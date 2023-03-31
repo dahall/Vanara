@@ -4,8 +4,8 @@ using ExplorerBrowser;
 using System;
 using System.Windows.Forms;
 
-namespace Microsoft.WindowsAPICodePack.Samples
-{
+namespace Microsoft.WindowsAPICodePack.Samples;
+
     static class Program
     {
         /// <summary>
@@ -19,4 +19,3 @@ namespace Microsoft.WindowsAPICodePack.Samples
             Application.Run(new ExplorerBrowserTestForm());  //new SimpleForm()); // new ExplorerBrowserTestForm()); // ShellNamespaceTreeControlTestForm());
         }
     }
-}

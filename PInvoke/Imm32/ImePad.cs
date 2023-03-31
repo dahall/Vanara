@@ -3,24 +3,23 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Vanara.PInvoke
+namespace Vanara.PInvoke;
+
+public static partial class Imm32
 {
-	public static partial class Imm32
-	{
-		// TODO: Complete interfaces from imdpad.h
-		//[ComImport, Guid(""), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		//public interface IImePad
-		//{
-		//}
+	// TODO: Complete interfaces from imdpad.h
+	//[ComImport, Guid(""), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	//public interface IImePad
+	//{
+	//}
 
-		//[ComImport, Guid(""), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		//public interface IImePadApplet
-		//{
-		//}
+	//[ComImport, Guid(""), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	//public interface IImePadApplet
+	//{
+	//}
 
-		//[ComImport, Guid(""), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		//public interface IImeSpecifyApplets
-		//{
-		//}
-	}
+	//[ComImport, Guid(""), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	//public interface IImeSpecifyApplets
+	//{
+	//}
 }

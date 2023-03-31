@@ -30,8 +30,8 @@ using System;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace Vanara.Windows.Forms.Annotations
-{
+namespace Vanara.Windows.Forms.Annotations;
+
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,
   /// so the check for <c>null</c> is necessary before its usage.
@@ -1036,4 +1036,3 @@ namespace Vanara.Windows.Forms.Annotations
   /// </remarks>
   [AttributeUsage(AttributeTargets.All)]
   public sealed class NoReorder : Attribute { }
-}

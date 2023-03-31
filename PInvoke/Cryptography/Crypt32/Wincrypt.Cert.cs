@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
@@ -2320,7 +2319,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "1504f166-2fa9-4041-9d72-b150cd8baa8a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertGetValidUsages(uint cCerts, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PCCERT_CONTEXT[] rghCerts,
-		out int cNumOIDs, [In, Optional, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rghOIDs, ref uint pcbOIDs);
+		out int cNumOIDs, [In, Optional, MarshalAs(UnmanagedType.LPArray)] IntPtr[]? rghOIDs, ref uint pcbOIDs);
 
 	/// <summary>
 	/// The <c>CertOpenServerOcspResponse</c> function opens a handle to an online certificate status protocol (OCSP) response
@@ -3683,7 +3682,7 @@ public static partial class Crypt32
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
-	//public static CERT_SELECT_CRITERIA[] CertSelectCertificateChains(in Guid pSelectionContext, HCERTSTORE hStore, CertSelection dwFlags, [Optional] CERT_SELECT_CHAIN_PARA? pChainParameters, [Optional] CERT_SELECT_CRITERIA[] rgpCriteria)
+	//public static CERT_SELECT_CRITERIA[] CertSelectCertificateChains(in Guid pSelectionContext, HCERTSTORE hStore, CertSelection dwFlags, [Optional] CERT_SELECT_CHAIN_PARA? pChainParameters, [Optional] CERT_SELECT_CRITERIA[]? rgpCriteria)
 	//{
 	//	unsafe
 	//	{
@@ -3699,7 +3698,7 @@ public static partial class Crypt32
 	//[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	//[return: MarshalAs(UnmanagedType.Bool)]
 	//private static extern unsafe bool CertSelectCertificateChains(in Guid pSelectionContext, CertSelection dwFlags, [In, Optional] CERT_SELECT_CHAIN_PARA* pChainParameters, int cCriteria,
-	//	[In, Optional, MarshalAs(UnmanagedType.LPArray)] CERT_SELECT_CRITERIA[] rgpCriteria, HCERTSTORE hStore, out int pcSelection, out CERT_CHAIN_CONTEXT*[] pprgpSelection);
+	//	[In, Optional, MarshalAs(UnmanagedType.LPArray)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out int pcSelection, out CERT_CHAIN_CONTEXT*[] pprgpSelection);
 
 	/// <summary>Provides a handle to a Certificate Chain Engine.</summary>
 	[StructLayout(LayoutKind.Sequential)]

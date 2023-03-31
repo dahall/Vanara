@@ -874,7 +874,7 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
 	public static extern uint ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[] registrationInfos,
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[]? registrationInfos,
 		uint timeoutMs, uint completionCount,
 		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Kernel32.OVERLAPPED_ENTRY[] completionPortEntries, out uint receivedEntryCount);
 
@@ -973,7 +973,7 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
 	public static extern Win32Error ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[] registrationInfos,
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[]? registrationInfos,
 		uint timeoutMs, [Optional] uint completionCount, [In, Optional] IntPtr completionPortEntries, [In, Optional] IntPtr receivedEntryCount);
 
 	/// <summary/>

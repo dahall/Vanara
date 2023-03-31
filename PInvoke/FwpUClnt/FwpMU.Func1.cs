@@ -1682,7 +1682,7 @@ public static partial class FwpUClnt
 	// *session, [out] HANDLE *engineHandle );
 	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmEngineOpen0")]
-	public static extern Win32Error FwpmEngineOpen0([Optional] string serverName, RPC_C_AUTHN authnService,
+	public static extern Win32Error FwpmEngineOpen0([Optional] string? serverName, RPC_C_AUTHN authnService,
 		in SEC_WINNT_AUTH_IDENTITY authIdentity, in FWPM_SESSION0 session, out SafeHFWPENG engineHandle);
 
 	/// <summary>The <c>FwpmEngineOpen0</c> function opens a session to the filter engine.</summary>
@@ -1763,7 +1763,7 @@ public static partial class FwpUClnt
 	// *session, [out] HANDLE *engineHandle );
 	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmEngineOpen0")]
-	public static extern Win32Error FwpmEngineOpen0([Optional] string serverName, RPC_C_AUTHN authnService,
+	public static extern Win32Error FwpmEngineOpen0([Optional] string? serverName, RPC_C_AUTHN authnService,
 		[In, Optional] IntPtr authIdentity, [In, Optional] IntPtr session, out SafeHFWPENG engineHandle);
 
 	/// <summary>

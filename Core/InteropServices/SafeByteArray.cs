@@ -192,14 +192,12 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 		if (Count != l.Count)
 			throw new ArgumentOutOfRangeException(nameof(other), @"Other value doesn't have the same number of elements.");
 
-		using (var tenum = GetEnumerator())
-		using (var oenum = l.GetEnumerator())
+		using var tenum = GetEnumerator();
+		using var oenum = l.GetEnumerator();
+		while (tenum.MoveNext() && oenum.MoveNext())
 		{
-			while (tenum.MoveNext() && oenum.MoveNext())
-			{
-				var i = comparer.Compare(tenum.Current, oenum.Current);
-				if (i != 0) return i;
-			}
+			var i = comparer.Compare(tenum.Current, oenum.Current);
+			if (i != 0) return i;
 		}
 		return 0;
 	}
@@ -249,14 +247,12 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 		if (Count != l.Count)
 			throw new ArgumentOutOfRangeException(nameof(other), @"Other value doesn't have the same number of elements.");
 
-		using (var tenum = GetEnumerator())
-		using (var oenum = l.GetEnumerator())
+		using var tenum = GetEnumerator();
+		using var oenum = l.GetEnumerator();
+		while (tenum.MoveNext() && oenum.MoveNext())
 		{
-			while (tenum.MoveNext() && oenum.MoveNext())
-			{
-				if (!comparer.Equals(tenum.Current, oenum.Current))
-					return false;
-			}
+			if (!comparer.Equals(tenum.Current, oenum.Current))
+				return false;
 		}
 		return true;
 	}

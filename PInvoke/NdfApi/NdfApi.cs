@@ -294,10 +294,10 @@ public static partial class NdfApi
 	// [in, optional] SOCKET_ADDRESS_LIST *Addresses, [in, optional] LPCWSTR appId, [out] NDFHANDLE *handle );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateGroupingIncident")]
-	public static extern HRESULT NdfCreateGroupingIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string CloudName,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string GroupName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string Identity,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string Invitation, [In, Optional] IntPtr Addresses,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string appId, out SafeNDFHANDLE handle);
+	public static extern HRESULT NdfCreateGroupingIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string? CloudName,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? GroupName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? Identity,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? Invitation, [In, Optional] IntPtr Addresses,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? appId, out SafeNDFHANDLE handle);
 
 	/// <summary>The <c>NdfCreateGroupingIncident</c> function creates a session to diagnose peer-to-peer grouping functionality issues.</summary>
 	/// <param name="CloudName">
@@ -398,10 +398,10 @@ public static partial class NdfApi
 	// [in, optional] SOCKET_ADDRESS_LIST *Addresses, [in, optional] LPCWSTR appId, [out] NDFHANDLE *handle );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateGroupingIncident")]
-	public static extern HRESULT NdfCreateGroupingIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string CloudName,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string GroupName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string Identity,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string Invitation, in SOCKET_ADDRESS_LIST Addresses,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string appId, out SafeNDFHANDLE handle);
+	public static extern HRESULT NdfCreateGroupingIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string? CloudName,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? GroupName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? Identity,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? Invitation, in SOCKET_ADDRESS_LIST Addresses,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? appId, out SafeNDFHANDLE handle);
 
 	/// <summary>
 	/// The <c>NdfCreateInboundIncident</c> function creates a session to diagnose inbound connectivity for a specific application or service.
@@ -474,8 +474,8 @@ public static partial class NdfApi
 	// *localTarget, IPPROTO protocol, DWORD dwFlags, [out] NDFHANDLE *handle );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateInboundIncident")]
-	public static extern HRESULT NdfCreateInboundIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string applicationID,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string serviceID, [In, Optional] PSID userID, in SOCKADDR_STORAGE localTarget,
+	public static extern HRESULT NdfCreateInboundIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string? applicationID,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? serviceID, [In, Optional] PSID userID, in SOCKADDR_STORAGE localTarget,
 		IPPROTO protocol, NDF_INBOUND_FLAG dwFlags, out SafeNDFHANDLE handle);
 
 	/// <summary>
@@ -549,8 +549,8 @@ public static partial class NdfApi
 	// *localTarget, IPPROTO protocol, DWORD dwFlags, [out] NDFHANDLE *handle );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateInboundIncident")]
-	public static extern HRESULT NdfCreateInboundIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string applicationID,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string serviceID, [In, Optional] PSID userID, [In, Optional] IntPtr localTarget,
+	public static extern HRESULT NdfCreateInboundIncident([Optional, MarshalAs(UnmanagedType.LPWStr)] string? applicationID,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? serviceID, [In, Optional] PSID userID, [In, Optional] IntPtr localTarget,
 		IPPROTO protocol, NDF_INBOUND_FLAG dwFlags, out SafeNDFHANDLE handle);
 
 	/// <summary>
@@ -713,8 +713,8 @@ public static partial class NdfApi
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreatePnrpIncident")]
 	public static extern HRESULT NdfCreatePnrpIncident([MarshalAs(UnmanagedType.LPWStr)] string cloudname,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string peername, [MarshalAs(UnmanagedType.Bool)] bool diagnosePublish,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string appId, out SafeNDFHANDLE handle);
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? peername, [MarshalAs(UnmanagedType.Bool)] bool diagnosePublish,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? appId, out SafeNDFHANDLE handle);
 
 	/// <summary>The <c>NdfCreateSharingIncident</c> function diagnoses network problems in accessing a specific network share.</summary>
 	/// <param name="UNCPath">
@@ -909,8 +909,8 @@ public static partial class NdfApi
 	// sock, [in, optional] LPCWSTR host, USHORT port, [in, optional] LPCWSTR appId, [in, optional] SID *userId, [out] NDFHANDLE *handle );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateWinSockIncident")]
-	public static extern HRESULT NdfCreateWinSockIncident(SOCKET sock, [Optional, MarshalAs(UnmanagedType.LPWStr)] string host,
-		ushort port, [Optional, MarshalAs(UnmanagedType.LPWStr)] string appId, [In, Optional] PSID userId, out SafeNDFHANDLE handle);
+	public static extern HRESULT NdfCreateWinSockIncident(SOCKET sock, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? host,
+		ushort port, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? appId, [In, Optional] PSID userId, out SafeNDFHANDLE handle);
 
 	/// <summary>The <c>NdfDiagnoseIncident</c> function diagnoses the root cause of an incident without displaying a user interface.</summary>
 	/// <param name="Handle">

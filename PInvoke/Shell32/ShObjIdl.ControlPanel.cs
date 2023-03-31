@@ -310,7 +310,7 @@ namespace Vanara.PInvoke
 			/// A pointer to the site for navigating in-frame for Shell folder Control Panel items. This parameter can be NULL.
 			/// </param>
 			[PreserveSig]
-			HRESULT Open([MarshalAs(UnmanagedType.LPWStr), Optional] string pszName, [MarshalAs(UnmanagedType.LPWStr), Optional] string page, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punkSite);
+			HRESULT Open([MarshalAs(UnmanagedType.LPWStr), Optional] string? pszName, [MarshalAs(UnmanagedType.LPWStr), Optional] string? page, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punkSite);
 
 			/// <summary>Gets the path of a specified Control Panel item.</summary>
 			/// <param name="pszName">
@@ -320,7 +320,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszPath">When this method returns, contains the path of the specified Control Panel item as a Unicode string.</param>
 			/// <param name="cchPath">The size of the buffer pointed to by pszPath, in WCHARs.</param>
 			[PreserveSig]
-			HRESULT GetPath([MarshalAs(UnmanagedType.LPWStr), Optional] string pszName, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
+			HRESULT GetPath([MarshalAs(UnmanagedType.LPWStr), Optional] string? pszName, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
 
 			/// <summary>Gets the most recent Control Panel view: Classic view or Category view.</summary>
 			/// <returns>The most recent view.</returns>

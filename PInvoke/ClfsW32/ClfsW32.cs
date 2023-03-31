@@ -2556,9 +2556,9 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.ReserveAndAppendLog")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReserveAndAppendLog([In] IntPtr pvMarshal,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[] rgWriteEntries,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[]? rgWriteEntries,
 		[In] uint cWriteEntries, in CLS_LSN plsnUndoNext, in CLS_LSN plsnPrevious, [In] uint cReserveRecords,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] long[] rgcbReservation, [In] CLFS_FLAG fFlags,
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] long[]? rgcbReservation, [In] CLFS_FLAG fFlags,
 		out CLS_LSN plsn, ref NativeOverlapped pOverlapped);
 
 	/// <summary>Reserves space for log buffers, or appends a log record to the log, or does both. The function is atomic.</summary>
@@ -2670,9 +2670,9 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.ReserveAndAppendLog")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReserveAndAppendLog([In] IntPtr pvMarshal,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[] rgWriteEntries,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[]? rgWriteEntries,
 		[In] uint cWriteEntries, [In, Optional] IntPtr plsnUndoNext, [In, Optional] IntPtr plsnPrevious, [In] uint cReserveRecords,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] long[] rgcbReservation, [In] CLFS_FLAG fFlags,
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] long[]? rgcbReservation, [In] CLFS_FLAG fFlags,
 		out CLS_LSN plsn, [In, Optional] IntPtr pOverlapped);
 
 	/// <summary>
@@ -2794,9 +2794,9 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.ReserveAndAppendLogAligned")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReserveAndAppendLogAligned([In] IntPtr pvMarshal,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[] rgWriteEntries,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[]? rgWriteEntries,
 		[In] uint cWriteEntries, [In] uint cbEntryAlignment, in CLS_LSN plsnUndoNext, in CLS_LSN plsnPrevious, [In] uint cReserveRecords,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] long[] rgcbReservation, [In] CLFS_FLAG fFlags,
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] long[]? rgcbReservation, [In] CLFS_FLAG fFlags,
 		out CLS_LSN plsn, ref NativeOverlapped pOverlapped);
 
 	/// <summary>
@@ -2918,9 +2918,9 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.ReserveAndAppendLogAligned")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReserveAndAppendLogAligned([In] IntPtr pvMarshal,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[] rgWriteEntries,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_WRITE_ENTRY[]? rgWriteEntries,
 		[In] uint cWriteEntries, [In] uint cbEntryAlignment, [In, Optional] IntPtr plsnUndoNext, [In, Optional] IntPtr plsnPrevious,
-		[In] uint cReserveRecords, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] long[] rgcbReservation,
+		[In] uint cReserveRecords, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] long[]? rgcbReservation,
 		[In] CLFS_FLAG fFlags, out CLS_LSN plsn, [In, Optional] IntPtr pOverlapped);
 
 	/// <summary>Enumerates log containers. Call this function repeatedly to iterate over all log containers.</summary>

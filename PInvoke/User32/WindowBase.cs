@@ -46,7 +46,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <param name="wndProcOverride">The window procedure override delegate.</param>
 	public WindowBase(WindowProc wndProcOverride) : this() => customWndProc = wndProcOverride;
 
-	internal WindowBase(HWND hwnd) : this() => wCls = WindowClass.GetInstanceFromWindow(hwnd) ?? throw Win32Error.GetLastError().GetException();
+	internal WindowBase(HWND hwnd) : this() => wCls = WindowClass.GetInstanceFromWindow(hwnd) ?? throw Win32Error.GetLastError().GetException()!;
 
 	/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
 	~WindowBase() => Dispose(false);

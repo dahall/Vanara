@@ -2,7 +2,6 @@ using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.Ws2_32;
 
 #pragma warning disable IDE1006 // Naming Styles
 namespace Vanara.PInvoke;

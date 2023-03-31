@@ -5,8 +5,8 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
-namespace Vanara.PInvoke
-{
+namespace Vanara.PInvoke;
+
     public static partial class PortableDeviceApi
     {
         /// <summary>
@@ -851,4 +851,3 @@ namespace Vanara.PInvoke
         {
         }
     }
-}

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vanara.Windows.Shell;
 
-namespace Microsoft.WindowsAPICodePack.Samples
-{
+namespace Microsoft.WindowsAPICodePack.Samples;
+
     public partial class SimpleForm : Form
     {
         public SimpleForm()
@@ -23,4 +23,3 @@ namespace Microsoft.WindowsAPICodePack.Samples
             //explorerBrowser1.Navigate(ShellFolder.Desktop);
         }
     }
-}

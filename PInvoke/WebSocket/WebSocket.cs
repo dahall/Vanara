@@ -463,9 +463,9 @@ public static partial class WebSocket
 	// *pulAdditionalHeaderCount );
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketBeginClientHandshake")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT WebSocketBeginClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszSubprotocols,
-		[Optional] uint ulSubprotocolCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string pszExtensions, [Optional] uint ulExtensionCount,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[] pInitialHeaders, [Optional] uint ulInitialHeaderCount,
+	public static extern HRESULT WebSocketBeginClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pszSubprotocols,
+		[Optional] uint ulSubprotocolCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string? pszExtensions, [Optional] uint ulExtensionCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[]? pInitialHeaders, [Optional] uint ulInitialHeaderCount,
 		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 8)] out WEB_SOCKET_HTTP_HEADER[] pAdditionalHeaders, out uint pulAdditionalHeaderCount);
 
 	/// <summary>The <c>WebSocketBeginServerHandshake</c> function begins the server-side handshake.</summary>
@@ -529,8 +529,8 @@ public static partial class WebSocket
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketBeginServerHandshake")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketBeginServerHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
-		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszSubprotocolSelected,
-		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszExtensionSelected, [Optional] uint ulExtensionSelectedCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pszSubprotocolSelected,
+		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pszExtensionSelected, [Optional] uint ulExtensionSelectedCount,
 		[In, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[] pRequestHeaders, uint ulRequestHeaderCount,
 		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out WEB_SOCKET_HTTP_HEADER[] pResponseHeaders, out uint pulResponseHeaderCount);
 
@@ -732,7 +732,7 @@ public static partial class WebSocket
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketEndClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WEB_SOCKET_HTTP_HEADER[] pResponseHeaders,
-		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] pulSelectedExtensions,
+		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[]? pulSelectedExtensions,
 		ref uint pulSelectedExtensionCount, out uint pulSelectedSubprotocol);
 
 	/// <summary>The <c>WebSocketEndClientHandshake</c> function completes the client-side handshake.</summary>
@@ -805,7 +805,7 @@ public static partial class WebSocket
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketEndClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WEB_SOCKET_HTTP_HEADER[] pResponseHeaders,
-		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] pulSelectedExtensions,
+		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[]? pulSelectedExtensions,
 		[In, Optional] IntPtr pulSelectedExtensionCount, [In, Optional] IntPtr pulSelectedSubprotocol);
 
 	/// <summary>The <c>WebSocketEndServerHandshake</c> function completes the server-side handshake.</summary>
@@ -1031,7 +1031,7 @@ public static partial class WebSocket
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketReceive")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketReceive([In] WEB_SOCKET_HANDLE hWebSocket,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_BUFFER[] pBuffer, [In, Optional] IntPtr pvContext);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_BUFFER[]? pBuffer, [In, Optional] IntPtr pvContext);
 
 	/// <summary>The <c>WebSocketSend</c> function adds a send operation to the protocol component operation queue.</summary>
 	/// <param name="hWebSocket">
@@ -1078,7 +1078,7 @@ public static partial class WebSocket
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketSend")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketSend([In] WEB_SOCKET_HANDLE hWebSocket, [In] WEB_SOCKET_BUFFER_TYPE BufferType,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_BUFFER[] pBuffer, [In, Optional] IntPtr Context);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_BUFFER[]? pBuffer, [In, Optional] IntPtr Context);
 
 	/// <summary>The <c>WEB_SOCKET_BUFFER</c> structure contains data for a specific WebSocket action.</summary>
 	/// <remarks>

@@ -693,7 +693,7 @@ public static partial class Kernel32
 	public static TOut? EndDeviceIoControl<TIn, TOut>(IAsyncResult asyncResult) where TIn : struct where TOut : struct
 	{
 		var ret = OverlappedAsync.EndOverlappedFunction(asyncResult);
-		return Unpack<TIn, TOut>((byte[])ret).Item2;
+		return Unpack<TIn, TOut>((byte[]?)ret).Item2;
 	}
 
 	/// <summary>Ends the asynchronous call to <c>BeginDeviceIoControl&lt;TIn, TOut&gt;(HFILE, uint, TIn?, TOut?, AsyncCallback)</c>.</summary>
@@ -702,10 +702,10 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>The output buffer, if exists; <c>null</c> otherwise.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-	public static byte[] EndDeviceIoControl(IAsyncResult asyncResult)
+	public static byte[]? EndDeviceIoControl(IAsyncResult asyncResult)
 	{
 		var ret = OverlappedAsync.EndOverlappedFunction(asyncResult);
-		return Unpack((byte[])ret).Item2;
+		return Unpack((byte[]?)ret).Item2;
 	}
 
 	/// <summary>
@@ -1058,8 +1058,10 @@ public static partial class Kernel32
 		return ms.ToArray();
 	}
 
-	private static Tuple<TIn?, TOut?> Unpack<TIn, TOut>(byte[] buffer) where TIn : struct where TOut : struct
+	private static Tuple<TIn?, TOut?> Unpack<TIn, TOut>(byte[]? buffer) where TIn : struct where TOut : struct
 	{
+		if (buffer is null || buffer.Length == 0)
+			return new Tuple<TIn?, TOut?>(null, null);
 		using var ms = new MemoryStream(buffer);
 		using var rdr = new BinaryReader(ms);
 		var inLen = rdr.ReadInt32();
@@ -1067,13 +1069,15 @@ public static partial class Kernel32
 		return new Tuple<TIn?, TOut?>(inLen > 0 ? rdr.Read<TIn>() : (TIn?)null, outLen > 0 ? rdr.Read<TOut>() : (TOut?)null);
 	}
 
-	private static Tuple<byte[], byte[]> Unpack(byte[] buffer)
+	private static Tuple<byte[]?, byte[]?> Unpack(byte[]? buffer)
 	{
+		if (buffer is null || buffer.Length == 0)
+			return new Tuple<byte[]?, byte[]?>(null, null);
 		using var ms = new MemoryStream(buffer);
 		using var rdr = new BinaryReader(ms);
 		var inLen = rdr.ReadInt32();
 		var outLen = rdr.ReadInt32();
-		return new Tuple<byte[], byte[]>(rdr.ReadBytes(inLen), rdr.ReadBytes(outLen));
+		return new Tuple<byte[]?, byte[]?>(rdr.ReadBytes(inLen), rdr.ReadBytes(outLen));
 	}
 
 	/// <summary>Contains the information returned by a call to the GetQueuedCompletionStatusEx function.</summary>

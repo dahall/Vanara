@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading;
 using static Vanara.PInvoke.PortableDeviceApi;
 
-namespace Vanara.PInvoke.Tests
-{
+namespace Vanara.PInvoke.Tests;
+
     [TestFixture]
     public class PortableDeviceApiTests
     {
@@ -22,9 +22,8 @@ namespace Vanara.PInvoke.Tests
         public void _Setup()
         {
             manager = new();
-            var deviceId = manager.GetDevices().FirstOrDefault();
-            if (deviceId is null) throw new ArgumentNullException("Device");
-            device = new();
+            var deviceId = manager.GetDevices().FirstOrDefault() ?? throw new ArgumentNullException("Device");
+		device = new();
             device.Open(deviceId, GetClientInfo());
         }
 
@@ -215,4 +214,3 @@ namespace Vanara.PInvoke.Tests
             return clientInformation;
         }
     }
-}

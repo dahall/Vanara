@@ -3,8 +3,8 @@ using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
-namespace Vanara.PInvoke
-{
+namespace Vanara.PInvoke;
+
     public static partial class PortableDeviceApi
     {
         /// <summary>
@@ -268,4 +268,3 @@ namespace Vanara.PInvoke
         [ComImport, Guid("a1570149-e645-4f43-8b0d-409b061db2fc"), ClassInterface(ClassInterfaceType.None)]
         public class EnumBthMtpConnectors { }
     }
-}

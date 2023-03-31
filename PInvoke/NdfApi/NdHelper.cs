@@ -347,7 +347,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-lowhealth HRESULT LowHealth( [in] LPCWSTR
 		// pwszInstanceDescription, [out] LPWSTR *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
 		[PreserveSig]
-		HRESULT LowHealth([Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszInstanceDescription,
+		HRESULT LowHealth([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszInstanceDescription,
 			[MarshalAs(UnmanagedType.LPWStr)] out string ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
 
 		/// <summary>
@@ -403,7 +403,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-highutilization HRESULT HighUtilization(
 		// [in] LPCWSTR pwszInstanceDescription, [out] LPWSTR *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
 		[PreserveSig]
-		HRESULT HighUtilization([Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszInstanceDescription,
+		HRESULT HighUtilization([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszInstanceDescription,
 			[MarshalAs(UnmanagedType.LPWStr)] out string ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
 
 		/// <summary>

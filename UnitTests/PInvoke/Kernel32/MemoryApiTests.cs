@@ -107,8 +107,8 @@ public class MemoryApiTests
 	[Test, Repeat(50)]
 	public void SafeMoveableHGlobalCreateFromHGLOBALTest()
 	{
-		var val = new RECT(8, 16, 32, 64);
-		var ptr = InteropExtensions.MarshalToPtr(val, i => (IntPtr)GlobalAlloc(GMEM.GHND | GMEM.GMEM_SHARE, i), out _, memLock: p => GlobalLock(p), memUnlock: p => GlobalUnlock(p));
+		RECT val = new(8, 16, 32, 64);
+		IntPtr ptr = InteropExtensions.MarshalToPtr(val, i => (IntPtr)GlobalAlloc(GMEM.GHND | GMEM.GMEM_SHARE, i), out _, memLock: p => GlobalLock(p), memUnlock: p => GlobalUnlock(p));
 		using SafeMoveableHGlobalHandle h = new(ptr, true);
 		Assert.AreEqual(val, h.ToStructure<RECT>());
 	}
@@ -116,7 +116,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalCreateFromStringListTest()
 	{
-		var strings = new[] { "AAAA", "BBBB", "CCCC" };
+		string[] strings = new[] { "AAAA", "BBBB", "CCCC" };
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStringList(strings);
 		CollectionAssert.AreEqual(strings, h.ToStringEnum());
 	}
@@ -124,7 +124,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalCreateFromStructTest()
 	{
-		var val = new RECT(8, 16, 32, 64);
+		RECT val = new(8, 16, 32, 64);
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStructure(val);
 		Assert.AreEqual(val, h.ToStructure<RECT>());
 	}
@@ -140,12 +140,12 @@ public class MemoryApiTests
 	[Test, Repeat(50)]
 	public void SafeMoveableHGlobalTakeOwnershipTest()
 	{
-		var val = new RECT(8, 16, 32, 64);
+		RECT val = new(8, 16, 32, 64);
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStructure(val);
 		HGLOBAL myh = h.TakeOwnership();
 		try
 		{
-			var p = GlobalLock(myh);
+			IntPtr p = GlobalLock(myh);
 			Assert.AreEqual(val, p.ToStructure<RECT>());
 			GlobalUnlock(myh);
 		}
@@ -155,7 +155,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalWriteStructTest()
 	{
-		var val = new RECT(8, 16, 32, 64);
+		RECT val = new(8, 16, 32, 64);
 		using SafeMoveableHGlobalHandle h = new(32);
 		h.Write(val);
 		Assert.AreEqual(val, h.ToStructure<RECT>());
@@ -164,7 +164,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalWriteStringListTest()
 	{
-		var strings = new[] { "AAAA", "BBBB", "CCCC" };
+		string[] strings = new[] { "AAAA", "BBBB", "CCCC" };
 		using SafeMoveableHGlobalHandle h = new(256);
 		h.CallLocked(p => p.Write(strings, StringListPackMethod.Concatenated, offset: 64, allocatedBytes: h.Size));
 		CollectionAssert.AreEqual(strings, h.ToStringEnum(prefixBytes: 64));

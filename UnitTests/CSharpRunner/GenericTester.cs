@@ -2,39 +2,37 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 
-namespace Vanara.PInvoke
+namespace Vanara.PInvoke;
+
+public class GenericComTester<TInt> where TInt : class
 {
-	public class GenericComTester<TInt> where TInt : class
+	protected Stack<object> objects = new Stack<object>();
+
+	public virtual TInt Instance => (TInt)objects.Peek();
+
+	[OneTimeSetUp]
+	public virtual void Setup() => objects.Push(InitInstance());
+
+	[OneTimeTearDown]
+	public virtual void TearDown()
 	{
-		protected Stack<object> objects = new Stack<object>();
-
-		public virtual TInt Instance => (TInt)objects.Peek();
-
-		[OneTimeSetUp]
-		public virtual void Setup() => objects.Push(InitInstance());
-
-		[OneTimeTearDown]
-		public virtual void TearDown()
-		{
-			while (objects.Count > 0)
-				Marshal.FinalReleaseComObject(objects.Pop());
-		}
-
-		protected virtual TInt InitInstance() => Activator.CreateInstance<TInt>();
+		while (objects.Count > 0)
+			Marshal.FinalReleaseComObject(objects.Pop());
 	}
 
-	public class GenericTester<T> where T : class, IDisposable
-	{
-		public virtual T Instance { get; protected set; }
+	protected virtual TInt InitInstance() => Activator.CreateInstance<TInt>();
+}
 
-		[OneTimeSetUp]
-		public virtual void Setup() => Instance = InitInstance();
+public class GenericTester<T> where T : class, IDisposable
+{
+	public virtual T Instance { get; protected set; }
 
-		[OneTimeTearDown]
-		public virtual void TearDown() => Instance?.Dispose();
+	[OneTimeSetUp]
+	public virtual void Setup() => Instance = InitInstance();
 
-		protected virtual T InitInstance() => Activator.CreateInstance<T>();
-	}
+	[OneTimeTearDown]
+	public virtual void TearDown() => Instance?.Dispose();
+
+	protected virtual T InitInstance() => Activator.CreateInstance<T>();
 }

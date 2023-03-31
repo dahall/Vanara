@@ -4,13 +4,11 @@
     <SupportedDlls>crypt32.dll;bcrypt.dll;ncrypt.dll;tokenbinding.dll;cryptui.dll;cryptnet.dll;cryptdlg.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <Nullable>enable</Nullable>
     <Description>PInvoke API (methods, structures and constants) imported from Windows crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptnet.dll, cryptdlg.dll and cryptui.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.Cryptography</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;cryptography</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

@@ -167,7 +167,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "df3b493c-23d2-4996-9b79-86009efe3078")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDisplayDevices([Optional] string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, EDD dwFlags);
+	public static extern bool EnumDisplayDevices([Optional] string? lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, EDD dwFlags);
 
 	/// <summary>
 	/// The <c>EnumDisplayMonitors</c> function enumerates display monitors (including invisible pseudo-monitors associated with the
@@ -366,7 +366,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "af73610b-bcd8-4660-800e-84fa0cc5b4eb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDisplaySettings([Optional] string lpszDeviceName, uint iModeNum, ref DEVMODE lpDevMode);
+	public static extern bool EnumDisplaySettings([Optional] string? lpszDeviceName, uint iModeNum, ref DEVMODE lpDevMode);
 
 	/// <summary>
 	/// <para>
@@ -495,7 +495,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "99794fb1-7ba3-4864-bf6a-e3a514fa7917")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDisplaySettingsEx([Optional] string lpszDeviceName, uint iModeNum, ref DEVMODE lpDevMode, EDS dwFlags);
+	public static extern bool EnumDisplaySettingsEx([Optional] string? lpszDeviceName, uint iModeNum, ref DEVMODE lpDevMode, EDS dwFlags);
 
 	/// <summary>The <c>GetMonitorInfo</c> function retrieves information about a display monitor.</summary>
 	/// <param name="hMonitor">A handle to the display monitor of interest.</param>

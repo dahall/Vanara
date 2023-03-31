@@ -6,8 +6,8 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PortableDeviceApi;
 
-namespace Vanara.PInvoke
-{
+namespace Vanara.PInvoke;
+
     /// <summary>Elements from the Enhanced Storage API.</summary>
     public static partial class EnhancedStorage
     {
@@ -1328,4 +1328,3 @@ namespace Vanara.PInvoke
         }
         */
     }
-}

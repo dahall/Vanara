@@ -9,2638 +9,2638 @@ using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
-namespace Vanara.PInvoke
+namespace Vanara.PInvoke;
+
+/// <summary>Platform invokable enumerated types, constants and functions from ntdll.h</summary>
+public static partial class NtDll
 {
-	/// <summary>Platform invokable enumerated types, constants and functions from ntdll.h</summary>
-	public static partial class NtDll
+	/// <summary>
+	/// <para>The <c>KEY_INFORMATION_CLASS</c> enumeration type represents the type of information to supply about a registry key.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Use the <c>KEY_INFORMATION_CLASS</c> values to specify the type of data to be supplied by the ZwEnumerateKey and ZwQueryKey routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ne-wdm-_key_information_class typedef enum
+	// _KEY_INFORMATION_CLASS { KeyBasicInformation , KeyNodeInformation , KeyFullInformation , KeyNameInformation ,
+	// KeyCachedInformation , KeyFlagsInformation , KeyVirtualizationInformation , KeyHandleTagsInformation , KeyTrustInformation ,
+	// KeyLayerInformation , MaxKeyInfoClass } KEY_INFORMATION_CLASS;
+	[PInvokeData("wdm.h", MSDNShortId = "cb531a0e-c934-4f3e-9b92-07eb3ab75673")]
+	public enum KEY_INFORMATION_CLASS : uint
+	{
+		/// <summary>A KEY_BASIC_INFORMATION structure is supplied.</summary>
+		[CorrespondingType(typeof(KEY_BASIC_INFORMATION))]
+		KeyBasicInformation,
+
+		/// <summary>A KEY_NODE_INFORMATION structure is supplied.</summary>
+		[CorrespondingType(typeof(KEY_NODE_INFORMATION))]
+		KeyNodeInformation,
+
+		/// <summary>A KEY_FULL_INFORMATION structure is supplied.</summary>
+		[CorrespondingType(typeof(KEY_FULL_INFORMATION))]
+		KeyFullInformation,
+
+		/// <summary>A KEY_NAME_INFORMATION structure is supplied.</summary>
+		[CorrespondingType(typeof(KEY_NAME_INFORMATION))]
+		KeyNameInformation,
+
+		/// <summary>A KEY_CACHED_INFORMATION structure is supplied.</summary>
+		KeyCachedInformation,
+
+		/// <summary>Reserved for system use.</summary>
+		KeyFlagsInformation,
+
+		/// <summary>A KEY_VIRTUALIZATION_INFORMATION structure is supplied.</summary>
+		KeyVirtualizationInformation,
+
+		/// <summary>Reserved for system use.</summary>
+		KeyHandleTagsInformation,
+
+		/// <summary/>
+		KeyTrustInformation,
+
+		/// <summary/>
+		KeyLayerInformation,
+
+		/// <summary>The maximum value in this enumeration type.</summary>
+		MaxKeyInfoClass,
+	}
+
+	/// <summary>
+	/// <para>The <c>DbgBreakPoint</c> routine breaks into the kernel debugger.</para>
+	/// </summary>
+	/// <returns>
+	/// <para>None</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>DbgBreakPoint</c> routine is the kernel-mode equivalent of <c>DebugBreak</c>.</para>
+	/// <para>
+	/// This routine raises an exception that is handled by the kernel debugger if one is installed; otherwise, it is handled by the
+	/// debug system. If a debugger is not connected to the system, the exception can be handled in the standard way.
+	/// </para>
+	/// <para>
+	/// In kernel mode, a break exception that is not handled will cause a bug check. You can, however, connect a kernel-mode debugger
+	/// to a target computer that has stopped responding and has kernel debugging enabled. For more information, see Windows Debugging.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-dbgbreakpoint __analysis_noreturn VOID
+	// DbgBreakPoint( );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "deeac910-2cc3-4a54-bf3b-aeb56d0004dc")]
+	public static extern void DbgBreakPoint();
+
+	/// <summary>
+	/// <para>The <c>DbgPrint</c> routine sends a message to the kernel debugger. </para>
+	/// <para>
+	/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only when the conditions that you specify
+	/// apply (see the <a href="#remarks">Remarks</a> section for information).
+	/// </para>
+	/// </summary>
+	/// <param name="Format">
+	/// <para>
+	/// Specifies a pointer to the format string to print. The Format string supports most of the printf-style format specification fields.
+	/// However, the Unicode format codes (%C, %S, %lc, %ls, %wc, %ws, and %wZ) can only be used with IRQL = PASSIVE_LEVEL.
+	/// The <c>DbgPrint</c> routine does not support any of the floating point types (%f, %e, %E, %g, %G, %a, or %A).
+	/// </para>
+	/// </param>
+	/// <param name="arguments">
+	/// <para>Specifies arguments for the format string, as in <c>printf</c>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If successful, <c>DbgPrint</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise it returns the appropriate error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes (%wc and %ws) can be used only
+	/// at IRQL=PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with other processors,
+	/// calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
+	/// </para>
+	/// <para> Only kernel-mode drivers can call the <c>DbgPrint</c> routine. </para>
+	/// <para>
+	/// In Microsoft Windows Server 2003 and earlier versions of Windows, the <c>DbgPrint</c> routine sends a message to the kernel debugger.
+	/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only if certain conditions apply.
+	/// Specifically, it behaves like the DbgPrintEx routine with the DEFAULT component and a message importance level of DPFLTR_INFO_LEVEL.
+	/// <code>
+	/// DbgPrint ( Format, arguments ),
+	/// DbgPrintEx ( DPFLTR_DEFAULT_ID, DPFLTR_INFO_LEVEL, Format, arguments )
+	/// </code>
+	/// </para>
+	/// <para> For more information about message filtering, components, and message importance level, see Reading and Filtering Debugging Messages. </para>
+	/// <para>
+	/// Regardless of which version of Windows you are using, it is recommended that you use <c>DbgPrintEx</c> instead of <c>DbgPrint</c>,
+	/// since this allows you to control the conditions under which the message is sent.
+	/// </para>
+	/// <para>
+	/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to <c>DbgPrint</c>.
+	/// If you do use a string that you did not create, you must verify that this is a valid format string, and that the format codes
+	/// match the argument list in type and quantity. The best coding practice is for all Format strings to be static and defined at compile time.
+	/// </para>
+	/// <para>
+	/// There is no upper limit to the size of the Format string or the number of arguments. However, any single call to <c>DbgPrint</c>
+	/// will only transmit 512 bytes of information. There is also a limit to the size of the <c>DbgPrint</c> buffer.
+	/// See DbgPrint Buffer and the Debugger for details.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprint ULONG DbgPrint([in] PCSTR Format,...);
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrint")]
+	public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr arguments);
+
+	/// <summary>
+	/// <para>The <c>DbgPrint</c> routine sends a message to the kernel debugger.</para>
+	/// <para>
+	/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only when the conditions that you specify apply
+	/// (see the Remarks section for information).
+	/// </para>
+	/// </summary>
+	/// <param name="Format">
+	/// Specifies a pointer to the format string to print. The <c>Format</c> string supports most of the <c>printf</c>-style format
+	/// specification fields. However, the Unicode format codes ( <c>%C</c>, <c>%S</c>, <c>%lc</c>, <c>%ls</c>, <c>%wc</c>, <c>%ws</c>,
+	/// and <c>%wZ</c>) can only be used with IRQL = PASSIVE_LEVEL. The <c>DbgPrint</c> routine does not support any of the floating
+	/// point types ( <c>%f</c>, <c>%e</c>, <c>%E</c>, <c>%g</c>, <c>%G</c>, <c>%a</c>, or <c>%A</c>).
+	/// </param>
+	/// <param name="args">Specifies arguments for the format string, as in <c>printf</c>.</param>
+	/// <returns>
+	/// If successful, <c>DbgPrint</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise it returns the appropriate error code.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes (%wc and %ws) can be used
+	/// only at IRQL=PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with other processors,
+	/// calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
+	/// </para>
+	/// <para>Only kernel-mode drivers can call the <c>DbgPrint</c> routine.</para>
+	/// <para>
+	/// In Microsoft Windows Server 2003 and earlier versions of Windows, the <c>DbgPrint</c> routine sends a message to the kernel
+	/// debugger. In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only if certain conditions apply.
+	/// Specifically, it behaves like the DbgPrintEx routine with the DEFAULT component and a message importance level of
+	/// DPFLTR_INFO_LEVEL. In other words, the following two function calls are identical:
+	/// </para>
+	/// <para>
+	/// <code>DbgPrint ( Format, arguments ) DbgPrintEx ( DPFLTR_DEFAULT_ID, DPFLTR_INFO_LEVEL, Format, arguments )</code>
+	/// </para>
+	/// <para>
+	/// For more information about message filtering, components, and message importance level, see Reading and Filtering Debugging Messages.
+	/// </para>
+	/// <para>
+	/// <c>Note</c> Regardless of which version of Windows you are using, it is recommended that you use <c>DbgPrintEx</c> instead of
+	/// <c>DbgPrint</c>, since this allows you to control the conditions under which the message is sent.
+	/// </para>
+	/// <para>
+	/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to
+	/// <c>DbgPrint</c>. If you do use a string that you did not create, you must verify that this is a valid format string, and that the
+	/// format codes match the argument list in type and quantity. The best coding practice is for all <c>Format</c> strings to be static
+	/// and defined at compile time.
+	/// </para>
+	/// <para>
+	/// There is no upper limit to the size of the <c>Format</c> string or the number of arguments. However, any single call to
+	/// <c>DbgPrint</c> will only transmit 512 bytes of information. There is also a limit to the size of the DbgPrint buffer. See
+	/// DbgPrint Buffer and the Debugger for details.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrintEx")]
+	public static NTStatus DbgPrint(string Format, params object[] args)
+	{
+		using var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true);
+		return DbgPrint(Format, pargs);
+	}
+
+	/// <summary>The <c>DbgPrintEx</c> routine sends a string to the kernel debugger if the conditions you specify are met.</summary>
+	/// <param name="ComponentId">
+	/// <para>
+	/// Specifies the component calling this routine. This must be one of the component name filter IDs defined in the Dpfilter.h header
+	/// file. To avoid mixing your driver's output with the output of Windows components, you should use only the following values for <c>ComponentId</c>:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>DPFLTR_IHVVIDEO_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVAUDIO_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVNETWORK_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVSTREAMING_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVBUS_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVDRIVER_ID</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="Level">
+	/// Specifies the severity of the message being sent. This can be any 32-bit integer. Values between 0 and 31 (inclusive) are treated
+	/// differently than values between 32 and 0xFFFFFFFF. For details, see Reading and Filtering Debugging Messages.
+	/// </param>
+	/// <param name="Format">
+	/// Specifies a pointer to the format string to print. The <c>Format</c> string supports most of the <c>printf</c>-style format
+	/// specification fields. However, the Unicode format codes ( <c>%C</c>, <c>%S</c>, <c>%lc</c>, <c>%ls</c>, <c>%wc</c>, <c>%ws</c>,
+	/// and <c>%wZ</c>) can only be used with IRQL = PASSIVE_LEVEL. The <c>DbgPrintEx</c> routine does not support any of the floating
+	/// point types ( <c>%f</c>, <c>%e</c>, <c>%E</c>, <c>%g</c>, <c>%G</c>, <c>%a</c>, or <c>%A</c>).
+	/// </param>
+	/// <param name="arguments">Specifies arguments for the format string, as in <c>printf</c>.</param>
+	/// <returns>
+	/// If successful, <c>DbgPrintEx</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise, it returns the appropriate error code.
+	/// </returns>
+	/// <remarks>
+	/// <para>Only kernel-mode drivers can call the <c>DbgPrintEx</c> routine.</para>
+	/// <para>
+	/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes ( <c>%wc</c> and <c>%ws</c>)
+	/// can be used only at IRQL = PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with
+	/// other processors, calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
+	/// </para>
+	/// <para>
+	/// <c>DbgPrintEx</c> either passes the specified string to the kernel debugger or does nothing at all, depending on the values of
+	/// <c>ComponentId</c>, <c>Level</c>, and the corresponding component filter masks. For details, see Reading and Filtering Debugging Messages.
+	/// </para>
+	/// <para>
+	/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to
+	/// <c>DbgPrintEx</c>. If you do use a string that you did not create, you must verify that this is a valid format string, and that
+	/// the format codes match the argument list in type and quantity. The best coding practice is for all <c>Format</c> strings to be
+	/// static and defined at compile time.
+	/// </para>
+	/// <para>
+	/// There is no upper limit to the size of the <c>Format</c> string or the number of arguments. However, any single call to
+	/// <c>DbgPrintEx</c> will only transmit 512 bytes of information. There is also a limit to the size of the DbgPrint buffer. See The
+	/// DbgPrint Buffer and the Debugger for details.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprintex NTSYSAPI ULONG
+	// DbgPrintEx([in] ULONG ComponentId, [in] ULONG Level,[in] PCSTR Format,...);
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrintEx")]
+	public static extern NTStatus DbgPrintEx(DPFLTR_TYPE ComponentId, uint Level, [MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr arguments);
+
+	/// <summary>The <c>DbgPrintEx</c> routine sends a string to the kernel debugger if the conditions you specify are met.</summary>
+	/// <param name="ComponentId">
+	/// <para>
+	/// Specifies the component calling this routine. This must be one of the component name filter IDs defined in the Dpfilter.h header
+	/// file. To avoid mixing your driver's output with the output of Windows components, you should use only the following values for <c>ComponentId</c>:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>DPFLTR_IHVVIDEO_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVAUDIO_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVNETWORK_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVSTREAMING_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVBUS_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>DPFLTR_IHVDRIVER_ID</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="Level">
+	/// Specifies the severity of the message being sent. This can be any 32-bit integer. Values between 0 and 31 (inclusive) are treated
+	/// differently than values between 32 and 0xFFFFFFFF. For details, see Reading and Filtering Debugging Messages.
+	/// </param>
+	/// <param name="Format">
+	/// Specifies a pointer to the format string to print. The <c>Format</c> string supports most of the <c>printf</c>-style format
+	/// specification fields. However, the Unicode format codes ( <c>%C</c>, <c>%S</c>, <c>%lc</c>, <c>%ls</c>, <c>%wc</c>, <c>%ws</c>,
+	/// and <c>%wZ</c>) can only be used with IRQL = PASSIVE_LEVEL. The <c>DbgPrintEx</c> routine does not support any of the floating
+	/// point types ( <c>%f</c>, <c>%e</c>, <c>%E</c>, <c>%g</c>, <c>%G</c>, <c>%a</c>, or <c>%A</c>).
+	/// </param>
+	/// <param name="args">Specifies arguments for the format string, as in <c>printf</c>.</param>
+	/// <returns>
+	/// If successful, <c>DbgPrintEx</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise, it returns the appropriate error code.
+	/// </returns>
+	/// <remarks>
+	/// <para>Only kernel-mode drivers can call the <c>DbgPrintEx</c> routine.</para>
+	/// <para>
+	/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes ( <c>%wc</c> and <c>%ws</c>)
+	/// can be used only at IRQL = PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with
+	/// other processors, calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
+	/// </para>
+	/// <para>
+	/// <c>DbgPrintEx</c> either passes the specified string to the kernel debugger or does nothing at all, depending on the values of
+	/// <c>ComponentId</c>, <c>Level</c>, and the corresponding component filter masks. For details, see Reading and Filtering Debugging Messages.
+	/// </para>
+	/// <para>
+	/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to
+	/// <c>DbgPrintEx</c>. If you do use a string that you did not create, you must verify that this is a valid format string, and that
+	/// the format codes match the argument list in type and quantity. The best coding practice is for all <c>Format</c> strings to be
+	/// static and defined at compile time.
+	/// </para>
+	/// <para>
+	/// There is no upper limit to the size of the <c>Format</c> string or the number of arguments. However, any single call to
+	/// <c>DbgPrintEx</c> will only transmit 512 bytes of information. There is also a limit to the size of the DbgPrint buffer. See The
+	/// DbgPrint Buffer and the Debugger for details.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrintEx")]
+	public static NTStatus DbgPrintEx(DPFLTR_TYPE ComponentId, uint Level, string Format, params object[] args)
+	{
+		using var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true);
+		return DbgPrintEx(ComponentId, Level, Format, pargs);
+	}
+
+	/// <summary>
+	/// <para>
+	/// The <c>ZwCommitComplete</c> routine notifies KTM that the calling resource manager has finished committing a transaction's data.
+	/// </para>
+	/// </summary>
+	/// <param name="EnlistmentHandle">
+	/// <para>
+	/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The handle must
+	/// have ENLISTMENT_SUBORDINATE_RIGHTS access to the object.
+	/// </para>
+	/// </param>
+	/// <param name="TmVirtualClock">
+	/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCommitComplete</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
+	/// <term>The specified handle is not a handle to an enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The object handle is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The caller does not have appropriate access to the enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_NOT_REQUESTED</term>
+	/// <term>The transaction or its enlistment is not in the correct state.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A resource manager must call <c>ZwCommitComplete</c> after it has finished servicing a TRANSACTION_NOTIFY_COMMIT notification.</para>
+	/// <para>For more information about <c>ZwCommitComplete</c>, see Handling Commit Operations.</para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitcomplete __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCommitComplete( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05")]
+	public static extern NTStatus NtCommitComplete([In] SafeEnlistmentHandle EnlistmentHandle, in long TmVirtualClock);
+
+	/// <summary>
+	/// <para>
+	/// The <c>ZwCommitComplete</c> routine notifies KTM that the calling resource manager has finished committing a transaction's data.
+	/// </para>
+	/// </summary>
+	/// <param name="EnlistmentHandle">
+	/// <para>
+	/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The handle must
+	/// have ENLISTMENT_SUBORDINATE_RIGHTS access to the object.
+	/// </para>
+	/// </param>
+	/// <param name="TmVirtualClock">
+	/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCommitComplete</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
+	/// <term>The specified handle is not a handle to an enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The object handle is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The caller does not have appropriate access to the enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_NOT_REQUESTED</term>
+	/// <term>The transaction or its enlistment is not in the correct state.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A resource manager must call <c>ZwCommitComplete</c> after it has finished servicing a TRANSACTION_NOTIFY_COMMIT notification.</para>
+	/// <para>For more information about <c>ZwCommitComplete</c>, see Handling Commit Operations.</para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitcomplete __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCommitComplete( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05")]
+	public static extern NTStatus NtCommitComplete([In] SafeEnlistmentHandle EnlistmentHandle, [In, Optional] IntPtr TmVirtualClock);
+
+	/// <summary>
+	/// <para>The <c>ZwCommitEnlistment</c> routine initiates the commit operation for a specified enlistment's transaction.</para>
+	/// </summary>
+	/// <param name="EnlistmentHandle">
+	/// <para>
+	/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The object must
+	/// represent a superior enlistment and the handle must have ENLISTMENT_SUPERIOR_RIGHTS access to the object.
+	/// </para>
+	/// </param>
+	/// <param name="TmVirtualClock">
+	/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCommitEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
+	/// <term>The specified handle is not a handle to an enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The object handle is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The caller does not have appropriate access to the enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ENLISTMENT_NOT_SUPERIOR</term>
+	/// <term>The caller is not a superior transaction manager for the enlistment.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_RESPONSE_NOT_ENLISTED</term>
+	/// <term>The caller did not register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_REQUEST_NOT_VALID</term>
+	/// <term>The enlistment's transaction is not in a state that allows it to be committed.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
+	/// <term>The commit operation for this transaction has already been started.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_ALREADY_ABORTED</term>
+	/// <term>The transaction cannot be committed because it has been rolled back.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Only superior transaction managers can call <c>ZwCommitEnlistment</c>.</para>
+	/// <para>Callers of <c>ZwCommitEnlistment</c> must register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</para>
+	/// <para>
+	/// The <c>ZwCommitEnlistment</c> routine causes KTM to send TRANSACTION_NOTIFY_COMMIT notifications to all resource managers that
+	/// have enlisted in the transaction.
+	/// </para>
+	/// <para>
+	/// For more information about <c>ZwCommitEnlistment</c>, see Creating a Superior Transaction Manager and Handling Commit Operations.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitenlistment __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCommitEnlistment( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "9c7f3e24-1d7c-450e-bbef-df0479911bc6")]
+	public static extern NTStatus NtCommitEnlistment([In] SafeEnlistmentHandle EnlistmentHandle, in long TmVirtualClock);
+
+	/// <summary>
+	/// <para>The <c>ZwCommitEnlistment</c> routine initiates the commit operation for a specified enlistment's transaction.</para>
+	/// </summary>
+	/// <param name="EnlistmentHandle">
+	/// <para>
+	/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The object must
+	/// represent a superior enlistment and the handle must have ENLISTMENT_SUPERIOR_RIGHTS access to the object.
+	/// </para>
+	/// </param>
+	/// <param name="TmVirtualClock">
+	/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCommitEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
+	/// <term>The specified handle is not a handle to an enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The object handle is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The caller does not have appropriate access to the enlistment object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ENLISTMENT_NOT_SUPERIOR</term>
+	/// <term>The caller is not a superior transaction manager for the enlistment.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_RESPONSE_NOT_ENLISTED</term>
+	/// <term>The caller did not register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_REQUEST_NOT_VALID</term>
+	/// <term>The enlistment's transaction is not in a state that allows it to be committed.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
+	/// <term>The commit operation for this transaction has already been started.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_ALREADY_ABORTED</term>
+	/// <term>The transaction cannot be committed because it has been rolled back.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Only superior transaction managers can call <c>ZwCommitEnlistment</c>.</para>
+	/// <para>Callers of <c>ZwCommitEnlistment</c> must register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</para>
+	/// <para>
+	/// The <c>ZwCommitEnlistment</c> routine causes KTM to send TRANSACTION_NOTIFY_COMMIT notifications to all resource managers that
+	/// have enlisted in the transaction.
+	/// </para>
+	/// <para>
+	/// For more information about <c>ZwCommitEnlistment</c>, see Creating a Superior Transaction Manager and Handling Commit Operations.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitenlistment __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCommitEnlistment( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "9c7f3e24-1d7c-450e-bbef-df0479911bc6")]
+	public static extern NTStatus NtCommitEnlistment([In] SafeEnlistmentHandle EnlistmentHandle, [In, Optional] IntPtr TmVirtualClock);
+
+	/// <summary>
+	/// <para>The <c>ZwCommitTransaction</c> routine initiates a commit operation for a specified transaction.</para>
+	/// </summary>
+	/// <param name="TransactionHandle">
+	/// <para>
+	/// A handle to a transaction object. Your component receives this handle from ZwCreateTransaction or ZwOpenTransaction. The handle
+	/// must have TRANSACTION_COMMIT access to the object.
+	/// </para>
+	/// </param>
+	/// <param name="Wait">
+	/// <para>
+	/// A Boolean value that the caller sets to <c>TRUE</c> for synchronous operation or <c>FALSE</c> for asynchronous operation. If
+	/// this parameter is <c>TRUE</c>, the call returns after the commit operation is complete.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCommitTransaction</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
+	/// <term>The handle that was specified for the TransactionHandle parameter is not a handle to a transaction object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The specified transaction object handle is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The caller does not have appropriate access to the transaction object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_SUPERIOR_EXISTS</term>
+	/// <term>The caller cannot commit the transaction because a superior transaction manager exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_ALREADY_ABORTED</term>
+	/// <term>The transaction cannot be committed because it has been rolled back.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_ALREADY_COMMITTED</term>
+	/// <term>The transaction is already committed.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_REQUEST_NOT_VALID</term>
+	/// <term>The commit operation for this transaction has already been started.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_PENDING</term>
+	/// <term>Commit notifications have been queued to resource managers, and the caller specified FALSE for the Wait parameter.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// For more information about how transaction clients should use the <c>ZwCommitTransaction</c> routine, see Creating a
+	/// Transactional Client.
+	/// </para>
+	/// <para>For more information about commit operations, see Handling Commit Operations.</para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommittransaction __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCommitTransaction( HANDLE TransactionHandle, BOOLEAN Wait );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "145646f3-ff90-41d6-bf76-947cdf93b489")]
+	public static extern NTStatus NtCommitTransaction([In] IntPtr TransactionHandle, [MarshalAs(UnmanagedType.U1)] bool Wait);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateEnlistment</c> routine creates a new enlistment object for a transaction.</para>
+	/// </summary>
+	/// <param name="EnlistmentHandle">
+	/// <para>
+	/// A pointer to a caller-allocated variable that receives a handle to the new enlistment object if the call to
+	/// <c>ZwCreateEnlistment</c> succeeds.
+	/// </para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the enlistment object. In addition to the access rights
+	/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right flags for
+	/// enlistment objects:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>ACCESS_MASK flag</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ENLISTMENT_QUERY_INFORMATION</term>
+	/// <term>Query information about the enlistment (see ZwQueryInformationEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_SET_INFORMATION</term>
+	/// <term>Set information for the enlistment (see ZwSetInformationEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_RECOVER</term>
+	/// <term>Recover the enlistment (see ZwRecoverEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_SUBORDINATE_RIGHTS</term>
+	/// <term>
+	/// Perform operations that a resource manager that is not superior performs (see ZwRollbackEnlistment, ZwPrePrepareComplete,
+	/// ZwPrepareComplete, ZwCommitComplete, ZwRollbackComplete, ZwSinglePhaseReject, ZwReadOnlyEnlistment).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_SUPERIOR_RIGHTS</term>
+	/// <term>
+	/// Perform operations that a superior transaction manager must perform (see ZwPrepareEnlistment, ZwPrePrepareEnlistment, ZwCommitEnlistment).
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
+	/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
+	/// these bitmaps together with additional flags from the previous table. The following table shows how the bitmaps correspond to
+	/// specific access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Generic access right</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ENLISTMENT_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ and ENLISTMENT_QUERY_INFORMATION</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, ENLISTMENT_SET_INFORMATION, ENLISTMENT_RECOVER, ENLISTMENT_REFERENCE, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_GENERIC_EXECUTE</term>
+	/// <term>STANDARD_RIGHTS_EXECUTE, ENLISTMENT_RECOVER, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, ENLISTMENT_GENERIC_READ, ENLISTMENT_GENERIC_WRITE, and ENLISTMENT_GENERIC_EXECUTE</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="ResourceManagerHandle">
+	/// <para>A handle to the caller's resource manager object that was obtained by a previous call to ZwCreateResourceManager or ZwOpenResourceManager.</para>
+	/// </param>
+	/// <param name="TransactionHandle">
+	/// <para>
+	/// A handle to a transaction object that was obtained by a previous call to ZwCreateTransaction or ZwOpenTransaction. KTM adds this
+	/// transaction to the list of transactions that the calling resource manager is handling.
+	/// </para>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Enlistment option flags. The following table contains the only available flag.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>CreateOptions flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ENLISTMENT_SUPERIOR</term>
+	/// <term>The caller is enlisting as a superior transaction manager for the specified transaction.</term>
+	/// </item>
+	/// </list>
+	/// <para>This parameter is optional and can be zero.</para>
+	/// </param>
+	/// <param name="NotificationMask">
+	/// <para>
+	/// A bitwise OR of TRANSACTION_NOTIFY_XXX values that are defined in Ktmtypes.h. This mask specifies the types of transaction
+	/// notifications that KTM sends to the caller.
+	/// </para>
+	/// </param>
+	/// <param name="EnlistmentKey">
+	/// <para>
+	/// A pointer to caller-defined information that uniquely identifies the enlistment. The resource manager receives this pointer when
+	/// it calls ZwGetNotificationResourceManager or when KTM calls the ResourceManagerNotification callback routine. The resource
+	/// manager can maintain a reference count for this key by calling TmReferenceEnlistmentKey and TmDereferenceEnlistmentKey. This
+	/// parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>An object handle is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>
+	/// The CreateOptions or NotificationMask parameter's value is invalid, or KTM could not find the transaction that the
+	/// TransactionHandle parameter specifies.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
+	/// <term>A memory allocation failed.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTIONMANAGER_NOT_ONLINE</term>
+	/// <term>The enlistment failed because KTM or the resource manager is not in an operational state.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
+	/// <term>The enlistment failed because the transaction that the TransactionHandle parameter specifies is not active.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_SUPERIOR_EXISTS</term>
+	/// <term>The caller tried to register as a superior transaction manager but a superior transaction manager already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TM_VOLATILE</term>
+	/// <term>
+	/// The caller is trying to register as a superior transaction manager, but the caller's resource manager object is volatile while
+	/// the associated transaction manager object is not volatile.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A resource manager calls <c>ZwCreateEnlistment</c> to enlist in a transaction.</para>
+	/// <para>Resource managers that are not superior must include the ENLISTMENT_SUBORDINATE_RIGHTS flag in their access mask.</para>
+	/// <para>
+	/// Superior transaction managers must include the ENLISTMENT_SUPERIOR_RIGHTS flag in their access masks. Typically, a superior
+	/// transaction manager includes code that calls ZwRollbackEnlistment, so it must also include the ENLISTMENT_SUBORDINATE_RIGHTS flag.
+	/// </para>
+	/// <para>A resource manager that calls <c>ZwCreateEnlistment</c> must eventually call ZwClose to close the object handle.</para>
+	/// <para>
+	/// Your resource manager can use the EnlistmentKey parameter to assign a unique value to each enlistment, such as a pointer to a
+	/// data structure that contains information about the enlistment. For example, if the resource manager stores the enlistment
+	/// object's handle in the structure, the resource manager can do the following:
+	/// </para>
+	/// <para>
+	/// For more information about <c>ZwCreateEnlistment</c>, see Creating a Resource Manager and Creating a Superior Transaction Manager.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateenlistment __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCreateEnlistment( PHANDLE EnlistmentHandle, ACCESS_MASK DesiredAccess, HANDLE ResourceManagerHandle, HANDLE
+	// TransactionHandle, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, NOTIFICATION_MASK NotificationMask, PVOID
+	// EnlistmentKey );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "5ffd8262-10b3-4c40-bd3e-050271338508")]
+	public static extern NTStatus NtCreateEnlistment(out SafeEnlistmentHandle EnlistmentHandle, ACCESS_MASK DesiredAccess, [In] SafeResourceManagerHandle ResourceManagerHandle,
+		[In] SafeTransactionHandle TransactionHandle, in OBJECT_ATTRIBUTES ObjectAttributes, [Optional] uint CreateOptions, NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateEnlistment</c> routine creates a new enlistment object for a transaction.</para>
+	/// </summary>
+	/// <param name="EnlistmentHandle">
+	/// <para>
+	/// A pointer to a caller-allocated variable that receives a handle to the new enlistment object if the call to
+	/// <c>ZwCreateEnlistment</c> succeeds.
+	/// </para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the enlistment object. In addition to the access rights
+	/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right flags for
+	/// enlistment objects:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>ACCESS_MASK flag</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ENLISTMENT_QUERY_INFORMATION</term>
+	/// <term>Query information about the enlistment (see ZwQueryInformationEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_SET_INFORMATION</term>
+	/// <term>Set information for the enlistment (see ZwSetInformationEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_RECOVER</term>
+	/// <term>Recover the enlistment (see ZwRecoverEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_SUBORDINATE_RIGHTS</term>
+	/// <term>
+	/// Perform operations that a resource manager that is not superior performs (see ZwRollbackEnlistment, ZwPrePrepareComplete,
+	/// ZwPrepareComplete, ZwCommitComplete, ZwRollbackComplete, ZwSinglePhaseReject, ZwReadOnlyEnlistment).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_SUPERIOR_RIGHTS</term>
+	/// <term>
+	/// Perform operations that a superior transaction manager must perform (see ZwPrepareEnlistment, ZwPrePrepareEnlistment, ZwCommitEnlistment).
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
+	/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
+	/// these bitmaps together with additional flags from the previous table. The following table shows how the bitmaps correspond to
+	/// specific access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Generic access right</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ENLISTMENT_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ and ENLISTMENT_QUERY_INFORMATION</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, ENLISTMENT_SET_INFORMATION, ENLISTMENT_RECOVER, ENLISTMENT_REFERENCE, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_GENERIC_EXECUTE</term>
+	/// <term>STANDARD_RIGHTS_EXECUTE, ENLISTMENT_RECOVER, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS</term>
+	/// </item>
+	/// <item>
+	/// <term>ENLISTMENT_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, ENLISTMENT_GENERIC_READ, ENLISTMENT_GENERIC_WRITE, and ENLISTMENT_GENERIC_EXECUTE</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="ResourceManagerHandle">
+	/// <para>A handle to the caller's resource manager object that was obtained by a previous call to ZwCreateResourceManager or ZwOpenResourceManager.</para>
+	/// </param>
+	/// <param name="TransactionHandle">
+	/// <para>
+	/// A handle to a transaction object that was obtained by a previous call to ZwCreateTransaction or ZwOpenTransaction. KTM adds this
+	/// transaction to the list of transactions that the calling resource manager is handling.
+	/// </para>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Enlistment option flags. The following table contains the only available flag.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>CreateOptions flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ENLISTMENT_SUPERIOR</term>
+	/// <term>The caller is enlisting as a superior transaction manager for the specified transaction.</term>
+	/// </item>
+	/// </list>
+	/// <para>This parameter is optional and can be zero.</para>
+	/// </param>
+	/// <param name="NotificationMask">
+	/// <para>
+	/// A bitwise OR of TRANSACTION_NOTIFY_XXX values that are defined in Ktmtypes.h. This mask specifies the types of transaction
+	/// notifications that KTM sends to the caller.
+	/// </para>
+	/// </param>
+	/// <param name="EnlistmentKey">
+	/// <para>
+	/// A pointer to caller-defined information that uniquely identifies the enlistment. The resource manager receives this pointer when
+	/// it calls ZwGetNotificationResourceManager or when KTM calls the ResourceManagerNotification callback routine. The resource
+	/// manager can maintain a reference count for this key by calling TmReferenceEnlistmentKey and TmDereferenceEnlistmentKey. This
+	/// parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>An object handle is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>
+	/// The CreateOptions or NotificationMask parameter's value is invalid, or KTM could not find the transaction that the
+	/// TransactionHandle parameter specifies.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
+	/// <term>A memory allocation failed.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTIONMANAGER_NOT_ONLINE</term>
+	/// <term>The enlistment failed because KTM or the resource manager is not in an operational state.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
+	/// <term>The enlistment failed because the transaction that the TransactionHandle parameter specifies is not active.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_SUPERIOR_EXISTS</term>
+	/// <term>The caller tried to register as a superior transaction manager but a superior transaction manager already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TM_VOLATILE</term>
+	/// <term>
+	/// The caller is trying to register as a superior transaction manager, but the caller's resource manager object is volatile while
+	/// the associated transaction manager object is not volatile.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A resource manager calls <c>ZwCreateEnlistment</c> to enlist in a transaction.</para>
+	/// <para>Resource managers that are not superior must include the ENLISTMENT_SUBORDINATE_RIGHTS flag in their access mask.</para>
+	/// <para>
+	/// Superior transaction managers must include the ENLISTMENT_SUPERIOR_RIGHTS flag in their access masks. Typically, a superior
+	/// transaction manager includes code that calls ZwRollbackEnlistment, so it must also include the ENLISTMENT_SUBORDINATE_RIGHTS flag.
+	/// </para>
+	/// <para>A resource manager that calls <c>ZwCreateEnlistment</c> must eventually call ZwClose to close the object handle.</para>
+	/// <para>
+	/// Your resource manager can use the EnlistmentKey parameter to assign a unique value to each enlistment, such as a pointer to a
+	/// data structure that contains information about the enlistment. For example, if the resource manager stores the enlistment
+	/// object's handle in the structure, the resource manager can do the following:
+	/// </para>
+	/// <para>
+	/// For more information about <c>ZwCreateEnlistment</c>, see Creating a Resource Manager and Creating a Superior Transaction Manager.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateenlistment __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCreateEnlistment( PHANDLE EnlistmentHandle, ACCESS_MASK DesiredAccess, HANDLE ResourceManagerHandle, HANDLE
+	// TransactionHandle, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, NOTIFICATION_MASK NotificationMask, PVOID
+	// EnlistmentKey );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "5ffd8262-10b3-4c40-bd3e-050271338508")]
+	public static extern NTStatus NtCreateEnlistment(out SafeEnlistmentHandle EnlistmentHandle, ACCESS_MASK DesiredAccess, [In] SafeResourceManagerHandle ResourceManagerHandle,
+		[In] SafeTransactionHandle TransactionHandle, [In, Optional] IntPtr ObjectAttributes, [Optional] uint CreateOptions, NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateResourceManager</c> routine creates a resource manager object.</para>
+	/// </summary>
+	/// <param name="ResourceManagerHandle">
+	/// <para>
+	/// A pointer to a caller-allocated variable that receives a handle to the new resource manager object if the call to
+	/// <c>ZwCreateResourceManager</c> is successful.
+	/// </para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the resource manager object. In addition to the access
+	/// rights that are defined for all kinds of objects (see <c>ACCESS_MASK</c>), the caller can specify any of the following access
+	/// right flags for resource manager objects:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>ACCESS_MASK flag</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>RESOURCEMANAGER_ENLIST</term>
+	/// <term>Enlist in transactions (see ZwCreateEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GET_NOTIFICATION</term>
+	/// <term>Receive notifications about the transactions that are associated with this resource manager (see ZwGetNotificationResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_REGISTER_PROTOCOL</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_QUERY_INFORMATION</term>
+	/// <term>Query information about the resource manager (see ZwQueryInformationResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_SET_INFORMATION</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_RECOVER</term>
+	/// <term>Recover the resource manager (see ZwRecoverResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_COMPLETE_PROPAGATION</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following generic ACCESS_MASK flags. (The STANDARD_RIGHTS_Xxx flags are
+	/// predefined system values that are used to enforce security on system objects.) You can also combine these generic flags with
+	/// additional flags from the preceding table. The following table shows how generic access rights correspond to specific access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Generic access right</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ, RESOURCEMANAGER_QUERY_INFORMATION, and SYNCHRONIZE</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, RESOURCEMANAGER_SET_INFORMATION, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST,
+	/// RESOURCEMANAGER_GET_NOTIFICATION, RESOURCEMANAGER_REGISTER_PROTOCOL, RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GENERIC_EXECUTE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_EXECUTE, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST, RESOURCEMANAGER_GET_NOTIFICATION,
+	/// RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, RESOURCEMANAGER_GENERIC_READ, RESOURCEMANAGER_GENERIC_WRITE, and RESOURCEMANAGER_GENERIC_EXECUTE</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="TmHandle">
+	/// <para>A handle to a transaction manager object that was obtained by a previous all to ZwCreateTransactionManager or ZwOpenTransactionManager.</para>
+	/// </param>
+	/// <param name="RmGuid">
+	/// <para>
+	/// A pointer to a GUID that KTM will use to identify the resource manager. If this pointer is <c>NULL</c>, KTM generates a GUID.
+	/// </para>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>CreateOptions flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>RESOURCE_MANAGER_COMMUNICATION</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCE_MANAGER_VOLATILE</term>
+	/// <term>The caller will manage volatile resources. It will be non-persistent and will not perform recovery.</term>
+	/// </item>
+	/// </list>
+	/// <para>This parameter is optional and can be zero.</para>
+	/// </param>
+	/// <param name="Description">
+	/// <para>
+	/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
+	/// description of the resource manager. KTM stores a copy of the string and includes the string in messages that it writes to the
+	/// log stream. The maximum string length is MAX_RESOURCEMANAGER_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateResourceManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
+	/// <term>The handle that TmHandle specifies is not a handle to a transaction object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The handle that TmHandle specifies is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The caller does not have appropriate access to the specified transaction manager object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_OBJECT_EXPIRED</term>
+	/// <term>The handle that TmHandle specifies is closed.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>The CreateOptions parameter's value is invalid or the Description parameter's string is too long.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TM_VOLATILE</term>
+	/// <term>
+	/// The CreateOptions parameter does not specify RESOURCE_MANAGER_VOLATILE but the transaction manager that TmHandle specifies is volatile.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_COLLISION</term>
+	/// <term>The GUID that ResourceManagerGuid specifies already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A resource manager that calls <c>ZwCreateResourceManager</c> must eventually call ZwClose to close the object handle.</para>
+	/// <para>For more information about <c>ZwCreateResourceManager</c>, see Creating a Resource Manager.</para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateresourcemanager __kernel_entry
+	// NTSYSCALLAPI NTSTATUS NtCreateResourceManager( PHANDLE ResourceManagerHandle, ACCESS_MASK DesiredAccess, HANDLE TmHandle, LPGUID
+	// RmGuid, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, PUNICODE_STRING Description );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "4812eeb4-134f-4ecb-870b-dbab04c1137b")]
+	public static extern NTStatus NtCreateResourceManager(out SafeResourceManagerHandle ResourceManagerHandle, ACCESS_MASK DesiredAccess, SafeTransactionManagerHandle TmHandle, in Guid RmGuid,
+		in OBJECT_ATTRIBUTES ObjectAttributes, [Optional] uint CreateOptions, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string? Description);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateResourceManager</c> routine creates a resource manager object.</para>
+	/// </summary>
+	/// <param name="ResourceManagerHandle">
+	/// <para>
+	/// A pointer to a caller-allocated variable that receives a handle to the new resource manager object if the call to
+	/// <c>ZwCreateResourceManager</c> is successful.
+	/// </para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the resource manager object. In addition to the access
+	/// rights that are defined for all kinds of objects (see <c>ACCESS_MASK</c>), the caller can specify any of the following access
+	/// right flags for resource manager objects:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>ACCESS_MASK flag</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>RESOURCEMANAGER_ENLIST</term>
+	/// <term>Enlist in transactions (see ZwCreateEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GET_NOTIFICATION</term>
+	/// <term>Receive notifications about the transactions that are associated with this resource manager (see ZwGetNotificationResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_REGISTER_PROTOCOL</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_QUERY_INFORMATION</term>
+	/// <term>Query information about the resource manager (see ZwQueryInformationResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_SET_INFORMATION</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_RECOVER</term>
+	/// <term>Recover the resource manager (see ZwRecoverResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_COMPLETE_PROPAGATION</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following generic ACCESS_MASK flags. (The STANDARD_RIGHTS_Xxx flags are
+	/// predefined system values that are used to enforce security on system objects.) You can also combine these generic flags with
+	/// additional flags from the preceding table. The following table shows how generic access rights correspond to specific access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Generic access right</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ, RESOURCEMANAGER_QUERY_INFORMATION, and SYNCHRONIZE</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, RESOURCEMANAGER_SET_INFORMATION, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST,
+	/// RESOURCEMANAGER_GET_NOTIFICATION, RESOURCEMANAGER_REGISTER_PROTOCOL, RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_GENERIC_EXECUTE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_EXECUTE, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST, RESOURCEMANAGER_GET_NOTIFICATION,
+	/// RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCEMANAGER_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, RESOURCEMANAGER_GENERIC_READ, RESOURCEMANAGER_GENERIC_WRITE, and RESOURCEMANAGER_GENERIC_EXECUTE</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="TmHandle">
+	/// <para>A handle to a transaction manager object that was obtained by a previous all to ZwCreateTransactionManager or ZwOpenTransactionManager.</para>
+	/// </param>
+	/// <param name="RmGuid">
+	/// <para>
+	/// A pointer to a GUID that KTM will use to identify the resource manager. If this pointer is <c>NULL</c>, KTM generates a GUID.
+	/// </para>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>CreateOptions flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>RESOURCE_MANAGER_COMMUNICATION</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCE_MANAGER_VOLATILE</term>
+	/// <term>The caller will manage volatile resources. It will be non-persistent and will not perform recovery.</term>
+	/// </item>
+	/// </list>
+	/// <para>This parameter is optional and can be zero.</para>
+	/// </param>
+	/// <param name="Description">
+	/// <para>
+	/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
+	/// description of the resource manager. KTM stores a copy of the string and includes the string in messages that it writes to the
+	/// log stream. The maximum string length is MAX_RESOURCEMANAGER_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateResourceManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
+	/// <term>The handle that TmHandle specifies is not a handle to a transaction object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The handle that TmHandle specifies is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The caller does not have appropriate access to the specified transaction manager object.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TRANSACTION_OBJECT_EXPIRED</term>
+	/// <term>The handle that TmHandle specifies is closed.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>The CreateOptions parameter's value is invalid or the Description parameter's string is too long.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_TM_VOLATILE</term>
+	/// <term>
+	/// The CreateOptions parameter does not specify RESOURCE_MANAGER_VOLATILE but the transaction manager that TmHandle specifies is volatile.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_COLLISION</term>
+	/// <term>The GUID that ResourceManagerGuid specifies already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A resource manager that calls <c>ZwCreateResourceManager</c> must eventually call ZwClose to close the object handle.</para>
+	/// <para>For more information about <c>ZwCreateResourceManager</c>, see Creating a Resource Manager.</para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateresourcemanager __kernel_entry
+	// NTSYSCALLAPI NTSTATUS NtCreateResourceManager( PHANDLE ResourceManagerHandle, ACCESS_MASK DesiredAccess, HANDLE TmHandle, LPGUID
+	// RmGuid, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, PUNICODE_STRING Description );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wdm.h", MSDNShortId = "4812eeb4-134f-4ecb-870b-dbab04c1137b")]
+	public static extern NTStatus NtCreateResourceManager(out SafeResourceManagerHandle ResourceManagerHandle, ACCESS_MASK DesiredAccess, SafeTransactionManagerHandle TmHandle, in Guid RmGuid,
+		[In, Optional] IntPtr ObjectAttributes, [Optional] uint CreateOptions, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string? Description);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateTransaction</c> routine creates a transaction object.</para>
+	/// </summary>
+	/// <param name="TransactionHandle">
+	/// <para>
+	/// A pointer to a caller-allocated variable that receives a handle to the new transaction object, if the call to
+	/// <c>ZwCreateTransaction</c> succeeds.
+	/// </para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the transaction object. In addition to the access rights
+	/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following flags for transaction objects.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Access mask</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_COMMIT</term>
+	/// <term>Commit the transaction (see ZwCommitTransaction).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_ENLIST</term>
+	/// <term>Create an enlistment for the transaction (see ZwCreateEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_PROPAGATE</term>
+	/// <term>Do not use.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_QUERY_INFORMATION</term>
+	/// <term>Obtain information about the transaction (see ZwQueryInformationTransaction).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_ROLLBACK</term>
+	/// <term>Roll back the transaction (see ZwRollbackTransaction).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_SET_INFORMATION</term>
+	/// <term>Set information for the transaction (see ZwSetInformationTransaction).</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
+	/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
+	/// these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to specific
+	/// access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Rights bitmap</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ, TRANSACTION_QUERY_INFORMATION, and SYNCHRONIZE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, TRANSACTION_SET_INFORMATION, TRANSACTION_COMMIT, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
+	/// TRANSACTION_PROPAGATE, TRANSACTION_SAVEPOINT, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_GENERIC_EXECUTE</term>
+	/// <term>STANDARD_RIGHTS_EXECUTE, TRANSACTION_COMMIT, TRANSACTION_ROLLBACK, and SYNCHRONIZE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTION_GENERIC_READ, TRANSACTION_GENERIC_WRITE, and TRANSACTION_GENERIC_EXECUTE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_RESOURCE_MANAGER_RIGHTS</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, TRANSACTION_GENERIC_READ, TRANSACTION_SET_INFORMATION, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
+	/// TRANSACTION_PROPAGATE, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>Typically, a resource manager specifies TRANSACTION_RESOURCE_MANAGER_RIGHTS.</para>
+	/// <para>The DesiredAccess value cannot be zero.</para>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="Uow">
+	/// <para>
+	/// A pointer to a GUID that KTM uses as the new transaction object's unit of work (UOW) identifier. This parameter is optional and
+	/// can be <c>NULL</c>. If this parameter is <c>NULL</c>, KTM generates a GUID and assigns it to the transaction object. For more
+	/// information, see the following Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="TmHandle">
+	/// <para>
+	/// A handle to a transaction manager object that was obtained by a previous call to ZwCreateTransactionManager or
+	/// ZwOpenTransactionManager. KTM assigns the new transaction object to the specified transaction manager object. If this parameter
+	/// is <c>NULL</c>, KTM assigns the new transaction object to a transaction manager later, when a resource manager creates an
+	/// enlistment for the transaction.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Option flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_DO_NOT_PROMOTE</term>
+	/// <term>Reserved for future use.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="IsolationLevel">
+	/// <para>Reserved for future use. Callers must set this parameter to zero.</para>
+	/// </param>
+	/// <param name="IsolationFlags">
+	/// <para>Reserved for future use. Callers should set this parameter to zero.</para>
+	/// </param>
+	/// <param name="Timeout">
+	/// <para>
+	/// A pointer to a time-out value. If the transaction has not been committed by the time specified by this parameter, KTM rolls back
+	/// the transaction. The time-out value is expressed in system time units (100-nanosecond intervals), and can specify either an
+	/// absolute time or a relative time. If the value pointed to by Timeout is negative, the expiration time is relative to the current
+	/// system time. Otherwise, the expiration time is absolute. This pointer is optional and can be <c>NULL</c> if you do not want the
+	/// transaction to have a time-out value. If Timeout = <c>NULL</c> or *Timeout = 0, the transaction never times out. (You can also
+	/// use ZwSetInformationTransaction to set a time-out value.)
+	/// </para>
+	/// </param>
+	/// <param name="Description">
+	/// <para>
+	/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
+	/// description of the transaction. KTM stores a copy of the string and includes the string in messages that it writes to the log
+	/// stream. The maximum string length is MAX_TRANSACTION_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateTransaction</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>
+	/// The CreateOptions parameter contains an invalid flag, the DesiredAccess parameter is zero, or the Description parameter's string
+	/// is too long.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
+	/// <term>KTM could not allocate system resources (typically memory).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_ACL</term>
+	/// <term>A security descriptor contains an invalid access control list (ACL).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_SID</term>
+	/// <term>A security descriptor contains an invalid security identifier (SID).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_EXISTS</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_INVALID</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The caller can use the Uow parameter to specify a UOW identifier for the transaction object. If the caller does not specify a
+	/// UOW identifier, KTM generates a GUID and assigns it to the transaction object. The caller can later obtain this GUID by calling ZwQueryInformationTransaction.
+	/// </para>
+	/// <para>
+	/// Typically, you should let KTM generate a GUID for the transaction object, unless your component communicates with another TPS
+	/// component that has already generated a UOW identifier for the transaction.
+	/// </para>
+	/// <para>
+	/// To close the transaction handle, the component that called <c>ZwCreateTransaction</c> must call ZwClose. If the last transaction
+	/// handle closes before any component calls ZwCommitTransaction for the transaction, KTM rolls back the transaction.
+	/// </para>
+	/// <para>
+	/// For more information about how transaction clients should use <c>ZwCreateTransaction</c>, see Creating a Transactional Client.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransaction __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCreateTransaction( PHANDLE TransactionHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, LPGUID
+	// Uow, HANDLE TmHandle, ULONG CreateOptions, ULONG IsolationLevel, ULONG IsolationFlags, PLARGE_INTEGER Timeout, PUNICODE_STRING
+	// Description );
+	[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("wdm.h", MSDNShortId = "b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4")]
+	public static extern NTStatus NtCreateTransaction(out SafeTransactionHandle TransactionHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
+		in Guid Uow, SafeTransactionManagerHandle TmHandle, [Optional] uint CreateOptions, [Optional] uint IsolationLevel, [Optional] uint IsolationFlags, in long Timeout,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string? Description);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateTransaction</c> routine creates a transaction object.</para>
+	/// </summary>
+	/// <param name="TransactionHandle">
+	/// <para>
+	/// A pointer to a caller-allocated variable that receives a handle to the new transaction object, if the call to
+	/// <c>ZwCreateTransaction</c> succeeds.
+	/// </para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the transaction object. In addition to the access rights
+	/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following flags for transaction objects.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Access mask</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_COMMIT</term>
+	/// <term>Commit the transaction (see ZwCommitTransaction).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_ENLIST</term>
+	/// <term>Create an enlistment for the transaction (see ZwCreateEnlistment).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_PROPAGATE</term>
+	/// <term>Do not use.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_QUERY_INFORMATION</term>
+	/// <term>Obtain information about the transaction (see ZwQueryInformationTransaction).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_ROLLBACK</term>
+	/// <term>Roll back the transaction (see ZwRollbackTransaction).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_SET_INFORMATION</term>
+	/// <term>Set information for the transaction (see ZwSetInformationTransaction).</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
+	/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
+	/// these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to specific
+	/// access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Rights bitmap</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ, TRANSACTION_QUERY_INFORMATION, and SYNCHRONIZE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, TRANSACTION_SET_INFORMATION, TRANSACTION_COMMIT, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
+	/// TRANSACTION_PROPAGATE, TRANSACTION_SAVEPOINT, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_GENERIC_EXECUTE</term>
+	/// <term>STANDARD_RIGHTS_EXECUTE, TRANSACTION_COMMIT, TRANSACTION_ROLLBACK, and SYNCHRONIZE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTION_GENERIC_READ, TRANSACTION_GENERIC_WRITE, and TRANSACTION_GENERIC_EXECUTE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_RESOURCE_MANAGER_RIGHTS</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, TRANSACTION_GENERIC_READ, TRANSACTION_SET_INFORMATION, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
+	/// TRANSACTION_PROPAGATE, and SYNCHRONIZE
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>Typically, a resource manager specifies TRANSACTION_RESOURCE_MANAGER_RIGHTS.</para>
+	/// <para>The DesiredAccess value cannot be zero.</para>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="Uow">
+	/// <para>
+	/// A pointer to a GUID that KTM uses as the new transaction object's unit of work (UOW) identifier. This parameter is optional and
+	/// can be <c>NULL</c>. If this parameter is <c>NULL</c>, KTM generates a GUID and assigns it to the transaction object. For more
+	/// information, see the following Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="TmHandle">
+	/// <para>
+	/// A handle to a transaction manager object that was obtained by a previous call to ZwCreateTransactionManager or
+	/// ZwOpenTransactionManager. KTM assigns the new transaction object to the specified transaction manager object. If this parameter
+	/// is <c>NULL</c>, KTM assigns the new transaction object to a transaction manager later, when a resource manager creates an
+	/// enlistment for the transaction.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Option flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_DO_NOT_PROMOTE</term>
+	/// <term>Reserved for future use.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="IsolationLevel">
+	/// <para>Reserved for future use. Callers must set this parameter to zero.</para>
+	/// </param>
+	/// <param name="IsolationFlags">
+	/// <para>Reserved for future use. Callers should set this parameter to zero.</para>
+	/// </param>
+	/// <param name="Timeout">
+	/// <para>
+	/// A pointer to a time-out value. If the transaction has not been committed by the time specified by this parameter, KTM rolls back
+	/// the transaction. The time-out value is expressed in system time units (100-nanosecond intervals), and can specify either an
+	/// absolute time or a relative time. If the value pointed to by Timeout is negative, the expiration time is relative to the current
+	/// system time. Otherwise, the expiration time is absolute. This pointer is optional and can be <c>NULL</c> if you do not want the
+	/// transaction to have a time-out value. If Timeout = <c>NULL</c> or *Timeout = 0, the transaction never times out. (You can also
+	/// use ZwSetInformationTransaction to set a time-out value.)
+	/// </para>
+	/// </param>
+	/// <param name="Description">
+	/// <para>
+	/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
+	/// description of the transaction. KTM stores a copy of the string and includes the string in messages that it writes to the log
+	/// stream. The maximum string length is MAX_TRANSACTION_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateTransaction</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
+	/// following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>
+	/// The CreateOptions parameter contains an invalid flag, the DesiredAccess parameter is zero, or the Description parameter's string
+	/// is too long.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
+	/// <term>KTM could not allocate system resources (typically memory).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_ACL</term>
+	/// <term>A security descriptor contains an invalid access control list (ACL).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_SID</term>
+	/// <term>A security descriptor contains an invalid security identifier (SID).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_EXISTS</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_INVALID</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The caller can use the Uow parameter to specify a UOW identifier for the transaction object. If the caller does not specify a
+	/// UOW identifier, KTM generates a GUID and assigns it to the transaction object. The caller can later obtain this GUID by calling ZwQueryInformationTransaction.
+	/// </para>
+	/// <para>
+	/// Typically, you should let KTM generate a GUID for the transaction object, unless your component communicates with another TPS
+	/// component that has already generated a UOW identifier for the transaction.
+	/// </para>
+	/// <para>
+	/// To close the transaction handle, the component that called <c>ZwCreateTransaction</c> must call ZwClose. If the last transaction
+	/// handle closes before any component calls ZwCommitTransaction for the transaction, KTM rolls back the transaction.
+	/// </para>
+	/// <para>
+	/// For more information about how transaction clients should use <c>ZwCreateTransaction</c>, see Creating a Transactional Client.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransaction __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtCreateTransaction( PHANDLE TransactionHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, LPGUID
+	// Uow, HANDLE TmHandle, ULONG CreateOptions, ULONG IsolationLevel, ULONG IsolationFlags, PLARGE_INTEGER Timeout, PUNICODE_STRING
+	// Description );
+	[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("wdm.h", MSDNShortId = "b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4")]
+	public static extern NTStatus NtCreateTransaction(out SafeTransactionHandle TransactionHandle, ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
+		[In, Optional] IntPtr Uow, [In, Optional] IntPtr TmHandle, [Optional] uint CreateOptions, [Optional] uint IsolationLevel,
+		[Optional] uint IsolationFlags, [In, Optional] IntPtr Timeout, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string? Description);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateTransactionManager</c> routine creates a new transaction manager object.</para>
+	/// </summary>
+	/// <param name="TmHandle">
+	/// <para>A pointer to a caller-allocated variable that receives a handle to the new transaction manager object.</para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the transaction manager object. In addition to the access
+	/// rights that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right
+	/// flags for transaction manager objects.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>ACCESS_MASK flag</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_CREATE_RM</term>
+	/// <term>Create a resource manager (see ZwCreateResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_QUERY_INFORMATION</term>
+	/// <term>
+	/// Obtain information about the transaction manager (see ZwQueryInformationTransactionManager and ZwEnumerateTransactionObject).
+	/// Also required for ZwOpenResourceManager, ZwCreateTransaction, and ZwOpenTransaction.)
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_RECOVER</term>
+	/// <term>Recover the transaction manager (see ZwRecoverTransactionManager and ZwRollforwardTransactionManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_RENAME</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_SET_INFORMATION</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
+	/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the <c>ACCESS_MASK</c> reference page. You can also
+	/// combine these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to
+	/// specific access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Rights bitmap</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ and TRANSACTIONMANAGER_QUERY_INFORMATION</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, TRANSACTIONMANAGER_SET_INFORMATION, TRANSACTIONMANAGER_RECOVER, TRANSACTIONMANAGER_RENAME, and TRANSACTIONMANAGER_CREATE_RM
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
+	/// <term>STANDARD_RIGHTS_EXECUTE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTIONMANAGER_GENERIC_READ, TRANSACTIONMANAGER_GENERIC_WRITE, and TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="LogFileName">
+	/// <para>
+	/// A pointer to a UNICODE_STRING structure that contains the path and file name of a CLFS log file stream to be associated with the
+	/// transaction manager object. This parameter must be <c>NULL</c> if the CreateOptions parameter is TRANSACTION_MANAGER_VOLATILE.
+	/// Otherwise, this parameter must be non- <c>NULL</c>. For more information, see the following Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Option flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_VOLATILE</term>
+	/// <term>The transaction manager object will be volatile. Therefore, it will not use a log file.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_DEFAULT</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_VOLUME</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_HIVES</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_LOWEST</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_RECOVERY</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_PROGRESS</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="CommitStrength">
+	/// <para>Reserved for future use. This parameter must be zero.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateTransactionManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of
+	/// the following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>The value of an input parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
+	/// <term>KTM could not allocate system resources (typically memory).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_LOG_CORRUPTION_DETECTED</term>
+	/// <term>KTM encountered an error while creating or opening the log file.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_ACL</term>
+	/// <term>A security descriptor contains an invalid access control list (ACL).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_SID</term>
+	/// <term>A security descriptor contains an invalid security identifier (SID).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_EXISTS</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_COLLISION</term>
+	/// <term>The operating system detected a duplicate object name. The error might indicate that the log stream is already being used.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_INVALID</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the log file stream that the LogFileName parameter specifies does not exist, KTM calls CLFS to create the stream. If the
+	/// stream already exists, KTM calls CLFS to open the stream.
+	/// </para>
+	/// <para>Your TPS component must call ZwRecoverTransactionManager after it has called <c>ZwCreateTransactionManager</c></para>
+	/// <para>
+	/// If your TPS component specifies the TRANSACTION_MANAGER_VOLATILE flag in the CreateOptions parameter, all resource managers that
+	/// are associated with the transaction manager object must specify the RESOURCE_MANAGER_VOLATILE flag when they call ZwCreateResourceManager.
+	/// </para>
+	/// <para>A TPS component that calls <c>ZwCreateTransactionManager</c> must eventually call ZwClose to close the object handle.</para>
+	/// <para>For more information about how use <c>ZwCreateTransactionManager</c>, see Creating a Resource Manager.</para>
+	/// <para>
+	/// <c>NtCreateTransactionManager</c> and <c>ZwCreateTransactionManager</c> are two versions of the same Windows Native System
+	/// Services routine.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransactionmanager __kernel_entry
+	// NTSYSCALLAPI NTSTATUS NtCreateTransactionManager( PHANDLE TmHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES
+	// ObjectAttributes, PUNICODE_STRING LogFileName, ULONG CreateOptions, ULONG CommitStrength );
+	[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("wdm.h", MSDNShortId = "9c9f0a8b-7add-4ab1-835d-39f508ce32a9")]
+	public static extern NTStatus NtCreateTransactionManager(out SafeTransactionManagerHandle TmHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string? LogFileName, [Optional] uint CreateOptions, [Optional] uint CommitStrength);
+
+	/// <summary>
+	/// <para>The <c>ZwCreateTransactionManager</c> routine creates a new transaction manager object.</para>
+	/// </summary>
+	/// <param name="TmHandle">
+	/// <para>A pointer to a caller-allocated variable that receives a handle to the new transaction manager object.</para>
+	/// </param>
+	/// <param name="DesiredAccess">
+	/// <para>
+	/// An ACCESS_MASK value that specifies the caller's requested access to the transaction manager object. In addition to the access
+	/// rights that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right
+	/// flags for transaction manager objects.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>ACCESS_MASK flag</term>
+	/// <term>Allows the caller to</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_CREATE_RM</term>
+	/// <term>Create a resource manager (see ZwCreateResourceManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_QUERY_INFORMATION</term>
+	/// <term>
+	/// Obtain information about the transaction manager (see ZwQueryInformationTransactionManager and ZwEnumerateTransactionObject).
+	/// Also required for ZwOpenResourceManager, ZwCreateTransaction, and ZwOpenTransaction.)
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_RECOVER</term>
+	/// <term>Recover the transaction manager (see ZwRecoverTransactionManager and ZwRollforwardTransactionManager).</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_RENAME</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_SET_INFORMATION</term>
+	/// <term>Not used.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
+	/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the <c>ACCESS_MASK</c> reference page. You can also
+	/// combine these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to
+	/// specific access rights.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Rights bitmap</term>
+	/// <term>Set of specific access rights</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_GENERIC_READ</term>
+	/// <term>STANDARD_RIGHTS_READ and TRANSACTIONMANAGER_QUERY_INFORMATION</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_GENERIC_WRITE</term>
+	/// <term>
+	/// STANDARD_RIGHTS_WRITE, TRANSACTIONMANAGER_SET_INFORMATION, TRANSACTIONMANAGER_RECOVER, TRANSACTIONMANAGER_RENAME, and TRANSACTIONMANAGER_CREATE_RM
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
+	/// <term>STANDARD_RIGHTS_EXECUTE</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTIONMANAGER_ALL_ACCESS</term>
+	/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTIONMANAGER_GENERIC_READ, TRANSACTIONMANAGER_GENERIC_WRITE, and TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="ObjectAttributes">
+	/// <para>
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
+	/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
+	/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="LogFileName">
+	/// <para>
+	/// A pointer to a UNICODE_STRING structure that contains the path and file name of a CLFS log file stream to be associated with the
+	/// transaction manager object. This parameter must be <c>NULL</c> if the CreateOptions parameter is TRANSACTION_MANAGER_VOLATILE.
+	/// Otherwise, this parameter must be non- <c>NULL</c>. For more information, see the following Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="CreateOptions">
+	/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Option flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_VOLATILE</term>
+	/// <term>The transaction manager object will be volatile. Therefore, it will not use a log file.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_DEFAULT</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_VOLUME</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_HIVES</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_COMMIT_LOWEST</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_RECOVERY</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_PROGRESS</term>
+	/// <term>For internal use only.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="CommitStrength">
+	/// <para>Reserved for future use. This parameter must be zero.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwCreateTransactionManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of
+	/// the following values:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>The value of an input parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
+	/// <term>KTM could not allocate system resources (typically memory).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_LOG_CORRUPTION_DETECTED</term>
+	/// <term>KTM encountered an error while creating or opening the log file.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_ACL</term>
+	/// <term>A security descriptor contains an invalid access control list (ACL).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_SID</term>
+	/// <term>A security descriptor contains an invalid security identifier (SID).</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_EXISTS</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_COLLISION</term>
+	/// <term>The operating system detected a duplicate object name. The error might indicate that the log stream is already being used.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_OBJECT_NAME_INVALID</term>
+	/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_ACCESS_DENIED</term>
+	/// <term>The value of the DesiredAccess parameter is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>The routine might return other NTSTATUS values.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the log file stream that the LogFileName parameter specifies does not exist, KTM calls CLFS to create the stream. If the
+	/// stream already exists, KTM calls CLFS to open the stream.
+	/// </para>
+	/// <para>Your TPS component must call ZwRecoverTransactionManager after it has called <c>ZwCreateTransactionManager</c></para>
+	/// <para>
+	/// If your TPS component specifies the TRANSACTION_MANAGER_VOLATILE flag in the CreateOptions parameter, all resource managers that
+	/// are associated with the transaction manager object must specify the RESOURCE_MANAGER_VOLATILE flag when they call ZwCreateResourceManager.
+	/// </para>
+	/// <para>A TPS component that calls <c>ZwCreateTransactionManager</c> must eventually call ZwClose to close the object handle.</para>
+	/// <para>For more information about how use <c>ZwCreateTransactionManager</c>, see Creating a Resource Manager.</para>
+	/// <para>
+	/// <c>NtCreateTransactionManager</c> and <c>ZwCreateTransactionManager</c> are two versions of the same Windows Native System
+	/// Services routine.
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransactionmanager __kernel_entry
+	// NTSYSCALLAPI NTSTATUS NtCreateTransactionManager( PHANDLE TmHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES
+	// ObjectAttributes, PUNICODE_STRING LogFileName, ULONG CreateOptions, ULONG CommitStrength );
+	[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("wdm.h", MSDNShortId = "9c9f0a8b-7add-4ab1-835d-39f508ce32a9")]
+	public static extern NTStatus NtCreateTransactionManager(out SafeTransactionManagerHandle TmHandle, ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string? LogFileName, [Optional] uint CreateOptions, [Optional] uint CommitStrength);
+
+	/// <summary>
+	/// <para>
+	/// The <c>ZwQueryKey</c> routine provides information about the class of a registry key, and the number and sizes of its subkeys.
+	/// </para>
+	/// </summary>
+	/// <param name="KeyHandle">
+	/// <para>
+	/// Handle to the registry key to obtain information about. This handle is created by a successful call to ZwCreateKey or ZwOpenKey.
+	/// </para>
+	/// </param>
+	/// <param name="KeyInformationClass">
+	/// <para>Specifies a KEY_INFORMATION_CLASS value that determines the type of information returned in the KeyInformation buffer.</para>
+	/// </param>
+	/// <param name="KeyInformation">
+	/// <para>Pointer to a caller-allocated buffer that receives the requested information.</para>
+	/// </param>
+	/// <param name="Length">
+	/// <para>Specifies the size, in bytes, of the KeyInformation buffer.</para>
+	/// </param>
+	/// <param name="ResultLength">
+	/// <para>
+	/// Pointer to a variable that receives the size, in bytes, of the requested key information. If <c>ZwQueryKey</c> returns
+	/// STATUS_SUCCESS, the variable contains the amount of data returned. If <c>ZwQueryKey</c> returns STATUS_BUFFER_OVERFLOW or
+	/// STATUS_BUFFER_TOO_SMALL, you can use the value of the variable to determine the required buffer size.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// <c>ZwQueryKey</c> returns STATUS_SUCCESS on success, or the appropriate error code on failure. Possible error code values include:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_BUFFER_OVERFLOW</term>
+	/// <term>
+	/// The buffer supplied is too small, and only partial data has been written to the buffer. *ResultLength is set to the minimum size
+	/// required to hold the requested information.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_BUFFER_TOO_SMALL</term>
+	/// <term>
+	/// The buffer supplied is too small, and no data has been written to the buffer. *ResultLength is set to the minimum size required
+	/// to hold the requested information.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>The KeyInformationClass parameter is not a valid KEY_INFORMATION_CLASS value.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The KeyHandle passed to <c>ZwQueryKey</c> must have been opened with KEY_QUERY_VALUE access. This is accomplished by passing
+	/// KEY_QUERY_VALUE, KEY_READ, or KEY_ALL_ACCESS as the DesiredAccess parameter to ZwCreateKey or ZwOpenKey.
+	/// </para>
+	/// <para>
+	/// <c>ZwQueryKey</c> can be used to obtain information that you can use to allocate buffers to hold registry data, such as the
+	/// maximum size of a key's value entries or subkey names, or the number of subkeys. For example, you can call <c>ZwQueryKey</c>,
+	/// use the returned information to allocate a buffer for a subkey, call ZwEnumerateKey to get the name of the subkey, and pass that
+	/// name to an <c>Rtl</c><c>Xxx</c><c>Registry</c> routine.
+	/// </para>
+	/// <para>For more information about working with registry keys, see Using the Registry in a Driver.</para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
+	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-zwquerykey NTSYSAPI NTSTATUS ZwQueryKey( HANDLE
+	// KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, PVOID KeyInformation, ULONG Length, PULONG ResultLength );
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+	[PInvokeData("wdm.h", MSDNShortId = "3b2d3a8b-a21f-4067-a1f0-9aa66c1973f5")]
+	// public static extern NTSYSAPI NTSTATUS ZwQueryKey(IntPtr KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, IntPtr
+	// KeyInformation, uint Length, ref uint ResultLength);
+	public static extern NTStatus NtQueryKey(HKEY KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, [Out] SafeHGlobalHandle KeyInformation, uint Length, out uint ResultLength);
+
+	/// <summary>
+	/// <para>
+	/// A driver sets an IRP's I/O status block to indicate the final status of an I/O request, before calling IoCompleteRequest for the IRP.
+	/// </para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Unless a driver's dispatch routine completes an IRP with an error status value, the lowest-level driver in the chain frequently
+	/// sets the IRP's I/O status block to the values that will be returned to the original requester of the I/O operation.
+	/// </para>
+	/// <para>
+	/// The IoCompletion routines of higher-level drivers usually check the I/O status block in IRPs completed by lower drivers. By
+	/// design, the I/O status block in an IRP is the only information passed back from the underlying device driver to all higher-level
+	/// drivers' IoCompletion routines.
+	/// </para>
+	/// <para>
+	/// The operating system implements support routines that write <c>IO_STATUS_BLOCK</c> values to caller-supplied output buffers. For
+	/// example, see ZwOpenFile or NtOpenFile. These routines return status codes that might not match the status codes in the
+	/// <c>IO_STATUS_BLOCK</c> structures. If one of these routines returns STATUS_PENDING, the caller should wait for the I/O operation
+	/// to complete, and then check the status code in the <c>IO_STATUS_BLOCK</c> structure to determine the final status of the
+	/// operation. If the routine returns a status code other than STATUS_PENDING, the caller should rely on this status code instead of
+	/// the status code in the <c>IO_STATUS_BLOCK</c> structure.
+	/// </para>
+	/// <para>For more information, see I/O Status Blocks.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_io_status_block typedef struct _IO_STATUS_BLOCK
+	// { union { NTSTATUS Status; PVOID Pointer; } DUMMYUNIONNAME; ULONG_PTR Information; } IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
+	[PInvokeData("wdm.h", MSDNShortId = "1ce2b1d0-a8b2-4a05-8895-e13802690a7b")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct IO_STATUS_BLOCK
 	{
 		/// <summary>
-		/// <para>The <c>KEY_INFORMATION_CLASS</c> enumeration type represents the type of information to supply about a registry key.</para>
+		/// This is the completion status, either STATUS_SUCCESS if the requested operation was completed successfully or an
+		/// informational, warning, or error STATUS_XXX value. For more information, see Using NTSTATUS values.
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Use the <c>KEY_INFORMATION_CLASS</c> values to specify the type of data to be supplied by the ZwEnumerateKey and ZwQueryKey routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ne-wdm-_key_information_class typedef enum
-		// _KEY_INFORMATION_CLASS { KeyBasicInformation , KeyNodeInformation , KeyFullInformation , KeyNameInformation ,
-		// KeyCachedInformation , KeyFlagsInformation , KeyVirtualizationInformation , KeyHandleTagsInformation , KeyTrustInformation ,
-		// KeyLayerInformation , MaxKeyInfoClass } KEY_INFORMATION_CLASS;
-		[PInvokeData("wdm.h", MSDNShortId = "cb531a0e-c934-4f3e-9b92-07eb3ab75673")]
-		public enum KEY_INFORMATION_CLASS : uint
-		{
-			/// <summary>A KEY_BASIC_INFORMATION structure is supplied.</summary>
-			[CorrespondingType(typeof(KEY_BASIC_INFORMATION))]
-			KeyBasicInformation,
-
-			/// <summary>A KEY_NODE_INFORMATION structure is supplied.</summary>
-			[CorrespondingType(typeof(KEY_NODE_INFORMATION))]
-			KeyNodeInformation,
-
-			/// <summary>A KEY_FULL_INFORMATION structure is supplied.</summary>
-			[CorrespondingType(typeof(KEY_FULL_INFORMATION))]
-			KeyFullInformation,
-
-			/// <summary>A KEY_NAME_INFORMATION structure is supplied.</summary>
-			[CorrespondingType(typeof(KEY_NAME_INFORMATION))]
-			KeyNameInformation,
-
-			/// <summary>A KEY_CACHED_INFORMATION structure is supplied.</summary>
-			KeyCachedInformation,
-
-			/// <summary>Reserved for system use.</summary>
-			KeyFlagsInformation,
-
-			/// <summary>A KEY_VIRTUALIZATION_INFORMATION structure is supplied.</summary>
-			KeyVirtualizationInformation,
-
-			/// <summary>Reserved for system use.</summary>
-			KeyHandleTagsInformation,
-
-			/// <summary/>
-			KeyTrustInformation,
-
-			/// <summary/>
-			KeyLayerInformation,
-
-			/// <summary>The maximum value in this enumeration type.</summary>
-			MaxKeyInfoClass,
-		}
+		public uint Status;
 
 		/// <summary>
-		/// <para>The <c>DbgBreakPoint</c> routine breaks into the kernel debugger.</para>
+		/// This is set to a request-dependent value. For example, on successful completion of a transfer request, this is set to the
+		/// number of bytes transferred. If a transfer request is completed with another STATUS_XXX, this member is set to zero.
 		/// </summary>
-		/// <returns>
-		/// <para>None</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>The <c>DbgBreakPoint</c> routine is the kernel-mode equivalent of <c>DebugBreak</c>.</para>
+		public IntPtr Information;
+	}
+
+	/// <summary>
+	/// <para>The <c>KEY_BASIC_INFORMATION</c> structure defines a subset of the full information that is available for a registry key.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The ZwEnumerateKey and ZwQueryKey routines use the <c>KEY_BASIC_INFORMATION</c> structure to contain the basic information for a
+	/// registry key. When the KeyInformationClass parameter of either routine is <c>KeyBasicInformation</c>, the KeyInformation buffer
+	/// is treated as a <c>KEY_BASIC_INFORMATION</c> structure. For more information about the <c>KeyBasicInformation</c> enumeration
+	/// value, see KEY_INFORMATION_CLASS.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_key_basic_information typedef struct
+	// _KEY_BASIC_INFORMATION { LARGE_INTEGER LastWriteTime; ULONG TitleIndex; ULONG NameLength; WCHAR Name[1]; } KEY_BASIC_INFORMATION, *PKEY_BASIC_INFORMATION;
+	[PInvokeData("wdm.h", MSDNShortId = "789c60b6-a5a4-4570-bb0c-acfe1166a302")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct KEY_BASIC_INFORMATION
+	{
+		/// <summary>
 		/// <para>
-		/// This routine raises an exception that is handled by the kernel debugger if one is installed; otherwise, it is handled by the
-		/// debug system. If a debugger is not connected to the system, the exception can be handled in the standard way.
+		/// The last time this key or any of its values changed. This time value is expressed in absolute system time format. Absolute
+		/// system time is the number of 100-nanosecond intervals since the start of the year 1601 in the Gregorian calendar.
 		/// </para>
-		/// <para>
-		/// In kernel mode, a break exception that is not handled will cause a bug check. You can, however, connect a kernel-mode debugger
-		/// to a target computer that has stopped responding and has kernel debugging enabled. For more information, see Windows Debugging.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-dbgbreakpoint __analysis_noreturn VOID
-		// DbgBreakPoint( );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "deeac910-2cc3-4a54-bf3b-aeb56d0004dc")]
-		public static extern void DbgBreakPoint();
+		/// </summary>
+		public long LastWriteTime;
 
 		/// <summary>
-		/// <para>The <c>DbgPrint</c> routine sends a message to the kernel debugger. </para>
-		/// <para>
-		/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only when the conditions that you specify
-		/// apply (see the <a href="#remarks">Remarks</a> section for information).
-		/// </para>
+		/// <para>Device and intermediate drivers should ignore this member.</para>
 		/// </summary>
-		/// <param name="Format">
-		/// <para>
-		/// Specifies a pointer to the format string to print. The Format string supports most of the printf-style format specification fields.
-		/// However, the Unicode format codes (%C, %S, %lc, %ls, %wc, %ws, and %wZ) can only be used with IRQL = PASSIVE_LEVEL.
-		/// The <c>DbgPrint</c> routine does not support any of the floating point types (%f, %e, %E, %g, %G, %a, or %A).
-		/// </para>
-		/// </param>
-		/// <param name="arguments">
-		/// <para>Specifies arguments for the format string, as in <c>printf</c>.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If successful, <c>DbgPrint</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise it returns the appropriate error code.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes (%wc and %ws) can be used only
-		/// at IRQL=PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with other processors,
-		/// calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
-		/// </para>
-		/// <para> Only kernel-mode drivers can call the <c>DbgPrint</c> routine. </para>
-		/// <para>
-		/// In Microsoft Windows Server 2003 and earlier versions of Windows, the <c>DbgPrint</c> routine sends a message to the kernel debugger.
-		/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only if certain conditions apply.
-		/// Specifically, it behaves like the DbgPrintEx routine with the DEFAULT component and a message importance level of DPFLTR_INFO_LEVEL.
-		/// <code>
-		/// DbgPrint ( Format, arguments ),
-		/// DbgPrintEx ( DPFLTR_DEFAULT_ID, DPFLTR_INFO_LEVEL, Format, arguments )
-		/// </code>
-		/// </para>
-		/// <para> For more information about message filtering, components, and message importance level, see Reading and Filtering Debugging Messages. </para>
-		/// <para>
-		/// Regardless of which version of Windows you are using, it is recommended that you use <c>DbgPrintEx</c> instead of <c>DbgPrint</c>,
-		/// since this allows you to control the conditions under which the message is sent.
-		/// </para>
-		/// <para>
-		/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to <c>DbgPrint</c>.
-		/// If you do use a string that you did not create, you must verify that this is a valid format string, and that the format codes
-		/// match the argument list in type and quantity. The best coding practice is for all Format strings to be static and defined at compile time.
-		/// </para>
-		/// <para>
-		/// There is no upper limit to the size of the Format string or the number of arguments. However, any single call to <c>DbgPrint</c>
-		/// will only transmit 512 bytes of information. There is also a limit to the size of the <c>DbgPrint</c> buffer.
-		/// See DbgPrint Buffer and the Debugger for details.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprint ULONG DbgPrint([in] PCSTR Format,...);
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrint")]
-		public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr arguments);
+		public uint TitleIndex;
 
 		/// <summary>
-		/// <para>The <c>DbgPrint</c> routine sends a message to the kernel debugger.</para>
-		/// <para>
-		/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only when the conditions that you specify apply
-		/// (see the Remarks section for information).
-		/// </para>
+		/// <para>The size, in bytes, of the key name string in the <c>Name</c> array.</para>
 		/// </summary>
-		/// <param name="Format">
-		/// Specifies a pointer to the format string to print. The <c>Format</c> string supports most of the <c>printf</c>-style format
-		/// specification fields. However, the Unicode format codes ( <c>%C</c>, <c>%S</c>, <c>%lc</c>, <c>%ls</c>, <c>%wc</c>, <c>%ws</c>,
-		/// and <c>%wZ</c>) can only be used with IRQL = PASSIVE_LEVEL. The <c>DbgPrint</c> routine does not support any of the floating
-		/// point types ( <c>%f</c>, <c>%e</c>, <c>%E</c>, <c>%g</c>, <c>%G</c>, <c>%a</c>, or <c>%A</c>).
-		/// </param>
-		/// <param name="args">Specifies arguments for the format string, as in <c>printf</c>.</param>
-		/// <returns>
-		/// If successful, <c>DbgPrint</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise it returns the appropriate error code.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes (%wc and %ws) can be used
-		/// only at IRQL=PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with other processors,
-		/// calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
-		/// </para>
-		/// <para>Only kernel-mode drivers can call the <c>DbgPrint</c> routine.</para>
-		/// <para>
-		/// In Microsoft Windows Server 2003 and earlier versions of Windows, the <c>DbgPrint</c> routine sends a message to the kernel
-		/// debugger. In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only if certain conditions apply.
-		/// Specifically, it behaves like the DbgPrintEx routine with the DEFAULT component and a message importance level of
-		/// DPFLTR_INFO_LEVEL. In other words, the following two function calls are identical:
-		/// </para>
-		/// <para>
-		/// <code>DbgPrint ( Format, arguments ) DbgPrintEx ( DPFLTR_DEFAULT_ID, DPFLTR_INFO_LEVEL, Format, arguments )</code>
-		/// </para>
-		/// <para>
-		/// For more information about message filtering, components, and message importance level, see Reading and Filtering Debugging Messages.
-		/// </para>
-		/// <para>
-		/// <c>Note</c> Regardless of which version of Windows you are using, it is recommended that you use <c>DbgPrintEx</c> instead of
-		/// <c>DbgPrint</c>, since this allows you to control the conditions under which the message is sent.
-		/// </para>
-		/// <para>
-		/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to
-		/// <c>DbgPrint</c>. If you do use a string that you did not create, you must verify that this is a valid format string, and that the
-		/// format codes match the argument list in type and quantity. The best coding practice is for all <c>Format</c> strings to be static
-		/// and defined at compile time.
-		/// </para>
-		/// <para>
-		/// There is no upper limit to the size of the <c>Format</c> string or the number of arguments. However, any single call to
-		/// <c>DbgPrint</c> will only transmit 512 bytes of information. There is also a limit to the size of the DbgPrint buffer. See
-		/// DbgPrint Buffer and the Debugger for details.
-		/// </para>
-		/// </remarks>
-		[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrintEx")]
-		public static NTStatus DbgPrint(string Format, params object[] args)
-		{
-			using var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true);
-			return DbgPrint(Format, pargs);
-		}
-
-		/// <summary>The <c>DbgPrintEx</c> routine sends a string to the kernel debugger if the conditions you specify are met.</summary>
-		/// <param name="ComponentId">
-		/// <para>
-		/// Specifies the component calling this routine. This must be one of the component name filter IDs defined in the Dpfilter.h header
-		/// file. To avoid mixing your driver's output with the output of Windows components, you should use only the following values for <c>ComponentId</c>:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>DPFLTR_IHVVIDEO_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVAUDIO_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVNETWORK_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVSTREAMING_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVBUS_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVDRIVER_ID</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="Level">
-		/// Specifies the severity of the message being sent. This can be any 32-bit integer. Values between 0 and 31 (inclusive) are treated
-		/// differently than values between 32 and 0xFFFFFFFF. For details, see Reading and Filtering Debugging Messages.
-		/// </param>
-		/// <param name="Format">
-		/// Specifies a pointer to the format string to print. The <c>Format</c> string supports most of the <c>printf</c>-style format
-		/// specification fields. However, the Unicode format codes ( <c>%C</c>, <c>%S</c>, <c>%lc</c>, <c>%ls</c>, <c>%wc</c>, <c>%ws</c>,
-		/// and <c>%wZ</c>) can only be used with IRQL = PASSIVE_LEVEL. The <c>DbgPrintEx</c> routine does not support any of the floating
-		/// point types ( <c>%f</c>, <c>%e</c>, <c>%E</c>, <c>%g</c>, <c>%G</c>, <c>%a</c>, or <c>%A</c>).
-		/// </param>
-		/// <param name="arguments">Specifies arguments for the format string, as in <c>printf</c>.</param>
-		/// <returns>
-		/// If successful, <c>DbgPrintEx</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise, it returns the appropriate error code.
-		/// </returns>
-		/// <remarks>
-		/// <para>Only kernel-mode drivers can call the <c>DbgPrintEx</c> routine.</para>
-		/// <para>
-		/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes ( <c>%wc</c> and <c>%ws</c>)
-		/// can be used only at IRQL = PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with
-		/// other processors, calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
-		/// </para>
-		/// <para>
-		/// <c>DbgPrintEx</c> either passes the specified string to the kernel debugger or does nothing at all, depending on the values of
-		/// <c>ComponentId</c>, <c>Level</c>, and the corresponding component filter masks. For details, see Reading and Filtering Debugging Messages.
-		/// </para>
-		/// <para>
-		/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to
-		/// <c>DbgPrintEx</c>. If you do use a string that you did not create, you must verify that this is a valid format string, and that
-		/// the format codes match the argument list in type and quantity. The best coding practice is for all <c>Format</c> strings to be
-		/// static and defined at compile time.
-		/// </para>
-		/// <para>
-		/// There is no upper limit to the size of the <c>Format</c> string or the number of arguments. However, any single call to
-		/// <c>DbgPrintEx</c> will only transmit 512 bytes of information. There is also a limit to the size of the DbgPrint buffer. See The
-		/// DbgPrint Buffer and the Debugger for details.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprintex NTSYSAPI ULONG
-		// DbgPrintEx([in] ULONG ComponentId, [in] ULONG Level,[in] PCSTR Format,...);
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrintEx")]
-		public static extern NTStatus DbgPrintEx(DPFLTR_TYPE ComponentId, uint Level, [MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr arguments);
-
-		/// <summary>The <c>DbgPrintEx</c> routine sends a string to the kernel debugger if the conditions you specify are met.</summary>
-		/// <param name="ComponentId">
-		/// <para>
-		/// Specifies the component calling this routine. This must be one of the component name filter IDs defined in the Dpfilter.h header
-		/// file. To avoid mixing your driver's output with the output of Windows components, you should use only the following values for <c>ComponentId</c>:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>DPFLTR_IHVVIDEO_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVAUDIO_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVNETWORK_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVSTREAMING_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVBUS_ID</term>
-		/// </item>
-		/// <item>
-		/// <term>DPFLTR_IHVDRIVER_ID</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="Level">
-		/// Specifies the severity of the message being sent. This can be any 32-bit integer. Values between 0 and 31 (inclusive) are treated
-		/// differently than values between 32 and 0xFFFFFFFF. For details, see Reading and Filtering Debugging Messages.
-		/// </param>
-		/// <param name="Format">
-		/// Specifies a pointer to the format string to print. The <c>Format</c> string supports most of the <c>printf</c>-style format
-		/// specification fields. However, the Unicode format codes ( <c>%C</c>, <c>%S</c>, <c>%lc</c>, <c>%ls</c>, <c>%wc</c>, <c>%ws</c>,
-		/// and <c>%wZ</c>) can only be used with IRQL = PASSIVE_LEVEL. The <c>DbgPrintEx</c> routine does not support any of the floating
-		/// point types ( <c>%f</c>, <c>%e</c>, <c>%E</c>, <c>%g</c>, <c>%G</c>, <c>%a</c>, or <c>%A</c>).
-		/// </param>
-		/// <param name="args">Specifies arguments for the format string, as in <c>printf</c>.</param>
-		/// <returns>
-		/// If successful, <c>DbgPrintEx</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise, it returns the appropriate error code.
-		/// </returns>
-		/// <remarks>
-		/// <para>Only kernel-mode drivers can call the <c>DbgPrintEx</c> routine.</para>
-		/// <para>
-		/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes ( <c>%wc</c> and <c>%ws</c>)
-		/// can be used only at IRQL = PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with
-		/// other processors, calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
-		/// </para>
-		/// <para>
-		/// <c>DbgPrintEx</c> either passes the specified string to the kernel debugger or does nothing at all, depending on the values of
-		/// <c>ComponentId</c>, <c>Level</c>, and the corresponding component filter masks. For details, see Reading and Filtering Debugging Messages.
-		/// </para>
-		/// <para>
-		/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to
-		/// <c>DbgPrintEx</c>. If you do use a string that you did not create, you must verify that this is a valid format string, and that
-		/// the format codes match the argument list in type and quantity. The best coding practice is for all <c>Format</c> strings to be
-		/// static and defined at compile time.
-		/// </para>
-		/// <para>
-		/// There is no upper limit to the size of the <c>Format</c> string or the number of arguments. However, any single call to
-		/// <c>DbgPrintEx</c> will only transmit 512 bytes of information. There is also a limit to the size of the DbgPrint buffer. See The
-		/// DbgPrint Buffer and the Debugger for details.
-		/// </para>
-		/// </remarks>
-		[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrintEx")]
-		public static NTStatus DbgPrintEx(DPFLTR_TYPE ComponentId, uint Level, string Format, params object[] args)
-		{
-			using var pargs = new SafeHGlobalHandle(InteropExtensions.MarshalObjectsToPtr(args, Marshal.AllocHGlobal, out var sz, true), sz, true);
-			return DbgPrintEx(ComponentId, Level, Format, pargs);
-		}
+		public uint NameLength;
 
 		/// <summary>
 		/// <para>
-		/// The <c>ZwCommitComplete</c> routine notifies KTM that the calling resource manager has finished committing a transaction's data.
+		/// An array of wide characters that contains the name of the registry key. This character string is null-terminated. Only the
+		/// first element in this array is included in the <c>KEY_BASIC_INFORMATION</c> structure definition. The storage for the
+		/// remaining elements in the array immediately follows this element.
 		/// </para>
 		/// </summary>
-		/// <param name="EnlistmentHandle">
+		public StrPtrUni Name;
+	}
+
+	/// <summary>
+	/// <para>
+	/// The <c>KEY_FULL_INFORMATION</c> structure defines the information available for a registry key, including information about its
+	/// subkeys and the maximum length for their names and value entries. This information can be used to size buffers to get the names
+	/// of subkeys and their value entries.
+	/// </para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The ZwEnumerateKey and ZwQueryKey routines use the <c>KEY_FULL_INFORMATION</c> structure to contain the full information for a
+	/// registry key. When the KeyInformationClass parameter of either routine is <c>KeyFullInformation</c>, the KeyInformation buffer
+	/// is treated as a <c>KEY_FULL_INFORMATION</c> structure. For more information about the <c>KeyFullInformation</c> enumeration
+	/// value, see KEY_INFORMATION_CLASS.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_key_full_information typedef struct
+	// _KEY_FULL_INFORMATION { LARGE_INTEGER LastWriteTime; ULONG TitleIndex; ULONG ClassOffset; ULONG ClassLength; ULONG SubKeys; ULONG
+	// MaxNameLen; ULONG MaxClassLen; ULONG Values; ULONG MaxValueNameLen; ULONG MaxValueDataLen; WCHAR Class[1]; }
+	// KEY_FULL_INFORMATION, *PKEY_FULL_INFORMATION;
+	[PInvokeData("wdm.h", MSDNShortId = "dd099435-e3e3-4d78-a829-0f12f2db46d9")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct KEY_FULL_INFORMATION
+	{
+		/// <summary>
 		/// <para>
-		/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The handle must
-		/// have ENLISTMENT_SUBORDINATE_RIGHTS access to the object.
+		/// The last time this key or any of its values changed. This time value is expressed in absolute system time format. Absolute
+		/// system time is the number of 100-nanosecond intervals since the start of the year 1601 in the Gregorian calendar.
 		/// </para>
-		/// </param>
-		/// <param name="TmVirtualClock">
-		/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCommitComplete</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
-		/// <term>The specified handle is not a handle to an enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>The object handle is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The caller does not have appropriate access to the enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_NOT_REQUESTED</term>
-		/// <term>The transaction or its enlistment is not in the correct state.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>A resource manager must call <c>ZwCommitComplete</c> after it has finished servicing a TRANSACTION_NOTIFY_COMMIT notification.</para>
-		/// <para>For more information about <c>ZwCommitComplete</c>, see Handling Commit Operations.</para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitcomplete __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCommitComplete( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05")]
-		public static extern NTStatus NtCommitComplete([In] SafeEnlistmentHandle EnlistmentHandle, in long TmVirtualClock);
+		/// </summary>
+		public long LastWriteTime;
+
+		/// <summary>
+		/// <para>Device and intermediate drivers should ignore this member.</para>
+		/// </summary>
+		public uint TitleIndex;
+
+		/// <summary>
+		/// <para>The byte offset from the start of this structure to the <c>Class</c> member.</para>
+		/// </summary>
+		public uint ClassOffset;
+
+		/// <summary>
+		/// <para>The size, in bytes, of the key class name string in the <c>Class</c> array.</para>
+		/// </summary>
+		public uint ClassLength;
+
+		/// <summary>
+		/// <para>The number of subkeys for this key.</para>
+		/// </summary>
+		public uint SubKeys;
+
+		/// <summary>
+		/// <para>The maximum size, in bytes, of any name for a subkey.</para>
+		/// </summary>
+		public uint MaxNameLen;
+
+		/// <summary>
+		/// <para>The maximum size, in bytes, of a class name.</para>
+		/// </summary>
+		public uint MaxClassLen;
+
+		/// <summary>
+		/// <para>The number of value entries for this key.</para>
+		/// </summary>
+		public uint Values;
+
+		/// <summary>
+		/// <para>The maximum size, in bytes, of a value entry name.</para>
+		/// </summary>
+		public uint MaxValueNameLen;
+
+		/// <summary>
+		/// <para>The maximum size, in bytes, of a value entry data field.</para>
+		/// </summary>
+		public uint MaxValueDataLen;
 
 		/// <summary>
 		/// <para>
-		/// The <c>ZwCommitComplete</c> routine notifies KTM that the calling resource manager has finished committing a transaction's data.
+		/// An array of wide characters that contains the name of the class of the key. This character string is null-terminated. Only
+		/// the first element in this array is included in the <c>KEY_FULL_INFORMATION</c> structure definition. The storage for the
+		/// remaining elements in the array immediately follows this element.
 		/// </para>
 		/// </summary>
-		/// <param name="EnlistmentHandle">
+		public StrPtrUni Class;
+	}
+
+	/// <summary>
+	/// <para>The <c>KEY_NODE_INFORMATION</c> structure defines the basic information available for a registry (sub)key.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The ZwEnumerateKey and ZwQueryKey routines use the <c>KEY_NODE_INFORMATION</c> structure to contain the registry key name and
+	/// key class name. When the KeyInformationClass parameter of either routine is <c>KeyNodeInformation</c>, the KeyInformation buffer
+	/// is treated as a <c>KEY_NODE_INFORMATION</c> structure. For more information about the <c>KeyNodeInformation</c> enumeration
+	/// value, see KEY_INFORMATION_CLASS.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_key_node_information typedef struct
+	// _KEY_NODE_INFORMATION { LARGE_INTEGER LastWriteTime; ULONG TitleIndex; ULONG ClassOffset; ULONG ClassLength; ULONG NameLength;
+	// WCHAR Name[1]; } KEY_NODE_INFORMATION, *PKEY_NODE_INFORMATION;
+	[PInvokeData("wdm.h", MSDNShortId = "2eed1a3d-fc40-4416-ad61-d82bf4fb69a1")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct KEY_NODE_INFORMATION
+	{
+		/// <summary>
 		/// <para>
-		/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The handle must
-		/// have ENLISTMENT_SUBORDINATE_RIGHTS access to the object.
+		/// The last time this key or any of its values changed. This time value is expressed in absolute system time format. Absolute
+		/// system time is the number of 100-nanosecond intervals since the start of the year 1601 in the Gregorian calendar.
 		/// </para>
-		/// </param>
-		/// <param name="TmVirtualClock">
-		/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCommitComplete</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
-		/// <term>The specified handle is not a handle to an enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>The object handle is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The caller does not have appropriate access to the enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_NOT_REQUESTED</term>
-		/// <term>The transaction or its enlistment is not in the correct state.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>A resource manager must call <c>ZwCommitComplete</c> after it has finished servicing a TRANSACTION_NOTIFY_COMMIT notification.</para>
-		/// <para>For more information about <c>ZwCommitComplete</c>, see Handling Commit Operations.</para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitcomplete __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCommitComplete( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05")]
-		public static extern NTStatus NtCommitComplete([In] SafeEnlistmentHandle EnlistmentHandle, [In, Optional] IntPtr TmVirtualClock);
+		/// </summary>
+		public long LastWriteTime;
 
 		/// <summary>
-		/// <para>The <c>ZwCommitEnlistment</c> routine initiates the commit operation for a specified enlistment's transaction.</para>
+		/// <para>Device and intermediate drivers should ignore this member.</para>
 		/// </summary>
-		/// <param name="EnlistmentHandle">
-		/// <para>
-		/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The object must
-		/// represent a superior enlistment and the handle must have ENLISTMENT_SUPERIOR_RIGHTS access to the object.
-		/// </para>
-		/// </param>
-		/// <param name="TmVirtualClock">
-		/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCommitEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
-		/// <term>The specified handle is not a handle to an enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>The object handle is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The caller does not have appropriate access to the enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ENLISTMENT_NOT_SUPERIOR</term>
-		/// <term>The caller is not a superior transaction manager for the enlistment.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_RESPONSE_NOT_ENLISTED</term>
-		/// <term>The caller did not register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_REQUEST_NOT_VALID</term>
-		/// <term>The enlistment's transaction is not in a state that allows it to be committed.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
-		/// <term>The commit operation for this transaction has already been started.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_ALREADY_ABORTED</term>
-		/// <term>The transaction cannot be committed because it has been rolled back.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>Only superior transaction managers can call <c>ZwCommitEnlistment</c>.</para>
-		/// <para>Callers of <c>ZwCommitEnlistment</c> must register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</para>
-		/// <para>
-		/// The <c>ZwCommitEnlistment</c> routine causes KTM to send TRANSACTION_NOTIFY_COMMIT notifications to all resource managers that
-		/// have enlisted in the transaction.
-		/// </para>
-		/// <para>
-		/// For more information about <c>ZwCommitEnlistment</c>, see Creating a Superior Transaction Manager and Handling Commit Operations.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitenlistment __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCommitEnlistment( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "9c7f3e24-1d7c-450e-bbef-df0479911bc6")]
-		public static extern NTStatus NtCommitEnlistment([In] SafeEnlistmentHandle EnlistmentHandle, in long TmVirtualClock);
-
-		/// <summary>
-		/// <para>The <c>ZwCommitEnlistment</c> routine initiates the commit operation for a specified enlistment's transaction.</para>
-		/// </summary>
-		/// <param name="EnlistmentHandle">
-		/// <para>
-		/// A handle to an enlistment object that was obtained by a previous call to ZwCreateEnlistment or ZwOpenEnlistment. The object must
-		/// represent a superior enlistment and the handle must have ENLISTMENT_SUPERIOR_RIGHTS access to the object.
-		/// </para>
-		/// </param>
-		/// <param name="TmVirtualClock">
-		/// <para>A pointer to a virtual clock value. This parameter is optional and can be <c>NULL</c>.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCommitEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
-		/// <term>The specified handle is not a handle to an enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>The object handle is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The caller does not have appropriate access to the enlistment object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ENLISTMENT_NOT_SUPERIOR</term>
-		/// <term>The caller is not a superior transaction manager for the enlistment.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_RESPONSE_NOT_ENLISTED</term>
-		/// <term>The caller did not register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_REQUEST_NOT_VALID</term>
-		/// <term>The enlistment's transaction is not in a state that allows it to be committed.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
-		/// <term>The commit operation for this transaction has already been started.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_ALREADY_ABORTED</term>
-		/// <term>The transaction cannot be committed because it has been rolled back.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>Only superior transaction managers can call <c>ZwCommitEnlistment</c>.</para>
-		/// <para>Callers of <c>ZwCommitEnlistment</c> must register to receive TRANSACTION_NOTIFY_COMMIT_COMPLETE notifications.</para>
-		/// <para>
-		/// The <c>ZwCommitEnlistment</c> routine causes KTM to send TRANSACTION_NOTIFY_COMMIT notifications to all resource managers that
-		/// have enlisted in the transaction.
-		/// </para>
-		/// <para>
-		/// For more information about <c>ZwCommitEnlistment</c>, see Creating a Superior Transaction Manager and Handling Commit Operations.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommitenlistment __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCommitEnlistment( HANDLE EnlistmentHandle, PLARGE_INTEGER TmVirtualClock );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "9c7f3e24-1d7c-450e-bbef-df0479911bc6")]
-		public static extern NTStatus NtCommitEnlistment([In] SafeEnlistmentHandle EnlistmentHandle, [In, Optional] IntPtr TmVirtualClock);
-
-		/// <summary>
-		/// <para>The <c>ZwCommitTransaction</c> routine initiates a commit operation for a specified transaction.</para>
-		/// </summary>
-		/// <param name="TransactionHandle">
-		/// <para>
-		/// A handle to a transaction object. Your component receives this handle from ZwCreateTransaction or ZwOpenTransaction. The handle
-		/// must have TRANSACTION_COMMIT access to the object.
-		/// </para>
-		/// </param>
-		/// <param name="Wait">
-		/// <para>
-		/// A Boolean value that the caller sets to <c>TRUE</c> for synchronous operation or <c>FALSE</c> for asynchronous operation. If
-		/// this parameter is <c>TRUE</c>, the call returns after the commit operation is complete.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCommitTransaction</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
-		/// <term>The handle that was specified for the TransactionHandle parameter is not a handle to a transaction object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>The specified transaction object handle is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The caller does not have appropriate access to the transaction object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_SUPERIOR_EXISTS</term>
-		/// <term>The caller cannot commit the transaction because a superior transaction manager exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_ALREADY_ABORTED</term>
-		/// <term>The transaction cannot be committed because it has been rolled back.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_ALREADY_COMMITTED</term>
-		/// <term>The transaction is already committed.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_REQUEST_NOT_VALID</term>
-		/// <term>The commit operation for this transaction has already been started.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_PENDING</term>
-		/// <term>Commit notifications have been queued to resource managers, and the caller specified FALSE for the Wait parameter.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// For more information about how transaction clients should use the <c>ZwCommitTransaction</c> routine, see Creating a
-		/// Transactional Client.
-		/// </para>
-		/// <para>For more information about commit operations, see Handling Commit Operations.</para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcommittransaction __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCommitTransaction( HANDLE TransactionHandle, BOOLEAN Wait );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "145646f3-ff90-41d6-bf76-947cdf93b489")]
-		public static extern NTStatus NtCommitTransaction([In] IntPtr TransactionHandle, [MarshalAs(UnmanagedType.U1)] bool Wait);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateEnlistment</c> routine creates a new enlistment object for a transaction.</para>
-		/// </summary>
-		/// <param name="EnlistmentHandle">
-		/// <para>
-		/// A pointer to a caller-allocated variable that receives a handle to the new enlistment object if the call to
-		/// <c>ZwCreateEnlistment</c> succeeds.
-		/// </para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the enlistment object. In addition to the access rights
-		/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right flags for
-		/// enlistment objects:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>ACCESS_MASK flag</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ENLISTMENT_QUERY_INFORMATION</term>
-		/// <term>Query information about the enlistment (see ZwQueryInformationEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_SET_INFORMATION</term>
-		/// <term>Set information for the enlistment (see ZwSetInformationEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_RECOVER</term>
-		/// <term>Recover the enlistment (see ZwRecoverEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_SUBORDINATE_RIGHTS</term>
-		/// <term>
-		/// Perform operations that a resource manager that is not superior performs (see ZwRollbackEnlistment, ZwPrePrepareComplete,
-		/// ZwPrepareComplete, ZwCommitComplete, ZwRollbackComplete, ZwSinglePhaseReject, ZwReadOnlyEnlistment).
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_SUPERIOR_RIGHTS</term>
-		/// <term>
-		/// Perform operations that a superior transaction manager must perform (see ZwPrepareEnlistment, ZwPrePrepareEnlistment, ZwCommitEnlistment).
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
-		/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
-		/// these bitmaps together with additional flags from the previous table. The following table shows how the bitmaps correspond to
-		/// specific access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Generic access right</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ENLISTMENT_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ and ENLISTMENT_QUERY_INFORMATION</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, ENLISTMENT_SET_INFORMATION, ENLISTMENT_RECOVER, ENLISTMENT_REFERENCE, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_GENERIC_EXECUTE</term>
-		/// <term>STANDARD_RIGHTS_EXECUTE, ENLISTMENT_RECOVER, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, ENLISTMENT_GENERIC_READ, ENLISTMENT_GENERIC_WRITE, and ENLISTMENT_GENERIC_EXECUTE</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="ResourceManagerHandle">
-		/// <para>A handle to the caller's resource manager object that was obtained by a previous call to ZwCreateResourceManager or ZwOpenResourceManager.</para>
-		/// </param>
-		/// <param name="TransactionHandle">
-		/// <para>
-		/// A handle to a transaction object that was obtained by a previous call to ZwCreateTransaction or ZwOpenTransaction. KTM adds this
-		/// transaction to the list of transactions that the calling resource manager is handling.
-		/// </para>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Enlistment option flags. The following table contains the only available flag.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>CreateOptions flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ENLISTMENT_SUPERIOR</term>
-		/// <term>The caller is enlisting as a superior transaction manager for the specified transaction.</term>
-		/// </item>
-		/// </list>
-		/// <para>This parameter is optional and can be zero.</para>
-		/// </param>
-		/// <param name="NotificationMask">
-		/// <para>
-		/// A bitwise OR of TRANSACTION_NOTIFY_XXX values that are defined in Ktmtypes.h. This mask specifies the types of transaction
-		/// notifications that KTM sends to the caller.
-		/// </para>
-		/// </param>
-		/// <param name="EnlistmentKey">
-		/// <para>
-		/// A pointer to caller-defined information that uniquely identifies the enlistment. The resource manager receives this pointer when
-		/// it calls ZwGetNotificationResourceManager or when KTM calls the ResourceManagerNotification callback routine. The resource
-		/// manager can maintain a reference count for this key by calling TmReferenceEnlistmentKey and TmDereferenceEnlistmentKey. This
-		/// parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>An object handle is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>
-		/// The CreateOptions or NotificationMask parameter's value is invalid, or KTM could not find the transaction that the
-		/// TransactionHandle parameter specifies.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
-		/// <term>A memory allocation failed.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTIONMANAGER_NOT_ONLINE</term>
-		/// <term>The enlistment failed because KTM or the resource manager is not in an operational state.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
-		/// <term>The enlistment failed because the transaction that the TransactionHandle parameter specifies is not active.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_SUPERIOR_EXISTS</term>
-		/// <term>The caller tried to register as a superior transaction manager but a superior transaction manager already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TM_VOLATILE</term>
-		/// <term>
-		/// The caller is trying to register as a superior transaction manager, but the caller's resource manager object is volatile while
-		/// the associated transaction manager object is not volatile.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>A resource manager calls <c>ZwCreateEnlistment</c> to enlist in a transaction.</para>
-		/// <para>Resource managers that are not superior must include the ENLISTMENT_SUBORDINATE_RIGHTS flag in their access mask.</para>
-		/// <para>
-		/// Superior transaction managers must include the ENLISTMENT_SUPERIOR_RIGHTS flag in their access masks. Typically, a superior
-		/// transaction manager includes code that calls ZwRollbackEnlistment, so it must also include the ENLISTMENT_SUBORDINATE_RIGHTS flag.
-		/// </para>
-		/// <para>A resource manager that calls <c>ZwCreateEnlistment</c> must eventually call ZwClose to close the object handle.</para>
-		/// <para>
-		/// Your resource manager can use the EnlistmentKey parameter to assign a unique value to each enlistment, such as a pointer to a
-		/// data structure that contains information about the enlistment. For example, if the resource manager stores the enlistment
-		/// object's handle in the structure, the resource manager can do the following:
-		/// </para>
-		/// <para>
-		/// For more information about <c>ZwCreateEnlistment</c>, see Creating a Resource Manager and Creating a Superior Transaction Manager.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateenlistment __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCreateEnlistment( PHANDLE EnlistmentHandle, ACCESS_MASK DesiredAccess, HANDLE ResourceManagerHandle, HANDLE
-		// TransactionHandle, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, NOTIFICATION_MASK NotificationMask, PVOID
-		// EnlistmentKey );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "5ffd8262-10b3-4c40-bd3e-050271338508")]
-		public static extern NTStatus NtCreateEnlistment(out SafeEnlistmentHandle EnlistmentHandle, ACCESS_MASK DesiredAccess, [In] SafeResourceManagerHandle ResourceManagerHandle,
-			[In] SafeTransactionHandle TransactionHandle, in OBJECT_ATTRIBUTES ObjectAttributes, [Optional] uint CreateOptions, NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateEnlistment</c> routine creates a new enlistment object for a transaction.</para>
-		/// </summary>
-		/// <param name="EnlistmentHandle">
-		/// <para>
-		/// A pointer to a caller-allocated variable that receives a handle to the new enlistment object if the call to
-		/// <c>ZwCreateEnlistment</c> succeeds.
-		/// </para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the enlistment object. In addition to the access rights
-		/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right flags for
-		/// enlistment objects:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>ACCESS_MASK flag</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ENLISTMENT_QUERY_INFORMATION</term>
-		/// <term>Query information about the enlistment (see ZwQueryInformationEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_SET_INFORMATION</term>
-		/// <term>Set information for the enlistment (see ZwSetInformationEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_RECOVER</term>
-		/// <term>Recover the enlistment (see ZwRecoverEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_SUBORDINATE_RIGHTS</term>
-		/// <term>
-		/// Perform operations that a resource manager that is not superior performs (see ZwRollbackEnlistment, ZwPrePrepareComplete,
-		/// ZwPrepareComplete, ZwCommitComplete, ZwRollbackComplete, ZwSinglePhaseReject, ZwReadOnlyEnlistment).
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_SUPERIOR_RIGHTS</term>
-		/// <term>
-		/// Perform operations that a superior transaction manager must perform (see ZwPrepareEnlistment, ZwPrePrepareEnlistment, ZwCommitEnlistment).
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
-		/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
-		/// these bitmaps together with additional flags from the previous table. The following table shows how the bitmaps correspond to
-		/// specific access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Generic access right</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ENLISTMENT_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ and ENLISTMENT_QUERY_INFORMATION</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, ENLISTMENT_SET_INFORMATION, ENLISTMENT_RECOVER, ENLISTMENT_REFERENCE, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_GENERIC_EXECUTE</term>
-		/// <term>STANDARD_RIGHTS_EXECUTE, ENLISTMENT_RECOVER, ENLISTMENT_SUBORDINATE_RIGHTS, and ENLISTMENT_SUPERIOR_RIGHTS</term>
-		/// </item>
-		/// <item>
-		/// <term>ENLISTMENT_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, ENLISTMENT_GENERIC_READ, ENLISTMENT_GENERIC_WRITE, and ENLISTMENT_GENERIC_EXECUTE</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="ResourceManagerHandle">
-		/// <para>A handle to the caller's resource manager object that was obtained by a previous call to ZwCreateResourceManager or ZwOpenResourceManager.</para>
-		/// </param>
-		/// <param name="TransactionHandle">
-		/// <para>
-		/// A handle to a transaction object that was obtained by a previous call to ZwCreateTransaction or ZwOpenTransaction. KTM adds this
-		/// transaction to the list of transactions that the calling resource manager is handling.
-		/// </para>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Enlistment option flags. The following table contains the only available flag.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>CreateOptions flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ENLISTMENT_SUPERIOR</term>
-		/// <term>The caller is enlisting as a superior transaction manager for the specified transaction.</term>
-		/// </item>
-		/// </list>
-		/// <para>This parameter is optional and can be zero.</para>
-		/// </param>
-		/// <param name="NotificationMask">
-		/// <para>
-		/// A bitwise OR of TRANSACTION_NOTIFY_XXX values that are defined in Ktmtypes.h. This mask specifies the types of transaction
-		/// notifications that KTM sends to the caller.
-		/// </para>
-		/// </param>
-		/// <param name="EnlistmentKey">
-		/// <para>
-		/// A pointer to caller-defined information that uniquely identifies the enlistment. The resource manager receives this pointer when
-		/// it calls ZwGetNotificationResourceManager or when KTM calls the ResourceManagerNotification callback routine. The resource
-		/// manager can maintain a reference count for this key by calling TmReferenceEnlistmentKey and TmDereferenceEnlistmentKey. This
-		/// parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateEnlistment</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>An object handle is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>
-		/// The CreateOptions or NotificationMask parameter's value is invalid, or KTM could not find the transaction that the
-		/// TransactionHandle parameter specifies.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
-		/// <term>A memory allocation failed.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTIONMANAGER_NOT_ONLINE</term>
-		/// <term>The enlistment failed because KTM or the resource manager is not in an operational state.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_NOT_ACTIVE</term>
-		/// <term>The enlistment failed because the transaction that the TransactionHandle parameter specifies is not active.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_SUPERIOR_EXISTS</term>
-		/// <term>The caller tried to register as a superior transaction manager but a superior transaction manager already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TM_VOLATILE</term>
-		/// <term>
-		/// The caller is trying to register as a superior transaction manager, but the caller's resource manager object is volatile while
-		/// the associated transaction manager object is not volatile.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>A resource manager calls <c>ZwCreateEnlistment</c> to enlist in a transaction.</para>
-		/// <para>Resource managers that are not superior must include the ENLISTMENT_SUBORDINATE_RIGHTS flag in their access mask.</para>
-		/// <para>
-		/// Superior transaction managers must include the ENLISTMENT_SUPERIOR_RIGHTS flag in their access masks. Typically, a superior
-		/// transaction manager includes code that calls ZwRollbackEnlistment, so it must also include the ENLISTMENT_SUBORDINATE_RIGHTS flag.
-		/// </para>
-		/// <para>A resource manager that calls <c>ZwCreateEnlistment</c> must eventually call ZwClose to close the object handle.</para>
-		/// <para>
-		/// Your resource manager can use the EnlistmentKey parameter to assign a unique value to each enlistment, such as a pointer to a
-		/// data structure that contains information about the enlistment. For example, if the resource manager stores the enlistment
-		/// object's handle in the structure, the resource manager can do the following:
-		/// </para>
-		/// <para>
-		/// For more information about <c>ZwCreateEnlistment</c>, see Creating a Resource Manager and Creating a Superior Transaction Manager.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateenlistment __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCreateEnlistment( PHANDLE EnlistmentHandle, ACCESS_MASK DesiredAccess, HANDLE ResourceManagerHandle, HANDLE
-		// TransactionHandle, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, NOTIFICATION_MASK NotificationMask, PVOID
-		// EnlistmentKey );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "5ffd8262-10b3-4c40-bd3e-050271338508")]
-		public static extern NTStatus NtCreateEnlistment(out SafeEnlistmentHandle EnlistmentHandle, ACCESS_MASK DesiredAccess, [In] SafeResourceManagerHandle ResourceManagerHandle,
-			[In] SafeTransactionHandle TransactionHandle, [In, Optional] IntPtr ObjectAttributes, [Optional] uint CreateOptions, NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateResourceManager</c> routine creates a resource manager object.</para>
-		/// </summary>
-		/// <param name="ResourceManagerHandle">
-		/// <para>
-		/// A pointer to a caller-allocated variable that receives a handle to the new resource manager object if the call to
-		/// <c>ZwCreateResourceManager</c> is successful.
-		/// </para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the resource manager object. In addition to the access
-		/// rights that are defined for all kinds of objects (see <c>ACCESS_MASK</c>), the caller can specify any of the following access
-		/// right flags for resource manager objects:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>ACCESS_MASK flag</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCEMANAGER_ENLIST</term>
-		/// <term>Enlist in transactions (see ZwCreateEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GET_NOTIFICATION</term>
-		/// <term>Receive notifications about the transactions that are associated with this resource manager (see ZwGetNotificationResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_REGISTER_PROTOCOL</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_QUERY_INFORMATION</term>
-		/// <term>Query information about the resource manager (see ZwQueryInformationResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_SET_INFORMATION</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_RECOVER</term>
-		/// <term>Recover the resource manager (see ZwRecoverResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_COMPLETE_PROPAGATION</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following generic ACCESS_MASK flags. (The STANDARD_RIGHTS_Xxx flags are
-		/// predefined system values that are used to enforce security on system objects.) You can also combine these generic flags with
-		/// additional flags from the preceding table. The following table shows how generic access rights correspond to specific access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Generic access right</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ, RESOURCEMANAGER_QUERY_INFORMATION, and SYNCHRONIZE</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, RESOURCEMANAGER_SET_INFORMATION, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST,
-		/// RESOURCEMANAGER_GET_NOTIFICATION, RESOURCEMANAGER_REGISTER_PROTOCOL, RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GENERIC_EXECUTE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_EXECUTE, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST, RESOURCEMANAGER_GET_NOTIFICATION,
-		/// RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, RESOURCEMANAGER_GENERIC_READ, RESOURCEMANAGER_GENERIC_WRITE, and RESOURCEMANAGER_GENERIC_EXECUTE</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="TmHandle">
-		/// <para>A handle to a transaction manager object that was obtained by a previous all to ZwCreateTransactionManager or ZwOpenTransactionManager.</para>
-		/// </param>
-		/// <param name="RmGuid">
-		/// <para>
-		/// A pointer to a GUID that KTM will use to identify the resource manager. If this pointer is <c>NULL</c>, KTM generates a GUID.
-		/// </para>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>CreateOptions flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCE_MANAGER_COMMUNICATION</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCE_MANAGER_VOLATILE</term>
-		/// <term>The caller will manage volatile resources. It will be non-persistent and will not perform recovery.</term>
-		/// </item>
-		/// </list>
-		/// <para>This parameter is optional and can be zero.</para>
-		/// </param>
-		/// <param name="Description">
-		/// <para>
-		/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
-		/// description of the resource manager. KTM stores a copy of the string and includes the string in messages that it writes to the
-		/// log stream. The maximum string length is MAX_RESOURCEMANAGER_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateResourceManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
-		/// <term>The handle that TmHandle specifies is not a handle to a transaction object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>The handle that TmHandle specifies is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The caller does not have appropriate access to the specified transaction manager object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_OBJECT_EXPIRED</term>
-		/// <term>The handle that TmHandle specifies is closed.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>The CreateOptions parameter's value is invalid or the Description parameter's string is too long.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TM_VOLATILE</term>
-		/// <term>
-		/// The CreateOptions parameter does not specify RESOURCE_MANAGER_VOLATILE but the transaction manager that TmHandle specifies is volatile.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_COLLISION</term>
-		/// <term>The GUID that ResourceManagerGuid specifies already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>A resource manager that calls <c>ZwCreateResourceManager</c> must eventually call ZwClose to close the object handle.</para>
-		/// <para>For more information about <c>ZwCreateResourceManager</c>, see Creating a Resource Manager.</para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateresourcemanager __kernel_entry
-		// NTSYSCALLAPI NTSTATUS NtCreateResourceManager( PHANDLE ResourceManagerHandle, ACCESS_MASK DesiredAccess, HANDLE TmHandle, LPGUID
-		// RmGuid, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, PUNICODE_STRING Description );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "4812eeb4-134f-4ecb-870b-dbab04c1137b")]
-		public static extern NTStatus NtCreateResourceManager(out SafeResourceManagerHandle ResourceManagerHandle, ACCESS_MASK DesiredAccess, SafeTransactionManagerHandle TmHandle, in Guid RmGuid,
-			in OBJECT_ATTRIBUTES ObjectAttributes, [Optional] uint CreateOptions, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string Description);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateResourceManager</c> routine creates a resource manager object.</para>
-		/// </summary>
-		/// <param name="ResourceManagerHandle">
-		/// <para>
-		/// A pointer to a caller-allocated variable that receives a handle to the new resource manager object if the call to
-		/// <c>ZwCreateResourceManager</c> is successful.
-		/// </para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the resource manager object. In addition to the access
-		/// rights that are defined for all kinds of objects (see <c>ACCESS_MASK</c>), the caller can specify any of the following access
-		/// right flags for resource manager objects:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>ACCESS_MASK flag</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCEMANAGER_ENLIST</term>
-		/// <term>Enlist in transactions (see ZwCreateEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GET_NOTIFICATION</term>
-		/// <term>Receive notifications about the transactions that are associated with this resource manager (see ZwGetNotificationResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_REGISTER_PROTOCOL</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_QUERY_INFORMATION</term>
-		/// <term>Query information about the resource manager (see ZwQueryInformationResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_SET_INFORMATION</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_RECOVER</term>
-		/// <term>Recover the resource manager (see ZwRecoverResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_COMPLETE_PROPAGATION</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following generic ACCESS_MASK flags. (The STANDARD_RIGHTS_Xxx flags are
-		/// predefined system values that are used to enforce security on system objects.) You can also combine these generic flags with
-		/// additional flags from the preceding table. The following table shows how generic access rights correspond to specific access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Generic access right</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ, RESOURCEMANAGER_QUERY_INFORMATION, and SYNCHRONIZE</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, RESOURCEMANAGER_SET_INFORMATION, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST,
-		/// RESOURCEMANAGER_GET_NOTIFICATION, RESOURCEMANAGER_REGISTER_PROTOCOL, RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_GENERIC_EXECUTE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_EXECUTE, RESOURCEMANAGER_RECOVER, RESOURCEMANAGER_ENLIST, RESOURCEMANAGER_GET_NOTIFICATION,
-		/// RESOURCEMANAGER_COMPLETE_PROPAGATION, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCEMANAGER_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, RESOURCEMANAGER_GENERIC_READ, RESOURCEMANAGER_GENERIC_WRITE, and RESOURCEMANAGER_GENERIC_EXECUTE</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="TmHandle">
-		/// <para>A handle to a transaction manager object that was obtained by a previous all to ZwCreateTransactionManager or ZwOpenTransactionManager.</para>
-		/// </param>
-		/// <param name="RmGuid">
-		/// <para>
-		/// A pointer to a GUID that KTM will use to identify the resource manager. If this pointer is <c>NULL</c>, KTM generates a GUID.
-		/// </para>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>CreateOptions flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>RESOURCE_MANAGER_COMMUNICATION</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>RESOURCE_MANAGER_VOLATILE</term>
-		/// <term>The caller will manage volatile resources. It will be non-persistent and will not perform recovery.</term>
-		/// </item>
-		/// </list>
-		/// <para>This parameter is optional and can be zero.</para>
-		/// </param>
-		/// <param name="Description">
-		/// <para>
-		/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
-		/// description of the resource manager. KTM stores a copy of the string and includes the string in messages that it writes to the
-		/// log stream. The maximum string length is MAX_RESOURCEMANAGER_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateResourceManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_OBJECT_TYPE_MISMATCH</term>
-		/// <term>The handle that TmHandle specifies is not a handle to a transaction object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_HANDLE</term>
-		/// <term>The handle that TmHandle specifies is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The caller does not have appropriate access to the specified transaction manager object.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TRANSACTION_OBJECT_EXPIRED</term>
-		/// <term>The handle that TmHandle specifies is closed.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>The CreateOptions parameter's value is invalid or the Description parameter's string is too long.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_TM_VOLATILE</term>
-		/// <term>
-		/// The CreateOptions parameter does not specify RESOURCE_MANAGER_VOLATILE but the transaction manager that TmHandle specifies is volatile.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_COLLISION</term>
-		/// <term>The GUID that ResourceManagerGuid specifies already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>A resource manager that calls <c>ZwCreateResourceManager</c> must eventually call ZwClose to close the object handle.</para>
-		/// <para>For more information about <c>ZwCreateResourceManager</c>, see Creating a Resource Manager.</para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreateresourcemanager __kernel_entry
-		// NTSYSCALLAPI NTSTATUS NtCreateResourceManager( PHANDLE ResourceManagerHandle, ACCESS_MASK DesiredAccess, HANDLE TmHandle, LPGUID
-		// RmGuid, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, PUNICODE_STRING Description );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "4812eeb4-134f-4ecb-870b-dbab04c1137b")]
-		public static extern NTStatus NtCreateResourceManager(out SafeResourceManagerHandle ResourceManagerHandle, ACCESS_MASK DesiredAccess, SafeTransactionManagerHandle TmHandle, in Guid RmGuid,
-			[In, Optional] IntPtr ObjectAttributes, [Optional] uint CreateOptions, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string Description);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateTransaction</c> routine creates a transaction object.</para>
-		/// </summary>
-		/// <param name="TransactionHandle">
-		/// <para>
-		/// A pointer to a caller-allocated variable that receives a handle to the new transaction object, if the call to
-		/// <c>ZwCreateTransaction</c> succeeds.
-		/// </para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the transaction object. In addition to the access rights
-		/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following flags for transaction objects.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Access mask</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_COMMIT</term>
-		/// <term>Commit the transaction (see ZwCommitTransaction).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_ENLIST</term>
-		/// <term>Create an enlistment for the transaction (see ZwCreateEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_PROPAGATE</term>
-		/// <term>Do not use.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_QUERY_INFORMATION</term>
-		/// <term>Obtain information about the transaction (see ZwQueryInformationTransaction).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_ROLLBACK</term>
-		/// <term>Roll back the transaction (see ZwRollbackTransaction).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_SET_INFORMATION</term>
-		/// <term>Set information for the transaction (see ZwSetInformationTransaction).</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
-		/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
-		/// these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to specific
-		/// access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Rights bitmap</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ, TRANSACTION_QUERY_INFORMATION, and SYNCHRONIZE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, TRANSACTION_SET_INFORMATION, TRANSACTION_COMMIT, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
-		/// TRANSACTION_PROPAGATE, TRANSACTION_SAVEPOINT, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_GENERIC_EXECUTE</term>
-		/// <term>STANDARD_RIGHTS_EXECUTE, TRANSACTION_COMMIT, TRANSACTION_ROLLBACK, and SYNCHRONIZE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTION_GENERIC_READ, TRANSACTION_GENERIC_WRITE, and TRANSACTION_GENERIC_EXECUTE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_RESOURCE_MANAGER_RIGHTS</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, TRANSACTION_GENERIC_READ, TRANSACTION_SET_INFORMATION, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
-		/// TRANSACTION_PROPAGATE, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>Typically, a resource manager specifies TRANSACTION_RESOURCE_MANAGER_RIGHTS.</para>
-		/// <para>The DesiredAccess value cannot be zero.</para>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="Uow">
-		/// <para>
-		/// A pointer to a GUID that KTM uses as the new transaction object's unit of work (UOW) identifier. This parameter is optional and
-		/// can be <c>NULL</c>. If this parameter is <c>NULL</c>, KTM generates a GUID and assigns it to the transaction object. For more
-		/// information, see the following Remarks section.
-		/// </para>
-		/// </param>
-		/// <param name="TmHandle">
-		/// <para>
-		/// A handle to a transaction manager object that was obtained by a previous call to ZwCreateTransactionManager or
-		/// ZwOpenTransactionManager. KTM assigns the new transaction object to the specified transaction manager object. If this parameter
-		/// is <c>NULL</c>, KTM assigns the new transaction object to a transaction manager later, when a resource manager creates an
-		/// enlistment for the transaction.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Option flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_DO_NOT_PROMOTE</term>
-		/// <term>Reserved for future use.</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="IsolationLevel">
-		/// <para>Reserved for future use. Callers must set this parameter to zero.</para>
-		/// </param>
-		/// <param name="IsolationFlags">
-		/// <para>Reserved for future use. Callers should set this parameter to zero.</para>
-		/// </param>
-		/// <param name="Timeout">
-		/// <para>
-		/// A pointer to a time-out value. If the transaction has not been committed by the time specified by this parameter, KTM rolls back
-		/// the transaction. The time-out value is expressed in system time units (100-nanosecond intervals), and can specify either an
-		/// absolute time or a relative time. If the value pointed to by Timeout is negative, the expiration time is relative to the current
-		/// system time. Otherwise, the expiration time is absolute. This pointer is optional and can be <c>NULL</c> if you do not want the
-		/// transaction to have a time-out value. If Timeout = <c>NULL</c> or *Timeout = 0, the transaction never times out. (You can also
-		/// use ZwSetInformationTransaction to set a time-out value.)
-		/// </para>
-		/// </param>
-		/// <param name="Description">
-		/// <para>
-		/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
-		/// description of the transaction. KTM stores a copy of the string and includes the string in messages that it writes to the log
-		/// stream. The maximum string length is MAX_TRANSACTION_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateTransaction</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>
-		/// The CreateOptions parameter contains an invalid flag, the DesiredAccess parameter is zero, or the Description parameter's string
-		/// is too long.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
-		/// <term>KTM could not allocate system resources (typically memory).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_ACL</term>
-		/// <term>A security descriptor contains an invalid access control list (ACL).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_SID</term>
-		/// <term>A security descriptor contains an invalid security identifier (SID).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_EXISTS</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_INVALID</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The caller can use the Uow parameter to specify a UOW identifier for the transaction object. If the caller does not specify a
-		/// UOW identifier, KTM generates a GUID and assigns it to the transaction object. The caller can later obtain this GUID by calling ZwQueryInformationTransaction.
-		/// </para>
-		/// <para>
-		/// Typically, you should let KTM generate a GUID for the transaction object, unless your component communicates with another TPS
-		/// component that has already generated a UOW identifier for the transaction.
-		/// </para>
-		/// <para>
-		/// To close the transaction handle, the component that called <c>ZwCreateTransaction</c> must call ZwClose. If the last transaction
-		/// handle closes before any component calls ZwCommitTransaction for the transaction, KTM rolls back the transaction.
-		/// </para>
-		/// <para>
-		/// For more information about how transaction clients should use <c>ZwCreateTransaction</c>, see Creating a Transactional Client.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransaction __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCreateTransaction( PHANDLE TransactionHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, LPGUID
-		// Uow, HANDLE TmHandle, ULONG CreateOptions, ULONG IsolationLevel, ULONG IsolationFlags, PLARGE_INTEGER Timeout, PUNICODE_STRING
-		// Description );
-		[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("wdm.h", MSDNShortId = "b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4")]
-		public static extern NTStatus NtCreateTransaction(out SafeTransactionHandle TransactionHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
-			in Guid Uow, SafeTransactionManagerHandle TmHandle, [Optional] uint CreateOptions, [Optional] uint IsolationLevel, [Optional] uint IsolationFlags, in long Timeout,
-			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string Description);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateTransaction</c> routine creates a transaction object.</para>
-		/// </summary>
-		/// <param name="TransactionHandle">
-		/// <para>
-		/// A pointer to a caller-allocated variable that receives a handle to the new transaction object, if the call to
-		/// <c>ZwCreateTransaction</c> succeeds.
-		/// </para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the transaction object. In addition to the access rights
-		/// that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following flags for transaction objects.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Access mask</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_COMMIT</term>
-		/// <term>Commit the transaction (see ZwCommitTransaction).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_ENLIST</term>
-		/// <term>Create an enlistment for the transaction (see ZwCreateEnlistment).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_PROPAGATE</term>
-		/// <term>Do not use.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_QUERY_INFORMATION</term>
-		/// <term>Obtain information about the transaction (see ZwQueryInformationTransaction).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_ROLLBACK</term>
-		/// <term>Roll back the transaction (see ZwRollbackTransaction).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_SET_INFORMATION</term>
-		/// <term>Set information for the transaction (see ZwSetInformationTransaction).</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
-		/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the ACCESS_MASK reference page. You can also combine
-		/// these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to specific
-		/// access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Rights bitmap</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ, TRANSACTION_QUERY_INFORMATION, and SYNCHRONIZE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, TRANSACTION_SET_INFORMATION, TRANSACTION_COMMIT, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
-		/// TRANSACTION_PROPAGATE, TRANSACTION_SAVEPOINT, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_GENERIC_EXECUTE</term>
-		/// <term>STANDARD_RIGHTS_EXECUTE, TRANSACTION_COMMIT, TRANSACTION_ROLLBACK, and SYNCHRONIZE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTION_GENERIC_READ, TRANSACTION_GENERIC_WRITE, and TRANSACTION_GENERIC_EXECUTE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_RESOURCE_MANAGER_RIGHTS</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, TRANSACTION_GENERIC_READ, TRANSACTION_SET_INFORMATION, TRANSACTION_ENLIST, TRANSACTION_ROLLBACK,
-		/// TRANSACTION_PROPAGATE, and SYNCHRONIZE
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>Typically, a resource manager specifies TRANSACTION_RESOURCE_MANAGER_RIGHTS.</para>
-		/// <para>The DesiredAccess value cannot be zero.</para>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="Uow">
-		/// <para>
-		/// A pointer to a GUID that KTM uses as the new transaction object's unit of work (UOW) identifier. This parameter is optional and
-		/// can be <c>NULL</c>. If this parameter is <c>NULL</c>, KTM generates a GUID and assigns it to the transaction object. For more
-		/// information, see the following Remarks section.
-		/// </para>
-		/// </param>
-		/// <param name="TmHandle">
-		/// <para>
-		/// A handle to a transaction manager object that was obtained by a previous call to ZwCreateTransactionManager or
-		/// ZwOpenTransactionManager. KTM assigns the new transaction object to the specified transaction manager object. If this parameter
-		/// is <c>NULL</c>, KTM assigns the new transaction object to a transaction manager later, when a resource manager creates an
-		/// enlistment for the transaction.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Option flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_DO_NOT_PROMOTE</term>
-		/// <term>Reserved for future use.</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="IsolationLevel">
-		/// <para>Reserved for future use. Callers must set this parameter to zero.</para>
-		/// </param>
-		/// <param name="IsolationFlags">
-		/// <para>Reserved for future use. Callers should set this parameter to zero.</para>
-		/// </param>
-		/// <param name="Timeout">
-		/// <para>
-		/// A pointer to a time-out value. If the transaction has not been committed by the time specified by this parameter, KTM rolls back
-		/// the transaction. The time-out value is expressed in system time units (100-nanosecond intervals), and can specify either an
-		/// absolute time or a relative time. If the value pointed to by Timeout is negative, the expiration time is relative to the current
-		/// system time. Otherwise, the expiration time is absolute. This pointer is optional and can be <c>NULL</c> if you do not want the
-		/// transaction to have a time-out value. If Timeout = <c>NULL</c> or *Timeout = 0, the transaction never times out. (You can also
-		/// use ZwSetInformationTransaction to set a time-out value.)
-		/// </para>
-		/// </param>
-		/// <param name="Description">
-		/// <para>
-		/// A pointer to a caller-supplied UNICODE_STRING structure that contains a NULL-terminated string. The string provides a
-		/// description of the transaction. KTM stores a copy of the string and includes the string in messages that it writes to the log
-		/// stream. The maximum string length is MAX_TRANSACTION_DESCRIPTION_LENGTH. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateTransaction</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of the
-		/// following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>
-		/// The CreateOptions parameter contains an invalid flag, the DesiredAccess parameter is zero, or the Description parameter's string
-		/// is too long.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
-		/// <term>KTM could not allocate system resources (typically memory).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_ACL</term>
-		/// <term>A security descriptor contains an invalid access control list (ACL).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_SID</term>
-		/// <term>A security descriptor contains an invalid security identifier (SID).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_EXISTS</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_INVALID</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The caller can use the Uow parameter to specify a UOW identifier for the transaction object. If the caller does not specify a
-		/// UOW identifier, KTM generates a GUID and assigns it to the transaction object. The caller can later obtain this GUID by calling ZwQueryInformationTransaction.
-		/// </para>
-		/// <para>
-		/// Typically, you should let KTM generate a GUID for the transaction object, unless your component communicates with another TPS
-		/// component that has already generated a UOW identifier for the transaction.
-		/// </para>
-		/// <para>
-		/// To close the transaction handle, the component that called <c>ZwCreateTransaction</c> must call ZwClose. If the last transaction
-		/// handle closes before any component calls ZwCommitTransaction for the transaction, KTM rolls back the transaction.
-		/// </para>
-		/// <para>
-		/// For more information about how transaction clients should use <c>ZwCreateTransaction</c>, see Creating a Transactional Client.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransaction __kernel_entry NTSYSCALLAPI
-		// NTSTATUS NtCreateTransaction( PHANDLE TransactionHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, LPGUID
-		// Uow, HANDLE TmHandle, ULONG CreateOptions, ULONG IsolationLevel, ULONG IsolationFlags, PLARGE_INTEGER Timeout, PUNICODE_STRING
-		// Description );
-		[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("wdm.h", MSDNShortId = "b4c2dd68-3c1a-46d3-ab9c-be2291ed80f4")]
-		public static extern NTStatus NtCreateTransaction(out SafeTransactionHandle TransactionHandle, ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
-			[In, Optional] IntPtr Uow, [In, Optional] IntPtr TmHandle, [Optional] uint CreateOptions, [Optional] uint IsolationLevel,
-			[Optional] uint IsolationFlags, [In, Optional] IntPtr Timeout, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string Description);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateTransactionManager</c> routine creates a new transaction manager object.</para>
-		/// </summary>
-		/// <param name="TmHandle">
-		/// <para>A pointer to a caller-allocated variable that receives a handle to the new transaction manager object.</para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the transaction manager object. In addition to the access
-		/// rights that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right
-		/// flags for transaction manager objects.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>ACCESS_MASK flag</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_CREATE_RM</term>
-		/// <term>Create a resource manager (see ZwCreateResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_QUERY_INFORMATION</term>
-		/// <term>
-		/// Obtain information about the transaction manager (see ZwQueryInformationTransactionManager and ZwEnumerateTransactionObject).
-		/// Also required for ZwOpenResourceManager, ZwCreateTransaction, and ZwOpenTransaction.)
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_RECOVER</term>
-		/// <term>Recover the transaction manager (see ZwRecoverTransactionManager and ZwRollforwardTransactionManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_RENAME</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_SET_INFORMATION</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
-		/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the <c>ACCESS_MASK</c> reference page. You can also
-		/// combine these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to
-		/// specific access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Rights bitmap</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ and TRANSACTIONMANAGER_QUERY_INFORMATION</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, TRANSACTIONMANAGER_SET_INFORMATION, TRANSACTIONMANAGER_RECOVER, TRANSACTIONMANAGER_RENAME, and TRANSACTIONMANAGER_CREATE_RM
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
-		/// <term>STANDARD_RIGHTS_EXECUTE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTIONMANAGER_GENERIC_READ, TRANSACTIONMANAGER_GENERIC_WRITE, and TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="LogFileName">
-		/// <para>
-		/// A pointer to a UNICODE_STRING structure that contains the path and file name of a CLFS log file stream to be associated with the
-		/// transaction manager object. This parameter must be <c>NULL</c> if the CreateOptions parameter is TRANSACTION_MANAGER_VOLATILE.
-		/// Otherwise, this parameter must be non- <c>NULL</c>. For more information, see the following Remarks section.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Option flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_VOLATILE</term>
-		/// <term>The transaction manager object will be volatile. Therefore, it will not use a log file.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_DEFAULT</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_VOLUME</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_HIVES</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_LOWEST</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_RECOVERY</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_PROGRESS</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="CommitStrength">
-		/// <para>Reserved for future use. This parameter must be zero.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateTransactionManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of
-		/// the following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>The value of an input parameter is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
-		/// <term>KTM could not allocate system resources (typically memory).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_LOG_CORRUPTION_DETECTED</term>
-		/// <term>KTM encountered an error while creating or opening the log file.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_ACL</term>
-		/// <term>A security descriptor contains an invalid access control list (ACL).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_SID</term>
-		/// <term>A security descriptor contains an invalid security identifier (SID).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_EXISTS</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_COLLISION</term>
-		/// <term>The operating system detected a duplicate object name. The error might indicate that the log stream is already being used.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_INVALID</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If the log file stream that the LogFileName parameter specifies does not exist, KTM calls CLFS to create the stream. If the
-		/// stream already exists, KTM calls CLFS to open the stream.
-		/// </para>
-		/// <para>Your TPS component must call ZwRecoverTransactionManager after it has called <c>ZwCreateTransactionManager</c></para>
-		/// <para>
-		/// If your TPS component specifies the TRANSACTION_MANAGER_VOLATILE flag in the CreateOptions parameter, all resource managers that
-		/// are associated with the transaction manager object must specify the RESOURCE_MANAGER_VOLATILE flag when they call ZwCreateResourceManager.
-		/// </para>
-		/// <para>A TPS component that calls <c>ZwCreateTransactionManager</c> must eventually call ZwClose to close the object handle.</para>
-		/// <para>For more information about how use <c>ZwCreateTransactionManager</c>, see Creating a Resource Manager.</para>
-		/// <para>
-		/// <c>NtCreateTransactionManager</c> and <c>ZwCreateTransactionManager</c> are two versions of the same Windows Native System
-		/// Services routine.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransactionmanager __kernel_entry
-		// NTSYSCALLAPI NTSTATUS NtCreateTransactionManager( PHANDLE TmHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES
-		// ObjectAttributes, PUNICODE_STRING LogFileName, ULONG CreateOptions, ULONG CommitStrength );
-		[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("wdm.h", MSDNShortId = "9c9f0a8b-7add-4ab1-835d-39f508ce32a9")]
-		public static extern NTStatus NtCreateTransactionManager(out SafeTransactionManagerHandle TmHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
-			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string LogFileName, [Optional] uint CreateOptions, [Optional] uint CommitStrength);
-
-		/// <summary>
-		/// <para>The <c>ZwCreateTransactionManager</c> routine creates a new transaction manager object.</para>
-		/// </summary>
-		/// <param name="TmHandle">
-		/// <para>A pointer to a caller-allocated variable that receives a handle to the new transaction manager object.</para>
-		/// </param>
-		/// <param name="DesiredAccess">
-		/// <para>
-		/// An ACCESS_MASK value that specifies the caller's requested access to the transaction manager object. In addition to the access
-		/// rights that are defined for all kinds of objects (see ACCESS_MASK), the caller can specify any of the following access right
-		/// flags for transaction manager objects.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>ACCESS_MASK flag</term>
-		/// <term>Allows the caller to</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_CREATE_RM</term>
-		/// <term>Create a resource manager (see ZwCreateResourceManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_QUERY_INFORMATION</term>
-		/// <term>
-		/// Obtain information about the transaction manager (see ZwQueryInformationTransactionManager and ZwEnumerateTransactionObject).
-		/// Also required for ZwOpenResourceManager, ZwCreateTransaction, and ZwOpenTransaction.)
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_RECOVER</term>
-		/// <term>Recover the transaction manager (see ZwRecoverTransactionManager and ZwRollforwardTransactionManager).</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_RENAME</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_SET_INFORMATION</term>
-		/// <term>Not used.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Alternatively, you can specify one or more of the following ACCESS_MASK bitmaps. These bitmaps combine the flags from the
-		/// previous table with the STANDARD_RIGHTS_XXX flags that are described on the <c>ACCESS_MASK</c> reference page. You can also
-		/// combine these bitmaps with additional flags from the preceding table. The following table shows how the bitmaps correspond to
-		/// specific access rights.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Rights bitmap</term>
-		/// <term>Set of specific access rights</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_GENERIC_READ</term>
-		/// <term>STANDARD_RIGHTS_READ and TRANSACTIONMANAGER_QUERY_INFORMATION</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_GENERIC_WRITE</term>
-		/// <term>
-		/// STANDARD_RIGHTS_WRITE, TRANSACTIONMANAGER_SET_INFORMATION, TRANSACTIONMANAGER_RECOVER, TRANSACTIONMANAGER_RENAME, and TRANSACTIONMANAGER_CREATE_RM
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
-		/// <term>STANDARD_RIGHTS_EXECUTE</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTIONMANAGER_ALL_ACCESS</term>
-		/// <term>STANDARD_RIGHTS_REQUIRED, TRANSACTIONMANAGER_GENERIC_READ, TRANSACTIONMANAGER_GENERIC_WRITE, and TRANSACTIONMANAGER_GENERIC_EXECUTE</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="ObjectAttributes">
-		/// <para>
-		/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use the
-		/// InitializeObjectAttributes routine to initialize this structure. If the caller is not running in a system thread context, it
-		/// must set the OBJ_KERNEL_HANDLE attribute when it calls <c>InitializeObjectAttributes</c>. This parameter is optional and can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="LogFileName">
-		/// <para>
-		/// A pointer to a UNICODE_STRING structure that contains the path and file name of a CLFS log file stream to be associated with the
-		/// transaction manager object. This parameter must be <c>NULL</c> if the CreateOptions parameter is TRANSACTION_MANAGER_VOLATILE.
-		/// Otherwise, this parameter must be non- <c>NULL</c>. For more information, see the following Remarks section.
-		/// </para>
-		/// </param>
-		/// <param name="CreateOptions">
-		/// <para>Optional object creation flags. The following table contains the available flags, which are defined in Ktmtypes.h.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Option flag</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_VOLATILE</term>
-		/// <term>The transaction manager object will be volatile. Therefore, it will not use a log file.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_DEFAULT</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_VOLUME</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_SYSTEM_HIVES</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_COMMIT_LOWEST</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_RECOVERY</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// <item>
-		/// <term>TRANSACTION_MANAGER_CORRUPT_FOR_PROGRESS</term>
-		/// <term>For internal use only.</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="CommitStrength">
-		/// <para>Reserved for future use. This parameter must be zero.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwCreateTransactionManager</c> returns STATUS_SUCCESS if the operation succeeds. Otherwise, this routine might return one of
-		/// the following values:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>The value of an input parameter is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INSUFFICIENT_RESOURCES</term>
-		/// <term>KTM could not allocate system resources (typically memory).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_LOG_CORRUPTION_DETECTED</term>
-		/// <term>KTM encountered an error while creating or opening the log file.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_ACL</term>
-		/// <term>A security descriptor contains an invalid access control list (ACL).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_SID</term>
-		/// <term>A security descriptor contains an invalid security identifier (SID).</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_EXISTS</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies already exists.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_COLLISION</term>
-		/// <term>The operating system detected a duplicate object name. The error might indicate that the log stream is already being used.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_OBJECT_NAME_INVALID</term>
-		/// <term>The object name that the ObjectAttributes parameter specifies is invalid.</term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_ACCESS_DENIED</term>
-		/// <term>The value of the DesiredAccess parameter is invalid.</term>
-		/// </item>
-		/// </list>
-		/// <para>The routine might return other NTSTATUS values.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If the log file stream that the LogFileName parameter specifies does not exist, KTM calls CLFS to create the stream. If the
-		/// stream already exists, KTM calls CLFS to open the stream.
-		/// </para>
-		/// <para>Your TPS component must call ZwRecoverTransactionManager after it has called <c>ZwCreateTransactionManager</c></para>
-		/// <para>
-		/// If your TPS component specifies the TRANSACTION_MANAGER_VOLATILE flag in the CreateOptions parameter, all resource managers that
-		/// are associated with the transaction manager object must specify the RESOURCE_MANAGER_VOLATILE flag when they call ZwCreateResourceManager.
-		/// </para>
-		/// <para>A TPS component that calls <c>ZwCreateTransactionManager</c> must eventually call ZwClose to close the object handle.</para>
-		/// <para>For more information about how use <c>ZwCreateTransactionManager</c>, see Creating a Resource Manager.</para>
-		/// <para>
-		/// <c>NtCreateTransactionManager</c> and <c>ZwCreateTransactionManager</c> are two versions of the same Windows Native System
-		/// Services routine.
-		/// </para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-ntcreatetransactionmanager __kernel_entry
-		// NTSYSCALLAPI NTSTATUS NtCreateTransactionManager( PHANDLE TmHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES
-		// ObjectAttributes, PUNICODE_STRING LogFileName, ULONG CreateOptions, ULONG CommitStrength );
-		[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("wdm.h", MSDNShortId = "9c9f0a8b-7add-4ab1-835d-39f508ce32a9")]
-		public static extern NTStatus NtCreateTransactionManager(out SafeTransactionManagerHandle TmHandle, ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
-			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string LogFileName, [Optional] uint CreateOptions, [Optional] uint CommitStrength);
+		public uint TitleIndex;
 
 		/// <summary>
 		/// <para>
-		/// The <c>ZwQueryKey</c> routine provides information about the class of a registry key, and the number and sizes of its subkeys.
+		/// The byte offset from the start of this structure to the class name string, which is located in the <c>Name</c> array
+		/// immediately following the key name string. Like the key name string, the class name string is not null-terminated.
 		/// </para>
 		/// </summary>
-		/// <param name="KeyHandle">
-		/// <para>
-		/// Handle to the registry key to obtain information about. This handle is created by a successful call to ZwCreateKey or ZwOpenKey.
-		/// </para>
-		/// </param>
-		/// <param name="KeyInformationClass">
-		/// <para>Specifies a KEY_INFORMATION_CLASS value that determines the type of information returned in the KeyInformation buffer.</para>
-		/// </param>
-		/// <param name="KeyInformation">
-		/// <para>Pointer to a caller-allocated buffer that receives the requested information.</para>
-		/// </param>
-		/// <param name="Length">
-		/// <para>Specifies the size, in bytes, of the KeyInformation buffer.</para>
-		/// </param>
-		/// <param name="ResultLength">
-		/// <para>
-		/// Pointer to a variable that receives the size, in bytes, of the requested key information. If <c>ZwQueryKey</c> returns
-		/// STATUS_SUCCESS, the variable contains the amount of data returned. If <c>ZwQueryKey</c> returns STATUS_BUFFER_OVERFLOW or
-		/// STATUS_BUFFER_TOO_SMALL, you can use the value of the variable to determine the required buffer size.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// <c>ZwQueryKey</c> returns STATUS_SUCCESS on success, or the appropriate error code on failure. Possible error code values include:
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STATUS_BUFFER_OVERFLOW</term>
-		/// <term>
-		/// The buffer supplied is too small, and only partial data has been written to the buffer. *ResultLength is set to the minimum size
-		/// required to hold the requested information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_BUFFER_TOO_SMALL</term>
-		/// <term>
-		/// The buffer supplied is too small, and no data has been written to the buffer. *ResultLength is set to the minimum size required
-		/// to hold the requested information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>STATUS_INVALID_PARAMETER</term>
-		/// <term>The KeyInformationClass parameter is not a valid KEY_INFORMATION_CLASS value.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The KeyHandle passed to <c>ZwQueryKey</c> must have been opened with KEY_QUERY_VALUE access. This is accomplished by passing
-		/// KEY_QUERY_VALUE, KEY_READ, or KEY_ALL_ACCESS as the DesiredAccess parameter to ZwCreateKey or ZwOpenKey.
-		/// </para>
-		/// <para>
-		/// <c>ZwQueryKey</c> can be used to obtain information that you can use to allocate buffers to hold registry data, such as the
-		/// maximum size of a key's value entries or subkey names, or the number of subkeys. For example, you can call <c>ZwQueryKey</c>,
-		/// use the returned information to allocate a buffer for a subkey, call ZwEnumerateKey to get the name of the subkey, and pass that
-		/// name to an <c>Rtl</c><c>Xxx</c><c>Registry</c> routine.
-		/// </para>
-		/// <para>For more information about working with registry keys, see Using the Registry in a Driver.</para>
-		/// <para>
-		/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-		/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-		/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-zwquerykey NTSYSAPI NTSTATUS ZwQueryKey( HANDLE
-		// KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, PVOID KeyInformation, ULONG Length, PULONG ResultLength );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		[PInvokeData("wdm.h", MSDNShortId = "3b2d3a8b-a21f-4067-a1f0-9aa66c1973f5")]
-		// public static extern NTSYSAPI NTSTATUS ZwQueryKey(IntPtr KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, IntPtr
-		// KeyInformation, uint Length, ref uint ResultLength);
-		public static extern NTStatus NtQueryKey(HKEY KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, [Out] SafeHGlobalHandle KeyInformation, uint Length, out uint ResultLength);
+		public uint ClassOffset;
+
+		/// <summary>
+		/// <para>The size, in bytes, in the class name string.</para>
+		/// </summary>
+		public uint ClassLength;
+
+		/// <summary>
+		/// <para>The size, in bytes, of the key name string contained in the <c>Name</c> array.</para>
+		/// </summary>
+		public uint NameLength;
 
 		/// <summary>
 		/// <para>
-		/// A driver sets an IRP's I/O status block to indicate the final status of an I/O request, before calling IoCompleteRequest for the IRP.
+		/// An array of wide characters that contains the name of the registry key. This character string is null-terminated. Only the
+		/// first element in this array is included in the <c>KEY_NODE_INFORMATION</c> structure definition. The storage for the
+		/// remaining elements in the array immediately follows this element.
 		/// </para>
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Unless a driver's dispatch routine completes an IRP with an error status value, the lowest-level driver in the chain frequently
-		/// sets the IRP's I/O status block to the values that will be returned to the original requester of the I/O operation.
-		/// </para>
-		/// <para>
-		/// The IoCompletion routines of higher-level drivers usually check the I/O status block in IRPs completed by lower drivers. By
-		/// design, the I/O status block in an IRP is the only information passed back from the underlying device driver to all higher-level
-		/// drivers' IoCompletion routines.
-		/// </para>
-		/// <para>
-		/// The operating system implements support routines that write <c>IO_STATUS_BLOCK</c> values to caller-supplied output buffers. For
-		/// example, see ZwOpenFile or NtOpenFile. These routines return status codes that might not match the status codes in the
-		/// <c>IO_STATUS_BLOCK</c> structures. If one of these routines returns STATUS_PENDING, the caller should wait for the I/O operation
-		/// to complete, and then check the status code in the <c>IO_STATUS_BLOCK</c> structure to determine the final status of the
-		/// operation. If the routine returns a status code other than STATUS_PENDING, the caller should rely on this status code instead of
-		/// the status code in the <c>IO_STATUS_BLOCK</c> structure.
-		/// </para>
-		/// <para>For more information, see I/O Status Blocks.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_io_status_block typedef struct _IO_STATUS_BLOCK
-		// { union { NTSTATUS Status; PVOID Pointer; } DUMMYUNIONNAME; ULONG_PTR Information; } IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
-		[PInvokeData("wdm.h", MSDNShortId = "1ce2b1d0-a8b2-4a05-8895-e13802690a7b")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct IO_STATUS_BLOCK
-		{
-			/// <summary>
-			/// This is the completion status, either STATUS_SUCCESS if the requested operation was completed successfully or an
-			/// informational, warning, or error STATUS_XXX value. For more information, see Using NTSTATUS values.
-			/// </summary>
-			public uint Status;
-
-			/// <summary>
-			/// This is set to a request-dependent value. For example, on successful completion of a transfer request, this is set to the
-			/// number of bytes transferred. If a transfer request is completed with another STATUS_XXX, this member is set to zero.
-			/// </summary>
-			public IntPtr Information;
-		}
-
-		/// <summary>
-		/// <para>The <c>KEY_BASIC_INFORMATION</c> structure defines a subset of the full information that is available for a registry key.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The ZwEnumerateKey and ZwQueryKey routines use the <c>KEY_BASIC_INFORMATION</c> structure to contain the basic information for a
-		/// registry key. When the KeyInformationClass parameter of either routine is <c>KeyBasicInformation</c>, the KeyInformation buffer
-		/// is treated as a <c>KEY_BASIC_INFORMATION</c> structure. For more information about the <c>KeyBasicInformation</c> enumeration
-		/// value, see KEY_INFORMATION_CLASS.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_key_basic_information typedef struct
-		// _KEY_BASIC_INFORMATION { LARGE_INTEGER LastWriteTime; ULONG TitleIndex; ULONG NameLength; WCHAR Name[1]; } KEY_BASIC_INFORMATION, *PKEY_BASIC_INFORMATION;
-		[PInvokeData("wdm.h", MSDNShortId = "789c60b6-a5a4-4570-bb0c-acfe1166a302")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct KEY_BASIC_INFORMATION
-		{
-			/// <summary>
-			/// <para>
-			/// The last time this key or any of its values changed. This time value is expressed in absolute system time format. Absolute
-			/// system time is the number of 100-nanosecond intervals since the start of the year 1601 in the Gregorian calendar.
-			/// </para>
-			/// </summary>
-			public long LastWriteTime;
-
-			/// <summary>
-			/// <para>Device and intermediate drivers should ignore this member.</para>
-			/// </summary>
-			public uint TitleIndex;
-
-			/// <summary>
-			/// <para>The size, in bytes, of the key name string in the <c>Name</c> array.</para>
-			/// </summary>
-			public uint NameLength;
-
-			/// <summary>
-			/// <para>
-			/// An array of wide characters that contains the name of the registry key. This character string is null-terminated. Only the
-			/// first element in this array is included in the <c>KEY_BASIC_INFORMATION</c> structure definition. The storage for the
-			/// remaining elements in the array immediately follows this element.
-			/// </para>
-			/// </summary>
-			public StrPtrUni Name;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>KEY_FULL_INFORMATION</c> structure defines the information available for a registry key, including information about its
-		/// subkeys and the maximum length for their names and value entries. This information can be used to size buffers to get the names
-		/// of subkeys and their value entries.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The ZwEnumerateKey and ZwQueryKey routines use the <c>KEY_FULL_INFORMATION</c> structure to contain the full information for a
-		/// registry key. When the KeyInformationClass parameter of either routine is <c>KeyFullInformation</c>, the KeyInformation buffer
-		/// is treated as a <c>KEY_FULL_INFORMATION</c> structure. For more information about the <c>KeyFullInformation</c> enumeration
-		/// value, see KEY_INFORMATION_CLASS.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_key_full_information typedef struct
-		// _KEY_FULL_INFORMATION { LARGE_INTEGER LastWriteTime; ULONG TitleIndex; ULONG ClassOffset; ULONG ClassLength; ULONG SubKeys; ULONG
-		// MaxNameLen; ULONG MaxClassLen; ULONG Values; ULONG MaxValueNameLen; ULONG MaxValueDataLen; WCHAR Class[1]; }
-		// KEY_FULL_INFORMATION, *PKEY_FULL_INFORMATION;
-		[PInvokeData("wdm.h", MSDNShortId = "dd099435-e3e3-4d78-a829-0f12f2db46d9")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct KEY_FULL_INFORMATION
-		{
-			/// <summary>
-			/// <para>
-			/// The last time this key or any of its values changed. This time value is expressed in absolute system time format. Absolute
-			/// system time is the number of 100-nanosecond intervals since the start of the year 1601 in the Gregorian calendar.
-			/// </para>
-			/// </summary>
-			public long LastWriteTime;
-
-			/// <summary>
-			/// <para>Device and intermediate drivers should ignore this member.</para>
-			/// </summary>
-			public uint TitleIndex;
-
-			/// <summary>
-			/// <para>The byte offset from the start of this structure to the <c>Class</c> member.</para>
-			/// </summary>
-			public uint ClassOffset;
-
-			/// <summary>
-			/// <para>The size, in bytes, of the key class name string in the <c>Class</c> array.</para>
-			/// </summary>
-			public uint ClassLength;
-
-			/// <summary>
-			/// <para>The number of subkeys for this key.</para>
-			/// </summary>
-			public uint SubKeys;
-
-			/// <summary>
-			/// <para>The maximum size, in bytes, of any name for a subkey.</para>
-			/// </summary>
-			public uint MaxNameLen;
-
-			/// <summary>
-			/// <para>The maximum size, in bytes, of a class name.</para>
-			/// </summary>
-			public uint MaxClassLen;
-
-			/// <summary>
-			/// <para>The number of value entries for this key.</para>
-			/// </summary>
-			public uint Values;
-
-			/// <summary>
-			/// <para>The maximum size, in bytes, of a value entry name.</para>
-			/// </summary>
-			public uint MaxValueNameLen;
-
-			/// <summary>
-			/// <para>The maximum size, in bytes, of a value entry data field.</para>
-			/// </summary>
-			public uint MaxValueDataLen;
-
-			/// <summary>
-			/// <para>
-			/// An array of wide characters that contains the name of the class of the key. This character string is null-terminated. Only
-			/// the first element in this array is included in the <c>KEY_FULL_INFORMATION</c> structure definition. The storage for the
-			/// remaining elements in the array immediately follows this element.
-			/// </para>
-			/// </summary>
-			public StrPtrUni Class;
-		}
-
-		/// <summary>
-		/// <para>The <c>KEY_NODE_INFORMATION</c> structure defines the basic information available for a registry (sub)key.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The ZwEnumerateKey and ZwQueryKey routines use the <c>KEY_NODE_INFORMATION</c> structure to contain the registry key name and
-		/// key class name. When the KeyInformationClass parameter of either routine is <c>KeyNodeInformation</c>, the KeyInformation buffer
-		/// is treated as a <c>KEY_NODE_INFORMATION</c> structure. For more information about the <c>KeyNodeInformation</c> enumeration
-		/// value, see KEY_INFORMATION_CLASS.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_key_node_information typedef struct
-		// _KEY_NODE_INFORMATION { LARGE_INTEGER LastWriteTime; ULONG TitleIndex; ULONG ClassOffset; ULONG ClassLength; ULONG NameLength;
-		// WCHAR Name[1]; } KEY_NODE_INFORMATION, *PKEY_NODE_INFORMATION;
-		[PInvokeData("wdm.h", MSDNShortId = "2eed1a3d-fc40-4416-ad61-d82bf4fb69a1")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct KEY_NODE_INFORMATION
-		{
-			/// <summary>
-			/// <para>
-			/// The last time this key or any of its values changed. This time value is expressed in absolute system time format. Absolute
-			/// system time is the number of 100-nanosecond intervals since the start of the year 1601 in the Gregorian calendar.
-			/// </para>
-			/// </summary>
-			public long LastWriteTime;
-
-			/// <summary>
-			/// <para>Device and intermediate drivers should ignore this member.</para>
-			/// </summary>
-			public uint TitleIndex;
-
-			/// <summary>
-			/// <para>
-			/// The byte offset from the start of this structure to the class name string, which is located in the <c>Name</c> array
-			/// immediately following the key name string. Like the key name string, the class name string is not null-terminated.
-			/// </para>
-			/// </summary>
-			public uint ClassOffset;
-
-			/// <summary>
-			/// <para>The size, in bytes, in the class name string.</para>
-			/// </summary>
-			public uint ClassLength;
-
-			/// <summary>
-			/// <para>The size, in bytes, of the key name string contained in the <c>Name</c> array.</para>
-			/// </summary>
-			public uint NameLength;
-
-			/// <summary>
-			/// <para>
-			/// An array of wide characters that contains the name of the registry key. This character string is null-terminated. Only the
-			/// first element in this array is included in the <c>KEY_NODE_INFORMATION</c> structure definition. The storage for the
-			/// remaining elements in the array immediately follows this element.
-			/// </para>
-			/// </summary>
-			public StrPtrUni Name;
-		}
+		public StrPtrUni Name;
+	}
 /*
 ACCESS_STATE structure
 ACL structure
@@ -4023,5 +4023,4 @@ ZwUnloadDriver function
 ZwUnmapViewOfSection function
 ZwWriteFile function
 */
-	}
 }

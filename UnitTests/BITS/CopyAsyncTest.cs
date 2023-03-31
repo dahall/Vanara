@@ -1,24 +1,23 @@
 ﻿using System.IO;
 using System.Threading;
 
-namespace Vanara.PInvoke.Tests
+namespace Vanara.PInvoke.Tests;
+
+internal partial class BackgroundCopyTests
 {
-	internal partial class BackgroundCopyTests
+	[Test]
+	public void CopyAsyncTest()
 	{
-		[Test]
-		public void CopyAsyncTest()
-		{
-			using var tempRoot = new TemporaryDirectory();
+		using var tempRoot = new TemporaryDirectory();
 
-			var srcFile = tempRoot.CreateFile().FullName;
+		var srcFile = tempRoot.CreateFile().FullName;
 
-			var dstFile = tempRoot.RandomTxtFileFullPath;
+		var dstFile = tempRoot.RandomTxtFileFullPath;
 
-			using var cts = new CancellationTokenSource();
+		using var cts = new CancellationTokenSource();
 
-			Assert.That(() => BackgroundCopyManager.CopyAsync(srcFile, dstFile, cts.Token, null), Throws.Nothing);
+		Assert.That(() => BackgroundCopyManager.CopyAsync(srcFile, dstFile, cts.Token, null), Throws.Nothing);
 
-			Assert.That(File.Exists(dstFile), Is.True);
-		}
+		Assert.That(File.Exists(dstFile), Is.True);
 	}
 }

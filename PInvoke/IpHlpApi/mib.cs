@@ -4,1201 +4,1200 @@ using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ws2_32;
 
-namespace Vanara.PInvoke
+namespace Vanara.PInvoke;
+
+public static partial class IpHlpApi
 {
-	public static partial class IpHlpApi
+	/// <summary>Set the value of MIB_IPSTATS.dwDefaultTTL to this value to keep the current value when calling SetIpStatistics.</summary>
+	public const uint MIB_USE_CURRENT_TTL = uint.MaxValue;
+
+	/// <summary>The address type or state for <see cref="MIB_IPADDRROW"/>.</summary>
+	[PInvokeData("ipmib.h", MSDNShortId = "ed1777bd-4c02-43e0-9bbb-6bb02702e1a4")]
+	[Flags]
+	public enum MIB_IPADDRTYPE : ushort
 	{
-		/// <summary>Set the value of MIB_IPSTATS.dwDefaultTTL to this value to keep the current value when calling SetIpStatistics.</summary>
-		public const uint MIB_USE_CURRENT_TTL = uint.MaxValue;
+		/// <summary>Primary IP address.</summary>
+		MIB_IPADDR_PRIMARY = 0x0001,
 
-		/// <summary>The address type or state for <see cref="MIB_IPADDRROW"/>.</summary>
-		[PInvokeData("ipmib.h", MSDNShortId = "ed1777bd-4c02-43e0-9bbb-6bb02702e1a4")]
-		[Flags]
-		public enum MIB_IPADDRTYPE : ushort
-		{
-			/// <summary>Primary IP address.</summary>
-			MIB_IPADDR_PRIMARY = 0x0001,
+		/// <summary>Dynamic IP address.</summary>
+		MIB_IPADDR_DYNAMIC = 0x0004,
 
-			/// <summary>Dynamic IP address.</summary>
-			MIB_IPADDR_DYNAMIC = 0x0004,
+		/// <summary>Address is on disconnected interface</summary>
+		MIB_IPADDR_DISCONNECTED = 0x0008,
 
-			/// <summary>Address is on disconnected interface</summary>
-			MIB_IPADDR_DISCONNECTED = 0x0008,
+		/// <summary>Address is being deleted</summary>
+		MIB_IPADDR_DELETED = 0x0040,
 
-			/// <summary>Address is being deleted</summary>
-			MIB_IPADDR_DELETED = 0x0040,
+		/// <summary>Transient address</summary>
+		MIB_IPADDR_TRANSIENT = 0x0080,
 
-			/// <summary>Transient address</summary>
-			MIB_IPADDR_TRANSIENT = 0x0080,
+		/// <summary>Address is eligible for DNS.</summary>
+		MIB_IPADDR_DNS_ELIGIBLE = 0X0100,
+	}
 
-			/// <summary>Address is eligible for DNS.</summary>
-			MIB_IPADDR_DNS_ELIGIBLE = 0X0100,
-		}
+	/// <summary>The MIB_IPFORWARD_PROTO enumeration indicates which protocols have updated routes.</summary>
+	[PInvokeData("IpHlpApi.h")]
+	public enum MIB_IPFORWARD_PROTO
+	{
+		/// <summary>A route added by a protocol not specified in [RFC1354].</summary>
+		MIB_IPPROTO_OTHER = 1,
 
-		/// <summary>The MIB_IPFORWARD_PROTO enumeration indicates which protocols have updated routes.</summary>
-		[PInvokeData("IpHlpApi.h")]
-		public enum MIB_IPFORWARD_PROTO
-		{
-			/// <summary>A route added by a protocol not specified in [RFC1354].</summary>
-			MIB_IPPROTO_OTHER = 1,
-
-			/// <summary>A route added locally on an interface.</summary>
-			MIB_IPPROTO_LOCAL = 2,
-
-			/// <summary>
-			/// A static route. This value is used to identify route information for IP routing set through network management such as DHCP,
-			/// the Simple Network Management Protocol (SNMP), or by any other API to create routes.
-			/// </summary>
-			MIB_IPPROTO_NETMGMT = 3,
-
-			/// <summary>A route added as a result of an Internet Control Message Protocol (ICMP) redirect.</summary>
-			MIB_IPPROTO_ICMP = 4,
-
-			/// <summary>A route added by the Exterior Gateway Protocol (EGP), a dynamic routing protocol.</summary>
-			MIB_IPPROTO_EGP = 5,
-
-			/// <summary>A route added by the Gateway-to-Gateway Protocol (GGP), a dynamic routing protocol.</summary>
-			MIB_IPPROTO_GGP = 6,
-
-			/// <summary>
-			/// A route added by the Hellospeak protocol, a dynamic routing protocol. This protocol is not supported and MUST NOT be used.
-			/// </summary>
-			MIB_IPPROTO_HELLO = 7,
-
-			/// <summary>
-			/// A route added by the Berkeley Routing Information Protocol (RIP) or RIP-II, a dynamic routing protocol. See [RFC1058] and [RFC1723].
-			/// </summary>
-			MIB_IPPROTO_RIP = 8,
-
-			/// <summary>
-			/// A route added by the Intermediate System-to-Intermediate System (IS-IS) protocol, a dynamic routing protocol. The IS-IS
-			/// protocol was developed for use in the Open Systems Interconnection (OSI) protocol suite.
-			/// </summary>
-			MIB_IPPROTO_IS_IS = 9,
-
-			/// <summary>
-			/// A route added by the End System-to-Intermediate System (ES-IS) protocol, a dynamic routing protocol. The ES-IS protocol was
-			/// developed for use in the Open Systems Interconnection (OSI) protocol suite.
-			/// </summary>
-			MIB_IPPROTO_ES_IS = 10,
-
-			/// <summary>A route added by the Cisco Interior Gateway Routing Protocol (IGRP), a dynamic routing protocol.</summary>
-			MIB_IPPROTO_CISCO = 11,
-
-			/// <summary>
-			/// A route added by the Bolt, Beranek, and Newman (BBN) Interior Gateway Protocol (IGP) that used the Shortest Path First (SPF)
-			/// algorithm, a dynamic routing protocol.
-			/// </summary>
-			MIB_IPPROTO_BBN = 12,
-
-			/// <summary>A route added by the Open Shortest Path First (OSPF) protocol, a dynamic routing protocol.</summary>
-			MIB_IPPROTO_OSPF = 13,
-
-			/// <summary>A route added by the Border Gateway Protocol (BGP), a dynamic routing protocol.</summary>
-			MIB_IPPROTO_BGP = 14,
-
-			/// <summary>The mib ipproto idpr</summary>
-			MIB_IPPROTO_IDPR = 15,
-
-			/// <summary>The mib ipproto eigrp</summary>
-			MIB_IPPROTO_EIGRP = 16,
-
-			/// <summary>The mib ipproto DVMRP</summary>
-			MIB_IPPROTO_DVMRP = 17,
-
-			/// <summary>The mib ipproto RPL</summary>
-			MIB_IPPROTO_RPL = 18,
-
-			/// <summary>The mib ipproto DHCP</summary>
-			MIB_IPPROTO_DHCP = 19,
-
-			/// <summary>A route that was originally generated by a routing protocol, but now is static.</summary>
-			MIB_IPPROTO_NT_AUTOSTATIC = 10002,
-
-			/// <summary>A route added as a static route from the routing user interface (5) or a routing command.</summary>
-			MIB_IPPROTO_NT_STATIC = 10006,
-
-			/// <summary>
-			/// A route added as a static route from the routing user interface or a routing command. These routes do not cause demand-dial.
-			/// </summary>
-			MIB_IPPROTO_NT_STATIC_NON_DOD = 10007,
-		}
-
-		/// <summary>Specifies the type of the IP route.</summary>
-		[PInvokeData("IpHlpApi.h")]
-		public enum MIB_IPFORWARD_TYPE
-		{
-			/// <summary>Other than the type specified in [RFC1354].</summary>
-			MIB_IPROUTE_TYPE_OTHER = 1,
-
-			/// <summary>An invalid route is deleted.</summary>
-			MIB_IPROUTE_TYPE_INVALID = 2,
-
-			/// <summary>A local route where the next hop is the final destination (a local interface).</summary>
-			MIB_IPROUTE_TYPE_DIRECT = 3,
-
-			/// <summary>The remote route where the next hop is not the final destination (a remote destination).</summary>
-			MIB_IPROUTE_TYPE_INDIRECT = 4,
-		}
-
-		/// <summary>The type of ARP entry in <see cref="MIB_IPNETROW"/>.</summary>
-		[PInvokeData("ipmib.h")]
-		public enum MIB_IPNET_TYPE
-		{
-			/// <summary>Other</summary>
-			MIB_IPNET_TYPE_OTHER = 1,
-
-			/// <summary>An invalid ARP type. This can indicate an unreachable or incomplete ARP entry.</summary>
-			MIB_IPNET_TYPE_INVALID = 2,
-
-			/// <summary>A dynamic ARP type.</summary>
-			MIB_IPNET_TYPE_DYNAMIC = 3,
-
-			/// <summary>A static ARP type.</summary>
-			MIB_IPNET_TYPE_STATIC = 4,
-		}
-
-		/// <summary>Specifies whether IP forwarding is enabled or disabled for a protocol (IPv4 or IPv6).</summary>
-		[PInvokeData("ipmib.h", MSDNShortId = "920e71b6-247c-4442-9f66-704a6c878feb")]
-		public enum MIB_IPSTATS_FORWARDING
-		{
-			/// <summary>IP forwarding is enabled.</summary>
-			MIB_IP_FORWARDING = 1,
-
-			/// <summary>IP forwarding is not enabled.</summary>
-			MIB_IP_NOT_FORWARDING = 2,
-
-			/// <summary>
-			/// Use the current IP forwarding setting. This value is only applicable when setting the forwarding and time-to-live (TTL)
-			/// options using the SetIpStatistics and SetIpStatisticsEx functions.
-			/// </summary>
-			MIB_USE_CURRENT_FORWARDING = -1
-		}
-
-		/// <summary>The MIB_TCP_STATE enumeration enumerates different possible TCP states.</summary>
-		[PInvokeData("IpHlpApi.h", MSDNShortId = "cc669305")]
-		public enum MIB_TCP_STATE
-		{
-			/// <summary>The TCP connection is closed.</summary>
-			MIB_TCP_STATE_CLOSED = 1,
-
-			/// <summary>The TCP connection is in the listen state.</summary>
-			MIB_TCP_STATE_LISTEN = 2,
-
-			/// <summary>A SYN packet has been sent.</summary>
-			MIB_TCP_STATE_SYN_SENT = 3,
-
-			/// <summary>A SYN packet has been received.</summary>
-			MIB_TCP_STATE_SYN_RCVD = 4,
-
-			/// <summary>The TCP connection has been established.</summary>
-			MIB_TCP_STATE_ESTAB = 5,
-
-			/// <summary>The TCP connection is waiting for a FIN packet.</summary>
-			MIB_TCP_STATE_FIN_WAIT1 = 6,
-
-			/// <summary>The TCP connection is waiting for a FIN packet.</summary>
-			MIB_TCP_STATE_FIN_WAIT2 = 7,
-
-			/// <summary>The TCP connection is in the close wait state.</summary>
-			MIB_TCP_STATE_CLOSE_WAIT = 8,
-
-			/// <summary>The TCP connection is closing.</summary>
-			MIB_TCP_STATE_CLOSING = 9,
-
-			/// <summary>The TCP connection is in the last ACK state.</summary>
-			MIB_TCP_STATE_LAST_ACK = 10,
-
-			/// <summary>The TCP connection is in the time wait state.</summary>
-			MIB_TCP_STATE_TIME_WAIT = 11,
-
-			/// <summary>The TCP connection is in the delete TCB state.</summary>
-			MIB_TCP_STATE_DELETE_TCB = 12,
-		}
+		/// <summary>A route added locally on an interface.</summary>
+		MIB_IPPROTO_LOCAL = 2,
 
 		/// <summary>
-		/// The <c>MIB_ICMP</c> structure contains the Internet Control Message Protocol (ICMP) statistics for a particular computer.
+		/// A static route. This value is used to identify route information for IP routing set through network management such as DHCP,
+		/// the Simple Network Management Protocol (SNMP), or by any other API to create routes.
 		/// </summary>
-		/// <remarks>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIB_ICMP</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note that
-		/// the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file.
-		/// The Ipmib.h and Iprtrmib.h header files should never be used directly.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_icmp typedef struct _MIB_ICMP { MIBICMPINFO stats; }
-		// MIB_ICMP, *PMIB_ICMP;
-		[PInvokeData("ipmib.h", MSDNShortId = "45ccaacb-f2cd-4be5-94ef-48d4403d5f60")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct MIB_ICMP
-		{
-			/// <summary>A MIBICMPINFO structure that contains the ICMP statistics for the computer.</summary>
-			public MIBICMPINFO stats;
-		}
+		MIB_IPPROTO_NETMGMT = 3,
+
+		/// <summary>A route added as a result of an Internet Control Message Protocol (ICMP) redirect.</summary>
+		MIB_IPPROTO_ICMP = 4,
+
+		/// <summary>A route added by the Exterior Gateway Protocol (EGP), a dynamic routing protocol.</summary>
+		MIB_IPPROTO_EGP = 5,
+
+		/// <summary>A route added by the Gateway-to-Gateway Protocol (GGP), a dynamic routing protocol.</summary>
+		MIB_IPPROTO_GGP = 6,
 
 		/// <summary>
-		/// <para>
-		/// The <c>MIB_ICMP_EX</c> structure contains the extended Internet Control Message Protocol (ICMP) statistics for a particular computer.
-		/// </para>
+		/// A route added by the Hellospeak protocol, a dynamic routing protocol. This protocol is not supported and MUST NOT be used.
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Two MIBICMPSTATS_EX structures are required to hold all the extended ICMP statistics for a given computer. One
-		/// <c>MIBICMPSTATS_EX</c> structure contains the extended statistics for incoming ICMP messages. The other contains the extended
-		/// statistics for outgoing ICMP messages. For this reason, the <c>MIB_ICMP_EX</c> structure contains two <c>MIBICMPSTATS_EX</c> structures.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIB_ICMP_EX</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
-		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
-		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_icmp_ex_xpsp1 typedef struct _MIB_ICMP_EX_XPSP1 {
-		// MIBICMPSTATS_EX icmpInStats; MIBICMPSTATS_EX icmpOutStats; } MIB_ICMP_EX_XPSP1, *PMIB_ICMP_EX_XPSP1;
-		[PInvokeData("ipmib.h", MSDNShortId = "3d2c7edc-c9e6-4db6-b7c8-07f7f01cbe0d")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct MIB_ICMP_EX
-		{
-			/// <summary>Specifies an MIBICMPSTATS_EX structure that contains the extended statistics for incoming ICMP messages.</summary>
-			public MIBICMPSTATS_EX icmpInStats;
-
-			/// <summary>Specifies an MIBICMPSTATS_EX structure that contains the extended statistics for outgoing ICMP messages.</summary>
-			public MIBICMPSTATS_EX icmpOutStats;
-		}
+		MIB_IPPROTO_HELLO = 7,
 
 		/// <summary>
-		/// <para>The <c>MIB_IPADDRROW</c> specifies information for a particular IPv4 address in the MIB_IPADDRTABLE structure.</para>
+		/// A route added by the Berkeley Routing Information Protocol (RIP) or RIP-II, a dynamic routing protocol. See [RFC1058] and [RFC1723].
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// On Windows XP and later, the <c>dwIndex</c> member of the <c>MIB_IPADDRROW</c> structure has a data type of <c>IF_INDEX</c>. The
-		/// <c>wType</c> member is only available on Windows XP and later. On Windows 2000 and earlier, this member is defined as <c>Unused2</c>.
-		/// </para>
-		/// <para>
-		/// The GetIpAddrTable function retrieves the interface–to–IPv4 address mapping table on a local computer and returns this
-		/// information in an MIB_IPADDRTABLE structure. The <c>table</c> member in the <c>MIB_IPADDRTABLE</c> structure contains an array of
-		/// <c>MIB_IPADDRROW</c> entries.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIB_IPADDRROW</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
-		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
-		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// To view an example that retrieves the MIB_IPADDRTABLE structure and then prints out the <c>MIB_IPADDRROW</c> structures in this
-		/// table, see the GetIpAddrTable function.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipaddrrow_xp typedef struct
-		// _MIB_IPADDRROW_XP { DWORD dwAddr; IF_INDEX dwIndex; DWORD dwMask; DWORD dwBCastAddr; DWORD dwReasmSize; unsigned short unused1;
-		// unsigned short wType; } MIB_IPADDRROW_XP, *PMIB_IPADDRROW_XP;
-		[PInvokeData("ipmib.h", MSDNShortId = "ed1777bd-4c02-43e0-9bbb-6bb02702e1a4")]
-		[StructLayout(LayoutKind.Sequential, Pack = 2)]
-		public struct MIB_IPADDRROW
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The IPv4 address in network byte order.</para>
-			/// </summary>
-			public IN_ADDR dwAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The index of the interface associated with this IPv4 address.</para>
-			/// </summary>
-			public uint dwIndex;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The subnet mask for the IPv4 address in network byte order.</para>
-			/// </summary>
-			public IN_ADDR dwMask;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The broadcast address in network byte order. A broadcast address is typically the IPv4 address with the host portion set to
-			/// either all zeros or all ones.
-			/// </para>
-			/// <para>The proper value for this member is not returned by the GetIpAddrTable function.</para>
-			/// </summary>
-			public IN_ADDR dwBCastAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The maximum re-assembly size for received datagrams.</para>
-			/// </summary>
-			public uint dwReasmSize;
-
-			/// <summary>
-			/// <para>Type: <c>unsigned short</c></para>
-			/// <para>This member is reserved.</para>
-			/// </summary>
-			public ushort unused1;
-
-			/// <summary>
-			/// <para>Type: <c>unsigned short</c></para>
-			/// <para>The address type or state. This member can be a combination of the following values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MIB_IPADDR_PRIMARY 0x0001</term>
-			/// <term>Primary IP address</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_IPADDR_DYNAMIC 0x0004</term>
-			/// <term>Dynamic IP address</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_IPADDR_DISCONNECTED 0x0008</term>
-			/// <term>Address is on disconnected interface</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_IPADDR_DELETED 0x0040</term>
-			/// <term>Address is being deleted</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_IPADDR_TRANSIENT 0x0080</term>
-			/// <term>Transient address</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public MIB_IPADDRTYPE wType;
-		}
+		MIB_IPPROTO_RIP = 8,
 
 		/// <summary>
-		/// <para>The <c>MIB_IPFORWARDROW</c> structure contains information that describes an IPv4 network route.</para>
+		/// A route added by the Intermediate System-to-Intermediate System (IS-IS) protocol, a dynamic routing protocol. The IS-IS
+		/// protocol was developed for use in the Open Systems Interconnection (OSI) protocol suite.
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetIpForwardTable function enumerates the IPv4 route entries on a local system and returns this information in a
-		/// MIB_IPFORWARDTABLE structure that contains an array of <c>MIB_IPFORWARDROW</c> structure entries.
-		/// </para>
-		/// <para>
-		/// The <c>dwForwardDest</c>, <c>dwForwardMask</c>, and <c>dwForwardNextHop</c> members of the <c>MIB_IPFORWARDROW</c> structure
-		/// represent IPv4 addresses in network byte order.
-		/// </para>
-		/// <para>
-		/// The <c>dwForwardProto</c> member of the <c>MIB_IPFORWARDROW</c> structure specifies the protocol or routing mechanism that
-		/// generated the route. Routing protocol identifiers are used to identify route information for the specified routing protocol. For
-		/// example, <c>MIB_IPPROTO_NETMGMT</c> is used to identify route information for IP routing set through network management such as
-		/// the Dynamic Host Configuration Protocol (DCHP), the Simple Network Management Protocol (SNMP), or by calls to the
-		/// CreateIpForwardEntry, DeleteIpForwardEntry , or SetIpForwardEntry functions. See Protocol Identifiers for a list of possible
-		/// protocols and routing mechanisms.
-		/// </para>
-		/// <para>
-		/// An IPv4 address of 0.0.0.0 in the <c>dwForwardDest</c> member of the <c>MIB_IPFORWARDROW</c> structure is considered a default
-		/// route. The MIB_IPFORWARDTABLE may contain multiple <c>MIB_IPFORWARDROW</c> entries with the <c>dwForwardDest</c> member set to
-		/// 0.0.0.0 when there are multiple network adapters installed.
-		/// </para>
-		/// <para>When <c>dwForwardAge</c> is set to <c>INFINITE</c>, the route will not be removed based on a timeout</para>
-		/// <para>
-		/// value. Any other value for <c>dwForwardAge</c> specifies the number of seconds since the route was added or modified in the
-		/// network routing table.
-		/// </para>
-		/// <para>
-		/// On Windows Server 2003 or Windows 2000 Server when the Routing and Remote Access Service (RRAS) is running, the
-		/// <c>MIB_IPFORWARDROW</c> entries returned have the <c>dwForwardType</c> and <c>dwForwardAge</c> members set to zero.
-		/// </para>
-		/// <para>
-		/// On Windows Vista and Windows Server 2008, the route metric specified in the <c>dwForwardMetric1</c> member of the
-		/// <c>MIB_IPFORWARDROW</c> structure represents a combination of the route metric added to the interface metric specified in the
-		/// <c>Metric</c> member of the MIB_IPINTERFACE_ROW structure of the associated interface. So the <c>dwForwardMetric1</c> member of
-		/// the <c>MIB_IPFORWARDROW</c> structure should be equal to or greater than <c>Metric</c> member of the associated
-		/// <c>MIB_IPINTERFACE_ROW</c> structure. If an application would like to set the route metric to 0, then the <c>dwForwardMetric1</c>
-		/// member of the <c>MIB_IPFORWARDROW</c> structure should be set equal to the value of the interface metric specified in the
-		/// <c>Metric</c> member of the associated <c>MIB_IPINTERFACE_ROW</c> structure. An application can retrieve the interface metric by
-		/// calling the GetIpInterfaceEntry function.
-		/// </para>
-		/// <para>
-		/// A number of members of the <c>MIB_IPFORWARDROW</c> structure are not currently used by IPv4 routing. These members include
-		/// <c>dwForwardPolicy</c>, <c>dwForwardNextHopAS</c>, <c>dwForwardMetric2</c>, <c>dwForwardMetric3</c>, <c>dwForwardMetric4</c>, and <c>dwForwardMetric5</c>.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Ipmib.h header file, not in the Iprtrmib.h header file. Note that the Ipmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Ipmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// To view an example that retrieves the MIB_IPFORWARDTABLE structure and then prints out the <c>MIB_IPFORWARDROW</c> structure
-		/// entries in this table, see the GetIpForwardTable function.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipforwardrow typedef struct
-		// _MIB_IPFORWARDROW { DWORD dwForwardDest; DWORD dwForwardMask; DWORD dwForwardPolicy; DWORD dwForwardNextHop; IF_INDEX
-		// dwForwardIfIndex; union { DWORD dwForwardType; MIB_IPFORWARD_TYPE ForwardType; }; union { DWORD dwForwardProto;
-		// MIB_IPFORWARD_PROTO ForwardProto; }; DWORD dwForwardAge; DWORD dwForwardNextHopAS; DWORD dwForwardMetric1; DWORD dwForwardMetric2;
-		// DWORD dwForwardMetric3; DWORD dwForwardMetric4; DWORD dwForwardMetric5; } MIB_IPFORWARDROW, *PMIB_IPFORWARDROW;
-		[PInvokeData("ipmib.h", MSDNShortId = "ff451481-3e9d-4add-94e2-846d67002a38")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_IPFORWARDROW
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The destination IPv4 address of the route. An entry with a IPv4 address of 0.0.0.0 is considered a default route. This member
-			/// cannot be set to a multicast (class D) IPv4 address.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwForwardDest;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The IPv4 subnet mask to use with the destination IPv4 address before being compared to the value in the <c>dwForwardDest</c> member.
-			/// </para>
-			/// <para>
-			/// The <c>dwForwardMask</c> value should be applied to the destination IPv4 address (logical and operation) before a comparison
-			/// with the value in the <c>dwForwardDest</c> member.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwForwardMask;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The set of conditions that would cause the selection of a multi-path route (the set of next hops for a given destination).
-			/// This member is typically in IP TOS format. This encoding of this member is described in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt.
-			/// </para>
-			/// </summary>
-			public uint dwForwardPolicy;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// For remote routes, the IPv4 address of the next system en route. Otherwise, this member should be an IPv4 address of 0.0.0.0.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwForwardNextHop;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The index of the local interface through which the next hop of this route should be reached.</para>
-			/// </summary>
-			public uint dwForwardIfIndex;
-
-			/// <summary/>
-			public MIB_IPFORWARD_TYPE dwForwardType;
-
-			/// <summary/>
-			public MIB_IPFORWARD_PROTO dwForwardProto;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of seconds since the route was added or modified in the network routing table.</para>
-			/// </summary>
-			public uint dwForwardAge;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The autonomous system number of the next hop. When this member is unknown or not relevant to the protocol or routing
-			/// mechanism specified in <c>dwForwardProto</c>, this value should be set to zero. This value is documented in RFC 1354. For
-			/// more information, see http://www.ietf.org/rfc/rfc1354.txt
-			/// </para>
-			/// </summary>
-			public uint dwForwardNextHopAS;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The primary routing metric value for this route. The semantics of this metric are determined by the routing protocol
-			/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
-			/// documented in in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
-			/// </para>
-			/// </summary>
-			public uint dwForwardMetric1;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
-			/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
-			/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
-			/// </para>
-			/// </summary>
-			public uint dwForwardMetric2;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
-			/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
-			/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
-			/// </para>
-			/// </summary>
-			public uint dwForwardMetric3;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
-			/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
-			/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
-			/// </para>
-			/// </summary>
-			public uint dwForwardMetric4;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
-			/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
-			/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
-			/// </para>
-			/// </summary>
-			public uint dwForwardMetric5;
-		}
+		MIB_IPPROTO_IS_IS = 9,
 
 		/// <summary>
-		/// <para>
-		/// The <c>MIB_IPNETROW</c> structure contains information for an Address Resolution Protocol (ARP) table entry for an IPv4 address.
-		/// </para>
+		/// A route added by the End System-to-Intermediate System (ES-IS) protocol, a dynamic routing protocol. The ES-IS protocol was
+		/// developed for use in the Open Systems Interconnection (OSI) protocol suite.
 		/// </summary>
-		/// <remarks>
+		MIB_IPPROTO_ES_IS = 10,
+
+		/// <summary>A route added by the Cisco Interior Gateway Routing Protocol (IGRP), a dynamic routing protocol.</summary>
+		MIB_IPPROTO_CISCO = 11,
+
+		/// <summary>
+		/// A route added by the Bolt, Beranek, and Newman (BBN) Interior Gateway Protocol (IGP) that used the Shortest Path First (SPF)
+		/// algorithm, a dynamic routing protocol.
+		/// </summary>
+		MIB_IPPROTO_BBN = 12,
+
+		/// <summary>A route added by the Open Shortest Path First (OSPF) protocol, a dynamic routing protocol.</summary>
+		MIB_IPPROTO_OSPF = 13,
+
+		/// <summary>A route added by the Border Gateway Protocol (BGP), a dynamic routing protocol.</summary>
+		MIB_IPPROTO_BGP = 14,
+
+		/// <summary>The mib ipproto idpr</summary>
+		MIB_IPPROTO_IDPR = 15,
+
+		/// <summary>The mib ipproto eigrp</summary>
+		MIB_IPPROTO_EIGRP = 16,
+
+		/// <summary>The mib ipproto DVMRP</summary>
+		MIB_IPPROTO_DVMRP = 17,
+
+		/// <summary>The mib ipproto RPL</summary>
+		MIB_IPPROTO_RPL = 18,
+
+		/// <summary>The mib ipproto DHCP</summary>
+		MIB_IPPROTO_DHCP = 19,
+
+		/// <summary>A route that was originally generated by a routing protocol, but now is static.</summary>
+		MIB_IPPROTO_NT_AUTOSTATIC = 10002,
+
+		/// <summary>A route added as a static route from the routing user interface (5) or a routing command.</summary>
+		MIB_IPPROTO_NT_STATIC = 10006,
+
+		/// <summary>
+		/// A route added as a static route from the routing user interface or a routing command. These routes do not cause demand-dial.
+		/// </summary>
+		MIB_IPPROTO_NT_STATIC_NON_DOD = 10007,
+	}
+
+	/// <summary>Specifies the type of the IP route.</summary>
+	[PInvokeData("IpHlpApi.h")]
+	public enum MIB_IPFORWARD_TYPE
+	{
+		/// <summary>Other than the type specified in [RFC1354].</summary>
+		MIB_IPROUTE_TYPE_OTHER = 1,
+
+		/// <summary>An invalid route is deleted.</summary>
+		MIB_IPROUTE_TYPE_INVALID = 2,
+
+		/// <summary>A local route where the next hop is the final destination (a local interface).</summary>
+		MIB_IPROUTE_TYPE_DIRECT = 3,
+
+		/// <summary>The remote route where the next hop is not the final destination (a remote destination).</summary>
+		MIB_IPROUTE_TYPE_INDIRECT = 4,
+	}
+
+	/// <summary>The type of ARP entry in <see cref="MIB_IPNETROW"/>.</summary>
+	[PInvokeData("ipmib.h")]
+	public enum MIB_IPNET_TYPE
+	{
+		/// <summary>Other</summary>
+		MIB_IPNET_TYPE_OTHER = 1,
+
+		/// <summary>An invalid ARP type. This can indicate an unreachable or incomplete ARP entry.</summary>
+		MIB_IPNET_TYPE_INVALID = 2,
+
+		/// <summary>A dynamic ARP type.</summary>
+		MIB_IPNET_TYPE_DYNAMIC = 3,
+
+		/// <summary>A static ARP type.</summary>
+		MIB_IPNET_TYPE_STATIC = 4,
+	}
+
+	/// <summary>Specifies whether IP forwarding is enabled or disabled for a protocol (IPv4 or IPv6).</summary>
+	[PInvokeData("ipmib.h", MSDNShortId = "920e71b6-247c-4442-9f66-704a6c878feb")]
+	public enum MIB_IPSTATS_FORWARDING
+	{
+		/// <summary>IP forwarding is enabled.</summary>
+		MIB_IP_FORWARDING = 1,
+
+		/// <summary>IP forwarding is not enabled.</summary>
+		MIB_IP_NOT_FORWARDING = 2,
+
+		/// <summary>
+		/// Use the current IP forwarding setting. This value is only applicable when setting the forwarding and time-to-live (TTL)
+		/// options using the SetIpStatistics and SetIpStatisticsEx functions.
+		/// </summary>
+		MIB_USE_CURRENT_FORWARDING = -1
+	}
+
+	/// <summary>The MIB_TCP_STATE enumeration enumerates different possible TCP states.</summary>
+	[PInvokeData("IpHlpApi.h", MSDNShortId = "cc669305")]
+	public enum MIB_TCP_STATE
+	{
+		/// <summary>The TCP connection is closed.</summary>
+		MIB_TCP_STATE_CLOSED = 1,
+
+		/// <summary>The TCP connection is in the listen state.</summary>
+		MIB_TCP_STATE_LISTEN = 2,
+
+		/// <summary>A SYN packet has been sent.</summary>
+		MIB_TCP_STATE_SYN_SENT = 3,
+
+		/// <summary>A SYN packet has been received.</summary>
+		MIB_TCP_STATE_SYN_RCVD = 4,
+
+		/// <summary>The TCP connection has been established.</summary>
+		MIB_TCP_STATE_ESTAB = 5,
+
+		/// <summary>The TCP connection is waiting for a FIN packet.</summary>
+		MIB_TCP_STATE_FIN_WAIT1 = 6,
+
+		/// <summary>The TCP connection is waiting for a FIN packet.</summary>
+		MIB_TCP_STATE_FIN_WAIT2 = 7,
+
+		/// <summary>The TCP connection is in the close wait state.</summary>
+		MIB_TCP_STATE_CLOSE_WAIT = 8,
+
+		/// <summary>The TCP connection is closing.</summary>
+		MIB_TCP_STATE_CLOSING = 9,
+
+		/// <summary>The TCP connection is in the last ACK state.</summary>
+		MIB_TCP_STATE_LAST_ACK = 10,
+
+		/// <summary>The TCP connection is in the time wait state.</summary>
+		MIB_TCP_STATE_TIME_WAIT = 11,
+
+		/// <summary>The TCP connection is in the delete TCB state.</summary>
+		MIB_TCP_STATE_DELETE_TCB = 12,
+	}
+
+	/// <summary>
+	/// The <c>MIB_ICMP</c> structure contains the Internet Control Message Protocol (ICMP) statistics for a particular computer.
+	/// </summary>
+	/// <remarks>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIB_ICMP</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note that
+	/// the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file.
+	/// The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_icmp typedef struct _MIB_ICMP { MIBICMPINFO stats; }
+	// MIB_ICMP, *PMIB_ICMP;
+	[PInvokeData("ipmib.h", MSDNShortId = "45ccaacb-f2cd-4be5-94ef-48d4403d5f60")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct MIB_ICMP
+	{
+		/// <summary>A MIBICMPINFO structure that contains the ICMP statistics for the computer.</summary>
+		public MIBICMPINFO stats;
+	}
+
+	/// <summary>
+	/// <para>
+	/// The <c>MIB_ICMP_EX</c> structure contains the extended Internet Control Message Protocol (ICMP) statistics for a particular computer.
+	/// </para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Two MIBICMPSTATS_EX structures are required to hold all the extended ICMP statistics for a given computer. One
+	/// <c>MIBICMPSTATS_EX</c> structure contains the extended statistics for incoming ICMP messages. The other contains the extended
+	/// statistics for outgoing ICMP messages. For this reason, the <c>MIB_ICMP_EX</c> structure contains two <c>MIBICMPSTATS_EX</c> structures.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIB_ICMP_EX</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+	/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+	/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_icmp_ex_xpsp1 typedef struct _MIB_ICMP_EX_XPSP1 {
+	// MIBICMPSTATS_EX icmpInStats; MIBICMPSTATS_EX icmpOutStats; } MIB_ICMP_EX_XPSP1, *PMIB_ICMP_EX_XPSP1;
+	[PInvokeData("ipmib.h", MSDNShortId = "3d2c7edc-c9e6-4db6-b7c8-07f7f01cbe0d")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct MIB_ICMP_EX
+	{
+		/// <summary>Specifies an MIBICMPSTATS_EX structure that contains the extended statistics for incoming ICMP messages.</summary>
+		public MIBICMPSTATS_EX icmpInStats;
+
+		/// <summary>Specifies an MIBICMPSTATS_EX structure that contains the extended statistics for outgoing ICMP messages.</summary>
+		public MIBICMPSTATS_EX icmpOutStats;
+	}
+
+	/// <summary>
+	/// <para>The <c>MIB_IPADDRROW</c> specifies information for a particular IPv4 address in the MIB_IPADDRTABLE structure.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// On Windows XP and later, the <c>dwIndex</c> member of the <c>MIB_IPADDRROW</c> structure has a data type of <c>IF_INDEX</c>. The
+	/// <c>wType</c> member is only available on Windows XP and later. On Windows 2000 and earlier, this member is defined as <c>Unused2</c>.
+	/// </para>
+	/// <para>
+	/// The GetIpAddrTable function retrieves the interface–to–IPv4 address mapping table on a local computer and returns this
+	/// information in an MIB_IPADDRTABLE structure. The <c>table</c> member in the <c>MIB_IPADDRTABLE</c> structure contains an array of
+	/// <c>MIB_IPADDRROW</c> entries.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIB_IPADDRROW</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+	/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+	/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>
+	/// To view an example that retrieves the MIB_IPADDRTABLE structure and then prints out the <c>MIB_IPADDRROW</c> structures in this
+	/// table, see the GetIpAddrTable function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipaddrrow_xp typedef struct
+	// _MIB_IPADDRROW_XP { DWORD dwAddr; IF_INDEX dwIndex; DWORD dwMask; DWORD dwBCastAddr; DWORD dwReasmSize; unsigned short unused1;
+	// unsigned short wType; } MIB_IPADDRROW_XP, *PMIB_IPADDRROW_XP;
+	[PInvokeData("ipmib.h", MSDNShortId = "ed1777bd-4c02-43e0-9bbb-6bb02702e1a4")]
+	[StructLayout(LayoutKind.Sequential, Pack = 2)]
+	public struct MIB_IPADDRROW
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The IPv4 address in network byte order.</para>
+		/// </summary>
+		public IN_ADDR dwAddr;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The index of the interface associated with this IPv4 address.</para>
+		/// </summary>
+		public uint dwIndex;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The subnet mask for the IPv4 address in network byte order.</para>
+		/// </summary>
+		public IN_ADDR dwMask;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
 		/// <para>
-		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the <c>MIB_IPNETROW</c>
-		/// structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note that the Ipmib.h header file is
-		/// automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file. The Ipmib.h and Iprtrmib.h
-		/// header files should never be used directly.
+		/// The broadcast address in network byte order. A broadcast address is typically the IPv4 address with the host portion set to
+		/// either all zeros or all ones.
 		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipnetrow_lh typedef struct
-		// _MIB_IPNETROW_LH { IF_INDEX dwIndex; DWORD dwPhysAddrLen; UCHAR bPhysAddr[MAXLEN_PHYSADDR]; DWORD dwAddr; union { DWORD dwType;
-		// MIB_IPNET_TYPE Type; }; } MIB_IPNETROW_LH, *PMIB_IPNETROW_LH;
-		[PInvokeData("ipmib.h", MSDNShortId = "aa9aa9f9-2334-4b08-896f-f4a77caa0f7f")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_IPNETROW
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The index of the adapter.</para>
-			/// </summary>
-			public uint dwIndex;
+		/// <para>The proper value for this member is not returned by the GetIpAddrTable function.</para>
+		/// </summary>
+		public IN_ADDR dwBCastAddr;
 
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The length, in bytes, of the physical address.</para>
-			/// </summary>
-			public uint dwPhysAddrLen;
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The maximum re-assembly size for received datagrams.</para>
+		/// </summary>
+		public uint dwReasmSize;
 
-			/// <summary>
-			/// <para>Type: <c>BYTE[MAXLEN_PHYSADDR]</c></para>
-			/// <para>The physical address.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXLEN_PHYSADDR)]
-			public byte[] bPhysAddr;
+		/// <summary>
+		/// <para>Type: <c>unsigned short</c></para>
+		/// <para>This member is reserved.</para>
+		/// </summary>
+		public ushort unused1;
 
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The IPv4 address.</para>
-			/// </summary>
-			public IN_ADDR dwAddr;
-
-			/// <summary>The type of ARP entry. This type can be one of the following values.</summary>
-			public MIB_IPNET_TYPE dwType;
-
-			/// <summary>Initializes a new instance of the <see cref="MIB_IPNETROW"/> struct.</summary>
-			/// <param name="ipV4">The IPv4 address.</param>
-			/// <param name="ifIdx">The index of the adapter.</param>
-			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-			/// <param name="type">The type of ARP entry.</param>
-			public MIB_IPNETROW(IN_ADDR ipV4, uint ifIdx, byte[] macAddr = null, MIB_IPNET_TYPE? type = null)
-			{
-				dwIndex = ifIdx;
-				dwAddr = ipV4;
-				dwPhysAddrLen = macAddr == null ? 0U : (uint)macAddr.Length;
-				bPhysAddr = new byte[8];
-				if (macAddr != null) Array.Copy(macAddr, bPhysAddr, 6);
-				dwType = type ?? MIB_IPNET_TYPE.MIB_IPNET_TYPE_OTHER;
-			}
-		}
-
-		/// <summary>The <c>MIB_IPSTATS</c> structure stores information about the IP protocol running on a particular computer.</summary>
-		/// <remarks>
-		/// <para>The <c>MIB_IPSTATS</c> structure stores information per protocol (IPv4 or IPv6).</para>
-		/// <para>
-		/// The <c>dwForwarding</c> member specifies the per-protocol forwarding state for IPv4 or IPv6, not the forwarding state for an
-		/// interface. The forwarding state of each interface state is the state that is in affect for that interface. The per-protocol state
-		/// returned by the <c>GetIpStatistics</c> or the <c>GetIpStatisticsEx</c> function is not the forwarding state in affect. The
-		/// <c>dwForwarding</c> member exists to serve two purposes:
-		/// </para>
-		/// <list type="bullet">
+		/// <summary>
+		/// <para>Type: <c>unsigned short</c></para>
+		/// <para>The address type or state. This member can be a combination of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
 		/// <item>
-		/// <term>
-		/// Provides a default value for the forwarding state when a new interface is created with no specific forwarding state (neither
-		/// disabled nor enabled) . This value is inherited per-protocol state.
-		/// </term>
+		/// <term>MIB_IPADDR_PRIMARY 0x0001</term>
+		/// <term>Primary IP address</term>
 		/// </item>
 		/// <item>
+		/// <term>MIB_IPADDR_DYNAMIC 0x0004</term>
+		/// <term>Dynamic IP address</term>
+		/// </item>
+		/// <item>
+		/// <term>MIB_IPADDR_DISCONNECTED 0x0008</term>
+		/// <term>Address is on disconnected interface</term>
+		/// </item>
+		/// <item>
+		/// <term>MIB_IPADDR_DELETED 0x0040</term>
+		/// <term>Address is being deleted</term>
+		/// </item>
+		/// <item>
+		/// <term>MIB_IPADDR_TRANSIENT 0x0080</term>
+		/// <term>Transient address</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public MIB_IPADDRTYPE wType;
+	}
+
+	/// <summary>
+	/// <para>The <c>MIB_IPFORWARDROW</c> structure contains information that describes an IPv4 network route.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The GetIpForwardTable function enumerates the IPv4 route entries on a local system and returns this information in a
+	/// MIB_IPFORWARDTABLE structure that contains an array of <c>MIB_IPFORWARDROW</c> structure entries.
+	/// </para>
+	/// <para>
+	/// The <c>dwForwardDest</c>, <c>dwForwardMask</c>, and <c>dwForwardNextHop</c> members of the <c>MIB_IPFORWARDROW</c> structure
+	/// represent IPv4 addresses in network byte order.
+	/// </para>
+	/// <para>
+	/// The <c>dwForwardProto</c> member of the <c>MIB_IPFORWARDROW</c> structure specifies the protocol or routing mechanism that
+	/// generated the route. Routing protocol identifiers are used to identify route information for the specified routing protocol. For
+	/// example, <c>MIB_IPPROTO_NETMGMT</c> is used to identify route information for IP routing set through network management such as
+	/// the Dynamic Host Configuration Protocol (DCHP), the Simple Network Management Protocol (SNMP), or by calls to the
+	/// CreateIpForwardEntry, DeleteIpForwardEntry , or SetIpForwardEntry functions. See Protocol Identifiers for a list of possible
+	/// protocols and routing mechanisms.
+	/// </para>
+	/// <para>
+	/// An IPv4 address of 0.0.0.0 in the <c>dwForwardDest</c> member of the <c>MIB_IPFORWARDROW</c> structure is considered a default
+	/// route. The MIB_IPFORWARDTABLE may contain multiple <c>MIB_IPFORWARDROW</c> entries with the <c>dwForwardDest</c> member set to
+	/// 0.0.0.0 when there are multiple network adapters installed.
+	/// </para>
+	/// <para>When <c>dwForwardAge</c> is set to <c>INFINITE</c>, the route will not be removed based on a timeout</para>
+	/// <para>
+	/// value. Any other value for <c>dwForwardAge</c> specifies the number of seconds since the route was added or modified in the
+	/// network routing table.
+	/// </para>
+	/// <para>
+	/// On Windows Server 2003 or Windows 2000 Server when the Routing and Remote Access Service (RRAS) is running, the
+	/// <c>MIB_IPFORWARDROW</c> entries returned have the <c>dwForwardType</c> and <c>dwForwardAge</c> members set to zero.
+	/// </para>
+	/// <para>
+	/// On Windows Vista and Windows Server 2008, the route metric specified in the <c>dwForwardMetric1</c> member of the
+	/// <c>MIB_IPFORWARDROW</c> structure represents a combination of the route metric added to the interface metric specified in the
+	/// <c>Metric</c> member of the MIB_IPINTERFACE_ROW structure of the associated interface. So the <c>dwForwardMetric1</c> member of
+	/// the <c>MIB_IPFORWARDROW</c> structure should be equal to or greater than <c>Metric</c> member of the associated
+	/// <c>MIB_IPINTERFACE_ROW</c> structure. If an application would like to set the route metric to 0, then the <c>dwForwardMetric1</c>
+	/// member of the <c>MIB_IPFORWARDROW</c> structure should be set equal to the value of the interface metric specified in the
+	/// <c>Metric</c> member of the associated <c>MIB_IPINTERFACE_ROW</c> structure. An application can retrieve the interface metric by
+	/// calling the GetIpInterfaceEntry function.
+	/// </para>
+	/// <para>
+	/// A number of members of the <c>MIB_IPFORWARDROW</c> structure are not currently used by IPv4 routing. These members include
+	/// <c>dwForwardPolicy</c>, <c>dwForwardNextHopAS</c>, <c>dwForwardMetric2</c>, <c>dwForwardMetric3</c>, <c>dwForwardMetric4</c>, and <c>dwForwardMetric5</c>.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed. This structure is defined in the Ipmib.h header file, not in the Iprtrmib.h header file. Note that the Ipmib.h
+	/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Ipmib.h
+	/// and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>
+	/// To view an example that retrieves the MIB_IPFORWARDTABLE structure and then prints out the <c>MIB_IPFORWARDROW</c> structure
+	/// entries in this table, see the GetIpForwardTable function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipforwardrow typedef struct
+	// _MIB_IPFORWARDROW { DWORD dwForwardDest; DWORD dwForwardMask; DWORD dwForwardPolicy; DWORD dwForwardNextHop; IF_INDEX
+	// dwForwardIfIndex; union { DWORD dwForwardType; MIB_IPFORWARD_TYPE ForwardType; }; union { DWORD dwForwardProto;
+	// MIB_IPFORWARD_PROTO ForwardProto; }; DWORD dwForwardAge; DWORD dwForwardNextHopAS; DWORD dwForwardMetric1; DWORD dwForwardMetric2;
+	// DWORD dwForwardMetric3; DWORD dwForwardMetric4; DWORD dwForwardMetric5; } MIB_IPFORWARDROW, *PMIB_IPFORWARDROW;
+	[PInvokeData("ipmib.h", MSDNShortId = "ff451481-3e9d-4add-94e2-846d67002a38")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct MIB_IPFORWARDROW
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The destination IPv4 address of the route. An entry with a IPv4 address of 0.0.0.0 is considered a default route. This member
+		/// cannot be set to a multicast (class D) IPv4 address.
+		/// </para>
+		/// </summary>
+		public IN_ADDR dwForwardDest;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The IPv4 subnet mask to use with the destination IPv4 address before being compared to the value in the <c>dwForwardDest</c> member.
+		/// </para>
+		/// <para>
+		/// The <c>dwForwardMask</c> value should be applied to the destination IPv4 address (logical and operation) before a comparison
+		/// with the value in the <c>dwForwardDest</c> member.
+		/// </para>
+		/// </summary>
+		public IN_ADDR dwForwardMask;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The set of conditions that would cause the selection of a multi-path route (the set of next hops for a given destination).
+		/// This member is typically in IP TOS format. This encoding of this member is described in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt.
+		/// </para>
+		/// </summary>
+		public uint dwForwardPolicy;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// For remote routes, the IPv4 address of the next system en route. Otherwise, this member should be an IPv4 address of 0.0.0.0.
+		/// </para>
+		/// </summary>
+		public IN_ADDR dwForwardNextHop;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The index of the local interface through which the next hop of this route should be reached.</para>
+		/// </summary>
+		public uint dwForwardIfIndex;
+
+		/// <summary/>
+		public MIB_IPFORWARD_TYPE dwForwardType;
+
+		/// <summary/>
+		public MIB_IPFORWARD_PROTO dwForwardProto;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of seconds since the route was added or modified in the network routing table.</para>
+		/// </summary>
+		public uint dwForwardAge;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The autonomous system number of the next hop. When this member is unknown or not relevant to the protocol or routing
+		/// mechanism specified in <c>dwForwardProto</c>, this value should be set to zero. This value is documented in RFC 1354. For
+		/// more information, see http://www.ietf.org/rfc/rfc1354.txt
+		/// </para>
+		/// </summary>
+		public uint dwForwardNextHopAS;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The primary routing metric value for this route. The semantics of this metric are determined by the routing protocol
+		/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
+		/// documented in in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
+		/// </para>
+		/// </summary>
+		public uint dwForwardMetric1;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
+		/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
+		/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
+		/// </para>
+		/// </summary>
+		public uint dwForwardMetric2;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
+		/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
+		/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
+		/// </para>
+		/// </summary>
+		public uint dwForwardMetric3;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
+		/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
+		/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
+		/// </para>
+		/// </summary>
+		public uint dwForwardMetric4;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// An alternate routing metric value for this route. The semantics of this metric are determined by the routing protocol
+		/// specified in the <c>dwForwardProto</c> member. If this metric is not used, its value should be set to -1. This value is
+		/// documented in RFC 1354. For more information, see http://www.ietf.org/rfc/rfc1354.txt
+		/// </para>
+		/// </summary>
+		public uint dwForwardMetric5;
+	}
+
+	/// <summary>
+	/// <para>
+	/// The <c>MIB_IPNETROW</c> structure contains information for an Address Resolution Protocol (ARP) table entry for an IPv4 address.
+	/// </para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed and the <c>MIB_IPNETROW</c>
+	/// structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note that the Ipmib.h header file is
+	/// automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file. The Ipmib.h and Iprtrmib.h
+	/// header files should never be used directly.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipnetrow_lh typedef struct
+	// _MIB_IPNETROW_LH { IF_INDEX dwIndex; DWORD dwPhysAddrLen; UCHAR bPhysAddr[MAXLEN_PHYSADDR]; DWORD dwAddr; union { DWORD dwType;
+	// MIB_IPNET_TYPE Type; }; } MIB_IPNETROW_LH, *PMIB_IPNETROW_LH;
+	[PInvokeData("ipmib.h", MSDNShortId = "aa9aa9f9-2334-4b08-896f-f4a77caa0f7f")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct MIB_IPNETROW
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The index of the adapter.</para>
+		/// </summary>
+		public uint dwIndex;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The length, in bytes, of the physical address.</para>
+		/// </summary>
+		public uint dwPhysAddrLen;
+
+		/// <summary>
+		/// <para>Type: <c>BYTE[MAXLEN_PHYSADDR]</c></para>
+		/// <para>The physical address.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXLEN_PHYSADDR)]
+		public byte[] bPhysAddr;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The IPv4 address.</para>
+		/// </summary>
+		public IN_ADDR dwAddr;
+
+		/// <summary>The type of ARP entry. This type can be one of the following values.</summary>
+		public MIB_IPNET_TYPE dwType;
+
+		/// <summary>Initializes a new instance of the <see cref="MIB_IPNETROW"/> struct.</summary>
+		/// <param name="ipV4">The IPv4 address.</param>
+		/// <param name="ifIdx">The index of the adapter.</param>
+		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
+		/// <param name="type">The type of ARP entry.</param>
+		public MIB_IPNETROW(IN_ADDR ipV4, uint ifIdx, byte[] macAddr = null, MIB_IPNET_TYPE? type = null)
+		{
+			dwIndex = ifIdx;
+			dwAddr = ipV4;
+			dwPhysAddrLen = macAddr == null ? 0U : (uint)macAddr.Length;
+			bPhysAddr = new byte[8];
+			if (macAddr != null) Array.Copy(macAddr, bPhysAddr, 6);
+			dwType = type ?? MIB_IPNET_TYPE.MIB_IPNET_TYPE_OTHER;
+		}
+	}
+
+	/// <summary>The <c>MIB_IPSTATS</c> structure stores information about the IP protocol running on a particular computer.</summary>
+	/// <remarks>
+	/// <para>The <c>MIB_IPSTATS</c> structure stores information per protocol (IPv4 or IPv6).</para>
+	/// <para>
+	/// The <c>dwForwarding</c> member specifies the per-protocol forwarding state for IPv4 or IPv6, not the forwarding state for an
+	/// interface. The forwarding state of each interface state is the state that is in affect for that interface. The per-protocol state
+	/// returned by the <c>GetIpStatistics</c> or the <c>GetIpStatisticsEx</c> function is not the forwarding state in affect. The
+	/// <c>dwForwarding</c> member exists to serve two purposes:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// Provides a default value for the forwarding state when a new interface is created with no specific forwarding state (neither
+	/// disabled nor enabled) . This value is inherited per-protocol state.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Provides a value set by a domain administrator to enable or disable a per-protocol forwarding state. The forwarding states of all
+	/// interfaces using that protocol are also enabled or disabled.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIB_IPSTATS</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+	/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+	/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-mib_ipstats_w2k typedef struct _MIB_IPSTATS_W2K { DWORD
+	// dwForwarding; DWORD dwDefaultTTL; DWORD dwInReceives; DWORD dwInHdrErrors; DWORD dwInAddrErrors; DWORD dwForwDatagrams; DWORD
+	// dwInUnknownProtos; DWORD dwInDiscards; DWORD dwInDelivers; DWORD dwOutRequests; DWORD dwRoutingDiscards; DWORD dwOutDiscards;
+	// DWORD dwOutNoRoutes; DWORD dwReasmTimeout; DWORD dwReasmReqds; DWORD dwReasmOks; DWORD dwReasmFails; DWORD dwFragOks; DWORD
+	// dwFragFails; DWORD dwFragCreates; DWORD dwNumIf; DWORD dwNumAddr; DWORD dwNumRoutes; } MIB_IPSTATS_W2K, *PMIB_IPSTATS_W2K;
+	[PInvokeData("ipmib.h", MSDNShortId = "920e71b6-247c-4442-9f66-704a6c878feb")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct MIB_IPSTATS
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Specifies whether IP forwarding is enabled or disabled for a protocol (IPv4 or IPv6).</para>
+		/// <para>
+		/// On Windows Vista and later, this member is defined as a union containing a <c>DWORD dwForwarding</c> member and a
+		/// <c>MIB_IPSTATS_FORWARDING Forwarding</c> member where <c>MIB_IPSTATS_FORWARDING</c> is an enumeration defined in the Ipmib.h
+		/// header file.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This member applies to the entire system per protocol (IPv4 or IPv6) and doesn’t return per interface
+		/// configuration for IP forwarding.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MIB_IP_FORWARDING 1</term>
+		/// <term>IP forwarding is enabled.</term>
+		/// </item>
+		/// <item>
+		/// <term>MIB_IP_NOT_FORWARDING 2</term>
+		/// <term>IP forwarding is not enabled.</term>
+		/// </item>
+		/// <item>
+		/// <term>MIB_USE_CURRENT_FORWARDING 0xffff</term>
 		/// <term>
-		/// Provides a value set by a domain administrator to enable or disable a per-protocol forwarding state. The forwarding states of all
-		/// interfaces using that protocol are also enabled or disabled.
+		/// Use the current IP forwarding setting. This value is only applicable when setting the forwarding and time-to-live (TTL)
+		/// options using the SetIpStatistics and SetIpStatisticsEx functions.
 		/// </term>
 		/// </item>
 		/// </list>
+		/// </summary>
+		public MIB_IPSTATS_FORWARDING Forwarding;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The default initial time-to-live (TTL) for datagrams originating on a particular computer.</para>
 		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIB_IPSTATS</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
-		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
-		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+		/// This member can be set to <c>MIB_USE_CURRENT_TTL</c> to use the current deafult TTL value when setting the forwarding and
+		/// time-to-live (TTL) options using the <c>SetIpStatistics</c> and SetIpStatisticsEx functions.
 		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-mib_ipstats_w2k typedef struct _MIB_IPSTATS_W2K { DWORD
-		// dwForwarding; DWORD dwDefaultTTL; DWORD dwInReceives; DWORD dwInHdrErrors; DWORD dwInAddrErrors; DWORD dwForwDatagrams; DWORD
-		// dwInUnknownProtos; DWORD dwInDiscards; DWORD dwInDelivers; DWORD dwOutRequests; DWORD dwRoutingDiscards; DWORD dwOutDiscards;
-		// DWORD dwOutNoRoutes; DWORD dwReasmTimeout; DWORD dwReasmReqds; DWORD dwReasmOks; DWORD dwReasmFails; DWORD dwFragOks; DWORD
-		// dwFragFails; DWORD dwFragCreates; DWORD dwNumIf; DWORD dwNumAddr; DWORD dwNumRoutes; } MIB_IPSTATS_W2K, *PMIB_IPSTATS_W2K;
-		[PInvokeData("ipmib.h", MSDNShortId = "920e71b6-247c-4442-9f66-704a6c878feb")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_IPSTATS
+		/// </summary>
+		public uint dwDefaultTTL;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams received.</para>
+		/// </summary>
+		public uint dwInReceives;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams received that have header errors.</para>
+		/// </summary>
+		public uint dwInHdrErrors;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams received that have address errors.</para>
+		/// </summary>
+		public uint dwInAddrErrors;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams forwarded.</para>
+		/// </summary>
+		public uint dwForwDatagrams;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams received that have an unknown protocol.</para>
+		/// </summary>
+		public uint dwInUnknownProtos;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of received datagrams discarded.</para>
+		/// </summary>
+		public uint dwInDiscards;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of received datagrams delivered.</para>
+		/// </summary>
+		public uint dwInDelivers;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of outgoing datagrams that IP is requested to transmit. This number does not include forwarded datagrams.</para>
+		/// </summary>
+		public uint dwOutRequests;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of outgoing datagrams discarded.</para>
+		/// </summary>
+		public uint dwRoutingDiscards;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of transmitted datagrams discarded.</para>
+		/// </summary>
+		public uint dwOutDiscards;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of datagrams for which this computer did not have a route to the destination IP address. These datagrams were discarded.
+		/// </para>
+		/// </summary>
+		public uint dwOutNoRoutes;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The amount of time allowed for all pieces of a fragmented datagram to arrive. If all pieces do not arrive within this time,
+		/// the datagram is discarded.
+		/// </para>
+		/// </summary>
+		public uint dwReasmTimeout;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams that require re-assembly.</para>
+		/// </summary>
+		public uint dwReasmReqds;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams that were successfully reassembled.</para>
+		/// </summary>
+		public uint dwReasmOks;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams that cannot be reassembled.</para>
+		/// </summary>
+		public uint dwReasmFails;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of datagrams that were fragmented successfully.</para>
+		/// </summary>
+		public uint dwFragOks;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of datagrams that have not been fragmented because the IP header specifies no fragmentation. These datagrams are discarded.
+		/// </para>
+		/// </summary>
+		public uint dwFragFails;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of fragments created.</para>
+		/// </summary>
+		public uint dwFragCreates;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of interfaces.</para>
+		/// </summary>
+		public uint dwNumIf;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of IP addresses associated with this computer.</para>
+		/// </summary>
+		public uint dwNumAddr;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of routes in the IP routing table.</para>
+		/// </summary>
+		public uint dwNumRoutes;
+	}
+
+	/// <summary>The <c>MIBICMPINFO</c> structure contains Internet Control Message Protocol (ICMP) statistics for a particular computer.</summary>
+	/// <remarks>
+	/// <para>
+	/// Two MIBICMPSTATS structures are required to hold all the ICMP statistics for a given computer. One <c>MIBICMPSTATS</c> structure
+	/// contains the statistics for incoming ICMP messages. The other contains the statistics for outgoing ICMP messages. For this
+	/// reason, the <c>MIBICMPINFO</c> structure contains two <c>MIBICMPSTATS</c> structures.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIBICMPINFO</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+	/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+	/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpinfo typedef struct _MIBICMPINFO { MIBICMPSTATS
+	// icmpInStats; MIBICMPSTATS icmpOutStats; } MIBICMPINFO;
+	[PInvokeData("ipmib.h", MSDNShortId = "547da10e-3490-44d2-9142-0caed041503b")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct MIBICMPINFO
+	{
+		/// <summary>An MIBICMPSTATS structure that contains the statistics for incoming ICMP messages.</summary>
+		public MIBICMPSTATS icmpInStats;
+
+		/// <summary>An MIBICMPSTATS structure that contains the statistics for outgoing ICMP messages.</summary>
+		public MIBICMPSTATS icmpOutStats;
+	}
+
+	/// <summary>
+	/// The <c>MIBICMPSTATS</c> structure contains statistics for either incoming or outgoing Internet Control Message Protocol (ICMP)
+	/// messages on a particular computer.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Two <c>MIBICMPSTATS</c> structures are required to hold all the ICMP statistics for a given computer. One <c>MIBICMPSTATS</c>
+	/// structure contains the statistics for incoming ICMP messages. The other contains the statistics for outgoing ICMP messages. For
+	/// this reason, the MIBICMPINFO structure contains two <c>MIBICMPSTATS</c> structures.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIBICMPSTATS</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+	/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+	/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpstats typedef struct _MIBICMPSTATS { DWORD dwMsgs;
+	// DWORD dwErrors; DWORD dwDestUnreachs; DWORD dwTimeExcds; DWORD dwParmProbs; DWORD dwSrcQuenchs; DWORD dwRedirects; DWORD dwEchos;
+	// DWORD dwEchoReps; DWORD dwTimestamps; DWORD dwTimestampReps; DWORD dwAddrMasks; DWORD dwAddrMaskReps; } MIBICMPSTATS, *PMIBICMPSTATS;
+	[PInvokeData("ipmib.h", MSDNShortId = "080cdd28-3e2d-4cd0-8e5a-9ec9dcb9df48")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct MIBICMPSTATS
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of messages received or sent.</para>
+		/// </summary>
+		public uint dwMsgs;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of errors received or sent.</para>
+		/// </summary>
+		public uint dwErrors;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of destination-unreachable messages received or sent. A destination-unreachable message is sent to the originating
+		/// computer when a datagram fails to reach its intended destination.
+		/// </para>
+		/// </summary>
+		public uint dwDestUnreachs;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of time-to-live (TTL) exceeded messages received or sent. A time-to-live exceeded message is sent to the
+		/// originating computer when a datagram is discarded because the number of routers it has passed through exceeds its
+		/// time-to-live value.
+		/// </para>
+		/// </summary>
+		public uint dwTimeExcds;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of parameter-problem messages received or sent. A parameter-problem message is sent to the originating computer
+		/// when a router or host detects an error in a datagram's IP header.
+		/// </para>
+		/// </summary>
+		public uint dwParmProbs;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of source quench messages received or sent. A source quench request is sent to a computer to request that it
+		/// reduce its rate of packet transmission.
+		/// </para>
+		/// </summary>
+		public uint dwSrcQuenchs;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of redirect messages received or sent. A redirect message is sent to the originating computer when a better route
+		/// is discovered for a datagram sent by that computer.
+		/// </para>
+		/// </summary>
+		public uint dwRedirects;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of echo requests received or sent. An echo request causes the receiving computer to send an echo reply message
+		/// back to the originating computer.
+		/// </para>
+		/// </summary>
+		public uint dwEchos;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of echo replies received or sent. A computer sends an echo reply in response to receiving an echo request message.
+		/// </para>
+		/// </summary>
+		public uint dwEchoReps;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of time-stamp requests received or sent. A time-stamp request causes the receiving computer to send a time-stamp
+		/// reply back to the originating computer.
+		/// </para>
+		/// </summary>
+		public uint dwTimestamps;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of time-stamp replies received or sent. A computer sends a time-stamp reply in response to receiving a time-stamp
+		/// request. Routers can use time-stamp requests and replies to measure the transmission speed of datagrams on a network.
+		/// </para>
+		/// </summary>
+		public uint dwTimestampReps;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of address mask requests received or sent. A computer sends an address mask request to determine the number of
+		/// bits in the subnet mask for its local subnet.
+		/// </para>
+		/// </summary>
+		public uint dwAddrMasks;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The number of address mask responses received or sent. A computer sends an address mask response in response to an address
+		/// mask request.
+		/// </para>
+		/// </summary>
+		public uint dwAddrMaskReps;
+	}
+
+	/// <summary>
+	/// <para>
+	/// The <c>MIBICMPSTATS_EX</c> structure contains extended statistics for either incoming or outgoing Internet Control Message
+	/// Protocol (ICMP) messages on a particular computer.
+	/// </para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Two <c>MIBICMPSTATS_EX</c> structures are required to hold all the extended ICMP statistics for a given computer. One
+	/// <c>MIBICMPSTATS_EX</c> structure contains the extended statistics for incoming ICMP messages. The other contains the extended
+	/// statistics for outgoing ICMP messages. For this reason, the MIB_ICMP_EX structure contains two <c>MIBICMPSTATS_EX</c> structures.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIBICMPSTATS_EX</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file.
+	/// Note that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h
+	/// header file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpstats_ex_xpsp1 typedef struct _MIBICMPSTATS_EX_XPSP1 {
+	// DWORD dwMsgs; DWORD dwErrors; DWORD rgdwTypeCount[256]; } MIBICMPSTATS_EX_XPSP1, *PMIBICMPSTATS_EX_XPSP1;
+	[PInvokeData("ipmib.h", MSDNShortId = "d97921f8-8be0-4a14-887f-aaafcb82eb1f")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct MIBICMPSTATS_EX
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Specifies the number of messages received or sent.</para>
+		/// </summary>
+		public uint dwMsgs;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of errors received or sent.</para>
+		/// </summary>
+		public uint dwErrors;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD[256]</c></para>
+		/// <para>The type count.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+		public uint[] rgdwTypeCount;
+	}
+
+	/// <summary>
+	/// <para>The <c>MIB_IPADDRTABLE</c> structure contains a table of IPv4 address entries.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The GetIpAddrTable function retrieves the interface–to–IPv4 address mapping table on a local computer and returns this
+	/// information in an <c>MIB_IPADDRTABLE</c> structure.
+	/// </para>
+	/// <para>
+	/// The <c>MIB_IPADDRTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
+	/// MIB_IPADDRROW array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_IPADDRROW</c>
+	/// array entries in the <c>table</c> member. Any access to a <c>MIB_IPADDRROW</c> array entry should assume padding may exist.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the MIB_IPADDRROW is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note that the Ipmib.h
+	/// header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file. The Ipmib.h
+	/// and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>
+	/// To view an example that retrieves the <c>MIB_IPADDRTABLE</c> structure and then prints out the MIB_IPADDRROW structures in this
+	/// table, see the GetIpAddrTable function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipaddrtable typedef struct
+	// _MIB_IPADDRTABLE { DWORD dwNumEntries; MIB_IPADDRROW table[ANY_SIZE]; } MIB_IPADDRTABLE, *PMIB_IPADDRTABLE;
+	[PInvokeData("ipmib.h", MSDNShortId = "12a929e5-813d-4dae-9ea0-5a3c0a88cf05")]
+	[CorrespondingType(typeof(MIB_IPADDRROW))]
+	[DefaultProperty(nameof(table))]
+	public class MIB_IPADDRTABLE : SafeElementArray<MIB_IPADDRROW, uint, CoTaskMemoryMethods>
+	{
+		/// <summary>Initializes a new instance of the <see cref="MIB_IPADDRTABLE"/> class.</summary>
+		/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
+		public MIB_IPADDRTABLE(uint byteSize) : base((int)byteSize, 0)
 		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>Specifies whether IP forwarding is enabled or disabled for a protocol (IPv4 or IPv6).</para>
-			/// <para>
-			/// On Windows Vista and later, this member is defined as a union containing a <c>DWORD dwForwarding</c> member and a
-			/// <c>MIB_IPSTATS_FORWARDING Forwarding</c> member where <c>MIB_IPSTATS_FORWARDING</c> is an enumeration defined in the Ipmib.h
-			/// header file.
-			/// </para>
-			/// <para>
-			/// <c>Note</c> This member applies to the entire system per protocol (IPv4 or IPv6) and doesn’t return per interface
-			/// configuration for IP forwarding.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MIB_IP_FORWARDING 1</term>
-			/// <term>IP forwarding is enabled.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_IP_NOT_FORWARDING 2</term>
-			/// <term>IP forwarding is not enabled.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_USE_CURRENT_FORWARDING 0xffff</term>
-			/// <term>
-			/// Use the current IP forwarding setting. This value is only applicable when setting the forwarding and time-to-live (TTL)
-			/// options using the SetIpStatistics and SetIpStatisticsEx functions.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public MIB_IPSTATS_FORWARDING Forwarding;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The default initial time-to-live (TTL) for datagrams originating on a particular computer.</para>
-			/// <para>
-			/// This member can be set to <c>MIB_USE_CURRENT_TTL</c> to use the current deafult TTL value when setting the forwarding and
-			/// time-to-live (TTL) options using the <c>SetIpStatistics</c> and SetIpStatisticsEx functions.
-			/// </para>
-			/// </summary>
-			public uint dwDefaultTTL;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams received.</para>
-			/// </summary>
-			public uint dwInReceives;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams received that have header errors.</para>
-			/// </summary>
-			public uint dwInHdrErrors;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams received that have address errors.</para>
-			/// </summary>
-			public uint dwInAddrErrors;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams forwarded.</para>
-			/// </summary>
-			public uint dwForwDatagrams;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams received that have an unknown protocol.</para>
-			/// </summary>
-			public uint dwInUnknownProtos;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of received datagrams discarded.</para>
-			/// </summary>
-			public uint dwInDiscards;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of received datagrams delivered.</para>
-			/// </summary>
-			public uint dwInDelivers;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of outgoing datagrams that IP is requested to transmit. This number does not include forwarded datagrams.</para>
-			/// </summary>
-			public uint dwOutRequests;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of outgoing datagrams discarded.</para>
-			/// </summary>
-			public uint dwRoutingDiscards;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of transmitted datagrams discarded.</para>
-			/// </summary>
-			public uint dwOutDiscards;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of datagrams for which this computer did not have a route to the destination IP address. These datagrams were discarded.
-			/// </para>
-			/// </summary>
-			public uint dwOutNoRoutes;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The amount of time allowed for all pieces of a fragmented datagram to arrive. If all pieces do not arrive within this time,
-			/// the datagram is discarded.
-			/// </para>
-			/// </summary>
-			public uint dwReasmTimeout;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams that require re-assembly.</para>
-			/// </summary>
-			public uint dwReasmReqds;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams that were successfully reassembled.</para>
-			/// </summary>
-			public uint dwReasmOks;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams that cannot be reassembled.</para>
-			/// </summary>
-			public uint dwReasmFails;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of datagrams that were fragmented successfully.</para>
-			/// </summary>
-			public uint dwFragOks;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of datagrams that have not been fragmented because the IP header specifies no fragmentation. These datagrams are discarded.
-			/// </para>
-			/// </summary>
-			public uint dwFragFails;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of fragments created.</para>
-			/// </summary>
-			public uint dwFragCreates;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of interfaces.</para>
-			/// </summary>
-			public uint dwNumIf;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of IP addresses associated with this computer.</para>
-			/// </summary>
-			public uint dwNumAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of routes in the IP routing table.</para>
-			/// </summary>
-			public uint dwNumRoutes;
-		}
-
-		/// <summary>The <c>MIBICMPINFO</c> structure contains Internet Control Message Protocol (ICMP) statistics for a particular computer.</summary>
-		/// <remarks>
-		/// <para>
-		/// Two MIBICMPSTATS structures are required to hold all the ICMP statistics for a given computer. One <c>MIBICMPSTATS</c> structure
-		/// contains the statistics for incoming ICMP messages. The other contains the statistics for outgoing ICMP messages. For this
-		/// reason, the <c>MIBICMPINFO</c> structure contains two <c>MIBICMPSTATS</c> structures.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIBICMPINFO</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
-		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
-		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpinfo typedef struct _MIBICMPINFO { MIBICMPSTATS
-		// icmpInStats; MIBICMPSTATS icmpOutStats; } MIBICMPINFO;
-		[PInvokeData("ipmib.h", MSDNShortId = "547da10e-3490-44d2-9142-0caed041503b")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct MIBICMPINFO
-		{
-			/// <summary>An MIBICMPSTATS structure that contains the statistics for incoming ICMP messages.</summary>
-			public MIBICMPSTATS icmpInStats;
-
-			/// <summary>An MIBICMPSTATS structure that contains the statistics for outgoing ICMP messages.</summary>
-			public MIBICMPSTATS icmpOutStats;
 		}
 
 		/// <summary>
-		/// The <c>MIBICMPSTATS</c> structure contains statistics for either incoming or outgoing Internet Control Message Protocol (ICMP)
-		/// messages on a particular computer.
+		/// <para>The number of IPv4 address entries in the table.</para>
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Two <c>MIBICMPSTATS</c> structures are required to hold all the ICMP statistics for a given computer. One <c>MIBICMPSTATS</c>
-		/// structure contains the statistics for incoming ICMP messages. The other contains the statistics for outgoing ICMP messages. For
-		/// this reason, the MIBICMPINFO structure contains two <c>MIBICMPSTATS</c> structures.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIBICMPSTATS</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
-		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
-		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpstats typedef struct _MIBICMPSTATS { DWORD dwMsgs;
-		// DWORD dwErrors; DWORD dwDestUnreachs; DWORD dwTimeExcds; DWORD dwParmProbs; DWORD dwSrcQuenchs; DWORD dwRedirects; DWORD dwEchos;
-		// DWORD dwEchoReps; DWORD dwTimestamps; DWORD dwTimestampReps; DWORD dwAddrMasks; DWORD dwAddrMaskReps; } MIBICMPSTATS, *PMIBICMPSTATS;
-		[PInvokeData("ipmib.h", MSDNShortId = "080cdd28-3e2d-4cd0-8e5a-9ec9dcb9df48")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct MIBICMPSTATS
+		public uint dwNumEntries => Count;
+
+		/// <summary>
+		/// <para>A pointer to a table of IPv4 address entries implemented as an array of MIB_IPADDRROW structures.</para>
+		/// </summary>
+		public MIB_IPADDRROW[] table { get => Elements; set => Elements = value; }
+
+		/// <summary>Performs an implicit conversion from <see cref="MIB_IPADDRTABLE"/> to <see cref="System.IntPtr"/>.</summary>
+		/// <param name="table">The MIB_IPADDRTABLE instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(MIB_IPADDRTABLE table) => table.DangerousGetHandle();
+	}
+
+	/// <summary>The <c>MIB_IPFORWARDTABLE</c> structure contains a table of IPv4 route entries.</summary>
+	/// <remarks>
+	/// <para>
+	/// The GetIpForwardTable function enumerates the IPv4 route entries on a local system and returns this information in a
+	/// <c>MIB_IPFORWARDTABLE</c> structure.
+	/// </para>
+	/// <para>
+	/// The <c>MIB_IPFORWARDTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
+	/// MIB_IPFORWARDROW array entry in the <c>table</c> member. Padding for alignment may also be present between the
+	/// <c>MIB_IPFORWARDROW</c> array entries in the <c>table</c> member. Any access to a <c>MIB_IPFORWARDROW</c> array entry should
+	/// assume padding may exist.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed. This structure is defined in the Ipmib.h header file, not in the Iprtrmib.h header file. Note that the Ipmib.h
+	/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Ipmib.h
+	/// and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>
+	/// To view an example that retrieves the <c>MIB_IPFORWARDTABLE</c> structure and then prints out the MIB_IPFORWARDROW structure
+	/// entries in this table, see the GetIpForwardTable function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_ipforwardtable typedef struct _MIB_IPFORWARDTABLE { DWORD
+	// dwNumEntries; MIB_IPFORWARDROW table[ANY_SIZE]; } MIB_IPFORWARDTABLE, *PMIB_IPFORWARDTABLE;
+	[PInvokeData("ipmib.h", MSDNShortId = "bdecf944-fe19-4033-8778-362523984b03")]
+	[CorrespondingType(typeof(MIB_IPFORWARDROW))]
+	[DefaultProperty(nameof(table))]
+	public class MIB_IPFORWARDTABLE : SafeElementArray<MIB_IPFORWARDROW, uint, CoTaskMemoryMethods>
+	{
+		/// <summary>Initializes a new instance of the <see cref="MIB_IPFORWARDTABLE"/> class.</summary>
+		/// <param name="byteSize">Size of the byte.</param>
+		public MIB_IPFORWARDTABLE(uint byteSize) : base((int)byteSize, 0)
 		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of messages received or sent.</para>
-			/// </summary>
-			public uint dwMsgs;
+		}
 
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of errors received or sent.</para>
-			/// </summary>
-			public uint dwErrors;
+		/// <summary>The number of route entries in the table.</summary>
+		public uint dwNumEntries => Count;
 
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of destination-unreachable messages received or sent. A destination-unreachable message is sent to the originating
-			/// computer when a datagram fails to reach its intended destination.
-			/// </para>
-			/// </summary>
-			public uint dwDestUnreachs;
+		/// <summary>A pointer to a table of route entries implemented as an array of MIB_IPFORWARDROW structures.</summary>
+		/// <value>The <see cref="MIB_IPFORWARDROW"/>.</value>
+		/// <returns></returns>
+		public MIB_IPFORWARDROW[] table { get => Elements; set => Elements = value; }
 
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of time-to-live (TTL) exceeded messages received or sent. A time-to-live exceeded message is sent to the
-			/// originating computer when a datagram is discarded because the number of routers it has passed through exceeds its
-			/// time-to-live value.
-			/// </para>
-			/// </summary>
-			public uint dwTimeExcds;
+		/// <summary>Performs an implicit conversion from <see cref="MIB_IPFORWARDTABLE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="table">The table.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(MIB_IPFORWARDTABLE table) => table.DangerousGetHandle();
+	}
 
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of parameter-problem messages received or sent. A parameter-problem message is sent to the originating computer
-			/// when a router or host detects an error in a datagram's IP header.
-			/// </para>
-			/// </summary>
-			public uint dwParmProbs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of source quench messages received or sent. A source quench request is sent to a computer to request that it
-			/// reduce its rate of packet transmission.
-			/// </para>
-			/// </summary>
-			public uint dwSrcQuenchs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of redirect messages received or sent. A redirect message is sent to the originating computer when a better route
-			/// is discovered for a datagram sent by that computer.
-			/// </para>
-			/// </summary>
-			public uint dwRedirects;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of echo requests received or sent. An echo request causes the receiving computer to send an echo reply message
-			/// back to the originating computer.
-			/// </para>
-			/// </summary>
-			public uint dwEchos;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of echo replies received or sent. A computer sends an echo reply in response to receiving an echo request message.
-			/// </para>
-			/// </summary>
-			public uint dwEchoReps;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of time-stamp requests received or sent. A time-stamp request causes the receiving computer to send a time-stamp
-			/// reply back to the originating computer.
-			/// </para>
-			/// </summary>
-			public uint dwTimestamps;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of time-stamp replies received or sent. A computer sends a time-stamp reply in response to receiving a time-stamp
-			/// request. Routers can use time-stamp requests and replies to measure the transmission speed of datagrams on a network.
-			/// </para>
-			/// </summary>
-			public uint dwTimestampReps;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of address mask requests received or sent. A computer sends an address mask request to determine the number of
-			/// bits in the subnet mask for its local subnet.
-			/// </para>
-			/// </summary>
-			public uint dwAddrMasks;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of address mask responses received or sent. A computer sends an address mask response in response to an address
-			/// mask request.
-			/// </para>
-			/// </summary>
-			public uint dwAddrMaskReps;
+	/// <summary>
+	/// <para>The <c>MIB_IPNETTABLE</c> structure contains a table of Address Resolution Protocol (ARP) entries for IPv4 addresses.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>The GetIpNetTable function retrieves the IPv4-to-physical address mapping table.</para>
+	/// <para>on a local system and returns this information in a <c>MIB_IPNETTABLE</c> structure.</para>
+	/// <para>The <c>dwNumEntries</c> member in this structure may be zero if there are no ARP entries in the table.</para>
+	/// <para>
+	/// The <c>MIB_IPNETTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
+	/// MIB_IPNETROW array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_IPNETROW</c>
+	/// array entries in the <c>table</c> member. Any access to a <c>MIB_IPNETROW</c> array entry should assume padding may exist.
+	/// </para>
+	/// <para>
+	/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+	/// has changed and the <c>MIB_IPNETTABLE</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+	/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+	/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipnettable typedef struct
+	// _MIB_IPNETTABLE { DWORD dwNumEntries; MIB_IPNETROW table[ANY_SIZE]; } MIB_IPNETTABLE, *PMIB_IPNETTABLE;
+	[PInvokeData("ipmib.h", MSDNShortId = "1cac1c19-bc42-4aee-b9d0-d007b8798eeb")]
+	[CorrespondingType(typeof(MIB_IPNETROW))]
+	[DefaultProperty(nameof(table))]
+	public class MIB_IPNETTABLE : SafeElementArray<MIB_IPNETROW, uint, CoTaskMemoryMethods>
+	{
+		/// <summary>Initializes a new instance of the <see cref="MIB_IPNETTABLE"/> class.</summary>
+		/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
+		public MIB_IPNETTABLE(uint byteSize) : base((int)byteSize, 0)
+		{
 		}
 
 		/// <summary>
-		/// <para>
-		/// The <c>MIBICMPSTATS_EX</c> structure contains extended statistics for either incoming or outgoing Internet Control Message
-		/// Protocol (ICMP) messages on a particular computer.
-		/// </para>
+		/// <para>The number of ARP entries in the table.</para>
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Two <c>MIBICMPSTATS_EX</c> structures are required to hold all the extended ICMP statistics for a given computer. One
-		/// <c>MIBICMPSTATS_EX</c> structure contains the extended statistics for incoming ICMP messages. The other contains the extended
-		/// statistics for outgoing ICMP messages. For this reason, the MIB_ICMP_EX structure contains two <c>MIBICMPSTATS_EX</c> structures.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIBICMPSTATS_EX</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file.
-		/// Note that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h
-		/// header file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpstats_ex_xpsp1 typedef struct _MIBICMPSTATS_EX_XPSP1 {
-		// DWORD dwMsgs; DWORD dwErrors; DWORD rgdwTypeCount[256]; } MIBICMPSTATS_EX_XPSP1, *PMIBICMPSTATS_EX_XPSP1;
-		[PInvokeData("ipmib.h", MSDNShortId = "d97921f8-8be0-4a14-887f-aaafcb82eb1f")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct MIBICMPSTATS_EX
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>Specifies the number of messages received or sent.</para>
-			/// </summary>
-			public uint dwMsgs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of errors received or sent.</para>
-			/// </summary>
-			public uint dwErrors;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD[256]</c></para>
-			/// <para>The type count.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-			public uint[] rgdwTypeCount;
-		}
+		public uint dwNumEntries => Count;
 
 		/// <summary>
-		/// <para>The <c>MIB_IPADDRTABLE</c> structure contains a table of IPv4 address entries.</para>
+		/// <para>A pointer to a table of ARP entries implemented as an array of MIB_IPNETROW structures.</para>
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetIpAddrTable function retrieves the interface–to–IPv4 address mapping table on a local computer and returns this
-		/// information in an <c>MIB_IPADDRTABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_IPADDRTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
-		/// MIB_IPADDRROW array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_IPADDRROW</c>
-		/// array entries in the <c>table</c> member. Any access to a <c>MIB_IPADDRROW</c> array entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the MIB_IPADDRROW is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note that the Ipmib.h
-		/// header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file. The Ipmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// To view an example that retrieves the <c>MIB_IPADDRTABLE</c> structure and then prints out the MIB_IPADDRROW structures in this
-		/// table, see the GetIpAddrTable function.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipaddrtable typedef struct
-		// _MIB_IPADDRTABLE { DWORD dwNumEntries; MIB_IPADDRROW table[ANY_SIZE]; } MIB_IPADDRTABLE, *PMIB_IPADDRTABLE;
-		[PInvokeData("ipmib.h", MSDNShortId = "12a929e5-813d-4dae-9ea0-5a3c0a88cf05")]
-		[CorrespondingType(typeof(MIB_IPADDRROW))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_IPADDRTABLE : SafeElementArray<MIB_IPADDRROW, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_IPADDRTABLE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_IPADDRTABLE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
+		public MIB_IPNETROW[] table { get => Elements; set => Elements = value; }
 
-			/// <summary>
-			/// <para>The number of IPv4 address entries in the table.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>A pointer to a table of IPv4 address entries implemented as an array of MIB_IPADDRROW structures.</para>
-			/// </summary>
-			public MIB_IPADDRROW[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_IPADDRTABLE"/> to <see cref="System.IntPtr"/>.</summary>
-			/// <param name="table">The MIB_IPADDRTABLE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_IPADDRTABLE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>The <c>MIB_IPFORWARDTABLE</c> structure contains a table of IPv4 route entries.</summary>
-		/// <remarks>
-		/// <para>
-		/// The GetIpForwardTable function enumerates the IPv4 route entries on a local system and returns this information in a
-		/// <c>MIB_IPFORWARDTABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_IPFORWARDTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
-		/// MIB_IPFORWARDROW array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_IPFORWARDROW</c> array entries in the <c>table</c> member. Any access to a <c>MIB_IPFORWARDROW</c> array entry should
-		/// assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Ipmib.h header file, not in the Iprtrmib.h header file. Note that the Ipmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Ipmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// To view an example that retrieves the <c>MIB_IPFORWARDTABLE</c> structure and then prints out the MIB_IPFORWARDROW structure
-		/// entries in this table, see the GetIpForwardTable function.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_ipforwardtable typedef struct _MIB_IPFORWARDTABLE { DWORD
-		// dwNumEntries; MIB_IPFORWARDROW table[ANY_SIZE]; } MIB_IPFORWARDTABLE, *PMIB_IPFORWARDTABLE;
-		[PInvokeData("ipmib.h", MSDNShortId = "bdecf944-fe19-4033-8778-362523984b03")]
-		[CorrespondingType(typeof(MIB_IPFORWARDROW))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_IPFORWARDTABLE : SafeElementArray<MIB_IPFORWARDROW, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_IPFORWARDTABLE"/> class.</summary>
-			/// <param name="byteSize">Size of the byte.</param>
-			public MIB_IPFORWARDTABLE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>The number of route entries in the table.</summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>A pointer to a table of route entries implemented as an array of MIB_IPFORWARDROW structures.</summary>
-			/// <value>The <see cref="MIB_IPFORWARDROW"/>.</value>
-			/// <returns></returns>
-			public MIB_IPFORWARDROW[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_IPFORWARDTABLE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The table.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_IPFORWARDTABLE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_IPNETTABLE</c> structure contains a table of Address Resolution Protocol (ARP) entries for IPv4 addresses.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>The GetIpNetTable function retrieves the IPv4-to-physical address mapping table.</para>
-		/// <para>on a local system and returns this information in a <c>MIB_IPNETTABLE</c> structure.</para>
-		/// <para>The <c>dwNumEntries</c> member in this structure may be zero if there are no ARP entries in the table.</para>
-		/// <para>
-		/// The <c>MIB_IPNETTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
-		/// MIB_IPNETROW array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_IPNETROW</c>
-		/// array entries in the <c>table</c> member. Any access to a <c>MIB_IPNETROW</c> array entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIB_IPNETTABLE</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
-		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
-		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ipmib/ns-ipmib-_mib_ipnettable typedef struct
-		// _MIB_IPNETTABLE { DWORD dwNumEntries; MIB_IPNETROW table[ANY_SIZE]; } MIB_IPNETTABLE, *PMIB_IPNETTABLE;
-		[PInvokeData("ipmib.h", MSDNShortId = "1cac1c19-bc42-4aee-b9d0-d007b8798eeb")]
-		[CorrespondingType(typeof(MIB_IPNETROW))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_IPNETTABLE : SafeElementArray<MIB_IPNETROW, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_IPNETTABLE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_IPNETTABLE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of ARP entries in the table.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>A pointer to a table of ARP entries implemented as an array of MIB_IPNETROW structures.</para>
-			/// </summary>
-			public MIB_IPNETROW[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_IPNETTABLE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_IPNETTABLE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_IPNETTABLE table) => table.DangerousGetHandle();
-		}
+		/// <summary>Performs an implicit conversion from <see cref="MIB_IPNETTABLE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="table">The MIB_IPNETTABLE instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(MIB_IPNETTABLE table) => table.DangerousGetHandle();
 	}
 }

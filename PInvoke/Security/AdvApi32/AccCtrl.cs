@@ -655,12 +655,12 @@ public static partial class AdvApi32
 
 		/// <summary>Name of the ancestor from which the ACE was inherited. For an explicit ACE, set this to <c>null</c>.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string AncestorName;
+		public string? AncestorName;
 
 		/// <summary>Initializes a new instance of the <see cref="INHERITED_FROM"/> structure.</summary>
 		/// <param name="generationGap">The generation gap.</param>
 		/// <param name="ancestorName">Name of the ancestor.</param>
-		public INHERITED_FROM(int generationGap, string ancestorName)
+		public INHERITED_FROM(int generationGap, string? ancestorName)
 		{
 			GenerationGap = generationGap;
 			AncestorName = ancestorName;
@@ -900,7 +900,7 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </value>
-		public string Name => TrusteeForm == TRUSTEE_FORM.TRUSTEE_IS_NAME ? Marshal.PtrToStringAuto(ptstrName) : null;
+		public string? Name => TrusteeForm == TRUSTEE_FORM.TRUSTEE_IS_NAME ? Marshal.PtrToStringAuto(ptstrName) : null;
 
 		/// <summary>Gets the sid for the trustee</summary>
 		/// <value>The Sid.</value>

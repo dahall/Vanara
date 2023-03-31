@@ -268,24 +268,22 @@ public static partial class InteropExtensions
 		}
 
 		// Write to memory stream
-		using (var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet })
+		using var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet };
+		ms.SetLength(ms.Position = prefixBytes);
+		foreach (var o in values)
 		{
-			ms.SetLength(ms.Position = prefixBytes);
-			foreach (var o in values)
-			{
-				if (referencePointers)
-					ms.WriteReferenceObject(o);
-				else
-					ms.WriteObject(o);
-			}
 			if (referencePointers)
-				ms.WriteReference((int?)null);
-			ms.Flush();
-
-			// Copy to newly allocated memory using memAlloc
-			bytesAllocated = (int)ms.Length;
-			return AllocWrite(bytesAllocated, (p,c) => ms.Pointer.CopyTo(p, c), memAlloc, memLock, memUnlock);
+				ms.WriteReferenceObject(o);
+			else
+				ms.WriteObject(o);
 		}
+		if (referencePointers)
+			ms.WriteReference((int?)null);
+		ms.Flush();
+
+		// Copy to newly allocated memory using memAlloc
+		bytesAllocated = (int)ms.Length;
+		return AllocWrite(bytesAllocated, (p, c) => ms.Pointer.CopyTo(p, c), memAlloc, memLock, memUnlock);
 	}
 
 	/// <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>

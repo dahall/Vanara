@@ -459,7 +459,7 @@ public static partial class PhotoAcquisition
 		// IPhotoAcquireSource *pPhotoAcquireSource, [in] BOOL fShowProgress, [in] HWND hWndParent, [in] LPCWSTR pszApplicationName, [in]
 		// IPhotoAcquireProgressCB *pPhotoAcquireProgressCB );
 		void Acquire([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource pPhotoAcquireSource, [In, MarshalAs(UnmanagedType.Bool)] bool fShowProgress,
-			[In, Optional] HWND hWndParent, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszApplicationName, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireProgressCB pPhotoAcquireProgressCB);
+			[In, Optional] HWND hWndParent, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszApplicationName, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireProgressCB pPhotoAcquireProgressCB);
 
 		/// <summary>
 		/// The method retrieves an enumeration containing the paths of all files successfully transferred during the most recent call to Acquire.
@@ -680,7 +680,7 @@ public static partial class PhotoAcquisition
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireoptionsdialog-initialize HRESULT
 		// Initialize( [in] LPCWSTR pszRegistryRoot );
-		void Initialize([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszRegistryRoot);
+		void Initialize([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszRegistryRoot);
 
 		/// <summary>The method creates and displays a modeless instance of the photo options dialog box, hosted within a parent window.</summary>
 		/// <param name="hWndParent">Handle to the parent window.</param>

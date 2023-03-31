@@ -113,12 +113,12 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="uint"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator uint(SizeT value) => value;
+	public static implicit operator uint(SizeT value) => (uint)value.val;
 
 	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="ulong"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator ulong(SizeT value) => value;
+	public static implicit operator ulong(SizeT value) => value.val;
 
 	/// <summary>Subtracts two specified <see cref="SizeT"/> values.</summary>
 	/// <param name="s1">The minuend.</param>

@@ -1863,7 +1863,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardIntroduceCardTypeA")]
 	public static extern SCARD_RET SCardIntroduceCardType([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName,
-		in Guid pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[] rgguidInterfaces,
+		in Guid pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[]? rgguidInterfaces,
 		[In] uint dwInterfaceCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtr,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtrMask, [In] uint cbAtrLen);
 
@@ -1944,7 +1944,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardIntroduceCardTypeA")]
 	public static extern SCARD_RET SCardIntroduceCardType([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName,
-		[In, Optional] IntPtr pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[] rgguidInterfaces,
+		[In, Optional] IntPtr pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[]? rgguidInterfaces,
 		[In] uint dwInterfaceCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtr,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtrMask, [In] uint cbAtrLen);
 
@@ -2232,8 +2232,8 @@ public static partial class WinSCard
 	// LPDWORD pcchCards );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListCardsA")]
-	public static extern SCARD_RET SCardListCards([In] SCARDCONTEXT hContext, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[] pbAtr,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[] rgquidInterfaces, [In] uint cguidInterfaceCount,
+	public static extern SCARD_RET SCardListCards([In] SCARDCONTEXT hContext, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? pbAtr,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[]? rgquidInterfaces, [In] uint cguidInterfaceCount,
 		[Out] IntPtr mszCards, ref uint pcchCards);
 
 	/// <summary>
@@ -2299,7 +2299,7 @@ public static partial class WinSCard
 	///   <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> Not applicable.</para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListCardsA")]
-	public static SCARD_RET SCardListCards(SCARDCONTEXT hContext, [Optional] byte[] pbAtr, [Optional] Guid[] rgquidInterfaces, out string[] mszCards)
+	public static SCARD_RET SCardListCards(SCARDCONTEXT hContext, [Optional] byte[]? pbAtr, [Optional] Guid[]? rgquidInterfaces, out string[] mszCards)
 	{
 		IntPtr ptr = default;
 		uint cch = SCARD_AUTOALLOCATE;
@@ -2800,7 +2800,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersA")]
 	public static extern SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext,
-		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] mszGroups,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[]? mszGroups,
 		[Out] IntPtr mszReaders, ref uint pcchReaders);
 
 	/// <summary>
@@ -2891,7 +2891,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersA")]
-	public static SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext, [In, Optional] string[] mszGroups, out string[] mszReaders)
+	public static SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext, [In, Optional] string[]? mszGroups, out string[] mszReaders)
 	{
 		IntPtr ptr = default;
 		uint cch = SCARD_AUTOALLOCATE;

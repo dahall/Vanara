@@ -1,19 +1,21 @@
 <Project>
   <PropertyGroup>
     <Version>4.0.0</Version>
-    <TargetFrameworks>net45;net48;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net45;net48;net6.0;net7.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
     <Authors>David Hall</Authors>
     <Company>GitHub Community</Company>
-    <Copyright>Copyright © 2017-2022</Copyright>
+    <Copyright>Copyright © 2017-2023</Copyright>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <IncludeSource>true</IncludeSource>
     <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <Nullable>enable</Nullable>
     <PackageIcon>Vanara64x64.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
@@ -22,7 +24,8 @@
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <SignAssembly>true</SignAssembly>
-    <NoWarn>$(NoWarn);NETSDK1138;SYSLIB0003;SYSLIB0004;SYSLIB0011;IL2026;IL2075;IL2067;IL2070;IL2072;IL2077;IL2080;IL2087;IL2090;CS0618;</NoWarn>
+    <NoWarn>$(NoWarn);NETSDK1138;SYSLIB0003;SYSLIB0004;SYSLIB0011;IL2026;IL2075;IL2067;IL2070;IL2072;IL2077;IL2080;IL2087;IL2090;CS0618;CA1401;CA2101;</NoWarn>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -47,5 +50,6 @@
   <!-- END: Source Link configuration. -->
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsmDef.cs" Link="AsmDef.cs" Condition="'$(MSBuildProjectExtension)' == '.csproj'"/>
   </ItemGroup>
 </Project>

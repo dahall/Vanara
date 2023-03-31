@@ -2982,14 +2982,12 @@ public static partial class Kernel32
 	{
 		var minWin7 = Environment.OSVersion.Version >= new Version(6, 1);
 		FINDEX_INFO_LEVELS lvl = excludeShortName && minWin7 ? FINDEX_INFO_LEVELS.FindExInfoBasic : FINDEX_INFO_LEVELS.FindExInfoStandard;
-		using (SafeSearchHandle h = FindFirstFileEx(lpFileName, lvl, out WIN32_FIND_DATA data, fSearchOp, default, dwAdditionalFlags))
-		{
-			if (h.IsInvalid) ThrowIfNotNoMore();
+		using SafeSearchHandle h = FindFirstFileEx(lpFileName, lvl, out WIN32_FIND_DATA data, fSearchOp, default, dwAdditionalFlags);
+		if (h.IsInvalid) ThrowIfNotNoMore();
+		yield return data;
+		while (FindNextFile(h, out data))
 			yield return data;
-			while (FindNextFile(h, out data))
-				yield return data;
-			ThrowIfNotNoMore();
-		}
+		ThrowIfNotNoMore();
 
 		static void ThrowIfNotNoMore() => Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_FILES);
 	}
@@ -2999,14 +2997,12 @@ public static partial class Kernel32
 	public static IEnumerable<string> EnumVolumes()
 	{
 		var sb = new StringBuilder(MAX_PATH, MAX_PATH);
-		using (SafeVolumeSearchHandle h = FindFirstVolume(sb, (uint)sb.Capacity))
-		{
-			if (h.IsInvalid) ThrowIfNotNoMore();
+		using SafeVolumeSearchHandle h = FindFirstVolume(sb, (uint)sb.Capacity);
+		if (h.IsInvalid) ThrowIfNotNoMore();
+		yield return sb.ToString();
+		while (FindNextVolume(h, sb, (uint)sb.Capacity))
 			yield return sb.ToString();
-			while (FindNextVolume(h, sb, (uint)sb.Capacity))
-				yield return sb.ToString();
-			ThrowIfNotNoMore();
-		}
+		ThrowIfNotNoMore();
 
 		static void ThrowIfNotNoMore() => Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_FILES);
 	}

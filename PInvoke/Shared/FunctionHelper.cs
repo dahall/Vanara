@@ -176,13 +176,11 @@ public static class FunctionHelper
 		result = default;
 		var err = (getSize ?? GetSize)(ref sz);
 		if (err.Failed && (bufErr == null || bufErr.Value != err) && !buffErrs.Contains(err)) return err;
-		using (var buf = new SafeHGlobalHandle(sz.ToInt32(null)))
-		{
-			err = method(buf.DangerousGetHandle(), ref sz);
-			if (err.Succeeded)
-				result = (outConverter ?? Conv)(buf.DangerousGetHandle(), sz);
-			return err;
-		}
+		using var buf = new SafeHGlobalHandle(sz.ToInt32(null));
+		err = method(buf.DangerousGetHandle(), ref sz);
+		if (err.Succeeded)
+			result = (outConverter ?? Conv)(buf.DangerousGetHandle(), sz);
+		return err;
 
 		Win32Error GetSize(ref TSize sz1) => method(IntPtr.Zero, ref sz1);
 

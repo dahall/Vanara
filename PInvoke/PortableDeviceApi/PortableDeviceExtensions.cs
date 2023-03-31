@@ -5,8 +5,8 @@ using System.Reflection;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PortableDeviceApi;
 
-namespace Vanara.Extensions
-{
+namespace Vanara.Extensions;
+
     /// <summary>Extension methods for classes in Vanara.PInvoke.PortableDeviceApi.</summary>
     public static class PortableDeviceExtensions
     {
@@ -148,4 +148,3 @@ namespace Vanara.Extensions
             return GetDict(parentType).TryGetValue(key, out var pi) ? pi : null;
         }
     }
-}

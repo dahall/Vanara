@@ -7,106 +7,103 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
-namespace Vanara.PInvoke.Tests
+namespace Vanara.PInvoke.Tests;
+
+[TestFixture]
+public class ThreadPoolLegacyApiSetTests
 {
-	[TestFixture]
-	public class ThreadPoolLegacyApiSetTests
+	[Test]
+	public void QueueUserWorkItemTest()
 	{
-		[Test]
-		public void QueueUserWorkItemTest()
+		int cnt = 0;
+		InitializeCriticalSection(out CRITICAL_SECTION g_cs);
+
+		try
 		{
-			var cnt = 0;
-			InitializeCriticalSection(out var g_cs);
-
-			try
-			{
-				Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)1, WT.WT_EXECUTEDEFAULT), ResultIs.Successful);
-				Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)2, WT.WT_EXECUTEINIOTHREAD), ResultIs.Successful);
-				Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)3, WT.WT_EXECUTEINLONGTHREAD), ResultIs.Successful);
-				Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)1, WT.WT_EXECUTEINTIMERTHREAD), ResultIs.Successful);
-				Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)2, WT.WT_EXECUTEINUITHREAD), ResultIs.Successful);
-				Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)3, WT.WT_EXECUTEINWAITTHREAD), ResultIs.Successful);
-			}
-			finally
-			{
-				while (cnt < 6)
-					Sleep(500);
-				DeleteCriticalSection(ref g_cs);
-			}
-
-			uint ThreadProc(IntPtr c)
-			{
-				for (var i = 0; i <= 5; i++)
-				{
-					//EnterCriticalSection(ref g_cs);
-					Debug.WriteLine($"Thread {0} (id: {1}) is {2}", c.ToInt32(), GetCurrentThreadId(), i);
-					//LeaveCriticalSection(ref g_cs);
-					InterlockedIncrement(ref cnt);
-				}
-				return 0;
-			}
+			Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)1, WT.WT_EXECUTEDEFAULT), ResultIs.Successful);
+			Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)2, WT.WT_EXECUTEINIOTHREAD), ResultIs.Successful);
+			Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)3, WT.WT_EXECUTEINLONGTHREAD), ResultIs.Successful);
+			Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)1, WT.WT_EXECUTEINTIMERTHREAD), ResultIs.Successful);
+			Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)2, WT.WT_EXECUTEINUITHREAD), ResultIs.Successful);
+			Assert.That(QueueUserWorkItem(ThreadProc, (IntPtr)3, WT.WT_EXECUTEINWAITTHREAD), ResultIs.Successful);
+		}
+		finally
+		{
+			while (cnt < 6)
+				Sleep(500);
+			DeleteCriticalSection(ref g_cs);
 		}
 
-		[Test]
-		public void RegisterWaitForSingleObjectTest()
+		uint ThreadProc(IntPtr c)
 		{
-			SafeEventHandle hCmplEvt;
-			var start = DateTime.Now;
-			using (var hEvent = CreateEvent(null, true, false, null))
-			using (hCmplEvt = CreateEvent(null, true, false, null))
+			for (int i = 0; i <= 5; i++)
 			{
-				Debug.WriteLine("Register wait proc...");
-				Assert.That(RegisterWaitForSingleObject(out var hWait, hEvent, WaitProc, default, 3000, WT_SET_MAX_THREADPOOL_THREADS(WT.WT_EXECUTEONLYONCE, 503)), ResultIs.Successful);
-				using (hWait)
-				{
-					hWait.WaitForAllFunctions = true;
-					Sleep(1000);
-					Assert.That(hEvent.Set(), ResultIs.Successful);
-				}
-				Debug.WriteLine($"{(DateTime.Now - start).TotalSeconds} Exiting wait proc...");
+				//EnterCriticalSection(ref g_cs);
+				Debug.WriteLine($"Thread {0} (id: {1}) is {2}", c.ToInt32(), GetCurrentThreadId(), i);
+				//LeaveCriticalSection(ref g_cs);
+				InterlockedIncrement(ref cnt);
 			}
+			return 0;
+		}
+	}
 
-			void WaitProc(IntPtr lpParameter, bool TimerOrWaitFired)
+	[Test]
+	public void RegisterWaitForSingleObjectTest()
+	{
+		SafeEventHandle hCmplEvt;
+		DateTime start = DateTime.Now;
+		using (SafeEventHandle hEvent = CreateEvent(null, true, false, null))
+		using (hCmplEvt = CreateEvent(null, true, false, null))
+		{
+			Debug.WriteLine("Register wait proc...");
+			Assert.That(RegisterWaitForSingleObject(out SafeRegisteredWaitHandle hWait, hEvent, WaitProc, default, 3000, WT_SET_MAX_THREADPOOL_THREADS(WT.WT_EXECUTEONLYONCE, 503)), ResultIs.Successful);
+			using (hWait)
 			{
-				Debug.WriteLine($"{(DateTime.Now - start).TotalSeconds} In wait proc (TimerOrWaitFired={TimerOrWaitFired})...");
+				hWait.WaitForAllFunctions = true;
+				Sleep(1000);
+				Assert.That(hEvent.Set(), ResultIs.Successful);
 			}
+			Debug.WriteLine($"{(DateTime.Now - start).TotalSeconds} Exiting wait proc...");
 		}
 
-		[Test]
-		public void TimerQueueTest()
+		void WaitProc(IntPtr lpParameter, bool TimerOrWaitFired)
 		{
-			// Use an event object to track the TimerRoutine execution
-			SafeEventHandle gDoneEvent;
-			using (gDoneEvent = CreateEvent(null, true, false, null))
-			{
-				Assert.That(gDoneEvent, ResultIs.ValidHandle);
+			Debug.WriteLine($"{(DateTime.Now - start).TotalSeconds} In wait proc (TimerOrWaitFired={TimerOrWaitFired})...");
+		}
+	}
 
-				// Create the timer queue.
-				using (var hTimerQueue = CreateTimerQueue())
-				{
-					Assert.That(hTimerQueue, ResultIs.ValidHandle);
+	[Test]
+	public void TimerQueueTest()
+	{
+		// Use an event object to track the TimerRoutine execution
+		SafeEventHandle gDoneEvent;
+		using (gDoneEvent = CreateEvent(null, true, false, null))
+		{
+			Assert.That(gDoneEvent, ResultIs.ValidHandle);
 
-					// Establish that all callback functions are complete before disposing.
-					hTimerQueue.CompletionEvent = SafeEventHandle.InvalidHandle;
+			// Create the timer queue.
+			using SafeTimerQueueHandle hTimerQueue = CreateTimerQueue();
+			Assert.That(hTimerQueue, ResultIs.ValidHandle);
 
-					// Set a timer to call the timer routine in 2 then 1 second.
-					Assert.That(CreateTimerQueueTimer(out var hTimer, hTimerQueue, TimerRoutine, default, 2000), ResultIs.Successful);
-					Assert.That(ChangeTimerQueueTimer(hTimerQueue, hTimer, 1000, 0), ResultIs.Successful);
+			// Establish that all callback functions are complete before disposing.
+			hTimerQueue.CompletionEvent = SafeEventHandle.InvalidHandle;
 
-					// TODO: Do other useful work here
+			// Set a timer to call the timer routine in 2 then 1 second.
+			Assert.That(CreateTimerQueueTimer(out TimerQueueTimerHandle hTimer, hTimerQueue, TimerRoutine, default, 2000), ResultIs.Successful);
+			Assert.That(ChangeTimerQueueTimer(hTimerQueue, hTimer, 1000, 0), ResultIs.Successful);
 
-					// Wait for the timer-queue thread to complete using an event object. The thread will signal the event at that time.
-					Assert.That(WaitForSingleObject(gDoneEvent, INFINITE), ResultIs.Value(WAIT_STATUS.WAIT_OBJECT_0));
+			// TODO: Do other useful work here
 
-					// Forceably delete the timer.
-					Assert.That(DeleteTimerQueueTimer(hTimerQueue, hTimer, SafeEventHandle.Null), ResultIs.Successful);
-				}
-			}
+			// Wait for the timer-queue thread to complete using an event object. The thread will signal the event at that time.
+			Assert.That(WaitForSingleObject(gDoneEvent, INFINITE), ResultIs.Value(WAIT_STATUS.WAIT_OBJECT_0));
 
-			void TimerRoutine(IntPtr lpParam, bool TimerOrWaitFired)
-			{
-				SetEvent(gDoneEvent);
-			}
+			// Forceably delete the timer.
+			Assert.That(DeleteTimerQueueTimer(hTimerQueue, hTimer, SafeEventHandle.Null), ResultIs.Successful);
+		}
+
+		void TimerRoutine(IntPtr lpParam, bool TimerOrWaitFired)
+		{
+			SetEvent(gDoneEvent);
 		}
 	}
 }

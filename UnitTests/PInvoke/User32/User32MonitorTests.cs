@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using static Vanara.PInvoke.User32;
 
-namespace Vanara.PInvoke.Tests
-{
+namespace Vanara.PInvoke.Tests;
+
     [TestFixture()]
     public partial class User32Tests
     {
@@ -55,4 +55,3 @@ namespace Vanara.PInvoke.Tests
             }
         }
     }
-}

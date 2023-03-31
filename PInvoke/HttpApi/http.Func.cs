@@ -581,7 +581,7 @@ public static partial class HttpApi
 	// Flags, [out] PHANDLE RequestQueueHandle );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpCreateRequestQueue")]
-	public static extern Win32Error HttpCreateRequestQueue(HTTPAPI_VERSION Version, [Optional, MarshalAs(UnmanagedType.LPWStr)] string Name,
+	public static extern Win32Error HttpCreateRequestQueue(HTTPAPI_VERSION Version, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? Name,
 		[In, Optional] SECURITY_ATTRIBUTES SecurityAttributes, [In, Optional] HTTP_CREATE_REQUEST_QUEUE_FLAG Flags,
 		out SafeHREQQUEUE RequestQueueHandle);
 
@@ -742,7 +742,7 @@ public static partial class HttpApi
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpDeclarePush")]
 	public static extern Win32Error HttpDeclarePush([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_VERB Verb,
-		[MarshalAs(UnmanagedType.LPWStr)] string Path, [Optional, MarshalAs(UnmanagedType.LPStr)] string Query, [In, Optional] IntPtr Headers);
+		[MarshalAs(UnmanagedType.LPWStr)] string Path, [Optional, MarshalAs(UnmanagedType.LPStr)] string? Query, [In, Optional] IntPtr Headers);
 
 	/// <summary>
 	/// Declares a resource-to-subresource relationship to use for an HTTP server push. HTTP.sys then performs an HTTP 2.0 server push for
@@ -787,7 +787,7 @@ public static partial class HttpApi
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpDeclarePush")]
 	public static extern Win32Error HttpDeclarePush([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_VERB Verb,
-		[MarshalAs(UnmanagedType.LPWStr)] string Path, [Optional, MarshalAs(UnmanagedType.LPStr)] string Query, in HTTP_REQUEST_HEADERS Headers);
+		[MarshalAs(UnmanagedType.LPWStr)] string Path, [Optional, MarshalAs(UnmanagedType.LPStr)] string? Query, in HTTP_REQUEST_HEADERS Headers);
 
 	/// <summary>Delegates a request from the source request queue to the target request queue.</summary>
 	/// <param name="RequestQueueHandle">

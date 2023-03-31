@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using static Vanara.PInvoke.EnhancedStorage;
 
-namespace Vanara.PInvoke.Tests
-{
+namespace Vanara.PInvoke.Tests;
+
     [TestFixture]
     public class EnhancedStorageTests
     {
@@ -43,4 +43,3 @@ namespace Vanara.PInvoke.Tests
             TestContext.WriteLine(a.GetDescription());
         }
     }
-}

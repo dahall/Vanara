@@ -8,44 +8,43 @@ using System.Threading.Tasks;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.NtDll;
 
-namespace Vanara.PInvoke.Tests
+namespace Vanara.PInvoke.Tests;
+
+[TestFixture]
+public partial class NtDllTests
 {
-	[TestFixture]
-	public partial class NtDllTests
+	[Test]
+	public void NtQuerySystemInformationTest()
 	{
-		[Test]
-		public void NtQuerySystemInformationTest()
-		{
 #pragma warning disable CS0618 // Type or member is obsolete
-			var bi = NtQuerySystemInformation<SYSTEM_BASIC_INFORMATION>(SYSTEM_INFORMATION_CLASS.SystemBasicInformation);
+		var bi = NtQuerySystemInformation<SYSTEM_BASIC_INFORMATION>(SYSTEM_INFORMATION_CLASS.SystemBasicInformation);
 #pragma warning restore CS0618 // Type or member is obsolete
-			Assert.That(bi.NumberOfProcessors, Is.Not.Zero);
-			var qi = NtQuerySystemInformation<SYSTEM_REGISTRY_QUOTA_INFORMATION>(SYSTEM_INFORMATION_CLASS.SystemRegistryQuotaInformation);
-			Assert.That(qi.RegistryQuotaUsed, Is.Not.Zero);
-			var ppi = NtQuerySystemInformation<SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION[]>(SYSTEM_INFORMATION_CLASS.SystemProcessorPerformanceInformation);
-			Assert.That(ppi.Length, Is.EqualTo(bi.NumberOfProcessors));
+		Assert.That(bi.NumberOfProcessors, Is.Not.Zero);
+		var qi = NtQuerySystemInformation<SYSTEM_REGISTRY_QUOTA_INFORMATION>(SYSTEM_INFORMATION_CLASS.SystemRegistryQuotaInformation);
+		Assert.That(qi.RegistryQuotaUsed, Is.Not.Zero);
+		var ppi = NtQuerySystemInformation<SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION[]>(SYSTEM_INFORMATION_CLASS.SystemProcessorPerformanceInformation);
+		Assert.That(ppi.Length, Is.EqualTo(bi.NumberOfProcessors));
 
-			var arr = NtQuerySystemInformation<SYSTEM_PROCESS_INFORMATION[]>(SYSTEM_INFORMATION_CLASS.SystemProcessInformation);
-			var pti = NtQuerySystemInformation_Process();
-			Assert.That(arr.Length, Is.EqualTo(pti.Count));
+		var arr = NtQuerySystemInformation<SYSTEM_PROCESS_INFORMATION[]>(SYSTEM_INFORMATION_CLASS.SystemProcessInformation);
+		var pti = NtQuerySystemInformation_Process();
+		Assert.That(arr.Length, Is.EqualTo(pti.Count));
 
-			TestContext.WriteLine($"{bi.NumberOfProcessors} Cores; {pti.Count} Processes; {pti.Sum(t => t.Item2.Length)} Threads");
-		}
+		TestContext.WriteLine($"{bi.NumberOfProcessors} Cores; {pti.Count} Processes; {pti.Sum(t => t.Item2.Length)} Threads");
+	}
 
-		[Test]
-		public void SafeUNICODE_STRING_Test()
+	[Test]
+	public void SafeUNICODE_STRING_Test()
+	{
+		const string testStr = "Testing. 1. 2. 3.";
+		SafeUNICODE_STRING sstr = null;
+		try
 		{
-			const string testStr = "Testing. 1. 2. 3.";
-			SafeUNICODE_STRING sstr = null;
-			try
-			{
-				Assert.That(() => sstr = testStr, Throws.Nothing);
-				Assert.That((string)sstr, Is.EqualTo(testStr));
-			}
-			finally
-			{
-				sstr?.Dispose();
-			}
+			Assert.That(() => sstr = testStr, Throws.Nothing);
+			Assert.That((string)sstr, Is.EqualTo(testStr));
+		}
+		finally
+		{
+			sstr?.Dispose();
 		}
 	}
 }

@@ -8,8 +8,8 @@ using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.NetApi32;
 
-namespace Vanara
-{
+namespace Vanara;
+
     /// <summary>Represents a user account on a server.</summary>
     [DefaultProperty(nameof(UserName))]
     public sealed class UserAccount : IEquatable<UserAccount>, INamedEntity
@@ -734,4 +734,3 @@ namespace Vanara
 
         private IEnumerable<UserAccount> Enumerate() => NetUserEnum<USER_INFO_0>(Target, 0).Select(u => new UserAccount(u.usri0_name, Target));
     }
-}

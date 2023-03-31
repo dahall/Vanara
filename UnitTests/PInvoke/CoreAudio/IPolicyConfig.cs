@@ -3,8 +3,8 @@ using System.Runtime.InteropServices;
 using static Vanara.PInvoke.CoreAudio;
 using static Vanara.PInvoke.Ole32;
 
-namespace Vanara.PInvoke.Tests
-{
+namespace Vanara.PInvoke.Tests;
+
     /// <summary>Functions, structures and constants from Windows Core Audio Api.</summary>
     public static partial class CoreAudio
     {
@@ -58,4 +58,3 @@ namespace Vanara.PInvoke.Tests
         [ComImport, Guid("870af99c-171d-4f9e-af0d-e63df40c2bc9"), ClassInterface(ClassInterfaceType.None)]
         public class PolicyConfig { }
     }
-}

@@ -6,8 +6,8 @@ using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-namespace Vanara.PInvoke
-{
+namespace Vanara.PInvoke;
+
     public static partial class PortableDeviceApi
     {
         /****************************************************************************
@@ -4786,4 +4786,3 @@ namespace Vanara.PInvoke
             public bool Required { get; }
         }
     }
-}

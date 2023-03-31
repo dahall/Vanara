@@ -72,7 +72,7 @@ namespace Vanara.Extensions
 					return ptr.ToStringEnum(charSet, 0, size).ToArray();
 
 				case REG_VALUE_TYPE.REG_QWORD:
-					return ptr.ToArray<ulong>((int)size);
+					return ptr.ToStructure<ulong>((int)size);
 
 				case REG_VALUE_TYPE.REG_SZ:
 					return StringHelper.GetString(ptr, charSet, size);
@@ -114,13 +114,13 @@ namespace Vanara.PInvoke
 		[CorrespondingType(typeof(uint))]
 		REG_DWORD = 4,
 
-		/// <summary>
-		/// A 32-bit number in little-endian format.
-		/// <para>Windows is designed to run on little-endian computer architectures.</para>
-		/// <para>Therefore, this value is defined as REG_DWORD in the Windows header files.</para>
-		/// </summary>
-		[CorrespondingType(typeof(uint))]
-		REG_DWORD_LITTLE_ENDIAN = 4,
+		///// <summary>
+		///// A 32-bit number in little-endian format.
+		///// <para>Windows is designed to run on little-endian computer architectures.</para>
+		///// <para>Therefore, this value is defined as REG_DWORD in the Windows header files.</para>
+		///// </summary>
+		//[CorrespondingType(typeof(uint))]
+		//REG_DWORD_LITTLE_ENDIAN = 4,
 
 		/// <summary>
 		/// A 32-bit number in big-endian format.
@@ -158,15 +158,15 @@ namespace Vanara.PInvoke
 		[CorrespondingType(typeof(ulong))]
 		REG_QWORD = 11,
 
-		/// <summary>
-		/// A 64-bit number in little-endian format.
-		/// <para>
-		/// Windows is designed to run on little-endian computer architectures. Therefore, this value is defined as REG_QWORD in the Windows
-		/// header files.
-		/// </para>
-		/// </summary>
-		[CorrespondingType(typeof(ulong))]
-		REG_QWORD_LITTLE_ENDIAN = 11,
+		///// <summary>
+		///// A 64-bit number in little-endian format.
+		///// <para>
+		///// Windows is designed to run on little-endian computer architectures. Therefore, this value is defined as REG_QWORD in the Windows
+		///// header files.
+		///// </para>
+		///// </summary>
+		//[CorrespondingType(typeof(ulong))]
+		//REG_QWORD_LITTLE_ENDIAN = 11,
 
 		/// <summary>
 		/// A null-terminated string. This will be either a Unicode or an ANSI string, depending on whether you use the Unicode or ANSI functions.

@@ -7,8 +7,8 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
-namespace Vanara.PInvoke
-{
+namespace Vanara.PInvoke;
+
     /// <summary>Items from the PortableDeviceApi.dll</summary>
     public static partial class PortableDeviceApi
     {
@@ -2760,4 +2760,3 @@ namespace Vanara.PInvoke
         [ComImport, Guid("1649b154-c794-497a-9b03-f3f0121302f3"), ClassInterface(ClassInterfaceType.None)]
         public class PortableDeviceServiceFTM { }
     }
-}

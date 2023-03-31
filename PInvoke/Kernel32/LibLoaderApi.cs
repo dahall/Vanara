@@ -1872,7 +1872,7 @@ public static partial class Kernel32
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("libloaderapi2.h", MSDNShortId = "43690689-4372-48ae-ac6d-230250f05f7c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryOptionalDelayLoadedAPI(HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, uint Reserved = 0);
+	public static extern bool QueryOptionalDelayLoadedAPI(HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string? lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, uint Reserved = 0);
 
 	/// <summary>Removes a directory that was added to the process DLL search path by using <c>AddDllDirectory</c>.</summary>
 	/// <param name="Cookie">The cookie returned by <c>AddDllDirectory</c> when the directory was added to the search path.</param>

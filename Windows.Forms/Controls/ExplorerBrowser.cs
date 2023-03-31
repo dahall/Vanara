@@ -23,8 +23,8 @@ using static Vanara.PInvoke.User32;
 using IMessageFilter = System.Windows.Forms.IMessageFilter;
 using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
 
-namespace Vanara.Windows.Forms
-{
+namespace Vanara.Windows.Forms;
+
     /// <summary>
     /// Indicates the content options of the explorer browser. Typically use one, or a bitwise combination of these flags to specify how
     /// content should appear in the explorer browser control
@@ -1570,4 +1570,3 @@ namespace Vanara.Windows.Forms
             }
         }
     }
-}

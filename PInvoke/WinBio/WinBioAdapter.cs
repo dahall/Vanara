@@ -2,12 +2,12 @@ using System;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
-namespace Vanara.PInvoke
+namespace Vanara.PInvoke;
+
+/// <summary>Items from the WinBio.dll</summary>
+public static partial class WinBio
 {
-	/// <summary>Items from the WinBio.dll</summary>
-	public static partial class WinBio
-	{
-		/*
+	/*
 WINBIO_ENGINE_INTERFACE structure
 WINBIO_SENSOR_INTERFACE structure
 WINBIO_STORAGE_INTERFACE structure
@@ -105,6 +105,5 @@ PIBIO_STORAGE_QUERY_EXTENDED_INFO_FN callback function
 WbioQueryEngineInterface function
 WbioQuerySensorInterface function
 WbioQueryStorageInterface function
-		*/
-	}
+	*/
 }

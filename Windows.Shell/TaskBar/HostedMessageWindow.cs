@@ -4,8 +4,8 @@ using System.Security;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 
-namespace Vanara.Windows.Shell
-{
+namespace Vanara.Windows.Shell;
+
     internal interface IMessageWindowHost
     {
         void WndProc(ref Message msg);
@@ -65,4 +65,3 @@ namespace Vanara.Windows.Shell
 
         protected override bool DoNotClose => true;
     }
-}

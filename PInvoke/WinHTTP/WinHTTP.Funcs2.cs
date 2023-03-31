@@ -1379,7 +1379,7 @@ public static partial class WinHTTP
 	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpSendRequest")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WinHttpSendRequest(HINTERNET hRequest, [Optional, MarshalAs(UnmanagedType.LPWStr)] string lpszHeaders,
+	public static extern bool WinHttpSendRequest(HINTERNET hRequest, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? lpszHeaders,
 		[Optional] int dwHeadersLength, [In, Optional] IntPtr lpOptional, [Optional] uint dwOptionalLength, [Optional] uint dwTotalLength,
 		[In, Optional] IntPtr dwContext);
 
@@ -1492,7 +1492,7 @@ public static partial class WinHTTP
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpSetCredentials")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool WinHttpSetCredentials(HINTERNET hRequest, WINHTTP_AUTH_TARGET AuthTargets, WINHTTP_AUTH_SCHEME AuthScheme,
-		[MarshalAs(UnmanagedType.LPWStr)] string pwszUserName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszPassword, IntPtr pAuthParams = default);
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszUserName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszPassword, IntPtr pAuthParams = default);
 
 	/// <summary>The <c>WinHttpSetDefaultProxyConfiguration</c> function sets the default WinHTTP proxy configuration in the registry.</summary>
 	/// <param name="pProxyInfo">A pointer to a variable of type WINHTTP_PROXY_INFO that specifies the default proxy configuration.</param>

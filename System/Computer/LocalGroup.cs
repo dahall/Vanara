@@ -6,8 +6,8 @@ using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.NetApi32;
 
-namespace Vanara
-{
+namespace Vanara;
+
     /// <summary>Represents a local group on a server.</summary>
     public class LocalGroup : IEquatable<LocalGroup>
     {
@@ -276,4 +276,3 @@ namespace Vanara
 
         private IEnumerable<LocalGroup> Enumerate() => NetLocalGroupEnum<LOCALGROUP_INFO_0>(Target).Select(i => new LocalGroup(Target, i.lgrpi0_name));
     }
-}
