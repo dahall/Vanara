@@ -447,6 +447,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>The Yes button was selected.</summary>
 			IDYES = 6,
+
+			/// <summary>A call to <c>MessageBoxTimeout</c> has timed-out.</summary>
+			MB_TIMEDOUT = 32000,
 		}
 
 		/// <summary>A set of bit-flags that specify properties of the MouseKeys feature.</summary>
@@ -3800,10 +3803,8 @@ namespace Vanara.PInvoke
 		public static extern bool MessageBeep(uint uType = 0);
 
 		/// <summary>
-		/// <para>
 		/// Displays a modal dialog box that contains a system icon, a set of buttons, and a brief application-specific message, such as
 		/// status or error information. The message box returns an integer value that indicates which button the user clicked.
-		/// </para>
 		/// </summary>
 		/// <param name="hWnd">
 		/// <para>Type: <c>HWND</c></para>
@@ -3830,188 +3831,197 @@ namespace Vanara.PInvoke
 		/// <para>To indicate the buttons displayed in the message box, specify one of the following values.</para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
 		/// </listheader>
 		/// <item>
-		/// <term>MB_ABORTRETRYIGNORE 0x00000002L</term>
-		/// <term>The message box contains three push buttons: Abort, Retry, and Ignore.</term>
+		/// <description><c>MB_ABORTRETRYIGNORE</c> 0x00000002L</description>
+		/// <description>The message box contains three push buttons: <c>Abort</c>, <c>Retry</c>, and <c>Ignore</c>.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_CANCELTRYCONTINUE 0x00000006L</term>
-		/// <term>The message box contains three push buttons: Cancel, Try Again, Continue. Use this message box type instead of MB_ABORTRETRYIGNORE.</term>
+		/// <description><c>MB_CANCELTRYCONTINUE</c> 0x00000006L</description>
+		/// <description>
+		/// The message box contains three push buttons: <c>Cancel</c>, <c>Try Again</c>, <c>Continue</c>. Use this message box type instead
+		/// of MB_ABORTRETRYIGNORE.
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_HELP 0x00004000L</term>
-		/// <term>
-		/// Adds a Help button to the message box. When the user clicks the Help button or presses F1, the system sends a WM_HELP message to
-		/// the owner.
-		/// </term>
+		/// <description><c>MB_HELP</c> 0x00004000L</description>
+		/// <description>
+		/// Adds a <c>Help</c> button to the message box. When the user clicks the <c>Help</c> button or presses F1, the system sends a
+		/// WM_HELP message to the owner.
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_OK 0x00000000L</term>
-		/// <term>The message box contains one push button: OK. This is the default.</term>
+		/// <description><c>MB_OK</c> 0x00000000L</description>
+		/// <description>The message box contains one push button: <c>OK</c>. This is the default.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_OKCANCEL 0x00000001L</term>
-		/// <term>The message box contains two push buttons: OK and Cancel.</term>
+		/// <description><c>MB_OKCANCEL</c> 0x00000001L</description>
+		/// <description>The message box contains two push buttons: <c>OK</c> and <c>Cancel</c>.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_RETRYCANCEL 0x00000005L</term>
-		/// <term>The message box contains two push buttons: Retry and Cancel.</term>
+		/// <description><c>MB_RETRYCANCEL</c> 0x00000005L</description>
+		/// <description>The message box contains two push buttons: <c>Retry</c> and <c>Cancel</c>.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_YESNO 0x00000004L</term>
-		/// <term>The message box contains two push buttons: Yes and No.</term>
+		/// <description><c>MB_YESNO</c> 0x00000004L</description>
+		/// <description>The message box contains two push buttons: <c>Yes</c> and <c>No</c>.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_YESNOCANCEL 0x00000003L</term>
-		/// <term>The message box contains three push buttons: Yes, No, and Cancel.</term>
+		/// <description><c>MB_YESNOCANCEL</c> 0x00000003L</description>
+		/// <description>The message box contains three push buttons: <c>Yes</c>, <c>No</c>, and <c>Cancel</c>.</description>
 		/// </item>
 		/// </list>
+		/// <para>Â</para>
 		/// <para>To display an icon in the message box, specify one of the following values.</para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
 		/// </listheader>
 		/// <item>
-		/// <term>MB_ICONEXCLAMATION 0x00000030L</term>
-		/// <term>An exclamation-point icon appears in the message box.</term>
+		/// <description><c>MB_ICONEXCLAMATION</c> 0x00000030L</description>
+		/// <description>An exclamation-point icon appears in the message box.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_ICONWARNING 0x00000030L</term>
-		/// <term>An exclamation-point icon appears in the message box.</term>
+		/// <description><c>MB_ICONWARNING</c> 0x00000030L</description>
+		/// <description>An exclamation-point icon appears in the message box.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_ICONINFORMATION 0x00000040L</term>
-		/// <term>An icon consisting of a lowercase letter i in a circle appears in the message box.</term>
+		/// <description><c>MB_ICONINFORMATION</c> 0x00000040L</description>
+		/// <description>An icon consisting of a lowercase letter <c>i</c> in a circle appears in the message box.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_ICONASTERISK 0x00000040L</term>
-		/// <term>An icon consisting of a lowercase letter i in a circle appears in the message box.</term>
+		/// <description><c>MB_ICONASTERISK</c> 0x00000040L</description>
+		/// <description>An icon consisting of a lowercase letter <c>i</c> in a circle appears in the message box.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_ICONQUESTION 0x00000020L</term>
-		/// <term>
+		/// <description><c>MB_ICONQUESTION</c> 0x00000020L</description>
+		/// <description>
 		/// A question-mark icon appears in the message box. The question-mark message icon is no longer recommended because it does not
 		/// clearly represent a specific type of message and because the phrasing of a message as a question could apply to any message type.
 		/// In addition, users can confuse the message symbol question mark with Help information. Therefore, do not use this question mark
 		/// message symbol in your message boxes. The system continues to support its inclusion only for backward compatibility.
-		/// </term>
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_ICONSTOP 0x00000010L</term>
-		/// <term>A stop-sign icon appears in the message box.</term>
+		/// <description><c>MB_ICONSTOP</c> 0x00000010L</description>
+		/// <description>A stop-sign icon appears in the message box.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_ICONERROR 0x00000010L</term>
-		/// <term>A stop-sign icon appears in the message box.</term>
+		/// <description><c>MB_ICONERROR</c> 0x00000010L</description>
+		/// <description>A stop-sign icon appears in the message box.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_ICONHAND 0x00000010L</term>
-		/// <term>A stop-sign icon appears in the message box.</term>
+		/// <description><c>MB_ICONHAND</c> 0x00000010L</description>
+		/// <description>A stop-sign icon appears in the message box.</description>
 		/// </item>
 		/// </list>
+		/// <para>Â</para>
 		/// <para>To indicate the default button, specify one of the following values.</para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
 		/// </listheader>
 		/// <item>
-		/// <term>MB_DEFBUTTON1 0x00000000L</term>
-		/// <term>
-		/// The first button is the default button. MB_DEFBUTTON1 is the default unless MB_DEFBUTTON2, MB_DEFBUTTON3, or MB_DEFBUTTON4 is specified.
-		/// </term>
+		/// <description><c>MB_DEFBUTTON1</c> 0x00000000L</description>
+		/// <description>
+		/// The first button is the default button. <c>MB_DEFBUTTON1</c> is the default unless <c>MB_DEFBUTTON2</c>, <c>MB_DEFBUTTON3</c>, or
+		/// <c>MB_DEFBUTTON4</c> is specified.
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_DEFBUTTON2 0x00000100L</term>
-		/// <term>The second button is the default button.</term>
+		/// <description><c>MB_DEFBUTTON2</c> 0x00000100L</description>
+		/// <description>The second button is the default button.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_DEFBUTTON3 0x00000200L</term>
-		/// <term>The third button is the default button.</term>
+		/// <description><c>MB_DEFBUTTON3</c> 0x00000200L</description>
+		/// <description>The third button is the default button.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_DEFBUTTON4 0x00000300L</term>
-		/// <term>The fourth button is the default button.</term>
+		/// <description><c>MB_DEFBUTTON4</c> 0x00000300L</description>
+		/// <description>The fourth button is the default button.</description>
 		/// </item>
 		/// </list>
+		/// <para>Â</para>
 		/// <para>To indicate the modality of the dialog box, specify one of the following values.</para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
 		/// </listheader>
 		/// <item>
-		/// <term>MB_APPLMODAL 0x00000000L</term>
-		/// <term>
-		/// The user must respond to the message box before continuing work in the window identified by the hWnd parameter. However, the user
-		/// can move to the windows of other threads and work in those windows. Depending on the hierarchy of windows in the application, the
-		/// user may be able to move to other windows within the thread. All child windows of the parent of the message box are automatically
-		/// disabled, but pop-up windows are not. MB_APPLMODAL is the default if neither MB_SYSTEMMODAL nor MB_TASKMODAL is specified.
-		/// </term>
+		/// <description><c>MB_APPLMODAL</c> 0x00000000L</description>
+		/// <description>
+		/// The user must respond to the message box before continuing work in the window identified by the <c>hWnd</c> parameter. However,
+		/// the user can move to the windows of other threads and work in those windows. Depending on the hierarchy of windows in the
+		/// application, the user may be able to move to other windows within the thread. All child windows of the parent of the message box
+		/// are automatically disabled, but pop-up windows are not. <c>MB_APPLMODAL</c> is the default if neither <c>MB_SYSTEMMODAL</c> nor
+		/// <c>MB_TASKMODAL</c> is specified.
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_SYSTEMMODAL 0x00001000L</term>
-		/// <term>
-		/// Same as MB_APPLMODAL except that the message box has the WS_EX_TOPMOST style. Use system-modal message boxes to notify the user
-		/// of serious, potentially damaging errors that require immediate attention (for example, running out of memory). This flag has no
-		/// effect on the user's ability to interact with windows other than those associated with hWnd.
-		/// </term>
+		/// <description><c>MB_SYSTEMMODAL</c> 0x00001000L</description>
+		/// <description>
+		/// Same as MB_APPLMODAL except that the message box has the <c>WS_EX_TOPMOST</c> style. Use system-modal message boxes to notify the
+		/// user of serious, potentially damaging errors that require immediate attention (for example, running out of memory). This flag has
+		/// no effect on the user's ability to interact with windows other than those associated with <c>hWnd</c>.
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_TASKMODAL 0x00002000L</term>
-		/// <term>
-		/// Same as MB_APPLMODAL except that all the top-level windows belonging to the current thread are disabled if the hWnd parameter is
-		/// NULL. Use this flag when the calling application or library does not have a window handle available but still needs to prevent
-		/// input to other windows in the calling thread without suspending other threads.
-		/// </term>
+		/// <description><c>MB_TASKMODAL</c> 0x00002000L</description>
+		/// <description>
+		/// Same as <c>MB_APPLMODAL</c> except that all the top-level windows belonging to the current thread are disabled if the <c>hWnd</c>
+		/// parameter is <c>NULL</c>. Use this flag when the calling application or library does not have a window handle available but still
+		/// needs to prevent input to other windows in the calling thread without suspending other threads.
+		/// </description>
 		/// </item>
 		/// </list>
+		/// <para>Â</para>
 		/// <para>To specify other options, use one or more of the following values.</para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
 		/// </listheader>
 		/// <item>
-		/// <term>MB_DEFAULT_DESKTOP_ONLY 0x00020000L</term>
-		/// <term>
+		/// <description><c>MB_DEFAULT_DESKTOP_ONLY</c> 0x00020000L</description>
+		/// <description>
 		/// Same as desktop of the interactive window station. For more information, see Window Stations. If the current input desktop is not
-		/// the default desktop, MessageBox does not return until the user switches to the default desktop.
-		/// </term>
+		/// the default desktop, <c>MessageBox</c> does not return until the user switches to the default desktop.
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_RIGHT 0x00080000L</term>
-		/// <term>The text is right-justified.</term>
+		/// <description><c>MB_RIGHT</c> 0x00080000L</description>
+		/// <description>The text is right-justified.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_RTLREADING 0x00100000L</term>
-		/// <term>Displays message and caption text using right-to-left reading order on Hebrew and Arabic systems.</term>
+		/// <description><c>MB_RTLREADING</c> 0x00100000L</description>
+		/// <description>Displays message and caption text using right-to-left reading order on Hebrew and Arabic systems.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_SETFOREGROUND 0x00010000L</term>
-		/// <term>
+		/// <description><c>MB_SETFOREGROUND</c> 0x00010000L</description>
+		/// <description>
 		/// The message box becomes the foreground window. Internally, the system calls the SetForegroundWindow function for the message box.
-		/// </term>
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <term>MB_TOPMOST 0x00040000L</term>
-		/// <term>The message box is created with the WS_EX_TOPMOST window style.</term>
+		/// <description><c>MB_TOPMOST</c> 0x00040000L</description>
+		/// <description>The message box is created with the <c>WS_EX_TOPMOST</c> window style.</description>
 		/// </item>
 		/// <item>
-		/// <term>MB_SERVICE_NOTIFICATION 0x00200000L</term>
-		/// <term>
+		/// <description><c>MB_SERVICE_NOTIFICATION</c> 0x00200000L</description>
+		/// <description>
 		/// The caller is a service notifying the user of an event. The function displays a message box on the current active desktop, even
-		/// if there is no user logged on to the computer. Terminal Services: If the calling thread has an impersonation token, the function
-		/// directs the message box to the session specified in the impersonation token. If this flag is set, the hWnd parameter must be
-		/// NULL. This is so that the message box can appear on a desktop other than the desktop corresponding to the hWnd. For information
-		/// on security considerations in regard to using this flag, see Interactive Services. In particular, be aware that this flag can
-		/// produce interactive content on a locked desktop and should therefore be used for only a very limited set of scenarios, such as
-		/// resource exhaustion.
-		/// </term>
+		/// if there is no user logged on to the computer. <c>Terminal Services:</c> If the calling thread has an impersonation token, the
+		/// function directs the message box to the session specified in the impersonation token. If this flag is set, the <c>hWnd</c>
+		/// parameter must be <c>NULL</c>. This is so that the message box can appear on a desktop other than the desktop corresponding to
+		/// the <c>hWnd</c>. For information on security considerations in regard to using this flag, see Interactive Services. In
+		/// particular, be aware that this flag can produce interactive content on a locked desktop and should therefore be used for only a
+		/// very limited set of scenarios, such as resource exhaustion.
+		/// </description>
 		/// </item>
 		/// </list>
 		/// </param>
@@ -4019,89 +4029,93 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>int</c></para>
 		/// <para>
 		/// If a message box has a <c>Cancel</c> button, the function returns the <c>IDCANCEL</c> value if either the ESC key is pressed or
-		/// the <c>Cancel</c> button is selected. If the message box has no <c>Cancel</c> button, pressing ESC has no effect.
+		/// the <c>Cancel</c> button is selected. If the message box has no <c>Cancel</c> button, pressing ESC will no effect - unless an
+		/// MB_OK button is present. If an MB_OK button is displayed and the user presses ESC, the return value will be <c>IDOK</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// <para>If the function succeeds, the return value is one of the following menu-item values.</para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Return code/value</term>
-		/// <term>Description</term>
+		/// <description>Return code/value</description>
+		/// <description>Description</description>
 		/// </listheader>
 		/// <item>
-		/// <term>IDABORT 3</term>
-		/// <term>The Abort button was selected.</term>
+		/// <description><c>IDABORT</c> 3</description>
+		/// <description>The <c>Abort</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDCANCEL 2</term>
-		/// <term>The Cancel button was selected.</term>
+		/// <description><c>IDCANCEL</c> 2</description>
+		/// <description>The <c>Cancel</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDCONTINUE 11</term>
-		/// <term>The Continue button was selected.</term>
+		/// <description><c>IDCONTINUE</c> 11</description>
+		/// <description>The <c>Continue</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDIGNORE 5</term>
-		/// <term>The Ignore button was selected.</term>
+		/// <description><c>IDIGNORE</c> 5</description>
+		/// <description>The <c>Ignore</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDNO 7</term>
-		/// <term>The No button was selected.</term>
+		/// <description><c>IDNO</c> 7</description>
+		/// <description>The <c>No</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDOK 1</term>
-		/// <term>The OK button was selected.</term>
+		/// <description><c>IDOK</c> 1</description>
+		/// <description>The <c>OK</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDRETRY 4</term>
-		/// <term>The Retry button was selected.</term>
+		/// <description><c>IDRETRY</c> 4</description>
+		/// <description>The <c>Retry</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDTRYAGAIN 10</term>
-		/// <term>The Try Again button was selected.</term>
+		/// <description><c>IDTRYAGAIN</c> 10</description>
+		/// <description>The <c>Try Again</c> button was selected.</description>
 		/// </item>
 		/// <item>
-		/// <term>IDYES 6</term>
-		/// <term>The Yes button was selected.</term>
+		/// <description><c>IDYES</c> 6</description>
+		/// <description>The <c>Yes</c> button was selected.</description>
 		/// </item>
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <para>The following system icons can be used in a message box by setting the uType parameter to the corresponding flag value.</para>
+		/// <para>
+		/// The following system icons can be used in a message box by setting the <c>uType</c> parameter to the corresponding flag value.
+		/// </para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Icon</term>
-		/// <term>Flag values</term>
+		/// <description>Icon</description>
+		/// <description>Flag values</description>
 		/// </listheader>
 		/// <item>
-		/// <term/>
-		/// <term>MB_ICONHAND, MB_ICONSTOP, or MB_ICONERROR</term>
+		/// <description/>
+		/// <description><c>MB_ICONHAND</c>, <c>MB_ICONSTOP</c>, or <c>MB_ICONERROR</c></description>
 		/// </item>
 		/// <item>
-		/// <term/>
-		/// <term>MB_ICONQUESTION</term>
+		/// <description/>
+		/// <description><c>MB_ICONQUESTION</c></description>
 		/// </item>
 		/// <item>
-		/// <term/>
-		/// <term>MB_ICONEXCLAMATION or MB_ICONWARNING</term>
+		/// <description/>
+		/// <description><c>MB_ICONEXCLAMATION</c> or <c>MB_ICONWARNING</c></description>
 		/// </item>
 		/// <item>
-		/// <term/>
-		/// <term>MB_ICONASTERISK or MB_ICONINFORMATION</term>
+		/// <description/>
+		/// <description><c>MB_ICONASTERISK</c> or <c>MB_ICONINFORMATION</c></description>
 		/// </item>
 		/// </list>
+		/// <para>Â</para>
 		/// <para>
 		/// Adding two right-to-left marks (RLMs), represented by Unicode formatting character U+200F, in the beginning of a MessageBox
 		/// display string is interpreted by the MessageBox rendering engine so as to cause the reading order of the MessageBox to be
 		/// rendered as right-to-left (RTL).
 		/// </para>
 		/// <para>
-		/// When you use a system-modal message box to indicate that the system is low on memory, the strings pointed to by the lpText and
-		/// lpCaption parameters should not be taken from a resource file because an attempt to load the resource may fail.
+		/// When you use a system-modal message box to indicate that the system is low on memory, the strings pointed to by the <c>lpText</c>
+		/// and <c>lpCaption</c> parameters should not be taken from a resource file because an attempt to load the resource may fail.
 		/// </para>
 		/// <para>
-		/// If you create a message box while a dialog box is present, use a handle to the dialog box as the hWnd parameter. The hWnd
-		/// parameter should not identify a child window, such as a control in a dialog box.
+		/// If you create a message box while a dialog box is present, use a handle to the dialog box as the <c>hWnd</c> parameter. The
+		/// <c>hWnd</c> parameter should not identify a child window, such as a control in a dialog box.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>
@@ -4114,13 +4128,14 @@ namespace Vanara.PInvoke
 		/// <para>The following image shows the output from the preceding code example:</para>
 		/// <para>For another message box example, see Displaying a Message Box.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-messagebox int MessageBox( HWND hWnd, LPCTSTR lpText,
-		// LPCTSTR lpCaption, UINT uType );
+		// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messagebox
+		// int MessageBox( [in, optional] HWND hWnd, [in, optional] LPCTSTR lpText, [in, optional] LPCTSTR lpCaption, [in] UINT uType );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "messagebox")]
 		public static extern MB_RESULT MessageBox([Optional] HWND hWnd, string lpText, [Optional] string lpCaption, [Optional] MB_FLAGS uType);
 
 		/// <summary>
+		/// <note type="warning">This function is undocumented, but has been available since Windows XP. Use with caution.</note>
 		/// Creates, displays, and operates a message box. The message box contains application-defined message text and title, any icon, and
 		/// any combination of predefined push buttons.
 		/// </summary>
@@ -4136,6 +4151,377 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h")]
 		public static extern MB_RESULT MessageBoxIndirect(in MSGBOXPARAMS lpMsgBoxParams);
+
+		/// <summary>
+		/// Displays a modal dialog box that contains a system icon, a set of buttons, and a brief application-specific message, such as
+		/// status or error information. The message box returns an integer value that indicates which button the user clicked.
+		/// </summary>
+		/// <param name="hWnd"><para>Type: <c>HWND</c></para>
+		/// <para>
+		/// A handle to the owner window of the message box to be created. If this parameter is <c>NULL</c>, the message box has no owner window.
+		/// </para></param>
+		/// <param name="lpText"><para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The message to be displayed. If the string consists of more than one line, you can separate the lines using a carriage return
+		/// and/or linefeed character between each line.
+		/// </para></param>
+		/// <param name="lpCaption"><para>Type: <c>LPCTSTR</c></para>
+		/// <para>The dialog box title. If this parameter is <c>NULL</c>, the default title is <c>Error</c>.</para></param>
+		/// <param name="uType"><para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The contents and behavior of the dialog box. This parameter can be a combination of flags from the following groups of flags.
+		/// </para>
+		/// <para>To indicate the buttons displayed in the message box, specify one of the following values.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <description>Value</description>
+		///     <description>Meaning</description>
+		///   </listheader>
+		///   <item>
+		///     <description>
+		///       <c>MB_ABORTRETRYIGNORE</c> 0x00000002L</description>
+		///     <description>The message box contains three push buttons: <c>Abort</c>, <c>Retry</c>, and <c>Ignore</c>.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_CANCELTRYCONTINUE</c> 0x00000006L</description>
+		///     <description>
+		/// The message box contains three push buttons: <c>Cancel</c>, <c>Try Again</c>, <c>Continue</c>. Use this message box type instead
+		/// of MB_ABORTRETRYIGNORE.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_HELP</c> 0x00004000L</description>
+		///     <description>
+		/// Adds a <c>Help</c> button to the message box. When the user clicks the <c>Help</c> button or presses F1, the system sends a
+		/// WM_HELP message to the owner.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_OK</c> 0x00000000L</description>
+		///     <description>The message box contains one push button: <c>OK</c>. This is the default.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_OKCANCEL</c> 0x00000001L</description>
+		///     <description>The message box contains two push buttons: <c>OK</c> and <c>Cancel</c>.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_RETRYCANCEL</c> 0x00000005L</description>
+		///     <description>The message box contains two push buttons: <c>Retry</c> and <c>Cancel</c>.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_YESNO</c> 0x00000004L</description>
+		///     <description>The message box contains two push buttons: <c>Yes</c> and <c>No</c>.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_YESNOCANCEL</c> 0x00000003L</description>
+		///     <description>The message box contains three push buttons: <c>Yes</c>, <c>No</c>, and <c>Cancel</c>.</description>
+		///   </item>
+		/// </list>
+		/// <para>Â</para>
+		/// <para>To display an icon in the message box, specify one of the following values.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <description>Value</description>
+		///     <description>Meaning</description>
+		///   </listheader>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONEXCLAMATION</c> 0x00000030L</description>
+		///     <description>An exclamation-point icon appears in the message box.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONWARNING</c> 0x00000030L</description>
+		///     <description>An exclamation-point icon appears in the message box.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONINFORMATION</c> 0x00000040L</description>
+		///     <description>An icon consisting of a lowercase letter <c>i</c> in a circle appears in the message box.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONASTERISK</c> 0x00000040L</description>
+		///     <description>An icon consisting of a lowercase letter <c>i</c> in a circle appears in the message box.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONQUESTION</c> 0x00000020L</description>
+		///     <description>
+		/// A question-mark icon appears in the message box. The question-mark message icon is no longer recommended because it does not
+		/// clearly represent a specific type of message and because the phrasing of a message as a question could apply to any message type.
+		/// In addition, users can confuse the message symbol question mark with Help information. Therefore, do not use this question mark
+		/// message symbol in your message boxes. The system continues to support its inclusion only for backward compatibility.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONSTOP</c> 0x00000010L</description>
+		///     <description>A stop-sign icon appears in the message box.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONERROR</c> 0x00000010L</description>
+		///     <description>A stop-sign icon appears in the message box.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_ICONHAND</c> 0x00000010L</description>
+		///     <description>A stop-sign icon appears in the message box.</description>
+		///   </item>
+		/// </list>
+		/// <para>Â</para>
+		/// <para>To indicate the default button, specify one of the following values.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <description>Value</description>
+		///     <description>Meaning</description>
+		///   </listheader>
+		///   <item>
+		///     <description>
+		///       <c>MB_DEFBUTTON1</c> 0x00000000L</description>
+		///     <description>
+		/// The first button is the default button. <c>MB_DEFBUTTON1</c> is the default unless <c>MB_DEFBUTTON2</c>, <c>MB_DEFBUTTON3</c>, or
+		/// <c>MB_DEFBUTTON4</c> is specified.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_DEFBUTTON2</c> 0x00000100L</description>
+		///     <description>The second button is the default button.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_DEFBUTTON3</c> 0x00000200L</description>
+		///     <description>The third button is the default button.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_DEFBUTTON4</c> 0x00000300L</description>
+		///     <description>The fourth button is the default button.</description>
+		///   </item>
+		/// </list>
+		/// <para>Â</para>
+		/// <para>To indicate the modality of the dialog box, specify one of the following values.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <description>Value</description>
+		///     <description>Meaning</description>
+		///   </listheader>
+		///   <item>
+		///     <description>
+		///       <c>MB_APPLMODAL</c> 0x00000000L</description>
+		///     <description>
+		/// The user must respond to the message box before continuing work in the window identified by the <c>hWnd</c> parameter. However,
+		/// the user can move to the windows of other threads and work in those windows. Depending on the hierarchy of windows in the
+		/// application, the user may be able to move to other windows within the thread. All child windows of the parent of the message box
+		/// are automatically disabled, but pop-up windows are not. <c>MB_APPLMODAL</c> is the default if neither <c>MB_SYSTEMMODAL</c> nor
+		/// <c>MB_TASKMODAL</c> is specified.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_SYSTEMMODAL</c> 0x00001000L</description>
+		///     <description>
+		/// Same as MB_APPLMODAL except that the message box has the <c>WS_EX_TOPMOST</c> style. Use system-modal message boxes to notify the
+		/// user of serious, potentially damaging errors that require immediate attention (for example, running out of memory). This flag has
+		/// no effect on the user's ability to interact with windows other than those associated with <c>hWnd</c>.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_TASKMODAL</c> 0x00002000L</description>
+		///     <description>
+		/// Same as <c>MB_APPLMODAL</c> except that all the top-level windows belonging to the current thread are disabled if the <c>hWnd</c>
+		/// parameter is <c>NULL</c>. Use this flag when the calling application or library does not have a window handle available but still
+		/// needs to prevent input to other windows in the calling thread without suspending other threads.
+		/// </description>
+		///   </item>
+		/// </list>
+		/// <para>Â</para>
+		/// <para>To specify other options, use one or more of the following values.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <description>Value</description>
+		///     <description>Meaning</description>
+		///   </listheader>
+		///   <item>
+		///     <description>
+		///       <c>MB_DEFAULT_DESKTOP_ONLY</c> 0x00020000L</description>
+		///     <description>
+		/// Same as desktop of the interactive window station. For more information, see Window Stations. If the current input desktop is not
+		/// the default desktop, <c>MessageBox</c> does not return until the user switches to the default desktop.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_RIGHT</c> 0x00080000L</description>
+		///     <description>The text is right-justified.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_RTLREADING</c> 0x00100000L</description>
+		///     <description>Displays message and caption text using right-to-left reading order on Hebrew and Arabic systems.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_SETFOREGROUND</c> 0x00010000L</description>
+		///     <description>
+		/// The message box becomes the foreground window. Internally, the system calls the SetForegroundWindow function for the message box.
+		/// </description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_TOPMOST</c> 0x00040000L</description>
+		///     <description>The message box is created with the <c>WS_EX_TOPMOST</c> window style.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>MB_SERVICE_NOTIFICATION</c> 0x00200000L</description>
+		///     <description>
+		/// The caller is a service notifying the user of an event. The function displays a message box on the current active desktop, even
+		/// if there is no user logged on to the computer. <c>Terminal Services:</c> If the calling thread has an impersonation token, the
+		/// function directs the message box to the session specified in the impersonation token. If this flag is set, the <c>hWnd</c>
+		/// parameter must be <c>NULL</c>. This is so that the message box can appear on a desktop other than the desktop corresponding to
+		/// the <c>hWnd</c>. For information on security considerations in regard to using this flag, see Interactive Services. In
+		/// particular, be aware that this flag can produce interactive content on a locked desktop and should therefore be used for only a
+		/// very limited set of scenarios, such as resource exhaustion.
+		/// </description>
+		///   </item>
+		/// </list></param>
+		/// <param name="wLanguageId">The language for the text displayed in the message box button(s). Specifying a value of zero (0) indicates to display the button text in the default system language. If this parameter is MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), the current language associated with the calling thread is used.
+		/// <para>To specify a language other than the current language, use the MAKELANGID macro to create this parameter.</para>
+		/// </param>
+		/// <param name="dwMilliseconds">Parameter is in milliseconds so 1000 will be 1 second etc. Messagebox won't time-out if <paramref name="dwMilliseconds"/> is 0.</param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// If a message box has a <c>Cancel</c> button, the function returns the <c>IDCANCEL</c> value if either the ESC key is pressed or
+		/// the <c>Cancel</c> button is selected. If the message box has no <c>Cancel</c> button, pressing ESC will no effect - unless an
+		/// MB_OK button is present. If an MB_OK button is displayed and the user presses ESC, the return value will be <c>IDOK</c>.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>If the function succeeds, the return value is one of the following menu-item values.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <description>Return code/value</description>
+		///     <description>Description</description>
+		///   </listheader>
+		///   <item>
+		///     <description>
+		///       <c>IDABORT</c> 3</description>
+		///     <description>The <c>Abort</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDCANCEL</c> 2</description>
+		///     <description>The <c>Cancel</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDCONTINUE</c> 11</description>
+		///     <description>The <c>Continue</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDIGNORE</c> 5</description>
+		///     <description>The <c>Ignore</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDNO</c> 7</description>
+		///     <description>The <c>No</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDOK</c> 1</description>
+		///     <description>The <c>OK</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDRETRY</c> 4</description>
+		///     <description>The <c>Retry</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDTRYAGAIN</c> 10</description>
+		///     <description>The <c>Try Again</c> button was selected.</description>
+		///   </item>
+		///   <item>
+		///     <description>
+		///       <c>IDYES</c> 6</description>
+		///     <description>The <c>Yes</c> button was selected.</description>
+		///   </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The following system icons can be used in a message box by setting the <c>uType</c> parameter to the corresponding flag value.
+		/// </para>
+		/// <list type="table">
+		///   <listheader>
+		///     <description>Icon</description>
+		///     <description>Flag values</description>
+		///   </listheader>
+		///   <item>
+		///     <description />
+		///     <description>
+		///       <c>MB_ICONHAND</c>, <c>MB_ICONSTOP</c>, or <c>MB_ICONERROR</c></description>
+		///   </item>
+		///   <item>
+		///     <description />
+		///     <description>
+		///       <c>MB_ICONQUESTION</c>
+		///     </description>
+		///   </item>
+		///   <item>
+		///     <description />
+		///     <description>
+		///       <c>MB_ICONEXCLAMATION</c> or <c>MB_ICONWARNING</c></description>
+		///   </item>
+		///   <item>
+		///     <description />
+		///     <description>
+		///       <c>MB_ICONASTERISK</c> or <c>MB_ICONINFORMATION</c></description>
+		///   </item>
+		/// </list>
+		/// <para>Â</para>
+		/// <para>
+		/// Adding two right-to-left marks (RLMs), represented by Unicode formatting character U+200F, in the beginning of a MessageBox
+		/// display string is interpreted by the MessageBox rendering engine so as to cause the reading order of the MessageBox to be
+		/// rendered as right-to-left (RTL).
+		/// </para>
+		/// <para>
+		/// When you use a system-modal message box to indicate that the system is low on memory, the strings pointed to by the <c>lpText</c>
+		/// and <c>lpCaption</c> parameters should not be taken from a resource file because an attempt to load the resource may fail.
+		/// </para>
+		/// <para>
+		/// If you create a message box while a dialog box is present, use a handle to the dialog box as the <c>hWnd</c> parameter. The
+		/// <c>hWnd</c> parameter should not identify a child window, such as a control in a dialog box.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// In the following example, the application displays a message box that prompts the user for an action after an error condition has
+		/// occurred. The message box displays the message that describes the error condition and how to resolve it. The
+		/// <c>MB_CANCELTRYCONTINUE</c> style directs <c>MessageBox</c> to provide three buttons with which the user can choose how to
+		/// proceed. The <c>MB_DEFBUTTON2</c> style sets the default focus on the second button of the message box, in this case, the <c>Try
+		/// Again</c> button.
+		/// </para>
+		/// <para>The following image shows the output from the preceding code example:</para>
+		/// <para>For another message box example, see Displaying a Message Box.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messagebox
+		// int MessageBox( [in, optional] HWND hWnd, [in, optional] LPCTSTR lpText, [in, optional] LPCTSTR lpCaption, [in] UINT uType );
+		[PInvokeData("winuser.h")]
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		public static extern MB_RESULT MessageBoxTimeout([Optional] HWND hWnd, string lpText, [Optional] string lpCaption, [Optional] MB_FLAGS uType, [Optional] LANGID wLanguageId, [Optional] uint dwMilliseconds);
 
 		/// <summary>
 		/// Indicates that the system cannot be shut down and sets a reason string to be displayed to the user if system shutdown is initiated.
