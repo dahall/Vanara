@@ -84,7 +84,7 @@ namespace Vanara.PInvoke.Tests
 			uint uSpn = 1;
 			ret = DsGetSpn(DS_SPN_NAME_TYPE.DS_SPN_NB_HOST, "cxhndl", null, 0, 0, null, null, ref uSpn, out var hA);
 			ret.ThrowIfFailed();
-			DsFreeSpnArray(uSpn, ref hA);
+			DsFreeSpnArray(uSpn, hA);
 		}
 
 		[Test]

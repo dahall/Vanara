@@ -1545,7 +1545,7 @@ namespace Vanara.PInvoke
 		// *rpszSpn );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "1c229933-432d-4ded-be3b-3bd339a0abe4")]
-		public static extern void DsFreeSpnArray(uint cSpn, ref SpnArrayHandle rpszSpn);
+		public static extern void DsFreeSpnArray(uint cSpn, SpnArrayHandle rpszSpn);
 
 		/// <summary>
 		/// The <c>DsGetDomainControllerInfo</c> function retrieves data about the domain controllers in a domain.
