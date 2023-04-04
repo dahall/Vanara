@@ -300,142 +300,169 @@ namespace Vanara.PInvoke
 			[In] HPROCESS ParentProcess, [In] PROCESS_CREATE_FLAGS Flags, [In, Optional] IntPtr SectionHandle,
 			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort, uint JobMemberLevel);
 
-		/// <summary>
-		/// <para>
-		/// [ <c>NtQueryInformationProcess</c> may be altered or unavailable in future versions of Windows. Applications should use the
-		/// alternate functions listed in this topic.]
-		/// </para>
-		/// <para>Retrieves information about the specified process.</para>
-		/// </summary>
-		/// <param name="ProcessHandle">A handle to the process for which information is to be retrieved.</param>
-		/// <param name="ProcessInformationClass">
-		/// <para>
-		/// The type of process information to be retrieved. This parameter can be one of the following values from the
-		/// <c>PROCESSINFOCLASS</c> enumeration.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ProcessBasicInformation<br/>0</term>
-		/// <term>
-		/// Retrieves a pointer to a PEB structure that can be used to determine whether the specified process is being debugged, and a
-		/// unique value used by the system to identify the specified process. Use the CheckRemoteDebuggerPresent and GetProcessId functions
-		/// to obtain this information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessDebugPort<br/>7</term>
-		/// <term>
-		/// Retrieves a DWORD_PTR value that is the port number of the debugger for the process. A nonzero value indicates that the process
-		/// is being run under the control of a ring 3 debugger. Use the CheckRemoteDebuggerPresent or IsDebuggerPresent function.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessWow64Information<br/>26</term>
-		/// <term>
-		/// Determines whether the process is running in the WOW64 environment (WOW64 is the x86 emulator that allows Win32-based
-		/// applications to run on 64-bit Windows). Use the IsWow64Process2 function to obtain this information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessImageFileName<br/>27</term>
-		/// <term>
-		/// Retrieves a UNICODE_STRING value containing the name of the image file for the process. Use the QueryFullProcessImageName or
-		/// GetProcessImageFileName function to obtain this information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessBreakOnTermination<br/>29</term>
-		/// <term>Retrieves a ULONG value indicating whether the process is considered critical.</term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessSubsystemInformation<br/>75</term>
-		/// <term>
-		/// Retrieves a SUBSYSTEM_INFORMATION_TYPE value indicating the subsystem type of the process. The buffer pointed to by the
-		/// ProcessInformation parameter should be large enough to hold a single SUBSYSTEM_INFORMATION_TYPE enumeration.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="ProcessInformation">
-		/// <para>
-		/// A pointer to a buffer supplied by the calling application into which the function writes the requested information. The size of
-		/// the information written varies depending on the data type of the ProcessInformationClass parameter:
-		/// </para>
-		/// <para>PROCESS_BASIC_INFORMATION</para>
-		/// <para>
-		/// When the ProcessInformationClass parameter is <c>ProcessBasicInformation</c>, the buffer pointed to by the ProcessInformation
-		/// parameter should be large enough to hold a single <c>PROCESS_BASIC_INFORMATION</c> structure having the following layout:
-		/// </para>
-		/// <code><![CDATA[
-		///typedef struct _PROCESS_BASIC_INFORMATION {
-		///    PVOID Reserved1;
-		///    PPEB PebBaseAddress;
-		///    PVOID Reserved2[2];
-		///    ULONG_PTR UniqueProcessId;
-		///    PVOID Reserved3;
-		///} PROCESS_BASIC_INFORMATION;
-		/// ]]></code>
-		/// <para>
-		/// The <c>UniqueProcessId</c> member points to the system's unique identifier for this process. Use the GetProcessId function to
-		/// retrieve this information.
-		/// </para>
-		/// <para>The <c>PebBaseAddress</c> member points to a PEB structure.</para>
-		/// <para>The other members of this structure are reserved for internal use by the operating system.</para>
-		/// <para>ULONG_PTR</para>
-		/// <para>
-		/// When the ProcessInformationClass parameter is <c>ProcessWow64Information</c>, the buffer pointed to by the ProcessInformation
-		/// parameter should be large enough to hold a <c>ULONG_PTR</c>. If this value is nonzero, the process is running in a WOW64
-		/// environment; otherwise, if the value is equal to zero, the process is not running in a WOW64 environment.
-		/// </para>
-		/// <para>Use the IsWow64Process2 function to determine whether a process is running in the WOW64 environment.</para>
-		/// <para>UNICODE_STRING</para>
-		/// <para>
-		/// When the ProcessInformationClass parameter is <c>ProcessImageFileName</c>, the buffer pointed to by the ProcessInformation
-		/// parameter should be large enough to hold a <c>UNICODE_STRING</c> structure as well as the string itself. The string stored in
-		/// the <c>Buffer</c> member is the name of the image file.
-		/// </para>
-		/// <para>
-		/// If the buffer is too small, the function fails with the STATUS_INFO_LENGTH_MISMATCH error code and the ReturnLength parameter is
-		/// set to the required buffer size.
-		/// </para>
-		/// </param>
-		/// <param name="ProcessInformationLength">The size of the buffer pointed to by the ProcessInformation parameter, in bytes.</param>
-		/// <param name="ReturnLength">
-		/// A pointer to a variable in which the function returns the size of the requested information. If the function was successful,
-		/// this is the size of the information written to the buffer pointed to by the ProcessInformation parameter, but if the buffer was
-		/// too small, this is the minimum size of buffer needed to receive the information successfully.
-		/// </param>
-		/// <returns>
-		/// <para>The function returns an NTSTATUS success or error code.</para>
-		/// <para>
-		/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
-		/// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
-		/// Logging Errors.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>NtQueryInformationProcess</c> function and the structures that it returns are internal to the operating system and
-		/// subject to change from one release of Windows to another. To maintain the compatibility of your application, it is better to use
-		/// public functions mentioned in the description of the ProcessInformationClass parameter instead.
-		/// </para>
-		/// <para>
-		/// If you do use <c>NtQueryInformationProcess</c>, access the function through run-time dynamic linking. This gives your code an
-		/// opportunity to respond gracefully if the function has been changed or removed from the operating system. Signature changes,
-		/// however, may not be detectable.
-		/// </para>
-		/// <para>
-		/// This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Ntdll.dll.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntqueryinformationprocess __kernel_entry NTSTATUS
-		// NtQueryInformationProcess( IN HANDLE ProcessHandle, IN PROCESSINFOCLASS ProcessInformationClass, OUT PVOID ProcessInformation, IN
-		// ULONG ProcessInformationLength, OUT PULONG ReturnLength );
-		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+        /// <summary>Set the debug object handle in the TEB. This function is UNDOCUMENTED.</summary>
+        /// <param name="DebugObjectHandle">Debug object handle. Retrieve from NtQueryInformationProcess</param>
+        /// <returns>
+        /// <para>The function returns an NTSTATUS success or error code.</para>
+        /// <para>
+        /// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+        /// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+        /// Logging Errors.
+        /// </para>
+        /// </returns>
+        [DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+        public static extern NTStatus DbgUiSetThreadDebugObject(IntPtr DebugObjectHandle);
+
+        /// <summary>Call the kernel to remove the debug object. This function is UNDOCUMENTED.</summary>
+		/// <param name="ProcessHandle">The process handle.</param>
+        /// <param name="DebugObjectHandle">Debug object handle. Retrieve from NtQueryInformationProcess</param>
+        /// <returns>
+        /// <para>The function returns an NTSTATUS success or error code.</para>
+        /// <para>
+        /// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+        /// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+        /// Logging Errors.
+        /// </para>
+        /// </returns>
+        [DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+        public static extern NTStatus NtRemoveProcessDebug(HPROCESS ProcessHandle, IntPtr DebugObjectHandle);
+
+        /// <summary>
+        /// <para>
+        /// [ <c>NtQueryInformationProcess</c> may be altered or unavailable in future versions of Windows. Applications should use the
+        /// alternate functions listed in this topic.]
+        /// </para>
+        /// <para>Retrieves information about the specified process.</para>
+        /// </summary>
+        /// <param name="ProcessHandle">A handle to the process for which information is to be retrieved.</param>
+        /// <param name="ProcessInformationClass">
+        /// <para>
+        /// The type of process information to be retrieved. This parameter can be one of the following values from the
+        /// <c>PROCESSINFOCLASS</c> enumeration.
+        /// </para>
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Value</term>
+        /// <term>Meaning</term>
+        /// </listheader>
+        /// <item>
+        /// <term>ProcessBasicInformation<br/>0</term>
+        /// <term>
+        /// Retrieves a pointer to a PEB structure that can be used to determine whether the specified process is being debugged, and a
+        /// unique value used by the system to identify the specified process. Use the CheckRemoteDebuggerPresent and GetProcessId functions
+        /// to obtain this information.
+        /// </term>
+        /// </item>
+        /// <item>
+        /// <term>ProcessDebugPort<br/>7</term>
+        /// <term>
+        /// Retrieves a DWORD_PTR value that is the port number of the debugger for the process. A nonzero value indicates that the process
+        /// is being run under the control of a ring 3 debugger. Use the CheckRemoteDebuggerPresent or IsDebuggerPresent function.
+        /// </term>
+        /// </item>
+        /// <item>
+        /// <term>ProcessWow64Information<br/>26</term>
+        /// <term>
+        /// Determines whether the process is running in the WOW64 environment (WOW64 is the x86 emulator that allows Win32-based
+        /// applications to run on 64-bit Windows). Use the IsWow64Process2 function to obtain this information.
+        /// </term>
+        /// </item>
+        /// <item>
+        /// <term>ProcessImageFileName<br/>27</term>
+        /// <term>
+        /// Retrieves a UNICODE_STRING value containing the name of the image file for the process. Use the QueryFullProcessImageName or
+        /// GetProcessImageFileName function to obtain this information.
+        /// </term>
+        /// </item>
+        /// <item>
+        /// <term>ProcessBreakOnTermination<br/>29</term>
+        /// <term>Retrieves a ULONG value indicating whether the process is considered critical.</term>
+        /// </item>
+        /// <item>
+        /// <term>ProcessSubsystemInformation<br/>75</term>
+        /// <term>
+        /// Retrieves a SUBSYSTEM_INFORMATION_TYPE value indicating the subsystem type of the process. The buffer pointed to by the
+        /// ProcessInformation parameter should be large enough to hold a single SUBSYSTEM_INFORMATION_TYPE enumeration.
+        /// </term>
+        /// </item>
+        /// </list>
+        /// </param>
+        /// <param name="ProcessInformation">
+        /// <para>
+        /// A pointer to a buffer supplied by the calling application into which the function writes the requested information. The size of
+        /// the information written varies depending on the data type of the ProcessInformationClass parameter:
+        /// </para>
+        /// <para>PROCESS_BASIC_INFORMATION</para>
+        /// <para>
+        /// When the ProcessInformationClass parameter is <c>ProcessBasicInformation</c>, the buffer pointed to by the ProcessInformation
+        /// parameter should be large enough to hold a single <c>PROCESS_BASIC_INFORMATION</c> structure having the following layout:
+        /// </para>
+        /// <code><![CDATA[
+        ///typedef struct _PROCESS_BASIC_INFORMATION {
+        ///    PVOID Reserved1;
+        ///    PPEB PebBaseAddress;
+        ///    PVOID Reserved2[2];
+        ///    ULONG_PTR UniqueProcessId;
+        ///    PVOID Reserved3;
+        ///} PROCESS_BASIC_INFORMATION;
+        /// ]]></code>
+        /// <para>
+        /// The <c>UniqueProcessId</c> member points to the system's unique identifier for this process. Use the GetProcessId function to
+        /// retrieve this information.
+        /// </para>
+        /// <para>The <c>PebBaseAddress</c> member points to a PEB structure.</para>
+        /// <para>The other members of this structure are reserved for internal use by the operating system.</para>
+        /// <para>ULONG_PTR</para>
+        /// <para>
+        /// When the ProcessInformationClass parameter is <c>ProcessWow64Information</c>, the buffer pointed to by the ProcessInformation
+        /// parameter should be large enough to hold a <c>ULONG_PTR</c>. If this value is nonzero, the process is running in a WOW64
+        /// environment; otherwise, if the value is equal to zero, the process is not running in a WOW64 environment.
+        /// </para>
+        /// <para>Use the IsWow64Process2 function to determine whether a process is running in the WOW64 environment.</para>
+        /// <para>UNICODE_STRING</para>
+        /// <para>
+        /// When the ProcessInformationClass parameter is <c>ProcessImageFileName</c>, the buffer pointed to by the ProcessInformation
+        /// parameter should be large enough to hold a <c>UNICODE_STRING</c> structure as well as the string itself. The string stored in
+        /// the <c>Buffer</c> member is the name of the image file.
+        /// </para>
+        /// <para>
+        /// If the buffer is too small, the function fails with the STATUS_INFO_LENGTH_MISMATCH error code and the ReturnLength parameter is
+        /// set to the required buffer size.
+        /// </para>
+        /// </param>
+        /// <param name="ProcessInformationLength">The size of the buffer pointed to by the ProcessInformation parameter, in bytes.</param>
+        /// <param name="ReturnLength">
+        /// A pointer to a variable in which the function returns the size of the requested information. If the function was successful,
+        /// this is the size of the information written to the buffer pointed to by the ProcessInformation parameter, but if the buffer was
+        /// too small, this is the minimum size of buffer needed to receive the information successfully.
+        /// </param>
+        /// <returns>
+        /// <para>The function returns an NTSTATUS success or error code.</para>
+        /// <para>
+        /// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+        /// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+        /// Logging Errors.
+        /// </para>
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// The <c>NtQueryInformationProcess</c> function and the structures that it returns are internal to the operating system and
+        /// subject to change from one release of Windows to another. To maintain the compatibility of your application, it is better to use
+        /// public functions mentioned in the description of the ProcessInformationClass parameter instead.
+        /// </para>
+        /// <para>
+        /// If you do use <c>NtQueryInformationProcess</c>, access the function through run-time dynamic linking. This gives your code an
+        /// opportunity to respond gracefully if the function has been changed or removed from the operating system. Signature changes,
+        /// however, may not be detectable.
+        /// </para>
+        /// <para>
+        /// This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Ntdll.dll.
+        /// </para>
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntqueryinformationprocess __kernel_entry NTSTATUS
+        // NtQueryInformationProcess( IN HANDLE ProcessHandle, IN PROCESSINFOCLASS ProcessInformationClass, OUT PVOID ProcessInformation, IN
+        // ULONG ProcessInformationLength, OUT PULONG ReturnLength );
+        [DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winternl.h", MSDNShortId = "0eae7899-c40b-4a5f-9e9c-adae021885e7")]
 		public static extern NTStatus NtQueryInformationProcess([In] HPROCESS ProcessHandle, PROCESSINFOCLASS ProcessInformationClass, [Out] IntPtr ProcessInformation, uint ProcessInformationLength, out uint ReturnLength);
 
