@@ -311,7 +311,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		public static extern NTStatus DbgUiSetThreadDebugObject(IntPtr DebugObjectHandle);
+		public static extern void DbgUiSetThreadDebugObject(IntPtr DebugObjectHandle);
 
 		/// <summary>Call the kernel to remove the debug object. This function is UNDOCUMENTED.</summary>
 		/// <param name="ProcessHandle">The process handle.</param>

@@ -84,7 +84,7 @@ namespace Vanara.PInvoke.Tests
 
 				try
 				{
-					Assert.That(DbgUiSetThreadDebugObject(DebugObjectHandleQueryResult.Value), ResultIs.Successful);
+					DbgUiSetThreadDebugObject(DebugObjectHandleQueryResult.Value);
 
 					try
 					{
@@ -114,7 +114,7 @@ namespace Vanara.PInvoke.Tests
 					}
 					finally
 					{
-						Assert.That(DbgUiSetThreadDebugObject(IntPtr.Zero), ResultIs.Successful);
+						DbgUiSetThreadDebugObject(IntPtr.Zero);
 					}
 				}
 				finally
