@@ -302,14 +302,6 @@ namespace Vanara.PInvoke
 
 		/// <summary>Set the debug object handle in the TEB. This function is UNDOCUMENTED.</summary>
 		/// <param name="DebugObjectHandle">Debug object handle. Retrieve from NtQueryInformationProcess</param>
-		/// <returns>
-		/// <para>The function returns an NTSTATUS success or error code.</para>
-		/// <para>
-		/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
-		/// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
-		/// Logging Errors.
-		/// </para>
-		/// </returns>
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		public static extern void DbgUiSetThreadDebugObject(IntPtr DebugObjectHandle);
 
