@@ -1398,32 +1398,28 @@ public static partial class Ws2_32
 		{
 			get
 			{
-				unsafe
-				{
-					var v6addr = new ushort[IN6_ADDR_SIZE / 2];
-					fixed (ushort* usp = &v6addr[0])
-					{
-						var ulp2 = (ulong*)usp;
-						ulp2[0] = lower;
-						ulp2[1] = upper;
-					}
-					return v6addr;
-				}
+				var v6addr = new ushort[IN6_ADDR_SIZE / 2];
+				var b = bytes;
+				for (int i = 0; i < v6addr.Length; i++)
+					v6addr[i] = (ushort)(b[i * 2] * 256 + b[i * 2 + 1]);
+				return v6addr;
 			}
 			set
 			{
-				unsafe
+				if (value == null)
 				{
-					if (value == null) value = new ushort[IN6_ADDR_SIZE / 2];
-					if (value.Length != IN6_ADDR_SIZE / 2)
-						throw new ArgumentException("UInt16 array must have 8 items.", nameof(value));
-					fixed (ushort* bp = &value[0])
-					{
-						var ulp = (ulong*)bp;
-						lower = ulp[0];
-						upper = ulp[1];
-					}
+					lower = upper = 0;
+					return;
 				}
+				if (value.Length != IN6_ADDR_SIZE / 2)
+					throw new ArgumentException("UInt16 array must have 8 items.", nameof(value));
+				byte[] b = new byte[IN6_ADDR_SIZE];
+				for (int i = 0, j = 0; i < value.Length; i++)
+				{
+					b[j++] = (byte)((value[i] >> 8) & 0xFF);
+					b[j++] = (byte)((value[i]) & 0xFF);
+				}
+				bytes = b;
 			}
 		}
 
@@ -1462,11 +1458,10 @@ public static partial class Ws2_32
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString()
 		{
-			const string numberFormat = "{0:x4}:{1:x4}:{2:x4}:{3:x4}:{4:x4}:{5:x4}:{6}.{7}.{8}.{9}";
-			var m_Numbers = words;
-			return string.Format(System.Globalization.CultureInfo.InvariantCulture, numberFormat,
-				m_Numbers[0], m_Numbers[1], m_Numbers[2], m_Numbers[3], m_Numbers[4], m_Numbers[5],
-				(m_Numbers[6] >> 8) & 0xFF, m_Numbers[6] & 0xFF, (m_Numbers[7] >> 8) & 0xFF, m_Numbers[7] & 0xFF);
+			System.Text.StringBuilder sb = new(64);
+			var p = InetNtopW(ADDRESS_FAMILY.AF_INET6, this, sb, sb.Capacity);
+			if (p.IsNull) throw WSAGetLastError().GetException();
+			return sb.ToString();
 		}
 
 		/// <summary>Determines whether the specified <paramref name="other"/> value is equal to this instance.</summary>
