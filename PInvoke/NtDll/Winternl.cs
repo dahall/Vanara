@@ -210,6 +210,12 @@ public static partial class NtDll
 		/// <summary>Reserved.</summary>
 		MaxSubsystemInformationType,
 	}
+
+	/// <summary>Set the debug object handle in the TEB. This function is UNDOCUMENTED.</summary>
+	/// <param name="DebugObjectHandle">Debug object handle. Retrieve from NtQueryInformationProcess</param>
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	public static extern void DbgUiSetThreadDebugObject(IntPtr DebugObjectHandle);
+
 	/// <summary>Creates a process. This function is UNDOCUMENTED.</summary>
 	/// <param name="ProcessHandle">The process handle.</param>
 	/// <param name="DesiredAccess">The desired access.</param>
@@ -524,7 +530,7 @@ public static partial class NtDll
 				if (ret.Succeeded)
 					return res;
 				if (ret != NTStatus.STATUS_INFO_LENGTH_MISMATCH || qsz == 0)
-					throw ret.GetException();
+					throw ret.GetException()!;
 				res.Size = qsz;
 				NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)res).ToInt32(), res.Size, out _).ThrowIfFailed();
 				return res;
@@ -538,7 +544,7 @@ public static partial class NtDll
 		if (status.Succeeded)
 			return mem;
 		if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0)
-			throw status.GetException();
+			throw status.GetException()!;
 		mem.Size = sz;
 		NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out _).ThrowIfFailed();
 		return mem;
@@ -550,6 +556,20 @@ public static partial class NtDll
 	/// <param name="ProcessHandle">The process handle.</param>
 	/// <returns><see langword="true"/> if structures returned from <c>NtQueryInformationProcess</c> must be configured exclusively for 64-bit use.</returns>
 	public static bool NtQueryInformationProcessRequiresWow64Structs(HPROCESS ProcessHandle) => IsWow64(Kernel32.GetCurrentProcess()) && !IsWow64(ProcessHandle);
+
+	/// <summary>Call the kernel to remove the debug object. This function is UNDOCUMENTED.</summary>
+	/// <param name="ProcessHandle">The process handle.</param>
+	/// <param name="DebugObjectHandle">Debug object handle. Retrieve from NtQueryInformationProcess</param>
+	/// <returns>
+	/// <para>The function returns an NTSTATUS success or error code.</para>
+	/// <para>
+	/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+	/// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+	/// Logging Errors.
+	/// </para>
+	/// </returns>
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	public static extern NTStatus NtRemoveProcessDebug(HPROCESS ProcessHandle, IntPtr DebugObjectHandle);
 
 	/// <summary>
 	/// <para>

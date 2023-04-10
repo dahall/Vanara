@@ -68,4 +68,58 @@ public partial class WinternlTests
 		Assert.That(() => ppb = NtQueryInformationProcess<uint>(hProc, PROCESSINFOCLASS.ProcessPriorityBoost), Throws.Nothing);
 		TestContext.WriteLine($"Priority boost: {ppb.Value}");
 	}
+
+	[Test]
+	public void DbgUiSetThreadDebugObjectAndNtRemoveProcessDebugTest()
+	{
+		Kernel32.STARTUPINFO StartInfo = new()
+		{
+			dwFlags = Kernel32.STARTF.STARTF_USESHOWWINDOW,
+			wShowWindow = (ushort)ShowWindowCommand.SW_HIDE
+		};
+		Assert.That(Kernel32.CreateProcess(@"C:\Program Files\Notepad++\notepad++.exe", dwCreationFlags: Kernel32.CREATE_PROCESS.DEBUG_PROCESS | Kernel32.CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT, lpStartupInfo: StartInfo, lpProcessInformation: out Kernel32.SafePROCESS_INFORMATION Information), ResultIs.Successful);
+		using (Information)
+		using (NtQueryResult<IntPtr> DebugObjectHandleQueryResult = NtQueryInformationProcess<IntPtr>(Information.hProcess, PROCESSINFOCLASS.ProcessDebugObjectHandle))
+		{
+			Assert.That(DebugObjectHandleQueryResult, ResultIs.ValidHandle);
+			Assert.That(DebugObjectHandleQueryResult.Value, ResultIs.ValidHandle);
+
+			try
+			{
+				DbgUiSetThreadDebugObject(DebugObjectHandleQueryResult.Value);
+
+				try
+				{
+					Kernel32.SafeHPROCESS DebugProcessHandle = Kernel32.SafeHPROCESS.Null;
+					try
+					{
+						while (true)
+						{
+							Assert.That(Kernel32.WaitForDebugEvent(out Kernel32.DEBUG_EVENT Event, Kernel32.INFINITE), ResultIs.Successful);
+							if (Event.dwDebugEventCode == Kernel32.DEBUG_EVENT_CODE.CREATE_PROCESS_DEBUG_EVENT)
+							{
+								DebugProcessHandle = new Kernel32.SafeHPROCESS(Event.u.CreateProcessInfo.hProcess);
+								break;
+							}
+							Assert.That(Kernel32.ContinueDebugEvent(Event.dwProcessId, Event.dwThreadId, Kernel32.DEBUG_CONTINUE.DBG_CONTINUE), ResultIs.Successful);
+						}
+						Assert.False(DebugProcessHandle.IsNull);
+					}
+					finally
+					{
+						DebugProcessHandle.Dispose();
+					}
+				}
+				finally
+				{
+					DbgUiSetThreadDebugObject(IntPtr.Zero);
+				}
+			}
+			finally
+			{
+				Assert.That(Kernel32.TerminateProcess(Information.hProcess, 0), ResultIs.Successful);
+				Assert.That(NtRemoveProcessDebug(Information.hProcess, DebugObjectHandleQueryResult.Value), ResultIs.Successful);
+			}
+		}
+	}
 }
