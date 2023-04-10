@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
@@ -20,7 +21,7 @@ public partial class User32Tests
 		WindowClass wc = null;
 
 		Assert.DoesNotThrow(() => wc = new());
-		Assert.AreEqual(wc.wc.hInstance, (HINSTANCE)GetModuleHandle());
+		Assert.AreEqual(wc.wc.hInstance, HINSTANCE.NULL);
 		Assert.True(wc.Unregister());
 
 		Assert.DoesNotThrow(() => wc = new("MyCustomName"));
@@ -29,10 +30,24 @@ public partial class User32Tests
 
 		Assert.DoesNotThrow(() => wc = WindowClass.MakeVisibleWindowClass("MyWindowClass", DefWindowProc));
 		Assert.AreEqual(wc.ClassName, "MyWindowClass");
+		Assert.AreEqual(wc.wc.hInstance, (HINSTANCE)GetModuleHandle());
 		Assert.AreNotEqual(wc.wc.hIcon, HICON.NULL);
 		Assert.AreNotEqual(wc.wc.hCursor, HCURSOR.NULL);
 		Assert.AreNotEqual(wc.wc.hbrBackground, HBRUSH.NULL);
 	}
+
+	[Test]
+	public void WindowClassCreateWinTest()
+	{
+		var _wndProc = new WindowProc(WndProc);
+		var _gcHandle = GCHandle.Alloc(_wndProc);
+		var windowClass = new WindowClass(null, HINSTANCE.NULL, _wndProc, hbrBkgd: HBRUSH.NULL);
+		var exStyles = WindowStylesEx.WS_EX_LAYERED | WindowStylesEx.WS_EX_NOACTIVATE | WindowStylesEx.WS_EX_TRANSPARENT | WindowStylesEx.WS_EX_NOREDIRECTIONBITMAP;
+		var styles = WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_POPUP | WindowStyles.WS_CLIPSIBLINGS;
+		Assert.That(CreateWindowEx(exStyles, windowClass.ClassName, "Test Window", styles), ResultIs.ValidHandle);
+	}
+
+	private static IntPtr WndProc(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam) => DefWindowProc(hwnd, uMsg, wParam, lParam);
 
 	[Test]
 	public void WindowClassCreateTest()
