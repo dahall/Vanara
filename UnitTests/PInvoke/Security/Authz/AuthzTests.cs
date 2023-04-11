@@ -68,7 +68,7 @@ public class AuthzTests
 		SID_AND_ATTRIBUTES restrictedSids = new() { Sid = localSid, Attributes = (uint)GroupAttributes.SE_GROUP_ENABLED };
 		using SafeAUTHZ_RESOURCE_MANAGER_HANDLE hRM = GetAuthzInitializeResourceManager();
 		using SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx = GetCurrentUserAuthContext(hRM);
-		Assert.That(AuthzAddSidsToContext(hCtx, sids, 1, restrictedSids, 1, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE hNewCtx), ResultIs.Successful);
+		Assert.That(AuthzAddSidsToContext(hCtx, new[] { sids }, 1, new[] { restrictedSids }, 1, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE hNewCtx), ResultIs.Successful);
 	}
 
 	[Test]

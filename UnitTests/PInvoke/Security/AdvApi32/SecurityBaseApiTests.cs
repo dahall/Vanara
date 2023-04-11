@@ -540,11 +540,11 @@ public class SecurityBaseApiTests
 					var insz = (int)mem.Size;
 					if (cls == TOKEN_INFORMATION_CLASS.TokenLinkedToken || cls == TOKEN_INFORMATION_CLASS.TokenElevation)
 						insz = 4;
-					var param = new object[] { (HTOKEN)t, cls, (IntPtr)mem, insz, null };
+					var param = new object?[] { (HTOKEN)t, cls, (IntPtr)mem, insz, null };
 					var res = getmi.Invoke(null, param);
 					if ((bool)res)
 					{
-						sz = (uint)(int)param[4];
+						sz = (uint)(int)(param[4] ?? 0);
 						TestContext.Write($">> Get =");
 						try
 						{
@@ -642,18 +642,18 @@ public class SecurityBaseApiTests
 		Assert.That(() => ret = pSD.MakeAbsolute(), Throws.Nothing);
 		try
 		{
-			SafePSECURITY_DESCRIPTOR newSD = null;
-			Assert.That(() => newSD = new SafePSECURITY_DESCRIPTOR(ret.pAbsoluteSecurityDescriptor, false), Throws.Exception);
-			Assert.That(() => newSD = new SafePSECURITY_DESCRIPTOR(ret.pAbsoluteSecurityDescriptor, true), Throws.Nothing);
-			newSD.Dispose();
+			SafePSECURITY_DESCRIPTOR? newSD = null;
+			Assert.That(() => newSD = new SafePSECURITY_DESCRIPTOR((PSECURITY_DESCRIPTOR)ret.pAbsoluteSecurityDescriptor!, false), Throws.Exception);
+			Assert.That(() => newSD = new SafePSECURITY_DESCRIPTOR((PSECURITY_DESCRIPTOR)ret.pAbsoluteSecurityDescriptor!, true), Throws.Nothing);
+			newSD?.Dispose();
 		}
 		finally
 		{
-			ret.pAbsoluteSecurityDescriptor.Dispose();
-			ret.pDacl.Dispose();
-			ret.pSacl.Dispose();
-			ret.pOwner.Dispose();
-			ret.pPrimaryGroup.Dispose();
+			ret.pAbsoluteSecurityDescriptor?.Dispose();
+			ret.pDacl?.Dispose();
+			ret.pSacl?.Dispose();
+			ret.pOwner?.Dispose();
+			ret.pPrimaryGroup?.Dispose();
 		}
 	}
 

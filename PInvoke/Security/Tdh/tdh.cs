@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
 #nullable enable
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -1125,7 +1126,7 @@ public static partial class Tdh
 	// TdhEnumerateProviderFieldInformation( [in] LPGUID pGuid, [in] EVENT_FIELD_TYPE EventFieldType, [out, optional]
 	// PPROVIDER_FIELD_INFOARRAY pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProviderFieldInformation")]
-	public static Win32Error TdhEnumerateProviderFieldInformation([In] Guid pGuid, [In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? pBuffer) =>
+	public static Win32Error TdhEnumerateProviderFieldInformation([In] Guid pGuid, [In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY> pBuffer) =>
 		GetMem((IntPtr p, ref uint s) => TdhEnumerateProviderFieldInformation(pGuid, EventFieldType, p, ref s), out pBuffer);
 
 	/// <summary>The <c>TdhEnumerateProviderFilters</c> function enumerates the filters that the specified provider defined in the manifest.</summary>
@@ -1220,7 +1221,7 @@ public static partial class Tdh
 	// [in] LPGUID Guid, [in] ULONG TdhContextCount, [in, optional] PTDH_CONTEXT TdhContext, [in] ULONG *FilterCount, [out, optional]
 	// PPROVIDER_FILTER_INFO *Buffer, [in, out] ULONG *BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProviderFilters", MinClient = PInvokeClient.Windows7)]
-	public static Win32Error TdhEnumerateProviderFilters(in Guid Guid, [In, Optional] TDH_CONTEXT[]? TdhContext, out SafeNativeArray<PROVIDER_FILTER_INFO>? Buffer)
+	public static Win32Error TdhEnumerateProviderFilters(in Guid Guid, [In, Optional] TDH_CONTEXT[]? TdhContext, out SafeNativeArray<PROVIDER_FILTER_INFO> Buffer)
 	{
 		Win32Error status;
 		SafeHGlobalHandle buffer = new(0);
@@ -1235,7 +1236,7 @@ public static partial class Tdh
 
 			buffer.Size = bufferSize;
 		}
-		Buffer = status.Succeeded ? filterCount == 0 ? new SafeNativeArray<PROVIDER_FILTER_INFO>(0) : new SafeNativeArray<PROVIDER_FILTER_INFO>(buffer.TakeOwnership(), bufferSize, true, 0, (int)filterCount, true) : default;
+		Buffer = status.Succeeded && filterCount > 0 ? new SafeNativeArray<PROVIDER_FILTER_INFO>(buffer.TakeOwnership(), bufferSize, true, 0, (int)filterCount, true) : new SafeNativeArray<PROVIDER_FILTER_INFO>(0);
 		return status;
 	}
 
@@ -1309,7 +1310,7 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhenumerateproviders Win32Error TdhEnumerateProviders( [out]
 	// PPROVIDER_ENUMERATION_INFO pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProviders", MinClient = PInvokeClient.Windows7)]
-	public static Win32Error TdhEnumerateProviders(out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO>? pBuffer) =>
+	public static Win32Error TdhEnumerateProviders(out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> pBuffer) =>
 		GetMem(TdhEnumerateProviders, out pBuffer);
 
 	/// <summary>Retrieves a list of providers that have registered a MOF class or manifest file on the computer.</summary>
@@ -1374,7 +1375,7 @@ public static partial class Tdh
 	// TdhEnumerateProvidersForDecodingSource( DECODING_SOURCE filter, [out] PROVIDER_ENUMERATION_INFO *buffer, [in, out] ULONG bufferSize,
 	// [out] ULONG *bufferRequired );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProvidersForDecodingSource", MinClient = PInvokeClient.Windows10)]
-	public static Win32Error TdhEnumerateProvidersForDecodingSource(DECODING_SOURCE filter, out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO>? buffer) =>
+	public static Win32Error TdhEnumerateProvidersForDecodingSource(DECODING_SOURCE filter, out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> buffer) =>
 		GetMem((IntPtr p, ref uint s) => TdhEnumerateProvidersForDecodingSource(filter, p, s, out s), out buffer);
 
 	/// <summary>Formats a property value for display.</summary>
@@ -1480,7 +1481,7 @@ public static partial class Tdh
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhFormatProperty(SafeCoTaskMemStruct<TRACE_EVENT_INFO> EventInfo, in EVENT_MAP_INFO MapInfo, uint PointerSize,
 		ushort PropertyInType, ushort PropertyOutType, ushort PropertyLength, ushort UserDataLength, [In] IntPtr UserData,
-		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, out ushort UserDataConsumed);
+		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? Buffer, out ushort UserDataConsumed);
 
 	/// <summary>Formats a property value for display.</summary>
 	/// <param name="EventInfo">
@@ -1585,7 +1586,7 @@ public static partial class Tdh
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhFormatProperty(SafeCoTaskMemStruct<TRACE_EVENT_INFO> EventInfo, [In, Optional] IntPtr MapInfo, uint PointerSize,
 		ushort PropertyInType, ushort PropertyOutType, ushort PropertyLength, ushort UserDataLength, [In] IntPtr UserData,
-		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, out ushort UserDataConsumed);
+		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? Buffer, out ushort UserDataConsumed);
 
 	/// <summary>Retrieves the value of a decoding parameter.</summary>
 	/// <param name="Handle">
@@ -1734,7 +1735,7 @@ public static partial class Tdh
 	// PEVENT_RECORD Event, [in] ULONG TdhContextCount, [in] PTDH_CONTEXT TdhContext, [out] PTRACE_EVENT_INFO Buffer, [in, out] PULONG
 	// BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventInformation")]
-	public static Win32Error TdhGetEventInformation([In] EVENT_RECORD Event, [In, Optional] TDH_CONTEXT[]? TdhContext, out SafeCoTaskMemStruct<TRACE_EVENT_INFO>? Buffer) =>
+	public static Win32Error TdhGetEventInformation([In] EVENT_RECORD Event, [In, Optional] TDH_CONTEXT[]? TdhContext, out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) =>
 		GetMem((IntPtr p, ref uint s) => TdhGetEventInformation(Event, (uint)(TdhContext?.Length ?? 0), TdhContext, p, ref s), out Buffer);
 
 	/// <summary>Retrieves information about the event map contained in the event.</summary>
@@ -1852,7 +1853,7 @@ public static partial class Tdh
 	// PEVENT_RECORD pEvent, [in] PWSTR pMapName, [out] PEVENT_MAP_INFO pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventMapInformation")]
 	public static Win32Error TdhGetEventMapInformation([In] EVENT_RECORD pEvent, [MarshalAs(UnmanagedType.LPWStr)] string pMapName,
-		out SafeCoTaskMemStruct<EVENT_MAP_INFO>? pBuffer) => GetMem((IntPtr p, ref uint sz) => TdhGetEventMapInformation(pEvent, pMapName, p, ref sz), out pBuffer);
+		out SafeCoTaskMemStruct<EVENT_MAP_INFO> pBuffer) => GetMem((IntPtr p, ref uint sz) => TdhGetEventMapInformation(pEvent, pMapName, p, ref sz), out pBuffer);
 
 	/// <summary>The <c>TdhGetManifestEventInformation</c> function retrieves metadata about an event in a manifest.</summary>
 	/// <param name="ProviderGuid">A GUID that identifies the manifest provider whose event metadata you want to retrieve.</param>
@@ -1950,7 +1951,7 @@ public static partial class Tdh
 	// out] ULONG *BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetManifestEventInformation", MinClient = PInvokeClient.Windows81)]
 	public static Win32Error TdhGetManifestEventInformation([In] Guid ProviderGuid, [In] EVENT_DESCRIPTOR EventDescriptor,
-		out SafeCoTaskMemStruct<TRACE_EVENT_INFO>? Buffer) => GetMem((IntPtr p, ref uint sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
+		out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) => GetMem((IntPtr p, ref uint sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
 
 	/// <summary>Retrieves a property value from the event data.</summary>
 	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
@@ -2480,7 +2481,7 @@ public static partial class Tdh
 	// PPROVIDER_FIELD_INFOARRAY pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhQueryProviderFieldInformation")]
 	public static Win32Error TdhQueryProviderFieldInformation([In] Guid pGuid, ulong EventFieldValue,
-		[In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? pBuffer) =>
+		[In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY> pBuffer) =>
 		GetMem((IntPtr p, ref uint s) => TdhQueryProviderFieldInformation(pGuid, EventFieldValue, EventFieldType, p, ref s), out pBuffer);
 
 	/// <summary>Sets the value of a decoding parameter.</summary>
@@ -2735,11 +2736,11 @@ public static partial class Tdh
 	private static Win32Error Get<T>(GetD getter, out T value) where T : struct
 	{
 		var status = GetMem<T>(getter, out var mem);
-		value = status.Succeeded && mem is not null ? mem.Value : default;
+		value = status.Succeeded && !mem.IsInvalid ? mem.Value : default;
 		return status;
 	}
 
-	private static Win32Error GetMem<T>(GetD getter, out SafeCoTaskMemStruct<T>? value) where T : struct
+	private static Win32Error GetMem<T>(GetD getter, out SafeCoTaskMemStruct<T> value) where T : struct
 	{
 		Win32Error status;
 		SafeCoTaskMemStruct<T> buffer = new();
@@ -2754,7 +2755,7 @@ public static partial class Tdh
 
 			buffer.Size = bufferSize;
 		}
-		value = status.Succeeded ? buffer : default;
+		value = status.Succeeded ? buffer : SafeCoTaskMemStruct<T>.Null;
 		return status;
 	}
 

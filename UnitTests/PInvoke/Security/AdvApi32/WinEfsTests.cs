@@ -63,9 +63,9 @@ public class WinEfsTests
 
 		bool Callback(IntPtr pvSystemStore, uint dwFlags, in CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved, IntPtr pvArg)
 		{
-			var ss = StringHelper.GetString(pvSystemStore, CharSet.Unicode);
+			string? ss = StringHelper.GetString(pvSystemStore, CharSet.Unicode);
 			if (!string.IsNullOrEmpty(ss))
-				list.Add(ss);
+				list.Add(ss!);
 			return true;
 		}
 	}

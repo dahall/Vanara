@@ -51,9 +51,9 @@ public class WinCredTests
 		Assert.That(cred, Is.Not.Null);
 		TestContext.Write(cred);
 
-		Assert.That(CredIsMarshaledCredential(cred), Is.True);
+		Assert.That(CredIsMarshaledCredential(cred!), Is.True);
 
-		Assert.That(CredUnmarshalCredential(cred, out var type, out var mem), ResultIs.Successful);
+		Assert.That(CredUnmarshalCredential(cred!, out var type, out var mem), ResultIs.Successful);
 		Assert.That(type, Is.EqualTo(CRED_MARSHAL_TYPE.UsernameTargetCredential));
 		Assert.That(mem.DangerousGetHandle().ToStructure<USERNAME_TARGET_CREDENTIAL_INFO>().UserName, Is.EqualTo(un));
 		mem.Dispose();

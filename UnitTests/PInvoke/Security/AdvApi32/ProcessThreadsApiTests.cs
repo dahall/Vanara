@@ -11,12 +11,12 @@ public class ProcessThreadsApiTests
 	[Test]
 	public void CreateProcessAsUserTest()
 	{
-		Assert.That(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS, out var hTok), ResultIs.Successful);
+		Assert.That(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS, out SafeHTOKEN? hTok), ResultIs.Successful);
 		using (hTok)
 		{
-			var si = STARTUPINFO.Default;
+			STARTUPINFO si = STARTUPINFO.Default;
 			si.ShowWindowCommand = ShowWindowCommand.SW_MAXIMIZE;
-			Assert.That(CreateProcessAsUser(hTok, @"C:\Windows\notepad.exe", bInheritHandles: false, dwCreationFlags: CREATE_PROCESS.NORMAL_PRIORITY_CLASS, lpStartupInfo: si, lpProcessInformation: out var pi), ResultIs.Successful);
+			Assert.That(CreateProcessAsUser(hTok, @"C:\Windows\notepad.exe", bInheritHandles: false, dwCreationFlags: CREATE_PROCESS.NORMAL_PRIORITY_CLASS, lpStartupInfo: si, lpProcessInformation: out SafePROCESS_INFORMATION? pi), ResultIs.Successful);
 			Sleep(500);
 			Kernel32.TerminateProcess(pi.hProcess, 0);
 		}
@@ -25,12 +25,12 @@ public class ProcessThreadsApiTests
 	[Test]
 	public void CreateProcessAsUserTest2()
 	{
-		Assert.That(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS, out var hTok), ResultIs.Successful);
+		Assert.That(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS, out SafeHTOKEN? hTok), ResultIs.Successful);
 		using (hTok)
 		{
-			var si = STARTUPINFOEX.Default;
+			STARTUPINFOEX si = STARTUPINFOEX.Default;
 			si.StartupInfo.ShowWindowCommand = ShowWindowCommand.SW_MAXIMIZE;
-			Assert.That(CreateProcessAsUser(hTok, @"C:\Windows\notepad.exe", bInheritHandles: false, dwCreationFlags: CREATE_PROCESS.NORMAL_PRIORITY_CLASS, lpStartupInfo: si, lpProcessInformation: out var pi), ResultIs.Successful);
+			Assert.That(CreateProcessAsUser(hTok, @"C:\Windows\notepad.exe", bInheritHandles: false, dwCreationFlags: CREATE_PROCESS.NORMAL_PRIORITY_CLASS, lpStartupInfo: si, lpProcessInformation: out SafePROCESS_INFORMATION? pi), ResultIs.Successful);
 			Sleep(500);
 			Kernel32.TerminateProcess(pi.hProcess, 0);
 		}
@@ -39,8 +39,8 @@ public class ProcessThreadsApiTests
 	[Test]
 	public void OpenThreadTokenTest()
 	{
-		Assert.That(OpenThreadToken(GetCurrentThread(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_ADJUST_PRIVILEGES, true, out var hTok), ResultIs.FailureCode(Win32Error.ERROR_NO_TOKEN));
-		Assert.That(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_DUPLICATE, out var hPrTok), ResultIs.Successful);
+		Assert.That(OpenThreadToken(GetCurrentThread(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_ADJUST_PRIVILEGES, true, out SafeHTOKEN? hTok), ResultIs.FailureCode(Win32Error.ERROR_NO_TOKEN));
+		Assert.That(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_DUPLICATE, out SafeHTOKEN? hPrTok), ResultIs.Successful);
 		using (hPrTok)
 		{
 			Assert.That(DuplicateTokenEx(hPrTok, TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_ADJUST_PRIVILEGES,

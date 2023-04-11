@@ -32,7 +32,7 @@ public class AdvApi32Tests
 		var b = CreateProcessWithTokenW(hTok, 0, "notepad.exe", null, 0, default, default, STARTUPINFO.Default, out var pi);
 		if (!b) TestContext.WriteLine($"CreateProcessWithTokenW:{Win32Error.GetLastError()}");
 		Assert.That(b, Is.True);
-		Assert.That((int)WaitForSingleObject(pi.hProcess, INFINITE), Is.Zero);
+		Assert.That((int)WaitForSingleObject(pi!.hProcess, INFINITE), Is.Zero);
 	}
 
 	[Test()]

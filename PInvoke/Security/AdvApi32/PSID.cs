@@ -315,7 +315,7 @@ public static partial class AdvApi32
 
 		/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>
 		/// <param name="pSIDs">A list of <see cref="SafePSID"/> instances.</param>
-		public SafePSIDArray(IEnumerable<SafePSID> pSIDs) : this(pSIDs?.Select(p => (PSID)p) ?? Enumerable.Empty<PSID>())
+		public SafePSIDArray(IEnumerable<SafePSID>? pSIDs) : this(pSIDs?.Select(p => (PSID)p) ?? Enumerable.Empty<PSID>())
 		{
 		}
 

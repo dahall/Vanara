@@ -85,7 +85,7 @@ public static partial class Secur32
 	[DllImport(Lib.Secur32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("secext.h", MSDNShortId = "aead19ae-a27c-486e-aa2e-220d337044fc")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool GetComputerObjectName(EXTENDED_NAME_FORMAT NameFormat, StringBuilder lpNameBuffer, ref uint nSize);
+	public static extern bool GetComputerObjectName(EXTENDED_NAME_FORMAT NameFormat, StringBuilder? lpNameBuffer, ref uint nSize);
 
 	/// <summary>
 	/// <para>
@@ -141,7 +141,7 @@ public static partial class Secur32
 	[DllImport(Lib.Secur32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("secext.h", MSDNShortId = "7e7d618b-2e64-4b0b-aed3-f3221b0443ca")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool GetUserNameEx(EXTENDED_NAME_FORMAT NameFormat, StringBuilder lpNameBuffer, ref uint nSize);
+	public static extern bool GetUserNameEx(EXTENDED_NAME_FORMAT NameFormat, StringBuilder? lpNameBuffer, ref uint nSize);
 
 	/// <summary>Converts a directory service object name from one format to another.</summary>
 	/// <param name="lpAccountName">The name to be translated.</param>
@@ -173,5 +173,5 @@ public static partial class Secur32
 	[DllImport(Lib.Secur32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("secext.h", MSDNShortId = "4df25519-e7d6-46ea-b0e8-ba1f82e5f94f")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool TranslateName(string lpAccountName, EXTENDED_NAME_FORMAT AccountNameFormat, EXTENDED_NAME_FORMAT DesiredNameFormat, StringBuilder lpTranslatedName, ref uint nSize);
+	public static extern bool TranslateName(string lpAccountName, EXTENDED_NAME_FORMAT AccountNameFormat, EXTENDED_NAME_FORMAT DesiredNameFormat, StringBuilder? lpTranslatedName, ref uint nSize);
 }

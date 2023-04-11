@@ -5961,11 +5961,11 @@ public static partial class AdvApi32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MaxLogFileNameLength)]
-		public string? LogFileName;
+		public string LogFileName;
 
 		/// <summary>Reserve buffer space so the ETW system can fill this with the logger name</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MaxLoggerNameLength)]
-		public string? LoggerName;
+		public string LoggerName;
 
 		/// <summary>Creates a <see cref="EVENT_TRACE_PROPERTIES"/> with default properties set.</summary>
 		/// <param name="sessionId">The session identifier.</param>
@@ -5984,9 +5984,8 @@ public static partial class AdvApi32
 		/// <param name="logFileName">Name of the log file.</param>
 		/// <param name="providerName">Name of the provider.</param>
 		/// <returns>An initialized instance of <see cref="EVENT_TRACE_PROPERTIES"/>.</returns>
-		public static EVENT_TRACE_PROPERTIES Create(string? logFileName = null, string? providerName = null)
-		{
-			var output = new EVENT_TRACE_PROPERTIES
+		public static EVENT_TRACE_PROPERTIES Create(string? logFileName = null, string? providerName = null) =>
+			new EVENT_TRACE_PROPERTIES
 			{
 				Wnode = new WNODE_HEADER
 				{
@@ -5994,14 +5993,10 @@ public static partial class AdvApi32
 					Flags = WNODE_FLAG.WNODE_FLAG_TRACED_GUID,
 				},
 				LoggerNameOffset = SizeOf - StrLen,
-				LogFileNameOffset = SizeOf - StrLen * 2
+				LogFileNameOffset = SizeOf - StrLen * 2,
+				LogFileName = logFileName ?? "",
+				LoggerName = providerName ?? ""
 			};
-			if (!string.IsNullOrEmpty(logFileName))
-				output.LogFileName = logFileName;
-			if (!string.IsNullOrEmpty(providerName))
-				output.LoggerName = providerName;
-			return output;
-		}
 	}
 
 	/// <summary>

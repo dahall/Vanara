@@ -801,36 +801,9 @@ public static partial class Authz
 	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("authz.h", MSDNShortId = "4744013b-7f2e-4ebb-8944-10ffcc6006d0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AuthzAddSidsToContext(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in SID_AND_ATTRIBUTES Sids, uint SidCount, in SID_AND_ATTRIBUTES RestrictedSids, uint RestrictedSidCount, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext);
-
-	/// <summary>
-	/// The <c>AuthzAddSidsToContext</c> function creates a copy of an existing context and appends a given set of security identifiers
-	/// (SIDs) and restricted SIDs.
-	/// </summary>
-	/// <param name="hAuthzClientContext">An <c>AUTHZ_CLIENT_CONTEXT_HANDLE</c> structure to be copied as the basis for NewClientContext.</param>
-	/// <param name="Sids">
-	/// A pointer to a SID_AND_ATTRIBUTES structure containing the SIDs and attributes to be added to the unrestricted part of the client context.
-	/// </param>
-	/// <param name="SidCount">The number of SIDs to be added.</param>
-	/// <param name="RestrictedSids">
-	/// A pointer to a SID_AND_ATTRIBUTES structure containing the SIDs and attributes to be added to the restricted part of the client context.
-	/// </param>
-	/// <param name="RestrictedSidCount">Number of restricted SIDs to be added.</param>
-	/// <param name="phNewAuthzClientContext">
-	/// A pointer to the created <c>AUTHZ_CLIENT_CONTEXT_HANDLE</c> structure containing input values for expiration time, identifier,
-	/// flags, additional SIDs and restricted SIDs.
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
-	/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzaddsidstocontext AUTHZAPI BOOL AuthzAddSidsToContext(
-	// AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, PSID_AND_ATTRIBUTES Sids, DWORD SidCount, PSID_AND_ATTRIBUTES RestrictedSids,
-	// DWORD RestrictedSidCount, PAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext );
-	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("authz.h", MSDNShortId = "4744013b-7f2e-4ebb-8944-10ffcc6006d0")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AuthzAddSidsToContext(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [Optional] IntPtr Sids, uint SidCount, [Optional] IntPtr RestrictedSids, uint RestrictedSidCount, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext);
+	public static extern bool AuthzAddSidsToContext(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] SID_AND_ATTRIBUTES[]? Sids,
+		[Optional] uint SidCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SID_AND_ATTRIBUTES[]? RestrictedSids, [Optional] uint RestrictedSidCount,
+		out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phNewAuthzClientContext);
 
 	/// <summary>
 	/// The <c>AuthzCachedAccessCheck</c> function performs a fast access check based on a cached handle containing the static granted
@@ -1080,6 +1053,32 @@ public static partial class Authz
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzGetInformationFromContext(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
 		AUTHZ_CONTEXT_INFORMATION_CLASS InfoClass, uint BufferSize, out uint pSizeRequired, IntPtr Buffer);
+
+	/// <summary>
+	/// <para>The <c>AuthzGetInformationFromContext</c> function returns information about an Authz context.</para>
+	/// <para>
+	/// Starting with Windows Server 2012 and Windows 8, device groups are returned as a TOKEN_GROUPS structure. User and device claims are
+	/// returned as an AUTHZ_SECURITY_ATTRIBUTES_INFORMATION structure.
+	/// </para>
+	/// </summary>
+	/// <typeparam name="T">The type of information requested.</typeparam>
+	/// <param name="hAuthzClientContext">A handle to the context.</param>
+	/// <param name="InfoClass">
+	/// A value of the AUTHZ_CONTEXT_INFORMATION_CLASS enumeration that indicates the type of information to be returned.
+	/// </param>
+	/// <returns>The information requested in the InfoClass parameter.</returns>
+	/// <exception cref="System.ArgumentException">No corresponding AUTHZ_CONTEXT_INFORMATION_CLASS for type " + typeof(T).Name</exception>
+	[PInvokeData("authz.h", MSDNShortId = "c365029a-3ff3-49c1-9dfc-b52948e466f3")]
+	public static T? AuthzGetInformationFromContext<T>(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS? InfoClass = null)
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, AUTHZ_CONTEXT_INFORMATION_CLASS>(InfoClass, out var iClass))
+			throw new ArgumentException("No corresponding AUTHZ_CONTEXT_INFORMATION_CLASS for type " + typeof(T).Name);
+		if (!AuthzGetInformationFromContext(hAuthzClientContext, iClass, 0, out var sz, default) && sz == 0)
+			throw Win32Error.GetLastError().GetException()!;
+		using var mem = new SafeHGlobalHandle(sz);
+		Win32Error.ThrowLastErrorIfFalse(AuthzGetInformationFromContext(hAuthzClientContext, iClass, mem.Size, out sz, mem));
+		return mem.ToType<T>();
+	}
 
 	/// <summary>
 	/// <para>
@@ -1537,13 +1536,9 @@ public static partial class Authz
 	[DllImport(Lib.Authz, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("authz.h", MSDNShortId = "aa376313")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AuthzInitializeResourceManager(
-		AuthzResourceManagerFlags flags,
-		[Optional] AuthzAccessCheckCallback pfnAccessCheck,
-		[Optional] AuthzComputeGroupsCallback pfnComputeDynamicGroups,
-		[Optional] AuthzFreeGroupsCallback pfnFreeDynamicGroups,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? name,
-		out SafeAUTHZ_RESOURCE_MANAGER_HANDLE rm);
+	public static extern bool AuthzInitializeResourceManager(AuthzResourceManagerFlags flags, [Optional] AuthzAccessCheckCallback? pfnAccessCheck,
+		[Optional] AuthzComputeGroupsCallback? pfnComputeDynamicGroups, [Optional] AuthzFreeGroupsCallback? pfnFreeDynamicGroups,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? name, out SafeAUTHZ_RESOURCE_MANAGER_HANDLE rm);
 
 	/// <summary>
 	/// The <c>AuthzInitializeResourceManagerEx</c> function initializes an Authz resource manager and returns a handle to it. Use this
@@ -1717,7 +1712,7 @@ public static partial class Authz
 	[DllImport(Lib.Authz, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifyClaims(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS ClaimClass,
-		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pClaimOperations,
+		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pClaimOperations,
 		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pClaims);
 
 	/// <summary>
@@ -1751,7 +1746,7 @@ public static partial class Authz
 	[PInvokeData("authz.h", MSDNShortId = "d84873e2-ecfe-45cf-9048-7ed173117efa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifySecurityAttributes(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
-		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pOperations,
+		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pOperations,
 		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAttributes);
 
 	/// <summary>
@@ -1792,7 +1787,7 @@ public static partial class Authz
 	[PInvokeData("authz.h", MSDNShortId = "740569A5-6159-409B-B8CB-B3A8BAE4F398")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifySids(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS SidClass,
-		AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
+		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
 
 	/// <summary>
 	/// The <c>AuthzOpenObjectAudit</c> function reads the system access control list (SACL) of the specified security descriptor and
@@ -1817,8 +1812,10 @@ public static partial class Authz
 	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("authz.h", MSDNShortId = "39c6f0bc-72bf-4a82-b417-c0c5b2626344")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AuthzOpenObjectAudit([Optional] uint Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest, AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, [In] PSECURITY_DESCRIPTOR pSecurityDescriptor,
-		[In, Optional] PSECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray, uint OptionalSecurityDescriptorCount, in AUTHZ_ACCESS_REPLY pReply);
+	public static extern bool AuthzOpenObjectAudit([Optional] uint Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest,
+		AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, [In] PSECURITY_DESCRIPTOR pSecurityDescriptor,
+		[In, Optional] PSECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray, uint OptionalSecurityDescriptorCount,
+		in AUTHZ_ACCESS_REPLY pReply);
 
 	/// <summary>The <c>AuthzRegisterCapChangeNotification</c> function registers a CAP update notification callback.</summary>
 	/// <param name="phCapChangeSubscription">
@@ -1996,7 +1993,7 @@ public static partial class Authz
 	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("authz.h", MSDNShortId = "CD01C5E1-2367-4CC1-A495-A295E3C82B46")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AuthzSetAppContainerInformation([In] AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [In] PSID pAppContainerSid, uint CapabilityCount, [In] SID_AND_ATTRIBUTES[] pCapabilitySids);
+	public static extern bool AuthzSetAppContainerInformation([In] AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, [In] PSID pAppContainerSid, uint CapabilityCount, [In] SID_AND_ATTRIBUTES[]? pCapabilitySids);
 
 	/// <summary>
 	/// The <c>AuthzUninstallSecurityEventSource</c> function removes the specified source from the list of valid security event sources.
@@ -2121,10 +2118,10 @@ public static partial class Authz
 	public struct AUTHZ_ACCESS_REQUEST
 	{
 		/// <summary>The type of access to test for.</summary>
-		public uint DesiredAccess;
+		public ACCESS_MASK DesiredAccess;
 
 		/// <summary>The security identifier (SID) to use for the principal self SID in the access control list (ACL).</summary>
-		public byte[] PrincipalSelfSid;
+		public PSID PrincipalSelfSid;
 
 		/// <summary>
 		/// An array of OBJECT_TYPE_LIST structures in the object tree for the object. Set to NULL unless the application checks access
@@ -2143,7 +2140,7 @@ public static partial class Authz
 
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_ACCESS_REQUEST"/> struct.</summary>
 		/// <param name="access">The access.</param>
-		public AUTHZ_ACCESS_REQUEST(uint access) : this() => DesiredAccess = access;
+		public AUTHZ_ACCESS_REQUEST(ACCESS_MASK access) : this() => DesiredAccess = access;
 
 		/// <summary>Gets or sets the object types.</summary>
 		/// <value>The object types.</value>
@@ -2511,6 +2508,7 @@ public static partial class Authz
 		/// <summary>
 		/// A pointer to strings that specify the names of the publisher, the product, and the original binary file of the value.
 		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pName;
 	}
 
@@ -2524,7 +2522,7 @@ public static partial class Authz
 	public struct AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE
 	{
 		/// <summary>A pointer to the value.</summary>
-		public byte[] pValue;
+		public IntPtr pValue;
 
 		/// <summary>The length, in bytes, of the pValue member.</summary>
 		public uint ValueLength;
@@ -2544,6 +2542,7 @@ public static partial class Authz
 	public struct AUTHZ_SECURITY_ATTRIBUTE_V1
 	{
 		/// <summary>A pointer to a name of a security attribute.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pName;
 
 		/// <summary>The data type of the values pointed to by the Values member.</summary>
@@ -2706,26 +2705,26 @@ public static partial class Authz
 		public SOURCE_SCHEMA_REGISTRATION_FLAGS dwFlags;
 
 		/// <summary>A pointer to a wide character string that represents the name of the event source.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string szEventSourceName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? szEventSourceName;
 
 		/// <summary>A pointer to a wide character string that represents the name of the resource that contains the event messages.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string szEventMessageFile;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? szEventMessageFile;
 
 		/// <summary>A pointer to a wide character string that represents the name of the XML schema file for the event source.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string szEventSourceXmlSchemaFile;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? szEventSourceXmlSchemaFile;
 
 		/// <summary>
 		/// A pointer to a wide character string that represents the name of the resource that contains the event parameter strings.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string szEventAccessStringsFile;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? szEventAccessStringsFile;
 
 		/// <summary>This member is reserved and must be set to <c>NULL</c>.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string szExecutableImagePath;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? szExecutableImagePath;
 
 		/// <summary>
 		/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
@@ -2738,7 +2737,7 @@ public static partial class Authz
 
 		/// <summary>An array of AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET structures that represents the object types for the events.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET[] ObjectTypeNames;
+		public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET[]? ObjectTypeNames;
 	}
 
 	/// <summary>
@@ -2783,30 +2782,24 @@ public static partial class Authz
 			Error = Marshal.AllocHGlobal(sz);
 		}
 
-
 		/// <summary>Gets or sets the granted access mask values. The length of this array must match the value in <see cref="ResultListLength"/>.</summary>
 		/// <value>The granted access mask values.</value>
 		public uint[] GrantedAccessMaskValues
 		{
-			get => GrantedAccessMask != IntPtr.Zero && ResultListLength > 0 ? GrantedAccessMask.ToArray<uint>(ResultListLength) : (new uint[0]);
+			get => GrantedAccessMask != IntPtr.Zero && ResultListLength > 0 ? GrantedAccessMask.ToArray<uint>(ResultListLength)! : new uint[0];
 			set
 			{
-				if (value is null && ResultListLength != 0)
-					throw new ArgumentNullException(nameof(GrantedAccessMaskValues), $"Value cannot be null if {nameof(ResultListLength)} field does not equal 0.");
-				if (value is not null && value.Length != ResultListLength)
+				if (value.Length != ResultListLength)
 					throw new ArgumentOutOfRangeException(nameof(GrantedAccessMaskValues), $"Number of items must match value of {nameof(ResultListLength)} field.");
-				CopyArrayToPtr(value, GrantedAccessMask);
+				Marshal.FreeHGlobal(GrantedAccessMask);
+				if (ResultListLength == 0)
+					GrantedAccessMask = IntPtr.Zero;
+				else
+					CopyArrayToPtr(value, GrantedAccessMask);
 			}
 		}
 
-		private static void CopyArrayToPtr<T>(T[] items, IntPtr ptr)
-		{
-			var ms = new MemoryStream();
-			var bw = new BinaryWriter(ms);
-			foreach (var item in items)
-				bw.Write(item);
-			Marshal.Copy(ms.ToArray(), 0, ptr, (int)ms.Length);
-		}
+		private static void CopyArrayToPtr(uint[] items, IntPtr ptr) => ptr = items.MarshalToPtr(Marshal.AllocHGlobal, out _);
 
 		/// <summary>
 		/// Gets or sets the system access control list (SACL) evaluation results values. The length of this array must match the value
@@ -2816,15 +2809,17 @@ public static partial class Authz
 		public uint[] SaclEvaluationResultsValues
 		{
 			get => SaclEvaluationResults != IntPtr.Zero && ResultListLength > 0
-					? SaclEvaluationResults.ToArray<uint>(ResultListLength)
-					: (new uint[0]);
+					? SaclEvaluationResults.ToArray<uint>(ResultListLength)!
+					: new uint[0];
 			set
 			{
-				if (value is null && ResultListLength != 0)
-					throw new ArgumentNullException(nameof(SaclEvaluationResultsValues), $"Value cannot be null if {nameof(ResultListLength)} field does not equal 0.");
-				if (value is not null && value.Length != ResultListLength)
+				if (value.Length != ResultListLength)
 					throw new ArgumentOutOfRangeException(nameof(SaclEvaluationResultsValues), $"Number of items must match value of {nameof(ResultListLength)} field.");
-				CopyArrayToPtr(value, SaclEvaluationResults);
+				Marshal.FreeHGlobal(SaclEvaluationResults);
+				if (ResultListLength == 0)
+					SaclEvaluationResults = IntPtr.Zero;
+				else
+					CopyArrayToPtr(value, SaclEvaluationResults);
 			}
 		}
 
@@ -2832,14 +2827,16 @@ public static partial class Authz
 		/// <value>The results values.</value>
 		public uint[] ErrorValues
 		{
-			get => Error != IntPtr.Zero && ResultListLength > 0 ? Error.ToArray<uint>(ResultListLength) : (new uint[0]);
+			get => Error != IntPtr.Zero && ResultListLength > 0 ? Error.ToArray<uint>(ResultListLength)! : new uint[0];
 			set
 			{
-				if (value is null && ResultListLength != 0)
-					throw new ArgumentNullException(nameof(ErrorValues), $"Value cannot be null if {nameof(ResultListLength)} field does not equal 0.");
-				if (value is not null && value.Length != ResultListLength)
+				if (value.Length != ResultListLength)
 					throw new ArgumentOutOfRangeException(nameof(ErrorValues), $"Number of items must match value of {nameof(ResultListLength)} field.");
-				CopyArrayToPtr(value, Error);
+				Marshal.FreeHGlobal(Error);
+				if (ResultListLength == 0)
+					Error = IntPtr.Zero;
+				else
+					CopyArrayToPtr(value, Error);
 			}
 		}
 
@@ -2875,12 +2872,12 @@ public static partial class Authz
 
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTES_INFORMATION"/> class.</summary>
 		/// <param name="attributes">The attributes.</param>
-		public AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(AUTHZ_SECURITY_ATTRIBUTE_V1[] attributes)
+		public AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(AUTHZ_SECURITY_ATTRIBUTE_V1[]? attributes)
 		{
 			Version = 1;
 			Reserved = 0;
 			AttributeCount = (uint)(attributes?.Length ?? 0);
-			pAttributeV1 = attributes;
+			pAttributeV1 = attributes ?? new AUTHZ_SECURITY_ATTRIBUTE_V1[0];
 		}
 
 		/// <summary>Create a AUTHZ_SECURITY_ATTRIBUTES_INFORMATION from a pointer.</summary>
@@ -3042,7 +3039,7 @@ public static partial class Authz
 
 	internal class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler : ICustomMarshaler
 	{
-		public static ICustomMarshaler GetInstance(string _) => new AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler();
+		public static ICustomMarshaler GetInstance(string? _) => new AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler();
 
 		public void CleanUpManagedData(object ManagedObj)
 		{
@@ -3152,35 +3149,35 @@ public static partial class Authz
 
 		public object MarshalNativeToManaged(IntPtr pNativeData)
 		{
-			if (pNativeData == IntPtr.Zero) return null;
+			if (pNativeData == IntPtr.Zero) return new ();
 			var attrInfo = pNativeData.ToStructure<Internal_AUTHZ_SECURITY_ATTRIBUTES_INFORMATION>();
 			return new AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(attrInfo.pAttributeV1 == IntPtr.Zero ? null :
-				Array.ConvertAll(attrInfo.pAttributeV1.ToArray<Internal_AUTHZ_SECURITY_ATTRIBUTE_V1>((int)attrInfo.AttributeCount), Conv));
+				Array.ConvertAll(attrInfo.pAttributeV1.ToArray<Internal_AUTHZ_SECURITY_ATTRIBUTE_V1>((int)attrInfo.AttributeCount)!, Conv));
 
 			static AUTHZ_SECURITY_ATTRIBUTE_V1 Conv(Internal_AUTHZ_SECURITY_ATTRIBUTE_V1 input)
 			{
-				var v1 = new AUTHZ_SECURITY_ATTRIBUTE_V1 { pName = StringHelper.GetString(input.pName, CharSet.Unicode), Flags = input.Flags, ValueCount = input.ValueCount, ValueType = input.ValueType };
+				var v1 = new AUTHZ_SECURITY_ATTRIBUTE_V1 { pName = (string?)input.pName ?? "", Flags = input.Flags, ValueCount = input.ValueCount, ValueType = input.ValueType };
 				switch (v1.ValueType)
 				{
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN:
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64:
-						v1.Values.pInt64 = input.Values.ToArray<long>((int)v1.ValueCount);
+						v1.Values.pInt64 = input.Values.ToArray<long>((int)v1.ValueCount) ?? new long[0];
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64:
-						v1.Values.pUInt64 = input.Values.ToArray<ulong>((int)v1.ValueCount);
+						v1.Values.pUInt64 = input.Values.ToArray<ulong>((int)v1.ValueCount) ?? new ulong[0];
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING:
-						v1.Values.ppString = input.Values.ToStringEnum((int)v1.ValueCount, CharSet.Unicode).ToArray();
+						v1.Values.ppString = input.Values.ToStringEnum((int)v1.ValueCount, CharSet.Unicode).Select(s => s ?? "").ToArray();
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_FQBN:
-						v1.Values.pFqbn = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE>((int)v1.ValueCount);
+						v1.Values.pFqbn = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE>((int)v1.ValueCount) ?? new AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE[0];
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING:
-						v1.Values.pOctetString = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE>((int)v1.ValueCount);
+						v1.Values.pOctetString = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE>((int)v1.ValueCount) ?? new AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE[0];
 						break;
 
 					default:
@@ -3194,7 +3191,7 @@ public static partial class Authz
 		private struct Internal_AUTHZ_SECURITY_ATTRIBUTE_V1
 		{
 			/// <summary>A pointer to a name of a security attribute.</summary>
-			public IntPtr pName;
+			public StrPtrUni pName;
 
 			/// <summary>The data type of the values pointed to by the Values member.</summary>
 			public AUTHZ_SECURITY_ATTRIBUTE_DATATYPE ValueType;

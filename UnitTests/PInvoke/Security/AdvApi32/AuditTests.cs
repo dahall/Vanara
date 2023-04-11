@@ -12,8 +12,8 @@ public class AuditTests
 {
 	private static readonly Guid objAccAudit = new Guid("6997984a-797a-11d9-bed3-505054503030");
 	private static readonly Guid regAudit = new Guid("0cce921e-69ae-11d9-bed3-505054503030");
-	private static SafePSID pCurSid;
-	private ElevPriv secPriv;
+	private static SafePSID? pCurSid;
+	private ElevPriv? secPriv;
 
 	public static IEnumerable<Guid> Categories => AuditEnumerateCategories();
 
@@ -22,16 +22,13 @@ public class AuditTests
 	{
 		get
 		{
-			if (null != pCurSid)
+			if (pCurSid is not null)
 				return pCurSid;
 
-
 			using var identity = WindowsIdentity.GetCurrent();
-
 			return pCurSid = new SafePSID(identity.User.GetBytes());
 		}
 	}
-
 
 	public static IEnumerable<PSID> PerUserPolicy => AuditEnumeratePerUserPolicy();
 
@@ -136,7 +133,7 @@ public class AuditTests
 	[Test]
 	public void AuditQuerySetPerUserPolicyTest()
 	{
-		AUDIT_POLICY_INFORMATION[] orig = null;
+		AUDIT_POLICY_INFORMATION[] orig = new AUDIT_POLICY_INFORMATION[0];
 		Assert.That(() => orig = AuditQueryPerUserPolicy(CurUserSid, new[] { regAudit }).ToArray(), Throws.Nothing);
 
 		var api = new AUDIT_POLICY_INFORMATION { AuditSubCategoryGuid = regAudit, AuditingInformation = AuditCondition.PER_USER_AUDIT_SUCCESS_INCLUDE };
@@ -161,7 +158,7 @@ public class AuditTests
 	[Test]
 	public void AuditQuerySetSystemPolicyTest()
 	{
-		AUDIT_POLICY_INFORMATION[] api = null;
+		AUDIT_POLICY_INFORMATION[] api;
 		Assert.That(api = AuditQuerySystemPolicy(SubCategories.ToArray()).ToArray(), Is.Not.Empty);
 		Assert.That(AuditSetSystemPolicy(api, (uint)api.Length), ResultIs.Successful);
 	}

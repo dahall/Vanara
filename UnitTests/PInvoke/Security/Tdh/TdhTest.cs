@@ -19,7 +19,7 @@ public class TdhTests
 	public void DisplayAllProviders()
 	{
 		Win32Error.ThrowIfFailed(TdhEnumerateProviders(out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> peInfo));
-		List<(Guid id, uint source, string name)> list = new(peInfo.Value.TraceProviderInfoArray.Select(i => (i.ProviderGuid, i.SchemaSource, PEI_PROVIDER_NAME(peInfo, i))));
+		List<(Guid id, uint source, string? name)> list = new(peInfo.Value.TraceProviderInfoArray.Select(i => (i.ProviderGuid, i.SchemaSource, PEI_PROVIDER_NAME(peInfo, i))));
 		list.Sort((x, y) => string.Compare(x.name, y.name));
 
 		foreach (var (id, source, name) in list)
@@ -81,8 +81,8 @@ public class TdhTests
 		Assert.That(TdhOpenDecodingHandle(out var h), ResultIs.Successful);
 		try
 		{
-			Guid id = new("e5c16d49-2464-4382-bb20-97a4b5465db9");
-			uint eventid = 404; // Id: 404, Ver: 0, Chnl: 0, Lvl: 4, Opcode: 0, Task: 0, Key: 0x0
+			//Guid id = new("e5c16d49-2464-4382-bb20-97a4b5465db9");
+			//uint eventid = 404; // Id: 404, Ver: 0, Chnl: 0, Lvl: 4, Opcode: 0, Task: 0, Key: 0x0
 		}
 		finally
 		{

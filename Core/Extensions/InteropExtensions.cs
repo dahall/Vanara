@@ -706,9 +706,8 @@ public static partial class InteropExtensions
 	/// <summary>Converts a string to a <see cref="SecureString"/>.</summary>
 	/// <param name="s">A string.</param>
 	/// <returns>A <see cref="SecureString"/> with the contents of the string.</returns>
-	public static SecureString? ToSecureString(this string s)
+	public static SecureString ToSecureString(this string s)
 	{
-		if (s == null) return null;
 		var ss = new SecureString();
 		foreach (var c in s)
 			ss.AppendChar(c);

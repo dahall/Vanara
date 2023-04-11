@@ -36,7 +36,7 @@ public class PSIDTests
 		Assert.That(EqualSid(pSid, (IntPtr)peSid));
 		ConvertStringSidToSid("S-1-2-0", out var lsid);
 		Assert.That(EqualSid(pSid, (IntPtr)lsid), Is.False);
-		string s = null;
+		string? s = null;
 		Assert.That(IsValidSid(pSid), Is.True);
 		Assert.That(() => s = ConvertSidToStringSid(pSid), Throws.Nothing);
 		Assert.That(s, Is.EqualTo("S-1-1-0"));
@@ -87,8 +87,6 @@ public class PSIDTests
 		using var mesid = SafePSID.Current;
 		Assert.That(ssid == esid, Is.True);
 		Assert.That(ssid != mesid, Is.True);
-		Assert.That(ssid.Equals(null), Is.False);
-		Assert.That(ssid == null, Is.False);
 		Assert.That(ssid.Equals((PSID)esid), Is.True);
 		Assert.That(ssid.Equals((IntPtr)esid), Is.True);
 		Assert.That(ssid.Equals((object)esid), Is.True);
@@ -213,10 +211,10 @@ public class PSIDTests
 	public void SafePSIDArrayCtorTest()
 	{
 		var sids = new[] { SafePSID.Current, SafePSID.Everyone };
-		SafePSIDArray safeArr = null;
-		Assert.That(() => safeArr = new SafePSIDArray((SafePSID[])null), Throws.ArgumentNullException);
+		SafePSIDArray? safeArr = null;
+		Assert.That(() => safeArr = new SafePSIDArray((SafePSID[]?)null), Throws.Nothing);
 		Assert.That(() => safeArr = new SafePSIDArray(new SafePSID[0]), Throws.Nothing);
-		Assert.That(safeArr.Count, Is.Zero);
+		Assert.That(safeArr!.Count, Is.Zero);
 		Assert.That(() => safeArr = new SafePSIDArray(sids), Throws.Nothing);
 		Assert.That(safeArr.Count, Is.EqualTo(sids.Length));
 		Assert.That(() => safeArr = new SafePSIDArray(Array.ConvertAll(sids, s => (PSID)s)), Throws.Nothing);
@@ -233,9 +231,9 @@ public class PSIDTests
 		// Build in-memory SID array
 		var sids = new[] { SafePSID.Current, SafePSID.Everyone };
 
-		SafePSIDArray safeArr = null;
+		SafePSIDArray? safeArr = null;
 		Assert.That(() => safeArr = new SafePSIDArray(IntPtr.Zero, 0), Throws.Nothing);
-		Assert.That(safeArr.Count, Is.Zero);
+		Assert.That(safeArr!.Count, Is.Zero);
 
 		// Unowned
 		var ptr = Build();

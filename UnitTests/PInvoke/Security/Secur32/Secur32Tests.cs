@@ -16,7 +16,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public class Secur32Tests
 {
-	private SafeLsaConnectionHandle hLsaConn;
+	private SafeLsaConnectionHandle? hLsaConn;
 
 	[Test]
 	public void AcquireCredentialsHandleTest()
@@ -110,7 +110,7 @@ public class Secur32Tests
 	{
 		Assert.That((int)EnumerateSecurityPackages(out var count, out var buf), Is.Zero);
 		Assert.That(count, Is.GreaterThan(0));
-		foreach (var pi in buf.ToArray<SecPkgInfo>((int)count))
+		foreach (var pi in buf.ToArray<SecPkgInfo>((int)count)!)
 		{
 			foreach (var fi in typeof(SecPkgInfo).GetFields())
 				TestContext.WriteLine($"{fi.Name}: {fi.GetValue(pi)}");
@@ -215,11 +215,11 @@ public class Secur32Tests
 	[Test]
 	public void LsaCallAuthenticationPackageTest()
 	{
-		Assert.That(LsaLookupAuthenticationPackage(hLsaConn, MICROSOFT_KERBEROS_NAME, out var pkg), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaLookupAuthenticationPackage(hLsaConn!, MICROSOFT_KERBEROS_NAME, out var pkg), Is.EqualTo((NTStatus)0));
 
 		var krr = new KERB_RETRIEVE_TKT_REQUEST { MessageType = KERB_PROTOCOL_MESSAGE_TYPE.KerbRetrieveTicketMessage };
 		var mem = SafeHGlobalHandle.CreateFromStructure(krr);
-		Assert.That(LsaCallAuthenticationPackage(hLsaConn, pkg, (IntPtr)mem, (uint)mem.Size, out var buf, out var len, out var status), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaCallAuthenticationPackage(hLsaConn!, pkg, (IntPtr)mem, (uint)mem.Size, out var buf, out var len, out var status), Is.EqualTo((NTStatus)0));
 		Assert.That(status, Is.EqualTo((NTStatus)0));
 		Assert.That(len, Is.GreaterThan(0));
 		var respTick = buf.ToStructure<KERB_RETRIEVE_TKT_RESPONSE>().Ticket;
@@ -247,7 +247,7 @@ public class Secur32Tests
 	{
 		const string user = "fred", domain = "contoso", pwd = "password";
 
-		Assert.That(LsaLookupAuthenticationPackage(hLsaConn, MICROSOFT_KERBEROS_NAME, out var pkg), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaLookupAuthenticationPackage(hLsaConn!, MICROSOFT_KERBEROS_NAME, out var pkg), Is.EqualTo((NTStatus)0));
 		var kerb = new KERB_INTERACTIVE_LOGON
 		{
 			MessageType = KERB_LOGON_SUBMIT_TYPE.KerbInteractiveLogon,
@@ -258,7 +258,7 @@ public class Secur32Tests
 		var mem = SafeHGlobalHandle.CreateFromStructure(kerb);
 		AllocateLocallyUniqueId(out var srcLuid);
 		var source = new TOKEN_SOURCE { SourceName = "foobar12".ToCharArray(), SourceIdentifier = srcLuid };
-		Assert.That(LsaLogonUser(hLsaConn, "TestApp", SECURITY_LOGON_TYPE.Interactive, pkg, (IntPtr)mem, (uint)mem.Size, IntPtr.Zero, source,
+		Assert.That(LsaLogonUser(hLsaConn!, "TestApp", SECURITY_LOGON_TYPE.Interactive, pkg, (IntPtr)mem, (uint)mem.Size, IntPtr.Zero, source,
 			out var profBuf, out var profBufLen, out var logonId, out var hToken, out var quotas, out var subStat), Is.EqualTo((NTStatus)0));
 	}
 
@@ -339,7 +339,7 @@ public class Secur32Tests
 		EnumerateSecurityPackages(out var c, out var b);
 		using (b)
 		{
-			foreach (var npi in b.ToArray<SecPkgInfo>((int)c))
+			foreach (var npi in b.ToArray<SecPkgInfo>((int)c)!)
 			{
 				Assert.That(QuerySecurityPackageInfo(npi.Name, out var ppi), Is.EqualTo((HRESULT)0));
 				Assert.That(() =>
@@ -363,11 +363,11 @@ public class Secur32Tests
 	public void Setup() => LsaConnectUntrusted(out hLsaConn).ThrowIfFailed();
 
 	[OneTimeTearDown]
-	public void TearDown() => hLsaConn.Dispose();
+	public void TearDown() => hLsaConn!.Dispose();
 
 	private static SafeCredHandle AcqCredHandle(string secPkg = MICROSOFT_KERBEROS_NAME, SECPKG_CRED use = SECPKG_CRED.SECPKG_CRED_BOTH) => SafeCredHandle.Acquire(secPkg, use);
 
-	private static SafeCtxtHandle GetSecContext(SafeCredHandle hCred, SafeSecBufferDesc pOutput, string target = null)
+	private static SafeCtxtHandle GetSecContext(SafeCredHandle hCred, SafeSecBufferDesc pOutput, string? target = null)
 	{
 		if (target is null) target = WindowsIdentity.GetCurrent().Name;
 		var hCtxt = new SafeCtxtHandle();
@@ -389,7 +389,7 @@ public class Secur32Tests
 		return hCtxt;
 	}
 
-	private static SafeCtxtHandle GetSecContext(SafeCredHandle hCred, out SafeSecBufferDesc pOutput, SecBufferType type = SecBufferType.SECBUFFER_TOKEN, string target = null)
+	private static SafeCtxtHandle GetSecContext(SafeCredHandle hCred, out SafeSecBufferDesc pOutput, SecBufferType type = SecBufferType.SECBUFFER_TOKEN, string? target = null)
 	{
 		pOutput = new SafeSecBufferDesc(type);
 		return GetSecContext(hCred, pOutput, target);

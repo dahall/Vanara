@@ -9,11 +9,11 @@ public class EventLogFile
 {
 	protected internal EVENT_TRACE_LOGFILE m_log;
 
-	public EventLogFile(string lpszFile, string lpszLogger = null) => InternalInit(lpszFile, lpszLogger);
+	public EventLogFile(string? lpszFile, string? lpszLogger = null) => InternalInit(lpszFile, lpszLogger);
 
-	public EventLogFile(EventLogFile src) : this((string)null) => InternalCopy(src.m_log);
+	public EventLogFile(EventLogFile src) : this((string?)null) => InternalCopy(src.m_log);
 
-	internal EventLogFile(in EVENT_TRACE_LOGFILE src) : this((string)null) => InternalCopy(src);
+	internal EventLogFile(in EVENT_TRACE_LOGFILE src) : this((string?)null) => InternalCopy(src);
 
 	// TODO: See if you can make this an event
 	public BufferCallback BufferCallback
@@ -27,13 +27,13 @@ public class EventLogFile
 		set => m_log.Callback.EventCallback = value;
 	}
 
-	public string LogFilePath
+	public string? LogFilePath
 	{
 		get => m_log.LogFileName;
 		set => m_log.LogFileName = value;
 	}
 
-	public string LoggerName
+	public string? LoggerName
 	{
 		get => m_log.LoggerName;
 		set => m_log.LoggerName = value;
@@ -90,7 +90,7 @@ public class EventLogFile
 		m_log.Callback.EventCallback = null;
 	}
 
-	protected void InternalInit(string lpszFile = null, string lpszSession = null)
+	protected void InternalInit(string? lpszFile = null, string? lpszSession = null)
 	{
 		m_log = default;
 

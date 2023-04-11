@@ -672,7 +672,7 @@ public static partial class Schannel
 		public uint cIssuers;
 
 		/// <summary>An array of CERT_NAME_BLOB structures that contains a list of the names of CAs that the server trusts.</summary>
-		public CRYPTOAPI_BLOB[] Issuers => aIssuers.ToArray<CRYPTOAPI_BLOB>((int)cIssuers);
+		public CRYPTOAPI_BLOB[] Issuers => aIssuers.ToArray<CRYPTOAPI_BLOB>((int)cIssuers) ?? new CRYPTOAPI_BLOB[0];
 	}
 
 	/// <summary>The <c>SecPkgContext_KeyingMaterial</c> structure specifies the exportable keying material for the security context.</summary>
@@ -993,7 +993,7 @@ public static partial class Schannel
 		/// </summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <returns>A managed object that contains the data that this handle holds.</returns>
-		public T ToStructure<T>()
+		public T? ToStructure<T>()
 		{
 			if (IsInvalid) return default;
 			return handle.ToStructure<T>();

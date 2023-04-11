@@ -743,10 +743,10 @@ public static partial class CredUI
 		{
 			cbSize = Marshal.SizeOf(typeof(CREDUI_INFO));
 			hwndParent = hwndOwner;
-			if (caption?.Length > CREDUI_MAX_CAPTION_LENGTH)
+			if (caption.Length > CREDUI_MAX_CAPTION_LENGTH)
 				throw new ArgumentOutOfRangeException(nameof(caption), $"The caption may not be longer than {CREDUI_MAX_CAPTION_LENGTH}.");
-			pszCaptionText = caption ?? string.Empty;
-			if (message?.Length > CREDUI_MAX_MESSAGE_LENGTH)
+			pszCaptionText = caption;
+			if (message.Length > CREDUI_MAX_MESSAGE_LENGTH)
 				throw new ArgumentOutOfRangeException(nameof(message), $"The message may not be longer than {CREDUI_MAX_MESSAGE_LENGTH}.");
 			pszMessageText = message;
 			hbmBanner = HBITMAP.NULL;

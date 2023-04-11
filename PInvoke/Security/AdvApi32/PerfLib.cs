@@ -817,7 +817,7 @@ public static partial class AdvApi32
 	// szMachine, HANDLE *phQuery );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "5105F617-9443-451D-B802-C6A241769E65")]
-	public static extern NTStatus PerfOpenQueryHandle([MarshalAs(UnmanagedType.LPWStr)] string szMachine, out SafeHPERFQUERY phQuery);
+	public static extern NTStatus PerfOpenQueryHandle([MarshalAs(UnmanagedType.LPWStr)] string? szMachine, out SafeHPERFQUERY phQuery);
 
 	/// <summary>Gets the values of the performance counters that match the counter specifications in the specified query.</summary>
 	/// <param name="hQuery">

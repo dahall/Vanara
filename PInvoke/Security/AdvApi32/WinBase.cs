@@ -3020,7 +3020,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "f3cb607b-a8fd-4a1b-9361-7ccd7cd8aac2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ObjectOpenAuditAlarm(string SubsystemName, IntPtr HandleId, string ObjectTypeName, string ObjectName,
+	public static extern bool ObjectOpenAuditAlarm(string SubsystemName, IntPtr HandleId, string ObjectTypeName, string? ObjectName,
 		PSECURITY_DESCRIPTOR pSecurityDescriptor, HTOKEN ClientToken, ACCESS_MASK DesiredAccess, ACCESS_MASK GrantedAccess,
 		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET? Privileges,
 		[MarshalAs(UnmanagedType.Bool)] bool ObjectCreation, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted,

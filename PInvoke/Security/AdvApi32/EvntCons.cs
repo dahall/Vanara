@@ -1094,7 +1094,7 @@ public static partial class AdvApi32
 		/// <para>The user consuming the events must have permissions to read the file.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string LogFileName;
+		public string? LogFileName;
 
 		/// <summary>
 		/// <para>
@@ -1112,7 +1112,7 @@ public static partial class AdvApi32
 		/// <para><c>Windows XP and Windows 2000:</c> Anyone can consume real time events.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string LoggerName;
+		public string? LoggerName;
 
 		/// <summary>On output, the current time, in 100-nanosecond intervals since midnight, January 1, 1601.</summary>
 		public FILETIME CurrentTime;
@@ -1209,7 +1209,7 @@ public static partial class AdvApi32
 			/// </summary>
 			[FieldOffset(0)]
 			[MarshalAs(UnmanagedType.FunctionPtr)]
-			public EventClassCallback EventCallback;
+			public EventClassCallback? EventCallback;
 
 			/// <summary>
 			/// <para>Pointer to the <c>EventRecordCallback</c> function that ETW calls for each event in the buffer.</para>
@@ -1220,7 +1220,7 @@ public static partial class AdvApi32
 			/// </summary>
 			[FieldOffset(0)]
 			[MarshalAs(UnmanagedType.FunctionPtr)]
-			public EventRecordCallback EventRecordCallback;
+			public EventRecordCallback? EventRecordCallback;
 		}
 	}
 }

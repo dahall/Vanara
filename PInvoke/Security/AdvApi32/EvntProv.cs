@@ -366,7 +366,7 @@ public static partial class AdvApi32
 	// RegHandle, PCEVENT_DESCRIPTOR EventDescriptor, ULONG UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "93070eb7-c167-4419-abff-e861877dad07")]
-	public static extern Win32Error EventWrite(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EVENT_DATA_DESCRIPTOR[] UserData);
+	public static extern Win32Error EventWrite(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EVENT_DATA_DESCRIPTOR[]? UserData);
 
 	/// <summary>Use this function to write an event.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -516,7 +516,8 @@ public static partial class AdvApi32
 	// UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "00b907cb-45cd-48c7-bea4-4d8a39b4fa24")]
-	public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional] uint Flags, [Optional] IntPtr ActivityId, [Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[] UserData);
+	public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional] uint Flags, [Optional] IntPtr ActivityId,
+		[Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[]? UserData);
 
 	/// <summary>Writes an event that contains a string as its data.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -663,7 +664,8 @@ public static partial class AdvApi32
 	// PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "798cf3ba-e1cc-4eaf-a1d2-2313a64aab1a")]
-	public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, [Optional] IntPtr ActivityId, [Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[] UserData);
+	public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, [Optional] IntPtr ActivityId,
+		[Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[]? UserData);
 
 	/// <summary>
 	/// The EVENT_DATA_DESCRIPTOR structure is used with the user mode EventWrite and the kernel mode EtwWrite functions to send events.

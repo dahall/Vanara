@@ -27,7 +27,7 @@ public class SaslTests
 	public unsafe void SaslNonFuncTest()
 	{
 		Assert.That(SaslAcceptSecurityContext(null, null, null, ASC_REQ.ASC_REQ_ALLOCATE_MEMORY, DREP.SECURITY_NATIVE_DREP, out var hCtx, null, out _, out _), ResultIs.Failure);
-		Assert.That(SaslGetProfilePackage(null, out _), ResultIs.Failure);
+		Assert.That(SaslGetProfilePackage(string.Empty, out _), ResultIs.Failure);
 		var desc = default(SecBufferDesc);
 		Assert.That(SaslIdentifyPackage(ref desc, out _), ResultIs.Failure);
 		Assert.That(SaslInitializeSecurityContext(null, null, null, ASC_REQ.ASC_REQ_ALLOCATE_MEMORY, 0, DREP.SECURITY_NATIVE_DREP, null, 0, out _, null, out _, out _), ResultIs.Failure);

@@ -14,8 +14,8 @@ public class WinBaseTests
 	private const string objType = "TestObj";
 	private const string subSys = "UnitTest";
 	private const SECURITY_INFORMATION siNoSacl = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
-	private SafePSID pCurSid;
-	private ElevPriv secPriv;
+	private SafePSID? pCurSid;
+	private ElevPriv? secPriv;
 
 	[OneTimeSetUp]
 	public void _SetupTests()
@@ -52,7 +52,7 @@ public class WinBaseTests
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
 		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
-		Assert.That(AccessCheckByTypeAndAuditAlarm(subSys, default, objType, null, pSD, pCurSid, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
+		Assert.That(AccessCheckByTypeAndAuditAlarm(subSys, default, objType, null, pSD, pCurSid ?? PSID.NULL, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
 			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, (uint)otl.Length, gm, false, out var access, out var status, out var gen), ResultIs.FailureCode(Win32Error.ERROR_NO_IMPERSONATION_TOKEN));
 		//Assert.That(access, Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
 		//Assert.That(status, Is.True);
@@ -71,7 +71,7 @@ public class WinBaseTests
 		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
 		var access = new uint[otl.Length];
 		var status = new uint[otl.Length];
-		Assert.That(AccessCheckByTypeResultListAndAuditAlarm(subSys, default, objType, null, pSD, pCurSid, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
+		Assert.That(AccessCheckByTypeResultListAndAuditAlarm(subSys, default, objType, null, pSD, pCurSid ?? PSID.NULL, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
 			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, (uint)otl.Length, gm, false, access, status, out var gen), ResultIs.FailureCode(Win32Error.ERROR_NO_IMPERSONATION_TOKEN));
 		//Assert.That(ps.PrivilegeCount, Is.GreaterThanOrEqualTo(0));
 		//Assert.That(access[0], Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
@@ -91,7 +91,7 @@ public class WinBaseTests
 		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
 		var access = new uint[otl.Length];
 		var status = new uint[otl.Length];
-		Assert.That(AccessCheckByTypeResultListAndAuditAlarmByHandle(subSys, default, hTok, objType, null, pSD, pCurSid, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
+		Assert.That(AccessCheckByTypeResultListAndAuditAlarmByHandle(subSys, default, hTok, objType, null, pSD, pCurSid ?? PSID.NULL, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
 			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, (uint)otl.Length, gm, false, access, status, out var gen), ResultIs.Successful);
 		Assert.That(ps.PrivilegeCount, Is.GreaterThanOrEqualTo(0));
 		Assert.That(access[0], Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
@@ -113,7 +113,7 @@ public class WinBaseTests
 		Assert.That(CreateProcessWithLogonW(username, domain, password, 0, @"C:\Windows\notepad.exe", null, CREATE_PROCESS.NORMAL_PRIORITY_CLASS, null, null,
 			sti, out var pi), ResultIs.Successful);
 		using (pi)
-			TerminateProcess(pi.hProcess, 0);
+			TerminateProcess(pi!.hProcess, 0);
 	}
 
 	[Test]
@@ -124,7 +124,7 @@ public class WinBaseTests
 		Assert.That(CreateProcessWithTokenW(hTok, 0, @"C:\Windows\notepad.exe", null, CREATE_PROCESS.NORMAL_PRIORITY_CLASS, null, null,
 			sti, out var pi), ResultIs.Successful);
 		using (pi)
-			TerminateProcess(pi.hProcess, 0);
+			TerminateProcess(pi!.hProcess, 0);
 	}
 
 	[Test]
@@ -220,9 +220,9 @@ public class WinBaseTests
 		using (new ElevPriv("SeTcbPrivilege"))
 		using (var hPol = LsaOpenPolicy(LsaPolicyRights.POLICY_ALL_ACCESS))
 		{
-			Assert.That(LsaAddAccountRights(hPol, pCurSid, new[] { "SeInteractiveLogonRight" }, 1), ResultIs.Successful);
+			Assert.That(LsaAddAccountRights(hPol, pCurSid ?? PSID.NULL, new[] { "SeInteractiveLogonRight" }, 1), ResultIs.Successful);
 			var grps = new TOKEN_GROUPS(1);
-			grps.Groups[0] = new SID_AND_ATTRIBUTES(pCurSid, 0);
+			grps.Groups[0] = new SID_AND_ATTRIBUTES(pCurSid ?? PSID.NULL, 0);
 			Assert.That(LogonUserExExW(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, grps, out var hTok, out var pSid,
 				out var buf, out _, out _), /*validCred && validUser ? (NUnit.Framework.Constraints.IResolveConstraint)ResultIs.Successful :*/ ResultIs.Failure);
 			hTok.Dispose();
@@ -270,7 +270,7 @@ public class WinBaseTests
 	{
 		var sb = new StringBuilder(1024);
 		var sz = (uint)sb.Capacity;
-		Assert.That(LookupPrivilegeDisplayName(null, "SeTcbPrivilege", sb, ref sz, out var langId), ResultIs.Successful);
+		Assert.That(LookupPrivilegeDisplayName(null, "SeTcbPrivilege", sb, ref sz, out _), ResultIs.Successful);
 		TestContext.Write(sb);
 	}
 
@@ -285,7 +285,7 @@ public class WinBaseTests
 		Assert.That(sb.ToString(), Is.EqualTo(priv));
 
 		// Look at bad values
-		Assert.That(LookupPrivilegeValue(null, "SeBadPrivilege", out luid), Is.False);
+		Assert.That(LookupPrivilegeValue(null, "SeBadPrivilege", out _), Is.False);
 		luid = LUID.NewLUID();
 		Assert.That(LookupPrivilegeName(null, luid, sb, ref chSz), Is.False);
 	}

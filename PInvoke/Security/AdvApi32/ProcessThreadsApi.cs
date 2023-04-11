@@ -319,11 +319,11 @@ public static partial class AdvApi32
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "6b3f4dd9-500b-420e-804a-401a9e188be8")]
 	public static bool CreateProcessAsUser(HTOKEN hToken, [Optional] string? lpApplicationName, [Optional] StringBuilder? lpCommandLine, [Optional] SECURITY_ATTRIBUTES? lpProcessAttributes,
 		[Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In, Optional] string[]? lpEnvironment, [Optional] string? lpCurrentDirectory,
-		in STARTUPINFO lpStartupInfo, [NotNullWhen(true)] out SafePROCESS_INFORMATION? lpProcessInformation)
+		in STARTUPINFO lpStartupInfo, [NotNullWhen(true)] out SafePROCESS_INFORMATION lpProcessInformation)
 	{
 		var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
 			lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
-		lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+		lpProcessInformation = ret ? new(pi) : new();
 		return ret;
 	}
 
@@ -637,11 +637,11 @@ public static partial class AdvApi32
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "6b3f4dd9-500b-420e-804a-401a9e188be8")]
 	public static bool CreateProcessAsUser(HTOKEN hToken, [Optional] string? lpApplicationName, [Optional] StringBuilder? lpCommandLine, [Optional] SECURITY_ATTRIBUTES? lpProcessAttributes,
 		[Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In, Optional] string[]? lpEnvironment, [Optional] string? lpCurrentDirectory,
-		in STARTUPINFOEX lpStartupInfo, [NotNullWhen(true)] out SafePROCESS_INFORMATION? lpProcessInformation)
+		in STARTUPINFOEX lpStartupInfo, [NotNullWhen(true)] out SafePROCESS_INFORMATION lpProcessInformation)
 	{
 		var ret = CreateProcessAsUser(hToken, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment,
 			lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
-		lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;
+		lpProcessInformation = ret ? new(pi) : new();
 		return ret;
 	}
 

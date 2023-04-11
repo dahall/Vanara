@@ -1415,7 +1415,8 @@ public static partial class Secur32
 	// SEC_GET_KEY_FN pGetKeyFn, void *pvGetKeyArgument, PCredHandle phCredential, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "3b73decf-75d4-4bc4-b7ca-5f16aaadff29")]
-	public static extern HRESULT AcquireCredentialsHandle([Optional] string? pszPrincipal, string pszPackage, SECPKG_CRED fCredentialUse, [In, Optional] IntPtr pvLogonId, [In, Optional] IntPtr pAuthData, [In, Optional] IntPtr pGetKeyFn,
+	public static extern HRESULT AcquireCredentialsHandle([Optional] string? pszPrincipal, string pszPackage, SECPKG_CRED fCredentialUse,
+		[In, Optional] IntPtr pvLogonId, [In, Optional] IntPtr pAuthData, [In, Optional] IntPtr pGetKeyFn,
 		[In, Optional] IntPtr pvGetKeyArgument, out CredHandle phCredential, out TimeStamp ptsExpiry);
 
 	/// <summary>
@@ -1544,8 +1545,9 @@ public static partial class Secur32
 	// SEC_GET_KEY_FN pGetKeyFn, void *pvGetKeyArgument, PCredHandle phCredential, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "3b73decf-75d4-4bc4-b7ca-5f16aaadff29")]
-	public static extern HRESULT AcquireCredentialsHandle([Optional] string? pszPrincipal, string pszPackage, SECPKG_CRED fCredentialUse, in LUID pvLogonId, in CREDSSP_CRED pAuthData, [In, Optional] SEC_GET_KEY_FN pGetKeyFn,
-		[In, Optional] IntPtr pvGetKeyArgument, out CredHandle phCredential, out TimeStamp ptsExpiry);
+	public static extern HRESULT AcquireCredentialsHandle([Optional] string? pszPrincipal, string pszPackage, SECPKG_CRED fCredentialUse, in LUID pvLogonId,
+		in CREDSSP_CRED pAuthData, [In, Optional] SEC_GET_KEY_FN? pGetKeyFn, [In, Optional] IntPtr pvGetKeyArgument,
+		out CredHandle phCredential, out TimeStamp ptsExpiry);
 
 	/// <summary>Adds a security support provider to the list of providers supported by Microsoft Negotiate.</summary>
 	/// <param name="pszPackageName">The name of the package to add.</param>
@@ -2743,8 +2745,10 @@ public static partial class Secur32
 	// PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "21d965d4-3c03-4e29-a70d-4538c5c366b0")]
-	public static unsafe extern HRESULT InitializeSecurityContext([In, Optional] CredHandle* phCredential, [In, Optional] CtxtHandle* phContext, [Optional] string? pszTargetName, ASC_REQ fContextReq, [Optional] uint Reserved1, DREP TargetDataRep,
-		[In, Optional] SecBufferDesc* pInput, [Optional] uint Reserved2, ref CtxtHandle phNewContext, [Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
+	public static unsafe extern HRESULT InitializeSecurityContext([In, Optional] CredHandle* phCredential, [In, Optional] CtxtHandle* phContext,
+		[Optional] string? pszTargetName, ASC_REQ fContextReq, [Optional] uint Reserved1, DREP TargetDataRep,
+		[In, Optional] SecBufferDesc* pInput, [Optional] uint Reserved2, ref CtxtHandle phNewContext,
+		[Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
 
 	/// <summary>
 	/// <para>
@@ -3171,8 +3175,10 @@ public static partial class Secur32
 	// PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "21d965d4-3c03-4e29-a70d-4538c5c366b0")]
-	public static extern HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Optional] IntPtr phContext, string pszTargetName, [In] ASC_REQ fContextReq, [Optional] int Reserved1, [In] DREP TargetDataRep,
-		[In, Optional] IntPtr pInput, [Optional] int Reserved2, ref CtxtHandle phNewContext, ref SecBufferDesc pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
+	public static extern HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Optional] IntPtr phContext, [Optional] string? pszTargetName,
+		[In] ASC_REQ fContextReq, [Optional] int Reserved1, [In] DREP TargetDataRep, [In, Optional] IntPtr pInput,
+		[Optional] int Reserved2, ref CtxtHandle phNewContext, ref SecBufferDesc pOutput, out ASC_RET pfContextAttr,
+		out TimeStamp ptsExpiry);
 
 	/// <summary>
 	/// <para>
@@ -3567,8 +3573,9 @@ public static partial class Secur32
 	/// <c>InitializeSecurityContext (General)</c> again, specifying the new credential in the phCredential parameter.
 	/// </para>
 	/// </remarks>
-	public static HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Out] SafeCtxtHandle phContext, string pszTargetName, ASC_REQ fContextReq, DREP TargetDataRep,
-		[In, Optional] SecBufferDesc? pInput, SecBufferType outputType, out SafeSecBufferDesc pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry)
+	public static HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Out] SafeCtxtHandle phContext, [Optional] string? pszTargetName,
+		ASC_REQ fContextReq, DREP TargetDataRep, [In, Optional] SecBufferDesc? pInput, SecBufferType outputType,
+		out SafeSecBufferDesc pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry)
 	{
 		pOutput = new SafeSecBufferDesc(outputType);
 		return InitializeSecurityContext(phCredential, phContext, pszTargetName, fContextReq, TargetDataRep, pInput, pOutput, out pfContextAttr, out ptsExpiry);
@@ -3967,8 +3974,9 @@ public static partial class Secur32
 	/// <c>InitializeSecurityContext (General)</c> again, specifying the new credential in the phCredential parameter.
 	/// </para>
 	/// </remarks>
-	public static HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Out] SafeCtxtHandle phContext, string pszTargetName, ASC_REQ fContextReq, DREP TargetDataRep,
-		SecBufferDesc? pInput, [In, Out] SafeSecBufferDesc pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry)
+	public static HRESULT InitializeSecurityContext(in CredHandle phCredential, [In, Out] SafeCtxtHandle phContext, [Optional] string? pszTargetName,
+		ASC_REQ fContextReq, DREP TargetDataRep, SecBufferDesc? pInput, [In, Out] SafeSecBufferDesc pOutput,
+		out ASC_RET pfContextAttr, out TimeStamp ptsExpiry)
 	{
 		if (phContext is null) throw new ArgumentNullException(nameof(phContext));
 		unsafe
@@ -5273,8 +5281,10 @@ public static partial class Secur32
 	// PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "9cc661b7-f1b0-4fb1-b799-5b318d87fd4d")]
-	public static unsafe extern HRESULT SaslInitializeSecurityContext([In, Optional] CredHandle* phCredential, [In, Optional] CtxtHandle* phContext, [Optional] string? pszTargetName, ASC_REQ fContextReq, [Optional] uint Reserved1, DREP TargetDataRep,
-		[In, Optional] SecBufferDesc* pInput, [Optional] uint Reserved2, out SafeCtxtHandle phNewContext, [Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
+	public static unsafe extern HRESULT SaslInitializeSecurityContext([In, Optional] CredHandle* phCredential, [In, Optional] CtxtHandle* phContext,
+		[Optional] string? pszTargetName, ASC_REQ fContextReq, [Optional] uint Reserved1, DREP TargetDataRep,
+		[In, Optional] SecBufferDesc* pInput, [Optional] uint Reserved2, out SafeCtxtHandle phNewContext,
+		[Optional] SecBufferDesc* pOutput, out ASC_RET pfContextAttr, out TimeStamp ptsExpiry);
 
 	/// <summary>The <c>SaslSetContextOption</c> function sets the value of the specified property for the specified SASL context.</summary>
 	/// <param name="ContextHandle">Handle of the SASL context.</param>
@@ -5701,15 +5711,12 @@ public static partial class Secur32
 	/// </param>
 	/// <param name="ppszUserName">
 	/// <para>The marshaled user name of the identity specified by the pAuthIdentity parameter.</para>
-	/// <para>When you have finished using this string, free it by calling the SspiFreeAuthIdentity function.</para>
 	/// </param>
 	/// <param name="ppszDomainName">
 	/// <para>The marshaled domain name of the identity specified by the pAuthIdentity parameter.</para>
-	/// <para>When you have finished using this string, free it by calling the SspiFreeAuthIdentity function.</para>
 	/// </param>
 	/// <param name="ppszPackedCredentialsString">
 	/// <para>An encoded string version of a SEC_WINNT_AUTH_IDENTITY_EX2 structure that specifies the users credentials.</para>
-	/// <para>When you have finished using this string, free it by calling the SspiFreeAuthIdentity function.</para>
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, it returns <c>SEC_E_OK</c>.</para>
@@ -5969,7 +5976,8 @@ public static partial class Secur32
 	// *ppszCredmanTargetName );
 	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("sspi.h", MSDNShortId = "f473fd7a-5c0f-4a77-829b-28a82ad0d28d")]
-	public static extern Win32Error SspiPrepareForCredRead(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity, string pszTargetName, out CRED_TYPE pCredmanCredentialType, out string ppszCredmanTargetName);
+	public static extern Win32Error SspiPrepareForCredRead(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity, string pszTargetName, out CRED_TYPE pCredmanCredentialType,
+		out string ppszCredmanTargetName);
 
 	/// <summary>
 	/// <para>
@@ -6007,7 +6015,8 @@ public static partial class Secur32
 	// *ppszCredmanTargetName, PCWSTR *ppszCredmanUserName, PUCHAR *ppCredentialBlob, PULONG pCredentialBlobSize );
 	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("sspi.h", MSDNShortId = "4db92042-38f2-42c2-9c94-b24e0eaafdf9")]
-	public static extern Win32Error SspiPrepareForCredWrite(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity, string pszTargetName, out CRED_TYPE pCredmanCredentialType, out string ppszCredmanTargetName, out string ppszCredmanUserName,
+	public static extern Win32Error SspiPrepareForCredWrite(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity, string pszTargetName, out CRED_TYPE pCredmanCredentialType,
+		out string ppszCredmanTargetName, out string ppszCredmanUserName,
 		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] out byte[] ppCredentialBlob, out uint pCredentialBlobSize);
 
 	/// <summary>
@@ -7566,7 +7575,7 @@ public static partial class Secur32
 		/// <param name="count">The number of structures to retrieve.</param>
 		/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 		/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
-		public T[] ToArray<T>(int count, int prefixBytes = 0)
+		public T[]? ToArray<T>(int count, int prefixBytes = 0)
 		{
 			if (IsInvalid) return null;
 			//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
@@ -7580,7 +7589,7 @@ public static partial class Secur32
 		/// </summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-		public T ToStructure<T>()
+		public T? ToStructure<T>()
 		{
 			if (IsInvalid) return default;
 			return handle.ToStructure<T>();
@@ -7729,7 +7738,7 @@ public static partial class Secur32
 		/// logon identifier (LUID) of that session. Typically, this is used by kernel-mode modules that must act on behalf of a logged-on user.
 		/// </para>
 		/// </remarks>
-		public static SafeCredHandle Acquire<TAuthData>(string pszPackage, SECPKG_CRED fCredentialUse, TAuthData? pAuthData, string pszPrincipal,
+		public static SafeCredHandle Acquire<TAuthData>(string pszPackage, SECPKG_CRED fCredentialUse, TAuthData? pAuthData, string? pszPrincipal,
 			LUID? pvLogonId, out TimeStamp ptsExpiry) where TAuthData : struct
 		{
 			using var pinnedLuid = new PinnedObject(pvLogonId);
@@ -7862,7 +7871,7 @@ public static partial class Secur32
 		private SecBufferDesc desc = SecBufferDesc.Default;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeSecBufferDesc"/> class.</summary>
-		public SafeSecBufferDesc() : base(null, HdrSize) { }
+		public SafeSecBufferDesc() : base(new SecBuffer[0], HdrSize) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeSecBufferDesc"/> class.</summary>
 		public SafeSecBufferDesc(SecBufferType type) : base(new[] { new SecBuffer(type) }, HdrSize) { }
@@ -7875,7 +7884,7 @@ public static partial class Secur32
 		/// <summary>Performs an implicit conversion from <see cref="SafeSecBufferDesc"/> to <see cref="SecBufferDesc"/>.</summary>
 		/// <param name="sbd">The <see cref="SafeSecBufferDesc"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SecBufferDesc? (SafeSecBufferDesc sbd) => (SecBufferDesc)sbd.handle.ToNullableStructure<SecBufferDesc>();
+		public static implicit operator SecBufferDesc? (SafeSecBufferDesc sbd) => sbd.handle.ToNullableStructure<SecBufferDesc>();
 
 		/// <summary>Adds the specified type with an empty value as a new SecBuffer item.</summary>
 		/// <param name="type">The type of the SecBuffer.</param>
@@ -7967,7 +7976,7 @@ public static partial class Secur32
 		/// <summary>Gets the bytes associated with this memory.</summary>
 		/// <param name="count">The count of bytes to get.</param>
 		/// <returns>A byte array.</returns>
-		public byte[] GetBytes(uint count) => handle.ToByteArray((int)count);
+		public byte[] GetBytes(uint count) => handle.ToByteArray((int)count) ?? new byte[0];
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() { SspiLocalFree(handle); return true; }
@@ -7993,9 +8002,9 @@ public static partial class Secur32
 
 		public object MarshalNativeToManaged(IntPtr pNativeData)
 		{
-			var ret = StringHelper.GetString(pNativeData, CharSet.Unicode);
+			string? ret = StringHelper.GetString(pNativeData, CharSet.Unicode);
 			System.Diagnostics.Debug.WriteLine($"SspiStringMarshaler: {ret ?? "null"}");
-			return ret.Clone();
+			return ret?.Clone() ?? "";
 		}
 	}
 }

@@ -34,7 +34,7 @@ public class EventTraceException : Exception
 	{
 	}
 
-	internal EventTraceException(Win32Error err, string message = null) : base(message ?? err.ToString(), err.GetException())
+	internal EventTraceException(Win32Error err, string? message = null) : base(message ?? err.ToString(), err.GetException())
 	{
 	}
 
@@ -90,7 +90,7 @@ public class EventTraceSession
 	public int LogBuffersLost { get; private set; }
 
 	// <summary>The path of the logging file.</summary>
-	public string LogFilePath { get; set; }
+	public string? LogFilePath { get; set; }
 
 	// <summary>The maximum number of buffers allocated for the event tracing session's buffer pool.</summary>
 	public int MaximumBuffers { get; set; }
@@ -102,13 +102,13 @@ public class EventTraceSession
 	public int MinimumBuffers { get; set; }
 
 	// <summary>Name of the tracing session.</summary>
-	public string Name { get; set; }
+	public string? Name { get; set; }
 
 	// <summary>Number of buffers allocated for the event tracing session's buffer pool.</summary>
 	public int NumberOfBuffers { get; private set; }
 
 	// <summary>The provider description from XML file for the GUID</summary>
-	public string ProviderDescription { get; private set; }
+	public string? ProviderDescription { get; private set; }
 
 	// <summary>The GUID for the information in this structure</summary>
 	public Guid ProviderGuid { get; set; }
@@ -117,7 +117,7 @@ public class EventTraceSession
 	public int ProviderId { get; private set; }
 
 	// <summary>The provider name from XML file for the GUID</summary>
-	public string ProviderName { get; private set; }
+	public string? ProviderName { get; private set; }
 
 	// <summary>Number of buffers that could not be delivered in real-time.</summary>
 	public int RealTimeBuffersLost { get; private set; }
@@ -274,7 +274,7 @@ public class EventTraceSession
 		catch (Exception ex) { throw new EventTraceException(ex); }
 	}
 
-	internal static TRACEHANDLE GetSessionHandleFromLoggerName(string loggerName)
+	internal static TRACEHANDLE GetSessionHandleFromLoggerName(string? loggerName)
 	{
 		if (!string.IsNullOrEmpty(loggerName))
 		{
