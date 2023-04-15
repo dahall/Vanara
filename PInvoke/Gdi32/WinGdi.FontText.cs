@@ -2007,7 +2007,7 @@ public static partial class Gdi32
 		[Optional] int cWeight, [Optional, MarshalAs(UnmanagedType.Bool)] bool bItalic, [Optional, MarshalAs(UnmanagedType.Bool)] bool bUnderline,
 		[Optional, MarshalAs(UnmanagedType.Bool)] bool bStrikeOut, CharacterSet iCharSet = CharacterSet.DEFAULT_CHARSET,
 		OutputPrecision iOutPrecision = OutputPrecision.OUT_DEFAULT_PRECIS, ClippingPrecision iClipPrecision = ClippingPrecision.CLIP_DEFAULT_PRECIS,
-		OutputQuality iQuality = OutputQuality.DEFAULT_QUALITY, PitchAndFamily iPitchAndFamily = PitchAndFamily.FF_DONTCARE, string pszFaceName = null);
+		OutputQuality iQuality = OutputQuality.DEFAULT_QUALITY, PitchAndFamily iPitchAndFamily = PitchAndFamily.FF_DONTCARE, string? pszFaceName = null);
 
 	/// <summary>
 	/// The <c>CreateFontIndirect</c> function creates a logical font that has the specified characteristics. The font can subsequently
@@ -4569,7 +4569,7 @@ public static partial class Gdi32
 		/// <summary>Performs an implicit conversion from <see cref="System.Decimal"/> to <see cref="Vanara.PInvoke.Gdi32.FIXED"/>.</summary>
 		/// <param name="d">The decimal value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator FIXED(decimal d) => new FIXED { value = (short)Math.Truncate(d), fract = ushort.Parse(d.ToString(NumberFormatInfo.InvariantInfo).Split(new[] { NumberFormatInfo.InvariantInfo.NumberDecimalSeparator }, StringSplitOptions.None)[1], NumberFormatInfo.InvariantInfo) };
+		public static implicit operator FIXED(decimal d) => new() { value = (short)Math.Truncate(d), fract = ushort.Parse(d.ToString(NumberFormatInfo.InvariantInfo).Split(new[] { NumberFormatInfo.InvariantInfo.NumberDecimalSeparator }, StringSplitOptions.None)[1], NumberFormatInfo.InvariantInfo) };
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -4838,7 +4838,7 @@ public static partial class Gdi32
 		public int nMaxFit;
 
 		/// <summary>The default instance of this structure with the structure size value set.</summary>
-		public static GCP_RESULTS Default = new GCP_RESULTS { lStructSize = (uint)Marshal.SizeOf(typeof(GCP_RESULTS)) };
+		public static GCP_RESULTS Default = new() { lStructSize = (uint)Marshal.SizeOf(typeof(GCP_RESULTS)) };
 	}
 
 	/// <summary>
@@ -4950,7 +4950,7 @@ public static partial class Gdi32
 		public FIXED eM22;
 
 		/// <summary>The identity matrix value.</summary>
-		public static readonly MAT2 IdentityMatrix = new MAT2 { eM11 = new FIXED { fract = 1 }, eM22 = new FIXED { fract = 1 } };
+		public static readonly MAT2 IdentityMatrix = new() { eM11 = new FIXED { fract = 1 }, eM22 = new FIXED { fract = 1 } };
 	}
 
 	/// <summary>The <c>NEWTEXTMETRIC</c> structure contains data that describes a physical font.</summary>

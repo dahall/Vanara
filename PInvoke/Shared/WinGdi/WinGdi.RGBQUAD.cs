@@ -32,6 +32,13 @@ public struct RGBQUAD : IEquatable<RGBQUAD>
 		rgbReserved = 0;
 	}
 
+	/// <summary>Initializes a new instance of the <see cref="RGBQUAD"/> struct from a DWORD (<see cref="uint"/>) value.</summary>
+	/// <param name="dword">The 32-bit value with R, G and B values packed in the first 3 bytes.</param>
+	public RGBQUAD(uint dword)
+	{
+		unsafe { this = *(RGBQUAD*)&dword; }
+	}
+
 	/// <summary>Gets a value indicating whether any transparency is defined.</summary>
 	/// <value><see langword="true"/> if this value is transparent; otherwise, <see langword="false"/>.</value>
 	public bool IsTransparent => rgbReserved == 0;

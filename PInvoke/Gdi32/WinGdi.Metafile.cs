@@ -1654,7 +1654,7 @@ public static partial class Gdi32
 		public SIZE szlMicrometers;
 
 		/// <summary>A default instance of the structure with the size field preset.</summary>
-		public static readonly ENHMETAHEADER Default = new ENHMETAHEADER { nSize = (uint)Marshal.SizeOf(typeof(ENHMETAHEADER)) };
+		public static readonly ENHMETAHEADER Default = new() { nSize = (uint)Marshal.SizeOf(typeof(ENHMETAHEADER)) };
 	}
 
 	/// <summary>
@@ -1742,7 +1742,7 @@ public static partial class Gdi32
 		}
 
 		/// <summary>An array of parameters passed to the GDI function identified by the record.</summary>
-		public uint[] dParm => base.Elements;
+		public uint[] dParm => base.Elements ?? new uint[0];
 
 		/// <summary>The record type.</summary>
 		public RecordType iType => handle.ToStructure<RecordType>();
@@ -1753,7 +1753,7 @@ public static partial class Gdi32
 		/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="ENHMETARECORD"/>.</summary>
 		/// <param name="ptr">The pointer to an instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator ENHMETARECORD(IntPtr ptr) => new ENHMETARECORD(ptr);
+		public static explicit operator ENHMETARECORD(IntPtr ptr) => new(ptr);
 	}
 
 	/// <summary>The <c>METARECORD</c> structure contains a Windows-format metafile record.</summary>
@@ -1782,7 +1782,7 @@ public static partial class Gdi32
 		public ushort rdFunction => handle.ToStructure<ushort>(Size, 4);
 
 		/// <summary>An array of words containing the function parameters, in reverse of the order they are passed to the function.</summary>
-		public ushort[] rdParm => base.Elements;
+		public ushort[] rdParm => base.Elements ?? new ushort[0];
 
 		/// <summary>The size, in words, of the record.</summary>
 		public uint rdSize => Size / 2U;
@@ -1790,7 +1790,7 @@ public static partial class Gdi32
 		/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="METARECORD"/>.</summary>
 		/// <param name="ptr">The pointer to an instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator METARECORD(IntPtr ptr) => new METARECORD(ptr);
+		public static explicit operator METARECORD(IntPtr ptr) => new(ptr);
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HENHMETAFILE"/> that is disposed using <see cref="DeleteEnhMetaFile"/>.</summary>

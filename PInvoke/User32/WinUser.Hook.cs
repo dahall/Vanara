@@ -1135,16 +1135,16 @@ public static partial class User32
 
 	/// <summary>Provides a handle to a hook.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HHOOK : IUserHandle
+	public readonly struct HHOOK : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HHOOK"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HHOOK(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HHOOK"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HHOOK NULL => new HHOOK(IntPtr.Zero);
+		public static HHOOK NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1157,7 +1157,7 @@ public static partial class User32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HHOOK"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HHOOK(IntPtr h) => new HHOOK(h);
+		public static implicit operator HHOOK(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1172,7 +1172,7 @@ public static partial class User32
 		public static bool operator ==(HHOOK h1, HHOOK h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HHOOK h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HHOOK h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1183,16 +1183,16 @@ public static partial class User32
 
 	/// <summary>Provides a handle to a Windows Event Hook.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HWINEVENTHOOK : IHandle
+	public readonly struct HWINEVENTHOOK : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HWINEVENTHOOK"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HWINEVENTHOOK(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HWINEVENTHOOK"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HWINEVENTHOOK NULL => new HWINEVENTHOOK(IntPtr.Zero);
+		public static HWINEVENTHOOK NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1205,7 +1205,7 @@ public static partial class User32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWINEVENTHOOK"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWINEVENTHOOK(IntPtr h) => new HWINEVENTHOOK(h);
+		public static implicit operator HWINEVENTHOOK(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1220,7 +1220,7 @@ public static partial class User32
 		public static bool operator ==(HWINEVENTHOOK h1, HWINEVENTHOOK h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWINEVENTHOOK h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HWINEVENTHOOK h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

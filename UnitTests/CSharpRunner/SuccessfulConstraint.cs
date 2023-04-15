@@ -5,13 +5,13 @@ namespace Vanara.PInvoke.Tests;
 
 public abstract class ResultIs // : NUnit.Framework.Is
 {
-	public static FailureConstraint Failure => new FailureConstraint();
+	public static FailureConstraint Failure => new();
 	public static MyConstraintExpression Not => MyConstraintExpression.Not;
-	public static SuccessfulConstraint Successful => new SuccessfulConstraint();
-	public static ValidHandleConstraint ValidHandle => new ValidHandleConstraint();
+	public static SuccessfulConstraint Successful => new();
+	public static ValidHandleConstraint ValidHandle => new();
 
-	public static FailureConstraint FailureCode(object expectedError) => new FailureConstraint(expectedError);
-	public static ValueConstraint Value(object value) => new ValueConstraint(value);
+	public static FailureConstraint FailureCode(object expectedError) => new(expectedError);
+	public static ValueConstraint Value(object value) => new(value);
 }
 
 public class MyConstraintExpression
@@ -20,11 +20,11 @@ public class MyConstraintExpression
 
 	private MyConstraintExpression(OpConstraint.Op _op) => op = _op;
 
-	public static MyConstraintExpression Not => new MyConstraintExpression(OpConstraint.Op.Not);
+	public static MyConstraintExpression Not => new(OpConstraint.Op.Not);
 
-	public ValidHandleConstraint ValidHandle => new ValidHandleConstraint(op);
+	public ValidHandleConstraint ValidHandle => new(op);
 
-	public ValueConstraint Value(object value) => new ValueConstraint(value, op);
+	public ValueConstraint Value(object value) => new(value, op);
 }
 
 public class FailureConstraint : Constraint

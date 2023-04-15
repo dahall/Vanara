@@ -26,13 +26,13 @@ public delegate bool BasicMessageWindowFilter(HWND hwnd, uint msg, IntPtr wParam
 public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 {
 	private readonly WeakReference weakSelfRef;
-	private SafeHWND hwnd;
+	private SafeHWND? hwnd;
 	private bool isDisposed;
-	private WindowClass wCls;
+	private WindowClass? wCls;
 
 	/// <summary>Initializes a new instance of the <see cref="BasicMessageWindow"/> class.</summary>
 	/// <param name="callback">Specifies the callback method to use to process messages.</param>
-	public BasicMessageWindow(BasicMessageWindowFilter callback = null)
+	public BasicMessageWindow(BasicMessageWindowFilter? callback = null)
 	{
 		MessageFilter = callback;
 		weakSelfRef = new WeakReference(this);
@@ -48,11 +48,11 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 
 	/// <summary>Gets or sets the callback method used to filter window messages.</summary>
 	/// <value>The callback method.</value>
-	public BasicMessageWindowFilter MessageFilter { get; set; }
+	public BasicMessageWindowFilter? MessageFilter { get; set; }
 
 	/// <summary>Gets the name of the class.</summary>
 	/// <value>The name of the class.</value>
-	public string ClassName => wCls?.ClassName;
+	public string? ClassName => wCls?.ClassName;
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public void Dispose()

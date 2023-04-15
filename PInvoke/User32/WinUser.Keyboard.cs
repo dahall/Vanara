@@ -2841,7 +2841,7 @@ public static partial class User32
 
 	/// <summary>Provides a handle to a .</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HKL : IHandle
+	public readonly struct HKL : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -2878,7 +2878,7 @@ public static partial class User32
 		public static bool operator ==(HKL h1, HKL h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HKL h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HKL h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

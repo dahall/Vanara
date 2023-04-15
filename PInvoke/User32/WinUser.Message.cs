@@ -1248,7 +1248,7 @@ public static partial class User32
 	// DWORD nCount, const HANDLE *pHandles, BOOL fWaitAll, DWORD dwMilliseconds, DWORD dwWakeMask );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "0629f1b3-6805-43a7-9aeb-4f80939ec62c")]
-	public static extern uint MsgWaitForMultipleObjects(uint nCount, HANDLE[] pHandles, [MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwMilliseconds,
+	public static extern uint MsgWaitForMultipleObjects(uint nCount, HANDLE[]? pHandles, [MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwMilliseconds,
 		QS dwWakeMask);
 
 	/// <summary>
@@ -1511,7 +1511,7 @@ public static partial class User32
 	// MsgWaitForMultipleObjectsEx( DWORD nCount, const HANDLE *pHandles, DWORD dwMilliseconds, DWORD dwWakeMask, DWORD dwFlags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "1774b721-3ad4-492e-96af-b71de9066f0c")]
-	public static extern uint MsgWaitForMultipleObjectsEx(uint nCount, HANDLE[] pHandles, uint dwMilliseconds, QS dwWakeMask, MWMO dwFlags);
+	public static extern uint MsgWaitForMultipleObjectsEx(uint nCount, HANDLE[]? pHandles, uint dwMilliseconds, QS dwWakeMask, MWMO dwFlags);
 
 	/// <summary>Packs a Dynamic Data Exchange (DDE) lParam value into an internal structure used for sharing DDE data between processes.</summary>
 	/// <param name="msg">

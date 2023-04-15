@@ -9,7 +9,7 @@ namespace Vanara.PInvoke;
 [StructLayout(LayoutKind.Sequential), Serializable]
 [TypeConverter(typeof(time_tTypeConverter))]
 #pragma warning disable IDE1006 // Naming Styles
-public struct time_t : IEquatable<time_t>, IComparable<time_t>, IEquatable<DateTime>, IComparable<DateTime>, IConvertible, IComparable
+public readonly struct time_t : IEquatable<time_t>, IComparable<time_t>, IEquatable<DateTime>, IComparable<DateTime>, IConvertible, IComparable
 #pragma warning restore IDE1006 // Naming Styles
 {
 	private static readonly DateTime epoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);

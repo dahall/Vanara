@@ -690,7 +690,7 @@ public static partial class User32
 
 	/// <summary>Provides a handle to a RAWINPUT structure.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HRAWINPUT : IHandle
+	public readonly struct HRAWINPUT : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -727,7 +727,7 @@ public static partial class User32
 		public static bool operator ==(HRAWINPUT h1, HRAWINPUT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HRAWINPUT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HRAWINPUT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -2609,16 +2609,16 @@ public static partial class Gdi32
 
 	/// <summary>Provides a handle to a DIB section.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HSECTION : IHandle
+	public readonly struct HSECTION : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HSECTION"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HSECTION(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HSECTION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HSECTION NULL => new HSECTION(IntPtr.Zero);
+		public static HSECTION NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2631,7 +2631,7 @@ public static partial class Gdi32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSECTION"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSECTION(IntPtr h) => new HSECTION(h);
+		public static implicit operator HSECTION(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2646,7 +2646,7 @@ public static partial class Gdi32
 		public static bool operator ==(HSECTION h1, HSECTION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HSECTION h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HSECTION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

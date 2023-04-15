@@ -2522,7 +2522,7 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 
 	/// <summary>Provides a handle to an input context.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HIMC : IHandle
+	public readonly struct HIMC : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -2574,7 +2574,7 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 		}
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			return (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
 		}

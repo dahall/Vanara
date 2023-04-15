@@ -8710,7 +8710,7 @@ public static partial class User32
 		public MessageFilterInformation ExtStatus;
 
 		/// <summary>The default value for this structure with the size field set appropriately.</summary>
-		public static CHANGEFILTERSTRUCT Default = new CHANGEFILTERSTRUCT() { cbSize = (uint)Marshal.SizeOf(typeof(CHANGEFILTERSTRUCT)) };
+		public static CHANGEFILTERSTRUCT Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CHANGEFILTERSTRUCT)) };
 	}
 
 	/// <summary>
@@ -9767,7 +9767,7 @@ public static partial class User32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszMenuName;
+		public string? lpszMenuName;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>

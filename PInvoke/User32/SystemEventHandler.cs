@@ -23,12 +23,12 @@ namespace Vanara.PInvoke;
 /// <seealso cref="System.IDisposable"/>
 public abstract class SystemEventHandler : IDisposable
 {
-	private static ManualResetEvent eventWindowReady;
-	private static Thread windowThread;
-	private readonly Dictionary<Guid, Delegate> eventHandles = new Dictionary<Guid, Delegate>();
-	private readonly object lockObj = new object();
+	private static ManualResetEvent? eventWindowReady;
+	private static Thread? windowThread;
+	private readonly Dictionary<Guid, Delegate> eventHandles = new();
+	private readonly object lockObj = new();
 	private bool disposedValue;
-	private BasicMessageWindow msgWindow;
+	private BasicMessageWindow? msgWindow;
 
 	/// <summary>Initializes a new instance of the <see cref="SystemEventHandler"/> class.</summary>
 	/// <param name="forceThread">
@@ -61,7 +61,7 @@ public abstract class SystemEventHandler : IDisposable
 	}
 
 	/// <summary>Occurs when the message window handle has been created.</summary>
-	public event EventHandler MessageWindowHandleCreated;
+	public event EventHandler? MessageWindowHandleCreated;
 
 	/// <summary>Gets a value indicating whether this instance is running in a thread.</summary>
 	/// <value><see langword="true"/> if this instance is running in a thread; otherwise, <see langword="false"/>.</value>
@@ -71,7 +71,7 @@ public abstract class SystemEventHandler : IDisposable
 	/// <value>The message window handle.</value>
 	public HWND MessageWindowHandle => msgWindow?.Handle ?? HWND.NULL;
 
-	private ManualResetEvent ThreadRunning { get; set; }
+	private ManualResetEvent? ThreadRunning { get; set; }
 
 	/// <summary>Adds a delegate and its associated key to the handler list.</summary>
 	/// <param name="key">The key.</param>
@@ -80,7 +80,7 @@ public abstract class SystemEventHandler : IDisposable
 	{
 		lock (lockObj)
 		{
-			if (!eventHandles.TryGetValue(key, out Delegate h))
+			if (!eventHandles.TryGetValue(key, out Delegate? h))
 			{
 				eventHandles.Add(key, value);
 				OnEventAdd(key);
@@ -99,7 +99,7 @@ public abstract class SystemEventHandler : IDisposable
 	{
 		lock (lockObj)
 		{
-			if (eventHandles.TryGetValue(key, out Delegate h))
+			if (eventHandles.TryGetValue(key, out Delegate? h))
 			{
 				h = Delegate.Remove(h, value);
 				if (h is null || h.GetInvocationList().Length == 0)
@@ -144,7 +144,7 @@ public abstract class SystemEventHandler : IDisposable
 				}
 			}
 
-			msgWindow.Dispose();
+			msgWindow?.Dispose();
 
 			disposedValue = true;
 		}
@@ -202,24 +202,25 @@ public abstract class SystemEventHandler : IDisposable
 	/// <param name="args">The arguments.</param>
 	/// <returns>The value returned by the call to the delegate list.</returns>
 	/// <exception cref="InvalidOperationException">Event for {key} is not registered.</exception>
-	protected object RaiseEvent(Guid key, params object[] args)
+	protected object? RaiseEvent(Guid key, params object?[] args)
 	{
-		Delegate h;
+		Delegate? h;
 		lock (lockObj)
 		{
 			if (!eventHandles.TryGetValue(key, out h))
 				throw new InvalidOperationException($"Event for {key} is not registered.");
 		}
-		return h.DynamicInvoke(args);
+		return h?.DynamicInvoke(args);
 	}
 
-	private static void MTAThreadProc(object param)
+	private static void MTAThreadProc(object? param)
 	{
-		var handler = (SystemEventHandler)param;
+		if (param is not SystemEventHandler handler)
+			throw new InvalidOperationException("Invalid parameter type.");
 		try
 		{
 			handler.Init();
-			eventWindowReady.Set();
+			eventWindowReady?.Set();
 			if (!handler.MessageWindowHandle.IsNull)
 			{
 				var keepRunning = true;
@@ -251,12 +252,12 @@ public abstract class SystemEventHandler : IDisposable
 		}
 		catch (Exception e)
 		{
-			eventWindowReady.Set();
+			eventWindowReady?.Set();
 			if (e is not (ThreadInterruptedException or ThreadAbortException))
 				System.Diagnostics.Debug.Fail("Unexpected thread exception in SystemEventHandler thread.", e.ToString());
 		}
 
-		handler.ThreadRunning.Set();
+		handler.ThreadRunning?.Set();
 	}
 
 	private void Init()

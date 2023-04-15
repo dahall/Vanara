@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
+#pragma warning disable IDE1006 // Naming Styles
 namespace Vanara.PInvoke;
 
 /// <summary>Functions and types from Gdi32.dll.</summary>
@@ -248,10 +249,10 @@ public static partial class Gdi32
 		/// </item>
 		/// <item>
 		/// <description>
-		/// An array of 16-bit unsigned integers that specifies indexes into the currently realized logical palette. This use of
-		/// bmiColors is allowed for functions that use DIBs. When bmiColors elements contain indexes to a realized logical palette,
-		/// they must also call the following bitmap
-		/// functions: CreateDIBitmap, CreateDIBPatternBrush, CreateDIBSection (The iUsage parameter of CreateDIBSection must be set to DIB_PAL_COLORS.)
+		/// An array of 16-bit unsigned integers that specifies indexes into the currently realized logical palette. This use of bmiColors is
+		/// allowed for functions that use DIBs. When bmiColors elements contain indexes to a realized logical palette, they must also call
+		/// the following bitmap functions: CreateDIBitmap, CreateDIBPatternBrush, CreateDIBSection (The iUsage parameter of CreateDIBSection
+		/// must be set to DIB_PAL_COLORS.)
 		/// </description>
 		/// </item>
 		/// </list>
@@ -271,6 +272,7 @@ public static partial class Gdi32
 			: this()
 		{
 			bmiHeader = new BITMAPINFOHEADER(width, height, bitCount);
+			bmiColors = new RGBQUAD[bitCount];
 		}
 
 		/// <summary>Creates a <see cref="BITMAPINFO"/> structure from the information in a bitmap handle.</summary>
@@ -1218,10 +1220,7 @@ public static partial class Gdi32
 		/// has a value greater than 8. Each color mask indicates the bits that are used to encode one of the three color channels (red,
 		/// green, and blue).
 		/// </summary>
-#pragma warning disable IDE1006 // Naming Styles
-
 		public uint[] dsBitFields
-#pragma warning restore IDE1006 // Naming Styles
 		{
 			get => new[] { dsBitField1, dsBitField2, dsBitField3 };
 			set { dsBitField1 = value[0]; dsBitField2 = value[1]; dsBitField3 = value[2]; }
@@ -1235,22 +1234,16 @@ public static partial class Gdi32
 	public class SafeBITMAPINFO : SafeCoTaskMemStruct<BITMAPINFO>
 	{
 		private const int RGBQUADSZ = 4;
+		private static readonly int hdrSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="bmpInfo">The <see cref="BITMAPINFO"/> value.</param>
-		public SafeBITMAPINFO(in BITMAPINFO bmpInfo) : base(BaseStructSize + (bmpInfo.bmiColors?.Length ?? 0) * RGBQUADSZ)
-		{
-			handle.Write(bmpInfo.bmiHeader, 0, Size);
-			bmiColors = bmpInfo.bmiColors;
-		}
+		public SafeBITMAPINFO(in BITMAPINFO bmpInfo) : this(bmpInfo.bmiHeader, bmpInfo.bmiColors.Length * RGBQUADSZ) => bmiColors = bmpInfo.bmiColors;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
-		/// <param name="hdr">The HDR.</param>
-		/// <param name="capacity">The capacity of the buffer, in bytes. If 0 or <see langword="default"/>, the capacity is calculated.</param>
-		public SafeBITMAPINFO(in BITMAPINFOHEADER hdr, SizeT capacity = default) : base(Math.Max(capacity, BaseStructSize))
-		{
-			handle.Write(hdr, 0, Size);
-		}
+		/// <param name="hdr">The <see cref="BITMAPINFOHEADER"/> to initialize.</param>
+		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
+		public SafeBITMAPINFO(in BITMAPINFOHEADER hdr, SizeT capacity = default) : base(hdrSize + capacity) => bmiHeader = hdr;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="ptr">Existing handle.</param>
@@ -1259,7 +1252,6 @@ public static partial class Gdi32
 		{
 		}
 
-#pragma warning disable IDE1006 // Naming Styles
 		/// <summary>
 		/// The bmiColors member contains one of the following:
 		/// <list type="bullet">
@@ -1280,17 +1272,15 @@ public static partial class Gdi32
 		/// </para>
 		/// <para>The colors in the bmiColors table appear in order of importance. For more information, see the Remarks section.</para>
 		/// </summary>
-		public byte[] bmiColorBytes
+		public ushort[] bmiColorBytes
 		{
-			get => handle.ToByteArray((Size - BaseStructSize), BaseStructSize, Size);
+			get => handle.ToArray<ushort>((Size - hdrSize) / 2, hdrSize, Size) ?? new ushort[0];
 			set
 			{
-				var reqSize = BaseStructSize + (value?.Length ?? 0);
+				var reqSize = hdrSize + value.Length;
 				if (Size < reqSize)
 					Size = reqSize;
-				else
-					handle.Offset(BaseStructSize).FillMemory(0, Size - BaseStructSize);
-				handle.Write(value, BaseStructSize, Size);
+				handle.Write(value, hdrSize, Size);
 			}
 		}
 
@@ -1316,15 +1306,13 @@ public static partial class Gdi32
 		/// </summary>
 		public RGBQUAD[] bmiColors
 		{
-			get => handle.ToArray<RGBQUAD>((Size - BaseStructSize) / RGBQUADSZ, BaseStructSize, Size);
+			get => handle.ToArray<RGBQUAD>((Size - hdrSize) / RGBQUADSZ, hdrSize, Size) ?? new RGBQUAD[0];
 			set
 			{
-				var reqSize = BaseStructSize + (value?.Length ?? 0) * RGBQUADSZ;
+				var reqSize = hdrSize + value.Length * RGBQUADSZ;
 				if (Size < reqSize)
 					Size = reqSize;
-				else
-					handle.Offset(BaseStructSize).FillMemory(0, Size - BaseStructSize);
-				handle.Write(value, BaseStructSize, Size);
+				handle.Write(value, hdrSize, Size);
 			}
 		}
 
@@ -1335,7 +1323,6 @@ public static partial class Gdi32
 		/// <summary>A reference to the BITMAPINFOHEADER structure.</summary>
 		public ref BITMAPINFOHEADER bmiHeaderAsRef => ref AsRef().bmiHeader;
 #endif
-#pragma warning restore IDE1006 // Naming Styles
 
 		/// <summary>
 		/// Specifies the number of bytes required by the structure. This value does not include the size of the color table or the size
@@ -1357,6 +1344,6 @@ public static partial class Gdi32
 		public T GetHeader<T>() where T : struct => handle.ToStructure<T>(Size);
 
 		/// <summary>Zero out all allocated memory.</summary>
-		public override void Zero() { base.Zero(); HeaderSize = BaseStructSize; }
+		public override void Zero() { base.Zero(); HeaderSize = hdrSize; }
 	}
 }

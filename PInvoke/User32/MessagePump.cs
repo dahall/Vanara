@@ -22,7 +22,7 @@ public interface IMessagePump
 	/// <returns>
 	/// The result of <see cref="PeekMessage(out MSG, HWND, uint, uint, PM)"/> or <see cref="GetMessage(out MSG, HWND, uint, uint)"/>.
 	/// </returns>
-	int Run(IWindowInstance mainWindow = null);
+	int Run(IWindowInstance? mainWindow = null);
 }
 
 /// <summary>An interface that represents a Win32 window with created and destroyed events.</summary>
@@ -48,7 +48,7 @@ public class MessagePump : IMessagePump
 	protected const ushort quitMsg = (ushort)WindowMessage.WM_QUIT;
 
 	/// <inhertdoc/>
-	public int Run(IWindowInstance mainWindow = null)
+	public int Run(IWindowInstance? mainWindow = null)
 	{
 		if (mainWindow is not null and not WindowBase)
 			mainWindow.Destroyed += onDestroy;
@@ -88,15 +88,15 @@ public class MessagePump : IMessagePump
 public class ExaminedMessagePump : MessagePump
 {
 	/// <summary>Occurs after <see cref="DispatchMessage(in MSG)"/>.</summary>
-	public event MsgPumpDelegate PostProcess;
+	public event MsgPumpDelegate? PostProcess;
 
 	/// <summary>Occurs after <see cref="TranslateMessage(in MSG)"/> and determines if message should be dispatched.</summary>
-	public event MsgPumpPredicateDelegate PostTranslate;
+	public event MsgPumpPredicateDelegate? PostTranslate;
 
 	/// <summary>
 	/// Occurs after <see cref="PeekMessage(out MSG, HWND, uint, uint, PM)"/> and determines if message should be translated or dispatched.
 	/// </summary>
-	public event MsgPumpPredicateDelegate PreProcess;
+	public event MsgPumpPredicateDelegate? PreProcess;
 
 	/// <inhertdoc/>
 	protected override int RunLoop()

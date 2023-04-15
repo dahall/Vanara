@@ -318,7 +318,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0e6e81f1-ec7b-42ba-8706-a352349fa6ab")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TranslateCharsetInfo(ref uint lpSrc, out CHARSETINFO lpCs, TCI dwFlags);
+	public static extern bool TranslateCharsetInfo([In, MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] lpSrc, out CHARSETINFO lpCs, TCI dwFlags);
 
 	/// <summary>Translates character set information and sets all members of a destination structure to appropriate values.</summary>
 	/// <param name="lpSrc">
@@ -377,9 +377,9 @@ public static partial class Gdi32
 	public struct CHARSETINFO
 	{
 		/// <summary>Character set value.</summary>
-		public uint ciCharset;
+		public CharacterSetUint ciCharset;
 
-		/// <summary>Windows ANSI code page identifier. For a list of identifiers, see Code Page Identifiers.</summary>
+		/// <summary>Windows ANSI code page identifier. For a list of identifiers, see Code Page Identifiers constants in <c>Vanara.PInvoke.Kernel32</c>.</summary>
 		public uint ciACP;
 
 		/// <summary>
@@ -473,6 +473,6 @@ public static partial class Gdi32
 		public string DeviceKey;
 
 		/// <summary>Gets an empty structure with the <see cref="cb"/> set to the size of the structure.</summary>
-		public static readonly DISPLAY_DEVICE Default = new DISPLAY_DEVICE { cb = (uint)Marshal.SizeOf(typeof(DISPLAY_DEVICE)) };
+		public static readonly DISPLAY_DEVICE Default = new() { cb = (uint)Marshal.SizeOf(typeof(DISPLAY_DEVICE)) };
 	}
 }

@@ -139,7 +139,7 @@ public static partial class Gdi32
 		/// <summary>Creates a context into which a graphics object is selected.</summary>
 		/// <param name="hObject">The graphics object to select.</param>
 		/// <returns>A selection context for the graphics object.</returns>
-		public GdiObjectContext SelectObject(HGDIOBJ hObject) => new GdiObjectContext(handle, hObject);
+		public GdiObjectContext SelectObject(HGDIOBJ hObject) => new(handle, hObject);
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle()

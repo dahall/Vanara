@@ -225,7 +225,7 @@ public static partial class User32
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
 	public static SafeHBITMAP LoadImage_Bitmap(HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
-		new SafeHBITMAP(LoadImage(hinst, lpszName, LoadImageType.IMAGE_BITMAP, cxDesired, cyDesired, fuLoad), true);
+		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_BITMAP, cxDesired, cyDesired, fuLoad), true);
 
 	/// <summary>Loads a cursor or animated cursor.</summary>
 	/// <param name="hinst">
@@ -270,7 +270,7 @@ public static partial class User32
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
 	public static SafeHCURSOR LoadImage_Cursor(HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
-		new SafeHCURSOR(LoadImage(hinst, lpszName, LoadImageType.IMAGE_CURSOR, cxDesired, cyDesired, fuLoad), true);
+		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_CURSOR, cxDesired, cyDesired, fuLoad), true);
 
 	/// <summary>Loads an enhanced metafile.</summary>
 	/// <param name="hinst">
@@ -315,7 +315,7 @@ public static partial class User32
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
 	public static SafeHENHMETAFILE LoadImage_EnhMetaFile(HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
-		new SafeHENHMETAFILE(LoadImage(hinst, lpszName, LoadImageType.IMAGE_ENHMETAFILE, cxDesired, cyDesired, fuLoad), true);
+		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_ENHMETAFILE, cxDesired, cyDesired, fuLoad), true);
 
 	/// <summary>Loads an icon.</summary>
 	/// <param name="hinst">
@@ -360,7 +360,7 @@ public static partial class User32
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
 	public static SafeHICON LoadImage_Icon(HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
-		new SafeHICON(LoadImage(hinst, lpszName, LoadImageType.IMAGE_ICON, cxDesired, cyDesired, fuLoad), true);
+		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_ICON, cxDesired, cyDesired, fuLoad), true);
 
 	/// <summary>
 	/// Loads a string resource from the executable file associated with a specified module, copies the string into a buffer, and appends

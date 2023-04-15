@@ -483,6 +483,64 @@ public static partial class Gdi32
 	public static extern bool SetBrushOrgEx(HDC hdc, int x, int y, in POINT lppt);
 
 	/// <summary>
+	/// <para>
+	/// The <c>SetBrushOrgEx</c> function sets the brush origin that GDI assigns to the next brush an application selects into the
+	/// specified device context.
+	/// </para>
+	/// </summary>
+	/// <param name="hdc">
+	/// <para>A handle to the device context.</para>
+	/// </param>
+	/// <param name="x">
+	/// <para>
+	/// The x-coordinate, in device units, of the new brush origin. If this value is greater than the brush width, its value is reduced
+	/// using the modulus operator (nXOrg <c>mod</c> brush width).
+	/// </para>
+	/// </param>
+	/// <param name="y">
+	/// <para>
+	/// The y-coordinate, in device units, of the new brush origin. If this value is greater than the brush height, its value is reduced
+	/// using the modulus operator (nYOrg <c>mod</c> brush height).
+	/// </para>
+	/// </param>
+	/// <param name="lppt">
+	/// <para>A pointer to a POINT structure that receives the previous brush origin.</para>
+	/// <para>This parameter can be <c>NULL</c> if the previous brush origin is not required.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A brush is a bitmap that the system uses to paint the interiors of filled shapes.</para>
+	/// <para>
+	/// The brush origin is a pair of coordinates specifying the location of one pixel in the bitmap. The default brush origin
+	/// coordinates are (0,0). For horizontal coordinates, the value 0 corresponds to the leftmost column of pixels; the width
+	/// corresponds to the rightmost column. For vertical coordinates, the value 0 corresponds to the uppermost row of pixels; the height
+	/// corresponds to the lowermost row.
+	/// </para>
+	/// <para>
+	/// The system automatically tracks the origin of all window-managed device contexts and adjusts their brushes as necessary to
+	/// maintain an alignment of patterns on the surface. The brush origin that is set with this call is relative to the upper-left
+	/// corner of the client area.
+	/// </para>
+	/// <para>
+	/// An application should call <c>SetBrushOrgEx</c> after setting the bitmap stretching mode to HALFTONE by using SetStretchBltMode.
+	/// This must be done to avoid brush misalignment.
+	/// </para>
+	/// <para>
+	/// The system automatically tracks the origin of all window-managed device contexts and adjusts their brushes as necessary to
+	/// maintain an alignment of patterns on the surface.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-setbrushorgex BOOL SetBrushOrgEx( HDC hdc, int x, int y,
+	// LPPOINT lppt );
+	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wingdi.h", MSDNShortId = "dcc7575a-49fd-4306-8baa-57e9e0d5ed1f")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool SetBrushOrgEx(HDC hdc, int x, int y, [In, Optional] IntPtr lppt);
+
+	/// <summary>
 	/// <c>SetDCBrushColor</c> function sets the current device context (DC) brush color to the specified color value. If the device
 	/// cannot represent the specified color value, the color is set to the nearest physical color.
 	/// </summary>

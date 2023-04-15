@@ -690,7 +690,7 @@ public static partial class Gdi32
 		/// <summary>Specifies an arbitrary-size buffer that contains the RECT structures that make up the region.</summary>
 		public RECT[] Buffer
 		{
-			get => _Buffer.ToArray<RECT>((int)rdh.nCount);
+			get => _Buffer.ToArray<RECT>((int)rdh.nCount) ?? new RECT[0];
 			set
 			{
 				((IDisposable)this).Dispose();

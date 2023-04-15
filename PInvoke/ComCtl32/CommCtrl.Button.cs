@@ -8,7 +8,7 @@ namespace Vanara.PInvoke;
 public static partial class ComCtl32
 {
 	/// <summary>Used in the <see cref="BUTTON_IMAGELIST"/> structure himl member to indicate that no glyph should be displayed.</summary>
-	public static IntPtr BCCL_NOGLYPH = new IntPtr(-1);
+	public static IntPtr BCCL_NOGLYPH = new(-1);
 
 	/// <summary>Used by the <see cref="BUTTON_IMAGELIST.uAlign"/> member to specify alignment.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775953")]

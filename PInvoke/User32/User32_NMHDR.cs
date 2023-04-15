@@ -25,7 +25,7 @@ public static partial class User32
 		/// <summary>Creates a <see cref="NMHDR"/> structure from an LPARAM value.</summary>
 		/// <param name="lParam">The LPARAM value.</param>
 		/// <returns>A <see cref="NMHDR"/> structure.</returns>
-		public static NMHDR FromLParam(IntPtr lParam) => (NMHDR)Marshal.PtrToStructure(lParam, typeof(NMHDR));
+		public static NMHDR FromLParam(IntPtr lParam) => lParam.ToStructure<NMHDR>();
 
 #if ALLOWSPAN
 		/// <summary>Creates a reference to an <see cref="NMHDR"/> structure from an LPARAM value.</summary>

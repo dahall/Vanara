@@ -117,7 +117,7 @@ public class BitmapTests
 		ajBits[0] = 0xff; ajBits[2] = 0xc; ajBits[3] = 0xf0; ajBits[4] = 0x0f;
 
 		var bisize = Marshal.SizeOf(typeof(BITMAPINFOHEADER)) + 256 * Marshal.SizeOf(typeof(uint));
-		using SafeBITMAPINFO pbi = new SafeBITMAPINFO(default, bisize);
+		using SafeBITMAPINFO pbi = new(default, bisize);
 
 		using var hdcScreen = GetDC();
 		Assert.That(hdcScreen, ResultIs.ValidHandle);

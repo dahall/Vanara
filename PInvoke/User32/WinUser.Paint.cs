@@ -1478,7 +1478,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "5a823d36-d08b-41c9-8857-540576f54b55")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InvalidateRect(HWND hWnd, [In] PRECT lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+	public static extern bool InvalidateRect(HWND hWnd, [In, Optional] PRECT? lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 	/// <summary>
 	/// The <c>InvalidateRgn</c> function invalidates the client area within the specified region by adding it to the current update
@@ -1516,7 +1516,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "b5b44efe-8045-4e54-89f9-1766689a053d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InvalidateRgn(HWND hWnd, HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+	public static extern bool InvalidateRgn(HWND hWnd, [In, Optional] HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 	/// <summary>
 	/// The <c>LockWindowUpdate</c> function disables or enables drawing in the specified window. Only one window can be locked at a time.
@@ -1747,7 +1747,7 @@ public static partial class User32
 	// bRedraw );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "06209d0c-14f9-45ec-ae2c-9cc596b5bbaa")]
-	public static extern int SetWindowRgn(HWND hWnd, HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
+	public static extern int SetWindowRgn(HWND hWnd, [In, Optional] HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
 
 	/// <summary>
 	/// The <c>UpdateWindow</c> function updates the client area of the specified window by sending a WM_PAINT message to the window if
@@ -1793,7 +1793,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "961dd768-1849-44df-bc7f-480881ed6477")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ValidateRect(HWND hWnd, [In] PRECT lpRect);
+	public static extern bool ValidateRect(HWND hWnd, [In, Optional] PRECT? lpRect);
 
 	/// <summary>
 	/// The <c>ValidateRgn</c> function validates the client area within a region by removing the region from the current update region
@@ -1819,7 +1819,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "80fb1d4a-d9b1-4e67-b585-eee81893ed34")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ValidateRgn(HWND hWnd, HRGN hRgn);
+	public static extern bool ValidateRgn(HWND hWnd, [In, Optional] HRGN hRgn);
 
 	/// <summary>
 	/// <para>

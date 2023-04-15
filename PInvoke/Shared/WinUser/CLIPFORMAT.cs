@@ -19,7 +19,7 @@ namespace Vanara.PInvoke;
 /// <seealso cref="System.IEquatable{CLIPFORMAT}"/>
 [StructLayout(LayoutKind.Sequential)]
 [PInvokeData("wtypes.h", MSDNShortId = "fe42baec-6b00-4816-b379-7f335da8a197")]
-public partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>, IEquatable<CLIPFORMAT>
+public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>, IEquatable<CLIPFORMAT>
 {
 	internal readonly ushort _value;
 

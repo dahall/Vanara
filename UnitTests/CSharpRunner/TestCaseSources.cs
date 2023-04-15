@@ -192,7 +192,7 @@ public static class TestCaseSources
 
 			public DEnum(StrArrDict parent) => p = parent;
 
-			public KeyValuePair<string, string> Current => new KeyValuePair<string, string>(p.keys[c], p.values[c]);
+			public KeyValuePair<string, string> Current => new(p.keys[c], p.values[c]);
 
 			object IEnumerator.Current => Current;
 

@@ -720,16 +720,16 @@ public static partial class User32
 	/// <summary>Provides a handle to a device notification.</summary>
 	[PInvokeData("dbt.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HDEVNOTIFY : IHandle
+	public readonly struct HDEVNOTIFY : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HDEVNOTIFY"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HDEVNOTIFY(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDEVNOTIFY"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDEVNOTIFY NULL => new HDEVNOTIFY(IntPtr.Zero);
+		public static HDEVNOTIFY NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -742,7 +742,7 @@ public static partial class User32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDEVNOTIFY"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDEVNOTIFY(IntPtr h) => new HDEVNOTIFY(h);
+		public static implicit operator HDEVNOTIFY(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -757,7 +757,7 @@ public static partial class User32
 		public static bool operator ==(HDEVNOTIFY h1, HDEVNOTIFY h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDEVNOTIFY h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HDEVNOTIFY h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

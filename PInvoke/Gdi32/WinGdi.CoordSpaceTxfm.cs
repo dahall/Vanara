@@ -387,6 +387,46 @@ public static partial class Gdi32
 	public static extern bool LPtoDP(HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] lppt, int c);
 
 	/// <summary>
+	/// <para>
+	/// The <c>LPtoDP</c> function converts logical coordinates into device coordinates. The conversion depends on the mapping mode of
+	/// the device context, the settings of the origins and extents for the window and viewport, and the world transformation.
+	/// </para>
+	/// </summary>
+	/// <param name="hdc">
+	/// <para>A handle to the device context.</para>
+	/// </param>
+	/// <param name="lppt">
+	/// <para>
+	/// A pointer to an array of POINT structures. The x-coordinates and y-coordinates contained in each of the <c>POINT</c> structures
+	/// will be transformed.
+	/// </para>
+	/// </param>
+	/// <param name="c">
+	/// <para>The number of points in the array.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>LPtoDP</c> function fails if the logical coordinates exceed 32 bits, or if the converted device coordinates exceed 27
+	/// bits. In the case of such an overflow, the results for all the points are undefined.
+	/// </para>
+	/// <para>
+	/// <c>LPtoDP</c> calculates complex floating-point arithmetic, and it has a caching system for efficiency. Therefore, the conversion
+	/// result of an initial call to <c>LPtoDP</c> might not exactly match the conversion result of a later call to <c>LPtoDP</c>. We
+	/// recommend not to write code that relies on the exact match of the conversion results from multiple calls to <c>LPtoDP</c> even if
+	/// the parameters that are passed to each call are identical.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-lptodp BOOL LPtoDP( HDC hdc, LPPOINT lppt, int c );
+	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wingdi.h", MSDNShortId = "670a16fb-842e-4250-9ad7-dc08e849c2ba")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool LPtoDP(HDC hdc, ref POINT lppt, int c = 1);
+
+	/// <summary>
 	/// The <c>ModifyWorldTransform</c> function changes the world transformation for a device context using the specified mode.
 	/// </summary>
 	/// <param name="hdc">A handle to the device context.</param>

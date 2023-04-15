@@ -155,7 +155,7 @@ public static partial class GdiExtension
 			throw new ArgumentException("Bitmaps must be of the same size and their pixel format must be Format32bppArgb.");
 
 		var bmp = new Bitmap(whiteBmp.Width, whiteBmp.Height, whiteBmp.PixelFormat);
-		using (SmartBitmapLock oVals = new SmartBitmapLock(bmp), wVals = new SmartBitmapLock(whiteBmp), bVals = new SmartBitmapLock(blackBmp))
+		using (SmartBitmapLock oVals = new(bmp), wVals = new(whiteBmp), bVals = new(blackBmp))
 		{
 			for (var i = 0; i < oVals.Length; i++)
 			{

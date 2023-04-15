@@ -5985,7 +5985,7 @@ public static partial class AdvApi32
 		/// <param name="providerName">Name of the provider.</param>
 		/// <returns>An initialized instance of <see cref="EVENT_TRACE_PROPERTIES"/>.</returns>
 		public static EVENT_TRACE_PROPERTIES Create(string? logFileName = null, string? providerName = null) =>
-			new EVENT_TRACE_PROPERTIES
+			new()
 			{
 				Wnode = new WNODE_HEADER
 				{

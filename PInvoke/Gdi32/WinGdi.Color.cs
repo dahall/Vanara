@@ -513,7 +513,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1e16771a-80c5-47bb-9c98-14169d4dd773")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetICMProfile(HDC hdc, ref uint pBufSize, StringBuilder pszFilename);
+	public static extern bool GetICMProfile(HDC hdc, ref uint pBufSize, StringBuilder? pszFilename);
 
 	/// <summary>The <c>GetLogColorSpace</c> function retrieves the color space definition identified by a specified handle.</summary>
 	/// <param name="hColorSpace">Specifies the handle to a color space.</param>
@@ -603,7 +603,7 @@ public static partial class Gdi32
 	// UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5e72e881-32e1-458e-a09e-91fa13abe178")]
-	public static extern uint GetPaletteEntries(HPALETTE hpal, uint iStart, uint cEntries, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
+	public static extern uint GetPaletteEntries([Optional] HPALETTE hpal, uint iStart, uint cEntries, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteEntries</c> function retrieves a range of palette entries from the system palette that is associated with
@@ -629,7 +629,7 @@ public static partial class Gdi32
 	// hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "67bb0adf-ae7f-48d5-bc62-82ece45aeee6")]
-	public static extern uint GetSystemPaletteEntries(HDC hdc, uint iStart, uint cEntries, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
+	public static extern uint GetSystemPaletteEntries(HDC hdc, uint iStart, uint cEntries, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteUse</c> function retrieves the current state of the system (physical) palette for the specified device
@@ -1447,7 +1447,7 @@ public static partial class Gdi32
 		public string lcsFilename;
 
 		/// <summary>The default structure with size and default fields preset.</summary>
-		public static readonly LOGCOLORSPACE Default = new LOGCOLORSPACE { lcsSignature = LCS_SIGNATURE, lcsVersion = 0x400, lcsSize = (uint)Marshal.SizeOf(typeof(LOGCOLORSPACE)) };
+		public static readonly LOGCOLORSPACE Default = new() { lcsSignature = LCS_SIGNATURE, lcsVersion = 0x400, lcsSize = (uint)Marshal.SizeOf(typeof(LOGCOLORSPACE)) };
 	}
 
 	/// <summary>

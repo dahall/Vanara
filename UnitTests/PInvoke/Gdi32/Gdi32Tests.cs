@@ -143,6 +143,35 @@ public class Gdi32Tests
 		}
 	}
 
+	[Test]
+	public void GetTextCharsetInfoTest()
+	{
+		using var hdc = SafeHDC.ScreenCompatibleDCHandle;
+		var cs = GetTextCharsetInfo(hdc, out var fs);
+		Assert.AreNotEqual(cs, CharacterSetUint.DEFAULT_CHARSET);
+		fs.WriteValues();
+	}
+
+	[Test]
+	public void TranslateCharsetInfoTest()
+	{
+		var acp = Kernel32.GetACP();
+		Assert.That(TranslateCharsetInfo((IntPtr)acp, out var csi, TCI.TCI_SRCCODEPAGE), ResultIs.Successful);
+		csi.WriteValues();
+
+		Assert.That(TranslateCharsetInfo((IntPtr)csi.ciCharset, out csi, TCI.TCI_SRCCHARSET), ResultIs.Successful);
+		csi.WriteValues();
+
+		Assert.That(TranslateCharsetInfo((IntPtr)(int)(uint)Kernel32.GetThreadLocale(), out csi, TCI.TCI_SRCLOCALE), ResultIs.Successful);
+		csi.WriteValues();
+
+		FONTSIGNATURE fs = default;
+		using (var hdc = SafeHDC.ScreenCompatibleDCHandle)
+			GetTextCharsetInfo(hdc, out fs);
+		Assert.That(TranslateCharsetInfo(fs.fsCsb, out csi, TCI.TCI_SRCFONTSIG), ResultIs.Successful);
+		csi.WriteValues();
+	}
+
 	// TODO: [Test]
 	public void SelectObjectTest()
 	{

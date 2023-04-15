@@ -102,12 +102,12 @@ public static class GdiObjExtensions2
 				break;
 
 			case BrushStyle.BS_HATCHED:
-				HatchBrush hbr = new HatchBrush((System.Drawing.Drawing2D.HatchStyle)lpen.elpHatch.ToInt32(), lpen.elpColor);
+				HatchBrush hbr = new((System.Drawing.Drawing2D.HatchStyle)lpen.elpHatch.ToInt32(), lpen.elpColor);
 				pen = new Pen(hbr);
 				break;
 
 			case BrushStyle.BS_PATTERN:
-				TextureBrush pbr = new TextureBrush(Image.FromHbitmap(lpen.elpHatch));
+				TextureBrush pbr = new(Image.FromHbitmap(lpen.elpHatch));
 				pen = new Pen(pbr);
 				break;
 

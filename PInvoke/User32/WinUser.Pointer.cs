@@ -1748,16 +1748,16 @@ public static partial class User32
 
 	/// <summary>Provides a handle to a synthetic pointer device.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HSYNTHETICPOINTERDEVICE : IHandle
+	public readonly struct HSYNTHETICPOINTERDEVICE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HSYNTHETICPOINTERDEVICE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HSYNTHETICPOINTERDEVICE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HSYNTHETICPOINTERDEVICE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HSYNTHETICPOINTERDEVICE NULL => new HSYNTHETICPOINTERDEVICE(IntPtr.Zero);
+		public static HSYNTHETICPOINTERDEVICE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1770,7 +1770,7 @@ public static partial class User32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSYNTHETICPOINTERDEVICE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSYNTHETICPOINTERDEVICE(IntPtr h) => new HSYNTHETICPOINTERDEVICE(h);
+		public static implicit operator HSYNTHETICPOINTERDEVICE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1785,7 +1785,7 @@ public static partial class User32
 		public static bool operator ==(HSYNTHETICPOINTERDEVICE h1, HSYNTHETICPOINTERDEVICE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HSYNTHETICPOINTERDEVICE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HSYNTHETICPOINTERDEVICE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

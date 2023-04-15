@@ -695,16 +695,16 @@ public static partial class User32
 
 	/// <summary>Provides a handle to a DPI awareness context.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DPI_AWARENESS_CONTEXT : IHandle
+	public readonly struct DPI_AWARENESS_CONTEXT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="DPI_AWARENESS_CONTEXT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public DPI_AWARENESS_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="DPI_AWARENESS_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static DPI_AWARENESS_CONTEXT NULL => new DPI_AWARENESS_CONTEXT(IntPtr.Zero);
+		public static DPI_AWARENESS_CONTEXT NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -717,7 +717,7 @@ public static partial class User32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="DPI_AWARENESS_CONTEXT"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator DPI_AWARENESS_CONTEXT(IntPtr h) => new DPI_AWARENESS_CONTEXT(h);
+		public static implicit operator DPI_AWARENESS_CONTEXT(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -732,7 +732,7 @@ public static partial class User32
 		public static bool operator ==(DPI_AWARENESS_CONTEXT h1, DPI_AWARENESS_CONTEXT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is DPI_AWARENESS_CONTEXT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is DPI_AWARENESS_CONTEXT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

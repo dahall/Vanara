@@ -1297,7 +1297,7 @@ public static partial class User32
 		public uint cbExtraArgs;
 
 		/// <summary>A default value for <see cref="GESTUREINFO"/> with the <see cref="cbSize"/> field value set correctly.</summary>
-		public static readonly GESTUREINFO Default = new GESTUREINFO { cbSize = (uint)Marshal.SizeOf(typeof(GESTUREINFO)) };
+		public static readonly GESTUREINFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(GESTUREINFO)) };
 	}
 
 	/// <summary>When transmitted with WM_GESTURENOTIFY messages, passes information about a gesture.</summary>
@@ -1324,21 +1324,21 @@ public static partial class User32
 		public uint dwInstanceID;
 
 		/// <summary>A default value for <see cref="GESTURENOTIFYSTRUCT"/> with the <see cref="cbSize"/> field value set correctly.</summary>
-		public static readonly GESTURENOTIFYSTRUCT Default = new GESTURENOTIFYSTRUCT { cbSize = (uint)Marshal.SizeOf(typeof(GESTURENOTIFYSTRUCT)) };
+		public static readonly GESTURENOTIFYSTRUCT Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(GESTURENOTIFYSTRUCT)) };
 	}
 
 	/// <summary>Provides a handle to a gesture info.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HGESTUREINFO : IHandle
+	public readonly struct HGESTUREINFO : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HGESTUREINFO"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HGESTUREINFO(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HGESTUREINFO"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HGESTUREINFO NULL => new HGESTUREINFO(IntPtr.Zero);
+		public static HGESTUREINFO NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1351,7 +1351,7 @@ public static partial class User32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HGESTUREINFO"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGESTUREINFO(IntPtr h) => new HGESTUREINFO(h);
+		public static implicit operator HGESTUREINFO(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1366,7 +1366,7 @@ public static partial class User32
 		public static bool operator ==(HGESTUREINFO h1, HGESTUREINFO h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HGESTUREINFO h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HGESTUREINFO h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1377,16 +1377,16 @@ public static partial class User32
 
 	/// <summary>Provides a handle to a touch input.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HTOUCHINPUT : IHandle
+	public readonly struct HTOUCHINPUT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HTOUCHINPUT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HTOUCHINPUT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTOUCHINPUT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTOUCHINPUT NULL => new HTOUCHINPUT(IntPtr.Zero);
+		public static HTOUCHINPUT NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1399,7 +1399,7 @@ public static partial class User32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTOUCHINPUT"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTOUCHINPUT(IntPtr h) => new HTOUCHINPUT(h);
+		public static implicit operator HTOUCHINPUT(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1414,7 +1414,7 @@ public static partial class User32
 		public static bool operator ==(HTOUCHINPUT h1, HTOUCHINPUT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTOUCHINPUT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HTOUCHINPUT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

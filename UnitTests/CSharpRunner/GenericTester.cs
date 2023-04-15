@@ -7,7 +7,7 @@ namespace Vanara.PInvoke;
 
 public class GenericComTester<TInt> where TInt : class
 {
-	protected Stack<object> objects = new Stack<object>();
+	protected Stack<object> objects = new();
 
 	public virtual TInt Instance => (TInt)objects.Peek();
 

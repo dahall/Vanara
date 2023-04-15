@@ -341,7 +341,7 @@ public static partial class Usp10
 		/// <returns>
 		/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
 		/// </returns>
-		public override bool Equals(object obj) => obj is OPENTYPE_TAG tAG && Equals(tAG);
+		public override bool Equals(object? obj) => obj is OPENTYPE_TAG tAG && Equals(tAG);
 
 		/// <summary>Determines whether the specified <see cref="OPENTYPE_TAG"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="OPENTYPE_TAG"/> to compare with this instance.</param>

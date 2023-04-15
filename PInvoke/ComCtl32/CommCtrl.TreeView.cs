@@ -2294,16 +2294,16 @@ public static partial class ComCtl32
 
 	/// <summary>Provides a handle to a tree view item.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HTREEITEM
+	public readonly struct HTREEITEM
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HTREEITEM"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HTREEITEM(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTREEITEM"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTREEITEM NULL => new HTREEITEM(IntPtr.Zero);
+		public static HTREEITEM NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2316,7 +2316,7 @@ public static partial class ComCtl32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTREEITEM"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTREEITEM(IntPtr h) => new HTREEITEM(h);
+		public static implicit operator HTREEITEM(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2331,7 +2331,7 @@ public static partial class ComCtl32
 		public static bool operator ==(HTREEITEM h1, HTREEITEM h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTREEITEM h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HTREEITEM h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
