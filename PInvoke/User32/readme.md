@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 
 - Includes methods from user32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.User32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.User32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.User32)  
-### Methods - 100% API coverage (562 of 562 functions)  
+### Methods - 100% API coverage (564 of 564 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -377,6 +377,8 @@ Native Method | Header | Managed Method
 [MessageBeep](https://www.google.com/search?num=5&q=MessageBeep+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MessageBeep](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBeep)  
 [MessageBox](https://www.google.com/search?num=5&q=MessageBoxA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MessageBox](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBox)  
 [MessageBoxIndirect](https://www.google.com/search?num=5&q=MessageBoxIndirectA+site%3Alearn.microsoft.com) | Winuser.h | [Vanara.PInvoke.User32.MessageBoxIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBoxIndirect)  
+[MessageBoxTimeoutA](https://www.google.com/search?num=5&q=MessageBoxTimeoutA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MessageBoxTimeout](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBoxTimeout)  
+[MessageBoxTimeoutW](https://www.google.com/search?num=5&q=MessageBoxTimeoutW+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MessageBoxTimeout](https://github.com/dahall/Vanara/search?l=C%23&q=MessageBoxTimeout)  
 [ModifyMenu](https://www.google.com/search?num=5&q=ModifyMenuA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ModifyMenu](https://github.com/dahall/Vanara/search?l=C%23&q=ModifyMenu)  
 [MonitorFromPoint](https://www.google.com/search?num=5&q=MonitorFromPoint+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MonitorFromPoint](https://github.com/dahall/Vanara/search?l=C%23&q=MonitorFromPoint)  
 [MonitorFromRect](https://www.google.com/search?num=5&q=MonitorFromRect+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MonitorFromRect](https://github.com/dahall/Vanara/search?l=C%23&q=MonitorFromRect)  

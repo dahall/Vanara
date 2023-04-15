@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (35 of 628 functions)  
+### Methods - 5% API coverage (37 of 630 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
@@ -12,6 +12,7 @@ Native Method | Header | Managed Method
 [DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrint)  
 [DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrintEx](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrintEx)  
 [DbgPrompt](https://www.google.com/search?num=5&q=DbgPrompt+site%3Alearn.microsoft.com) | ntddk.h | [Vanara.PInvoke.NtDll.DbgPrompt](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrompt)  
+[DbgUiSetThreadDebugObject](https://www.google.com/search?num=5&q=DbgUiSetThreadDebugObject+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.NtDll.DbgUiSetThreadDebugObject](https://github.com/dahall/Vanara/search?l=C%23&q=DbgUiSetThreadDebugObject)  
 [EtwCheckCoverage](https://www.google.com/search?num=5&q=EtwCheckCoverage+site%3Alearn.microsoft.com) |  |   
 [LdrCallEnclave](https://www.google.com/search?num=5&q=LdrCallEnclave+site%3Alearn.microsoft.com) |  |   
 [LdrControlFlowGuardEnforced](https://www.google.com/search?num=5&q=LdrControlFlowGuardEnforced+site%3Alearn.microsoft.com) |  |   
@@ -127,6 +128,7 @@ Native Method | Header | Managed Method
 [NtRecoverEnlistment](https://www.google.com/search?num=5&q=NtRecoverEnlistment+site%3Alearn.microsoft.com) |  |   
 [NtRecoverResourceManager](https://www.google.com/search?num=5&q=NtRecoverResourceManager+site%3Alearn.microsoft.com) |  |   
 [NtRecoverTransactionManager](https://www.google.com/search?num=5&q=NtRecoverTransactionManager+site%3Alearn.microsoft.com) |  |   
+[NtRemoveProcessDebug](https://www.google.com/search?num=5&q=NtRemoveProcessDebug+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtRemoveProcessDebug](https://github.com/dahall/Vanara/search?l=C%23&q=NtRemoveProcessDebug)  
 [NtRenameKey](https://www.google.com/search?num=5&q=NtRenameKey+site%3Alearn.microsoft.com) |  |   
 [NtRenameTransactionManager](https://www.google.com/search?num=5&q=NtRenameTransactionManager+site%3Alearn.microsoft.com) |  |   
 [NtRollbackComplete](https://www.google.com/search?num=5&q=NtRollbackComplete+site%3Alearn.microsoft.com) |  |   
