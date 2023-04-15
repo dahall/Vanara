@@ -753,7 +753,7 @@ namespace Vanara.PInvoke
 			return charSet;
 		}
 
-		private static Encoding GetEncoding(ClipCorrespondingTypeAttribute attr) => (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding));
+		private static Encoding GetEncoding(ClipCorrespondingTypeAttribute attr) => (Encoding)Activator.CreateInstance(attr?.EncodingType ?? typeof(UnicodeEncoding));
 
 		/// <summary>
 		/// <para>
