@@ -142,10 +142,7 @@ public static partial class Gdi32
 		public GdiObjectContext SelectObject(HGDIOBJ hObject) => new(handle, hObject);
 
 		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle()
-		{
-			return DeleteDC(handle);
-		}
+		protected override bool InternalReleaseHandle() => DeleteDC(handle);
 	}
 
 	/// <summary>

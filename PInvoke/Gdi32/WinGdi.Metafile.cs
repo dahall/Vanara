@@ -687,7 +687,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-copymetafilea HMETAFILE CopyMetaFileA( HMETAFILE , LPCSTR );
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e9f97591-697b-47d0-a748-60fda4d5258c")]
-	public static extern SafeHMETAFILE CopyMetaFile(HMETAFILE arg1, string arg2);
+	public static extern SafeHMETAFILE CopyMetaFile(HMETAFILE arg1, [Optional] string? arg2);
 
 	/// <summary>
 	/// <para>
@@ -803,7 +803,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createmetafilea HDC CreateMetaFileA( LPCSTR pszFile );
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "81b3baae-f0e6-4b71-a6de-953ad3376dbd")]
-	public static extern HDC CreateMetaFile(string pszFile);
+	public static extern HDC CreateMetaFile([Optional] string? pszFile);
 
 	/// <summary>
 	/// <para>The <c>DeleteEnhMetaFile</c> function deletes an enhanced-format metafile or an enhanced-format metafile handle.</para>
@@ -1045,7 +1045,7 @@ public static partial class Gdi32
 	// UINT nSize, LPBYTE lpData );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2bbfa0da-5b1e-4843-9777-c2e4c5fd3b78")]
-	public static extern uint GetEnhMetaFileBits(HENHMETAFILE hEMF, uint nSize, byte[] lpData);
+	public static extern uint GetEnhMetaFileBits(HENHMETAFILE hEMF, uint nSize, byte[]? lpData);
 
 	/// <summary>
 	/// The <c>GetEnhMetaFileDescription</c> function retrieves an optional text description from an enhanced-format metafile and copies
@@ -1081,7 +1081,7 @@ public static partial class Gdi32
 	// HENHMETAFILE hemf, UINT cchBuffer, LPSTR lpDescription );
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "51f4f617-fe53-4463-b222-cb6860d15dd6")]
-	public static extern uint GetEnhMetaFileDescription(HENHMETAFILE hemf, uint cchBuffer, StringBuilder lpDescription);
+	public static extern uint GetEnhMetaFileDescription(HENHMETAFILE hemf, uint cchBuffer, StringBuilder? lpDescription);
 
 	/// <summary>
 	/// The <c>GetEnhMetaFileHeader</c> function retrieves the record containing the header for the specified enhanced-format metafile.
@@ -1108,7 +1108,7 @@ public static partial class Gdi32
 	// hemf, UINT nSize, LPENHMETAHEADER lpEnhMetaHeader );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c42bcbe2-2e8f-42bd-a8e3-2827c6563300")]
-	public static extern uint GetEnhMetaFileHeader(HENHMETAFILE hemf, uint nSize, IntPtr lpEnhMetaHeader);
+	public static extern uint GetEnhMetaFileHeader(HENHMETAFILE hemf, uint nSize, [Optional] IntPtr lpEnhMetaHeader);
 
 	/// <summary>
 	/// The <c>GetEnhMetaFileHeader</c> function retrieves the record containing the header for the specified enhanced-format metafile.
@@ -1171,7 +1171,7 @@ public static partial class Gdi32
 	// GetEnhMetaFilePaletteEntries( HENHMETAFILE hemf, UINT nNumEntries, LPPALETTEENTRY lpPaletteEntries );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2d61fd6a-cebd-457e-ad00-d3e8bd15584a")]
-	public static extern uint GetEnhMetaFilePaletteEntries(HENHMETAFILE hemf, uint nNumEntries, [Out] PALETTEENTRY[] lpPaletteEntries);
+	public static extern uint GetEnhMetaFilePaletteEntries(HENHMETAFILE hemf, uint nNumEntries, [Out] PALETTEENTRY[]? lpPaletteEntries);
 
 	/// <summary>
 	/// <para>[GetMetaFile is no longer available for use as of Windows 2000. Instead, use GetEnhMetaFile.]</para>
@@ -1267,7 +1267,7 @@ public static partial class Gdi32
 	// UINT cbData16, LPBYTE pData16, INT iMapMode, HDC hdcRef );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "db61ea3a-44d0-4769-acb4-05a982d3f06f")]
-	public static extern uint GetWinMetaFileBits(HENHMETAFILE hemf, uint cbData16, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData16, MapMode iMapMode, HDC hdcRef);
+	public static extern uint GetWinMetaFileBits(HENHMETAFILE hemf, uint cbData16, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[]? pData16, MapMode iMapMode, HDC hdcRef);
 
 	/// <summary>The <c>PlayEnhMetaFile</c> function displays the picture stored in the specified enhanced-format metafile.</summary>
 	/// <param name="hdc">A handle to the device context for the output device on which the picture will appear.</param>

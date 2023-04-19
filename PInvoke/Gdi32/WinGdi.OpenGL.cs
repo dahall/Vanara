@@ -310,6 +310,38 @@ public static partial class Gdi32
 	[PInvokeData("wingdi.h", MSDNShortId = "9692a30d-c7d4-40c7-a265-72c4ebabd5f2")]
 	public static extern int DescribePixelFormat(HDC hdc, int iPixelFormat, uint nBytes, ref PIXELFORMATDESCRIPTOR ppfd);
 
+	/// <summary>
+	/// The <c>DescribePixelFormat</c> function obtains information about the pixel format identified by iPixelFormat of the device
+	/// associated with hdc. The function sets the members of the PIXELFORMATDESCRIPTOR structure pointed to by ppfd with that pixel
+	/// format data.
+	/// </summary>
+	/// <param name="hdc">Specifies the device context.</param>
+	/// <param name="iPixelFormat">
+	/// Index that specifies the pixel format. The pixel formats that a device context supports are identified by positive one-based
+	/// integer indexes.
+	/// </param>
+	/// <param name="nBytes">
+	/// The size, in bytes, of the structure pointed to by ppfd. The <c>DescribePixelFormat</c> function stores no more than nBytes bytes
+	/// of data to that structure. Set this value to <c>sizeof</c>( <c>PIXELFORMATDESCRIPTOR</c>).
+	/// </param>
+	/// <param name="ppfd">
+	/// Pointer to a <c>PIXELFORMATDESCRIPTOR</c> structure whose members the function sets with pixel format data. The function stores
+	/// the number of bytes copied to the structure in the structure's <c>nSize</c> member. If, upon entry, ppfd is <c>NULL</c>, the
+	/// function writes no data to the structure. This is useful when you only want to obtain the maximum pixel format index of a device context.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, the return value is the maximum pixel format index of the device context. In addition, the function
+	/// sets the members of the <c>PIXELFORMATDESCRIPTOR</c> structure pointed to by ppfd according to the specified pixel format.
+	/// </para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-describepixelformat int DescribePixelFormat( HDC hdc, int
+	// iPixelFormat, UINT nBytes, LPPIXELFORMATDESCRIPTOR ppfd );
+	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("wingdi.h", MSDNShortId = "9692a30d-c7d4-40c7-a265-72c4ebabd5f2")]
+	public static extern int DescribePixelFormat(HDC hdc, int iPixelFormat, uint nBytes, [In, Optional] IntPtr ppfd);
+
 	/// <summary>The <c>GetEnhMetaFilePixelFormat</c> function retrieves pixel format information for an enhanced metafile.</summary>
 	/// <param name="hemf">Identifies the enhanced metafile.</param>
 	/// <param name="cbBuffer">Specifies the size, in bytes, of the buffer into which the pixel format information is copied.</param>

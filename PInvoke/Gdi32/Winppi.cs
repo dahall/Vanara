@@ -335,7 +335,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "e0122858-0c9d-4aa8-a394-89d65fb98fda")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiPlayPageEMF(HSPOOLFILE SpoolFileHandle, HANDLE hemf, in RECT prectDocument, in RECT prectBorder, in RECT prectClip);
+	public static extern bool GdiPlayPageEMF(HSPOOLFILE SpoolFileHandle, HANDLE hemf, in RECT prectDocument, [In, Optional] PRECT prectBorder, [In, Optional] PRECT prectClip);
 
 	/// <summary>The <c>GdiResetDCEMF</c> function resets a printer's device context during playback of a spooled EMF print job.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -134,6 +135,8 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(null, CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 		PASSTHROUGH = 19,
 
 		/// <summary>
@@ -172,6 +175,7 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.GetSet)]
 		GETTECHNOLOGY = 20,
 
 		SETLINECAP = 21,
@@ -220,6 +224,8 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(null, CorrespondingAction.Get)]
+		[CorrespondingType(typeof(DRAWPATRECT), CorrespondingAction.Set)]
 		DRAWPATTERNRECT = 25,
 
 		GETVECTORPENSIZE = 26,
@@ -275,6 +281,8 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(null, CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 		POSTSCRIPT_DATA = 37,
 
 		POSTSCRIPT_IGNORE = 38,
@@ -362,6 +370,8 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(null, CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 		POSTSCRIPT_PASSTHROUGH = 4115,
 
 		ENCAPSULATED_POSTSCRIPT = 4116,
@@ -432,6 +442,8 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(null, CorrespondingAction.Get)]
+		[CorrespondingType(typeof(PSIDENT), CorrespondingAction.Set)]
 		POSTSCRIPT_IDENTIFY = 4117,
 
 		/// <summary>
@@ -480,6 +492,8 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(null, CorrespondingAction.Get)]
+		[CorrespondingType(typeof(PSINJECTDATA), CorrespondingAction.Set)]
 		POSTSCRIPT_INJECTION = 4118,
 
 		/// <summary>
@@ -520,6 +534,9 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(byte[]), CorrespondingAction.Set)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 		CHECKJPEGFORMAT = 4119,
 
 		/// <summary>
@@ -560,6 +577,9 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(byte[]), CorrespondingAction.Set)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 		CHECKPNGFORMAT = 4120,
 
 		/// <summary>
@@ -680,6 +700,11 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(typeof(BOOL), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(PSFEATURE_OUTPUT), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(int), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(PSFEATURE_CUSTPAPER), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(FEATURESETTING), CorrespondingAction.Set)]
 		GET_PS_FEATURESETTING = 4121,
 
 		GDIPLUS_TS_QUERYVER = 4122,
@@ -728,8 +753,100 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(null, CorrespondingAction.Get)]
+		[CorrespondingType(typeof(byte[]), CorrespondingAction.Set)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Set)]
 		SPCLPASSTHROUGH2 = 4568,
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+	}
+
+	/// <summary>Values for the GET_PS_FEATURESETTING escape.</summary>
+	[PInvokeData("wingdi.h")]
+	public enum FEATURESETTING
+	{
+		/// <summary>
+		/// <para>Retrieves the N-Up setting of the page layout.</para>
+		/// <para>Set cbOutput to sizeof ( BOOL ) and lpszOutData to point to a <see cref="BOOL"/> variable.</para>
+		/// <para>If an N-Up page layout is not being used, the lpszOutData variable returns FALSE.</para>
+		/// <para>
+		/// If an N-Up page layout is being used, the lpszOutData variable returns TRUE. However, the variable does not indicate the format
+		/// of the N-Up page layout or its semantics.
+		/// </para>
+		/// </summary>
+		FEATURESETTING_NUP =        0,
+
+		/// <summary>
+		/// <para>Retrieves information about PostScript driver output options.</para>
+		/// <para>Set cbOutput to sizeof ( PSFEATURE_OUTPUT ) and lpszOutData to point to a <see cref="PSFEATURE_OUTPUT"/> structure.</para>
+		/// </summary>
+		FEATURESETTING_OUTPUT =        1,
+
+		/// <summary>
+		/// <para>Retrieves the PostScript language level.</para>
+		/// <para>Set cbOutput to sizeof ( INT ) and lpszOutData to point to an INT variable.</para>
+		/// <para>When the function returns, the lpszOutData variable is set to 1, 2, 3, or higher to indicate the PostScript language level.</para>
+		/// </summary>
+		FEATURESETTING_PSLEVEL =        2,
+
+		/// <summary>
+		/// <para>Retrieves the custom paper parameters.</para>
+		/// <para>Set cbOutput to sizeof ( PSFEATURE_CUSTPAPER ) and lpszOutData to point to a <see cref="PSFEATURE_CUSTPAPER"/> structure.</para>
+		/// </summary>
+		FEATURESETTING_CUSTPAPER =        3,
+
+		/// <summary>
+		/// <para>Retrieves the mirrored output setting.</para>
+		/// <para>Set cbOutput to sizeof ( BOOL ) and lpszOutData to point to a <see cref="BOOL"/> variable.</para>
+		/// <para>If mirrored output is selected, the value returned in lpszOutData is TRUE.</para>
+		/// <para>If mirrored output is not selected, the value returned in lpszOutData is FALSE</para>
+		/// </summary>
+		FEATURESETTING_MIRROR =        4,
+
+		/// <summary>
+		/// <para>Retrieves the negative output setting.</para>
+		/// <para>Set cbOutput to sizeof ( BOOL ) and lpszOutData to point to a <see cref="BOOL"/> variable.</para>
+		/// <para>When the function returns, the lpszOutData variable is TRUE if "Negative Output: Yes" is selected; otherwise, it is FALSE.</para>
+		/// </summary>
+		FEATURESETTING_NEGATIVE =        5,
+
+		/// <summary>
+		/// <para>Retrieves the output protocol setting.</para>
+		/// <para>Sets cbOutput to sizeof( INT ) and lpszOutData to point to an INT variable.</para>
+		/// <para>When the function returns, the lpszOutData variable is set to one of the following output protocol values:</para>
+		/// <para>PSPROTOCOL_ASCII PSPROTOCOL_BCP PSPROTOCOL_TBCP PSPROTOCOL_BINARY</para>
+		/// </summary>
+		FEATURESETTING_PROTOCOL =        6,
+
+		/// <summary>
+		/// Windows XP and later versions of Windows support the private use of this parameter. For private use, you can use the numbers in
+		/// the range from FEATURESETTING_PRIVATE_BEGIN to FEATURESETTING_PRIVATE_END. Private parties that intend to use numbers in this
+		/// range should contact Microsoft first to avoid conflicts with other applications.
+		/// </summary>
+		FEATURESETTING_PRIVATE_BEGIN = 0x1000,
+
+		/// <summary>
+		/// Windows XP and later versions of Windows support the private use of this parameter. For private use, you can use the numbers in
+		/// the range from FEATURESETTING_PRIVATE_BEGIN to FEATURESETTING_PRIVATE_END. Private parties that intend to use numbers in this
+		/// range should contact Microsoft first to avoid conflicts with other applications.
+		/// </summary>
+		FEATURESETTING_PRIVATE_END = 0x1FFF,
+	}
+
+	/// <summary>Values for the POSTSCRIPT_IDENTIFY escape.</summary>
+	[PInvokeData("wingdi.h")]
+	public enum PSIDENT
+	{
+		/// <summary>
+		/// GDI-centric mode. Specify this value if the PostScript driver supports the PASSTHROUGH printer escape function, but not the
+		/// POSTSCRIPT_PASSTHROUGH printer escape function.
+		/// </summary>
+		PSIDENT_GDICENTRIC = 0,
+
+		/// <summary>
+		/// PostScript-centric mode. Specify this value if the PostScript driver supports the POSTSCRIPT_PASSTHROUGH printer escape function,
+		/// but not the PASSTHROUGH printer escape function.
+		/// </summary>
+		PSIDENT_PSCENTRIC = 1,
 	}
 
 	/// <summary>Specifies where to inject the raw data in the PostScript output.</summary>
@@ -828,6 +945,9 @@ public static partial class Gdi32
 
 		/// <summary>After restore operator</summary>
 		PSINJECT_VMRESTORE = 201,
+
+		/// <summary/>
+		PSINJECT_DLFONT = unchecked((ushort)0xdddddddd),
 	}
 
 	/// <summary>
@@ -969,7 +1089,7 @@ public static partial class Gdi32
 	// pvIn, LPVOID pvOut );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ba21b680-78a8-45a2-94e1-01b377b74787")]
-	public static extern int Escape(HDC hdc, EscapeFunction iEscape, int cjIn, [In] IntPtr pvIn, [Out] IntPtr pvOut);
+	public static extern int Escape(HDC hdc, EscapeFunction iEscape, int cjIn, [In] IntPtr pvIn, [Out, Optional] IntPtr pvOut);
 
 	/// <summary>
 	/// The <c>ExtEscape</c> function enables an application to access device capabilities that are not available through GDI.
@@ -1243,7 +1363,7 @@ public static partial class Gdi32
 	// LPCSTR lpInData, int cjOutput, LPSTR lpOutData );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5ca74f61-75dd-4a8c-9f0f-9c1b4719c75f")]
-	public static extern int ExtEscape(HDC hdc, EscapeFunction iEscape, int cjInput, [In] IntPtr lpInData, int cjOutput, [Out] IntPtr lpOutData);
+	public static extern int ExtEscape(HDC hdc, EscapeFunction iEscape, int cjInput, [In] IntPtr lpInData, int cjOutput, [Out, Optional] IntPtr lpOutData);
 
 	/// <summary>
 	/// The <c>SetAbortProc</c> function sets the application-defined abort function that allows a print job to be canceled during spooling.
@@ -1353,7 +1473,7 @@ public static partial class Gdi32
 		/// will be sent to the device identified by the device context handle that was passed to the StartDoc function.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszOutput;
+		public string? lpszOutput;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the type of data used to record the print job. The legal values for this
@@ -1361,7 +1481,7 @@ public static partial class Gdi32
 		/// can be <c>NULL</c>. Note that the requested data type might be ignored.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszDatatype;
+		public string? lpszDatatype;
 
 		/// <summary>
 		/// <para>Specifies additional information about the print job. This member must be zero or one of the following values.</para>

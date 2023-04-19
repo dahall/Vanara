@@ -381,7 +381,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d1622574-c65e-4265-9a17-22bb4d2cae0e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyBezier(HDC hdc, [In] POINT[] apt, uint cpt);
+	public static extern bool PolyBezier(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
 
 	/// <summary>The <c>PolyBezierTo</c> function draws one or more Bézier curves.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -408,7 +408,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0c8d6d6d-d0a3-4188-91ad-934e6f054862")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyBezierTo(HDC hdc, [In] POINT[] apt, uint cpt);
+	public static extern bool PolyBezierTo(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
 
 	/// <summary>The <c>PolyDraw</c> function draws a set of line segments and Bézier curves.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -485,7 +485,8 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5fd3f285-dcf3-4cd0-915a-236ba7902353")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyDraw(HDC hdc, [In] POINT[] apt, [In] VertexType[] aj, int cpt);
+	public static extern bool PolyDraw(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] VertexType[] aj, int cpt);
 
 	/// <summary>
 	/// The <c>Polygon</c> function draws a polygon consisting of two or more vertices connected by straight lines. The polygon is
@@ -510,7 +511,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2f958b91-039a-4e02-b727-be142bb18b06")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Polygon(HDC hdc, [In] POINT[] apt, int cpt);
+	public static extern bool Polygon(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, int cpt);
 
 	/// <summary>The <c>Polyline</c> function draws a series of line segments by connecting the points in the specified array.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -528,7 +529,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "55481dd0-3db7-4131-b383-4d0036943e60")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Polyline(HDC hdc, [In] POINT[] apt, int cpt);
+	public static extern bool Polyline(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, int cpt);
 
 	/// <summary>The <c>PolylineTo</c> function draws one or more straight lines.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -552,7 +553,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "76020742-b651-4244-82c3-13034573c306")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolylineTo(HDC hdc, [In] POINT[] apt, uint cpt);
+	public static extern bool PolylineTo(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
 
 	/// <summary>
 	/// The <c>PolyPolygon</c> function draws a series of closed polygons. Each polygon is outlined by using the current pen and filled
@@ -586,7 +587,8 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ac0a2802-c8b0-4cd7-9521-5b179f2c70b9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyPolygon(HDC hdc, [In] POINT[] apt, [In] int[] asz, int csz);
+	public static extern bool PolyPolygon(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] int[] asz, int csz);
 
 	/// <summary>The <c>PolyPolyline</c> function draws multiple series of connected line segments.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -612,7 +614,8 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "71a9273f-321b-4efb-ac73-5979f8151d05")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyPolyline(HDC hdc, [In] POINT[] apt, [In] uint[] asz, uint csz);
+	public static extern bool PolyPolyline(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] asz, uint csz);
 
 	/// <summary>
 	/// The <c>Rectangle</c> function draws a rectangle. The rectangle is outlined by using the current pen and filled by using the

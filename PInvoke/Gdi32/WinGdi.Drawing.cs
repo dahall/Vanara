@@ -335,7 +335,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray)] GRADIENT_TRIANGLE[] pMesh, uint nCount, GradientFillMode ulMode);
+	public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_TRIANGLE[] pMesh, uint nCount, GradientFillMode ulMode);
 
 	/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
 	/// <param name="hdc">A handle to the destination device context.</param>
@@ -414,7 +414,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray)] GRADIENT_RECT[] pMesh, uint nCount, GradientFillMode ulMode);
+	public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_RECT[] pMesh, uint nCount, GradientFillMode ulMode);
 
 	/// <summary>
 	/// The <c>GdiSetBatchLimit</c> function sets the maximum number of function calls that can be accumulated in the calling thread's
@@ -532,7 +532,7 @@ public static partial class Gdi32
 	// flags );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "139d4550-9adc-48b3-a15c-03ae1f1ef1ab")]
-	public static extern DCB GetBoundsRect(HDC hdc, out RECT lprect, DCB flags);
+	public static extern DCB GetBoundsRect(HDC hdc, out RECT lprect, [Optional] DCB flags);
 
 	/// <summary>
 	/// The <c>GetROP2</c> function retrieves the foreground mix mode of the specified device context. The mix mode specifies how the pen

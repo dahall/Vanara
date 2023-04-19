@@ -369,6 +369,27 @@ public static partial class Gdi32
 	[PInvokeData("wingdi.h", MSDNShortId = "4dcff824-eb1d-425c-b246-db4ace2c6518")]
 	public static extern SafeHRGN ExtCreateRegion(in XFORM lpx, uint nCount, [In] RGNDATA lpData);
 
+	/// <summary>The <c>ExtCreateRegion</c> function creates a region from the specified region and transformation data.</summary>
+	/// <param name="lpx">
+	/// A pointer to an XFORM structure that defines the transformation to be performed on the region. If this pointer is <c>NULL</c>,
+	/// the identity transformation is used.
+	/// </param>
+	/// <param name="nCount">The number of bytes pointed to by lpRgnData.</param>
+	/// <param name="lpData">A pointer to a RGNDATA structure that contains the region data in logical units.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is the value of the region.</para>
+	/// <para>If the function fails, the return value is <c>NULL</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Region coordinates are represented as 27-bit signed integers.</para>
+	/// <para>An application can retrieve data for a region by calling the GetRegionData function.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-extcreateregion HRGN ExtCreateRegion( const XFORM *lpx,
+	// DWORD nCount, const RGNDATA *lpData );
+	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wingdi.h", MSDNShortId = "4dcff824-eb1d-425c-b246-db4ace2c6518")]
+	public static extern SafeHRGN ExtCreateRegion([In, Optional] IntPtr lpx, uint nCount, [In] RGNDATA lpData);
+
 	/// <summary>The <c>FillRgn</c> function fills a region by using the specified brush.</summary>
 	/// <param name="hdc">Handle to the device context.</param>
 	/// <param name="hrgn">Handle to the region to be filled. The region's coordinates are presumed to be in logical units.</param>
@@ -450,6 +471,30 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e0d4862d-a405-4c00-b7b0-af4dd60407c0")]
 	public static extern uint GetRegionData(HRGN hrgn, uint nCount, [In, Out] RGNDATA lpRgnData);
+
+	/// <summary>
+	/// The <c>GetRegionData</c> function fills the specified buffer with data describing a region. This data includes the dimensions of
+	/// the rectangles that make up the region.
+	/// </summary>
+	/// <param name="hrgn">A handle to the region.</param>
+	/// <param name="nCount">The size, in bytes, of the lpRgnData buffer.</param>
+	/// <param name="lpRgnData">
+	/// A pointer to a RGNDATA structure that receives the information. The dimensions of the region are in logical units. If this
+	/// parameter is <c>NULL</c>, the return value contains the number of bytes needed for the region data.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds and dwCount specifies an adequate number of bytes, the return value is always dwCount. If dwCount is too
+	/// small or the function fails, the return value is 0. If lpRgnData is <c>NULL</c>, the return value is the required number of bytes.
+	/// </para>
+	/// <para>If the function fails, the return value is zero.</para>
+	/// </returns>
+	/// <remarks>The <c>GetRegionData</c> function is used in conjunction with the ExtCreateRegion function.</remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-getregiondata DWORD GetRegionData( HRGN hrgn, DWORD nCount,
+	// LPRGNDATA lpRgnData );
+	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wingdi.h", MSDNShortId = "e0d4862d-a405-4c00-b7b0-af4dd60407c0")]
+	public static extern uint GetRegionData(HRGN hrgn, uint nCount, [In, Out, Optional] IntPtr lpRgnData);
 
 	/// <summary>The <c>GetRgnBox</c> function retrieves the bounding rectangle of the specified region.</summary>
 	/// <param name="hrgn">A handle to the region.</param>

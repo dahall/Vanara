@@ -383,7 +383,8 @@ public static partial class Gdi32
 	// cWidth, const LOGBRUSH *plbrush, DWORD cStyle, const DWORD *pstyle );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a1e81314-4fe6-481f-af96-24ebf56332cf")]
-	public static extern SafeHPEN ExtCreatePen(uint iPenStyle, uint cWidth, in LOGBRUSH plbrush, uint cStyle, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] pstyle);
+	public static extern SafeHPEN ExtCreatePen(uint iPenStyle, uint cWidth, in LOGBRUSH plbrush, [Optional] uint cStyle,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[]? pstyle);
 
 	/// <summary>
 	/// <para>
