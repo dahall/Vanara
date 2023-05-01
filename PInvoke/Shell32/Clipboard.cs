@@ -588,7 +588,7 @@ public static partial class Shell32
 				case IEnumerable<string> strlist:
 					// Handle HDROP specifically since its formatter cannot be specified.
 					if (CLIPFORMAT.CF_HDROP.Equals(formatId))
-						mbr = new ClipboardHDROPFormatter().Write(strlist, charSet != CharSet.Ansi);
+						mbr = new ClipboardHDROPFormatter().Write(strlist, charSet == CharSet.Unicode || (charSet == CharSet.Auto && Marshal.SystemDefaultCharSize == 2);
 					else
 						mbr = strlist.MarshalToPtr(StringListPackMethod.Concatenated, MoveableHGlobalMemoryMethods.Instance.AllocMem, out _, charSet, 0,
 							MoveableHGlobalMemoryMethods.Instance.LockMem, MoveableHGlobalMemoryMethods.Instance.UnlockMem);
@@ -883,16 +883,16 @@ public static partial class Shell32
 		[MarshalAs(UnmanagedType.Bool)]
 		public bool fWide;
 
-		/// <summary>
-		/// Gets the file name array appended to this struture. It consists of a series of strings, each containing one file's fully
-		/// qualified path. This method should only be called when the <see cref="DROPFILES"/> instance is a reference value pulled from
-		/// the clipboard's HGLOBAL allocation.
+		/// Gets the file name array appended to a <see cref="DROPFILES"/> struture in memory. It consists of a series of strings, each
+		/// containing one file's fully qualified path. This method should only be called when <paramref name="pDropFiles"/> is a valid
+		/// pointer to a <see cref="DROPFILES"/> structure.
 		/// </summary>
 		/// <returns>The file list.</returns>
-		public string[] DangerousGetFileList()
+		public static string[] DangerousGetFileList(IntPtr pDropFiles)
 		{
-			using PinnedObject pinned = new(this);
-			return ((IntPtr)pinned).ToStringEnum(fWide ? CharSet.Unicode : CharSet.Ansi, (int)pFiles).ToArray();
+			SafeMoveableHGlobalHandle h = new(pDropFiles, false);
+			DROPFILES df = h.ToStructure<DROPFILES>();
+			return h.ToStringEnum(df.fWide ? CharSet.Unicode : CharSet.Ansi, (int)df.pFiles).ToArray();
 		}
 	}
 
@@ -1818,12 +1818,7 @@ public static partial class Shell32
 
 	internal class ClipboardHDROPFormatter : IClipboardFormatter
 	{
-		public object Read(IntPtr hGlobal)
-		{
-			SafeMoveableHGlobalHandle h = new(hGlobal, false);
-			DROPFILES df = h.ToStructure<DROPFILES>();
-			return h.ToStringEnum(df.fWide ? CharSet.Unicode : CharSet.Ansi, Marshal.SizeOf(typeof(DROPFILES))).ToArray();
-		}
+		public object Read(IntPtr hGlobal) => DROPFILES.DangerousGetFileList(hGlobal);
 
 		public IntPtr Write(object value) => Write(value, Marshal.SystemDefaultCharSize != 1);
 

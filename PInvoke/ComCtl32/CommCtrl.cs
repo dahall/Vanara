@@ -71,7 +71,7 @@ public static partial class ComCtl32
 	// dwRefData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776774(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb776774")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate IntPtr SUBCLASSPROC(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
+	public delegate IntPtr SUBCLASSPROC(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, nuint uIdSubclass, IntPtr dwRefData);
 
 	/// <summary>
 	/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(in INITCOMMONCONTROLSEX)"/>.
@@ -1267,7 +1267,7 @@ public static partial class ComCtl32
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb762094")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RemoveWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass);
+	public static extern bool RemoveWindowSubclass([In] HWND hWnd, [In, MarshalAs(UnmanagedType.FunctionPtr)] SUBCLASSPROC pfnSubclass, nuint uIdSubclass);
 
 	/// <summary>Installs or updates a window subclass callback.</summary>
 	/// <param name="hWnd">
@@ -1305,7 +1305,7 @@ public static partial class ComCtl32
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb762102")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
+	public static extern bool SetWindowSubclass([In] HWND hWnd, [In, MarshalAs(UnmanagedType.FunctionPtr)] SUBCLASSPROC pfnSubclass, nuint uIdSubclass, [In] IntPtr dwRefData);
 
 	/// <summary>
 	/// <para>

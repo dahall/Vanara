@@ -9420,8 +9420,10 @@ public static partial class User32
 		/// </summary>
 		public RECT rcNormalPosition;
 
+#if _MAC
 		/// <summary/>
 		public RECT rcDevice;
+#endif
 	}
 
 	/// <summary>
