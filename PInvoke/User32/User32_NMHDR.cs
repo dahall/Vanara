@@ -7,6 +7,9 @@ namespace Vanara.PInvoke;
 public static partial class User32
 {
 	/// <summary>Contains information about a notification message.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-nmhdr
+	// typedef struct tagNMHDR { HWND hwndFrom; UINT_PTR idFrom; UINT code; } NMHDR;
+	[PInvokeData("winuser.h", MSDNShortId = "NS:winuser.tagNMHDR")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct NMHDR
 	{

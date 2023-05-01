@@ -956,10 +956,10 @@ public static partial class Usp10
 	// https://docs.microsoft.com/en-us/windows/win32/api/usp10/nf-usp10-scriptgetproperties HRESULT ScriptGetProperties( [out] const
 	// SCRIPT_PROPERTIES ***ppSp, [out] int *piNumScripts );
 	[PInvokeData("usp10.h", MSDNShortId = "NF:usp10.ScriptGetProperties")]
-	public static HRESULT ScriptGetProperties(out SCRIPT_PROPERTIES[] ppSp)
+	public static HRESULT ScriptGetProperties(out SCRIPT_PROPERTIES[]? ppSp)
 	{
 		HRESULT hr = ScriptGetProperties(out IntPtr p, out int c);
-		ppSp = hr.Succeeded ? Array.ConvertAll(p.ToArray<IntPtr>(c), i => (SCRIPT_PROPERTIES)Marshal.ReadInt64(i)) : null;
+		ppSp = hr.Succeeded && p != IntPtr.Zero ? Array.ConvertAll(p.ToArray<IntPtr>(c)!, i => (SCRIPT_PROPERTIES)Marshal.ReadInt64(i)) : null;
 		return hr;
 	}
 
@@ -2993,7 +2993,7 @@ public static partial class Usp10
 	[PInvokeData("usp10.h", MSDNShortId = "NF:usp10.ScriptStringAnalyse")]
 	public static SafeSCRIPT_STRING_ANALYSIS ScriptStringAnalyse([In, Optional] HDC hdc, string pString, SSA dwFlags,
 		int cString = -1, int iReqWidth = 0, SCRIPT_CONTROL? psControl = null, SCRIPT_STATE? psState = null,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] piDx = null, SCRIPT_TABDEF? pTabdef = null,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? piDx = null, SCRIPT_TABDEF? pTabdef = null,
 		IntPtr pbInClass = default)
 	{
 		unsafe
@@ -3333,7 +3333,7 @@ public static partial class Usp10
 	[DllImport(Lib_Usp10, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("usp10.h", MSDNShortId = "NF:usp10.ScriptStringOut")]
 	public static extern HRESULT ScriptStringOut([In] SafeSCRIPT_STRING_ANALYSIS ssa, int iX, int iY, ETO uOptions,
-		[In, Optional] PRECT prc, int iMinSel, int iMaxSel, [MarshalAs(UnmanagedType.Bool)] bool fDisabled);
+		[In, Optional] PRECT? prc, int iMinSel, int iMaxSel, [MarshalAs(UnmanagedType.Bool)] bool fDisabled);
 
 	/// <summary>Checks a SCRIPT_STRING_ANALYSIS structure for invalid sequences.</summary>
 	/// <param name="ssa">A SCRIPT_STRING_ANALYSIS structure for a string.</param>

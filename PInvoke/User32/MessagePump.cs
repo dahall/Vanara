@@ -18,11 +18,19 @@ public delegate bool MsgPumpPredicateDelegate(ref MSG msg);
 public interface IMessagePump
 {
 	/// <summary>Runs the message pump on the optionally specified window.</summary>
-	/// <param name="mainWindow">The window instance.</param>
 	/// <returns>
 	/// The result of <see cref="PeekMessage(out MSG, HWND, uint, uint, PM)"/> or <see cref="GetMessage(out MSG, HWND, uint, uint)"/>.
 	/// </returns>
-	int Run(IWindowInstance? mainWindow = null);
+	int Run();
+
+	/// <summary>Runs the message pump on the optionally specified window.</summary>
+	/// <param name="mainWindow">
+	/// The window instance that is used to watch for a destroyed event so <see cref="PostQuitMessage(int)"/> can be called.
+	/// </param>
+	/// <returns>
+	/// The result of <see cref="PeekMessage(out MSG, HWND, uint, uint, PM)"/> or <see cref="GetMessage(out MSG, HWND, uint, uint)"/>.
+	/// </returns>
+	int Run(IWindowInstance mainWindow);
 }
 
 /// <summary>An interface that represents a Win32 window with created and destroyed events.</summary>
@@ -48,7 +56,10 @@ public class MessagePump : IMessagePump
 	protected const ushort quitMsg = (ushort)WindowMessage.WM_QUIT;
 
 	/// <inhertdoc/>
-	public int Run(IWindowInstance? mainWindow = null)
+	public int Run() => Run(null);
+
+	/// <inhertdoc/>
+	public int Run(IWindowInstance? mainWindow)
 	{
 		if (mainWindow is not null and not WindowBase)
 			mainWindow.Destroyed += onDestroy;

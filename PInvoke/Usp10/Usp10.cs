@@ -1917,7 +1917,7 @@ public static partial class Usp10
 				unsafe
 				{
 					SCRIPT_LOGATTR* a = ScriptString_pLogAttr(this);
-					return a is null ? null : ((IntPtr)a).ToArray<SCRIPT_LOGATTR>(OutChars.GetValueOrDefault());
+					return a is not null ? ((IntPtr)a).ToArray<SCRIPT_LOGATTR>(OutChars.GetValueOrDefault())! : new SCRIPT_LOGATTR[0];
 				}
 			}
 		}
@@ -2047,7 +2047,7 @@ public static partial class Usp10
 		/// rendered correctly. If the application must use this flag, it can unset and reset the flag as necessary to avoid the problem.
 		/// </para>
 		/// </remarks>
-		public HRESULT Out(POINT pt, Gdi32.ETO options = 0, [In] PRECT rc = null, int minSel = 0, int maxSel = 0, [MarshalAs(UnmanagedType.Bool)] bool disabled = false) =>
+		public HRESULT Out(POINT pt, Gdi32.ETO options = 0, [In] PRECT? rc = null, int minSel = 0, int maxSel = 0, [MarshalAs(UnmanagedType.Bool)] bool disabled = false) =>
 			ScriptStringOut(this, pt.X, pt.Y, options, rc, minSel, maxSel, disabled);
 
 		/// <summary>Checks for invalid sequences.</summary>

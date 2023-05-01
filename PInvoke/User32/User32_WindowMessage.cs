@@ -1,10 +1,113 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Vanara.PInvoke;
 
 public static partial class User32
 {
+
+	/// <summary>lParam value for WM_SHOWWINDOW.</summary>
+	[PInvokeData("winuser.h")]
+	public enum WM_SHOWWINDOW_LPARAM : uint
+	{
+		/// <summary>The window's owner window is being minimized.</summary>
+		SW_PARENTCLOSING = 1,
+		/// <summary>The window is being covered by another window that has been maximized.</summary>
+		SW_OTHERZOOM = 2,
+		/// <summary>The window's owner window is being restored.</summary>
+		SW_PARENTOPENING = 3,
+		/// <summary>The window is being uncovered because a maximize window was restored or minimized.</summary>
+		SW_OTHERUNZOOM = 4,
+	}
+	
+	/// <summary>wParam value for WM_SIZE.</summary>
+	[PInvokeData("winuser.h")]
+	public enum WM_SIZE_WPARAM
+	{
+		/// <summary>The window has been resized, but neither the SIZE_MINIMIZED nor SIZE_MAXIMIZED value applies.</summary>
+		SIZE_RESTORED = 0,
+		/// <summary>The window has been minimized.</summary>
+		SIZE_MINIMIZED = 1,
+		/// <summary>The window has been maximized.</summary>
+		SIZE_MAXIMIZED = 2,
+		/// <summary>Message is sent to all pop-up windows when some other window has been restored to its former size.</summary>
+		SIZE_MAXSHOW = 3,
+		/// <summary>Message is sent to all pop-up windows when some other window is maximized.</summary>
+		SIZE_MAXHIDE = 4,
+	}
+
+	/// <summary>lParam value for WM_SIZE.</summary>
+	[PInvokeData("winuser.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct WM_SIZE_LPARAM
+	{
+		/// <summary>The width</summary>
+		public ushort Width;
+		/// <summary>The height</summary>
+		public ushort Height;
+	}
+
+	/// <summary>wParam value for WM_ACTIVATE.</summary>
+	[PInvokeData("winuser.h")]
+	public enum WM_ACTIVATE_WPARAM
+	{
+		/// <summary>Deactivated.</summary>
+		WA_INACTIVE = 0,
+		/// <summary>Activated by some method other than a mouse click (for example, by a call to the SetActiveWindow function or by use of the keyboard interface to select the window).</summary>
+		WA_ACTIVE = 1,
+		/// <summary>Activated by a mouse click.</summary>
+		WA_CLICKACTIVE = 2,
+	}
+
+	/// <summary>Return value for WM_MOUSEACTIVATE.</summary>
+	[PInvokeData("winuser.h")]
+	public enum WM_MOUSEACTIVATE_RETURN : int
+	{
+		/// <summary>Activates the window and does not discard the mouse message.</summary>
+		MA_ACTIVATE = 1,
+		/// <summary>Activates the window and discards the mouse message.</summary>
+		MA_ACTIVATEANDEAT = 2,
+		/// <summary>Does not activate the window and does not discard the mouse message.</summary>
+		MA_NOACTIVATE = 3,
+		/// <summary>Does not activate the window and discards the mouse message.</summary>
+		MA_NOACTIVATEANDEAT = 4,
+	}
+
+	/// <summary>lParam value for WM_SETCURSOR.</summary>
+	[PInvokeData("winuser.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct WM_SETCURSOR_LPARAM
+	{
+		private IntPtr lp;
+
+		/// <summary>Specifies the hit-test result for the cursor position.</summary>
+		public HitTestValues HitTestResult => (HitTestValues)Macros.LOWORD(lp);
+
+		/// <summary>Specifies the mouse window message which triggered this event, such as WM_MOUSEMOVE. When the window enters menu mode, this value is zero.</summary>
+		public WindowMessage MouseWindowMessage => (WindowMessage)Macros.HIWORD(lp);
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_SETCURSOR_LPARAM"/>.</summary>
+		/// <param name="lparam">The lparam value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator WM_SETCURSOR_LPARAM(IntPtr lparam) => new() { lp = lparam };
+	}
+
+	/// <summary>lParam value for WM_QUERYENDSESSION.</summary>
+	[PInvokeData("winuser.h")]
+	[Flags]
+	public enum ENDSESSION : uint
+	{
+		/// <summary>The application is using a file that must be replaced, the system is being serviced, or system resources are exhausted. For more information, see Guidelines for Applications.</summary>
+		ENDSESSION_CLOSEAPP = 0x00000001,
+		/// <summary>The application is forced to shut down.</summary>
+		ENDSESSION_CRITICAL = 0x40000000,
+		/// <summary>The user is logging off. For more information, see Logging Off.</summary>
+		ENDSESSION_LOGOFF = 0x80000000,
+	}
+
 	/// <summary>Windows Messages</summary>
+	[PInvokeData("winuser.h")]
 	public enum WindowMessage
 	{
 		/// <summary>
@@ -36,6 +139,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-null
+		[MsgParams()]
 		WM_NULL = 0x0000,
 
 		/// <summary>
@@ -61,6 +165,7 @@ public static partial class User32
 		/// returns –1, the window is destroyed and the <c>CreateWindowEx</c> or <c>CreateWindow</c> function returns a <c>NULL</c> handle.
 		/// </para>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-create
+		[MsgParams(null, typeof(CREATESTRUCT), LParamByRef = true)]
 		WM_CREATE = 0x0001,
 
 		/// <summary>
@@ -91,6 +196,7 @@ public static partial class User32
 		/// <c>WM_DESTROY</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-destroy
+		[MsgParams()]
 		WM_DESTROY = 0x0002,
 
 		/// <summary>
@@ -127,6 +233,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-move
+		[MsgParams(null, typeof(POINTS))]	
 		WM_MOVE = 0x0003,
 
 		/// <summary>
@@ -186,6 +293,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-size
+		[MsgParams(typeof(WM_SIZE_WPARAM), typeof(WM_SIZE_LPARAM))]
 		WM_SIZE = 0x0005,
 
 		/// <summary>
@@ -240,6 +348,7 @@ public static partial class User32
 		/// window. If the window is activated by a mouse click, it also receives a <c>WM_MOUSEACTIVATE</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-activate
+		[MsgParams(typeof(WM_ACTIVATE_WPARAM), typeof(HWND))]
 		WM_ACTIVATE = 0x0006,
 
 		/// <summary>
@@ -259,6 +368,7 @@ public static partial class User32
 		/// To display a caret, an application should call the appropriate caret functions when it receives the <c>WM_SETFOCUS</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-setfocus
+		[MsgParams(typeof(HWND), null)]
 		WM_SETFOCUS = 0x0007,
 
 		/// <summary>
@@ -282,6 +392,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-killfocus
+		[MsgParams(typeof(HWND), null)]
 		WM_KILLFOCUS = 0x0008,
 
 		/// <summary>
@@ -307,6 +418,7 @@ public static partial class User32
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-enable
+		[MsgParams(typeof(BOOL), null)]
 		WM_ENABLE = 0x000A,
 
 		/// <summary>
@@ -362,6 +474,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/gdi/wm-setredraw
+		[MsgParams(typeof(BOOL), null)]
 		WM_SETREDRAW = 0x000B,
 
 		/// <summary>
@@ -394,6 +507,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-settext
+		[MsgParams(null, typeof(string))]
 		WM_SETTEXT = 0x000C,
 
 		/// <summary>
@@ -442,6 +556,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-gettext
+		[MsgParams(typeof(uint), typeof(StringBuilder))]
 		WM_GETTEXT = 0x000D,
 
 		/// <summary>
@@ -482,6 +597,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-gettextlength
+		[MsgParams()]
 		WM_GETTEXTLENGTH = 0x000E,
 
 		/// <summary>
@@ -543,6 +659,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/gdi/wm-paint
+		[MsgParams()]
 		WM_PAINT = 0x000F,
 
 		/// <summary>
@@ -568,6 +685,7 @@ public static partial class User32
 		/// <para>By default, the <c>DefWindowProc</c> function calls the <c>DestroyWindow</c> function to destroy the window.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-close
+		[MsgParams()]
 		WM_CLOSE = 0x0010,
 
 		/// <summary>
@@ -648,6 +766,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shutdown/wm-queryendsession
+		[MsgParams(null, typeof(ENDSESSION))]
 		WM_QUERYENDSESSION = 0x0011,
 
 		/// <summary>
@@ -676,6 +795,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-queryopen
+		[MsgParams()]
 		WM_QUERYOPEN = 0x0013,
 
 		/// <summary>
@@ -739,6 +859,7 @@ public static partial class User32
 		/// <para>The application need not call the <c>DestroyWindow</c> or <c>PostQuitMessage</c> function when the session is ending.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shutdown/wm-endsession
+		[MsgParams(typeof(BOOL), typeof(ENDSESSION))]
 		WM_ENDSESSION = 0x0016,
 
 		/// <summary>
@@ -769,6 +890,7 @@ public static partial class User32
 		/// <para>Do not post the <c>WM_QUIT</c> message using the <c>PostMessage</c> function; use <c>PostQuitMessage</c>.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-quit
+		[MsgParams(typeof(BOOL), typeof(ENDSESSION))]
 		WM_QUIT = 0x0012,
 
 		/// <summary>
@@ -801,6 +923,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-erasebkgnd
+		[MsgParams(typeof(HDC), null)]
 		WM_ERASEBKGND = 0x0014,
 
 		/// <summary>
@@ -830,6 +953,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/gdi/wm-syscolorchange
+		[MsgParams()]
 		WM_SYSCOLORCHANGE = 0x0015,
 
 		/// <summary>
@@ -892,6 +1016,7 @@ public static partial class User32
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-showwindow
+		[MsgParams(typeof(BOOL), typeof(WM_SHOWWINDOW_LPARAM))]
 		WM_SHOWWINDOW = 0x0018,
 
 		/// <summary>
@@ -938,6 +1063,7 @@ public static partial class User32
 		/// <para>The change in the storage location has no effect on the behavior of this message.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-wininichange
+		[MsgParams(null, typeof(string))]
 		WM_WININICHANGE = 0x001A,
 
 		/// <summary>
@@ -996,6 +1122,7 @@ public static partial class User32
 		/// CONVERTIBLESLATEMODE indicator was toggled or "SystemDockMode" if the DOCKED indicator was toggled.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-settingchange
+		[MsgParams(null, typeof(string))]
 		WM_SETTINGCHANGE = WM_WININICHANGE,
 
 		/// <summary>
@@ -1021,6 +1148,7 @@ public static partial class User32
 		/// the <c>SendMessageTimeout</c> function with the hWnd parameter set to HWND_BROADCAST.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/gdi/wm-devmodechange
+		[MsgParams(null, typeof(string))]
 		WM_DEVMODECHANGE = 0x001B,
 
 		/// <summary>
@@ -1048,6 +1176,7 @@ public static partial class User32
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-activateapp
+		[MsgParams(typeof(BOOL), typeof(uint))]
 		WM_ACTIVATEAPP = 0x001C,
 
 		/// <summary>
@@ -1075,6 +1204,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/gdi/wm-fontchange
+		[MsgParams()]
 		WM_FONTCHANGE = 0x001D,
 
 		/// <summary>
@@ -1100,6 +1230,7 @@ public static partial class User32
 		/// the system time.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/sysinfo/wm-timechange
+		[MsgParams()]
 		WM_TIMECHANGE = 0x001E,
 
 		/// <summary>
@@ -1127,6 +1258,7 @@ public static partial class User32
 		/// scroll bar input, cancels internal menu processing, and releases the mouse capture.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-cancelmode
+		[MsgParams()]
 		WM_CANCELMODE = 0x001F,
 
 		/// <summary>
@@ -1160,6 +1292,7 @@ public static partial class User32
 		/// buttons is pressed, <c>DefWindowProc</c> calls the <c>MessageBeep</c> function.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/menurc/wm-setcursor
+		[MsgParams(typeof(HWND), typeof(WM_SETCURSOR_LPARAM))]
 		WM_SETCURSOR = 0x0020,
 
 		/// <summary>
@@ -1217,6 +1350,7 @@ public static partial class User32
 		/// return <c>MA_NOACTIVATE</c> or <c>MA_NOACTIVATEANDEAT</c> to prevent the system from processing the message further.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-mouseactivate
+		[MsgParams(typeof(HWND), typeof(WM_SETCURSOR_LPARAM))]
 		WM_MOUSEACTIVATE = 0x0021,
 
 		/// <summary>
@@ -1235,6 +1369,7 @@ public static partial class User32
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-childactivate
+		[MsgParams()]
 		WM_CHILDACTIVATE = 0x0022,
 
 		/// <summary>
