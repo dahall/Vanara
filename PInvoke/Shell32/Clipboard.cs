@@ -1819,13 +1819,7 @@ namespace Vanara.PInvoke
 
 		internal class ClipboardHDROPFormatter : IClipboardFormatter
 		{
-			public object Read(IntPtr hGlobal)
-			{
-				return DROPFILES.DangerousGetFileList(hGlobal);
-				//SafeMoveableHGlobalHandle h = new(hGlobal, false);
-				//DROPFILES df = h.ToStructure<DROPFILES>();
-				//return h.ToStringEnum(df.fWide ? CharSet.Unicode : CharSet.Ansi, Marshal.SizeOf(typeof(DROPFILES))).ToArray();
-			}
+			public object Read(IntPtr hGlobal) => DROPFILES.DangerousGetFileList(hGlobal);
 
 			public IntPtr Write(object value) => Write(value, Marshal.SystemDefaultCharSize != 1);
 
