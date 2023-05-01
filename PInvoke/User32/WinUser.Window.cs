@@ -9438,8 +9438,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public RECT rcNormalPosition;
 
+#if _MAC
 			/// <summary/>
 			public RECT rcDevice;
+#endif
 		}
 
 		/// <summary>
