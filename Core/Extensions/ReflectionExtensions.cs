@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -11,6 +12,31 @@ namespace Vanara.Extensions.Reflection
 	public static class ReflectionExtensions
 	{
 		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
+
+		/// <summary>Converts the given value object to the specified type.</summary>
+		/// <param name="value">The <see cref="object"/> to convert.</param>
+		/// <param name="type">The <see cref="Type"/> to conver the <paramref name="value"/> paramter to.</param>
+		/// <returns>An <see cref="object"/> that represents the converted value.</returns>
+		/// <remarks>
+		/// This will convert <see langword="null"/> or <see cref="DBNull"/> to itself, values of the requested <paramref name="type"/>, to
+		/// themselves, or will use available <see cref="TypeConverter"/> s or <see cref="IConvertible"/> associations to perform the conversion.
+		/// </remarks>
+		public static object? ConvertTo(this object? value, Type type)
+		{
+			if (value is null or DBNull || value.GetType() == type)
+				return value;
+			if (type.IsEnum && value is IConvertible c)
+				return Enum.ToObject(type, c.ToType(Enum.GetUnderlyingType(type), System.Threading.Thread.CurrentThread.CurrentCulture));
+
+			TypeConverter converter = TypeDescriptor.GetConverter(value);
+			if (converter.CanConvertTo(type))
+				return converter.ConvertTo(value, type);
+			converter = TypeDescriptor.GetConverter(type);
+			if (converter.CanConvertFrom(value.GetType()))
+				return converter.ConvertFrom(value);
+
+			return Convert.ChangeType(value, type, System.Threading.Thread.CurrentThread.CurrentCulture);
+		}
 
 		/// <summary>Get a sequence of types that represent all base types and interfaces.</summary>
 		/// <param name="type">The type to evaluate.</param>
