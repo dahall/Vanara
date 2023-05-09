@@ -2839,7 +2839,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	public static extern short VkKeyScanW(char ch);
 
-	/// <summary>Provides a handle to a .</summary>
+	/// <summary>Provides a handle to an input locale identifier.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public readonly struct HKL : IHandle
 	{
@@ -2852,8 +2852,16 @@ public static partial class User32
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HKL"/> object with <see cref="IntPtr.Zero"/>.</summary>
 		public static HKL NULL => new(IntPtr.Zero);
 
+		/// <summary>Gets the device identifier tied to the HKL.</summary>
+		/// <value>The device identifier.</value>
+		public ushort DeviceId => Macros.HIWORD(unchecked((uint)handle.ToInt32()));
+
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Gets the language identifier tied to the HKL.</summary>
+		/// <value>The language identifier.</value>
+		public LANGID LangId => new(Macros.LOWORD(unchecked((uint)handle.ToInt32())));
 
 		/// <summary>Performs an explicit conversion from <see cref="HKL"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
