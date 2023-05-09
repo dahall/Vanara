@@ -12,13 +12,11 @@ public static partial class Macros
 	/// A value that is aligned to the next multiple of <paramref name="pow2"/>. This value may be the same as <paramref name="value"/>.
 	/// </returns>
 	/// <exception cref="ArgumentOutOfRangeException">pow2 - Parameter must be a power of 2.</exception>
-	public static long ALIGN_TO_MULTIPLE(long value, int pow2)
-	{
+	public static long ALIGN_TO_MULTIPLE(long value, int pow2) =>
 		// Ensure pow2 is a power of 2
-		return pow2 == 0 || (pow2 & (pow2 - 1)) != 0
-			?            throw new ArgumentOutOfRangeException(nameof(pow2), "Parameter must be a power of 2.")
+		pow2 == 0 || (pow2 & (pow2 - 1)) != 0
+			? throw new ArgumentOutOfRangeException(nameof(pow2), "Parameter must be a power of 2.")
 			: (value + pow2 - 1) & (~((long)pow2 - 1));
-	}
 
 	/// <summary>Retrieves the signed x-coordinate from the specified <c>LPARAM</c> value.</summary>
 	/// <param name="lp">The value to be converted.</param>
