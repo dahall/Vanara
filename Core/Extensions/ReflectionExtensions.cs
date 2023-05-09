@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.Extensions.Reflection
 {
@@ -23,6 +25,7 @@ namespace Vanara.Extensions.Reflection
 		/// </remarks>
 		public static object? ConvertTo(this object? value, Type type)
 		{
+			if (type is null) return null;
 			if (value is null or DBNull || value.GetType() == type)
 				return value;
 			if (type.IsEnum && value is IConvertible c)
@@ -35,7 +38,33 @@ namespace Vanara.Extensions.Reflection
 			if (converter.CanConvertFrom(value.GetType()))
 				return converter.ConvertFrom(value);
 
-			return Convert.ChangeType(value, type, System.Threading.Thread.CurrentThread.CurrentCulture);
+			try { return Convert.ChangeType(value, type, System.Threading.Thread.CurrentThread.CurrentCulture); }
+			catch
+			{
+				// See if type has conversion constructor
+				var ci = type.GetConstructor(new[] { value.GetType() });
+				if (ci is not null)
+					return ci.Invoke(new[] { value });
+
+				// See if type has static conversion method
+				var mi = type.GetMethod("op_Implicit", new[] { value.GetType() }) ?? type.GetMethod("op_Explicit", new[] { value.GetType() });
+				if (mi is not null)
+					return mi.Invoke(null, new[] { value });
+
+				// If both value and type are value types, and type is smaller, try to do binary conversion
+				try
+				{
+					int vsz = 0;
+					if (Marshal.SizeOf(type) <= (vsz = Marshal.SizeOf(value.GetType())))
+					{
+						using SafeCoTaskMemHandle p = new(vsz);
+						Marshal.StructureToPtr(value, p, false);
+						return p.DangerousGetHandle().ToStructure(type, p.Size);
+					}
+				}
+				catch { }
+				return value;
+			}
 		}
 
 		/// <summary>Get a sequence of types that represent all base types and interfaces.</summary>
