@@ -1535,7 +1535,7 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		public static HRESULT GetThemeColor<TPart, TState, TProp>(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out COLORREF pColor)
+		public static HRESULT GetThemeColor<TPart, TState, TProp>(HTHEME hTheme, TPart iPartId, TState iStateId, TProp iPropId, out COLORREF pColor)
 			where TPart : IConvertible where TState : IConvertible where TProp : IConvertible =>
 			GetThemeColor(hTheme, Convert.ToInt32(iPartId), Convert.ToInt32(iStateId), Convert.ToInt32(iPropId), out pColor);
 
