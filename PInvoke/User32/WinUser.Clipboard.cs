@@ -11,6 +11,7 @@ public static partial class User32
 {
 	/// <summary>Messages sent by Clipboard functions to the message window to notify of operations.</summary>
 	[PInvokeData("Winuser.h", MSDNShortId = "clipboard-notifications")]
+	[Obsolete("Use Vanara.PInvoke.User32.WindowMessage instead. This enumeration will be removed in a future version.")]
 	public enum ClipboardNotificationMessage
 	{
 		/// <summary>
@@ -221,17 +222,14 @@ public static partial class User32
 	public enum StandardClipboardFormat : uint
 	{
 		/// <summary>A handle to a bitmap (HBITMAP).</summary>
-		[CorrespondingType(typeof(HBITMAP))]
 		CF_BITMAP = 2,
 
 		/// <summary>A memory object containing a BITMAPINFO structure followed by the bitmap bits.</summary>
-		[CorrespondingType(typeof(Gdi32.SafeBITMAPINFO))]
 		CF_DIB = 8,
 
 		/// <summary>
 		/// A memory object containing a BITMAPV5HEADER structure followed by the bitmap color space information and the bitmap bits.
 		/// </summary>
-		//[CorrespondingType(typeof(Gdi32.SafeBITMAPV5HEADER))]
 		CF_DIBV5 = 17,
 
 		/// <summary>Software Arts' Data Interchange Format.</summary>
@@ -241,32 +239,27 @@ public static partial class User32
 		/// Bitmap display format associated with a private format. The hMem parameter must be a handle to data that can be displayed in
 		/// bitmap format in lieu of the privately formatted data.
 		/// </summary>
-		[CorrespondingType(typeof(HBITMAP))]
 		CF_DSPBITMAP = 0x0082,
 
 		/// <summary>
 		/// Enhanced metafile display format associated with a private format. The hMem parameter must be a handle to data that can be
 		/// displayed in enhanced metafile format in lieu of the privately formatted data.
 		/// </summary>
-		[CorrespondingType(typeof(HENHMETAFILE))]
 		CF_DSPENHMETAFILE = 0x008E,
 
 		/// <summary>
 		/// Metafile-picture display format associated with a private format. The hMem parameter must be a handle to data that can be
 		/// displayed in metafile-picture format in lieu of the privately formatted data.
 		/// </summary>
-		[CorrespondingType(typeof(SafeMemStruct<METAFILEPICT, HGlobalMemoryMethods>))]
 		CF_DSPMETAFILEPICT = 0x0083,
 
 		/// <summary>
 		/// Text display format associated with a private format. The hMem parameter must be a handle to data that can be displayed in
 		/// text format in lieu of the privately formatted data.
 		/// </summary>
-		[CorrespondingType(typeof(SafeMemString<HGlobalMemoryMethods>), EncodingType = typeof(UTF8Encoding))]
 		CF_DSPTEXT = 0x0081,
 
 		/// <summary>A handle to an enhanced metafile (HENHMETAFILE).</summary>
-		[CorrespondingType(typeof(HENHMETAFILE))]
 		CF_ENHMETAFILE = 14,
 
 		/// <summary>
@@ -277,7 +270,6 @@ public static partial class User32
 		/// handle allocated by the GlobalAlloc function with the GMEM_MOVEABLE flag.
 		/// </para>
 		/// </summary>
-		[CorrespondingType(typeof(Stream))]
 		CF_GDIOBJFIRST = 0x0300,
 
 		/// <summary>See CF_GDIOBJFIRST.</summary>
@@ -306,21 +298,18 @@ public static partial class User32
 		/// correct code page table is used for the conversion.
 		/// </para>
 		/// </summary>
-		[CorrespondingType(typeof(SafeMemStruct<LCID, HGlobalMemoryMethods>))]
 		CF_LOCALE = 16,
 
 		/// <summary>
 		/// Handle to a metafile picture format as defined by the METAFILEPICT structure. When passing a CF_METAFILEPICT handle by means
 		/// of DDE, the application responsible for deleting hMem should also free the metafile referred to by the CF_METAFILEPICT handle.
 		/// </summary>
-		[CorrespondingType(typeof(SafeMemStruct<METAFILEPICT, HGlobalMemoryMethods>))]
 		CF_METAFILEPICT = 3,
 
 		/// <summary>
 		/// Text format containing characters in the OEM character set. Each line ends with a carriage return/linefeed (CR-LF)
 		/// combination. A null character signals the end of the data.
 		/// </summary>
-		[CorrespondingType(typeof(SafeMemString<HGlobalMemoryMethods>), EncodingType = typeof(UTF8Encoding))]
 		CF_OEMTEXT = 7,
 
 		/// <summary>
@@ -342,7 +331,6 @@ public static partial class User32
 		/// CF_PALETTE format.
 		/// </para>
 		/// </summary>
-		[CorrespondingType(typeof(HPALETTE))]
 		CF_PALETTE = 9,
 
 		/// <summary>Data for the pen extensions to the Microsoft Windows for Pen Computing.</summary>
@@ -359,7 +347,6 @@ public static partial class User32
 		CF_PRIVATELAST = 0x02FF,
 
 		/// <summary>Represents audio data more complex than can be represented in a CF_WAVE standard wave format.</summary>
-		[CorrespondingType(typeof(Stream))]
 		CF_RIFF = 11,
 
 		/// <summary>Microsoft Symbolic Link (SYLK) format.</summary>
@@ -369,22 +356,18 @@ public static partial class User32
 		/// Text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the
 		/// data. Use this format for ANSI text.
 		/// </summary>
-		[CorrespondingType(typeof(SafeMemString<HGlobalMemoryMethods>), EncodingType = typeof(UTF8Encoding))]
 		CF_TEXT = 1,
 
 		/// <summary>Tagged-image file format.</summary>
-		[CorrespondingType(typeof(Stream))]
 		CF_TIFF = 6,
 
 		/// <summary>
 		/// Unicode text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of
 		/// the data.
 		/// </summary>
-		[CorrespondingType(typeof(SafeMemString<HGlobalMemoryMethods>), EncodingType = typeof(UnicodeEncoding))]
 		CF_UNICODETEXT = 13,
 
 		/// <summary>Represents audio data in one of the standard wave formats, such as 11 kHz or 22 kHz PCM.</summary>
-		[CorrespondingType(typeof(Stream))]
 		CF_WAVE = 12,
 	}
 
@@ -877,7 +860,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "openclipboard")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OpenClipboard(HWND hWndNewOwner);
+	public static extern bool OpenClipboard([Optional] HWND hWndNewOwner);
 
 	/// <summary>
 	/// <para>Registers a new clipboard format. This format can then be used as a valid clipboard format.</para>
@@ -989,7 +972,7 @@ public static partial class User32
 	// HANDLE hMem );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setclipboarddata")]
-	public static extern IntPtr SetClipboardData(uint uFormat, IntPtr hMem);
+	public static extern IntPtr SetClipboardData(uint uFormat, [Optional] IntPtr hMem);
 
 	/// <summary>
 	/// <para>

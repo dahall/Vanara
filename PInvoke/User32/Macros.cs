@@ -25,10 +25,10 @@ public static partial class User32
 	public static bool IsRButtonDown() => GetKeyState((int)VK.VK_RBUTTON) < 0;
 	public static bool IsMButtonDown() => GetKeyState((int)VK.VK_MBUTTON) < 0;
 	public static HWND SetWindowRedraw(HWND hwnd, BOOL fRedraw) => SendMessage(hwnd, WindowMessage.WM_SETREDRAW, (IntPtr)fRedraw);
-	public static WindowProc SubclassWindow(HWND hwnd, WindowProc lpfn) => Marshal.GetDelegateForFunctionPointer<WindowProc>(SetWindowLong(hwnd, WindowLongFlags.GWLP_WNDPROC, Marshal.GetFunctionPointerForDelegate(lpfn)));
+	public static WindowProc SubclassWindow(HWND hwnd, WindowProc lpfn) => (WindowProc)Marshal.GetDelegateForFunctionPointer(SetWindowLong(hwnd, WindowLongFlags.GWLP_WNDPROC, Marshal.GetFunctionPointerForDelegate(lpfn)), typeof(WindowProc));
 	public static HWND SetWindowFont(HWND hwnd, HFONT hfont, BOOL fRedraw) => SendMessage(hwnd, WindowMessage.WM_SETFONT, (IntPtr)hfont, (IntPtr)fRedraw);
 	public static int MapWindowRect(HWND hwndFrom, HWND hwndTo, ref RECT lprc) => MapWindowPoints(hwndFrom, hwndTo, ref lprc);
-	public static WindowProc SubclassDialog(HWND hwndDlg, WindowProc lpfn) => Marshal.GetDelegateForFunctionPointer<WindowProc>(SetWindowLong(hwndDlg, WindowLongFlags.DWLP_DLGPROC, Marshal.GetFunctionPointerForDelegate(lpfn)));
+	public static WindowProc SubclassDialog(HWND hwndDlg, WindowProc lpfn) => (WindowProc)Marshal.GetDelegateForFunctionPointer(SetWindowLong(hwndDlg, WindowLongFlags.DWLP_DLGPROC, Marshal.GetFunctionPointerForDelegate(lpfn)), typeof(WindowProc));
 	public static bool SetDlgMsgResult(HWND hwnd, WindowMessage msg, BOOL result) => (msg is WindowMessage.WM_CTLCOLORMSGBOX or WindowMessage.WM_CTLCOLOREDIT or WindowMessage.WM_CTLCOLORLISTBOX or WindowMessage.WM_CTLCOLORBTN or WindowMessage.WM_CTLCOLORDLG or WindowMessage.WM_CTLCOLORSCROLLBAR or WindowMessage.WM_CTLCOLORSTATIC or WindowMessage.WM_COMPAREITEM or WindowMessage.WM_VKEYTOITEM or WindowMessage.WM_CHARTOITEM or WindowMessage.WM_QUERYDRAGICON or WindowMessage.WM_INITDIALOG) ?
 		result :
 		SetWindowLong(hwnd, WindowLongFlags.DWLP_MSGRESULT, (IntPtr)result) != IntPtr.Zero;

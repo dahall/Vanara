@@ -404,7 +404,7 @@ public static partial class User32
 	// lpwinsta, DWORD dwFlags, ACCESS_MASK dwDesiredAccess, LPSECURITY_ATTRIBUTES lpsa );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "c1aee546-decd-46c9-8d02-d6792f5a6a0d")]
-	public static extern SafeHWINSTA CreateWindowStation(string lpwinsta, CreateWindowStationFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
+	public static extern SafeHWINSTA CreateWindowStation(string? lpwinsta, CreateWindowStationFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
 
 	/// <summary>
 	/// <para>
@@ -451,7 +451,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "3e900b34-2c60-4281-881f-13a746674aec")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDesktops(HWINSTA hwinsta, EnumDesktopProc lpEnumFunc, IntPtr lParam);
+	public static extern bool EnumDesktops([Optional] HWINSTA hwinsta, EnumDesktopProc lpEnumFunc, IntPtr lParam);
 
 	/// <summary>Enumerates all desktops associated with the specified window station of the calling process.</summary>
 	/// <param name="hwinsta">
@@ -469,7 +469,7 @@ public static partial class User32
 	/// right. For more information, see Desktop Security and Access Rights.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<string> EnumDesktops(HWINSTA hwinsta)
+	public static IEnumerable<string> EnumDesktops([Optional] HWINSTA hwinsta)
 	{
 		var ret = new List<string>();
 		if (!EnumDesktops(hwinsta, EnumProc, IntPtr.Zero))
@@ -520,7 +520,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "b399ff19-e2e5-4509-8bb5-9647734881b3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDesktopWindows(HDESK hDesktop, EnumWindowsProc lpfn, IntPtr lParam);
+	public static extern bool EnumDesktopWindows([Optional] HDESK hDesktop, EnumWindowsProc lpfn, IntPtr lParam);
 
 	/// <summary>
 	/// <para>
@@ -760,9 +760,7 @@ public static partial class User32
 		var mem = new SafeHGlobalHandle((int)sz);
 		if (!GetUserObjectInformation(hObj, nIndex, (IntPtr)mem, sz, out var _))
 			Win32Error.ThrowLastError();
-		if (typeof(T) == typeof(string))
-			return (T)(object)mem.ToString(-1);
-		return mem.ToStructure<T>();
+		return typeof(T) == typeof(string) ? (T)(object)mem.ToString(-1)! : mem.ToStructure<T>()!;
 	}
 
 	/// <summary>
@@ -1043,7 +1041,7 @@ public static partial class User32
 	public static void SetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex, T info)
 	{
 		if (!CorrespondingTypeAttribute.CanSet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
-		var mem = typeof(T) == typeof(string) ? new SafeHGlobalHandle(info.ToString()) : SafeHGlobalHandle.CreateFromStructure(info);
+		var mem = typeof(T) == typeof(string) ? new SafeHGlobalHandle(info.ToString()!) : SafeHGlobalHandle.CreateFromStructure(info);
 		if (!SetUserObjectInformation(hObj, nIndex, (IntPtr)mem, (uint)mem.Size))
 			Win32Error.ThrowLastError();
 	}

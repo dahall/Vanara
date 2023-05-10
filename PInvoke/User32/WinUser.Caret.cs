@@ -66,7 +66,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateCaret(HWND hWnd, HBITMAP hBitmap, int nWidth, int nHeight);
+	public static extern bool CreateCaret(HWND hWnd, [Optional] HBITMAP hBitmap, [Optional] int nWidth, [Optional] int nHeight);
 
 	/// <summary>Destroys the caret's current shape, frees the caret from the window, and removes the caret from the screen.</summary>
 	/// <returns>
@@ -157,7 +157,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HideCaret(HWND hWnd);
+	public static extern bool HideCaret([Optional] HWND hWnd);
 
 	/// <summary>
 	/// Sets the caret blink time to the specified number of milliseconds. The blink time is the elapsed time, in milliseconds, required
@@ -264,5 +264,5 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowCaret(HWND hWnd);
+	public static extern bool ShowCaret([Optional] HWND hWnd);
 }

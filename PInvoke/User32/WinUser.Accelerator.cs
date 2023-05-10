@@ -142,7 +142,7 @@ public static partial class User32
 	// hInstance, LPCSTR lpTableName );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern HACCEL LoadAccelerators(HINSTANCE hInstance, string lpTableName);
+	public static extern HACCEL LoadAccelerators(HINSTANCE hInstance, SafeResourceId lpTableName);
 
 	/// <summary>
 	/// Processes accelerator keys for menu commands. The function translates a WM_KEYDOWN or WM_SYSKEYDOWN message to a WM_COMMAND or

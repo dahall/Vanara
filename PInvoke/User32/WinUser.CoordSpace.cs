@@ -100,7 +100,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "")]
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-	public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref RECT lpPoints, uint cPoints = 2);
+	public static extern int MapWindowPoints([Optional] HWND hWndFrom, [Optional] HWND hWndTo, ref RECT lpPoints, uint cPoints = 2);
 
 	/// <summary>
 	/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
@@ -132,7 +132,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "")]
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-	public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref POINT lpPoints, uint cPoints = 1);
+	public static extern int MapWindowPoints([Optional] HWND hWndFrom, [Optional] HWND hWndTo, ref POINT lpPoints, uint cPoints = 1);
 
 	/// <summary>
 	/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
@@ -164,7 +164,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "")]
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-	public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
+	public static extern int MapWindowPoints([Optional] HWND hWndFrom, [Optional] HWND hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
 
 	/// <summary>The ScreenToClient function converts the screen coordinates of a specified point on the screen to client-area coordinates.</summary>
 	/// <param name="hWnd">A handle to the window whose client area will be used for the conversion.</param>

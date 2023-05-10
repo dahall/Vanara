@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
-using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;

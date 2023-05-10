@@ -155,7 +155,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "clipcursor")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ClipCursor(in RECT lpRect);
+	public static extern bool ClipCursor([In, Optional] PRECT lpRect);
 
 	/// <summary>
 	/// Creates a new cursor and copies the attributes of the specified image to the new one. If necessary, the function stretches the
@@ -551,7 +551,7 @@ public static partial class User32
 	// LPCSTR lpCursorName );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]
-	public static extern SafeHCURSOR LoadCursor(HINSTANCE hInstance, string lpCursorName);
+	public static extern SafeHCURSOR LoadCursor([Optional] HINSTANCE hInstance, string lpCursorName);
 
 	/// <summary>
 	/// <para>Loads the specified cursor resource from the executable (.EXE) file associated with an application instance.</para>
@@ -742,7 +742,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setcursor HCURSOR SetCursor( HCURSOR hCursor );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setcursor")]
-	public static extern SafeHCURSOR SetCursor(SafeHCURSOR hCursor);
+	public static extern SafeHCURSOR SetCursor([Optional] HCURSOR hCursor);
 
 	/// <summary>
 	/// <para>
