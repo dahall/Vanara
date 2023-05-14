@@ -1631,7 +1631,7 @@ public static partial class User32
 		public uint dwTime;
 
 		/// <summary>An additional value associated with the touch event.</summary>
-		public UIntPtr dwExtraInfo;
+		public IntPtr dwExtraInfo;
 
 		/// <summary>
 		/// The width of the touch contact area in hundredths of a pixel in physical screen coordinates. This value is only valid if the

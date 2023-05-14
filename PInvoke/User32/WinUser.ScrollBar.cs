@@ -567,7 +567,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ScrollDC(HDC hDC, int dx, int dy, PRECT lprcScroll, PRECT lprcClip, HRGN hrgnUpdate, out RECT lprcUpdate);
+	public static extern bool ScrollDC(HDC hDC, int dx, int dy, [Optional] PRECT? lprcScroll, [Optional] PRECT? lprcClip, HRGN hrgnUpdate, out RECT lprcUpdate);
 
 	/// <summary>
 	/// <para>The <c>ScrollWindow</c> function scrolls the contents of the specified window's client area.</para>
@@ -643,7 +643,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ScrollWindow(HWND hWnd, int XAmount, int YAmount, PRECT lpRect, in RECT lpClipRect);
+	public static extern bool ScrollWindow(HWND hWnd, int XAmount, int YAmount, [Optional] PRECT? lpRect, in RECT lpClipRect);
 
 	/// <summary>The <c>ScrollWindowEx</c> function scrolls the contents of the specified window's client area.</summary>
 	/// <param name="hWnd">
@@ -757,7 +757,7 @@ public static partial class User32
 	// dy, const RECT *prcScroll, const RECT *prcClip, HRGN hrgnUpdate, LPRECT prcUpdate, UINT flags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int ScrollWindowEx(HWND hWnd, int dx, int dy, PRECT prcScroll, PRECT prcClip, HRGN hrgnUpdate, out RECT prcUpdate, ScrollWindowFlags flags);
+	public static extern int ScrollWindowEx(HWND hWnd, int dx, int dy, [Optional] PRECT? prcScroll, [Optional] PRECT? prcClip, [Optional] HRGN hrgnUpdate, out RECT prcUpdate, ScrollWindowFlags flags);
 
 	/// <summary>
 	/// The <c>SetScrollInfo</c> function sets the parameters of a scroll bar, including the minimum and maximum scrolling positions, the

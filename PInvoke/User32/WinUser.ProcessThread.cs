@@ -111,7 +111,7 @@ public static partial class User32
 	/// returns immediately.
 	/// </param>
 	/// <param name="dwMilliseconds">
-	/// The time-out interval, in milliseconds. If dwMilliseconds is INFINITE, the function does not return until the process is idle.
+	/// The time-out interval, in milliseconds. If dwMilliseconds is <see cref="Kernel32.INFINITE"/>, the function does not return until the process is idle.
 	/// </param>
 	/// <returns>
 	/// <para>The following table shows the possible return values for this function.</para>
@@ -156,5 +156,5 @@ public static partial class User32
 	// DWORD dwMilliseconds );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "2a684921-36f1-438c-895c-5bebc242635a")]
-	public static extern uint WaitForInputIdle(HPROCESS hProcess, uint dwMilliseconds);
+	public static extern Kernel32.WAIT_STATUS WaitForInputIdle(HPROCESS hProcess, uint dwMilliseconds);
 }

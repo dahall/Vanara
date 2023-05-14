@@ -386,7 +386,7 @@ public static partial class User32
 	// pData, PUINT pcbSize, UINT cbSizeHeader );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern uint GetRawInputBuffer(IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
+	public static extern uint GetRawInputBuffer([Optional] IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
 
 	/// <summary>Retrieves the raw input from the specified device.</summary>
 	/// <param name="hRawInput">
@@ -442,7 +442,7 @@ public static partial class User32
 	// hRawInput, UINT uiCommand, LPVOID pData, PUINT pcbSize, UINT cbSizeHeader );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern uint GetRawInputData(HRAWINPUT hRawInput, RID uiCommand, IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
+	public static extern uint GetRawInputData(HRAWINPUT hRawInput, RID uiCommand, [Optional] IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
 
 	/// <summary>Retrieves information about the raw input device.</summary>
 	/// <param name="hDevice">
@@ -498,7 +498,7 @@ public static partial class User32
 	// HANDLE hDevice, UINT uiCommand, LPVOID pData, PUINT pcbSize );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, uint uiCommand, IntPtr pData, ref uint pcbSize);
+	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, uint uiCommand, [Optional] IntPtr pData, ref uint pcbSize);
 
 	/// <summary>Enumerates the raw input devices attached to the system.</summary>
 	/// <param name="pRawInputDeviceList">
@@ -536,7 +536,7 @@ public static partial class User32
 	// PRAWINPUTDEVICELIST pRawInputDeviceList, PUINT puiNumDevices, UINT cbSize );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern uint GetRawInputDeviceList([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RAWINPUTDEVICELIST[] pRawInputDeviceList, ref uint puiNumDevices, uint cbSize);
+	public static extern uint GetRawInputDeviceList([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RAWINPUTDEVICELIST[]? pRawInputDeviceList, ref uint puiNumDevices, uint cbSize);
 
 	/// <summary>Retrieves the information about the raw input devices for the current application.</summary>
 	/// <param name="pRawInputDevices">
@@ -567,7 +567,7 @@ public static partial class User32
 	// GetRegisteredRawInputDevices( PRAWINPUTDEVICE pRawInputDevices, PUINT puiNumDevices, UINT cbSize );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern uint GetRegisteredRawInputDevices([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RAWINPUTDEVICE[] pRawInputDevices, ref uint puiNumDevices, uint cbSize);
+	public static extern uint GetRegisteredRawInputDevices([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RAWINPUTDEVICE[]? pRawInputDevices, ref uint puiNumDevices, uint cbSize);
 
 	/// <summary>Registers the devices that supply the raw input data.</summary>
 	/// <param name="pRawInputDevices">

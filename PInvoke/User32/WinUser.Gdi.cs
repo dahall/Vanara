@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
@@ -313,9 +315,11 @@ public static partial class User32
 		GWL_STYLE = -16,
 
 		/// <summary>The window user data</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		GWL_USERDATA = -21,
 
 		/// <summary>The window user data</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		GWLP_USERDATA = -21,
 
 		/// <summary>The window procedure address or handle</summary>
@@ -327,9 +331,11 @@ public static partial class User32
 		GWLP_WNDPROC = -4,
 
 		/// <summary>The dialog user data</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		DWLP_USER = 0x8,
 
 		/// <summary>The dialog procedure message result</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		DWLP_MSGRESULT = 0x0,
 
 		/// <summary>The dialog procedure address or handle</summary>
@@ -337,9 +343,11 @@ public static partial class User32
 		DWLP_DLGPROC = 0x4,
 
 		/// <summary>The dialog user data</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		DWL_USER = 0x8,
 
 		/// <summary>The dialog procedure message result</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		DWL_MSGRESULT = 0x0,
 
 		/// <summary>The dialog procedure address or handle</summary>
@@ -1917,7 +1925,7 @@ public static partial class User32
 	// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]
-	public static extern int DrawTextEx(HDC hdc, string lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS lpdtp);
+	public static extern int DrawTextEx(HDC hdc, string lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS? lpdtp);
 
 	/// <summary>The <c>DrawTextEx</c> function draws formatted text in the specified rectangle.</summary>
 	/// <param name="hdc">A handle to the device context in which to draw.</param>
@@ -2102,7 +2110,7 @@ public static partial class User32
 	// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]
-	public static extern int DrawTextEx(HDC hdc, StringBuilder lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS lpdtp);
+	public static extern int DrawTextEx(HDC hdc, StringBuilder lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS? lpdtp);
 
 	/// <summary>
 	/// The GetDC function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire
@@ -2350,7 +2358,7 @@ public static partial class User32
 	// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "3444bb8d-4a30-47d4-b211-01f7cba39975")]
-	public static extern uint GetTabbedTextExtent(HDC hdc, string lpString, int chCount, int nTabPositions, [In] int[] lpnTabStopPositions);
+	public static extern uint GetTabbedTextExtent(HDC hdc, string lpString, int chCount, [Optional] int nTabPositions, [In, Optional] int[]? lpnTabStopPositions);
 
 	/// <summary>
 	/// The <c>GetTabbedTextExtent</c> function computes the width and height of a character string. If the string contains one or more
@@ -2388,9 +2396,9 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-gettabbedtextextenta DWORD GetTabbedTextExtentA( HDC hdc,
 	// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions );
 	[PInvokeData("winuser.h", MSDNShortId = "3444bb8d-4a30-47d4-b211-01f7cba39975")]
-	public static SIZE GetTabbedTextExtent(HDC hdc, string lpString, int[] lpnTabStopPositions)
+	public static SIZE GetTabbedTextExtent(HDC hdc, string lpString, int[]? lpnTabStopPositions = null)
 	{
-		var ret = GetTabbedTextExtent(hdc, lpString, lpString?.Length ?? 0, lpnTabStopPositions?.Length ?? 0, lpnTabStopPositions);
+		var ret = GetTabbedTextExtent(hdc, lpString, lpString.Length, lpnTabStopPositions?.Length ?? 0, lpnTabStopPositions);
 		return new SIZE(Macros.LOWORD(ret), Macros.HIWORD(ret));
 	}
 
@@ -2475,6 +2483,26 @@ public static partial class User32
 		if (ret == IntPtr.Zero)
 			throw new System.ComponentModel.Win32Exception();
 		return ret;
+	}
+
+	/// <summary>
+	/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
+	/// </summary>
+	/// <typeparam name="T">The type of the return value.</typeparam>
+	/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
+	/// <param name="nIndex">
+	/// The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window
+	/// memory, minus the size of an integer. To retrieve any other value, specify one of the following values.
+	/// </param>
+	/// <returns>
+	/// If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended
+	/// error information, call GetLastError.
+	/// </returns>
+	/// <exception cref="System.ArgumentException">Type mismatch</exception>
+	public static T GetWindowLong<T>(HWND hWnd, WindowLongFlags nIndex)
+	{
+		if (!CorrespondingTypeAttribute.CanGet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
+		return (T)GetWindowLongAuto(hWnd, nIndex).CastTo(typeof(T))!;
 	}
 
 	/// <summary>
@@ -2612,7 +2640,7 @@ public static partial class User32
 	// LPCSTR lpBitmapName );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "5eed5f78-deaf-4b23-986e-4802dc05936c")]
-	public static extern SafeHBITMAP LoadBitmap(HINSTANCE hInstance, [In] SafeResourceId lpBitmapName);
+	public static extern SafeHBITMAP LoadBitmap([Optional] HINSTANCE hInstance, [In] SafeResourceId lpBitmapName);
 
 	/// <summary>
 	/// The <c>ReleaseDC</c> function releases a device context (DC), freeing it for use by other applications. The effect of the
@@ -3067,7 +3095,7 @@ public static partial class User32
 		/// <summary>Creates a <see cref="WINDOWPOS"/> structure from an LPARAM value.</summary>
 		/// <param name="lParam">The LPARAM value.</param>
 		/// <returns>A <see cref="WINDOWPOS"/> structure.</returns>
-		public static WINDOWPOS FromLParam(IntPtr lParam) => (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS));
+		public static WINDOWPOS FromLParam(IntPtr lParam) => lParam.ToStructure<WINDOWPOS>();
 
 		/// <summary>Updates the <see cref="WINDOWPOS"/> value pointed to by an LPARAM value from this instance.</summary>
 		/// <param name="lParam">The LPARAM value to update.</param>

@@ -574,7 +574,7 @@ public static partial class Gdi32
 	// DISPLAYCONFIG_ADAPTER_NAME { DISPLAYCONFIG_DEVICE_INFO_HEADER header; WCHAR adapterDevicePath[128]; } DISPLAYCONFIG_ADAPTER_NAME;
 	[PInvokeData("wingdi.h", MSDNShortId = "248f325f-37ae-48f4-a758-ee78a3e3f0b8")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct DISPLAYCONFIG_ADAPTER_NAME
+	public struct DISPLAYCONFIG_ADAPTER_NAME : IDisplayConfig
 	{
 		/// <summary>
 		/// A DISPLAYCONFIG_DEVICE_INFO_HEADER structure that contains information about the request for the adapter name. The caller should
@@ -648,12 +648,29 @@ public static partial class Gdi32
 		/// of information being requested. For example, in the case of DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME, this is the source identifier.
 		/// </summary>
 		public uint id;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DISPLAYCONFIG_DEVICE_INFO_HEADER"/> struct.
+		/// </summary>
+		/// <param name="type">The type.</param>
+		/// <param name="adapterId">The adapter identifier.</param>
+		/// <param name="id">The identifier.</param>
+		public DISPLAYCONFIG_DEVICE_INFO_HEADER(DISPLAYCONFIG_DEVICE_INFO_TYPE type, ulong adapterId, uint id)
+		{
+			size = (uint)Marshal.SizeOf(typeof(DISPLAYCONFIG_DEVICE_INFO_HEADER));
+			this.type = type;
+			this.adapterId = adapterId;
+			this.id = id;
+		}
 	}
+
+	/// <summary>A structure that contains <see cref="DISPLAYCONFIG_DEVICE_INFO_HEADER"/> as the first field.</summary>
+	public interface IDisplayConfig { }
 
 	/// <summary>Undocumented.</summary>
 	[PInvokeData("wingdi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO
+	public struct DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO : IDisplayConfig
 	{
 		/// <summary>Undocumented.</summary>
 		public DISPLAYCONFIG_DEVICE_INFO_HEADER header;
@@ -950,7 +967,7 @@ public static partial class Gdi32
 	/// <summary>Undocumented.</summary>
 	[PInvokeData("wingdi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DISPLAYCONFIG_SDR_WHITE_LEVEL
+	public struct DISPLAYCONFIG_SDR_WHITE_LEVEL : IDisplayConfig
 	{
 		/// <summary>Undocumented.</summary>
 		private DISPLAYCONFIG_DEVICE_INFO_HEADER header;
@@ -965,7 +982,7 @@ public static partial class Gdi32
 	/// <summary>Undocumented.</summary>
 	[PInvokeData("wingdi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE
+	public struct DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE : IDisplayConfig
 	{
 		/// <summary>Undocumented.</summary>
 		public DISPLAYCONFIG_DEVICE_INFO_HEADER header;
@@ -980,7 +997,7 @@ public static partial class Gdi32
 	// reserved : 31; } DUMMYSTRUCTNAME; UINT32 value; } DUMMYUNIONNAME; } DISPLAYCONFIG_SET_TARGET_PERSISTENCE;
 	[PInvokeData("wingdi.h", MSDNShortId = "4798a1e1-8685-40c2-917a-0ee071bc780c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct DISPLAYCONFIG_SET_TARGET_PERSISTENCE
+	public struct DISPLAYCONFIG_SET_TARGET_PERSISTENCE : IDisplayConfig
 	{
 		/// <summary>
 		/// A DISPLAYCONFIG_DEVICE_INFO_HEADER structure that contains information for setting the target persistence. The <c>type</c> member
@@ -1002,7 +1019,7 @@ public static partial class Gdi32
 	// DISPLAYCONFIG_SOURCE_DEVICE_NAME { DISPLAYCONFIG_DEVICE_INFO_HEADER header; WCHAR viewGdiDeviceName[CCHDEVICENAME]; } DISPLAYCONFIG_SOURCE_DEVICE_NAME;
 	[PInvokeData("wingdi.h", MSDNShortId = "92813ffc-1915-4f26-afb1-936bf76f7844")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct DISPLAYCONFIG_SOURCE_DEVICE_NAME
+	public struct DISPLAYCONFIG_SOURCE_DEVICE_NAME : IDisplayConfig
 	{
 		/// <summary>
 		/// A DISPLAYCONFIG_DEVICE_INFO_HEADER structure that contains information about the request for the source device name. The caller
@@ -1065,7 +1082,7 @@ public static partial class Gdi32
 	// disableMonitorVirtualResolution : 1; UINT32 reserved : 31; } DUMMYSTRUCTNAME; UINT32 value; } DUMMYSTRUCTNAME; } DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION;
 	[PInvokeData("wingdi.h", MSDNShortId = "D9208D00-F437-4B2E-8C39-044F75088659")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION
+	public struct DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION : IDisplayConfig
 	{
 		/// <summary>
 		/// A DISPLAYCONFIG_DEVICE_INFO_HEADER structure that holds information on the type, size, adapterID, and ID of the target the
@@ -1088,7 +1105,7 @@ public static partial class Gdi32
 	// } DISPLAYCONFIG_TARGET_BASE_TYPE;
 	[PInvokeData("wingdi.h", MSDNShortId = "7916E714-9A3C-4682-AC08-9B6EE222D8B7")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct DISPLAYCONFIG_TARGET_BASE_TYPE
+	public struct DISPLAYCONFIG_TARGET_BASE_TYPE : IDisplayConfig
 	{
 		/// <summary>
 		/// <para>
@@ -1138,7 +1155,7 @@ public static partial class Gdi32
 	// connectorInstance; public ushort monitorFriendlyDeviceName[64]; public ushort monitorDevicePath[128]; public ; public
 	// DISPLAYCONFIG_TARGET_DEVICE_NAME; }
 	[StructLayout(LayoutKind.Sequential, Pack = 2, CharSet = CharSet.Unicode)]
-	public struct DISPLAYCONFIG_TARGET_DEVICE_NAME
+	public struct DISPLAYCONFIG_TARGET_DEVICE_NAME : IDisplayConfig
 	{
 		/// <summary>
 		/// A DISPLAYCONFIG_DEVICE_INFO_HEADER structure that contains information about the request for the target device name. The caller
@@ -1205,7 +1222,7 @@ public static partial class Gdi32
 	// targetMode; } DISPLAYCONFIG_TARGET_PREFERRED_MODE;
 	[PInvokeData("wingdi.h", MSDNShortId = "1a4926ca-36d2-466c-b3d2-b59d34a89ee6")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DISPLAYCONFIG_TARGET_PREFERRED_MODE
+	public struct DISPLAYCONFIG_TARGET_PREFERRED_MODE : IDisplayConfig
 	{
 		/// <summary>
 		/// A DISPLAYCONFIG_DEVICE_INFO_HEADER structure that contains information about the request for the target preferred mode. The

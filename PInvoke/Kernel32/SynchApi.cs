@@ -2422,7 +2422,7 @@ public static partial class Kernel32
 		private readonly int RecursionCount;
 		private readonly IntPtr OwningThread;
 		private readonly IntPtr LockSemaphore;
-		private readonly UIntPtr SpinCount;
+		private readonly nuint SpinCount;
 	}
 
 	/// <summary>A one-time initialization structure.</summary>

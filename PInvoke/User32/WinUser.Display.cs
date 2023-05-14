@@ -190,21 +190,20 @@ public static partial class User32
 	/// </param>
 	/// <returns>The value of type <typeparamref name="T"/> for the information provided.</returns>
 	/// <exception cref="ArgumentException">Request type does not match type param value.</exception>
-	public static T DisplayConfigGetDeviceInfo<T>(ulong adapterId, uint id, DISPLAYCONFIG_DEVICE_INFO_TYPE type = 0) where T : struct
+	public static T DisplayConfigGetDeviceInfo<T>(ulong adapterId, uint id, DISPLAYCONFIG_DEVICE_INFO_TYPE type = 0) where T : struct, IDisplayConfig
 	{
 		if (type == 0)
 		{
-			if (!CorrespondingTypeAttribute.CanGet<T, DISPLAYCONFIG_DEVICE_INFO_TYPE>(out type)) throw new ArgumentException("Unable to find enum value matching supplied type param.");
+			if (!CorrespondingTypeAttribute.CanGet<T, DISPLAYCONFIG_DEVICE_INFO_TYPE>(out type))
+				throw new ArgumentException("Unable to find enum value matching supplied type param.");
 		}
-		else if (!CorrespondingTypeAttribute.CanGet(type, typeof(T))) throw new ArgumentException("Request type does not match type param value.");
-		var hdr = new DISPLAYCONFIG_DEVICE_INFO_HEADER { size = (uint)Marshal.SizeOf(typeof(T)), type = type, adapterId = adapterId, id = id };
-		var mem = new SafeHGlobalHandle((int)hdr.size);
-		mem.Zero();
+		else if (!CorrespondingTypeAttribute.CanGet(type, typeof(T)))
+			throw new ArgumentException("Request type does not match type param value.");
+		DISPLAYCONFIG_DEVICE_INFO_HEADER hdr = new() { size = (uint)Marshal.SizeOf(typeof(T)), type = type, adapterId = adapterId, id = id };
+		using var mem = new SafeCoTaskMemStruct<T>((int)hdr.size);
 		Marshal.StructureToPtr(hdr, (IntPtr)mem, false);
-		var hdr2 = mem.ToStructure<T>();
-		var err = DisplayConfigGetDeviceInfo((IntPtr)mem);
-		err.ThrowIfFailed();
-		return mem.ToStructure<T>();
+		DisplayConfigGetDeviceInfo(mem).ThrowIfFailed();
+		return mem.Value;
 	}
 
 	/// <summary>The <c>DisplayConfigSetDeviceInfo</c> function sets the properties of a target.</summary>

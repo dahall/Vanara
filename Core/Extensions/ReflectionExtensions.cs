@@ -23,14 +23,20 @@ namespace Vanara.Extensions.Reflection
 		/// This will convert <see langword="null"/> or <see cref="DBNull"/> to itself, values of the requested <paramref name="type"/>, to
 		/// themselves, or will use available <see cref="TypeConverter"/> s or <see cref="IConvertible"/> associations to perform the conversion.
 		/// </remarks>
-		public static object? ConvertTo(this object? value, Type type)
+		public static object? CastTo(this object? value, Type type)
 		{
 			if (type is null) return null;
 			if (value is null or DBNull || value.GetType() == type)
 				return value;
-			if (type.IsEnum && value is IConvertible c)
-				return Enum.ToObject(type, c.ToType(Enum.GetUnderlyingType(type), System.Threading.Thread.CurrentThread.CurrentCulture));
-
+			if (value is SafeHandle h) value = h.DangerousGetHandle();
+			if (value is PInvoke.IHandle ih) value = ih.DangerousGetHandle();
+			if (type.IsEnum)
+			{
+				if (value is IntPtr p)
+					value = p.ToInt64();
+				if (value is IConvertible c)
+					return Enum.ToObject(type, c.ToType(Enum.GetUnderlyingType(type), System.Threading.Thread.CurrentThread.CurrentCulture));
+			}
 			TypeConverter converter = TypeDescriptor.GetConverter(value);
 			if (converter.CanConvertTo(type))
 				return converter.ConvertTo(value, type);

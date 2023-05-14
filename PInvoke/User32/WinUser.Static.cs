@@ -29,6 +29,7 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stm-seticon
+		[MsgParams(typeof(HICON), null, LResultType = typeof(HICON))]
 		STM_SETICON = 0x0170,
 
 		/// <summary>
@@ -52,6 +53,7 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stm-geticon
+		[MsgParams(null, null, LResultType = typeof(HICON))]
 		STM_GETICON = 0x0171,
 
 		/// <summary>
@@ -126,6 +128,7 @@ public static partial class User32
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stm-setimage
+		[MsgParams(typeof(LoadImageType), typeof(HANDLE), LResultType = typeof(HANDLE))]
 		STM_SETIMAGE = 0x0172,
 
 		/// <summary>
@@ -170,6 +173,7 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stm-getimage
+		[MsgParams(typeof(HANDLE), null, LResultType = typeof(HANDLE))]
 		STM_GETIMAGE = 0x0173,
 	}
 

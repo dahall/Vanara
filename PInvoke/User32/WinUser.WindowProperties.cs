@@ -81,7 +81,7 @@ public static partial class User32
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winuser.h", MSDNShortId = "propenumprocex")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool PropEnumProcEx(HWND hwnd, string lpszString, IntPtr hData, UIntPtr dwData);
+	public delegate bool PropEnumProcEx(HWND hwnd, string lpszString, IntPtr hData, [Optional] IntPtr dwData);
 
 	/// <summary>
 	/// <para>

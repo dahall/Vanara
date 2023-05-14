@@ -607,7 +607,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "drawiconex")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawIconEx(HDC hdc, int xLeft, int yTop, HICON hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, HBRUSH hbrFlickerFreeDraw, DrawIconExFlags diFlags);
+	public static extern bool DrawIconEx(HDC hdc, int xLeft, int yTop, HICON hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, [Optional] HBRUSH hbrFlickerFreeDraw, DrawIconExFlags diFlags);
 
 	/// <summary>
 	/// <para>Retrieves information about the specified icon or cursor.</para>
@@ -1281,7 +1281,7 @@ public static partial class User32
 	/// <returns>A bitmap handle.</returns>
 	public static SafeHBITMAP ToHBITMAP(this HICON hIcon)
 	{
-		if (hIcon.IsNull) return null;
+		if (hIcon.IsNull) return SafeHBITMAP.Null;
 		using var icoInfo = new ICONINFO();
 		Win32Error.ThrowLastErrorIfFalse(GetIconInfo(hIcon, icoInfo));
 		return new SafeHBITMAP((IntPtr)CopyImage((IntPtr)icoInfo.hbmColor, LoadImageType.IMAGE_BITMAP, 0, 0, CopyImageOptions.LR_CREATEDIBSECTION), true);

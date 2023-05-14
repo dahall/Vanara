@@ -1359,7 +1359,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenuitemrect.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMenuItemRect(HWND hWnd, HMENU hMenu, uint uItem, out RECT lprcItem);
+	public static extern bool GetMenuItemRect([Optional] HWND hWnd, HMENU hMenu, uint uItem, out RECT lprcItem);
 
 	/// <summary>
 	/// <para>
@@ -1570,7 +1570,7 @@ public static partial class User32
 	// uIDItem, LPSTR lpString, int cchMax, UINT flags );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenustring.htm")]
-	public static extern int GetMenuString(HMENU hMenu, uint uIDItem, StringBuilder lpString, int cchMax, MenuFlags flags);
+	public static extern int GetMenuString(HMENU hMenu, uint uIDItem, StringBuilder? lpString, int cchMax, MenuFlags flags);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the drop-down menu or submenu activated by the specified menu item.</para>
@@ -2237,7 +2237,7 @@ public static partial class User32
 	// hMenu, POINT ptScreen );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "menuitemfrompoint.htm")]
-	public static extern int MenuItemFromPoint(HWND hWnd, HMENU hMenu, POINT ptScreen);
+	public static extern int MenuItemFromPoint([Optional] HWND hWnd, HMENU hMenu, POINT ptScreen);
 
 	/// <summary>
 	/// <para>Changes an existing menu item. This function is used to specify the content, appearance, and behavior of the menu item.</para>
@@ -2715,7 +2715,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setmenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenu(HWND hWnd, HMENU hMenu);
+	public static extern bool SetMenu(HWND hWnd, [Optional] HMENU hMenu);
 
 	/// <summary>Associates a Help context identifier with a menu.</summary>
 	/// <param name="arg1">
@@ -2857,7 +2857,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setmenuitembitmaps.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenuItemBitmaps(HMENU hMenu, uint uPosition, MenuFlags uFlags, HBITMAP hBitmapUnchecked, HBITMAP hBitmapChecked);
+	public static extern bool SetMenuItemBitmaps(HMENU hMenu, uint uPosition, MenuFlags uFlags, [Optional] HBITMAP hBitmapUnchecked, [Optional] HBITMAP hBitmapChecked);
 
 	/// <summary>
 	/// <para>Changes information about a menu item.</para>

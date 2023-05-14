@@ -1309,7 +1309,7 @@ public static partial class Kernel32
 			/// <summary>
 			/// <para>The affinity mask of the process.</para>
 			/// </summary>
-			public UIntPtr AffinityMask;
+			public nuint AffinityMask;
 
 			/// <summary>
 			/// <para>The base priority level of the process.</para>
@@ -1359,7 +1359,7 @@ public static partial class Kernel32
 			/// <summary>
 			/// <para>The affinity mask of the process.</para>
 			/// </summary>
-			public UIntPtr AffinityMask;
+			public nuint AffinityMask;
 
 			/// <summary>
 			/// <para>The thread’s dynamic priority level.</para>
@@ -1602,7 +1602,7 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>The affinity mask of the process.</para>
 		/// </summary>
-		public UIntPtr AffinityMask;
+		public nuint AffinityMask;
 
 		/// <summary>
 		/// <para>The base priority level of the process.</para>
@@ -1652,12 +1652,12 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr PeakVirtualSize;
+		public nuint PeakVirtualSize;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr VirtualSize;
+		public nuint VirtualSize;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
@@ -1667,47 +1667,47 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr PeakWorkingSetSize;
+		public nuint PeakWorkingSetSize;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr WorkingSetSize;
+		public nuint WorkingSetSize;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr QuotaPeakPagedPoolUsage;
+		public nuint QuotaPeakPagedPoolUsage;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr QuotaPagedPoolUsage;
+		public nuint QuotaPagedPoolUsage;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr QuotaPeakNonPagedPoolUsage;
+		public nuint QuotaPeakNonPagedPoolUsage;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr QuotaNonPagedPoolUsage;
+		public nuint QuotaNonPagedPoolUsage;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr PagefileUsage;
+		public nuint PagefileUsage;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr PeakPagefileUsage;
+		public nuint PeakPagefileUsage;
 
 		/// <summary>
 		/// <para>A memory usage counter. See the GetProcessMemoryInfo function for more information.</para>
 		/// </summary>
-		public UIntPtr PrivateUsage;
+		public nuint PrivateUsage;
 
 		/// <summary>
 		/// <para>Reserved for use by the operating system.</para>
@@ -1762,7 +1762,7 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>The affinity mask of the process.</para>
 		/// </summary>
-		public UIntPtr AffinityMask;
+		public nuint AffinityMask;
 
 		/// <summary>
 		/// <para>The thread’s dynamic priority level.</para>
@@ -1920,7 +1920,7 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>Information about the VA region. For more information, see MEMORY_BASIC_INFORMATION.</para>
 		/// </summary>
-		public UIntPtr RegionSize;
+		public nuint RegionSize;
 
 		/// <summary>
 		/// <para>Information about the VA region. For more information, see MEMORY_BASIC_INFORMATION.</para>

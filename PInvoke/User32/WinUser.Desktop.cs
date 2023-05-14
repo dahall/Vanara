@@ -1041,7 +1041,7 @@ public static partial class User32
 	public static void SetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex, T info)
 	{
 		if (!CorrespondingTypeAttribute.CanSet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
-		var mem = typeof(T) == typeof(string) ? new SafeHGlobalHandle(info.ToString()!) : SafeHGlobalHandle.CreateFromStructure(info);
+		var mem = typeof(T) == typeof(string) ? new SafeHGlobalHandle(info?.ToString() ?? "") : SafeHGlobalHandle.CreateFromStructure(info);
 		if (!SetUserObjectInformation(hObj, nIndex, (IntPtr)mem, (uint)mem.Size))
 			Win32Error.ThrowLastError();
 	}

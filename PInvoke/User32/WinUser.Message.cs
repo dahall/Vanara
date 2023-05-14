@@ -52,7 +52,7 @@ public static partial class User32
 	// Sendasyncproc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ ULONG_PTR dwData, _In_ LRESULT lResult);
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winuser.h")]
-	public delegate void Sendasyncproc(HWND hwnd, uint uMsg, UIntPtr dwData, IntPtr lResult);
+	public delegate void Sendasyncproc(HWND hwnd, uint uMsg, IntPtr dwData, IntPtr lResult);
 
 	/// <summary>Flags used by BroadcastSystemMessage and BroadcastSystemMessageEx.</summary>
 	[PInvokeData("winuser.h")]
@@ -420,6 +420,133 @@ public static partial class User32
 	/// Sends a message to the specified recipients. The recipients can be applications, installable drivers, network drivers,
 	/// system-level device drivers, or any combination of these system components.
 	/// </para>
+	/// <para>To receive additional information if the request is defined, use the BroadcastSystemMessageEx function.</para>
+	/// </summary>
+	/// <param name="flags">
+	/// <para>Type: <c>DWORD</c></para>
+	/// <para>The broadcast option. This parameter can be one or more of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BSF_ALLOWSFW 0x00000080</term>
+	/// <term>Enables the recipient to set the foreground window while processing the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_FLUSHDISK 0x00000004</term>
+	/// <term>Flushes the disk after each recipient processes the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_FORCEIFHUNG 0x00000020</term>
+	/// <term>Continues to broadcast the message, even if the time-out period elapses or one of the recipients is not responding.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_IGNORECURRENTTASK 0x00000002</term>
+	/// <term>
+	/// Does not send the message to windows that belong to the current task. This prevents an application from receiving its own message.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_NOHANG 0x00000008</term>
+	/// <term>
+	/// Forces a non-responsive application to time out. If one of the recipients times out, do not continue broadcasting the message.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_NOTIMEOUTIFNOTHUNG 0x00000040</term>
+	/// <term>Waits for a response to the message, as long as the recipient is not being unresponsive. Does not time out.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_POSTMESSAGE 0x00000010</term>
+	/// <term>Posts the message. Do not use in combination with BSF_QUERY.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_QUERY 0x00000001</term>
+	/// <term>
+	/// Sends the message to one recipient at a time, sending to a subsequent recipient only if the current recipient returns TRUE.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_SENDNOTIFYMESSAGE 0x00000100</term>
+	/// <term>Sends the message using SendNotifyMessage function. Do not use in combination with BSF_QUERY.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="lpInfo">
+	/// <para>Type: <c>LPDWORD</c></para>
+	/// <para>A pointer to a variable that contains and receives information about the recipients of the message.</para>
+	/// <para>
+	/// When the function returns, this variable receives a combination of these values identifying which recipients actually received
+	/// the message.
+	/// </para>
+	/// <para>If this parameter is <c>NULL</c>, the function broadcasts to all components.</para>
+	/// <para>This parameter can be one or more of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BSM_ALLCOMPONENTS 0x00000000</term>
+	/// <term>Broadcast to all system components.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSM_ALLDESKTOPS 0x00000010</term>
+	/// <term>Broadcast to all desktops. Requires the SE_TCB_NAME privilege.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSM_APPLICATIONS 0x00000008</term>
+	/// <term>Broadcast to applications.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="Msg">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+	/// </param>
+	/// <param name="wParam">
+	/// <para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <param name="lParam">
+	/// <para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>Type: <c>long</c></c></para>
+	/// <para>If the function succeeds, the return value is a positive value.</para>
+	/// <para>If the function is unable to broadcast the message, the return value is –1.</para>
+	/// <para>
+	/// If the dwFlags parameter is <c>BSF_QUERY</c> and at least one recipient returned <c>BROADCAST_QUERY_DENY</c> to the corresponding
+	/// message, the return value is zero. To get extended error information, call GetLastError.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If <c>BSF_QUERY</c> is not specified, the function sends the specified message to all requested recipients, ignoring values
+	/// returned by those recipients.
+	/// </para>
+	/// <para>
+	/// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
+	/// <c>WM_USER</c>) to another process, you must do custom marshaling.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Terminating a Process.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-broadcastsystemmessage long BroadcastSystemMessage( DWORD
+	// flags, LPDWORD lpInfo, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("winuser.h")]
+	public static extern long BroadcastSystemMessage(BSF flags, [In, Optional] IntPtr lpInfo, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
+
+	/// <summary>
+	/// <para>
+	/// Sends a message to the specified recipients. The recipients can be applications, installable drivers, network drivers,
+	/// system-level device drivers, or any combination of these system components.
+	/// </para>
 	/// <para>This function is similar to BroadcastSystemMessage except that this function can return more information from the recipients.</para>
 	/// </summary>
 	/// <param name="flags">
@@ -562,6 +689,154 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
 	public static extern long BroadcastSystemMessageEx(BSF flags, ref BSM lpInfo, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, ref BSMINFO pbsmInfo);
+
+	/// <summary>
+	/// <para>
+	/// Sends a message to the specified recipients. The recipients can be applications, installable drivers, network drivers,
+	/// system-level device drivers, or any combination of these system components.
+	/// </para>
+	/// <para>This function is similar to BroadcastSystemMessage except that this function can return more information from the recipients.</para>
+	/// </summary>
+	/// <param name="flags">
+	/// <para>Type: <c>DWORD</c></para>
+	/// <para>The broadcast option. This parameter can be one or more of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BSF_ALLOWSFW 0x00000080</term>
+	/// <term>Enables the recipient to set the foreground window while processing the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_FLUSHDISK 0x00000004</term>
+	/// <term>Flushes the disk after each recipient processes the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_FORCEIFHUNG 0x00000020</term>
+	/// <term>Continues to broadcast the message, even if the time-out period elapses or one of the recipients is not responding.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_IGNORECURRENTTASK 0x00000002</term>
+	/// <term>
+	/// Does not send the message to windows that belong to the current task. This prevents an application from receiving its own message.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_LUID 0x00000400</term>
+	/// <term>
+	/// If BSF_LUID is set, the message is sent to the window that has the same LUID as specified in the luid member of the BSMINFO
+	/// structure. Windows 2000: This flag is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_NOHANG 0x00000008</term>
+	/// <term>
+	/// Forces a non-responsive application to time out. If one of the recipients times out, do not continue broadcasting the message.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_NOTIMEOUTIFNOTHUNG 0x00000040</term>
+	/// <term>Waits for a response to the message, as long as the recipient is not being unresponsive. Does not time out.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_POSTMESSAGE 0x00000010</term>
+	/// <term>Posts the message. Do not use in combination with BSF_QUERY.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_RETURNHDESK 0x00000200</term>
+	/// <term>
+	/// If access is denied and both this and BSF_QUERY are set, BSMINFO returns both the desktop handle and the window handle. If access
+	/// is denied and only BSF_QUERY is set, only the window handle is returned by BSMINFO. Windows 2000: This flag is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_QUERY 0x00000001</term>
+	/// <term>
+	/// Sends the message to one recipient at a time, sending to a subsequent recipient only if the current recipient returns TRUE.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BSF_SENDNOTIFYMESSAGE 0x00000100</term>
+	/// <term>Sends the message using SendNotifyMessage function. Do not use in combination with BSF_QUERY.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="lpInfo">
+	/// <para>Type: <c>LPDWORD</c></para>
+	/// <para>A pointer to a variable that contains and receives information about the recipients of the message.</para>
+	/// <para>
+	/// When the function returns, this variable receives a combination of these values identifying which recipients actually received
+	/// the message.
+	/// </para>
+	/// <para>If this parameter is <c>NULL</c>, the function broadcasts to all components.</para>
+	/// <para>This parameter can be one or more of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BSM_ALLCOMPONENTS 0x00000000</term>
+	/// <term>Broadcast to all system components.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSM_ALLDESKTOPS 0x00000010</term>
+	/// <term>Broadcast to all desktops. Requires the SE_TCB_NAME privilege.</term>
+	/// </item>
+	/// <item>
+	/// <term>BSM_APPLICATIONS 0x00000008</term>
+	/// <term>Broadcast to applications.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="Msg">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+	/// </param>
+	/// <param name="wParam">
+	/// <para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <param name="lParam">
+	/// <para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <param name="pbsmInfo">
+	/// <para>Type: <c>PBSMINFO</c></para>
+	/// <para>A pointer to a BSMINFO structure that contains additional information if the request is denied and dwFlags is set to <c>BSF_QUERY</c>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>Type: <c>long</c></c></para>
+	/// <para>If the function succeeds, the return value is a positive value.</para>
+	/// <para>If the function is unable to broadcast the message, the return value is –1.</para>
+	/// <para>
+	/// If the dwFlags parameter is <c>BSF_QUERY</c> and at least one recipient returned <c>BROADCAST_QUERY_DENY</c> to the corresponding
+	/// message, the return value is zero. To get extended error information, call GetLastError.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If <c>BSF_QUERY</c> is not specified, the function sends the specified message to all requested recipients, ignoring values
+	/// returned by those recipients.
+	/// </para>
+	/// <para>
+	/// If the caller's thread is on a desktop other than that of the window that denied the request, the caller must call
+	/// SetThreadDesktop <c>(hdesk)</c> to query anything on that window. Also, the caller must call CloseDesktop on the returned
+	/// <c>hdesk</c> handle.
+	/// </para>
+	/// <para>
+	/// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
+	/// <c>WM_USER</c>) to another process, you must do custom marshaling.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-broadcastsystemmessageexa long BroadcastSystemMessageExA(
+	// DWORD flags, LPDWORD lpInfo, UINT Msg, WPARAM wParam, LPARAM lParam, PBSMINFO pbsmInfo );
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h")]
+	public static extern long BroadcastSystemMessageEx(BSF flags, [In, Optional] IntPtr lpInfo, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, ref BSMINFO pbsmInfo);
 
 	/// <summary>
 	/// Dispatches a message to a window procedure. It is typically used to dispatch a message retrieved by the GetMessage function.
@@ -3439,7 +3714,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SendMessageCallback(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, Sendasyncproc lpResultCallBack, UIntPtr dwData);
+	public static extern bool SendMessageCallback(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, Sendasyncproc lpResultCallBack, IntPtr dwData);
 
 	/// <summary>Sends the specified message to one or more windows.</summary>
 	/// <param name="hWnd">

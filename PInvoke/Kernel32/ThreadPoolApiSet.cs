@@ -34,7 +34,7 @@ public static partial class Kernel32
 	/// <param name="Io">A TP_IO structure that defines the I/O completion object that generated the callback.</param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	public delegate void IoCompletionCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, IntPtr Overlapped, uint IoResult,
-		UIntPtr NumberOfBytesTransferred, PTP_IO Io);
+		nuint NumberOfBytesTransferred, PTP_IO Io);
 
 	/// <summary>Applications implement this callback if they call the TrySubmitThreadpoolCallback function to start a worker thread.</summary>
 	/// <param name="Instance">

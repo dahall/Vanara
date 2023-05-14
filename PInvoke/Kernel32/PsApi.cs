@@ -1789,13 +1789,13 @@ public static partial class Kernel32
 		/// <summary>
 		/// The working set information. See the description of the structure members for information about the layout of this variable.
 		/// </summary>
-		public UIntPtr Flags;
+		public nuint Flags;
 
 		/// <summary>If <see langword="true"/>, the page is sharable; otherwise, the page is not sharable.</summary>
-		public bool Shared => GetBit(Flags.ToUInt32(), 9);
+		public bool Shared => GetBit((uint)Flags, 9);
 
 		/// <summary>The number of processes that share this page. The maximum value of this member is 7.</summary>
-		public uint ShareCount => GetBits(Flags.ToUInt32(), 5, 3);
+		public uint ShareCount => GetBits((uint)Flags, 5, 3);
 
 		/// <summary>
 		/// <para>The protection attributes of the page. This member can be one of the following values.</para>
@@ -1934,10 +1934,10 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Protection => GetBits(Flags.ToUInt32(), 0, 5);
+		public uint Protection => GetBits((uint)Flags, 0, 5);
 
 		/// <summary/>
-		public IntPtr VirtualPage => new((long)Flags.ToUInt64() & ~0xFFFL);
+		public IntPtr VirtualPage => new((long)Flags & ~0xFFFL);
 	}
 
 	/// <summary>Contains extended working set information for a page.</summary>
@@ -1953,25 +1953,25 @@ public static partial class Kernel32
 		/// <summary>
 		/// The working set information. See the description of the structure members for information about the layout of this variable.
 		/// </summary>
-		public UIntPtr Flags;
+		public nuint Flags;
 
 		/// <summary>If <see langword="true"/>, the page is valid; otherwise, the page is not valid.</summary>
-		public bool Valid => GetBit(Flags.ToUInt32(), 0);
+		public bool Valid => GetBit((uint)Flags, 0);
 
 		/// <summary>Gets a value indicating whether the virtual page is locked in physical memory.</summary>
-		public bool Locked => Valid && GetBit(Flags.ToUInt32(), 22);
+		public bool Locked => Valid && GetBit((uint)Flags, 22);
 
 		/// <summary>Gets a value indicating whether this page is a large page.</summary>
-		public bool LargePage => Valid && GetBit(Flags.ToUInt32(), 23);
+		public bool LargePage => Valid && GetBit((uint)Flags, 23);
 
 		/// <summary>Gets a value indicating whether the page is has been reported as bad.</summary>
-		public bool Bad => GetBit(Flags.ToUInt32(), 31);
+		public bool Bad => GetBit((uint)Flags, 31);
 
 		/// <summary>If <see langword="true"/>, the page is sharable; otherwise, the page is not sharable.</summary>
-		public bool Shared => GetBit(Flags.ToUInt32(), 15);
+		public bool Shared => GetBit((uint)Flags, 15);
 
 		/// <summary>The number of processes that share this page. The maximum value of this member is 7.</summary>
-		public uint ShareCount => Valid ? GetBits(Flags.ToUInt32(), 1, 3) : 0U;
+		public uint ShareCount => Valid ? GetBits((uint)Flags, 1, 3) : 0U;
 
 		/// <summary>
 		/// <para>The protection attributes of the page. This member can be one of the following values.</para>
@@ -2110,10 +2110,10 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Protection => Valid ? GetBits(Flags.ToUInt32(), 4, 11) : 0U;
+		public uint Protection => Valid ? GetBits((uint)Flags, 4, 11) : 0U;
 
 		/// <summary>Gets the NUMA node. The maximum value of this member is 63.</summary>
-		public uint Node => Valid ? GetBits(Flags.ToUInt32(), 16, 6) : 0U;
+		public uint Node => Valid ? GetBits((uint)Flags, 16, 6) : 0U;
 	}
 
 	/// <summary>Contains extended working set information for a process.</summary>
@@ -2140,7 +2140,7 @@ public static partial class Kernel32
 	public struct PSAPI_WORKING_SET_INFORMATION
 	{
 		/// <summary>The number of entries in the <c>WorkingSetInfo</c> array.</summary>
-		public UIntPtr NumberOfEntries;
+		public nuint NumberOfEntries;
 
 		private PSAPI_WORKING_SET_BLOCK padding;
 
@@ -2153,9 +2153,9 @@ public static partial class Kernel32
 				{
 					fixed (PSAPI_WORKING_SET_INFORMATION* ptr = &this)
 					{
-						var ret = new PSAPI_WORKING_SET_BLOCK[NumberOfEntries.ToUInt64()];
+						var ret = new PSAPI_WORKING_SET_BLOCK[(ulong)NumberOfEntries];
 						var pblk = (PSAPI_WORKING_SET_BLOCK*)(ptr + 1);
-						for (ulong i = 0; i < NumberOfEntries.ToUInt64(); i++)
+						for (ulong i = 0; i < (ulong)NumberOfEntries; i++)
 							ret[i] = pblk[i];
 						return ret;
 					}
@@ -2202,11 +2202,11 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>The identifier of the thread that caused the page fault.</para>
 		/// </summary>
-		public UIntPtr FaultingThreadId;
+		public nuint FaultingThreadId;
 
 		/// <summary>
 		/// <para>This member is reserved for future use.</para>
 		/// </summary>
-		public UIntPtr Flags;
+		public nuint Flags;
 	}
 }

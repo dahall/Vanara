@@ -3267,7 +3267,7 @@ public static partial class Kernel32
 		private readonly uint Reserved10;
 
 		/// <summary>A bitmap that specifies the affinity for zero or more active processors within the group.</summary>
-		public UIntPtr ActiveProcessorMask;
+		public nuint ActiveProcessorMask;
 	}
 
 	/// <summary>
@@ -3408,7 +3408,7 @@ public static partial class Kernel32
 		/// <summary>
 		/// A mask representing the set of processors configured into the system. Bit 0 is processor 0; bit 31 is processor 31.
 		/// </summary>
-		public UIntPtr dwActiveProcessorMask;
+		public nuint dwActiveProcessorMask;
 
 		/// <summary>
 		/// The number of logical processors in the current group. To retrieve this value, use the <c>GetLogicalProcessorInformation</c> function.
@@ -3490,7 +3490,7 @@ public static partial class Kernel32
 		/// </para>
 		/// <para>On a system with more than 64 processors, the processor mask identifies processors in a single processor group.</para>
 		/// </summary>
-		public UIntPtr ProcessorMask;
+		public nuint ProcessorMask;
 
 		/// <summary>
 		/// <para>

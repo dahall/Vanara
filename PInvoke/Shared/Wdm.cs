@@ -972,7 +972,7 @@ public struct CM_PARTIAL_RESOURCE_DESCRIPTOR
 		/// Contains a <c>UIntPtr</c>-typed bitmask value indicating the set of processors the device can interrupt. To indicate that
 		/// the device can interrupt any processor, this member is set to -1.
 		/// </summary>
-		public UIntPtr Affinity;
+		public nint Affinity;
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 2)]
@@ -993,7 +993,7 @@ public struct CM_PARTIAL_RESOURCE_DESCRIPTOR
 		public uint Vector;
 
 		/// <summary>Specifies a UIntPtr value that indicates the processors that receive the device's interrupts.</summary>
-		public UIntPtr Affinity;
+		public nint Affinity;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

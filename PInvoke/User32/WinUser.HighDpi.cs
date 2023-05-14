@@ -35,7 +35,7 @@ public static partial class User32
 	// hProcess );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "94236ECF-E69A-4D77-AABA-D43FE8DF8203")]
-	public static extern uint GetSystemDpiForProcess(HPROCESS hProcess);
+	public static extern uint GetSystemDpiForProcess([Optional] HPROCESS hProcess);
 
 	/// <summary>Retrieves the specified system metric or system configuration setting taking into account a provided DPI.</summary>
 	/// <param name="nIndex">The system metric or configuration setting to be retrieved. See GetSystemMetrics for the possible values.</param>
@@ -90,7 +90,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "BA460A5B-5356-43A5-B232-03E6E72D15A2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SystemParametersInfoForDpi(SPI uiAction, uint uiParam, IntPtr pvParam, uint fWinIni, uint dpi);
+	public static extern bool SystemParametersInfoForDpi(SPI uiAction, [Optional] uint uiParam, [Optional] IntPtr pvParam, uint fWinIni, uint dpi);
 
 	/// <summary>Sets the DPI scale for which the cursors being created on this thread are intended. This value is taken into account when scaling the cursor for the specific monitor on which it is being shown.</summary>
 	/// <param name="cursorDpi">

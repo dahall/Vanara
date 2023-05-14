@@ -2636,7 +2636,7 @@ public static partial class Kernel32
 	// VOID WINAPI GetCurrentThreadStackLimits( _Out_ PULONG_PTR LowLimit, _Out_ PULONG_PTR HighLimit); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706789(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Processthreadsapi.h", MSDNShortId = "hh706789")]
-	public static extern void GetCurrentThreadStackLimits(out UIntPtr LowLimit, out UIntPtr HighLimit);
+	public static extern void GetCurrentThreadStackLimits(out nuint LowLimit, out nuint HighLimit);
 
 	/// <summary>
 	/// Retrieves a pseudo-handle that you can use as a shorthand way to refer to the impersonation token that was assigned to the current thread.
@@ -6576,7 +6576,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public UIntPtr Value;
+		public nuint Value;
 	}
 
 	/// <summary>

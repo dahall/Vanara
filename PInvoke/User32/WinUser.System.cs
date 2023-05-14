@@ -3723,7 +3723,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("", MSDNShortId = "D2AF238D-F5A8-477D-BF47-0F5D4D68B27E")]
 	[return: MarshalAs(UnmanagedType.LPWStr)]
-	public static extern string MB_GetString(uint wBtn);
+	public static extern string? MB_GetString(uint wBtn);
 
 	/// <summary>
 	/// <para>Plays a waveform sound. The waveform sound for each sound type is identified by an entry in the registry.</para>
@@ -4523,7 +4523,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShutdownBlockReasonQuery(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, ref uint pcchBuff);
+	public static extern bool ShutdownBlockReasonQuery(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pwszBuff, ref uint pcchBuff);
 
 	/// <summary>Retrieves the reason string set by the <see cref="ShutdownBlockReasonCreate"/> function.</summary>
 	/// <param name="hWnd">A handle to the main window of the application.</param>
@@ -4535,7 +4535,7 @@ public static partial class User32
 	public static bool ShutdownBlockReasonQuery(HWND hWnd, out string reason)
 	{
 		uint sz = 0;
-		reason = null;
+		reason = "";
 		if (!ShutdownBlockReasonQuery(hWnd, null, ref sz)) return false;
 		var sb = new StringBuilder((int)sz);
 		if (!ShutdownBlockReasonQuery(hWnd, sb, ref sz)) return false;

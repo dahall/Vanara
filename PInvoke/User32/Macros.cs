@@ -6,9 +6,9 @@ namespace Vanara.PInvoke;
 public static partial class User32
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-	public static HINSTANCE GetWindowInstance(HWND hwnd) => (HINSTANCE)GetWindowLongPtr(hwnd, WindowLongFlags.GWLP_HINSTANCE);
-	public static WindowStyles GetWindowStyle(HWND hwnd) => (WindowStyles)GetWindowLong(hwnd, WindowLongFlags.GWL_STYLE);
-	public static WindowStylesEx GetWindowExStyle(HWND hwnd) => (WindowStylesEx)GetWindowLong(hwnd, WindowLongFlags.GWL_EXSTYLE);
+	public static HINSTANCE GetWindowInstance(HWND hwnd) => GetWindowLong<HINSTANCE>(hwnd, WindowLongFlags.GWLP_HINSTANCE);
+	public static WindowStyles GetWindowStyle(HWND hwnd) => GetWindowLong<WindowStyles>(hwnd, WindowLongFlags.GWL_STYLE);
+	public static WindowStylesEx GetWindowExStyle(HWND hwnd) => GetWindowLong<WindowStylesEx>(hwnd, WindowLongFlags.GWL_EXSTYLE);
 	public static HWND GetWindowOwner(HWND hwnd) => GetWindow(hwnd, GetWindowCmd.GW_OWNER);
 	public static HWND GetFirstChild(HWND hwnd) => GetTopWindow(hwnd);
 	public static HWND GetFirstSibling(HWND hwnd) => GetWindow(hwnd, GetWindowCmd.GW_HWNDFIRST);

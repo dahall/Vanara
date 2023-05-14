@@ -236,7 +236,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("tlhelp32.h", MSDNShortId = "79d01e3a-b11b-46b5-99d0-b445000288a7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Heap32First(ref HEAPENTRY32 lphe, uint th32ProcessID, UIntPtr th32HeapID);
+	public static extern bool Heap32First(ref HEAPENTRY32 lphe, uint th32ProcessID, nuint th32HeapID);
 
 	/// <summary>
 	/// <para>Retrieves information about the first heap that has been allocated by a specified process.</para>
@@ -615,7 +615,7 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>The heap identifier. This is not a handle, and has meaning only to the tool help functions.</para>
 		/// </summary>
-		public UIntPtr th32HeapID;
+		public nuint th32HeapID;
 
 		/// <summary>Gets an empty instance with the size value set.</summary>
 		public static readonly HEAPENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(HEAPENTRY32)) };
@@ -646,7 +646,7 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>The heap identifier. This is not a handle, and has meaning only to the tool help functions.</para>
 		/// </summary>
-		public UIntPtr th32HeapID;
+		public nuint th32HeapID;
 
 		/// <summary>
 		/// <para>This member can be one of the following values.</para>
@@ -832,7 +832,7 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>This member is no longer used and is always set to zero.</para>
 		/// </summary>
-		public UIntPtr th32DefaultHeapID;
+		public nuint th32DefaultHeapID;
 
 		/// <summary>
 		/// <para>This member is no longer used and is always set to zero.</para>

@@ -913,7 +913,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "b92150be-8264-4ea8-a2ea-d70b7fba6361")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawState(HDC hdc, HBRUSH hbrFore, DrawStateProc qfnCallBack, IntPtr lData, IntPtr wData, int x, int y, int cx, int cy, DrawStateFlags uFlags);
+	public static extern bool DrawState(HDC hdc, HBRUSH hbrFore, [Optional] DrawStateProc? qfnCallBack, [Optional] IntPtr lData,
+		[Optional] IntPtr wData, int x, int y, [Optional] int cx, [Optional] int cy, DrawStateFlags uFlags);
 
 	/// <summary>
 	/// The <c>DrawState</c> function displays an image and applies a visual effect to indicate a state, such as a disabled or default state.
@@ -1035,7 +1036,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "b92150be-8264-4ea8-a2ea-d70b7fba6361")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawState(HDC hdc, HBRUSH hbrFore, DrawStateProc qfnCallBack, string lData, IntPtr wData, int x, int y, int cx, int cy, DrawStateFlags uFlags);
+	public static extern bool DrawState(HDC hdc, HBRUSH hbrFore, [Optional] DrawStateProc? qfnCallBack, [MarshalAs(UnmanagedType.LPTStr)] string lData,
+		[Optional] nuint wData, int x, int y, [Optional] int cx, [Optional] int cy, DrawStateFlags uFlags);
 
 	/// <summary>
 	/// The <c>EndPaint</c> function marks the end of painting in the specified window. This function is required for each call to the
@@ -1191,7 +1193,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "e54483a1-8738-4b22-a24e-c0b31f6ca9d6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUpdateRect(HWND hWnd, PRECT lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+	public static extern bool GetUpdateRect(HWND hWnd, [Optional] PRECT? lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 	/// <summary>
 	/// The <c>GetUpdateRgn</c> function retrieves the update region of a window by copying it into the specified region. The coordinates
@@ -1281,7 +1283,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowdc HDC GetWindowDC( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "9e6a135e-e337-4129-a3ad-faf9a8ac9b2d")]
-	public static extern HDC GetWindowDC(HWND hWnd);
+	public static extern HDC GetWindowDC([Optional] HWND hWnd);
 
 	/// <summary>
 	/// The <c>GetWindowRgn</c> function obtains a copy of the window region of a window. The window region of a window is set by calling
@@ -1381,7 +1383,7 @@ public static partial class User32
 	/// brush and background. <c>GrayString</c> uses the font currently selected for the specified device context.
 	/// </para>
 	/// <para>
-	/// If thelpOutputFuncparameter is <c>NULL</c>, GDI uses the TextOut function, and thelpDataparameter is assumed to be a pointer to
+	/// If the lpOutputFunc parameter is <c>NULL</c>, GDI uses the TextOut function, and thelpDataparameter is assumed to be a pointer to
 	/// the character string to be output. If the characters to be output cannot be handled by <c>TextOut</c> (for example, the string is
 	/// stored as a bitmap), the application must supply its own output function.
 	/// </para>
@@ -1433,7 +1435,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "b14b8c40-f97f-4e41-8d8d-687692acfda9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GrayString(HDC hDC, HBRUSH hBrush, OutputProc lpOutputFunc, string lpData, int nCount, int X, int Y, int nWidth, int nHeight);
+	public static extern bool GrayString(HDC hDC, [Optional] HBRUSH hBrush, [Optional] OutputProc? lpOutputFunc, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpData,
+		[Optional] int nCount, int X, int Y, [Optional] int nWidth, [Optional] int nHeight);
 
 	/// <summary>
 	/// The <c>InvalidateRect</c> function adds a rectangle to the specified window's update region. The update region represents the
@@ -1553,7 +1556,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "00ec40c7-8ab2-40db-a9bb-48e18d66bf1a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LockWindowUpdate(HWND hWndLock);
+	public static extern bool LockWindowUpdate([Optional] HWND hWndLock);
 
 	/// <summary>
 	/// The <c>PaintDesktop</c> function fills the clipping region in the specified device context with the desktop pattern or wallpaper.
@@ -1703,7 +1706,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "c6cb7f74-237e-4d3e-a852-894da36e990c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RedrawWindow(HWND hWnd, [In] PRECT lprcUpdate, HRGN hrgnUpdate, RedrawWindowFlags flags);
+	public static extern bool RedrawWindow(HWND hWnd, [In, Optional] PRECT? lprcUpdate, [Optional] HRGN hrgnUpdate, RedrawWindowFlags flags);
 
 	/// <summary>
 	/// The <c>SetWindowRgn</c> function sets the window region of a window. The window region determines the area within the window
@@ -1793,7 +1796,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "961dd768-1849-44df-bc7f-480881ed6477")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ValidateRect(HWND hWnd, [In, Optional] PRECT? lpRect);
+	public static extern bool ValidateRect([Optional] HWND hWnd, [In, Optional] PRECT? lpRect);
 
 	/// <summary>
 	/// The <c>ValidateRgn</c> function validates the client area within a region by removing the region from the current update region

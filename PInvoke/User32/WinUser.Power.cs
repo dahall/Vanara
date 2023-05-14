@@ -55,6 +55,7 @@ public static partial class User32
 		/// should carry out preparations for the suspension before returning. Return TRUE to grant the request to suspend. To deny the
 		/// request, return BROADCAST_QUERY_DENY.
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		PBT_APMQUERYSTANDBY = 0x0001,
 
 		/// <summary>
@@ -77,6 +78,7 @@ public static partial class User32
 		/// <para>Applications typically respond to this event by resuming normal operation.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmquerysuspendfailed
+		[CorrespondingType(null)]
 		PBT_APMQUERYSUSPENDFAILED = 0x0002,
 
 		/// <summary>
@@ -105,6 +107,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmsuspend
+		[CorrespondingType(null)]
 		PBT_APMSUSPEND = 0x0004,
 
 		/// <summary>Undocumented.</summary>
@@ -135,6 +138,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmresumecritical
+		[CorrespondingType(null)]
 		PBT_APMRESUMECRITICAL = 0x0006,
 
 		/// <summary>
@@ -163,6 +167,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmresumesuspend
+		[CorrespondingType(null)]
 		PBT_APMRESUMESUSPEND = 0x0007,
 
 		/// <summary>
@@ -190,6 +195,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmbatterylow
+		[CorrespondingType(null)]
 		PBT_APMBATTERYLOW = 0x0009,
 
 		/// <summary>
@@ -215,6 +221,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmpowerstatuschange
+		[CorrespondingType(null)]
 		PBT_APMPOWERSTATUSCHANGE = 0x000A,
 
 		/// <summary>
@@ -238,6 +245,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmoemevent
+		[CorrespondingType(typeof(int))]
 		PBT_APMOEMEVENT = 0x000B,
 
 		/// <summary>
@@ -259,6 +267,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-apmresumeautomatic
+		[CorrespondingType(null)]
 		PBT_APMRESUMEAUTOMATIC = 0x0012,
 
 		/// <summary>
@@ -270,6 +279,7 @@ public static partial class User32
 		/// <para>No return value.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/power/pbt-powersettingchange
+		[CorrespondingType(typeof(POWERBROADCAST_SETTING?))]
 		PBT_POWERSETTINGCHANGE = 0x8013,
 	}
 
@@ -349,7 +359,8 @@ public static partial class User32
 	// UnregisterPowerSettingNotification( IN HPOWERNOTIFY Handle );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "de1509f5-cf4c-448e-bb3b-08da6be53bfa")]
-	[return: MarshalAs(UnmanagedType.Bool)] public static extern bool UnregisterPowerSettingNotification([In] HANDLE Handle);
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool UnregisterPowerSettingNotification([In] HANDLE Handle);
 
 	/// <summary>
 	/// Cancels a registration to receive notification when the system is suspended or resumed. Similar to

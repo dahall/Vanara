@@ -1969,7 +1969,7 @@ public static partial class Kernel32
 		/// subset of the specified affinity mask. Processes cannot set their own affinity mask.
 		/// </para>
 		/// </summary>
-		public UIntPtr Affinity;
+		public nuint Affinity;
 
 		/// <summary>
 		/// <para>
@@ -2318,7 +2318,7 @@ public static partial class Kernel32
 	public struct JOBOBJECT_IO_ATTRIBUTION_STATS
 	{
 		/// <summary/>
-		public UIntPtr IoCount;
+		public nuint IoCount;
 
 		/// <summary/>
 		public ulong TotalNonOverlappedQueueTime;

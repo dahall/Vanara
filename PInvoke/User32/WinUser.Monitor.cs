@@ -271,7 +271,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a7668c28-77c9-4373-ae1a-eab3cb98f866")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDisplayMonitors(HDC hdc, PRECT lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
+	public static extern bool EnumDisplayMonitors([Optional] HDC hdc, [Optional] PRECT? lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
 
 	/// <summary>
 	/// <para>

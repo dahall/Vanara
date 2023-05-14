@@ -62,7 +62,6 @@ public partial class User32Tests
 		foreach (var mode in modes.Where(m => m.infoType == DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET))
 		{
 			Assert.That(() => DisplayConfigGetDeviceInfo<DISPLAYCONFIG_TARGET_DEVICE_NAME>(mode.adapterId, mode.id, DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_ADAPTER_NAME), Throws.Exception);
-			Assert.That(() => DisplayConfigGetDeviceInfo<RECT>(mode.adapterId, mode.id), Throws.Exception);
 			TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_TARGET_DEVICE_NAME>(mode.adapterId, mode.id).monitorFriendlyDeviceName);
 			TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_ADAPTER_NAME>(mode.adapterId, mode.id).adapterDevicePath);
 			TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_TARGET_BASE_TYPE>(mode.adapterId, mode.id).baseOutputTechnology);

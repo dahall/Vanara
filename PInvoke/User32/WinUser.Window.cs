@@ -470,6 +470,7 @@ public static partial class User32
 		/// </summary>
 		GW_OWNER = 4,
 	}
+
 	/// <summary>The thread state.</summary>
 	[PInvokeData("winuser.h", MSDNShortId = "guithreadinfo")]
 	[Flags]
@@ -1705,7 +1706,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "calculatepopupwindowposition")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CalculatePopupWindowPosition(in POINT anchorPoint, in SIZE windowSize, TrackPopupMenuFlags flags, [Optional] PRECT excludeRect, out RECT popupWindowPosition);
+	public static extern bool CalculatePopupWindowPosition(in POINT anchorPoint, in SIZE windowSize, TrackPopupMenuFlags flags, [Optional] PRECT? excludeRect, out RECT popupWindowPosition);
 
 	/// <summary>Passes message information to the specified window procedure.</summary>
 	/// <param name="lpPrevWndFunc">
@@ -1909,7 +1910,7 @@ public static partial class User32
 	// wHow, CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "cascadewindows")]
-	public static extern ushort CascadeWindows(HWND hwndParent, uint wHow, in RECT lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
+	public static extern ushort CascadeWindows([Optional] HWND hwndParent, uint wHow, [In, Optional] PRECT? lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
 
 	/// <summary>
 	/// <para>
@@ -2182,46 +2183,96 @@ public static partial class User32
 	public static extern bool CloseWindow(HWND hWnd);
 
 	/// <summary>
-	/// <para>Creates an overlapped, pop-up, or child window. It specifies the window class, window title, window style, and (optionally) the initial position and size of the window. The function also specifies the window's parent or owner, if any, and the window's menu.</para>
+	/// <para>
+	/// Creates an overlapped, pop-up, or child window. It specifies the window class, window title, window style, and (optionally) the
+	/// initial position and size of the window. The function also specifies the window's parent or owner, if any, and the window's menu.
+	/// </para>
 	/// <para>To use extended window styles in addition to the styles supported by <c>CreateWindow</c>, use the CreateWindowEx function.</para>
 	/// </summary>
 	/// <param name="lpClassName">
 	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>A <c>null</c>-terminated string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpClassName; the high-order word must be zero. If lpClassName is a string, it specifies the window class name. The class name can be any name registered with <c>RegisterClass</c> or <c>RegisterClassEx</c>, provided that the module that registers the class is also the module that creates the window. The class name can also be any of the predefined system class names. For a list of system class names, see the Remarks section.</para>
+	/// <para>
+	/// A <c>null</c>-terminated string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom
+	/// must be in the low-order word of lpClassName; the high-order word must be zero. If lpClassName is a string, it specifies the window
+	/// class name. The class name can be any name registered with <c>RegisterClass</c> or <c>RegisterClassEx</c>, provided that the module
+	/// that registers the class is also the module that creates the window. The class name can also be any of the predefined system class
+	/// names. For a list of system class names, see the Remarks section.
+	/// </para>
 	/// </param>
 	/// <param name="lpWindowName">
 	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>The window name. If the window style specifies a title bar, the window title pointed to by lpWindowName is displayed in the title bar. When using <c>CreateWindow</c> to create controls, such as buttons, check boxes, and static controls, use lpWindowName to specify the text of the control. When creating a static control with the <c>SS_ICON</c> style, use lpWindowName to specify the icon name or identifier. To specify an identifier, use the syntax "#num".</para>
+	/// <para>
+	/// The window name. If the window style specifies a title bar, the window title pointed to by lpWindowName is displayed in the title
+	/// bar. When using <c>CreateWindow</c> to create controls, such as buttons, check boxes, and static controls, use lpWindowName to
+	/// specify the text of the control. When creating a static control with the <c>SS_ICON</c> style, use lpWindowName to specify the icon
+	/// name or identifier. To specify an identifier, use the syntax "#num".
+	/// </para>
 	/// </param>
 	/// <param name="dwStyle">
 	/// <para>Type: <c>DWORD</c></para>
-	/// <para>The style of the window being created. This parameter can be a combination of the window style values, plus the control styles indicated in the Remarks section.</para>
+	/// <para>
+	/// The style of the window being created. This parameter can be a combination of the window style values, plus the control styles
+	/// indicated in the Remarks section.
+	/// </para>
 	/// </param>
 	/// <param name="x">
 	/// <para>Type: <c>int</c></para>
-	/// <para>The initial horizontal position of the window. For an overlapped or pop-up window, the x parameter is the initial x-coordinate of the window's upper-left corner, in screen coordinates. For a child window, x is the x-coordinate of the upper-left corner of the window relative to the upper-left corner of the parent window's client area. If this parameter is set to <c>CW_USEDEFAULT</c>, the system selects the default position for the window's upper-left corner and ignores the y parameter. <c>CW_USEDEFAULT</c> is valid only for overlapped windows; if it is specified for a pop-up or child window, the x and y parameters are set to zero.</para>
+	/// <para>
+	/// The initial horizontal position of the window. For an overlapped or pop-up window, the x parameter is the initial x-coordinate of the
+	/// window's upper-left corner, in screen coordinates. For a child window, x is the x-coordinate of the upper-left corner of the window
+	/// relative to the upper-left corner of the parent window's client area. If this parameter is set to <c>CW_USEDEFAULT</c>, the system
+	/// selects the default position for the window's upper-left corner and ignores the y parameter. <c>CW_USEDEFAULT</c> is valid only for
+	/// overlapped windows; if it is specified for a pop-up or child window, the x and y parameters are set to zero.
+	/// </para>
 	/// </param>
 	/// <param name="y">
 	/// <para>Type: <c>int</c></para>
-	/// <para>The initial vertical position of the window. For an overlapped or pop-up window, the y parameter is the initial y-coordinate of the window's upper-left corner, in screen coordinates. For a child window, y is the initial y-coordinate of the upper-left corner of the child window relative to the upper-left corner of the parent window's client area. For a list box, y is the initial y-coordinate of the upper-left corner of the list box's client area relative to the upper-left corner of the parent window's client area.</para>
-	/// <para>If an overlapped window is created with the <c>WS_VISIBLE</c> style bit set and the x parameter is set to <c>CW_USEDEFAULT</c>, then the y parameter determines how the window is shown. If the y parameter is <c>CW_USEDEFAULT</c>, then the window manager calls ShowWindow with the <c>SW_SHOW</c> flag after the window has been created. If the y parameter is some other value, then the window manager calls <c>ShowWindow</c> with that value as the nCmdShow parameter.</para>
+	/// <para>
+	/// The initial vertical position of the window. For an overlapped or pop-up window, the y parameter is the initial y-coordinate of the
+	/// window's upper-left corner, in screen coordinates. For a child window, y is the initial y-coordinate of the upper-left corner of the
+	/// child window relative to the upper-left corner of the parent window's client area. For a list box, y is the initial y-coordinate of
+	/// the upper-left corner of the list box's client area relative to the upper-left corner of the parent window's client area.
+	/// </para>
+	/// <para>
+	/// If an overlapped window is created with the <c>WS_VISIBLE</c> style bit set and the x parameter is set to <c>CW_USEDEFAULT</c>, then
+	/// the y parameter determines how the window is shown. If the y parameter is <c>CW_USEDEFAULT</c>, then the window manager calls
+	/// ShowWindow with the <c>SW_SHOW</c> flag after the window has been created. If the y parameter is some other value, then the window
+	/// manager calls <c>ShowWindow</c> with that value as the nCmdShow parameter.
+	/// </para>
 	/// </param>
 	/// <param name="nWidth">
 	/// <para>Type: <c>int</c></para>
-	/// <para>The width, in device units, of the window. For overlapped windows, nWidth is either the window's width, in screen coordinates, or <c>CW_USEDEFAULT</c>. If nWidth is <c>CW_USEDEFAULT</c>, the system selects a default width and height for the window; the default width extends from the initial x-coordinate to the right edge of the screen, and the default height extends from the initial y-coordinate to the top of the icon area. <c>CW_USEDEFAULT</c> is valid only for overlapped windows; if <c>CW_USEDEFAULT</c> is specified for a pop-up or child window, nWidth and nHeight are set to zero.</para>
+	/// <para>
+	/// The width, in device units, of the window. For overlapped windows, nWidth is either the window's width, in screen coordinates, or
+	/// <c>CW_USEDEFAULT</c>. If nWidth is <c>CW_USEDEFAULT</c>, the system selects a default width and height for the window; the default
+	/// width extends from the initial x-coordinate to the right edge of the screen, and the default height extends from the initial
+	/// y-coordinate to the top of the icon area. <c>CW_USEDEFAULT</c> is valid only for overlapped windows; if <c>CW_USEDEFAULT</c> is
+	/// specified for a pop-up or child window, nWidth and nHeight are set to zero.
+	/// </para>
 	/// </param>
 	/// <param name="nHeight">
 	/// <para>Type: <c>int</c></para>
-	/// <para>The height, in device units, of the window. For overlapped windows, nHeight is the window's height, in screen coordinates. If nWidth is set to <c>CW_USEDEFAULT</c>, the system ignores nHeight.</para>
+	/// <para>
+	/// The height, in device units, of the window. For overlapped windows, nHeight is the window's height, in screen coordinates. If nWidth
+	/// is set to <c>CW_USEDEFAULT</c>, the system ignores nHeight.
+	/// </para>
 	/// </param>
 	/// <param name="hWndParent">
 	/// <para>Type: <c>HWND</c></para>
-	/// <para>A handle to the parent or owner window of the window being created. To create a child window or an owned window, supply a valid window handle. This parameter is optional for pop-up windows.</para>
+	/// <para>
+	/// A handle to the parent or owner window of the window being created. To create a child window or an owned window, supply a valid
+	/// window handle. This parameter is optional for pop-up windows.
+	/// </para>
 	/// <para>To create a message-only window, supply <c>HWND_MESSAGE</c> or a handle to an existing message-only window.</para>
 	/// </param>
 	/// <param name="hMenu">
 	/// <para>Type: <c>HMENU</c></para>
-	/// <para>A handle to a menu, or specifies a child-window identifier depending on the window style. For an overlapped or pop-up window, hMenu identifies the menu to be used with the window; it can be <c>NULL</c> if the class menu is to be used. For a child window, hMenu specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The application determines the child-window identifier; it must be unique for all child windows with the same parent window.</para>
+	/// <para>
+	/// A handle to a menu, or specifies a child-window identifier depending on the window style. For an overlapped or pop-up window, hMenu
+	/// identifies the menu to be used with the window; it can be <c>NULL</c> if the class menu is to be used. For a child window, hMenu
+	/// specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The
+	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
+	/// </para>
 	/// </param>
 	/// <param name="hInstance">
 	/// <para>Type: <c>HINSTANCE</c></para>
@@ -2229,8 +2280,15 @@ public static partial class User32
 	/// </param>
 	/// <param name="lpParam">
 	/// <para>Type: <c>LPVOID</c></para>
-	/// <para>A pointer to a value to be passed to the window through the CREATESTRUCT structure (<c>lpCreateParams</c> member) pointed to by the lParam param of the WM_CREATE message. This message is sent to the created window by this function before it returns.</para>
-	/// <para>If an application calls <c>CreateWindow</c> to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure. If an MDI client window calls <c>CreateWindow</c> to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure. lpParam may be <c>NULL</c> if no additional data is needed.</para>
+	/// <para>
+	/// A pointer to a value to be passed to the window through the CREATESTRUCT structure ( <c>lpCreateParams</c> member) pointed to by the
+	/// lParam param of the WM_CREATE message. This message is sent to the created window by this function before it returns.
+	/// </para>
+	/// <para>
+	/// If an application calls <c>CreateWindow</c> to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure. If
+	/// an MDI client window calls <c>CreateWindow</c> to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure.
+	/// lpParam may be <c>NULL</c> if no additional data is needed.
+	/// </para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>Type: <c>HWND</c></c></para>
@@ -2253,11 +2311,22 @@ public static partial class User32
 	/// </list>
 	/// </returns>
 	/// <remarks>
-	/// <para>Before returning, <c>CreateWindow</c> sends a WM_CREATE message to the window procedure. For overlapped, pop-up, and child windows, <c>CreateWindow</c> sends <c>WM_CREATE</c>, WM_GETMINMAXINFO, and WM_NCCREATE messages to the window. The lParam parameter of the <c>WM_CREATE</c> message contains a pointer to a CREATESTRUCT structure. If the <c>WS_VISIBLE</c> style is specified, <c>CreateWindow</c> sends the window all the messages required to activate and show the window.</para>
-	/// <para>If the created window is a child window, its default position is at the bottom of the Z-order. If the created window is a top-level window, its default position is at the top of the Z-order (but beneath all topmost windows unless the created window is itself topmost).</para>
+	/// <para>
+	/// Before returning, <c>CreateWindow</c> sends a WM_CREATE message to the window procedure. For overlapped, pop-up, and child windows,
+	/// <c>CreateWindow</c> sends <c>WM_CREATE</c>, WM_GETMINMAXINFO, and WM_NCCREATE messages to the window. The lParam parameter of the
+	/// <c>WM_CREATE</c> message contains a pointer to a CREATESTRUCT structure. If the <c>WS_VISIBLE</c> style is specified,
+	/// <c>CreateWindow</c> sends the window all the messages required to activate and show the window.
+	/// </para>
+	/// <para>
+	/// If the created window is a child window, its default position is at the bottom of the Z-order. If the created window is a top-level
+	/// window, its default position is at the top of the Z-order (but beneath all topmost windows unless the created window is itself topmost).
+	/// </para>
 	/// <para>For information on controlling whether the Taskbar displays a button for the created window, see Managing Taskbar Buttons.</para>
 	/// <para>For information on removing a window, see the DestroyWindow function.</para>
-	/// <para>The following predefined system classes can be specified in the lpClassName parameter. Note the corresponding control styles you can use in the dwStyle parameter.</para>
+	/// <para>
+	/// The following predefined system classes can be specified in the lpClassName parameter. Note the corresponding control styles you can
+	/// use in the dwStyle parameter.
+	/// </para>
 	/// <list type="table">
 	/// <listheader>
 	/// <term>System class</term>
@@ -2265,43 +2334,88 @@ public static partial class User32
 	/// </listheader>
 	/// <item>
 	/// <term>BUTTON</term>
-	/// <term>Designates a small rectangular child window that represents a button the user can click to turn it on or off. Button controls can be used alone or in groups, and they can either be labeled or appear without text. Button controls typically change appearance when the user clicks them. For more information, see Buttons For a table of the button styles you can specify in the dwStyle parameter, see Button Styles.</term>
+	/// <term>
+	/// Designates a small rectangular child window that represents a button the user can click to turn it on or off. Button controls can be
+	/// used alone or in groups, and they can either be labeled or appear without text. Button controls typically change appearance when the
+	/// user clicks them. For more information, see Buttons For a table of the button styles you can specify in the dwStyle parameter, see
+	/// Button Styles.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>COMBOBOX</term>
-	/// <term>Designates a control consisting of a list box and a selection field similar to an edit control. When using this style, an application should either display the list box at all times or enable a drop-down list box. If the list box is visible, typing characters into the selection field highlights the first list box entry that matches the characters typed. Conversely, selecting an item in the list box displays the selected text in the selection field. For more information, see Combo Boxes. For a table of the combo box styles you can specify in the dwStyle parameter, see Combo Box Styles.</term>
+	/// <term>
+	/// Designates a control consisting of a list box and a selection field similar to an edit control. When using this style, an application
+	/// should either display the list box at all times or enable a drop-down list box. If the list box is visible, typing characters into
+	/// the selection field highlights the first list box entry that matches the characters typed. Conversely, selecting an item in the list
+	/// box displays the selected text in the selection field. For more information, see Combo Boxes. For a table of the combo box styles you
+	/// can specify in the dwStyle parameter, see Combo Box Styles.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>EDIT</term>
-	/// <term>Designates a rectangular child window into which the user can type text from the keyboard. The user selects the control and gives it the keyboard focus by clicking it or moving to it by pressing the TAB key. The user can type text when the edit control displays a flashing caret; use the mouse to move the cursor, select characters to be replaced, or position the cursor for inserting characters; or use the BACKSPACE key to delete characters. For more information, see Edit Controls. For a table of the edit control styles you can specify in the dwStyle parameter, see Edit Control Styles.</term>
+	/// <term>
+	/// Designates a rectangular child window into which the user can type text from the keyboard. The user selects the control and gives it
+	/// the keyboard focus by clicking it or moving to it by pressing the TAB key. The user can type text when the edit control displays a
+	/// flashing caret; use the mouse to move the cursor, select characters to be replaced, or position the cursor for inserting characters;
+	/// or use the BACKSPACE key to delete characters. For more information, see Edit Controls. For a table of the edit control styles you
+	/// can specify in the dwStyle parameter, see Edit Control Styles.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>LISTBOX</term>
-	/// <term>Designates a list of character strings. Specify this control whenever an application must present a list of names, such as file names, from which the user can choose. The user can select a string by clicking it. A selected string is highlighted, and a notification message is passed to the parent window. For more information, see List Boxes. For a table of the list box styles you can specify in the dwStyle parameter, see List Box Styles.</term>
+	/// <term>
+	/// Designates a list of character strings. Specify this control whenever an application must present a list of names, such as file
+	/// names, from which the user can choose. The user can select a string by clicking it. A selected string is highlighted, and a
+	/// notification message is passed to the parent window. For more information, see List Boxes. For a table of the list box styles you can
+	/// specify in the dwStyle parameter, see List Box Styles.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>MDICLIENT</term>
-	/// <term>Designates an MDI client window. This window receives messages that control the MDI application's child windows. The recommended style bits are WS_CLIPCHILDREN and WS_CHILD. Specify the WS_HSCROLL and WS_VSCROLL styles to create an MDI client window that allows the user to scroll MDI child windows into view. For more information, see Multiple Document Interface.</term>
+	/// <term>
+	/// Designates an MDI client window. This window receives messages that control the MDI application's child windows. The recommended
+	/// style bits are WS_CLIPCHILDREN and WS_CHILD. Specify the WS_HSCROLL and WS_VSCROLL styles to create an MDI client window that allows
+	/// the user to scroll MDI child windows into view. For more information, see Multiple Document Interface.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>RichEdit</term>
-	/// <term>Designates a Microsoft Rich Edit 1.0 control. This window lets the user view and edit text with character and paragraph formatting, and can include embedded Component Object Model (COM) objects. For more information, see Rich Edit Controls. For a table of the rich edit control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.</term>
+	/// <term>
+	/// Designates a Microsoft Rich Edit 1.0 control. This window lets the user view and edit text with character and paragraph formatting,
+	/// and can include embedded Component Object Model (COM) objects. For more information, see Rich Edit Controls. For a table of the rich
+	/// edit control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>RICHEDIT_CLASS</term>
-	/// <term>Designates a Microsoft Rich Edit 2.0 control. This controls let the user view and edit text with character and paragraph formatting, and can include embedded COM objects. For more information, see Rich Edit Controls. For a table of the rich edit control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.</term>
+	/// <term>
+	/// Designates a Microsoft Rich Edit 2.0 control. This controls let the user view and edit text with character and paragraph formatting,
+	/// and can include embedded COM objects. For more information, see Rich Edit Controls. For a table of the rich edit control styles you
+	/// can specify in the dwStyle parameter, see Rich Edit Control Styles.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>SCROLLBAR</term>
-	/// <term>Designates a rectangle that contains a scroll box and has direction arrows at both ends. The scroll bar sends a notification message to its parent window whenever the user clicks the control. The parent window is responsible for updating the position of the scroll box, if necessary. For more information, see Scroll Bars. For a table of the scroll bar control styles you can specify in the dwStyle parameter, see Scroll Bar Control Styles.</term>
+	/// <term>
+	/// Designates a rectangle that contains a scroll box and has direction arrows at both ends. The scroll bar sends a notification message
+	/// to its parent window whenever the user clicks the control. The parent window is responsible for updating the position of the scroll
+	/// box, if necessary. For more information, see Scroll Bars. For a table of the scroll bar control styles you can specify in the dwStyle
+	/// parameter, see Scroll Bar Control Styles.
+	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>STATIC</term>
-	/// <term>Designates a simple text field, box, or rectangle used to label, box, or separate other controls. Static controls take no input and provide no output. For more information, see Static Controls. For a table of the static control styles you can specify in the dwStyle parameter, see Static Control Styles.</term>
+	/// <term>
+	/// Designates a simple text field, box, or rectangle used to label, box, or separate other controls. Static controls take no input and
+	/// provide no output. For more information, see Static Controls. For a table of the static control styles you can specify in the dwStyle
+	/// parameter, see Static Control Styles.
+	/// </term>
 	/// </item>
 	/// </list>
 	/// <para><c>CreateWindow</c> is implemented as a call to the CreateWindowEx function, as shown below.</para>
-	/// <para><code>#define CreateWindowA(lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam)\ CreateWindowExA(0L, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam) #define CreateWindowW(lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam)\ CreateWindowExW(0L, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam) #ifdef UNICODE #define CreateWindow CreateWindowW #else #define CreateWindow CreateWindowA #endif</code></para>
+	/// <para>
+	/// <code>#define CreateWindowA(lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam)\ CreateWindowExA(0L, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam) #define CreateWindowW(lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam)\ CreateWindowExW(0L, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam) #ifdef UNICODE #define CreateWindow CreateWindowW #else #define CreateWindow CreateWindowA #endif</code>
+	/// </para>
 	/// <para>Examples</para>
 	/// <para>For an example, see Using Window Classes.</para>
 	/// </remarks>
@@ -3028,7 +3142,7 @@ public static partial class User32
 	// hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, UINT uFlags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "deferwindowpos")]
-	public static extern HDWP DeferWindowPos(HDWP hWinPosInfo, HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+	public static extern HDWP DeferWindowPos(HDWP hWinPosInfo, HWND hWnd, [Optional] HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 
 	/// <summary>
 	/// Provides default processing for any window messages that the window procedure of a multiple-document interface (MDI) frame window
@@ -3103,7 +3217,7 @@ public static partial class User32
 	// hWndMDIClient, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefFrameProc(HWND hWnd, HWND hWndMDIClient, uint uMsg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr DefFrameProc(HWND hWnd, [Optional] HWND hWndMDIClient, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
 	/// Provides default processing for any window message that the window procedure of a multiple-document interface (MDI) child window
@@ -3468,7 +3582,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "enumchildwindows")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumChildWindows(HWND hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+	public static extern bool EnumChildWindows([Optional] HWND hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
 	/// <summary>
 	/// Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to
@@ -3878,7 +3992,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getalttabinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAltTabInfo(HWND hwnd, int iItem, ref ALTTABINFO pati, StringBuilder pszItemText, uint cchItemText);
+	public static extern bool GetAltTabInfo(HWND hwnd, int iItem, ref ALTTABINFO pati, [Optional] StringBuilder? pszItemText, uint cchItemText);
 
 	/// <summary>
 	/// <para>Retrieves the handle to the ancestor of the specified window.</para>
@@ -3993,7 +4107,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetClassInfo([In] HINSTANCE hInstance, [MarshalAs(UnmanagedType.LPTStr)] string lpClassName, out WNDCLASS lpWndClass);
+	public static extern bool GetClassInfo([In, Optional] HINSTANCE hInstance, [MarshalAs(UnmanagedType.LPTStr)] string lpClassName, out WNDCLASS lpWndClass);
 
 	/// <summary>
 	/// <para>
@@ -4783,7 +4897,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-gettopwindow HWND GetTopWindow( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "gettopwindow")]
-	public static extern HWND GetTopWindow(HWND hWnd);
+	public static extern HWND GetTopWindow([Optional] HWND hWnd);
 
 	/// <summary>
 	/// <para>Retrieves a handle to a window that has the specified relationship (Z-Order or owner) to the specified window.</para>
@@ -6699,7 +6813,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setfocus HWND SetFocus( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HWND SetFocus(HWND hWnd);
+	public static extern HWND SetFocus([Optional] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -6896,7 +7010,7 @@ public static partial class User32
 	// hWndNewParent );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setparent")]
-	public static extern HWND SetParent(HWND hWndChild, HWND hWndNewParent);
+	public static extern HWND SetParent(HWND hWndChild, [Optional] HWND hWndNewParent);
 
 	/// <summary>
 	/// <para>Changes the default layout when windows are created with no parent or owner only for the currently running process.</para>
@@ -7074,7 +7188,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "72bee160-7004-40be-9c91-e431b06ccaed")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, [Optional] uint dwFlags, uint size, IntPtr configuration);
+	public static extern bool SetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, [Optional] uint dwFlags, uint size, [Optional] IntPtr configuration);
 
 	/// <summary>
 	/// <para>Sets the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -7674,7 +7788,7 @@ public static partial class User32
 	// CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "tilewindows")]
-	public static extern ushort TileWindows(HWND hwndParent, MdiTileFlags wHow, PRECT lpRect, uint cKids, [In] HWND[] lpKids);
+	public static extern ushort TileWindows([Optional] HWND hwndParent, MdiTileFlags wHow, [Optional] PRECT? lpRect, uint cKids, [In, Optional] HWND[]? lpKids);
 
 	/// <summary>
 	/// Processes accelerator keystrokes for window menu commands of the multiple-document interface (MDI) child windows associated with
@@ -7861,7 +7975,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, in POINT pptDst, in SIZE psize, HDC hdcSrc, in POINT pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
+	public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, in POINT pptDst, in SIZE psize, HDC hdcSrc,
+		in POINT pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 	/// <summary>
 	/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
@@ -7984,7 +8099,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindow(HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize, [In, Optional] HDC hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
+	public static extern bool UpdateLayeredWindow(HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize,
+		[In, Optional] HDC hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 	/// <summary>Updates the position, size, shape, content, and translucency of a layered window.</summary>
 	/// <param name="hwnd">
@@ -9641,7 +9757,7 @@ public static partial class User32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public WindowProc lpfnWndProc;
+		public WindowProc? lpfnWndProc;
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
@@ -9820,7 +9936,7 @@ public static partial class User32
 		public WindowClassStyles style;
 
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public WindowProc lpfnWndProc;
+		public WindowProc? lpfnWndProc;
 
 		public int cbClsExtra;
 
@@ -9847,7 +9963,7 @@ public static partial class User32
 			cbSize = wc.cbSize,
 			style = wc.style,
 			lpszMenuName = wc.lpszMenuName,
-			lpszClassName = wc.lpszClassName,
+			lpszClassName = ((string?)wc.lpszClassName) ?? "",
 			hIconSm = wc.hIconSm,
 			hCursor = wc.hCursor,
 			hbrBackground = wc.hbrBackground,

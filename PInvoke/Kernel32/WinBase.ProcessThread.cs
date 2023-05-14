@@ -426,7 +426,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683213")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessAffinityMask([In] HPROCESS hProcess, out UIntPtr lpProcessAffinityMask, out UIntPtr lpSystemAffinityMask);
+	public static extern bool GetProcessAffinityMask([In] HPROCESS hProcess, out nuint lpProcessAffinityMask, out nuint lpSystemAffinityMask);
 
 	/// <summary>Retrieves accounting information for all I/O operations performed by the specified process.</summary>
 	/// <param name="hProcess">
@@ -703,7 +703,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686223")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessAffinityMask([In] HPROCESS hProcess, UIntPtr dwProcessAffinityMask);
+	public static extern bool SetProcessAffinityMask([In] HPROCESS hProcess, nuint dwProcessAffinityMask);
 
 	/// <summary>Sets the minimum and maximum working set sizes for the specified process.</summary>
 	/// <param name="hProcess">
@@ -782,7 +782,7 @@ public static partial class Kernel32
 	// DWORD_PTR WINAPI SetThreadAffinityMask( _In_ HANDLE hThread, _In_ DWORD_PTR dwThreadAffinityMask); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686247(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686247")]
-	public static extern UIntPtr SetThreadAffinityMask([In] HTHREAD hThread, UIntPtr dwThreadAffinityMask);
+	public static extern nuint SetThreadAffinityMask([In] HTHREAD hThread, nuint dwThreadAffinityMask);
 
 	/// <summary>
 	/// Enables an application to inform the system that it is in use, thereby preventing the system from entering sleep or turning off

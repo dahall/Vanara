@@ -2093,7 +2093,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "registerhotkey")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterHotKey(HWND hWnd, int id, HotKeyModifiers fsModifiers, uint vk);
+	public static extern bool RegisterHotKey([Optional] HWND hWnd, int id, HotKeyModifiers fsModifiers, uint vk);
 
 	/// <summary>
 	/// <para>
@@ -2551,7 +2551,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "unregisterhotkey")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnregisterHotKey(HWND hWnd, int id);
+	public static extern bool UnregisterHotKey([Optional] HWND hWnd, int id);
 
 	/// <summary>
 	/// <para>

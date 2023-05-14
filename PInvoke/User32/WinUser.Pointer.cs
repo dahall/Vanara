@@ -437,7 +437,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "4dd25033-e63a-4fa9-89b9-bfcae4061a76")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDeviceCursors(HANDLE device, ref uint cursorCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]POINTER_DEVICE_CURSOR_INFO[] deviceCursors);
+	public static extern bool GetPointerDeviceCursors(HANDLE device, ref uint cursorCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_DEVICE_CURSOR_INFO[]? deviceCursors);
 
 	/// <summary>Gets device properties that aren't included in the POINTER_DEVICE_INFO structure.</summary>
 	/// <param name="device">
@@ -461,7 +461,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "dbb81637-217a-49b1-9e81-2068cf4c0951")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDeviceProperties(HANDLE device, ref uint propertyCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_DEVICE_PROPERTY[] pointerProperties);
+	public static extern bool GetPointerDeviceProperties(HANDLE device, ref uint propertyCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_DEVICE_PROPERTY[]? pointerProperties);
 
 	/// <summary>
 	/// Gets the x and y range for the pointer device (in himetric) and the x and y range (current resolution) for the display that the
@@ -512,7 +512,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "91FD5EBA-EDD7-4D7D-ABF3-3CE2461417B0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDevices(ref uint deviceCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINTER_DEVICE_INFO[] pointerDevices);
+	public static extern bool GetPointerDevices(ref uint deviceCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINTER_DEVICE_INFO[]? pointerDevices);
 
 	/// <summary>Gets the entire frame of information for the specified pointers associated with the current message.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve frame information.</param>
@@ -605,7 +605,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "6b7f450d-6ab1-4991-b2f9-a1db3f065711")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameInfo(uint pointerId, ref uint pointerCount, [In, Out, MarshalAs(UnmanagedType.LPArray)] POINTER_INFO[] pointerInfo);
+	public static extern bool GetPointerFrameInfo(uint pointerId, ref uint pointerCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] POINTER_INFO[]? pointerInfo);
 
 	/// <summary>
 	/// Gets the entire frame of information (including coalesced input frames) for the specified pointers associated with the current message.
@@ -711,7 +711,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "1ae035d6-a375-4421-82a6-50be4a2341f6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out] POINTER_INFO[,] pointerInfo);
+	public static extern bool GetPointerFrameInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] POINTER_INFO[,]? pointerInfo);
 
 	/// <summary>
 	/// Gets the entire frame of pen-based information for the specified pointers (of type PT_PEN) associated with the current message.
@@ -807,7 +807,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "52db9b96-7f9e-41d7-88f7-b9c7691a6511")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFramePenInfo(uint pointerId, ref uint pointerCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_PEN_INFO[] penInfo);
+	public static extern bool GetPointerFramePenInfo(uint pointerId, ref uint pointerCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_PEN_INFO[]? penInfo);
 
 	/// <summary>
 	/// Gets the entire frame of pen-based information (including coalesced input frames) for the specified pointers (of type PT_PEN)
@@ -915,7 +915,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a4f6a9f3-dfbd-4413-aae7-f58e1521ef1d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFramePenInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out] POINTER_PEN_INFO[,] penInfo);
+	public static extern bool GetPointerFramePenInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] POINTER_PEN_INFO[,]? penInfo);
 
 	/// <summary>
 	/// Gets the entire frame of touch-based information for the specified pointers (of type PT_TOUCH) associated with the current message.
@@ -1011,7 +1011,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a100cc7a-62fc-4ace-8d35-e77aff98d944")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameTouchInfo(uint pointerId, ref uint pointerCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_TOUCH_INFO[] touchInfo);
+	public static extern bool GetPointerFrameTouchInfo(uint pointerId, ref uint pointerCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_TOUCH_INFO[]? touchInfo);
 
 	/// <summary>
 	/// Gets the entire frame of touch-based information (including coalesced input frames) for the specified pointers (of type
@@ -1119,7 +1119,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "f2521a67-9850-46e9-bc8b-75bf5b6cc263")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameTouchInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out] POINTER_TOUCH_INFO[,] touchInfo);
+	public static extern bool GetPointerFrameTouchInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] POINTER_TOUCH_INFO[,]? touchInfo);
 
 	/// <summary>
 	/// <para>Gets the information for the specified pointer associated with the current message.</para>
@@ -1211,7 +1211,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "92173197-45e8-4ee7-8959-2f14f90c2d21")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_INFO[] pointerInfo);
+	public static extern bool GetPointerInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_INFO[]? pointerInfo);
 
 	/// <summary>Gets one or more transforms for the pointer information coordinates associated with the current message.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
@@ -1382,7 +1382,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "90082327-b242-4f5d-8cd7-fd8ef9340395")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerPenInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_PEN_INFO[] penInfo);
+	public static extern bool GetPointerPenInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_PEN_INFO[]? penInfo);
 
 	/// <summary>Gets the touch-based information for the specified pointer (of type PT_TOUCH) associated with the current message.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
@@ -1475,7 +1475,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "9fdfbde7-4126-4c1b-b870-479f846e1aa9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerTouchInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_TOUCH_INFO[] touchInfo);
+	public static extern bool GetPointerTouchInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_TOUCH_INFO[]? touchInfo);
 
 	/// <summary>Retrieves the pointer type for a specified pointer.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve pointer type.</param>

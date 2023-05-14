@@ -248,7 +248,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialoga void CreateDialogA( hInstance, lpName,
 	// hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "createdialog")]
-	public static SafeHWND CreateDialog(HINSTANCE hInstance, string lpName, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
+	public static SafeHWND CreateDialog([Optional] HINSTANCE hInstance, SafeResourceId lpName, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -397,7 +397,7 @@ public static partial class User32
 	// dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createdialogindirectparam")]
-	public static extern SafeHWND CreateDialogIndirectParam(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern SafeHWND CreateDialogIndirectParam([Optional] HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -455,7 +455,7 @@ public static partial class User32
 	// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createdialogparam")]
-	public static extern SafeHWND CreateDialogParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern SafeHWND CreateDialogParam([Optional] HINSTANCE hInstance, SafeResourceId lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -555,7 +555,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate,
 	// hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-	public static IntPtr DialogBox(HINSTANCE hInstance, string lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBox([Optional] HINSTANCE hInstance, string lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -608,7 +608,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate,
 	// hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-	public static IntPtr DialogBox(HINSTANCE hInstance, ResourceId lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBox([Optional] HINSTANCE hInstance, ResourceId lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -828,7 +828,7 @@ public static partial class User32
 	// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
-	public static extern IntPtr DialogBoxParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern IntPtr DialogBoxParam([Optional] HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -893,7 +893,7 @@ public static partial class User32
 	// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
-	public static extern IntPtr DialogBoxParam(HINSTANCE hInstance, ResourceId lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern IntPtr DialogBoxParam([Optional] HINSTANCE hInstance, ResourceId lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// Retrieves the current selection from a combo box filled by using the DlgDirListComboBox function. The selection is interpreted as
@@ -1260,7 +1260,7 @@ public static partial class User32
 	// HWND hCtl, BOOL bPrevious );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getnextdlggroupitem")]
-	public static extern HWND GetNextDlgGroupItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+	public static extern HWND GetNextDlgGroupItem(HWND hDlg, [Optional] HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control.</para>
@@ -1304,7 +1304,7 @@ public static partial class User32
 	// hCtl, BOOL bPrevious );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getnextdlgtabitem")]
-	public static extern HWND GetNextDlgTabItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+	public static extern HWND GetNextDlgTabItem(HWND hDlg, [Optional] HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 	/// <summary>
 	/// <para>Determines whether a message is intended for the specified dialog box and, if it is, processes the message.</para>

@@ -857,7 +857,7 @@ public static partial class User32
 	// eventMin, DWORD eventMax, HMODULE hmodWinEventProc, WINEVENTPROC pfnWinEventProc, DWORD idProcess, DWORD idThread, DWORD dwFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "090bda1b-0635-4aa3-ae33-3987b36e30b8")]
-	public static extern HWINEVENTHOOK SetWinEventHook(uint eventMin, uint eventMax, HINSTANCE hmodWinEventProc, WinEventProc pfnWinEventProc, uint idProcess, uint idThread, WINEVENT dwFlags);
+	public static extern HWINEVENTHOOK SetWinEventHook(uint eventMin, uint eventMax, [Optional] HINSTANCE hmodWinEventProc, WinEventProc pfnWinEventProc, uint idProcess, [Optional] uint idThread, WINEVENT dwFlags);
 
 	/// <summary>
 	/// <para>Removes a hook procedure installed in a hook chain by the SetWindowsHookEx function.</para>
@@ -1341,7 +1341,7 @@ public static partial class User32
 		/// <para>Type: <c>ULONG_PTR</c></para>
 		/// <para>Additional information associated with the message.</para>
 		/// </summary>
-		public UIntPtr dwExtraInfo;
+		public IntPtr dwExtraInfo;
 	}
 
 	/// <summary>
@@ -1375,7 +1375,7 @@ public static partial class User32
 		/// <para>Type: <c>ULONG_PTR</c></para>
 		/// <para>Additional information associated with the message.</para>
 		/// </summary>
-		public UIntPtr dwExtraInfo;
+		public IntPtr dwExtraInfo;
 	}
 
 	/// <summary>
@@ -1412,7 +1412,7 @@ public static partial class User32
 		/// <para>Type: <c>ULONG_PTR</c></para>
 		/// <para>Additional information associated with the message.</para>
 		/// </summary>
-		public UIntPtr dwExtraInfo;
+		public IntPtr dwExtraInfo;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -1522,7 +1522,7 @@ public static partial class User32
 		/// <para>Type: <c>ULONG_PTR</c></para>
 		/// <para>Additional information associated with the message.</para>
 		/// </summary>
-		public UIntPtr dwExtraInfo;
+		public IntPtr dwExtraInfo;
 	}
 
 	/// <summary>
