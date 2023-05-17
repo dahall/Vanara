@@ -873,13 +873,13 @@ public static partial class ComCtl32
 	/// <summary>Contains information about a trackbar change notification. This message is sent with the TRBN_THUMBPOSCHANGING notification.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760153")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTRBTHUMBPOSCHANGING
+	public struct NMTRBTHUMBPOSCHANGING : INotificationInfo
 	{
-		/// <summary>Position on trackbar.</summary>
-		public uint dwPos;
-
 		/// <summary>A NMHDR structure that describes the notification.</summary>
 		public NMHDR hdr;
+
+		/// <summary>Position on trackbar.</summary>
+		public uint dwPos;
 
 		/// <summary>
 		/// Type of movement as one of the following values: TB_LINEUP, TB_LINEDOWN, TB_PAGEUP, TB_PAGEDOWN, TB_THUMBPOSITION,

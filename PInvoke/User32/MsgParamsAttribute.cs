@@ -52,9 +52,20 @@ public static class MsgExtensions
 		}
 		else
 		{
-			object? wParam = attr.WParamType is null ? null : attr.WParamType.IsNullable() ? msg.wParam.ToStructure(attr.WParamType) : msg.wParam.ToInt32().CastTo(attr.WParamType);
-			object? lParam = attr.LParamType is null ? null : attr.LParamType.IsNullable() ? msg.lParam.ToStructure(attr.LParamType) : msg.lParam.ToInt32().CastTo(attr.LParamType);
+			object? wParam = GetParam(attr.WParamType, msg.wParam);
+			object? lParam = GetParam(attr.LParamType, msg.lParam);
 			return (wParam, lParam);
+		}
+
+		static object? GetParam(Type? t, IntPtr p)
+		{
+			if (t is null)
+				return null;
+			if (t.IsClass)
+				return p.ToStructure(t);
+			if (t.IsNullable())
+				return p.ToStructure(t.GetGenericArguments()[0]);
+			return p.ToInt32().CastTo(t);
 		}
 	}
 }

@@ -5769,7 +5769,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774773")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMLISTVIEW
+	public struct NMLISTVIEW : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains information about this notification message</summary>
 		public NMHDR hdr;

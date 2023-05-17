@@ -1021,7 +1021,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760258")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NMTTDISPINFO
+	public struct NMTTDISPINFO : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains additional information about the notification.</summary>
 		public NMHDR hdr;

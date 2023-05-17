@@ -2861,7 +2861,7 @@ public static partial class ComCtl32
 		TBSTYLE_CHECK = 0x0002,
 
 		/// <summary>Equivalent to BTNS_CHECKGROUP. Use TBSTYLE_CHECKGROUP for version 4.72 and earlier.</summary>
-		TBSTYLE_CHECKGROUP = (TBSTYLE_GROUP | TBSTYLE_CHECK),
+		TBSTYLE_CHECKGROUP = TBSTYLE_GROUP | TBSTYLE_CHECK,
 
 		/// <summary>Version 4.70. Generates NM_CUSTOMDRAW notification codes when the toolbar processes WM_ERASEBKGND messages.</summary>
 		TBSTYLE_CUSTOMERASE = 0x2000,
@@ -3160,7 +3160,7 @@ public static partial class ComCtl32
 	// *LPNMTBDISPINFO; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760452(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760452")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NMTBDISPINFO
+	public struct NMTBDISPINFO : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -3243,7 +3243,7 @@ public static partial class ComCtl32
 	// *LPNMTBGETINFOTIP; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760454(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760454")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NMTBGETINFOTIP
+	public struct NMTBGETINFOTIP : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -3290,7 +3290,7 @@ public static partial class ComCtl32
 	// typedef struct tagNMTBHOTITEM { NMHDR hdr; int idOld; int idNew; DWORD dwFlags;} NMTBHOTITEM, *LPNMTBHOTITEM; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760456(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760456")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTBHOTITEM
+	public struct NMTBHOTITEM : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -3378,7 +3378,7 @@ public static partial class ComCtl32
 	// cbBytesPerRecord; TBBUTTON tbButton;} NMTBRESTORE, *LPNMTBRESTORE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760458(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760458")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTBRESTORE
+	public struct NMTBRESTORE : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -3457,7 +3457,7 @@ public static partial class ComCtl32
 	// *LPNMTBSAVE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760471(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760471")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTBSAVE
+	public struct NMTBSAVE : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -3526,7 +3526,7 @@ public static partial class ComCtl32
 	// *LPNMTOOLBAR; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760473(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760473")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NMTOOLBAR
+	public struct NMTOOLBAR : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>

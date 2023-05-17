@@ -14,7 +14,19 @@ public static partial class ComCtl32
 	private const int HDM_FIRST = 0x1200;
 	private const int HDN_FIRST = -300;
 
+	/// <summary>The type of image list to retrieve.</summary>
+	[PInvokeData("Commctrl.h")]
+	public enum HDSIL : ushort
+	{
+		/// <summary>Indicates that this is a normal image list.</summary>
+		HDSIL_NORMAL = 0,
+
+		/// <summary>Indicates that this is a state image list.</summary>
+		HDSIL_STATE = 1
+	}
+
 	/// <summary>The variable that receives information about the results of a hit test.</summary>
+	[PInvokeData("Commctrl.h")]
 	[Flags]
 	public enum HeaderHitTestFlag : uint
 	{
@@ -66,6 +78,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>The type of filter specified by <see cref="HDITEM.pvFilter"/>.</summary>
+	[PInvokeData("Commctrl.h")]
 	public enum HeaderItemFilterType
 	{
 		/// <summary>String data.</summary>
@@ -82,6 +95,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Flags that specify an <see cref="HDITEM"/> format.</summary>
+	[PInvokeData("Commctrl.h")]
 	[Flags]
 	public enum HeaderItemFormat : uint
 	{
@@ -150,6 +164,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Determines which type of bitmap is displayed on a header column.</summary>
+	[PInvokeData("Commctrl.h")]
 	[Flags]
 	public enum HeaderItemImageDisplay
 	{
@@ -170,6 +185,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Flags indicating which <see cref="HDITEM"/> structure members contain valid data or must be filled in.</summary>
+	[PInvokeData("Commctrl.h")]
 	[Flags]
 	public enum HeaderItemMask : uint
 	{
@@ -219,6 +235,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Valid entries for <see cref="HDITEM.state"/>.</summary>
+	[PInvokeData("Commctrl.h")]
 	public enum HeaderItemState
 	{
 		/// <summary>No state value.</summary>
@@ -247,6 +264,7 @@ public static partial class ComCtl32
 		/// If the column value is specified as -1, all the filters are cleared, and the HDN_FILTERCHANGE notification is sent only once.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-clearfilter
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		HDM_CLEARFILTER = HDM_FIRST + 24, // int, 0
 
 		/// <summary>
@@ -263,6 +281,7 @@ public static partial class ComCtl32
 		/// <para>Returns a handle to an image list that contains the new image as its only element.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-createdragimage
+		[MsgParams(typeof(int), null, LResultType = typeof(HIMAGELIST))]
 		HDM_CREATEDRAGIMAGE = HDM_FIRST + 16, // int, 0
 
 		/// <summary>
@@ -276,6 +295,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-deleteitem
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		HDM_DELETEITEM = HDM_FIRST + 2, // int, 0
 
 		/// <summary>Moves the input focus to the edit box when a filter button has the focus.
@@ -305,6 +325,7 @@ public static partial class ComCtl32
 		/// <para>Returns an integer. The <c>LRESULT</c> is cast to an integer that indicates <c>TRUE</c>(1) or <c>FALSE</c>(0).</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-editfilter
+		[MsgParams(typeof(int), typeof(BOOL), LResultType = typeof(BOOL))]
 		HDM_EDITFILTER = HDM_FIRST + 23, // int, bool
 
 		/// <summary>
@@ -322,6 +343,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getbitmapmargin
+		[MsgParams()]
 		HDM_GETBITMAPMARGIN = HDM_FIRST + 21, // 0,0
 
 		/// <summary>
@@ -336,6 +358,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the item in focus.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getfocuseditem
+		[MsgParams()]
 		HDM_GETFOCUSEDITEM = HDM_FIRST + 27, // 0,0
 
 		/// <summary>
@@ -364,6 +387,7 @@ public static partial class ComCtl32
 		/// <para>Returns a handle to the image list set for the header control.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getimagelist
+		[MsgParams(typeof(HDSIL), null, LResultType = typeof(HIMAGELIST))]
 		HDM_GETIMAGELIST = HDM_FIRST + 9, // 0, 0
 
 		/// <summary>
@@ -386,6 +410,7 @@ public static partial class ComCtl32
 		/// Applications should not assume that the text will always be placed in the requested buffer.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitem
+		[MsgParams(typeof(int), typeof(HDITEM), LResultType = typeof(BOOL))]
 		HDM_GETITEM = HDM_FIRST + 11, // int, HDITEM
 
 		/// <summary>
@@ -399,6 +424,7 @@ public static partial class ComCtl32
 		/// <para>Returns the number of items if successful, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemcount
+		[MsgParams()]
 		HDM_GETITEMCOUNT = HDM_FIRST + 0, // 0, 0
 
 		/// <summary>
@@ -417,6 +443,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The header item must have style <c>HDF_SPLITBUTTON</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemdropdownrect
+		[MsgParams(typeof(int), typeof(RECT?), LResultType = typeof(BOOL))]
 		HDM_GETITEMDROPDOWNRECT = HDM_FIRST + 25, // int, RECT
 
 		/// <summary>
@@ -434,6 +461,7 @@ public static partial class ComCtl32
 		/// <para>Returns nonzero if successful, or zero otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemrect
+		[MsgParams(typeof(int), typeof(RECT?), LResultType = typeof(BOOL))]
 		HDM_GETITEMRECT = HDM_FIRST + 7, // int, RECT*
 
 		/// <summary>
@@ -462,6 +490,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getorderarray
+		[MsgParams(typeof(int), typeof(int[]), LResultType = typeof(BOOL))]
 		HDM_GETORDERARRAY = HDM_FIRST + 17, // iCount, lpArray
 
 		/// <summary>
@@ -480,6 +509,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The header control must have style <c>HDF_SPLITBUTTON</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getoverflowrect
+		[MsgParams(null, typeof(RECT?), LResultType = typeof(BOOL))]
 		HDM_GETOVERFLOWRECT = HDM_FIRST + 26, // 0, RECT*
 
 		/// <summary>
@@ -498,6 +528,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getunicodeformat
+		[MsgParams(null, null, LResultType = typeof(BOOL))]
 		HDM_GETUNICODEFORMAT = 0X2006,        // CCM_GETUNICODEFORMAT,
 
 		/// <summary>Tests a point to determine which header item, if any, is at the specified point.
@@ -510,9 +541,10 @@ public static partial class ComCtl32
 		/// of the test.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
-		/// <para>Returns the index of the item at the specified position, if any, or 1 otherwise.</para>
+		/// <para>Returns the index of the item at the specified position, if any, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-hittest
+		[MsgParams(null, typeof(HDHITTESTINFO), LResultType = typeof(int))]
 		HDM_HITTEST = HDM_FIRST + 6, // 0, HDHITTEST
 
 		/// <summary>
@@ -530,6 +562,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the new item if successful, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-insertitem
+		[MsgParams(typeof(int), typeof(HDITEM), LResultType = typeof(int))]
 		HDM_INSERTITEM = HDM_FIRST + 10, // int, HDITEM
 
 		/// <summary>
@@ -559,6 +592,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-layout
+		[MsgParams(null, typeof(HDLAYOUT), LResultType = typeof(BOOL))]
 		HDM_LAYOUT = HDM_FIRST + 5, // 0, HDLAYOUT
 
 		/// <summary>
@@ -1639,7 +1673,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information used in handling HDN_GETDISPINFO notification codes.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775253")]
 	[StructLayout(LayoutKind.Sequential)]
-	public sealed class NMHDDISPINFO
+	public sealed class NMHDDISPINFO : INotificationInfo
 	{
 		/// <summary>NMHDR structure containing information about this notification code</summary>
 		public NMHDR hdr;
@@ -1670,7 +1704,7 @@ public static partial class ComCtl32
 	/// <summary>Specifies or receives the attributes of a filter button click.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775255")]
 	[StructLayout(LayoutKind.Sequential)]
-	public sealed class NMHDFILTERBTNCLICK
+	public sealed class NMHDFILTERBTNCLICK : INotificationInfo
 	{
 		/// <summary>A handle of an NMHDR structure that contains additional information.</summary>
 		public NMHDR hdr;
@@ -1685,7 +1719,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information about header control notification messages. This structure supersedes the HD_NOTIFY structure.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775257")]
 	[StructLayout(LayoutKind.Sequential)]
-	public sealed class NMHEADER
+	public sealed class NMHEADER : INotificationInfo
 	{
 		/// <summary>A NMHDR structure that contains information about the notification message.</summary>
 		public NMHDR nmhdr;

@@ -122,7 +122,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information about a BCN_DROPDOWN notification.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775957")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMBCDROPDOWN
+	public struct NMBCDROPDOWN : INotificationInfo
 	{
 		/// <summary>An NMHDR structure containing information about the notification.</summary>
 		public NMHDR hdr;
@@ -134,7 +134,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information about the movement of the mouse over a button control.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775959")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMBCHOTITEM
+	public struct NMBCHOTITEM : INotificationInfo
 	{
 		/// <summary>An NMHDR structure.</summary>
 		public NMHDR hdr;

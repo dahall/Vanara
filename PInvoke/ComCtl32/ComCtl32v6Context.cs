@@ -22,7 +22,7 @@ namespace Vanara.Windows.Forms;
 [SuppressUnmanagedCodeSecurity]
 public class ComCtl32v6Context : IDisposable
 {
-	private SafeHACTCTX hActCtx;
+	private SafeHACTCTX hActCtx = SafeHACTCTX.Null;
 	private IntPtr localCookie;
 
 	/// <summary>Initializes a new instance of the <see cref="ComCtl32v6Context"/> class.</summary>
@@ -42,16 +42,17 @@ public class ComCtl32v6Context : IDisposable
 	{
 		try
 		{
-			if ((localCookie != IntPtr.Zero) && DeactivateActCtx(0, localCookie))
+			if (localCookie != IntPtr.Zero && DeactivateActCtx(0, localCookie))
 				localCookie = IntPtr.Zero;
 			hActCtx.Dispose();
+			hActCtx = SafeHACTCTX.Null;
 		}
 		catch { }
 	}
 
 	private void Activate()
 	{
-		if (hActCtx != null && !ActivateActCtx(hActCtx, out localCookie))
+		if (!hActCtx.IsInvalid && !ActivateActCtx(hActCtx, out localCookie))
 			localCookie = IntPtr.Zero;
 	}
 

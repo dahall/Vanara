@@ -154,7 +154,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information used with the CBEN_DRAGBEGIN notification code.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775748")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct NMCBEDRAGBEGIN
+	public struct NMCBEDRAGBEGIN : INotificationInfo
 	{
 		/// <summary>The NMHDR structure that contains information about the notification code.</summary>
 		public NMHDR hdr;
@@ -175,7 +175,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775750")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct NMCBEENDEDIT
+	public struct NMCBEENDEDIT : INotificationInfo
 	{
 		/// <summary>The NMHDR structure that contains information about the notification code.</summary>
 		public NMHDR hdr;
@@ -202,7 +202,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information specific to ComboBoxEx items for use with notification codes.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775752")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct NMCOMBOBOXEX
+	public struct NMCOMBOBOXEX : INotificationInfo
 	{
 		/// <summary>The NMHDR structure that contains information about the notification code.</summary>
 		public NMHDR hdr;

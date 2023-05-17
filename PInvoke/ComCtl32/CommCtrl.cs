@@ -766,16 +766,16 @@ public static partial class ComCtl32
 		CDDS_ITEM = 0x00010000,
 
 		/// <summary>Before an item is drawn.</summary>
-		CDDS_ITEMPREPAINT = (CDDS_ITEM | CDDS_PREPAINT),
+		CDDS_ITEMPREPAINT = CDDS_ITEM | CDDS_PREPAINT,
 
 		/// <summary>After an item has been drawn.</summary>
-		CDDS_ITEMPOSTPAINT = (CDDS_ITEM | CDDS_POSTPAINT),
+		CDDS_ITEMPOSTPAINT = CDDS_ITEM | CDDS_POSTPAINT,
 
 		/// <summary>Before an item is erased.</summary>
-		CDDS_ITEMPREERASE = (CDDS_ITEM | CDDS_PREERASE),
+		CDDS_ITEMPREERASE = CDDS_ITEM | CDDS_PREERASE,
 
 		/// <summary>After an item has been erased.</summary>
-		CDDS_ITEMPOSTERASE = (CDDS_ITEM | CDDS_POSTERASE),
+		CDDS_ITEMPOSTERASE = CDDS_ITEM | CDDS_POSTERASE,
 
 		/// <summary>
 		/// Flag combined with CDDS_ITEMPREPAINT or CDDS_ITEMPOSTPAINT if a subitem is being drawn. This will only be set if
@@ -970,7 +970,7 @@ public static partial class ComCtl32
 		for (var i = 0; i < controlIdentifiers.Length; i++)
 		{
 			lpInfo[(i + 1) * 2] = 1;
-			lpInfo[((i + 1) * 2) + 1] = controlIdentifiers[i];
+			lpInfo[(i + 1) * 2 + 1] = controlIdentifiers[i];
 		}
 		var ptr = InteropServices.SafeCoTaskMemHandle.CreateFromList(lpInfo);
 		GetEffectiveClientRect(hWnd, out var rect, (IntPtr)ptr);
@@ -1037,7 +1037,7 @@ public static partial class ComCtl32
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb776430")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, out IntPtr pdwRefData);
+	public static extern bool GetWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, nuint uIdSubclass, out IntPtr pdwRefData);
 
 	/// <summary>
 	/// Ensures that the common control DLL (Comctl32.dll) is loaded, and registers specific common control classes from the DLL. An
@@ -1076,64 +1076,107 @@ public static partial class ComCtl32
 
 	/// <summary>Loads a specified icon resource with a client-specified system metric.</summary>
 	/// <param name="hinst">
-	/// <para>Type: <c><c>HINSTANCE</c></c></para>
+	/// <para>Type: <c>HINSTANCE</c></para>
 	/// <para>
-	/// A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see <c>GetModuleHandle</c>.
+	/// A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see GetModuleHandle.
 	/// </para>
 	/// <para>To load a predefined icon or a standalone icon file, set this parameter to <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszName">
-	/// <para>Type: <c><c>PCWSTR</c></c></para>
+	/// <para>Type: <c>PCWSTR</c></para>
 	/// <para>
 	/// A pointer to a null-terminated, Unicode buffer that contains location information about the icon to load. It is interpreted as follows:
 	/// </para>
-	/// <para>If hinst is <c>NULL</c>, pszName can specify one of two things.</para>
-	/// <para>If hinst is non-null, pszName can specify one of two things.</para>
+	/// <para>If <c>hinst</c> is <c>NULL</c>, <c>pszName</c> can specify one of two things.</para>
+	/// <list type="number">
+	/// <item>
+	/// <description>The name of a standalone icon (.ico) file.</description>
+	/// </item>
+	/// <item>
+	/// <description>The identifier of a predefined icon to load. These identifiers are recognized:</description>
+	/// </item>
+	/// </list>
+	/// <para>If <c>hinst</c> is non-null, <c>pszName</c> can specify one of two things.</para>
+	/// <list type="number">
+	/// <item>
+	/// <description>The name of the icon resource, if the icon resource is to be loaded by name from the module.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// The icon ordinal, if the icon resource is to be loaded by ordinal from the module. This ordinal must be packaged by using the
+	/// MAKEINTRESOURCE macro.
+	/// </description>
+	/// </item>
+	/// </list>
 	/// </param>
 	/// <param name="lims">
 	/// <para>Type: <c>int</c></para>
 	/// <para>The desired metric. One of the following values:</para>
-	/// <para>
 	/// <list type="table">
 	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
 	/// </listheader>
 	/// <item>
-	/// <term>LIM_SMALL</term>
-	/// <term>Corresponds to SM_CXSMICON, the recommended pixel width of a small icon.</term>
+	/// <description><c>LIM_SMALL</c></description>
+	/// <description>Corresponds to SM_CXSMICON, the recommended pixel width of a small icon.</description>
 	/// </item>
 	/// <item>
-	/// <term>LIM_LARGE</term>
-	/// <term>Corresponds toSM_CXICON, the default pixel width of an icon.</term>
+	/// <description><c>LIM_LARGE</c></description>
+	/// <description>Corresponds toSM_CXICON, the default pixel width of an icon.</description>
 	/// </item>
 	/// </list>
-	/// </para>
 	/// </param>
 	/// <param name="phico">
-	/// <para>Type: <c><c>HICON</c>*</c></para>
+	/// <para>Type: <c>HICON*</c></para>
 	/// <para>When this function returns, contains a pointer to the handle of the loaded icon.</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c><c>HRESULT</c></c></para>
+	/// <para>Type: <c>HRESULT</c></para>
 	/// <para>Returns S_OK if successful, otherwise an error, including the following value.</para>
-	/// <para>
 	/// <list type="table">
 	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
+	/// <description>Return code</description>
+	/// <description>Description</description>
 	/// </listheader>
 	/// <item>
-	/// <term>E_INVALIDARG</term>
-	/// <term>The contents of the buffer pointed to by pszName do not fit any of the expected interpretations.</term>
+	/// <description><c>E_INVALIDARG</c></description>
+	/// <description>The contents of the buffer pointed to by <c>pszName</c> do not fit any of the expected interpretations.</description>
 	/// </item>
 	/// </list>
-	/// </para>
 	/// </returns>
-	// HRESULT LoadIconMetric( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int lims, _Out_ HICON *phico); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775701(v=vs.85).aspx
+	/// <remarks>
+	/// <para>
+	/// <c>LoadIconMetric</c> is similar to LoadIcon, but with the capability to specify the icon metric. It is used in place of
+	/// <c>LoadIcon</c> when the calling application wants to ensure a high quality icon. This is particularly useful in high dots per inch
+	/// (dpi) situations.
+	/// </para>
+	/// <para>Icons are extracted or created as follows.</para>
+	/// <list type="number">
+	/// <item>
+	/// <description>If an exact size match is found in the resource, that icon is used.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// If an exact size match cannot be found and a larger icon is available, a new icon is created by scaling the larger version down to
+	/// the desired size.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// If an exact size match cannot be found and no larger icon is available, a new icon is created by scaling a smaller icon up to the
+	/// desired size.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>Comparative calls are shown here for <c>LoadIconMetric</c> and LoadIcon.</para>
+	/// <para>The application is responsible for calling DestroyIcon on the retrieved icon.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/nf-commctrl-loadiconmetric
+	// HRESULT LoadIconMetric( [in] HINSTANCE hinst, [in] PCWSTR pszName, [in] int lims, [out] HICON *phico );
+	[PInvokeData("commctrl.h", MSDNShortId = "NF:commctrl.LoadIconMetric")]
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
-	[PInvokeData("Commctrl.h", MSDNShortId = "bb775701")]
-	public static extern HRESULT LoadIconMetric(HINSTANCE hinst, string pszName, LI_METRIC lims, out SafeHICON phico);
+	public static extern HRESULT LoadIconMetric([In, Optional] HINSTANCE hinst, [MarshalAs(UnmanagedType.LPWStr)] string pszName, LI_METRIC lims, out SafeHICON phico);
 
 	/// <summary>
 	/// Loads an icon. If the icon is not a standard size, this function scales down a larger image instead of scaling up a smaller image.
@@ -1238,7 +1281,7 @@ public static partial class ComCtl32
 	// HRESULT WINAPI LoadIconWithScaleDown( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int cx, _In_ int cy, _Out_ HICON *phico); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775703(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775703")]
-	public static extern HRESULT LoadIconWithScaleDown(HINSTANCE hinst, string pszName, int cx, int cy, out IntPtr phico);
+	public static extern HRESULT LoadIconWithScaleDown([In, Optional] HINSTANCE hinst, [MarshalAs(UnmanagedType.LPWStr)] string pszName, int cx, int cy, out SafeHICON phico);
 
 	/// <summary>Removes a subclass callback from a window.</summary>
 	/// <param name="hWnd">
@@ -1391,7 +1434,7 @@ public static partial class ComCtl32
 	// typedef struct tagNMCHAR { NMHDR hdr; UINT ch; DWORD dwItemPrev; DWORD dwItemNext;} NMCHAR, *LPNMCHAR; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775508(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775508")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMCHAR
+	public struct NMCHAR : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -1421,7 +1464,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information specific to an NM_CUSTOMDRAW notification code.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775483")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMCUSTOMDRAW
+	public struct NMCUSTOMDRAW : INotificationInfo
 	{
 		/// <summary>An NMHDR structure that contains information about this notification code.</summary>
 		public NMHDR hdr;
@@ -1454,7 +1497,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information about the two rectangles of a split button. Sent with the NM_GETCUSTOMSPLITRECT notification.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775510")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMCUSTOMSPLITRECTINFO
+	public struct NMCUSTOMSPLITRECTINFO : INotificationInfo
 	{
 		/// <summary>An NMHDR structure that contains information about the notification.</summary>
 		public NMHDR hdr;
@@ -1474,7 +1517,7 @@ public static partial class ComCtl32
 	// *LPNMCUSTOMTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775512(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775512")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct NMCUSTOMTEXT
+	public struct NMCUSTOMTEXT : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -1513,7 +1556,7 @@ public static partial class ComCtl32
 		/// function. This may be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public uint uFormat;
+		public DrawTextFlags uFormat;
 
 		/// <summary>
 		/// <para>Type: <c><c>BOOL</c></c></para>
@@ -1527,7 +1570,7 @@ public static partial class ComCtl32
 	// typedef struct tagNMKEY { NMHDR hdr; UINT nVKey; UINT uFlags;} NMKEY, *LPNMKEY; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775516(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775516")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMKEY
+	public struct NMKEY : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -1556,7 +1599,7 @@ public static partial class ComCtl32
 	// *LPNMMOUSE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775518(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775518")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMMOUSE
+	public struct NMMOUSE : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -1594,7 +1637,7 @@ public static partial class ComCtl32
 	// *LPNMOBJECTNOTIFY; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775520(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775520")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMOBJECTNOTIFY
+	public struct NMOBJECTNOTIFY : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>
@@ -1640,7 +1683,7 @@ public static partial class ComCtl32
 	// typedef struct tagNMTOOLTIPSCREATED { NMHDR hdr; HWND hwndToolTips;} NMTOOLTIPSCREATED, *LPNMTOOLTIPSCREATED; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775522(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775522")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTOOLTIPSCREATED
+	public struct NMTOOLTIPSCREATED : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>

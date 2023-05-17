@@ -442,7 +442,7 @@ public static partial class ComCtl32
 	/// </summary>
 	// typedef struct _NM_UPDOWN { NMHDR hdr; int iPos; int iDelta;} NMUPDOWN, *LPNMUPDOWN; https://msdn.microsoft.com/en-us/library/windows/desktop/bb759893(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb759893")]
-	public struct NMUPDOWN
+	public struct NMUPDOWN : INotificationInfo
 	{
 		/// <summary>
 		/// <para>Type: <c><c>NMHDR</c></c></para>

@@ -6,6 +6,14 @@ namespace Vanara.PInvoke;
 
 public static partial class User32
 {
+	/// <summary>
+	/// Interface to indicate that a structure provides information about a notification and contains a <see cref="NMHDR"/> structure as its
+	/// first member.
+	/// </summary>
+	public interface INotificationInfo
+	{
+	}
+
 	/// <summary>Contains information about a notification message.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-nmhdr
 	// typedef struct tagNMHDR { HWND hwndFrom; UINT_PTR idFrom; UINT code; } NMHDR;

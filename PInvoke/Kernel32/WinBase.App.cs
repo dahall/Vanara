@@ -1671,7 +1671,7 @@ public static partial class Kernel32
 		}
 
 		/// <summary>Represents a NULL value.</summary>
-		public static HACTCTX Null => new SafeHACTCTX(IntPtr.Zero, false);
+		public static SafeHACTCTX Null => new SafeHACTCTX(IntPtr.Zero, false);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeHACTCTX"/> to <see cref="HACTCTX"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>

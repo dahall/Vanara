@@ -2343,7 +2343,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773411")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NMTREEVIEW
+	public struct NMTREEVIEW : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains information about this notification message.</summary>
 		public NMHDR hdr;
@@ -2380,7 +2380,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773413")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTVASYNCDRAW
+	public struct NMTVASYNCDRAW : INotificationInfo
 	{
 		/// <summary>NMHDR structure.</summary>
 		public NMHDR hdr;
@@ -2438,7 +2438,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773418")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NMTVDISPINFO
+	public struct NMTVDISPINFO : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains information about this notification.</summary>
 		public NMHDR hdr;
@@ -2453,7 +2453,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information pertaining to extended TreeView notification information.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760143")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NMTVDISPINFOEX
+	public struct NMTVDISPINFOEX : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains information about this notification.</summary>
 		public NMHDR hdr;
@@ -2468,7 +2468,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773421")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct NMTVGETINFOTIP
+	public struct NMTVGETINFOTIP : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains information about this notification.</summary>
 		public NMHDR hdr;
@@ -2497,7 +2497,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773425")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct NMTVITEMCHANGE
+	public struct NMTVITEMCHANGE : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains information about the notification.</summary>
 		public NMHDR hdr;
@@ -2527,7 +2527,7 @@ public static partial class ComCtl32
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773433")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTVKEYDOWN
+	public struct NMTVKEYDOWN : INotificationInfo
 	{
 		/// <summary>NMHDR structure that contains information about this notification.</summary>
 		public NMHDR hdr;

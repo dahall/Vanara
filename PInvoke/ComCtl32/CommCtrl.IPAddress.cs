@@ -172,7 +172,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information for the IPN_FIELDCHANGED notification code.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb761375")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMIPADDRESS
+	public struct NMIPADDRESS : INotificationInfo
 	{
 		/// <summary>An <see cref="NMHDR"/> structure that contains additional information about the notification.</summary>
 		public NMHDR hdr;
