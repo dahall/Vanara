@@ -946,7 +946,7 @@ namespace Vanara.PInvoke
 		/// <summary>Allows an application to retrieve the most recent and frequent documents opened in that app, as reported via SHAddToRecentDocs</summary>
 		/// <securitynote>Critical: Suppresses unmanaged code security.</securitynote>
 		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("3c594f9f-9f30-47a1-979a-c9e83d3d0a06")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("3c594f9f-9f30-47a1-979a-c9e83d3d0a06"), CoClass(typeof(ApplicationDocumentLists))]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762502")]
 		public interface IApplicationDocumentLists
 		{
@@ -2625,6 +2625,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h")]
 		[ComImport, Guid("86c14003-4d6b-4ef3-a7b4-0506663b2e68"), ClassInterface(ClassInterfaceType.None)]
 		public class ApplicationDestinations { }
+
+		/// <summary>Implements CLSID_ApplicationDocumentLists to create IApplicationDocumentLists.</summary>
+		[PInvokeData("shobjidl_core.h")]
+		[ComImport, Guid("86bec222-30f2-47e0-9f25-60d11cd75c28"), ClassInterface(ClassInterfaceType.None)]
+		public class ApplicationDocumentLists { }
 
 		/// <summary>Class interface for IEnumerableObjectCollection.</summary>
 		[ComImport, Guid("2d3468c1-36a7-43b6-ac24-d3f02fd9607a"), ClassInterface(ClassInterfaceType.None)]
