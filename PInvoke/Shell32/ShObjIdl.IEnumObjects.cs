@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -9,7 +10,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ienumobjects
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IEnumObjects")]
 		[ComImport, Guid("2c1c7e2e-2d0e-4059-831e-1e6f82335c2e"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumObjects : Vanara.Collections.ICOMEnum<object>
+		public interface IEnumObjects
 		{
 			/// <summary>Gets the next specified number and type of objects.</summary>
 			/// <param name="celt">
@@ -73,6 +74,18 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumobjects-clone HRESULT Clone(
 			// IEnumObjects **ppenum );
 			IEnumObjects Clone();
+		}
+
+		/// <summary>Enumerates the objects exposed by a <see cref="IEnumObjects"/> instance.</summary>
+		/// <typeparam name="TInterface">The type of the interface to enumerate.</typeparam>
+		/// <param name="obj">The <see cref="IEnumObjects"/> instance.</param>
+		/// <returns>A sequence of <typeparamref name="TInterface"/> instances.</returns>
+		public static IEnumerable<TInterface> Enumerate<TInterface>(this IEnumObjects obj) where TInterface : class
+		{
+			var iid = typeof(TInterface).GUID;
+			var arr = new object[1];
+			while (obj.Next(1, iid, arr, out var fetched) == HRESULT.S_OK && fetched == 1)
+				yield return arr[0] as TInterface;
 		}
 	}
 }
