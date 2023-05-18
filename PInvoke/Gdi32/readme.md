@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll
 
 - Includes methods from gdi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Gdi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Gdi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)  
-### Methods - 100% API coverage (306 of 306 functions)  
+### Methods - 99% API coverage (306 of 307 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -110,6 +110,7 @@ Native Method | Header | Managed Method
 [GdiGetPageHandle](https://www.google.com/search?num=5&q=GdiGetPageHandle+site%3Alearn.microsoft.com) | winppi.h | [Vanara.PInvoke.Gdi32.GdiGetPageHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetPageHandle)  
 [GdiGetSpoolFileHandle](https://www.google.com/search?num=5&q=GdiGetSpoolFileHandle+site%3Alearn.microsoft.com) | winppi.h | [Vanara.PInvoke.Gdi32.GdiGetSpoolFileHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGetSpoolFileHandle)  
 [GdiGradientFill](https://www.google.com/search?num=5&q=GdiGradientFill+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiGradientFill](https://github.com/dahall/Vanara/search?l=C%23&q=GdiGradientFill)  
+[GdiHandleBeingTracked](https://www.google.com/search?num=5&q=GdiHandleBeingTracked+site%3Alearn.microsoft.com) |  |   
 [GdiPlayPageEMF](https://www.google.com/search?num=5&q=GdiPlayPageEMF+site%3Alearn.microsoft.com) | winppi.h | [Vanara.PInvoke.Gdi32.GdiPlayPageEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiPlayPageEMF)  
 [GdiResetDCEMF](https://www.google.com/search?num=5&q=GdiResetDCEMF+site%3Alearn.microsoft.com) | winppi.h | [Vanara.PInvoke.Gdi32.GdiResetDCEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiResetDCEMF)  
 [GdiSetBatchLimit](https://www.google.com/search?num=5&q=GdiSetBatchLimit+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiSetBatchLimit](https://github.com/dahall/Vanara/search?l=C%23&q=GdiSetBatchLimit)  

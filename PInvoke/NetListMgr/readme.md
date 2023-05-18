@@ -29,7 +29,9 @@ Native Interface | Header | Managed Interface
 [IEnumNetworks](https://www.google.com/search?num=5&q=IEnumNetworks+site%3Alearn.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.IEnumNetworks](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumNetworks)  
 [IErrorLog](https://www.google.com/search?num=5&q=IErrorLog+site%3Alearn.microsoft.com) |  |   
 [INetwork](https://www.google.com/search?num=5&q=INetwork+site%3Alearn.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetwork](https://github.com/dahall/Vanara/search?l=C%23&q=INetwork)  
+[INetwork2](https://www.google.com/search?num=5&q=INetwork2+site%3Alearn.microsoft.com) |  |   
 [INetworkConnection](https://www.google.com/search?num=5&q=INetworkConnection+site%3Alearn.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnection](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnection)  
+[INetworkConnection2](https://www.google.com/search?num=5&q=INetworkConnection2+site%3Alearn.microsoft.com) |  |   
 [INetworkConnectionCost](https://www.google.com/search?num=5&q=INetworkConnectionCost+site%3Alearn.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnectionCost](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnectionCost)  
 [INetworkConnectionCostEvents](https://www.google.com/search?num=5&q=INetworkConnectionCostEvents+site%3Alearn.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnectionCostEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnectionCostEvents)  
 [INetworkConnectionEvents](https://www.google.com/search?num=5&q=INetworkConnectionEvents+site%3Alearn.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkConnectionEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkConnectionEvents)  

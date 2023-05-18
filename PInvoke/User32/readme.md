@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 
 - Includes methods from user32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.User32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.User32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.User32)  
-### Methods - 100% API coverage (564 of 564 functions)  
+### Methods - 99% API coverage (564 of 565 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -514,6 +514,7 @@ Native Method | Header | Managed Method
 [SetWindowsHookExW](https://www.google.com/search?num=5&q=SetWindowsHookExW+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowsHookEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowsHookEx)  
 [SetWindowText](https://www.google.com/search?num=5&q=SetWindowTextA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowText](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowText)  
 [SetWinEventHook](https://www.google.com/search?num=5&q=SetWinEventHook+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWinEventHook](https://github.com/dahall/Vanara/search?l=C%23&q=SetWinEventHook)  
+[ShellRegisterHotKey](https://www.google.com/search?num=5&q=ShellRegisterHotKey+site%3Alearn.microsoft.com) |  |   
 [ShowCaret](https://www.google.com/search?num=5&q=ShowCaret+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ShowCaret](https://github.com/dahall/Vanara/search?l=C%23&q=ShowCaret)  
 [ShowCursor](https://www.google.com/search?num=5&q=ShowCursor+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ShowCursor](https://github.com/dahall/Vanara/search?l=C%23&q=ShowCursor)  
 [ShowOwnedPopups](https://www.google.com/search?num=5&q=ShowOwnedPopups+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ShowOwnedPopups](https://github.com/dahall/Vanara/search?l=C%23&q=ShowOwnedPopups)  
