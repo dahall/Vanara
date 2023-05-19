@@ -3490,6 +3490,31 @@ public static partial class Shell32
 	public static extern void SHAddToRecentDocs(SHARD uFlags, PIDL pv);
 
 	/// <summary>
+	/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
+	/// frequently. This function can also be used to clear all usage data.
+	/// </summary>
+	/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
+	/// <param name="pv">
+	/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the
+	/// following forms:
+	/// <list type="bullet">
+	/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
+	/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
+	/// <item>
+	/// <definition>Windows 7 and later only. A <see cref="SHARDAPPIDINFO"/>, <see cref="SHARDAPPIDINFOIDLIST"/>, or <see
+	/// cref="SHARDAPPIDINFOLINK"/> structure that identifies the item through an AppUserModelID. See Application User Model IDs
+	/// (AppUserModelIDs) for more information.</definition>
+	/// </item>
+	/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
+	/// </list>
+	/// <para>Set this parameter to NULL to clear all usage data on all items.</para>
+	/// </param>
+	[DllImport(Lib.Shell32, ExactSpelling = true)]
+	[SecurityCritical, SuppressUnmanagedCodeSecurity]
+	[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
+	public static extern void SHAddToRecentDocs(SHARD uFlags, IntPtr pv);
+
+	/// <summary>
 	/// <para>
 	/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this
 	/// function binds to the parent of the namespace item and optionally returns a pointer to the final component of the item identifier list.
@@ -7576,12 +7601,116 @@ public static partial class Shell32
 	}
 
 	/// <summary>
+	/// Contains data used by SHAddToRecentDocs to identify both an itemâin this case as an IShellItemâand the process that it is
+	/// associated with.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-shardappidinfo typedef struct SHARDAPPIDINFO {
+	// IShellItem *psi; PCWSTR pszAppID; } SHARDAPPIDINFO;
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core.SHARDAPPIDINFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SHARDAPPIDINFO
+	{
+		/// <summary>
+		/// <para>Type: <c>IShellItem*</c></para>
+		/// <para>Pointer to an IShellItem object that represents the object in the Shell namespace.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
+		public IShellItem psi;
+
+		/// <summary>
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>The application-defined AppUserModelID associated with the item.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszAppID;
+	}
+
+	/// <summary>
+	/// Contains data used by SHAddToRecentDocs to identify both an itemâin this case by an absolute pointer to an item identifier list
+	/// (PIDL)âand the process that it is associated with.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-shardappidinfoidlist typedef struct
+	// SHARDAPPIDINFOIDLIST { PCIDLIST_ABSOLUTE pidl; PCWSTR pszAppID; } SHARDAPPIDINFOIDLIST;
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core.SHARDAPPIDINFOIDLIST")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SHARDAPPIDINFOIDLIST
+	{
+		private IntPtr _pidl;
+
+		/// <summary>
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>The application-defined AppUserModelID associated with the item.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszAppID;
+
+		/// <summary>
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>An absolute PIDL that gives the full path of the item in the Shell namespace.</para>
+		/// </summary>
+		public PIDL pidl { get => _pidl == IntPtr.Zero ? null : new PIDL(_pidl); set => _pidl = value?.DangerousGetHandle() ?? IntPtr.Zero; }
+	}
+
+	/// <summary>
+	/// Contains data used by SHAddToRecentDocs to identify both an item, in this case through an IShellLink, and the process that it is
+	/// associated with.
+	/// </summary>
+	/// <remarks>
+	/// <para>The IShellLink instance pointed to by <c>psl</c> must provide the following:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// Either a pointer to an item identifier list (PIDL) (IShellLink::SetIDList) or the target path (IShellLink::SetPath or IShellLink::SetRelativePath)
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>Command-line arguments (IShellLink::SetArguments)</description>
+	/// </item>
+	/// <item>
+	/// <description>Icon location (IShellLink::SetIconLocation)</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The display name must be set through the item's System.Title (PKEY_Title) property. The property can directly hold the display
+	/// name or it can be an indirect string representation, such as "@shell32.dll,-1324", to use a stored string. An indirect string
+	/// enables the item name to be displayed in the user's selected language.
+	/// </para>
+	/// <para>
+	/// Optionally, the description field (IShellLink::SetDescription) can be set to provide a custom tooltip for the item in the Jump List.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-shardappidinfolink typedef struct
+	// SHARDAPPIDINFOLINK { IShellLink *psl; PCWSTR pszAppID; } SHARDAPPIDINFOLINK;
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core.SHARDAPPIDINFOLINK")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SHARDAPPIDINFOLINK
+	{
+		/// <summary>
+		/// <para>Type: <c>IShellLink*</c></para>
+		/// <para>
+		/// Pointer to an IShellLink instance that, when launched, opens the item. The shortcut is not added by SHAddToRecentDocs to the
+		/// user's <c>Recent</c> folder (CSIDL_RECENT, FOLDERID_Recent), but it is added to the <c>Recent</c> category in the specified
+		/// application's Jump List.
+		/// </para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
+		public IShellLinkW psl;
+
+		/// <summary>
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>The application-defined AppUserModelID associated with the item.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszAppID;
+	}
+
+	/// <summary>
 	/// Contains and receives information for change notifications. This structure is used with the SHChangeNotifyRegister function and
 	/// the SFVM_QUERYFSNOTIFY notification.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_shchangenotifyentry typedef struct
-	// _SHChangeNotifyEntry { PCIDLIST_ABSOLUTE pidl; BOOL fRecursive; } SHChangeNotifyEntry;
-	[PInvokeData("shlobj_core.h", MSDNShortId = "cb11435a-86f0-4b06-bfc6-e0417f2897a1")]
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-shchangenotifyentry typedef struct _SHChangeNotifyEntry
+	// { PCIDLIST_ABSOLUTE pidl; BOOL fRecursive; } SHChangeNotifyEntry; // _SHChangeNotifyEntry { PCIDLIST_ABSOLUTE pidl; BOOL fRecursive; } SHChangeNotifyEntry;
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core._SHChangeNotifyEntry")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct SHChangeNotifyEntry
 	{
@@ -7613,11 +7742,7 @@ public static partial class Shell32
 		/// <summary>Initializes a new instance of the <see cref="SHChangeNotifyEntry"/> struct.</summary>
 		/// <param name="pidl">PIDL for which to receive notifications.</param>
 		/// <param name="recursive">A flag indicating whether to post notifications for children of this PIDL.</param>
-		public SHChangeNotifyEntry(PIDL pidl, bool recursive = false)
-		{
-			this.pidl = pidl?.DangerousGetHandle() ?? default;
-			fRecursive = recursive;
-		}
+		public SHChangeNotifyEntry(PIDL pidl, bool recursive = false) : this(pidl?.DangerousGetHandle() ?? default, recursive) { }
 	}
 
 	/// <summary>Receives item data in response to a call to SHGetDataFromIDList.</summary>
