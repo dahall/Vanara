@@ -8,9 +8,9 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="7.2.1.6856" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7345" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />

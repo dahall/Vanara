@@ -156,7 +156,7 @@
     </CustomBuildStep>-->
   </ItemDefinitionGroup>
   <ItemGroup>
-    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
