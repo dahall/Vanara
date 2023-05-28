@@ -20,7 +20,7 @@ public class WinSCardTests
 	[Test]
 	public void ListTest()
 	{
-		SCardEstablishContext(SCARD_SCOPE.SCARD_SCOPE_USER, phContext: out var ctx).ThrowIfFailed();
+		SCardEstablishContext(SCARD_SCOPE.SCARD_SCOPE_SYSTEM, phContext: out var ctx).ThrowIfFailed();
 
 		SCardListReaders(ctx, null, out var readers).ThrowIfFailed();
 		TestContext.WriteLine("Registerd Readers(s)\n======================\n" + (readers is null ? "None" : string.Join("\n", readers)));
