@@ -2,7 +2,7 @@ global using System;
 global using System.Runtime.InteropServices;
 global using Vanara.InteropServices;
 
-global using SCARDCONTEXT = System.UIntPtr;
+global using SCARDCONTEXT = nuint;
 using System.Linq;
 using System.Text;
 using Vanara.Extensions;
@@ -67,6 +67,8 @@ public static partial class WinSCard
 	/// <param name="pvUserData">Pointer to user data passed in the parameter block.</param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	public delegate void LPOCNDSCPROC([In] SCARDCONTEXT hSCardContext, [In] SCARDHANDLE hcard, [In] IntPtr pvUserData);
+
+	private delegate SCARD_RET SCardListCardsDelegate(IntPtr mszOut, ref uint pcch);
 
 	/// <summary></summary>
 	[PInvokeData("winscard.h", MSDNShortId = "NS:winscard.__unnamed_struct_4")]
@@ -1863,7 +1865,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardIntroduceCardTypeA")]
 	public static extern SCARD_RET SCardIntroduceCardType([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName,
-		in Guid pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[] rgguidInterfaces,
+		in Guid pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[]? rgguidInterfaces,
 		[In] uint dwInterfaceCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtr,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtrMask, [In] uint cbAtrLen);
 
@@ -1944,7 +1946,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardIntroduceCardTypeA")]
 	public static extern SCARD_RET SCardIntroduceCardType([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName,
-		[In, Optional] IntPtr pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[] rgguidInterfaces,
+		[In, Optional] IntPtr pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[]? rgguidInterfaces,
 		[In] uint dwInterfaceCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtr,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtrMask, [In] uint cbAtrLen);
 
@@ -2232,8 +2234,8 @@ public static partial class WinSCard
 	// LPDWORD pcchCards );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListCardsA")]
-	public static extern SCARD_RET SCardListCards([In] SCARDCONTEXT hContext, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[] pbAtr,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[] rgquidInterfaces, [In] uint cguidInterfaceCount,
+	public static extern SCARD_RET SCardListCards([In] SCARDCONTEXT hContext, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? pbAtr,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[]? rgquidInterfaces, [In] uint cguidInterfaceCount,
 		[Out] IntPtr mszCards, ref uint pcchCards);
 
 	/// <summary>
@@ -2246,35 +2248,37 @@ public static partial class WinSCard
 	/// are supplied, the cards returned will match the ATR string supplied and support the interfaces specified.
 	/// </para>
 	/// </summary>
-	/// <param name="hContext"><para>
+	/// <param name="hContext">
+	/// <para>
 	/// Handle that identifies the resource manager context for the query. The resource manager context can be set by a previous call to SCardEstablishContext.
 	/// </para>
-	/// <para>If this parameter is set to <c>NULL</c>, the search for cards is not limited to any context.</para></param>
+	/// <para>If this parameter is set to <c>NULL</c>, the search for cards is not limited to any context.</para>
+	/// </param>
 	/// <param name="pbAtr">Address of an ATR string to compare to known cards, or <c>NULL</c> if no ATR matching is to be performed.</param>
-	/// <param name="rgquidInterfaces">Array of identifiers (GUIDs), or <c>NULL</c> if no interface matching is to be performed. When an array is supplied, a card name will
-	/// be returned only if all the specified identifiers are supported by the card.</param>
-	/// <param name="mszCards">Multi-string that lists the smart cards found. If this value is <c>NULL</c>, <c>SCardListCards</c> ignores the buffer length supplied
+	/// <param name="rgquidInterfaces">
+	/// Array of identifiers (GUIDs), or <c>NULL</c> if no interface matching is to be performed. When an array is supplied, a card name will
+	/// be returned only if all the specified identifiers are supported by the card.
+	/// </param>
+	/// <param name="mszCards">
+	/// Multi-string that lists the smart cards found. If this value is <c>NULL</c>, <c>SCardListCards</c> ignores the buffer length supplied
 	/// in <c>pcchCards</c>, returning the length of the buffer that would have been returned if this parameter had not been <c>NULL</c> to
-	/// <c>pcchCards</c> and a success code.</param>
+	/// <c>pcchCards</c> and a success code.
+	/// </param>
 	/// <returns>
 	/// <para>This function returns different values depending on whether it succeeds or fails.</para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>Success</c>
-	///     </term>
-	///     <term>SCARD_S_SUCCESS.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>Failure</c>
-	///     </term>
-	///     <term>An error code. For more information, see Smart Card Return Values.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>Success</c></term>
+	/// <term>SCARD_S_SUCCESS.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Failure</c></term>
+	/// <term>An error code. For more information, see Smart Card Return Values.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
@@ -2293,21 +2297,13 @@ public static partial class WinSCard
 	/// <c>SCardBeginTransaction</c> function.
 	/// </para>
 	/// <para>
-	///   <c>Windows Server 2008 R2 and Windows 7:</c> Calling this function within a transaction could result in your computer becoming unresponsive.
+	/// <c>Windows Server 2008 R2 and Windows 7:</c> Calling this function within a transaction could result in your computer becoming unresponsive.
 	/// </para>
-	/// <para>
-	///   <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> Not applicable.</para>
+	/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> Not applicable.</para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListCardsA")]
-	public static SCARD_RET SCardListCards(SCARDCONTEXT hContext, [Optional] byte[] pbAtr, [Optional] Guid[] rgquidInterfaces, out string[] mszCards)
-	{
-		IntPtr ptr = default;
-		uint cch = SCARD_AUTOALLOCATE;
-		var ret = SCardListCards(hContext, pbAtr, rgquidInterfaces, (uint)(rgquidInterfaces?.Length ?? 0), ptr, ref cch);
-		mszCards = ret.Succeeded ? ptr.ToStringEnum(CharSet.Auto, 0, cch).ToArray() : null;
-		SCardFreeMemory(hContext, ptr);
-		return ret;
-	}
+	public static SCARD_RET SCardListCards(SCARDCONTEXT hContext, [Optional] byte[]? pbAtr, [Optional] Guid[]? rgquidInterfaces, out string[] mszCards) =>
+		ListSCardFunc((IntPtr p, ref uint c) => SCardListCards(hContext, pbAtr, rgquidInterfaces, (uint)(rgquidInterfaces?.Length ?? 0), p, ref c), out mszCards);
 
 	/// <summary>
 	/// <para>The <c>SCardListInterfaces</c> function provides a list of interfaces supplied by a given card.</para>
@@ -2456,29 +2452,27 @@ public static partial class WinSCard
 	/// the card.
 	/// </para>
 	/// </summary>
-	/// <param name="hContext">Handle that identifies the resource manager context for the query. The resource manager context can be set by a previous call to
-	/// SCardEstablishContext. This parameter cannot be <c>NULL</c>.</param>
+	/// <param name="hContext">
+	/// Handle that identifies the resource manager context for the query. The resource manager context can be set by a previous call to
+	/// SCardEstablishContext. This parameter cannot be <c>NULL</c>.
+	/// </param>
 	/// <param name="szCard">Name of the smart card already introduced to the smart card subsystem.</param>
 	/// <param name="pguidInterfaces">Array of interface identifiers (GUIDs) that indicate the interfaces supported by the smart card.</param>
 	/// <returns>
 	/// <para>This function returns different values depending on whether it succeeds or fails.</para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>Success</c>
-	///     </term>
-	///     <term>SCARD_S_SUCCESS.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>Failure</c>
-	///     </term>
-	///     <term>An error code. For more information, see Smart Card Return Values.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>Success</c></term>
+	/// <term>SCARD_S_SUCCESS.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Failure</c></term>
+	/// <term>An error code. For more information, see Smart Card Return Values.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
@@ -2492,15 +2486,8 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListInterfacesA")]
-	public static SCARD_RET SCardListInterfaces([In] SCARDCONTEXT hContext, string szCard, out Guid[] pguidInterfaces)
-	{
-		IntPtr ptr = default;
-		uint cch = SCARD_AUTOALLOCATE;
-		var ret = SCardListInterfaces(hContext, szCard, ptr, ref cch);
-		pguidInterfaces = ret.Succeeded ? ptr.ToArray<Guid>((int)cch) : null;
-		SCardFreeMemory(hContext, ptr);
-		return ret;
-	}
+	public static SCARD_RET SCardListInterfaces([In] SCARDCONTEXT hContext, string szCard, out Guid[] pguidInterfaces) =>
+		ListSCardFunc((IntPtr p, ref uint c) => SCardListInterfaces(hContext, szCard, p, ref c), out pguidInterfaces);
 
 	/// <summary>
 	/// The <c>SCardListReaderGroups</c> function provides the list of reader groups that have previously been introduced to the system.
@@ -2605,67 +2592,61 @@ public static partial class WinSCard
 	/// <summary>
 	/// The <c>SCardListReaderGroups</c> function provides the list of reader groups that have previously been introduced to the system.
 	/// </summary>
-	/// <param name="hContext"><para>
+	/// <param name="hContext">
+	/// <para>
 	/// Handle that identifies the resource manager context for the query. The resource manager context can be set by a previous call to SCardEstablishContext.
 	/// </para>
-	/// <para>If this parameter is set to <c>NULL</c>, the search for reader groups is not limited to any context.</para></param>
-	/// <param name="mszGroups"><para>
-	/// String array that lists the reader groups defined to the system and available to the current user on the current terminal.
-	/// </para>
+	/// <para>If this parameter is set to <c>NULL</c>, the search for reader groups is not limited to any context.</para>
+	/// </param>
+	/// <param name="mszGroups">
+	/// <para>String array that lists the reader groups defined to the system and available to the current user on the current terminal.</para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Value</term>
-	///     <term>Meaning</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_ALL_READERS</c> TEXT("SCard$AllReaders\000")</term>
-	///     <term>
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>SCARD_ALL_READERS</c> TEXT("SCard$AllReaders\000")</term>
+	/// <term>
 	/// Group used when no group name is provided when listing readers. Returns a list of all readers, regardless of what group or groups the
 	/// readers are in.
 	/// </term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_DEFAULT_READERS</c> TEXT("SCard$DefaultReaders\000")</term>
-	///     <term>Default group to which all readers are added when introduced into the system.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_LOCAL_READERS</c> TEXT("SCard$LocalReaders\000")</term>
-	///     <term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_DEFAULT_READERS</c> TEXT("SCard$DefaultReaders\000")</term>
+	/// <term>Default group to which all readers are added when introduced into the system.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_LOCAL_READERS</c> TEXT("SCard$LocalReaders\000")</term>
+	/// <term>
 	/// Unused legacy value. This is an internally managed group that cannot be modified by using any reader group APIs. It is intended to be
 	/// used for enumeration only.
 	/// </term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_SYSTEM_READERS</c> TEXT("SCard$SystemReaders\000")</term>
-	///     <term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_SYSTEM_READERS</c> TEXT("SCard$SystemReaders\000")</term>
+	/// <term>
 	/// Unused legacy value. This is an internally managed group that cannot be modified by using any reader group APIs. It is intended to be
 	/// used for enumeration only.
 	/// </term>
-	///   </item>
-	/// </list></param>
+	/// </item>
+	/// </list>
+	/// </param>
 	/// <returns>
 	/// <para>This function returns different values depending on whether it succeeds or fails.</para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>Success</c>
-	///     </term>
-	///     <term>SCARD_S_SUCCESS.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>Failure</c>
-	///     </term>
-	///     <term>An error code. For more information, see Smart Card Return Values.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>Success</c></term>
+	/// <term>SCARD_S_SUCCESS.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Failure</c></term>
+	/// <term>An error code. For more information, see Smart Card Return Values.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
@@ -2679,15 +2660,8 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReaderGroupsA")]
-	public static SCARD_RET SCardListReaderGroups([In, Optional] SCARDCONTEXT hContext, out string[] mszGroups)
-	{
-		IntPtr ptr = default;
-		uint cch = SCARD_AUTOALLOCATE;
-		var ret = SCardListReaderGroups(hContext, ptr, ref cch);
-		mszGroups = ret.Succeeded ? ptr.ToStringEnum(CharSet.Auto, 0, cch).ToArray() : null;
-		SCardFreeMemory(hContext, ptr);
-		return ret;
-	}
+	public static SCARD_RET SCardListReaderGroups([In, Optional] SCARDCONTEXT hContext, out string[] mszGroups) =>
+		ListSCardFunc((IntPtr p, ref uint c) => SCardListReaderGroups(hContext, p, ref c), out mszGroups);
 
 	/// <summary>
 	/// <para>The <c>SCardListReaders</c> function provides the list of readers within a set of named reader groups, eliminating duplicates.</para>
@@ -2800,7 +2774,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersA")]
 	public static extern SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext,
-		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] mszGroups,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[]? mszGroups,
 		[Out] IntPtr mszReaders, ref uint pcchReaders);
 
 	/// <summary>
@@ -2810,78 +2784,73 @@ public static partial class WinSCard
 	/// ignored. This function only returns readers within the named groups that are currently attached to the system and available for use.
 	/// </para>
 	/// </summary>
-	/// <param name="hContext"><para>
+	/// <param name="hContext">
+	/// <para>
 	/// Handle that identifies the resource manager context for the query. The resource manager context can be set by a previous call to SCardEstablishContext.
 	/// </para>
-	/// <para>If this parameter is set to <c>NULL</c>, the search for readers is not limited to any context.</para></param>
-	/// <param name="mszGroups"><para>
+	/// <para>If this parameter is set to <c>NULL</c>, the search for readers is not limited to any context.</para>
+	/// </param>
+	/// <param name="mszGroups">
+	/// <para>
 	/// Names of the reader groups defined to the system, as a string array. Use a <c>NULL</c> value to list all readers in the system (that
 	/// is, the SCard$AllReaders group).
 	/// </para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Value</term>
-	///     <term>Meaning</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_ALL_READERS</c> TEXT("SCard$AllReaders\000")</term>
-	///     <term>
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>SCARD_ALL_READERS</c> TEXT("SCard$AllReaders\000")</term>
+	/// <term>
 	/// Group used when no group name is provided when listing readers. Returns a list of all readers, regardless of what group or groups the
 	/// readers are in.
 	/// </term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_DEFAULT_READERS</c> TEXT("SCard$DefaultReaders\000")</term>
-	///     <term>Default group to which all readers are added when introduced into the system.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_LOCAL_READERS</c> TEXT("SCard$LocalReaders\000")</term>
-	///     <term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_DEFAULT_READERS</c> TEXT("SCard$DefaultReaders\000")</term>
+	/// <term>Default group to which all readers are added when introduced into the system.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_LOCAL_READERS</c> TEXT("SCard$LocalReaders\000")</term>
+	/// <term>
 	/// Unused legacy value. This is an internally managed group that cannot be modified by using any reader group APIs. It is intended to be
 	/// used for enumeration only.
 	/// </term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>SCARD_SYSTEM_READERS</c> TEXT("SCard$SystemReaders\000")</term>
-	///     <term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_SYSTEM_READERS</c> TEXT("SCard$SystemReaders\000")</term>
+	/// <term>
 	/// Unused legacy value. This is an internally managed group that cannot be modified by using any reader group APIs. It is intended to be
 	/// used for enumeration only.
 	/// </term>
-	///   </item>
-	/// </list></param>
+	/// </item>
+	/// </list>
+	/// </param>
 	/// <param name="mszReaders">String array that lists the card readers within the supplied reader groups.</param>
 	/// <returns>
 	/// <para>This function returns different values depending on whether it succeeds or fails.</para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>Success</c> 0 (0x0)</term>
-	///     <term>SCARD_S_SUCCESS</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>Group contains no readers</c> 2148532270 (0x8010002E)</term>
-	///     <term>SCARD_E_NO_READERS_AVAILABLE</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>Specified reader is not currently available for use</c> 2148532247 (0x80100017)</term>
-	///     <term>SCARD_E_READER_UNAVAILABLE</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>Other</c>
-	///     </term>
-	///     <term>An error code. For more information, see Smart Card Return Values.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>Success</c> 0 (0x0)</term>
+	/// <term>SCARD_S_SUCCESS</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Group contains no readers</c> 2148532270 (0x8010002E)</term>
+	/// <term>SCARD_E_NO_READERS_AVAILABLE</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Specified reader is not currently available for use</c> 2148532247 (0x80100017)</term>
+	/// <term>SCARD_E_READER_UNAVAILABLE</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Other</c></term>
+	/// <term>An error code. For more information, see Smart Card Return Values.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
@@ -2891,15 +2860,8 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersA")]
-	public static SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext, [In, Optional] string[] mszGroups, out string[] mszReaders)
-	{
-		IntPtr ptr = default;
-		uint cch = SCARD_AUTOALLOCATE;
-		var ret = SCardListReaders(hContext, mszGroups, ptr, ref cch);
-		mszReaders = ret.Succeeded ? ptr.ToStringEnum(CharSet.Auto, 0, cch).ToArray() : null;
-		SCardFreeMemory(hContext, ptr);
-		return ret;
-	}
+	public static SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext, [In, Optional] string[]? mszGroups, out string[]? mszReaders) =>
+		ListSCardFunc((IntPtr p, ref uint c) => SCardListReaders(hContext, mszGroups, p, ref c), out mszReaders);
 
 	/// <summary>
 	/// The <c>SCardListReadersWithDeviceInstanceId</c> function gets the list of readers that have provided a device instance identifier.
@@ -2971,30 +2933,30 @@ public static partial class WinSCard
 	/// The <c>SCardListReadersWithDeviceInstanceId</c> function gets the list of readers that have provided a device instance identifier.
 	/// This function does not affect the state of the reader.
 	/// </summary>
-	/// <param name="hContext">Handle that identifies the resource manager context for the query. You can set the resource manager context by a previous call to the
-	/// SCardEstablishContext function. This parameter cannot be <c>NULL</c>.</param>
-	/// <param name="szDeviceInstanceId">Device instance ID of the reader. You can get this value by calling the SCardGetReaderDeviceInstanceId function with the reader name
-	/// or by calling the SetupDiGetDeviceInstanceId function from the DDK.</param>
+	/// <param name="hContext">
+	/// Handle that identifies the resource manager context for the query. You can set the resource manager context by a previous call to the
+	/// SCardEstablishContext function. This parameter cannot be <c>NULL</c>.
+	/// </param>
+	/// <param name="szDeviceInstanceId">
+	/// Device instance ID of the reader. You can get this value by calling the SCardGetReaderDeviceInstanceId function with the reader name
+	/// or by calling the SetupDiGetDeviceInstanceId function from the DDK.
+	/// </param>
 	/// <param name="mszReaders">A string array that contain the smart card readers within the supplied device instance identifier.</param>
 	/// <returns>
 	/// <para>This function returns different values depending on whether it succeeds or fails.</para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>Success</c>
-	///     </term>
-	///     <term>SCARD_S_SUCCESS.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>Failure</c>
-	///     </term>
-	///     <term>An error code. For more information, see Smart Card Return Values.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>Success</c></term>
+	/// <term>SCARD_S_SUCCESS.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Failure</c></term>
+	/// <term>An error code. For more information, see Smart Card Return Values.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
@@ -3004,15 +2966,8 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersWithDeviceInstanceIdA")]
-	public static SCARD_RET SCardListReadersWithDeviceInstanceId([In] SCARDCONTEXT hContext, string szDeviceInstanceId, out string[] mszReaders)
-	{
-		IntPtr ptr = default;
-		uint cch = SCARD_AUTOALLOCATE;
-		var ret = SCardListReadersWithDeviceInstanceId(hContext, szDeviceInstanceId, ptr, ref cch);
-		mszReaders = ret.Succeeded ? ptr.ToStringEnum(CharSet.Auto, 0, cch).ToArray() : null;
-		SCardFreeMemory(hContext, ptr);
-		return ret;
-	}
+	public static SCARD_RET SCardListReadersWithDeviceInstanceId([In] SCARDCONTEXT hContext, string szDeviceInstanceId, out string[] mszReaders) =>
+		ListSCardFunc((IntPtr p, ref uint c) => SCardListReadersWithDeviceInstanceId(hContext, szDeviceInstanceId, p, ref c), out mszReaders);
 
 	/// <summary>
 	/// The <c>SCardLocateCards</c> function searches the readers listed in the <c>rgReaderStates</c> parameter for a card with an ATR string
@@ -3880,6 +3835,21 @@ public static partial class WinSCard
 	public static extern SCARD_RET SCardWriteCache([In] SCARDCONTEXT hContext, in Guid CardIdentifier, [In] uint FreshnessCounter,
 		[MarshalAs(UnmanagedType.LPTStr)] string LookupName, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] byte[] Data, [In] uint DataLen);
 
+	private static SCARD_RET ListSCardFunc<T>(SCardListCardsDelegate d, out T[] msz)
+	{
+		msz = new T[0];
+		uint cch = 0;
+		SCARD_RET ret = d(default, ref cch);
+		if (ret.Failed) return ret;
+		using SafeCoTaskMemHandle ptr = new(Len(cch));
+		ret = d(ptr, ref cch);
+		if (ret.Succeeded)
+			msz = typeof(T) == typeof(string) ? (T[])(object)ptr.ToStringEnum().ToArray() : ptr.ToArray<T>((int)cch);
+		return ret;
+
+		static int Len(uint cch) => typeof(T) == typeof(string) ? (1 + (int)cch) * Marshal.SystemDefaultCharSize : InteropExtensions.SizeOf<T>() * cch;
+	}
+
 	/// <summary>
 	/// The <c>OPENCARD_SEARCH_CRITERIA</c> structure is used by the SCardUIDlgSelectCard function in order to recognize cards that meet the
 	/// requirements set forth by the caller. You can, however, call <c>SCardUIDlgSelectCard</c> without using this structure.
@@ -4505,7 +4475,7 @@ public static partial class WinSCard
 
 	/// <summary>Provides a handle to a smartcard.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SCARDHANDLE : IHandle
+	public readonly struct SCARDHANDLE : IHandle
 	{
 		private readonly IntPtr handle;
 
