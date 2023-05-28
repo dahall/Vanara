@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using Vanara.Extensions;
 using Vanara.Extensions.Reflection;
 
@@ -61,6 +63,12 @@ public static class MsgExtensions
 		{
 			if (t is null)
 				return null;
+			if (typeof(MulticastDelegate).IsAssignableFrom(t.BaseType))
+				return Marshal.GetDelegateForFunctionPointer(p, t);
+			if (t.IsArray)
+				throw new Exception("Array types are not supported.");
+			if (t == typeof(string))
+				return StringHelper.GetString(p);
 			if (t.IsClass)
 				return p.ToStructure(t);
 			if (t.IsNullable())

@@ -241,10 +241,7 @@ public class ValueConstraint : OpConstraint
 {
 	public object Expected { get; }
 
-	public ValueConstraint(object expected, OpConstraint.Op op = OpConstraint.Op.None) : base(op)
-	{
-		Expected = expected;
-	}
+	public ValueConstraint(object expected, OpConstraint.Op op = OpConstraint.Op.None) : base(op) => Expected = expected;
 
 	public override ConstraintResult ApplyTo<TActual>(TActual actual)
 	{
@@ -261,10 +258,7 @@ public class ErrConstraintResult : ConstraintResult
 {
 	private readonly Win32Error lastErr;
 
-	public ErrConstraintResult(IConstraint constraint, object actualValue, bool isSuccessful) : base(constraint, actualValue, isSuccessful)
-	{
-		lastErr = Win32Error.GetLastError();
-	}
+	public ErrConstraintResult(IConstraint constraint, object actualValue, bool isSuccessful) : base(constraint, actualValue, isSuccessful) => lastErr = Win32Error.GetLastError();
 
 	public override void WriteAdditionalLinesTo(MessageWriter writer) => writer.Write($" (Err: {lastErr})");
 }

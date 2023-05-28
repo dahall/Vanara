@@ -544,7 +544,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the item at the specified position, if any, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-hittest
-		[MsgParams(null, typeof(HDHITTESTINFO), LResultType = typeof(int))]
+		[MsgParams(null, typeof(HDHITTESTINFO))]
 		HDM_HITTEST = HDM_FIRST + 6, // 0, HDHITTEST
 
 		/// <summary>
@@ -562,7 +562,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the new item if successful, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-insertitem
-		[MsgParams(typeof(int), typeof(HDITEM), LResultType = typeof(int))]
+		[MsgParams(typeof(int), typeof(HDITEM))]
 		HDM_INSERTITEM = HDM_FIRST + 10, // int, HDITEM
 
 		/// <summary>
@@ -610,6 +610,7 @@ public static partial class ComCtl32
 		/// <para>Returns INT that indicates the item index. If wParam is invalid (negative or too large), the return equals wParam.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-ordertoindex
+		[MsgParams(typeof(int), null)]
 		HDM_ORDERTOINDEX = HDM_FIRST + 15, // int, 0
 
 		/// <summary>
@@ -627,6 +628,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setbitmapmargin
+		[MsgParams(typeof(int), null)]
 		HDM_SETBITMAPMARGIN = HDM_FIRST + 20,// iWidth, 0
 
 		/// <summary>
@@ -641,6 +643,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the filter control being modified.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setfilterchangetimeout
+		[MsgParams(null, null)]
 		HDM_SETFILTERCHANGETIMEOUT = HDM_FIRST + 22, // 0, int
 
 		/// <summary>
@@ -655,6 +658,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setfocuseditem
+		[MsgParams(null, typeof(int), LResultType = typeof(BOOL))]
 		HDM_SETFOCUSEDITEM = HDM_FIRST + 28, // 0, int
 
 		/// <summary>
@@ -693,6 +697,7 @@ public static partial class ComCtl32
 		/// <c>HDM_SETHOTDIVIDER</c> message is intended to be used when the owner of the control handles drag-and-drop operations manually.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-sethotdivider
+		[MsgParams(typeof(BOOL), typeof(int))]
 		HDM_SETHOTDIVIDER = HDM_FIRST + 19, // bool, int
 
 		/// <summary>
@@ -724,6 +729,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setimagelist
+		[MsgParams(typeof(HDSIL), typeof(HIMAGELIST), LResultType = typeof(HIMAGELIST))]
 		HDM_SETIMAGELIST = HDM_FIRST + 8, // HDSIL_, hImageList
 
 		/// <summary>
@@ -745,6 +751,7 @@ public static partial class ComCtl32
 		/// members, you can control the order in which items are displayed and specify images to appear with items.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setitem
+		[MsgParams(typeof(int), typeof(HDITEM), LResultType = typeof(BOOL))]
 		HDM_SETITEM = HDM_FIRST + 12, // int, HDITEM
 
 		/// <summary>
@@ -761,6 +768,7 @@ public static partial class ComCtl32
 		/// <para>Returns nonzero if successful, or zero otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setorderarray
+		[MsgParams(typeof(int), typeof(int[]), LResultType = typeof(BOOL))]
 		HDM_SETORDERARRAY = HDM_FIRST + 18, // iCount, lpArray
 
 		/// <summary>
@@ -780,6 +788,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setunicodeformat
+		[MsgParams(typeof(CommonControlMessage), null, LResultType = typeof(CommonControlMessage))]
 		HDM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
 	}
 
@@ -809,6 +818,7 @@ public static partial class ComCtl32
 		/// (manual) drag-and-drop management allows the owner of the control to provide custom services as part of the drag-and-drop process.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-begindrag
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_BEGINDRAG = HDN_FIRST - 10,
 
 		/// <summary>
@@ -826,6 +836,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-beginfilteredit
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_BEGINFILTEREDIT = HDN_FIRST - 14,
 
 		/// <summary>
@@ -847,6 +858,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>FALSE</c> to allow tracking of the divider, or <c>TRUE</c> to prevent tracking.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-begintrack
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_BEGINTRACK = HDN_FIRST - 26,
 
 		/// <summary>
@@ -866,6 +878,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-dividerdblclick
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_DIVIDERDBLCLICK = HDN_FIRST - 25,
 
 		/// <summary>
@@ -890,6 +903,7 @@ public static partial class ComCtl32
 		/// <para>This message is sent only if style HDF_SPLITBUTTON is set on the header item.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-dropdown
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_DROPDOWN = HDN_FIRST - 18,
 
 		/// <summary>
@@ -914,6 +928,7 @@ public static partial class ComCtl32
 		/// reorder header items manually by sending <c>HDM_SETITEM</c> or <c>HDM_SETORDERARRAY</c>.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-enddrag
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ENDDRAG = HDN_FIRST - 11,
 
 		/// <summary>
@@ -931,6 +946,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-endfilteredit
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ENDFILTEREDIT = HDN_FIRST - 15,
 
 		/// <summary>
@@ -950,6 +966,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-endtrack
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ENDTRACK = HDN_FIRST - 27,
 
 		/// <summary>
@@ -973,6 +990,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-filterbtnclick
+		[CorrespondingType(typeof(NMHDFILTERBTNCLICK))]
 		HDN_FILTERBTNCLICK = HDN_FIRST - 13,
 
 		/// <summary>
@@ -993,6 +1011,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-filterchange
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_FILTERCHANGE = HDN_FIRST - 12,
 
 		/// <summary>
@@ -1018,6 +1037,7 @@ public static partial class ComCtl32
 		/// information and will not request it again.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-getdispinfo
+		[CorrespondingType(typeof(NMHDDISPINFO))]
 		HDN_GETDISPINFO = HDN_FIRST - 29,
 
 		/// <summary>
@@ -1038,6 +1058,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemchanged
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ITEMCHANGED = HDN_FIRST - 21,
 
 		/// <summary>
@@ -1058,6 +1079,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>FALSE</c> to allow the changes, or <c>TRUE</c> to prevent them.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemchanging
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ITEMCHANGING = HDN_FIRST - 20,
 
 		/// <summary>
@@ -1079,6 +1101,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>A header control sends this notification code after the user releases the left mouse button.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemclick
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ITEMCLICK = HDN_FIRST - 22,
 
 		/// <summary>
@@ -1096,6 +1119,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemdblclick
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ITEMDBLCLICK = HDN_FIRST - 23,
 
 		/// <summary>
@@ -1113,6 +1137,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemkeydown
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ITEMKEYDOWN = HDN_FIRST - 17,
 
 		/// <summary>
@@ -1132,6 +1157,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemstateiconclick
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_ITEMSTATEICONCLICK = HDN_FIRST - 16,
 
 		/// <summary>
@@ -1164,6 +1190,7 @@ public static partial class ComCtl32
 		/// <para>This message is sent only when style <c>HDS_OVERFLOW</c> is set on the header control.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-overflowclick
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_OVERFLOWCLICK = HDN_FIRST - 19,
 
 		/// <summary>
@@ -1184,6 +1211,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>FALSE</c> to continue tracking the divider, or <c>TRUE</c> to end tracking.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-track
+		[CorrespondingType(typeof(NMHEADER))]
 		HDN_TRACK = HDN_FIRST - 28,
 	}
 
@@ -1371,7 +1399,7 @@ public static partial class ComCtl32
 
 		/// <summary>Initializes a new instance of the <see cref="HDITEM"/> class.</summary>
 		/// <param name="text">The text.</param>
-		public HDITEM(string text = null) => Text = text;
+		public HDITEM(string? text = null) => Text = text;
 
 		/// <summary>Gets or sets a value indicating whether this <see cref="HDITEM"/> is checked.</summary>
 		/// <value><c>true</c> if checked; otherwise, <c>false</c>.</value>
@@ -1383,29 +1411,20 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the filter. This value must be a string, integer, DateTime or SYSTEMTIME.</summary>
 		/// <value>The filter.</value>
-		public object Filter
+		public object? Filter
 		{
 			get
 			{
 				if (!mask.IsFlagSet(HeaderItemMask.HDI_FILTER))
 					return null;
-				switch (type)
+				return type switch
 				{
-					case HeaderItemFilterType.HDFT_ISSTRING:
-						return pvFilter.ToStructure<HDTEXTFILTER>().ToString();
-
-					case HeaderItemFilterType.HDFT_ISNUMBER:
-						return pvFilter.ToInt32();
-
-					case HeaderItemFilterType.HDFT_ISDATE:
-						return pvFilter.ToStructure<SYSTEMTIME>().ToDateTime(DateTimeKind.Unspecified);
-
-					case HeaderItemFilterType.HDFT_HASNOVALUE:
-						return null;
-
-					default:
-						throw new InvalidOperationException();
-				}
+					HeaderItemFilterType.HDFT_ISSTRING => pvFilter.ToStructure<HDTEXTFILTER>().ToString(),
+					HeaderItemFilterType.HDFT_ISNUMBER => pvFilter.ToInt32(),
+					HeaderItemFilterType.HDFT_ISDATE => pvFilter.ToStructure<SYSTEMTIME>().ToDateTime(DateTimeKind.Unspecified),
+					HeaderItemFilterType.HDFT_HASNOVALUE => null,
+					_ => throw new InvalidOperationException(),
+				};
 			}
 			set
 			{
@@ -1568,7 +1587,7 @@ public static partial class ComCtl32
 		/// <summary>Gets or sets the text.</summary>
 		/// <value>The text.</value>
 		/// <exception cref="System.ArgumentOutOfRangeException">Text - A header control will only display the first 260 characters.</exception>
-		public string Text
+		public string? Text
 		{
 			get => mask.IsFlagSet(HeaderItemMask.HDI_TEXT) ? pszText.ToString() : null;
 			set
@@ -1585,7 +1604,7 @@ public static partial class ComCtl32
 			get => fmt & HeaderItemFormat.HDF_JUSTIFYMASK;
 			set
 			{
-				value = value & HeaderItemFormat.HDF_JUSTIFYMASK;
+				value &= HeaderItemFormat.HDF_JUSTIFYMASK;
 				EnumExtensions.SetFlags(ref fmt, HeaderItemFormat.HDF_JUSTIFYMASK, false);
 				EnumExtensions.SetFlags(ref fmt, value);
 				EnumExtensions.SetFlags(ref mask, HeaderItemMask.HDI_FORMAT);

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -15,113 +13,184 @@ public static partial class User32
 	public enum ClipboardNotificationMessage
 	{
 		/// <summary>
-		/// <para>
-		/// Sent to the clipboard owner by a clipboard viewer window to request the name of a <c>CF_OWNERDISPLAY</c> clipboard format.
-		/// </para>
+		/// <para>Sent to the clipboard owner by a clipboard viewer window to request the name of a <c>CF_OWNERDISPLAY</c> clipboard format.</para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// </summary>
-		/// <returns>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>The size, in characters, of the buffer pointed to by the lParam parameter.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to the buffer that is to receive the clipboard format name.</para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// In response to this message, the clipboard owner should copy the name of the owner-display format to the specified buffer,
-		/// not exceeding the buffer size specified by the wParam parameter.
+		/// In response to this message, the clipboard owner should copy the name of the owner-display format to the specified buffer, not
+		/// exceeding the buffer size specified by the wParam parameter.
 		/// </para>
 		/// <para>
-		/// A clipboard viewer window sends this message to the clipboard owner to determine the name of the <c>CF_OWNERDISPLAY</c>
-		/// format for example, to initialize a menu listing available formats.
+		/// A clipboard viewer window sends this message to the clipboard owner to determine the name of the <c>CF_OWNERDISPLAY</c> format
+		/// for example, to initialize a menu listing available formats.
 		/// </para>
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-askcbformatname
 		WM_ASKCBFORMATNAME = 0x030C,
 
 		/// <summary>
 		/// <para>Sent to the first window in the clipboard viewer chain when a window is being removed from the chain.</para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// </summary>
-		/// <returns>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>A handle to the window being removed from the clipboard viewer chain.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// A handle to the next window in the chain following the window being removed. This parameter is <c>NULL</c> if the window being
+		/// removed is the last window in the chain.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
 		/// <remarks>
 		/// <para>
 		/// Each clipboard viewer window saves the handle to the next window in the clipboard viewer chain. Initially, this handle is the
 		/// return value of the <c>SetClipboardViewer</c> function.
 		/// </para>
 		/// <para>
-		/// When a clipboard viewer window receives the <c>WM_CHANGECBCHAIN</c> message, it should call the <c>SendMessage</c> function
-		/// to pass the message to the next window in the chain, unless the next window is the window being removed. In this case, the
-		/// clipboard viewer should save the handle specified by the lParam parameter as the next window in the chain.
+		/// When a clipboard viewer window receives the <c>WM_CHANGECBCHAIN</c> message, it should call the <c>SendMessage</c> function to
+		/// pass the message to the next window in the chain, unless the next window is the window being removed. In this case, the clipboard
+		/// viewer should save the handle specified by the lParam parameter as the next window in the chain.
 		/// </para>
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-changecbchain
 		WM_CHANGECBCHAIN = 0x030D,
 
-		/// <summary>
-		/// <para>Sent when the contents of the clipboard have changed.</para>
-		/// </summary>
-		/// <returns>
+		/// <summary>Sent when the contents of the clipboard have changed.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>To register a window to receive this message, use the <c>AddClipboardFormatListener</c> function.</para>
-		/// </remarks>
+		/// <remarks>To register a window to receive this message, use the <c>AddClipboardFormatListener</c> function.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-clipboardupdate
 		WM_CLIPBOARDUPDATE = 0x031D,
 
 		/// <summary>
 		/// <para>Sent to the clipboard owner when a call to the <c>EmptyClipboard</c> function empties the clipboard.</para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// </summary>
-		/// <returns>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-destroyclipboard
 		WM_DESTROYCLIPBOARD = 0x0307,
 
 		/// <summary>
 		/// <para>
-		/// Sent to the first window in the clipboard viewer chain when the content of the clipboard changes. This enables a clipboard
-		/// viewer window to display the new content of the clipboard.
+		/// Sent to the first window in the clipboard viewer chain when the content of the clipboard changes. This enables a clipboard viewer
+		/// window to display the new content of the clipboard.
 		/// </para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// </summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
 		/// <remarks>
 		/// <para>
-		/// Only clipboard viewer windows receive this message. These are windows that have been added to the clipboard viewer chain by
-		/// using the <c>SetClipboardViewer</c> function.
+		/// Only clipboard viewer windows receive this message. These are windows that have been added to the clipboard viewer chain by using
+		/// the <c>SetClipboardViewer</c> function.
 		/// </para>
 		/// <para>
-		/// Each window that receives the <c>WM_DRAWCLIPBOARD</c> message must call the <c>SendMessage</c> function to pass the message
-		/// on to the next window in the clipboard viewer chain. The handle to the next window in the chain is returned by
+		/// Each window that receives the <c>WM_DRAWCLIPBOARD</c> message must call the <c>SendMessage</c> function to pass the message on to
+		/// the next window in the clipboard viewer chain. The handle to the next window in the chain is returned by
 		/// <c>SetClipboardViewer</c>, and may change in response to a <c>WM_CHANGECBCHAIN</c> message.
 		/// </para>
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-drawclipboard
 		WM_DRAWCLIPBOARD = 0x0308,
 
 		/// <summary>
-		/// <para>
 		/// Sent to the clipboard owner by a clipboard viewer window. This occurs when the clipboard contains data in the
-		/// <c>CF_OWNERDISPLAY</c> format and an event occurs in the clipboard viewer's horizontal scroll bar. The owner should scroll
-		/// the clipboard image and update the scroll bar values.
-		/// </para>
+		/// <c>CF_OWNERDISPLAY</c> format and an event occurs in the clipboard viewer's horizontal scroll bar. The owner should scroll the
+		/// clipboard image and update the scroll bar values.
 		/// </summary>
-		/// <returns>
-		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
-		/// <remarks>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>A handle to the clipboard viewer window.</para>
+		/// <para><em>lParam</em></para>
 		/// <para>
-		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and
-		/// invalidate the appropriate region.
+		/// The low-order word of lParam specifies a scroll bar event. This parameter can be one of the following values. The high-order word
+		/// of lParam specifies the current position of the scroll box if the low-order word of lParam is <c>SB_THUMBPOSITION</c>; otherwise,
+		/// the high-order word is not used.
 		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SB_ENDSCROLL</c> 8</description>
+		/// <description>End scroll.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_LEFT</c> 6</description>
+		/// <description>Scroll to upper left.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_RIGHT</c> 7</description>
+		/// <description>Scroll to lower right.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_LINELEFT</c> 0</description>
+		/// <description>Scrolls left by one unit.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_LINERIGHT</c> 1</description>
+		/// <description>Scrolls right by one unit.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_PAGELEFT</c> 2</description>
+		/// <description>Scrolls left by the width of the window.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_PAGERIGHT</c> 3</description>
+		/// <description>Scrolls right by the width of the window.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_THUMBPOSITION</c> 4</description>
+		/// <description>Scroll to absolute position. The current position is specified by the high-order word.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <remarks>
+		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and invalidate
+		/// the appropriate region.
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-hscrollclipboard
 		WM_HSCROLLCLIPBOARD = 0x030E,
 
 		/// <summary>
-		/// <para>
-		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c>
-		/// format and the clipboard viewer's client area needs repainting.
-		/// </para>
+		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c> format
+		/// and the clipboard viewer's client area needs repainting.
 		/// </summary>
-		/// <returns>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>A handle to the clipboard viewer window.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// A handle to a global memory object that contains a <c>PAINTSTRUCT</c> structure. The structure defines the part of the client
+		/// area to paint.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
 		/// <remarks>
 		/// <para>
 		/// To determine whether the entire client area or just a portion of it needs repainting, the clipboard owner must compare the
@@ -129,61 +198,85 @@ public static partial class User32
 		/// recent <c>WM_SIZECLIPBOARD</c> message.
 		/// </para>
 		/// <para>
-		/// The clipboard owner must use the <c>GlobalLock</c> function to lock the memory that contains the <c>PAINTSTRUCT</c>
-		/// structure. Before returning, the clipboard owner must unlock that memory by using the <c>GlobalUnlock</c> function.
+		/// The clipboard owner must use the <c>GlobalLock</c> function to lock the memory that contains the <c>PAINTSTRUCT</c> structure.
+		/// Before returning, the clipboard owner must unlock that memory by using the <c>GlobalUnlock</c> function.
 		/// </para>
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-paintclipboard
 		WM_PAINTCLIPBOARD = 0x0309,
 
 		/// <summary>
 		/// <para>
-		/// Sent to the clipboard owner before it is destroyed, if the clipboard owner has delayed rendering one or more clipboard
-		/// formats. For the content of the clipboard to remain available to other applications, the clipboard owner must render data in
-		/// all the formats it is capable of generating, and place the data on the clipboard by calling the <c>SetClipboardData</c> function.
+		/// Sent to the clipboard owner before it is destroyed, if the clipboard owner has delayed rendering one or more clipboard formats.
+		/// For the content of the clipboard to remain available to other applications, the clipboard owner must render data in all the
+		/// formats it is capable of generating, and place the data on the clipboard by calling the <c>SetClipboardData</c> function.
 		/// </para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// </summary>
-		/// <returns>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used and must be zero.</para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// When responding to a <c>WM_RENDERALLFORMATS</c> message, the clipboard owner must call the <c>OpenClipboard</c> and
-		/// <c>EmptyClipboard</c> functions before calling <c>SetClipboardData</c>.
+		/// When responding to a <c>WM_RENDERALLFORMATS</c> message, the application must call the <c>OpenClipboard</c> function and then
+		/// check that it is still the clipboard owner by calling the <c>GetClipboardOwner</c> function before calling <c>SetClipboardData</c>.
+		/// </para>
+		/// <para>
+		/// The application needs to check that it is still the clipboard owner after opening the clipboard because after it receives the
+		/// <c>WM_RENDERALLFORMATS</c> message, but before it opens the clipboard, another application may have opened and taken ownership of
+		/// the clipboard, and that application's data should not be overwritten.
+		/// </para>
+		/// <para>
+		/// In most cases, the application should not call the <c>EmptyClipboard</c> function before calling <c>SetClipboardData</c>, since
+		/// doing so will erase the clipboard formats that the application has already rendered.
 		/// </para>
 		/// <para>
 		/// When the application returns, the system removes any unrendered formats from the list of available clipboard formats. For
-		/// information about delayed rendering, see <c>SetClipboardData</c>.
+		/// information about delayed rendering, see Delayed Rendering.
 		/// </para>
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-renderallformats
 		WM_RENDERALLFORMATS = 0x0306,
 
 		/// <summary>
-		/// <para>
-		/// Sent to the clipboard owner if it has delayed rendering a specific clipboard format and if an application has requested data
-		/// in that format. The clipboard owner must render data in the specified format and place it on the clipboard by calling the
+		/// Sent to the clipboard owner if it has delayed rendering a specific clipboard format and if an application has requested data in
+		/// that format. The clipboard owner must render data in the specified format and place it on the clipboard by calling the
 		/// <c>SetClipboardData</c> function.
-		/// </para>
 		/// </summary>
-		/// <returns>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>The clipboard format to be rendered.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used.</para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
 		/// <remarks>
-		/// <para>
-		/// When responding to a <c>WM_RENDERFORMAT</c> message, the clipboard owner must not open the clipboard before calling <c>SetClipboardData</c>.
-		/// </para>
+		/// When responding to a <c>WM_RENDERFORMAT</c> message, the clipboard owner must not open the clipboard before calling
+		/// <c>SetClipboardData</c>. Opening the clipboard is not necessary before placing data in response to <c>WM_RENDERFORMAT</c>, and
+		/// any attempt to open the clipboard will fail because the clipboard is currently being held open by the application that requested
+		/// the format to be rendered.
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-renderformat
 		WM_RENDERFORMAT = 0x0305,
 
 		/// <summary>
-		/// <para>
-		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c>
-		/// format and the clipboard viewer's client area has changed size.
-		/// </para>
+		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c> format
+		/// and the clipboard viewer's client area has changed size.
 		/// </summary>
-		/// <returns>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>A handle to the clipboard viewer window.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// A handle to a global memory object that contains a <c>RECT</c> structure. The structure specifies the new dimensions of the
+		/// clipboard viewer's client area.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
 		/// <remarks>
 		/// <para>
 		/// When the clipboard viewer window is about to be destroyed or resized, a <c>WM_SIZECLIPBOARD</c> message is sent with a null
@@ -194,24 +287,68 @@ public static partial class User32
 		/// returning, the clipboard owner must unlock the object by using the <c>GlobalUnlock</c> function.
 		/// </para>
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-sizeclipboard
 		WM_SIZECLIPBOARD = 0x030B,
 
 		/// <summary>
-		/// <para>
-		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c>
-		/// format and an event occurs in the clipboard viewer's vertical scroll bar. The owner should scroll the clipboard image and
-		/// update the scroll bar values.
-		/// </para>
+		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c> format
+		/// and an event occurs in the clipboard viewer's vertical scroll bar. The owner should scroll the clipboard image and update the
+		/// scroll bar values.
 		/// </summary>
-		/// <returns>
-		/// <para>If an application processes this message, it should return zero.</para>
-		/// </returns>
-		/// <remarks>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>A handle to the clipboard viewer window.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>The low-order word of lParam specifies a scroll bar event. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SB_BOTTOM</c> 7</description>
+		/// <description>Scroll to lower right.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_ENDSCROLL</c> 8</description>
+		/// <description>End scroll.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_LINEDOWN</c> 1</description>
+		/// <description>Scroll one line down.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_LINEUP</c> 0</description>
+		/// <description>Scroll one line up.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_PAGEDOWN</c> 3</description>
+		/// <description>Scroll one page down.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_PAGEUP</c> 2</description>
+		/// <description>Scroll one page up.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_THUMBPOSITION</c> 4</description>
+		/// <description>Scroll to absolute position. The current position is specified by the high-order word.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SB_TOP</c> 6</description>
+		/// <description>Scroll to upper left.</description>
+		/// </item>
+		/// </list>
 		/// <para>
-		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and
-		/// invalidate the appropriate region.
+		/// The high-order word of lParam specifies the current position of the scroll box if the low-order word of lParam is
+		/// <c>SB_THUMBPOSITION</c>; otherwise, the high-order word of lParam is not used.
 		/// </para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <remarks>
+		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and invalidate
+		/// the appropriate region.
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-vscrollclipboard
 		WM_VSCROLLCLIPBOARD = 0x030A,
 	}
 
@@ -254,8 +391,8 @@ public static partial class User32
 		CF_DSPMETAFILEPICT = 0x0083,
 
 		/// <summary>
-		/// Text display format associated with a private format. The hMem parameter must be a handle to data that can be displayed in
-		/// text format in lieu of the privately formatted data.
+		/// Text display format associated with a private format. The hMem parameter must be a handle to data that can be displayed in text
+		/// format in lieu of the privately formatted data.
 		/// </summary>
 		CF_DSPTEXT = 0x0081,
 
@@ -266,8 +403,8 @@ public static partial class User32
 		/// Start of a range of integer values for application-defined GDI object clipboard formats. The end of the range is CF_GDIOBJLAST.
 		/// <para>
 		/// Handles associated with clipboard formats in this range are not automatically deleted using the GlobalFree function when the
-		/// clipboard is emptied. Also, when using values in this range, the hMem parameter is not a handle to a GDI object, but is a
-		/// handle allocated by the GlobalAlloc function with the GMEM_MOVEABLE flag.
+		/// clipboard is emptied. Also, when using values in this range, the hMem parameter is not a handle to a GDI object, but is a handle
+		/// allocated by the GlobalAlloc function with the GMEM_MOVEABLE flag.
 		/// </para>
 		/// </summary>
 		CF_GDIOBJFIRST = 0x0300,
@@ -276,22 +413,22 @@ public static partial class User32
 		CF_GDIOBJLAST = 0x03FF,
 
 		/// <summary>
-		/// A handle to type HDROP that identifies a list of files. An application can retrieve information about the files by passing
-		/// the handle to the DragQueryFile function.
+		/// A handle to type HDROP that identifies a list of files. An application can retrieve information about the files by passing the
+		/// handle to the DragQueryFile function.
 		/// </summary>
 		CF_HDROP = 15,
 
 		/// <summary>
-		/// The data is a handle to the locale identifier associated with text in the clipboard. When you close the clipboard, if it
-		/// contains CF_TEXT data but no CF_LOCALE data, the system automatically sets the CF_LOCALE format to the current input
-		/// language. You can use the CF_LOCALE format to associate a different locale with the clipboard text.
+		/// The data is a handle to the locale identifier associated with text in the clipboard. When you close the clipboard, if it contains
+		/// CF_TEXT data but no CF_LOCALE data, the system automatically sets the CF_LOCALE format to the current input language. You can use
+		/// the CF_LOCALE format to associate a different locale with the clipboard text.
 		/// <para>
-		/// An application that pastes text from the clipboard can retrieve this format to determine which character set was used to
-		/// generate the text.
+		/// An application that pastes text from the clipboard can retrieve this format to determine which character set was used to generate
+		/// the text.
 		/// </para>
 		/// <para>
-		/// Note that the clipboard does not support plain text in multiple character sets. To achieve this, use a formatted text data
-		/// type such as RTF instead.
+		/// Note that the clipboard does not support plain text in multiple character sets. To achieve this, use a formatted text data type
+		/// such as RTF instead.
 		/// </para>
 		/// <para>
 		/// The system uses the code page associated with CF_LOCALE to implicitly convert from CF_TEXT to CF_UNICODETEXT. Therefore, the
@@ -301,14 +438,14 @@ public static partial class User32
 		CF_LOCALE = 16,
 
 		/// <summary>
-		/// Handle to a metafile picture format as defined by the METAFILEPICT structure. When passing a CF_METAFILEPICT handle by means
-		/// of DDE, the application responsible for deleting hMem should also free the metafile referred to by the CF_METAFILEPICT handle.
+		/// Handle to a metafile picture format as defined by the METAFILEPICT structure. When passing a CF_METAFILEPICT handle by means of
+		/// DDE, the application responsible for deleting hMem should also free the metafile referred to by the CF_METAFILEPICT handle.
 		/// </summary>
 		CF_METAFILEPICT = 3,
 
 		/// <summary>
-		/// Text format containing characters in the OEM character set. Each line ends with a carriage return/linefeed (CR-LF)
-		/// combination. A null character signals the end of the data.
+		/// Text format containing characters in the OEM character set. Each line ends with a carriage return/linefeed (CR-LF) combination. A
+		/// null character signals the end of the data.
 		/// </summary>
 		CF_OEMTEXT = 7,
 
@@ -320,11 +457,11 @@ public static partial class User32
 		CF_OWNERDISPLAY = 0x0080,
 
 		/// <summary>
-		/// Handle to a color palette. Whenever an application places data in the clipboard that depends on or assumes a color palette,
-		/// it should place the palette on the clipboard as well.
+		/// Handle to a color palette. Whenever an application places data in the clipboard that depends on or assumes a color palette, it
+		/// should place the palette on the clipboard as well.
 		/// <para>
-		/// If the clipboard contains data in the CF_PALETTE (logical color palette) format, the application should use the SelectPalette
-		/// and RealizePalette functions to realize (compare) any other data in the clipboard against that logical palette.
+		/// If the clipboard contains data in the CF_PALETTE (logical color palette) format, the application should use the SelectPalette and
+		/// RealizePalette functions to realize (compare) any other data in the clipboard against that logical palette.
 		/// </para>
 		/// <para>
 		/// When displaying clipboard data, the clipboard always uses as its current palette any object on the clipboard that is in the
@@ -338,8 +475,8 @@ public static partial class User32
 
 		/// <summary>
 		/// Start of a range of integer values for private clipboard formats. The range ends with CF_PRIVATELAST. Handles associated with
-		/// private clipboard formats are not freed automatically; the clipboard owner must free such handles, typically in response to
-		/// the WM_DESTROYCLIPBOARD message.
+		/// private clipboard formats are not freed automatically; the clipboard owner must free such handles, typically in response to the
+		/// WM_DESTROYCLIPBOARD message.
 		/// </summary>
 		CF_PRIVATEFIRST = 0x0200,
 
@@ -353,8 +490,8 @@ public static partial class User32
 		CF_SYLK = 4,
 
 		/// <summary>
-		/// Text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the
-		/// data. Use this format for ANSI text.
+		/// Text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
+		/// Use this format for ANSI text.
 		/// </summary>
 		CF_TEXT = 1,
 
@@ -362,8 +499,7 @@ public static partial class User32
 		CF_TIFF = 6,
 
 		/// <summary>
-		/// Unicode text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of
-		/// the data.
+		/// Unicode text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
 		/// </summary>
 		CF_UNICODETEXT = 13,
 
@@ -384,12 +520,12 @@ public static partial class User32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// When a window has been added to the clipboard format listener list, it is posted a WM_CLIPBOARDUPDATE message whenever the
-	/// contents of the clipboard have changed.
+	/// When a window has been added to the clipboard format listener list, it is posted a WM_CLIPBOARDUPDATE message whenever the contents
+	/// of the clipboard have changed.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-addclipboardformatlistener BOOL
-	// AddClipboardFormatListener( HWND hwnd );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-addclipboardformatlistener BOOL AddClipboardFormatListener(
+	// HWND hwnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "addclipboardformatlistener")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -412,8 +548,8 @@ public static partial class User32
 	/// <returns>
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>
-	/// The return value indicates the result of passing the WM_CHANGECBCHAIN message to the windows in the clipboard viewer chain.
-	/// Because a window in the chain typically returns <c>FALSE</c> when it processes <c>WM_CHANGECBCHAIN</c>, the return value from
+	/// The return value indicates the result of passing the WM_CHANGECBCHAIN message to the windows in the clipboard viewer chain. Because a
+	/// window in the chain typically returns <c>FALSE</c> when it processes <c>WM_CHANGECBCHAIN</c>, the return value from
 	/// <c>ChangeClipboardChain</c> is typically <c>FALSE</c>. If there is only one window in the chain, the return value is typically <c>TRUE</c>.
 	/// </para>
 	/// </returns>
@@ -441,8 +577,8 @@ public static partial class User32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// When the window has finished examining or changing the clipboard, close the clipboard by calling <c>CloseClipboard</c>. This
-	/// enables other windows to access the clipboard.
+	/// When the window has finished examining or changing the clipboard, close the clipboard by calling <c>CloseClipboard</c>. This enables
+	/// other windows to access the clipboard.
 	/// </para>
 	/// <para>Do not place an object on the clipboard after calling <c>CloseClipboard</c>.</para>
 	/// <para>Examples</para>
@@ -469,8 +605,8 @@ public static partial class User32
 
 	/// <summary>
 	/// <para>
-	/// Empties the clipboard and frees handles to data in the clipboard. The function then assigns ownership of the clipboard to the
-	/// window that currently has the clipboard open.
+	/// Empties the clipboard and frees handles to data in the clipboard. The function then assigns ownership of the clipboard to the window
+	/// that currently has the clipboard open.
 	/// </para>
 	/// </summary>
 	/// <returns>
@@ -480,9 +616,9 @@ public static partial class User32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Before calling <c>EmptyClipboard</c>, an application must open the clipboard by using the OpenClipboard function. If the
-	/// application specifies a <c>NULL</c> window handle when opening the clipboard, <c>EmptyClipboard</c> succeeds but sets the
-	/// clipboard owner to <c>NULL</c>. Note that this causes SetClipboardData to fail.
+	/// Before calling <c>EmptyClipboard</c>, an application must open the clipboard by using the OpenClipboard function. If the application
+	/// specifies a <c>NULL</c> window handle when opening the clipboard, <c>EmptyClipboard</c> succeeds but sets the clipboard owner to
+	/// <c>NULL</c>. Note that this causes SetClipboardData to fail.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>For an example, see Copying Information to the Clipboard.</para>
@@ -496,9 +632,9 @@ public static partial class User32
 	/// <summary>
 	/// <para>Enumerates the data formats currently available on the clipboard.</para>
 	/// <para>
-	/// Clipboard data formats are stored in an ordered list. To perform an enumeration of clipboard data formats, you make a series of
-	/// calls to the <c>EnumClipboardFormats</c> function. For each call, the format parameter specifies an available clipboard format,
-	/// and the function returns the next available clipboard format.
+	/// Clipboard data formats are stored in an ordered list. To perform an enumeration of clipboard data formats, you make a series of calls
+	/// to the <c>EnumClipboardFormats</c> function. For each call, the format parameter specifies an available clipboard format, and the
+	/// function returns the next available clipboard format.
 	/// </para>
 	/// </summary>
 	/// <param name="format">
@@ -506,8 +642,7 @@ public static partial class User32
 	/// <para>A clipboard format that is known to be available.</para>
 	/// <para>
 	/// To start an enumeration of clipboard formats, set format to zero. When format is zero, the function retrieves the first available
-	/// clipboard format. For subsequent calls during an enumeration, set format to the result of the previous
-	/// <c>EnumClipboardFormats</c> call.
+	/// clipboard format. For subsequent calls during an enumeration, set format to the result of the previous <c>EnumClipboardFormats</c> call.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -517,12 +652,12 @@ public static partial class User32
 	/// clipboard format.
 	/// </para>
 	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. If the clipboard is not
-	/// open, the function fails.
+	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. If the clipboard is not open,
+	/// the function fails.
 	/// </para>
 	/// <para>
-	/// If there are no more clipboard formats to enumerate, the return value is zero. In this case, the GetLastError function returns
-	/// the value <c>ERROR_SUCCESS</c>. This lets you distinguish between function failure and the end of enumeration.
+	/// If there are no more clipboard formats to enumerate, the return value is zero. In this case, the GetLastError function returns the
+	/// value <c>ERROR_SUCCESS</c>. This lets you distinguish between function failure and the end of enumeration.
 	/// </para>
 	/// </returns>
 	/// <remarks>
@@ -531,21 +666,20 @@ public static partial class User32
 	/// <c>EnumClipboardFormats</c> function fails if the clipboard is not open.
 	/// </para>
 	/// <para>
-	/// The <c>EnumClipboardFormats</c> function enumerates formats in the order that they were placed on the clipboard. If you are
-	/// copying information to the clipboard, add clipboard objects in order from the most descriptive clipboard format to the least
-	/// descriptive clipboard format. If you are pasting information from the clipboard, retrieve the first clipboard format that you can
-	/// handle. That will be the most descriptive clipboard format that you can handle.
+	/// The <c>EnumClipboardFormats</c> function enumerates formats in the order that they were placed on the clipboard. If you are copying
+	/// information to the clipboard, add clipboard objects in order from the most descriptive clipboard format to the least descriptive
+	/// clipboard format. If you are pasting information from the clipboard, retrieve the first clipboard format that you can handle. That
+	/// will be the most descriptive clipboard format that you can handle.
 	/// </para>
 	/// <para>
-	/// The system provides automatic type conversions for certain clipboard formats. In the case of such a format, this function
-	/// enumerates the specified format, then enumerates the formats to which it can be converted. For more information, see Standard
-	/// Clipboard Formats and Synthesized Clipboard Formats.
+	/// The system provides automatic type conversions for certain clipboard formats. In the case of such a format, this function enumerates
+	/// the specified format, then enumerates the formats to which it can be converted. For more information, see Standard Clipboard Formats
+	/// and Synthesized Clipboard Formats.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>For an example, see Example of a Clipboard Viewer.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-enumclipboardformats UINT EnumClipboardFormats( UINT
-	// format );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-enumclipboardformats UINT EnumClipboardFormats( UINT format );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "enumclipboardformats")]
 	public static extern uint EnumClipboardFormats(uint format);
@@ -561,25 +695,27 @@ public static partial class User32
 	/// <c>EnumClipboardFormats</c> function fails if the clipboard is not open.
 	/// </para>
 	/// <para>
-	/// The <c>EnumClipboardFormats</c> function enumerates formats in the order that they were placed on the clipboard. If you are
-	/// copying information to the clipboard, add clipboard objects in order from the most descriptive clipboard format to the least
-	/// descriptive clipboard format. If you are pasting information from the clipboard, retrieve the first clipboard format that you can
-	/// handle. That will be the most descriptive clipboard format that you can handle.
+	/// The <c>EnumClipboardFormats</c> function enumerates formats in the order that they were placed on the clipboard. If you are copying
+	/// information to the clipboard, add clipboard objects in order from the most descriptive clipboard format to the least descriptive
+	/// clipboard format. If you are pasting information from the clipboard, retrieve the first clipboard format that you can handle. That
+	/// will be the most descriptive clipboard format that you can handle.
 	/// </para>
 	/// <para>
-	/// The system provides automatic type conversions for certain clipboard formats. In the case of such a format, this function
-	/// enumerates the specified format, then enumerates the formats to which it can be converted. For more information, see Standard
-	/// Clipboard Formats and Synthesized Clipboard Formats.
+	/// The system provides automatic type conversions for certain clipboard formats. In the case of such a format, this function enumerates
+	/// the specified format, then enumerates the formats to which it can be converted. For more information, see Standard Clipboard Formats
+	/// and Synthesized Clipboard Formats.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<uint> EnumClipboardFormats()
 	{
-		var fmt = 0U;
+		uint fmt = 0U;
 		while (true)
 		{
 			fmt = EnumClipboardFormats(fmt);
 			if (fmt > 0)
+			{
 				yield return fmt;
+			}
 			else
 			{
 				Win32Error.GetLastError().ThrowIfFailed();
@@ -604,10 +740,9 @@ public static partial class User32
 	/// <para><c>Caution</c> Clipboard data is not trusted. Parse the data carefully before using it in your application.</para>
 	/// <para>An application can enumerate the available formats in advance by using the EnumClipboardFormats function.</para>
 	/// <para>
-	/// The clipboard controls the handle that the <c>GetClipboardData</c> function returns, not the application. The application should
-	/// copy the data immediately. The application must not free the handle nor leave it locked. The application must not use the handle
-	/// after the EmptyClipboard or CloseClipboard function is called, or after the SetClipboardData function is called with the same
-	/// clipboard format.
+	/// The clipboard controls the handle that the <c>GetClipboardData</c> function returns, not the application. The application should copy
+	/// the data immediately. The application must not free the handle nor leave it locked. The application must not use the handle after the
+	/// EmptyClipboard or CloseClipboard function is called, or after the SetClipboardData function is called with the same clipboard format.
 	/// </para>
 	/// <para>
 	/// The system performs implicit data format conversions between certain clipboard formats when an application calls the
@@ -624,9 +759,7 @@ public static partial class User32
 	public static extern IntPtr GetClipboardData(uint uFormat);
 
 	/// <summary>
-	/// <para>
-	/// Retrieves from the clipboard the name of the specified registered format. The function copies the name to the specified buffer.
-	/// </para>
+	/// <para>Retrieves from the clipboard the name of the specified registered format. The function copies the name to the specified buffer.</para>
 	/// </summary>
 	/// <param name="format">
 	/// <para>Type: <c>UINT</c></para>
@@ -652,8 +785,8 @@ public static partial class User32
 	/// <para>Security Considerations</para>
 	/// <para>
 	/// Using this function incorrectly might compromise the security of your program. For example, miscalculating the proper size of the
-	/// lpszFormatName buffer, especially when the application is used in both ANSI and Unicode versions, can cause a buffer overflow.
-	/// Also, note that the string is truncated if it is longer than the cchMaxCount parameter, which can lead to loss of information.
+	/// lpszFormatName buffer, especially when the application is used in both ANSI and Unicode versions, can cause a buffer overflow. Also,
+	/// note that the string is truncated if it is longer than the cchMaxCount parameter, which can lead to loss of information.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>For an example, see Example of a Clipboard Viewer.</para>
@@ -691,20 +824,18 @@ public static partial class User32
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <para>
-	/// The return value is the clipboard sequence number. If you do not have <c>WINSTA_ACCESSCLIPBOARD</c> access to the window station,
-	/// the function returns zero.
+	/// The return value is the clipboard sequence number. If you do not have <c>WINSTA_ACCESSCLIPBOARD</c> access to the window station, the
+	/// function returns zero.
 	/// </para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// The system keeps a serial number for the clipboard for each window station. This number is incremented whenever the contents of
-	/// the clipboard change or the clipboard is emptied. You can track this value to determine whether the clipboard contents have
-	/// changed and optimize creating DataObjects. If clipboard rendering is delayed, the sequence number is not incremented until the
-	/// changes are rendered.
+	/// The system keeps a serial number for the clipboard for each window station. This number is incremented whenever the contents of the
+	/// clipboard change or the clipboard is emptied. You can track this value to determine whether the clipboard contents have changed and
+	/// optimize creating DataObjects. If clipboard rendering is delayed, the sequence number is not incremented until the changes are rendered.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclipboardsequencenumber DWORD
-	// GetClipboardSequenceNumber( );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclipboardsequencenumber DWORD GetClipboardSequenceNumber( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getclipboardsequencenumber")]
 	public static extern uint GetClipboardSequenceNumber();
@@ -728,14 +859,14 @@ public static partial class User32
 	/// <returns>
 	/// <para>Type: <c>HWND</c></para>
 	/// <para>
-	/// If the function succeeds, the return value is the handle to the window that has the clipboard open. If no window has the
-	/// clipboard open, the return value is <c>NULL</c>. To get extended error information, call GetLastError.
+	/// If the function succeeds, the return value is the handle to the window that has the clipboard open. If no window has the clipboard
+	/// open, the return value is <c>NULL</c>. To get extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// If an application or DLL specifies a <c>NULL</c> window handle when calling the OpenClipboard function, the clipboard is opened
-	/// but is not associated with a window. In such a case, <c>GetOpenClipboardWindow</c> returns <c>NULL</c>.
+	/// If an application or DLL specifies a <c>NULL</c> window handle when calling the OpenClipboard function, the clipboard is opened but
+	/// is not associated with a window. In such a case, <c>GetOpenClipboardWindow</c> returns <c>NULL</c>.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getopenclipboardwindow HWND GetOpenClipboardWindow( );
@@ -754,16 +885,14 @@ public static partial class User32
 	/// </param>
 	/// <param name="cFormats">
 	/// <para>Type: <c>int</c></para>
-	/// <para>
-	/// The number of entries in the paFormatPriorityList array. This value must not be greater than the number of entries in the list.
-	/// </para>
+	/// <para>The number of entries in the paFormatPriorityList array. This value must not be greater than the number of entries in the list.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>int</c></para>
 	/// <para>
-	/// If the function succeeds, the return value is the first clipboard format in the list for which data is available. If the
-	/// clipboard is empty, the return value is NULL. If the clipboard contains data, but not in any of the specified formats, the return
-	/// value is –1. To get extended error information, call GetLastError.
+	/// If the function succeeds, the return value is the first clipboard format in the list for which data is available. If the clipboard is
+	/// empty, the return value is NULL. If the clipboard contains data, but not in any of the specified formats, the return value is –1. To
+	/// get extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpriorityclipboardformat int GetPriorityClipboardFormat(
@@ -791,8 +920,8 @@ public static partial class User32
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>The function returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>. Call GetLastError for additional details.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getupdatedclipboardformats BOOL
-	// GetUpdatedClipboardFormats( PUINT lpuiFormats, UINT cFormats, PUINT pcFormatsOut );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getupdatedclipboardformats BOOL GetUpdatedClipboardFormats(
+	// PUINT lpuiFormats, UINT cFormats, PUINT pcFormatsOut );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getupdatedclipboardformats")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -821,8 +950,8 @@ public static partial class User32
 	/// <para>Examples</para>
 	/// <para>For an example, see Pasting Information from the Clipboard.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-isclipboardformatavailable BOOL
-	// IsClipboardFormatAvailable( UINT format );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-isclipboardformatavailable BOOL IsClipboardFormatAvailable(
+	// UINT format );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "isclipboardformatavailable")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -834,8 +963,8 @@ public static partial class User32
 	/// <param name="hWndNewOwner">
 	/// <para>Type: <c>HWND</c></para>
 	/// <para>
-	/// A handle to the window to be associated with the open clipboard. If this parameter is <c>NULL</c>, the open clipboard is
-	/// associated with the current task.
+	/// A handle to the window to be associated with the open clipboard. If this parameter is <c>NULL</c>, the open clipboard is associated
+	/// with the current task.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -850,8 +979,8 @@ public static partial class User32
 	/// The window identified by the hWndNewOwner parameter does not become the clipboard owner unless the EmptyClipboard function is called.
 	/// </para>
 	/// <para>
-	/// If an application calls <c>OpenClipboard</c> with hwnd set to <c>NULL</c>, EmptyClipboard sets the clipboard owner to
-	/// <c>NULL</c>; this causes SetClipboardData to fail.
+	/// If an application calls <c>OpenClipboard</c> with hwnd set to <c>NULL</c>, EmptyClipboard sets the clipboard owner to <c>NULL</c>;
+	/// this causes SetClipboardData to fail.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>For an example, see Copying Information to the Clipboard.</para>
@@ -877,8 +1006,8 @@ public static partial class User32
 	/// <remarks>
 	/// <para>
 	/// If a registered format with the specified name already exists, a new format is not registered and the return value identifies the
-	/// existing format. This enables more than one application to copy and paste data using the same registered clipboard format. Note
-	/// that the format name comparison is case-insensitive.
+	/// existing format. This enables more than one application to copy and paste data using the same registered clipboard format. Note that
+	/// the format name comparison is case-insensitive.
 	/// </para>
 	/// <para>Registered clipboard formats are identified by values in the range 0xC000 through 0xFFFF.</para>
 	/// <para>
@@ -887,8 +1016,8 @@ public static partial class User32
 	/// <para>Examples</para>
 	/// <para>For an example, see Registering a Clipboard Format.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registerclipboardformata UINT RegisterClipboardFormatA(
-	// LPCSTR lpszFormat );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registerclipboardformata UINT RegisterClipboardFormatA( LPCSTR
+	// lpszFormat );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "registerclipboardformat")]
 	public static extern uint RegisterClipboardFormat(string lpszFormat);
@@ -917,29 +1046,29 @@ public static partial class User32
 	/// <summary>
 	/// <para>
 	/// Places data on the clipboard in a specified clipboard format. The window must be the current clipboard owner, and the application
-	/// must have called the OpenClipboard function. (When responding to the WM_RENDERFORMAT and WM_RENDERALLFORMATS messages, the
-	/// clipboard owner must not call <c>OpenClipboard</c> before calling <c>SetClipboardData</c>.)
+	/// must have called the OpenClipboard function. (When responding to the WM_RENDERFORMAT and WM_RENDERALLFORMATS messages, the clipboard
+	/// owner must not call <c>OpenClipboard</c> before calling <c>SetClipboardData</c>.)
 	/// </para>
 	/// </summary>
 	/// <param name="uFormat">
 	/// <para>Type: <c>UINT</c></para>
 	/// <para>
-	/// The clipboard format. This parameter can be a registered format or any of the standard clipboard formats. For more information,
-	/// see Standard Clipboard Formats and Registered Clipboard Formats.
+	/// The clipboard format. This parameter can be a registered format or any of the standard clipboard formats. For more information, see
+	/// Standard Clipboard Formats and Registered Clipboard Formats.
 	/// </para>
 	/// </param>
 	/// <param name="hMem">
 	/// <para>Type: <c>HANDLE</c></para>
 	/// <para>
 	/// A handle to the data in the specified format. This parameter can be <c>NULL</c>, indicating that the window provides data in the
-	/// specified clipboard format (renders the format) upon request. If a window delays rendering, it must process the WM_RENDERFORMAT
-	/// and WM_RENDERALLFORMATS messages.
+	/// specified clipboard format (renders the format) upon request. If a window delays rendering, it must process the WM_RENDERFORMAT and
+	/// WM_RENDERALLFORMATS messages.
 	/// </para>
 	/// <para>
-	/// If <c>SetClipboardData</c> succeeds, the system owns the object identified by the hMem parameter. The application may not write
-	/// to or free the data once ownership has been transferred to the system, but it can lock and read from the data until the
-	/// CloseClipboard function is called. (The memory must be unlocked before the Clipboard is closed.) If the hMem parameter identifies
-	/// a memory object, the object must have been allocated using the function with the <c>GMEM_MOVEABLE</c> flag.
+	/// If <c>SetClipboardData</c> succeeds, the system owns the object identified by the hMem parameter. The application may not write to or
+	/// free the data once ownership has been transferred to the system, but it can lock and read from the data until the CloseClipboard
+	/// function is called. (The memory must be unlocked before the Clipboard is closed.) If the hMem parameter identifies a memory object,
+	/// the object must have been allocated using the function with the <c>GMEM_MOVEABLE</c> flag.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -952,32 +1081,31 @@ public static partial class User32
 	/// <c>Windows 8:</c> Bitmaps to be shared with Windows Store app apps must be in the <c>CF_BITMAP</c> format (device-dependent bitmap).
 	/// </para>
 	/// <para>
-	/// If an application calls <c>SetClipboardData</c> in response to WM_RENDERFORMAT or WM_RENDERALLFORMATS, the application should not
-	/// use the handle after <c>SetClipboardData</c> has been called.
+	/// If an application calls <c>SetClipboardData</c> in response to WM_RENDERFORMAT or WM_RENDERALLFORMATS, the application should not use
+	/// the handle after <c>SetClipboardData</c> has been called.
 	/// </para>
 	/// <para>
 	/// If an application calls OpenClipboard with hwnd set to <c>NULL</c>, EmptyClipboard sets the clipboard owner to <c>NULL</c>; this
 	/// causes <c>SetClipboardData</c> to fail.
 	/// </para>
 	/// <para>
-	/// The system performs implicit data format conversions between certain clipboard formats when an application calls the
-	/// GetClipboardData function. For example, if the <c>CF_OEMTEXT</c> format is on the clipboard, a window can retrieve data in the
-	/// <c>CF_TEXT</c> format. The format on the clipboard is converted to the requested format on demand. For more information, see
-	/// Synthesized Clipboard Formats.
+	/// The system performs implicit data format conversions between certain clipboard formats when an application calls the GetClipboardData
+	/// function. For example, if the <c>CF_OEMTEXT</c> format is on the clipboard, a window can retrieve data in the <c>CF_TEXT</c> format.
+	/// The format on the clipboard is converted to the requested format on demand. For more information, see Synthesized Clipboard Formats.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>For an example, see Copying Information to the Clipboard.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclipboarddata HANDLE SetClipboardData( UINT uFormat,
-	// HANDLE hMem );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclipboarddata HANDLE SetClipboardData( UINT uFormat, HANDLE
+	// hMem );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setclipboarddata")]
 	public static extern IntPtr SetClipboardData(uint uFormat, [Optional] IntPtr hMem);
 
 	/// <summary>
 	/// <para>
-	/// Adds the specified window to the chain of clipboard viewers. Clipboard viewer windows receive a WM_DRAWCLIPBOARD message whenever
-	/// the content of the clipboard changes. This function is used for backward compatibility with earlier versions of Windows.
+	/// Adds the specified window to the chain of clipboard viewers. Clipboard viewer windows receive a WM_DRAWCLIPBOARD message whenever the
+	/// content of the clipboard changes. This function is used for backward compatibility with earlier versions of Windows.
 	/// </para>
 	/// </summary>
 	/// <param name="hWndNewViewer">
@@ -987,31 +1115,30 @@ public static partial class User32
 	/// <returns>
 	/// <para>Type: <c>HWND</c></para>
 	/// <para>
-	/// If the function succeeds, the return value identifies the next window in the clipboard viewer chain. If an error occurs or there
-	/// are no other windows in the clipboard viewer chain, the return value is NULL. To get extended error information, call GetLastError.
+	/// If the function succeeds, the return value identifies the next window in the clipboard viewer chain. If an error occurs or there are
+	/// no other windows in the clipboard viewer chain, the return value is NULL. To get extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
 	/// The windows that are part of the clipboard viewer chain, called clipboard viewer windows, must process the clipboard messages
-	/// WM_CHANGECBCHAIN and WM_DRAWCLIPBOARD. Each clipboard viewer window calls the SendMessage function to pass these messages to the
-	/// next window in the clipboard viewer chain.
+	/// WM_CHANGECBCHAIN and WM_DRAWCLIPBOARD. Each clipboard viewer window calls the SendMessage function to pass these messages to the next
+	/// window in the clipboard viewer chain.
 	/// </para>
 	/// <para>
-	/// A clipboard viewer window must eventually remove itself from the clipboard viewer chain by calling the ChangeClipboardChain
-	/// function — for example, in response to the WM_DESTROY message.
+	/// A clipboard viewer window must eventually remove itself from the clipboard viewer chain by calling the ChangeClipboardChain function
+	/// — for example, in response to the WM_DESTROY message.
 	/// </para>
 	/// <para>
 	/// The <c>SetClipboardViewer</c> function exists to provide backward compatibility with earlier versions of Windows. The clipboard
-	/// viewer chain can be broken by an application that fails to handle the clipboard chain messages properly. New applications should
-	/// use more robust techniques such as the clipboard sequence number or the registration of a clipboard format listener. For further
-	/// details on these alternatives techniques, see Monitoring Clipboard Contents.
+	/// viewer chain can be broken by an application that fails to handle the clipboard chain messages properly. New applications should use
+	/// more robust techniques such as the clipboard sequence number or the registration of a clipboard format listener. For further details
+	/// on these alternatives techniques, see Monitoring Clipboard Contents.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>For an example, see Adding a Window to the Clipboard Viewer Chain.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclipboardviewer HWND SetClipboardViewer( HWND
-	// hWndNewViewer );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclipboardviewer HWND SetClipboardViewer( HWND hWndNewViewer );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setclipboardviewer")]
 	public static extern HWND SetClipboardViewer(HWND hWndNewViewer);
@@ -1019,8 +1146,8 @@ public static partial class User32
 	/// <summary>
 	/// <para>Defines the metafile picture format used for exchanging metafile data through the clipboard.</para>
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-tagmetafilepict typedef struct tagMETAFILEPICT { LONG mm;
-	// LONG xExt; LONG yExt; HMETAFILE hMF; } METAFILEPICT, *LPMETAFILEPICT;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-tagmetafilepict typedef struct tagMETAFILEPICT { LONG mm; LONG
+	// xExt; LONG yExt; HMETAFILE hMF; } METAFILEPICT, *LPMETAFILEPICT;
 	[PInvokeData("wingdi.h", MSDNShortId = "metafilepict")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct METAFILEPICT
@@ -1035,8 +1162,8 @@ public static partial class User32
 		/// <para>Type: <c>LONG</c></para>
 		/// <para>
 		/// The size of the metafile picture for all modes except the <c>MM_ISOTROPIC</c> and <c>MM_ANISOTROPIC</c> modes. (For more
-		/// information about these modes, see the <c>yExt</c> member.) The x-extent specifies the width of the rectangle within which
-		/// the picture is drawn. The coordinates are in units that correspond to the mapping mode.
+		/// information about these modes, see the <c>yExt</c> member.) The x-extent specifies the width of the rectangle within which the
+		/// picture is drawn. The coordinates are in units that correspond to the mapping mode.
 		/// </para>
 		/// </summary>
 		public int xExt;
@@ -1048,10 +1175,10 @@ public static partial class User32
 		/// specifies the height of the rectangle within which the picture is drawn. The coordinates are in units that correspond to the
 		/// mapping mode. For <c>MM_ISOTROPIC</c> and <c>MM_ANISOTROPIC</c> modes, which can be scaled, the <c>xExt</c> and <c>yExt</c>
 		/// members contain an optional suggested size in <c>MM_HIMETRIC</c> units. For <c>MM_ANISOTROPIC</c> pictures, <c>xExt</c> and
-		/// <c>yExt</c> can be zero when no suggested size is supplied. For <c>MM_ISOTROPIC</c> pictures, an aspect ratio must be
-		/// supplied even when no suggested size is given. (If a suggested size is given, the aspect ratio is implied by the size.) To
-		/// give an aspect ratio without implying a suggested size, set <c>xExt</c> and <c>yExt</c> to negative values whose ratio is the
-		/// appropriate aspect ratio. The magnitude of the negative <c>xExt</c> and <c>yExt</c> values is ignored; only the ratio is used.
+		/// <c>yExt</c> can be zero when no suggested size is supplied. For <c>MM_ISOTROPIC</c> pictures, an aspect ratio must be supplied
+		/// even when no suggested size is given. (If a suggested size is given, the aspect ratio is implied by the size.) To give an aspect
+		/// ratio without implying a suggested size, set <c>xExt</c> and <c>yExt</c> to negative values whose ratio is the appropriate aspect
+		/// ratio. The magnitude of the negative <c>xExt</c> and <c>yExt</c> values is ignored; only the ratio is used.
 		/// </para>
 		/// </summary>
 		public int yExt;

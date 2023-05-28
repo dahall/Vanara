@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -59,6 +60,274 @@ public static partial class ComCtl32
 		CBEIF_DI_SETITEM = 0x10000000,
 	}
 
+	/// <summary>
+	/// Window messages related to extended combo boxes. These messages are defined in Commctrl.h and are available starting with Windows Vista.
+	/// </summary>
+	[PInvokeData("Commctrl.h")]
+	public enum ComboBoxExMessage
+	{
+		/// <summary>Sets an image list for a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A handle to the image list to be set for the control.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>
+		/// Returns the handle to the image list previously associated with the control, or returns <c>NULL</c> if no image list was
+		/// previously set.
+		/// </para>
+		/// <remarks>
+		/// <para>Important</para>
+		/// <para>
+		/// The height of images in your image list might change the size requirements of the ComboBoxEx control. It is recommended that you
+		/// resize the control after sending this message to ensure that it is displayed properly.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setimagelist
+		[MsgParams(null, typeof(HIMAGELIST), LResultType = typeof(HIMAGELIST))]
+		CBEM_SETIMAGELIST = WindowMessage.WM_USER + 2,
+
+		/// <summary>Gets the handle to an image list assigned to a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns the handle to the image list assigned to the control if successful, or <c>NULL</c> otherwise.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getimagelist
+		[MsgParams(LResultType = typeof(HIMAGELIST))]
+		CBEM_GETIMAGELIST = WindowMessage.WM_USER + 3,
+
+		/// <summary>Removes an item from a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>The zero-based index of the item to be removed.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>
+		/// Returns an INT value that represents the number of items remaining in the control. If iIndex is invalid, the message returns CB_ERR.
+		/// </para>
+		/// <remarks>This message maps to the combo box control message <c>CB_DELETESTRING</c>.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-deleteitem
+		[MsgParams(typeof(int), null, LResultType = typeof(int))]
+		CBEM_DELETEITEM = ComboBoxMessage.CB_DELETESTRING,
+
+		/// <summary>Gets the handle to the child combo box control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns the handle to the combo box control within the ComboBoxEx control.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getcombocontrol
+		[MsgParams(LResultType = typeof(HWND))]
+		CBEM_GETCOMBOCONTROL = WindowMessage.WM_USER + 6,
+
+		/// <summary>
+		/// Gets the handle to the edit control portion of a ComboBoxEx control. A ComboBoxEx control uses an edit box when it is set to the
+		/// <c>CBS_DROPDOWN</c> style.
+		/// </summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>
+		/// Returns the handle to the edit control within the ComboBoxEx control if it uses the <c>CBS_DROPDOWN</c> style. Otherwise, the
+		/// message returns <c>NULL</c>.
+		/// </para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-geteditcontrol
+		[MsgParams(LResultType = typeof(HWND))]
+		CBEM_GETEDITCONTROL = WindowMessage.WM_USER + 7,
+
+		/// <summary/>
+		[Obsolete("Use CBEM_SETEXTENDEDSTYLE instead.", false)]
+		CBEM_SETEXSTYLE = WindowMessage.WM_USER + 8,
+
+		/// <summary>Sets extended styles within a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>
+		/// A <c>DWORD</c> value that indicates which styles in lParam are to be affected. Only the extended styles in wParam will be
+		/// changed. If this parameter is zero, then all of the styles in lParam will be affected.
+		/// </para>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>DWORD</c> value that contains the ComboBoxEx Control Extended Styles to set for the control.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns a <c>DWORD</c> value that contains the extended styles previously used for the control.</para>
+		/// <remarks>
+		/// <para>
+		/// wParam enables you to modify one or more extended styles without having to retrieve the existing styles first. For example, if
+		/// you pass <c>CBES_EX_NOEDITIMAGE</c> for wParam and 0 for lParam, the <c>CBES_EX_NOEDITIMAGE</c> style will be cleared, but all
+		/// other styles will remain the same.
+		/// </para>
+		/// <para>
+		/// If you try to set an extended style for a ComboBoxEx control created with the <c>CBS_SIMPLE</c> style, it may not repaint properly.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setextendedstyle
+		[MsgParams(typeof(ComboBoxExStyle), typeof(ComboBoxExStyle), LResultType = typeof(ComboBoxExStyle))]
+		CBEM_SETEXTENDEDSTYLE = WindowMessage.WM_USER + 14,
+
+		/// <summary/>
+		[Obsolete("Use CBEM_GETEXTENDEDSTYLE instead.", false)]
+		CBEM_GETEXSTYLE = WindowMessage.WM_USER + 9,
+
+		/// <summary>Gets the extended styles that are in use for a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns a DWORD value that contains the ComboBoxEx control extended styles in use for the control.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getextendedstyle
+		[MsgParams(LResultType = typeof(ComboBoxExStyle))]
+		CBEM_GETEXTENDEDSTYLE = WindowMessage.WM_USER + 9,
+
+		/// <summary>
+		/// Sets the UNICODE character format flag for the control. This message enables you to change the character set used by the control
+		/// at run time rather than having to re-create the control.
+		/// </summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>
+		/// Determines the character set that is used by the control. If this value is nonzero, the control will use Unicode characters. If
+		/// this value is zero, the control will use ANSI characters.
+		/// </para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns the previous Unicode format flag for the control.</para>
+		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setunicodeformat
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
+		CBEM_SETUNICODEFORMAT = 0x2005,
+
+		/// <summary>Gets the UNICODE character format flag for the control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>
+		/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this value
+		/// is zero, the control is using ANSI characters.
+		/// </para>
+		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getunicodeformat
+		[MsgParams(LResultType = typeof(BOOL))]
+		CBEM_GETUNICODEFORMAT = 0x2006,
+
+		/// <summary>Determines whether the user has changed the text of a ComboBoxEx edit control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns <c>TRUE</c> if the text in the control's edit box has been changed, or <c>FALSE</c> otherwise.</para>
+		/// <remarks>
+		/// <para>
+		/// A ComboBoxEx control uses an edit box control when it is set to the <c>CBS_DROPDOWN</c> style. You can retrieve the edit box
+		/// control's window handle by sending a <c>CBEM_GETEDITCONTROL</c> message.
+		/// </para>
+		/// <para>
+		/// When the user begins editing, you will receive a CBEN_BEGINEDIT notification. When editing is complete, or the focus changes, you
+		/// will receive a CBEN_ENDEDIT notification. The <c>CBEM_HASEDITCHANGED</c> message is only useful for determining whether the text
+		/// has been changed if it is sent before the CBEN_ENDEDIT notification. If the message is sent afterward, it will return
+		/// <c>FALSE</c>. For example, suppose the user starts to edit the text in the edit box but changes focus, generating a CBEN_ENDEDIT
+		/// notification. If you then send a <c>CBEM_HASEDITCHANGED</c> message, it will return <c>FALSE</c>, even though the text has been changed.
+		/// </para>
+		/// <para>The <c>CBS_SIMPLE</c> style does not work correctly with <c>CBEM_HASEDITCHANGED</c>.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-haseditchanged
+		[MsgParams(LResultType = typeof(BOOL))]
+		CBEM_HASEDITCHANGED = WindowMessage.WM_USER + 10,
+
+		/// <summary>Inserts a new item in a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// A pointer to a <c>COMBOBOXEXITEM</c> structure that contains information about the item to be inserted. When the message is sent,
+		/// the <c>iItem</c> member must be set to indicate the zero-based index at which to insert the item. To insert an item at the end of
+		/// the list, set the <c>iItem</c> member to -1.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns the index at which the new item was inserted if successful, or -1 otherwise.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-insertitem
+		[MsgParams(null, typeof(COMBOBOXEXITEM), LResultType = typeof(int))]
+		CBEM_INSERTITEM = WindowMessage.WM_USER + 11,
+
+		/// <summary>Sets the attributes for an item in a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// A pointer to a <c>COMBOBOXEXITEM</c> structure that contains the item information to be set. When the message is sent, the
+		/// <c>mask</c> member of the structure must be set to indicate which attributes are valid and the <c>iItem</c> member must specify
+		/// the zero-based index of the item to be modified. Setting the <c>iItem</c> member to -1 will modify the item displayed in the edit control.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns nonzero if successful, or zero otherwise.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setitem
+		[MsgParams(null, typeof(COMBOBOXEXITEM), LResultType = typeof(BOOL))]
+		CBEM_SETITEM = WindowMessage.WM_USER + 12,
+
+		/// <summary>Gets item information for a given ComboBoxEx item.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to a <c>COMBOBOXEXITEM</c> structure that receives the item information.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns nonzero if successful, or zero otherwise.</para>
+		/// <remarks>
+		/// <para>
+		/// When the message is sent, the <c>iItem</c> and <c>mask</c> members of the structure must be set to indicate the index of the
+		/// target item and the type of information to be retrieved. Other members are set as needed. For example, to retrieve text, you must
+		/// set the CBEIF_TEXT flag in <c>mask</c>, and assign a value to <c>cchTextMax</c>. Setting the <c>iItem</c> member to -1 will
+		/// retrieve the item displayed in the edit control.
+		/// </para>
+		/// <para>
+		/// If the CBEIF_TEXT flag is set in the <c>mask</c> member of the <c>COMBOBOXEXITEM</c> structure, the control may change the
+		/// <c>pszText</c> member of the structure to point to the new text instead of filling the buffer with the requested text.
+		/// Applications should not assume that the text will always be placed in the requested buffer.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/Controls/cbem-getitem
+		[MsgParams(null, typeof(COMBOBOXEXITEM), LResultType = typeof(BOOL))]
+		CBEM_GETITEM = WindowMessage.WM_USER + 13,
+
+		/// <summary>Sets the visual style of a ComboBoxEx control.</summary>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to a Unicode string that contains the control visual style to set.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>The return value is not used.</para>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// To use this message, you must provide a manifest specifying Comclt32 version 6.0. For more information on manifests, see Enabling
+		/// Visual Styles.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setwindowtheme
+		[MsgParams(null, typeof(StrPtrUni), LResultType = null)]
+		CBEM_SETWINDOWTHEME = 0x200B,
+	}
+
 	/// <summary>Support the extended styles that are listed in this section as well as most standard combo box control styles.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775742")]
 	public enum ComboBoxExStyle
@@ -93,62 +362,6 @@ public static partial class ComCtl32
 		/// to a fixed width, yet the entries in the list may be long.
 		/// </summary>
 		CBES_EX_TEXTENDELLIPSIS = 0x00000020,
-	}
-
-	/// <summary>Contains combo box status information.</summary>
-	[PInvokeData("Winuser.h", MSDNShortId = "bb775798")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct COMBOBOXINFO
-	{
-		/// <summary>The size, in bytes, of the structure. The calling application must set this to sizeof(COMBOBOXINFO).</summary>
-		public int cbSize;
-
-		/// <summary>A RECT structure that specifies the coordinates of the edit box.</summary>
-		public RECT rcItem;
-
-		/// <summary>A RECT structure that specifies the coordinates of the button that contains the drop-down arrow.</summary>
-		public RECT rcButton;
-
-		/// <summary>The combo box button state.</summary>
-		public ComboBoxInfoState buttonState;
-
-		/// <summary>A handle to the combo box.</summary>
-		public HWND hwndCombo;
-
-		/// <summary>A handle to the edit box.</summary>
-		public HWND hwndEdit;
-
-		/// <summary>A handle to the drop-down list.</summary>
-		public HWND hwndList;
-
-		/// <summary>Creates an instance of the <see cref="COMBOBOXINFO"/> structure from a handle and retrieves its values.</summary>
-		/// <param name="hComboBox">The handle to a ComboBox.</param>
-		/// <returns>A <see cref="COMBOBOXINFO"/> structure with values from the supplied handle.</returns>
-		public static COMBOBOXINFO FromHandle(HWND hComboBox)
-		{
-			if (hComboBox.IsNull)
-				throw new ArgumentException("ComboBox handle cannot be NULL.", nameof(hComboBox));
-
-			var cbi = new COMBOBOXINFO() { cbSize = Marshal.SizeOf(typeof(COMBOBOXINFO)) };
-			SendMessage(hComboBox, ComboBoxMessage.CB_GETCOMBOBOXINFO, 0, ref cbi);
-			return cbi;
-		}
-
-		/// <summary>Gets a value indicating whether this <see cref="COMBOBOXINFO"/> is invisible.</summary>
-		/// <value><c>true</c> if invisible; otherwise, <c>false</c>.</value>
-		public bool Invisible => (buttonState & ComboBoxInfoState.STATE_SYSTEM_INVISIBLE) == ComboBoxInfoState.STATE_SYSTEM_INVISIBLE;
-
-		/// <summary>Gets a value indicating whether this <see cref="COMBOBOXINFO"/> is pressed.</summary>
-		/// <value><c>true</c> if pressed; otherwise, <c>false</c>.</value>
-		public bool Pressed => (buttonState & ComboBoxInfoState.STATE_SYSTEM_PRESSED) == ComboBoxInfoState.STATE_SYSTEM_PRESSED;
-
-		/// <summary>Gets the item rectangle.</summary>
-		/// <value>The item rectangle.</value>
-		public RECT ItemRectangle => rcItem;
-
-		/// <summary>Gets the button rectangle.</summary>
-		/// <value>The button rectangle.</value>
-		public RECT ButtonRectangle => rcButton;
 	}
 
 	/// <summary>Contains information used with the CBEN_DRAGBEGIN notification code.</summary>
@@ -228,7 +441,7 @@ public static partial class ComCtl32
 		public ComboBoxExItemMask mask;
 
 		/// <summary>The zero-based index of the item.</summary>
-		[MarshalAs(UnmanagedType.SysInt)] public int iItem;
+		public nint iItem;
 
 		/// <summary>
 		/// A pointer to a character buffer that contains or receives the item's text. If text information is being retrieved, this
@@ -236,7 +449,7 @@ public static partial class ComCtl32
 		/// indicated in cchTextMax. If this member is set to LPSTR_TEXTCALLBACK, the control will request the information by using the
 		/// CBEN_GETDISPINFO notification codes.
 		/// </summary>
-		public IntPtr pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>The length of pszText, in TCHARs. If text information is being set, this member is ignored.</summary>
 		public int cchTextMax;
@@ -276,18 +489,18 @@ public static partial class ComCtl32
 
 		/// <summary>Initializes a new instance of the <see cref="COMBOBOXEXITEM"/> class.</summary>
 		/// <param name="text">The text.</param>
-		public COMBOBOXEXITEM(string text) => Text = text;
+		public COMBOBOXEXITEM(string? text) => Text = text;
 
 		/// <summary>Gets or sets the item's text.</summary>
 		/// <value>The text value.</value>
-		public string Text
+		public string? Text
 		{
-			get => pszText == LPSTR_TEXTCALLBACK ? null : Marshal.PtrToStringAuto(pszText);
+			get => pszText == LPSTR_TEXTCALLBACK ? null : pszText;
 			set
 			{
 				((IDisposable)this).Dispose();
 				if (value == null) return;
-				pszText = Marshal.StringToCoTaskMemAuto(value);
+				pszText.Assign(value);
 				cchTextMax = value.Length;
 				mask |= ComboBoxExItemMask.CBEIF_TEXT;
 			}
@@ -297,7 +510,7 @@ public static partial class ComCtl32
 		/// <value><c>true</c> if using text callback method; otherwise, <c>false</c>.</value>
 		public bool UseTextCallback
 		{
-			get => pszText == LPSTR_TEXTCALLBACK;
+			get => pszText.Equals(LPSTR_TEXTCALLBACK);
 			set
 			{
 				if (value)
@@ -312,10 +525,9 @@ public static partial class ComCtl32
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		void IDisposable.Dispose()
 		{
-			if (pszText != IntPtr.Zero && pszText != LPSTR_TEXTCALLBACK)
+			if (!pszText.IsNull && !pszText.Equals(LPSTR_TEXTCALLBACK))
 			{
-				Marshal.FreeCoTaskMem(pszText);
-				pszText = IntPtr.Zero;
+				pszText.Free();
 				cchTextMax = 0;
 			}
 		}

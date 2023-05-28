@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
@@ -97,6 +98,7 @@ public static partial class ComCtl32
 		/// <para>Returns the handle to the image list if successful, or <c>NULL</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getimagelist
+		[MsgParams(LResultType = typeof(HIMAGELIST))]
 		TCM_GETIMAGELIST = TCM_FIRST + 2,
 
 		/// <summary>
@@ -110,6 +112,7 @@ public static partial class ComCtl32
 		/// <para>Returns the handle to the previous image list, or <c>NULL</c> if there is no previous image list.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setimagelist
+		[MsgParams(null, typeof(HIMAGELIST), LResultType = typeof(HIMAGELIST))]
 		TCM_SETIMAGELIST = TCM_FIRST + 3,
 
 		/// <summary>
@@ -124,6 +127,7 @@ public static partial class ComCtl32
 		/// <para>Returns the number of items if successful, or zero otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getitemcount
+		[MsgParams()]
 		TCM_GETITEMCOUNT = TCM_FIRST + 4,
 
 		/// <summary>
@@ -148,6 +152,7 @@ public static partial class ComCtl32
 		/// control may set the <c>pszText</c> member to <c>NULL</c> to indicate that no text is associated with the item.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getitem
+		[MsgParams(typeof(int), typeof(TCITEM), LResultType = typeof(BOOL))]
 		TCM_GETITEM = TCM_FIRST + 60,
 
 		/// <summary>
@@ -165,6 +170,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setitem
+		[MsgParams(typeof(int), typeof(TCITEM), LResultType = typeof(BOOL))]
 		TCM_SETITEM = TCM_FIRST + 61,
 
 		/// <summary>
@@ -181,6 +187,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the new tab if successful, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-insertitem
+		[MsgParams(typeof(int), typeof(TCITEM))]
 		TCM_INSERTITEM = TCM_FIRST + 62,
 
 		/// <summary>
@@ -194,6 +201,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-deleteitem
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		TCM_DELETEITEM = TCM_FIRST + 8,
 
 		/// <summary>
@@ -207,6 +215,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-deleteallitems
+		[MsgParams(LResultType = typeof(BOOL))]
 		TCM_DELETEALLITEMS = TCM_FIRST + 9,
 
 		/// <summary>
@@ -221,6 +230,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getitemrect
+		[MsgParams(typeof(int), typeof(RECT?), LResultType = typeof(BOOL))]
 		TCM_GETITEMRECT = TCM_FIRST + 10,
 
 		/// <summary>
@@ -235,6 +245,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the selected tab if successful, or -1 if no tab is selected.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getcursel
+		[MsgParams()]
 		TCM_GETCURSEL = TCM_FIRST + 11,
 
 		/// <summary>
@@ -251,6 +262,7 @@ public static partial class ComCtl32
 		/// A tab control does not send a TCN_SELCHANGING or TCN_SELCHANGE notification code when a tab is selected using this message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setcursel
+		[MsgParams(typeof(int), null)]
 		TCM_SETCURSEL = TCM_FIRST + 12,
 
 		/// <summary>
@@ -265,6 +277,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the tab, or -1 if no tab is at the specified position.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-hittest
+		[MsgParams(null, typeof(TCHITTESTINFO?))]
 		TCM_HITTEST = TCM_FIRST + 13,
 
 		/// <summary>
@@ -287,6 +300,7 @@ public static partial class ComCtl32
 		/// <para>An application should only change the number of extra bytes when a tab control does not contain any tabs.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setitemextra
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		TCM_SETITEMEXTRA = TCM_FIRST + 14,
 
 		/// <summary>
@@ -308,6 +322,7 @@ public static partial class ComCtl32
 		/// This message applies only to tab controls that are at the top. It does not apply to tab controls that are on the sides or bottom.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-adjustrect
+		[MsgParams(typeof(BOOL), typeof(RECT?), LResultType = null)]
 		TCM_ADJUSTRECT = TCM_FIRST + 40,
 
 		/// <summary>
@@ -329,6 +344,7 @@ public static partial class ComCtl32
 		/// lowest value that is greater than the image width.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setitemsize
+		[MsgParams(null, typeof(uint), LResultType = typeof(uint))]
 		TCM_SETITEMSIZE = TCM_FIRST + 41,
 
 		/// <summary>
@@ -347,11 +363,13 @@ public static partial class ComCtl32
 		/// using the image being removed, the tab will be set to have no image.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-removeimage
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TCM_REMOVEIMAGE = TCM_FIRST + 42,
 
 		/// <summary>
-		/// Sets the amount of space (padding) around each tab's icon and label in a tab control. You can send this message explicitly or
-		/// by using the <c>TabCtrl_SetPadding</c> macro.
+		/// Sets the amount of space (padding) around each tab's icon and label in a tab control. You can send this message explicitly or by
+		/// using the <c>TabCtrl_SetPadding</c> macro.
+		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
@@ -360,8 +378,8 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setpadding
+		// https://learn.microsoft.com/en-us/windows/win32/controls/tcm-setpadding
+		[MsgParams(null, typeof(uint), LResultType = null)]
 		TCM_SETPADDING = TCM_FIRST + 43,
 
 		/// <summary>
@@ -377,6 +395,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>Only tab controls that have the <c>TCS_MULTILINE</c> style can have multiple rows of tabs.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getrowcount
+		[MsgParams()]
 		TCM_GETROWCOUNT = TCM_FIRST + 44,
 
 		/// <summary>
@@ -395,6 +414,7 @@ public static partial class ComCtl32
 		/// tab control by using the <c>TCM_SETTOOLTIPS</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-gettooltips
+		[MsgParams(LResultType = typeof(HWND))]
 		TCM_GETTOOLTIPS = TCM_FIRST + 45,
 
 		/// <summary>
@@ -409,6 +429,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>You can retrieve the tooltip control associated with a tab control by using the <c>TCM_GETTOOLTIPS</c> message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-settooltips
+		[MsgParams(typeof(HWND), null, LResultType = null)]
 		TCM_SETTOOLTIPS = TCM_FIRST + 46,
 
 		/// <summary>
@@ -424,6 +445,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The item that has the focus may be different than the selected item.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getcurfocus
+		[MsgParams()]
 		TCM_GETCURFOCUS = TCM_FIRST + 47,
 
 		/// <summary>
@@ -450,6 +472,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setcurfocus
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TCM_SETCURFOCUS = TCM_FIRST + 48,
 
 		/// <summary>
@@ -466,6 +489,7 @@ public static partial class ComCtl32
 		/// <para>Returns an INT value that represents the previous minimum tab width.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setmintabwidth
+		[MsgParams(null, typeof(int))]
 		TCM_SETMINTABWIDTH = TCM_FIRST + 49,
 
 		/// <summary>
@@ -484,6 +508,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>This message is only meaningful if the <c>TCS_BUTTONS</c> style flag has been set.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-deselectall
+		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		TCM_DESELECTALL = TCM_FIRST + 50,
 
 		/// <summary>
@@ -501,6 +526,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>In Comctl32.dll version 6.0, this message has no visible effect when a theme is active.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-highlightitem
+		[MsgParams(typeof(int), typeof(uint), LResultType = typeof(BOOL))]
 		TCM_HIGHLIGHTITEM = TCM_FIRST + 51,
 
 		/// <summary>
@@ -526,6 +552,7 @@ public static partial class ComCtl32
 		/// <para>For backward compatibility reasons, the <c>TabCtrl_SetExtendedStyle</c> macro has not been updated to use dwExMask.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setextendedstyle
+		[MsgParams(typeof(TabControlStylesEx), typeof(TabControlStylesEx), LResultType = typeof(TabControlStylesEx))]
 		TCM_SETEXTENDEDSTYLE = TCM_FIRST + 52,  // optional wParam == mask
 
 		/// <summary>
@@ -543,6 +570,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getextendedstyle
+		[MsgParams(LResultType = typeof(TabControlStylesEx))]
 		TCM_GETEXTENDEDSTYLE = TCM_FIRST + 53,
 
 		/// <summary>
@@ -562,6 +590,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setunicodeformat
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
 		TCM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
 
 		/// <summary>
@@ -580,6 +609,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getunicodeformat
+		[MsgParams(LResultType = typeof(BOOL))]
 		TCM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT
 	}
 
@@ -602,6 +632,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-keydown
+		[CorrespondingType(typeof(NMTCKEYDOWN))]
 		TCN_KEYDOWN = TCN_FIRST - 0,
 
 		/// <summary>
@@ -620,6 +651,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>To determine the currently selected tab, use the <c>TabCtrl_GetCurSel</c> macro.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-selchange
+		[CorrespondingType(typeof(NMHDR))]
 		TCN_SELCHANGE = TCN_FIRST - 1,
 
 		/// <summary>
@@ -638,6 +670,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>To determine the currently selected tab, use the <c>TabCtrl_GetCurSel</c> macro.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-selchanging
+		[CorrespondingType(typeof(NMHDR))]
 		TCN_SELCHANGING = TCN_FIRST - 2,
 
 		/// <summary>
@@ -658,6 +691,7 @@ public static partial class ComCtl32
 		/// <para>The application processing this notification code must return zero.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-getobject
+		[CorrespondingType(typeof(NMOBJECTNOTIFY))]
 		TCN_GETOBJECT = TCN_FIRST - 3,
 
 		/// <summary>
@@ -675,6 +709,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-focuschange
+		[CorrespondingType(typeof(NMHDR))]
 		TCN_FOCUSCHANGE = TCN_FIRST - 4,
 	}
 
@@ -793,6 +828,35 @@ public static partial class ComCtl32
 		TCS_EX_REGISTERDROP = 0x00000002
 	}
 
+	/// <summary>
+	/// Contains information about a key press in a tab control. It is used with the TCN_KEYDOWN notification code. This structure supersedes
+	/// the <c>TC_KEYDOWN</c> structure.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmtckeydown typedef struct tagTCKEYDOWN { NMHDR hdr; WORD
+	// wVKey; UINT flags; } NMTCKEYDOWN;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagTCKEYDOWN")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NMTCKEYDOWN : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains information about the notification.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>WORD</c></para>
+		/// <para>Virtual key code. Cast to <see cref="VK"/>.</para>
+		/// </summary>
+		public ushort wVKey;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Value that is identical to the <c>lParam</c> parameter of the <see cref="WindowMessage.WM_KEYDOWN"/> message.</para>
+		/// </summary>
+		public WM_KEY_LPARAM flags;
+	}
+
 	/// <summary>Contains information about a hit test. This structure supersedes the TC_HITTESTINFO structure.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760553")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -851,7 +915,9 @@ public static partial class ComCtl32
 		/// </summary>
 		public IntPtr lParam;
 
-		/// <summary>Initializes a new instance of the <see cref="TCITEM"/> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="TCITEM" /> class.</summary>
+		/// <param name="itemsToGet">Value that specifies which members to retrieve or set.</param>
+		/// <param name="statesToGet">Specifies which bits of the dwState member contain valid information.</param>
 		public TCITEM(TabControlItemMask itemsToGet = TabControlItemMask.TCIF_ALL, TabControlItemStates statesToGet = TabControlItemStates.TCIS_ALL)
 		{
 			if ((itemsToGet & TabControlItemMask.TCIF_TEXT) != 0)

@@ -36,6 +36,7 @@ public static partial class ComCtl32
 		/// <para>To set a larger range, call <c>PBM_SETRANGE32</c>.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setrange
+		[MsgParams(null, typeof(uint), LResultType = typeof(uint))]
 		PBM_SETRANGE = WindowMessage.WM_USER + 1,
 
 		/// <summary>Sets the current position for a progress bar and redraws the bar to reflect the new position.
@@ -52,6 +53,7 @@ public static partial class ComCtl32
 		/// <para>Do not send this message to a control that has the <c>PBS_MARQUEE</c> style.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setpos
+		[MsgParams(typeof(int), null)]
 		PBM_SETPOS = WindowMessage.WM_USER + 2,
 
 		/// <summary>
@@ -69,6 +71,7 @@ public static partial class ComCtl32
 		/// <para>The behavior of this message is undefined if it is sent to a control that has the <c>PBS_MARQUEE</c> style.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-deltapos
+		[MsgParams(typeof(int), null)]
 		PBM_DELTAPOS = WindowMessage.WM_USER + 3,
 
 		/// <summary>
@@ -83,6 +86,7 @@ public static partial class ComCtl32
 		/// <para>Returns the previous step increment.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setstep
+		[MsgParams(typeof(int), null)]
 		PBM_SETSTEP = WindowMessage.WM_USER + 4,
 
 		/// <summary>
@@ -101,6 +105,7 @@ public static partial class ComCtl32
 		/// starts over again from the beginning.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-stepit
+		[MsgParams(null, null)]
 		PBM_STEPIT = WindowMessage.WM_USER + 5,
 
 		/// <summary>
@@ -119,6 +124,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>To retrieve the entire high and low 32-bit values, use the <c>PBM_GETRANGE</c> message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setrange32
+		[MsgParams(typeof(ushort), typeof(ushort), LResultType = typeof(uint))]
 		PBM_SETRANGE32 = WindowMessage.WM_USER + 6,  // lParam = high, wParam = low
 
 		/// <summary>Retrieves information about the current high and low limits of a given progress bar control.
@@ -154,6 +160,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getrange
+		[MsgParams(typeof(BOOL), typeof(PBRANGE?))]
 		PBM_GETRANGE = WindowMessage.WM_USER + 7,  // wParam = return (TRUE ? low : high). lParam = PPBRANGE or NULL
 
 		/// <summary>Retrieves the current position of the progress bar.
@@ -166,6 +173,7 @@ public static partial class ComCtl32
 		/// <para>Returns a <c>UINT</c> value that represents the current position of the progress bar.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getpos
+		[MsgParams(LResultType = typeof(uint))]
 		PBM_GETPOS = WindowMessage.WM_USER + 8,
 
 		/// <summary>Sets the color of the progress indicator bar in the progress bar control.
@@ -184,6 +192,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setbarcolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		PBM_SETBARCOLOR = WindowMessage.WM_USER + 9,  // lParam = bar color
 
 		/// <summary>Sets the background color in the progress bar.
@@ -200,6 +209,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setbkcolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		PBM_SETBKCOLOR = CommonControlMessage.CCM_SETBKCOLOR,  // lParam = bkColor
 
 		/// <summary>Sets the progress bar to marquee mode. This causes the progress bar to move like a marquee.
@@ -229,6 +239,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setmarquee
+		[MsgParams(typeof(BOOL), typeof(uint), LResultType = typeof(BOOL))]
 		PBM_SETMARQUEE = WindowMessage.WM_USER + 10,
 
 		/// <summary>
@@ -243,6 +254,7 @@ public static partial class ComCtl32
 		/// <para>Returns the current step increment.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getstep
+		[MsgParams(LResultType = typeof(uint))]
 		PBM_GETSTEP = WindowMessage.WM_USER + 13,
 
 		/// <summary>Gets the background color of the progress bar.
@@ -259,6 +271,7 @@ public static partial class ComCtl32
 		/// <para>This function only affects the classic mode, not any visual style.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getbkcolor
+		[MsgParams(LResultType = typeof(COLORREF))]
 		PBM_GETBKCOLOR = WindowMessage.WM_USER + 14,
 
 		/// <summary>Gets the color of the progress bar.
@@ -277,6 +290,7 @@ public static partial class ComCtl32
 		/// <para>This function only affects the classic mode, not any visual style.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getbarcolor
+		[MsgParams(LResultType = typeof(COLORREF))]
 		PBM_GETBARCOLOR = WindowMessage.WM_USER + 15,
 
 		/// <summary>Sets the state of the progress bar.
@@ -307,6 +321,7 @@ public static partial class ComCtl32
 		/// <para>Returns the previous state.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setstate
+		[MsgParams(typeof(ProgressState), null, LResultType = typeof(ProgressState))]
 		PBM_SETSTATE = WindowMessage.WM_USER + 16, // wParam = PBST_[State] (NORMAL, ERROR, PAUSED)
 
 		/// <summary>Gets the state of the progress bar.
@@ -337,6 +352,7 @@ public static partial class ComCtl32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getstate
+		[MsgParams(LResultType = typeof(ProgressState))]
 		PBM_GETSTATE = WindowMessage.WM_USER + 17,
 	}
 

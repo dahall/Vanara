@@ -19,7 +19,7 @@ public class MessageLoop
 	private Action<object> appCallback;
 	private uint callbackMsg;
 	private object callbackObj;
-	private IntPtr timeoutTimerId;   // timer id used to exit the app if the app is not called back within a certain time
+	private nuint timeoutTimerId;   // timer id used to exit the app if the app is not called back within a certain time
 
 	/// <summary>Initializes a new instance of the <see cref="MessageLoop"/> class.</summary>
 	public MessageLoop() => curThreadId = GetCurrentThreadId();
@@ -87,10 +87,10 @@ public class MessageLoop
 			try { ProcessMessage?.Invoke(this, new MessageEventArgs(msg)); } catch { }
 			if (msg.message == WM_TIMER)
 			{
-				KillTimer(default, msg.wParam);
-				if (msg.wParam == timeoutTimerId)
+				KillTimer(default, (nuint)(nint)msg.wParam);
+				if ((nuint)(nint)msg.wParam == timeoutTimerId)
 				{
-					timeoutTimerId = IntPtr.Zero;
+					timeoutTimerId = 0;
 					PostQuitMessage(0);
 				}
 			}

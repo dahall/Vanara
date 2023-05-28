@@ -19,7 +19,7 @@ public static partial class User32
 	// typedef struct tagNMHDR { HWND hwndFrom; UINT_PTR idFrom; UINT code; } NMHDR;
 	[PInvokeData("winuser.h", MSDNShortId = "NS:winuser.tagNMHDR")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMHDR
+	public struct NMHDR : INotificationInfo
 	{
 		/// <summary>A window handle to the control sending the message.</summary>
 		public HWND hwndFrom;

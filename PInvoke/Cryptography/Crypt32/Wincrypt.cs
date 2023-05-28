@@ -3606,11 +3606,11 @@ public static partial class Crypt32
 
 		/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class.</summary>
 		/// <param name="value">The value.</param>
-		public SafeOID(int value) { SetHandle((IntPtr)unchecked((ushort)value)); }
+		public SafeOID(int value) => SetHandle((IntPtr)unchecked((ushort)value));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class.</summary>
 		/// <param name="value">The value.</param>
-		public SafeOID(uint value) { SetHandle((IntPtr)unchecked((ushort)value)); }
+		public SafeOID(uint value) => SetHandle((IntPtr)unchecked((ushort)value));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeOID"/> class.</summary>
 		/// <param name="value">The value.</param>

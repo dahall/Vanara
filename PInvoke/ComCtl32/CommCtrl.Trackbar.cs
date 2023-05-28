@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -37,9 +38,11 @@ public static partial class ComCtl32
 		/// <para>Returns a 32-bit value that specifies the current logical position of the trackbar's slider.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getpos
+		[MsgParams()]
 		TBM_GETPOS = WindowMessage.WM_USER,
 
-		/// <summary>Retrieves the minimum position for the slider in a trackbar.
+		/// <summary>
+		/// Retrieves the minimum position for the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -49,9 +52,11 @@ public static partial class ComCtl32
 		/// <para>Returns a 32-bit value that specifies the minimum position in the trackbar's range of minimum to maximum slider positions.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getrangemin
+		[MsgParams()]
 		TBM_GETRANGEMIN = WindowMessage.WM_USER + 1,
 
-		/// <summary>Retrieves the maximum position for the slider in a trackbar.
+		/// <summary>
+		/// Retrieves the maximum position for the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -61,6 +66,7 @@ public static partial class ComCtl32
 		/// <para>Returns a 32-bit value that specifies the maximum position in the trackbar's range of minimum to maximum slider positions.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getrangemax
+		[MsgParams()]
 		TBM_GETRANGEMAX = WindowMessage.WM_USER + 2,
 
 		/// <summary>
@@ -69,8 +75,8 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Zero-based index identifying a tick mark. Valid indexes are in the range from zero to two less than the tick count returned
-		/// by the <c>TBM_GETNUMTICS</c> message.
+		/// Zero-based index identifying a tick mark. Valid indexes are in the range from zero to two less than the tick count returned by
+		/// the <c>TBM_GETNUMTICS</c> message.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>Must be zero.</para>
@@ -78,52 +84,54 @@ public static partial class ComCtl32
 		/// <para>Returns the logical position of the specified tick mark, or -1 if wParam does not specify a valid index.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-gettic
+		[MsgParams(typeof(int), null)]
 		TBM_GETTIC = WindowMessage.WM_USER + 3,
 
-		/// <summary>Sets a tick mark in a trackbar at the specified logical position.
+		/// <summary>
+		/// Sets a tick mark in a trackbar at the specified logical position.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Position of the tick mark. This parameter can be any of the integer values in the trackbar's range of minimum to maximum
-		/// slider positions.
+		/// Position of the tick mark. This parameter can be any of the integer values in the trackbar's range of minimum to maximum slider positions.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if the tick mark is set, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
-		/// <remarks>
-		/// A trackbar creates its own first and last tick marks. Do not use this message to set the first and last tick marks.
-		/// </remarks>
+		/// <remarks>A trackbar creates its own first and last tick marks. Do not use this message to set the first and last tick marks.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-settic
+		[MsgParams(null, typeof(int), LResultType = typeof(BOOL))]
 		TBM_SETTIC = WindowMessage.WM_USER + 4,
 
-		/// <summary>Sets the current logical position of the slider in a trackbar.
+		/// <summary>
+		/// Sets the current logical position of the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Redraw flag. If this parameter is <c>TRUE</c>, the message redraws the control with the slider at the position given by
-		/// lParam. If this parameter is <c>FALSE</c>, the message does not redraw the slider at the new position. Note that the message
-		/// sets the value of the slider position (as returned by the <c>TBM_GETPOS</c> message) regardless of the wParam parameter.
+		/// Redraw flag. If this parameter is <c>TRUE</c>, the message redraws the control with the slider at the position given by lParam.
+		/// If this parameter is <c>FALSE</c>, the message does not redraw the slider at the new position. Note that the message sets the
+		/// value of the slider position (as returned by the <c>TBM_GETPOS</c> message) regardless of the wParam parameter.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// New logical position of the slider. Valid logical positions are the integer values in the trackbar's range of minimum to
-		/// maximum slider positions. If this value is outside the control's maximum and minimum range, the position is set to the
-		/// maximum or minimum value.
+		/// New logical position of the slider. Valid logical positions are the integer values in the trackbar's range of minimum to maximum
+		/// slider positions. If this value is outside the control's maximum and minimum range, the position is set to the maximum or minimum value.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setpos
+		[MsgParams(typeof(BOOL), typeof(int), LResultType = null)]
 		TBM_SETPOS = WindowMessage.WM_USER + 5,
 
-		/// <summary>Sets the range of minimum and maximum logical positions for the slider in a trackbar.
+		/// <summary>
+		/// Sets the range of minimum and maximum logical positions for the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Redraw flag. If this parameter is <c>TRUE</c>, the trackbar is redrawn after the range is set. If this parameter is
-		/// <c>FALSE</c>, the message sets the range but does not redraw the trackbar.
+		/// Redraw flag. If this parameter is <c>TRUE</c>, the trackbar is redrawn after the range is set. If this parameter is <c>FALSE</c>,
+		/// the message sets the range but does not redraw the trackbar.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>The <c>LOWORD</c> specifies the minimum position for the slider, and the <c>HIWORD</c> specifies the maximum position.</para>
@@ -141,9 +149,11 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setrange
+		[MsgParams(typeof(BOOL), typeof(uint), LResultType = null)]
 		TBM_SETRANGE = WindowMessage.WM_USER + 6,
 
-		/// <summary>Sets the minimum logical position for the slider in a trackbar.
+		/// <summary>
+		/// Sets the minimum logical position for the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -156,18 +166,20 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
-		/// If the current slider position is less than the new minimum, the <c>TBM_SETRANGEMIN</c> message sets the slider position to
-		/// the new minimum value.
+		/// If the current slider position is less than the new minimum, the <c>TBM_SETRANGEMIN</c> message sets the slider position to the
+		/// new minimum value.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setrangemin
+		[MsgParams(typeof(BOOL), typeof(int), LResultType = null)]
 		TBM_SETRANGEMIN = WindowMessage.WM_USER + 7,
 
-		/// <summary>Sets the maximum logical position for the slider in a trackbar.
+		/// <summary>
+		/// Sets the maximum logical position for the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Redraw flag. If this parameter is <c>TRUE</c>, the trackbar is redrawn after the range is set. If this parameter is
-		/// <c>FALSE</c>, the message sets the range but does not redraw the trackbar.
+		/// Redraw flag. If this parameter is <c>TRUE</c>, the trackbar is redrawn after the range is set. If this parameter is <c>FALSE</c>,
+		/// the message sets the range but does not redraw the trackbar.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>Maximum position for the slider.</para>
@@ -175,10 +187,11 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
-		/// If the current slider position is greater than the new maximum, the <c>TBM_SETRANGEMAX</c> message sets the slider position
-		/// to the new maximum value.
+		/// If the current slider position is greater than the new maximum, the <c>TBM_SETRANGEMAX</c> message sets the slider position to
+		/// the new maximum value.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setrangemax
+		[MsgParams(typeof(BOOL), typeof(int), LResultType = null)]
 		TBM_SETRANGEMAX = WindowMessage.WM_USER + 8,
 
 		/// <summary>
@@ -196,9 +209,11 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-cleartics
+		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		TBM_CLEARTICS = WindowMessage.WM_USER + 9,
 
-		/// <summary>Sets the starting and ending positions for the available selection range in a trackbar.
+		/// <summary>
+		/// Sets the starting and ending positions for the available selection range in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -218,11 +233,12 @@ public static partial class ComCtl32
 		/// <para><c>TBM_SETSEL</c> allows you to restrict the pointer to only a portion of the range available to the progress bar.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setsel
+		[MsgParams(typeof(BOOL), typeof(uint), LResultType = null)]
 		TBM_SETSEL = WindowMessage.WM_USER + 10,
 
 		/// <summary>
-		/// Sets the starting logical position of the current selection range in a trackbar. This message is ignored if the trackbar does
-		/// not have the <c>TBS_ENABLESELRANGE</c> style.
+		/// Sets the starting logical position of the current selection range in a trackbar. This message is ignored if the trackbar does not
+		/// have the <c>TBS_ENABLESELRANGE</c> style.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -235,11 +251,12 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setselstart
+		[MsgParams(typeof(BOOL), typeof(int), LResultType = null)]
 		TBM_SETSELSTART = WindowMessage.WM_USER + 11,
 
 		/// <summary>
-		/// Sets the ending logical position of the current selection range in a trackbar. This message is ignored if the trackbar does
-		/// not have the <c>TBS_ENABLESELRANGE</c> style.
+		/// Sets the ending logical position of the current selection range in a trackbar. This message is ignored if the trackbar does not
+		/// have the <c>TBS_ENABLESELRANGE</c> style.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -252,9 +269,11 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setselend
+		[MsgParams(typeof(BOOL), typeof(int), LResultType = null)]
 		TBM_SETSELEND = WindowMessage.WM_USER + 12,
 
-		/// <summary>Retrieves the address of an array that contains the positions of the tick marks for a trackbar.
+		/// <summary>
+		/// Retrieves the address of an array that contains the positions of the tick marks for a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -262,20 +281,22 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the address of an array of <c>DWORD</c> values. The elements of the array specify the logical positions of the
-		/// trackbar's tick marks, not including the first and last tick marks created by the trackbar. The logical positions can be any
-		/// of the integer values in the trackbar's range of minimum to maximum slider positions.
+		/// Returns the address of an array of <c>DWORD</c> values. The elements of the array specify the logical positions of the trackbar's
+		/// tick marks, not including the first and last tick marks created by the trackbar. The logical positions can be any of the integer
+		/// values in the trackbar's range of minimum to maximum slider positions.
 		/// </para>
 		/// </summary>
 		/// <remarks>
-		/// The number of elements in the array is two less than the tick count returned by the <c>TBM_GETNUMTICS</c> message. Note that
-		/// the values in the array may include duplicate positions and may not be in sequential order. The returned pointer is valid
-		/// until you change the trackbar's tick marks.
+		/// The number of elements in the array is two less than the tick count returned by the <c>TBM_GETNUMTICS</c> message. Note that the
+		/// values in the array may include duplicate positions and may not be in sequential order. The returned pointer is valid until you
+		/// change the trackbar's tick marks.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getptics
+		[MsgParams(LResultType = typeof(uint[]))]
 		TBM_GETPTICS = WindowMessage.WM_USER + 14,
 
-		/// <summary>Retrieves the current physical position of a tick mark in a trackbar.
+		/// <summary>
+		/// Retrieves the current physical position of a tick mark in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -285,16 +306,16 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the distance, in client coordinates, from the left or top of the trackbar's client area to the specified tick mark.
-		/// The return value is the x-coordinate of the tick mark for a horizontal trackbar or the y-coordinate for a vertical trackbar.
-		/// If wParam is not a valid index, the return value is -1.
+		/// Returns the distance, in client coordinates, from the left or top of the trackbar's client area to the specified tick mark. The
+		/// return value is the x-coordinate of the tick mark for a horizontal trackbar or the y-coordinate for a vertical trackbar. If
+		/// wParam is not a valid index, the return value is -1.
 		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// Because the first and last tick marks are not available through this message, valid indexes are offset from their tick
-		/// position on the trackbar. If the difference between <c>TBM_GETRANGEMIN</c> and <c>TBM_GETRANGEMAX</c> is less than two, then
-		/// there is no valid index and this message will fail.
+		/// Because the first and last tick marks are not available through this message, valid indexes are offset from their tick position
+		/// on the trackbar. If the difference between <c>TBM_GETRANGEMIN</c> and <c>TBM_GETRANGEMAX</c> is less than two, then there is no
+		/// valid index and this message will fail.
 		/// </para>
 		/// <para>
 		/// The following illustrates the relation between the ticks on a trackbar, the ticks available through this message, and their
@@ -305,9 +326,11 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getticpos
+		[MsgParams(typeof(uint), null)]
 		TBM_GETTICPOS = WindowMessage.WM_USER + 15,
 
-		/// <summary>Retrieves the number of tick marks in a trackbar.
+		/// <summary>
+		/// Retrieves the number of tick marks in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -323,9 +346,11 @@ public static partial class ComCtl32
 		/// The <c>TBM_GETNUMTICS</c> message counts all of the tick marks, including the first and last tick marks created by the trackbar.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getnumtics
+		[MsgParams()]
 		TBM_GETNUMTICS = WindowMessage.WM_USER + 16,
 
-		/// <summary>Retrieves the starting position of the current selection range in a trackbar.
+		/// <summary>
+		/// Retrieves the starting position of the current selection range in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -338,9 +363,11 @@ public static partial class ComCtl32
 		/// A trackbar can have a selection range only if you specified the <c>TBS_ENABLESELRANGE</c> style when you created it.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getselstart
+		[MsgParams()]
 		TBM_GETSELSTART = WindowMessage.WM_USER + 17,
 
-		/// <summary>Retrieves the ending position of the current selection range in a trackbar.
+		/// <summary>
+		/// Retrieves the ending position of the current selection range in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -353,9 +380,11 @@ public static partial class ComCtl32
 		/// A trackbar can have a selection range only if you specified the <c>TBS_ENABLESELRANGE</c> style when you created it.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getselend
+		[MsgParams()]
 		TBM_GETSELEND = WindowMessage.WM_USER + 18,
 
-		/// <summary>Clears the current selection range in a trackbar.
+		/// <summary>
+		/// Clears the current selection range in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Redraw flag. If this parameter is <c>TRUE</c>, the trackbar is redrawn after the selection is cleared.</para>
@@ -368,12 +397,13 @@ public static partial class ComCtl32
 		/// A trackbar can have a selection range only if you specified the <c>TBS_ENABLESELRANGE</c> style when you created it.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-clearsel
+		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		TBM_CLEARSEL = WindowMessage.WM_USER + 19,
 
 		/// <summary>
-		/// Sets the interval frequency for tick marks in a trackbar. For example, if the frequency is set to two, a tick mark is
-		/// displayed for every other increment in the trackbar's range. The default setting for the frequency is one; that is, every
-		/// increment in the range is associated with a tick mark.
+		/// Sets the interval frequency for tick marks in a trackbar. For example, if the frequency is set to two, a tick mark is displayed
+		/// for every other increment in the trackbar's range. The default setting for the frequency is one; that is, every increment in the
+		/// range is associated with a tick mark.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Frequency of the tick marks.</para>
@@ -384,6 +414,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The trackbar must have the <c>TBS_AUTOTICKS</c> style to use this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setticfreq
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TBM_SETTICFREQ = WindowMessage.WM_USER + 20,
 
 		/// <summary>
@@ -399,16 +430,17 @@ public static partial class ComCtl32
 		/// <para>Returns a 32-bit value that specifies the previous page size.</para>
 		/// </summary>
 		/// <remarks>
-		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_PAGEUP and TB_PAGEDOWN notification
-		/// codes to its parent window when it receives keyboard or mouse input that scrolls the page.
+		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_PAGEUP and TB_PAGEDOWN notification codes to
+		/// its parent window when it receives keyboard or mouse input that scrolls the page.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setpagesize
+		[MsgParams(null, typeof(int))]
 		TBM_SETPAGESIZE = WindowMessage.WM_USER + 21,
 
 		/// <summary>
 		/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input, such as the or keys, or
-		/// mouse input, such as clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's
-		/// range of minimum to maximum slider positions.
+		/// mouse input, such as clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's range
+		/// of minimum to maximum slider positions.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -418,15 +450,16 @@ public static partial class ComCtl32
 		/// <para>Returns a 32-bit value that specifies the page size for the trackbar.</para>
 		/// </summary>
 		/// <remarks>
-		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_PAGEUP and TB_PAGEDOWN notification
-		/// codes to its parent window when it receives keyboard or mouse input that scrolls the page.
+		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_PAGEUP and TB_PAGEDOWN notification codes to
+		/// its parent window when it receives keyboard or mouse input that scrolls the page.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getpagesize
+		[MsgParams()]
 		TBM_GETPAGESIZE = WindowMessage.WM_USER + 22,
 
 		/// <summary>
-		/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such as
-		/// the or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
+		/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such as the
+		/// or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -438,16 +471,17 @@ public static partial class ComCtl32
 		/// <remarks>
 		/// <para>The default setting for the line size is 1.</para>
 		/// <para>
-		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_LINEUP and TB_LINEDOWN notification
-		/// codes to its parent window when the user presses the arrow keys.
+		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_LINEUP and TB_LINEDOWN notification codes to
+		/// its parent window when the user presses the arrow keys.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setlinesize
+		[MsgParams(null, typeof(int))]
 		TBM_SETLINESIZE = WindowMessage.WM_USER + 23,
 
 		/// <summary>
-		/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such
-		/// as the or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
+		/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such as
+		/// the or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -459,14 +493,16 @@ public static partial class ComCtl32
 		/// <remarks>
 		/// <para>The default setting for the line size is 1.</para>
 		/// <para>
-		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_LINEUP and TB_LINEDOWN notification
-		/// codes to its parent window when the user presses the arrow keys.
+		/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_LINEUP and TB_LINEDOWN notification codes to
+		/// its parent window when the user presses the arrow keys.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getlinesize
+		[MsgParams()]
 		TBM_GETLINESIZE = WindowMessage.WM_USER + 24,
 
-		/// <summary>Retrieves the size and position of the bounding rectangle for the slider in a trackbar.
+		/// <summary>
+		/// Retrieves the size and position of the bounding rectangle for the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -479,6 +515,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getthumbrect
+		[MsgParams(null, typeof(RECT?), LResultType = null)]
 		TBM_GETTHUMBRECT = WindowMessage.WM_USER + 25,
 
 		/// <summary>
@@ -489,13 +526,14 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure. The message fills this structure with the channel's bounding rectangle, in client
-		/// coordinates of the trackbar's window.
+		/// Pointer to a <c>RECT</c> structure. The message fills this structure with the channel's bounding rectangle, in client coordinates
+		/// of the trackbar's window.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getchannelrect
+		[MsgParams(null, typeof(RECT?), LResultType = null)]
 		TBM_GETCHANNELRECT = WindowMessage.WM_USER + 26,
 
 		/// <summary>
@@ -509,9 +547,11 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setthumblength
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TBM_SETTHUMBLENGTH = WindowMessage.WM_USER + 27,
 
-		/// <summary>Retrieves the length of the slider in a trackbar.
+		/// <summary>
+		/// Retrieves the length of the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -521,9 +561,11 @@ public static partial class ComCtl32
 		/// <para>Returns the length, in pixels, of the slider.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getthumblength
+		[MsgParams()]
 		TBM_GETTHUMBLENGTH = WindowMessage.WM_USER + 28,
 
-		/// <summary>Assigns a tooltip control to a trackbar control.
+		/// <summary>
+		/// Assigns a tooltip control to a trackbar control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Handle to an existing tooltip control.</para>
@@ -533,13 +575,15 @@ public static partial class ComCtl32
 		/// <para>The return value for this message is not used.</para>
 		/// </summary>
 		/// <remarks>
-		/// When a trackbar control is created with the <c>TBS_TOOLTIPS</c> style, it creates a default tooltip control that appears next
-		/// to the slider, displaying the slider's current position.
+		/// When a trackbar control is created with the <c>TBS_TOOLTIPS</c> style, it creates a default tooltip control that appears next to
+		/// the slider, displaying the slider's current position.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-settooltips
+		[MsgParams(typeof(HWND), null, LResultType = null)]
 		TBM_SETTOOLTIPS = WindowMessage.WM_USER + 29,
 
-		/// <summary>Retrieves the handle to the tooltip control assigned to the trackbar, if any.
+		/// <summary>
+		/// Retrieves the handle to the tooltip control assigned to the trackbar, if any.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -547,11 +591,12 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the handle to the tooltip control assigned to the trackbar, or <c>NULL</c> if tooltips are not in use. If the
-		/// trackbar control does not use the <c>TBS_TOOLTIPS</c> style, the return value is <c>NULL</c>.
+		/// Returns the handle to the tooltip control assigned to the trackbar, or <c>NULL</c> if tooltips are not in use. If the trackbar
+		/// control does not use the <c>TBS_TOOLTIPS</c> style, the return value is <c>NULL</c>.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-gettooltips
+		[MsgParams(LResultType = typeof(HWND))]
 		TBM_GETTOOLTIPS = WindowMessage.WM_USER + 30,
 
 		/// <summary>
@@ -585,11 +630,11 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns a value that represents the tooltip control's previous location. The return value equals one of the possible values
-		/// for wParam.
+		/// Returns a value that represents the tooltip control's previous location. The return value equals one of the possible values for wParam.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-settipside
+		[MsgParams(typeof(TrackBarTipSide), null, LResultType = typeof(TrackBarTipSide))]
 		TBM_SETTIPSIDE = WindowMessage.WM_USER + 31,
 
 		/// <summary>
@@ -606,15 +651,15 @@ public static partial class ComCtl32
 		/// <item>
 		/// <term><c>TRUE</c></term>
 		/// <term>
-		/// The buddy will appear to the left of the trackbar if the trackbar control uses the <c>TBS_HORZ</c> style. If the trackbar
-		/// uses the <c>TBS_VERT</c> style, the buddy appears above the trackbar control.
+		/// The buddy will appear to the left of the trackbar if the trackbar control uses the <c>TBS_HORZ</c> style. If the trackbar uses
+		/// the <c>TBS_VERT</c> style, the buddy appears above the trackbar control.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term><c>FALSE</c></term>
 		/// <term>
-		/// The buddy will appear to the right of the trackbar if the trackbar control uses the <c>TBS_HORZ</c> style. If the trackbar
-		/// uses the <c>TBS_VERT</c> style, the buddy appears below the trackbar control.
+		/// The buddy will appear to the right of the trackbar if the trackbar control uses the <c>TBS_HORZ</c> style. If the trackbar uses
+		/// the <c>TBS_VERT</c> style, the buddy appears below the trackbar control.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -630,11 +675,12 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setbuddy
+		[MsgParams(typeof(BOOL), typeof(HWND), LResultType = typeof(HWND))]
 		TBM_SETBUDDY = WindowMessage.WM_USER + 32,
 
 		/// <summary>
-		/// Retrieves the handle to a trackbar control buddy window at a given location. The specified location is relative to the
-		/// control's orientation (horizontal or vertical).
+		/// Retrieves the handle to a trackbar control buddy window at a given location. The specified location is relative to the control's
+		/// orientation (horizontal or vertical).
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Value indicating which buddy window handle will be retrieved, by relative location. This value can be one of the following:</para>
@@ -666,36 +712,38 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getbuddy
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(HWND))]
 		TBM_GETBUDDY = WindowMessage.WM_USER + 33,
 
-		/// <summary>Sets the current logical position of the slider in a trackbar.
+		/// <summary>
+		/// Sets the current logical position of the slider in a trackbar.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>wParam is unused.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// New logical position of the slider. Valid logical positions are the integer values in the trackbar's range of minimum to
-		/// maximum slider positions. If this value is outside the control's maximum and minimum range, the position is set to the
-		/// maximum or minimum value.
+		/// New logical position of the slider. Valid logical positions are the integer values in the trackbar's range of minimum to maximum
+		/// slider positions. If this value is outside the control's maximum and minimum range, the position is set to the maximum or minimum value.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
-		/// Calling <c>TBM_SETPOSNOTIFY</c> will set the trackbar slider location like <c>TBM_SETPOS</c> would, but it will also cause
-		/// the trackbar to notify its parent of a move via a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message.
+		/// Calling <c>TBM_SETPOSNOTIFY</c> will set the trackbar slider location like <c>TBM_SETPOS</c> would, but it will also cause the
+		/// trackbar to notify its parent of a move via a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setposnotify
+		[MsgParams(null, typeof(int), LResultType = null)]
 		TBM_SETPOSNOTIFY = WindowMessage.WM_USER + 34,
 
 		/// <summary>
-		/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the
-		/// control at run time rather than having to re-create the control.
+		/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the control
+		/// at run time rather than having to re-create the control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Determines the character set that is used by the control. If this value is nonzero, the control will use Unicode characters.
-		/// If this value is zero, the control will use ANSI characters.
+		/// Determines the character set that is used by the control. If this value is nonzero, the control will use Unicode characters. If
+		/// this value is zero, the control will use ANSI characters.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>Must be zero.</para>
@@ -704,9 +752,11 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setunicodeformat
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
 		TBM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
 
-		/// <summary>Retrieves the Unicode character format flag for the control.
+		/// <summary>
+		/// Retrieves the Unicode character format flag for the control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -714,12 +764,13 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
-		/// value is zero, the control is using ANSI characters.
+		/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this value
+		/// is zero, the control is using ANSI characters.
 		/// </para>
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getunicodeformat
+		[MsgParams(LResultType = typeof(BOOL))]
 		TBM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT
 	}
 
@@ -745,6 +796,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>Send this notification to clients that do not listen for <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> messages.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/trbn-thumbposchanging
+		[CorrespondingType(typeof(NMTRBTHUMBPOSCHANGING))]
 		TRBN_THUMBPOSCHANGING = TRBN_FIRST
 	}
 
@@ -806,8 +858,8 @@ public static partial class ComCtl32
 		TBS_RIGHT = 0x0000,
 
 		/// <summary>
-		/// The trackbar control displays tick marks on both sides of the control. This will be both top and bottom when used with
-		/// TBS_HORZ or both left and right if used with TBS_VERT.
+		/// The trackbar control displays tick marks on both sides of the control. This will be both top and bottom when used with TBS_HORZ
+		/// or both left and right if used with TBS_VERT.
 		/// </summary>
 		TBS_BOTH = 0x0008,
 
@@ -815,8 +867,8 @@ public static partial class ComCtl32
 		TBS_NOTICKS = 0x0010,
 
 		/// <summary>
-		/// The trackbar control displays a selection range only. The tick marks at the starting and ending positions of a selection
-		/// range are displayed as triangles (instead of vertical dashes), and the selection range is highlighted.
+		/// The trackbar control displays a selection range only. The tick marks at the starting and ending positions of a selection range
+		/// are displayed as triangles (instead of vertical dashes), and the selection range is highlighted.
 		/// </summary>
 		TBS_ENABLESELRANGE = 0x0020,
 
@@ -827,16 +879,15 @@ public static partial class ComCtl32
 		TBS_NOTHUMB = 0x0080,
 
 		/// <summary>
-		/// The trackbar control supports tooltips. When a trackbar control is created using this style, it automatically creates a
-		/// default tooltip control that displays the slider's current position. You can change where the tooltips are displayed by using
-		/// the TBM_SETTIPSIDE message.
+		/// The trackbar control supports tooltips. When a trackbar control is created using this style, it automatically creates a default
+		/// tooltip control that displays the slider's current position. You can change where the tooltips are displayed by using the
+		/// TBM_SETTIPSIDE message.
 		/// </summary>
 		TBS_TOOLTIPS = 0x0100,
 
 		/// <summary>
-		/// This style bit is used for "reversed" trackbars, where a smaller number indicates "higher" and a larger number indicates
-		/// "lower." It has no effect on the control; it is simply a label that can be checked to determine whether a trackbar is normal
-		/// or reversed.
+		/// This style bit is used for "reversed" trackbars, where a smaller number indicates "higher" and a larger number indicates "lower."
+		/// It has no effect on the control; it is simply a label that can be checked to determine whether a trackbar is normal or reversed.
 		/// </summary>
 		TBS_REVERSED = 0x0200,
 
@@ -882,8 +933,8 @@ public static partial class ComCtl32
 		public uint dwPos;
 
 		/// <summary>
-		/// Type of movement as one of the following values: TB_LINEUP, TB_LINEDOWN, TB_PAGEUP, TB_PAGEDOWN, TB_THUMBPOSITION,
-		/// TB_THUMBTRACK, TB_TOP, TB_BOTTOM, or TB_ENDTRACK.
+		/// Type of movement as one of the following values: TB_LINEUP, TB_LINEDOWN, TB_PAGEUP, TB_PAGEDOWN, TB_THUMBPOSITION, TB_THUMBTRACK,
+		/// TB_TOP, TB_BOTTOM, or TB_ENDTRACK.
 		/// </summary>
 		public TrackBarScrollNotification nReason;
 	}

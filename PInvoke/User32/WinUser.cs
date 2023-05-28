@@ -307,4 +307,19 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "d97494db-868a-49d4-a613-e8beba86d4e6")]
 	public static extern void SetLastErrorEx(uint dwErrCode, uint dwType = 0);
+
+	/// <summary>For all notifications coming through WM_COMMAND, the <c>wParam</c> parameter can be cast to <see cref="CmdNotifyWParam"/>.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CmdNotifyWParam
+	{
+		/// <summary>The control's identifier.</summary>
+		public ushort ctrlId;
+
+		/// <summary>The notification code.</summary>
+		public ushort notification;
+
+		/// <summary>Initializes a new instance of the <see cref="CmdNotifyWParam"/> struct.</summary>
+		/// <param name="wParam">A WPARAM value.</param>
+		public CmdNotifyWParam(IntPtr wParam) { ctrlId = Macros.LOWORD(wParam); notification = Macros.HIWORD(wParam); }
+	}
 }

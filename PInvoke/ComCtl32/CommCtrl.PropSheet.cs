@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.User32;
@@ -9,6 +10,12 @@ namespace Vanara.PInvoke;
 
 public static partial class ComCtl32
 {
+	/// <summary>A page sent the PSM_REBOOTSYSTEM message to the property sheet. The computer must be restarted for the user's changes to take effect.</summary>
+	public static readonly IntPtr ID_PSREBOOTSYSTEM = (IntPtr)3;
+
+	/// <summary>A page sent the PSM_RESTARTWINDOWS message to the property sheet. Windows must be restarted for the user's changes to take effect.</summary>
+	public static readonly IntPtr ID_PSRESTARTWINDOWS = (IntPtr)2;
+
 	/// <summary>
 	/// Specifies an application-defined callback function that a property sheet extension uses to add a page to a property sheet.
 	/// </summary>
@@ -678,7 +685,8 @@ public static partial class ComCtl32
 		/// Pointer to the dialog box procedure for the page. Because the pages are created as modeless dialog boxes, the dialog box
 		/// procedure must not call the EndDialog function.
 		/// </summary>
-		public DialogProc pfnDlgProc;
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public DialogProc? pfnDlgProc;
 
 		/// <summary>
 		/// When the page is created, a copy of the page's PROPSHEETPAGE structure is passed to the dialog box procedure with a
@@ -692,7 +700,8 @@ public static partial class ComCtl32
 		/// destroyed. For more information about the callback function, see PropSheetPageProc. To use this member, you must set the
 		/// PSP_USECALLBACK flag in the dwFlags member.
 		/// </summary>
-		private PropSheetPageProc _pfnCallback;
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		private PropSheetPageProc? _pfnCallback;
 
 		/// <summary>
 		/// Pointer to the reference count value. To use this member, you must set the PSP_USEREFPARENT flag in the dwFlags member.
@@ -877,7 +886,7 @@ public static partial class ComCtl32
 		/// destroyed. For more information about the callback function, see PropSheetPageProc. To use this member, you must set the
 		/// PSP_USECALLBACK flag in the dwFlags member.
 		/// </summary>
-		public PropSheetPageProc pfnCallback
+		public PropSheetPageProc? pfnCallback
 		{
 			get => _pfnCallback;
 			set

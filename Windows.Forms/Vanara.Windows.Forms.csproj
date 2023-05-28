@@ -48,6 +48,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <EmbeddedResource Include="Extenders\GlassExtenderProvider.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controls\SysLink.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

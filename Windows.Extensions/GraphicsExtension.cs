@@ -339,10 +339,7 @@ public static partial class GdiExtension
 			private SmartBitmapLock bmpLock;
 			private int idx = -1;
 
-			internal Enumertor(SmartBitmapLock bmp)
-			{
-				bmpLock = bmp;
-			}
+			internal Enumertor(SmartBitmapLock bmp) => bmpLock = bmp;
 
 			public Color Current => idx >= 0 && idx < bmpLock.Length ? bmpLock[idx] : Color.Empty;
 

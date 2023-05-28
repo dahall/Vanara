@@ -224,5 +224,5 @@ public static partial class User32
 	// UINT uElapse, TIMERPROC lpTimerFunc );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr SetTimer([Optional] HWND hWnd, [Optional] nuint nIDEvent, [Optional] uint uElapse, [Optional] Timerproc? lpTimerFunc);
+	public static extern nuint SetTimer([Optional] HWND hWnd, [Optional] nuint nIDEvent, [Optional] uint uElapse, [Optional] Timerproc? lpTimerFunc);
 }

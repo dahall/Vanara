@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using Vanara.InteropServices;
+
+namespace Vanara.PInvoke;
 
 public static partial class ComCtl32
 {
@@ -36,6 +38,7 @@ public static partial class ComCtl32
 		/// <para>Returns the previous Unicode format flag for the control.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-setunicodeformat
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(CommonControlMessage))]
 		CCM_SETUNICODEFORMAT = CCM_FIRST + 5,
 
 		/// <summary>Gets the Unicode character format flag for the control.
@@ -51,6 +54,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-getunicodeformat
+		[MsgParams(null, null, LResultType = typeof(CommonControlMessage))]
 		CCM_GETUNICODEFORMAT = CCM_FIRST + 6,
 
 		/// <summary>This message is used to inform the control that you are expecting a behavior associated with a particular version.
@@ -82,6 +86,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-setversion
+		[MsgParams(typeof(int), null)]
 		CCM_SETVERSION = CCM_FIRST + 0x7,
 
 		/// <summary>Gets the version number for a control set by the most recent <c>CCM_SETVERSION</c> message.
@@ -106,9 +111,11 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-getversion
+		[MsgParams(null, null)]
 		CCM_GETVERSION = CCM_FIRST + 0x8,
 
 		/// <summary/>
+		[MsgParams(typeof(HWND), null)]
 		CCM_SETNOTIFYWINDOW = CCM_FIRST + 0x9, // wParam == hwndParent.
 
 		/// <summary>Sets the visual style of a control.
@@ -128,6 +135,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-setwindowtheme
+		[MsgParams(null, typeof(StrPtrUni), LResultType = null)]
 		CCM_SETWINDOWTHEME = CCM_FIRST + 0xb,
 
 		/// <summary>
@@ -153,6 +161,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-dpiscale
+		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		CCM_DPISCALE = CCM_FIRST + 0xc, // wParam == Awareness
 	}
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -19,8 +21,59 @@ public static partial class ComCtl32
 	/// <summary>The item does not belong to a group.</summary>
 	public const int I_GROUPIDNONE = -2;
 
+	/// <summary>Automatically sizes the column.</summary>
+	public const int LVSCW_AUTOSIZE = -1;
+
+	/// <summary>
+	/// Automatically sizes the column to fit the header text. If you use this value with the last column, its width is set to fill the
+	/// remaining width of the list-view control.
+	/// </summary>
+	public const int LVSCW_AUTOSIZE_USEHEADER = -2;
+
 	private const uint LVM_FIRST = 0x1000;
+
 	private const int LVN_FIRST = -0x100;
+
+	/// <summary>
+	/// The <c>LVGroupCompare</c> function is an application-defined callback function used with the LVM_INSERTGROUPSORTED and LVM_SORTGROUPS
+	/// messages. It defines the ordering of the groups, based on the ID. The <c>LVGROUPCOMPARE</c> type defines a pointer to this callback
+	/// function. <c>LVGroupCompare</c> is a placeholder for the application-defined function name.
+	/// </summary>
+	/// <param name="unnamedParam1">
+	/// <para>Type: <c>INT</c></para>
+	/// <para>The ID of the first group.</para>
+	/// </param>
+	/// <param name="unnamedParam2">
+	/// <para>Type: <c>INT</c></para>
+	/// <para>The ID of the second group.</para>
+	/// </param>
+	/// <param name="unnamedParam3">
+	/// <para>Type: <c>VOID*</c></para>
+	/// <para>
+	/// A pointer to the application-defined information. This comes from the message that was called; for LVM_INSERTGROUPSORTED it is
+	/// LVINSERTGROUPSORTED.pvData, and for LVM_SORTGROUPS it is the <c>plv</c> parameter.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>INT</c></para>
+	/// <para>
+	/// Returns a negative value if the data for <c>Group1_ID</c> is less than the data for <c>Group2_ID</c>, a positive value if it is
+	/// greater, or zero if it is the same.
+	/// </para>
+	/// </returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/nc-commctrl-pfnlvgroupcompare PFNLVGROUPCOMPARE Pfnlvgroupcompare; int
+	// Pfnlvgroupcompare( int unnamedParam1, int unnamedParam2, void *unnamedParam3 ) {...}
+	[PInvokeData("commctrl.h", MSDNShortId = "NC:commctrl.PFNLVGROUPCOMPARE")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	public delegate int LVGroupCompare(int unnamedParam1, int unnamedParam2, IntPtr unnamedParam3);
+
+	/// <summary>Flags for <see cref="NMLVEMPTYMARKUP"/>.</summary>
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVEMPTYMARKUP")]
+	public enum EMF
+	{
+		/// <summary>Render markup centered in the listview area.</summary>
+		EMF_CENTERED = 0x00000001,
+	}
 
 	/// <summary>Values that specify alignment for LVM_ARRANGE.</summary>
 	[PInvokeData("Commctrl.h")]
@@ -48,8 +101,8 @@ public static partial class ComCtl32
 		LVBKIF_SOURCE_NONE = 0X00000000,
 
 		/// <summary>
-		/// A background bitmap is supplied via the hbm member of LVBKIMAGE. If the message LVM_SETBKIMAGE succeeds, then the list-view
-		/// takes ownership of the bitmap.
+		/// A background bitmap is supplied via the hbm member of LVBKIMAGE. If the message LVM_SETBKIMAGE succeeds, then the list-view takes
+		/// ownership of the bitmap.
 		/// </summary>
 		LVBKIF_SOURCE_HBITMAP = 0X00000001,
 
@@ -69,11 +122,11 @@ public static partial class ComCtl32
 		LVBKIF_STYLE_MASK = 0X00000010,
 
 		/// <summary>
-		/// Specify the coordinates of the first tile. This flag is valid only if the LVBKIF_STYLE_TILE flag is also specified. If this
-		/// flag is not specified, the first tile begins at the upper-left corner of the client area. If you use ComCtl32.dll Version
-		/// 6.0 the xOffsetPercent and yOffsetPercent fields contain pixels, not percentage values, to specify the coordinates of the
-		/// first tile. Comctl32.dll version 6 is not redistributable but it is included in Windows or later. Also, you must specify
-		/// Comctl32.dll version 6 in a manifest. For more information on manifests, see Enabling Visual Styles.
+		/// Specify the coordinates of the first tile. This flag is valid only if the LVBKIF_STYLE_TILE flag is also specified. If this flag
+		/// is not specified, the first tile begins at the upper-left corner of the client area. If you use ComCtl32.dll Version 6.0 the
+		/// xOffsetPercent and yOffsetPercent fields contain pixels, not percentage values, to specify the coordinates of the first tile.
+		/// Comctl32.dll version 6 is not redistributable but it is included in Windows or later. Also, you must specify Comctl32.dll version
+		/// 6 in a manifest. For more information on manifests, see Enabling Visual Styles.
 		/// </summary>
 		LVBKIF_FLAG_TILEOFFSET = 0X00000100,
 
@@ -124,8 +177,8 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>
-	/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT;
-	/// it cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.
+	/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT; it
+	/// cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774743")]
 	[Flags]
@@ -141,9 +194,9 @@ public static partial class ComCtl32
 		LVCFMT_CENTER = 0X0002,
 
 		/// <summary>
-		/// A bitmask used to select those bits of fmt that control field justification. To check the format of a column, use a logical
-		/// "and" to combine LCFMT_JUSTIFYMASK with fmt. You can then use a switch statement to determine whether the LVCFMT_LEFT,
-		/// LVCFMT_RIGHT, or LVCFMT_CENTER bits are set.
+		/// A bitmask used to select those bits of fmt that control field justification. To check the format of a column, use a logical "and"
+		/// to combine LCFMT_JUSTIFYMASK with fmt. You can then use a switch statement to determine whether the LVCFMT_LEFT, LVCFMT_RIGHT, or
+		/// LVCFMT_CENTER bits are set.
 		/// </summary>
 		LVCFMT_JUSTIFYMASK = 0X0003,
 
@@ -151,8 +204,7 @@ public static partial class ComCtl32
 		LVCFMT_IMAGE = 0X0800,
 
 		/// <summary>
-		/// Version 4.70. The bitmap appears to the right of text. This does not affect an image from an image list assigned to the
-		/// header item.
+		/// Version 4.70. The bitmap appears to the right of text. This does not affect an image from an image list assigned to the header item.
 		/// </summary>
 		LVCFMT_BITMAP_ON_RIGHT = 0X1000,
 
@@ -184,8 +236,8 @@ public static partial class ComCtl32
 		LVCFMT_TILE_PLACEMENTMASK = LVCFMT_LINE_BREAK | LVCFMT_FILL,
 
 		/// <summary>
-		/// Version 6.00 and Windows Vista. Column is a split button (same as HDF_SPLITBUTTON). The header of the column displays a
-		/// split button (same as HDF_SPLITBUTTON).
+		/// Version 6.00 and Windows Vista. Column is a split button (same as HDF_SPLITBUTTON). The header of the column displays a split
+		/// button (same as HDF_SPLITBUTTON).
 		/// </summary>
 		LVCFMT_SPLITBUTTON = 0X1000000,
 	}
@@ -199,35 +251,32 @@ public static partial class ComCtl32
 		LVFI_PARAM = 0X0001,
 
 		/// <summary>
-		/// Searches based on the item text. Unless additional values are specified, the item text of the matching item must exactly
-		/// match the string pointed to by the psz member. However, the search is case-insensitive.
+		/// Searches based on the item text. Unless additional values are specified, the item text of the matching item must exactly match
+		/// the string pointed to by the psz member. However, the search is case-insensitive.
 		/// </summary>
 		LVFI_STRING = 0X0002,
 
 		/// <summary>Windows Vista and later. Equivalent to LVFI_PARTIAL.</summary>
 		LVFI_SUBSTRING = 0X0004,
 
-		/// <summary>
-		/// Checks to see if the item text begins with the string pointed to by the psz member. This value implies use of LVFI_STRING.
-		/// </summary>
+		/// <summary>Checks to see if the item text begins with the string pointed to by the psz member. This value implies use of LVFI_STRING.</summary>
 		LVFI_PARTIAL = 0X0008,
 
 		/// <summary>
-		/// Continues the search at the beginning if no match is found. If this flag is used by itself, it is assumed that a string
-		/// search is wanted.
+		/// Continues the search at the beginning if no match is found. If this flag is used by itself, it is assumed that a string search is wanted.
 		/// </summary>
 		LVFI_WRAP = 0X0020,
 
 		/// <summary>
-		/// Finds the item nearest to the position specified in the pt member, in the direction specified by the vkDirection member.
-		/// This flag is supported only by large icon and small icon modes. If LVFI_NEARESTXY is specified, all other flags are ignored.
+		/// Finds the item nearest to the position specified in the pt member, in the direction specified by the vkDirection member. This
+		/// flag is supported only by large icon and small icon modes. If LVFI_NEARESTXY is specified, all other flags are ignored.
 		/// </summary>
 		LVFI_NEARESTXY = 0X0040,
 	}
 
 	/// <summary>
-	/// Indicates the alignment of the header or footer text for the group. It can have one or more of the following values. Use one of
-	/// the header flags. Footer flags are optional.
+	/// Indicates the alignment of the header or footer text for the group. It can have one or more of the following values. Use one of the
+	/// header flags. Footer flags are optional.
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 	[Flags]
@@ -335,10 +384,10 @@ public static partial class ComCtl32
 		LVGGR_LABEL = 2,
 
 		/// <summary>
-		/// Coordinates of the subset link only (markup subset). A list-view control can limit the number of visible items displayed in
-		/// each group. A link is presented to the user to allow the user to expand the group. This flag will return the bounding
-		/// rectangle of the subset link if the group is a subset (group state of LVGS_SUBSETED, see structure LVGROUP, member state).
-		/// This flag is provided so that accessibility applications can located the link.
+		/// Coordinates of the subset link only (markup subset). A list-view control can limit the number of visible items displayed in each
+		/// group. A link is presented to the user to allow the user to expand the group. This flag will return the bounding rectangle of the
+		/// subset link if the group is a subset (group state of LVGS_SUBSETED, see structure LVGROUP, member state). This flag is provided
+		/// so that accessibility applications can located the link.
 		/// </summary>
 		LVGGR_SUBSETLINK = 3,
 	}
@@ -491,8 +540,8 @@ public static partial class ComCtl32
 		LVIF_INDENT = 0x00000010,
 
 		/// <summary>
-		/// The control will not generate LVN_GETDISPINFO to retrieve text information if it receives an LVM_GETITEM message. Instead,
-		/// the pszText member will contain LPSTR_TEXTCALLBACK.
+		/// The control will not generate LVN_GETDISPINFO to retrieve text information if it receives an LVM_GETITEM message. Instead, the
+		/// pszText member will contain LPSTR_TEXTCALLBACK.
 		/// </summary>
 		LVIF_NORECOMPUTE = 0x00000800,
 
@@ -506,14 +555,14 @@ public static partial class ComCtl32
 		LVIF_COLUMNS = 0x00000200,
 
 		/// <summary>
-		/// Windows Vista and later. The piColFmt member is valid or must be set. If this flag is used, the cColumns member is valid or
-		/// must be set.
+		/// Windows Vista and later. The piColFmt member is valid or must be set. If this flag is used, the cColumns member is valid or must
+		/// be set.
 		/// </summary>
 		LVIF_COLFMT = 0x00010000,
 
 		/// <summary>
-		/// The operating system should store the requested list item information and not ask for it again. This flag is used only with
-		/// the LVN_GETDISPINFO notification code.
+		/// The operating system should store the requested list item information and not ask for it again. This flag is used only with the
+		/// LVN_GETDISPINFO notification code.
 		/// </summary>
 		LVIF_DISETITEM = 0x1000,
 
@@ -539,8 +588,8 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>
-	/// An item's state value consists of the item's state, an optional overlay mask index, and an optional state image mask index. An
-	/// item's state determines its appearance and functionality. The state can be zero or one or more of the following values:
+	/// An item's state value consists of the item's state, an optional overlay mask index, and an optional state image mask index. An item's
+	/// state determines its appearance and functionality. The state can be zero or one or more of the following values:
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 	[Flags]
@@ -550,14 +599,14 @@ public static partial class ComCtl32
 		LVIS_NONE = 0x0000,
 
 		/// <summary>
-		/// The item has the focus, so it is surrounded by a standard focus rectangle. Although more than one item may be selected, only
-		/// one item can have the focus.
+		/// The item has the focus, so it is surrounded by a standard focus rectangle. Although more than one item may be selected, only one
+		/// item can have the focus.
 		/// </summary>
 		LVIS_FOCUSED = 0x0001,
 
 		/// <summary>
-		/// The item is selected. The appearance of a selected item depends on whether it has the focus and also on the system colors
-		/// used for selection.
+		/// The item is selected. The appearance of a selected item depends on whether it has the focus and also on the system colors used
+		/// for selection.
 		/// </summary>
 		LVIS_SELECTED = 0x0002,
 
@@ -588,14 +637,14 @@ public static partial class ComCtl32
 	public enum ListViewMessage : uint
 	{
 		/// <summary>
-		/// Sets the UNICODE character format flag for the control. This message allows you to change the character set used by the
-		/// control at run time rather than having to re-create the control. You can send this message explicitly or use the
+		/// Sets the UNICODE character format flag for the control. This message allows you to change the character set used by the control
+		/// at run time rather than having to re-create the control. You can send this message explicitly or use the
 		/// <c>ListView_SetUnicodeFormat</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Determines the character set that is used by the control. If this value is nonzero, the control will use Unicode characters.
-		/// If this value is zero, the control will use ANSI characters.
+		/// Determines the character set that is used by the control. If this value is nonzero, the control will use Unicode characters. If
+		/// this value is zero, the control will use ANSI characters.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>Must be zero.</para>
@@ -604,6 +653,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setunicodeformat
+		[MsgParams(typeof(CommonControlMessage), null, LResultType = typeof(CommonControlMessage))]
 		LVM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
 
 		/// <summary>
@@ -616,17 +666,17 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
-		/// value is zero, the control is using ANSI characters.
+		/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this value
+		/// is zero, the control is using ANSI characters.
 		/// </para>
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getunicodeformat
+		[MsgParams(null, null, LResultType = typeof(CommonControlMessage))]
 		LVM_GETUNICODEFORMAT = 0X2006,        // CCM_GETUNICODEFORMAT,
 
 		/// <summary>
-		/// Gets the background color of a list-view control. You can send this message explicitly or by using the
-		/// <c>ListView_GetBkColor</c> macro.
+		/// Gets the background color of a list-view control. You can send this message explicitly or by using the <c>ListView_GetBkColor</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -636,11 +686,11 @@ public static partial class ComCtl32
 		/// <para>Returns the background color of the list-view control.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getbkcolor
+		[MsgParams(null, null, LResultType = typeof(COLORREF))]
 		LVM_GETBKCOLOR = LVM_FIRST + 0,
 
 		/// <summary>
-		/// Sets the background color of a list-view control. You can send this message explicitly or by using the
-		/// <c>ListView_SetBkColor</c> macro.
+		/// Sets the background color of a list-view control. You can send this message explicitly or by using the <c>ListView_SetBkColor</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -653,6 +703,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setbkcolor
+		[MsgParams(typeof(COLORREF), null, LResultType = typeof(COLORREF))]
 		LVM_SETBKCOLOR = LVM_FIRST + 1,
 
 		/// <summary>
@@ -689,11 +740,11 @@ public static partial class ComCtl32
 		/// <para>Returns the handle to the specified image list if successful, or <c>NULL</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getimagelist
+		[MsgParams(typeof(ListViewImageList), null, LResultType = typeof(HIMAGELIST))]
 		LVM_GETIMAGELIST = LVM_FIRST + 2,
 
 		/// <summary>
-		/// Assigns an image list to a list-view control. You can send this message explicitly or by using the
-		/// <c>ListView_SetImageList</c> macro.
+		/// Assigns an image list to a list-view control. You can send this message explicitly or by using the <c>ListView_SetImageList</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Type of image list. This parameter can be one of the following values:</para>
@@ -725,11 +776,12 @@ public static partial class ComCtl32
 		/// <para>Returns the handle to the image list previously associated with the control if successful, or <c>NULL</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
-		/// The current image list will be destroyed when the list-view control is destroyed unless the <c>LVS_SHAREIMAGELISTS</c> style
-		/// is set. If you use this message to replace one image list with another, your application must explicitly destroy all image
-		/// lists other than the current one.
+		/// The current image list will be destroyed when the list-view control is destroyed unless the <c>LVS_SHAREIMAGELISTS</c> style is
+		/// set. If you use this message to replace one image list with another, your application must explicitly destroy all image lists
+		/// other than the current one.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setimagelist
+		[MsgParams(typeof(ListViewImageList), typeof(HIMAGELIST), LResultType = typeof(HIMAGELIST))]
 		LVM_SETIMAGELIST = LVM_FIRST + 3,
 
 		/// <summary>
@@ -744,6 +796,7 @@ public static partial class ComCtl32
 		/// <para>Returns the number of items.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemcount
+		[MsgParams()]
 		LVM_GETITEMCOUNT = LVM_FIRST + 4,
 
 		/// <summary>
@@ -762,14 +815,14 @@ public static partial class ComCtl32
 		/// <remarks>
 		/// <para>
 		/// When the <c>LVM_GETITEM</c> message is sent, the <c>iItem</c> and <c>iSubItem</c> members identify the item or subitem to
-		/// retrieve information about and the <c>mask</c> member specifies which attributes to retrieve. For a list of possible values,
-		/// see the description of the <c>LVITEM</c> structure.
+		/// retrieve information about and the <c>mask</c> member specifies which attributes to retrieve. For a list of possible values, see
+		/// the description of the <c>LVITEM</c> structure.
 		/// </para>
 		/// <para>
-		/// If the LVIF_TEXT flag is set in the <c>mask</c> member of the <c>LVITEM</c> structure, the <c>pszText</c> member must point
-		/// to a valid buffer and the <c>cchTextMax</c> member must be set to the number of characters in that buffer. Applications
-		/// should not assume that the text will necessarily be placed in the specified buffer. The control may instead change the
-		/// <c>pszText</c> member of the structure to point to the new text, rather than place it in the buffer.
+		/// If the LVIF_TEXT flag is set in the <c>mask</c> member of the <c>LVITEM</c> structure, the <c>pszText</c> member must point to a
+		/// valid buffer and the <c>cchTextMax</c> member must be set to the number of characters in that buffer. Applications should not
+		/// assume that the text will necessarily be placed in the specified buffer. The control may instead change the <c>pszText</c> member
+		/// of the structure to point to the new text, rather than place it in the buffer.
 		/// </para>
 		/// <para>
 		/// If the <c>mask</c> member specifies the LVIF_STATE value, the <c>stateMask</c> member must specify the item state bits to
@@ -777,40 +830,42 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitem
+		[MsgParams(null, typeof(LVITEM), LResultType = typeof(BOOL))]
 		LVM_GETITEM = LVM_FIRST + 75,
 
 		/// <summary>
-		/// Sets some or all of a list-view item's attributes. You can also send LVM_SETITEM to set the text of a subitem. You can send
-		/// this message explicitly or by using the <c>ListView_SetItem</c> macro.
+		/// Sets some or all of a list-view item's attributes. You can also send LVM_SETITEM to set the text of a subitem. You can send this
+		/// message explicitly or by using the <c>ListView_SetItem</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>LVITEM</c> structure that contains the new item attributes. The <c>iItem</c> and <c>iSubItem</c> members
-		/// identify the item or subitem, and the <c>mask</c> member specifies which attributes to set. If the <c>mask</c> member
-		/// specifies the LVIF_TEXT value, the <c>pszText</c> member is the address of a null-terminated string and the <c>cchTextMax</c>
-		/// member is ignored. If the <c>mask</c> member specifies the LVIF_STATE value, the <c>stateMask</c> member specifies which item
-		/// states to change and the <c>state</c> member contains the values for those states.
+		/// identify the item or subitem, and the <c>mask</c> member specifies which attributes to set. If the <c>mask</c> member specifies
+		/// the LVIF_TEXT value, the <c>pszText</c> member is the address of a null-terminated string and the <c>cchTextMax</c> member is
+		/// ignored. If the <c>mask</c> member specifies the LVIF_STATE value, the <c>stateMask</c> member specifies which item states to
+		/// change and the <c>state</c> member contains the values for those states.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// To set the attributes of a list-view item, set the <c>iItem</c> member of the <c>LVITEM</c> structure to the index of the
-		/// item, and set the <c>iSubItem</c> member to zero. For an item, you can set the <c>state</c>, <c>pszText</c>, <c>iImage</c>,
-		/// and <c>lParam</c> members of the <c>LVITEM</c> structure.
+		/// To set the attributes of a list-view item, set the <c>iItem</c> member of the <c>LVITEM</c> structure to the index of the item,
+		/// and set the <c>iSubItem</c> member to zero. For an item, you can set the <c>state</c>, <c>pszText</c>, <c>iImage</c>, and
+		/// <c>lParam</c> members of the <c>LVITEM</c> structure.
 		/// </para>
 		/// <para>
 		/// To set the text of a subitem, set the <c>iItem</c> and <c>iSubItem</c> members to indicate the specific subitem, and use the
-		/// <c>pszText</c> member to specify the text. Alternatively, you can use the <c>ListView_SetItemText</c> macro to set the text
-		/// of a subitem. You cannot set the <c>state</c> or <c>lParam</c> members for subitems because subitems do not have these
-		/// attributes. In version 4.70 and later, you can set the <c>iImage</c> member for subitems. The subitem image will be displayed
-		/// if the list-view control has the <c>LVS_EX_SUBITEMIMAGES</c> extended style. Previous versions will ignore the subitem image.
+		/// <c>pszText</c> member to specify the text. Alternatively, you can use the <c>ListView_SetItemText</c> macro to set the text of a
+		/// subitem. You cannot set the <c>state</c> or <c>lParam</c> members for subitems because subitems do not have these attributes. In
+		/// version 4.70 and later, you can set the <c>iImage</c> member for subitems. The subitem image will be displayed if the list-view
+		/// control has the <c>LVS_EX_SUBITEMIMAGES</c> extended style. Previous versions will ignore the subitem image.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitem
+		[MsgParams(null, typeof(LVITEM), LResultType = typeof(BOOL))]
 		LVM_SETITEM = LVM_FIRST + 76,
 
 		/// <summary>
@@ -820,10 +875,10 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>LVITEM</c> structure that specifies the attributes of the list-view item. Use the <c>iItem</c> member to
-		/// specify the zero-based index at which the new item should be inserted. If this value is greater than the number of items
-		/// currently contained by the listview, the new item will be appended to the end of the list and assigned the correct index.
-		/// Examine the message's return value to determine the actual index assigned to the item.
+		/// Pointer to an <c>LVITEM</c> structure that specifies the attributes of the list-view item. Use the <c>iItem</c> member to specify
+		/// the zero-based index at which the new item should be inserted. If this value is greater than the number of items currently
+		/// contained by the listview, the new item will be appended to the end of the list and assigned the correct index. Examine the
+		/// message's return value to determine the actual index assigned to the item.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the index of the new item if successful, or -1 otherwise.</para>
@@ -835,8 +890,8 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>
 		/// If a list-view control has the <c>LVS_EX_CHECKBOXES</c> style set, any value placed in bits 12 through 15 of the <c>state</c>
-		/// member of the <c>LVITEM</c> structure will be ignored. When an item is added with this style set, it will always be set to
-		/// the unchecked state.
+		/// member of the <c>LVITEM</c> structure will be ignored. When an item is added with this style set, it will always be set to the
+		/// unchecked state.
 		/// </para>
 		/// <para>
 		/// If a list-view control has either the <c>LVS_SORTASCENDING</c> or <c>LVS_SORTDESCENDING</c> window style, an
@@ -844,8 +899,7 @@ public static partial class ComCtl32
 		/// <c>pszText</c> member.
 		/// </para>
 		/// <para>
-		/// The <c>LVM_INSERTITEM</c> message will insert the new item in the proper position in the sort order if the following
-		/// conditions hold:
+		/// The <c>LVM_INSERTITEM</c> message will insert the new item in the proper position in the sort order if the following conditions hold:
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
@@ -859,11 +913,12 @@ public static partial class ComCtl32
 		/// </item>
 		/// </list>
 		/// <para>
-		/// If the <c>LVITEM</c> structure does not contain LVIF_GROUPID in the <c>mask</c> member, the value of the <c>iGroupId</c>
-		/// member is I_GROUPIDCALLBACK by default.
+		/// If the <c>LVITEM</c> structure does not contain LVIF_GROUPID in the <c>mask</c> member, the value of the <c>iGroupId</c> member
+		/// is I_GROUPIDCALLBACK by default.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertitem
+		[MsgParams(null, typeof(LVITEM))]
 		LVM_INSERTITEM = LVM_FIRST + 77,
 
 		/// <summary>
@@ -877,11 +932,11 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-deleteitem
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		LVM_DELETEITEM = LVM_FIRST + 8,
 
 		/// <summary>
-		/// Removes all items from a list-view control. You can send this message explicitly or by using the
-		/// <c>ListView_DeleteAllItems</c> macro.
+		/// Removes all items from a list-view control. You can send this message explicitly or by using the <c>ListView_DeleteAllItems</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -891,10 +946,11 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
-		/// When a list-view control receives the <c>LVM_DELETEALLITEMS</c> message, it sends the <c>LVN_DELETEALLITEMS</c> notification
-		/// code to its parent window.
+		/// When a list-view control receives the <c>LVM_DELETEALLITEMS</c> message, it sends the <c>LVN_DELETEALLITEMS</c> notification code
+		/// to its parent window.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-deleteallitems
+		[MsgParams(LResultType = typeof(BOOL))]
 		LVM_DELETEALLITEMS = LVM_FIRST + 9,
 
 		/// <summary>
@@ -909,6 +965,7 @@ public static partial class ComCtl32
 		/// <para>Returns the callback mask.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcallbackmask
+		[MsgParams(LResultType = typeof(ListViewItemState))]
 		LVM_GETCALLBACKMASK = LVM_FIRST + 10,
 
 		/// <summary>
@@ -917,8 +974,8 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Value of the callback mask. The bits of the mask indicate the item states or images for which the application stores the
-		/// current state data. This value can be any combination of the following constants:
+		/// Value of the callback mask. The bits of the mask indicate the item states or images for which the application stores the current
+		/// state data. This value can be any combination of the following constants:
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -959,8 +1016,8 @@ public static partial class ComCtl32
 		/// <para>
 		/// The callback mask of a list-view control is a set of bit flags that specify the item states for which the application, rather
 		/// than the control, stores the current data. The callback mask applies to all of the control's items, unlike the callback item
-		/// designation, which applies to a specific item. The callback mask is zero by default, meaning that the list-view control
-		/// stores all item state information. After creating a list-view control and initializing its items, you can send the
+		/// designation, which applies to a specific item. The callback mask is zero by default, meaning that the list-view control stores
+		/// all item state information. After creating a list-view control and initializing its items, you can send the
 		/// <c>LVM_SETCALLBACKMASK</c> message to change the callback mask. To retrieve the current callback mask, send the
 		/// <c>LVM_GETCALLBACKMASK</c> message.
 		/// </para>
@@ -968,11 +1025,12 @@ public static partial class ComCtl32
 		/// <para>For more information on list-view callbacks, see Callback Items and the Callback Mask.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setcallbackmask
+		[MsgParams(typeof(ListViewItemState), null, LResultType = typeof(BOOL))]
 		LVM_SETCALLBACKMASK = LVM_FIRST + 11,
 
 		/// <summary>
-		/// Searches for a list-view item that has the specified properties and bears the specified relationship to a specified item. You
-		/// can send this message explicitly or by using the <c>ListView_GetNextItem</c> macro.
+		/// Searches for a list-view item that has the specified properties and bears the specified relationship to a specified item. You can
+		/// send this message explicitly or by using the <c>ListView_GetNextItem</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1051,9 +1109,7 @@ public static partial class ComCtl32
 		/// </item>
 		/// <item>
 		/// <term><c>LVNI_STATEMASK</c></term>
-		/// <term>
-		/// <c>Windows Vista and later:</c> A state flag mask with value as follows: LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED.
-		/// </term>
+		/// <term><c>Windows Vista and later:</c> A state flag mask with value as follows: LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED.</term>
 		/// </item>
 		/// <item>
 		/// <term>Searches by appearance of items or by group</term>
@@ -1084,6 +1140,7 @@ public static partial class ComCtl32
 		/// LVNI_VISIBLEONLY, LVNI_SAMEGROUPONLY, LVNI_VISIBLEORDER, LVNI_DIRECTIONMASK, and LVNI_STATEMASK.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getnextitem
+		[MsgParams(typeof(int), typeof(ListViewNextItemFlag))]
 		LVM_GETNEXTITEM = LVM_FIRST + 12,
 
 		/// <summary>
@@ -1092,8 +1149,7 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// The index of the item to begin the search with or -1 to start from the beginning. The specified item is itself excluded from
-		/// the search.
+		/// The index of the item to begin the search with or -1 to start from the beginning. The specified item is itself excluded from the search.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>A pointer to an <c>LVFINDINFO</c> structure that contains information about what to search for.</para>
@@ -1101,19 +1157,20 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the item if successful, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-finditem
+		[MsgParams(typeof(int), typeof(LVFINDINFO?))]
 		LVM_FINDITEM = LVM_FIRST + 83,
 
 		/// <summary>
-		/// Retrieves the bounding rectangle for all or part of an item in the current view. You can send this message explicitly or by
-		/// using the <c>ListView_GetItemRect</c> macro.
+		/// Retrieves the bounding rectangle for all or part of an item in the current view. You can send this message explicitly or by using
+		/// the <c>ListView_GetItemRect</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Index of the list-view item.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that receives the bounding rectangle. When the message is sent, the <c>left</c> member of
-		/// this structure is used to specify the portion of the list-view item from which to retrieve the bounding rectangle. It must be
-		/// set to one of the following values:
+		/// Pointer to a <c>RECT</c> structure that receives the bounding rectangle. When the message is sent, the <c>left</c> member of this
+		/// structure is used to specify the portion of the list-view item from which to retrieve the bounding rectangle. It must be set to
+		/// one of the following values:
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -1141,6 +1198,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemrect
+		[MsgParams(typeof(int), typeof(RECT?), LResultType = typeof(BOOL))]
 		LVM_GETITEMRECT = LVM_FIRST + 14,
 
 		/// <summary>
@@ -1151,28 +1209,28 @@ public static partial class ComCtl32
 		/// <para>Index of the list-view item.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// The <c>LOWORD</c> specifies the new x-position of the item's upper-left corner, in view coordinates. The <c>HIWORD</c>
-		/// specifies the new y-position of the item's upper-left corner, in view coordinates.
+		/// The <c>LOWORD</c> specifies the new x-position of the item's upper-left corner, in view coordinates. The <c>HIWORD</c> specifies
+		/// the new y-position of the item's upper-left corner, in view coordinates.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// If the list-view control has the <c>LVS_AUTOARRANGE</c> style, the items in the list-view control are arranged after the
-		/// position of the item is set.
+		/// If the list-view control has the <c>LVS_AUTOARRANGE</c> style, the items in the list-view control are arranged after the position
+		/// of the item is set.
 		/// </para>
 		/// <para>
-		/// On Windows Vista, sending this message to a list-view control with the <c>LVS_AUTOARRANGE</c> style does nothing, and the
-		/// return value is <c>FALSE</c>.
+		/// On Windows Vista, sending this message to a list-view control with the <c>LVS_AUTOARRANGE</c> style does nothing, and the return
+		/// value is <c>FALSE</c>.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemposition
+		[MsgParams(typeof(int), typeof(POINTS), LResultType = typeof(BOOL))]
 		LVM_SETITEMPOSITION = LVM_FIRST + 15,
 
 		/// <summary>
-		/// Retrieves the position of a list-view item. You can send this message explicitly or by using the
-		/// <c>ListView_GetItemPosition</c> macro.
+		/// Retrieves the position of a list-view item. You can send this message explicitly or by using the <c>ListView_GetItemPosition</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Index of the list-view item.</para>
@@ -1182,6 +1240,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemposition
+		[MsgParams(typeof(int), typeof(POINT?), LResultType = typeof(BOOL))]
 		LVM_GETITEMPOSITION = LVM_FIRST + 16,
 
 		/// <summary>
@@ -1196,11 +1255,12 @@ public static partial class ComCtl32
 		/// <para>Returns the string width if successful, or zero otherwise.</para>
 		/// </summary>
 		/// <remarks>
-		/// The LVM_GETSTRINGWIDTH message returns the exact width, in pixels, of the specified string. If you use the returned string
-		/// width as the column width in the <c>LVM_SETCOLUMNWIDTH</c> message, the string will be truncated. To retrieve the column
-		/// width that can contain the string without truncating it, you must add padding to the returned string width.
+		/// The LVM_GETSTRINGWIDTH message returns the exact width, in pixels, of the specified string. If you use the returned string width
+		/// as the column width in the <c>LVM_SETCOLUMNWIDTH</c> message, the string will be truncated. To retrieve the column width that can
+		/// contain the string without truncating it, you must add padding to the returned string width.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getstringwidth
+		[MsgParams(null, typeof(StrPtrAuto))]
 		LVM_GETSTRINGWIDTH = LVM_FIRST + 87,
 
 		/// <summary>
@@ -1213,31 +1273,33 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>LVHITTESTINFO</c> structure that contains the position to hit test and receives information about the
-		/// results of the hit test.
+		/// Pointer to an <c>LVHITTESTINFO</c> structure that contains the position to hit test and receives information about the results of
+		/// the hit test.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the index of the item at the specified position, if any, or -1 otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-hittest
+		[MsgParams(typeof(int), typeof(LVHITTESTINFO?))]
 		LVM_HITTEST = LVM_FIRST + 18,
 
 		/// <summary>
-		/// Ensures that a list-view item is either entirely or partially visible, scrolling the list-view control if necessary. You can
-		/// send this message explicitly or by using the <c>ListView_EnsureVisible</c> macro.
+		/// Ensures that a list-view item is either entirely or partially visible, scrolling the list-view control if necessary. You can send
+		/// this message explicitly or by using the <c>ListView_EnsureVisible</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The index of the list-view item.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// A value specifying whether the item must be entirely visible. If this parameter is <c>TRUE</c>, no scrolling occurs if the
-		/// item is at least partially visible.
+		/// A value specifying whether the item must be entirely visible. If this parameter is <c>TRUE</c>, no scrolling occurs if the item
+		/// is at least partially visible.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>The message fails if the window style includes <c>LVS_NOSCROLL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-ensurevisible
+		[MsgParams(typeof(int), typeof(BOOL), LResultType = typeof(BOOL))]
 		LVM_ENSUREVISIBLE = LVM_FIRST + 19,
 
 		/// <summary>
@@ -1245,25 +1307,26 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// Value of type <c>int</c> that specifies the amount of horizontal scrolling, in pixels, relative to the current position of
-		/// the list view content. If the list-view control is in list view, this value is rounded up to the nearest number of pixels
-		/// that form a whole column.
+		/// Value of type <c>int</c> that specifies the amount of horizontal scrolling, in pixels, relative to the current position of the
+		/// list view content. If the list-view control is in list view, this value is rounded up to the nearest number of pixels that form a
+		/// whole column.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Value of type <c>int</c> that specifies the amount of vertical scrolling, in pixels, relative to the current position of the
-		/// list view content.
+		/// Value of type <c>int</c> that specifies the amount of vertical scrolling, in pixels, relative to the current position of the list
+		/// view content.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
 		/// </summary>
 		/// <remarks>
-		/// When the list-view control is in report view, the control can only be scrolled vertically in whole line increments.
-		/// Therefore, the lParam parameter will be rounded to the nearest number of pixels that form a whole line increment. For
-		/// example, if the height of a line is 16 pixels and 8 is passed for lParam, the list will be scrolled by 16 pixels (1 line). If
-		/// 7 is passed for lParam, the list will be scrolled 0 pixels (0 lines).
+		/// When the list-view control is in report view, the control can only be scrolled vertically in whole line increments. Therefore,
+		/// the lParam parameter will be rounded to the nearest number of pixels that form a whole line increment. For example, if the height
+		/// of a line is 16 pixels and 8 is passed for lParam, the list will be scrolled by 16 pixels (1 line). If 7 is passed for lParam,
+		/// the list will be scrolled 0 pixels (0 lines).
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-scroll
+		[MsgParams(typeof(int), typeof(int), LResultType = typeof(BOOL))]
 		LVM_SCROLL = LVM_FIRST + 20,
 
 		/// <summary>
@@ -1278,10 +1341,11 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
-		/// The specified items are not actually redrawn until the list-view window receives a <c>WM_PAINT</c> message to repaint. To
-		/// repaint immediately, call the <c>UpdateWindow</c> function after using this macro.
+		/// The specified items are not actually redrawn until the list-view window receives a <c>WM_PAINT</c> message to repaint. To repaint
+		/// immediately, call the <c>UpdateWindow</c> function after using this macro.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-redrawitems
+		[MsgParams(typeof(int), typeof(int), LResultType = typeof(BOOL))]
 		LVM_REDRAWITEMS = LVM_FIRST + 21,
 
 		/// <summary>
@@ -1317,11 +1381,12 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-arrange
+		[MsgParams(typeof(ListViewArrange), null, LResultType = typeof(BOOL))]
 		LVM_ARRANGE = LVM_FIRST + 22,
 
 		/// <summary>
-		/// Begins in-place editing of the specified list-view item's text. The message implicitly selects and focuses the specified
-		/// item. You can send this message explicitly or by using the <c>ListView_EditLabel</c> macro.
+		/// Begins in-place editing of the specified list-view item's text. The message implicitly selects and focuses the specified item.
+		/// You can send this message explicitly or by using the <c>ListView_EditLabel</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The index of the list-view item. To cancel editing, set the index to -1.</para>
@@ -1332,8 +1397,8 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// When the user completes or cancels editing, the edit control is destroyed and the handle is no longer valid. You can subclass
-		/// the edit control, but you should not destroy it.
+		/// When the user completes or cancels editing, the edit control is destroyed and the handle is no longer valid. You can subclass the
+		/// edit control, but you should not destroy it.
 		/// </para>
 		/// <para>
 		/// The control must have the focus before you send this message to the control. Focus can be set using the <c>SetFocus</c> function.
@@ -1341,11 +1406,12 @@ public static partial class ComCtl32
 		/// <para>If wParam is -1, an LVN_ENDLABELEDIT notification code is sent.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-editlabel
+		[MsgParams(typeof(int), null, LResultType = typeof(HWND))]
 		LVM_EDITLABEL = LVM_FIRST + 118,
 
 		/// <summary>
-		/// Gets the handle to the edit control being used to edit a list-view item's text. You can send this message explicitly or by
-		/// using the <c>ListView_GetEditControl</c> macro.
+		/// Gets the handle to the edit control being used to edit a list-view item's text. You can send this message explicitly or by using
+		/// the <c>ListView_GetEditControl</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1356,24 +1422,25 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
-		/// control sends its parent window an LVN_BEGINLABELEDIT notification code.
+		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view control
+		/// sends its parent window an LVN_BEGINLABELEDIT notification code.
 		/// </para>
 		/// <para>
-		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message
-		/// to the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle
-		/// to customize the edit control by sending the usual <c>EM_XXX</c> messages.
+		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message to
+		/// the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle to
+		/// customize the edit control by sending the usual <c>EM_XXX</c> messages.
 		/// </para>
 		/// <para>
-		/// When the user completes or cancels editing, the edit control is destroyed and the handle is no longer valid. You can subclass
-		/// the edit control, but you should not destroy it. To cancel editing, send the list-view control a <c>WM_CANCELMODE</c> message.
+		/// When the user completes or cancels editing, the edit control is destroyed and the handle is no longer valid. You can subclass the
+		/// edit control, but you should not destroy it. To cancel editing, send the list-view control a <c>WM_CANCELMODE</c> message.
 		/// </para>
 		/// <para>
-		/// The list-view item being edited is the currently focused item that is, the item in the focused state. To find an item based
-		/// on its state, use the <c>LVM_GETNEXTITEM</c> message.
+		/// The list-view item being edited is the currently focused item that is, the item in the focused state. To find an item based on
+		/// its state, use the <c>LVM_GETNEXTITEM</c> message.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-geteditcontrol
+		[MsgParams(LResultType = typeof(HWND))]
 		LVM_GETEDITCONTROL = LVM_FIRST + 24,
 
 		/// <summary>
@@ -1384,15 +1451,16 @@ public static partial class ComCtl32
 		/// <para>The index of the column.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// A pointer to an <c>LVCOLUMN</c> structure that specifies the information to retrieve and receives information about the
-		/// column. The <c>mask</c> member specifies which column attributes to retrieve. If the <c>mask</c> member specifies the
-		/// LVCF_TEXT value, the <c>pszText</c> member must contain the address of the buffer that receives the item text and the
-		/// <c>cchTextMax</c> member must specify the size of the buffer.
+		/// A pointer to an <c>LVCOLUMN</c> structure that specifies the information to retrieve and receives information about the column.
+		/// The <c>mask</c> member specifies which column attributes to retrieve. If the <c>mask</c> member specifies the LVCF_TEXT value,
+		/// the <c>pszText</c> member must contain the address of the buffer that receives the item text and the <c>cchTextMax</c> member
+		/// must specify the size of the buffer.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcolumn
+		[MsgParams(typeof(int), typeof(LVCOLUMN), LResultType = typeof(BOOL))]
 		LVM_GETCOLUMN = LVM_FIRST + 95,
 
 		/// <summary>
@@ -1402,19 +1470,19 @@ public static partial class ComCtl32
 		/// <para>Index of the column.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>LVCOLUMN</c> structure that contains the new column attributes. The <c>mask</c> member specifies which
-		/// column attributes to set. If the <c>mask</c> member specifies the LVCF_TEXT value, the <c>pszText</c> member is the address
-		/// of a null-terminated string and the <c>cchTextMax</c> member is ignored.
+		/// Pointer to an <c>LVCOLUMN</c> structure that contains the new column attributes. The <c>mask</c> member specifies which column
+		/// attributes to set. If the <c>mask</c> member specifies the LVCF_TEXT value, the <c>pszText</c> member is the address of a
+		/// null-terminated string and the <c>cchTextMax</c> member is ignored.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setcolumn
+		[MsgParams(typeof(int), typeof(LVCOLUMN), LResultType = typeof(BOOL))]
 		LVM_SETCOLUMN = LVM_FIRST + 96,
 
 		/// <summary>
-		/// Inserts a new column in a list-view control. You can send this message explicitly or by using the
-		/// <c>ListView_InsertColumn</c> macro.
+		/// Inserts a new column in a list-view control. You can send this message explicitly or by using the <c>ListView_InsertColumn</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Index of the new column.</para>
@@ -1425,6 +1493,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>Columns are visible only in report (details) view.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertcolumn
+		[MsgParams(typeof(int), typeof(LVCOLUMN))]
 		LVM_INSERTCOLUMN = LVM_FIRST + 97,
 
 		/// <summary>
@@ -1439,10 +1508,11 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// Deleting column zero of a list-view control is supported only in ComCtl32.dll version 6 and later. Version 5 also supports
-		/// deleting column zero, but only after you use <c>CCM_SETVERSION</c> to set the version to 5 or later. In versions prior to
-		/// version 5, if you must delete column zero, insert a zero length dummy column zero and delete column one and above.
+		/// deleting column zero, but only after you use <c>CCM_SETVERSION</c> to set the version to 5 or later. In versions prior to version
+		/// 5, if you must delete column zero, insert a zero length dummy column zero and delete column one and above.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-deletecolumn
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		LVM_DELETECOLUMN = LVM_FIRST + 28,
 
 		/// <summary>
@@ -1460,6 +1530,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcolumnwidth
+		[MsgParams(typeof(int), null)]
 		LVM_GETCOLUMNWIDTH = LVM_FIRST + 29,
 
 		/// <summary>
@@ -1482,8 +1553,8 @@ public static partial class ComCtl32
 		/// <item>
 		/// <term><c>LVSCW_AUTOSIZE_USEHEADER</c></term>
 		/// <term>
-		/// Automatically sizes the column to fit the header text. If you use this value with the last column, its width is set to fill
-		/// the remaining width of the list-view control.
+		/// Automatically sizes the column to fit the header text. If you use this value with the last column, its width is set to fill the
+		/// remaining width of the list-view control.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -1491,11 +1562,11 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
-		/// Assume that you have a 2-column list-view control with a width of 500 pixels. If the width of column zero is set to 200
-		/// pixels, and you send this message with wParam = 1 and lParam = LVSCW_AUTOSIZE_USEHEADER, the second (and last) column will be
-		/// 300 pixels wide.
+		/// Assume that you have a 2-column list-view control with a width of 500 pixels. If the width of column zero is set to 200 pixels,
+		/// and you send this message with wParam = 1 and lParam = LVSCW_AUTOSIZE_USEHEADER, the second (and last) column will be 300 pixels wide.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setcolumnwidth
+		[MsgParams(typeof(uint), typeof(int), LResultType = typeof(BOOL))]
 		LVM_SETCOLUMNWIDTH = LVM_FIRST + 30,
 
 		/// <summary>
@@ -1510,6 +1581,7 @@ public static partial class ComCtl32
 		/// <para>Returns the handle to the header control.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getheader
+		[MsgParams(LResultType = typeof(HWND))]
 		LVM_GETHEADER = LVM_FIRST + 31,
 
 		/// <summary>
@@ -1527,23 +1599,25 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>Your application is responsible for destroying the image list when it is no longer needed.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-createdragimage
+		[MsgParams(typeof(int), typeof(POINT?), LResultType = typeof(HWND))]
 		LVM_CREATEDRAGIMAGE = LVM_FIRST + 33,
 
 		/// <summary>
-		/// Retrieves the bounding rectangle of all items in the list-view control. The list view must be in icon or small icon view. You
-		/// can send this message explicitly or by using the <c>ListView_GetViewRect</c> macro.
+		/// Retrieves the bounding rectangle of all items in the list-view control. The list view must be in icon or small icon view. You can
+		/// send this message explicitly or by using the <c>ListView_GetViewRect</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that receives the bounding rectangle. All coordinates are relative to the visible area of
-		/// the list-view control.
+		/// Pointer to a <c>RECT</c> structure that receives the bounding rectangle. All coordinates are relative to the visible area of the
+		/// list-view control.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getviewrect
+		[MsgParams(null, typeof(RECT?), LResultType = typeof(BOOL))]
 		LVM_GETVIEWRECT = LVM_FIRST + 34,
 
 		/// <summary>
@@ -1558,6 +1632,7 @@ public static partial class ComCtl32
 		/// <para>Returns the text color.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettextcolor
+		[MsgParams(LResultType = typeof(COLORREF))]
 		LVM_GETTEXTCOLOR = LVM_FIRST + 35,
 
 		/// <summary>
@@ -1571,6 +1646,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settextcolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(BOOL))]
 		LVM_SETTEXTCOLOR = LVM_FIRST + 36,
 
 		/// <summary>
@@ -1585,6 +1661,7 @@ public static partial class ComCtl32
 		/// <para>Returns the background color of the text.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettextbkcolor
+		[MsgParams(LResultType = typeof(COLORREF))]
 		LVM_GETTEXTBKCOLOR = LVM_FIRST + 37,
 
 		/// <summary>
@@ -1599,11 +1676,12 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settextbkcolor
+		[MsgParams(LResultType = typeof(BOOL))]
 		LVM_SETTEXTBKCOLOR = LVM_FIRST + 38,
 
 		/// <summary>
-		/// Retrieves the index of the topmost visible item when in list or report view. You can send this message explicitly or by using
-		/// the <c>ListView_GetTopIndex</c> macro.
+		/// Retrieves the index of the topmost visible item when in list or report view. You can send this message explicitly or by using the
+		/// <c>ListView_GetTopIndex</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1616,12 +1694,12 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettopindex
+		[MsgParams()]
 		LVM_GETTOPINDEX = LVM_FIRST + 39,
 
 		/// <summary>
-		/// Calculates the number of items that can fit vertically in the visible area of a list-view control when in list or report
-		/// view. Only fully visible items are counted. You can send this message explicitly or by using the
-		/// <c>ListView_GetCountPerPage</c> macro.
+		/// Calculates the number of items that can fit vertically in the visible area of a list-view control when in list or report view.
+		/// Only fully visible items are counted. You can send this message explicitly or by using the <c>ListView_GetCountPerPage</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1629,11 +1707,12 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the number of fully visible items if successful. If the current view is icon or small icon view, the return value is
-		/// the total number of items in the list-view control.
+		/// Returns the number of fully visible items if successful. If the current view is icon or small icon view, the return value is the
+		/// total number of items in the list-view control.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcountperpage
+		[MsgParams(LResultType = typeof(uint))]
 		LVM_GETCOUNTPERPAGE = LVM_FIRST + 40,
 
 		/// <summary>
@@ -1648,11 +1727,12 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> if the current view is list or report view.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getorigin
+		[MsgParams(null, typeof(POINT?), LResultType = typeof(BOOL))]
 		LVM_GETORIGIN = LVM_FIRST + 41,
 
 		/// <summary>
-		/// Updates a list-view item. If the list-view control has the <c>LVS_AUTOARRANGE</c> style, this macro causes the list-view
-		/// control to be arranged. You can send this message explicitly or by using the <c>ListView_Update</c> macro.
+		/// Updates a list-view item. If the list-view control has the <c>LVS_AUTOARRANGE</c> style, this macro causes the list-view control
+		/// to be arranged. You can send this message explicitly or by using the <c>ListView_Update</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Index of the item to update.</para>
@@ -1662,6 +1742,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-update
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		LVM_UPDATE = LVM_FIRST + 42,
 
 		/// <summary>
@@ -1683,6 +1764,7 @@ public static partial class ComCtl32
 		/// indexes that indicate the item's state image and overlay image.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemstate
+		[MsgParams(typeof(int), typeof(LVITEM), LResultType = typeof(BOOL))]
 		LVM_SETITEMSTATE = LVM_FIRST + 43,
 
 		/// <summary>
@@ -1708,15 +1790,15 @@ public static partial class ComCtl32
 		/// <item>
 		/// <term><c>LVIS_FOCUSED</c></term>
 		/// <term>
-		/// The item has the focus, so it is surrounded by a standard focus rectangle. Although more than one item may be selected, only
-		/// one item can have the focus.
+		/// The item has the focus, so it is surrounded by a standard focus rectangle. Although more than one item may be selected, only one
+		/// item can have the focus.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term><c>LVIS_SELECTED</c></term>
 		/// <term>
-		/// The item is selected. The appearance of a selected item depends on whether it has the focus and also on the system colors
-		/// used for selection.
+		/// The item is selected. The appearance of a selected item depends on whether it has the focus and also on the system colors used
+		/// for selection.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1730,15 +1812,16 @@ public static partial class ComCtl32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the current state for the specified item. The only valid bits in the return value are those that correspond to the
-		/// bits set in the lParam parameter.
+		/// Returns the current state for the specified item. The only valid bits in the return value are those that correspond to the bits
+		/// set in the lParam parameter.
 		/// </para>
 		/// </summary>
 		/// <remarks>
-		/// An item's state information includes a set of bit flags as well as image list indexes that indicate the item's state image
-		/// and overlay image.
+		/// An item's state information includes a set of bit flags as well as image list indexes that indicate the item's state image and
+		/// overlay image.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemstate
+		[MsgParams(typeof(int), typeof(ListViewItemState), LResultType = typeof(ListViewItemState))]
 		LVM_GETITEMSTATE = LVM_FIRST + 44,
 
 		/// <summary>
@@ -1749,8 +1832,8 @@ public static partial class ComCtl32
 		/// <para>Index of the list-view item.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>LVITEM</c> structure. To retrieve the item text, set <c>iSubItem</c> to zero. To retrieve the text of a
-		/// subitem, set <c>iSubItem</c> to the subitem's index. The <c>pszText</c> member points to a buffer that receives the text. The
+		/// Pointer to an <c>LVITEM</c> structure. To retrieve the item text, set <c>iSubItem</c> to zero. To retrieve the text of a subitem,
+		/// set <c>iSubItem</c> to the subitem's index. The <c>pszText</c> member points to a buffer that receives the text. The
 		/// <c>cchTextMax</c> member specifies the number of characters in the buffer.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
@@ -1760,32 +1843,31 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// You can also send this message by calling the <c>ListView_GetItemText</c> macro. However, this macro does not return the
-		/// string length.
+		/// You can also send this message by calling the <c>ListView_GetItemText</c> macro. However, this macro does not return the string length.
 		/// </para>
 		/// <para><c>LVM_GETITEMTEXT</c> is not supported under the <c>LVS_OWNERDATA</c> style.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemtext
+		[MsgParams(typeof(int), typeof(LVITEM), LResultType = typeof(uint))]
 		LVM_GETITEMTEXT = LVM_FIRST + 115,
 
 		/// <summary>
-		/// Changes the text of a list-view item or subitem. You can send this message explicitly or by using the
-		/// <c>ListView_SetItemText</c> macro.
+		/// Changes the text of a list-view item or subitem. You can send this message explicitly or by using the <c>ListView_SetItemText</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Zero-based index of the list-view item.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>LVITEM</c> structure. The <c>iSubItem</c> member is the index of the subitem, or it can be zero to set the
-		/// item label. The <c>pszText</c> member is the address of a null-terminated string containing the new text; it can also be
-		/// <c>NULL</c>. The <c>pszText</c> member can also be LPSTR_TEXTCALLBACK to indicate a callback item for which the parent window
-		/// stores the text. In this case, the list-view control sends the parent an <c>LVN_GETDISPINFO</c> notification code when it
-		/// needs the text.
+		/// Pointer to an <c>LVITEM</c> structure. The <c>iSubItem</c> member is the index of the subitem, or it can be zero to set the item
+		/// label. The <c>pszText</c> member is the address of a null-terminated string containing the new text; it can also be <c>NULL</c>.
+		/// The <c>pszText</c> member can also be LPSTR_TEXTCALLBACK to indicate a callback item for which the parent window stores the text.
+		/// In this case, the list-view control sends the parent an <c>LVN_GETDISPINFO</c> notification code when it needs the text.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If you send this message explicitly, it returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemtext
+		[MsgParams(typeof(int), typeof(LVITEM), LResultType = typeof(BOOL))]
 		LVM_SETITEMTEXT = LVM_FIRST + 116,
 
 		/// <summary>
@@ -1822,9 +1904,9 @@ public static partial class ComCtl32
 		/// <c>ListView_SetItemCount</c> or <c>ListView_SetItemCountEx</c> macros. For more information, see Virtual List-View Style.
 		/// </para>
 		/// <para>
-		/// If the list-view control was created without the <c>LVS_OWNERDATA</c> style, sending this message causes the control to
-		/// allocate its internal data structures for the specified number of items. This prevents the control from having to allocate
-		/// the data structures every time an item is added.
+		/// If the list-view control was created without the <c>LVS_OWNERDATA</c> style, sending this message causes the control to allocate
+		/// its internal data structures for the specified number of items. This prevents the control from having to allocate the data
+		/// structures every time an item is added.
 		/// </para>
 		/// <para>
 		/// If the list-view control was created with the <c>LVS_OWNERDATA</c> style (a virtual list view), sending this message sets the
@@ -1835,11 +1917,12 @@ public static partial class ComCtl32
 		/// <c>LVS_LIST</c> styles.
 		/// </para>
 		/// <para>
-		/// When the common control list-view is a virtualized list-view ( <c>LVS_OWNERDATA</c>), there is a 100,000,000 item limit on
-		/// the list-view. In this scenario, <c>LVM_SETITEMCOUNT</c> will return FALSE when it has a wParam of 100,000,001.
+		/// When the common control list-view is a virtualized list-view ( <c>LVS_OWNERDATA</c>), there is a 100,000,000 item limit on the
+		/// list-view. In this scenario, <c>LVM_SETITEMCOUNT</c> will return FALSE when it has a wParam of 100,000,001.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemcount
+		[MsgParams(typeof(int), typeof(LVSICF), LResultType = typeof(BOOL))]
 		LVM_SETITEMCOUNT = LVM_FIRST + 47,
 
 		/// <summary>
@@ -1850,8 +1933,8 @@ public static partial class ComCtl32
 		/// <para>Application-defined value that is passed to the comparison function.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to the application-defined comparison function. The comparison function is called during the sort operation each time
-		/// the relative order of two list items needs to be compared.
+		/// Pointer to the application-defined comparison function. The comparison function is called during the sort operation each time the
+		/// relative order of two list items needs to be compared.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
@@ -1863,13 +1946,13 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>
 		/// The lParam1 parameter is the value associated with the first item being compared, and the lParam2 parameter is the value
-		/// associated with the second item. These are the values that were specified in the <c>lParam</c> member of the items'
-		/// <c>LVITEM</c> structure when they were inserted into the list. The <c>ListView_SortItems</c>'s wParam parameter is passed to
-		/// the callback function as its third parameter.
+		/// associated with the second item. These are the values that were specified in the <c>lParam</c> member of the items' <c>LVITEM</c>
+		/// structure when they were inserted into the list. The <c>ListView_SortItems</c>'s wParam parameter is passed to the callback
+		/// function as its third parameter.
 		/// </para>
 		/// <para>
-		/// The comparison function must return a negative value if the first item should precede the second, a positive value if the
-		/// first item should follow the second, or zero if the two items are equivalent.
+		/// The comparison function must return a negative value if the first item should precede the second, a positive value if the first
+		/// item should follow the second, or zero if the two items are equivalent.
 		/// </para>
 		/// <para>
 		/// <para>Note</para>
@@ -1880,12 +1963,13 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sortitems
+		[MsgParams(typeof(IntPtr), typeof(Func<IntPtr, IntPtr, IntPtr, int>), LResultType = typeof(BOOL))]
 		LVM_SORTITEMS = LVM_FIRST + 48,
 
 		/// <summary>
-		/// Moves an item to a specified position in a list-view control (must be in icon or small icon view). This message differs from
-		/// the <c>LVM_SETITEMPOSITION</c> message in that it uses 32-bit coordinates. You can send this message explicitly or by using
-		/// the <c>ListView_SetItemPosition32</c> macro.
+		/// Moves an item to a specified position in a list-view control (must be in icon or small icon view). This message differs from the
+		/// <c>LVM_SETITEMPOSITION</c> message in that it uses 32-bit coordinates. You can send this message explicitly or by using the
+		/// <c>ListView_SetItemPosition32</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Index of the list-view item for which to set the position.</para>
@@ -1895,6 +1979,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemposition32
+		[MsgParams(typeof(int), typeof(POINT?), LResultType = null)]
 		LVM_SETITEMPOSITION32 = LVM_FIRST + 49,
 
 		/// <summary>
@@ -1909,6 +1994,7 @@ public static partial class ComCtl32
 		/// <para>Returns the number of selected items.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getselectedcount
+		[MsgParams()]
 		LVM_GETSELECTEDCOUNT = LVM_FIRST + 50,
 
 		/// <summary>
@@ -1923,11 +2009,12 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the amount of spacing between items. The horizontal spacing is contained in the <c>LOWORD</c> and the vertical
-		/// spacing is contained in the <c>HIWORD</c>.
+		/// Returns the amount of spacing between items. The horizontal spacing is contained in the <c>LOWORD</c> and the vertical spacing is
+		/// contained in the <c>HIWORD</c>.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemspacing
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(uint))]
 		LVM_GETITEMSPACING = LVM_FIRST + 51,
 
 		/// <summary>
@@ -1942,37 +2029,38 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the number of characters in the incremental search string, not including the terminating NULL character, or zero if
-		/// the list-view control is not in incremental search mode.
+		/// Returns the number of characters in the incremental search string, not including the terminating NULL character, or zero if the
+		/// list-view control is not in incremental search mode.
 		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>Security Warning:</c> Using this message incorrectly might compromise the security of your program. This message does not
-		/// provide a way for you to know the size of the buffer. If you use this message, first call the message passing <c>NULL</c> in
-		/// the lParam, this returns the number of characters, excluding <c>NULL</c> that are required. Then call the message a second
-		/// time to retrieve the string. You should review the Security Considerations: Microsoft Windows Controls before continuing.
+		/// provide a way for you to know the size of the buffer. If you use this message, first call the message passing <c>NULL</c> in the
+		/// lParam, this returns the number of characters, excluding <c>NULL</c> that are required. Then call the message a second time to
+		/// retrieve the string. You should review the Security Considerations: Microsoft Windows Controls before continuing.
 		/// </para>
 		/// <para>
-		/// The incremental search string is the character sequence that the user types while the list view has the input focus. Each
-		/// time the user types a character, the system appends the character to the search string and then searches for a matching item.
-		/// If the system finds a match, it selects the item and, if necessary, scrolls it into view.
+		/// The incremental search string is the character sequence that the user types while the list view has the input focus. Each time
+		/// the user types a character, the system appends the character to the search string and then searches for a matching item. If the
+		/// system finds a match, it selects the item and, if necessary, scrolls it into view.
 		/// </para>
 		/// <para>
 		/// A time-out period is associated with each character that the user types. If the time-out period elapses before the user types
 		/// another character, the incremental search string is reset.
 		/// </para>
 		/// <para>
-		/// Make sure that the buffer is large enough to hold the string and the terminating NULL character. If it is too small, an
-		/// immediate invalid page fault will result.
+		/// Make sure that the buffer is large enough to hold the string and the terminating NULL character. If it is too small, an immediate
+		/// invalid page fault will result.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getisearchstring
+		[MsgParams(null, typeof(IntPtr))]
 		LVM_GETISEARCHSTRING = LVM_FIRST + 117,
 
 		/// <summary>
-		/// Sets the spacing between icons in list-view controls that have the <c>LVS_ICON</c> style. You can send this message
-		/// explicitly or by using the <c>ListView_SetIconSpacing</c> macro.
+		/// Sets the spacing between icons in list-view controls that have the <c>LVS_ICON</c> style. You can send this message explicitly or
+		/// by using the <c>ListView_SetIconSpacing</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1983,22 +2071,23 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns a <c>DWORD</c> value that contains the previous x-axis distance in the low word, and the previous y-axis distance in
-		/// the high word.
+		/// Returns a <c>DWORD</c> value that contains the previous x-axis distance in the low word, and the previous y-axis distance in the
+		/// high word.
 		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// Values for lParam are relative to the upper-left corner of an icon bitmap. Therefore, to set spacing between icons that do
-		/// not overlap, the lParam values must include the size of the icon, plus the amount of empty space desired between icons.
-		/// Values that do not include the width of the icon will result in overlaps.
+		/// Values for lParam are relative to the upper-left corner of an icon bitmap. Therefore, to set spacing between icons that do not
+		/// overlap, the lParam values must include the size of the icon, plus the amount of empty space desired between icons. Values that
+		/// do not include the width of the icon will result in overlaps.
 		/// </para>
 		/// <para>
-		/// When defining the icon spacing, the lParam values must set to 4 or larger. Smaller values will not yield the desired layout.
-		/// To reset the icons to the default spacing, set the lParam values to -1.
+		/// When defining the icon spacing, the lParam values must set to 4 or larger. Smaller values will not yield the desired layout. To
+		/// reset the icons to the default spacing, set the lParam values to -1.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-seticonspacing
+		[MsgParams(null, typeof(uint), LResultType = typeof(uint))]
 		LVM_SETICONSPACING = LVM_FIRST + 53,
 
 		/// <summary>
@@ -2007,9 +2096,9 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// <c>DWORD</c> value that specifies which styles in lParam are to be affected. This parameter can be a combination of
-		/// <c>Extended List-View Styles</c>. Only the extended styles in wParam will be changed. All other styles will be maintained as
-		/// they are. If this parameter is zero, all of the styles in lParam will be affected.
+		/// <c>DWORD</c> value that specifies which styles in lParam are to be affected. This parameter can be a combination of <c>Extended
+		/// List-View Styles</c>. Only the extended styles in wParam will be changed. All other styles will be maintained as they are. If
+		/// this parameter is zero, all of the styles in lParam will be affected.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
@@ -2021,26 +2110,27 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The wParam parameter allows you to modify one or more extended styles without having to retrieve the existing styles first.
-		/// For example, if you pass <c>LVS_EX_FULLROWSELECT</c> for wParam and 0 for lParam, the <c>LVS_EX_FULLROWSELECT</c> style will
-		/// be cleared but all other styles will remain the same.
+		/// The wParam parameter allows you to modify one or more extended styles without having to retrieve the existing styles first. For
+		/// example, if you pass <c>LVS_EX_FULLROWSELECT</c> for wParam and 0 for lParam, the <c>LVS_EX_FULLROWSELECT</c> style will be
+		/// cleared but all other styles will remain the same.
 		/// </para>
 		/// <para>
-		/// For backward compatibility reasons, the <c>ListView_SetExtendedListViewStyle</c> macro has not been updated to use wParam. To
-		/// use the wParam value, use the <c>ListView_SetExtendedListViewStyleEx</c> macro.
+		/// For backward compatibility reasons, the <c>ListView_SetExtendedListViewStyle</c> macro has not been updated to use wParam. To use
+		/// the wParam value, use the <c>ListView_SetExtendedListViewStyleEx</c> macro.
 		/// </para>
 		/// <para>
-		/// When you use this message to set the <c>LVS_EX_CHECKBOXES</c> style, any previously set state image index will be discarded.
-		/// All check boxes will be initialized to the unchecked state. The state image index is contained in bits 12 through 15 of the
+		/// When you use this message to set the <c>LVS_EX_CHECKBOXES</c> style, any previously set state image index will be discarded. All
+		/// check boxes will be initialized to the unchecked state. The state image index is contained in bits 12 through 15 of the
 		/// <c>state</c> member of the <c>LVITEM</c> structure.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setextendedlistviewstyle
+		[MsgParams(typeof(ListViewStyleEx), typeof(ListViewStyleEx), LResultType = typeof(ListViewStyleEx))]
 		LVM_SETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 54,            // OPTIONAL WPARAM == MASK
 
 		/// <summary>
-		/// Gets the extended styles that are currently in use for a given list-view control. You can send this message explicitly or use
-		/// the <c>ListView_GetExtendedListViewStyle</c> macro.
+		/// Gets the extended styles that are currently in use for a given list-view control. You can send this message explicitly or use the
+		/// <c>ListView_GetExtendedListViewStyle</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -2048,24 +2138,25 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns a <c>DWORD</c> that represents the styles currently in use for a given list-view control. This value can be a
-		/// combination of Extended List-View Styles.
+		/// Returns a <c>DWORD</c> that represents the styles currently in use for a given list-view control. This value can be a combination
+		/// of Extended List-View Styles.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getextendedlistviewstyle
+		[MsgParams(LResultType = typeof(ListViewStyleEx))]
 		LVM_GETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 55,
 
 		/// <summary>
-		/// Retrieves information about the bounding rectangle for a subitem in a list-view control. You can send this message explicitly
-		/// or by using the <c>ListView_GetSubItemRect</c> macro (recommended). This message is intended to be used only with list-view
-		/// controls that use the <c>LVS_REPORT</c> style.
+		/// Retrieves information about the bounding rectangle for a subitem in a list-view control. You can send this message explicitly or
+		/// by using the <c>ListView_GetSubItemRect</c> macro (recommended). This message is intended to be used only with list-view controls
+		/// that use the <c>LVS_REPORT</c> style.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Index of the subitem's parent item.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that will receive the subitem bounding rectangle information. Its members must be
-		/// initialized according to the following member/value relationships:
+		/// Pointer to a <c>RECT</c> structure that will receive the subitem bounding rectangle information. Its members must be initialized
+		/// according to the following member/value relationships:
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -2110,6 +2201,7 @@ public static partial class ComCtl32
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getsubitemrect
+		[MsgParams(typeof(int), typeof(RECT?), LResultType = typeof(BOOL))]
 		LVM_GETSUBITEMRECT = LVM_FIRST + 56,
 
 		/// <summary>
@@ -2120,16 +2212,17 @@ public static partial class ComCtl32
 		/// <para>Must be 0. **Windows Vista.** Should be -1 if the **iGroup** member of *lParam* is to be retrieved.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>LVHITTESTINFO</c> structure. The <c>POINT</c> structure within <c>LVHITTESTINFO</c> should be set to the
-		/// client coordinates to be hit-tested.
+		/// Pointer to an <c>LVHITTESTINFO</c> structure. The <c>POINT</c> structure within <c>LVHITTESTINFO</c> should be set to the client
+		/// coordinates to be hit-tested.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the index of the item or subitem tested, if any, or -1 otherwise. If an item or subitem is at the given coordinates,
-		/// the fields of the <c>LVHITTESTINFO</c> structure will be filled with the applicable hit information.
+		/// Returns the index of the item or subitem tested, if any, or -1 otherwise. If an item or subitem is at the given coordinates, the
+		/// fields of the <c>LVHITTESTINFO</c> structure will be filled with the applicable hit information.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-subitemhittest
+		[MsgParams(typeof(int), typeof(LVHITTESTINFO?))]
 		LVM_SUBITEMHITTEST = LVM_FIRST + 57,
 
 		/// <summary>
@@ -2147,6 +2240,7 @@ public static partial class ComCtl32
 		/// <para>Returns nonzero if successful, or zero otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setcolumnorderarray
+		[MsgParams(typeof(int), typeof(int[]), LResultType = typeof(BOOL))]
 		LVM_SETCOLUMNORDERARRAY = LVM_FIRST + 58,
 
 		/// <summary>
@@ -2157,8 +2251,8 @@ public static partial class ComCtl32
 		/// <para>The number of columns in the list-view control.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// A pointer to an array of integers that receives the index values of the columns in the list-view control. The array must be
-		/// large enough to hold wParam elements.
+		/// A pointer to an array of integers that receives the index values of the columns in the list-view control. The array must be large
+		/// enough to hold wParam elements.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
@@ -2167,6 +2261,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcolumnorderarray
+		[MsgParams(typeof(int), typeof(int[]), LResultType = typeof(BOOL))]
 		LVM_GETCOLUMNORDERARRAY = LVM_FIRST + 59,
 
 		/// <summary>
@@ -2180,6 +2275,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the item that was previously hot.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sethotitem
+		[MsgParams(typeof(int), null)]
 		LVM_SETHOTITEM = LVM_FIRST + 60,
 
 		/// <summary>
@@ -2193,12 +2289,12 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the item that is hot.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gethotitem
+		[MsgParams(null, null)]
 		LVM_GETHOTITEM = LVM_FIRST + 61,
 
 		/// <summary>
-		/// Sets the HCURSOR value that the list-view control uses when the pointer is over an item while hot tracking is enabled. You
-		/// can send this message explicitly or use the <c>ListView_SetHotCursor</c> macro. To check whether hot tracking is enabled,
-		/// call <c>SystemParametersInfo</c>.
+		/// Sets the HCURSOR value that the list-view control uses when the pointer is over an item while hot tracking is enabled. You can
+		/// send this message explicitly or use the <c>ListView_SetHotCursor</c> macro. To check whether hot tracking is enabled, call <c>SystemParametersInfo</c>.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -2209,6 +2305,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>A list-view control uses hot tracking and hover selection when the <c>LVS_EX_TRACKSELECT</c> style is set.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sethotcursor
+		[MsgParams(null, typeof(HCURSOR), LResultType = typeof(HCURSOR))]
 		LVM_SETHOTCURSOR = LVM_FIRST + 62,
 
 		/// <summary>
@@ -2224,41 +2321,42 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>A list-view control uses hot tracking and hover selection when the <c>LVS_EX_TRACKSELECT</c> style is set.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gethotcursor
+		[MsgParams(LResultType = typeof(HCURSOR))]
 		LVM_GETHOTCURSOR = LVM_FIRST + 63,
 
 		/// <summary>
-		/// Calculates the approximate width and height required to display a given number of items. You can send this message explicitly
-		/// or use the <c>ListView_ApproximateViewRect</c> macro.
+		/// Calculates the approximate width and height required to display a given number of items. You can send this message explicitly or
+		/// use the <c>ListView_ApproximateViewRect</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// The number of items to be displayed in the control. If this parameter is set to -1, the message uses the total number of
-		/// items in the control.
+		/// The number of items to be displayed in the control. If this parameter is set to -1, the message uses the total number of items in
+		/// the control.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// The <c>LOWORD</c> is the proposed x-dimension of the control, in pixels. This parameter can be set to -1 to allow the message
-		/// to use the current width value.
+		/// The <c>LOWORD</c> is the proposed x-dimension of the control, in pixels. This parameter can be set to -1 to allow the message to
+		/// use the current width value.
 		/// </para>
 		/// <para>
-		/// The <c>HIWORD</c> is the proposed y-dimension of the control, in pixels. This parameter can be set to -1 to allow the message
-		/// to use the current height value.
+		/// The <c>HIWORD</c> is the proposed y-dimension of the control, in pixels. This parameter can be set to -1 to allow the message to
+		/// use the current height value.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns a <c>DWORD</c> value that holds the approximate width (in the <c>LOWORD</c>) and height (in the <c>HIWORD</c>) needed
-		/// to display the items, in pixels.
+		/// Returns a <c>DWORD</c> value that holds the approximate width (in the <c>LOWORD</c>) and height (in the <c>HIWORD</c>) needed to
+		/// display the items, in pixels.
 		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// Setting the size of the list-view control based on the dimensions provided by this message can optimize redraw and reduce flicker.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-approximateviewrect
+		[MsgParams(typeof(int), typeof(SIZES), LResultType = typeof(SIZES))]
 		LVM_APPROXIMATEVIEWRECT = LVM_FIRST + 64,
 
 		/// <summary>
-		/// Sets the working areas within a list-view control. You can send this message explicitly or use the
-		/// <c>ListView_SetWorkAreas</c> macro.
+		/// Sets the working areas within a list-view control. You can send this message explicitly or use the <c>ListView_SetWorkAreas</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -2267,13 +2365,14 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an array of <c>RECT</c> structures that contain the new working areas of the list-view control. Values in these
-		/// structures are in client coordinates. If this parameter is <c>NULL</c>, the working area will be set to the client area of
-		/// the control. wParam specifies the number of structures in this array.
+		/// structures are in client coordinates. If this parameter is <c>NULL</c>, the working area will be set to the client area of the
+		/// control. wParam specifies the number of structures in this array.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value for this message is not used.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setworkareas
+		[MsgParams(typeof(int), typeof(RECT[]), LResultType = null)]
 		LVM_SETWORKAREAS = LVM_FIRST + 65,
 
 		/// <summary>
@@ -2284,13 +2383,14 @@ public static partial class ComCtl32
 		/// <para>The number of <c>RECT</c> structures in the array at lParam.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an array of <c>RECT</c> structures that receive the current working areas of the list-view control. Values in
-		/// these structures are in client coordinates. wParam specifies the number of structures in this array.
+		/// Pointer to an array of <c>RECT</c> structures that receive the current working areas of the list-view control. Values in these
+		/// structures are in client coordinates. wParam specifies the number of structures in this array.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value for this message is not used.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getworkareas
+		[MsgParams(typeof(int), typeof(RECT[]), LResultType = null)]
 		LVM_GETWORKAREAS = LVM_FIRST + 70,
 
 		/// <summary>
@@ -2301,13 +2401,14 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a UINT value that receives the number of working areas in the list-view control. If zero is placed in this
-		/// variable, then no working areas are currently set. This value cannot be <c>NULL</c>.
+		/// Pointer to a UINT value that receives the number of working areas in the list-view control. If zero is placed in this variable,
+		/// then no working areas are currently set. This value cannot be <c>NULL</c>.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value for this message is not used.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getnumberofworkareas
+		[MsgParams(null, typeof(uint), LResultType = null)]
 		LVM_GETNUMBEROFWORKAREAS = LVM_FIRST + 73,
 
 		/// <summary>
@@ -2323,11 +2424,11 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The selection mark is the item index from which a multiple selection starts.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getselectionmark
+		[MsgParams()]
 		LVM_GETSELECTIONMARK = LVM_FIRST + 66,
 
 		/// <summary>
-		/// Sets the selection mark in a list-view control. You can send this message explicitly or use the
-		/// <c>ListView_SetSelectionMark</c> macro.
+		/// Sets the selection mark in a list-view control. You can send this message explicitly or use the <c>ListView_SetSelectionMark</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -2337,10 +2438,11 @@ public static partial class ComCtl32
 		/// <para>Returns the previous selection mark, or -1 if there is no previous selection mark.</para>
 		/// </summary>
 		/// <remarks>
-		/// The selection mark is the item index from which a multiple selection starts. This message does not affect the selection state
-		/// of the item.
+		/// The selection mark is the item index from which a multiple selection starts. This message does not affect the selection state of
+		/// the item.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setselectionmark
+		[MsgParams(null, typeof(int))]
 		LVM_SETSELECTIONMARK = LVM_FIRST + 67,
 
 		/// <summary>
@@ -2351,8 +2453,8 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// The new amount of time, in milliseconds, that the mouse cursor must hover over an item before it is selected. If this value
-		/// is ( <c>DWORD</c>)-1, then the hover time is set to the default hover time.
+		/// The new amount of time, in milliseconds, that the mouse cursor must hover over an item before it is selected. If this value is (
+		/// <c>DWORD</c>)-1, then the hover time is set to the default hover time.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the previous hover time.</para>
@@ -2362,6 +2464,7 @@ public static partial class ComCtl32
 		/// <c>LVS_EX_TWOCLICKACTIVATE</c> extended list-view style.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sethovertime
+		[MsgParams(null, typeof(int))]
 		LVM_SETHOVERTIME = LVM_FIRST + 71,
 
 		/// <summary>
@@ -2374,8 +2477,8 @@ public static partial class ComCtl32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the amount of time, in milliseconds, that the mouse cursor must hover over an item before it is selected. If the
-		/// return value is ( <c>DWORD</c>)-1, then the hover time is the default hover time.
+		/// Returns the amount of time, in milliseconds, that the mouse cursor must hover over an item before it is selected. If the return
+		/// value is ( <c>DWORD</c>)-1, then the hover time is the default hover time.
 		/// </para>
 		/// </summary>
 		/// <remarks>
@@ -2383,11 +2486,12 @@ public static partial class ComCtl32
 		/// <c>LVS_EX_TWOCLICKACTIVATE</c> extended list-view style.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gethovertime
+		[MsgParams()]
 		LVM_GETHOVERTIME = LVM_FIRST + 72,
 
 		/// <summary>
-		/// Sets the tooltip control that the list-view control will use to display tooltips. You can send this message explicitly or use
-		/// the <c>ListView_SetToolTips</c> macro.
+		/// Sets the tooltip control that the list-view control will use to display tooltips. You can send this message explicitly or use the
+		/// <c>ListView_SetToolTips</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Handle to the tooltip control to be set.</para>
@@ -2397,11 +2501,12 @@ public static partial class ComCtl32
 		/// <para>Returns the handle to the previous tooltip control.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settooltips
+		[MsgParams(typeof(HWND), null, LResultType = typeof(HWND))]
 		LVM_SETTOOLTIPS = LVM_FIRST + 74,
 
 		/// <summary>
-		/// Retrieves the tooltip control that the list-view control uses to display tooltips. You can send this message explicitly or
-		/// use the <c>ListView_GetToolTips</c> macro.
+		/// Retrieves the tooltip control that the list-view control uses to display tooltips. You can send this message explicitly or use
+		/// the <c>ListView_GetToolTips</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -2411,6 +2516,7 @@ public static partial class ComCtl32
 		/// <para>Returns the handle of the tooltip control.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettooltips
+		[MsgParams(LResultType = typeof(HWND))]
 		LVM_GETTOOLTIPS = LVM_FIRST + 78,
 
 		/// <summary>
@@ -2421,8 +2527,8 @@ public static partial class ComCtl32
 		/// <para>Application-defined value that is passed to the comparison function.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an application-defined comparison function. It is called during the sort operation each time the relative order of
-		/// two list items needs to be compared.
+		/// Pointer to an application-defined comparison function. It is called during the sort operation each time the relative order of two
+		/// list items needs to be compared.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
@@ -2434,12 +2540,12 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>
 		/// This message is similar to <c>LVM_SORTITEMS</c>, except for the type of information passed to the comparison function. With
-		/// <c>LVM_SORTITEMSEX</c>, lParam1 is the current index of the first item, and lParam2 is the current index of the second item.
-		/// You can send an <c>LVM_GETITEMTEXT</c> message to retrieve more information on an item, if needed.
+		/// <c>LVM_SORTITEMSEX</c>, lParam1 is the current index of the first item, and lParam2 is the current index of the second item. You
+		/// can send an <c>LVM_GETITEMTEXT</c> message to retrieve more information on an item, if needed.
 		/// </para>
 		/// <para>
-		/// The comparison function must return a negative value if the first item should precede the second, a positive value if the
-		/// first item should follow the second, or zero if the two items are equivalent.
+		/// The comparison function must return a negative value if the first item should precede the second, a positive value if the first
+		/// item should follow the second, or zero if the two items are equivalent.
 		/// </para>
 		/// <para>
 		/// <para>Note</para>
@@ -2450,11 +2556,11 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sortitemsex
+		[MsgParams(typeof(IntPtr), typeof(Func<IntPtr, IntPtr, IntPtr, int>), LResultType = typeof(BOOL))]
 		LVM_SORTITEMSEX = LVM_FIRST + 81,
 
 		/// <summary>
-		/// Sets the background image in a list-view control. You can send this message explicitly or by using the
-		/// <c>ListView_SetBkImage</c> macro.
+		/// Sets the background image in a list-view control. You can send this message explicitly or by using the <c>ListView_SetBkImage</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -2462,8 +2568,7 @@ public static partial class ComCtl32
 		/// <para>Pointer to a <c>LVBKIMAGE</c> structure that contains the new background image information.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns nonzero if successful, or zero otherwise. Returns zero if the <c>ulFlags</c> member of the <c>LVBKIMAGE</c> structure
-		/// is <c>LVBKIF_SOURCE_NONE</c>.
+		/// Returns nonzero if successful, or zero otherwise. Returns zero if the <c>ulFlags</c> member of the <c>LVBKIMAGE</c> structure is <c>LVBKIF_SOURCE_NONE</c>.
 		/// </para>
 		/// </summary>
 		/// <remarks>
@@ -2472,11 +2577,11 @@ public static partial class ComCtl32
 		/// application is initialized and call either <c>CoUninitialize</c> or <c>OleUninitialize</c> when the application is terminating.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setbkimage
+		[MsgParams(null, typeof(LVBKIMAGE), LResultType = typeof(BOOL))]
 		LVM_SETBKIMAGE = LVM_FIRST + 138,
 
 		/// <summary>
-		/// Gets the background image in a list-view control. You can send this message explicitly or by using the
-		/// <c>ListView_GetBkImage</c> macro.
+		/// Gets the background image in a list-view control. You can send this message explicitly or by using the <c>ListView_GetBkImage</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -2486,6 +2591,7 @@ public static partial class ComCtl32
 		/// <para>Returns nonzero if successful, or zero otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getbkimage
+		[MsgParams(null, typeof(LVBKIMAGE), LResultType = typeof(BOOL))]
 		LVM_GETBKIMAGE = LVM_FIRST + 139,
 
 		/// <summary>
@@ -2509,6 +2615,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setselectedcolumn
+		[MsgParams(typeof(int), null, LResultType = null)]
 		LVM_SETSELECTEDCOLUMN = LVM_FIRST + 140,
 
 		/// <summary>
@@ -2549,6 +2656,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setview
+		[MsgParams(typeof(LV_VIEW), null)]
 		LVM_SETVIEW = LVM_FIRST + 142,
 
 		/// <summary>
@@ -2589,6 +2697,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getview
+		[MsgParams(LResultType = typeof(LV_VIEW))]
 		LVM_GETVIEW = LVM_FIRST + 143,
 
 		/// <summary>
@@ -2613,12 +2722,13 @@ public static partial class ComCtl32
 		/// <para>
 		/// <para>Note</para>
 		/// <para>
-		/// To use this message, you must provide a manifest specifying Comclt32 version 6.0. For more information on manifests, see
-		/// Enabling Visual Styles.
+		/// To use this message, you must provide a manifest specifying Comclt32 version 6.0. For more information on manifests, see Enabling
+		/// Visual Styles.
 		/// </para>
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertgroup
+		[MsgParams(typeof(int), typeof(LVGROUP))]
 		LVM_INSERTGROUP = LVM_FIRST + 145,
 
 		/// <summary>
@@ -2627,16 +2737,14 @@ public static partial class ComCtl32
 		/// <para><em>wParam</em></para>
 		/// <para>ID that specifies the group whose information is to be set.</para>
 		/// <para><em>lParam</em></para>
-		/// <para>
-		/// Pointer to a [**LVGROUP**](windows/win32/api/commctrl/ns-commctrl-lvgroup) structure that contains the information to set.
-		/// </para>
+		/// <para>Pointer to a [**LVGROUP**](windows/win32/api/commctrl/ns-commctrl-lvgroup) structure that contains the information to set.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the ID of the group if successful, or -1 otherwise.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// To change a group ID of an existing group add <c>LVGF_GROUPID</c> to <c>LVGROUP.mask</c> and set <c>LVGROUP.iGroupId</c> to
-		/// the new ID. The call will fail if <c>LVGROUP.iGroupId</c> contains ID of an existing group.
+		/// To change a group ID of an existing group add <c>LVGF_GROUPID</c> to <c>LVGROUP.mask</c> and set <c>LVGROUP.iGroupId</c> to the
+		/// new ID. The call will fail if <c>LVGROUP.iGroupId</c> contains ID of an existing group.
 		/// </para>
 		/// <para>
 		/// To update other properties of an existing group (e.g. update an alignment of the header or footer text for the group,
@@ -2651,6 +2759,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setgroupinfo
+		[MsgParams(typeof(int), typeof(LVGROUP))]
 		LVM_SETGROUPINFO = LVM_FIRST + 147,
 
 		/// <summary>
@@ -2676,6 +2785,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupinfo
+		[MsgParams(typeof(int), typeof(LVGROUP))]
 		LVM_GETGROUPINFO = LVM_FIRST + 149,
 
 		/// <summary>
@@ -2696,6 +2806,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-removegroup
+		[MsgParams(typeof(int), null)]
 		LVM_REMOVEGROUP = LVM_FIRST + 150,
 
 		/// <summary>This message is not implemented.</summary>
@@ -2713,6 +2824,7 @@ public static partial class ComCtl32
 		/// <para>Returns the number of groups.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupcount
+		[MsgParams()]
 		LVM_GETGROUPCOUNT = LVM_FIRST + 152,
 
 		/// <summary>
@@ -2724,14 +2836,15 @@ public static partial class ComCtl32
 		/// <para>
 		/// A pointer to an <c>LVGROUP</c> structure to receive information on the group specified by wParam. The calling process is
 		/// responsible for allocating memory for the structure and any buffers in the structure, such as the one pointed to by the
-		/// <c>pszHeader</c> member. Set any contingent members of the structure, such as <c>cchHeader</c> the size of the buffer pointed
-		/// to by <c>pszHeader</c> in <c>WCHARs</c> including the terminating <c>NULL</c>. Set <c>cbSize</c> to sizeof(LVGROUP).
+		/// <c>pszHeader</c> member. Set any contingent members of the structure, such as <c>cchHeader</c> the size of the buffer pointed to
+		/// by <c>pszHeader</c> in <c>WCHARs</c> including the terminating <c>NULL</c>. Set <c>cbSize</c> to sizeof(LVGROUP).
 		/// </para>
 		/// <para>The message receiver is responsible for setting the structure members with information for the group specified by wParam.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupinfobyindex
+		[MsgParams(typeof(int), typeof(LVGROUP), LResultType = typeof(BOOL))]
 		LVM_GETGROUPINFOBYINDEX = LVM_FIRST + 153,
 
 		/// <summary>This message is not implemented.</summary>
@@ -2745,12 +2858,12 @@ public static partial class ComCtl32
 		/// <para>Specifies the group by <c>iGroupId</c> (see <c>LVGROUP</c> structure).</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// A pointer to a <c>RECT</c> structure to receive information on the group specified by wParam. The message receiver is
-		/// responsible for setting the structure members with information for the group specified by wParam.
+		/// A pointer to a <c>RECT</c> structure to receive information on the group specified by wParam. The message receiver is responsible
+		/// for setting the structure members with information for the group specified by wParam.
 		/// </para>
 		/// <para>
-		/// The calling process is responsible for allocating memory for the structure. Set the <c>top</c> member of the <c>RECT</c> to
-		/// one of the following flags to specify the coordinates of the rectangle to get.
+		/// The calling process is responsible for allocating memory for the structure. Set the <c>top</c> member of the <c>RECT</c> to one
+		/// of the following flags to specify the coordinates of the rectangle to get.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -2772,10 +2885,10 @@ public static partial class ComCtl32
 		/// <item>
 		/// <term><c>LVGGR_SUBSETLINK</c></term>
 		/// <term>
-		/// Coordinates of the subset link only (markup subset). A list-view control can limit the number of visible items displayed in
-		/// each group. A link is presented to the user to allow the user to expand the group. This flag will return the bounding
-		/// rectangle of the subset link if the group is a subset (group state of LVGS_SUBSETED, see structure <c>LVGROUP</c>, member
-		/// <c>state</c>). This flag is provided so that accessibility applications can located the link.
+		/// Coordinates of the subset link only (markup subset). A list-view control can limit the number of visible items displayed in each
+		/// group. A link is presented to the user to allow the user to expand the group. This flag will return the bounding rectangle of the
+		/// subset link if the group is a subset (group state of LVGS_SUBSETED, see structure <c>LVGROUP</c>, member <c>state</c>). This flag
+		/// is provided so that accessibility applications can located the link.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -2783,6 +2896,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgrouprect
+		[MsgParams(typeof(int), typeof(RECT?), LResultType = typeof(BOOL))]
 		LVM_GETGROUPRECT = LVM_FIRST + 98,
 
 		/// <summary>
@@ -2805,6 +2919,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setgroupmetrics
+		[MsgParams(null, typeof(LVGROUPMETRICS?), LResultType = null)]
 		LVM_SETGROUPMETRICS = LVM_FIRST + 155,
 
 		/// <summary>
@@ -2827,6 +2942,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupmetrics
+		[MsgParams(null, typeof(LVGROUPMETRICS?), LResultType = null)]
 		LVM_GETGROUPMETRICS = LVM_FIRST + 156,
 
 		/// <summary>
@@ -2871,15 +2987,14 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-enablegroupview
+		[MsgParams(typeof(BOOL), null)]
 		LVM_ENABLEGROUPVIEW = LVM_FIRST + 157,
 
 		/// <summary>
 		/// Uses an application-defined comparison function to sort groups by ID within a list-view control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
-		/// <para>Pointer to an application-defined comparison function,</para>
-		/// <para>LVGroupCompare</para>
-		/// <para>.</para>
+		/// <para>Pointer to an application-defined comparison function, <c>LVGroupCompare</c>.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>Void pointer to the application-defined information.</para>
 		/// <para><strong>Returns</strong></para>
@@ -2893,15 +3008,14 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sortgroups
+		[MsgParams(typeof(LVGroupCompare), typeof(IntPtr), LResultType = typeof(BOOL))]
 		LVM_SORTGROUPS = LVM_FIRST + 158,
 
 		/// <summary>
 		/// Inserts a group into an ordered list of groups.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
-		/// <para>Pointer to an</para>
-		/// <para>LVINSERTGROUPSORTED</para>
-		/// <para>structure that contains the group to insert.</para>
+		/// <para>Pointer to an <c>LVINSERTGROUPSORTED</c> structure that contains the group to insert.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>Must be **NULL**.</para>
 		/// <para><strong>Returns</strong></para>
@@ -2921,6 +3035,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertgroupsorted
+		[MsgParams(typeof(LVINSERTGROUPSORTED?), null, LResultType = null)]
 		LVM_INSERTGROUPSORTED = LVM_FIRST + 159,
 
 		/// <summary>
@@ -2941,6 +3056,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-removeallgroups
+		[MsgParams(LResultType = null)]
 		LVM_REMOVEALLGROUPS = LVM_FIRST + 160,
 
 		/// <summary>
@@ -2961,6 +3077,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-hasgroup
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		LVM_HASGROUP = LVM_FIRST + 161,
 
 		/// <summary>
@@ -2972,11 +3089,12 @@ public static partial class ComCtl32
 		/// <para>Specifies the state values to retrieve. This is a combination of the flags listed for the <c>state</c> member of <c>LVGROUP</c>.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns the combination of state values that are set. For example, if lParam is LVGS_COLLAPSED and the value returned is
-		/// zero, the LVGS_COLLAPSED state is not set. Zero is returned if the group is not found.
+		/// Returns the combination of state values that are set. For example, if lParam is LVGS_COLLAPSED and the value returned is zero,
+		/// the LVGS_COLLAPSED state is not set. Zero is returned if the group is not found.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupstate
+		[MsgParams(typeof(int), typeof(ListViewGroupState), LResultType = typeof(ListViewGroupState))]
 		LVM_GETGROUPSTATE = LVM_FIRST + 92,
 
 		/// <summary>
@@ -2990,6 +3108,7 @@ public static partial class ComCtl32
 		/// <para>Returns the index of the group with state of LVGS_FOCUSED, or -1 if there is no group with state of LVGS_FOCUSED.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfocusedgroup
+		[MsgParams(LResultType = typeof(ListViewGroupState))]
 		LVM_GETFOCUSEDGROUP = LVM_FIRST + 93,
 
 		/// <summary>
@@ -2998,9 +3117,7 @@ public static partial class ComCtl32
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
-		/// <para>Pointer to an</para>
-		/// <para>**LVTILEVIEWINFO**</para>
-		/// <para>structure that contains the information to set.</para>
+		/// <para>Pointer to an <c>**LVTILEVIEWINFO**</c> structure that contains the information to set.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
@@ -3009,6 +3126,7 @@ public static partial class ComCtl32
 		/// Enabling Visual Styles.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settileviewinfo
+		[MsgParams(null, typeof(LVTILEVIEWINFO?), LResultType = typeof(BOOL))]
 		LVM_SETTILEVIEWINFO = LVM_FIRST + 162,
 
 		/// <summary>
@@ -3017,9 +3135,7 @@ public static partial class ComCtl32
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
-		/// <para>Pointer to an</para>
-		/// <para>**LVTILEVIEWINFO**</para>
-		/// <para>structure that receives the retrieved information.</para>
+		/// <para>Pointer to an <c>**LVTILEVIEWINFO**</c> structure that receives the retrieved information.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Return value not used.</para>
 		/// </summary>
@@ -3031,6 +3147,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettileviewinfo
+		[MsgParams(null, typeof(LVTILEVIEWINFO?), LResultType = null)]
 		LVM_GETTILEVIEWINFO = LVM_FIRST + 163,
 
 		/// <summary>
@@ -3039,9 +3156,7 @@ public static partial class ComCtl32
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
-		/// <para>Pointer to an</para>
-		/// <para>**LVTILEINFO**</para>
-		/// <para>structure that contains the information to set.</para>
+		/// <para>Pointer to an <c>**LVTILEINFO**</c> structure that contains the information to set.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
@@ -3056,6 +3171,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settileinfo
+		[MsgParams(null, typeof(LVTILEINFO), LResultType = typeof(BOOL))]
 		LVM_SETTILEINFO = LVM_FIRST + 164,
 
 		/// <summary>
@@ -3064,16 +3180,14 @@ public static partial class ComCtl32
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
 		/// <para><em>lParam</em></para>
-		/// <para>Pointer to an</para>
-		/// <para>**LVTILEINFO**</para>
-		/// <para>structure that receives the retrieved information.</para>
+		/// <para>Pointer to an <c>**LVTILEINFO**</c> structure that receives the retrieved information.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Return value not used.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// Tile view is a new way of arranging and displaying items in a list-view control. The other views are icon, small icon,
-		/// details, and list.
+		/// Tile view is a new way of arranging and displaying items in a list-view control. The other views are icon, small icon, details,
+		/// and list.
 		/// </para>
 		/// <para>
 		/// <para>Note</para>
@@ -3084,6 +3198,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettileinfo
+		[MsgParams(null, typeof(LVTILEINFO), LResultType = null)]
 		LVM_GETTILEINFO = LVM_FIRST + 165,
 
 		/// <summary>
@@ -3097,9 +3212,9 @@ public static partial class ComCtl32
 		/// <para>structure that specifies where to set the insertion point.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. <c>FALSE</c> is returned if the size in the <c>cbSize</c>
-		/// member of the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure, or when an insertion point does
-		/// not apply in the current view.
+		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. <c>FALSE</c> is returned if the size in the <c>cbSize</c> member of
+		/// the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure, or when an insertion point does not apply in
+		/// the current view.
 		/// </para>
 		/// </summary>
 		/// <remarks>
@@ -3116,6 +3231,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setinsertmark
+		[MsgParams(null, typeof(LVINSERTMARK?), LResultType = typeof(BOOL))]
 		LVM_SETINSERTMARK = LVM_FIRST + 166,
 
 		/// <summary>
@@ -3129,8 +3245,8 @@ public static partial class ComCtl32
 		/// <para>structure that receives the position of the insertion point.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. <c>FALSE</c> is returned if the size in the <c>cbSize</c>
-		/// member of the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure.
+		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. <c>FALSE</c> is returned if the size in the <c>cbSize</c> member of
+		/// the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure.
 		/// </para>
 		/// </summary>
 		/// <remarks>
@@ -3147,6 +3263,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getinsertmark
+		[MsgParams(null, typeof(LVINSERTMARK?), LResultType = typeof(BOOL))]
 		LVM_GETINSERTMARK = LVM_FIRST + 167,
 
 		/// <summary>
@@ -3160,9 +3277,9 @@ public static partial class ComCtl32
 		/// <para>structure that specifies the insertion point closest to the coordinates defined by the *wParam* parameter.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. <c>FALSE</c> is returned if the size in the <c>cbSize</c>
-		/// member of the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure, or when an insertion point does
-		/// not apply in the current view.
+		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. <c>FALSE</c> is returned if the size in the <c>cbSize</c> member of
+		/// the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure, or when an insertion point does not apply in
+		/// the current view.
 		/// </para>
 		/// </summary>
 		/// <remarks>
@@ -3170,9 +3287,7 @@ public static partial class ComCtl32
 		/// An insertion point can only appear if the list-view control is in icon view, small icon view, or tile view and is not in
 		/// group-view mode.
 		/// </para>
-		/// <para>
-		/// If insertion points do not apply for the view, the <c>LVINSERTMARK</c> structure contains a -1 in the <c>iItem</c> member.
-		/// </para>
+		/// <para>If insertion points do not apply for the view, the <c>LVINSERTMARK</c> structure contains a -1 in the <c>iItem</c> member.</para>
 		/// <para>
 		/// <para>Note</para>
 		/// <para>
@@ -3182,6 +3297,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertmarkhittest
+		[MsgParams(typeof(POINT?), typeof(LVINSERTMARK?), LResultType = typeof(BOOL))]
 		LVM_INSERTMARKHITTEST = LVM_FIRST + 168,
 
 		/// <summary>
@@ -3218,6 +3334,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getinsertmarkrect
+		[MsgParams(null, typeof(RECT?))]
 		LVM_GETINSERTMARKRECT = LVM_FIRST + 169,
 
 		/// <summary>
@@ -3238,6 +3355,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setinsertmarkcolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		LVM_SETINSERTMARKCOLOR = LVM_FIRST + 170,
 
 		/// <summary>
@@ -3258,6 +3376,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getinsertmarkcolor
+		[MsgParams(LResultType = typeof(COLORREF))]
 		LVM_GETINSERTMARKCOLOR = LVM_FIRST + 171,
 
 		/// <summary>
@@ -3278,6 +3397,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getselectedcolumn
+		[MsgParams(LResultType = typeof(uint))]
 		LVM_GETSELECTEDCOLUMN = LVM_FIRST + 174,
 
 		/// <summary>
@@ -3298,6 +3418,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-isgroupviewenabled
+		[MsgParams(LResultType = typeof(BOOL))]
 		LVM_ISGROUPVIEWENABLED = LVM_FIRST + 175,
 
 		/// <summary>
@@ -3318,6 +3439,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getoutlinecolor
+		[MsgParams(LResultType = typeof(COLORREF))]
 		LVM_GETOUTLINECOLOR = LVM_FIRST + 176,
 
 		/// <summary>
@@ -3338,6 +3460,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setoutlinecolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		LVM_SETOUTLINECOLOR = LVM_FIRST + 177,
 
 		/// <summary>
@@ -3359,6 +3482,7 @@ public static partial class ComCtl32
 		/// <para>This message causes a an LVN_ENDLABELEDIT notification to be sent.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-canceleditlabel
+		[MsgParams(LResultType = null)]
 		LVM_CANCELEDITLABEL = LVM_FIRST + 179,
 
 		/// <summary>
@@ -3376,8 +3500,8 @@ public static partial class ComCtl32
 		/// List-view controls internally track items by index. This can present problems because indexes can change during the control's lifetime.
 		/// </para>
 		/// <para>
-		/// The list-view control can tag an item with an ID when the item is created. You can use this ID to guarantee uniqueness during
-		/// the lifetime of the list-view control.
+		/// The list-view control can tag an item with an ID when the item is created. You can use this ID to guarantee uniqueness during the
+		/// lifetime of the list-view control.
 		/// </para>
 		/// <para>
 		/// To uniquely identify an item, take the index that is returned from a call such as <c>IComponent::GetDisplayInfo</c> and call
@@ -3386,8 +3510,7 @@ public static partial class ComCtl32
 		/// <para>
 		/// <para>Note</para>
 		/// <para>
-		/// In a multithreaded environment, the index is only guaranteed on the thread that hosts the list-view control, not on
-		/// background threads.
+		/// In a multithreaded environment, the index is only guaranteed on the thread that hosts the list-view control, not on background threads.
 		/// </para>
 		/// </para>
 		/// <para>
@@ -3399,6 +3522,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-mapindextoid
+		[MsgParams(typeof(int), null, LResultType = typeof(uint))]
 		LVM_MAPINDEXTOID = LVM_FIRST + 180,
 
 		/// <summary>
@@ -3416,23 +3540,22 @@ public static partial class ComCtl32
 		/// List-view controls internally track items by index. This can present problems because indexes can change during the control's lifetime.
 		/// </para>
 		/// <para>
-		/// The list-view control can tag an item with an ID when the item is created. You can use this ID to guarantee uniqueness during
-		/// the lifetime of the list-view control.
+		/// The list-view control can tag an item with an ID when the item is created. You can use this ID to guarantee uniqueness during the
+		/// lifetime of the list-view control.
 		/// </para>
 		/// <para>
 		/// To uniquely identify an item, take the index that is returned from a call such as <c>IComponent::GetDisplayInfo</c> and call
 		/// <c>LVM_MAPINDEXTOID</c>. The return value is a unique ID.
 		/// </para>
 		/// <para>
-		/// If you need the index of an item after an ID is created you can call <c>LVM_MAPIDTOINDEX</c> with the unique ID and it
-		/// returns the most current index.
+		/// If you need the index of an item after an ID is created you can call <c>LVM_MAPIDTOINDEX</c> with the unique ID and it returns
+		/// the most current index.
 		/// </para>
 		/// <para><c>LVM_MAPIDTOINDEX</c> is not supported under the <c>LVS_OWNERDATA</c> style.</para>
 		/// <para>
 		/// <para>Note</para>
 		/// <para>
-		/// In a multithreaded environment, the index is only guaranteed on the thread that hosts the list-view control, not on
-		/// background threads.
+		/// In a multithreaded environment, the index is only guaranteed on the thread that hosts the list-view control, not on background threads.
 		/// </para>
 		/// </para>
 		/// <para>
@@ -3444,6 +3567,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-mapidtoindex
+		[MsgParams(typeof(uint), null)]
 		LVM_MAPIDTOINDEX = LVM_FIRST + 181,
 
 		/// <summary>
@@ -3458,6 +3582,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if visible, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-isitemvisible
+		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		LVM_ISITEMVISIBLE = LVM_FIRST + 182,
 
 		/// <summary/>
@@ -3478,6 +3603,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getemptytext
+		[MsgParams(typeof(uint), typeof(StrPtrUni), LResultType = typeof(BOOL))]
 		LVM_GETEMPTYTEXT = LVM_FIRST + 204,
 
 		/// <summary>
@@ -3495,6 +3621,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooterrect
+		[MsgParams(null, typeof(RECT?), LResultType = typeof(BOOL))]
 		LVM_GETFOOTERRECT = LVM_FIRST + 205,
 
 		/// <summary>
@@ -3505,13 +3632,14 @@ public static partial class ComCtl32
 		/// <para>Not used. Must be 0.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// A pointer to a <c>LVFOOTERINFO</c> structure to receive information depending on the value of the <c>mask</c> member. The
-		/// calling process is responsible for allocating this structure and setting the <c>mask</c> member.
+		/// A pointer to a <c>LVFOOTERINFO</c> structure to receive information depending on the value of the <c>mask</c> member. The calling
+		/// process is responsible for allocating this structure and setting the <c>mask</c> member.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c>.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooterinfo
+		[MsgParams(null, typeof(LVFOOTERINFO?), LResultType = typeof(BOOL))]
 		LVM_GETFOOTERINFO = LVM_FIRST + 206,
 
 		/// <summary>
@@ -3529,6 +3657,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooteritemrect
+		[MsgParams(typeof(int), typeof(RECT?), LResultType = typeof(BOOL))]
 		LVM_GETFOOTERITEMRECT = LVM_FIRST + 207,
 
 		/// <summary>
@@ -3539,14 +3668,15 @@ public static partial class ComCtl32
 		/// <para>The index of the item.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// A pointer to a <c>LVFOOTERITEM</c> structure to receive a value for the <c>state</c> and/or <c>pszText</c> members according
-		/// to the value of the <c>mask</c> member. The calling process is responsible for allocating this structure and setting its
-		/// members to indicate to the receiver what information to return. For more information, see <c>LVFOOTERITEM</c>.
+		/// A pointer to a <c>LVFOOTERITEM</c> structure to receive a value for the <c>state</c> and/or <c>pszText</c> members according to
+		/// the value of the <c>mask</c> member. The calling process is responsible for allocating this structure and setting its members to
+		/// indicate to the receiver what information to return. For more information, see <c>LVFOOTERITEM</c>.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooteritem
+		[MsgParams(typeof(int), typeof(LVFOOTERITEM?), LResultType = typeof(BOOL))]
 		LVM_GETFOOTERITEM = LVM_FIRST + 208,
 
 		/// <summary>
@@ -3555,14 +3685,14 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// A pointer to a <c>LVITEMINDEX</c> structure for the parent item of the subitem. The calling process is responsible for
-		/// allocating this structure and setting its members. wParam must not be <c>NULL</c>.
+		/// A pointer to a <c>LVITEMINDEX</c> structure for the parent item of the subitem. The calling process is responsible for allocating
+		/// this structure and setting its members. wParam must not be <c>NULL</c>.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// A pointer to a <c>RECT</c> structure to receive the coordinates. The calling process is responsible for allocating this
-		/// structure. lParam must not be <c>NULL</c>. Set the <c>top</c> member to the index of the subitem. Set the <c>left</c> member
-		/// to one of the following values, indicating the part of the subitem for which the bounding rectangle is to be retrieved.
+		/// structure. lParam must not be <c>NULL</c>. Set the <c>top</c> member to the index of the subitem. Set the <c>left</c> member to
+		/// one of the following values, indicating the part of the subitem for which the bounding rectangle is to be retrieved.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -3586,6 +3716,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemindexrect
+		[MsgParams(typeof(LVITEMINDEX?), typeof(RECT?), LResultType = typeof(BOOL))]
 		LVM_GETITEMINDEXRECT = LVM_FIRST + 209,
 
 		/// <summary>
@@ -3593,15 +3724,15 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// A pointer to an <c>LVITEMINDEX</c> structure for the item. The calling process is responsible for allocating this structure
-		/// and setting the members.
+		/// A pointer to an <c>LVITEMINDEX</c> structure for the item. The calling process is responsible for allocating this structure and
+		/// setting the members.
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// A pointer to an <c>LVITEM</c> structure. The calling process is responsible for allocating memory for the structure. Set the
-		/// <c>state</c> member to one or more (as a bitwise combination) of the List-View Item States flags. Set the <c>stateMask</c>
-		/// member of the structure to indicate the valid bits of the <c>state</c> member. For more information, see the <c>stateMask</c>
-		/// member of the <c>LVITEM</c> structure.
+		/// <c>state</c> member to one or more (as a bitwise combination) of the List-View Item States flags. Set the <c>stateMask</c> member
+		/// of the structure to indicate the valid bits of the <c>state</c> member. For more information, see the <c>stateMask</c> member of
+		/// the <c>LVITEM</c> structure.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns one of the following values of type <c>HRESULT</c>.</para>
@@ -3625,21 +3756,20 @@ public static partial class ComCtl32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemindexstate
+		[MsgParams(typeof(LVITEMINDEX?), typeof(LVITEM), LResultType = typeof(HRESULT))]
 		LVM_SETITEMINDEXSTATE = LVM_FIRST + 210,
 
 		/// <summary>
-		/// Retrieves the index of an item in a specified list-view control that matches the specified properties and relationship to
-		/// another item. Send this message explicitly or by using the <c>ListView_GetNextItemIndex</c> macro.
+		/// Retrieves the index of an item in a specified list-view control that matches the specified properties and relationship to another
+		/// item. Send this message explicitly or by using the <c>ListView_GetNextItemIndex</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
-		/// A pointer to the <c>LVITEMINDEX</c> structure for the item to begin the search with, or -1 to find the first item that
-		/// matches the specified flags. The calling process is responsible for allocating this structure and setting its members.
+		/// A pointer to the <c>LVITEMINDEX</c> structure for the item to begin the search with, or -1 to find the first item that matches
+		/// the specified flags. The calling process is responsible for allocating this structure and setting its members.
 		/// </para>
 		/// <para><em>lParam</em></para>
-		/// <para>
-		/// Specifies the relationship to the item listed in parameter wParam. This can be one or a combination of the following values:
-		/// </para>
+		/// <para>Specifies the relationship to the item listed in parameter wParam. This can be one or a combination of the following values:</para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -3710,9 +3840,7 @@ public static partial class ComCtl32
 		/// </item>
 		/// <item>
 		/// <term><c>LVNI_STATEMASK</c></term>
-		/// <term>
-		/// <c>Windows Vista and later:</c> A state flag mask with value as follows: LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED.
-		/// </term>
+		/// <term><c>Windows Vista and later:</c> A state flag mask with value as follows: LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED.</term>
 		/// </item>
 		/// <item>
 		/// <term>Searches by appearance of items or by group.</term>
@@ -3739,10 +3867,11 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
-		/// Note that the following flags, for use only with Windows Vista, are mutually exclusive of any other flags in use:
-		/// LVNI_PREVIOUS, LVNI_VISIBLEONLY, LVNI_SAMEGROUPONLY, LVNI_VISIBLEORDER, LVNI_DIRECTIONMASK, and LVNI_STATEMASK.
+		/// Note that the following flags, for use only with Windows Vista, are mutually exclusive of any other flags in use: LVNI_PREVIOUS,
+		/// LVNI_VISIBLEONLY, LVNI_SAMEGROUPONLY, LVNI_VISIBLEORDER, LVNI_DIRECTIONMASK, and LVNI_STATEMASK.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getnextitemindex
+		[MsgParams(typeof(LVITEMINDEX?), typeof(ListViewNextItemFlag), LResultType = typeof(BOOL))]
 		LVM_GETNEXTITEMINDEX = LVM_FIRST + 211,
 
 		/// <summary/>
@@ -3779,8 +3908,8 @@ public static partial class ComCtl32
 		LVNI_VISIBLEORDER = 0X0010,
 
 		/// <summary>
-		/// Windows Vista and later: Searches for an item that is ordered before the item specified in wParam. The LVNI_PREVIOUS flag is
-		/// not directional (LVNI_ABOVE will find the item positioned above, while LVNI_PREVIOUS will find the item ordered before.) The
+		/// Windows Vista and later: Searches for an item that is ordered before the item specified in wParam. The LVNI_PREVIOUS flag is not
+		/// directional (LVNI_ABOVE will find the item positioned above, while LVNI_PREVIOUS will find the item ordered before.) The
 		/// LVNI_PREVIOUS flag basically reverses the logic of the search performed by the LVM_GETNEXTITEM or LVM_GETNEXTITEMINDEX messages.
 		/// </summary>
 		LVNI_PREVIOUS = 0X0020,
@@ -3803,9 +3932,7 @@ public static partial class ComCtl32
 		/// <summary>Searches for an item to the right of the specified item.</summary>
 		LVNI_TORIGHT = 0X0800,
 
-		/// <summary>
-		/// Windows Vista and later: A directional flag mask with value as follows: LVNI_ABOVE | LVNI_BELOW | LVNI_TOLEFT | LVNI_TORIGHT.
-		/// </summary>
+		/// <summary>Windows Vista and later: A directional flag mask with value as follows: LVNI_ABOVE | LVNI_BELOW | LVNI_TOLEFT | LVNI_TORIGHT.</summary>
 		LVNI_DIRECTIONMASK = LVNI_ABOVE | LVNI_BELOW | LVNI_TOLEFT | LVNI_TORIGHT,
 	}
 
@@ -3815,8 +3942,8 @@ public static partial class ComCtl32
 	{
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that a drag-and-drop operation involving the left mouse button is being
-		/// initiated. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that a drag-and-drop operation involving the left mouse button is being initiated.
+		/// This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_BEGINDRAG pnmv = (LPNMLISTVIEW) lParam;</code>
@@ -3824,19 +3951,19 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member identifies the item being dragged, and the other members
-		/// are zero.
+		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member identifies the item being dragged, and the other members are zero.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-begindrag
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_BEGINDRAG = LVN_FIRST - 9,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window about the start of label editing for an item. This notification code is sent in
-		/// the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window about the start of label editing for an item. This notification code is sent in the
+		/// form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_BEGINLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
@@ -3845,8 +3972,8 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure. The <c>item</c> member of this structure is an <c>LVITEM</c> structure whose
-		/// <c>iItem</c> member identifies the item being edited. Note that subitems cannot be edited; the <c>iSubItem</c> member is
-		/// always set to zero.
+		/// <c>iItem</c> member identifies the item being edited. Note that subitems cannot be edited; the <c>iSubItem</c> member is always
+		/// set to zero.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>To allow the user to edit the label, return <c>FALSE</c>.</para>
@@ -3854,23 +3981,24 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
-		/// control sends its parent window an LVN_BEGINLABELEDIT notification code.
+		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view control
+		/// sends its parent window an LVN_BEGINLABELEDIT notification code.
 		/// </para>
 		/// <para>
-		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message
-		/// to the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle
-		/// to customize the edit control by sending the usual <c>EM_XXX</c> messages.
+		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message to
+		/// the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle to
+		/// customize the edit control by sending the usual <c>EM_XXX</c> messages.
 		/// </para>
 		/// <para>When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT notification code.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-beginlabeledit
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_BEGINLABELEDIT = LVN_BEGINLABELEDITW,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window about the start of label editing for an item. This notification code is sent in
-		/// the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window about the start of label editing for an item. This notification code is sent in the
+		/// form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_BEGINLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
@@ -3879,8 +4007,8 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure. The <c>item</c> member of this structure is an <c>LVITEM</c> structure whose
-		/// <c>iItem</c> member identifies the item being edited. Note that subitems cannot be edited; the <c>iSubItem</c> member is
-		/// always set to zero.
+		/// <c>iItem</c> member identifies the item being edited. Note that subitems cannot be edited; the <c>iSubItem</c> member is always
+		/// set to zero.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>To allow the user to edit the label, return <c>FALSE</c>.</para>
@@ -3888,23 +4016,24 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
-		/// control sends its parent window an LVN_BEGINLABELEDIT notification code.
+		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view control
+		/// sends its parent window an LVN_BEGINLABELEDIT notification code.
 		/// </para>
 		/// <para>
-		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message
-		/// to the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle
-		/// to customize the edit control by sending the usual <c>EM_XXX</c> messages.
+		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message to
+		/// the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle to
+		/// customize the edit control by sending the usual <c>EM_XXX</c> messages.
 		/// </para>
 		/// <para>When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT notification code.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-beginlabeledit
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_BEGINLABELEDITA = LVN_FIRST - 5,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window about the start of label editing for an item. This notification code is sent in
-		/// the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window about the start of label editing for an item. This notification code is sent in the
+		/// form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_BEGINLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
@@ -3913,8 +4042,8 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure. The <c>item</c> member of this structure is an <c>LVITEM</c> structure whose
-		/// <c>iItem</c> member identifies the item being edited. Note that subitems cannot be edited; the <c>iSubItem</c> member is
-		/// always set to zero.
+		/// <c>iItem</c> member identifies the item being edited. Note that subitems cannot be edited; the <c>iSubItem</c> member is always
+		/// set to zero.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>To allow the user to edit the label, return <c>FALSE</c>.</para>
@@ -3922,23 +4051,24 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
-		/// control sends its parent window an LVN_BEGINLABELEDIT notification code.
+		/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view control
+		/// sends its parent window an LVN_BEGINLABELEDIT notification code.
 		/// </para>
 		/// <para>
-		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message
-		/// to the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle
-		/// to customize the edit control by sending the usual <c>EM_XXX</c> messages.
+		/// To customize label editing, implement a handler for LVN_BEGINLABELEDIT and have it send an <c>LVM_GETEDITCONTROL</c> message to
+		/// the list-view control. If a label is being edited, the return value will be a handle to the edit control. Use this handle to
+		/// customize the edit control by sending the usual <c>EM_XXX</c> messages.
 		/// </para>
 		/// <para>When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT notification code.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-beginlabeledit
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_BEGINLABELEDITW = LVN_FIRST - 75,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that a drag-and-drop operation involving the right mouse button is being
-		/// initiated. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that a drag-and-drop operation involving the right mouse button is being initiated.
+		/// This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_BEGINRDRAG pnmv = (LPNMLISTVIEW) lParam;</code>
@@ -3946,19 +4076,19 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member identifies the item being dragged, and the other members
-		/// are zero.
+		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member identifies the item being dragged, and the other members are zero.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-beginrdrag
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_BEGINRDRAG = LVN_FIRST - 11,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window when a scrolling operation starts. This notification code is sent in the form of
-		/// a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window when a scrolling operation starts. This notification code is sent in the form of a
+		/// <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_BEGINSCROLL pnmLVScroll = (LPNMLVSCROLL) lParam;</code>
@@ -3979,6 +4109,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-beginscroll
+		[CorrespondingType(typeof(NMLVSCROLL))]
 		LVN_BEGINSCROLL = LVN_FIRST - 80,
 
 		/// <summary>
@@ -3992,8 +4123,8 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member is -1, and the <c>iSubItem</c> member identifies the
-		/// column. All other members are zero.
+		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member is -1, and the <c>iSubItem</c> member identifies the column.
+		/// All other members are zero.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
@@ -4003,6 +4134,7 @@ public static partial class ComCtl32
 		/// control to send the HDN_ITEMSTATEICONCLICK notification code instead of LVN_COLUMNCLICK when a header item is clicked.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-columnclick
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_COLUMNCLICK = LVN_FIRST - 8,
 
 		/// <summary>
@@ -4017,34 +4149,34 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to a <c>NMLISTVIEW</c> structure that describes the notification code. The caller is responsible for allocating this
-		/// structure, including the contained <c>NMHDR</c> structure. Set the members of the <c>NMHDR</c> structure. The <c>code</c>
-		/// member must be set to LVN_COLUMNDROPDOWN.
+		/// structure, including the contained <c>NMHDR</c> structure. Set the members of the <c>NMHDR</c> structure. The <c>code</c> member
+		/// must be set to LVN_COLUMNDROPDOWN.
 		/// </para>
 		/// <para>
-		/// Set the <c>iItem</c> member of the <c>NMLISTVIEW</c> structure to -1. Set the <c>iSubItem</c> member to the index of the
-		/// subitem. Set the <c>uNewState</c>, <c>uOldState</c>, and <c>lParam</c> members to zero. The remaining members of the
-		/// <c>NMLISTVIEW</c> structure are not used.
+		/// Set the <c>iItem</c> member of the <c>NMLISTVIEW</c> structure to -1. Set the <c>iSubItem</c> member to the index of the subitem.
+		/// Set the <c>uNewState</c>, <c>uOldState</c>, and <c>lParam</c> members to zero. The remaining members of the <c>NMLISTVIEW</c>
+		/// structure are not used.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The notification receiver casts lParam to retrieve the <c>NMLISTVIEW</c> structure. The wParam parameter contains the ID of
-		/// the control that sends the notification code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLISTVIEW</c> structure. The wParam parameter contains the ID of the
+		/// control that sends the notification code.
 		/// </para>
 		/// <para>
-		/// If a header control is a child of the list-view, the header control should send this notidication code to the list-view
-		/// control when the header control receives the HDN_DROPDOWN notification code.
+		/// If a header control is a child of the list-view, the header control should send this notidication code to the list-view control
+		/// when the header control receives the HDN_DROPDOWN notification code.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-columndropdown
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_COLUMNDROPDOWN = LVN_FIRST - 64,
 
 		/// <summary>
 		/// <para>
-		/// Sent by a list-view control when its overflow button is clicked. This notification code is sent in the form of a
-		/// <c>WM_NOTIFY</c> message.
+		/// Sent by a list-view control when its overflow button is clicked. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_COLUMNOVERFLOWCLICK pnmv = (LPNMLISTVIEW) lParam;</code>
@@ -4053,21 +4185,21 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to a <c>NMLISTVIEW</c> structure that describes the notification code. The caller is responsible for allocating this
-		/// structure, including the contained <c>NMHDR</c> structure. Set the members of the <c>NMHDR</c> structure. The <c>code</c>
-		/// member must be set to LVN_COLUMNOVERFLOWCLICK.
+		/// structure, including the contained <c>NMHDR</c> structure. Set the members of the <c>NMHDR</c> structure. The <c>code</c> member
+		/// must be set to LVN_COLUMNOVERFLOWCLICK.
 		/// </para>
 		/// <para>
-		/// Set the <c>iItem</c> member of the <c>NMLISTVIEW</c> structure to -1. Set the <c>iSubItem</c> member to the index of the
-		/// subitem. Set the <c>uNewState</c>, <c>uOldState</c>, and <c>lParam</c> members to zero. The remaining members of the
-		/// <c>NMLISTVIEW</c> structure are not used.
+		/// Set the <c>iItem</c> member of the <c>NMLISTVIEW</c> structure to -1. Set the <c>iSubItem</c> member to the index of the subitem.
+		/// Set the <c>uNewState</c>, <c>uOldState</c>, and <c>lParam</c> members to zero. The remaining members of the <c>NMLISTVIEW</c>
+		/// structure are not used.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The notification receiver casts lParam to retrieve the <c>NMLISTVIEW</c> structure. The wParam parameter contains the ID of
-		/// the control that sends the notification code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLISTVIEW</c> structure. The wParam parameter contains the ID of the
+		/// control that sends the notification code.
 		/// </para>
 		/// <para>
 		/// If a header control is a child of the listview, the header control should send this notification code to the listview control
@@ -4075,6 +4207,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-columnoverflowclick
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_COLUMNOVERFLOWCLICK = LVN_FIRST - 66,
 
 		/// <summary>
@@ -4099,17 +4232,18 @@ public static partial class ComCtl32
 		/// LVN_DELETEITEM notification code as each item is deleted.
 		/// </para>
 		/// <para>
-		/// If the <c>LVM_DELETEALLITEMS</c> message handler is in a dialog box procedure, return <c>TRUE</c> from the dialog box
-		/// procedure, and use the <c>SetWindowLong</c> function with DWL_MSGRESULT to set the message return value.
+		/// If the <c>LVM_DELETEALLITEMS</c> message handler is in a dialog box procedure, return <c>TRUE</c> from the dialog box procedure,
+		/// and use the <c>SetWindowLong</c> function with DWL_MSGRESULT to set the message return value.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-deleteallitems
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_DELETEALLITEMS = LVN_FIRST - 4,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that an item is about to be deleted. This notification code is sent in the form
-		/// of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that an item is about to be deleted. This notification code is sent in the form of a
+		/// <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_DELETEITEM pnmv = (LPNMLISTVIEW) lParam;</code>
@@ -4118,20 +4252,21 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member identifies the item being deleted. If the control does not
-		/// have the <c>LVS_OWNERDATA</c> style, then the lParam is the application-defined data associated with the item. All other
-		/// members of this structure are zero.
+		/// have the <c>LVS_OWNERDATA</c> style, then the lParam is the application-defined data associated with the item. All other members
+		/// of this structure are zero.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>Do not add, delete, or rearrange items in the list view while processing this notification code.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-deleteitem
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_DELETEITEM = LVN_FIRST - 3,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window about the end of label editing for an item. This notification code is sent in
-		/// the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window about the end of label editing for an item. This notification code is sent in the
+		/// form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_ENDLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
@@ -4140,15 +4275,15 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure. The <c>item</c> member of this structure is an <c>LVITEM</c> structure whose
-		/// <c>iItem</c> member identifies the item being edited. The <c>pszText</c> member of <c>item</c> contains a valid value when
-		/// the LVN_ENDLABELEDIT notification code is sent, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of
-		/// the <c>LVITEM</c> structure. If the user cancels editing, the <c>pszText</c> member of the <c>LVITEM</c> structure is
-		/// <c>NULL</c>; otherwise, <c>pszText</c> is the address of the edited text.
+		/// <c>iItem</c> member identifies the item being edited. The <c>pszText</c> member of <c>item</c> contains a valid value when the
+		/// LVN_ENDLABELEDIT notification code is sent, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of the
+		/// <c>LVITEM</c> structure. If the user cancels editing, the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>;
+		/// otherwise, <c>pszText</c> is the address of the edited text.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// If the <c>pszText</c> member of the <c>LVITEM</c> structure is non- <c>NULL</c>, return <c>TRUE</c> to set the item's label
-		/// to the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
+		/// If the <c>pszText</c> member of the <c>LVITEM</c> structure is non- <c>NULL</c>, return <c>TRUE</c> to set the item's label to
+		/// the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
 		/// </para>
 		/// <para>If the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>, the return value is ignored.</para>
 		/// </summary>
@@ -4159,17 +4294,17 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>
 		/// When the user begins editing an item label, the parent window of the list-view control receives an LVN_BEGINLABELEDIT
-		/// notification code. When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT
-		/// notification code.
+		/// notification code. When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT notification code.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-endlabeledit
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_ENDLABELEDIT = LVN_ENDLABELEDITW,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window about the end of label editing for an item. This notification code is sent in
-		/// the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window about the end of label editing for an item. This notification code is sent in the
+		/// form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_ENDLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
@@ -4178,15 +4313,15 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure. The <c>item</c> member of this structure is an <c>LVITEM</c> structure whose
-		/// <c>iItem</c> member identifies the item being edited. The <c>pszText</c> member of <c>item</c> contains a valid value when
-		/// the LVN_ENDLABELEDIT notification code is sent, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of
-		/// the <c>LVITEM</c> structure. If the user cancels editing, the <c>pszText</c> member of the <c>LVITEM</c> structure is
-		/// <c>NULL</c>; otherwise, <c>pszText</c> is the address of the edited text.
+		/// <c>iItem</c> member identifies the item being edited. The <c>pszText</c> member of <c>item</c> contains a valid value when the
+		/// LVN_ENDLABELEDIT notification code is sent, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of the
+		/// <c>LVITEM</c> structure. If the user cancels editing, the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>;
+		/// otherwise, <c>pszText</c> is the address of the edited text.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// If the <c>pszText</c> member of the <c>LVITEM</c> structure is non- <c>NULL</c>, return <c>TRUE</c> to set the item's label
-		/// to the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
+		/// If the <c>pszText</c> member of the <c>LVITEM</c> structure is non- <c>NULL</c>, return <c>TRUE</c> to set the item's label to
+		/// the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
 		/// </para>
 		/// <para>If the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>, the return value is ignored.</para>
 		/// </summary>
@@ -4197,17 +4332,17 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>
 		/// When the user begins editing an item label, the parent window of the list-view control receives an LVN_BEGINLABELEDIT
-		/// notification code. When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT
-		/// notification code.
+		/// notification code. When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT notification code.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-endlabeledit
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_ENDLABELEDITA = LVN_FIRST - 6,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window about the end of label editing for an item. This notification code is sent in
-		/// the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window about the end of label editing for an item. This notification code is sent in the
+		/// form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_ENDLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
@@ -4216,15 +4351,15 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure. The <c>item</c> member of this structure is an <c>LVITEM</c> structure whose
-		/// <c>iItem</c> member identifies the item being edited. The <c>pszText</c> member of <c>item</c> contains a valid value when
-		/// the LVN_ENDLABELEDIT notification code is sent, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of
-		/// the <c>LVITEM</c> structure. If the user cancels editing, the <c>pszText</c> member of the <c>LVITEM</c> structure is
-		/// <c>NULL</c>; otherwise, <c>pszText</c> is the address of the edited text.
+		/// <c>iItem</c> member identifies the item being edited. The <c>pszText</c> member of <c>item</c> contains a valid value when the
+		/// LVN_ENDLABELEDIT notification code is sent, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of the
+		/// <c>LVITEM</c> structure. If the user cancels editing, the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>;
+		/// otherwise, <c>pszText</c> is the address of the edited text.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// If the <c>pszText</c> member of the <c>LVITEM</c> structure is non- <c>NULL</c>, return <c>TRUE</c> to set the item's label
-		/// to the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
+		/// If the <c>pszText</c> member of the <c>LVITEM</c> structure is non- <c>NULL</c>, return <c>TRUE</c> to set the item's label to
+		/// the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
 		/// </para>
 		/// <para>If the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>, the return value is ignored.</para>
 		/// </summary>
@@ -4235,11 +4370,11 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>
 		/// When the user begins editing an item label, the parent window of the list-view control receives an LVN_BEGINLABELEDIT
-		/// notification code. When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT
-		/// notification code.
+		/// notification code. When the user cancels or completes the editing, the parent window receives an LVN_ENDLABELEDIT notification code.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-endlabeledit
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_ENDLABELEDITW = LVN_FIRST - 76,
 
 		/// <summary>
@@ -4266,12 +4401,13 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-endscroll
+		[CorrespondingType(typeof(NMLVSCROLL))]
 		LVN_ENDSCROLL = LVN_FIRST - 81,
 
 		/// <summary>
 		/// <para>
-		/// Sent by a list-view control to its parent window. It is a request for the parent window to provide information needed to
-		/// display or sort a list-view item. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Sent by a list-view control to its parent window. It is a request for the parent window to provide information needed to display
+		/// or sort a list-view item. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_GETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
@@ -4279,10 +4415,10 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>NMLVDISPINFO</c> structure. On input, the <c>LVITEM</c> structure contained in this structure specifies the
-		/// type of information required and identifies the item or subitem of interest. Use the <c>LVITEM</c> structure to return the
-		/// requested information to the control. If your message handler sets the LVIF_DI_SETITEM flag in the <c>mask</c> member of the
-		/// <c>LVITEM</c> structure, the list-view control stores the requested information and will not ask for it again.
+		/// Pointer to an <c>NMLVDISPINFO</c> structure. On input, the <c>LVITEM</c> structure contained in this structure specifies the type
+		/// of information required and identifies the item or subitem of interest. Use the <c>LVITEM</c> structure to return the requested
+		/// information to the control. If your message handler sets the LVIF_DI_SETITEM flag in the <c>mask</c> member of the <c>LVITEM</c>
+		/// structure, the list-view control stores the requested information and will not ask for it again.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
@@ -4300,12 +4436,13 @@ public static partial class ComCtl32
 		/// <para>For more information on list-view callbacks, see Callback Items and the Callback Mask.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-getdispinfo
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_GETDISPINFO = LVN_GETDISPINFOW,
 
 		/// <summary>
 		/// <para>
-		/// Sent by a list-view control to its parent window. It is a request for the parent window to provide information needed to
-		/// display or sort a list-view item. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Sent by a list-view control to its parent window. It is a request for the parent window to provide information needed to display
+		/// or sort a list-view item. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_GETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
@@ -4313,10 +4450,10 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>NMLVDISPINFO</c> structure. On input, the <c>LVITEM</c> structure contained in this structure specifies the
-		/// type of information required and identifies the item or subitem of interest. Use the <c>LVITEM</c> structure to return the
-		/// requested information to the control. If your message handler sets the LVIF_DI_SETITEM flag in the <c>mask</c> member of the
-		/// <c>LVITEM</c> structure, the list-view control stores the requested information and will not ask for it again.
+		/// Pointer to an <c>NMLVDISPINFO</c> structure. On input, the <c>LVITEM</c> structure contained in this structure specifies the type
+		/// of information required and identifies the item or subitem of interest. Use the <c>LVITEM</c> structure to return the requested
+		/// information to the control. If your message handler sets the LVIF_DI_SETITEM flag in the <c>mask</c> member of the <c>LVITEM</c>
+		/// structure, the list-view control stores the requested information and will not ask for it again.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
@@ -4334,12 +4471,13 @@ public static partial class ComCtl32
 		/// <para>For more information on list-view callbacks, see Callback Items and the Callback Mask.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-getdispinfo
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_GETDISPINFOA = LVN_FIRST - 50,
 
 		/// <summary>
 		/// <para>
-		/// Sent by a list-view control to its parent window. It is a request for the parent window to provide information needed to
-		/// display or sort a list-view item. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Sent by a list-view control to its parent window. It is a request for the parent window to provide information needed to display
+		/// or sort a list-view item. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_GETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
@@ -4347,10 +4485,10 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to an <c>NMLVDISPINFO</c> structure. On input, the <c>LVITEM</c> structure contained in this structure specifies the
-		/// type of information required and identifies the item or subitem of interest. Use the <c>LVITEM</c> structure to return the
-		/// requested information to the control. If your message handler sets the LVIF_DI_SETITEM flag in the <c>mask</c> member of the
-		/// <c>LVITEM</c> structure, the list-view control stores the requested information and will not ask for it again.
+		/// Pointer to an <c>NMLVDISPINFO</c> structure. On input, the <c>LVITEM</c> structure contained in this structure specifies the type
+		/// of information required and identifies the item or subitem of interest. Use the <c>LVITEM</c> structure to return the requested
+		/// information to the control. If your message handler sets the LVIF_DI_SETITEM flag in the <c>mask</c> member of the <c>LVITEM</c>
+		/// structure, the list-view control stores the requested information and will not ask for it again.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
@@ -4368,6 +4506,7 @@ public static partial class ComCtl32
 		/// <para>For more information on list-view callbacks, see Callback Items and the Callback Mask.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-getdispinfo
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_GETDISPINFOW = LVN_FIRST - 77,
 
 		/// <summary>
@@ -4387,17 +4526,18 @@ public static partial class ComCtl32
 		/// <para>Return <c>TRUE</c> to set the markup text in the list-view control, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		/// <remarks>
-		/// The notification receiver casts lParam to retrieve the <c>NMLVEMPTYMARKUP</c> structure. The wParam parameter contains the ID
-		/// of the control that sends this message.
+		/// The notification receiver casts lParam to retrieve the <c>NMLVEMPTYMARKUP</c> structure. The wParam parameter contains the ID of
+		/// the control that sends this message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-getemptymarkup
+		[CorrespondingType(typeof(NMLVEMPTYMARKUP))]
 		LVN_GETEMPTYMARKUP = LVN_FIRST - 87,
 
 		/// <summary>
 		/// <para>
 		/// Sent by a large icon view list-view control that has the <c>LVS_EX_INFOTIP</c> extended style. This notification code is sent
-		/// when the list-view control is requesting additional text information to be displayed in a tooltip. It is sent in the form of
-		/// a <c>WM_NOTIFY</c> message.
+		/// when the list-view control is requesting additional text information to be displayed in a tooltip. It is sent in the form of a
+		/// <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_GETINFOTIP pGetInfoTip = (LPNMLVGETINFOTIP) lParam;</code>
@@ -4409,17 +4549,18 @@ public static partial class ComCtl32
 		/// <para>The return value for this notification is not used.</para>
 		/// </summary>
 		/// <remarks>
-		/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The
-		/// LVN_GETINFOTIP notification code is sent only for subitem 0.
+		/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The LVN_GETINFOTIP
+		/// notification code is sent only for subitem 0.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-getinfotip
+		[CorrespondingType(typeof(NMLVGETINFOTIP))]
 		LVN_GETINFOTIP = LVN_GETINFOTIPW,
 
 		/// <summary>
 		/// <para>
 		/// Sent by a large icon view list-view control that has the <c>LVS_EX_INFOTIP</c> extended style. This notification code is sent
-		/// when the list-view control is requesting additional text information to be displayed in a tooltip. It is sent in the form of
-		/// a <c>WM_NOTIFY</c> message.
+		/// when the list-view control is requesting additional text information to be displayed in a tooltip. It is sent in the form of a
+		/// <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_GETINFOTIP pGetInfoTip = (LPNMLVGETINFOTIP) lParam;</code>
@@ -4431,17 +4572,18 @@ public static partial class ComCtl32
 		/// <para>The return value for this notification is not used.</para>
 		/// </summary>
 		/// <remarks>
-		/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The
-		/// LVN_GETINFOTIP notification code is sent only for subitem 0.
+		/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The LVN_GETINFOTIP
+		/// notification code is sent only for subitem 0.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-getinfotip
+		[CorrespondingType(typeof(NMLVGETINFOTIP))]
 		LVN_GETINFOTIPA = LVN_FIRST - 57,
 
 		/// <summary>
 		/// <para>
 		/// Sent by a large icon view list-view control that has the <c>LVS_EX_INFOTIP</c> extended style. This notification code is sent
-		/// when the list-view control is requesting additional text information to be displayed in a tooltip. It is sent in the form of
-		/// a <c>WM_NOTIFY</c> message.
+		/// when the list-view control is requesting additional text information to be displayed in a tooltip. It is sent in the form of a
+		/// <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_GETINFOTIP pGetInfoTip = (LPNMLVGETINFOTIP) lParam;</code>
@@ -4453,16 +4595,17 @@ public static partial class ComCtl32
 		/// <para>The return value for this notification is not used.</para>
 		/// </summary>
 		/// <remarks>
-		/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The
-		/// LVN_GETINFOTIP notification code is sent only for subitem 0.
+		/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The LVN_GETINFOTIP
+		/// notification code is sent only for subitem 0.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-getinfotip
+		[CorrespondingType(typeof(NMLVGETINFOTIP))]
 		LVN_GETINFOTIPW = LVN_FIRST - 58,
 
 		/// <summary>
 		/// <para>
-		/// Sent by a list-view control when the user moves the mouse over an item. This notification code is only sent by list-view
-		/// controls that have the <c>LVS_EX_TRACKSELECT</c> extended list-view style. It is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Sent by a list-view control when the user moves the mouse over an item. This notification code is only sent by list-view controls
+		/// that have the <c>LVS_EX_TRACKSELECT</c> extended list-view style. It is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_HOTTRACK lpnmlv = (LPNMLISTVIEW) lParam;</code>
@@ -4471,22 +4614,23 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLISTVIEW</c> structure that contains information about this notification code. The <c>iItem</c>,
-		/// <c>iSubItem</c>, and <c>ptAction</c> members of this structure contain information about the item. The receiving application
-		/// can modify the <c>iItem</c> member to specify the item that will be selected. If <c>iItem</c> is set to -1, no item will be selected.
+		/// <c>iSubItem</c>, and <c>ptAction</c> members of this structure contain information about the item. The receiving application can
+		/// modify the <c>iItem</c> member to specify the item that will be selected. If <c>iItem</c> is set to -1, no item will be selected.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>
-		/// Return zero to allow the list view to perform its normal track select processing. If the application returns nonzero, the
-		/// item will not be selected.
+		/// Return zero to allow the list view to perform its normal track select processing. If the application returns nonzero, the item
+		/// will not be selected.
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-hottrack
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_HOTTRACK = LVN_FIRST - 21,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that an incremental search has started. This notification code is sent in the
-		/// form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that an incremental search has started. This notification code is sent in the form
+		/// of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_INCREMENTALSEARCH pnmv = (LPNMLVFINDITEM) lParam;</code>
@@ -4494,34 +4638,35 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a <c>NMLVFINDITEM</c> structure that describes the notification code. The caller is responsible for allocating
-		/// this structure, including the contained <c>NMHDR</c> and <c>LVFINDINFO</c> structures. Set the members of the <c>NMHDR</c>
-		/// structure. The <c>code</c> member must be set to LVN_INCREMENTALSEARCH.
+		/// Pointer to a <c>NMLVFINDITEM</c> structure that describes the notification code. The caller is responsible for allocating this
+		/// structure, including the contained <c>NMHDR</c> and <c>LVFINDINFO</c> structures. Set the members of the <c>NMHDR</c> structure.
+		/// The <c>code</c> member must be set to LVN_INCREMENTALSEARCH.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of
-		/// the control that sends this notification code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of the
+		/// control that sends this notification code.
 		/// </para>
 		/// <para>
-		/// This notification code gives an application (or the notification receiver) the opportunity to customize an incremental
-		/// search. For example, if the search items are numeric, the application can perform a numerical search instead of a string search.
+		/// This notification code gives an application (or the notification receiver) the opportunity to customize an incremental search.
+		/// For example, if the search items are numeric, the application can perform a numerical search instead of a string search.
 		/// </para>
 		/// <para>
-		/// The application sets the <c>lParam</c> member of the <c>LVFINDINFO</c> structure contained in <c>NMLVFINDITEM</c> structure
-		/// to the result of the search, or to another application defined value to fail the search and indicate to the control how to proceed.
+		/// The application sets the <c>lParam</c> member of the <c>LVFINDINFO</c> structure contained in <c>NMLVFINDITEM</c> structure to
+		/// the result of the search, or to another application defined value to fail the search and indicate to the control how to proceed.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-incrementalsearch
+		[CorrespondingType(typeof(NMLVFINDITEM))]
 		LVN_INCREMENTALSEARCH = LVN_INCREMENTALSEARCHW,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that an incremental search has started. This notification code is sent in the
-		/// form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that an incremental search has started. This notification code is sent in the form
+		/// of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_INCREMENTALSEARCH pnmv = (LPNMLVFINDITEM) lParam;</code>
@@ -4529,34 +4674,35 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a <c>NMLVFINDITEM</c> structure that describes the notification code. The caller is responsible for allocating
-		/// this structure, including the contained <c>NMHDR</c> and <c>LVFINDINFO</c> structures. Set the members of the <c>NMHDR</c>
-		/// structure. The <c>code</c> member must be set to LVN_INCREMENTALSEARCH.
+		/// Pointer to a <c>NMLVFINDITEM</c> structure that describes the notification code. The caller is responsible for allocating this
+		/// structure, including the contained <c>NMHDR</c> and <c>LVFINDINFO</c> structures. Set the members of the <c>NMHDR</c> structure.
+		/// The <c>code</c> member must be set to LVN_INCREMENTALSEARCH.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of
-		/// the control that sends this notification code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of the
+		/// control that sends this notification code.
 		/// </para>
 		/// <para>
-		/// This notification code gives an application (or the notification receiver) the opportunity to customize an incremental
-		/// search. For example, if the search items are numeric, the application can perform a numerical search instead of a string search.
+		/// This notification code gives an application (or the notification receiver) the opportunity to customize an incremental search.
+		/// For example, if the search items are numeric, the application can perform a numerical search instead of a string search.
 		/// </para>
 		/// <para>
-		/// The application sets the <c>lParam</c> member of the <c>LVFINDINFO</c> structure contained in <c>NMLVFINDITEM</c> structure
-		/// to the result of the search, or to another application defined value to fail the search and indicate to the control how to proceed.
+		/// The application sets the <c>lParam</c> member of the <c>LVFINDINFO</c> structure contained in <c>NMLVFINDITEM</c> structure to
+		/// the result of the search, or to another application defined value to fail the search and indicate to the control how to proceed.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-incrementalsearch
+		[CorrespondingType(typeof(NMLVFINDITEM))]
 		LVN_INCREMENTALSEARCHA = LVN_FIRST - 62,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that an incremental search has started. This notification code is sent in the
-		/// form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that an incremental search has started. This notification code is sent in the form
+		/// of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_INCREMENTALSEARCH pnmv = (LPNMLVFINDITEM) lParam;</code>
@@ -4564,28 +4710,29 @@ public static partial class ComCtl32
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// Pointer to a <c>NMLVFINDITEM</c> structure that describes the notification code. The caller is responsible for allocating
-		/// this structure, including the contained <c>NMHDR</c> and <c>LVFINDINFO</c> structures. Set the members of the <c>NMHDR</c>
-		/// structure. The <c>code</c> member must be set to LVN_INCREMENTALSEARCH.
+		/// Pointer to a <c>NMLVFINDITEM</c> structure that describes the notification code. The caller is responsible for allocating this
+		/// structure, including the contained <c>NMHDR</c> and <c>LVFINDINFO</c> structures. Set the members of the <c>NMHDR</c> structure.
+		/// The <c>code</c> member must be set to LVN_INCREMENTALSEARCH.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of
-		/// the control that sends this notification code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of the
+		/// control that sends this notification code.
 		/// </para>
 		/// <para>
-		/// This notification code gives an application (or the notification receiver) the opportunity to customize an incremental
-		/// search. For example, if the search items are numeric, the application can perform a numerical search instead of a string search.
+		/// This notification code gives an application (or the notification receiver) the opportunity to customize an incremental search.
+		/// For example, if the search items are numeric, the application can perform a numerical search instead of a string search.
 		/// </para>
 		/// <para>
-		/// The application sets the <c>lParam</c> member of the <c>LVFINDINFO</c> structure contained in <c>NMLVFINDITEM</c> structure
-		/// to the result of the search, or to another application defined value to fail the search and indicate to the control how to proceed.
+		/// The application sets the <c>lParam</c> member of the <c>LVFINDINFO</c> structure contained in <c>NMLVFINDITEM</c> structure to
+		/// the result of the search, or to another application defined value to fail the search and indicate to the control how to proceed.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-incrementalsearch
+		[CorrespondingType(typeof(NMLVFINDITEM))]
 		LVN_INCREMENTALSEARCHW = LVN_FIRST - 63,
 
 		/// <summary>
@@ -4598,13 +4745,12 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
-		/// <para>
-		/// Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member identifies the new item, and the other members are zero.
-		/// </para>
+		/// <para>Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member identifies the new item, and the other members are zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-insertitem
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_INSERTITEM = LVN_FIRST - 2,
 
 		/// <summary>
@@ -4622,11 +4768,12 @@ public static partial class ComCtl32
 		/// <para>The application receiving this notification code must return zero.</para>
 		/// </summary>
 		/// <remarks>
-		/// To obtain the items being activated, the receiving application should use the <c>LVM_GETSELECTEDCOUNT</c> message to retrieve
-		/// the number of items that are selected and then send the <c>LVM_GETNEXTITEM</c> message with <c>LVNI_SELECTED</c> until all of
-		/// the items have been retrieved.
+		/// To obtain the items being activated, the receiving application should use the <c>LVM_GETSELECTEDCOUNT</c> message to retrieve the
+		/// number of items that are selected and then send the <c>LVM_GETNEXTITEM</c> message with <c>LVNI_SELECTED</c> until all of the
+		/// items have been retrieved.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-itemactivate
+		[CorrespondingType(typeof(NMITEMACTIVATE))]
 		LVN_ITEMACTIVATE = LVN_FIRST - 14,
 
 		/// <summary>
@@ -4647,11 +4794,12 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
-		/// If a list-view control has the <c>LVS_OWNERDATA</c> style, and the user selects a range of items by holding down the SHIFT
-		/// key and clicking the mouse, LVN_ITEMCHANGED notification codes are not sent for each selected or deselected item. Instead,
-		/// you will receive a single LVN_ODSTATECHANGED notification code, indicating that a range of items has changed state.
+		/// If a list-view control has the <c>LVS_OWNERDATA</c> style, and the user selects a range of items by holding down the SHIFT key
+		/// and clicking the mouse, LVN_ITEMCHANGED notification codes are not sent for each selected or deselected item. Instead, you will
+		/// receive a single LVN_ODSTATECHANGED notification code, indicating that a range of items has changed state.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-itemchanged
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_ITEMCHANGED = LVN_FIRST - 1,
 
 		/// <summary>
@@ -4670,6 +4818,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>If the list-view control has the <c>LVS_OWNERDATA</c> style, LVN_ITEMCHANGING notification codes are not sent.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-itemchanging
+		[CorrespondingType(typeof(NMLISTVIEW))]
 		LVN_ITEMCHANGING = LVN_FIRST - 0,
 
 		/// <summary>
@@ -4687,6 +4836,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-keydown
+		[CorrespondingType(typeof(NMLVKEYDOWN))]
 		LVN_KEYDOWN = LVN_FIRST - 55,
 
 		/// <summary>
@@ -4699,28 +4849,27 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>lParam</em></para>
-		/// <para>
-		/// Pointer to an <c>NMLVLINK</c> structure. The identifier of the group containing the link is in the <c>iSubItem</c> member.
-		/// </para>
+		/// <para>Pointer to an <c>NMLVLINK</c> structure. The identifier of the group containing the link is in the <c>iSubItem</c> member.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The following example shows how an application might respond to this notification code in its <c>WM_NOTIFY</c> message
-		/// handler. The example toggles the collapsed state of the group and sets the appropriate link text.
+		/// The following example shows how an application might respond to this notification code in its <c>WM_NOTIFY</c> message handler.
+		/// The example toggles the collapsed state of the group and sets the appropriate link text.
 		/// </para>
 		/// <para>
 		/// <code>case LVN_LINKCLICK: { NMLVLINK* pLinkInfo = (NMLVLINK*)lParam; HWND hList = pLinkInfo-&gt;hdr.hwndFrom; LVGROUP groupInfo; groupInfo.cbSize = sizeof(groupInfo); groupInfo.mask = LVGF_TASK; int groupIndex = pLinkInfo-&gt;iSubItem; if (ListView_GetGroupState(hList, groupIndex, LVGS_COLLAPSED)) { ListView_SetGroupState(hList, groupIndex, LVGS_COLLAPSED, 0); groupInfo.pszTask = L"Hide"; } else { ListView_SetGroupState(hList, groupIndex, LVGS_COLLAPSED, LVGS_COLLAPSED); groupInfo.pszTask = L"Show"; } ListView_SetGroupInfo(hList, groupIndex, &amp;groupInfo); break; }</code>
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-linkclick
+		[CorrespondingType(typeof(NMLVLINK))]
 		LVN_LINKCLICK = LVN_FIRST - 84,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that a bounding box (marquee) selection has begun. This notification code is
-		/// sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that a bounding box (marquee) selection has begun. This notification code is sent in
+		/// the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_MARQUEEBEGIN pnmv = (LPNMLISTVIEW) lParam;</code>
@@ -4735,13 +4884,14 @@ public static partial class ComCtl32
 		/// A bounding box selection is the process of clicking the list-view window's client area and dragging to select multiple items simultaneously.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-marqueebegin
+		[CorrespondingType(typeof(NMHDR))]
 		LVN_MARQUEEBEGIN = LVN_FIRST - 56,
 
 		/// <summary>
 		/// <para>
-		/// Sent by a virtual list-view control when the contents of its display area have changed. For example, a list-view control
-		/// sends this notification code when the user scrolls the control's display. The LVN_ODCACHEHINT notification code is sent in
-		/// the form of a <c>WM_NOTIFY</c> message.
+		/// Sent by a virtual list-view control when the contents of its display area have changed. For example, a list-view control sends
+		/// this notification code when the user scrolls the control's display. The LVN_ODCACHEHINT notification code is sent in the form of
+		/// a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_ODCACHEHINT pCachehint = (NMLVCACHEHINT *) lParam;</code>
@@ -4754,16 +4904,17 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// Handling this message allows the application to update the item information held in cache so that it is readily available
-		/// when an LVN_GETDISPINFO notification code is sent.
+		/// Handling this message allows the application to update the item information held in cache so that it is readily available when an
+		/// LVN_GETDISPINFO notification code is sent.
 		/// </para>
 		/// <para>
-		/// Note that this notification code is not always an exact representation of the items that will be requested by
-		/// LVN_GETDISPINFO. Therefore, if the requested item is not cached while handling LVN_GETDISPINFO, the application must be
-		/// prepared to supply the requested information from a source outside the cache.
+		/// Note that this notification code is not always an exact representation of the items that will be requested by LVN_GETDISPINFO.
+		/// Therefore, if the requested item is not cached while handling LVN_GETDISPINFO, the application must be prepared to supply the
+		/// requested information from a source outside the cache.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-odcachehint
+		[CorrespondingType(typeof(NMLVCACHEHINT))]
 		LVN_ODCACHEHINT = LVN_FIRST - 13,
 
 		/// <summary>
@@ -4785,6 +4936,7 @@ public static partial class ComCtl32
 		/// Search information is sent in the form of an <c>LVFINDINFO</c> structure, which is a member of the <c>NMLVFINDITEM</c> structure.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-odfinditem
+		[CorrespondingType(typeof(NMLVFINDITEM))]
 		LVN_ODFINDITEM = LVN_ODFINDITEMW,
 
 		/// <summary>
@@ -4806,6 +4958,7 @@ public static partial class ComCtl32
 		/// Search information is sent in the form of an <c>LVFINDINFO</c> structure, which is a member of the <c>NMLVFINDITEM</c> structure.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-odfinditem
+		[CorrespondingType(typeof(NMLVFINDITEM))]
 		LVN_ODFINDITEMA = LVN_FIRST - 52,
 
 		/// <summary>
@@ -4827,12 +4980,13 @@ public static partial class ComCtl32
 		/// Search information is sent in the form of an <c>LVFINDINFO</c> structure, which is a member of the <c>NMLVFINDITEM</c> structure.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-odfinditem
+		[CorrespondingType(typeof(NMLVFINDITEM))]
 		LVN_ODFINDITEMW = LVN_FIRST - 79,
 
 		/// <summary>
 		/// <para>
-		/// Sent by a list-view control when the state of an item or range of items has changed. This notification code is sent in the
-		/// form of a <c>WM_NOTIFY</c> message.
+		/// Sent by a list-view control when the state of an item or range of items has changed. This notification code is sent in the form
+		/// of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_ODSTATECHANGED lpStateChange = (LPNMLVODSTATECHANGE) lParam;</code>
@@ -4844,12 +4998,13 @@ public static partial class ComCtl32
 		/// <para>The application receiving this notification code must return zero.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-odstatechanged
+		[CorrespondingType(typeof(NMLVODSTATECHANGE))]
 		LVN_ODSTATECHANGED = LVN_FIRST - 15,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that it must update the information it maintains for an item. This notification
-		/// code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that it must update the information it maintains for an item. This notification code
+		/// is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_SETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
@@ -4858,23 +5013,23 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure that specifies information for the changed item. The <c>item</c> member of this
-		/// structure is an <c>LVITEM</c> structure that contains information about the item that was changed. The <c>pszText</c> member
-		/// of <c>item</c> contains a valid value, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of this structure.
+		/// structure is an <c>LVITEM</c> structure that contains information about the item that was changed. The <c>pszText</c> member of
+		/// <c>item</c> contains a valid value, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of this structure.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
-		/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
-		/// message code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the message code.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-setdispinfo
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_SETDISPINFO = LVN_SETDISPINFOW,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that it must update the information it maintains for an item. This notification
-		/// code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that it must update the information it maintains for an item. This notification code
+		/// is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_SETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
@@ -4883,23 +5038,23 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure that specifies information for the changed item. The <c>item</c> member of this
-		/// structure is an <c>LVITEM</c> structure that contains information about the item that was changed. The <c>pszText</c> member
-		/// of <c>item</c> contains a valid value, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of this structure.
+		/// structure is an <c>LVITEM</c> structure that contains information about the item that was changed. The <c>pszText</c> member of
+		/// <c>item</c> contains a valid value, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of this structure.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
-		/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
-		/// message code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the message code.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-setdispinfo
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_SETDISPINFOA = LVN_FIRST - 51,
 
 		/// <summary>
 		/// <para>
-		/// Notifies a list-view control's parent window that it must update the information it maintains for an item. This notification
-		/// code is sent in the form of a <c>WM_NOTIFY</c> message.
+		/// Notifies a list-view control's parent window that it must update the information it maintains for an item. This notification code
+		/// is sent in the form of a <c>WM_NOTIFY</c> message.
 		/// </para>
 		/// <para>
 		/// <code>LVN_SETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
@@ -4908,17 +5063,17 @@ public static partial class ComCtl32
 		/// <para><em>lParam</em></para>
 		/// <para>
 		/// Pointer to an <c>NMLVDISPINFO</c> structure that specifies information for the changed item. The <c>item</c> member of this
-		/// structure is an <c>LVITEM</c> structure that contains information about the item that was changed. The <c>pszText</c> member
-		/// of <c>item</c> contains a valid value, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of this structure.
+		/// structure is an <c>LVITEM</c> structure that contains information about the item that was changed. The <c>pszText</c> member of
+		/// <c>item</c> contains a valid value, regardless of whether the LVIF_TEXT flag is set in the <c>mask</c> member of this structure.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
 		/// </summary>
 		/// <remarks>
-		/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
-		/// message code.
+		/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the message code.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-setdispinfo
+		[CorrespondingType(typeof(NMLVDISPINFO))]
 		LVN_SETDISPINFOW = LVN_FIRST - 78,
 	}
 
@@ -4955,27 +5110,27 @@ public static partial class ComCtl32
 		LVS_NOLABELWRAP = 0x0080,
 
 		/// <summary>
-		/// Scrolling is disabled. All items must be within the client area. This style is not compatible with the LVS_LIST or
-		/// LVS_REPORT styles. See Knowledge Base Article Q137520 for further discussion.
+		/// Scrolling is disabled. All items must be within the client area. This style is not compatible with the LVS_LIST or LVS_REPORT
+		/// styles. See Knowledge Base Article Q137520 for further discussion.
 		/// </summary>
 		LVS_NOSCROLL = 0x2000,
 
 		/// <summary>
-		/// Column headers do not work like buttons. This style can be used if clicking a column header in report view does not carry
-		/// out an action, such as sorting.
+		/// Column headers do not work like buttons. This style can be used if clicking a column header in report view does not carry out an
+		/// action, such as sorting.
 		/// </summary>
 		LVS_NOSORTHEADER = 0x8000,
 
 		/// <summary>
-		/// Version 4.70. This style specifies a virtual list-view control. For more information about this list control style, see
-		/// About List-View Controls.
+		/// Version 4.70. This style specifies a virtual list-view control. For more information about this list control style, see About
+		/// List-View Controls.
 		/// </summary>
 		LVS_OWNERDATA = 0x1000,
 
 		/// <summary>
-		/// The owner window can paint items in report view. The list-view control sends a WM_DRAWITEM message to paint each item; it
-		/// does not send separate messages for each subitem. The iItemData member of the DRAWITEMSTRUCT structure contains the item
-		/// data for the specified list-view item.
+		/// The owner window can paint items in report view. The list-view control sends a WM_DRAWITEM message to paint each item; it does
+		/// not send separate messages for each subitem. The iItemData member of the DRAWITEMSTRUCT structure contains the item data for the
+		/// specified list-view item.
 		/// </summary>
 		LVS_OWNERDRAWFIXED = 0x0400,
 
@@ -5034,25 +5189,25 @@ public static partial class ComCtl32
 		LVS_EX_BORDERSELECT = 0X00008000,
 
 		/// <summary>
-		/// Version 4.70. Enables check boxes for items in a list-view control. When set to this style, the control creates and sets a
-		/// state image list with two images using DrawFrameControl. State image 1 is the unchecked box, and state image 2 is the
-		/// checked box. Setting the state image to zero removes the check box.
+		/// Version 4.70. Enables check boxes for items in a list-view control. When set to this style, the control creates and sets a state
+		/// image list with two images using DrawFrameControl. State image 1 is the unchecked box, and state image 2 is the checked box.
+		/// Setting the state image to zero removes the check box.
 		/// <para>
-		/// Version 6.00 and later Check boxes are visible and functional with all list view modes except the tile view mode introduced
-		/// in ComCtl32.dll version 6. Clicking a checkbox in tile view mode only selects the item; the state does not change.
+		/// Version 6.00 and later Check boxes are visible and functional with all list view modes except the tile view mode introduced in
+		/// ComCtl32.dll version 6. Clicking a checkbox in tile view mode only selects the item; the state does not change.
 		/// </para>
 		/// <para>
 		/// You can obtain the state of the check box for a given item with ListView_GetCheckState. To set the check state, use
-		/// ListView_SetCheckState. If this style is set, the list-view control automatically toggles the check state when the user
-		/// clicks the check box or presses the space bar.
+		/// ListView_SetCheckState. If this style is set, the list-view control automatically toggles the check state when the user clicks
+		/// the check box or presses the space bar.
 		/// </para>
 		/// </summary>
 		LVS_EX_CHECKBOXES = 0X00000004,
 
 		/// <summary>
 		/// Indicates that an overflow button should be displayed in icon/tile view if there is not enough client width to display the
-		/// complete set of header items. The list-view control sends the LVN_COLUMNOVERFLOWCLICK notification when the overflow button
-		/// is clicked. This flag is only valid when LVS_EX_HEADERINALLVIEWS is also specified.
+		/// complete set of header items. The list-view control sends the LVN_COLUMNOVERFLOWCLICK notification when the overflow button is
+		/// clicked. This flag is only valid when LVS_EX_HEADERINALLVIEWS is also specified.
 		/// </summary>
 		LVS_EX_COLUMNOVERFLOW = 0X80000000,
 
@@ -5073,19 +5228,17 @@ public static partial class ComCtl32
 		LVS_EX_FLATSB = 0X00000100,
 
 		/// <summary>
-		/// When an item is selected, the item and all its subitems are highlighted. This style is available only in conjunction with
-		/// the LVS_REPORT style.
+		/// When an item is selected, the item and all its subitems are highlighted. This style is available only in conjunction with the
+		/// LVS_REPORT style.
 		/// </summary>
 		LVS_EX_FULLROWSELECT = 0X00000020,
 
-		/// <summary>
-		/// Displays gridlines around items and subitems. This style is available only in conjunction with the LVS_REPORT style.
-		/// </summary>
+		/// <summary>Displays gridlines around items and subitems. This style is available only in conjunction with the LVS_REPORT style.</summary>
 		LVS_EX_GRIDLINES = 0X00000001,
 
 		/// <summary>
-		/// Enables drag-and-drop reordering of columns in a list-view control. This style is only available to list-view controls that
-		/// use the LVS_REPORT style.
+		/// Enables drag-and-drop reordering of columns in a list-view control. This style is only available to list-view controls that use
+		/// the LVS_REPORT style.
 		/// </summary>
 		LVS_EX_HEADERDRAGDROP = 0X00000010,
 
@@ -5096,8 +5249,8 @@ public static partial class ComCtl32
 		LVS_EX_HIDELABELS = 0X00020000,
 
 		/// <summary>
-		/// When a list-view control uses the LVS_EX_INFOTIP style, the LVN_GETINFOTIP notification code is sent to the parent window
-		/// before displaying an item's tooltip.
+		/// When a list-view control uses the LVS_EX_INFOTIP style, the LVN_GETINFOTIP notification code is sent to the parent window before
+		/// displaying an item's tooltip.
 		/// </summary>
 		LVS_EX_INFOTIP = 0X00000400,
 
@@ -5105,36 +5258,36 @@ public static partial class ComCtl32
 		LVS_EX_JUSTIFYCOLUMNS = 0X00200000,
 
 		/// <summary>
-		/// If a partially hidden label in any list view mode lacks tooltip text, the list-view control will unfold the label. If this
-		/// style is not set, the list-view control will unfold partly hidden labels only for the large icon mode.
+		/// If a partially hidden label in any list view mode lacks tooltip text, the list-view control will unfold the label. If this style
+		/// is not set, the list-view control will unfold partly hidden labels only for the large icon mode.
 		/// </summary>
 		LVS_EX_LABELTIP = 0X00004000,
 
 		/// <summary>
-		/// If the list-view control has the LVS_AUTOARRANGE style, the control will not autoarrange its icons until one or more work
-		/// areas are defined (see LVM_SETWORKAREAS). To be effective, this style must be set before any work areas are defined and any
-		/// items have been added to the control.
+		/// If the list-view control has the LVS_AUTOARRANGE style, the control will not autoarrange its icons until one or more work areas
+		/// are defined (see LVM_SETWORKAREAS). To be effective, this style must be set before any work areas are defined and any items have
+		/// been added to the control.
 		/// </summary>
 		LVS_EX_MULTIWORKAREAS = 0X00002000,
 
 		/// <summary>
-		/// The list-view control sends an LVN_ITEMACTIVATE notification code to the parent window when the user clicks an item. This
-		/// style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is
-		/// highlighted but not selected. See the Extended List-View Styles Remarks section for a discussion of item activation.
+		/// The list-view control sends an LVN_ITEMACTIVATE notification code to the parent window when the user clicks an item. This style
+		/// also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is highlighted
+		/// but not selected. See the Extended List-View Styles Remarks section for a discussion of item activation.
 		/// </summary>
 		LVS_EX_ONECLICKACTIVATE = 0X00000040,
 
 		/// <summary>
-		/// Version 4.71 through Version 5.80 only. Not supported on Windows Vista and later. Sets the list view window region to
-		/// include only the item icons and text using SetWindowRgn. Any area that is not part of an item is excluded from the window
-		/// region. This style is only available to list-view controls that use the LVS_ICON style.
+		/// Version 4.71 through Version 5.80 only. Not supported on Windows Vista and later. Sets the list view window region to include
+		/// only the item icons and text using SetWindowRgn. Any area that is not part of an item is excluded from the window region. This
+		/// style is only available to list-view controls that use the LVS_ICON style.
 		/// </summary>
 		LVS_EX_REGIONAL = 0X00000200,
 
 		/// <summary>
-		/// Version 6.00 and later. In icon view, moves the state image of the control to the top right of the large icon rendering. In
-		/// views other than icon view there is no change. When the user changes the state by using the space bar, all selected items
-		/// cycle over, not the item with the focus.
+		/// Version 6.00 and later. In icon view, moves the state image of the control to the top right of the large icon rendering. In views
+		/// other than icon view there is no change. When the user changes the state by using the space bar, all selected items cycle over,
+		/// not the item with the focus.
 		/// </summary>
 		LVS_EX_SIMPLESELECT = 0X00100000,
 
@@ -5144,16 +5297,14 @@ public static partial class ComCtl32
 		/// <summary>Version 6.00 and later. In icon view, icons automatically snap into a grid.</summary>
 		LVS_EX_SNAPTOGRID = 0X00080000,
 
-		/// <summary>
-		/// Allows images to be displayed for subitems. This style is available only in conjunction with the LVS_REPORT style.
-		/// </summary>
+		/// <summary>Allows images to be displayed for subitems. This style is available only in conjunction with the LVS_REPORT style.</summary>
 		LVS_EX_SUBITEMIMAGES = 0X00000002,
 
 		/// <summary>
-		/// Enables hot-track selection in a list-view control. Hot track selection means that an item is automatically selected when
-		/// the cursor remains over the item for a certain period of time. The delay can be changed from the default system setting with
-		/// a LVM_SETHOVERTIME message. This style applies to all styles of list-view control. You can check whether hot-track selection
-		/// is enabled by calling SystemParametersInfo.
+		/// Enables hot-track selection in a list-view control. Hot track selection means that an item is automatically selected when the
+		/// cursor remains over the item for a certain period of time. The delay can be changed from the default system setting with a
+		/// LVM_SETHOVERTIME message. This style applies to all styles of list-view control. You can check whether hot-track selection is
+		/// enabled by calling SystemParametersInfo.
 		/// </summary>
 		LVS_EX_TRACKSELECT = 0X00000008,
 
@@ -5164,9 +5315,9 @@ public static partial class ComCtl32
 		LVS_EX_TRANSPARENTSHADOWTEXT = 0X00800000,
 
 		/// <summary>
-		/// The list-view control sends an LVN_ITEMACTIVATE notification code to the parent window when the user double-clicks an item.
-		/// This style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item,
-		/// it is highlighted but not selected. See the Extended List-View Styles Remarks section for a discussion of item activation.
+		/// The list-view control sends an LVN_ITEMACTIVATE notification code to the parent window when the user double-clicks an item. This
+		/// style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is
+		/// highlighted but not selected. See the Extended List-View Styles Remarks section for a discussion of item activation.
 		/// </summary>
 		LVS_EX_TWOCLICKACTIVATE = 0X00000080,
 
@@ -5220,10 +5371,97 @@ public static partial class ComCtl32
 		LVTVIM_LABELMARGIN = 0x00000004,
 	}
 
+	/// <summary>Values for wParam of LVM_SETVIEW and LVM_GETVIEW.</summary>
+	[PInvokeData("Commctrl.h")]
+	public enum LV_VIEW
+	{
+		/// <summary>Icon</summary>
+		LV_VIEW_ICON = 0x0000,
+
+		/// <summary>Details</summary>
+		LV_VIEW_DETAILS = 0x0001,
+
+		/// <summary>Small icon</summary>
+		LV_VIEW_SMALLICON = 0x0002,
+
+		/// <summary>List</summary>
+		LV_VIEW_LIST = 0x0003,
+
+		/// <summary>Tile</summary>
+		LV_VIEW_TILE = 0x0004,
+	}
+
+	/// <summary>Flags for <see cref="LVFOOTERINFO"/></summary>
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERINFO")]
+	public enum LVFF
+	{
+		/// <summary>cItems is specified.</summary>
+		LVFF_ITEMCOUNT = 0x00000001,
+	}
+
+	/// <summary>
+	/// Set of flags that specify which members of <see cref="LVFOOTERITEM"/> contain data to be set or which members are being requested.
+	/// </summary>
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERITEM")]
+	[Flags]
+	public enum LVFIF
+	{
+		/// <summary>The <c>pszText</c> member is valid input from the caller or is requested and thus should be set by the receiver.</summary>
+		LVFIF_TEXT = 0x00000001,
+
+		/// <summary>The <c>state</c> member is valid input from the caller or is requested and thus should be set by the receiver.</summary>
+		LVFIF_STATE = 0x00000002,
+	}
+
+	/// <summary>Indicates the item's state. The <c>stateMask</c> member indicates the valid bits of this member.</summary>
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERITEM")]
+	[Flags]
+	public enum LVFIS
+	{
+		/// <summary>Bit indicating focus state. Set if the item is in focus, otherwise cleared.</summary>
+		LVFIS_FOCUSED = 1
+	}
+
+	/// <summary>Flags for <see cref="NMLVGETINFOTIP"/></summary>
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVGETINFOTIPA")]
+	[Flags]
+	public enum LVGIT : uint
+	{
+		/// <summary>The full text of the item is already displayed, so there is no need to display it in the tooltip.</summary>
+		LVGIT_UNFOLDED = 0x0001,
+	}
+
+	/// <summary>Modifier keys that were pressed at the time of the activation.</summary>
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMITEMACTIVATE")]
+	[Flags]
+	public enum LVKF : uint
+	{
+		/// <summary>The ALT key is pressed.</summary>
+		LVKF_ALT = 0x0001,
+
+		/// <summary>The CTRL key is pressed.</summary>
+		LVKF_CONTROL = 0x0002,
+
+		/// <summary>The SHIFT key is pressed.</summary>
+		LVKF_SHIFT = 0x0004
+	}
+
+	/// <summary>Values that specify the behavior of the list-view control after resetting the item count.</summary>
+	[PInvokeData("Commctrl.h")]
+	[Flags]
+	public enum LVSICF
+	{
+		/// <term>The list-view control will not repaint unless affected items are currently in view.</term>
+		LVSICF_NOINVALIDATEALL = 0x00000001,
+
+		/// <term>The list-view control will not change the scroll position when the item count changes.</term>
+		LVSICF_NOSCROLL = 0x00000002,
+	}
+
 	/// <summary>
 	/// <para>
-	/// Gets the bounding rectangle for all or part of a subitem in the current view of a specified list-view control. Use this macro or
-	/// send the LVM_GETITEMINDEXRECT message explicitly.
+	/// Gets the bounding rectangle for all or part of a subitem in the current view of a specified list-view control. Use this macro or send
+	/// the LVM_GETITEMINDEXRECT message explicitly.
 	/// </para>
 	/// </summary>
 	/// <param name="hwnd">
@@ -5233,8 +5471,8 @@ public static partial class ComCtl32
 	/// <param name="plvii">
 	/// <para>Type: <c>LVITEMINDEX*</c></para>
 	/// <para>
-	/// A pointer to a LVITEMINDEX structure for the parent item of the subitem. The caller is responsible for allocating this structure
-	/// and setting its members. plvii must not be <c>NULL</c>.
+	/// A pointer to a LVITEMINDEX structure for the parent item of the subitem. The caller is responsible for allocating this structure and
+	/// setting its members. plvii must not be <c>NULL</c>.
 	/// </para>
 	/// </param>
 	/// <param name="iSubItem">
@@ -5271,23 +5509,23 @@ public static partial class ComCtl32
 	/// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
 	/// <remarks>
 	/// <para>
-	/// If iSubItem is zero, this macro returns the coordinates of the rectangle to the item pointed to by plvii. The value
-	/// LVIR_SELECTBOUNDS for the parameter code is not supported.
+	/// If iSubItem is zero, this macro returns the coordinates of the rectangle to the item pointed to by plvii. The value LVIR_SELECTBOUNDS
+	/// for the parameter code is not supported.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_getitemindexrect
 	[PInvokeData("commctrl.h", MSDNShortId = "listview_getitemindexrect")]
 	public static bool ListView_GetItemIndexRect(HWND hwnd, in LVITEMINDEX plvii, int iSubItem, ListViewItemRect code, out RECT prc)
 	{
-		var rc = new RECT((int)code, iSubItem, 0, 0);
-		var lr = SendMessage(hwnd, ListViewMessage.LVM_GETITEMINDEXRECT, in plvii, ref rc);
+		RECT rc = new((int)code, iSubItem, 0, 0);
+		IntPtr lr = SendMessage(hwnd, ListViewMessage.LVM_GETITEMINDEXRECT, in plvii, ref rc);
 		prc = lr == IntPtr.Zero ? RECT.Empty : rc;
 		return lr != IntPtr.Zero;
 	}
 
 	/// <summary>
-	/// Gets the index of the item in a particular list-view control that has the specified properties and relationship to another
-	/// specific item. Use this macro or send the <c>LVM_GETNEXTITEMINDEX</c> message explicitly.
+	/// Gets the index of the item in a particular list-view control that has the specified properties and relationship to another specific
+	/// item. Use this macro or send the <c>LVM_GETNEXTITEMINDEX</c> message explicitly.
 	/// </summary>
 	/// <param name="hwnd">
 	/// <para>Type: <c><c>HWND</c></c></para>
@@ -5296,8 +5534,8 @@ public static partial class ComCtl32
 	/// <param name="plvii">
 	/// <para>Type: <c><c>LVITEMINDEX</c>*</c></para>
 	/// <para>
-	/// A pointer to the <c>LVITEMINDEX</c> structure with which the item begins the search, or -1 to find the first item that matches
-	/// the specified flags. The calling process is responsible for allocating this structure and setting its members.
+	/// A pointer to the <c>LVITEMINDEX</c> structure with which the item begins the search, or -1 to find the first item that matches the
+	/// specified flags. The calling process is responsible for allocating this structure and setting its members.
 	/// </para>
 	/// </param>
 	/// <param name="flags">
@@ -5421,26 +5659,24 @@ public static partial class ComCtl32
 	/// </param>
 	/// <param name="mask">
 	/// <para>Type: <c>UINT</c></para>
-	/// <para>
-	/// The valid bits of the state specified by parameter data. For more information, see the stateMask member of the LVITEM) structure.
-	/// </para>
+	/// <para>The valid bits of the state specified by parameter data. For more information, see the stateMask member of the LVITEM) structure.</para>
 	/// </param>
 	/// <returns>
 	/// <para>None</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_setitemindexstate void
-	// ListView_SetItemIndexState( hwndLV, plvii, data, mask );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_setitemindexstate void ListView_SetItemIndexState(
+	// hwndLV, plvii, data, mask );
 	[PInvokeData("commctrl.h", MSDNShortId = "listview_setitemindexstate")]
 	public static HRESULT ListView_SetItemIndexState(HWND hwndLV, in LVITEMINDEX plvii, uint data, ListViewItemState mask)
 	{
-		var lvi = new LVITEM(0) { stateMask = mask, state = data };
-		using var plvi = new PinnedObject(lvi);
+		LVITEM lvi = new(0) { stateMask = mask, state = data };
+		using PinnedObject plvi = new(lvi);
 		return new HRESULT(SendMessage(hwndLV, (uint)ListViewMessage.LVM_SETITEMINDEXSTATE, in plvii, plvi).ToInt32());
 	}
 
 	/// <summary>
-	/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed
-	/// to fit standard naming conventions.
+	/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to fit
+	/// standard naming conventions.
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774745")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -5450,10 +5686,10 @@ public static partial class ComCtl32
 		public ListViewFindInfoFlag flags;
 
 		/// <summary>
-		/// Address of a null-terminated string to compare with the item text. It is valid only if LVFI_STRING or LVFI_PARTIAL is set in
-		/// the flags member.
+		/// Address of a null-terminated string to compare with the item text. It is valid only if LVFI_STRING or LVFI_PARTIAL is set in the
+		/// flags member.
 		/// </summary>
-		public string psz;
+		public string? psz;
 
 		/// <summary>
 		/// Value to compare with the lParam member of a list-view item's LVITEM structure. It is valid only if LVFI_PARAM is set in the
@@ -5498,6 +5734,147 @@ public static partial class ComCtl32
 			pt = point;
 			vkDirection = searchDirection;
 		}
+	}
+
+	/// <summary>Contains information on a footer in a list-view control.</summary>
+	/// <remarks>
+	/// <para>This structure is used with the ListView_GetFooterInfo macro and the LVM_GETFOOTERINFO message.</para>
+	/// <para>The creation of footers in list-view controls is currently not supported.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvfooterinfo typedef struct tagLVFOOTERINFO { UINT mask;
+	// LPWSTR pszText; int cchTextMax; UINT cItems; } LVFOOTERINFO, *LPLVFOOTERINFO;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERINFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct LVFOOTERINFO
+	{
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Set of flags that specify which members of this structure contain data to be set or which members are being requested. Currently,
+		/// this value must be LVFF_ITEMCOUNT, for the <c>cItems</c> member.
+		/// </para>
+		/// </summary>
+		public LVFF mask;
+
+		/// <summary>
+		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Not supported. Must be set to zero.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pszText;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Not supported. Must be set to zero.</para>
+		/// </summary>
+		public int cchTextMax;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The number of items in the footer. When this structure is used to get information, this member will be set by the message receiver.
+		/// </para>
+		/// </summary>
+		public uint cItems;
+
+		/// <summary>Initializes a new instance of the <see cref="LVFOOTERINFO"/> struct.</summary>
+		/// <param name="footerItemCount">The number of items in the footer.</param>
+		public LVFOOTERINFO(uint footerItemCount)
+		{
+			cItems = footerItemCount;
+			mask = LVFF.LVFF_ITEMCOUNT;
+		}
+	}
+
+	/// <summary>Contains information on a footer item.</summary>
+	/// <remarks>This structure is used with the ListView_GetFooterItem macro and the LVM_GETFOOTERITEM message.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvfooteritem typedef struct tagLVFOOTERITEM { UINT mask; int
+	// iItem; LPWSTR pszText; int cchTextMax; UINT state; UINT stateMask; } LVFOOTERITEM, *LPLVFOOTERITEM;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERITEM")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct LVFOOTERITEM
+	{
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Set of flags that specify which members of this structure contain data to be set or which members are being requested. This
+		/// parameter must be one of the following values:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>LVFIF_TEXT</c></description>
+		/// <description>The <c>pszText</c> member is valid input from the caller or is requested and thus should be set by the receiver.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>LVFIF_STATE</c></description>
+		/// <description>The <c>state</c> member is valid input from the caller or is requested and thus should be set by the receiver.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public LVFIF mask;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>The index of the item.</para>
+		/// </summary>
+		public int iItem;
+
+		/// <summary>
+		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>A pointer to a null-terminated, Unicode buffer. The calling process is responsible for allocating the buffer.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pszText;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>The number of <c>WCHAR</c><c>s</c> in the buffer pointed to by <c>pszText</c>, including the terminating <c>NULL</c>.</para>
+		/// </summary>
+		public int cchTextMax;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Indicates the item's state. The <c>stateMask</c> member indicates the valid bits of this member. Currently, <c>state</c> must be
+		/// set to the following:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>LVFIS_FOCUSED</c></description>
+		/// <description>Bit indicating focus state. Set if the item is in focus, otherwise cleared.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public LVFIS state;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Value specifying which bits of the <c>state</c> member will be retrieved or modified. Currently, this value must be the following:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>LVFIS_FOCUSED</c></description>
+		/// <description>
+		/// The LVFIS_FOCUSED bit of member <c>state</c> is valid. For example, setting this member to LVFIS_FOCUSED will cause the focus
+		/// state to be retrieved to member <c>state</c>.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public LVFIS stateMask;
 	}
 
 	/// <summary>Contains information about the display of groups in a list-view control.</summary>
@@ -5576,9 +5953,8 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>
-	/// Contains information about a hit test. This structure has been extended to accommodate subitem hit-testing. It is used in
-	/// association with the LVM_HITTEST and LVM_SUBITEMHITTEST messages and their related macros. This structure supersedes the
-	/// LVHITTESTINFO structure.
+	/// Contains information about a hit test. This structure has been extended to accommodate subitem hit-testing. It is used in association
+	/// with the LVM_HITTEST and LVM_SUBITEMHITTEST messages and their related macros. This structure supersedes the LVHITTESTINFO structure.
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774754")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -5591,8 +5967,8 @@ public static partial class ComCtl32
 		/// The variable that receives information about the results of a hit test. This member can be one or more of the following values:
 		/// <para>
 		/// You can use LVHT_ABOVE, LVHT_BELOW, LVHT_TOLEFT, and LVHT_TORIGHT to determine whether to scroll the contents of a list-view
-		/// control.Two of these values may be combined. For example, if the position is above and to the left of the client area, you
-		/// could use both LVHT_ABOVE and LVHT_TOLEFT.
+		/// control.Two of these values may be combined. For example, if the position is above and to the left of the client area, you could
+		/// use both LVHT_ABOVE and LVHT_TOLEFT.
 		/// </para>
 		/// <para>
 		/// You can test for LVHT_ONITEM to determine whether a specified position is over a list-view item. This value is a bitwise-OR
@@ -5618,6 +5994,33 @@ public static partial class ComCtl32
 		/// <summary>Initializes a new instance of the <see cref="LVHITTESTINFO"/> class.</summary>
 		/// <param name="pt">The pt.</param>
 		public LVHITTESTINFO(POINT pt) : this() => this.pt = pt;
+	}
+
+	/// <summary>Used to sort groups. It is used with LVM_INSERTGROUPSORTED.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvinsertgroupsorted typedef struct tagLVINSERTGROUPSORTED {
+	// PFNLVGROUPCOMPARE pfnGroupCompare; void *pvData; LVGROUP lvGroup; } LVINSERTGROUPSORTED, *PLVINSERTGROUPSORTED;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVINSERTGROUPSORTED")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct LVINSERTGROUPSORTED
+	{
+		/// <summary>
+		/// <para>Type: <c>PFNLVGROUPCOMPARE</c></para>
+		/// <para>Pointer to application-defined function LVGroupCompare that is used to sort the groups.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public LVGroupCompare pfnGroupCompare;
+
+		/// <summary>
+		/// <para>Type: <c>LPVOID*</c></para>
+		/// <para>Data to sort; this is application-defined.</para>
+		/// </summary>
+		public IntPtr pvData;
+
+		/// <summary>
+		/// <para>Type: <c>LVGROUP</c></para>
+		/// <para>Group to sort; this is application-defined.</para>
+		/// </summary>
+		public LVGROUP lvGroup;
 	}
 
 	/// <summary>Used to describe insertion points.</summary>
@@ -5763,9 +6166,101 @@ public static partial class ComCtl32
 		}
 	}
 
+	/// <summary>Contains information about an LVN_ITEMACTIVATE notification code.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmitemactivate typedef struct tagNMITEMACTIVATE { NMHDR hdr;
+	// int iItem; int iSubItem; UINT uNewState; UINT uOldState; UINT uChanged; POINT ptAction; LPARAM lParam; UINT uKeyFlags; }
+	// NMITEMACTIVATE, *LPNMITEMACTIVATE;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMITEMACTIVATE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NMITEMACTIVATE : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains information about this notification code.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Index of the list-view item. If the item index is not used for the notification, this member will contain -1.</para>
+		/// </summary>
+		public int iItem;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// One-based index of the subitem. If the subitem index is not used for the notification or the notification does not apply to a
+		/// subitem, this member will contain zero.
+		/// </para>
+		/// </summary>
+		public int iSubItem;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>New item state. This member is zero for notification codes that do not use it.</para>
+		/// </summary>
+		public ListViewItemState uNewState;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Old item state. This member is zero for notification codes that do not use it.</para>
+		/// </summary>
+		public ListViewItemState uOldState;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Set of flags that indicate the item attributes that have changed. This member is zero for notifications that do not use it.
+		/// Otherwise, it can have the same values as the <c>mask</c> member of the LVITEM structure.
+		/// </para>
+		/// </summary>
+		public ListViewItemMask uChanged;
+
+		/// <summary>
+		/// <para>Type: <c>POINT</c></para>
+		/// <para>
+		/// POINT structure that indicates the location at which the event occurred, in client coordinates. This member is undefined for
+		/// notification codes that do not use it.
+		/// </para>
+		/// </summary>
+		public POINT ptAction;
+
+		/// <summary>
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Application-defined value of the item. This member is undefined for notification codes that do not use it.</para>
+		/// </summary>
+		public IntPtr lParam;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Modifier keys that were pressed at the time of the activation. This member contains zero or a combination of the following flags:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>LVKF_ALT</c></description>
+		/// <description>The key is pressed.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>LVKF_CONTROL</c></description>
+		/// <description>The key is pressed.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>LVKF_SHIFT</c></description>
+		/// <description>The key is pressed.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public LVKF uKeyFlags;
+	}
+
 	/// <summary>
-	/// Contains information about a list-view notification message. This structure is the same as the NM_LISTVIEW structure but has
-	/// been renamed to fit standard naming conventions.
+	/// Contains information about a list-view notification message. This structure is the same as the NM_LISTVIEW structure but has been
+	/// renamed to fit standard naming conventions.
 	/// </summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774773")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -5781,14 +6276,14 @@ public static partial class ComCtl32
 		public int iSubItem;
 
 		/// <summary>
-		/// New item state. This member is zero for notification messages that do not use it. For a list of possible values, see
-		/// List-View Item States.
+		/// New item state. This member is zero for notification messages that do not use it. For a list of possible values, see List-View
+		/// Item States.
 		/// </summary>
 		public ListViewItemState uNewState;
 
 		/// <summary>
-		/// Old item state. This member is zero for notification messages that do not use it. For a list of possible values, see
-		/// List-View Item States.
+		/// Old item state. This member is zero for notification messages that do not use it. For a list of possible values, see List-View
+		/// Item States.
 		/// </summary>
 		public ListViewItemState uOldState;
 
@@ -5799,13 +6294,369 @@ public static partial class ComCtl32
 		public ListViewItemMask uChanged;
 
 		/// <summary>
-		/// POINT structure that indicates the location at which the event occurred. This member is undefined for notification messages
-		/// that do not use it.
+		/// POINT structure that indicates the location at which the event occurred. This member is undefined for notification messages that
+		/// do not use it.
 		/// </summary>
 		public POINT ptAction;
 
 		/// <summary>Application-defined value of the item. This member is undefined for notification messages that do not use it.</summary>
 		public IntPtr lParam;
+	}
+
+	/// <summary>Contains information used to update the cached item information for use with a virtual list view.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvcachehint typedef struct tagNMLVCACHEHINT { NMHDR hdr;
+	// int iFrom; int iTo; } NMLVCACHEHINT, *LPNMLVCACHEHINT;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVCACHEHINT")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NMLVCACHEHINT : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains information about this notification message.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Starting index of the requested range of items. This value is inclusive.</para>
+		/// </summary>
+		public int iFrom;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Ending index of the requested range of items. This value is inclusive.</para>
+		/// </summary>
+		public int iTo;
+	}
+
+	/// <summary>
+	/// Contains information about an LVN_GETDISPINFO or LVN_SETDISPINFO notification code. This structure is the same as the
+	/// <c>LV_DISPINFO</c> structure, but has been renamed to fit standard naming conventions.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// If the LVITEM structure is receiving item text, the <c>pszText</c> and <c>cchTextMax</c> members specify the address and size of a
+	/// buffer. You can either copy text to the buffer or assign the address of a string to the <c>pszText</c> member. In the latter case,
+	/// you must not change or delete the string until the corresponding item text is deleted or two additional LVN_GETDISPINFO messages have
+	/// been sent.
+	/// </para>
+	/// <para>
+	/// If you are handling the LVN_GETDISPINFO message, you can set the LVIF_DI_SETITEM flag in the <c>mask</c> member of the LVITEM
+	/// structure. This tells the operating system to store the requested list item information and not ask for it again. For list-view
+	/// controls with the LVS_REPORT style, this flag only applies to the first (subitem 0) column's information. The control will not store
+	/// information for subitems.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The commctrl.h header defines NMLVDISPINFO as an alias which automatically selects the ANSI or Unicode version of this function based
+	/// on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvdispinfoa typedef struct tagLVDISPINFO { NMHDR hdr;
+	// LVITEMA item; } NMLVDISPINFOA, *LPNMLVDISPINFOA;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVDISPINFO")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct NMLVDISPINFO : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains information about this notification code.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>LVITEM</c></para>
+		/// <para>
+		/// LVITEM structure that identifies the item or subitem. The structure either contains or receives information about the item. The
+		/// <c>mask</c> member contains a set of bit flags that specify which item attributes are relevant. For more information on the
+		/// available bit flags, see <c>LVITEM</c>.
+		/// </para>
+		/// </summary>
+		public LVITEM item;
+	}
+
+	/// <summary>Contains information used with the LVN_GETEMPTYMARKUP notification code.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvemptymarkup typedef struct tagNMLVEMPTYMARKUP { NMHDR
+	// hdr; DWORD dwFlags; WCHAR szMarkup[L_MAX_URL_LENGTH]; } NMLVEMPTYMARKUP;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVEMPTYMARKUP")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct NMLVEMPTYMARKUP : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>Info on the notification message.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>One of the following values. If <c>NULL</c>, markup is rendered left-justified in the listview area.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>EMF_CENTERED</c></description>
+		/// <description>Render markup centered in the listview area.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public EMF dwFlags;
+
+		/// <summary>
+		/// <para>Type: <c>WCHAR[L_MAX_URL_LENGTH]</c></para>
+		/// <para>Markup to display.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = L_MAX_URL_LENGTH)]
+		public string szMarkup;
+	}
+
+	/// <summary>
+	/// Contains information the owner needs to find items requested by a virtual list-view control. This structure is used with the
+	/// LVN_ODFINDITEM notification code.
+	/// </summary>
+	/// <remarks>
+	/// <para>Note</para>
+	/// <para>
+	/// The commctrl.h header defines NMLVFINDITEM as an alias which automatically selects the ANSI or Unicode version of this function based
+	/// on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvfinditemw typedef struct tagNMLVFINDITEMW { NMHDR hdr;
+	// int iStart; LVFINDINFOW lvfi; } NMLVFINDITEMW, *LPNMLVFINDITEMW;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVFINDITEMW")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct NMLVFINDITEM : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains information on this notification code.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Index of the item at which the search will start.</para>
+		/// </summary>
+		public int iStart;
+
+		/// <summary>
+		/// <para>Type: <c>LVFINDINFO</c></para>
+		/// <para>LVFINDINFO structure that contains information necessary to perform a search.</para>
+		/// </summary>
+		public LVFINDINFO lvfi;
+	}
+
+	/// <summary>
+	/// Contains and receives list-view item information needed to display a tooltip for an item. This structure is used with the
+	/// LVN_GETINFOTIP notification code.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// An item is said to be folded when the currently displayed text is truncated. If LVGIT_UNFOLDED is returned in <c>dwFlags</c>, the
+	/// full text of the item is already displayed, so there is no need to display it in the tooltip.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The commctrl.h header defines NMLVGETINFOTIP as an alias which automatically selects the ANSI or Unicode version of this function
+	/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvgetinfotipa typedef struct tagNMLVGETINFOTIPA { NMHDR
+	// hdr; DWORD dwFlags; LPSTR pszText; int cchTextMax; int iItem; int iSubItem; LPARAM lParam; } NMLVGETINFOTIPA, *LPNMLVGETINFOTIPA;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVGETINFOTIPA")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct NMLVGETINFOTIP : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains information on this notification code.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Either zero or LVGIT_UNFOLDED. See Remarks.</para>
+		/// </summary>
+		public LVGIT dwFlags;
+
+		/// <summary>
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
+		/// Address of a string buffer that receives any additional text information. If <c>dwFlags</c> is zero, this member will contain the
+		/// existing item text. In this case, you should append any additional text onto the end of this string. The size of this buffer is
+		/// specified by the <c>cchTextMax</c> structure.
+		/// </para>
+		/// </summary>
+		public StrPtrAuto pszText;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// Size, in characters, of the buffer pointed to by <c>pszText</c>. Although you should never assume that this buffer will be of any
+		/// particular size, the INFOTIPSIZE value can be used for design purposes.
+		/// </para>
+		/// </summary>
+		public int cchTextMax;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Zero-based index of the item to which this structure refers.</para>
+		/// </summary>
+		public int iItem;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// One-based index of the subitem to which this structure refers. If this member is zero, the structure is referring to the item and
+		/// not a subitem. This member is not currently used and will always be zero.
+		/// </para>
+		/// </summary>
+		public int iSubItem;
+
+		/// <summary>
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Application-defined value associated with the item. This member is not currently used and will always be zero.</para>
+		/// </summary>
+		public IntPtr lParam;
+	}
+
+	/// <summary>
+	/// Contains information used in processing the LVN_KEYDOWN notification code. This structure is the same as the <c>NMLVKEYDOWN</c>
+	/// structure but has been renamed to fit standard naming conventions.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvkeydown typedef struct tagLVKEYDOWN { NMHDR hdr; WORD
+	// wVKey; UINT flags; } NMLVKEYDOWN, *LPNMLVKEYDOWN;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVKEYDOWN")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NMLVKEYDOWN : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains additional information about the notification.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>WORD</c></para>
+		/// <para>Virtual key code. Cast this value to <see cref="VK"/>.</para>
+		/// </summary>
+		public ushort wVKey;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>This member must always be zero.</para>
+		/// </summary>
+		public uint flags;
+	}
+
+	/// <summary>Contains information about an LVN_LINKCLICK notification code.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvlink typedef struct tagNMLVLINK { NMHDR hdr; LITEM link;
+	// int iItem; int iSubItem; } NMLVLINK, *PNMLVLINK;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVLINK")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NMLVLINK : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains basic information about the notification code.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>LITEM</c></para>
+		/// <para>LITEM structure that contains information about the link that was clicked.</para>
+		/// </summary>
+		public LITEM link;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Index of the item that contains the link.</para>
+		/// </summary>
+		public int iItem;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// Subitem, if any. This member may be <c>NULL</c>. For a link in a group header, this is the group identifier, as set in LVGROUP.
+		/// </para>
+		/// </summary>
+		public int iSubItem;
+	}
+
+	/// <summary>Structure that contains information for use in processing the LVN_ODSTATECHANGED notification code.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvodstatechange typedef struct tagNMLVODSTATECHANGE { NMHDR
+	// hdr; int iFrom; int iTo; UINT uNewState; UINT uOldState; } NMLVODSTATECHANGE, *LPNMLVODSTATECHANGE;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVODSTATECHANGE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NMLVODSTATECHANGE : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains additional information about the notification.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Zero-based index of the first item in the range of items.</para>
+		/// </summary>
+		public int iFrom;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Zero-based index of the last item in the range of items.</para>
+		/// </summary>
+		public int iTo;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Value indicating the new state for the item or items. This member can be any valid combination of the list-view item states.</para>
+		/// </summary>
+		public ListViewItemState uNewState;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Value indicating the old state for the item or items. This member can be any valid combination of the list-view item states.</para>
+		/// </summary>
+		public ListViewItemState uOldState;
+	}
+
+	/// <summary>Provides information about a scrolling operation.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvscroll typedef struct tagNMLVSCROLL { NMHDR hdr; int dx;
+	// int dy; } NMLVSCROLL, *LPNMLVSCROLL;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVSCROLL")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NMLVSCROLL : INotificationInfo
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>NMHDR structure that contains information about a LVN_ENDSCROLL or a LVN_BEGINSCROLL notification code.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies in pixels the horizontal position where a scrolling operation should begin or end.</para>
+		/// </summary>
+		public int dx;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies in pixels the vertical position where a scrolling operation should begin or end.</para>
+		/// </summary>
+		public int dy;
 	}
 
 	/// <summary>
@@ -5818,8 +6669,8 @@ public static partial class ComCtl32
 	public sealed class LVBKIMAGE : IDisposable
 	{
 		/// <summary>
-		/// This member may be one or more of the following flags. You can use the LVBKIF_SOURCE_MASK value to mask off all but the
-		/// source flags. You can use the LVBKIF_STYLE_MASK value to mask off all but the style flags.
+		/// This member may be one or more of the following flags. You can use the LVBKIF_SOURCE_MASK value to mask off all but the source
+		/// flags. You can use the LVBKIF_STYLE_MASK value to mask off all but the style flags.
 		/// </summary>
 		public ListViewBkImageFlag ulFlags;
 
@@ -5828,8 +6679,8 @@ public static partial class ComCtl32
 
 		/// <summary>
 		/// Address of a NULL-terminated string that contains the URL of the background image. This member is valid only if the
-		/// LVBKIF_SOURCE_URL flag is set in ulFlags. This member must be initialized to point to the buffer that contains or receives
-		/// the text before sending the message.
+		/// LVBKIF_SOURCE_URL flag is set in ulFlags. This member must be initialized to point to the buffer that contains or receives the
+		/// text before sending the message.
 		/// </summary>
 		public StrPtrAuto pszImage;
 
@@ -5837,22 +6688,20 @@ public static partial class ComCtl32
 		public uint cchImageMax;
 
 		/// <summary>
-		/// Percentage of the control's client area that the image should be offset horizontally. For example, at 0 percent, the image
-		/// will be displayed against the left edge of the control's client area. At 50 percent, the image will be displayed
-		/// horizontally centered in the control's client area. At 100 percent, the image will be displayed against the right edge of
-		/// the control's client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both
-		/// LVBKIF_FLAG_TILEOFFSET and LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage
-		/// offset, of the first tile. Otherwise, the value is ignored.
+		/// Percentage of the control's client area that the image should be offset horizontally. For example, at 0 percent, the image will
+		/// be displayed against the left edge of the control's client area. At 50 percent, the image will be displayed horizontally centered
+		/// in the control's client area. At 100 percent, the image will be displayed against the right edge of the control's client area.
+		/// This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and LVBKIF_STYLE_TILE
+		/// are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile. Otherwise, the value is ignored.
 		/// </summary>
 		public int xOffset;
 
 		/// <summary>
-		/// Percentage of the control's client area that the image should be offset vertically. For example, at 0 percent, the image
-		/// will be displayed against the top edge of the control's client area. At 50 percent, the image will be displayed vertically
-		/// centered in the control's client area. At 100 percent, the image will be displayed against the bottom edge of the control's
-		/// client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and
-		/// LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile.
-		/// Otherwise, the value is ignored.
+		/// Percentage of the control's client area that the image should be offset vertically. For example, at 0 percent, the image will be
+		/// displayed against the top edge of the control's client area. At 50 percent, the image will be displayed vertically centered in
+		/// the control's client area. At 100 percent, the image will be displayed against the bottom edge of the control's client area. This
+		/// member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and LVBKIF_STYLE_TILE are
+		/// specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile. Otherwise, the value is ignored.
 		/// </summary>
 		public int yOffset;
 
@@ -5917,8 +6766,8 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>
-	/// Contains information about a column in report view. This structure is used both for creating and manipulating columns. This
-	/// structure supersedes the LV_COLUMN structure.
+	/// Contains information about a column in report view. This structure is used both for creating and manipulating columns. This structure
+	/// supersedes the LV_COLUMN structure.
 	/// </summary>
 	/// <seealso cref="System.IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774743")]
@@ -5931,9 +6780,8 @@ public static partial class ComCtl32
 		public ListViewColumMask mask;
 
 		/// <summary>
-		/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always
-		/// LVCFMT_LEFT; it cannot be changed. This member can be a combination of the following values. Note that not all combinations
-		/// are valid.
+		/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT; it
+		/// cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.
 		/// </summary>
 		public ListViewColumnFormat fmt;
 
@@ -5941,24 +6789,22 @@ public static partial class ComCtl32
 		public int cx;
 
 		/// <summary>
-		/// If column information is being set, this member is the address of a null-terminated string that contains the column header
-		/// text. If the structure is receiving information about a column, this member specifies the address of the buffer that
-		/// receives the column header text.
+		/// If column information is being set, this member is the address of a null-terminated string that contains the column header text.
+		/// If the structure is receiving information about a column, this member specifies the address of the buffer that receives the
+		/// column header text.
 		/// </summary>
 		public StrPtrAuto pszText;
 
 		/// <summary>
-		/// Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information about a column,
-		/// this member is ignored.
+		/// Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information about a column, this
+		/// member is ignored.
 		/// </summary>
 		public uint cchTextMax;
 
 		/// <summary>Index of subitem associated with the column.</summary>
 		public int iSubItem;
 
-		/// <summary>
-		/// Version 4.70. Zero-based index of an image within the image list. The specified image will appear within the column.
-		/// </summary>
+		/// <summary>Version 4.70. Zero-based index of an image within the image list. The specified image will appear within the column.</summary>
 		public int iImage;
 
 		/// <summary>
@@ -5970,8 +6816,8 @@ public static partial class ComCtl32
 		public int cxMin;
 
 		/// <summary>
-		/// Windows Vista. Application-defined value typically used to store the default width of the column. This member is ignored by
-		/// the list-view control.
+		/// Windows Vista. Application-defined value typically used to store the default width of the column. This member is ignored by the
+		/// list-view control.
 		/// </summary>
 		public int cxDefault;
 
@@ -6072,26 +6918,26 @@ public static partial class ComCtl32
 		public ListViewGroupMask mask;
 
 		/// <summary>
-		/// Pointer to a null-terminated string that contains the header text when item information is being set. If group information
-		/// is being retrieved, this member specifies the address of the buffer that receives the header text.
+		/// Pointer to a null-terminated string that contains the header text when item information is being set. If group information is
+		/// being retrieved, this member specifies the address of the buffer that receives the header text.
 		/// </summary>
 		public StrPtrAuto pszHeader;
 
 		/// <summary>
-		/// Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a
-		/// group, this member is ignored.
+		/// Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a group,
+		/// this member is ignored.
 		/// </summary>
 		public uint cchHeader;
 
 		/// <summary>
-		/// Pointer to a null-terminated string that contains the footer text when item information is being set. If group information
-		/// is being retrieved, this member specifies the address of the buffer that receives the footer text.
+		/// Pointer to a null-terminated string that contains the footer text when item information is being set. If group information is
+		/// being retrieved, this member specifies the address of the buffer that receives the footer text.
 		/// </summary>
 		public StrPtrAuto pszFooter;
 
 		/// <summary>
-		/// Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a
-		/// group, this member is ignored.
+		/// Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a group,
+		/// this member is ignored.
 		/// </summary>
 		public uint cchFooter;
 
@@ -6107,60 +6953,60 @@ public static partial class ComCtl32
 		public ListViewGroupState state;
 
 		/// <summary>
-		/// Indicates the alignment of the header or footer text for the group. It can have one or more of the following values. Use one
-		/// of the header flags. Footer flags are optional.
+		/// Indicates the alignment of the header or footer text for the group. It can have one or more of the following values. Use one of
+		/// the header flags. Footer flags are optional.
 		/// </summary>
 		public ListViewGroupAlignment uAlign;
 
 		/// <summary>
-		/// Pointer to a null-terminated string that contains the subtitle text when item information is being set. If group information
-		/// is being retrieved, this member specifies the address of the buffer that receives the subtitle text. This element is drawn
-		/// under the header text.
+		/// Pointer to a null-terminated string that contains the subtitle text when item information is being set. If group information is
+		/// being retrieved, this member specifies the address of the buffer that receives the subtitle text. This element is drawn under the
+		/// header text.
 		/// </summary>
 		public StrPtrAuto pszSubtitle;
 
 		/// <summary>
-		/// Size, in TCHARs, of the buffer pointed to by the pszSubtitle member. If the structure is not receiving information about a
-		/// group, this member is ignored.
+		/// Size, in TCHARs, of the buffer pointed to by the pszSubtitle member. If the structure is not receiving information about a group,
+		/// this member is ignored.
 		/// </summary>
 		public uint cchSubtitle;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the text for a task link when item information is being set. If group
-		/// information is being retrieved, this member specifies the address of the buffer that receives the task text. This item is
-		/// drawn right-aligned opposite the header text. When clicked by the user, the task link generates an LVN_LINKCLICK notification.
+		/// information is being retrieved, this member specifies the address of the buffer that receives the task text. This item is drawn
+		/// right-aligned opposite the header text. When clicked by the user, the task link generates an LVN_LINKCLICK notification.
 		/// </summary>
 		public StrPtrAuto pszTask;
 
 		/// <summary>
-		/// Size in TCHARs of the buffer pointed to by the pszTask member. If the structure is not receiving information about a group,
-		/// this member is ignored.
+		/// Size in TCHARs of the buffer pointed to by the pszTask member. If the structure is not receiving information about a group, this
+		/// member is ignored.
 		/// </summary>
 		public uint cchTask;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the top description text when item information is being set. If group
-		/// information is being retrieved, this member specifies the address of the buffer that receives the top description text. This
-		/// item is drawn opposite the title image when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
+		/// information is being retrieved, this member specifies the address of the buffer that receives the top description text. This item
+		/// is drawn opposite the title image when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
 		/// </summary>
 		public StrPtrAuto pszDescriptionTop;
 
 		/// <summary>
-		/// Size in TCHARs of the buffer pointed to by the pszDescriptionTop member. If the structure is not receiving information about
-		/// a group, this member is ignored.
+		/// Size in TCHARs of the buffer pointed to by the pszDescriptionTop member. If the structure is not receiving information about a
+		/// group, this member is ignored.
 		/// </summary>
 		public uint cchDescriptionTop;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the bottom description text when item information is being set. If group
-		/// information is being retrieved, this member specifies the address of the buffer that receives the bottom description text.
-		/// This item is drawn under the top description text when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
+		/// information is being retrieved, this member specifies the address of the buffer that receives the bottom description text. This
+		/// item is drawn under the top description text when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
 		/// </summary>
 		public StrPtrAuto pszDescriptionBottom;
 
 		/// <summary>
-		/// Size in TCHARs of the buffer pointed to by the pszDescriptionBottom member. If the structure is not receiving information
-		/// about a group, this member is ignored.
+		/// Size in TCHARs of the buffer pointed to by the pszDescriptionBottom member. If the structure is not receiving information about a
+		/// group, this member is ignored.
 		/// </summary>
 		public uint cchDescriptionBottom;
 
@@ -6177,9 +7023,9 @@ public static partial class ComCtl32
 		public uint cItems;
 
 		/// <summary>
-		/// NULL if group is not a subset. Pointer to a null-terminated string that contains the subset title text when item information
-		/// is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the
-		/// subset title text.
+		/// NULL if group is not a subset. Pointer to a null-terminated string that contains the subset title text when item information is
+		/// being set. If group information is being retrieved, this member specifies the address of the buffer that receives the subset
+		/// title text.
 		/// </summary>
 		public StrPtrAuto pszSubsetTitle;
 
@@ -6200,7 +7046,7 @@ public static partial class ComCtl32
 		/// <summary>Initializes a new instance of the <see cref="LVGROUP"/> class.</summary>
 		/// <param name="mask">The mask.</param>
 		/// <param name="header">The header text.</param>
-		public LVGROUP(ListViewGroupMask mask = ListViewGroupMask.LVGF_NONE, string header = null)
+		public LVGROUP(ListViewGroupMask mask = ListViewGroupMask.LVGF_NONE, string? header = null)
 		{
 			this.mask = mask;
 
@@ -6332,8 +7178,8 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>
-	/// Specifies or receives the attributes of a list-view item. This structure has been updated to support a new mask value
-	/// (LVIF_INDENT) that enables item indenting. This structure supersedes the LV_ITEM structure.
+	/// Specifies or receives the attributes of a list-view item. This structure has been updated to support a new mask value (LVIF_INDENT)
+	/// that enables item indenting. This structure supersedes the LV_ITEM structure.
 	/// </summary>
 	/// <seealso cref="System.IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774760")]
@@ -6362,29 +7208,27 @@ public static partial class ComCtl32
 		/// Indicates the item's state, state image, and overlay image. The stateMask member indicates the valid bits of this member.
 		/// <para>Bits 0 through 7 of this member contain the item state flags. This can be one or more of the item state values.</para>
 		/// <para>
-		/// Bits 8 through 11 of this member specify the one-based overlay image index. Both the full-sized icon image list and the
-		/// small icon image list can have overlay images. The overlay image is superimposed over the item's icon image. If these bits
-		/// are zero, the item has no overlay image. To isolate these bits, use the LVIS_OVERLAYMASK mask. To set the overlay image
-		/// index in this member, you should use the INDEXTOOVERLAYMASK macro. The image list's overlay images are set with the
-		/// ImageList_SetOverlayImage function.
+		/// Bits 8 through 11 of this member specify the one-based overlay image index. Both the full-sized icon image list and the small
+		/// icon image list can have overlay images. The overlay image is superimposed over the item's icon image. If these bits are zero,
+		/// the item has no overlay image. To isolate these bits, use the LVIS_OVERLAYMASK mask. To set the overlay image index in this
+		/// member, you should use the INDEXTOOVERLAYMASK macro. The image list's overlay images are set with the ImageList_SetOverlayImage function.
 		/// </para>
 		/// <para>
-		/// Bits 12 through 15 of this member specify the state image index. The state image is displayed next to an item's icon to
-		/// indicate an application-defined state. If these bits are zero, the item has no state image. To isolate these bits, use the
-		/// LVIS_STATEIMAGEMASK mask. To set the state image index, use the INDEXTOSTATEIMAGEMASK macro. The state image index specifies
-		/// the index of the image in the state image list that should be drawn. The state image list is specified with the
-		/// LVM_SETIMAGELIST message.
+		/// Bits 12 through 15 of this member specify the state image index. The state image is displayed next to an item's icon to indicate
+		/// an application-defined state. If these bits are zero, the item has no state image. To isolate these bits, use the
+		/// LVIS_STATEIMAGEMASK mask. To set the state image index, use the INDEXTOSTATEIMAGEMASK macro. The state image index specifies the
+		/// index of the image in the state image list that should be drawn. The state image list is specified with the LVM_SETIMAGELIST message.
 		/// </para>
 		/// </summary>
 		public uint state;
 
 		/// <summary>
-		/// Value specifying which bits of the state member will be retrieved or modified. For example, setting this member to
-		/// LVIS_SELECTED will cause only the item's selection state to be retrieved.
+		/// Value specifying which bits of the state member will be retrieved or modified. For example, setting this member to LVIS_SELECTED
+		/// will cause only the item's selection state to be retrieved.
 		/// <para>
-		/// This member allows you to modify one or more item states without having to retrieve all of the item states first.For
-		/// example, setting this member to LVIS_SELECTED and state to zero will cause the item's selection state to be cleared, but
-		/// none of the other states will be affected.
+		/// This member allows you to modify one or more item states without having to retrieve all of the item states first.For example,
+		/// setting this member to LVIS_SELECTED and state to zero will cause the item's selection state to be cleared, but none of the other
+		/// states will be affected.
 		/// </para>
 		/// <para>To retrieve or modify all of the states, set this member to(UINT)-1.</para>
 		/// <para>You can use the macro ListView_SetItemState both to set and to clear bits.</para>
@@ -6393,20 +7237,16 @@ public static partial class ComCtl32
 
 		/// <summary>
 		/// If the structure specifies item attributes, pszText is a pointer to a null-terminated string containing the item text. When
-		/// responding to an LVN_GETDISPINFO notification, be sure that this pointer remains valid until after the next notification has
-		/// been received.
+		/// responding to an LVN_GETDISPINFO notification, be sure that this pointer remains valid until after the next notification has been received.
 		/// <para>
-		/// If the structure receives item attributes, pszText is a pointer to a buffer that receives the item text. Note that although
-		/// the list-view control allows any length string to be stored as item text, only the first 260 TCHARs are displayed.
+		/// If the structure receives item attributes, pszText is a pointer to a buffer that receives the item text. Note that although the
+		/// list-view control allows any length string to be stored as item text, only the first 260 TCHARs are displayed.
 		/// </para>
 		/// <para>
-		/// If the value of pszText is LPSTR_TEXTCALLBACK, the item is a callback item.If the callback text changes, you must explicitly
-		/// set pszText to LPSTR_TEXTCALLBACK and notify the list-view control of the change by sending an LVM_SETITEM or
-		/// LVM_SETITEMTEXT message.
+		/// If the value of pszText is LPSTR_TEXTCALLBACK, the item is a callback item.If the callback text changes, you must explicitly set
+		/// pszText to LPSTR_TEXTCALLBACK and notify the list-view control of the change by sending an LVM_SETITEM or LVM_SETITEMTEXT message.
 		/// </para>
-		/// <para>
-		/// Do not set pszText to LPSTR_TEXTCALLBACK if the list-view control has the LVS_SORTASCENDING or LVS_SORTDESCENDING style.
-		/// </para>
+		/// <para>Do not set pszText to LPSTR_TEXTCALLBACK if the list-view control has the LVS_SORTASCENDING or LVS_SORTDESCENDING style.</para>
 		/// </summary>
 		public StrPtrAuto pszText;
 
@@ -6414,8 +7254,8 @@ public static partial class ComCtl32
 		/// Number of TCHARs in the buffer pointed to by pszText, including the terminating NULL.
 		/// <para>
 		/// This member is only used when the structure receives item attributes.It is ignored when the structure specifies item
-		/// attributes.For example, cchTextMax is ignored during LVM_SETITEM and LVM_INSERTITEM.It is read-only during LVN_GETDISPINFO
-		/// and other LVN_ notifications.
+		/// attributes.For example, cchTextMax is ignored during LVM_SETITEM and LVM_INSERTITEM.It is read-only during LVN_GETDISPINFO and
+		/// other LVN_ notifications.
 		/// </para>
 		/// <note>Never copy more than cchTextMax TCHARs—where cchTextMax includes the terminating NULL—into pszText during an LVN_
 		/// notification, otherwise your program can fail.</note>
@@ -6423,43 +7263,41 @@ public static partial class ComCtl32
 		public uint cchTextMax;
 
 		/// <summary>
-		/// Index of the item's icon in the control's image list. This applies to both the large and small image list. If this member is
-		/// the I_IMAGECALLBACK value, the parent window is responsible for storing the index. In this case, the list-view control sends
-		/// the parent an LVN_GETDISPINFO notification code to retrieve the index when it needs to display the image.
+		/// Index of the item's icon in the control's image list. This applies to both the large and small image list. If this member is the
+		/// I_IMAGECALLBACK value, the parent window is responsible for storing the index. In this case, the list-view control sends the
+		/// parent an LVN_GETDISPINFO notification code to retrieve the index when it needs to display the image.
 		/// </summary>
 		public int iImage;
 
 		/// <summary>
 		/// Value specific to the item. If you use the LVM_SORTITEMS message, the list-view control passes this value to the
-		/// application-defined comparison function. You can also use the LVM_FINDITEM message to search a list-view control for an item
-		/// with a specified lParam value.
+		/// application-defined comparison function. You can also use the LVM_FINDITEM message to search a list-view control for an item with
+		/// a specified lParam value.
 		/// </summary>
 		public IntPtr lParam;
 
 		/// <summary>
-		/// Version 4.70. Number of image widths to indent the item. A single indentation equals the width of an item image. Therefore,
-		/// the value 1 indents the item by the width of one image, the value 2 indents by two images, and so on. Note that this field
-		/// is supported only for items. Attempting to set subitem indentation will cause the calling function to fail.
+		/// Version 4.70. Number of image widths to indent the item. A single indentation equals the width of an item image. Therefore, the
+		/// value 1 indents the item by the width of one image, the value 2 indents by two images, and so on. Note that this field is
+		/// supported only for items. Attempting to set subitem indentation will cause the calling function to fail.
 		/// </summary>
 		public int iIndent;
 
 		/// <summary>
-		/// Version 6.0 Identifier of the group that the item belongs to, or one of the following values: I_GROUPIDCALLBACK = The
-		/// listview control sends the parent an LVN_GETDISPINFO notification code to retrieve the index of the group; I_GROUPIDNONE =
-		/// The item does not belong to a group.
+		/// Version 6.0 Identifier of the group that the item belongs to, or one of the following values: I_GROUPIDCALLBACK = The listview
+		/// control sends the parent an LVN_GETDISPINFO notification code to retrieve the index of the group; I_GROUPIDNONE = The item does
+		/// not belong to a group.
 		/// </summary>
 		public int iGroupId;
 
 		/// <summary>
-		/// Version 6.0 Number of data columns (subitems) to display for this item in tile view. The maximum value is 20. If this value
-		/// is I_COLUMNSCALLBACK, the size of the column array and the array itself (puColumns) are obtained by sending a
-		/// LVN_GETDISPINFO notification.
+		/// Version 6.0 Number of data columns (subitems) to display for this item in tile view. The maximum value is 20. If this value is
+		/// I_COLUMNSCALLBACK, the size of the column array and the array itself (puColumns) are obtained by sending a LVN_GETDISPINFO notification.
 		/// </summary>
 		public uint cColumns;
 
 		/// <summary>
-		/// Version 6.0 A pointer to an array of column indices, specifying which columns are displayed for this item, and the order of
-		/// those columns.
+		/// Version 6.0 A pointer to an array of column indices, specifying which columns are displayed for this item, and the order of those columns.
 		/// </summary>
 		public IntPtr puColumns;
 
@@ -6495,7 +7333,7 @@ public static partial class ComCtl32
 		/// <param name="item">Zero-based index of the item.</param>
 		/// <param name="subitem">One-based index of the subitem or zero if this structure refers to an item rather than a subitem.</param>
 		/// <param name="text">The item text.</param>
-		public LVITEM(int item, int subitem = 0, string text = null)
+		public LVITEM(int item, int subitem = 0, string? text = null)
 		{
 			iItem = item;
 			iSubItem = subitem;
@@ -6548,11 +7386,11 @@ public static partial class ComCtl32
 		{
 			get
 			{
-				var ret = new LVITEMCOLUMNINFO[cColumns];
+				LVITEMCOLUMNINFO[] ret = new LVITEMCOLUMNINFO[cColumns];
 				if (cColumns == 0) return ret;
-				var cols = puColumns.ToArray<int>((int)cColumns);
-				var fmts = piColFmt.ToArray<int>((int)cColumns);
-				for (var i = 0; i < cColumns; i++)
+				int[]? cols = puColumns.ToArray<int>((int)cColumns);
+				int[]? fmts = piColFmt.ToArray<int>((int)cColumns);
+				for (int i = 0; i < cColumns; i++)
 					ret[i] = new LVITEMCOLUMNINFO((uint)(cols?[i] ?? 0), (ListViewColumnFormat)(fmts?[i] ?? 0));
 				return ret;
 			}
@@ -6570,10 +7408,10 @@ public static partial class ComCtl32
 					return;
 				}
 
-				var cols = new int[cColumns];
-				var fmts = new int[cColumns];
-				var hasFmts = false;
-				for (var i = 0; i < cColumns; i++)
+				int[] cols = new int[cColumns];
+				int[] fmts = new int[cColumns];
+				bool hasFmts = false;
+				for (int i = 0; i < cColumns; i++)
 				{
 					cols[i] = (int)value[i].columnIndex;
 					fmts[i] = (int)value[i].format;
@@ -6669,6 +7507,92 @@ public static partial class ComCtl32
 			Marshal.FreeHGlobal(puColumns);
 			Marshal.FreeHGlobal(piColFmt);
 			pszText.Free();
+		}
+	}
+
+	/// <summary>Provides information about an item in a list-view control when it is displayed in tile view.</summary>
+	/// <remarks>
+	/// <para>
+	/// In tile view, the item name is displayed to the right of the icon. You can specify additional subitems (corresponding to columns in
+	/// the details view), to be displayed on lines below the item name. The <c>puColumns</c> array contains the indices of subitems to be
+	/// displayed. Indices should be greater than 0, because subitem 0, the item name, is already displayed.
+	/// </para>
+	/// <para>Column information can also be set in the LVITEM structure when creating the list item.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvtileinfo typedef struct tagLVTILEINFO { UINT cbSize; int
+	// iItem; UINT cColumns; PUINT puColumns; int *piColFmt; } LVTILEINFO, *PLVTILEINFO;
+	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVTILEINFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public class LVTILEINFO : IDisposable
+	{
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The size of the <c>LVTILEINFO</c> structure.</para>
+		/// </summary>
+		public uint cbSize;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>The item for which the information is retrieved or set.</para>
+		/// </summary>
+		public int iItem;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The number of data columns displayed for this item. When retrieving information, initialize this value to the size of the
+		/// <c>puColumns</c> array. On return, the member is set to the number of columns actually set for the item.
+		/// </para>
+		/// </summary>
+		public uint cColumns;
+
+		/// <summary>
+		/// <para>Type: <c>PUINT</c></para>
+		/// <para>
+		/// A pointer to an array of column indices, specifying which columns are displayed for this item, and the order of those columns.
+		/// When retrieving information, allocate an array large enough to hold the greatest number of columns expected.
+		/// </para>
+		/// </summary>
+		public IntPtr puColumns;
+
+		/// <summary>
+		/// <para>Type: <c>int*</c></para>
+		/// <para>
+		/// A pointer to an array of column formats (for example, LVCFMT_LEFT), one for each of the columns specified in <c>puColumns</c>.
+		/// When retrieving information, allocate an array large enough to hold the greatest number of column formats expected.
+		/// </para>
+		/// </summary>
+		public IntPtr piColFmt;
+
+		/// <summary>Initializes a new instance of the <see cref="LVTILEINFO"/> class.</summary>
+		/// <param name="item">The item for which the information is retrieved or set.</param>
+		/// <param name="columnFormats">A dictionary of column indicies and their associated formats.</param>
+		public LVTILEINFO(int item, IReadOnlyDictionary<int, ListViewColumnFormat> columnFormats)
+		{
+			cbSize = (uint)Marshal.SizeOf(typeof(LVTILEINFO));
+			iItem = item;
+			ColumnFormats = columnFormats;
+		}
+
+		/// <summary>A dictionary of column indicies and their associated formats.</summary>
+		public IReadOnlyDictionary<int, ListViewColumnFormat> ColumnFormats
+		{
+			get => cColumns == 0 ? new() : puColumns.ToArray<int>((int)cColumns)!.Zip(piColFmt.ToArray<ListViewColumnFormat>((int)cColumns)!, (i, f) => new { i, f }).
+				ToDictionary(i => i.i, i => i.f);
+			set
+			{
+				Dispose();
+				cColumns = (uint)value.Count;
+				puColumns = value.Keys.MarshalToPtr(Marshal.AllocCoTaskMem, out _);
+				piColFmt = value.Values.Cast<int>().MarshalToPtr(Marshal.AllocCoTaskMem, out _);
+			}
+		}
+
+		/// <inheritdoc/>
+		public void Dispose()
+		{
+			Marshal.FreeCoTaskMem(puColumns);
+			Marshal.FreeCoTaskMem(piColFmt);
 		}
 	}
 }

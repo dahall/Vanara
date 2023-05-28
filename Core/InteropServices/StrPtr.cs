@@ -127,13 +127,13 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
-	public void Assign(string s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Ansi);
+	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Ansi);
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="charsAllocated">The character count allocated.</param>
 	/// <returns><c>true</c> if new memory was allocated for the string; <c>false</c> if otherwise.</returns>
-	public bool Assign(string s, out uint charsAllocated) => StringHelper.RefreshString(ref ptr, out charsAllocated, s, CharSet.Ansi);
+	public bool Assign(string? s, out uint charsAllocated) => StringHelper.RefreshString(ref ptr, out charsAllocated, s, CharSet.Ansi);
 
 	/// <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
 	/// <param name="value">The value to assign.</param>
@@ -234,13 +234,13 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
-	public void Assign(string s) => StringHelper.RefreshString(ref ptr, out var _, s);
+	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out var _, s);
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="charsAllocated">The character count allocated.</param>
 	/// <returns><c>true</c> if new memory was allocated for the string; <c>false</c> if otherwise.</returns>
-	public bool Assign(string s, out uint charsAllocated) => StringHelper.RefreshString(ref ptr, out charsAllocated, s);
+	public bool Assign(string? s, out uint charsAllocated) => StringHelper.RefreshString(ref ptr, out charsAllocated, s);
 
 	/// <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
 	/// <param name="value">The value to assign.</param>
@@ -338,13 +338,13 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
-	public void Assign(string s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Unicode);
+	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Unicode);
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="charsAllocated">The character count allocated.</param>
 	/// <returns><c>true</c> if new memory was allocated for the string; <c>false</c> if otherwise.</returns>
-	public bool Assign(string s, out uint charsAllocated) => StringHelper.RefreshString(ref ptr, out charsAllocated, s, CharSet.Unicode);
+	public bool Assign(string? s, out uint charsAllocated) => StringHelper.RefreshString(ref ptr, out charsAllocated, s, CharSet.Unicode);
 
 	/// <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
 	/// <param name="value">The value to assign.</param>

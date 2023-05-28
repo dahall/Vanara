@@ -1,4 +1,5 @@
 ﻿using System;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -202,6 +203,7 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stn-clicked
+		[MsgParams(typeof(uint), typeof(HWND))]
 		STN_CLICKED = 0,
 
 		/// <summary>
@@ -224,6 +226,7 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stn-dblclk
+		[MsgParams(typeof(uint), typeof(HWND))]
 		STN_DBLCLK = 1,
 
 		/// <summary>
@@ -249,6 +252,7 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stn-enable
+		[MsgParams(typeof(uint), typeof(HWND))]
 		STN_ENABLE = 2,
 
 		/// <summary>
@@ -274,6 +278,7 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/stn-disable
+		[MsgParams(typeof(uint), typeof(HWND))]
 		STN_DISABLE = 3,
 	}
 

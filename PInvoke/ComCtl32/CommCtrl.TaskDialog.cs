@@ -827,9 +827,9 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>
-	/// The TaskDialog function creates, displays, and operates a task dialog. The task dialog contains application-defined message text
-	/// and title, icons, and any combination of predefined push buttons. This function does not support the registration of a callback
-	/// function to receive notifications.
+	/// The TaskDialog function creates, displays, and operates a task dialog. The task dialog contains application-defined message text and
+	/// title, icons, and any combination of predefined push buttons. This function does not support the registration of a callback function
+	/// to receive notifications.
 	/// </summary>
 	/// <param name="hwndParent">
 	/// Handle to the owner window of the task dialog to be created. If this parameter is NULL, the task dialog has no owner window.
@@ -840,14 +840,14 @@ public static partial class ComCtl32
 	/// Unicode string that contains a system resource identifier, for example, TD_ERROR_ICON.
 	/// </param>
 	/// <param name="pszWindowTitle">
-	/// Pointer to the string to be used for the task dialog title. This parameter is a null-terminated, Unicode string that contains
-	/// either text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. If this parameter is NULL, the filename
-	/// of the executable program is used.
+	/// Pointer to the string to be used for the task dialog title. This parameter is a null-terminated, Unicode string that contains either
+	/// text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. If this parameter is NULL, the filename of the
+	/// executable program is used.
 	/// </param>
 	/// <param name="pszMainInstruction">
-	/// Pointer to the string to be used for the main instruction. This parameter is a null-terminated, Unicode string that contains
-	/// either text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. This parameter can be NULL if no main
-	/// instruction is wanted.
+	/// Pointer to the string to be used for the main instruction. This parameter is a null-terminated, Unicode string that contains either
+	/// text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. This parameter can be NULL if no main instruction
+	/// is wanted.
 	/// </param>
 	/// <param name="pszContent">
 	/// Pointer to a string used for additional text that appears below the main instruction, in a smaller font. This parameter is a
@@ -859,8 +859,9 @@ public static partial class ComCtl32
 	/// </param>
 	/// <param name="pszIcon">
 	/// Pointer to a string that identifies the icon to display in the task dialog. This parameter must be an integer resource identifier
-	/// passed to the MAKEINTRESOURCE macro or one of the following predefined values. If this parameter is NULL, no icon will be
-	/// displayed. If the hInstance parameter is NULL and one of the predefined values is not used, the TaskDialog function fails.
+	/// passed to the MAKEINTRESOURCE macro or one of the following predefined values. If this parameter is <see
+	/// cref="SafeResourceId.Null"/>, no icon will be displayed. If the hInstance parameter is NULL and one of the predefined values is not
+	/// used, the TaskDialog function fails.
 	/// </param>
 	/// <param name="pnButton">
 	/// When this function returns, contains a pointer to an integer location that receives one of the standard button result values.
@@ -892,7 +893,8 @@ public static partial class ComCtl32
 	/// </returns>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760540")]
 	[DllImport(Lib.ComCtl32, CharSet = CharSet.Unicode, ExactSpelling = true)]
-	public static extern HRESULT TaskDialog(HWND hwndParent, HINSTANCE hInstance, string pszWindowTitle, string pszMainInstruction, string pszContent, TASKDIALOG_COMMON_BUTTON_FLAGS dwCommonButtons, SafeResourceId pszIcon, out int pnButton);
+	public static extern HRESULT TaskDialog([Optional] HWND hwndParent, [Optional] HINSTANCE hInstance, [Optional] string? pszWindowTitle, [Optional] string? pszMainInstruction,
+		[Optional] string? pszContent, TASKDIALOG_COMMON_BUTTON_FLAGS dwCommonButtons, SafeResourceId pszIcon, out int pnButton);
 
 	/// <summary>
 	/// The TaskDialogIndirect function creates, displays, and operates a task dialog. The task dialog contains application-defined
@@ -1121,7 +1123,7 @@ public static partial class ComCtl32
 
 		/// <summary>Pointer to an application-defined callback function. For more information see TaskDialogCallbackProc.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public TaskDialogCallbackProc pfCallbackProc;
+		public TaskDialogCallbackProc? pfCallbackProc;
 
 		/// <summary>A pointer to application-defined reference data. This value is defined by the caller.</summary>
 		public IntPtr lpCallbackData;
@@ -1134,10 +1136,7 @@ public static partial class ComCtl32
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TASKDIALOGCONFIG"/> class setting the <see cref="cbSize"/> field properly.
 		/// </summary>
-		public TASKDIALOGCONFIG()
-		{
-			cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG));
-		}
+		public TASKDIALOGCONFIG() => cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG));
 
 		/// <summary>
 		/// The string to be used for the task dialog title. If this parameter is NULL, the filename of the executable program is used.

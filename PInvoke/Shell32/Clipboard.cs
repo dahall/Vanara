@@ -588,7 +588,7 @@ public static partial class Shell32
 				case IEnumerable<string> strlist:
 					// Handle HDROP specifically since its formatter cannot be specified.
 					if (CLIPFORMAT.CF_HDROP.Equals(formatId))
-						mbr = new ClipboardHDROPFormatter().Write(strlist, charSet == CharSet.Unicode || (charSet == CharSet.Auto && Marshal.SystemDefaultCharSize == 2);
+						mbr = new ClipboardHDROPFormatter().Write(strlist, charSet == CharSet.Unicode || (charSet == CharSet.Auto && Marshal.SystemDefaultCharSize == 2));
 					else
 						mbr = strlist.MarshalToPtr(StringListPackMethod.Concatenated, MoveableHGlobalMemoryMethods.Instance.AllocMem, out _, charSet, 0,
 							MoveableHGlobalMemoryMethods.Instance.LockMem, MoveableHGlobalMemoryMethods.Instance.UnlockMem);

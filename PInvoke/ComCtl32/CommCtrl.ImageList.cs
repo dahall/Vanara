@@ -566,7 +566,7 @@ public static partial class ComCtl32
 		/// </param>
 		/// <param name="riid">An IID for the image list.</param>
 		/// <returns>The address of a pointer to the interface for the image list if successful, NULL otherwise.</returns>
-		IImageList GetDragImage(out POINT ppt, out POINT pptHotspot, in Guid riid);
+		IImageList? GetDragImage(out POINT ppt, out POINT pptHotspot, in Guid riid);
 
 		/// <summary>Gets the flags of an image.</summary>
 		/// <param name="i">A value of type int that contains the index of the images whose flags need to be retrieved.</param>
@@ -809,7 +809,7 @@ public static partial class ComCtl32
 		/// </param>
 		/// <param name="riid">An IID for the image list.</param>
 		/// <returns>The address of a pointer to the interface for the image list if successful, NULL otherwise.</returns>
-		new IImageList GetDragImage(out POINT ppt, out POINT pptHotspot, in Guid riid);
+		new IImageList? GetDragImage(out POINT ppt, out POINT pptHotspot, in Guid riid);
 
 		/// <summary>Gets the flags of an image.</summary>
 		/// <param name="i">A value of type int that contains the index of the images whose flags need to be retrieved.</param>
@@ -996,7 +996,7 @@ public static partial class ComCtl32
 	// HRESULT ImageList_CoCreateInstance( _In_ REFCLSID rclsid, _In_opt_ const IUnknown *punkOuter, _In_ REFIID riid, _Out_ void **ppv); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761518(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("CommonControls.h", MSDNShortId = "bb761518")]
-	public static extern HRESULT ImageList_CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object punkOuter, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT ImageList_CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object? punkOuter, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 	/// <summary>Creates a new image list.</summary>
 	/// <param name="cx">
@@ -1245,7 +1245,7 @@ public static partial class ComCtl32
 	// HIMAGELIST ImageList_LoadImage( HINSTANCE hi, LPCTSTR lpbmp, int cx, int cGrow, COLORREF crMask, UINT uType, UINT uFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761557(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb761557")]
-	public static extern SafeHIMAGELIST ImageList_LoadImage(HINSTANCE hi, string lpbmp, int cx, int cGrow, COLORREF crMask, LoadImageType uType, LoadImageOptions uFlags);
+	public static extern SafeHIMAGELIST ImageList_LoadImage([Optional] HINSTANCE hi, SafeResourceId lpbmp, int cx, int cGrow, COLORREF crMask, LoadImageType uType, LoadImageOptions uFlags);
 
 	/// <summary>Reads an image list from a stream.</summary>
 	/// <param name="pstm">
@@ -1301,7 +1301,7 @@ public static partial class ComCtl32
 	// HRESULT ImageList_ReadEx( _In_ DWORD dwFlags, _In_ LPSTREAM pstm, _Out_ REFIID riid, _Out_ void **ppv); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761562(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb761562")]
-	public static extern void ImageList_ReadEx(ILP dwFlags, IStream pstm, out Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern void ImageList_ReadEx(ILP dwFlags, IStream pstm, out Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 
 	/// <summary>Writes an image list to a stream.</summary>
 	/// <param name="himl">
@@ -1567,8 +1567,6 @@ public static partial class ComCtl32
 	/// </summary>
 	public class SafeHIMAGELIST : SafeHANDLE
 	{
-		private IImageList iImageList;
-
 		/// <summary>Initializes a new instance of the <see cref="HIMAGELIST"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		/// <param name="ownsHandle">
@@ -1585,7 +1583,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets the IImageList interface for this handle.</summary>
 		/// <value>The interface.</value>
-		public IImageList Interface => iImageList ?? (iImageList = HIMAGELIST_QueryInterface<IImageList>(handle));
+		public IImageList Interface => HIMAGELIST_QueryInterface<IImageList>(handle);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeHIMAGELIST"/> to <see cref="HIMAGELIST"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>

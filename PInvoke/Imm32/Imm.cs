@@ -2528,10 +2528,7 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 
 		/// <summary>Initializes a new instance of the <see cref="HIMC"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HIMC(IntPtr preexistingHandle)
-		{
-			handle = preexistingHandle;
-		}
+		public HIMC(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HIMC"/> object with <see cref="IntPtr.Zero"/>.</summary>
 		public static HIMC NULL { get; } = default;

@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -29,6 +30,7 @@ public static partial class ComCtl32
 		/// <para>The return value is not used.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-clearaddress
+		[MsgParams(LResultType = null)]
 		IPM_CLEARADDRESS = WindowMessage.WM_USER + 100,
 
 		/// <summary>Sets the address values for all four fields in the IP address control.
@@ -46,6 +48,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>This message does not generate an <c>IPN_FIELDCHANGED</c> notification.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setaddress
+		[MsgParams(null, typeof(uint), LResultType = null)]
 		IPM_SETADDRESS = WindowMessage.WM_USER + 101,
 
 		/// <summary>Gets the address values for all four fields in the IP address control.
@@ -64,6 +67,7 @@ public static partial class ComCtl32
 		/// <para>Returns the number of nonblank fields.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-getaddress
+		[MsgParams(null, typeof(uint?))]
 		IPM_GETADDRESS = WindowMessage.WM_USER + 102,
 
 		/// <summary>Sets the valid range for the specified field in the IP address control.
@@ -84,6 +88,7 @@ public static partial class ComCtl32
 		/// will attempt to change the entered value to the closest range limit.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setrange
+		[MsgParams(typeof(uint), typeof(uint), LResultType = typeof(BOOL))]
 		IPM_SETRANGE = WindowMessage.WM_USER + 103,
 
 		/// <summary>
@@ -100,6 +105,7 @@ public static partial class ComCtl32
 		/// <para>The return value is not used.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setfocus
+		[MsgParams(typeof(uint), null, LResultType = null)]
 		IPM_SETFOCUS = WindowMessage.WM_USER + 104,
 
 		/// <summary>Determines if all fields in the IP address control are blank.
@@ -112,6 +118,7 @@ public static partial class ComCtl32
 		/// <para>Returns nonzero if all fields are blank, or zero otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-isblank
+		[MsgParams(null, null, LResultType = typeof(BOOL))]
 		IPM_ISBLANK = WindowMessage.WM_USER + 105,
 	}
 
@@ -132,6 +139,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para></summary>
 		/// <remarks>This notification code is not sent in response to a <c>IPM_SETADDRESS</c> message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ipn-fieldchanged
+		[CorrespondingType(typeof(NMIPADDRESS))]
 		IPN_FIELDCHANGED = IPN_FIRST - 0
 	}
 

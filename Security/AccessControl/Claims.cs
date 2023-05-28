@@ -72,8 +72,9 @@ public class ClaimValue
 	public ClaimValue(string[] value) => attr = new AUTHZ_SECURITY_ATTRIBUTE_V1(null, value);
 
 	/// <summary>Initializes a new instance of the <see cref="ClaimValue"/> class based on a binary blob.</summary>
-	/// <param name="value">The value.</param>
-	public ClaimValue(byte[] value) => attr = new AUTHZ_SECURITY_ATTRIBUTE_V1(null, new AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE { pValue = value, ValueLength = (uint)value.Length });
+	/// <param name="value">A pointer to memory containing the blob bytes.</param>
+	/// <param name="byteCount">The byte count.</param>
+	public ClaimValue(IntPtr value, uint byteCount) => attr = new AUTHZ_SECURITY_ATTRIBUTE_V1(null, new AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE { pValue = value, ValueLength = byteCount });
 
 	/// <summary>Initializes a new instance of the <see cref="ClaimValue"/> class based on an unsigned long value.</summary>
 	/// <param name="value">The value.</param>
