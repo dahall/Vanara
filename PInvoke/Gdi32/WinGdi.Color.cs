@@ -603,7 +603,8 @@ public static partial class Gdi32
 	// UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5e72e881-32e1-458e-a09e-91fa13abe178")]
-	public static extern uint GetPaletteEntries([Optional] HPALETTE hpal, uint iStart, uint cEntries, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
+	public static extern uint GetPaletteEntries([Optional] HPALETTE hpal, uint iStart, uint cEntries,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteEntries</c> function retrieves a range of palette entries from the system palette that is associated with
@@ -629,7 +630,8 @@ public static partial class Gdi32
 	// hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "67bb0adf-ae7f-48d5-bc62-82ece45aeee6")]
-	public static extern uint GetSystemPaletteEntries(HDC hdc, uint iStart, uint cEntries, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
+	public static extern uint GetSystemPaletteEntries(HDC hdc, uint iStart, uint cEntries,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteUse</c> function retrieves the current state of the system (physical) palette for the specified device
@@ -674,6 +676,31 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0a9e7906-2f81-4fda-b03d-86feb0755327")]
 	public static extern SYSPAL GetSystemPaletteUse(HDC hdc);
+
+	/// <summary>
+	/// The <c>PALETTEINDEX</c> macro accepts an index to a logical-color palette entry and returns a palette-entry specifier consisting of a
+	/// COLORREF value that specifies the color associated with the given index. An application using a logical palette can pass this
+	/// specifier, instead of an explicit red, green, blue (RGB) value, to GDI functions that expect a color. This allows the function to use
+	/// the color in the specified palette entry.
+	/// </summary>
+	/// <param name="i">An index to the palette entry containing the color to be used for a graphics operation.</param>
+	/// <returns>A palette-entry specifier consisting of a COLORREF value that specifies the color associated with the given index.</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-paletteindex void PALETTEINDEX( i );
+	[PInvokeData("wingdi.h", MSDNShortId = "NF:wingdi.PALETTEINDEX")]
+	public static COLORREF PALETTEINDEX(ushort i) => (COLORREF)(0x01000000 | (uint)i);
+
+	/// <summary>
+	/// The <c>PALETTERGB</c> macro accepts three values that represent the relative intensities of red, green, and blue and returns a
+	/// palette-relative red, green, blue (RGB) specifier consisting of 2 in the high-order byte and an RGB value in the three low-order
+	/// bytes. An application using a color palette can pass this specifier, instead of an explicit RGB value, to functions that expect a color.
+	/// </summary>
+	/// <param name="r">The intensity of the red color field.</param>
+	/// <param name="g">The intensity of the green color field.</param>
+	/// <param name="b">The intensity of the blue color field.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-palettergb void PALETTERGB( r, g, b );
+	[PInvokeData("wingdi.h", MSDNShortId = "NF:wingdi.PALETTERGB")]
+	public static int PALETTERGB(byte r, byte g, byte b) => 0x02000000 | new COLORREF(r, g, b).ToArgb();
 
 	/// <summary>The <c>RealizePalette</c> function maps palette entries from the current logical palette to the system palette.</summary>
 	/// <param name="hdc">A handle to the device context into which a logical palette has been selected.</param>
