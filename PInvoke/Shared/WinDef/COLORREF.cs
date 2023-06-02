@@ -133,6 +133,11 @@ public struct COLORREF : IEquatable<COLORREF>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator COLORREF(uint value) => new(value);
 
+	/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="COLORREF"/>.</summary>
+	/// <param name="value">The <see cref="int"/> value.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator COLORREF(int value) => new(unchecked((uint)value));
+
 	/// <summary>Static reference for CLR_NONE representing no color.</summary>
 	public static COLORREF None = new(CLR_NONE);
 
