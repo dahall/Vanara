@@ -1,8 +1,9 @@
+#nullable enable
 global using System;
 global using System.Runtime.InteropServices;
 global using Vanara.InteropServices;
 
-global using SCARDCONTEXT = nuint;
+global using SCARDCONTEXT = System.UIntPtr;
 using System.Linq;
 using System.Text;
 using Vanara.Extensions;
@@ -1676,7 +1677,7 @@ public static partial class WinSCard
 	/// </list>
 	/// </returns>
 	/// <remarks>
-	/// <para>The icon should be 256 × 256 pixels with no alpha channel.</para>
+	/// <para>The icon should be 256 Ã— 256 pixels with no alpha channel.</para>
 	/// <para>Examples</para>
 	/// <para>
 	/// <code>PBYTE pbIcon = NULL; DWORD cbIcon = SCARD_AUTOALLOCATE; DWORD i; LONG lReturn; LPTSTR szReaderName = "USB Smart Card Reader 0"; // Retrieve the reader's icon. // hContext was set by a previous call to SCardEstablishContext. lReturn = SCardGetReaderIcon(hContext, szReaderName, (PBYTE)&amp;pbIcon, &amp;cbIcon); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardGetReaderIcon - %x\n", lReturn); // Take appropriate action. } else { // Free the memory when done. lReturn = SCardFreeMemory(hContext, pbIcon); }</code>
@@ -2910,7 +2911,7 @@ public static partial class WinSCard
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>
-	/// <code> szDeviceInstanceIdcchReaderNameLONG lReturn, lReturn2; LPTSTR pmszReaders = NULL; LPTSTR pReader = NULL;WCHAR DWORD cchReaderName = SCARD_AUTOALLOCATE; // Retrieve the reader’s name from it’s device instance ID // hContext was set by a previous call to SCardEstablishContext. // szDeviceInstanceId was obtained by calling SetupDiGetDeviceInstanceId lReturn = SCardListReadersWithDeviceInstanceId (hContext, szDeviceInstanceId, (LPTSTR)&amp;pmszReaders, &amp;cchReaderName); switch( lReturn ) { case SCARD_E_NO_READERS_AVAILABLE: printf("No readers have the provided device instance ID.\n"); // Take appropriate action. // ... break; case SCARD_S_SUCCESS: // Do something with the multi string of readers. // Output the values. // A double-null terminates the list of values. pReader = pmszReaders; while ( '\0' != *pReader ) { // Display the value. printf("Reader: %S\n", pReader ); // Advance to the next value. pReader = pReader + wcslen((wchar_t *)pReader) + 1; } // Free the memory. lReturn2 = SCardFreeMemory( hContext, pmszReaders ); if ( SCARD_S_SUCCESS != lReturn2 ) printf("Failed SCardFreeMemory\n"); break; default: printf("Failed SCardListReaders\n"); // Take appropriate action. // ... break;</code>
+	/// <code> szDeviceInstanceIdcchReaderNameLONG lReturn, lReturn2; LPTSTR pmszReaders = NULL; LPTSTR pReader = NULL;WCHAR DWORD cchReaderName = SCARD_AUTOALLOCATE; // Retrieve the readerÂ’s name from itÂ’s device instance ID // hContext was set by a previous call to SCardEstablishContext. // szDeviceInstanceId was obtained by calling SetupDiGetDeviceInstanceId lReturn = SCardListReadersWithDeviceInstanceId (hContext, szDeviceInstanceId, (LPTSTR)&amp;pmszReaders, &amp;cchReaderName); switch( lReturn ) { case SCARD_E_NO_READERS_AVAILABLE: printf("No readers have the provided device instance ID.\n"); // Take appropriate action. // ... break; case SCARD_S_SUCCESS: // Do something with the multi string of readers. // Output the values. // A double-null terminates the list of values. pReader = pmszReaders; while ( '\0' != *pReader ) { // Display the value. printf("Reader: %S\n", pReader ); // Advance to the next value. pReader = pReader + wcslen((wchar_t *)pReader) + 1; } // Free the memory. lReturn2 = SCardFreeMemory( hContext, pmszReaders ); if ( SCARD_S_SUCCESS != lReturn2 ) printf("Failed SCardFreeMemory\n"); break; default: printf("Failed SCardListReaders\n"); // Take appropriate action. // ... break;</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -4208,7 +4209,7 @@ public static partial class WinSCard
 
 		/// <summary>
 		/// A handle to an icon (32 x 32 pixels). You can specify a vendor-specific icon to display in the dialog box. If this value is
-		/// <c>NULL</c>, a generic, smart card reader–loaded icon is displayed.
+		/// <c>NULL</c>, a generic, smart card readerÂ–loaded icon is displayed.
 		/// </summary>
 		public HICON hIcon;
 
