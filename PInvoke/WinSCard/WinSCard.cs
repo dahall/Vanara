@@ -3728,8 +3728,8 @@ public static partial class WinSCard
 	// [out] LPBYTE pbRecvBuffer, [in, out] LPDWORD pcbRecvLength );
 	[DllImport(Lib_Winscard, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardTransmit")]
-	public static extern SCARD_RET SCardTransmit([In] SCARDHANDLE hCard, [In] SafeCoTaskMemStruct<SCARD_IO_REQUEST> pioSendPci, [In] IntPtr pbSendBuffer, [In] uint cbSendLength,
-		[In, Out, Optional] SafeCoTaskMemStruct<SCARD_IO_REQUEST> pioRecvPci, [Out] IntPtr pbRecvBuffer, ref uint pcbRecvLength);
+	public static extern SCARD_RET SCardTransmit([In] SCARDHANDLE hCard, [In] IntPtr /*SCARD_IO_REQUEST*/ pioSendPci, [In] IntPtr pbSendBuffer, [In] uint cbSendLength,
+		[In, Out, Optional] IntPtr /*SCARD_IO_REQUEST*/ pioRecvPci, [Out] IntPtr pbRecvBuffer, ref uint pcbRecvLength);
 
 	/// <summary>The <c>SCardUIDlgSelectCard</c> function displays the smart card <c>Select Card</c> dialog box.</summary>
 	/// <param name="unnamedParam1">Pointer to the OPENCARDNAME_EX structure for the <c>Select Card</c> dialog box.</param>
