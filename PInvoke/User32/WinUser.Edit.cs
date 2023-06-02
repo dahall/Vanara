@@ -1,8 +1,151 @@
+using System;
+using System.Runtime.InteropServices;
+using Vanara.InteropServices;
+
 namespace Vanara.PInvoke;
 
 public static partial class User32
 {
 	private const int ECM_FIRST = 0x1500;
+
+	/// <summary>
+	/// <para>An application-defined callback function used with the EM_SETWORDBREAKPROC message. A multiline edit control or a rich edit control calls an <c>EditWordBreakProc</c> function to break a line of text.</para>
+	/// <para>The <c>EDITWORDBREAKPROC</c> type defines a pointer to this callback function. <c>EditWordBreakProc</c> is a placeholder for the application-defined function name.</para>
+	/// </summary>
+	/// <param name="lpch">
+	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>A pointer to the text of the edit control.</para>
+	/// </param>
+	/// <param name="ichCurrent">
+	/// <para>Type: <c>int</c></para>
+	/// <para>An index to a character position in the buffer of text that identifies the point at which the function should begin checking for a word break.</para>
+	/// </param>
+	/// <param name="cch">
+	/// <para>Type: <c>int</c></para>
+	/// <para>The number of <c>TCHARs</c> in the edit control text. For the ANSI text, this is the number of bytes; for the Unicode text, this is the number of WCHARs.</para>
+	/// </param>
+	/// <param name="code">
+	/// <para>Type: <c>int</c></para>
+	/// <para>The action to be taken by the callback function. This parameter can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>WB_CLASSIFY</c></description>
+	/// <description>Retrieves the character class and word break flags of the character at the specified position. This value is for use with rich edit controls.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>WB_ISDELIMITER</c></description>
+	/// <description>Checks whether the character at the specified position is a delimiter.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>WB_LEFT</c></description>
+	/// <description>Finds the beginning of a word to the left of the specified position.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>WB_LEFTBREAK</c></description>
+	/// <description>Finds the end-of-word delimiter to the left of the specified position. This value is for use with rich edit controls.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>WB_MOVEWORDLEFT</c></description>
+	/// <description>Finds the beginning of a word to the left of the specified position. This value is used during CTRL+LEFT key processing. This value is for use with rich edit controls.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>WB_MOVEWORDRIGHT</c></description>
+	/// <description>Finds the beginning of a word to the right of the specified position. This value is used during CTRL+RIGHT key processing. This value is for use with rich edit controls.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>WB_RIGHT</c></description>
+	/// <description>Finds the beginning of a word to the right of the specified position. This is useful in right-aligned edit controls.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>WB_RIGHTBREAK</c></description>
+	/// <description>Finds the end-of-word delimiter to the right of the specified position. This is useful in right-aligned edit controls. This value is for use with rich edit controls.</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>int</c></para>
+	/// <para>If the <c>code</c> parameter specifies <c>WB_ISDELIMITER</c>, the return value is nonzero (TRUE) if the character at the specified position is a delimiter, or zero if it is not. If the <c>code</c> parameter specifies <c>WB_CLASSIFY</c>, the return value is the character class and word break flags of the character at the specified position. Otherwise, the return value is an index to the beginning of a word in the buffer of text.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>A carriage return followed by a line feed must be treated as a single word by the callback function. Two carriage returns followed by a line feed also must be treated as a single word.</para>
+	/// <para>An application must install the callback function by specifying the address of the callback function in an EM_SETWORDBREAKPROC message.</para>
+	/// <para><c>Rich Edit 1.0:</c>Microsoft Rich EditÂ 1.0 only passes back ANSI characters to <c>EditWordBreakProc</c>. For rich edit controls, you can alternately use the EM_SETWORDBREAKPROCEX message to replace the default extended word break procedure with an EditWordBreakProcEx callback function. This function provides additional information about the text, such as the character set.</para>
+	/// <para><c>Rich Edit 2.0 and later:</c>Microsoft Rich EditÂ 2.0 and later only pass back Unicode characters to <c>EditWordBreakProc</c>. Thus, an ANSI application would convert the Rich Edit-supplied Unicode string using WideCharToMultiByte, and then translate the indices appropriately.</para>
+	/// <para><para>Note</para> <para>The winuser.h header defines EDITWORDBREAKPROC as an alias which automatically selects the ANSI or Unicode version of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for Function Prototypes.</para></para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nc-winuser-editwordbreakproca
+	// EDITWORDBREAKPROCA Editwordbreakproca; int Editwordbreakproca( [in] LPSTR lpch, [in] int ichCurrent, [in] int cch, [in] int code ) {...}
+	[PInvokeData("winuser.h", MSDNShortId = "NC:winuser.EDITWORDBREAKPROCA")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false, CharSet = CharSet.Auto)]
+	public delegate int EDITWORDBREAKPROC([MarshalAs(UnmanagedType.LPTStr)] string lpch, int ichCurrent, int cch, WB code);
+
+	/// <summary>Word-break constants.</summary>
+	[PInvokeData("winuser.h", MSDNShortId = "NC:winuser.EDITWORDBREAKPROCA")]
+	public enum WB
+	{
+		/// <summary>Retrieves the character class and word break flags of the character at the specified position. This value is for use with rich edit controls.</summary>
+		WB_CLASSIFY = 3,
+		/// <summary>Checks whether the character at the specified position is a delimiter.</summary>
+		WB_ISDELIMITER = 2,
+		/// <summary>Finds the beginning of a word to the left of the specified position.</summary>
+		WB_LEFT = 0,
+		/// <summary>Finds the end-of-word delimiter to the left of the specified position. This value is for use with rich edit controls.</summary>
+		WB_LEFTBREAK = 6,
+		/// <summary>Finds the beginning of a word to the left of the specified position. This value is used during CTRL+LEFT key processing. This value is for use with rich edit controls.</summary>
+		WB_MOVEWORDLEFT = 4,
+		/// <summary>Finds the beginning of a word to the right of the specified position. This value is used during CTRL+RIGHT key processing. This value is for use with rich edit controls.</summary>
+		WB_MOVEWORDRIGHT = 5,
+		/// <summary>Finds the beginning of a word to the right of the specified position. This is useful in right-aligned edit controls.</summary>
+		WB_RIGHT = 1,
+		/// <summary>Finds the end-of-word delimiter to the right of the specified position. This is useful in right-aligned edit controls. This value is for use with rich edit controls.</summary>
+		WB_RIGHTBREAK = 7,
+	}
+
+	/// <summary>Styles for the edit control.</summary>
+	[PInvokeData("Winuser.h", MSDNShortId = "edit_control_constants")]
+	[Flags]
+	public enum EditStyle : uint
+	{
+		/// <summary>Left aligns text.</summary>
+		ES_LEFT = 0x0000,
+		/// <summary>Centers text in a single-line or multiline edit control.</summary>
+		ES_CENTER = 0x0001,
+		/// <summary>Right aligns text in a single-line or multiline edit control.</summary>
+		ES_RIGHT = 0x0002,
+		/// <summary>
+		///   <para>Designates a multiline edit control. The default is single-line edit control.</para>
+		///   <para>When the multiline edit control is in a dialog box, the default response to pressing the ENTER key is to activate the default button. To use the ENTER key as a carriage return, use the ES_WANTRETURN style.</para>
+		///   <para>When the multiline edit control is not in a dialog box and the ES_AUTOVSCROLL style is specified, the edit control shows as many lines as possible and scrolls vertically when the user presses the ENTER key. If you do not specify ES_AUTOVSCROLL, the edit control shows as many lines as possible and beeps if the user presses the ENTER key when no more lines can be displayed.</para>
+		///   <para>If you specify the ES_AUTOHSCROLL style, the multiline edit control automatically scrolls horizontally when the caret goes past the right edge of the control. To start a new line, the user must press the ENTER key. If you do not specify ES_AUTOHSCROLL, the control automatically wraps words to the beginning of the next line when necessary. A new line is also started if the user presses the ENTER key. The window size determines the position of the Wordwrap. If the window size changes, the Wordwrapping position changes and the text is redisplayed.</para>
+		///   <para>Multiline edit controls can have scroll bars. An edit control with scroll bars processes its own scroll bar messages. Note that edit controls without scroll bars scroll as described in the previous paragraphs and process any scroll messages sent by the parent window.</para>
+		/// </summary>
+		ES_MULTILINE = 0x0004,
+		/// <summary>Converts all characters to uppercase as they are typed into the edit control. To change this style after the control has been created, use SetWindowLong.</summary>
+		ES_UPPERCASE = 0x0008,
+		/// <summary>Converts all characters to lowercase as they are typed into the edit control. To change this style after the control has been created, use SetWindowLong.</summary>
+		ES_LOWERCASE = 0x0010,
+		/// <summary>Displays an asterisk (*) for each character typed into the edit control. This style is valid only for single-line edit controls.</summary>
+		ES_PASSWORD = 0x0020,
+		/// <summary>Automatically scrolls text up one page when the user presses the ENTER key on the last line.</summary>
+		ES_AUTOVSCROLL = 0x0040,
+		/// <summary>Automatically scrolls text to the right by 10 characters when the user types a character at the end of the line. When the user presses the ENTER key, the control scrolls all text back to position zero.</summary>
+		ES_AUTOHSCROLL = 0x0080,
+		/// <summary>Negates the default behavior for an edit control. The default behavior hides the selection when the control loses the input focus and inverts the selection when the control receives the input focus. If you specify ES_NOHIDESEL, the selected text is inverted, even if the control does not have the focus.</summary>
+		ES_NOHIDESEL = 0x0100,
+		/// <summary>Converts text entered in the edit control. The text is converted from the Windows character set to the OEM character set and then back to the Windows character set. This ensures proper character conversion when the application calls the CharToOem function to convert a Windows string in the edit control to OEM characters. This style is most useful for edit controls that contain file names that will be used on file systems that do not support Unicode.
+		/// <para>To change this style after the control has been created, use SetWindowLong.</para></summary>
+		ES_OEMCONVERT = 0x0400,
+		/// <summary>Prevents the user from typing or editing text in the edit control.</summary>
+		ES_READONLY = 0x0800,
+		/// <summary>Specifies that a carriage return be inserted when the user presses the ENTER key while entering text into a multiline edit control in a dialog box. If you do not specify this style, pressing the ENTER key has the same effect as pressing the dialog box's default push button. This style has no effect on a single-line edit control.</summary>
+		ES_WANTRETURN = 0x1000,
+		/// <summary>Allows only digits to be entered into the edit control.</summary>
+		ES_NUMBER = 0x2000,
+	}
 
 	/// <summary>Window messages for the edit control.</summary>
 	[PInvokeData("Winuser.h", MSDNShortId = "edit_control_constants")]
@@ -391,18 +534,272 @@ public static partial class User32
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-replacesel
 		[MsgParams(typeof(BOOL), typeof(string), LResultType = null)]
 		EM_REPLACESEL = 0x00C2,
-		EM_GETLINE             = 0x00C4,
-		EM_LIMITTEXT           = 0x00C5,
-		EM_CANUNDO             = 0x00C6,
-		EM_UNDO                = 0x00C7,
-		EM_FMTLINES            = 0x00C8,
-		EM_LINEFROMCHAR        = 0x00C9,
-		EM_SETTABSTOPS         = 0x00CB,
-		EM_SETPASSWORDCHAR     = 0x00CC,
-		EM_EMPTYUNDOBUFFER     = 0x00CD,
+
+		/// <summary>Copies a line of text from an edit control and places it in a specified buffer. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The zero-based index of the line to retrieve from a multiline edit control. A value of zero specifies the topmost line. This parameter is ignored by a single-line edit control.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to the buffer that receives a copy of the line. Before sending the message, set the first word of this buffer to the size, in <c>TCHAR</c>s, of the buffer. For ANSI text, this is the number of bytes; for Unicode text, this is the number of characters. The size in the first word is overwritten by the copied line.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the number of <c>TCHAR</c>s copied. The return value is zero if the line number specified by the wParam parameter is greater than the number of lines in the edit control.</para>
+		/// <remarks>
+		/// <para><c>Edit controls:</c> The copied line does not contain a terminating null character.</para>
+		/// <para><c>Rich edit controls:</c> Supported in Microsoft Rich Edit 1.0 and later. The copied line does not contain a terminating null character, unless no text was copied. If no text was copied, the message places a null character at the beginning of the buffer. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getline
+		[MsgParams(typeof(int), typeof(StrPtrAuto), LResultType = typeof(int))]
+		EM_GETLINE = 0x00C4,
+
+		/// <summary>
+		/// <para>Sets the text limit of an edit control. The text limit is the maximum amount of text, in <c>TCHAR</c>s, that the user can type into the edit control. You can send this message to either an edit control or a rich edit control.</para>
+		/// <para>For edit controls and Microsoft Rich Edit 1.0, bytes are used. For Microsoft Rich Edit 2.0 and later, characters are used.</para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The maximum number of <c>TCHAR</c>s the user can enter. For ANSI text, this is the number of bytes; for Unicode text, this is the number of characters. This number does not include the terminating null character.</para>
+		/// <para><c>Rich edit controls:</c> If this parameter is zero, the text length is set to 64,000 characters.</para>
+		/// <para>If this parameter is zero, the text length is set to 0x7FFFFFFE characters for single-line edit controls or -1 for multiline edit controls.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>
+		/// <para>The <c>EM_LIMITTEXT</c> message limits only the text the user can enter. It does not affect any text already in the edit control when the message is sent, nor does it affect the length of the text copied to the edit control by the <c>WM_SETTEXT</c> message. If an application uses the <c>WM_SETTEXT</c> message to place more text into an edit control than is specified in the <c>EM_LIMITTEXT</c> message, the user can edit the entire contents of the edit control.</para>
+		/// <para>Before <c>EM_LIMITTEXT</c> is called, the default limit for the amount of text a user can enter in an edit control is 32,767 characters.</para>
+		/// <para>For single-line edit controls, the text limit is either 0x7FFFFFFE bytes or the value of the wParam parameter, whichever is smaller. For multiline edit controls, this value is either -1 byte or the value of the wParam parameter, whichever is smaller.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. Use the message <c>EM_EXLIMITTEXT</c> for text length values greater than 64,000. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-limittext
+		[MsgParams(typeof(int), null, LResultType = null)]
+		EM_LIMITTEXT = 0x00C5,
+
+		/// <summary>Determines whether there are any actions in an edit control's undo queue. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If there are actions in the control's undo queue, the return value is nonzero.</para>
+		/// <para>If the undo queue is empty, the return value is zero.</para>
+		/// <remarks>
+		/// <para>If the undo queue is not empty, you can send the <c>EM_UNDO</c> message to the control to undo the most recent operation.</para>
+		/// <para><c>Edit controls and Rich Edit 1.0:</c> The undo queue contains only the most recent operation.</para>
+		/// <para><c>Rich Edit 2.0 and later:</c> The undo queue can contain multiple operations.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-canundo
+		[MsgParams(LResultType = typeof(BOOL))]
+		EM_CANUNDO = 0x00C6,
+
+		/// <summary>This message undoes the last edit control operation in the control's undo queue. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>For a single-line edit control, the return value is always <c>TRUE</c>.</para>
+		/// <para>For a multiline edit control, the return value is <c>TRUE</c> if the undo operation is successful, or <c>FALSE</c> if the undo operation fails.</para>
+		/// <remarks>
+		/// <para><c>Edit controls and Rich Edit 1.0:</c> An undo operation can also be undone. For example, you can restore deleted text with the first <c>EM_UNDO</c> message, and remove the text again with a second <c>EM_UNDO</c> message as long as there is no intervening edit operation.</para>
+		/// <para><c>Rich Edit 2.0 and later:</c> The undo feature is multilevel so sending two <c>EM_UNDO</c> messages will undo the last two operations in the undo queue. To redo an operation, send the <c>EM_REDO</c> message.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-undo
+		[MsgParams(LResultType = typeof(BOOL))]
+		EM_UNDO = 0x00C7,
+
+		/// <summary>Sets a flag that determines whether a multiline edit control includes soft line-break characters. A soft line break consists of two carriage returns and a line feed and is inserted at the end of a line that is broken because of wordwrapping.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies whether soft line-break characters are to be inserted. A value of <c>TRUE</c> inserts the characters; a value of <c>FALSE</c> removes them.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is identical to the wParam parameter.</para>
+		/// <remarks>
+		/// <para>This message affects only the buffer returned by the <c>EM_GETHANDLE</c> message and the text returned by the <c>WM_GETTEXT</c> message. It has no effect on the display of the text within the edit control.</para>
+		/// <para>The <c>EM_FMTLINES</c> message does not affect a line that ends with a hard line break. A hard line break consists of one carriage return and a line feed.</para>
+		/// <para><para>Note</para> <para>The size of the text changes when this message is processed.</para></para>
+		/// <para><c>Rich Edit:</c> The <c>EM_FMTLINES</c> message is not supported.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-fmtlines
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
+		EM_FMTLINES = 0x00C8,
+
+		/// <summary>Gets the index of the line that contains the specified character index in a multiline edit control. A character index is the zero-based index of the character from the beginning of the edit control. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The character index of the character contained in the line whose number is to be retrieved. If this parameter is -1, <c>EM_LINEFROMCHAR</c> retrieves either the line number of the current line (the line containing the caret) or, if there is a selection, the line number of the line containing the beginning of the selection.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the zero-based line number of the line containing the character index specified by wParam.</para>
+		/// <remarks><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. If the character index is greater than 64,000, use the <c>EM_EXLINEFROMCHAR</c> message. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-linefromchar
+		[MsgParams(typeof(int), null, LResultType = typeof(int))]
+		EM_LINEFROMCHAR = 0x00C9,
+
+		/// <summary>
+		/// <para>The <c>EM_SETTABSTOPS</c> message sets the tab stops in a multiline edit control. When text is copied to the control, any tab character in the text causes space to be generated up to the next tab stop.</para>
+		/// <para>This message is processed only by multiline edit controls. You can send this message to either an edit control or a rich edit control.</para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The number of tab stops contained in the array. If this parameter is zero, the lParam parameter is ignored and default tab stops are set at every 32 dialog template units. If this parameter is 1, tab stops are set at every n dialog template units, where n is the distance pointed to by the lParam parameter. If this parameter is greater than 1, lParam is a pointer to an array of tab stops.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to an array of unsigned integers specifying the tab stops, in dialog template units. If the wParam parameter is 1, this parameter is a pointer to an unsigned integer containing the distance between all tab stops, in dialog template units.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If all the tabs are set, the return value is <c>TRUE</c>.</para>
+		/// <para>If all the tabs are not set, the return value is <c>FALSE</c>.</para>
+		/// <remarks>
+		/// <para>The <c>EM_SETTABSTOPS</c> message does not automatically redraw the edit control window. If the application is changing the tab stops for text already in the edit control, it should call the <c>InvalidateRect</c> function to redraw the edit control window.</para>
+		/// <para>The values specified in the array are in dialog template units, which are the device-independent units used in dialog box templates. To convert measurements from dialog template units to screen units (pixels), use the <c>MapDialogRect</c> function.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 3.0 and later. A rich edit control can have the maximum number of tab stops specified by MAX_TAB_STOPS. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-settabstops
+		[MsgParams(typeof(uint), typeof(uint[]), LResultType = typeof(BOOL))]
+		EM_SETTABSTOPS = 0x00CB,
+
+		/// <summary>Sets or removes the password character for an edit control. When a password character is set, that character is displayed in place of the characters typed by the user. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The character to be displayed in place of the characters typed by the user. If this parameter is zero, the control removes the current password character and displays the characters typed by the user.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>
+		/// <para>When an edit control receives the <c>EM_SETPASSWORDCHAR</c> message, the control redraws all visible characters using the character specified by the wParam parameter. If wParam is zero, the control redraws all visible characters using the characters typed by the user.</para>
+		/// <para>If an edit control is created with the <c>ES_PASSWORD</c> style, the default password character is set to an asterisk (*). If an edit control is created without the <c>ES_PASSWORD</c> style, there is no password character. The <c>ES_PASSWORD</c> style is removed if an <c>EM_SETPASSWORDCHAR</c> message is sent with the wParam parameter set to zero.</para>
+		/// <para><c>Edit controls:</c> Multiline edit controls do not support the password style or messages.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 2.0 and later. Both single-line and multiline edit controls support the password style and messages. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setpasswordchar
+		[MsgParams(typeof(char), null, LResultType = null)]
+		EM_SETPASSWORDCHAR = 0x00CC,
+
+		/// <summary>Resets the undo flag of an edit control. The undo flag is set whenever an operation within the edit control can be undone. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>
+		/// <para>The undo flag is automatically reset whenever the edit control receives a <c>WM_SETTEXT</c> or <c>EM_SETHANDLE</c> message.</para>
+		/// <para><c>Edit controls and Rich Edit 1.0:</c> The control can only undo or redo the most recent operation.</para>
+		/// <para><c>Rich Edit 2.0 and later:</c> The <c>EM_EMPTYUNDOBUFFER</c> message empties all undo and redo buffers. Rich edit controls enable the user to undo or redo multiple operations.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-emptyundobuffer
+		[MsgParams(LResultType = null)]
+		EM_EMPTYUNDOBUFFER = 0x00CD,
+
+		/// <summary>Gets the zero-based index of the uppermost visible line in a multiline edit control. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the zero-based index of the uppermost visible line in a multiline edit control.</para>
+		/// <para><c>Edit controls:</c> For single-line edit controls, the return value is the zero-based index of the first visible character.</para>
+		/// <para><c>Rich edit controls:</c> For single-line rich edit controls, the return value is zero.</para>
+		/// <remarks>
+		/// <para>The number of lines and the length of the lines in an edit control depend on the width of the control and the current Wordwrap setting.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getfirstvisibleline
+		[MsgParams(LResultType = typeof(int))]
 		EM_GETFIRSTVISIBLELINE = 0x00CE,
-		EM_SETREADONLY         = 0x00CF,
-		EM_SETWORDBREAKPROC    = 0x00D0,
+
+		/// <summary>Sets or removes the read-only style (<c>ES_READONLY</c>) of an edit control. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies whether to set or remove the <c>ES_READONLY</c> style. A value of <c>TRUE</c> sets the <c>ES_READONLY</c> style; a value of <c>FALSE</c> removes the <c>ES_READONLY</c> style.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is nonzero.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		/// <remarks>
+		/// <para>When an edit control has the <c>ES_READONLY</c> style, the user cannot change the text within the edit control.</para>
+		/// <para>To determine whether an edit control has the <c>ES_READONLY</c> style, use the <c>GetWindowLong</c> function with the GWL_STYLE flag.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setreadonly
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
+		EM_SETREADONLY = 0x00CF,
+
+		/// <summary>Replaces an edit control's default Wordwrap function with an application-defined Wordwrap function. You can send this message to either an edit control or a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>The address of the application-defined Wordwrap function. For more information about breaking lines, see the description of the EditWordBreakProc callback function.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>
+		/// <para>A Wordwrap function scans a text buffer that contains text to be sent to the screen, looking for the first word that does not fit on the current screen line. The Wordwrap function places this word at the beginning of the next line on the screen.</para>
+		/// <para>A Wordwrap function defines the point at which the system should break a line of text for multiline edit controls, usually at a space character that separates two words. Either a multiline or a single-line edit control might call this function when the user presses arrow keys in combination with the CTRL key to move the caret to the next word or previous word. The default Wordwrap function breaks a line of text at a space character. The application-defined function may define the Wordwrap to occur at a hyphen or a character other than the space character.</para>
+		/// <para><c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions with the various system versions, see About Rich Edit Controls.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setwordbreakproc
+		[MsgParams(null, typeof(EditWordBreakProc), LResultType = null)]
+		EM_SETWORDBREAKPROC = 0x00D0,
+
 		EM_GETWORDBREAKPROC    = 0x00D1,
 		EM_GETPASSWORDCHAR     = 0x00D2,
 		EM_SETMARGINS          = 0x00D3,
@@ -424,6 +821,8 @@ public static partial class User32
 		EM_TAKEFOCUS           = ECM_FIRST + 8,
 	}
 
+	/// <summary>Edit control Notification Codes</summary>
+	[PInvokeData("WinUser.h")]
 	public enum EditNotification
 	{
 		EN_SETFOCUS = 0x0100,
