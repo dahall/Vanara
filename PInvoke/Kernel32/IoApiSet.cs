@@ -599,28 +599,29 @@ public static partial class Kernel32
 	/// <typeparam name="TIn">The type of the <paramref name="inVal"/>.</typeparam>
 	/// <typeparam name="TOut">The type of the <paramref name="outVal"/>.</typeparam>
 	/// <param name="hDev">
-	/// A handle to the device on which the operation is to be performed. The device is typically a volume, directory, file, or stream.
-	/// To retrieve a device handle, use the CreateFile function. For more information, see Remarks.
+	/// A handle to the device on which the operation is to be performed. The device is typically a volume, directory, file, or stream. To
+	/// retrieve a device handle, use the CreateFile function. For more information, see Remarks.
 	/// </param>
 	/// <param name="ioControlCode">
-	/// The control code for the operation. This value identifies the specific operation to be performed and the type of device on which
-	/// to perform it.
+	/// The control code for the operation. This value identifies the specific operation to be performed and the type of device on which to
+	/// perform it.
 	/// </param>
 	/// <param name="inVal">
 	/// The data required to perform the operation. The format of this data depends on the value of the dwIoControlCode parameter.
 	/// </param>
-	/// <param name="outVal">
-	/// The data returned by the operation. The format of this data depends on the value of the dwIoControlCode parameter.
+	/// <param name="outVal">The data returned by the operation. The format of this data depends on the value of the dwIoControlCode parameter.</param>
+	/// <param name="outSz">
+	/// The amount of memory to allocate for <paramref name="outVal"/> retrieval. If this value is <c>0</c>, then initialize the default structure.
 	/// </param>
 	/// <returns><c>true</c> if successful.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-	public static bool DeviceIoControl<TIn, TOut>(HFILE hDev, uint ioControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
+	public static bool DeviceIoControl<TIn, TOut>(HFILE hDev, uint ioControlCode, TIn inVal, out TOut outVal, SizeT outSz = default) where TIn : struct where TOut : struct
 	{
-		using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
+		using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = outSz == 0 ? SafeHGlobalHandle.CreateFromStructure<TOut>() : new(outSz);
 		var ret = DeviceIoControl(hDev, ioControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);
 		if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 		{
-			ptrOut.Size = bRet;
+			ptrOut.Size = bRet == 0 ? ptrOut.Size * 16 : bRet;
 			ret = DeviceIoControl(hDev, ioControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out bRet, IntPtr.Zero);
 		}
 		outVal = ret ? ptrOut.ToStructure<TOut>() : default;
@@ -642,11 +643,14 @@ public static partial class Kernel32
 	/// <param name="outVal">
 	/// The data returned by the operation. The format of this data depends on the value of the dwIoControlCode parameter.
 	/// </param>
+	/// <param name="outSz">
+	/// The amount of memory to allocate for <paramref name="outVal"/> retrieval. If this value is <c>0</c>, then initialize the default structure.
+	/// </param>
 	/// <returns><c>true</c> if successful.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-	public static bool DeviceIoControl<TOut>(HFILE hDev, uint ioControlCode, out TOut outVal) where TOut : struct
+	public static bool DeviceIoControl<TOut>(HFILE hDev, uint ioControlCode, out TOut outVal, SizeT outSz = default) where TOut : struct
 	{
-		using var ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
+		using var ptrOut = outSz == 0 ? SafeHGlobalHandle.CreateFromStructure<TOut>() : new(outSz);
 		var ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);
 		var err = Win32Error.GetLastError();
 		if (!ret && err == Win32Error.ERROR_INSUFFICIENT_BUFFER)

@@ -2120,7 +2120,7 @@ public static partial class Kernel32
 	public enum STORAGE_PROPERTY_ID
 	{
 		/// <summary>Indicates that the caller is querying for the device descriptor, STORAGE_DEVICE_DESCRIPTOR.</summary>
-		[CorrespondingType(typeof(STORAGE_DEVICE_DESCRIPTOR))]
+		[CorrespondingType(typeof(STORAGE_DEVICE_DESCRIPTOR_MGD))]
 		StorageDeviceProperty = 0,
 
 		/// <summary>Indicates that the caller is querying for the adapter descriptor, STORAGE_ADAPTER_DESCRIPTOR.</summary>
@@ -2139,7 +2139,7 @@ public static partial class Kernel32
 		/// the STORAGE_DEVICE_UNIQUE_IDENTIFIER structure (see the storduid.h header in the DDK). Windows Server 2003 and Windows XP:
 		/// This value is not supported before Windows Vista and Windows Server 2008.
 		/// </summary>
-		[CorrespondingType(typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER))]
+		[CorrespondingType(typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER_MGD))]
 		StorageDeviceUniqueIdProperty,
 
 		/// <summary>

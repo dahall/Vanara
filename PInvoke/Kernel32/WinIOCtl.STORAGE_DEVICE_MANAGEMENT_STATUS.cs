@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
@@ -83,6 +85,40 @@ public static partial class Kernel32
 		public string SerialNumber;
 	}
 
+	/// <summary>The STORAGE_DEVICE_LAYOUT_SIGNATURE structure defines a device layout structure.</summary>
+	[PInvokeData("storduid.h", MSDNShortId = "NS:storduid._STORAGE_DEVICE_LAYOUT_SIGNATURE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct STORAGE_DEVICE_LAYOUT_SIGNATURE
+	{
+		/// <summary>The version of the DUID.</summary>
+		public uint Version;
+
+		/// <summary>The size, in bytes, of this STORAGE_DEVICE_LAYOUT_SIGNATURE structure.</summary>
+		public uint Size;
+
+		/// <summary>
+		/// A Boolean value that indicates whether the partition table of the disk is formatted with a master boot record (MBR). If TRUE, the
+		/// partition table of the disk is formatted with a master boot record (MBR). If FALSE, the disk has a GUID partition table (GPT).
+		/// </summary>
+		public bool Mbr;
+
+		/// <summary>The device specific info.</summary>
+		public DEVICESPECIFIC DeviceSpecific;
+
+		/// <summary>The device specific info.</summary>
+		[StructLayout(LayoutKind.Explicit)]
+		public struct DEVICESPECIFIC
+		{
+			/// <summary>The signature value, which uniquely identifies the disk.</summary>
+			[FieldOffset(0)]
+			public uint MbrSignature;
+
+			/// <summary>The GUID that uniquely identifies the disk.</summary>
+			[FieldOffset(0)]
+			public Guid GptDiskId;
+		}
+	}
+
 	/// <summary>Structure for STORAGE_PROPERTY_ID.StorageDeviceManagementStatus</summary>
 	[PInvokeData("winioctl.h")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<STORAGE_DEVICE_MANAGEMENT_STATUS>), nameof(NumberOfAdditionalReasons))]
@@ -124,29 +160,27 @@ public static partial class Kernel32
 	// _STORAGE_DEVICE_UNIQUE_IDENTIFIER { ULONG Version; ULONG Size; ULONG StorageDeviceIdOffset; ULONG StorageDeviceOffset; ULONG
 	// DriveLayoutSignatureOffset; } STORAGE_DEVICE_UNIQUE_IDENTIFIER, *PSTORAGE_DEVICE_UNIQUE_IDENTIFIER;
 	[PInvokeData("storduid.h", MSDNShortId = "NS:storduid._STORAGE_DEVICE_UNIQUE_IDENTIFIER")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct STORAGE_DEVICE_UNIQUE_IDENTIFIER
+	[VanaraMarshaler(typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER_Marshaler))]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct STORAGE_DEVICE_UNIQUE_IDENTIFIER_MGD
 	{
 		/// <summary>The version of the DUID.</summary>
 		public uint Version;
 
-		/// <summary>The size, in bytes, of the identifier header and the identifiers (IDs) that follow the header.</summary>
-		public uint Size;
+		/// <summary>
+		/// The offset, in bytes, from the beginning of the header to the device ID descriptor ( <see cref="STORAGE_DEVICE_ID_DESCRIPTOR"/>).
+		/// The device ID descriptor contains the IDs that are extracted from page 0x83 of the device's vital product data (VPD).
+		/// </summary>
+		public STORAGE_DEVICE_ID_DESCRIPTOR StorageDeviceId;
 
 		/// <summary>
-		/// The offset, in bytes, from the beginning of the header to the device ID descriptor (STORAGE_DEVICE_ID_DESCRIPTOR). The device ID
-		/// descriptor contains the IDs that are extracted from page 0x83 of the device's vital product data (VPD).
+		/// The offset, in bytes, from the beginning of the header to the device descriptor ( <see cref="STORAGE_DEVICE_DESCRIPTOR"/>). The
+		/// device descriptor contains IDs that are extracted from non-VPD inquiry data.
 		/// </summary>
-		public uint StorageDeviceIdOffset;
+		public STORAGE_DEVICE_DESCRIPTOR_MGD StorageDevice;
 
-		/// <summary>
-		/// The offset, in bytes, from the beginning of the header to the device descriptor (STORAGE_DEVICE_DESCRIPTOR). The device
-		/// descriptor contains IDs that are extracted from non-VPD inquiry data.
-		/// </summary>
-		public uint StorageDeviceOffset;
-
-		/// <summary>The offset, in bytes, to the drive layout signature (STORAGE_DEVICE_LAYOUT_SIGNATURE).</summary>
-		public uint DriveLayoutSignatureOffset;
+		/// <summary>The offset, in bytes, to the drive layout signature ( <see cref="STORAGE_DEVICE_LAYOUT_SIGNATURE"/>).</summary>
+		public STORAGE_DEVICE_LAYOUT_SIGNATURE DriveLayoutSignature;
 	}
 
 	/// <summary>Additional reasons.</summary>
@@ -198,6 +232,40 @@ public static partial class Kernel32
 
 			[FieldOffset(0)]
 			public uint AsUlong;
+		}
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	private struct STORAGE_DEVICE_UNIQUE_IDENTIFIER
+	{
+		public uint Version;
+
+		public uint Size;
+
+		public uint StorageDeviceIdOffset;
+
+		public uint StorageDeviceOffset;
+
+		public uint DriveLayoutSignatureOffset;
+	}
+
+	private class STORAGE_DEVICE_UNIQUE_IDENTIFIER_Marshaler : IVanaraMarshaler
+	{
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER));
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeCoTaskMemHandle(1024);
+
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero) return null;
+			STORAGE_DEVICE_UNIQUE_IDENTIFIER sdd = (STORAGE_DEVICE_UNIQUE_IDENTIFIER)Marshal.PtrToStructure(pNativeData, typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER))!;
+			return new STORAGE_DEVICE_UNIQUE_IDENTIFIER_MGD
+			{
+				Version = sdd.Version,
+				StorageDeviceId = sdd.StorageDeviceIdOffset == 0 ? default : pNativeData.ToStructure<STORAGE_DEVICE_ID_DESCRIPTOR>(allocatedBytes, (int)sdd.StorageDeviceIdOffset),
+				StorageDevice = sdd.StorageDeviceOffset == 0 ? default : pNativeData.ToStructure<STORAGE_DEVICE_DESCRIPTOR_MGD>(allocatedBytes, (int)sdd.StorageDeviceOffset),
+				DriveLayoutSignature = sdd.DriveLayoutSignatureOffset == 0 ? default : pNativeData.ToStructure<STORAGE_DEVICE_LAYOUT_SIGNATURE>(allocatedBytes, (int)sdd.DriveLayoutSignatureOffset),
+			};
 		}
 	}
 }

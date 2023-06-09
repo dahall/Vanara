@@ -4574,7 +4574,7 @@ public static partial class Kernel32
 	/// </summary>
 	/// <remarks>
 	/// An application can determine the required buffer size by issuing a IOCTL_STORAGE_QUERY_PROPERTY control code passing a
-	/// STORAGE_DESCRIPTOR_HEADER structure for the output buffer, and then using the returned <c>Size</c> member of the
+	/// <see cref="STORAGE_DESCRIPTOR_HEADER"/> structure for the output buffer, and then using the returned <c>Size</c> member of the
 	/// <c>STORAGE_DESCRIPTOR_HEADER</c> structure to allocate a buffer of the proper size.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor typedef struct
@@ -4582,27 +4582,19 @@ public static partial class Kernel32
 	// CommandQueueing; DWORD VendorIdOffset; DWORD ProductIdOffset; DWORD ProductRevisionOffset; DWORD SerialNumberOffset;
 	// STORAGE_BUS_TYPE BusType; DWORD RawPropertiesLength; BYTE RawDeviceProperties[1]; } STORAGE_DEVICE_DESCRIPTOR, *PSTORAGE_DEVICE_DESCRIPTOR;
 	[PInvokeData("winioctl.h", MSDNShortId = "NS:winioctl._STORAGE_DEVICE_DESCRIPTOR")]
-	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<STORAGE_DEVICE_DESCRIPTOR>), nameof(RawPropertiesLength))]
+	[VanaraMarshaler(typeof(STORAGE_DEVICE_DESCRIPTOR_Marshaler))]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct STORAGE_DEVICE_DESCRIPTOR
+	public struct STORAGE_DEVICE_DESCRIPTOR_MGD
 	{
-		/// <summary>
-		/// Contains the size of this structure, in bytes. The value of this member will change as members are added to the structure.
-		/// </summary>
+		/// <summary>Contains the size of this structure, in bytes. The value of this member will change as members are added to the structure.</summary>
 		public uint Version;
-
-		/// <summary>
-		/// Specifies the total size of the descriptor, in bytes, which may include vendor ID, product ID, product revision, device
-		/// serial number strings and bus-specific data which are appended to the structure.
-		/// </summary>
-		public uint Size;
 
 		/// <summary>Specifies the device type as defined by the Small Computer Systems Interface (SCSI) specification.</summary>
 		public byte DeviceType;
 
 		/// <summary>
-		/// Specifies the device type modifier, if any, as defined by the SCSI specification. If no device type modifier exists, this
-		/// member is zero.
+		/// Specifies the device type modifier, if any, as defined by the SCSI specification. If no device type modifier exists, this member
+		/// is zero.
 		/// </summary>
 		public byte DeviceTypeModifier;
 
@@ -4621,28 +4613,25 @@ public static partial class Kernel32
 		public bool CommandQueueing;
 
 		/// <summary>
-		/// Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's
-		/// vendor ID. If the device has no vendor ID, this member is zero.
+		/// A null-terminated ASCII string that contains the device's vendor ID. If the device has no vendor ID, this member is <see langword="null"/>.
 		/// </summary>
-		public uint VendorIdOffset;
+		public string? VendorId;
 
 		/// <summary>
-		/// Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's
-		/// product ID. If the device has no product ID, this member is zero.
+		/// A null-terminated ASCII string that contains the device's product ID. If the device has no product ID, this member is <see langword="null"/>.
 		/// </summary>
-		public uint ProductIdOffset;
+		public string? ProductId;
 
 		/// <summary>
-		/// Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's
-		/// product revision string. If the device has no product revision string, this member is zero.
+		/// A null-terminated ASCII string that contains the device's product revision string. If the device has no product revision string,
+		/// this member is <see langword="null"/>.
 		/// </summary>
-		public uint ProductRevisionOffset;
+		public string? ProductRevision;
 
 		/// <summary>
-		/// Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's
-		/// serial number. If the device has no serial number, this member is zero.
+		/// A null-terminated ASCII string that contains the device's serial number. If the device has no serial number, this member is null.
 		/// </summary>
-		public uint SerialNumberOffset;
+		public string? SerialNumber;
 
 		/// <summary>
 		/// Specifies an enumerator value of type STORAGE_BUS_TYPE that indicates the type of bus to which the device is connected. This
@@ -4650,14 +4639,8 @@ public static partial class Kernel32
 		/// </summary>
 		public STORAGE_BUS_TYPE BusType;
 
-		/// <summary>Indicates the number of bytes of bus-specific data that have been appended to this descriptor.</summary>
-		public uint RawPropertiesLength;
-
-		/// <summary>
-		/// Contains an array of length one that serves as a place holder for the first byte of the bus specific property data.
-		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public byte[] RawDeviceProperties;
+		/// <summary>Contains a byte array of the bus specific property data.</summary>
+		public byte[]? RawDeviceProperties;
 	}
 
 	/// <summary>
@@ -5524,6 +5507,16 @@ public static partial class Kernel32
 		/// <summary>Contains an array of bytes that can be used to retrieve additional parameters for specific queries.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 		public byte[] AdditionalParameters;
+
+		/// <summary>Initializes a new instance of the <see cref="STORAGE_PROPERTY_QUERY"/> struct.</summary>
+		/// <param name="propertyId">The property identifier.</param>
+		/// <param name="queryType">Type of the query.</param>
+		public STORAGE_PROPERTY_QUERY(STORAGE_PROPERTY_ID propertyId, STORAGE_QUERY_TYPE queryType = STORAGE_QUERY_TYPE.PropertyStandardQuery)
+		{
+			PropertyId = propertyId;
+			QueryType = queryType;
+			AdditionalParameters = new byte[1];
+		}
 	}
 
 	/// <summary>
@@ -6976,5 +6969,66 @@ public static partial class Kernel32
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 		public byte[] Buffer;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	private struct STORAGE_DEVICE_DESCRIPTOR
+	{
+		public uint Version;
+
+		public uint Size;
+
+		public byte DeviceType;
+
+		public byte DeviceTypeModifier;
+
+		[MarshalAs(UnmanagedType.U1)]
+		public bool RemovableMedia;
+
+		[MarshalAs(UnmanagedType.U1)]
+		public bool CommandQueueing;
+
+		public uint VendorIdOffset;
+
+		public uint ProductIdOffset;
+
+		public uint ProductRevisionOffset;
+
+		public uint SerialNumberOffset;
+
+		public STORAGE_BUS_TYPE BusType;
+
+		public uint RawPropertiesLength;
+
+		public byte RawDeviceProperties;
+	}
+
+	private class STORAGE_DEVICE_DESCRIPTOR_Marshaler : IVanaraMarshaler
+	{
+		static readonly Lazy<long> propOffset = new (() => Marshal.OffsetOf(typeof(STORAGE_DEVICE_DESCRIPTOR), nameof(STORAGE_DEVICE_DESCRIPTOR.RawDeviceProperties)).ToInt64());
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(STORAGE_DEVICE_DESCRIPTOR));
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeCoTaskMemHandle(1024);
+
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero) return null;
+			var sdd = (STORAGE_DEVICE_DESCRIPTOR)Marshal.PtrToStructure(pNativeData, typeof(STORAGE_DEVICE_DESCRIPTOR))!;
+			return new STORAGE_DEVICE_DESCRIPTOR_MGD
+			{
+				Version = sdd.Version,
+				DeviceType = sdd.DeviceType,
+				DeviceTypeModifier = sdd.DeviceTypeModifier,
+				RemovableMedia = sdd.RemovableMedia,
+				CommandQueueing = sdd.CommandQueueing,
+				VendorId = sdd.VendorIdOffset == 0 ? null : Marshal.PtrToStringAnsi(pNativeData.Offset(sdd.VendorIdOffset))!,
+				ProductId = sdd.ProductIdOffset == 0 ? null : Marshal.PtrToStringAnsi(pNativeData.Offset(sdd.ProductIdOffset))!,
+				ProductRevision = sdd.ProductRevisionOffset == 0 ? null : Marshal.PtrToStringAnsi(pNativeData.Offset(sdd.ProductRevisionOffset))!,
+				SerialNumber = sdd.SerialNumberOffset == 0 ? null : Marshal.PtrToStringAnsi(pNativeData.Offset(sdd.SerialNumberOffset))!,
+				BusType = sdd.BusType,
+				RawDeviceProperties = pNativeData.Offset(propOffset.Value).ToArray<byte>((int)sdd.RawPropertiesLength)!,
+			};
+		}
 	}
 }

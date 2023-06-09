@@ -140,7 +140,7 @@ public partial class WinBaseTests_ProcessThread
 	[Test]
 	public void SetThreadAffinityMaskTest()
 	{
-		Assert.That(SetThreadAffinityMask(GetCurrentThread(), (UIntPtr)1).ToUInt64(), Is.Not.Zero);
+		Assert.That(SetThreadAffinityMask(GetCurrentThread(), 1), Is.Not.Zero);
 		//Assert.That(SetThreadAffinityMask(GetCurrentThread(), (UIntPtr)0).ToUInt64(), Is.Not.Zero);
 	}
 
