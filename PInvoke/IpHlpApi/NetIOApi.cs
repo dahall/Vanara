@@ -5847,7 +5847,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/ns-netioapi-_ip_address_prefix typedef struct _IP_ADDRESS_PREFIX {
 		// SOCKADDR_INET Prefix; UINT8 PrefixLength; } IP_ADDRESS_PREFIX, *PIP_ADDRESS_PREFIX;
 		[PInvokeData("netioapi.h", MSDNShortId = "3a6598d8-77e4-46f7-9397-124157508207")]
-		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 32)]
 		public struct IP_ADDRESS_PREFIX : IEquatable<IP_ADDRESS_PREFIX>
 		{
 			/// <summary>
