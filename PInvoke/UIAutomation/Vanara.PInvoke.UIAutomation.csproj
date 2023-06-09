@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>uiautomationcore.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows UIAutomationCore.dll.</Description>
+    <AssemblyName>Vanara.PInvoke.UIAutomation</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;UIAutomation;UIAutomationCore</PackageTags>
+    <PackageReleaseNotes />
+  </PropertyGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <Reference Include="Accessibility" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Accessibility\Vanara.PInvoke.Accessibility.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

@@ -6,29 +6,9 @@ using System.Text;
 namespace Vanara.PInvoke;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 public static partial class Oleacc
 {
-	// Input to DISPID_ACC_NAVIGATE
-	private const int NAVDIR_DOWN = 0x00000002;
-	private const int NAVDIR_FIRSTCHILD = 0x00000007;
-	private const int NAVDIR_LASTCHILD = 0x00000008;
-	private const int NAVDIR_LEFT = 0x00000003;
-	private const int NAVDIR_MAX = 0x00000009;
-	private const int NAVDIR_MIN = 0x00000000;
-	private const int NAVDIR_NEXT = 0x00000005;
-	private const int NAVDIR_PREVIOUS = 0x00000006;
-	private const int NAVDIR_RIGHT = 0x00000004;
-	private const int NAVDIR_UP = 0x00000001;
-
-	// Input to DISPID_ACC_SELECT
-	private const int SELFLAG_ADDSELECTION = 0x00000008;
-	private const int SELFLAG_EXTENDSELECTION = 0x00000004;
-	private const int SELFLAG_NONE = 0x00000000;
-	private const int SELFLAG_REMOVESELECTION = 0x00000010;
-	private const int SELFLAG_TAKEFOCUS = 0x00000001;
-	private const int SELFLAG_TAKESELECTION = 0x00000002;
-	private const int SELFLAG_VALID = 0x0000001F;
-
 	public enum AccessibilityRole : uint
 	{
 		ROLE_SYSTEM_TITLEBAR = 0x00000001,
@@ -154,13 +134,147 @@ public static partial class Oleacc
 		ANRUS_PRIORITY_AUDIO_ACTIVE = 0x0000004,
 
 		/// <summary>
-		/// The AT application is relying on audio (such as text-to-speech) to convey essential information to the user but should not
-		/// change relative to other system sounds.
+		/// The AT application is relying on audio (such as text-to-speech) to convey essential information to the user but should not change
+		/// relative to other system sounds.
 		/// </summary>
 		ANRUS_PRIORITY_AUDIO_ACTIVE_NODUCK = 0x0000008,
 
 		/// <summary>Undocumented.</summary>
 		ANRUS_PRIORITY_AUDIO_DYNAMIC_DUCK = 0x0000010,
+	}
+
+	/// <summary>
+	/// This topic describes the constant values, defined in oleacc.h, that indicate the spatial (up, down, left, and right) or logical
+	/// (first child, last, next, and previous) direction observed when clients use <c>IAccessible::accNavigate</c> to navigate from one user
+	/// interface element to another within the same container. For more information, see Object Navigation Properties and Methods.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/winauto/navigation-constants
+	[PInvokeData("Oleacc.h")]
+	public enum NAVDIR
+	{
+		/// <summary>Navigate to the sibling object that is located below the starting object.</summary>
+		NAVDIR_DOWN = 0x00000002,
+
+		/// <summary>
+		/// Navigate to the first child of this object. When this flag is used, the <c>lVal</c> member of the <c>varStart</c> parameter must
+		/// be CHILDID_SELF.
+		/// </summary>
+		NAVDIR_FIRSTCHILD = 0x00000007,
+
+		/// <summary>
+		/// Navigate to the last child of this object. When using this flag, the <c>lVal</c> member of the <c>varStart</c> parameter must be CHILDID_SELF.
+		/// </summary>
+		NAVDIR_LASTCHILD = 0x00000008,
+
+		/// <summary>Navigate to the sibling object located to the left of the starting object.</summary>
+		NAVDIR_LEFT = 0x00000003,
+
+		/// <summary/>
+		NAVDIR_MAX = 0x00000009,
+
+		/// <summary/>
+		NAVDIR_MIN = 0x00000000,
+
+		/// <summary>Navigate to the next logical object; generally, it is a sibling of the starting object.</summary>
+		NAVDIR_NEXT = 0x00000005,
+
+		/// <summary>Navigate to the previous logical object; generally, it is a sibling of the starting object.</summary>
+		NAVDIR_PREVIOUS = 0x00000006,
+
+		/// <summary>Navigate to the sibling object that is located to the right of the starting object.</summary>
+		NAVDIR_RIGHT = 0x00000004,
+
+		/// <summary>Navigate to the sibling object that is located above the starting object.</summary>
+		NAVDIR_UP = 0x00000001,
+	}
+
+	/// <summary>Inputs to IAccessible::accHitTest. The following are the valid values for the varChild parameter.</summary>
+	[PInvokeData("Oleacc.h")]
+	[Flags]
+	public enum SELFLAG
+	{
+		/// <summary>
+		/// <para>Adds the object to the current selection; possible result is a noncontiguous selection.</para>
+		/// <para>
+		/// Unless it is combined with SELFLAG_TAKEFOCUS, this flag does not change the focus or the selection anchor. The
+		/// SELFLAG_ADDSELECTION / SELFLAG_TAKEFOCUS combination is equivalent to adding an item to a selection manually by holding down the
+		/// CTRL key and clicking an unselected object in Windows Explorer.
+		/// </para>
+		/// <para>This flag is not combined with SELFLAG_REMOVESELECTION or SELFLAG_TAKESELECTION.</para>
+		/// </summary>
+		SELFLAG_ADDSELECTION = 0x00000008,
+
+		/// <summary>
+		/// <para>
+		/// Alters the selection so that all objects between the selection anchor and this object take on the anchor object's selection
+		/// state. If the anchor object is not selected, the objects are removed from the selection. If the anchor object is selected, the
+		/// selection is extended to include this object and all the objects in between. Set the selection state by combining this flag with
+		/// SELFLAG_ADDSELECTION or SELFLAG_REMOVESELECTION.
+		/// </para>
+		/// <para>
+		/// Unless it is combined with SELFLAG_TAKEFOCUS, this flag does not change the focus or the selection anchor. The
+		/// SELFLAG_EXTENDSELECTION / SELFLAG_TAKEFOCUS combination is equivalent to adding an item to a selection manually by holding down
+		/// the SHIFT key and clicking an unselected object in Windows Explorer.
+		/// </para>
+		/// <para>This flag is not combined with SELFLAG_TAKESELECTION.</para>
+		/// </summary>
+		SELFLAG_EXTENDSELECTION = 0x00000004,
+
+		/// <summary>Performs no action. Microsoft Active Accessibility does not change the selection or focus.</summary>
+		SELFLAG_NONE = 0x00000000,
+
+		/// <summary>
+		/// <para>Removes the object from the current selection; possible result is a noncontiguous selection.</para>
+		/// <para>
+		/// Unless it is combined with SELFLAG_TAKEFOCUS, this flag does not change the focus or the selection anchor. The
+		/// SELFLAG_REMOVESELECTION / SELFLAG_TAKEFOCUS combination is equivalent to removing an item from a selection manually, by holding
+		/// down the CTRL key while clicking a selected object in Windows Explorer.
+		/// </para>
+		/// <para>This flag is not combined with SELFLAG_ADDSELECTION or SELFLAG_TAKESELECTION.</para>
+		/// </summary>
+		SELFLAG_REMOVESELECTION = 0x00000010,
+
+		/// <summary>
+		/// <para>
+		/// Sets the focus to the object and makes it the selection anchor. Used by itself, this flag does not alter the selection. The
+		/// effect is similar to moving the focus manually by pressing an ARROW key while holding down the CTRL key in Windows Explorer or in
+		/// any multiple-selection list box.
+		/// </para>
+		/// <para>With objects that have the STATE_SYSTEM_MULTISELECTABLE, SELFLAG_TAKEFOCUS is combined with the following values:</para>
+		/// <list type="bullet">
+		/// <item>SELFLAG_TAKESELECTION</item>
+		/// <item>SELFLAG_EXTENDSELECTION</item>
+		/// <item>SELFLAG_ADDSELECTION</item>
+		/// <item>SELFLAG_REMOVESELECTION</item>
+		/// <item>SELFLAG_ADDSELECTION</item>
+		/// <item>SELFLAG_EXTENDSELECTION</item>
+		/// <item>SELFLAG_REMOVESELECTION</item>
+		/// <item>SELFLAG_EXTENDSELECTION</item>
+		/// </list>
+		/// <para>
+		/// If you call IAccessible::accSelect with the SELFLAG_TAKEFOCUS flag on an object that has an HWND, the flag will take effect only
+		/// if the object's parent already has the focus.
+		/// </para>
+		/// </summary>
+		SELFLAG_TAKEFOCUS = 0x00000001,
+
+		/// <summary>
+		/// <para>Selects the object and removes the selection from all other objects in the container.</para>
+		/// <para>
+		/// Unless it is combined with SELFLAG_TAKEFOCUS, this flag does not change the focus or the selection anchor. The
+		/// SELFLAG_TAKESELECTION / SELFLAG_TAKEFOCUS combination is equivalent to single-clicking an item in Windows Explorer.
+		/// </para>
+		/// <para>This flag must not be combined with the following flags:</para>
+		/// <list type="bullet">
+		/// <item>SELFLAG_ADDSELECTION</item>
+		/// <item>SELFLAG_REMOVESELECTION</item>
+		/// <item>SELFLAG_EXTENDSELECTION</item>
+		/// </list>
+		/// </summary>
+		SELFLAG_TAKESELECTION = 0x00000002,
+
+		/// <summary>The selflag valid</summary>
+		SELFLAG_VALID = 0x0000001F,
 	}
 
 	/// <summary>Retrieves the child ID or IDispatch of each child within an accessible container object.</summary>
@@ -171,8 +285,8 @@ public static partial class Oleacc
 	/// <param name="iChildStart">
 	/// <para>Type: <c>LONG</c></para>
 	/// <para>
-	/// Specifies the zero-based index of the first child that is retrieved. This parameter is an index, not a child ID, and it is
-	/// usually is set to zero (0).
+	/// Specifies the zero-based index of the first child that is retrieved. This parameter is an index, not a child ID, and it is usually is
+	/// set to zero (0).
 	/// </para>
 	/// </param>
 	/// <param name="cChildren">
@@ -183,16 +297,16 @@ public static partial class Oleacc
 	/// <para>Type: <c>VARIANT*</c></para>
 	/// <para>
 	/// Pointer to an array of VARIANT structures that receives information about the container's children. If the <c>vt</c> member of an
-	/// array element is VT_I4, then the <c>lVal</c> member for that element is the child ID. If the <c>vt</c> member of an array element
-	/// is VT_DISPATCH, then the <c>pdispVal</c> member for that element is the address of the child object's IDispatch interface.
+	/// array element is VT_I4, then the <c>lVal</c> member for that element is the child ID. If the <c>vt</c> member of an array element is
+	/// VT_DISPATCH, then the <c>pdispVal</c> member for that element is the address of the child object's IDispatch interface.
 	/// </para>
 	/// </param>
 	/// <param name="pcObtained">
 	/// <para>Type: <c>LONG*</c></para>
 	/// <para>
 	/// Address of a variable that receives the number of elements in the rgvarChildren array that is populated by the
-	/// <c>AccessibleChildren</c> function. This value is the same as that of the cChildren parameter; however, if you request more
-	/// children than exist, this value will be less than that of cChildren.
+	/// <c>AccessibleChildren</c> function. This value is the same as that of the cChildren parameter; however, if you request more children
+	/// than exist, this value will be less than that of cChildren.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -216,22 +330,21 @@ public static partial class Oleacc
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// To retrieve information about all of the children in a container, the iChildStart parameter must be zero (0), and cChildren must
-	/// be the value returned by IAccessible::get_accChildCount.
+	/// To retrieve information about all of the children in a container, the iChildStart parameter must be zero (0), and cChildren must be
+	/// the value returned by IAccessible::get_accChildCount.
 	/// </para>
 	/// <para>
 	/// When calling this function to obtain information about the children of a user interface element, it is recommended that clients
-	/// obtain information about all of the children. For example, iChildStart must be zero (0), and cChildren must be the value returned
-	/// by IAccessible::get_accChildCount.
+	/// obtain information about all of the children. For example, iChildStart must be zero (0), and cChildren must be the value returned by IAccessible::get_accChildCount.
 	/// </para>
 	/// <para>
-	/// If a child ID is returned for an element, then the container must provide information about the child element. To obtain
-	/// information about the element, clients use the container's IAccessible interface pointer and specify the obtained child ID in
-	/// calls to the <c>IAccessible</c> properties.
+	/// If a child ID is returned for an element, then the container must provide information about the child element. To obtain information
+	/// about the element, clients use the container's IAccessible interface pointer and specify the obtained child ID in calls to the
+	/// <c>IAccessible</c> properties.
 	/// </para>
 	/// <para>
-	/// Clients must call the IUnknown::Release method for any IDispatch interfaces retrieved by this function, and free the array when
-	/// it is no longer required.
+	/// Clients must call the IUnknown::Release method for any IDispatch interfaces retrieved by this function, and free the array when it is
+	/// no longer required.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>
@@ -246,14 +359,14 @@ public static partial class Oleacc
 	public static extern HRESULT AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] object[] rgvarChildren, out int pcObtained);
 
 	/// <summary>
-	/// Retrieves the address of the IAccessible interface for the object that generated the event that is currently being processed by
-	/// the client's event hook function.
+	/// Retrieves the address of the IAccessible interface for the object that generated the event that is currently being processed by the
+	/// client's event hook function.
 	/// </summary>
 	/// <param name="hwnd">
 	/// <para>Type: <c>HWND</c></para>
 	/// <para>
-	/// Specifies the window handle of the window that generated the event. This value must be the window handle that is sent to the
-	/// event hook function.
+	/// Specifies the window handle of the window that generated the event. This value must be the window handle that is sent to the event
+	/// hook function.
 	/// </para>
 	/// </param>
 	/// <param name="dwId">
@@ -265,9 +378,9 @@ public static partial class Oleacc
 	/// <param name="dwChildId">
 	/// <para>Type: <c>DWORD</c></para>
 	/// <para>
-	/// Specifies whether the event was triggered by an object or one of its child elements. If the object triggered the event, dwChildID
-	/// is CHILDID_SELF. If a child element triggered the event, dwChildID is the element's child ID. This value must be the child ID
-	/// that is sent to the event hook function.
+	/// Specifies whether the event was triggered by an object or one of its child elements. If the object triggered the event, dwChildID is
+	/// CHILDID_SELF. If a child element triggered the event, dwChildID is the element's child ID. This value must be the child ID that is
+	/// sent to the event hook function.
 	/// </para>
 	/// </param>
 	/// <param name="ppacc">
@@ -303,19 +416,19 @@ public static partial class Oleacc
 	/// function must be used for this function's hwnd, dwObjectID, and dwChildID parameters.
 	/// </para>
 	/// <para>
-	/// This function retrieves the lowest-level accessible object in the object hierarchy that is associated with an event. If the
-	/// element that generated the event is not an accessible object (that is, does not support IAccessible), then the function retrieves
-	/// the <c>IAccessible</c> interface of the parent object. The parent object must provide information about the child element through
-	/// the <c>IAccessible</c> interface.
+	/// This function retrieves the lowest-level accessible object in the object hierarchy that is associated with an event. If the element
+	/// that generated the event is not an accessible object (that is, does not support IAccessible), then the function retrieves the
+	/// <c>IAccessible</c> interface of the parent object. The parent object must provide information about the child element through the
+	/// <c>IAccessible</c> interface.
 	/// </para>
 	/// <para>
-	/// As with other IAccessible methods and functions, clients might receive errors for <c>IAccessible</c> interface pointers because
-	/// of a user action. For more information, see Receiving Errors for IAccessible Interface Pointers.
+	/// As with other IAccessible methods and functions, clients might receive errors for <c>IAccessible</c> interface pointers because of a
+	/// user action. For more information, see Receiving Errors for IAccessible Interface Pointers.
 	/// </para>
 	/// <para>
 	/// This function fails if called in response to EVENT_OBJECT_CREATE because the object is not fully initialized. Similarly, clients
-	/// should not call this in response to EVENT_OBJECT_DESTROY because the object is no longer available and cannot respond. Clients
-	/// watch for EVENT_OBJECT_SHOW and EVENT_OBJECT_HIDE events rather than for <c>EVENT_OBJECT_CREATE</c> and <c>EVENT_OBJECT_DESTROY</c>.
+	/// should not call this in response to EVENT_OBJECT_DESTROY because the object is no longer available and cannot respond. Clients watch
+	/// for EVENT_OBJECT_SHOW and EVENT_OBJECT_HIDE events rather than for <c>EVENT_OBJECT_CREATE</c> and <c>EVENT_OBJECT_DESTROY</c>.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>The following example code shows this method being called in a WinEventProc event handler.</para>
@@ -326,9 +439,7 @@ public static partial class Oleacc
 	[PInvokeData("oleacc.h", MSDNShortId = "d453c163-3918-4a1c-9636-16816227a295")]
 	public static extern HRESULT AccessibleObjectFromEvent(HWND hwnd, uint dwId, uint dwChildId, out IAccessible ppacc, [MarshalAs(UnmanagedType.Struct)] out object pvarChild);
 
-	/// <summary>
-	/// Retrieves the address of the IAccessible interface pointer for the object displayed at a specified point on the screen.
-	/// </summary>
+	/// <summary>Retrieves the address of the IAccessible interface pointer for the object displayed at a specified point on the screen.</summary>
 	/// <param name="ptScreen">Specifies, in physical screen coordinates, the point that is examined.</param>
 	/// <param name="ppacc">Address of a pointer variable that receives the address of the object's IAccessible interface.</param>
 	/// <param name="pvarChild">
@@ -355,14 +466,14 @@ public static partial class Oleacc
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// This function retrieves the lowest-level accessible object in the object hierarchy at a given point. If the element at the point
-	/// is not an accessible object (that is, does not support IAccessible), then the function retrieves the <c>IAccessible</c> interface
-	/// of the parent object. The parent object must provide information about the child element through the <c>IAccessible</c>
-	/// interface. Call IAccessible::accHitTest to identify the child element at the specified screen coordinates.
+	/// This function retrieves the lowest-level accessible object in the object hierarchy at a given point. If the element at the point is
+	/// not an accessible object (that is, does not support IAccessible), then the function retrieves the <c>IAccessible</c> interface of the
+	/// parent object. The parent object must provide information about the child element through the <c>IAccessible</c> interface. Call
+	/// IAccessible::accHitTest to identify the child element at the specified screen coordinates.
 	/// </para>
 	/// <para>
-	/// As with other IAccessible methods and functions, clients might receive errors for <c>IAccessible</c> interface pointers because
-	/// of a user action. For more information, see Receiving Errors for IAccessible Interface Pointers.
+	/// As with other IAccessible methods and functions, clients might receive errors for <c>IAccessible</c> interface pointers because of a
+	/// user action. For more information, see Receiving Errors for IAccessible Interface Pointers.
 	/// </para>
 	/// <para>Client Example</para>
 	/// <para>
@@ -386,16 +497,16 @@ public static partial class Oleacc
 	/// <param name="dwId">
 	/// <para>Type: <c>DWORD</c></para>
 	/// <para>
-	/// Specifies the object ID. This value is one of the standard object identifier constants or a custom object ID such as
-	/// OBJID_NATIVEOM, which is the object ID for the Office native object model. For more information about <c>OBJID_NATIVEOM</c>, see
-	/// the Remarks section in this topic.
+	/// Specifies the object ID. This value is one of the standard object identifier constants or a custom object ID such as OBJID_NATIVEOM,
+	/// which is the object ID for the Office native object model. For more information about <c>OBJID_NATIVEOM</c>, see the Remarks section
+	/// in this topic.
 	/// </para>
 	/// </param>
 	/// <param name="riid">
 	/// <para>Type: <c>REFIID</c></para>
 	/// <para>
-	/// Specifies the reference identifier of the requested interface. This value is either IID_IAccessible or IID_IDispatch, but it can
-	/// also be IID_IUnknown, or the IID of any interface that the object is expected to support.
+	/// Specifies the reference identifier of the requested interface. This value is either IID_IAccessible or IID_IDispatch, but it can also
+	/// be IID_IUnknown, or the IID of any interface that the object is expected to support.
 	/// </para>
 	/// </param>
 	/// <param name="ppvObject">
@@ -423,21 +534,20 @@ public static partial class Oleacc
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Clients call this function to retrieve the address of an object's IAccessible, IDispatch, IEnumVARIANT, IUnknown, or other
-	/// supported interface pointer.
+	/// Clients call this function to retrieve the address of an object's IAccessible, IDispatch, IEnumVARIANT, IUnknown, or other supported
+	/// interface pointer.
 	/// </para>
 	/// <para>
-	/// As with other IAccessible methods and functions, clients might receive errors for <c>IAccessible</c> interface pointers because
-	/// of a user action. For more information, see Receiving Errors for IAccessible Interface Pointers.
+	/// As with other IAccessible methods and functions, clients might receive errors for <c>IAccessible</c> interface pointers because of a
+	/// user action. For more information, see Receiving Errors for IAccessible Interface Pointers.
 	/// </para>
 	/// <para>
-	/// Clients use this function to obtain access to the Microsoft Office 2000 native object model. The native object model provides
-	/// clients with accessibility information about an Office application's document or client area that is not exposed by Microsoft
-	/// Active Accessibility.
+	/// Clients use this function to obtain access to the Microsoft Office 2000 native object model. The native object model provides clients
+	/// with accessibility information about an Office application's document or client area that is not exposed by Microsoft Active Accessibility.
 	/// </para>
 	/// <para>
-	/// To obtain an IDispatch interface pointer to a class supported by the native object model, specify OBJID_NATIVEOM in dwObjectID.
-	/// When using this object identifier, the hwnd parameter must match the following window class types.
+	/// To obtain an IDispatch interface pointer to a class supported by the native object model, specify OBJID_NATIVEOM in dwObjectID. When
+	/// using this object identifier, the hwnd parameter must match the following window class types.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -467,20 +577,20 @@ public static partial class Oleacc
 	/// </item>
 	/// </list>
 	/// <para>
-	/// Note that the above window classes correspond to the innermost document window or pane window. For more information about the
-	/// Office object model, see the Microsoft Office 2000/Visual Basic Programmer's Guide.
+	/// Note that the above window classes correspond to the innermost document window or pane window. For more information about the Office
+	/// object model, see the Microsoft Office 2000/Visual Basic Programmer's Guide.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-accessibleobjectfromwindow HRESULT
-	// AccessibleObjectFromWindow( HWND hwnd, DWORD dwId, REFIID riid, void **ppvObject );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-accessibleobjectfromwindow HRESULT AccessibleObjectFromWindow(
+	// HWND hwnd, DWORD dwId, REFIID riid, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "297ac50f-2a58-477b-ba57-5d1416c191b3")]
 	public static extern HRESULT AccessibleObjectFromWindow(HWND hwnd, uint dwId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvObject);
 
 	/// <summary>
-	/// Allows an assistive technology (AT) application to notify the system that it is interacting with UI through a Windows Automation
-	/// API (such as Microsoft UI Automation) as a result of a touch gesture from the user. This allows the assistive technology to
-	/// notify the target application and the system that the user is interacting with touch.
+	/// Allows an assistive technology (AT) application to notify the system that it is interacting with UI through a Windows Automation API
+	/// (such as Microsoft UI Automation) as a result of a touch gesture from the user. This allows the assistive technology to notify the
+	/// target application and the system that the user is interacting with touch.
 	/// </summary>
 	/// <param name="hwndApp">A window that belongs to the AT process that is calling <c>AccNotifyTouchInteraction</c>.</param>
 	/// <param name="hwndTarget">The nearest window of the automation element that the AT is targeting.</param>
@@ -492,14 +602,14 @@ public static partial class Oleacc
 	/// <remarks>
 	/// <para>
 	/// This function requires the calling process to have UIAccess or higher privileges. If the caller does not have the required
-	/// privileges, the call to <c>AccNotifyTouchInteraction</c> fails and returns <c>E_ACCESSDENIED</c>. For more information, see
-	/// Security Considerations for Assistive Technologies and /MANIFESTUAC (Embeds UAC information in manifest).
+	/// privileges, the call to <c>AccNotifyTouchInteraction</c> fails and returns <c>E_ACCESSDENIED</c>. For more information, see Security
+	/// Considerations for Assistive Technologies and /MANIFESTUAC (Embeds UAC information in manifest).
 	/// </para>
 	/// <para>
-	/// When an AT is consuming touch data (such as when using the RegisterPointerInputTarget function), the shell and applications that
-	/// the AT interacts with through the Windows Automation API are not aware that the user is interacting through touch. For the system
-	/// to expose touch-related functionality to the user, the AT must use <c>AccNotifyTouchInteraction</c> to notify the system that it
-	/// is performing the interaction in response to user touch input.
+	/// When an AT is consuming touch data (such as when using the RegisterPointerInputTarget function), the shell and applications that the
+	/// AT interacts with through the Windows Automation API are not aware that the user is interacting through touch. For the system to
+	/// expose touch-related functionality to the user, the AT must use <c>AccNotifyTouchInteraction</c> to notify the system that it is
+	/// performing the interaction in response to user touch input.
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>This code example shows how to call the <c>AccNotifyTouchInteraction</c> function.</para>
@@ -529,8 +639,8 @@ public static partial class Oleacc
 	/// <param name="dwUtilityState">
 	/// <para>Type: <c>DWORD</c></para>
 	/// <para>
-	/// The new settings for the system values indicated by dwUtilityStateMask. This parameter can be zero to reset the system values, or
-	/// a combination of the following values.
+	/// The new settings for the system values indicated by dwUtilityStateMask. This parameter can be zero to reset the system values, or a
+	/// combination of the following values.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -548,8 +658,8 @@ public static partial class Oleacc
 	/// <item>
 	/// <term>ANRUS_PRIORITY_AUDIO_ACTIVE 0x0000004</term>
 	/// <term>
-	/// The AT application is relying on audio (such as text-to-speech) to convey essential information to the user and should remain
-	/// audible over other system sounds.
+	/// The AT application is relying on audio (such as text-to-speech) to convey essential information to the user and should remain audible
+	/// over other system sounds.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -570,8 +680,8 @@ public static partial class Oleacc
 	/// <para>Before it exits, an AT application should reset any system values that it previously set.</para>
 	/// <para>
 	/// This function requires the calling process to have UIAccess or higher privileges. If the caller does not have the required
-	/// privileges, the call to <c>AccSetRunningUtilityState</c> fails and returns <c>E_ACCESSDENIED</c>. For more information, see
-	/// Security Considerations for Assistive Technologies and /MANIFESTUAC (Embeds UAC information in manifest).
+	/// privileges, the call to <c>AccSetRunningUtilityState</c> fails and returns <c>E_ACCESSDENIED</c>. For more information, see Security
+	/// Considerations for Assistive Technologies and /MANIFESTUAC (Embeds UAC information in manifest).
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>This code example shows how to call the <c>AccSetRunningUtilityState</c> function.</para>
@@ -612,11 +722,11 @@ public static partial class Oleacc
 	/// <remarks>
 	/// <para>
 	/// Server applications call this function when they contain a custom UI object that is similar to a system-provided object. Server
-	/// developers can call <c>CreateStdAccessibleObject</c> to override the IAccessible methods and properties as required to match
-	/// their custom objects. Alternatively, server developers can use Dynamic Annotation to override specific properties without having
-	/// to use difficult subclassing techniques that <c>CreateStdAccessibleObject</c> requires. Server developers should still use
-	/// <c>CreateStdAccessibleObject</c> for structural changes, such as hiding a child element or creating a placeholder child element.
-	/// This approach saves server developers the work of fully implementing all of the <c>IAccessible</c> properties and methods.
+	/// developers can call <c>CreateStdAccessibleObject</c> to override the IAccessible methods and properties as required to match their
+	/// custom objects. Alternatively, server developers can use Dynamic Annotation to override specific properties without having to use
+	/// difficult subclassing techniques that <c>CreateStdAccessibleObject</c> requires. Server developers should still use
+	/// <c>CreateStdAccessibleObject</c> for structural changes, such as hiding a child element or creating a placeholder child element. This
+	/// approach saves server developers the work of fully implementing all of the <c>IAccessible</c> properties and methods.
 	/// </para>
 	/// <para>
 	/// This function is similar to CreateStdAccessibleProxy, except that <c>CreateStdAccessibleProxy</c> allows you to specify the class
@@ -639,9 +749,9 @@ public static partial class Oleacc
 	/// <param name="pClassName">
 	/// <para>Type: <c>LPCTSTR</c></para>
 	/// <para>
-	/// Pointer to a null-terminated string of the class name of a system-provided user interface element for which an accessible object
-	/// is created. The window class name is one of the common controls (defined in Comctl32.dll), predefined controls (defined in
-	/// User32.dll), or window elements.
+	/// Pointer to a null-terminated string of the class name of a system-provided user interface element for which an accessible object is
+	/// created. The window class name is one of the common controls (defined in Comctl32.dll), predefined controls (defined in User32.dll),
+	/// or window elements.
 	/// </para>
 	/// </param>
 	/// <param name="idObject">
@@ -669,11 +779,11 @@ public static partial class Oleacc
 	/// <remarks>
 	/// <para>
 	/// Server applications call this function when they contain a custom control that is similar to a system-provided control. Server
-	/// applications can call <c>CreateStdAccessibleProxy</c> to override the IAccessible methods and properties as required to match
-	/// their custom controls. Alternatively, server developers can use Dynamic Annotation to override specific properties without having
-	/// to use difficult subclassing techniques that were required with <c>CreateStdAccessibleProxy</c>. Server developers should still
-	/// use <c>CreateStdAccessibleProxy</c> for structural changes, such as hiding a child element or creating a placeholder child
-	/// element. This approach saves server developers the work of fully implementing all of the <c>IAccessible</c> properties and methods.
+	/// applications can call <c>CreateStdAccessibleProxy</c> to override the IAccessible methods and properties as required to match their
+	/// custom controls. Alternatively, server developers can use Dynamic Annotation to override specific properties without having to use
+	/// difficult subclassing techniques that were required with <c>CreateStdAccessibleProxy</c>. Server developers should still use
+	/// <c>CreateStdAccessibleProxy</c> for structural changes, such as hiding a child element or creating a placeholder child element. This
+	/// approach saves server developers the work of fully implementing all of the <c>IAccessible</c> properties and methods.
 	/// </para>
 	/// <para>
 	/// This function is similar to CreateStdAccessibleObject, except that <c>CreateStdAccessibleObject</c> always uses the class name
@@ -682,8 +792,8 @@ public static partial class Oleacc
 	/// <para>
 	/// Use <c>CreateStdAccessibleProxy</c> to create an accessible object for a user interface element that is superclassed. When a user
 	/// interface element is superclassed, an application creates a custom control with a window class name different from the predefined
-	/// control on which it is based. Because the class name associated with the hwnd parameter is the superclass window class name,
-	/// specify the base class name (the system class name on which the superclassed control is based) in pszClassName.
+	/// control on which it is based. Because the class name associated with the hwnd parameter is the superclass window class name, specify
+	/// the base class name (the system class name on which the superclassed control is based) in pszClassName.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-createstdaccessibleproxya HRESULT CreateStdAccessibleProxyA(
@@ -727,26 +837,25 @@ public static partial class Oleacc
 	/// <remarks>
 	/// <para>
 	/// In previous versions of the operating system, a process could open another process (to access its memory, for example) using
-	/// <c>OpenProcess</c>. This function succeeds if the caller has appropriate privileges; usually the caller and target process must
-	/// be the same user.
+	/// <c>OpenProcess</c>. This function succeeds if the caller has appropriate privileges; usually the caller and target process must be
+	/// the same user.
 	/// </para>
 	/// <para>
 	/// On Windows Vista, however, <c>OpenProcess</c> fails in the scenario where the caller has UIAccess, and the target process is
-	/// elevated. In this case, the owner of the target process is in the Administrators group, but the calling process is running with
-	/// the restricted token, so does not have membership in this group, and is denied access to the elevated process. If the caller has
+	/// elevated. In this case, the owner of the target process is in the Administrators group, but the calling process is running with the
+	/// restricted token, so does not have membership in this group, and is denied access to the elevated process. If the caller has
 	/// UIAccess, however, they can use a windows hook to inject code into the target process, and from within the target process, send a
 	/// handle back to the caller.
 	/// </para>
 	/// <para>
-	/// <c>GetProcessHandleFromHwnd</c> is a convenience function that uses this technique to obtain the handle of the process that owns
-	/// the specified HWND. Note that it only succeeds in cases where the caller and target process are running as the same user. The
-	/// returned handle has the following privileges: PROCESS_DUP_HANDLE | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE |
-	/// SYNCHRONIZE. If other privileges are required, it may be necessary to implement the hooking technique explicitly instead of using
-	/// this function.
+	/// <c>GetProcessHandleFromHwnd</c> is a convenience function that uses this technique to obtain the handle of the process that owns the
+	/// specified HWND. Note that it only succeeds in cases where the caller and target process are running as the same user. The returned
+	/// handle has the following privileges: PROCESS_DUP_HANDLE | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE | SYNCHRONIZE. If
+	/// other privileges are required, it may be necessary to implement the hooking technique explicitly instead of using this function.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/WinAuto/getprocesshandlefromhwnd HANDLE WINAPI GetProcessHandleFromHwnd( _In_
-	// HWND hwnd );
+	// https://docs.microsoft.com/en-us/windows/desktop/WinAuto/getprocesshandlefromhwnd HANDLE WINAPI GetProcessHandleFromHwnd( _In_ HWND
+	// hwnd );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("", MSDNShortId = "173579d2-c930-402c-81c7-761b063b5b51")]
 	public static extern HPROCESS GetProcessHandleFromHwnd(HWND hwnd);
@@ -766,8 +875,8 @@ public static partial class Oleacc
 	/// <param name="cchRoleMax">
 	/// <para>Type: <c>UINT</c></para>
 	/// <para>
-	/// The size of the buffer that is pointed to by the lpszRole parameter. For ANSI strings, this value is measured in bytes; for
-	/// Unicode strings, it is measured in characters.
+	/// The size of the buffer that is pointed to by the lpszRole parameter. For ANSI strings, this value is measured in bytes; for Unicode
+	/// strings, it is measured in characters.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -799,8 +908,8 @@ public static partial class Oleacc
 	/// <param name="lpszState">
 	/// <para>Type: <c>LPTSTR</c></para>
 	/// <para>
-	/// Address of a buffer that receives the state text string. If this parameter is <c>NULL</c>, the function returns the state
-	/// string's length, not including the null character.
+	/// Address of a buffer that receives the state text string. If this parameter is <c>NULL</c>, the function returns the state string's
+	/// length, not including the null character.
 	/// </para>
 	/// </param>
 	/// <param name="cchState">
@@ -813,13 +922,13 @@ public static partial class Oleacc
 	/// <returns>
 	/// <para>Type: <c>UINT</c></para>
 	/// <para>
-	/// If successful, and if lpszStateBit is non- <c>NULL</c>, the return value is the number of bytes (ANSI strings) or characters
-	/// (Unicode strings) that are copied into the buffer, not including the null-terminated character. If lpszStateBit is <c>NULL</c>,
-	/// the return value represents the string's length, not including the null character.
+	/// If successful, and if lpszStateBit is non- <c>NULL</c>, the return value is the number of bytes (ANSI strings) or characters (Unicode
+	/// strings) that are copied into the buffer, not including the null-terminated character. If lpszStateBit is <c>NULL</c>, the return
+	/// value represents the string's length, not including the null character.
 	/// </para>
 	/// <para>
-	/// If the string resource does not exist, or if the lpszStateBit parameter is not a valid pointer, the return value is zero (0). To
-	/// get extended error information, call GetLastError.
+	/// If the string resource does not exist, or if the lpszStateBit parameter is not a valid pointer, the return value is zero (0). To get
+	/// extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
 	/// <remarks>This function accepts only one state bit at a time, not a bitmask.</remarks>
@@ -871,24 +980,24 @@ public static partial class Oleacc
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Servers call this function only when handling the WM_GETOBJECT message. For an overview of how <c>LresultFromObject</c> is
-	/// related to <c>WM_GETOBJECT</c>, see How WM_GETOBJECT Works.
+	/// Servers call this function only when handling the WM_GETOBJECT message. For an overview of how <c>LresultFromObject</c> is related to
+	/// <c>WM_GETOBJECT</c>, see How WM_GETOBJECT Works.
 	/// </para>
 	/// <para>
-	/// <c>LresultFromObject</c> increments the object's reference count. If you are not storing the interface pointer passed to the
-	/// function (that is, you create a new interface pointer for the object each time WM_GETOBJECT is received), call the object's
-	/// Release method to decrement the reference count back to one. Then the client calls <c>Release</c> and the object is destroyed.
-	/// For more information, see How to Handle WM_GETOBJECT.
+	/// <c>LresultFromObject</c> increments the object's reference count. If you are not storing the interface pointer passed to the function
+	/// (that is, you create a new interface pointer for the object each time WM_GETOBJECT is received), call the object's Release method to
+	/// decrement the reference count back to one. Then the client calls <c>Release</c> and the object is destroyed. For more information,
+	/// see How to Handle WM_GETOBJECT.
 	/// </para>
 	/// <para>
-	/// Each time a server processes WM_GETOBJECT for a specific object, it calls <c>LresultFromObject</c> to obtain a new reference to
-	/// the object. Servers do not save the reference returned from <c>LresultFromObject</c> from one instance of processing
-	/// <c>WM_GETOBJECT</c> to use as the message's return value when processing subsequent <c>WM_GETOBJECT</c> messages for the same
-	/// object. This causes the client to receive an error.
+	/// Each time a server processes WM_GETOBJECT for a specific object, it calls <c>LresultFromObject</c> to obtain a new reference to the
+	/// object. Servers do not save the reference returned from <c>LresultFromObject</c> from one instance of processing <c>WM_GETOBJECT</c>
+	/// to use as the message's return value when processing subsequent <c>WM_GETOBJECT</c> messages for the same object. This causes the
+	/// client to receive an error.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-lresultfromobject LRESULT LresultFromObject( REFIID riid,
-	// WPARAM wParam, LPUNKNOWN punk );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-lresultfromobject LRESULT LresultFromObject( REFIID riid, WPARAM
+	// wParam, LPUNKNOWN punk );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "c219a4cd-7a8f-4942-8975-b3d823b6497f")]
 	public static extern IntPtr LresultFromObject(in Guid riid, IntPtr wParam, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object punk);
@@ -946,8 +1055,8 @@ public static partial class Oleacc
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-objectfromlresult HRESULT ObjectFromLresult( LRESULT
-	// lResult, REFIID riid, WPARAM wParam, void **ppvObject );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-objectfromlresult HRESULT ObjectFromLresult( LRESULT lResult,
+	// REFIID riid, WPARAM wParam, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "97e766fd-e142-40d1-aba7-408b45d33426")]
 	public static extern HRESULT ObjectFromLresult(IntPtr lResult, in Guid riid, IntPtr wParam, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
@@ -979,8 +1088,8 @@ public static partial class Oleacc
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-windowfromaccessibleobject HRESULT
-	// WindowFromAccessibleObject( IAccessible *, HWND *phwnd );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-windowfromaccessibleobject HRESULT WindowFromAccessibleObject(
+	// IAccessible *, HWND *phwnd );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "b3a3d3dd-ef84-4323-ab6d-6331d8389f11")]
 	public static extern HRESULT WindowFromAccessibleObject([In] IAccessible arg1, out HWND phwnd);

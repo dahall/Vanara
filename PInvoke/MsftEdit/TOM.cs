@@ -5,6 +5,13 @@ namespace Vanara.PInvoke;
 
 public static partial class MsftEdit
 {
+	private const ComInterfaceType dualIntType =
+#if NETCOREAPP3_1
+		ComInterfaceType.InterfaceIsIUnknown;
+#else
+		ComInterfaceType.InterfaceIsDual;
+#endif
+
 	/// <summary>Retrieves the Unicode Transformation Format (UTF)-32 math alphanumeric character that corresponds to the specified Basic Multilingual Plane (BMP) character and math style.</summary>
 	/// <param name="ch">
 	/// <para>[in] Type: <c>LONG</c></para>
@@ -1604,7 +1611,7 @@ public static partial class MsftEdit
 	/// <remarks>This interface is currently undefined.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextdisplays
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextDisplays")]
-	[ComImport, Guid("C241F5F2-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5F2-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextDisplays
 	{
 	}
@@ -1632,7 +1639,7 @@ public static partial class MsftEdit
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextdocument
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextDocument")]
-	[ComImport, Guid("8CC497C0-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[ComImport, Guid("8CC497C0-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(dualIntType)]
 	public interface ITextDocument
 	{
 		/// <summary>Gets the file name of this document. This is the ITextDocument default property.</summary>
@@ -1681,7 +1688,7 @@ public static partial class MsftEdit
 		/// <remarks>To set the saved property, call the ITextDocument::SetSaved method.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextdocument-getsaved
 		// HRESULT GetSaved( long *pValue );
-		int GetSaved();
+		tomConstants GetSaved();
 
 		/// <summary>Sets the document <c>Saved</c> property.</summary>
 		/// <param name="Value">
@@ -1708,7 +1715,7 @@ public static partial class MsftEdit
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextdocument-setsaved
 		// HRESULT SetSaved( [in] long Value );
-		void SetSaved(int Value);
+		void SetSaved(tomConstants Value);
 
 		/// <summary>Gets the default tab width.</summary>
 		/// <returns>
@@ -1772,7 +1779,7 @@ public static partial class MsftEdit
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextdocument-open
 		// HRESULT Open( [in] VARIANT *pVar, long Flags, long CodePage );
-		void Open([In] object pVar, tomConstants Flags, uint CodePage);
+		void Open([In] object pVar, [Optional] tomConstants Flags, [Optional] uint CodePage);
 
 		/// <summary>Saves the document.</summary>
 		/// <param name="pVar">
@@ -1948,7 +1955,7 @@ public static partial class MsftEdit
 		/// <remarks>To set the saved property, call the ITextDocument::SetSaved method.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextdocument-getsaved
 		// HRESULT GetSaved( long *pValue );
-		new int GetSaved();
+		new tomConstants GetSaved();
 
 		/// <summary>Sets the document <c>Saved</c> property.</summary>
 		/// <param name="Value">
@@ -1975,7 +1982,7 @@ public static partial class MsftEdit
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextdocument-setsaved
 		// HRESULT SetSaved( [in] long Value );
-		new void SetSaved(int Value);
+		new void SetSaved(tomConstants Value);
 
 		/// <summary>Gets the default tab width.</summary>
 		/// <returns>
@@ -3084,7 +3091,7 @@ public static partial class MsftEdit
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextfont
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextFont")]
-	[ComImport, Guid("8CC497C3-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("8CC497C3-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(dualIntType)]
 	public interface ITextFont
 	{
 		/// <summary>Gets a duplicate of this text font object.</summary>
@@ -4760,7 +4767,7 @@ public static partial class MsftEdit
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextfont2
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextFont2")]
-	[ComImport, Guid("C241F5E3-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5E3-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextFont2 : ITextFont
 	{
 		/// <summary>Gets a duplicate of this text font object.</summary>
@@ -7617,7 +7624,7 @@ public static partial class MsftEdit
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextpara
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextPara")]
-	[ComImport, Guid("8CC497C4-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("8CC497C4-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(dualIntType)]
 	public interface ITextPara
 	{
 		/// <summary>Creates a duplicate of the specified paragraph format object. The duplicate property is the default property of an ITextPara object.</summary>
@@ -8223,68 +8230,717 @@ public static partial class MsftEdit
 		// HRESULT SetKeepWithNext( [in] long Value );
 		void SetKeepWithNext(tomConstants Value);
 
+		/// <summary>Retrieves the distance used to indent all lines except the first line of a paragraph. The distance is relative to the left margin.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The left indentation, in floating-point points.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>To set the left indentation amount, call the ITextPara::SetIndents method.</para>
+		///   <para>To get the first-line indent, call ITextPara::GetFirstLineIndent.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getleftindent
+		// HRESULT GetLeftIndent( float *pValue );
 		float GetLeftIndent();
 
+		/// <summary>Retrieves the line-spacing value for the text range.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The line-spacing value. The following table shows how this value is interpreted for the different line-spacing rules.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Line spacing rule</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomLineSpaceSingle</description>
+		///       <description>The line-spacing value is ignored.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpace1pt5</description>
+		///       <description>The line-spacing value is ignored.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceDouble</description>
+		///       <description>The line-spacing value is ignored.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceAtLeast</description>
+		///       <description>The line-spacing value specifies the spacing, in floating-point points, from one line to the next. However, if the value is less than single spacing, the control displays single-spaced text.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceExactly</description>
+		///       <description>The line-spacing value specifies the exact spacing, in floating-point points, from one line to the next (even if the value is less than single spacing).</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceMultiple</description>
+		///       <description>The line-spacing value specifies the line spacing, in lines.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>To retrieve the line-spacing rule, call the ITextPara::GetLineSpacingRule method.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlinespacing
+		// HRESULT GetLineSpacing( float *pValue );
 		float GetLineSpacing();
 
-		int GetLineSpacingRule();
+		/// <summary>Retrieves the line-spacing rule for the text range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values to indicate the line-spacing rule.</para>
+		///   <para>tomLineSpaceSingle</para>
+		///   <para>tomLineSpace1pt5</para>
+		///   <para>tomLineSpaceDouble</para>
+		///   <para>tomLineSpaceAtLeast</para>
+		///   <para>tomLineSpaceExactly</para>
+		///   <para>tomLineSpaceMultiple</para>
+		///   <para>tomLineSpacePercent</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlinespacingrule
+		// HRESULT GetLineSpacingRule( long *pValue );
+		tomConstants GetLineSpacingRule();
 
-		int GetListAlignment();
+		/// <summary>Retrieves the kind of alignment to use for bulleted and numbered lists.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values to indicate the kind of bullet and numbering alignment.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomAlignLeft</description>
+		///       <description>Text is left aligned.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomAlignCenter</description>
+		///       <description>Text is centered in the line.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomAlignRight</description>
+		///       <description>Text is right aligned.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>For a description of the different types of lists, see the ITextPara::GetListType method.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlistalignment
+		// HRESULT GetListAlignment( long *pValue );
+		tomConstants GetListAlignment();
 
-		HRESULT SetListAlignment(int Value);
+		/// <summary>Sets the alignment of bulleted or numbered text used for paragraphs.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New list alignment value. For possible values, see ITextPara::GetListAlignment.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlistalignment
+		// HRESULT SetListAlignment( [in] long Value );
+		void SetListAlignment(tomConstants Value);
 
+		/// <summary>Retrieves the list level index used with paragraphs.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is the list level index. The value of <c>pValue</c> can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>0</description>
+		///       <description>No list.</description>
+		///     </item>
+		///     <item>
+		///       <description>1</description>
+		///       <description>First-level (outermost) list.</description>
+		///     </item>
+		///     <item>
+		///       <description>2</description>
+		///       <description>Second-level (nested) list. This is nested under a level 1 list item.</description>
+		///     </item>
+		///     <item>
+		///       <description>3</description>
+		///       <description>Third-level (nested) list. This is nested under a level 2 list item.</description>
+		///     </item>
+		///     <item>
+		///       <description>and so forth</description>
+		///       <description>Nesting continues similarly.</description>
+		///     </item>
+		///   </list>
+		///   <para>Â</para>
+		///   <para>Up to three levels are common in HTML documents.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlistlevelindex
+		// HRESULT GetListLevelIndex( long *pValue );
 		int GetListLevelIndex();
 
-		HRESULT SetListLevelIndex(int Value);
+		/// <summary>Sets the list level index used for paragraphs.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New list level index value. For possible values, see ITextPara::GetListLevelIndex.</para>
+		/// </param>
+		/// <remarks>Setting the list level index does not automatically change a list's indentation and other paragraph properties.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlistlevelindex
+		// HRESULT SetListLevelIndex( [in] long Value );
+		void SetListLevelIndex(int Value);
 
-		int GetListStart();
+		/// <summary>Retrieves the starting value or code of a list numbering sequence.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The starting value or code of a list numbering sequence. For the possible values, see the ITextPara::GetListType method.</para>
+		/// </returns>
+		/// <remarks>For a discussion on which sequence to use, see the ITextPara::GetListType method.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getliststart
+		// HRESULT GetListStart( long *pValue );
+		tomConstants GetListStart();
 
-		HRESULT SetListStart(int Value);
+		/// <summary>Sets the starting number or Unicode value for a numbered list.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New starting number or Unicode value for a numbered list.</para>
+		/// </param>
+		/// <remarks>Other characteristics of a list are specified by ITextPara::SetListType.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setliststart
+		// HRESULT SetListStart( [in] long Value );
+		void SetListStart(tomConstants Value);
 
+		/// <summary>Retrieves the list tab setting, which is the distance between the first-line indent and the text on the first line. The numbered or bulleted text is left-justified, centered, or right-justified at the first-line indent value.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The list tab setting. The list tab value is in floating-point points.</para>
+		/// </returns>
+		/// <remarks>To determine whether the numbered or bulleted text is left-justified, centered, or right-justified, call ITextPara::GetListAlignment.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlisttab
+		// HRESULT GetListTab( float *pValue );
 		float GetListTab();
 
-		HRESULT SetListTab(float Value);
+		/// <summary>Sets the list tab setting, which is the distance between the first indent and the start of the text on the first line.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New list tab value, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlisttab
+		// HRESULT SetListTab( [in] float Value );
+		void SetListTab(float Value);
 
-		int GetListType();
+		/// <summary>Retrieves the kind of numbering to use with paragraphs.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is of the following values to indicate the kind of list numbering.</para>
+		///   <para>tomListNone</para>
+		///   <para>tomListBullet</para>
+		///   <para>tomListNumberAsArabic</para>
+		///   <para>tomListNumberAsLCLetter</para>
+		///   <para>tomListNumberAsUCLetter</para>
+		///   <para>tomListNumberAsLCRoman</para>
+		///   <para>tomListNumberAsUCRoman</para>
+		///   <para>tomListNumberAsSequence</para>
+		///   <para>tomListNumberedCircle</para>
+		///   <para>tomListNumberedBlackCircleWingding</para>
+		///   <para>tomListNumberedWhiteCircleWingding</para>
+		///   <para>tomListNumberedArabicWide</para>
+		///   <para>tomListNumberedChS</para>
+		///   <para>tomListNumberedChT</para>
+		///   <para>tomListNumberedJpnChs</para>
+		///   <para>tomListNumberedJpnKor</para>
+		///   <para>tomListNumberedArabic1</para>
+		///   <para>tomListNumberedArabic2</para>
+		///   <para>tomListNumberedHebrew</para>
+		///   <para>tomListNumberedThaiAlpha</para>
+		///   <para>tomListNumberedThaiNum</para>
+		///   <para>tomListNumberedHindiAlpha</para>
+		///   <para>tomListNumberedHindiAlpha1</para>
+		///   <para>tomListNumberedHindiNum</para>
+		///   <para>By default, numbers are followed by a right parenthesis, for example: 1). However, <c>pValue</c> can include one of the following flags to indicate a different formatting.</para>
+		///   <para>tomListMinus</para>
+		///   <para>tomListParentheses</para>
+		///   <para>tomListPeriod</para>
+		///   <para>tomListPlain</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>Values above 32 correspond to Unicode values for bullets.</para>
+		///   <para>The mobile Microsoft Office version of the rich edit control uses tomIgnoreNumberStyle to suppress setting the style.</para>
+		///   <para>The following Microsoft Visual Basic for Applications (VBA) example numbers the paragraphs in a range, starting with the number 2 and following the numbers with a period.</para>
+		///   <para>For an example of tomListNumberAsSequence, set to 0x2780, which gives you circled numbers. The Unicode Standard has examples of many more numbering sequences.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlisttype
+		// HRESULT GetListType( long *pValue );
+		tomConstants GetListType();
 
-		HRESULT SetListType(int Value);
+		/// <summary>Sets the type of list to be used for paragraphs.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New list type. For possible list types, see the ITextPara::GetListType method.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlisttype
+		// HRESULT SetListType( [in] long Value );
+		void SetListType(tomConstants Value);
 
-		int GetNoLineNumber();
+		/// <summary>Determines whether paragraph numbering is enabled.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomTrue</description>
+		///       <description>Line numbering is disabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFalse</description>
+		///       <description>Line numbering is enabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>Paragraph numbering is when the paragraphs of a range are numbered. The number appears on the first line of a paragraph.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getnolinenumber
+		// HRESULT GetNoLineNumber( long *pValue );
+		tomConstants GetNoLineNumber();
 
-		HRESULT SetNoLineNumber(int Value);
+		/// <summary>Determines whether to suppress line numbering of paragraphs in a range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Indicates if line numbering is suppressed. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomTrue</description>
+		///       <description>Line numbering is disabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomFalse</description>
+		///       <description>Line numbering is enabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>This property concerns the numbering of paragraphs in a range. If <c>Value</c> is <c>tomFalse</c>, the number of the paragraph appears on the first line of the paragraph.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setnolinenumber
+		// HRESULT SetNoLineNumber( [in] long Value );
+		void SetNoLineNumber(tomConstants Value);
 
-		int GetPageBreakBefore();
+		/// <summary>Determines whether each paragraph in the range must begin on a new page.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomTrue</description>
+		///       <description>Each paragraph in this range must begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFalse</description>
+		///       <description>The paragraphs in this range do not need to begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getpagebreakbefore
+		// HRESULT GetPageBreakBefore( long *pValue );
+		tomConstants GetPageBreakBefore();
 
-		HRESULT SetPageBreakBefore(int Value);
+		/// <summary>Controls whether there is a page break before each paragraph in a range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A tomBool value that controls page breaks before paragraphs. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Paragraphs in this range must begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Paragraphs in this range do not need to begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomToggle</c>
+		///       </description>
+		///       <description>Toggle the property value.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>This method is included for compatibility with Microsoft Word; it does not affect how the rich edit control displays text.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setpagebreakbefore
+		// HRESULT SetPageBreakBefore( [in] long Value );
+		void SetPageBreakBefore(tomConstants Value);
 
+		/// <summary>Retrieves the size of the right margin indent of a paragraph.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The right indentation, in floating-point points.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getrightindent
+		// HRESULT GetRightIndent( float *pValue );
 		float GetRightIndent();
 
-		HRESULT SetRightIndent(float Value);
+		/// <summary>Sets the right margin of paragraph.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Right indent, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setrightindent
+		// HRESULT SetRightIndent( [in] float Value );
+		void SetRightIndent(float Value);
 
-		HRESULT SetIndents(float First, float Left, float Right);
+		/// <summary>Sets the first-line indent, the left indent, and the right indent for a paragraph.</summary>
+		/// <param name="First">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Indent of the first line in a paragraph, relative to the left indent. The value is in floating-point points and can be positive or negative.</para>
+		/// </param>
+		/// <param name="Left">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Left indent of all lines except the first line in a paragraph, relative to left margin. The value is in floating-point points and can be positive or negative.</para>
+		/// </param>
+		/// <param name="Right">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Right indent of all lines in paragraph, relative to the right margin. The value is in floating-point points and can be positive or negative. This value is optional.</para>
+		/// </param>
+		/// <remarks>Line indents are not allowed to position text in the margins. If the first-line indent is set to a negative value (for an outdented paragraph) while the left indent is zero, the first-line indent is reset to zero. To avoid this problem while retaining property sets, set the first-line indent value equal to zero either explicitly or by calling the ITextPara::Reset method. Then, call <c>ITextPara::SetIndents</c> to set a nonnegative, left-indent value and set the desired first-line indent.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setindents
+		// HRESULT SetIndents( [in] float First, [in] float Left, [in] float Right );
+		void SetIndents(float First, float Left, float Right);
 
-		HRESULT SetLineSpacing(int Rule, float Spacing);
+		/// <summary>Sets the paragraph line-spacing rule and the line spacing for a paragraph.</summary>
+		/// <param name="Rule">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Value of new line-spacing rule. For a list of possible rule values and further discussion, see the ITextPara::GetLineSpacingRule method.</para>
+		/// </param>
+		/// <param name="Spacing">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Value of new line spacing. If the line-spacing rule treats the <c>Spacing</c> value as a linear dimension, then <c>Spacing</c> is given in floating-point points.</para>
+		/// </param>
+		/// <remarks>The line-spacing rule and line spacing work together, and as a result, they must be set together, much as the first and left indents need to be set together.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlinespacing
+		// HRESULT SetLineSpacing( [in] long Rule, [in] float Spacing );
+		void SetLineSpacing(tomConstants Rule, float Spacing);
 
+		/// <summary>Retrieves the amount of vertical space below a paragraph.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The space-after value, in floating-point points.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getspaceafter
+		// HRESULT GetSpaceAfter( float *pValue );
 		float GetSpaceAfter();
 
-		HRESULT SetSpaceAfter(float Value);
+		/// <summary>Sets the amount of space that follows a paragraph.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New space-after value, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setspaceafter
+		// HRESULT SetSpaceAfter( [in] float Value );
+		void SetSpaceAfter(float Value);
 
+		/// <summary>Retrieves the amount of vertical space above a paragraph.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The space-before value, in floating-point points.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getspacebefore
+		// HRESULT GetSpaceBefore( float *pValue );
 		float GetSpaceBefore();
 
-		HRESULT SetSpaceBefore(float Value);
+		/// <summary>Sets the amount of space preceding a paragraph.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New space-before value, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setspacebefore
+		// HRESULT SetSpaceBefore( [in] float Value );
+		void SetSpaceBefore(float Value);
 
-		int GetWidowControl();
+		/// <summary>Retrieves the widow and orphan control state for the paragraphs in a range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that indicates the state of widow and orphan control. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Prevents the printing of a widow or orphan</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Allows the printing of a widow or orphan.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The widow-control property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>A widow is created when the last line of a paragraph is printed by itself at the top of a page. An orphan is when the first line of a paragraph is printed by itself at the bottom of a page.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getwidowcontrol
+		// HRESULT GetWidowControl( long *pValue );
+		tomConstants GetWidowControl();
 
-		HRESULT SetWidowControl(int Value);
+		/// <summary>Controls the suppression of widows and orphans.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A tomBool value that controls the suppression of widows and orphans. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomTrue</description>
+		///       <description>Prevents printing of widows and orphans.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomFalse</description>
+		///       <description>Allows printing of widows and orphans.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomToggle</description>
+		///       <description>The value is toggled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>No change.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>
+		///   <para>This method is included for compatibility with Microsoft Word; it does not affect how the rich edit control displays text.</para>
+		///   <para>A widow is created when the last line of a paragraph is printed by itself at the top of a page. An orphan is when the first line of a paragraph is printed by itself at the bottom of a page.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setwidowcontrol
+		// HRESULT SetWidowControl( [in] long Value );
+		void SetWidowControl(tomConstants Value);
 
+		/// <summary>Retrieves the tab count.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The tab count.</para>
+		/// </returns>
+		/// <remarks>The tab count of a new instance can be nonzero, depending on the underlying text engine. For example, Microsoft Word stories begin with no explicit tabs defined, while rich edit instances start with a single explicit tab. To be sure there are no explicit tabs (that is, to set the tab count to zero), call ITextPara::ClearAllTabs.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-gettabcount
+		// HRESULT GetTabCount( long *pCount );
 		int GetTabCount();
 
-		HRESULT AddTab(float tbPos, int tbAlign, int tbLeader);
+		/// <summary>Adds a tab at the displacement <c>tbPos</c>, with type <c>tbAlign</c>, and leader style, <c>tbLeader</c>.</summary>
+		/// <param name="tbPos">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New tab displacement, in floating-point points.</para>
+		/// </param>
+		/// <param name="tbAlign">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Alignment options for the tab position. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignLeft</c>
+		///       </description>
+		///       <description>Text is left justified from the tab position. This is the default.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignCenter</c>
+		///       </description>
+		///       <description>Text is centered on the tab position.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignRight</c>
+		///       </description>
+		///       <description>Text is right justified from the tab position.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignDecimal</c>
+		///       </description>
+		///       <description>The decimal point is set at the tab position. This is useful for aligning a column of decimal numbers.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignBar</c>
+		///       </description>
+		///       <description>A vertical bar is positioned at the tab position. Text is not affected. Alignment bars on nearby lines at the same position form a continuous vertical line.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="tbLeader">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Leader character style. A leader character is the character that is used to fill the space taken by a tab character. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomSpaces</c>
+		///       </description>
+		///       <description>Spaces are used. This is the default.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomDots</c>
+		///       </description>
+		///       <description>Dots are used.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomDashes</c>
+		///       </description>
+		///       <description>A dashed line is used.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomLines</c>
+		///       </description>
+		///       <description>A solid line is used.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>It is assumed that there is never a tab at position zero. If multiple paragraphs are described, the common subset of tabs will be returned with 0x8000 in the upper word of the tab type.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-addtab
+		// HRESULT AddTab( [in] float tbPos, [in] long tbAlign, [in] long tbLeader );
+		void AddTab(float tbPos, tomConstants tbAlign, tomConstants tbLeader);
 
-		HRESULT ClearAllTabs();
+		/// <summary>Clears all tabs, reverting to equally spaced tabs with the default tab spacing.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-clearalltabs
+		// HRESULT ClearAllTabs();
+		void ClearAllTabs();
 
-		HRESULT DeleteTab(float tbPos);
+		/// <summary>Deletes a tab at a specified displacement.</summary>
+		/// <param name="tbPos">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Displacement, in floating-point points, at which a tab should be deleted.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-deletetab
+		// HRESULT DeleteTab( float tbPos );
+		void DeleteTab(float tbPos);
 
+		/// <summary>Retrieves tab parameters (displacement, alignment, and leader style) for a specified tab.</summary>
+		/// <param name="iTab">
+		/// <para>Type: <c>long</c></para>
+		/// <para>Index of tab for which to retrieve info. It can be either a numerical index or a special value (see the following table). Since tab indexes are zero-based, <c>iTab</c> = zero gets the first tab defined, <c>iTab</c> = 1 gets the second tab defined, and so forth. The following table summarizes all of the possible values of <c>iTab</c>.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description><c>iTab</c></description>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description>tomTabBack</description>
+		/// <description>â3</description>
+		/// <description>Get tab previous to * <c>ptbPos</c></description>
+		/// </item>
+		/// <item>
+		/// <description>tomTabNext</description>
+		/// <description>â2</description>
+		/// <description>Get tab following * <c>ptbPos</c></description>
+		/// </item>
+		/// <item>
+		/// <description>tomTabHere</description>
+		/// <description>â1</description>
+		/// <description>Get tab at * <c>ptbPos</c></description>
+		/// </item>
+		/// <item>
+		/// <description />
+		/// <description>&gt;= 0</description>
+		/// <description>Get tab with index of <c>iTab</c> (and ignore <c>ptbPos</c>).</description>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ptbPos">
+		/// <para>Type: <c>float*</c></para>
+		/// <para>The tab displacement, in floating-point points. The value of * <c>ptbPos</c> is zero if the tab does not exist and the value of * <c>ptbPos</c> is tomUndefined if there are multiple values in the associated range.</para>
+		/// </param>
+		/// <param name="ptbAlign">
+		/// <para>Type: <c>long*</c></para>
+		/// <para>The tab alignment. For more information, see ITextPara::AddTab.</para>
+		/// </param>
+		/// <param name="ptbLeader">
+		/// <para>Type: <c>long*</c></para>
+		/// <para>The tab leader-character style. For more information, see ITextPara::AddTab.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If <c>ITextPara::GetTab</c> succeeds, it returns <c>S_OK</c>. If the method fails, it returns one of the following COM error codes. For more information about COM error codes, see Error Handling in COM.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>Value</c></description>
+		/// <description>Meaning</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_INVALIDARG</c></description>
+		/// <description>Invalid argument.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CO_E_RELEASED</c></description>
+		/// <description>The paragraph formatting object is attached to a range that has been deleted.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>S_FALSE</c></description>
+		/// <description>There is no tab corresponding to iTab.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-gettab
+		// HRESULT GetTab( long iTab, float *ptbPos, long *ptbAlign, long *ptbLeader );
+		[PreserveSig]
 		HRESULT GetTab(int iTab, out float ptbPos, out int ptbAlign, out int ptbLeader);
 	}
 
@@ -8294,55 +8950,1717 @@ public static partial class MsftEdit
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextpara2
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextPara2")]
-	[ComImport, Guid("C241F5E4-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5E4-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextPara2 : ITextPara
 	{
-		/// <summary>
-		/// <para>Not implemented.</para>
-		/// <para>Gets the borders collection.</para>
-		/// </summary>
-		/// <param name="ppBorders">
-		/// <para>Type: <c>IUnknown**</c></para>
-		/// <para>The borders collection.</para>
+		/// <summary>Creates a duplicate of the specified paragraph format object. The duplicate property is the default property of an ITextPara object.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextPara**</c></para>
+		///   <para>The duplicate ITextPara object.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getduplicate
+		// HRESULT GetDuplicate( ITextPara **ppPara );
+		new ITextPara GetDuplicate();
+
+		/// <summary>Sets the formatting for an existing paragraph by copying a given format.</summary>
+		/// <param name="pPara">
+		///   <para>Type: <c>ITextPara*</c></para>
+		///   <para>The ITextPara range that contains the new paragraph formatting.</para>
+		/// </param>
+		/// <remarks>The tomUndefined values have no effect, that is, they will not change the target values.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setduplicate
+		// HRESULT SetDuplicate( [in] ITextPara *pPara );
+		new void SetDuplicate([In, Optional] ITextPara? pPara);
+
+		/// <summary>Determines whether the paragraph formatting can be changed.</summary>
+		/// <param name="pValue">
+		/// <para>Type: <c>long*</c></para>
+		/// <para>A variable that is <c>tomTrue</c> if the paragraph formatting can be changed or <c>tomFalse</c> if it cannot be changed. This parameter can be null.</para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If the method succeeds, it returns <c>NOERROR</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>If paragraph formatting can change, <c>ITextPara::CanChange</c> succeeds and returns <c>S_OK</c>. If paragraph formatting cannot change, the method fails and returns S_FALSE. For more information about COM error codes, see Error Handling in COM.</para>
+		/// </returns>
+		/// <remarks>The *<c>pbCanChange</c> parameter returns <c>tomTrue</c> only if the paragraph formatting can be changed (that is, if no part of an associated range is protected and an associated document is not read-only). If this ITextPara object is a duplicate, no protection rules apply.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-canchange
+		// HRESULT CanChange( [retval] long *pValue );
+		[PreserveSig]
+		new HRESULT CanChange(out tomConstants pValue);
+
+		/// <summary>Determines if the current range has the same properties as a specified range.</summary>
+		/// <param name="pPara">
+		/// <para>Type: <c>ITextPara*</c></para>
+		/// <para>The ITextPara range that is compared to the current range.</para>
+		/// </param>
+		/// <param name="pValue">
+		/// <para>Type: <c>long*</c></para>
+		/// <para>The comparison result. The value can be null.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If the objects are equal, <c>ITextPara::IsEqual</c> succeeds and returns <c>S_OK</c>. If the objects are not equal, the method fails and returns S_FALSE. For more information about COM error codes, see Error Handling in COM.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-isequal
+		// HRESULT IsEqual( ITextPara *pPara, long *pValue );
+		[PreserveSig]
+		new HRESULT IsEqual([In, Optional] ITextPara? pPara, out int pValue);
+
+		/// <summary>Resets the paragraph formatting to a choice of default values.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Type of reset. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomDefault</description>
+		///       <description>Used for paragraph formatting that is defined by the RTF \pard, that is, the paragraph default control word.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>Used for all undefined values. The tomUndefined value is only valid for duplicate (clone) ITextPara objects.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-reset
+		// HRESULT Reset( [in] long Value );
+		new void Reset(tomConstants Value);
+
+		/// <summary>Retrieves the style handle to the paragraphs in the specified range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The paragraph style handle. For more information, see the Remarks.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The Text Object Model (TOM) version 1.0 has no way to specify the meanings of user-defined style handles. They depend on other facilities of the text system implementing TOM. Negative style handles are reserved for built-in character and paragraph styles. Currently defined values are listed in the following table. For a description of the following styles, see the Microsoft Word documentation.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Style</description>
+		///       <description>Value</description>
+		///       <description>Style</description>
+		///       <description>Value</description>
+		///     </listheader>
+		///     <item>
+		///       <description>StyleNormal</description>
+		///       <description>â1</description>
+		///       <description>StyleTableofAuthorities</description>
+		///       <description>â45</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading1</description>
+		///       <description>â2</description>
+		///       <description>StyleMacroText</description>
+		///       <description>â46</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading2</description>
+		///       <description>â3</description>
+		///       <description>StyleTOAHeading</description>
+		///       <description>â47</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading3</description>
+		///       <description>â4</description>
+		///       <description>StyleList</description>
+		///       <description>â48</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading4</description>
+		///       <description>â5</description>
+		///       <description>StyleListBullet</description>
+		///       <description>â49</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading5</description>
+		///       <description>â6</description>
+		///       <description>StyleListNumber</description>
+		///       <description>â50</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading6</description>
+		///       <description>â7</description>
+		///       <description>StyleList2</description>
+		///       <description>â51</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading7</description>
+		///       <description>â8</description>
+		///       <description>StyleList3</description>
+		///       <description>â52</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading8</description>
+		///       <description>â9</description>
+		///       <description>StyleList4</description>
+		///       <description>â53</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeading9</description>
+		///       <description>â10</description>
+		///       <description>StyleList5</description>
+		///       <description>â54</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex1</description>
+		///       <description>â11</description>
+		///       <description>StyleListBullet2</description>
+		///       <description>â55</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex2</description>
+		///       <description>â12</description>
+		///       <description>StyleListBullet3</description>
+		///       <description>â56</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex3</description>
+		///       <description>â13</description>
+		///       <description>StyleListBullet4</description>
+		///       <description>â57</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex4</description>
+		///       <description>â14</description>
+		///       <description>StyleListBullet5</description>
+		///       <description>â58</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex5</description>
+		///       <description>â15</description>
+		///       <description>StyleListNumber2</description>
+		///       <description>â59</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex6</description>
+		///       <description>â16</description>
+		///       <description>StyleListNumber3</description>
+		///       <description>â60</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex7</description>
+		///       <description>â17</description>
+		///       <description>StyleListNumber4</description>
+		///       <description>â61</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex8</description>
+		///       <description>â18</description>
+		///       <description>StyleListNumber5</description>
+		///       <description>â62</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndex9</description>
+		///       <description>â19</description>
+		///       <description>StyleTitle</description>
+		///       <description>â63</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC1</description>
+		///       <description>â20</description>
+		///       <description>StyleClosing</description>
+		///       <description>â64</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC2</description>
+		///       <description>â21</description>
+		///       <description>StyleSignature</description>
+		///       <description>â65</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC3</description>
+		///       <description>â22</description>
+		///       <description>StyleDefaultParagraphFont</description>
+		///       <description>â66</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC4</description>
+		///       <description>â23</description>
+		///       <description>StyleBodyText</description>
+		///       <description>â67</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC5</description>
+		///       <description>â24</description>
+		///       <description>StyleBodyTextIndent</description>
+		///       <description>â68</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC6</description>
+		///       <description>â25</description>
+		///       <description>StyleListContinue</description>
+		///       <description>â69</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC7</description>
+		///       <description>â26</description>
+		///       <description>StyleListContinue2</description>
+		///       <description>â70</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC8</description>
+		///       <description>â27</description>
+		///       <description>StyleListContinue3</description>
+		///       <description>â71</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTOC9</description>
+		///       <description>â28</description>
+		///       <description>StyleListContinue4</description>
+		///       <description>â72</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleNormalIndent</description>
+		///       <description>â29</description>
+		///       <description>StyleListContinue5</description>
+		///       <description>â73</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleFootnoteText</description>
+		///       <description>â30</description>
+		///       <description>StyleMessageHeader</description>
+		///       <description>â74</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleAnnotationText</description>
+		///       <description>â31</description>
+		///       <description>StyleSubtitle</description>
+		///       <description>â75</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleHeader</description>
+		///       <description>â32</description>
+		///       <description>StyleSalutation</description>
+		///       <description>â76</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleFooter</description>
+		///       <description>â33</description>
+		///       <description>StyleDate</description>
+		///       <description>â77</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleIndexHeading</description>
+		///       <description>â34</description>
+		///       <description>StyleBodyTextFirstIndent</description>
+		///       <description>â78</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleCaption</description>
+		///       <description>â35</description>
+		///       <description>StyleBodyTextFirstIndent2</description>
+		///       <description>â79</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleTableofFigures</description>
+		///       <description>â36</description>
+		///       <description>StyleNoteHeading</description>
+		///       <description>â80</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleEnvelopeAddress</description>
+		///       <description>â37</description>
+		///       <description>StyleBodyText2</description>
+		///       <description>â81</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleEnvelopeReturn</description>
+		///       <description>â38</description>
+		///       <description>StyleBodyText3</description>
+		///       <description>â82</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleFootnoteReference</description>
+		///       <description>â39</description>
+		///       <description>StyleBodyTextIndent2</description>
+		///       <description>â83</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleAnnotationReference</description>
+		///       <description>â40</description>
+		///       <description>StyleBodyTextIndent3</description>
+		///       <description>â84</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleLineNumber</description>
+		///       <description>â41</description>
+		///       <description>StyleBlockQuotation</description>
+		///       <description>â85</description>
+		///     </item>
+		///     <item>
+		///       <description>StylePageNumber</description>
+		///       <description>â42</description>
+		///       <description>StyleHyperlink</description>
+		///       <description>â86</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleEndnoteReference</description>
+		///       <description>â43</description>
+		///       <description>StyleHyperlinkFollowed</description>
+		///       <description>â87</description>
+		///     </item>
+		///     <item>
+		///       <description>StyleEndnoteText</description>
+		///       <description>â44</description>
+		///       <description>Â</description>
+		///       <description>Â</description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getstyle
+		// HRESULT GetStyle( long *pValue );
+		new int GetStyle();
+
+		/// <summary>Sets the paragraph style for the paragraphs in a range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New paragraph style handle. For a list of styles, see the Remarks section of ITextPara::GetStyle.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setstyle
+		// HRESULT SetStyle( [in] long Value );
+		new void SetStyle(int Value);
+
+		/// <summary>Retrieves the current paragraph alignment value.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The paragraph alignment, which can be one of the following values.</para>
+		///   <para>tomAlignLeft</para>
+		///   <para>tomAlignCenter</para>
+		///   <para>tomAlignRight</para>
+		///   <para>tomAlignJustify</para>
+		///   <para>tomAlignInterWord</para>
+		///   <para>tomAlignNewspaper</para>
+		///   <para>tomAlignInterLetter</para>
+		///   <para>tomAlignScaled</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getalignment
+		// HRESULT GetAlignment( long *pValue );
+		new tomConstants GetAlignment();
+
+		/// <summary>Sets the paragraph alignment.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New paragraph alignment. For a list of possible values, see the ITextPara::GetAlignment method.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setalignment
+		// HRESULT SetAlignment( [in] long Value );
+		new void SetAlignment(tomConstants Value);
+
+		/// <summary>Determines whether automatic hyphenation is enabled for the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Automatic hyphenation is enabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Automatic hyphenation is disabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The hyphenation property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>This property corresponds to the PFE_DONOTHYPHEN effect described in the PARAFORMAT2 structure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-gethyphenation
+		// HRESULT GetHyphenation( long *pValue );
+		new tomConstants GetHyphenation();
+
+		/// <summary>Controls hyphenation for the paragraphs in the range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Indicates how hyphenation is controlled. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomTrue</description>
+		///       <description>Automatic hyphenation is enabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomFalse</description>
+		///       <description>Automatic hyphenation is disabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>The hyphenation property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-sethyphenation
+		// HRESULT SetHyphenation( [in] long Value );
+		new void SetHyphenation(tomConstants Value);
+
+		/// <summary>Retrieves the amount used to indent the first line of a paragraph relative to the left indent. The left indent is the indent for all lines of the paragraph except the first line.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The first-line indentation amount in floating-point points.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>To set the first line indentation amount, call the ITextPara::SetIndents method.</para>
+		///   <para>To get and set the indent for all other lines of the paragraph (that is, the left indent), use ITextPara::GetLeftIndent and ITextPara::SetIndents.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getfirstlineindent
+		// HRESULT GetFirstLineIndent( float *pValue );
+		new float GetFirstLineIndent();
+
+		/// <summary>Determines whether page breaks are allowed within paragraphs.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Page breaks are not allowed within a paragraph.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Page breaks are allowed within a paragraph.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>This property corresponds to the PFE_KEEP effect described in the PARAFORMAT2 structure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getkeeptogether
+		// HRESULT GetKeepTogether( long *pValue );
+		new tomConstants GetKeepTogether();
+
+		/// <summary>Controls whether page breaks are allowed within a paragraph in a range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Indicates whether page breaks are allowed within a paragraph in a range. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomTrue</description>
+		///       <description>Page breaks are not allowed within a paragraph.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomFalse</description>
+		///       <description>Page breaks are allowed within a paragraph.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>This property corresponds to the PFE_KEEP effect described in the PARAFORMAT2 structure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setkeeptogether
+		// HRESULT SetKeepTogether( [in] long Value );
+		new void SetKeepTogether(tomConstants Value);
+
+		/// <summary>Determines whether page breaks are allowed between paragraphs in the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Page breaks are not allowed between paragraphs.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Page breaks are allowed between paragraphs.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>This property corresponds to the PFE_KEEPNEXT effect described in the PARAFORMAT2 structure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getkeepwithnext
+		// HRESULT GetKeepWithNext( long *pValue );
+		new int GetKeepWithNext();
+
+		/// <summary>Controls whether page breaks are allowed between the paragraphs in a range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Indicates if page breaks can be used between the paragraphs of a range. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomTrue</description>
+		///       <description>Page breaks are not allowed between paragraphs.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomFalse</description>
+		///       <description>Page breaks are allowed between paragraphs.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>This property corresponds to the PFE_KEEPNEXT effect described in the PARAFORMAT2 structure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setkeepwithnext
+		// HRESULT SetKeepWithNext( [in] long Value );
+		new void SetKeepWithNext(tomConstants Value);
+
+		/// <summary>Retrieves the distance used to indent all lines except the first line of a paragraph. The distance is relative to the left margin.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The left indentation, in floating-point points.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>To set the left indentation amount, call the ITextPara::SetIndents method.</para>
+		///   <para>To get the first-line indent, call ITextPara::GetFirstLineIndent.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getleftindent
+		// HRESULT GetLeftIndent( float *pValue );
+		new float GetLeftIndent();
+
+		/// <summary>Retrieves the line-spacing value for the text range.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The line-spacing value. The following table shows how this value is interpreted for the different line-spacing rules.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Line spacing rule</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomLineSpaceSingle</description>
+		///       <description>The line-spacing value is ignored.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpace1pt5</description>
+		///       <description>The line-spacing value is ignored.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceDouble</description>
+		///       <description>The line-spacing value is ignored.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceAtLeast</description>
+		///       <description>The line-spacing value specifies the spacing, in floating-point points, from one line to the next. However, if the value is less than single spacing, the control displays single-spaced text.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceExactly</description>
+		///       <description>The line-spacing value specifies the exact spacing, in floating-point points, from one line to the next (even if the value is less than single spacing).</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLineSpaceMultiple</description>
+		///       <description>The line-spacing value specifies the line spacing, in lines.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>To retrieve the line-spacing rule, call the ITextPara::GetLineSpacingRule method.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlinespacing
+		// HRESULT GetLineSpacing( float *pValue );
+		new float GetLineSpacing();
+
+		/// <summary>Retrieves the line-spacing rule for the text range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values to indicate the line-spacing rule.</para>
+		///   <para>tomLineSpaceSingle</para>
+		///   <para>tomLineSpace1pt5</para>
+		///   <para>tomLineSpaceDouble</para>
+		///   <para>tomLineSpaceAtLeast</para>
+		///   <para>tomLineSpaceExactly</para>
+		///   <para>tomLineSpaceMultiple</para>
+		///   <para>tomLineSpacePercent</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlinespacingrule
+		// HRESULT GetLineSpacingRule( long *pValue );
+		new tomConstants GetLineSpacingRule();
+
+		/// <summary>Retrieves the kind of alignment to use for bulleted and numbered lists.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values to indicate the kind of bullet and numbering alignment.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomAlignLeft</description>
+		///       <description>Text is left aligned.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomAlignCenter</description>
+		///       <description>Text is centered in the line.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomAlignRight</description>
+		///       <description>Text is right aligned.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>For a description of the different types of lists, see the ITextPara::GetListType method.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlistalignment
+		// HRESULT GetListAlignment( long *pValue );
+		new tomConstants GetListAlignment();
+
+		/// <summary>Sets the alignment of bulleted or numbered text used for paragraphs.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New list alignment value. For possible values, see ITextPara::GetListAlignment.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlistalignment
+		// HRESULT SetListAlignment( [in] long Value );
+		new void SetListAlignment(tomConstants Value);
+
+		/// <summary>Retrieves the list level index used with paragraphs.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is the list level index. The value of <c>pValue</c> can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>0</description>
+		///       <description>No list.</description>
+		///     </item>
+		///     <item>
+		///       <description>1</description>
+		///       <description>First-level (outermost) list.</description>
+		///     </item>
+		///     <item>
+		///       <description>2</description>
+		///       <description>Second-level (nested) list. This is nested under a level 1 list item.</description>
+		///     </item>
+		///     <item>
+		///       <description>3</description>
+		///       <description>Third-level (nested) list. This is nested under a level 2 list item.</description>
+		///     </item>
+		///     <item>
+		///       <description>and so forth</description>
+		///       <description>Nesting continues similarly.</description>
+		///     </item>
+		///   </list>
+		///   <para>Â</para>
+		///   <para>Up to three levels are common in HTML documents.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlistlevelindex
+		// HRESULT GetListLevelIndex( long *pValue );
+		new int GetListLevelIndex();
+
+		/// <summary>Sets the list level index used for paragraphs.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New list level index value. For possible values, see ITextPara::GetListLevelIndex.</para>
+		/// </param>
+		/// <remarks>Setting the list level index does not automatically change a list's indentation and other paragraph properties.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlistlevelindex
+		// HRESULT SetListLevelIndex( [in] long Value );
+		new void SetListLevelIndex(int Value);
+
+		/// <summary>Retrieves the starting value or code of a list numbering sequence.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The starting value or code of a list numbering sequence. For the possible values, see the ITextPara::GetListType method.</para>
+		/// </returns>
+		/// <remarks>For a discussion on which sequence to use, see the ITextPara::GetListType method.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getliststart
+		// HRESULT GetListStart( long *pValue );
+		new tomConstants GetListStart();
+
+		/// <summary>Sets the starting number or Unicode value for a numbered list.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New starting number or Unicode value for a numbered list.</para>
+		/// </param>
+		/// <remarks>Other characteristics of a list are specified by ITextPara::SetListType.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setliststart
+		// HRESULT SetListStart( [in] long Value );
+		new void SetListStart(tomConstants Value);
+
+		/// <summary>Retrieves the list tab setting, which is the distance between the first-line indent and the text on the first line. The numbered or bulleted text is left-justified, centered, or right-justified at the first-line indent value.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The list tab setting. The list tab value is in floating-point points.</para>
+		/// </returns>
+		/// <remarks>To determine whether the numbered or bulleted text is left-justified, centered, or right-justified, call ITextPara::GetListAlignment.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlisttab
+		// HRESULT GetListTab( float *pValue );
+		new float GetListTab();
+
+		/// <summary>Sets the list tab setting, which is the distance between the first indent and the start of the text on the first line.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New list tab value, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlisttab
+		// HRESULT SetListTab( [in] float Value );
+		new void SetListTab(float Value);
+
+		/// <summary>Retrieves the kind of numbering to use with paragraphs.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is of the following values to indicate the kind of list numbering.</para>
+		///   <para>tomListNone</para>
+		///   <para>tomListBullet</para>
+		///   <para>tomListNumberAsArabic</para>
+		///   <para>tomListNumberAsLCLetter</para>
+		///   <para>tomListNumberAsUCLetter</para>
+		///   <para>tomListNumberAsLCRoman</para>
+		///   <para>tomListNumberAsUCRoman</para>
+		///   <para>tomListNumberAsSequence</para>
+		///   <para>tomListNumberedCircle</para>
+		///   <para>tomListNumberedBlackCircleWingding</para>
+		///   <para>tomListNumberedWhiteCircleWingding</para>
+		///   <para>tomListNumberedArabicWide</para>
+		///   <para>tomListNumberedChS</para>
+		///   <para>tomListNumberedChT</para>
+		///   <para>tomListNumberedJpnChs</para>
+		///   <para>tomListNumberedJpnKor</para>
+		///   <para>tomListNumberedArabic1</para>
+		///   <para>tomListNumberedArabic2</para>
+		///   <para>tomListNumberedHebrew</para>
+		///   <para>tomListNumberedThaiAlpha</para>
+		///   <para>tomListNumberedThaiNum</para>
+		///   <para>tomListNumberedHindiAlpha</para>
+		///   <para>tomListNumberedHindiAlpha1</para>
+		///   <para>tomListNumberedHindiNum</para>
+		///   <para>By default, numbers are followed by a right parenthesis, for example: 1). However, <c>pValue</c> can include one of the following flags to indicate a different formatting.</para>
+		///   <para>tomListMinus</para>
+		///   <para>tomListParentheses</para>
+		///   <para>tomListPeriod</para>
+		///   <para>tomListPlain</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>Values above 32 correspond to Unicode values for bullets.</para>
+		///   <para>The mobile Microsoft Office version of the rich edit control uses tomIgnoreNumberStyle to suppress setting the style.</para>
+		///   <para>The following Microsoft Visual Basic for Applications (VBA) example numbers the paragraphs in a range, starting with the number 2 and following the numbers with a period.</para>
+		///   <para>For an example of tomListNumberAsSequence, set to 0x2780, which gives you circled numbers. The Unicode Standard has examples of many more numbering sequences.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getlisttype
+		// HRESULT GetListType( long *pValue );
+		new tomConstants GetListType();
+
+		/// <summary>Sets the type of list to be used for paragraphs.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New list type. For possible list types, see the ITextPara::GetListType method.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlisttype
+		// HRESULT SetListType( [in] long Value );
+		new void SetListType(tomConstants Value);
+
+		/// <summary>Determines whether paragraph numbering is enabled.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomTrue</description>
+		///       <description>Line numbering is disabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFalse</description>
+		///       <description>Line numbering is enabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>Paragraph numbering is when the paragraphs of a range are numbered. The number appears on the first line of a paragraph.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getnolinenumber
+		// HRESULT GetNoLineNumber( long *pValue );
+		new tomConstants GetNoLineNumber();
+
+		/// <summary>Determines whether to suppress line numbering of paragraphs in a range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Indicates if line numbering is suppressed. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomTrue</description>
+		///       <description>Line numbering is disabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomFalse</description>
+		///       <description>Line numbering is enabled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>This property concerns the numbering of paragraphs in a range. If <c>Value</c> is <c>tomFalse</c>, the number of the paragraph appears on the first line of the paragraph.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setnolinenumber
+		// HRESULT SetNoLineNumber( [in] long Value );
+		new void SetNoLineNumber(tomConstants Value);
+
+		/// <summary>Determines whether each paragraph in the range must begin on a new page.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A variable that is one of the following values:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomTrue</description>
+		///       <description>Each paragraph in this range must begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFalse</description>
+		///       <description>The paragraphs in this range do not need to begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomUndefined</description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getpagebreakbefore
+		// HRESULT GetPageBreakBefore( long *pValue );
+		new tomConstants GetPageBreakBefore();
+
+		/// <summary>Controls whether there is a page break before each paragraph in a range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A tomBool value that controls page breaks before paragraphs. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Paragraphs in this range must begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Paragraphs in this range do not need to begin on a new page.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomToggle</c>
+		///       </description>
+		///       <description>Toggle the property value.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>This method is included for compatibility with Microsoft Word; it does not affect how the rich edit control displays text.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setpagebreakbefore
+		// HRESULT SetPageBreakBefore( [in] long Value );
+		new void SetPageBreakBefore(tomConstants Value);
+
+		/// <summary>Retrieves the size of the right margin indent of a paragraph.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The right indentation, in floating-point points.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getrightindent
+		// HRESULT GetRightIndent( float *pValue );
+		new float GetRightIndent();
+
+		/// <summary>Sets the right margin of paragraph.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Right indent, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setrightindent
+		// HRESULT SetRightIndent( [in] float Value );
+		new void SetRightIndent(float Value);
+
+		/// <summary>Sets the first-line indent, the left indent, and the right indent for a paragraph.</summary>
+		/// <param name="First">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Indent of the first line in a paragraph, relative to the left indent. The value is in floating-point points and can be positive or negative.</para>
+		/// </param>
+		/// <param name="Left">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Left indent of all lines except the first line in a paragraph, relative to left margin. The value is in floating-point points and can be positive or negative.</para>
+		/// </param>
+		/// <param name="Right">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Right indent of all lines in paragraph, relative to the right margin. The value is in floating-point points and can be positive or negative. This value is optional.</para>
+		/// </param>
+		/// <remarks>Line indents are not allowed to position text in the margins. If the first-line indent is set to a negative value (for an outdented paragraph) while the left indent is zero, the first-line indent is reset to zero. To avoid this problem while retaining property sets, set the first-line indent value equal to zero either explicitly or by calling the ITextPara::Reset method. Then, call <c>ITextPara::SetIndents</c> to set a nonnegative, left-indent value and set the desired first-line indent.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setindents
+		// HRESULT SetIndents( [in] float First, [in] float Left, [in] float Right );
+		new void SetIndents(float First, float Left, float Right);
+
+		/// <summary>Sets the paragraph line-spacing rule and the line spacing for a paragraph.</summary>
+		/// <param name="Rule">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Value of new line-spacing rule. For a list of possible rule values and further discussion, see the ITextPara::GetLineSpacingRule method.</para>
+		/// </param>
+		/// <param name="Spacing">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Value of new line spacing. If the line-spacing rule treats the <c>Spacing</c> value as a linear dimension, then <c>Spacing</c> is given in floating-point points.</para>
+		/// </param>
+		/// <remarks>The line-spacing rule and line spacing work together, and as a result, they must be set together, much as the first and left indents need to be set together.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setlinespacing
+		// HRESULT SetLineSpacing( [in] long Rule, [in] float Spacing );
+		new void SetLineSpacing(tomConstants Rule, float Spacing);
+
+		/// <summary>Retrieves the amount of vertical space below a paragraph.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The space-after value, in floating-point points.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getspaceafter
+		// HRESULT GetSpaceAfter( float *pValue );
+		new float GetSpaceAfter();
+
+		/// <summary>Sets the amount of space that follows a paragraph.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New space-after value, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setspaceafter
+		// HRESULT SetSpaceAfter( [in] float Value );
+		new void SetSpaceAfter(float Value);
+
+		/// <summary>Retrieves the amount of vertical space above a paragraph.</summary>
+		/// <returns>
+		///   <para>Type: <c>float*</c></para>
+		///   <para>The space-before value, in floating-point points.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getspacebefore
+		// HRESULT GetSpaceBefore( float *pValue );
+		new float GetSpaceBefore();
+
+		/// <summary>Sets the amount of space preceding a paragraph.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New space-before value, in floating-point points.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setspacebefore
+		// HRESULT SetSpaceBefore( [in] float Value );
+		new void SetSpaceBefore(float Value);
+
+		/// <summary>Retrieves the widow and orphan control state for the paragraphs in a range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that indicates the state of widow and orphan control. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Prevents the printing of a widow or orphan</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Allows the printing of a widow or orphan.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The widow-control property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		/// <remarks>A widow is created when the last line of a paragraph is printed by itself at the top of a page. An orphan is when the first line of a paragraph is printed by itself at the bottom of a page.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-getwidowcontrol
+		// HRESULT GetWidowControl( long *pValue );
+		new tomConstants GetWidowControl();
+
+		/// <summary>Controls the suppression of widows and orphans.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A tomBool value that controls the suppression of widows and orphans. It can be one of the following possible values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c> tomTrue</description>
+		///       <description>Prevents printing of widows and orphans.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomFalse</description>
+		///       <description>Allows printing of widows and orphans.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomToggle</description>
+		///       <description>The value is toggled.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c> tomUndefined</description>
+		///       <description>No change.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>
+		///   <para>This method is included for compatibility with Microsoft Word; it does not affect how the rich edit control displays text.</para>
+		///   <para>A widow is created when the last line of a paragraph is printed by itself at the top of a page. An orphan is when the first line of a paragraph is printed by itself at the bottom of a page.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-setwidowcontrol
+		// HRESULT SetWidowControl( [in] long Value );
+		new void SetWidowControl(tomConstants Value);
+
+		/// <summary>Retrieves the tab count.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The tab count.</para>
+		/// </returns>
+		/// <remarks>The tab count of a new instance can be nonzero, depending on the underlying text engine. For example, Microsoft Word stories begin with no explicit tabs defined, while rich edit instances start with a single explicit tab. To be sure there are no explicit tabs (that is, to set the tab count to zero), call ITextPara::ClearAllTabs.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-gettabcount
+		// HRESULT GetTabCount( long *pCount );
+		new int GetTabCount();
+
+		/// <summary>Adds a tab at the displacement <c>tbPos</c>, with type <c>tbAlign</c>, and leader style, <c>tbLeader</c>.</summary>
+		/// <param name="tbPos">
+		///   <para>Type: <c>float</c></para>
+		///   <para>New tab displacement, in floating-point points.</para>
+		/// </param>
+		/// <param name="tbAlign">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Alignment options for the tab position. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignLeft</c>
+		///       </description>
+		///       <description>Text is left justified from the tab position. This is the default.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignCenter</c>
+		///       </description>
+		///       <description>Text is centered on the tab position.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignRight</c>
+		///       </description>
+		///       <description>Text is right justified from the tab position.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignDecimal</c>
+		///       </description>
+		///       <description>The decimal point is set at the tab position. This is useful for aligning a column of decimal numbers.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomAlignBar</c>
+		///       </description>
+		///       <description>A vertical bar is positioned at the tab position. Text is not affected. Alignment bars on nearby lines at the same position form a continuous vertical line.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="tbLeader">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Leader character style. A leader character is the character that is used to fill the space taken by a tab character. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomSpaces</c>
+		///       </description>
+		///       <description>Spaces are used. This is the default.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomDots</c>
+		///       </description>
+		///       <description>Dots are used.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomDashes</c>
+		///       </description>
+		///       <description>A dashed line is used.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomLines</c>
+		///       </description>
+		///       <description>A solid line is used.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <remarks>It is assumed that there is never a tab at position zero. If multiple paragraphs are described, the common subset of tabs will be returned with 0x8000 in the upper word of the tab type.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-addtab
+		// HRESULT AddTab( [in] float tbPos, [in] long tbAlign, [in] long tbLeader );
+		new void AddTab(float tbPos, tomConstants tbAlign, tomConstants tbLeader);
+
+		/// <summary>Clears all tabs, reverting to equally spaced tabs with the default tab spacing.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-clearalltabs
+		// HRESULT ClearAllTabs();
+		new void ClearAllTabs();
+
+		/// <summary>Deletes a tab at a specified displacement.</summary>
+		/// <param name="tbPos">
+		///   <para>Type: <c>float</c></para>
+		///   <para>Displacement, in floating-point points, at which a tab should be deleted.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-deletetab
+		// HRESULT DeleteTab( float tbPos );
+		new void DeleteTab(float tbPos);
+
+		/// <summary>Retrieves tab parameters (displacement, alignment, and leader style) for a specified tab.</summary>
+		/// <param name="iTab">
+		/// <para>Type: <c>long</c></para>
+		/// <para>Index of tab for which to retrieve info. It can be either a numerical index or a special value (see the following table). Since tab indexes are zero-based, <c>iTab</c> = zero gets the first tab defined, <c>iTab</c> = 1 gets the second tab defined, and so forth. The following table summarizes all of the possible values of <c>iTab</c>.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description><c>iTab</c></description>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description>tomTabBack</description>
+		/// <description>â3</description>
+		/// <description>Get tab previous to * <c>ptbPos</c></description>
+		/// </item>
+		/// <item>
+		/// <description>tomTabNext</description>
+		/// <description>â2</description>
+		/// <description>Get tab following * <c>ptbPos</c></description>
+		/// </item>
+		/// <item>
+		/// <description>tomTabHere</description>
+		/// <description>â1</description>
+		/// <description>Get tab at * <c>ptbPos</c></description>
+		/// </item>
+		/// <item>
+		/// <description />
+		/// <description>&gt;= 0</description>
+		/// <description>Get tab with index of <c>iTab</c> (and ignore <c>ptbPos</c>).</description>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ptbPos">
+		/// <para>Type: <c>float*</c></para>
+		/// <para>The tab displacement, in floating-point points. The value of * <c>ptbPos</c> is zero if the tab does not exist and the value of * <c>ptbPos</c> is tomUndefined if there are multiple values in the associated range.</para>
+		/// </param>
+		/// <param name="ptbAlign">
+		/// <para>Type: <c>long*</c></para>
+		/// <para>The tab alignment. For more information, see ITextPara::AddTab.</para>
+		/// </param>
+		/// <param name="ptbLeader">
+		/// <para>Type: <c>long*</c></para>
+		/// <para>The tab leader-character style. For more information, see ITextPara::AddTab.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If <c>ITextPara::GetTab</c> succeeds, it returns <c>S_OK</c>. If the method fails, it returns one of the following COM error codes. For more information about COM error codes, see Error Handling in COM.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>Value</c></description>
+		/// <description>Meaning</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_INVALIDARG</c></description>
+		/// <description>Invalid argument.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CO_E_RELEASED</c></description>
+		/// <description>The paragraph formatting object is attached to a range that has been deleted.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>S_FALSE</c></description>
+		/// <description>There is no tab corresponding to iTab.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara-gettab
+		// HRESULT GetTab( long iTab, float *ptbPos, long *ptbAlign, long *ptbLeader );
+		[PreserveSig]
+		new HRESULT GetTab(int iTab, out float ptbPos, out int ptbAlign, out int ptbLeader);
+
+		/// <summary>
+		///   <para>Not implemented.</para>
+		///   <para>Gets the borders collection.</para>
+		/// </summary>
+		/// <returns>
+		///   <para>Type: <c>IUnknown**</c></para>
+		///   <para>The borders collection.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-getborders
 		// HRESULT GetBorders( [out, retval] IUnknown **ppBorders );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
 		object GetBorders();
 
+		/// <summary>Gets a duplicate of this text paragraph format object.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextPara2**</c></para>
+		///   <para>The duplicate text paragraph format object</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-getduplicate2
+		// HRESULT GetDuplicate2( [out, retval] ITextPara2 **ppPara );
 		ITextPara2 GetDuplicate2();
 
-		HRESULT SetDuplicate2([In, Optional] ITextPara2? pPara);
+		/// <summary>Sets the properties of this object by copying the properties of another text paragraph object.</summary>
+		/// <param name="pPara">
+		///   <para>Type: <c>ITextPara2*</c></para>
+		///   <para>The text paragraph object to copy from.</para>
+		/// </param>
+		/// <remarks>
+		///   <c>tomUndefined</c> values have no effect.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-setduplicate2
+		// HRESULT SetDuplicate2( [in] ITextPara2 *pPara );
+		void SetDuplicate2([In, Optional] ITextPara2? pPara);
 
-		int GetFontAlignment();
+		/// <summary>Gets the paragraph font alignment state.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The paragraph font alignment state. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Font Alignment States</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomFontAlignmentAuto (default)</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentTop</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentBaseline</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentBottom</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentCenter</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-getfontalignment
+		// HRESULT GetFontAlignment( [out, retval] long *pValue );
+		tomConstants GetFontAlignment();
 
-		HRESULT SetFontAlignment(int Value);
+		/// <summary>Sets the paragraph font alignment for Chinese, Japanese, Korean text.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The paragraph font alignment. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Font Alignment States</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomFontAlignmentAuto (default)</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentTop</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentBaseline</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentBottom</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFontAlignmentCenter</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-setfontalignment
+		// HRESULT SetFontAlignment( [in] long Value );
+		void SetFontAlignment(tomConstants Value);
 
-		int GetHangingPunctuation();
+		/// <summary>Gets whether to hang punctuation symbols on the right margin when the paragraph is justified.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Hang punctuation symbols on the right margin.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Do not hang punctuation symbols on the right margin.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The HangingPunctuation property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-gethangingpunctuation
+		// HRESULT GetHangingPunctuation( [out, retval] long *pValue );
+		tomConstants GetHangingPunctuation();
 
-		HRESULT SetHangingPunctuation(int Value);
+		/// <summary>Sets whether to hang punctuation symbols on the right margin when the paragraph is justified.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A tomBool value that can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Hang punctuation symbols on the right margin.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Do not hang punctuation symbols on the right margin.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomToggle</c>
+		///       </description>
+		///       <description>Toggle the HangingPunctuation property.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The HangingPunctuation property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-sethangingpunctuation
+		// HRESULT SetHangingPunctuation( [in] long Value );
+		void SetHangingPunctuation(tomConstants Value);
 
-		int GetSnapToGrid();
+		/// <summary>Gets whether paragraph lines snap to a vertical grid that could be defined for the whole document.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Paragraph lines snap to a vertical grid.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Paragraph lines do not snap to a grid.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The SnapToGrid property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-getsnaptogrid
+		// HRESULT GetSnapToGrid( [out, retval] long *pValue );
+		tomConstants GetSnapToGrid();
 
-		HRESULT SetSnapToGrid(int Value);
+		/// <summary>Sets whether paragraph lines snap to a vertical grid that could be defined for the whole document.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A tomBool value that can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Paragraph lines snap to a vertical grid.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Paragraph lines do not snap to a grid.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomToggle</c>
+		///       </description>
+		///       <description>Toggle the SnapToGrid property.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The SnapToGrid property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-setsnaptogrid
+		// HRESULT SetSnapToGrid( [in] long Value );
+		void SetSnapToGrid(tomConstants Value);
 
-		int GetTrimPunctuationAtStart();
+		/// <summary>Gets whether to trim the leading space of a punctuation symbol at the start of a line.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Trim the leading space of a punctuation symbol at the start of a line.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Do not trim the leading space of a punctuation symbol at the start of a line.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The TrimPunctuationAtStart property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-gettrimpunctuationatstart
+		// HRESULT GetTrimPunctuationAtStart( [out, retval] long *pValue );
+		tomConstants GetTrimPunctuationAtStart();
 
-		HRESULT SetTrimPunctuationAtStart(int Value);
+		/// <summary>Sets whether to trim the leading space of a punctuation symbol at the start of a line.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A tomBool that indicates whether to trim the leading space of a punctuation symbol. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomTrue</c>
+		///       </description>
+		///       <description>Trim the leading space of a punctuation symbol at the start of a line.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFalse</c>
+		///       </description>
+		///       <description>Do not trim the leading space of a punctuation symbol at the start of a line.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomToggle</c>
+		///       </description>
+		///       <description>Toggle the TrimPunctuationAtStart property.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUndefined</c>
+		///       </description>
+		///       <description>The TrimPunctuationAtStart property is undefined.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-settrimpunctuationatstart
+		// HRESULT SetTrimPunctuationAtStart( [in] long Value );
+		void SetTrimPunctuationAtStart(tomConstants Value);
 
-		HRESULT GetEffects(out int pValue, out int pMask);
+		/// <summary>Gets the paragraph format effects.</summary>
+		/// <param name="pValue">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The paragraph effects. This value can be a combination of the following flags.</para>
+		///   <para>tomParaEffectRTL</para>
+		///   <para>tomParaEffectKeep</para>
+		///   <para>tomParaEffectKeepNext</para>
+		///   <para>tomParaEffectPageBreakBefore</para>
+		///   <para>tomParaEffectNoLineNumber</para>
+		///   <para>tomParaEffectNoWidowControl</para>
+		///   <para>tomParaEffectDoNotHyphen</para>
+		///   <para>tomParaEffectSideBySide</para>
+		///   <para>tomParaEffectCollapsed</para>
+		///   <para>tomParaEffectOutlineLevel</para>
+		///   <para>tomParaEffectBox</para>
+		///   <para>tomParaEffectTableRowDelimiter</para>
+		///   <para>tomParaEffectTable</para>
+		/// </param>
+		/// <param name="pMask">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The differences in the flags over the range. A value of 1 indicates that the corresponding effect is the same over the range. For an insertion point, the values equal 1 for all defined effects.</para>
+		/// </param>
+		/// <remarks>If the <c>tomTable</c> flag is set, you can use the ITextRange2::GetTable method to get more table properties.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-geteffects
+		// HRESULT GetEffects( [out] long *pValue, [out] long *pMask );
+		void GetEffects(out tomConstants pValue, out tomConstants pMask);
 
-		HRESULT GetProperty(int Type, out int pValue);
+		/// <summary>Gets the value of the specified property.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The ID of the property value to retrieve.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The property value.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The tomParaPropMathAlign property sets the math alignment for math paragraphs in a text paragraph. It can have one of the following values.</para>
+		///   <list />
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-getproperty
+		// HRESULT GetProperty( [in] long Type, [out] long *pValue );
+		tomConstants GetProperty(int Type);
 
-		HRESULT IsEqual2([In, Optional] ITextPara2? pPara, out int pB);
+		/// <summary>Determines whether this text paragraph object has the same properties as the specified text paragraph object.</summary>
+		/// <param name="pPara">
+		///   <para>Type: <c>ITextPara2*</c></para>
+		///   <para>The text paragraph object to compare against.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that is <c>tomTrue</c> if the text paragraph objects have the same properties, or <c>tomFalse</c> if they don't. This parameter can be <c>NULL</c>.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-isequal2
+		// HRESULT IsEqual2( [in] ITextPara2 *pPara, [out, retval] long *pB );
+		tomConstants IsEqual2([In, Optional] ITextPara2? pPara);
 
-		HRESULT SetEffects(int Value, int Mask);
+		/// <summary>Sets the paragraph format effects.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The paragraph effects value.</para>
+		///   <para>This value can be a combination of the flags defined in the table for ITextPara2::GetEffects.</para>
+		/// </param>
+		/// <param name="Mask">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The desired mask.</para>
+		///   <para>This value can be a combination of the flags defined in the table for ITextPara2::GetEffects.</para>
+		///   <para>Only effects with the corresponding mask flag set are modified.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-seteffects
+		// HRESULT SetEffects( [in] long Value, [in] long Mask );
+		void SetEffects(tomConstants Value, tomConstants Mask);
 
-		HRESULT SetProperty(int Type, int Value);
+		/// <summary>Sets the property value.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The property ID of the property value to set. See ITextPara2::GetProperty for a list of defined properties.</para>
+		/// </param>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The property value to set.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-setproperty
+		// HRESULT SetProperty( [in] long Type, [in] long Value );
+		void SetProperty(int Type, int Value);
 	}
 
 	/// <summary>The <c>ITextRange</c> objects are powerful editing and data-binding tools that allow a program to select text in a story and then examine or change that text.</summary>
@@ -8474,108 +10792,1280 @@ public static partial class MsftEdit
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextrange
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextRange")]
-	[ComImport, Guid("8CC497C2-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("8CC497C2-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(dualIntType)]
 	public interface ITextRange
 	{
-		HRESULT GetText([MarshalAs(UnmanagedType.BStr)] out string pbstr);
+		/// <summary>Gets the plain text in this range. The Text property is the default property of the ITextRange interface.</summary>
+		/// <returns>
+		///   <para>Type: <c>BSTR*</c></para>
+		///   <para>The text.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The <c>ITextRange::GetText</c> method returns the plain text in the range. The Text property is the default property for ITextRange; this is, it is automatically invoked for a range, as in the following Microsoft Visual Basic for Applications (VBA) example.</para>
+		///   <para>Some of the examples below use this fact. The ITextRange::SetText method substitutes <c>bstr</c> for the range text. For processing a single character, the Char property is more efficient than the Text property and does not require creating a single character range for storing a character. If the range is degenerate, the Text property lets you insert text easily. You can also delete the text in a range, as shown in the following VBA examples.</para>
+		///   <para>You can use the <c>Text</c> property to copy plain text from one place to another, simply by setting one range equal to another. (This is quite different from the <c>Duplicate</c> property; for more information, see ITextRange::GetDuplicate). The following Microsoft Visual Basic example statement sets the text in the range1 to that in range2.</para>
+		///   <para>The ranges can be in different stories or even in different applications. However, they do imply copying the text first into a <c>BSTR</c> and then from that string to the target location. For large amounts of text, the ITextRange::Copy and ITextRange::Paste methods can be faster, since they can perform the copy directly from source to target and with any format supported by the source and target.</para>
+		///   <para>The text returned by the Text property is given in Unicode. The end-of-paragraph mark may be given by 0x2029 (the Unicode Paragraph Separator), or by carriage return/line feed (CR/LF) (0xd, 0xa), or by a carriage return alone, depending on the original file. Microsoft Word uses a carriage return alone, unless it reads another choice in from a file, the clipboard, or an IDataObject. The placeholder for an embedded object is given by the special character, <c>WCH_EMBEDDING</c>, which has the Unicode value 0xFFFC.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-gettext
+		// HRESULT GetText( BSTR *pbstr );
+		[return: MarshalAs(UnmanagedType.BStr)]
+		string GetText();
 
-		HRESULT SetText([MarshalAs(UnmanagedType.BStr)] string bstr);
+		/// <summary>Sets the text in this range.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>Text that replaces the current text in this range. If null, the current text is deleted.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>
+		///     <c>ITextRange::SetText</c> replaces the text in the range with the new text. In contrast, TypeText replaces the selection with the text <c>bstr</c> and leaves the selection as an insertion point just following the inserted text, just as if you had typed the text in. For UI selection behavior, see <c>TypeText</c>.</para>
+		///   <para>If, after you call <c>ITextRange::SetText</c>, you call ITextRange::GetText, you get back the same text that you set with the <c>ITextRange::SetText</c> method (unless some other range has changed that text in between the calls).</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-settext
+		// HRESULT SetText( [in] BSTR bstr );
+		void SetText([MarshalAs(UnmanagedType.BStr)] string bstr);
 
+		/// <summary>Gets the character at the start position of the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The start character position of the range.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The following Microsoft Visual Basic example sets <c>ch</c> equal to the character at the start of the range.</para>
+		///   <para>Similarly, ITextRange::SetChar overwrites the character at the start of the range with the specified character. The characters retrieved and set by these methods are <c>LONG</c> variables, which hide the way that they are stored in the backing store (as bytes, words, variable-length, and so forth), and they do not require using a <c>BSTR</c>.</para>
+		///   <para>The Char property, which can do most things that a characters collection can, has two big advantages:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>It can reference any character in the parent story instead of being limited to the parent range.</description>
+		///     </item>
+		///     <item>
+		///       <description>It is significantly faster, since <c>LONG</c>s are involved instead of range objects.</description>
+		///     </item>
+		///   </list>
+		///   <para>Accordingly, the Text Object Model (TOM) does not support a characters collection.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getchar
+		// HRESULT GetChar( long *pChar );
 		int GetChar();
 
-		HRESULT SetChar(int Char);
+		/// <summary>Sets the character at the starting position of the range.</summary>
+		/// <param name="Char">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New value for character at the starting position.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>
+		///     <c>ITextRange::SetChar</c> lets you specify the precise character code to use. However, string literals with similar looking glyphs can be misleading.</para>
+		///   <para>The characters set by this method are <c>LONG</c> instead of a <c>BSTR</c>. This hides the way that they are stored in the backing store, (as bytes, words, variable-length, and so forth).</para>
+		///   <para>Frequently on systems that do not have automatic word-wrapping, documents have hard carriage returns inserted just for line breaks. The following code shows a simple, but not perfect, way to convert such hard carriage returns back to blanks for the story that is associated with the range r.</para>
+		///   <para>Alternatively, you could use the following inside the IF loop.</para>
+		///   <para>This approach enables you to wrap the text to other widths. However, the algorithm isn't perfect: it assumes that a hard carriage return that is followed by anything other than white space (blank, tab, line feed, carriage return, and so forth) should be replaced by a blank. The algorithm also assumes that the carriage return character is a single character like carriage return or the Unicode end-of-paragraph (EOP) 0x2029 character. And, the combination carriage return and line feed isn't matched and would require writing and executing more code (or use ). Another caution is that there are other cases, such as mixed code and documentation, where the algorithm does not work correctly.</para>
+		///   <para>However, <c>ITextRange::SetChar</c> is more efficient than a replace operation that is accomplished by a delete followed by an insertion. Thus, rewriting the code without using <c>ITextRange::SetChar</c> would probably be much slower.</para>
+		///   <para>The <c>Char</c> property, which can do most things that a characters collection can, has two big advantages: it can reference any character in the parent story instead of being limited to the parent range, and it's significantly faster, since <c>LONG</c>s rather than range objects are involved. Because of these advantages, the Text Object Model (TOM) does not support a characters collection.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setchar
+		// HRESULT SetChar( long Char );
+		void SetChar(int Char);
 
+		/// <summary>Gets a duplicate of this range object.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextRange**</c></para>
+		///   <para>The duplicate of the range.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>To create an insertion point in order to traverse a range, first duplicate the range and then collapse the duplicate at its start character position. Note, a range is characterized by start and end character positions, and the story it belongs to.</para>
+		///   <para>Even if the range is actually an ITextSelection, the duplicate returned is an ITextRange. For an example, see the ITextRange::FindText method.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getduplicate
+		// HRESULT GetDuplicate( ITextRange **ppRange );
 		ITextRange GetDuplicate();
 
+		/// <summary>Gets an ITextRange object with the specified range's formatted text.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextRange**</c></para>
+		///   <para>The ITextRange object with the formatted text.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>This method, which amounts to an alias for the ITextRange::GetDuplicate method, is included to be Microsoft Visual Basic for Applications (VBA)-friendly. The method returns the formatted text in a range. If the ITextRange does not belong to the same Text Object Model (TOM) engine, call IUnknown::QueryInterface for an IDataObject interface.</para>
+		///   <para>Among the formats typically supported by IDataObject are <c>CF_TEXT</c> and <c>CF_RTF</c>. In addition, private formats can be used to reference a text solution's own internal rich-text formats. The following Microsoft Visual Basic example uses the <c>FormattedText</c> property to replace the text in a range2, by the formatted text in range1.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getformattedtext
+		// HRESULT GetFormattedText( ITextRange **ppRange );
 		ITextRange GetFormattedText();
 
-		HRESULT SetFormattedText([In, Optional] ITextRange? pRange);
+		/// <summary>Sets the formatted text of this range text to the formatted text of the specified range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>The formatted text to replace this range's text.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>If the ITextRange does not belong to the same Text Object Model (TOM) engine, call IUnknown::QueryInterface for an IDataObject interface.</para>
+		///   <para>Among the formats typically supported by the IDataObject are CF_TEXT and CF_RTF. In addition, private formats can be used to reference a text solution's own internal rich-text formats. The following Microsoft Visual Basic example uses the <c>FormattedText</c> property to replace the text in range2 with the formatted text in range1.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setformattedtext
+		// HRESULT SetFormattedText( [in] ITextRange *pRange );
+		void SetFormattedText([In, Optional] ITextRange? pRange);
 
+		/// <summary>Gets the start character position of the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The start character position.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getstart
+		// HRESULT GetStart( long *pcpFirst );
 		int GetStart();
 
-		HRESULT SetStart(int cpFirst);
+		/// <summary>Sets the character position for the start of this range.</summary>
+		/// <param name="cpFirst">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The new character position for the start of the range.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>Note that if <c>cpFirst</c> is greater than the range's end position, this method sets the end position equal to <c>cpFirst</c>, making the range an insertion point. If this range is the selection, the start position becomes the active end and is scrolled into view if the display isn't frozen.</para>
+		///   <para>ITextRange::SetEnd sets the range's end position, and ITextRange::SetRange sets both range ends simultaneously. The following example shows how to convert a nondegenerate range into a degenerate one (insertion point).</para>
+		///   <para>Similarly, converts the range into an insertion point at the end position.</para>
+		///   <para>The following example adds 1 to the end position, if it is not at the end of the story.</para>
+		///   <para>This also makes the end position the active end of the range, and it can turn a degenerate range into a nondegenerate one.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setstart
+		// HRESULT SetStart( [in] long cpFirst );
+		void SetStart(int cpFirst);
 
+		/// <summary>Gets the end character position of the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The end character position.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>Although a pointer to a range remains valid when the text is edited, this is not the case for the character position. A character position is volatile; that is, it becomes invalid as soon as text is inserted or deleted before the character position. Be careful about using methods that return character position values, especially if the values are to be stored for any duration.</para>
+		///   <para>This method is similar to the ITextRange::GetStart method which gets the start character position of the range.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getend
+		// HRESULT GetEnd( long *pcpLim );
 		int GetEnd();
 
-		HRESULT SetEnd(int cpLim);
+		/// <summary>Sets the end position of the range.</summary>
+		/// <param name="cpLim">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The new end position.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>If the new end position is less than the start position, this method also sets the start position to <c>cp</c>; that is, the range becomes an insertion point.</para>
+		///   <para>If this range is actually the selection, the end position becomes the active end and, if the display is not frozen, it is scrolled into view.</para>
+		///   <para>ITextRange::SetStart sets the range's start position and ITextRange::SetRange sets both range ends simultaneously. To convert a nondegenerate range, r, into a degenerate one (insertion point) at the start position, use</para>
+		///   <para>Similarly, r.Start = r.End converts r into an insertion point at the end position.</para>
+		///   <para>To add 1 to the end position, unless it is at the end of the story, use:</para>
+		///   <para>This also makes end position the active end, and it can turn a degenerate range into a nondegenerate one.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setend
+		// HRESULT SetEnd( long cpLim );
+		void SetEnd(int cpLim);
 
+		/// <summary>Gets an ITextFont object with the character attributes of the specified range.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextFont**</c></para>
+		///   <para>The pointer to an ITextFont object.</para>
+		/// </returns>
+		/// <remarks>For plain-text controls, these objects do not vary from range to range, but in rich-text solutions, they do. See the section on ITextFont for further details.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getfont
+		// HRESULT GetFont( ITextFont **ppFont );
 		ITextFont GetFont();
 
-		HRESULT SetFont([In, Optional] ITextFont? pFont);
+		/// <summary>Sets this range's character attributes to those of the specified ITextFont object.</summary>
+		/// <param name="pFont">
+		/// <para>Type: <c>ITextFont*</c></para>
+		/// <para>A font object with the desired character format.</para>
+		/// </param>
+		/// <remarks>
+		/// For occasional format changes, use the <c>ITextRange::SetFont</c> method. However, to make a number of character formatting
+		/// changes, it is more efficient to use a font duplicate. This is because every time you execute a statement like <c>range.font.bold
+		/// = tomTrue</c>, a font object is allocated and freed. However, a font duplicate can be allocated once and used many times.
+		/// Furthermore, you can save the font duplicate, reset it to the default or undefined states with the Reset method, and give it
+		/// values as needed for your rich-text processing. For sample code that shows how to use font duplicates, see Using a Font Duplicate.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setfont
+		// HRESULT SetFont( [in] ITextFont *pFont );
+		void SetFont([In, Optional] ITextFont? pFont);
 
+		/// <summary>Gets an ITextPara object with the paragraph attributes of the specified range.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextPara**</c></para>
+		///   <para>The pointer to the ITextPara object.</para>
+		/// </returns>
+		/// <remarks>For plain-text controls, these objects do not vary from range to range, but in rich-text solutions, they do. See the section on ITextPara for further details.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getpara
+		// HRESULT GetPara( ITextPara **ppPara );
 		ITextPara GetPara();
 
-		HRESULT SetPara([In, Optional] ITextPara? pPara);
+		/// <summary>Sets the paragraph attributes of this range to those of the specified ITextPara object.</summary>
+		/// <param name="pPara">
+		///   <para>Type: <c>ITextPara*</c></para>
+		///   <para>The paragraph object with the desired paragraph format.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setpara
+		// HRESULT SetPara( [in] ITextPara *pPara );
+		void SetPara([In, Optional] ITextPara? pPara);
 
+		/// <summary>Gets the count of characters in the range's story.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of characters in the range's story.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getstorylength
+		// HRESULT GetStoryLength( long *pCount );
 		int GetStoryLength();
 
-		int GetStoryType();
+		/// <summary>Get the type of the range's story.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The type of the range's story. The <c>pValue</c> value can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Story type</description>
+		///       <description>Value</description>
+		///       <description>Story type</description>
+		///       <description>Value</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomUnknownStory</c>
+		///       </description>
+		///       <description>0</description>
+		///       <description>
+		///         <c>tomEvenPagesHeaderStory</c>
+		///       </description>
+		///       <description>6</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMainTextStory</c>
+		///       </description>
+		///       <description>1</description>
+		///       <description>
+		///         <c>tomPrimaryHeaderStory</c>
+		///       </description>
+		///       <description>7</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFootnotesStory</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>
+		///         <c>tomEvenPagesFooterStory</c>
+		///       </description>
+		///       <description>8</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomEndnotesStory</c>
+		///       </description>
+		///       <description>3</description>
+		///       <description>
+		///         <c>tomPrimaryFooterStory</c>
+		///       </description>
+		///       <description>9</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomCommentsStory</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>
+		///         <c>tomFirstPageHeaderStory</c>
+		///       </description>
+		///       <description>10</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomTextFrameStory</c>
+		///       </description>
+		///       <description>5</description>
+		///       <description>
+		///         <c>tomFirstPageFooterStory</c>
+		///       </description>
+		///       <description>11</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getstorytype
+		// HRESULT GetStoryType( long *pValue );
+		tomConstants GetStoryType();
 
-		HRESULT Collapse(int bStart);
+		/// <summary>Collapses the specified text range into a degenerate point at either the beginning or end of the range.</summary>
+		/// <param name="bStart">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flag specifying the end to collapse at. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomStart or tomTrue</c>
+		///       </description>
+		///       <description>Range is collapsed to the start of the range. This is the default.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomEnd or tomFalse</c>
+		///       </description>
+		///       <description>Range is collapsed to the end of the range.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-collapse
+		// HRESULT Collapse( [in] long bStart );
+		void Collapse(tomConstants bStart);
 
-		HRESULT Expand(int Unit, out int pDelta);
+		/// <summary>Expands this range so that any partial units it contains are completely contained.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to include, if it is partially within the range. The default value is . For a list of the other <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of characters added to the range. The value can be null.</para>
+		/// </returns>
+		/// <remarks>For example, if an insertion point is at the beginning, the end, or within a word, <c>ITextRange::Expand</c> expands the range to include that word. If the range already includes one word and part of another, <c>ITextRange::Expand</c> expands the range to include both words. <c>ITextRange::Expand</c> expands the range to include the visible portion of the range's story.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-expand
+		// HRESULT Expand( long Unit, long *pDelta );
+		int Expand(int Unit);
 
-		HRESULT GetIndex(int Unit, out int pIndex);
+		/// <summary>Retrieves the story index of the <c>Unit</c> parameter at the specified range Start character position. The first <c>Unit</c> in a story has an index value of 1. The index of a <c>Unit</c> is the same for all character positions from that immediately preceding the <c>Unit</c> up to the last character in the <c>Unit</c>.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit that is indexed. For a list of possible <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The index value. The value is zero if <c>Unit</c> does not exist.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The <c>ITextRange::GetIndex</c> method retrieves the story index of a word, line, sentence, paragraph, and so forth, at the range Start. <c>Unit</c> specifies which kind of entity to index, such as words (<c>tomWord</c>), lines (<c>tomLine</c>), sentences (<c>tomSentence</c>), or paragraphs (<c>tomParagraph</c>). For example, <c>ITextRange::GetIndex</c> sets <c>pIndex</c> equal to the line number of the first line in the range. For a range at the end of the story, <c>ITextRange::GetIndex</c>, returns the number of <c>Unit</c>s in the story. Thus, you can get the number of words, lines, objects, and so forth, in a story.</para>
+		///   <para>The index value returned by the <c>ITextRange::GetIndex</c> method is not valid if the text is subsequently edited. Thus, users should be careful about using methods that return index values, especially if the values are to be stored for any duration. This is in contrast to a pointer to a range, which does remain valid when the text is edited.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getindex
+		// HRESULT GetIndex( long Unit, long *pIndex );
+		int GetIndex(int Unit);
 
-		HRESULT SetIndex(int Unit, int Index, int Extend);
+		/// <summary>Changes this range to the specified unit of the story.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit used to index the range. For a list of unit values, see ITextRange.</para>
+		/// </param>
+		/// <param name="Index">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Index for the <c>Unit</c>. This range is relocated to the <c>Unit</c> that has this index number. If positive, the numbering of <c>Unit</c>s begins at the start of the story and proceeds forward. If negative, the numbering begins at the end of the story and proceeds backward. The start of the story corresponds to an <c>Index</c> of 1 for all units that exist, and the last unit in the story corresponds to an <c>Index</c> of -1.</para>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flag that indicates the extent of the range. If zero (the default), the range is collapsed to an insertion point at the start position of the specified <c>Unit</c>. If nonzero, the range is set to the entire <c>Unit</c>.</para>
+		/// </param>
+		/// <remarks>This method allows an application to work with line-oriented text, such as programs, in a convenient way. For example, converts a range to an insertion point at the start of the tenth line.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setindex
+		// HRESULT SetIndex( [in] long Unit, [in] long Index, [in] long Extend );
+		void SetIndex(int Unit, int Index, int Extend);
 
-		HRESULT SetRange(int cpAnchor, int cpActive);
+		/// <summary>Adjusts the range endpoints to the specified values.</summary>
+		/// <param name="cpAnchor">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The character position for the anchor end of the range.</para>
+		/// </param>
+		/// <param name="cpActive">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The character position for the active end of the range.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>This method sets the range's start position to , and the end position to . If the range is a nondegenerate selection, <c>cpAnchor</c> is the active end, and <c>cpAnchor</c> is the anchor end. If the range is a degenerate selection, the selection is displayed at the start of the line, rather than at the end of the previous line.</para>
+		///   <para>This method removes any other subranges this range may have. To preserve the current subranges, use ITextRange2::SetActiveSubrange.</para>
+		///   <para>If the text range is a selection, you can set the attributes of the selection by using the ITextSelection::SetFlags method.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setrange
+		// HRESULT SetRange( long cpAnchor, long cpActive );
+		void SetRange(int cpAnchor, int cpActive);
 
-		HRESULT InRange([In, Optional] ITextRange? pRange, out int pValue);
+		/// <summary>Determines whether this range is within or at the same text as a specified range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>Text that is compared to the current range.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The comparison result. The pointer can be null. The method returns <c>pB</c> is <c>tomTrue</c> only if the range is in or at the same text as <c>pRange</c>.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>For range2 to be contained in range1, both ranges must be in the same story, and the limits of range2 must satisfy either of the following statements.</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>The start and end character positions of range1 are the same as range2. That is, both ranges are degenerate and have identical insertion points.</description>
+		///     </item>
+		///     <item>
+		///       <description>Range2 is a nondegenerate range with start and end character positions at or within those of range1.</description>
+		///     </item>
+		///   </list>
+		///   <para>The following example shows how to walk one range with another.</para>
+		///   <para>When the ITextRange::FindText, ITextRange::MoveWhile, and ITextRange::MoveUntil method families are used, you can use one range to walk another by specifying the appropriate limit count of characters (for an example, see the Remarks in <c>ITextRange::Find</c>).</para>
+		///   <para>ITextRange::IsEqual is a special case of <c>ITextRange::InRange</c> that returns <c>pB</c><c>tomTrue</c> if the <c>pRange</c> has the same start and end character positions and belongs to the same story.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-inrange
+		// HRESULT InRange( ITextRange *pRange, long *pValue );
+		tomConstants InRange([In, Optional] ITextRange? pRange);
 
-		HRESULT InStory([In, Optional] ITextRange? pRange, out int pValue);
+		/// <summary>Determines whether this range's story is the same as a specified range's story.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>The ITextRange object whose story is compared to this range's story.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The comparison result. The pointer can be null. The <c>pB</c> parameter receives <c>tomTrue</c> if this range's story is the same as that of the <c>pRange</c>; otherwise it receives <c>tomFalse</c>.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-instory
+		// HRESULT InStory( ITextRange *pRange, long *pValue );
+		tomConstants InStory([In, Optional] ITextRange? pRange);
 
-		HRESULT IsEqual([In, Optional] ITextRange? pRange, out int pValue);
+		/// <summary>Determines whether this range has the same character positions and story as those of a specified range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>The ITextRange object that is compared to this range.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The comparison result. The pointer can be null. The <c>pB</c> parameter receives <c>tomTrue</c> if this range points at the same text (has the same start and end character positions and story) as <c>pRange</c>; otherwise it returns <c>tomFalse</c>.</para>
+		/// </returns>
+		/// <remarks>The <c>ITextRange::IsEqual</c> method returns <c>tomTrue</c> only if the range points at the same text as <c>pRange</c>. See Finding Rich Text for code that compares two different pieces of text to see if they contain the same plain text and the same character formatting.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-isequal
+		// HRESULT IsEqual( ITextRange *pRange, long *pValue );
+		tomConstants IsEqual([In, Optional] ITextRange? pRange);
 
-		HRESULT Select();
+		/// <summary>Sets the start and end positions, and story values of the active selection, to those of this range.</summary>
+		/// <remarks>
+		///   <para>The active end of the new selection is at the end position.</para>
+		///   <para>The caret for an ambiguous character position is displayed at the beginning of the line.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-select
+		// HRESULT Select();
+		void Select();
 
-		HRESULT StartOf(int Unit, int Extend, out int pDelta);
+		/// <summary>Moves the range ends to the start of the first overlapping <c>Unit</c> in the range.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use in the move operation. For a list of <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>How to move the ends of the range. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>0 (or <c>tomMove</c>)</description>
+		///       <description>Collapses a nondegenerate range to the start position by moving the insertion point. This is the default.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>1 (or <c>tomExtend</c>)</description>
+		///       <description>Moves the start position to the beginning of the overlapping <c>Unit</c>. Does not move the end position.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>Pointer to a variable that receives the number of characters that the start position is moved. It can be null. On return, <c>pDelta</c> is the signed number of characters that the insertion point or start position is moved. This value is always less than or equal to zero, because the motion is always toward the beginning of the story.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the range is an insertion point on a boundary between <c>Unit</c>s, <c>ITextRange::StartOf</c> does not change the start position.</para>
+		///   <para>The <c>ITextRange::StartOf</c> and ITextRange::EndOf methods differ from the HomeKey and EndKey methods in that the latter extend from the active end, whereas <c>ITextRange::StartOf</c> extends from the start position and <c>ITextRange::EndOf</c> extends from the end position.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-startof
+		// HRESULT StartOf( long Unit, long Extend, long *pDelta );
+		tomConstants StartOf(tomConstants Unit, tomConstants Extend);
 
-		HRESULT EndOf(int Unit, int Extend, out int pDelta);
+		/// <summary>Moves this range's ends to the end of the last overlapping <c>Unit</c> in the range.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use. Default value: <c>tomWord</c>. For a list of the other <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Indicator of how the shifting of the range ends is to proceed. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>0 or <c>tomMove</c></description>
+		///       <description>Collapses a nondegenerate range to the End of the original range by moving the insertion point. This is the default.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>1 (or <c>tomExtend</c>)</description>
+		///       <description>Moves End to the end of the overlapping <c>Unit</c>. Does not move Start.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of characters that End is moved past. The value of the pointer can be null. On return, the value of <c>pDelta</c> is the number of characters the insertion point or End is moved <c>plus</c> 1 if a collapse occurs to the entry End. If the range includes the final CR (carriage return) (at the end of the story) and <c>Extend</c> = tomMove, then <c>pDelta</c> is set to â1, to indicate that the collapse occurred <c>before</c> the end of the range (because an insertion point cannot exist beyond the final CR).</para>
+		/// </returns>
+		/// <remarks>For comparison, the ITextRange::StartOf method moves the range ends to the beginning of the first overlapping <c>Unit</c> in the range. Note, the <c>ITextRange::StartOf</c> and <c>ITextRange::EndOf</c> methods differ from the HomeKey and EndKey methods in that the latter extend from the active end, whereas <c>ITextRange::StartOf</c> extends from Start and <c>ITextRange::EndOf</c> extends from End. If the range is an insertion point on a boundary between <c>Unit</c>s, <c>ITextRange::EndOf</c> does not change End. In particular, calling <c>ITextRange::EndOf</c> (<c>tomCharacter</c>, *, *) does not change End except for an insertion point at the beginning of a story.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-endof
+		// HRESULT EndOf( long Unit, long Extend, long *pDelta );
+		tomConstants EndOf(tomConstants Unit, tomConstants Extend);
 
-		HRESULT Move(int Unit, int Count, out int pDelta);
+		/// <summary>Moves the insertion point forward or backward a specified number of units. If the range is nondegenerate, the range is collapsed to an insertion point at either end, depending on <c>Count</c>, and then is moved.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use. The default value is <c>tomCharacter</c>. For information on other values, see the discussion in ITextRange.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Number of <c>Unit</c>s to move past. The default value is 1. If <c>Count</c> is greater than zero, motion is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, motion is backwardâtoward the beginning. If <c>Count</c> is zero, the range is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of <c>Unit</c>s the insertion point moves past. The pointer can be <c>NULL</c>. For more information, see the Remarks section.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the range is degenerate (an insertion point), this method tries to move the insertion point <c>Count</c>Â <c>Unit</c>s.</para>
+		///   <para>If the range is nondegenerate and <c>Count</c> is greater than zero, this method collapses the range at the end character position, moves the resulting insertion point forward to a <c>Unit</c> boundary (if it is not already at one), and then tries to move <c>Count</c> - 1 <c>Unit</c>s forward. If the range is nondegenerate and <c>Count</c> is less than zero, this method collapses the range at the start character position, moves the resulting insertion point backward to a <c>Unit</c> boundary (if it isn't already at one), and then tries to move |<c>Count</c>| - 1 <c>Unit</c>s backward. Thus, in both cases, collapsing a nondegenerate range to an insertion point, whether moving to the start or end of the <c>Unit</c> following the collapse, counts as a <c>Unit</c>.</para>
+		///   <para>The <c>ITextRange::Move</c> method returns <c>pDelta</c> = number of <c>Unit</c>s actually moved. This method never moves the insertion point beyond the story of this range. If <c>Count</c><c>Unit</c>s would move the insertion point before the beginning of the story, it is moved to the story beginning and <c>pDelta</c> is set accordingly. Similarly, if <c>Count</c>Â <c>Unit</c>s would move it beyond the end of the story, it is moved to the story end.</para>
+		///   <para>The <c>ITextRange::Move</c> method works similarly to the UI-oriented MoveLeft and MoveRight methods, except that the direction of motion is logical rather than geometrical. That is, with <c>ITextRange::Move</c> the direction is either toward the end or toward the start of the story. Depending on the language, moving toward the end of the story could be moving to the left or to the right. To get a feel for <c>Count</c>, press Ctrl+Right Arrow in a Microsoft Word document for a variety of selections. In left-to-right text, this keystroke behaves the same as , and . <c>Count</c> corresponds to the number of times you press Ctrl+Right Arrow.</para>
+		///   <para>For example, if you press Ctrl+Right Arrow for the selections shown in both of the following figures, you end up with an insertion point at character position 8, since this command collapses the selections at their end character positions (7 and 8, respectively) and moves to the next <c>tomWord</c> boundary.</para>
+		///   <para>The first selection does not include the blank space at character position 7, so Ctrl+Right Arrow moves past the space to the <c>tomWord</c> boundary at character position 8. The end character position is already at a <c>tomWord</c> boundary for the second selection, so Ctrl+Right Arrow just collapses the selection at that boundary. Similarly, Ctrl+Left Arrow, which for this text acts like , and collapses the first selection at character position 5, which is already at a <c>tomWord</c> boundary, so no more motion occurs. But Ctrl+Left Arrow collapses the second selection at character position 4 and then moves to zero, since that's the next <c>tomWord</c> boundary in the direction of motion.</para>
+		///   <para>The return argument, <c>pDelta</c>, is set equal to the number of <c>Unit</c>s that the insertion point is moved including one <c>Unit</c> for collapsing a nondegenerate range and moving it to a <c>Unit</c> boundary. So, if no motion and no collapse occur, as when the range is an insertion point at the end of the story, <c>pDelta</c> is set equal to zero. This approach is useful for controlling program loops that process a whole story.</para>
+		///   <para>In both of the cases mentioned above, calling sets <c>pDelta</c> equal to 1 because the ranges were collapsed. Similarly, calling sets <c>pDelta</c> equal to -1 for both cases. Collapsing, with or without moving part of a <c>Unit</c> to a <c>Unit</c> boundary, counts as a <c>Unit</c> moved.</para>
+		///   <para>The direction of motion refers to the logical character ordering in the plain-text backing store. This approach avoids the problems of geometrical ordering, such as left versus right and up versus down, in international software. Such geometrical methods are still needed in the edit engine, of course, since keyboards have arrow keys to invoke them. If the range is really an ITextSelection object, then methods like MoveLeft and MoveRight can be used.</para>
+		///   <para>If <c>Unit</c> specifies characters (<c>tomCharacter</c>), the Text Object Model (TOM) uses the Unicode character set. To convert between Unicode and multibyte character sets the MultiByteToWideChar and WideCharToMultiByte functions provide easy ways to convert between Unicode and multibyte character sets on import and export, respectively. For more information, see Open. In this connection, the use of a carriage return/line feed (CR/LF) to separate paragraphs is as problematic as double-byte character set (DBCS). The ITextSelectionÂ UI methods back up over a CR/LF as if it were a single character, but the <c>ITextRange::Move</c> methods count CR/LFs as two characters. It's clearly better to use a single character as a paragraph separator, which in TOM is represented by a character return, although the Unicode paragraph separator character, 0x2029, is accepted. In general, TOM engines should support CR/LF, carriage return (CR), line feed (LF), vertical tab, form feed, and 0x2029. Microsoft Rich Edit 2.0 also supports CR/CR/LF for backward compatibility.</para>
+		///   <para>See also the ITextRange::MoveStart and ITextRange::MoveEnd methods, which move the range Start or End position <c>Count</c>Â <c>Unit</c>s, respectively.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-move
+		// HRESULT Move( long Unit, long Count, long *pDelta );
+		tomConstants Move(tomConstants Unit, int Count);
 
-		HRESULT MoveStart(int Unit, int Count, out int pDelta);
+		/// <summary>Moves the start position of the range the specified number of units in the specified direction.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit used in the move. The default value is <c>tomCharacter</c>. For a list of the other <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Number of units to move. The default value is 1. If <c>Count</c> is greater than zero, motion is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, motion is backwardâtoward the beginning. If <c>Count</c> is zero, the start position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of units that the end is moved. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new start follows the old end, the new end is set equal to the new start.</para>
+		///   <para>The motion described by <c>ITextRange::MoveStart</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movestart
+		// HRESULT MoveStart( long Unit, long Count, long *pDelta );
+		tomConstants MoveStart(tomConstants Unit, int Count);
 
-		HRESULT MoveEnd(int Unit, int Count, out int pDelta);
+		/// <summary>Moves the end position of the range.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The units by which to move the end of the range. The default value is <c>tomCharacter</c>. For a list of the other unit values, see ITextRange.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The number of units to move past. The default value is 1. If <c>Count</c> is greater than zero, motion is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, motion is backwardâtoward the beginning. If <c>Count</c> is zero, the end position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of units that the end position of the range is moved past. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new end position precedes the old start position, the new start position is set equal to the new end position; that is, it becomes a degenerate range or an insertion point.</para>
+		///   <para>The motion described by <c>ITextRange::MoveEnd</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveend
+		// HRESULT MoveEnd( long Unit, long Count, long *pDelta );
+		tomConstants MoveEnd(tomConstants Unit, int Count);
 
-		HRESULT MoveWhile([In] object Cset, int Count, out int pDelta);
+		/// <summary>Starts at a specified end of a range and searches while the characters belong to the set specified by <c>Cset</c> and while the number of characters is less than or equal to <c>Count</c>. The range is collapsed to an insertion point when a non-matching character is found.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is less than zero, the search starts at the start position and goes backward â toward the beginning of the story. If <c>Count</c> is greater than zero, the search starts at the end position and goes forward â toward the end of the story.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual count of characters end is moved. This parameter can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The motion described by ITextRange::MoveUntil is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see the discussion in ITextRange and the Remarks section of ITextRange::Move.</para>
+		///   <para>The <c>ITextRange::MoveWhile</c> method is similar to ITextRange::MoveUntil, but <c>MoveWhile</c> searches as long as it finds members of the set specified by <c>Cset</c>, and there is no additional increment to the value <c>pDelta</c>.</para>
+		///   <para>The ITextRange::MoveStartWhile and ITextRange::MoveEndWhile methods move the start and end, respectively, just past all contiguous characters that are found in set of characters specified by the <c>Cset</c> parameter.</para>
+		///   <para>The <c>VARIANT</c> type is primarily intended to be used with <c>IDispatch</c> scenarios like Microsoft Visual Basic for Applications (VBA), but it can be readily used from C or C++ as well. The following C++ code illustrates how to initialize and use the <c>VARIANT</c> argument for matching a span of digits in the range r.</para>
+		///   <para>Alternatively, an explicit string could be used, as in the following sample.</para>
+		///   <para>The following VBA example code matches the body of the next Standard Generalized Markup Language (SGML) entry in a range, r. SGML entries start with &lt; &gt; and end with &lt;/ &gt;.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movewhile
+		// HRESULT MoveWhile( VARIANT *Cset, long Count, long *pDelta );
+		int MoveWhile([In] object Cset, int Count);
 
-		HRESULT MoveStartWhile([In] object Cset, int Count, out int pDelta);
+		/// <summary>Moves the start position of the range either <c>Count</c> characters, or just past all contiguous characters that are found in the set of characters specified by <c>Cset</c>, whichever is less.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, search is backwardâtoward the beginning. If <c>Count</c> is zero, the start position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual count of characters that the start position is moved. This parameter can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new start follows the old end, the new end is set equal to the new start.</para>
+		///   <para>The motion described by <c>ITextRange::MoveStartWhile</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movestartwhile
+		// HRESULT MoveStartWhile( VARIANT *Cset, long Count, long *pDelta );
+		int MoveStartWhile([In] object Cset, int Count);
 
-		HRESULT MoveEndWhile([In] object Cset, int Count, out int pDelta);
+		/// <summary>Moves the end of the range either <c>Count</c> characters or just past all contiguous characters that are found in the set of characters specified by <c>Cset</c>, whichever is less.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search moves forward (toward the end of the story). If <c>Count</c> is less than zero, the search moves backward (toward the beginning of the story). If <c>Count</c> is zero, the end position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of characters that the end is moved. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new end precedes the old start, the new start is set equal to the new end.</para>
+		///   <para>The motion described by <c>ITextRange::MoveEndWhile</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveendwhile
+		// HRESULT MoveEndWhile( VARIANT *Cset, long Count, long *pDelta );
+		int MoveEndWhile([In] object Cset, int Count);
 
-		HRESULT MoveUntil([In] object Cset, int Count, out int pDelta);
+		/// <summary>Searches up to <c>Count</c> characters for the first character in the set of characters specified by <c>Cset</c>. If a character is found, the range is collapsed to that point. The start of the search and the direction are also specified by <c>Count</c>.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set used in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is less than zero, the search is backward starting at the start position. If <c>Count</c> is greater than zero, the search is forward starting at the end.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The number of characters the insertion point is moved, plus 1 for a match if <c>Count</c> is greater than zero, and â1 for a match if <c>Count</c> less than zero. The pointer can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If no character is matched, the range is unchanged.</para>
+		///   <para>The motion described by <c>ITextRange::MoveUntil</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see the discussion in ITextRange and the Remarks section of ITextRange::Move.</para>
+		///   <para>The ITextRange::MoveStartUntil and ITextRange::MoveEndUntil methods move the start and end, respectively, until it finds the first character that is also in the set specified by the <c>Cset</c> parameter.</para>
+		///   <para>The <c>ITextRange::MoveUntil</c> method is similar to ITextRange::MoveWhile, but there are two differences. First, <c>MoveUntil</c> moves an insertion point <c>until</c> it finds the first character that belongs to the character set specified by <c>Cset</c>. Second, in <c>MoveUntil</c> the character matched counts as an additional character in the value returned in <c>pDelta</c>. This lets you know that the character at one end of the range or the other belongs to the <c>Cset</c> even though the insertion point stays at one of the range ends.</para>
+		///   <para>For example, suppose the range, r, is an insertion point. To see if the character at r (that is, given by r.GetChar()) is in <c>Cset</c>, call</para>
+		///   <para>If the character is in <c>Cset</c>, the return value is 1 and the insertion point does not move. Similarly, to see if the character preceding r is in <c>Cset</c>, call</para>
+		///   <para>If the character is in <c>Cset</c>, the return value is â1.</para>
+		///   <para>The following Microsoft Visual Basic for Applications (VBA) subroutine prints all numbers in the story identified by the range, r.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveuntil
+		// HRESULT MoveUntil( VARIANT *Cset, long Count, long *pDelta );
+		int MoveUntil([In] object Cset, int Count);
 
-		HRESULT MoveStartUntil([In] object Cset, int Count, out int pDelta);
+		/// <summary>Moves the start position of the range the position of the first character found that is in the set of characters specified by <c>Cset</c>, provided that the character is found within <c>Count</c> characters of the start position.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, search is backwardâtoward the beginning. If <c>Count</c> is zero, the start position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of characters the start of the range is moved, plus 1 for a match if <c>Count</c> is greater than zero, and â1 for a match if <c>Count</c> is less than zero. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If no character from <c>Cset</c> is found within <c>Count</c> positions of the start position, the range is left unchanged.</para>
+		///   <para>If the new start follows the old end, the new end is set equal to the new start.</para>
+		///   <para>The motion described by <c>ITextRange::MoveStartUntil</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movestartuntil
+		// HRESULT MoveStartUntil( VARIANT *Cset, long Count, long *pDelta );
+		int MoveStartUntil([In] object Cset, int Count);
 
-		HRESULT MoveEndUntil([In] object Cset, int Count, out int pDelta);
+		/// <summary>Moves the range's end to the character position of the first character found that is in the set of characters specified by <c>Cset</c>, provided that the character is found within <c>Count</c> characters of the range's end.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search moves forward (toward the end of the story). If <c>Count</c> is less than zero, the search moves backward (toward the beginning of the story). If <c>Count</c> is zero, the end position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of characters that the range end is moved, plus 1 for a match if <c>Count</c> is greater than zero, and â1 for a match if <c>Count</c> is less than zero. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If no character from the set specified by <c>Cset</c> is found within <c>Count</c> positions of the range's end, the range is left unchanged. If the new end precedes the old start, the new start is set equal to the new end.</para>
+		///   <para>The motion described by <c>ITextRange::MoveEndUntil</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveenduntil
+		// HRESULT MoveEndUntil( VARIANT *Cset, long Count, long *pDelta );
+		int MoveEndUntil([In] object Cset, int Count);
 
-		HRESULT FindText([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, int Flags, out int pLength);
+		/// <summary>Searches up to <c>Count</c> characters for the text given by <c>bstr</c>. The starting position and direction are also specified by <c>Count</c>, and the matching criteria are given by <c>Flags</c>.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>String to find.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to search. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomForward</c>
+		///       </description>
+		///       <description>Searches to the end of the story. This is the default value.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>n</c> (greater than 0)</description>
+		///       <description>Searches forward for <c>n</c> chars, starting from <c>cpFirst.</c> If the range itself matches <c>bstr</c>, another search is attempted from <c>cpFirst</c> + 1.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>n</c>(less than 0)</description>
+		///       <description>Searches backward for <c>n</c> chars, starting from <c>cpLim. </c>If the range itself matches <c>bstr</c>, another search is attempted from <c>cpLim</c>â 1.</description>
+		///     </item>
+		///     <item>
+		///       <description>0 (degenerate range)</description>
+		///       <description>Search begins after the range.</description>
+		///     </item>
+		///     <item>
+		///       <description>0 (nondegenerate range)</description>
+		///       <description>Search is limited to the range.</description>
+		///     </item>
+		///   </list>
+		///   <para>Â</para>
+		///   <para>In all cases, if a string is found, the range limits are changed to be those of the matched string and <c>pLength</c> is set equal to the length of the string. If the string is not found, the range remains unchanged and <c>pLength</c> is set equal to zero.</para>
+		/// </param>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags governing comparisons. It can be 0 (the default) or any combination of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomMatchWord</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>Matches whole words.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchCase</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>Matches case.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchPattern</c>
+		///       </description>
+		///       <description>8</description>
+		///       <description>Matches regular expressions.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The length of string matched.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The <c>ITextRange::FindText</c> method can also match special characters by using a caret (^) followed by a special letter. For a list of special characters, see the Special list available in the Microsoft WordÂ <c>Find and Replace</c> dialog box. For example, matches the next paragraph mark. Note, can be used to represent the Clipboard contents in the string to be replaced. Thus, using in the find string enables you to search for rich text. For more details, see the Word Help files.</para>
+		///   <para>As a comparison with the <c>ITextRange::FindText</c> method, the ITextRange::FindTextStart method searches forward or backward from the range's Start <c>cp</c>, and the ITextRange::FindTextEnd method searches forward or backward from the range's End <c>cp</c>. For more details, see the descriptions of these methods.</para>
+		///   <para>The following are several code snippets that show the <c>ITextRange::FindText</c> methods.</para>
+		///   <para>Example #1. The following Microsoft Visual Basic for Applications (VBA) program prints all the /* ... */ comments in a story identified by the range r.</para>
+		///   <para>Instead of these comments being printed, they could be inserted into another edit instance and saved to a file, or they could be inserted into separate cells in a table or spreadsheet.</para>
+		///   <para>To print all lines containing one or more occurrences of the word "laser", replace the loop by the following code:</para>
+		///   <para>Example #2. The following program prints a telephone list, given a story that contains an address list. The address list entries are separated by two or more paragraph marks, and each entry has the following form.</para>
+		///   <para>Note the use of the character in the <c>FindText</c> string argument to locate a pair of consecutive paragraph marks.</para>
+		///   <para>Example #3. The following subroutine replaces all occurrences of the string, str1, in a range by str2:</para>
+		///   <para>Example #4. The following line of code inserts a blank before the first occurrence of a right parenthesis, "(", that follows an occurrence of HRESULT.</para>
+		///   <para>To do this for all such occurrences, change the If into a While/Wend loop in the above line of code. This an example of a <c>FIND/REPLACE</c> macro that cannot be run with <c>Find and Replace</c> dialog boxes.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-findtext
+		// HRESULT FindText( BSTR bstr, long Count, long Flags, long *pLength );
+		int FindText([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, tomConstants Flags);
 
-		HRESULT FindTextStart([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, int Flags, out int pLength);
+		/// <summary>Searches up to <c>Count</c> characters for the string, <c>bstr</c>, starting at the range's Start <c>cp</c> (<c>cpFirst)</c>. The search is subject to the comparison parameter, <c>Flags</c>. If the string is found, the Start <c>cp</c> is changed to the matched string, and <c>pLength</c> is set equal to the length of the string. If the string is not found, the range is unchanged, and <c>pLength</c> is set equal to zero.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>The string to search for.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to search. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomForward</c>
+		///       </description>
+		///       <description>Search to the end of the story. This is the default value.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>n </c>(greater than 0)</description>
+		///       <description>Search forward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>n </c>(less than 0)</description>
+		///       <description>Search backward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags governing the comparisons. It can be zero (the default) or any combination of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomMatchWord</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>Matches whole words.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchCase</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>Matches case.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchPattern</c>
+		///       </description>
+		///       <description>8</description>
+		///       <description>Matches regular expressions.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The length of the matched string.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-findtextstart
+		// HRESULT FindTextStart( BSTR bstr, long Count, long Flags, long *pLength );
+		int FindTextStart([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, tomConstants Flags);
 
-		HRESULT FindTextEnd([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, int Flags, out int pLength);
+		/// <summary>Searches up to <c>Count</c> characters for the string, <c>bstr</c>, starting from the range's End <c>cp</c>. The search is subject to the comparison parameter, <c>Flags</c>. If the string is found, the End <c>cp</c> is changed to be the end of the matched string, and <c>pLength</c> is set equal to the length of the string. If the string is not found, the range is unchanged and <c>pLength</c> is set equal to zero.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>String to search for.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to search. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomForward</c>
+		///       </description>
+		///       <description>Search to the end of the story. This is the default value.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>n</c> (greater than 0)</description>
+		///       <description>Search forward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>n</c> (less than 0)</description>
+		///       <description>Search backward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags governing comparisons. It can be zero (the default) or any combination of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomMatchWord</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>Matches whole words.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchCase</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>Matches case.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchPattern</c>
+		///       </description>
+		///       <description>8</description>
+		///       <description>Matches regular expressions.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The length of string matched.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-findtextend
+		// HRESULT FindTextEnd( BSTR bstr, long Count, long Flags, long *pLength );
+		int FindTextEnd([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, tomConstants Flags);
 
-		HRESULT Delete(int Unit, int Count, out int pDelta);
+		/// <summary>Mimics the DELETE and BACKSPACE keys, with and without the CTRL key depressed.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use. <c>Unit</c> can be <c>tomCharacter</c> (the default value) or <c>tomWord</c>.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Number of <c>Unit</c>s to delete. If <c>Count</c>= zero, it deletes the text in the range only. If <c>Count</c> is greater than zero, <c>ITextRange::Delete</c> acts as if the DELETE key was pressed <c>Count</c> times. If <c>Count</c> is less than zero, it acts as if the BACKSPACE key was pressed <c>Count</c> times. The default value is 1. For more information, see the Remarks.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of units deleted. It can be null. The <c>pDelta</c> parameter is set equal to the number of <c>Unit</c>s deleted. Deleting the text in a nondegenerate range counts as one <c>Unit</c>.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If <c>Count</c> = zero, this method deletes the text in the range, that is, it deletes nothing if the range is only an insertion point.</para>
+		///   <para>If <c>Count</c> is not zero, and the range is an insertion point (that is, degenerate), | <c>Count</c>| (absolute value of <c>Count</c>) <c>Unit</c>s are deleted in the logical direction given by the sign of <c>Count</c>, where a positive value is the direction toward the end of the story, and a negative value is toward the start of the story.</para>
+		///   <para>If <c>Count</c> is not zero, and the range is nondegenerate (contains text), the text in the range is deleted (regardless of the values of <c>Unit </c> and <c>Count</c>), thereby creating an insertion point. Then, | <c>Count</c>| - 1 Â <c>Unit</c>s are deleted in the logical direction given by the sign of <c>Count</c>.</para>
+		///   <para>The text in the range can also be deleted by assigning a null string to the range (executing statement r = where r is the range). However, <c>ITextRange::Delete</c> does not require allocating a <c>BSTR</c>.</para>
+		///   <para>Deleting the end-of-paragraph mark (CR) results in the special behavior of the Microsoft WordÂ UI. Four cases are of particular interest:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>If you delete just the CR but the paragraph includes text, then the CR is deleted, and the following paragraph gets the same paragraph formatting as current one.</description>
+		///     </item>
+		///     <item>
+		///       <description>If you delete the CR as well as some, but not all, of the characters in the following paragraph, the characters left over from the current paragraph get the paragraph formatting of the following paragraph.</description>
+		///     </item>
+		///     <item>
+		///       <description>If you select to the end of a paragraph, but not the whole paragraph, the CR is not deleted.</description>
+		///     </item>
+		///     <item>
+		///       <description>If you delete the whole paragraph (from the beginning through the CR), you delete the CR as well (unless it is the final CR in the file).</description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-delete
+		// HRESULT Delete( long Unit, long Count, long *pDelta );
+		int Delete(tomConstants Unit, int Count);
 
-		HRESULT Cut(out VARIANT pVar);
+		/// <summary>Cuts the plain or rich text to a data object or to the Clipboard, depending on the <c>pVar</c> parameter.</summary>
+		/// <param name="pVar">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The cut text. <c>pVar</c>-&gt;ppunkVal is the out parameter for an IDataObject object, provided that the following conditions exist:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>pVar-&gt;vt = (VT_UNKNOWN | VT_BYREF)</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar is not null</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar-&gt;ppunkVal is not null</description>
+		///     </item>
+		///   </list>
+		///   <para>Otherwise, the clipboard is used.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-cut
+		// HRESULT Cut( VARIANT *pVar );
+		void Cut(out object pVar);
 
-		HRESULT Copy(out VARIANT pVar);
+		/// <summary>Copies the text to a data object.</summary>
+		/// <param name="pVar">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The copied text. <c>pVar</c>-&gt;ppunkVal is the out parameter for an IDataObject provided that the following conditions exist:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>pVar-&gt;vt = (VT_UNKNOWN | VT_BYREF)</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar is not null</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar-&gt;ppunkVal is not null</description>
+		///     </item>
+		///   </list>
+		///   <para>Otherwise, the clipboard is used.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>The ITextRange::Cut, <c>ITextRange::Copy</c>, and ITextRange::Paste methods let you perform the usual <c>Cut</c>, <c>Copy</c>, and <c>Paste</c> operations on a range object using an IDataObject, thereby not changing the contents of the clipboard. Among clipboard formats typically supported are <c>CF_TEXT</c> and <c>CF_RTF</c>. In addition, private clipboard formats can be used to reference a text solution's own internal rich text formats.</para>
+		///   <para>To copy and replace plain text, you can use the ITextRange::GetTextÂ <c></c> and ITextRange::SetTextÂ <c></c> methods. To copy formatted text from range r1 to range r2 without using the clipboard, you can use <c>Copy</c> and <c>Paste</c> and also the ITextRange::GetFormattedText and ITextRange::SetFormattedText methods, as shown in the following Microsoft Visual Basic example:</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-copy
+		// HRESULT Copy( VARIANT *pVar );
+		void Copy(out object pVar);
 
-		HRESULT Paste([In] object pVar, int Format);
+		/// <summary>Pastes text from a specified data object.</summary>
+		/// <param name="pVar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>The IDataObject to paste. However, the contents of the clipboard are used if any of the following are true.</para>
+		/// <para><c>pVar</c> is null</para>
+		/// <para><c>pVar</c> punkVal is null</para>
+		/// <para><c>pVar</c> is not <c>VT_UNKNOWN</c></para>
+		/// <para><c>pVar</c> punkVal does not return an IDataObject when queried for one</para>
+		/// </param>
+		/// <param name="Format">
+		/// <para>Type: <c>long</c></para>
+		/// <para>The clipboard format to use in the paste operation. Zero is best format, which usually is RTF, but <c>CF_UNICODETEXT</c> and other formats are also possible. The default value is zero. For more information, see Clipboard Formats.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If the method succeeds, it returns <c>S_OK</c>. If the method fails, it returns one of the following error codes. For more information about COM error codes, see Error Handling in COM.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>E_ACCESSDENIED</c></description>
+		/// <description>Destination is write-protected.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_OUTOFMEMORY</c></description>
+		/// <description>Destination cannot contain the text to be pasted.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>For more information, seeITextRange::Copy.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-paste
+		// HRESULT Paste( VARIANT *pVar, long Format );
+		void Paste([In] object pVar, int Format);
 
-		HRESULT CanPaste([In] object pVar, int Format, out int pValue);
+		/// <summary>Determines if a data object can be pasted, using a specified format, into the current range.</summary>
+		/// <param name="pVar">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The IDataObject to be pasted. However, the Clipboard contents are checked for pasting if any of the following are true:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>
+		///         <c>pVar</c> is null</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>pVar</c>-&gt;punkVal is null</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>pVar</c>-&gt;vt is not <c>VT_UNKNOWN</c></description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>pVar</c>-&gt;punkVal does not return an IDataObject object when queried for one</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Format">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Clipboard format that is used. Zero represents the best format, which usually is RTF, but <c>CF_UNICODETEXT</c> and other formats are also possible. The default value is zero.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that is <c>tomTrue</c> only if the data object identified by <c>pVar</c> can be pasted, using the specified format, into the range. This parameter can null.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-canpaste
+		// HRESULT CanPaste( VARIANT *pVar, long Format, long *pValue );
+		tomConstants CanPaste([In] object pVar, int Format);
 
-		HRESULT CanEdit(out int pValue);
+		/// <summary>Determines whether the specified range can be edited.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value indicating whether the range can be edited. It is <c>tomTrue</c> only if the specified range can be edited. The pointer can be null.</para>
+		/// </returns>
+		/// <remarks>The range cannot be edited if any part of it is protected or if the document is read-only.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-canedit
+		// HRESULT CanEdit( [retval] long *pValue );
+		tomConstants CanEdit();
 
-		HRESULT ChangeCase(int Type);
+		/// <summary>Changes the case of letters in this range according to the <c>Type</c> parameter.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Type of case change. The default value is <c>tomLower</c>.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomLowerCase</c> 0</description>
+		///       <description>Sets all text to lowercase.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUpperCase</c> 1</description>
+		///       <description>Sets all text to lowercase.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomTitleCase</c> 2</description>
+		///       <description>Capitalizes the first letter of each word.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomSentenceCase</c> 4</description>
+		///       <description>Capitalizes the first letter of each sentence.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomToggleCase</c> 5</description>
+		///       <description>Toggles the case of each letter.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-changecase
+		// HRESULT ChangeCase( [in] long Type );
+		void ChangeCase(tomConstants Type);
 
-		HRESULT GetPoint(int Type, out int px, out int py);
+		/// <summary>Retrieves screen coordinates for the start or end character position in the text range, along with the intra-line position.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flag that indicates the position to retrieve. This parameter can include one value from each of the following tables. The default value is tomStart + TA_BASELINE + TA_LEFT.</para>
+		///   <para>tomAllowOffClient</para>
+		///   <para>tomClientCoord</para>
+		///   <para>tomObjectArg</para>
+		///   <para>tomTransform</para>
+		///   <para>Use one of the following values to indicate the start or end of the range.</para>
+		///   <para>tomStart</para>
+		///   <para>tomEnd</para>
+		///   <para>Use one of the following values to indicate the vertical position.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>TA_TOP</description>
+		///       <description>Top edge of the bounding rectangle.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>TA_BASELINE</description>
+		///       <description>Base line of the text.</description>
+		///     </item>
+		///     <item>
+		///       <description>TA_BOTTOM</description>
+		///       <description>Bottom edge of the bounding rectangle.</description>
+		///     </item>
+		///   </list>
+		///   <para>Use one of the following values to indicate the horizontal position.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>TA_LEFT</description>
+		///       <description>Left edge of the bounding rectangle.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>TA_CENTER</description>
+		///       <description>Center of the bounding rectangle.</description>
+		///     </item>
+		///     <item>
+		///       <description>TA_RIGHT</description>
+		///       <description>Right edge of the bounding rectangle.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="px">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The x-coordinate.</para>
+		/// </param>
+		/// <param name="py">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The y-coordinate.</para>
+		/// </param>
+		/// <remarks>The <c>ITextRange::GetPoint</c> method gives ITextRange the ability to emulate UI-pointer commands; it is also handy for accessibility purposes.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getpoint
+		// HRESULT GetPoint( long Type, long *px, long *py );
+		void GetPoint(int Type, out int px, out int py);
 
-		HRESULT SetPoint(int x, int y, int Type, int Extend);
+		/// <summary>Changes the range based on a specified point at or up through (depending on <c>Extend</c>) the point (<c>x</c>, <c>y</c>) aligned according to <c>Type</c>.</summary>
+		/// <param name="x">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Horizontal coordinate of the specified point, in absolute screen coordinates.</para>
+		/// </param>
+		/// <param name="y">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Vertical coordinate of the specified point, in absolute screen coordinates.</para>
+		/// </param>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The end to move to the specified point. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomStart</c>
+		///       </description>
+		///       <description>Move the start of range.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomEnd</c>
+		///       </description>
+		///       <description>Move the end of range.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>How to set the endpoints of the range. If <c>Extend</c> is zero (the default), the range is an insertion point at the specified point (or at the nearest point with selectable text). If <c>Extend</c> is 1, the end specified by <c>Type</c> is moved to the point and the other end is left alone.</para>
+		/// </param>
+		/// <remarks>An application can use the specified point in the WindowFromPoint function to get the handle of the window, which usually can be used to find the client-rectangle coordinates (although a notable exception is with Windowless Controls).</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setpoint
+		// HRESULT SetPoint( [in] long x, [in] long y, [in] long Type, [in] long Extend );
+		void SetPoint(int x, int y, tomConstants Type, int Extend);
 
-		HRESULT ScrollIntoView(int Value);
+		/// <summary>Scrolls the specified range into view.</summary>
+		/// <param name="Value">
+		/// <para>Type: <c>long</c></para>
+		/// <para>Flag specifying the end to scroll into view. It can be one of the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>tomEnd</c></description>
+		/// <description>Scrolls the end character position to appear on the bottom line.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>tomStart</c></description>
+		/// <description>Scrolls the start character position to appear on the top line. (Default value).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>tomNoUpScroll</c></description>
+		/// <description />
+		/// </item>
+		/// <item>
+		/// <description><c>tomNoVpScroll</c></description>
+		/// <description />
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>The method returns an <c>HRESULT</c> value. If the method succeeds, it returns <c>S_OK</c>. If the method fails, it returns S_FALSE.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-scrollintoview
+		// HRESULT ScrollIntoView( long Value );
+		[PreserveSig]
+		HRESULT ScrollIntoView(tomConstants Value);
 
 		/// <summary>Retrieves a pointer to the embedded object at the start of the specified range, that is, at <c>cpFirst</c>. The range must either be an insertion point or it must select only the embedded object.</summary>
 		/// <returns>
@@ -8589,401 +12079,2343 @@ public static partial class MsftEdit
 		object GetEmbeddedObject();
 	}
 
-	/// <summary>
-	/// <para>Text Object Model (TOM) rich text-range attributes are accessed through a pair of dual interfaces, ITextFont and ITextPara.</para>
-	/// <para>The <c>ITextPara2</c> interface extends ITextPara, providing the equivalent of the Microsoft Word format-paragraph dialog.</para>
-	/// </summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextpara2
-	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextPara2")]
-	[ComImport, Guid("C241F5E4-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-	public interface ITextPara2 : ITextPara
-	{
-		/// <summary>
-		/// <para>Not implemented.</para>
-		/// <para>Gets the borders collection.</para>
-		/// </summary>
-		/// <param name="ppBorders">
-		/// <para>Type: <c>IUnknown**</c></para>
-		/// <para>The borders collection.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If the method succeeds, it returns <c>NOERROR</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
-		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextpara2-getborders
-		// HRESULT GetBorders( [out, retval] IUnknown **ppBorders );
-		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object GetBorders();
-
-		ITextPara2 GetDuplicate2();
-
-		HRESULT SetDuplicate2([In, Optional] ITextPara2? pPara);
-
-		int GetFontAlignment();
-
-		HRESULT SetFontAlignment(int Value);
-
-		int GetHangingPunctuation();
-
-		HRESULT SetHangingPunctuation(int Value);
-
-		int GetSnapToGrid();
-
-		HRESULT SetSnapToGrid(int Value);
-
-		int GetTrimPunctuationAtStart();
-
-		HRESULT SetTrimPunctuationAtStart(int Value);
-
-		HRESULT GetEffects(out int pValue, out int pMask);
-
-		HRESULT GetProperty(int Type, out int pValue);
-
-		HRESULT IsEqual2([In, Optional] ITextPara2? pPara, out int pB);
-
-		HRESULT SetEffects(int Value, int Mask);
-
-		HRESULT SetProperty(int Type, int Value);
-	}
-
-	/// <summary>The <c>ITextRange</c> objects are powerful editing and data-binding tools that allow a program to select text in a story and then examine or change that text.</summary>
-	/// <remarks>
-	/// <para>Multiple text ranges can be active and work cooperatively on the same story and evolve with the story. For example, if one text range deletes specified text before another text range, the latter tracks the change. In this sense, text ranges are similar to Microsoft Word bookmarks, which also track editing changes. However, bookmarks cannot edit text, while text ranges can. In addition, ranges let you manipulate text without changing the selection or Clipboard, both of which are valuable to end users. The ITextSelection interface inherits from <c>ITextRange</c> and adds some UI-oriented methods and properties as described in the section on <c>ITextSelection</c>.</para>
-	/// <para>You can look at a text range using methods based on character positions. Specifically, a text range is characterized by:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>The <c>first</c> character position, <c>cpFirst</c>, which points at an insertion point immediately preceding the first character (relative to the beginning of the story) in the range.</description>
-	/// </item>
-	/// <item>
-	/// <description>The <c>limit</c> position, <c>cpLim</c>, which points at an insertion point immediately following the last character in the range.</description>
-	/// </item>
-	/// </list>
-	/// <para>The first character in a story has <c>cpFirst</c> = zero. If a <c>cp</c> argument has a value greater than the number of characters in the story, the number of characters in the story is used instead. If a <c>cp</c> argument is negative, zero is used instead. For those familiar with Microsoft Visual Basic for Applications, call the <c>cpFirst</c> property <c>Start</c> and the <c>cpLim</c> property <c>End</c> (even though the starting position of a range is also an end).</para>
-	/// <para>In the following figure, character positions are represented by the lines separating the letters. The corresponding character position values are given beneath the lines. The range starting at <c>cpFirst</c> = 5 and ending at <c>cpLim</c> = 7 contains the two-letter word is. If this figure depicts the complete text in a story, the story length is 30.</para>
-	/// <para>The <c>length</c> of a range is given by <c>cpLim</c> - <c>cpFirst</c> or equivalently by End - Start. A range with zero length is called a <c>degenerate</c> or <c>empty</c> range and has equal <c>cp</c>* values, that is, <c>cpFirst</c> = <c>cpLim</c>. An example of a degenerate range is the current insertion point. A non-null selection is an example of a nondegenerate range.</para>
-	/// <para>Suppose that the range from 5 to 7 indicated by shaded cells in the preceding figure is told to delete its text (see Delete), thereby turning itself into an insertion point. The range from 25 to 29 would automatically track its contents, namely the word text. The following figure shows the result.</para>
-	/// <para>In this figure, the range for text now has been <c>automatically</c> adjusted to have <c>cpFirst</c> = 23 and <c>cpLim</c> = 27. The owner of the range does not have to worry about updating the range character position values in the face of editing.</para>
-	/// <para>The names of the move methods indicate which end to move, but note that if any method attempts to move one range end past the other, both ends get moved to the target position. As a result, the insertion point is at the target position. The concept is that <c>cpFirst</c> and <c>cpLim</c> always have to obey the fundamental condition</para>
-	/// <para>0 &lt;= <c>cpFirst</c> &lt;= <c>cpLim</c> &lt;= # characters in story</para>
-	/// <para>or equivalently for a range <c>r</c>, 0 &lt;= <c>r</c>.Start &lt;= <c>r</c>.End &lt;= <c>r</c>.StoryLength, which is what you would expect from the names of these quantities.</para>
-	/// <para>Another important feature is that all stories contain an undeletable final CR (0xD) character at the end. So even an empty story has a single character, namely the final CR. A range can select this character, but cannot become an insertion point beyond it. To see how this works, try selecting the final CR in a Word document and then press the RIGHT ARROW key to collapse it. The directory tree will collapse before the final CR, but the CR cannot be deleted. The Text Object Model (TOM) functions the same way. So, if <c>r</c>.Start &lt;= <c>r</c>.End, then <c>r</c>.End &lt;= (<c>r</c>.StoryLength â 1). For a discussion about deleting a CR, see Delete.</para>
-	/// <para>Some methods depend on a <c>Unit</c> argument, which can take on the predefined values listed in the following table.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Unit</description>
-	/// <description>Value</description>
-	/// <description>Meaning</description>
-	/// </listheader>
-	/// <item>
-	/// <description>tomCharacter</description>
-	/// <description>1</description>
-	/// <description>Character.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomWord</description>
-	/// <description>2</description>
-	/// <description>Word.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomSentence</description>
-	/// <description>3</description>
-	/// <description>Sentence.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomParagraph</description>
-	/// <description>4</description>
-	/// <description>Paragraph.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomLine</description>
-	/// <description>5</description>
-	/// <description>Line (on display).</description>
-	/// </item>
-	/// <item>
-	/// <description>tomStory</description>
-	/// <description>6</description>
-	/// <description>Story.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomScreen</description>
-	/// <description>7</description>
-	/// <description>Screen (as for PAGE UP/PAGE DOWN).</description>
-	/// </item>
-	/// <item>
-	/// <description>tomSection</description>
-	/// <description>8</description>
-	/// <description>Section.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomColumn</description>
-	/// <description>9</description>
-	/// <description>Table column.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomRow</description>
-	/// <description>10</description>
-	/// <description>Table row.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomWindow</description>
-	/// <description>11</description>
-	/// <description>Upper-left or lower-right of the window.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomCell</description>
-	/// <description>12</description>
-	/// <description>Table cell.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomCharFormat</description>
-	/// <description>13</description>
-	/// <description>Run of constant character formatting.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomParaFormat</description>
-	/// <description>14</description>
-	/// <description>Run of constant paragraph formatting.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomTable</description>
-	/// <description>15</description>
-	/// <description>Table.</description>
-	/// </item>
-	/// <item>
-	/// <description>tomObject</description>
-	/// <description>16</description>
-	/// <description>Embedded object.</description>
-	/// </item>
-	/// </list>
-	/// <para>Â</para>
-	/// <para>Most of the <c>Unit</c> values are self-explanatory. However the following descriptions are provided for additional clarity.</para>
-	/// <para>tomWord</para>
-	/// <para>The tomWord constant is an end of paragraph or a span of alphanumerics or punctuation including any blanks that follow. To get an on-screen feel for tomWord, watch how the caret moves when you press CTRL+RIGHT ARROW (â&gt;) or CTRL+LEFT ARROW (&lt;â) in a Word document.</para>
-	/// <para>tomSentence</para>
-	/// <para>The tomSentence constant describes a string of text that ends with a period, question mark, or exclamation mark and is followed either by one or more ASCII white space characters (9 through 0xd and 0x20), or the Unicode paragraph separator (0x2029). The trailing white space is part of the sentence. The last sentence in a story does not need to have a period, question mark, or exclamation mark. The start of a story qualifies as the start of a tomSentence, even if the string there does not qualify as a sentence grammatically. Other sentences must follow a sentence end and cannot begin with a period, question mark, or exclamation mark.</para>
-	/// <para>tomParagraph</para>
-	/// <para>The tomParagraph constant is a string of text terminated by an end-of-paragraph mark (CRLF, CR, VT (for SHIFT+ENTER), LF, FF, or 0x2029). TOM engines always have an undeletable end-of-paragraph mark at the end of a story. Thus, all TOM stories automatically have at least one tomWord, one tomSentence, and one tomParagraph.</para>
-	/// <para>tomLine</para>
-	/// <para>The tomLine constant corresponds to one line of text on a display, provided that a display is associated with the range. If no display is associated with a range, tomLine is treated as tomParagraph. A selection automatically has a display and a range that is a duplicate (see GetDuplicate). Other ranges may not have a display, depending on the TOM engine and context.</para>
-	/// <para>Methods that move one or both ends in terms of <c>Unit</c>, such as Move, MoveEnd, and MoveStart, depend on the signed <c>Count</c> argument. Except for the ITextSelection geometrical movement commands, if <c>Count</c> is greater than zero, the ends to be moved are moved forward (toward the end of the story), and if <c>Count</c> is less than zero, the ends are moved backward (toward the beginning). The default value of <c>Count</c> for these <c>Move</c> methods is 1. These methods attempt to move <c>Count Units</c>, but movement is never beyond the ends of the story.</para>
-	/// <para>Methods that move one or both ends by matching character strings or string patterns, such as MoveWhile, MoveEndWhile, and MoveStartWhile, can move up to a maximum number of characters given by the signed <c>Count</c> argument. If <c>Count</c> is greater than zero, the ends to be moved are moved forward, and if <c>Count</c> is less than zero, the ends are moved backward. Two special <c>Count</c> values, tomForward and tomBackward, are defined. These values are guaranteed to reach the end and the start of the story, respectively. The default value of <c>Count</c> is tomForward.</para>
-	/// <para>In <c>Move</c>* methods that turn a nondegenerate range into a degenerate one, such as Move, MoveWhile, and MoveUntil, <c>cpFirst</c> is changed if <c>Count</c> is negative and <c>cpLim</c> is changed if <c>Count</c> is positive. After this movement, the other end of the range is also moved to the new location. See the individual methods for more specific <c>Count</c> information. For nondegenerate ranges, the methods MoveStart, MoveEnd, MoveStartWhile, MoveEndWhile, MoveStartUntil and MoveEndUntil move either the starting position (Start) or the ending position (End).</para>
-	/// <para>To select a unit that corresponds to a contiguous range, such as a tomWord, tomSentence, and tomParagraph, use the MoveEnd method. To select a unit that corresponds to a noncontiguous range, such as tomObject, use the EndOf method, since the next object may occur after substantial intermediate text, if at all. To select a tomCell unit, the range must be inside a table.</para>
-	/// <para>Examples and further explanation of the <c>Count</c> and <c>Unit</c> arguments follow. Note that TOM engines may not support all of the units in the table above. For example, rich edit controls do not offer the concepts of sections, but rather return E_NOTIMPL when given tomSection. However if a TOM engine does support a unit, it has the index value given in the table.</para>
-	/// <para>Applications typically do not implement the <c>ITextRange</c> interface. Microsoft text solutions, such as rich edit controls, implement <c>ITextRange</c> as part of their TOM implementation.</para>
-	/// <para>Applications can retrieve an <c>ITextRange</c> pointer by calling the Range method.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextrange
-	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextRange")]
-	[ComImport, Guid("8CC497C2-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-	public interface ITextRange
-	{
-		HRESULT GetText([MarshalAs(UnmanagedType.BStr)] out string pbstr);
-
-		HRESULT SetText([MarshalAs(UnmanagedType.BStr)] string bstr);
-
-		int GetChar();
-
-		HRESULT SetChar(int Char);
-
-		ITextRange GetDuplicate();
-
-		ITextRange GetFormattedText();
-
-		HRESULT SetFormattedText([In, Optional] ITextRange? pRange);
-
-		int GetStart();
-
-		HRESULT SetStart(int cpFirst);
-
-		int GetEnd();
-
-		HRESULT SetEnd(int cpLim);
-
-		ITextFont GetFont();
-
-		HRESULT SetFont([In, Optional] ITextFont? pFont);
-
-		ITextPara GetPara();
-
-		HRESULT SetPara([In, Optional] ITextPara? pPara);
-
-		int GetStoryLength();
-
-		int GetStoryType();
-
-		HRESULT Collapse(int bStart);
-
-		HRESULT Expand(int Unit, out int pDelta);
-
-		HRESULT GetIndex(int Unit, out int pIndex);
-
-		HRESULT SetIndex(int Unit, int Index, int Extend);
-
-		HRESULT SetRange(int cpAnchor, int cpActive);
-
-		HRESULT InRange([In, Optional] ITextRange? pRange, out int pValue);
-
-		HRESULT InStory([In, Optional] ITextRange? pRange, out int pValue);
-
-		HRESULT IsEqual([In, Optional] ITextRange? pRange, out int pValue);
-
-		HRESULT Select();
-
-		HRESULT StartOf(int Unit, int Extend, out int pDelta);
-
-		HRESULT EndOf(int Unit, int Extend, out int pDelta);
-
-		HRESULT Move(int Unit, int Count, out int pDelta);
-
-		HRESULT MoveStart(int Unit, int Count, out int pDelta);
-
-		HRESULT MoveEnd(int Unit, int Count, out int pDelta);
-
-		HRESULT MoveWhile([In] object Cset, int Count, out int pDelta);
-
-		HRESULT MoveStartWhile([In] object Cset, int Count, out int pDelta);
-
-		HRESULT MoveEndWhile([In] object Cset, int Count, out int pDelta);
-
-		HRESULT MoveUntil([In] object Cset, int Count, out int pDelta);
-
-		HRESULT MoveStartUntil([In] object Cset, int Count, out int pDelta);
-
-		HRESULT MoveEndUntil([In] object Cset, int Count, out int pDelta);
-
-		HRESULT FindText([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, int Flags, out int pLength);
-
-		HRESULT FindTextStart([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, int Flags, out int pLength);
-
-		HRESULT FindTextEnd([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, int Flags, out int pLength);
-
-		HRESULT Delete(int Unit, int Count, out int pDelta);
-
-		HRESULT Cut(out VARIANT pVar);
-
-		HRESULT Copy(out VARIANT pVar);
-
-		HRESULT Paste([In] object pVar, int Format);
-
-		HRESULT CanPaste([In] object pVar, int Format, out int pValue);
-
-		HRESULT CanEdit(out int pValue);
-
-		HRESULT ChangeCase(int Type);
-
-		HRESULT GetPoint(int Type, out int px, out int py);
-
-		HRESULT SetPoint(int x, int y, int Type, int Extend);
-
-		HRESULT ScrollIntoView(int Value);
-
-		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object GetEmbeddedObject();
-	}
-
 	/// <summary>The <c>ITextRange2</c> interface is derived from ITextRange, and its objects are powerful editing and data-binding tools that enable a program to select text in a story and then examine or change that text.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextrange2
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextRange2")]
-	[ComImport, Guid("C241F5E2-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5E2-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextRange2 : ITextSelection
 	{
-		int GetCch();
+		/// <summary>Gets the plain text in this range. The Text property is the default property of the ITextRange interface.</summary>
+		/// <returns>
+		///   <para>Type: <c>BSTR*</c></para>
+		///   <para>The text.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The <c>ITextRange::GetText</c> method returns the plain text in the range. The Text property is the default property for ITextRange; this is, it is automatically invoked for a range, as in the following Microsoft Visual Basic for Applications (VBA) example.</para>
+		///   <para>Some of the examples below use this fact. The ITextRange::SetText method substitutes <c>bstr</c> for the range text. For processing a single character, the Char property is more efficient than the Text property and does not require creating a single character range for storing a character. If the range is degenerate, the Text property lets you insert text easily. You can also delete the text in a range, as shown in the following VBA examples.</para>
+		///   <para>You can use the <c>Text</c> property to copy plain text from one place to another, simply by setting one range equal to another. (This is quite different from the <c>Duplicate</c> property; for more information, see ITextRange::GetDuplicate). The following Microsoft Visual Basic example statement sets the text in the range1 to that in range2.</para>
+		///   <para>The ranges can be in different stories or even in different applications. However, they do imply copying the text first into a <c>BSTR</c> and then from that string to the target location. For large amounts of text, the ITextRange::Copy and ITextRange::Paste methods can be faster, since they can perform the copy directly from source to target and with any format supported by the source and target.</para>
+		///   <para>The text returned by the Text property is given in Unicode. The end-of-paragraph mark may be given by 0x2029 (the Unicode Paragraph Separator), or by carriage return/line feed (CR/LF) (0xd, 0xa), or by a carriage return alone, depending on the original file. Microsoft Word uses a carriage return alone, unless it reads another choice in from a file, the clipboard, or an IDataObject. The placeholder for an embedded object is given by the special character, <c>WCH_EMBEDDING</c>, which has the Unicode value 0xFFFC.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-gettext
+		// HRESULT GetText( BSTR *pbstr );
+		[return: MarshalAs(UnmanagedType.BStr)]
+		new string GetText();
 
-		/// <summary>
-		/// <para>Not implemented.</para>
-		/// <para>Gets a cells object with the parameters of cells in the currently selected table row or column.</para>
-		/// </summary>
-		/// <param name="ppCells">
-		/// <para>Type: <c>IUnknown**</c></para>
-		/// <para>The cells object.</para>
+		/// <summary>Sets the text in this range.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>Text that replaces the current text in this range. If null, the current text is deleted.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>
+		///     <c>ITextRange::SetText</c> replaces the text in the range with the new text. In contrast, TypeText replaces the selection with the text <c>bstr</c> and leaves the selection as an insertion point just following the inserted text, just as if you had typed the text in. For UI selection behavior, see <c>TypeText</c>.</para>
+		///   <para>If, after you call <c>ITextRange::SetText</c>, you call ITextRange::GetText, you get back the same text that you set with the <c>ITextRange::SetText</c> method (unless some other range has changed that text in between the calls).</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-settext
+		// HRESULT SetText( [in] BSTR bstr );
+		new void SetText([MarshalAs(UnmanagedType.BStr)] string bstr);
+
+		/// <summary>Gets the character at the start position of the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The start character position of the range.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The following Microsoft Visual Basic example sets <c>ch</c> equal to the character at the start of the range.</para>
+		///   <para>Similarly, ITextRange::SetChar overwrites the character at the start of the range with the specified character. The characters retrieved and set by these methods are <c>LONG</c> variables, which hide the way that they are stored in the backing store (as bytes, words, variable-length, and so forth), and they do not require using a <c>BSTR</c>.</para>
+		///   <para>The Char property, which can do most things that a characters collection can, has two big advantages:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>It can reference any character in the parent story instead of being limited to the parent range.</description>
+		///     </item>
+		///     <item>
+		///       <description>It is significantly faster, since <c>LONG</c>s are involved instead of range objects.</description>
+		///     </item>
+		///   </list>
+		///   <para>Accordingly, the Text Object Model (TOM) does not support a characters collection.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getchar
+		// HRESULT GetChar( long *pChar );
+		new int GetChar();
+
+		/// <summary>Sets the character at the starting position of the range.</summary>
+		/// <param name="Char">
+		///   <para>Type: <c>long</c></para>
+		///   <para>New value for character at the starting position.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>
+		///     <c>ITextRange::SetChar</c> lets you specify the precise character code to use. However, string literals with similar looking glyphs can be misleading.</para>
+		///   <para>The characters set by this method are <c>LONG</c> instead of a <c>BSTR</c>. This hides the way that they are stored in the backing store, (as bytes, words, variable-length, and so forth).</para>
+		///   <para>Frequently on systems that do not have automatic word-wrapping, documents have hard carriage returns inserted just for line breaks. The following code shows a simple, but not perfect, way to convert such hard carriage returns back to blanks for the story that is associated with the range r.</para>
+		///   <para>Alternatively, you could use the following inside the IF loop.</para>
+		///   <para>This approach enables you to wrap the text to other widths. However, the algorithm isn't perfect: it assumes that a hard carriage return that is followed by anything other than white space (blank, tab, line feed, carriage return, and so forth) should be replaced by a blank. The algorithm also assumes that the carriage return character is a single character like carriage return or the Unicode end-of-paragraph (EOP) 0x2029 character. And, the combination carriage return and line feed isn't matched and would require writing and executing more code (or use ). Another caution is that there are other cases, such as mixed code and documentation, where the algorithm does not work correctly.</para>
+		///   <para>However, <c>ITextRange::SetChar</c> is more efficient than a replace operation that is accomplished by a delete followed by an insertion. Thus, rewriting the code without using <c>ITextRange::SetChar</c> would probably be much slower.</para>
+		///   <para>The <c>Char</c> property, which can do most things that a characters collection can, has two big advantages: it can reference any character in the parent story instead of being limited to the parent range, and it's significantly faster, since <c>LONG</c>s rather than range objects are involved. Because of these advantages, the Text Object Model (TOM) does not support a characters collection.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setchar
+		// HRESULT SetChar( long Char );
+		new void SetChar(int Char);
+
+		/// <summary>Gets a duplicate of this range object.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextRange**</c></para>
+		///   <para>The duplicate of the range.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>To create an insertion point in order to traverse a range, first duplicate the range and then collapse the duplicate at its start character position. Note, a range is characterized by start and end character positions, and the story it belongs to.</para>
+		///   <para>Even if the range is actually an ITextSelection, the duplicate returned is an ITextRange. For an example, see the ITextRange::FindText method.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getduplicate
+		// HRESULT GetDuplicate( ITextRange **ppRange );
+		new ITextRange GetDuplicate();
+
+		/// <summary>Gets an ITextRange object with the specified range's formatted text.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextRange**</c></para>
+		///   <para>The ITextRange object with the formatted text.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>This method, which amounts to an alias for the ITextRange::GetDuplicate method, is included to be Microsoft Visual Basic for Applications (VBA)-friendly. The method returns the formatted text in a range. If the ITextRange does not belong to the same Text Object Model (TOM) engine, call IUnknown::QueryInterface for an IDataObject interface.</para>
+		///   <para>Among the formats typically supported by IDataObject are <c>CF_TEXT</c> and <c>CF_RTF</c>. In addition, private formats can be used to reference a text solution's own internal rich-text formats. The following Microsoft Visual Basic example uses the <c>FormattedText</c> property to replace the text in a range2, by the formatted text in range1.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getformattedtext
+		// HRESULT GetFormattedText( ITextRange **ppRange );
+		new ITextRange GetFormattedText();
+
+		/// <summary>Sets the formatted text of this range text to the formatted text of the specified range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>The formatted text to replace this range's text.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>If the ITextRange does not belong to the same Text Object Model (TOM) engine, call IUnknown::QueryInterface for an IDataObject interface.</para>
+		///   <para>Among the formats typically supported by the IDataObject are CF_TEXT and CF_RTF. In addition, private formats can be used to reference a text solution's own internal rich-text formats. The following Microsoft Visual Basic example uses the <c>FormattedText</c> property to replace the text in range2 with the formatted text in range1.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setformattedtext
+		// HRESULT SetFormattedText( [in] ITextRange *pRange );
+		new void SetFormattedText([In, Optional] ITextRange? pRange);
+
+		/// <summary>Gets the start character position of the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The start character position.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getstart
+		// HRESULT GetStart( long *pcpFirst );
+		new int GetStart();
+
+		/// <summary>Sets the character position for the start of this range.</summary>
+		/// <param name="cpFirst">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The new character position for the start of the range.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>Note that if <c>cpFirst</c> is greater than the range's end position, this method sets the end position equal to <c>cpFirst</c>, making the range an insertion point. If this range is the selection, the start position becomes the active end and is scrolled into view if the display isn't frozen.</para>
+		///   <para>ITextRange::SetEnd sets the range's end position, and ITextRange::SetRange sets both range ends simultaneously. The following example shows how to convert a nondegenerate range into a degenerate one (insertion point).</para>
+		///   <para>Similarly, converts the range into an insertion point at the end position.</para>
+		///   <para>The following example adds 1 to the end position, if it is not at the end of the story.</para>
+		///   <para>This also makes the end position the active end of the range, and it can turn a degenerate range into a nondegenerate one.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setstart
+		// HRESULT SetStart( [in] long cpFirst );
+		new void SetStart(int cpFirst);
+
+		/// <summary>Gets the end character position of the range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The end character position.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>Although a pointer to a range remains valid when the text is edited, this is not the case for the character position. A character position is volatile; that is, it becomes invalid as soon as text is inserted or deleted before the character position. Be careful about using methods that return character position values, especially if the values are to be stored for any duration.</para>
+		///   <para>This method is similar to the ITextRange::GetStart method which gets the start character position of the range.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getend
+		// HRESULT GetEnd( long *pcpLim );
+		new int GetEnd();
+
+		/// <summary>Sets the end position of the range.</summary>
+		/// <param name="cpLim">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The new end position.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>If the new end position is less than the start position, this method also sets the start position to <c>cp</c>; that is, the range becomes an insertion point.</para>
+		///   <para>If this range is actually the selection, the end position becomes the active end and, if the display is not frozen, it is scrolled into view.</para>
+		///   <para>ITextRange::SetStart sets the range's start position and ITextRange::SetRange sets both range ends simultaneously. To convert a nondegenerate range, r, into a degenerate one (insertion point) at the start position, use</para>
+		///   <para>Similarly, r.Start = r.End converts r into an insertion point at the end position.</para>
+		///   <para>To add 1 to the end position, unless it is at the end of the story, use:</para>
+		///   <para>This also makes end position the active end, and it can turn a degenerate range into a nondegenerate one.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setend
+		// HRESULT SetEnd( long cpLim );
+		new void SetEnd(int cpLim);
+
+		/// <summary>Gets an ITextFont object with the character attributes of the specified range.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextFont**</c></para>
+		///   <para>The pointer to an ITextFont object.</para>
+		/// </returns>
+		/// <remarks>For plain-text controls, these objects do not vary from range to range, but in rich-text solutions, they do. See the section on ITextFont for further details.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getfont
+		// HRESULT GetFont( ITextFont **ppFont );
+		new ITextFont GetFont();
+
+		/// <summary>Sets this range's character attributes to those of the specified ITextFont object.</summary>
+		/// <param name="pFont">
+		/// <para>Type: <c>ITextFont*</c></para>
+		/// <para>A font object with the desired character format.</para>
+		/// </param>
+		/// <remarks>
+		/// For occasional format changes, use the <c>ITextRange::SetFont</c> method. However, to make a number of character formatting
+		/// changes, it is more efficient to use a font duplicate. This is because every time you execute a statement like <c>range.font.bold
+		/// = tomTrue</c>, a font object is allocated and freed. However, a font duplicate can be allocated once and used many times.
+		/// Furthermore, you can save the font duplicate, reset it to the default or undefined states with the Reset method, and give it
+		/// values as needed for your rich-text processing. For sample code that shows how to use font duplicates, see Using a Font Duplicate.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setfont
+		// HRESULT SetFont( [in] ITextFont *pFont );
+		new void SetFont([In, Optional] ITextFont? pFont);
+
+		/// <summary>Gets an ITextPara object with the paragraph attributes of the specified range.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextPara**</c></para>
+		///   <para>The pointer to the ITextPara object.</para>
+		/// </returns>
+		/// <remarks>For plain-text controls, these objects do not vary from range to range, but in rich-text solutions, they do. See the section on ITextPara for further details.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getpara
+		// HRESULT GetPara( ITextPara **ppPara );
+		new ITextPara GetPara();
+
+		/// <summary>Sets the paragraph attributes of this range to those of the specified ITextPara object.</summary>
+		/// <param name="pPara">
+		///   <para>Type: <c>ITextPara*</c></para>
+		///   <para>The paragraph object with the desired paragraph format.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setpara
+		// HRESULT SetPara( [in] ITextPara *pPara );
+		new void SetPara([In, Optional] ITextPara? pPara);
+
+		/// <summary>Gets the count of characters in the range's story.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of characters in the range's story.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getstorylength
+		// HRESULT GetStoryLength( long *pCount );
+		new int GetStoryLength();
+
+		/// <summary>Get the type of the range's story.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The type of the range's story. The <c>pValue</c> value can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Story type</description>
+		///       <description>Value</description>
+		///       <description>Story type</description>
+		///       <description>Value</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomUnknownStory</c>
+		///       </description>
+		///       <description>0</description>
+		///       <description>
+		///         <c>tomEvenPagesHeaderStory</c>
+		///       </description>
+		///       <description>6</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMainTextStory</c>
+		///       </description>
+		///       <description>1</description>
+		///       <description>
+		///         <c>tomPrimaryHeaderStory</c>
+		///       </description>
+		///       <description>7</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomFootnotesStory</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>
+		///         <c>tomEvenPagesFooterStory</c>
+		///       </description>
+		///       <description>8</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomEndnotesStory</c>
+		///       </description>
+		///       <description>3</description>
+		///       <description>
+		///         <c>tomPrimaryFooterStory</c>
+		///       </description>
+		///       <description>9</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomCommentsStory</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>
+		///         <c>tomFirstPageHeaderStory</c>
+		///       </description>
+		///       <description>10</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomTextFrameStory</c>
+		///       </description>
+		///       <description>5</description>
+		///       <description>
+		///         <c>tomFirstPageFooterStory</c>
+		///       </description>
+		///       <description>11</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getstorytype
+		// HRESULT GetStoryType( long *pValue );
+		new tomConstants GetStoryType();
+
+		/// <summary>Collapses the specified text range into a degenerate point at either the beginning or end of the range.</summary>
+		/// <param name="bStart">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flag specifying the end to collapse at. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomStart or tomTrue</c>
+		///       </description>
+		///       <description>Range is collapsed to the start of the range. This is the default.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomEnd or tomFalse</c>
+		///       </description>
+		///       <description>Range is collapsed to the end of the range.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-collapse
+		// HRESULT Collapse( [in] long bStart );
+		new void Collapse(tomConstants bStart);
+
+		/// <summary>Expands this range so that any partial units it contains are completely contained.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to include, if it is partially within the range. The default value is . For a list of the other <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of characters added to the range. The value can be null.</para>
+		/// </returns>
+		/// <remarks>For example, if an insertion point is at the beginning, the end, or within a word, <c>ITextRange::Expand</c> expands the range to include that word. If the range already includes one word and part of another, <c>ITextRange::Expand</c> expands the range to include both words. <c>ITextRange::Expand</c> expands the range to include the visible portion of the range's story.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-expand
+		// HRESULT Expand( long Unit, long *pDelta );
+		new int Expand(int Unit);
+
+		/// <summary>Retrieves the story index of the <c>Unit</c> parameter at the specified range Start character position. The first <c>Unit</c> in a story has an index value of 1. The index of a <c>Unit</c> is the same for all character positions from that immediately preceding the <c>Unit</c> up to the last character in the <c>Unit</c>.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit that is indexed. For a list of possible <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The index value. The value is zero if <c>Unit</c> does not exist.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The <c>ITextRange::GetIndex</c> method retrieves the story index of a word, line, sentence, paragraph, and so forth, at the range Start. <c>Unit</c> specifies which kind of entity to index, such as words (<c>tomWord</c>), lines (<c>tomLine</c>), sentences (<c>tomSentence</c>), or paragraphs (<c>tomParagraph</c>). For example, <c>ITextRange::GetIndex</c> sets <c>pIndex</c> equal to the line number of the first line in the range. For a range at the end of the story, <c>ITextRange::GetIndex</c>, returns the number of <c>Unit</c>s in the story. Thus, you can get the number of words, lines, objects, and so forth, in a story.</para>
+		///   <para>The index value returned by the <c>ITextRange::GetIndex</c> method is not valid if the text is subsequently edited. Thus, users should be careful about using methods that return index values, especially if the values are to be stored for any duration. This is in contrast to a pointer to a range, which does remain valid when the text is edited.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getindex
+		// HRESULT GetIndex( long Unit, long *pIndex );
+		new int GetIndex(int Unit);
+
+		/// <summary>Changes this range to the specified unit of the story.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit used to index the range. For a list of unit values, see ITextRange.</para>
+		/// </param>
+		/// <param name="Index">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Index for the <c>Unit</c>. This range is relocated to the <c>Unit</c> that has this index number. If positive, the numbering of <c>Unit</c>s begins at the start of the story and proceeds forward. If negative, the numbering begins at the end of the story and proceeds backward. The start of the story corresponds to an <c>Index</c> of 1 for all units that exist, and the last unit in the story corresponds to an <c>Index</c> of -1.</para>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flag that indicates the extent of the range. If zero (the default), the range is collapsed to an insertion point at the start position of the specified <c>Unit</c>. If nonzero, the range is set to the entire <c>Unit</c>.</para>
+		/// </param>
+		/// <remarks>This method allows an application to work with line-oriented text, such as programs, in a convenient way. For example, converts a range to an insertion point at the start of the tenth line.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setindex
+		// HRESULT SetIndex( [in] long Unit, [in] long Index, [in] long Extend );
+		new void SetIndex(int Unit, int Index, int Extend);
+
+		/// <summary>Adjusts the range endpoints to the specified values.</summary>
+		/// <param name="cpAnchor">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The character position for the anchor end of the range.</para>
+		/// </param>
+		/// <param name="cpActive">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The character position for the active end of the range.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>This method sets the range's start position to , and the end position to . If the range is a nondegenerate selection, <c>cpAnchor</c> is the active end, and <c>cpAnchor</c> is the anchor end. If the range is a degenerate selection, the selection is displayed at the start of the line, rather than at the end of the previous line.</para>
+		///   <para>This method removes any other subranges this range may have. To preserve the current subranges, use ITextRange2::SetActiveSubrange.</para>
+		///   <para>If the text range is a selection, you can set the attributes of the selection by using the ITextSelection::SetFlags method.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setrange
+		// HRESULT SetRange( long cpAnchor, long cpActive );
+		new void SetRange(int cpAnchor, int cpActive);
+
+		/// <summary>Determines whether this range is within or at the same text as a specified range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>Text that is compared to the current range.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The comparison result. The pointer can be null. The method returns <c>pB</c> is <c>tomTrue</c> only if the range is in or at the same text as <c>pRange</c>.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>For range2 to be contained in range1, both ranges must be in the same story, and the limits of range2 must satisfy either of the following statements.</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>The start and end character positions of range1 are the same as range2. That is, both ranges are degenerate and have identical insertion points.</description>
+		///     </item>
+		///     <item>
+		///       <description>Range2 is a nondegenerate range with start and end character positions at or within those of range1.</description>
+		///     </item>
+		///   </list>
+		///   <para>The following example shows how to walk one range with another.</para>
+		///   <para>When the ITextRange::FindText, ITextRange::MoveWhile, and ITextRange::MoveUntil method families are used, you can use one range to walk another by specifying the appropriate limit count of characters (for an example, see the Remarks in <c>ITextRange::Find</c>).</para>
+		///   <para>ITextRange::IsEqual is a special case of <c>ITextRange::InRange</c> that returns <c>pB</c><c>tomTrue</c> if the <c>pRange</c> has the same start and end character positions and belongs to the same story.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-inrange
+		// HRESULT InRange( ITextRange *pRange, long *pValue );
+		new tomConstants InRange([In, Optional] ITextRange? pRange);
+
+		/// <summary>Determines whether this range's story is the same as a specified range's story.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>The ITextRange object whose story is compared to this range's story.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The comparison result. The pointer can be null. The <c>pB</c> parameter receives <c>tomTrue</c> if this range's story is the same as that of the <c>pRange</c>; otherwise it receives <c>tomFalse</c>.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-instory
+		// HRESULT InStory( ITextRange *pRange, long *pValue );
+		new tomConstants InStory([In, Optional] ITextRange? pRange);
+
+		/// <summary>Determines whether this range has the same character positions and story as those of a specified range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange*</c></para>
+		///   <para>The ITextRange object that is compared to this range.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The comparison result. The pointer can be null. The <c>pB</c> parameter receives <c>tomTrue</c> if this range points at the same text (has the same start and end character positions and story) as <c>pRange</c>; otherwise it returns <c>tomFalse</c>.</para>
+		/// </returns>
+		/// <remarks>The <c>ITextRange::IsEqual</c> method returns <c>tomTrue</c> only if the range points at the same text as <c>pRange</c>. See Finding Rich Text for code that compares two different pieces of text to see if they contain the same plain text and the same character formatting.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-isequal
+		// HRESULT IsEqual( ITextRange *pRange, long *pValue );
+		new tomConstants IsEqual([In, Optional] ITextRange? pRange);
+
+		/// <summary>Sets the start and end positions, and story values of the active selection, to those of this range.</summary>
+		/// <remarks>
+		///   <para>The active end of the new selection is at the end position.</para>
+		///   <para>The caret for an ambiguous character position is displayed at the beginning of the line.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-select
+		// HRESULT Select();
+		new void Select();
+
+		/// <summary>Moves the range ends to the start of the first overlapping <c>Unit</c> in the range.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use in the move operation. For a list of <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>How to move the ends of the range. It can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>0 (or <c>tomMove</c>)</description>
+		///       <description>Collapses a nondegenerate range to the start position by moving the insertion point. This is the default.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>1 (or <c>tomExtend</c>)</description>
+		///       <description>Moves the start position to the beginning of the overlapping <c>Unit</c>. Does not move the end position.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>Pointer to a variable that receives the number of characters that the start position is moved. It can be null. On return, <c>pDelta</c> is the signed number of characters that the insertion point or start position is moved. This value is always less than or equal to zero, because the motion is always toward the beginning of the story.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the range is an insertion point on a boundary between <c>Unit</c>s, <c>ITextRange::StartOf</c> does not change the start position.</para>
+		///   <para>The <c>ITextRange::StartOf</c> and ITextRange::EndOf methods differ from the HomeKey and EndKey methods in that the latter extend from the active end, whereas <c>ITextRange::StartOf</c> extends from the start position and <c>ITextRange::EndOf</c> extends from the end position.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-startof
+		// HRESULT StartOf( long Unit, long Extend, long *pDelta );
+		new tomConstants StartOf(tomConstants Unit, tomConstants Extend);
+
+		/// <summary>Moves this range's ends to the end of the last overlapping <c>Unit</c> in the range.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use. Default value: <c>tomWord</c>. For a list of the other <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Indicator of how the shifting of the range ends is to proceed. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>0 or <c>tomMove</c></description>
+		///       <description>Collapses a nondegenerate range to the End of the original range by moving the insertion point. This is the default.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>1 (or <c>tomExtend</c>)</description>
+		///       <description>Moves End to the end of the overlapping <c>Unit</c>. Does not move Start.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of characters that End is moved past. The value of the pointer can be null. On return, the value of <c>pDelta</c> is the number of characters the insertion point or End is moved <c>plus</c> 1 if a collapse occurs to the entry End. If the range includes the final CR (carriage return) (at the end of the story) and <c>Extend</c> = tomMove, then <c>pDelta</c> is set to â1, to indicate that the collapse occurred <c>before</c> the end of the range (because an insertion point cannot exist beyond the final CR).</para>
+		/// </returns>
+		/// <remarks>For comparison, the ITextRange::StartOf method moves the range ends to the beginning of the first overlapping <c>Unit</c> in the range. Note, the <c>ITextRange::StartOf</c> and <c>ITextRange::EndOf</c> methods differ from the HomeKey and EndKey methods in that the latter extend from the active end, whereas <c>ITextRange::StartOf</c> extends from Start and <c>ITextRange::EndOf</c> extends from End. If the range is an insertion point on a boundary between <c>Unit</c>s, <c>ITextRange::EndOf</c> does not change End. In particular, calling <c>ITextRange::EndOf</c> (<c>tomCharacter</c>, *, *) does not change End except for an insertion point at the beginning of a story.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-endof
+		// HRESULT EndOf( long Unit, long Extend, long *pDelta );
+		new tomConstants EndOf(tomConstants Unit, tomConstants Extend);
+
+		/// <summary>Moves the insertion point forward or backward a specified number of units. If the range is nondegenerate, the range is collapsed to an insertion point at either end, depending on <c>Count</c>, and then is moved.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use. The default value is <c>tomCharacter</c>. For information on other values, see the discussion in ITextRange.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Number of <c>Unit</c>s to move past. The default value is 1. If <c>Count</c> is greater than zero, motion is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, motion is backwardâtoward the beginning. If <c>Count</c> is zero, the range is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of <c>Unit</c>s the insertion point moves past. The pointer can be <c>NULL</c>. For more information, see the Remarks section.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the range is degenerate (an insertion point), this method tries to move the insertion point <c>Count</c>Â <c>Unit</c>s.</para>
+		///   <para>If the range is nondegenerate and <c>Count</c> is greater than zero, this method collapses the range at the end character position, moves the resulting insertion point forward to a <c>Unit</c> boundary (if it is not already at one), and then tries to move <c>Count</c> - 1 <c>Unit</c>s forward. If the range is nondegenerate and <c>Count</c> is less than zero, this method collapses the range at the start character position, moves the resulting insertion point backward to a <c>Unit</c> boundary (if it isn't already at one), and then tries to move |<c>Count</c>| - 1 <c>Unit</c>s backward. Thus, in both cases, collapsing a nondegenerate range to an insertion point, whether moving to the start or end of the <c>Unit</c> following the collapse, counts as a <c>Unit</c>.</para>
+		///   <para>The <c>ITextRange::Move</c> method returns <c>pDelta</c> = number of <c>Unit</c>s actually moved. This method never moves the insertion point beyond the story of this range. If <c>Count</c><c>Unit</c>s would move the insertion point before the beginning of the story, it is moved to the story beginning and <c>pDelta</c> is set accordingly. Similarly, if <c>Count</c>Â <c>Unit</c>s would move it beyond the end of the story, it is moved to the story end.</para>
+		///   <para>The <c>ITextRange::Move</c> method works similarly to the UI-oriented MoveLeft and MoveRight methods, except that the direction of motion is logical rather than geometrical. That is, with <c>ITextRange::Move</c> the direction is either toward the end or toward the start of the story. Depending on the language, moving toward the end of the story could be moving to the left or to the right. To get a feel for <c>Count</c>, press Ctrl+Right Arrow in a Microsoft Word document for a variety of selections. In left-to-right text, this keystroke behaves the same as , and . <c>Count</c> corresponds to the number of times you press Ctrl+Right Arrow.</para>
+		///   <para>For example, if you press Ctrl+Right Arrow for the selections shown in both of the following figures, you end up with an insertion point at character position 8, since this command collapses the selections at their end character positions (7 and 8, respectively) and moves to the next <c>tomWord</c> boundary.</para>
+		///   <para>The first selection does not include the blank space at character position 7, so Ctrl+Right Arrow moves past the space to the <c>tomWord</c> boundary at character position 8. The end character position is already at a <c>tomWord</c> boundary for the second selection, so Ctrl+Right Arrow just collapses the selection at that boundary. Similarly, Ctrl+Left Arrow, which for this text acts like , and collapses the first selection at character position 5, which is already at a <c>tomWord</c> boundary, so no more motion occurs. But Ctrl+Left Arrow collapses the second selection at character position 4 and then moves to zero, since that's the next <c>tomWord</c> boundary in the direction of motion.</para>
+		///   <para>The return argument, <c>pDelta</c>, is set equal to the number of <c>Unit</c>s that the insertion point is moved including one <c>Unit</c> for collapsing a nondegenerate range and moving it to a <c>Unit</c> boundary. So, if no motion and no collapse occur, as when the range is an insertion point at the end of the story, <c>pDelta</c> is set equal to zero. This approach is useful for controlling program loops that process a whole story.</para>
+		///   <para>In both of the cases mentioned above, calling sets <c>pDelta</c> equal to 1 because the ranges were collapsed. Similarly, calling sets <c>pDelta</c> equal to -1 for both cases. Collapsing, with or without moving part of a <c>Unit</c> to a <c>Unit</c> boundary, counts as a <c>Unit</c> moved.</para>
+		///   <para>The direction of motion refers to the logical character ordering in the plain-text backing store. This approach avoids the problems of geometrical ordering, such as left versus right and up versus down, in international software. Such geometrical methods are still needed in the edit engine, of course, since keyboards have arrow keys to invoke them. If the range is really an ITextSelection object, then methods like MoveLeft and MoveRight can be used.</para>
+		///   <para>If <c>Unit</c> specifies characters (<c>tomCharacter</c>), the Text Object Model (TOM) uses the Unicode character set. To convert between Unicode and multibyte character sets the MultiByteToWideChar and WideCharToMultiByte functions provide easy ways to convert between Unicode and multibyte character sets on import and export, respectively. For more information, see Open. In this connection, the use of a carriage return/line feed (CR/LF) to separate paragraphs is as problematic as double-byte character set (DBCS). The ITextSelectionÂ UI methods back up over a CR/LF as if it were a single character, but the <c>ITextRange::Move</c> methods count CR/LFs as two characters. It's clearly better to use a single character as a paragraph separator, which in TOM is represented by a character return, although the Unicode paragraph separator character, 0x2029, is accepted. In general, TOM engines should support CR/LF, carriage return (CR), line feed (LF), vertical tab, form feed, and 0x2029. Microsoft Rich Edit 2.0 also supports CR/CR/LF for backward compatibility.</para>
+		///   <para>See also the ITextRange::MoveStart and ITextRange::MoveEnd methods, which move the range Start or End position <c>Count</c>Â <c>Unit</c>s, respectively.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-move
+		// HRESULT Move( long Unit, long Count, long *pDelta );
+		new tomConstants Move(tomConstants Unit, int Count);
+
+		/// <summary>Moves the start position of the range the specified number of units in the specified direction.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit used in the move. The default value is <c>tomCharacter</c>. For a list of the other <c>Unit</c> values, see the discussion under ITextRange.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Number of units to move. The default value is 1. If <c>Count</c> is greater than zero, motion is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, motion is backwardâtoward the beginning. If <c>Count</c> is zero, the start position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of units that the end is moved. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new start follows the old end, the new end is set equal to the new start.</para>
+		///   <para>The motion described by <c>ITextRange::MoveStart</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movestart
+		// HRESULT MoveStart( long Unit, long Count, long *pDelta );
+		new tomConstants MoveStart(tomConstants Unit, int Count);
+
+		/// <summary>Moves the end position of the range.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The units by which to move the end of the range. The default value is <c>tomCharacter</c>. For a list of the other unit values, see ITextRange.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The number of units to move past. The default value is 1. If <c>Count</c> is greater than zero, motion is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, motion is backwardâtoward the beginning. If <c>Count</c> is zero, the end position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of units that the end position of the range is moved past. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new end position precedes the old start position, the new start position is set equal to the new end position; that is, it becomes a degenerate range or an insertion point.</para>
+		///   <para>The motion described by <c>ITextRange::MoveEnd</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveend
+		// HRESULT MoveEnd( long Unit, long Count, long *pDelta );
+		new tomConstants MoveEnd(tomConstants Unit, int Count);
+
+		/// <summary>Starts at a specified end of a range and searches while the characters belong to the set specified by <c>Cset</c> and while the number of characters is less than or equal to <c>Count</c>. The range is collapsed to an insertion point when a non-matching character is found.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is less than zero, the search starts at the start position and goes backward â toward the beginning of the story. If <c>Count</c> is greater than zero, the search starts at the end position and goes forward â toward the end of the story.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual count of characters end is moved. This parameter can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The motion described by ITextRange::MoveUntil is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see the discussion in ITextRange and the Remarks section of ITextRange::Move.</para>
+		///   <para>The <c>ITextRange::MoveWhile</c> method is similar to ITextRange::MoveUntil, but <c>MoveWhile</c> searches as long as it finds members of the set specified by <c>Cset</c>, and there is no additional increment to the value <c>pDelta</c>.</para>
+		///   <para>The ITextRange::MoveStartWhile and ITextRange::MoveEndWhile methods move the start and end, respectively, just past all contiguous characters that are found in set of characters specified by the <c>Cset</c> parameter.</para>
+		///   <para>The <c>VARIANT</c> type is primarily intended to be used with <c>IDispatch</c> scenarios like Microsoft Visual Basic for Applications (VBA), but it can be readily used from C or C++ as well. The following C++ code illustrates how to initialize and use the <c>VARIANT</c> argument for matching a span of digits in the range r.</para>
+		///   <para>Alternatively, an explicit string could be used, as in the following sample.</para>
+		///   <para>The following VBA example code matches the body of the next Standard Generalized Markup Language (SGML) entry in a range, r. SGML entries start with &lt; &gt; and end with &lt;/ &gt;.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movewhile
+		// HRESULT MoveWhile( VARIANT *Cset, long Count, long *pDelta );
+		new int MoveWhile([In] object Cset, int Count);
+
+		/// <summary>Moves the start position of the range either <c>Count</c> characters, or just past all contiguous characters that are found in the set of characters specified by <c>Cset</c>, whichever is less.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, search is backwardâtoward the beginning. If <c>Count</c> is zero, the start position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual count of characters that the start position is moved. This parameter can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new start follows the old end, the new end is set equal to the new start.</para>
+		///   <para>The motion described by <c>ITextRange::MoveStartWhile</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movestartwhile
+		// HRESULT MoveStartWhile( VARIANT *Cset, long Count, long *pDelta );
+		new int MoveStartWhile([In] object Cset, int Count);
+
+		/// <summary>Moves the end of the range either <c>Count</c> characters or just past all contiguous characters that are found in the set of characters specified by <c>Cset</c>, whichever is less.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search moves forward (toward the end of the story). If <c>Count</c> is less than zero, the search moves backward (toward the beginning of the story). If <c>Count</c> is zero, the end position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of characters that the end is moved. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the new end precedes the old start, the new start is set equal to the new end.</para>
+		///   <para>The motion described by <c>ITextRange::MoveEndWhile</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveendwhile
+		// HRESULT MoveEndWhile( VARIANT *Cset, long Count, long *pDelta );
+		new int MoveEndWhile([In] object Cset, int Count);
+
+		/// <summary>Searches up to <c>Count</c> characters for the first character in the set of characters specified by <c>Cset</c>. If a character is found, the range is collapsed to that point. The start of the search and the direction are also specified by <c>Count</c>.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set used in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is less than zero, the search is backward starting at the start position. If <c>Count</c> is greater than zero, the search is forward starting at the end.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The number of characters the insertion point is moved, plus 1 for a match if <c>Count</c> is greater than zero, and â1 for a match if <c>Count</c> less than zero. The pointer can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If no character is matched, the range is unchanged.</para>
+		///   <para>The motion described by <c>ITextRange::MoveUntil</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see the discussion in ITextRange and the Remarks section of ITextRange::Move.</para>
+		///   <para>The ITextRange::MoveStartUntil and ITextRange::MoveEndUntil methods move the start and end, respectively, until it finds the first character that is also in the set specified by the <c>Cset</c> parameter.</para>
+		///   <para>The <c>ITextRange::MoveUntil</c> method is similar to ITextRange::MoveWhile, but there are two differences. First, <c>MoveUntil</c> moves an insertion point <c>until</c> it finds the first character that belongs to the character set specified by <c>Cset</c>. Second, in <c>MoveUntil</c> the character matched counts as an additional character in the value returned in <c>pDelta</c>. This lets you know that the character at one end of the range or the other belongs to the <c>Cset</c> even though the insertion point stays at one of the range ends.</para>
+		///   <para>For example, suppose the range, r, is an insertion point. To see if the character at r (that is, given by r.GetChar()) is in <c>Cset</c>, call</para>
+		///   <para>If the character is in <c>Cset</c>, the return value is 1 and the insertion point does not move. Similarly, to see if the character preceding r is in <c>Cset</c>, call</para>
+		///   <para>If the character is in <c>Cset</c>, the return value is â1.</para>
+		///   <para>The following Microsoft Visual Basic for Applications (VBA) subroutine prints all numbers in the story identified by the range, r.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveuntil
+		// HRESULT MoveUntil( VARIANT *Cset, long Count, long *pDelta );
+		new int MoveUntil([In] object Cset, int Count);
+
+		/// <summary>Moves the start position of the range the position of the first character found that is in the set of characters specified by <c>Cset</c>, provided that the character is found within <c>Count</c> characters of the start position.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search is forwardâtoward the end of the storyâand if <c>Count</c> is less than zero, search is backwardâtoward the beginning. If <c>Count</c> is zero, the start position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of characters the start of the range is moved, plus 1 for a match if <c>Count</c> is greater than zero, and â1 for a match if <c>Count</c> is less than zero. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If no character from <c>Cset</c> is found within <c>Count</c> positions of the start position, the range is left unchanged.</para>
+		///   <para>If the new start follows the old end, the new end is set equal to the new start.</para>
+		///   <para>The motion described by <c>ITextRange::MoveStartUntil</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-movestartuntil
+		// HRESULT MoveStartUntil( VARIANT *Cset, long Count, long *pDelta );
+		new int MoveStartUntil([In] object Cset, int Count);
+
+		/// <summary>Moves the range's end to the character position of the first character found that is in the set of characters specified by <c>Cset</c>, provided that the character is found within <c>Count</c> characters of the range's end.</summary>
+		/// <param name="Cset">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The character set to use in the match. This could be an explicit string of characters or a character-set index. For more information, see Character Match Sets.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to move past. The default value is <c>tomForward</c>, which searches to the end of the story. If <c>Count</c> is greater than zero, the search moves forward (toward the end of the story). If <c>Count</c> is less than zero, the search moves backward (toward the beginning of the story). If <c>Count</c> is zero, the end position is unchanged.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The actual number of characters that the range end is moved, plus 1 for a match if <c>Count</c> is greater than zero, and â1 for a match if <c>Count</c> is less than zero. The value can be null.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If no character from the set specified by <c>Cset</c> is found within <c>Count</c> positions of the range's end, the range is left unchanged. If the new end precedes the old start, the new start is set equal to the new end.</para>
+		///   <para>The motion described by <c>ITextRange::MoveEndUntil</c> is logical rather than geometric. That is, motion is toward the end or toward the start of a story. Depending on the language, moving to the end of the story could be moving left or moving right.</para>
+		///   <para>For more information, see ITextRange and ITextRange::Move.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-moveenduntil
+		// HRESULT MoveEndUntil( VARIANT *Cset, long Count, long *pDelta );
+		new int MoveEndUntil([In] object Cset, int Count);
+
+		/// <summary>Searches up to <c>Count</c> characters for the text given by <c>bstr</c>. The starting position and direction are also specified by <c>Count</c>, and the matching criteria are given by <c>Flags</c>.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>String to find.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to search. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomForward</c>
+		///       </description>
+		///       <description>Searches to the end of the story. This is the default value.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>n</c> (greater than 0)</description>
+		///       <description>Searches forward for <c>n</c> chars, starting from <c>cpFirst.</c> If the range itself matches <c>bstr</c>, another search is attempted from <c>cpFirst</c> + 1.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>n</c>(less than 0)</description>
+		///       <description>Searches backward for <c>n</c> chars, starting from <c>cpLim. </c>If the range itself matches <c>bstr</c>, another search is attempted from <c>cpLim</c>â 1.</description>
+		///     </item>
+		///     <item>
+		///       <description>0 (degenerate range)</description>
+		///       <description>Search begins after the range.</description>
+		///     </item>
+		///     <item>
+		///       <description>0 (nondegenerate range)</description>
+		///       <description>Search is limited to the range.</description>
+		///     </item>
+		///   </list>
+		///   <para>Â</para>
+		///   <para>In all cases, if a string is found, the range limits are changed to be those of the matched string and <c>pLength</c> is set equal to the length of the string. If the string is not found, the range remains unchanged and <c>pLength</c> is set equal to zero.</para>
+		/// </param>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags governing comparisons. It can be 0 (the default) or any combination of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomMatchWord</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>Matches whole words.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchCase</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>Matches case.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchPattern</c>
+		///       </description>
+		///       <description>8</description>
+		///       <description>Matches regular expressions.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The length of string matched.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>The <c>ITextRange::FindText</c> method can also match special characters by using a caret (^) followed by a special letter. For a list of special characters, see the Special list available in the Microsoft WordÂ <c>Find and Replace</c> dialog box. For example, matches the next paragraph mark. Note, can be used to represent the Clipboard contents in the string to be replaced. Thus, using in the find string enables you to search for rich text. For more details, see the Word Help files.</para>
+		///   <para>As a comparison with the <c>ITextRange::FindText</c> method, the ITextRange::FindTextStart method searches forward or backward from the range's Start <c>cp</c>, and the ITextRange::FindTextEnd method searches forward or backward from the range's End <c>cp</c>. For more details, see the descriptions of these methods.</para>
+		///   <para>The following are several code snippets that show the <c>ITextRange::FindText</c> methods.</para>
+		///   <para>Example #1. The following Microsoft Visual Basic for Applications (VBA) program prints all the /* ... */ comments in a story identified by the range r.</para>
+		///   <para>Instead of these comments being printed, they could be inserted into another edit instance and saved to a file, or they could be inserted into separate cells in a table or spreadsheet.</para>
+		///   <para>To print all lines containing one or more occurrences of the word "laser", replace the loop by the following code:</para>
+		///   <para>Example #2. The following program prints a telephone list, given a story that contains an address list. The address list entries are separated by two or more paragraph marks, and each entry has the following form.</para>
+		///   <para>Note the use of the character in the <c>FindText</c> string argument to locate a pair of consecutive paragraph marks.</para>
+		///   <para>Example #3. The following subroutine replaces all occurrences of the string, str1, in a range by str2:</para>
+		///   <para>Example #4. The following line of code inserts a blank before the first occurrence of a right parenthesis, "(", that follows an occurrence of HRESULT.</para>
+		///   <para>To do this for all such occurrences, change the If into a While/Wend loop in the above line of code. This an example of a <c>FIND/REPLACE</c> macro that cannot be run with <c>Find and Replace</c> dialog boxes.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-findtext
+		// HRESULT FindText( BSTR bstr, long Count, long Flags, long *pLength );
+		new int FindText([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, tomConstants Flags);
+
+		/// <summary>Searches up to <c>Count</c> characters for the string, <c>bstr</c>, starting at the range's Start <c>cp</c> (<c>cpFirst)</c>. The search is subject to the comparison parameter, <c>Flags</c>. If the string is found, the Start <c>cp</c> is changed to the matched string, and <c>pLength</c> is set equal to the length of the string. If the string is not found, the range is unchanged, and <c>pLength</c> is set equal to zero.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>The string to search for.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to search. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomForward</c>
+		///       </description>
+		///       <description>Search to the end of the story. This is the default value.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>n </c>(greater than 0)</description>
+		///       <description>Search forward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>n </c>(less than 0)</description>
+		///       <description>Search backward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags governing the comparisons. It can be zero (the default) or any combination of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomMatchWord</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>Matches whole words.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchCase</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>Matches case.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchPattern</c>
+		///       </description>
+		///       <description>8</description>
+		///       <description>Matches regular expressions.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The length of the matched string.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-findtextstart
+		// HRESULT FindTextStart( BSTR bstr, long Count, long Flags, long *pLength );
+		new int FindTextStart([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, tomConstants Flags);
+
+		/// <summary>Searches up to <c>Count</c> characters for the string, <c>bstr</c>, starting from the range's End <c>cp</c>. The search is subject to the comparison parameter, <c>Flags</c>. If the string is found, the End <c>cp</c> is changed to be the end of the matched string, and <c>pLength</c> is set equal to the length of the string. If the string is not found, the range is unchanged and <c>pLength</c> is set equal to zero.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>String to search for.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Maximum number of characters to search. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomForward</c>
+		///       </description>
+		///       <description>Search to the end of the story. This is the default value.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>n</c> (greater than 0)</description>
+		///       <description>Search forward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>n</c> (less than 0)</description>
+		///       <description>Search backward for <c>n</c> chars, starting from <c>cpLim.</c></description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags governing comparisons. It can be zero (the default) or any combination of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomMatchWord</c>
+		///       </description>
+		///       <description>2</description>
+		///       <description>Matches whole words.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchCase</c>
+		///       </description>
+		///       <description>4</description>
+		///       <description>Matches case.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomMatchPattern</c>
+		///       </description>
+		///       <description>8</description>
+		///       <description>Matches regular expressions.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The length of string matched.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-findtextend
+		// HRESULT FindTextEnd( BSTR bstr, long Count, long Flags, long *pLength );
+		new int FindTextEnd([MarshalAs(UnmanagedType.BStr)] string bstr, int Count, tomConstants Flags);
+
+		/// <summary>Mimics the DELETE and BACKSPACE keys, with and without the CTRL key depressed.</summary>
+		/// <param name="Unit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Unit to use. <c>Unit</c> can be <c>tomCharacter</c> (the default value) or <c>tomWord</c>.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Number of <c>Unit</c>s to delete. If <c>Count</c>= zero, it deletes the text in the range only. If <c>Count</c> is greater than zero, <c>ITextRange::Delete</c> acts as if the DELETE key was pressed <c>Count</c> times. If <c>Count</c> is less than zero, it acts as if the BACKSPACE key was pressed <c>Count</c> times. The default value is 1. For more information, see the Remarks.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of units deleted. It can be null. The <c>pDelta</c> parameter is set equal to the number of <c>Unit</c>s deleted. Deleting the text in a nondegenerate range counts as one <c>Unit</c>.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If <c>Count</c> = zero, this method deletes the text in the range, that is, it deletes nothing if the range is only an insertion point.</para>
+		///   <para>If <c>Count</c> is not zero, and the range is an insertion point (that is, degenerate), | <c>Count</c>| (absolute value of <c>Count</c>) <c>Unit</c>s are deleted in the logical direction given by the sign of <c>Count</c>, where a positive value is the direction toward the end of the story, and a negative value is toward the start of the story.</para>
+		///   <para>If <c>Count</c> is not zero, and the range is nondegenerate (contains text), the text in the range is deleted (regardless of the values of <c>Unit </c> and <c>Count</c>), thereby creating an insertion point. Then, | <c>Count</c>| - 1 Â <c>Unit</c>s are deleted in the logical direction given by the sign of <c>Count</c>.</para>
+		///   <para>The text in the range can also be deleted by assigning a null string to the range (executing statement r = where r is the range). However, <c>ITextRange::Delete</c> does not require allocating a <c>BSTR</c>.</para>
+		///   <para>Deleting the end-of-paragraph mark (CR) results in the special behavior of the Microsoft WordÂ UI. Four cases are of particular interest:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>If you delete just the CR but the paragraph includes text, then the CR is deleted, and the following paragraph gets the same paragraph formatting as current one.</description>
+		///     </item>
+		///     <item>
+		///       <description>If you delete the CR as well as some, but not all, of the characters in the following paragraph, the characters left over from the current paragraph get the paragraph formatting of the following paragraph.</description>
+		///     </item>
+		///     <item>
+		///       <description>If you select to the end of a paragraph, but not the whole paragraph, the CR is not deleted.</description>
+		///     </item>
+		///     <item>
+		///       <description>If you delete the whole paragraph (from the beginning through the CR), you delete the CR as well (unless it is the final CR in the file).</description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-delete
+		// HRESULT Delete( long Unit, long Count, long *pDelta );
+		new int Delete(tomConstants Unit, int Count);
+
+		/// <summary>Cuts the plain or rich text to a data object or to the Clipboard, depending on the <c>pVar</c> parameter.</summary>
+		/// <param name="pVar">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The cut text. <c>pVar</c>-&gt;ppunkVal is the out parameter for an IDataObject object, provided that the following conditions exist:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>pVar-&gt;vt = (VT_UNKNOWN | VT_BYREF)</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar is not null</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar-&gt;ppunkVal is not null</description>
+		///     </item>
+		///   </list>
+		///   <para>Otherwise, the clipboard is used.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-cut
+		// HRESULT Cut( VARIANT *pVar );
+		new void Cut(out object pVar);
+
+		/// <summary>Copies the text to a data object.</summary>
+		/// <param name="pVar">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The copied text. <c>pVar</c>-&gt;ppunkVal is the out parameter for an IDataObject provided that the following conditions exist:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>pVar-&gt;vt = (VT_UNKNOWN | VT_BYREF)</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar is not null</description>
+		///     </item>
+		///     <item>
+		///       <description>pVar-&gt;ppunkVal is not null</description>
+		///     </item>
+		///   </list>
+		///   <para>Otherwise, the clipboard is used.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>The ITextRange::Cut, <c>ITextRange::Copy</c>, and ITextRange::Paste methods let you perform the usual <c>Cut</c>, <c>Copy</c>, and <c>Paste</c> operations on a range object using an IDataObject, thereby not changing the contents of the clipboard. Among clipboard formats typically supported are <c>CF_TEXT</c> and <c>CF_RTF</c>. In addition, private clipboard formats can be used to reference a text solution's own internal rich text formats.</para>
+		///   <para>To copy and replace plain text, you can use the ITextRange::GetTextÂ <c></c> and ITextRange::SetTextÂ <c></c> methods. To copy formatted text from range r1 to range r2 without using the clipboard, you can use <c>Copy</c> and <c>Paste</c> and also the ITextRange::GetFormattedText and ITextRange::SetFormattedText methods, as shown in the following Microsoft Visual Basic example:</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-copy
+		// HRESULT Copy( VARIANT *pVar );
+		new void Copy(out object pVar);
+
+		/// <summary>Pastes text from a specified data object.</summary>
+		/// <param name="pVar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>The IDataObject to paste. However, the contents of the clipboard are used if any of the following are true.</para>
+		/// <para><c>pVar</c> is null</para>
+		/// <para><c>pVar</c> punkVal is null</para>
+		/// <para><c>pVar</c> is not <c>VT_UNKNOWN</c></para>
+		/// <para><c>pVar</c> punkVal does not return an IDataObject when queried for one</para>
+		/// </param>
+		/// <param name="Format">
+		/// <para>Type: <c>long</c></para>
+		/// <para>The clipboard format to use in the paste operation. Zero is best format, which usually is RTF, but <c>CF_UNICODETEXT</c> and other formats are also possible. The default value is zero. For more information, see Clipboard Formats.</para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If the method succeeds, it returns <c>NOERROR</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>If the method succeeds, it returns <c>S_OK</c>. If the method fails, it returns one of the following error codes. For more information about COM error codes, see Error Handling in COM.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>E_ACCESSDENIED</c></description>
+		/// <description>Destination is write-protected.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_OUTOFMEMORY</c></description>
+		/// <description>Destination cannot contain the text to be pasted.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>For more information, seeITextRange::Copy.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-paste
+		// HRESULT Paste( VARIANT *pVar, long Format );
+		new void Paste([In] object pVar, int Format);
+
+		/// <summary>Determines if a data object can be pasted, using a specified format, into the current range.</summary>
+		/// <param name="pVar">
+		///   <para>Type: <c>VARIANT*</c></para>
+		///   <para>The IDataObject to be pasted. However, the Clipboard contents are checked for pasting if any of the following are true:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>
+		///         <c>pVar</c> is null</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>pVar</c>-&gt;punkVal is null</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>pVar</c>-&gt;vt is not <c>VT_UNKNOWN</c></description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>pVar</c>-&gt;punkVal does not return an IDataObject object when queried for one</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Format">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Clipboard format that is used. Zero represents the best format, which usually is RTF, but <c>CF_UNICODETEXT</c> and other formats are also possible. The default value is zero.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value that is <c>tomTrue</c> only if the data object identified by <c>pVar</c> can be pasted, using the specified format, into the range. This parameter can null.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-canpaste
+		// HRESULT CanPaste( VARIANT *pVar, long Format, long *pValue );
+		new tomConstants CanPaste([In] object pVar, int Format);
+
+		/// <summary>Determines whether the specified range can be edited.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A tomBool value indicating whether the range can be edited. It is <c>tomTrue</c> only if the specified range can be edited. The pointer can be null.</para>
+		/// </returns>
+		/// <remarks>The range cannot be edited if any part of it is protected or if the document is read-only.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-canedit
+		// HRESULT CanEdit( [retval] long *pValue );
+		new tomConstants CanEdit();
+
+		/// <summary>Changes the case of letters in this range according to the <c>Type</c> parameter.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Type of case change. The default value is <c>tomLower</c>.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomLowerCase</c> 0</description>
+		///       <description>Sets all text to lowercase.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomUpperCase</c> 1</description>
+		///       <description>Sets all text to lowercase.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomTitleCase</c> 2</description>
+		///       <description>Capitalizes the first letter of each word.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomSentenceCase</c> 4</description>
+		///       <description>Capitalizes the first letter of each sentence.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c>tomToggleCase</c> 5</description>
+		///       <description>Toggles the case of each letter.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-changecase
+		// HRESULT ChangeCase( [in] long Type );
+		new void ChangeCase(tomConstants Type);
+
+		/// <summary>Retrieves screen coordinates for the start or end character position in the text range, along with the intra-line position.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flag that indicates the position to retrieve. This parameter can include one value from each of the following tables. The default value is tomStart + TA_BASELINE + TA_LEFT.</para>
+		///   <para>tomAllowOffClient</para>
+		///   <para>tomClientCoord</para>
+		///   <para>tomObjectArg</para>
+		///   <para>tomTransform</para>
+		///   <para>Use one of the following values to indicate the start or end of the range.</para>
+		///   <para>tomStart</para>
+		///   <para>tomEnd</para>
+		///   <para>Use one of the following values to indicate the vertical position.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>TA_TOP</description>
+		///       <description>Top edge of the bounding rectangle.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>TA_BASELINE</description>
+		///       <description>Base line of the text.</description>
+		///     </item>
+		///     <item>
+		///       <description>TA_BOTTOM</description>
+		///       <description>Bottom edge of the bounding rectangle.</description>
+		///     </item>
+		///   </list>
+		///   <para>Use one of the following values to indicate the horizontal position.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>TA_LEFT</description>
+		///       <description>Left edge of the bounding rectangle.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>TA_CENTER</description>
+		///       <description>Center of the bounding rectangle.</description>
+		///     </item>
+		///     <item>
+		///       <description>TA_RIGHT</description>
+		///       <description>Right edge of the bounding rectangle.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="px">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The x-coordinate.</para>
+		/// </param>
+		/// <param name="py">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The y-coordinate.</para>
+		/// </param>
+		/// <remarks>The <c>ITextRange::GetPoint</c> method gives ITextRange the ability to emulate UI-pointer commands; it is also handy for accessibility purposes.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getpoint
+		// HRESULT GetPoint( long Type, long *px, long *py );
+		new void GetPoint(int Type, out int px, out int py);
+
+		/// <summary>Changes the range based on a specified point at or up through (depending on <c>Extend</c>) the point (<c>x</c>, <c>y</c>) aligned according to <c>Type</c>.</summary>
+		/// <param name="x">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Horizontal coordinate of the specified point, in absolute screen coordinates.</para>
+		/// </param>
+		/// <param name="y">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Vertical coordinate of the specified point, in absolute screen coordinates.</para>
+		/// </param>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The end to move to the specified point. It can be one of the following.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>
+		///         <c>tomStart</c>
+		///       </description>
+		///       <description>Move the start of range.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c>tomEnd</c>
+		///       </description>
+		///       <description>Move the end of range.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="Extend">
+		///   <para>Type: <c>long</c></para>
+		///   <para>How to set the endpoints of the range. If <c>Extend</c> is zero (the default), the range is an insertion point at the specified point (or at the nearest point with selectable text). If <c>Extend</c> is 1, the end specified by <c>Type</c> is moved to the point and the other end is left alone.</para>
+		/// </param>
+		/// <remarks>An application can use the specified point in the WindowFromPoint function to get the handle of the window, which usually can be used to find the client-rectangle coordinates (although a notable exception is with Windowless Controls).</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-setpoint
+		// HRESULT SetPoint( [in] long x, [in] long y, [in] long Type, [in] long Extend );
+		new void SetPoint(int x, int y, tomConstants Type, int Extend);
+
+		/// <summary>Scrolls the specified range into view.</summary>
+		/// <param name="Value">
+		/// <para>Type: <c>long</c></para>
+		/// <para>Flag specifying the end to scroll into view. It can be one of the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>tomEnd</c></description>
+		/// <description>Scrolls the end character position to appear on the bottom line.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>tomStart</c></description>
+		/// <description>Scrolls the start character position to appear on the top line. (Default value).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>tomNoUpScroll</c></description>
+		/// <description />
+		/// </item>
+		/// <item>
+		/// <description><c>tomNoVpScroll</c></description>
+		/// <description />
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>The method returns an <c>HRESULT</c> value. If the method succeeds, it returns <c>S_OK</c>. If the method fails, it returns S_FALSE.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-scrollintoview
+		// HRESULT ScrollIntoView( long Value );
+		[PreserveSig]
+		new HRESULT ScrollIntoView(tomConstants Value);
+
+		/// <summary>Retrieves a pointer to the embedded object at the start of the specified range, that is, at <c>cpFirst</c>. The range must either be an insertion point or it must select only the embedded object.</summary>
+		/// <returns>
+		///   <para>Type: <c>IUnknown**</c></para>
+		///   <para>The pointer to the object.</para>
+		/// </returns>
+		/// <remarks>If the start of this range does not have an embedded object or if the range selects more than a single object, <c>ppObject</c> is set equal to <c>NULL</c>.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange-getembeddedobject
+		// HRESULT GetEmbeddedObject( IUnknown **ppObject );
+		[return: MarshalAs(UnmanagedType.IUnknown)]
+		new object GetEmbeddedObject();
+
+		/// <summary>Gets the count of characters in a range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The signed count of characters.</para>
+		/// </returns>
+		/// <remarks>The count of characters is the difference between the character position of the active end of the range, and the character position of the anchor end. Some Text Object Model (TOM) implementations might include active ends only for a selection (represented by the ITextSelection interface). The rich edit control's TOM implementation of a text range (represented by the ITextRange interface) also has active ends.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getcch
+		// HRESULT GetCch( [out, retval] long *pcch );
+		int GetCch();
+
+		/// <summary>
+		///   <para>Not implemented.</para>
+		///   <para>Gets a cells object with the parameters of cells in the currently selected table row or column.</para>
+		/// </summary>
+		/// <returns>
+		///   <para>Type: <c>IUnknown**</c></para>
+		///   <para>The cells object.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getcells
 		// HRESULT GetCells( [out, retval] IUnknown **ppCells );
-		[return: MarshalAs(UnmanagedType.IUnknown)] 
+		[return: MarshalAs(UnmanagedType.IUnknown)]
 		object GetCells();
 
+		/// <summary>
+		///   <para>Not implemented.</para>
+		///   <para>Gets the column properties for the currently selected column.</para>
+		/// </summary>
+		/// <returns>
+		///   <para>Type: <c>IUnknown**</c></para>
+		///   <para>The column properties for the currently selected column.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getcolumn
+		// HRESULT GetColumn( [out, retval] IUnknown **ppColumn );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
 		object GetColumn();
 
+		/// <summary>Gets the count of subranges, including the active subrange in the current range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of subranges not including the active one.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If you select a range with no or one character, the count will be 1. But if you select a word and then move to a different location, and select a second word not touching the first, then the count is 2.</para>
+		///   <para>See ITextRange2::AddSubrange to add subranges programmatically.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getcount
+		// HRESULT GetCount( [out, retval] long *pCount );
 		int GetCount();
 
+		/// <summary>Gets a duplicate of a range object.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextRange2**</c></para>
+		///   <para>The duplicate range.</para>
+		/// </returns>
+		/// <remarks>If this range is an ITextSelection2 object, the duplicate returned is an ITextRange2 object. See the ITextRange::FindText method for more information.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getduplicate2
+		// HRESULT GetDuplicate2( [out, retval] ITextRange2 **ppRange );
 		ITextRange2 GetDuplicate2();
 
+		/// <summary>Gets an ITextFont2 object with the character attributes of the current range.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextFont2**</c></para>
+		///   <para>The ITextFont2 object.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getfont2
+		// HRESULT GetFont2( [out, retval] ITextFont2 **ppFont );
 		ITextFont2 GetFont2();
 
-		HRESULT SetFont2([In, Optional] ITextFont2? pFont);
+		/// <summary>Sets the character formatting attributes of the range.</summary>
+		/// <param name="pFont">
+		///   <para>Type: <c>ITextFont2*</c></para>
+		///   <para>The font object with the desired character formatting attributes.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setfont2
+		// HRESULT SetFont2( [in] ITextFont2 *pFont );
+		void SetFont2([In, Optional] ITextFont2? pFont);
 
+		/// <summary>Gets an ITextRange2 object with the current range's formatted text.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextRange2**</c></para>
+		///   <para>The formatted text.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getformattedtext2
+		// HRESULT GetFormattedText2( [out, retval] ITextRange2 **ppRange );
 		ITextRange2 GetFormattedText2();
 
-		HRESULT SetFormattedText2([In, Optional] ITextRange2? pRange);
+		/// <summary>Sets the text of this range to the formatted text of the specified range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange2*</c></para>
+		///   <para>The range that contains the formatted text that replaces the text of this range.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setformattedtext2
+		// HRESULT SetFormattedText2( [in] ITextRange2 *pRange );
+		void SetFormattedText2([In, Optional] ITextRange2? pRange);
 
-		int GetGravity();
+		/// <summary>Gets the gravity of this range.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The gravity value, which can be one of the following:</para>
+		///   <para>tomGravityUI</para>
+		///   <para>tomGravityBack</para>
+		///   <para>tomGravityFore</para>
+		///   <para>tomGravityIn</para>
+		///   <para>tomGravityOut</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getgravity
+		// HRESULT GetGravity( [out, retval] long *pValue );
+		tomConstants GetGravity();
 
-		HRESULT SetGravity(int Value);
+		/// <summary>Sets the gravity of this range.</summary>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The new gravity value, which can be one of the following.</para>
+		///   <para>tomGravityUI</para>
+		///   <para>tomGravityBack</para>
+		///   <para>tomGravityFore</para>
+		///   <para>tomGravityIn</para>
+		///   <para>tomGravityOut</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setgravity
+		// HRESULT SetGravity( [in] long Value );
+		void SetGravity(tomConstants Value);
 
+		/// <summary>Gets an ITextPara2 object with the paragraph attributes of a range.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextPara2**</c></para>
+		///   <para>The ITextPara2 object.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getpara2
+		// HRESULT GetPara2( [out, retval] ITextPara2 **ppPara );
 		ITextPara2 GetPara2();
 
-		HRESULT SetPara2([In, Optional] ITextPara2? pPara);
+		/// <summary>Sets the paragraph format attributes of a range.</summary>
+		/// <param name="pPara">
+		///   <para>Type: <c>ITextPara2*</c></para>
+		///   <para>The desired paragraph format.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setpara2
+		// HRESULT SetPara2( [in] ITextPara2 *pPara );
+		void SetPara2([In, Optional] ITextPara2? pPara);
 
+		/// <summary>Gets the row properties in the currently selected row.</summary>
+		/// <returns>
+		///   <para>Type: <c>ITextRow**</c></para>
+		///   <para>The row properties.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getrow
+		// HRESULT GetRow( [out, retval] ITextRow **ppRow );
 		ITextRow GetRow();
 
+		/// <summary>Gets the character position of the start of the paragraph that contains the range's start character position.</summary>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The start of the paragraph that contains the range's start character position.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getstartpara
+		// HRESULT GetStartPara( [out, retval] long *pValue );
 		int GetStartPara();
 
-		[return: MarshalAs(UnmanagedType.IUnknown)] 
+		/// <summary>
+		///   <para>Not implemented.</para>
+		///   <para>Gets the table properties in the currently selected table.</para>
+		/// </summary>
+		/// <returns>
+		///   <para>Type: <c>IUnknown**</c></para>
+		///   <para>The table properties.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>To select the table when the insertion point is inside a table, call ITextRange::Expand(tomTable).</para>
+		///   <para>Note: this method isn't implemented in RichEdit (see ITextRow for table functionality).</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-gettable
+		// HRESULT GetTable( [out, retval] IUnknown **ppTable );
+		[return: MarshalAs(UnmanagedType.IUnknown)]
 		object GetTable();
 
-		HRESULT GetURL([MarshalAs(UnmanagedType.BStr)] out string pbstr);
+		/// <summary>Returns the URL text associated with a range.</summary>
+		/// <returns>
+		///   <para>Type: <c>BSTR*</c></para>
+		///   <para>The URL text associated with the range.</para>
+		/// </returns>
+		/// <remarks>This method sets the start and end positions of the range to that of the whole hyperlink, including the friendly name, if any.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-geturl
+		// HRESULT GetURL( [out, retval] BSTR *pbstr );
+		[return: MarshalAs(UnmanagedType.BStr)]
+		string GetURL();
 
-		HRESULT SetURL([MarshalAs(UnmanagedType.BStr)] string bstr);
+		/// <summary>Sets the text in this range to that of the specified URL.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>The text to use as a URL for the selected friendly name.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>The URL string is not validated. The text it contains must be enclosed in quotes, optionally preceded by the sentinel character 0xFDDF. For example: "http://www.msn.com" or 0xFDDF"http://www.msn.com". The range must be nondegenerate.</para>
+		///   <para>The following actions are possible:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>If part of a link's friendly name is selected, the URL part is replaced with <c>bstr</c>.</description>
+		///     </item>
+		///     <item>
+		///       <description>If part of a regular URL is selected, it becomes the link's friendly name, with <c>bstr</c> as the URL.</description>
+		///     </item>
+		///     <item>
+		///       <description>If nonlink text is selected:</description>
+		///     </item>
+		///   </list>
+		///   <para>The text range be adjusted to different character positions after calling <c>SetURL</c>.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-seturl
+		// HRESULT SetURL( [in] BSTR bstr );
+		void SetURL([MarshalAs(UnmanagedType.BStr)] string bstr);
 
-		HRESULT AddSubrange(int cp1, int cp2, int Activate);
+		/// <summary>Adds a subrange to this range.</summary>
+		/// <param name="cp1">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The active-end character position of the subrange.</para>
+		/// </param>
+		/// <param name="cp2">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The anchor-end character position of the subrange.</para>
+		/// </param>
+		/// <param name="Activate">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The activate parameter. If this parameter is <c>tomTrue</c>, the new subrange is the active subrange, with <c>cp1</c> as the active end, and <c>cp2</c> the anchor end.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-addsubrange
+		// HRESULT AddSubrange( [in] long cp1, [in] long cp2, [in] long Activate );
+		void AddSubrange(int cp1, int cp2, tomConstants Activate);
 
-		HRESULT BuildUpMath(int Flags);
+		/// <summary>Converts the linear-format math in a range to a built-up form, or modifies the current built-up form.</summary>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A combination of the following flags.</para>
+		///   <para>tomChemicalFormula</para>
+		///   <para>tomHaveDelimiter</para>
+		///   <para>tomMathAlphabetics</para>
+		///   <para>tomMathApplyTemplate</para>
+		///   <para>tomMathArabicAlphabetics</para>
+		///   <para>tomMathAutoCorrect</para>
+		///   <para>tomMathAutoCorrectExt</para>
+		///   <para>tomMathAutoCorrectOpPairs</para>
+		///   <para>tomMathBackspace</para>
+		///   <para>tomMathBuildDown</para>
+		///   <para>tomMathBuildDownOutermost</para>
+		///   <para>tomMathBuildUpArgOrZone</para>
+		///   <para>tomMathBuildUpRecurse</para>
+		///   <para>tomMathChangeMask</para>
+		///   <para>tomMathCollapseSel</para>
+		///   <para>tomMathDeleteArg</para>
+		///   <para>tomMathDeleteArg1</para>
+		///   <para>tomMathDeleteArg2</para>
+		///   <para>tomMathDeleteCol</para>
+		///   <para>tomMathDeleteRow</para>
+		///   <para>tomMathEnter</para>
+		///   <para>tomMathInsColAfter</para>
+		///   <para>tomMathInsColBefore</para>
+		///   <para>tomMathInsRowAfter</para>
+		///   <para>tomMathInsRowBefore</para>
+		///   <para>tomMathMakeFracLinear</para>
+		///   <para>tomMathMakeFracSlashed</para>
+		///   <para>tomMathMakeFracStacked</para>
+		///   <para>tomMathMakeLeftSubSup</para>
+		///   <para>tomMathMakeSubSup</para>
+		///   <para>tomMathRemoveOutermost</para>
+		///   <para>tomMathRichEdit</para>
+		///   <para>tomMathShiftTab</para>
+		///   <para>tomMathSingleChar</para>
+		///   <para>tomMathSubscript</para>
+		///   <para>tomMathSuperscript</para>
+		///   <para>tomMathTab</para>
+		///   <para>tomNeedTermOp</para>
+		///   <para>tomPlain</para>
+		///   <para>tomShowEmptyArgPlaceholders</para>
+		///   <para>tomTeX</para>
+		/// </param>
+		/// <remarks>
+		///   <para>If the <c>ITextRange2::BuildUpMath</c> method is called on a nondegenerate range, the method checks the text for math italic conversions (if <c>tomMathAlphabetics</c> is specified) and math autocorrect conversions (if <c>tomMathAutoCorrect</c> or <c>tomMathAutoCorrectExt</c> is specified). Then, the method attempts to build up the selected text. If successful, the method replaces the previous text in the range with the built-up text. If the method makes any changes to the range, the function returns <c>NOERROR</c> and the range selects the result. If the method does change the range, it returns <c>S_FALSE</c> or a Component Object Model (COM) error code.</para>
+		///   <para>If the <c>ITextRange2::BuildUpMath</c> method is called on a degenerate range, the <c>BuildUpMath</c> method treats the range as an insertion point (IP) immediately following the last character input. The method converts that character, possibly along with some preceding characters, to math italic (if <c>tomMathAlphabetics</c> is specified), internal math autocorrect (if <c>tomMathAutoCorrect</c> is specified), negated operators, and some operator pairs (if <c>tomMathAutoCorrectOpPairs</c> is specified). If the IP is inside an argument, the method scans a range of text from the IP back to the start of a math object argument; otherwise, the method scans to the start of the current math zone. The scan is terminated by a hard carriage return or a soft end-of-paragraph mark, because math zones are terminated by these marks. A scan forward from start of the math object argument or math zone bypasses text that has no chance of being built up. If the scan reaches the original entry IP, one of the following outcomes can occur:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>If the method made any changes, the function returns <c>NOERROR</c> and the range updated with the changed text.</description>
+		///     </item>
+		///     <item>
+		///       <description>If the method made no changes, the function returns <c>S_FALSE</c> and leaves the range unchanged.</description>
+		///     </item>
+		///   </list>
+		///   <para>If the scan finds text that might get built up, the <c>BuildUpMath</c> method attempts to build up the text up to the insertion point. If successful, the method returns <c>NOERROR</c>, and the range is updated with the corresponding built-up text.</para>
+		///   <para>If this full build-up attempt fails, the <c>BuildUpMath</c> method does a partial build-up check for the expression immediately preceding the IP. If this succeeds, the method returns <c>NOERROR</c> and the range contains the linear text to be replaced by the built-up text.</para>
+		///   <para>If full and partial build-up attempts fail, the function returns as described previously for the cases where no build-up text was found. Other possible return values include <c>E_INVALIDARG</c> (if either interface pointer is <c>NULL</c>) and <c>E_OUTOFMEMORY</c>.</para>
+		///   <para>You should set the <c>tomNeedTermOp</c> flag should for formula autobuildup unless autocorrection has occurred that deletes the terminating blank. Autocorrection can occur when correcting text like \alpha when the user types a blank to force autocorrection.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-buildupmath
+		// HRESULT BuildUpMath( [in] long Flags );
+		void BuildUpMath(tomConstants Flags);
 
-		HRESULT DeleteSubrange(int cpFirst, int cpLim);
+		/// <summary>Deletes a subrange from a range.</summary>
+		/// <param name="cpFirst">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The start character position of the subrange.</para>
+		/// </param>
+		/// <param name="cpLim">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The end character position of the subrange.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-deletesubrange
+		// HRESULT DeleteSubrange( [in] long cpFirst, [in] long cpLim );
+		void DeleteSubrange(int cpFirst, int cpLim);
 
-		HRESULT Find([In, Optional] ITextRange2? pRange, int Count, int Flags, out int pDelta);
+		/// <summary>Searches for math inline functions in text as specified by a source range.</summary>
+		/// <param name="pRange">
+		///   <para>Type: <c>ITextRange2*</c></para>
+		///   <para>The formatted text to find in the range's text.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The number of characters to search through.</para>
+		/// </param>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags that control the search as defined for ITextRange::FindText.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>A count of the number of characters bypassed.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>If the string is found, and the math inline functions, if any, are the same as their counterparts in the source range, the range limits are changed to be those of the matched string and length is set equal to the length of the string.</para>
+		///   <para>If the string isn't found, the range remains unchanged and length is set equal to 0.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-find
+		// HRESULT Find( [in] ITextRange2 *pRange, [in] long Count, [in] long Flags, [out] long *pDelta );
+		tomConstants Find([In, Optional] ITextRange2? pRange, int Count, tomConstants Flags);
 
-		HRESULT GetChar2(out int pChar, int Offset);
+		/// <summary>Gets the character at the specified offset from the end of this range.</summary>
+		/// <param name="pChar">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The character value.</para>
+		/// </param>
+		/// <param name="Offset">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The offset from the end of the range. An offset of 0 gets the character at the end of the range.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>This method differs from ITextRange::GetChar in the following ways:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>It returns the UTF-32 character for the surrogate pair instead of the pair's lead code.</description>
+		///     </item>
+		///     <item>
+		///       <description>It gets the character code, or codes, at the specified offset from the end of the range instead of the character at the start of the range.</description>
+		///     </item>
+		///   </list>
+		///   <para>If the character is the lead code for a surrogate pair, the corresponding UTF-32 character is returned.</para>
+		///   <para>If <c>Offset</c> specifies a character before the start of the story or at the end of the story, this method returns the character code 0.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>If the Offset value is</description>
+		///       <description>This character is returned</description>
+		///     </listheader>
+		///     <item>
+		///       <description>0</description>
+		///       <description>The character at the end of the range.</description>
+		///     </item>
+		///     <item>
+		///       <description>Negative and accesses the middle of a surrogate pair</description>
+		///       <description>The corresponding UTF-32 character.</description>
+		///     </item>
+		///     <item>
+		///       <description>Positive and accesses the middle of a surrogate pair</description>
+		///       <description>The UTF-32 character following that pair.</description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getchar2
+		// HRESULT GetChar2( [out] long *pChar, [in] long Offset );
+		void GetChar2(out int pChar, int Offset);
 
-		HRESULT GetDropCap(out int pcLine, out int pPosition);
+		/// <summary>
+		///   <para>Not implemented.</para>
+		///   <para>Gets the drop-cap parameters of the paragraph that contains this range.</para>
+		/// </summary>
+		/// <param name="pcLine">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The count of lines for the drop cap. A value of 0 means no drop cap.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The position of the drop cap. The position can be one of the following:</para>
+		///   <list type="bullet">
+		///     <item>
+		///       <description>tomDropMargin</description>
+		///     </item>
+		///     <item>
+		///       <description>tomDropNone</description>
+		///     </item>
+		///     <item>
+		///       <description>tomDropNormal</description>
+		///     </item>
+		///   </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getdropcap
+		// HRESULT GetDropCap( [out] long *pcLine, [out] long *pPosition );
+		tomConstants GetDropCap(out int pcLine);
 
-		HRESULT GetInlineObject(out int pType, out int pAlign, out int pChar, out int pChar1, out int pChar2, out int pCount, out int pTeXStyle, out int pcCol, out int pLevel);
+		/// <summary>Gets the properties of the inline object at the range active end.</summary>
+		/// <param name="pType">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The inline object type can be one of the following:</para>
+		///   <para>tomSimpleText</para>
+		///   <para>tomRuby</para>
+		///   <para>tomHorzVert</para>
+		///   <para>tomWarichu</para>
+		///   <para>tomAccent</para>
+		///   <para>tomBox</para>
+		///   <para>tomBoxedFormula</para>
+		///   <para>tomBrackets</para>
+		///   <para>tomBracketsWithSeps</para>
+		///   <para>tomEquationArray</para>
+		///   <para>tomFraction</para>
+		///   <para>tomFunctionApply</para>
+		///   <para>tomLeftSubSup</para>
+		///   <para>tomLowerLimit</para>
+		///   <para>tomMatrix</para>
+		///   <para>tomNary</para>
+		///   <para>tomOpChar</para>
+		///   <para>tomOverbar</para>
+		///   <para>tomPhantom</para>
+		///   <para>tomRadical</para>
+		///   <para>tomSlashedFraction</para>
+		///   <para>tomStack</para>
+		///   <para>tomStretchStack</para>
+		///   <para>tomSubscript</para>
+		///   <para>tomSubSup</para>
+		///   <para>tomSuperscript</para>
+		///   <para>tomUnderbar</para>
+		///   <para>tomUpperLimit</para>
+		/// </param>
+		/// <param name="pAlign">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The inline object alignment, which can be one of these meanings depending on the inline object type:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Inline object type</description>
+		///       <description>Meaning of Align Parameter</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomRuby</description>
+		///       <description>tomRubyBelow tomRubyAlignCenter (default) tomRubyAlign010 tomRubyAlign121 tomRubyAlignLeft tomRubyAlignRight</description>
+		///     </item>
+		///     <item>
+		///       <description>tomBox</description>
+		///       <description>tomBoxAlignCenter tomSpaceMask tomSpaceDefault tomSpaceUnary tomSpaceBinary tomSpaceRelational tomSpaceSkip tomSpaceOrd tomSpaceDifferential tomSizeText tomSizeScript tomSizeScriptScript tomNoBreak tomTransparentForPositioning tomTransparentForSpacing</description>
+		///     </item>
+		///     <item>
+		///       <description>tomBoxedFormula</description>
+		///       <description>tomBoxHideTop tomBoxHideBottom tomBoxHideLeft tomBoxHideRight tomBoxStrikeH tomBoxStrikeV tomBoxStrikeTLBR tomBoxStrikeBLTR</description>
+		///     </item>
+		///     <item>
+		///       <description>tomBrackets</description>
+		///       <description>tomAlignDefault tomAlignCenter tomAlignMatchAscentDescent tomMathVariant</description>
+		///     </item>
+		///     <item>
+		///       <description>tomEquationArray</description>
+		///       <description>tomEqArrayLayoutWidth tomEqArrayAlignMask tomEqArrayAlignCenter tomEqArrayAlignTopRow tomEqArrayAlignBottomRow</description>
+		///     </item>
+		///     <item>
+		///       <description>tomMatrix</description>
+		///       <description>tomMatrixAlignMask tomMatrixAlignCenter tomMatrixAlignTopRow tomMatrixAlignBottomRow tomShowMatPlaceHldr</description>
+		///     </item>
+		///     <item>
+		///       <description>tomNary</description>
+		///       <description>tomLimitsDefault tomLimitsUnderOver tomLimitsSubSup tomUpperLimitAsSuperScript tomLimitsOpposite tomShowLLimPlaceHldr tomShowULimPlaceHldr tomDontGrowWithContent tomGrowWithContent</description>
+		///     </item>
+		///     <item>
+		///       <description>tomPhantom</description>
+		///       <description>tomPhantomShow tomPhantomZeroWidth tomPhantomZeroAscent tomPhantomZeroDescent tomPhantomTransparent</description>
+		///     </item>
+		///     <item>
+		///       <description>tomRadical</description>
+		///       <description>tomShowDegPlaceHldr</description>
+		///     </item>
+		///     <item>
+		///       <description>tomSubSup</description>
+		///       <description>tomSubSupAlign</description>
+		///     </item>
+		///     <item>
+		///       <description>tomStretchStack</description>
+		///       <description>tomStretchCharBelow tomStretchCharAbove tomStretchBaseBelow tomStretchBaseAbove</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="pChar">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The inline object character.</para>
+		///   <para>The value for each object type is shown in the following table..</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Inline object type</description>
+		///       <description>Meaning of align parameter</description>
+		///     </listheader>
+		///     <item>
+		///       <description>tomAccent</description>
+		///       <description>Accent (U+0300âU+36F, U+20D0âU+20EF)</description>
+		///     </item>
+		///     <item>
+		///       <description>tomBoxedFormula</description>
+		///       <description>U+25AD for rectangle enclosure</description>
+		///     </item>
+		///     <item>
+		///       <description>tomBrackets</description>
+		///       <description>Opening bracket. Default: U+0028.</description>
+		///     </item>
+		///     <item>
+		///       <description>tomBracketsWithSeps</description>
+		///       <description>Opening bracket with separators. Default: U+0028</description>
+		///     </item>
+		///     <item>
+		///       <description>tomEquationArray</description>
+		///       <description>U+2588</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFraction</description>
+		///       <description>Normal built-up fraction: U+002F; small numeric fraction: U+2298</description>
+		///     </item>
+		///     <item>
+		///       <description>tomFunctionApply</description>
+		///       <description>U+2061</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLeftSubSup</description>
+		///       <description>U+005E</description>
+		///     </item>
+		///     <item>
+		///       <description>tomLowerLimit</description>
+		///       <description>U+252C</description>
+		///     </item>
+		///     <item>
+		///       <description>tomMatrix</description>
+		///       <description>U+25A0: no enclosing brackets U+24A8: enclosing parentheses (\pmatrix) U+24B1: enclosing vertical bars (\vmatrix) U+24A9: enclosing double vertical bars (\Vmatrix)</description>
+		///     </item>
+		///     <item>
+		///       <description>tomNary</description>
+		///       <description>n-ary symbol</description>
+		///     </item>
+		///     <item>
+		///       <description>tomOpChar</description>
+		///       <description>Internal use for no-build operators</description>
+		///     </item>
+		///     <item>
+		///       <description>tomOverbar</description>
+		///       <description>U+00AF</description>
+		///     </item>
+		///     <item>
+		///       <description>tomPhantom</description>
+		///       <description>U+27E1: full or custom phantom U+2B04: horizontal phantom U+21F3: vertical phantom U+2B06: ascent smash U+2B07: descent smash U+2B0C: horizontal smash U+2B0D: full smash</description>
+		///     </item>
+		///     <item>
+		///       <description>tomRadical</description>
+		///       <description>U+221A: square or nth root U+221B: cube root U+221C: fourth root</description>
+		///     </item>
+		///     <item>
+		///       <description>tomSlashedFraction</description>
+		///       <description>U+2044: skewed fraction U+2215: built-up linear fraction</description>
+		///     </item>
+		///     <item>
+		///       <description>tomStack</description>
+		///       <description>U+00A6</description>
+		///     </item>
+		///     <item>
+		///       <description>tomStretchStack</description>
+		///       <description>Horizontal stretch character (see Unicode Technical Note 28 Appendix B for a list)</description>
+		///     </item>
+		///     <item>
+		///       <description>tomSubscript</description>
+		///       <description>U+005E</description>
+		///     </item>
+		///     <item>
+		///       <description>tomSubSup</description>
+		///       <description>U+005E</description>
+		///     </item>
+		///     <item>
+		///       <description>tomSuperscript</description>
+		///       <description>U+005F</description>
+		///     </item>
+		///     <item>
+		///       <description>tomUnderbar</description>
+		///       <description>U+2581</description>
+		///     </item>
+		///     <item>
+		///       <description>tomUpperLimit</description>
+		///       <description>U+2534</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="pChar1">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The closing <c>tomBrackets</c> character. See Unicode Technical Note 28 Appendix B. Character Keywords and Properties for a list.</para>
+		/// </param>
+		/// <param name="pChar2">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The separator character for <c>tomBracketsWithSep</c>:</para>
+		///   <para>U+007C: vertical bar with no extra spacing</para>
+		///   <para>U+2223: vertical bar with extra spacing</para>
+		/// </param>
+		/// <param name="pCount">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The inline object count of arguments.</para>
+		/// </param>
+		/// <param name="pTeXStyle">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The inline object TeX style, which can be one of the following values.</para>
+		///   <para>
+		///     <c>Note</c>Â Â The <c>tomStyleDefault</c> behavior depends on the context.</para>
+		///   <para>Â</para>
+		///   <para>tomStyleDefault</para>
+		///   <para>tomStyleScriptScriptCramped</para>
+		///   <para>tomStyleScriptScript</para>
+		///   <para>tomStyleScriptCramped</para>
+		///   <para>tomStyleScript</para>
+		///   <para>tomStyleTextCramped</para>
+		///   <para>tomStyleText</para>
+		///   <para>tomStyleDisplayCramped</para>
+		///   <para>tomStyleDisplay</para>
+		/// </param>
+		/// <param name="pcCol">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The inline object count of columns (<c>tomMatrix</c> only).</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The inline object 0-based nesting level.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>Unicode Technical Note 28 describes the alignment and character values in detail when the active end character is an inline object start delimiter.</para>
+		///   <para>When that character is not a start delimiter, the character and column parameters are set to 0, the count is set to the 0-based argument index, and the other parameters are set according to the active-end character properties of the innermost inline object argument.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getinlineobject
+		// HRESULT GetInlineObject( [out] long *pType, [out] long *pAlign, [out] long *pChar, [out] long *pChar1, [out] long *pChar2, [out] long *pCount, [out] long *pTeXStyle, [out] long *pcCol, [out] long *pLevel );
+		int GetInlineObject(out tomConstants pType, out tomConstants pAlign, out int pChar, out int pChar1, out int pChar2, out int pCount, out tomConstants pTeXStyle, out int pcCol);
 
-		HRESULT GetProperty(int Type, out int pValue);
+		/// <summary>Gets the value of a property.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The property ID.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The property value.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getproperty
+		// HRESULT GetProperty( [in] long Type, [out] long *pValue );
+		int GetProperty(int Type);
 
-		HRESULT GetRect(int Type, out int pLeft, out int pTop, out int pRight, out int pBottom, out int pHit);
+		/// <summary>Retrieves a rectangle of the specified type for the current range.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The type of rectangle to return. This parameter can include one value from each of the following tables.</para>
+		///   <para>tomAllowOffClient</para>
+		///   <para>tomClientCoord</para>
+		///   <para>tomObjectArg</para>
+		///   <para>tomTransform</para>
+		///   <para>Use one of these values to indicate the vertical position:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>TA_TOP</description>
+		///       <description>Top edge of the bounding rectangle.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>TA_BASELINE</description>
+		///       <description>Base line of the text.</description>
+		///     </item>
+		///     <item>
+		///       <description>TA_BOTTOM</description>
+		///       <description>Bottom edge of the bounding rectangle.</description>
+		///     </item>
+		///   </list>
+		///   <para>Â</para>
+		///   <para>Use one of these values to indicate the horizontal position:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>TA_LEFT</description>
+		///       <description>Left edge of the bounding rectangle.</description>
+		///     </listheader>
+		///     <item>
+		///       <description>TA_CENTER</description>
+		///       <description>Center of the bounding rectangle.</description>
+		///     </item>
+		///     <item>
+		///       <description>TA_RIGHT</description>
+		///       <description>Right edge of the bounding rectangle.</description>
+		///     </item>
+		///   </list>
+		/// </param>
+		/// <param name="pLeft">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The left rectangle coordinate.</para>
+		/// </param>
+		/// <param name="pTop">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The top rectangle coordinate.</para>
+		/// </param>
+		/// <param name="pRight">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The right rectangle coordinate.</para>
+		/// </param>
+		/// <param name="pBottom">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The bottom rectangle coordinate.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The hit-test value for the range.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getrect
+		// HRESULT GetRect( [in] long Type, [out] long *pLeft, [out] long *pTop, [out] long *pRight, [out] long *pBottom, [out] long *pHit );
+		tomConstants GetRect(tomConstants Type, out int pLeft, out int pTop, out int pRight, out int pBottom);
 
-		HRESULT GetSubrange(int iSubrange, out int pcpFirst, out int pcpLim);
+		/// <summary>Retrieves a subrange in a range.</summary>
+		/// <param name="iSubrange">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The subrange index.</para>
+		/// </param>
+		/// <param name="pcpFirst">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The character position for the start of the subrange.</para>
+		/// </param>
+		/// <param name="pcpLim">
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The character position for the end of the subrange.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>Subranges are selected as follows.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>iSubrange value</description>
+		///       <description>Subrange</description>
+		///     </listheader>
+		///     <item>
+		///       <description>Equals zero</description>
+		///       <description>Gets the current active subrange.</description>
+		///     </item>
+		///     <item>
+		///       <description>Greater than zero</description>
+		///       <description>Gets the subrange at the index specified by <c>iSubrange</c>, in the order in which the subranges were added. This requires extra calculation.</description>
+		///     </item>
+		///     <item>
+		///       <description>Less than zero</description>
+		///       <description>Gets the subrange at the index specified by <c>iSubrange</c>, in increasing character position order.</description>
+		///     </item>
+		///   </list>
+		///   <para>Â</para>
+		///   <para>See ITextRange2::GetCount for the count of subranges not including the active subrange.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getsubrange
+		// HRESULT GetSubrange( [in] long iSubrange, [out] long *pcpFirst, [out] long *pcpLim );
+		void GetSubrange(int iSubrange, out int pcpFirst, out int pcpLim);
 
-		HRESULT GetText2(int Flags, [MarshalAs(UnmanagedType.BStr)] out string pbstr);
+		/// <summary>Gets the text in this range according to the specified conversion flags.</summary>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The flags controlling how the text is retrieved. The flags can include a combination of the following values. Specifying a <c>Flags</c> value of 0 is the same as calling the ITextRange::GetText method.</para>
+		///   <para>tomAdjustCRLF</para>
+		///   <para>tomUseCRLF</para>
+		///   <para>tomIncludeNumbering</para>
+		///   <para>tomNoHidden</para>
+		///   <para>tomNoMathZoneBrackets</para>
+		///   <para>tomTextize</para>
+		///   <para>tomAllowFinalEOP</para>
+		///   <para>tomTranslateTableCell</para>
+		///   <para>tomFoldMathAlpha</para>
+		///   <para>tomLanguageTag</para>
+		/// </param>
+		/// <param name="pbstr">
+		///   <para>Type: <c>BSTR*</c></para>
+		///   <para>The text in the range.</para>
+		/// </param>
+		/// <remarks>This method includes the special flag <c>tomLanguageTag</c> to get the BCP-47 language tag for the range. This is an industry standard language tag which may be preferable to the language code identifier (LCID) obtained by calling ITextFont::GetLanguageID.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-gettext2
+		// HRESULT GetText2( [in] long Flags, [out] BSTR *pbstr );
+		void GetText2(tomConstants Flags, [MarshalAs(UnmanagedType.BStr)] out string pbstr);
 
-		HRESULT HexToUnicode();
+		/// <summary>Converts and replaces the hexadecimal number at the end of this range to a Unicode character.</summary>
+		/// <remarks>
+		///   <para>Some Unicode surrogates for hex values from 0x10000 up to 0x10FFFF are for internal use:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Hex values</description>
+		///       <description>Available for use</description>
+		///     </listheader>
+		///     <item>
+		///       <description>7, 0xFDD0 â 0xFDEF, 0xFFF9 â 0xFFFF</description>
+		///       <description>Internal use only</description>
+		///     </item>
+		///     <item>
+		///       <description>0xA â 0xD in the C0 range (0-0x1F)</description>
+		///       <description>Available for use</description>
+		///     </item>
+		///     <item>
+		///       <description>C1 range (0x80 â 0x9F)</description>
+		///       <description>Internal use only</description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-hextounicode
+		// HRESULT HexToUnicode();
+		void HexToUnicode();
 
-		HRESULT InsertTable(int cCol, int cRow, int AutoFit);
+		/// <summary>Inserts a table in a range.</summary>
+		/// <param name="cCol">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The number of columns in the table.</para>
+		/// </param>
+		/// <param name="cRow">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The number of rows in the table.</para>
+		/// </param>
+		/// <param name="AutoFit">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Specifies how the cells fit the target space.</para>
+		/// </param>
+		/// <remarks>If the range is nondegenerate, the table replaces the text in the range. The column widths are calculated according to the <c>AutoFit</c> parameter, and the borders are solid black with 0.5 point widths. To change these defaults, use the ITextRange2::GetRow method to obtain an ITextRow interface.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-inserttable
+		// HRESULT InsertTable( [in] long cCol, [in] long cRow, [in] long AutoFit );
+		void InsertTable(int cCol, int cRow, int AutoFit);
 
-		HRESULT Linearize(int Flags);
+		/// <summary>Translates the built-up math, ruby, and other inline objects in this range to linearized form.</summary>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>A combination of the following flags.</para>
+		///   <para>tomMathAlphabetics</para>
+		///   <para>tomMathBuildDownOutermost</para>
+		///   <para>tomMathBuildUpArgOrZone</para>
+		///   <para>tomMathRemoveOutermost</para>
+		///   <para>tomPlain</para>
+		///   <para>tomTeX</para>
+		/// </param>
+		/// <remarks>
+		///   <para>If the linearization is successful, the originally selected range is replaced by the linearized version.</para>
+		///   <para>If the <c>tomMathRemoveOutermost</c> or <c>tomMathBuildDownOutermost</c> build down mode is specified, the build down operation can be affected by the tomMathChangeMask values.</para>
+		///   <para>The main purpose of these build-down modes is to facilitate transformations of the build-up math object as exposed by math context menus.</para>
+		///   <para>For example, to convert a stacked fraction to a linear fraction as in (a+b/c)/(u+x/y)â((a+b/c))â((u+x/y)), parentheses must be inserted; otherwise, you get a transformation that looks incorrect, as in (a+b/c)/(u+x/y)â(a+b/c)â(u+x/y), even though internally the linear fraction still has the original numerator and denominator.</para>
+		///   <para>The build-down process automatically inserts the parentheses, because the linear format for this case has parentheses, and the special change is made to replace the stacked-fraction operator U+002F by the linear fraction operator U+2215. Build up doesn't discard the parentheses for U+2215, but it does for U+002F.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-linearize
+		// HRESULT Linearize( [in] long Flags );
+		void Linearize(tomConstants Flags);
 
-		HRESULT SetActiveSubrange(int cpAnchor, int cpActive);
+		/// <summary>Makes the specified subrange the active subrange of this range.</summary>
+		/// <param name="cpAnchor">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The anchor end character position of the subrange to make active.</para>
+		/// </param>
+		/// <param name="cpActive">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The active end character position of the subrange to make active.</para>
+		/// </param>
+		/// <remarks>The active subrange is the one affected by operations such as Shift+Arrow keys if this range is the selection.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setactivesubrange
+		// HRESULT SetActiveSubrange( [in] long cpAnchor, [in] long cpActive );
+		void SetActiveSubrange(int cpAnchor, int cpActive);
 
-		HRESULT SetDropCap(int cLine, int Position);
+		/// <summary>
+		///   <para>Not implemented.</para>
+		///   <para>Sets the drop-cap parameters for the paragraph that contains the current range.</para>
+		/// </summary>
+		/// <param name="cLine">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The count of lines for drop cap. Zero means no drop cap.</para>
+		/// </param>
+		/// <param name="Position">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The position of drop cap. It can be one of the following.</para>
+		///   <list />
+		/// </param>
+		/// <remarks>The current range can be degenerate, or you can select up to the complete drop-cap paragraph. If the range contains more than one paragraph, this method returns <c>E_FAIL</c>.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setdropcap
+		// HRESULT SetDropCap( [in] long cLine, [in] long Position );
+		void SetDropCap(int cLine, int Position);
 
-		HRESULT SetProperty(int Type, int Value);
+		/// <summary>Sets the value of the specified property.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The ID of the property to set.</para>
+		/// </param>
+		/// <param name="Value">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The new property value.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setproperty
+		// HRESULT SetProperty( [in] long Type, [in] long Value );
+		void SetProperty(tomConstants Type, int Value);
 
-		HRESULT SetText2(int Flags, [MarshalAs(UnmanagedType.BStr)] string bstr);
+		/// <summary>Sets the text of this range.</summary>
+		/// <param name="Flags">
+		///   <para>Type: <c>long</c></para>
+		///   <para>Flags controlling how the text is inserted in the range. The flag can be one of the following values:</para>
+		///   <para>tomUnicodeBiDi</para>
+		///   <para>tomMathCFCheck</para>
+		///   <para>tomUnlink</para>
+		///   <para>tomUnhide</para>
+		///   <para>tomCheckTextLimit</para>
+		///   <para>tomLanguageTag</para>
+		/// </param>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>The new text.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>If the <c>bstr</c> parameter is <c>NULL</c>, the text in the range is deleted.</para>
+		///   <para>This method is similar to ITextRange:: SetText, but lets the client specify flags that control various insertion options, including the special flag <c>tomLanguageTag</c> to get the BCP-47 language tag for the range. This is an industry standard language tag that may be preferable to ITextFont::SetLanguageID, which uses a language code identifier (LCID).</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-settext2
+		// HRESULT SetText2( [in] long Flags, [in] BSTR bstr );
+		void SetText2(tomConstants Flags, [MarshalAs(UnmanagedType.BStr)] string bstr);
 
-		HRESULT UnicodeToHex();
+		/// <summary>Converts the Unicode character(s) preceding the start position of this text range to a hexadecimal number, and selects it.</summary>
+		/// <remarks>
+		///   <para>Some Unicode surrogates for hex values from 0x10000 up to 0x10FFFF are for internal use:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Hex values</description>
+		///       <description>Available for use</description>
+		///     </listheader>
+		///     <item>
+		///       <description>0xFDD0 â 0xFDEF, 0xFFF9-0xFFFF</description>
+		///       <description>Internal use only</description>
+		///     </item>
+		///     <item>
+		///       <description>0xA â 0xD in the C0 range (0-0x1F)</description>
+		///       <description>Available for use</description>
+		///     </item>
+		///     <item>
+		///       <description>C1 range (0x80 â 0x9F)</description>
+		///       <description>Internal use only</description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-unicodetohex
+		// HRESULT UnicodeToHex();
+		void UnicodeToHex();
 
-		HRESULT SetInlineObject(int Type, int Align, int Char, int Char1, int Char2, int Count, int TeXStyle, int cCol);
+		/// <summary>Sets or inserts the properties of an inline object for a degenerate range.</summary>
+		/// <param name="Type">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The object type as defined in ITextRange2::GetInlineObject.</para>
+		/// </param>
+		/// <param name="Align">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The object alignment as defined in ITextRange2::GetInlineObject.</para>
+		/// </param>
+		/// <param name="Char">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The object character as defined in ITextRange2::GetInlineObject.</para>
+		/// </param>
+		/// <param name="Char1">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The closing bracket (tomBrackets) character. See Unicode Technical Note 28 for a list of characters.</para>
+		/// </param>
+		/// <param name="Char2">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The separator character for tomBracketsWithSeps, which can be one of the following values.</para>
+		/// </param>
+		/// <param name="Count">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The number of arguments in the inline object.</para>
+		/// </param>
+		/// <param name="TeXStyle">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The TeX style, as defined in ITextRange2::GetInlineObject.</para>
+		/// </param>
+		/// <param name="cCol">
+		///   <para>Type: <c>long</c></para>
+		///   <para>The number of columns in the inline object. For tomMatrix only.</para>
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-setinlineobject
+		// HRESULT SetInlineObject( [in] long Type, [in] long Align, [in] long Char, [in] long Char1, [in] long Char2, [in] long Count, [in] long TeXStyle, [in] long cCol );
+		void SetInlineObject(tomConstants Type, tomConstants Align, int Char, int Char1, int Char2, int Count, tomConstants TeXStyle, int cCol);
 
-		HRESULT GetMathFunctionType([MarshalAs(UnmanagedType.BStr)] string bstr, out int pValue);
+		/// <summary>Retrieves the math function type associated with the specified math function name.</summary>
+		/// <param name="bstr">
+		///   <para>Type: <c>BSTR</c></para>
+		///   <para>The math function name that is checked to determine the math function type.</para>
+		/// </param>
+		/// <returns>
+		///   <para>Type: <c>long*</c></para>
+		///   <para>The math function type of the function name specified by <c>bstr</c>. It can be one of the following values.</para>
+		///   <para>tomFunctionTypeNone</para>
+		///   <para>tomFunctionTypeTakesArg</para>
+		///   <para>tomFunctionTypeTakesLim</para>
+		///   <para>tomFunctionTypeTakesLim2</para>
+		///   <para>tomFunctionTypeIsLim</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-getmathfunctiontype
+		// HRESULT GetMathFunctionType( [in] BSTR bstr, [out] long *pValue );
+		tomConstants GetMathFunctionType([MarshalAs(UnmanagedType.BStr)] string bstr);
 
-		HRESULT InsertImage(int width, int height, int ascent, int Type, [MarshalAs(UnmanagedType.BStr)] string bstrAltText, [In, Optional] IStream? pStream);
+		/// <summary>Inserts an image into this range.</summary>
+		/// <param name="width">
+		/// <para>Type: <c>long</c></para>
+		/// <para>The width, in HIMETRIC units (0.01 mm), of the image.</para>
+		/// </param>
+		/// <param name="height">
+		/// <para>Type: <c>long</c></para>
+		/// <para>The height, in HIMETRIC units, of the image.</para>
+		/// </param>
+		/// <param name="ascent">
+		/// <para>Type: <c>long</c></para>
+		/// <para>If <c>Type</c> is TA_BASELINE, this parameter is the distance, in HIMETRIC units, that the top of the image extends above the text baseline. If <c>Type</c> is TA_BASELINE and <c>ascent</c> is zero, the bottom of the image is placed at the text baseline.</para>
+		/// </param>
+		/// <param name="Type">
+		/// <para>Type: <c>long</c></para>
+		/// <para>The vertical alignment of the image. It can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>TA_BASELINE</c></description>
+		/// <description>Align the image relative to the text baseline.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>TA_BOTTOM</c></description>
+		/// <description>Align the bottom of the image at the bottom of the text line.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>TA_TOP</c></description>
+		/// <description>Align the top of the image at the top of the text line</description>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="bstrAltText">
+		/// <para>Type: <c>BSTR</c></para>
+		/// <para>The alternate text for the image.</para>
+		/// </param>
+		/// <param name="pStream">
+		/// <para>Type: <c>IStream</c></para>
+		/// <para>The stream that contains the image data.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>If the range is nondegenerate, the image replaces the text in the range.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/tom/nf-tom-itextrange2-insertimage
+		// HRESULT InsertImage( [in] long width, [in] long height, [in] long ascent, [in] long Type, [in] BSTR bstrAltText, [in] IStream *pStream );
+		void InsertImage(int width, int height, int ascent, Gdi32.TextAlign Type, [MarshalAs(UnmanagedType.BStr)] string? bstrAltText,
+			[In, Optional] System.Runtime.InteropServices.ComTypes.IStream? pStream);
 	}
 
 	/// <summary>The <c>ITextRow</c> interface provides methods to insert one or more identical table rows, and to retrieve and change table row properties. To insert nonidentical rows, call ITextRow::Insert for each different row configuration.</summary>
@@ -8998,7 +14430,7 @@ public static partial class MsftEdit
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextrow
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextRow")]
-	[ComImport, Guid("C241F5EF-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5EF-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextRow
 	{
 		int GetAlignment();
@@ -9071,9 +14503,9 @@ public static partial class MsftEdit
 
 		HRESULT SetCellWidth(int Value);
 
-		HRESULT GetCellBorderColors(out int pcrLeft, out int pcrTop, out int pcrRight, out int pcrBottom);
+		tomConstants GetCellBorderColors(out int pcrLeft, out int pcrTop, out int pcrRight);
 
-		HRESULT GetCellBorderWidths(out int pduLeft, out int pduTop, out int pduRight, out int pduBottom);
+		tomConstants GetCellBorderWidths(out int pduLeft, out int pduTop, out int pduRight);
 
 		HRESULT SetCellBorderColors(int crLeft, int crTop, int crRight, int crBottom);
 
@@ -9083,11 +14515,11 @@ public static partial class MsftEdit
 
 		HRESULT CanChange(out int pValue);
 
-		HRESULT GetProperty(int Type, out int pValue);
+		tomConstants GetProperty(int Type);
 
 		HRESULT Insert(int cRow);
 
-		HRESULT IsEqual([In, Optional] ITextRow? pRow, out int pB);
+		tomConstants IsEqual([In, Optional] ITextRow? pRow);
 
 		HRESULT Reset(int Value);
 
@@ -9161,7 +14593,7 @@ public static partial class MsftEdit
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextselection
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextSelection")]
-	[ComImport, Guid("8CC497C1-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("8CC497C1-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(dualIntType)]
 	public interface ITextSelection : ITextRange
 	{
 
@@ -9172,17 +14604,17 @@ public static partial class MsftEdit
 
 		int GetType();
 
-		HRESULT MoveLeft(int Unit, int Count, int Extend, out int pDelta);
+		tomConstants MoveLeft(int Unit, int Count, int Extend);
 
-		HRESULT MoveRight(int Unit, int Count, int Extend, out int pDelta);
+		tomConstants MoveRight(int Unit, int Count, int Extend);
 
-		HRESULT MoveUp(int Unit, int Count, int Extend, out int pDelta);
+		tomConstants MoveUp(int Unit, int Count, int Extend);
 
-		HRESULT MoveDown(int Unit, int Count, int Extend, out int pDelta);
+		tomConstants MoveDown(int Unit, int Count, int Extend);
 
-		HRESULT HomeKey(int Unit, int Extend, out int pDelta);
+		tomConstants HomeKey(int Unit, int Extend);
 
-		HRESULT EndKey(int Unit, int Extend, out int pDelta);
+		tomConstants EndKey(int Unit, int Extend);
 
 		HRESULT TypeText([MarshalAs(UnmanagedType.BStr)] string bstr);
 	}
@@ -9190,7 +14622,7 @@ public static partial class MsftEdit
 	/// <summary>Currently, this interface contains no methods other than those inherited from ITextRange2.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextselection2
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextSelection2")]
-	[ComImport, Guid("C241F5E1-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5E1-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextSelection2 : ITextRange2
 	{
 	}
@@ -9230,7 +14662,7 @@ public static partial class MsftEdit
 
 		HRESULT SetType(int Value);
 
-		HRESULT GetProperty(int Type, out int pValue);
+		tomConstants GetProperty(int Type);
 
 		HRESULT GetRange(int cpActive, int cpAnchor, out ITextRange2 ppRange);
 
@@ -9247,7 +14679,7 @@ public static partial class MsftEdit
 	/// <remarks>You get a pointer to an <c>ITextStoryRanges</c> collection by calling the GetStoryRanges method. Each story obtained from this collection is represented by an ITextRange object that covers the whole story. Text Object Model (TOM) engines that only have a single story do not need to implement an <c>ITextStoryRanges</c> interface. Your code should only get a stories collection if GetStoryCount returns a story count greater than one.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextstoryranges
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextStoryRanges")]
-	[ComImport, Guid("8CC497C5-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("8CC497C5-A1DF-11ce-8098-00AA0047BE5D"), InterfaceType(dualIntType)]
 	public interface ITextStoryRanges
 	{
 		HRESULT NewEnum([MarshalAs(UnmanagedType.IUnknown)] out object ppunkEnum);
@@ -9264,7 +14696,7 @@ public static partial class MsftEdit
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextstoryranges2
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextStoryRanges2")]
-	[ComImport, Guid("C241F5E5-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5E5-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextStoryRanges2 : ITextStoryRanges
 	{
 		HRESULT Item2(int Index, out ITextRange2 ppRange);
@@ -9273,7 +14705,7 @@ public static partial class MsftEdit
 	/// <summary>The <c>ITextStrings</c> interface represents a collection of rich-text strings that are useful for manipulating rich text. In particular, you can use the collection to convert linearly formatted math expressions into built-up form and vice versa. You can also use the collection to collect the concatenation of a set of rich-text strings, or to manipulate a string without changing a primary story. The collection is efficiently implemented by concatenating the strings in a scratch story and maintaining an array of the string counts that identify the strings.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tom/nn-tom-itextstrings
 	[PInvokeData("tom.h", MSDNShortId = "NN:tom.ITextStrings")]
-	[ComImport, Guid("C241F5E7-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	[ComImport, Guid("C241F5E7-7206-11D8-A2C7-00A0D1D6C6B3"), InterfaceType(dualIntType)]
 	public interface ITextStrings
 	{
 		HRESULT Item(int Index, out ITextRange2 ppRange);
@@ -9293,7 +14725,7 @@ public static partial class MsftEdit
 		HRESULT EncodeFunction(int Type, int Align, int Char, int Char1, int Char2, int Count, int TeXStyle, int cCol,
 			[In, Optional] ITextRange2? pRange);
 
-		HRESULT GetCch(int iString, out int pcch);
+		tomConstants GetCch(int iString);
 
 		HRESULT InsertNullStr(int iString);
 

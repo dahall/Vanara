@@ -536,6 +536,9 @@ public class VisibleWindow : WindowBase
 		return screenRect;
 	}
 
+	/// <summary>Closes the window and destroys the handle.</summary>
+	public virtual void Close() => Dispose();
+
 	/// <summary>Sets input focus to the window.</summary>
 	public void Focus() => Win32Error.ThrowLastErrorIf(SetFocus(Handle), h => h.IsNull);
 

@@ -294,6 +294,11 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <returns>The return value is the result of the message processing and depends on the message.</returns>
 	protected virtual IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) => DefWndProc(hwnd, msg, wParam, lParam);
 
+	/// <summary>Performs an implicit conversion from <see cref="WindowBase"/> to <see cref="HWND"/>.</summary>
+	/// <param name="w">The <see cref="WindowBase"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator HWND(WindowBase w) => w.Handle;
+
 	[DebuggerStepThrough]
 	private void CheckDetached()
 	{

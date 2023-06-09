@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Imm32;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.UIAutomationCore;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;

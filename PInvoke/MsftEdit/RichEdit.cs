@@ -4,7 +4,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -14,6 +13,22 @@ public static partial class MsftEdit
 {
 	private const string Lib_msftedit = "msftedit.dll";
 	private const string Lib_Riched20 = "riched20.dll";
+
+	/// <summary>For Microsoft Rich Edit 4.1 (Msftedit.dll), specify MSFTEDIT_CLASS as the window class.</summary>
+	public const string MSFTEDIT_CLASS = "RICHEDIT50W";
+
+	/// <summary>For all previous versions, specify RICHEDIT_CLASS for the Rich Edit class name.</summary>
+	public static readonly string RICHEDIT_CLASS = "RichEdit20" + (Marshal.SystemDefaultCharSize == 1 ? "A" : "W");
+
+	/// <summary>The rich edit 1.0 class.</summary>
+	public const string RICHEDIT_CLASS10A = "RichEdit10";
+
+	/// <summary>Initializes the current thread to use the Rich Edit control.</summary>
+	public static void MsftEditThreadInit()
+	{
+		Ole32.OleInitialize(IntPtr.Zero);
+		Kernel32.LoadLibrary(Lib_msftedit);
+	}
 
 	/// <summary>
 	/// <para>
@@ -1063,6 +1078,3143 @@ public static partial class MsftEdit
 		PFNS_NEWNUMBER = 0x8000,
 	}
 
+	/// <summary>Messages specific to the rich edit control.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/controls/bumper-rich-edit-control-reference-messages
+	[PInvokeData("richedit.h")]
+	public enum RichEditMessage
+	{
+		/// <summary>Determines whether a rich edit control can paste a specified clipboard format.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the Clipboard Formats to try. To try any format currently on the clipboard, set this parameter to zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the clipboard format can be pasted, the return value is a nonzero value.</para>
+		/// <para>If the clipboard format cannot be pasted, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-canpaste
+		[MsgParams(typeof(CLIPFORMAT), null, LResultType = typeof(CLIPFORMAT))]
+		EM_CANPASTE = WindowMessage.WM_USER + 50,
+		/// <summary>Displays a portion of the contents of a rich edit control, as previously formatted for a device using the <c>EM_FORMATRANGE</c> message.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>RECT</c> structure specifying the display area of the device.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>If the operation fails, the return value is <c>FALSE</c>.</para>
+		/// <remarks>
+		/// <para>Text and Component Object Model (COM) objects are clipped by the rectangle. The application does not need to set the clipping region.</para>
+		/// <para>Banding is the process by which a single page of output is generated using one or more separate rectangles, or bands. When all bands are placed on the page, a complete image results. This approach is often used by raster printers that do not have sufficient memory or ability to image a full page at one time. Banding devices include most dot matrix printers as well as some laser printers.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-displayband
+		[MsgParams(null, typeof(RECT?), LResultType = typeof(BOOL))]
+		EM_DISPLAYBAND = WindowMessage.WM_USER + 51,
+		/// <summary>Retrieves the starting and ending character positions of the selection in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>CHARRANGE</c> structure that receives the selection range.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-exgetsel
+		[MsgParams(null, typeof(CHARRANGE?), LResultType = null)]
+		EM_EXGETSEL = WindowMessage.WM_USER + 52,
+		/// <summary>Sets an upper limit to the amount of text the user can type or paste into a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Specifies the maximum amount of text that can be entered. If this parameter is zero, the default maximum is used, which is 64K characters. A COM object counts as a single character.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>
+		/// <para>The text limit set by the <c>EM_EXLIMITTEXT</c> message does not limit the amount of text that you can stream into a rich edit control using the <c>EM_STREAMIN</c> message with lParam set to SF_TEXT. However, it does limit the amount of text that you can stream into a rich edit control using the <c>EM_STREAMIN</c> message with lParam set to SF_RTF.</para>
+		/// <para>Before <c>EM_EXLIMITTEXT</c> is called, the default limit to the amount of text a user can enter is 32,767 characters.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-exlimittext
+		[MsgParams(null, typeof(uint), LResultType = null)]
+		EM_EXLIMITTEXT = WindowMessage.WM_USER + 53,
+		/// <summary>Determines which line contains the specified character in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Zero-based index of the character.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the zero-based index of the line.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-exlinefromchar
+		[MsgParams(null, typeof(uint), LResultType = typeof(uint))]
+		EM_EXLINEFROMCHAR = WindowMessage.WM_USER + 54,
+		/// <summary>Selects a range of characters or Component Object Model (COM) objects in a Microsoft Rich Edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>CHARRANGE</c> structure that specifies the selection range.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the selection that is actually set.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-exsetsel
+		[MsgParams(null, typeof(CHARRANGE?), LResultType = typeof(CHARRANGE?))]
+		EM_EXSETSEL = WindowMessage.WM_USER + 55,
+		/// <summary>Finds text within a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specify the parameters of the search operation. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>FR_DOWN</c></description>
+		/// <description>Microsoft Rich Edit 2.0 and later: If set, the search is from the end of the current selection to the end of the document. If not set, the search is from the end of the current selection to the beginning of the document. Microsoft Rich Edit 1.0: The FR_DOWN flag is ignored. The search is always from the end of the current selection to the end of the document.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHALEFHAMZA</c></description>
+		/// <description>Microsoft Rich Edit 3.0 and later: If set, the search differentiates between Arabic alefs with different accents. If not set, all alefs are matched by the alef character alone.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHDIAC</c></description>
+		/// <description>Microsoft Rich Edit 3.0 and later: If set, the search operation considers Arabic and Hebrew diacritical marks. If not set, diacritical marks are ignored.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHKASHIDA</c></description>
+		/// <description>Microsoft Rich Edit 3.0 and later: If set, the search operation considers Arabic kashidas. If not set, kashidas are ignored.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHWIDTH</c></description>
+		/// <description>Windows 8: If set, single-byte and double-byte versions of the same character are considered to be not equal.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_WHOLEWORD</c></description>
+		/// <description>If set, the operation searches only for whole words that match the search string. If not set, the operation also searches for word fragments that match the search string.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>FINDTEXT</c> structure containing information about the find operation.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the target string is found, the return value is the zero-based position of the first character of the match. If the target is not found, the return value is -1.</para>
+		/// <remarks>The <c>cpMin</c> member of <c>FINDTEXT.chrg</c> always specifies the starting-point of the search, and <c>cpMax</c> specifies the end point. When searching backward, <c>cpMin</c> must be equal to or greater than <c>cpMax</c>. When searching forward, a value of -1 in <c>cpMax</c> extends the search range to the end of the text.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-findtext
+		[MsgParams(typeof(FR), typeof(FINDTEXT), LResultType = typeof(int))]
+		EM_FINDTEXT = WindowMessage.WM_USER + 56,
+		/// <summary>Formats a range of text in a rich edit control for a specific device.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies whether to render the text. If this parameter is not zero, the text is rendered. Otherwise, the text is just measured.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>FORMATRANGE</c> structure containing information about the output device, or <c>NULL</c> to free information cached by the control.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the index of the last character that fits in the region, plus 1.</para>
+		/// <remarks>
+		/// <para>This message is typically used to format the content of rich edit control for an output device such as a printer.</para>
+		/// <para>After using this message to format a range of text, it is important that you free cached information by sending <c>EM_FORMATRANGE</c> again, but with lParam set to <c>NULL</c>; otherwise, a memory leak will occur. Also, after using this message for one device, you must free cached information before using it again for a different device.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-formatrange
+		EM_FORMATRANGE = WindowMessage.WM_USER + 57,
+		/// <summary>Determines the character formatting in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the range of text from which to retrieve formatting. It can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SCF_DEFAULT</c></description>
+		/// <description>The default character formatting.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_SELECTION</c></description>
+		/// <description>The current selection's character formatting.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>CHARFORMAT</c> structure that receives the attributes of the first character. The <c>dwMask</c> member specifies which attributes are consistent throughout the entire selection. For example, if the entire selection is either in italics or not in italics, CFM_ITALIC is set; if the selection is partly in italics and partly not, CFM_ITALIC is not set.</para>
+		/// <para>Microsoft Rich Edit 2.0 and later: This parameter can be a pointer to a <c>CHARFORMAT2</c> structure, which is an extension of the <c>CHARFORMAT</c> structure. Before sending the <c>EM_GETCHARFORMAT</c> message, set the structure's <c>cbSize</c> member to indicate the version of the structure.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the value of the <c>dwMask</c> member of the <c>CHARFORMAT</c> structure.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getcharformat
+		EM_GETCHARFORMAT = WindowMessage.WM_USER + 58,
+		/// <summary>Retrieves the event mask for a rich edit control. The event mask specifies which notification codes the control sends to its parent window.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the event mask for the rich edit control.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-geteventmask
+		EM_GETEVENTMASK = WindowMessage.WM_USER + 59,
+
+		/// <summary>Retrieves an <c>IRichEditOle</c> object that a client can use to access a rich edit control's Component Object Model (COM) functionality.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a pointer that receives the <c>IRichEditOle</c> object. The control calls the <c>AddRef</c> method for the object before returning, so the calling application must call the <c>Release</c> method when it is done with the object.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getoleinterface
+		EM_GETOLEINTERFACE = WindowMessage.WM_USER + 60,
+		/// <summary>Retrieves the paragraph formatting of the current selection in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>PARAFORMAT</c> structure that receives the paragraph formatting attributes of the current selection.</para>
+		/// <para>If more than one paragraph is selected, the structure receives the attributes of the first paragraph, and the <c>dwMask</c> member specifies which attributes are consistent throughout the entire selection.</para>
+		/// <para>Microsoft Rich Edit 2.0 and later: This parameter can be a pointer to a <c>PARAFORMAT2</c> structure, which is an extension of the <c>PARAFORMAT</c> structure. Before sending the <c>EM_GETPARAFORMAT</c> message, set the structure's <c>cbSize</c> member to indicate the version of the structure.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the value of the <c>dwMask</c> member of the <c>PARAFORMAT</c> structure.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getparaformat
+		EM_GETPARAFORMAT = WindowMessage.WM_USER + 61,
+		/// <summary>Retrieves the currently selected text in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a buffer that receives the selected text. The calling application must ensure that the buffer is large enough to hold the selected text.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the number of characters copied, not including the terminating null character.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getseltext
+		EM_GETSELTEXT = WindowMessage.WM_USER + 62,
+		/// <summary>The <c>EM_HIDESELECTION</c> message hides or shows the selection in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Value specifying whether to hide or show the selection. If this parameter is zero, the selection is shown. Otherwise, the selection is hidden.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-hideselection
+		EM_HIDESELECTION = WindowMessage.WM_USER + 63,
+		/// <summary>Pastes a specific clipboard format in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the Clipboard Formats.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>REPASTESPECIAL</c> structure or <c>NULL</c>. If an object is being pasted, the <c>REPASTESPECIAL</c> structure is filled in with the desired display aspect. If lParam is <c>NULL</c> or the <c>dwAspect</c> member is zero, the display aspect used will be the contents of the object descriptor.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-pastespecial
+		EM_PASTESPECIAL = WindowMessage.WM_USER + 64,
+		/// <summary>Forces a rich edit control to send an <c>EN_REQUESTRESIZE</c> notification code to its parent window.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>This message is useful during <c>WM_SIZE</c> processing for the parent of a bottomless rich edit control.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-requestresize
+		EM_REQUESTRESIZE = WindowMessage.WM_USER + 65,
+		/// <summary>Determines the selection type for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the selection is empty, the return value is SEL_EMPTY.</para>
+		/// <para>If the selection is not empty, the return value is a set of flags containing one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SEL_TEXT</c></description>
+		/// <description>Text.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SEL_OBJECT</c></description>
+		/// <description>At least one COM object.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SEL_MULTICHAR</c></description>
+		/// <description>More than one character of text.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SEL_MULTIOBJECT</c></description>
+		/// <description>More than one COM object.</description>
+		/// </item>
+		/// </list>
+		/// <remarks>This message is useful during <c>WM_SIZE</c> processing for the parent of a bottomless rich edit control.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-selectiontype
+		EM_SELECTIONTYPE = WindowMessage.WM_USER + 66,
+		/// <summary>The <c>EM_SETBKGNDCOLOR</c> message sets the background color for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies whether to use the system color. If this parameter is a nonzero value, the background is set to the window background system color. Otherwise, the background is set to the specified color.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>COLORREF</c> structure specifying the color if wParam is zero. To generate a <c>COLORREF</c>, use the <c>RGB</c> macro.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the original background color.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setbkgndcolor
+		EM_SETBKGNDCOLOR = WindowMessage.WM_USER + 67,
+		/// <summary>Sets character formatting in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Character formatting that applies to the control. If this parameter is zero, the default character format is set. Otherwise, it can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SCF_ALL</c></description>
+		/// <description>Applies the formatting to all text in the control. Not valid with <c>SCF_SELECTION</c> or <c>SCF_WORD</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_ASSOCIATEFONT</c></description>
+		/// <description><c>RichEdit 4.1:</c> Associates a font to a given script, thus changing the default font for that script. To specify the font, use the following members of <c>CHARFORMAT2</c>: <c>yHeight</c>, <c>bCharSet</c>, <c>bPitchAndFamily</c>, <c>szFaceName</c>, and <c>lcid</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_ASSOCIATEFONT2</c></description>
+		/// <description><c>RichEdit 4.1:</c> Associates a surrogate (plane-2) font to a given script, thus changing the default font for that script. To specify the font, use the following members of <c>CHARFORMAT2</c>: <c>yHeight</c>, <c>bCharSet</c>, <c>bPitchAndFamily</c>, <c>szFaceName</c>, and <c>lcid</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_CHARREPFROMLCID</c></description>
+		/// <description>Gets the character repertoire from the LCID.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_DEFAULT</c></description>
+		/// <description><c>RichEdit 4.1:</c> Sets the default font for the control.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SPF_DONTSETDEFAULT</c></description>
+		/// <description>Prevents setting the default paragraph format when the rich edit control is empty.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_NOKBUPDATE</c></description>
+		/// <description><c>RichEdit 4.1:</c> Prevents keyboard switching to match the font. For example, if an Arabic font is set, normally the automatic keyboard feature for Bidi languages changes the keyboard to an Arabic keyboard.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_SELECTION</c></description>
+		/// <description>Applies the formatting to the current selection. If the selection is empty, the character formatting is applied to the insertion point, and the new character format is in effect only until the insertion point changes.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SPF_SETDEFAULT</c></description>
+		/// <description>Sets the default paragraph formatting attributes.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_SMARTFONT</c></description>
+		/// <description>Apply the font only if it can handle script.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_USEUIRULES</c></description>
+		/// <description><c>RichEdit 4.1:</c> Used with <c>SCF_SELECTION</c>. Indicates that format came from a toolbar or other UI tool, so UI formatting rules should be used instead of literal formatting.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SCF_WORD</c></description>
+		/// <description>Applies the formatting to the selected word or words. If the selection is empty but the insertion point is inside a word, the formatting is applied to the word. The <c>SCF_WORD</c> value must be used in conjunction with the <c>SCF_SELECTION</c> value.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>CHARFORMAT</c> structure specifying the character formatting to use. Only the formatting attributes specified by the <c>dwMask</c> member are changed.</para>
+		/// <para>Microsoft Rich Edit 2.0 and later: This parameter can be a pointer to a <c>CHARFORMAT2</c> structure, which is an extension of the <c>CHARFORMAT</c> structure. Before sending the <c>EM_SETCHARFORMAT</c> message, set the structure's <c>cbSize</c> member to or indicate which version of the structure is being used.</para>
+		/// <para>The <c>szFaceName</c> and <c>bCharSet</c> members may be overruled when invalid for characters, for example: Arial on kanji characters.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		/// <remarks>If this message is sent more than once with the same parameters, the effect on the text is toggled. That is, sending the message once produces the effect, sending the message twice cancels the effect, and so forth.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setcharformat
+		EM_SETCHARFORMAT = WindowMessage.WM_USER + 68,
+		/// <summary>Sets the event mask for a rich edit control. The event mask specifies which notification codes the control sends to its parent window.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>New event mask for the rich edit control. For a list of event masks, see <c>Rich Edit Control Event Mask Flags</c>.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the previous event mask.</para>
+		/// <remarks>The default event mask (before any is set) is ENM_NONE.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-seteventmask
+		EM_SETEVENTMASK = WindowMessage.WM_USER + 69,
+		/// <summary>Gives a rich edit control an <c>IRichEditOleCallback</c> object that the control uses to get OLE-related resources and information from the client.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to an <c>IRichEditOleCallback</c> object. The control calls the <c>AddRef</c> method for the object before returning.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setolecallback
+		EM_SETOLECALLBACK = WindowMessage.WM_USER + 70,
+		/// <summary>Sets the paragraph formatting for the current selection in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>PARAFORMAT</c> structure specifying the new paragraph formatting attributes. Only the attributes specified by the <c>dwMask</c> member are changed.</para>
+		/// <para>Microsoft Rich Edit 2.0 and later: This parameter can be a pointer to a <c>PARAFORMAT2</c> structure, which is an extension of the <c>PARAFORMAT</c> structure. Before sending the <c>EM_SETPARAFORMAT</c> message, set the structure's <c>cbSize</c> member to indicate the version of the structure.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setparaformat
+		EM_SETPARAFORMAT = WindowMessage.WM_USER + 71,
+		/// <summary>Sets the target device and line width used for "what you see is what you get" (WYSIWYG) formatting in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>HDC for the target device.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Line width to use for formatting.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is zero if the operation fails, or nonzero if it succeeds.</para>
+		/// <remarks>
+		/// <para>The HDC for the default printer can be obtained as follows.</para>
+		/// <para>If lParam is zero, no line breaks are created.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-settargetdevice
+		EM_SETTARGETDEVICE = WindowMessage.WM_USER + 72,
+		/// <summary>Replaces the contents of a rich edit control with a stream of data provided by an application defined EditStreamCallback callback function.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the data format and replacement options. This value must be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SF_RTF</c></description>
+		/// <description>RTF</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SF_TEXT</c></description>
+		/// <description>Text</description>
+		/// </item>
+		/// </list>
+		/// <para>In addition, you can specify the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SFF_PLAINRTF</c></description>
+		/// <description>If specified, only keywords common to all languages are streamed in. Language-specific RTF keywords in the stream are ignored. If not specified, all keywords are streamed in. You can combine this flag with the <c>SF_RTF</c> flag.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SFF_SELECTION</c></description>
+		/// <description>If specified, the data stream replaces the contents of the current selection. If not specified, the data stream replaces the entire contents of the control. You can combine this flag with the <c>SF_TEXT</c> or <c>SF_RTF</c> flags.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SF_UNICODE</c></description>
+		/// <description><c>Microsoft Rich Edit 2.0 and later:</c> Indicates Unicode text. You can combine this flag with the <c>SF_TEXT</c> flag.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to an <c>EDITSTREAM</c> structure. On input, the <c>pfnCallback</c> member of this structure must point to an application defined EditStreamCallback function. On output, the <c>dwError</c> member can contain a nonzero error code if an error occurred.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the number of characters read.</para>
+		/// <remarks>When you send an <c>EM_STREAMIN</c> message, the rich edit control makes repeated calls to the EditStreamCallback function specified by the <c>pfnCallback</c> member of the <c>EDITSTREAM</c> structure. Each time the callback function is called, it fills a buffer with data to read into the control. This continues until the callback function indicates that the stream-in operation has been completed or an error occurs.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-streamin
+		EM_STREAMIN = WindowMessage.WM_USER + 73,
+		/// <summary>Causes a rich edit control to pass its contents to an application defined EditStreamCallback callback function. The callback function can then write the stream of data to a file or any other location that it chooses.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the data format and replacement options.</para>
+		/// <para>This value must be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SF_RTF</c></description>
+		/// <description>RTF.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SF_RTFNOOBJS</c></description>
+		/// <description>RTF with spaces in place of COM objects.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SF_TEXT</c></description>
+		/// <description>Text with spaces in place of COM objects.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SF_TEXTIZED</c></description>
+		/// <description>Text with a text representation of COM objects.</description>
+		/// </item>
+		/// </list>
+		/// <para>The <c>SF_RTFNOOBJS</c> option is useful if an application stores COM objects itself, as RTF representation of COM objects is not very compact. The control word, \objattph, followed by a space denotes the object position.</para>
+		/// <para>In addition, you can specify the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SFF_PLAINRTF</c></description>
+		/// <description>If specified, the rich edit control streams out only the keywords common to all languages, ignoring language-specific keywords. If not specified, the rich edit control streams out all keywords. You can combine this flag with the <c>SF_RTF</c> or <c>SF_RTFNOOBJS</c> flag.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SFF_SELECTION</c></description>
+		/// <description>If specified, the rich edit control streams out only the contents of the current selection. If not specified, the control streams out the entire contents. You can combine this flag with any of data format values.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SF_UNICODE</c></description>
+		/// <description><c>Microsoft Rich Edit 2.0 and later:</c> Indicates Unicode text. You can combine this flag with the <c>SF_TEXT</c> flag.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SF_USECODEPAGE</c></description>
+		/// <description><c>Rich Edit 3.0 and later:</c> Generates UTF-8 RTF as well as text using other code pages. The code page is set in the high word of <c>wParam</c>. For example, for UTF-8 RTF, set <c>wParam</c> to (CP_UTF8 &lt;&lt; 16) | SF_USECODEPAGE | SF_RTF.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to an <c>EDITSTREAM</c> structure. On input, the <c>pfnCallback</c> member of this structure must point to an application defined EditStreamCallback function. On output, the <c>dwError</c> member can contain a nonzero error code if an error occurred.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the number of characters written to the data stream.</para>
+		/// <remarks>When you send an <c>EM_STREAMOUT</c> message, the rich edit control makes repeated calls to the EditStreamCallback function specified by the <c>pfnCallback</c> member of the <c>EDITSTREAM</c> structure. Each time it calls the callback function, the control passes a buffer containing a portion of the contents of the control. This process continues until the control has passed all its contents to the callback function, or until an error occurs.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-streamout
+		EM_STREAMOUT = WindowMessage.WM_USER + 74,
+		/// <summary>Retrieves a specified range of characters from a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>TEXTRANGE</c> structure that specifies the range of characters to retrieve and a buffer to copy the characters to.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The message returns the number of characters copied, not including the terminating null character.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gettextrange
+		EM_GETTEXTRANGE = WindowMessage.WM_USER + 75,
+		/// <summary>Finds the next word break before or after the specified character position or retrieves information about the character at that position.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the find operation. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>WB_CLASSIFY</c></description>
+		/// <description>Returns the character class and word-break flags of the character at the specified position.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_ISDELIMITER</c></description>
+		/// <description>Returns <c>TRUE</c> if the character at the specified position is a delimiter, or <c>FALSE</c> otherwise.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_LEFT</c></description>
+		/// <description>Finds the nearest character before the specified position that begins a word.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_LEFTBREAK</c></description>
+		/// <description>Finds the next word end before the specified position. This value is the same as WB_PREVBREAK.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_MOVEWORDLEFT</c></description>
+		/// <description>Finds the next character that begins a word before the specified position. This value is used during CTRL+LEFT ARROW key processing. This value is the similar to WB_MOVEWORDPREV. See Remarks for more information.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_MOVEWORDRIGHT</c></description>
+		/// <description>Finds the next character that begins a word after the specified position. This value is used during CTRL+right key processing. This value is similar to WB_MOVEWORDNEXT. See Remarks for more information.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_RIGHT</c></description>
+		/// <description>Finds the next character that begins a word after the specified position.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_RIGHTBREAK</c></description>
+		/// <description>Finds the next end-of-word delimiter after the specified position. This value is the same as WB_NEXTBREAK.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Zero-based character starting position.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The message returns a value based on the wParam parameter.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>wParam</c></description>
+		/// <description>Return Value</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_CLASSIFY</c></description>
+		/// <description>Returns the character class and word-break flags of the character at the specified position.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WB_ISDELIMITER</c></description>
+		/// <description>Returns <c>TRUE</c> if the character at the specified position is a delimiter; otherwise it returns <c>FALSE</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>Others</c></description>
+		/// <description>Returns the character index of the word break.</description>
+		/// </item>
+		/// </list>
+		/// <remarks>
+		/// <para>If wParam is WB_LEFT and WB_RIGHT, the word-break procedure finds word breaks only after delimiters. This matches the functionality of an edit control. If wParam is WB_MOVEWORDLEFT or WB_MOVEWORDRIGHT, the word-break procedure also compares character classes and word-break flags.</para>
+		/// <para>For information about character classes and word-break flags, see Word and Line Breaks.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-findwordbreak
+		EM_FINDWORDBREAK = WindowMessage.WM_USER + 76,
+		/// <summary>Sets the options for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the operation, which can be one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>ECOOP_SET</c></description>
+		/// <description>Sets the options to those specified by <c>lParam</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECOOP_OR</c></description>
+		/// <description>Combines the specified options with the current options.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECOOP_AND</c></description>
+		/// <description>Retains only those current options that are also specified by <c>lParam</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECOOP_XOR</c></description>
+		/// <description>Logically exclusive OR the current options with those specified by <c>lParam</c>.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Specifies one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>ECO_AUTOWORDSELECTION</c></description>
+		/// <description>Automatic selection of word on double-click.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECO_AUTOVSCROLL</c></description>
+		/// <description>Same as <c>ES_AUTOVSCROLL</c> style.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECO_AUTOHSCROLL</c></description>
+		/// <description>Same as <c>ES_AUTOHSCROLL</c> style.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECO_NOHIDESEL</c></description>
+		/// <description>Same as <c>ES_NOHIDESEL</c> style.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECO_READONLY</c></description>
+		/// <description>Same as <c>ES_READONLY</c> style.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECO_WANTRETURN</c></description>
+		/// <description>Same as <c>ES_WANTRETURN</c> style.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECO_SELECTIONBAR</c></description>
+		/// <description>Same as <c>ES_SELECTIONBAR</c> style.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECO_VERTICAL</c></description>
+		/// <description>Same as <c>ES_VERTICAL</c> style. Available in Asian-language versions only.</description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the current options of the edit control.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setoptions
+		EM_SETOPTIONS = WindowMessage.WM_USER + 77,
+		/// <summary>Retrieves rich edit control options.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns a combination of the current option flag values described in the <c>EM_SETOPTIONS</c> message.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getoptions
+		EM_GETOPTIONS = WindowMessage.WM_USER + 78,
+		/// <summary>Finds text within a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the behavior of the search operation. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>FR_DOWN</c></description>
+		/// <description>Microsoft Rich Edit 2.0 and later: If set, the search is forward from <c>FINDTEXTEX.chrg.cpMin</c>; if not set, the search is backward from <c>FINDTEXTEX.chrg.cpMin</c>. Microsoft Rich Edit 1.0: The FR_DOWN flag is ignored. The search is always forward.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHALEFHAMZA</c></description>
+		/// <description>Microsoft Rich Edit 3.0 and later: If set, the search differentiates between Arabic and Hebrew alefs with different accents. If not set, all alefs are matched by the alef character alone.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHCASE</c></description>
+		/// <description>If set, the search operation is case-sensitive. If not set, the search operation is case-insensitive.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHDIAC</c></description>
+		/// <description>Microsoft Rich Edit 3.0 and later: If set, the search operation considers Arabic and Hebrew diacritical marks. If not set, diacritical marks are ignored.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHKASHIDA</c></description>
+		/// <description>Microsoft Rich Edit 3.0 and later: If set, the search operation considers Arabic and Hebrew kashidas. If not set, kashidas are ignored.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_WHOLEWORD</c></description>
+		/// <description>If set, the operation searches only for whole words that match the search string. If not set, the operation also searches for word fragments that match the search string.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>FINDTEXTEX</c> structure containing information about the find operation.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the target string is found, the return value is the zero-based position of the first character of the match. If the target is not found, the return value is -1.</para>
+		/// <remarks>
+		/// <para>Use this message to find ANSI strings. For Unicode, use <c>EM_FINDTEXTEXW</c>.</para>
+		/// <para>The <c>cpMin</c> member of <c>FINDTEXTEX.chrg</c> always specifies the starting-point of the search, and <c>cpMax</c> specifies the end point. When searching backward, <c>cpMin</c> must be equal to or greater than <c>cpMax</c>. When searching forward, a value of -1 in <c>cpMax</c> extends the search range to the end of the text.</para>
+		/// <para>If the search operation finds a match, the <c>chrgText</c> member of the <c>FINDTEXTEX</c> structure returns the range of character positions that contains the matching text.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-findtextex
+		EM_FINDTEXTEX = WindowMessage.WM_USER + 79,
+		/// <summary>Retrieves the address of the currently registered extended word-break procedure for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The message returns the address of the current procedure.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getwordbreakprocex
+		EM_GETWORDBREAKPROCEX = WindowMessage.WM_USER + 80,
+		/// <summary>Sets the extended word-break procedure for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to an EditWordBreakProcEx function, or <c>NULL</c> to use the default procedure.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the address of the previous extended word-break procedure.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setwordbreakprocex
+		EM_SETWORDBREAKPROCEX = WindowMessage.WM_USER + 81,
+		/// <summary>Sets the maximum number of actions that can stored in the undo queue of a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the maximum number of actions that can be stored in the undo queue.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the new maximum number of undo actions for the rich edit control. This value may be less than wParam if memory is limited.</para>
+		/// <remarks>
+		/// <para>By default, the maximum number of actions in the undo queue is 100. If you increase this number, there must be enough available memory to accommodate the new number. For better performance, set the limit to the smallest possible value.</para>
+		/// <para>Setting the limit to zero disables the <c>Undo</c> feature.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setundolimit
+		EM_SETUNDOLIMIT = WindowMessage.WM_USER + 82,
+		/// <summary>Sends an <c>EM_REDO</c> message to a rich edit control to redo the next action in the control's redo queue.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the <c>Redo</c> operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the <c>Redo</c> operation fails, the return value is zero.</para>
+		/// <remarks>To determine whether there are any actions in the control's redo queue, send the <c>EM_CANREDO</c> message.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-redo
+		EM_REDO = WindowMessage.WM_USER + 84,
+		/// <summary>Determines whether there are any actions in the control redo queue.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If there are actions in the control redo queue, the return value is a nonzero value.</para>
+		/// <para>If the redo queue is empty, the return value is zero.</para>
+		/// <remarks>To redo the most recent undo operation, send the <c>EM_REDO</c> message.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-canredo
+		EM_CANREDO = WindowMessage.WM_USER + 85,
+		/// <summary>
+		/// <para>Microsoft Rich Edit 2.0 and later: Retrieves the type of the next undo action, if any.</para>
+		/// <para>Microsoft Rich Edit 1.0: This message is not supported.</para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If there is an undo action, the value returned is an <c>UNDONAMEID</c> enumeration value that indicates the type of the next action in the control's undo queue.</para>
+		/// <para>If there are no actions that can be undone or the type of the next undo action is unknown, the return value is zero.</para>
+		/// <remarks>The types of actions that can be undone or redone include typing, delete, drag, drop, cut, and paste operations. This information can be useful for applications that provide an extended user interface for undo and redo operations, such as a drop-down list box of actions that can be undone.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getundoname
+		EM_GETUNDONAME = WindowMessage.WM_USER + 86,
+		/// <summary>Retrieves the type of the next action, if any, in the rich edit control's redo queue.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the redo queue for the control is not empty, the value returned is an <c>UNDONAMEID</c> enumeration value that indicates the type of the next action in the control's redo queue.</para>
+		/// <para>If there are no redoable actions or the type of the next redoable action is unknown, the return value is zero.</para>
+		/// <remarks>The types of actions that can be undone or redone include typing, delete, drag-drop, cut, and paste operations. This information can be useful for applications that provide an extended user interface for undo and redo operations, such as a drop-down list box of redoable actions.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getredoname
+		EM_GETREDONAME = WindowMessage.WM_USER + 87,
+		/// <summary>Stops a rich edit control from collecting additional typing actions into the current undo action. The control stores the next typing action, if any, into a new action in the undo queue.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is zero. This message cannot fail.</para>
+		/// <remarks>
+		/// <para>A rich edit control groups consecutive typing actions, including characters deleted by using the <c>BackSpace</c> key, into a single undo action until one of the following events occurs:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>The control receives an <c>EM_STOPGROUPTYPING</c> message.</description>
+		/// </item>
+		/// <item>
+		/// <description>The control loses focus.</description>
+		/// </item>
+		/// <item>
+		/// <description>The user moves the current selection, either by using the arrow keys or by clicking the mouse.</description>
+		/// </item>
+		/// <item>
+		/// <description>The user presses the <c>Delete</c> key.</description>
+		/// </item>
+		/// <item>
+		/// <description>The user performs any other action, such as a paste operation that does <c>not</c> involve typing.</description>
+		/// </item>
+		/// </list>
+		/// <para>You can send the <c>EM_STOPGROUPTYPING</c> message to break consecutive typing actions into smaller undo groups. For example, you could send <c>EM_STOPGROUPTYPING</c> after each character or at each word break.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-stopgrouptyping
+		EM_STOPGROUPTYPING = WindowMessage.WM_USER + 88,
+		/// <summary>Sets the text mode or undo level of a rich edit control. The message fails if the control contains any text.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>One or more values from the <c>TEXTMODE</c> enumeration type. The values specify the new settings for the control's text mode and undo level parameters.</para>
+		/// <para>Specify one of the following values to set the text mode parameter. If you do not specify a text mode value, the text mode remains at its current setting.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>TM_PLAINTEXT</c></description>
+		/// <description>Indicates plain text mode, in which the control is similar to a standard edit control. For more information about plain text mode, see the following Remarks section.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>TM_RICHTEXT</c></description>
+		/// <description>Indicates rich text mode, in which the control has standard rich edit functionality. Rich text mode is the default setting.</description>
+		/// </item>
+		/// </list>
+		/// <para>Specify one of the following values to set the undo level parameter. If you do not specify an undo level value, the undo level remains at its current setting.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>TM_SINGLELEVELUNDO</c></description>
+		/// <description>The control allows the user to undo only the last action that can be undone.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>TM_MULTILEVELUNDO</c></description>
+		/// <description>The control supports multiple undo operations. This is the default setting. Use the <c>EM_SETUNDOLIMIT</c> message to set the maximum number of undo actions.</description>
+		/// </item>
+		/// </list>
+		/// <para>Specify one of the following values to set the code page parameter. If you do not specify an code page value, the code page remains at its current setting.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>TM_SINGLECODEPAGE</c></description>
+		/// <description>The control only allows the English keyboard and a keyboard corresponding to the default character set. For example, you could have Greek and English. Note that this prevents Unicode text from entering the control. For example, use this value if a Rich Edit control must be restricted to ANSI text.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>TM_MULTICODEPAGE</c></description>
+		/// <description>The control allows multiple code pages and Unicode text into the control. This is the default setting.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the message succeeds, the return value is zero.</para>
+		/// <para>If the message fails, the return value is a nonzero value.</para>
+		/// <remarks>
+		/// <para>In rich text mode, a rich edit control has standard rich edit functionality. However, in plain text mode, the control is similar to a standard edit control:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>The text in a plain text control can have only one format (such as Bold, 10pt Arial).</description>
+		/// </item>
+		/// <item>
+		/// <description>The user cannot paste rich text formats, such as Rich Text Format (RTF) or embedded objects into a plain text control.</description>
+		/// </item>
+		/// <item>
+		/// <description>Rich text mode controls always have a default end-of-document marker or carriage return, to format paragraphs. Plain text controls, on the other hand, do not need the default, end-of-document marker, so it is omitted.</description>
+		/// </item>
+		/// </list>
+		/// <para>The control must contain no text when it receives the <c>EM_SETTEXTMODE</c> message. To ensure there is no text, send a <c>WM_SETTEXT</c> message with an empty string ("").</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-settextmode
+		EM_SETTEXTMODE = WindowMessage.WM_USER + 89,
+		/// <summary>Gets the current text mode and undo level of a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is one or more values from the <c>TEXTMODE</c> enumeration type. The values indicate the current text mode and undo level of the control.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gettextmode
+		EM_GETTEXTMODE = WindowMessage.WM_USER + 90,
+		/// <summary>Enables or disables automatic detection of hyperlinks by a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specify 0 to disable automatic link detection, or one of the following values to enable various kinds of detection.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>AURL_DISABLEMIXEDLGC</c></description>
+		/// <description><c>Windows 8</c>: Disable recognition of domain names that contain labels with characters belonging to more than one of the following scripts: Latin, Greek, and Cyrillic.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>AURL_ENABLEDRIVELETTERS</c></description>
+		/// <description><c>Windows 8</c>: Recognize file names that have a leading drive specification, such as c:\temp.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>AURL_ENABLEEA</c></description>
+		/// <description>This value is deprecated; use <c>AURL_ENABLEEAURLS</c> instead.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>AURL_ENABLEEAURLS</c></description>
+		/// <description>Recognize URLs that contain East Asian characters.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>AURL_ENABLEEMAILADDR</c></description>
+		/// <description><c>Windows 8</c>: Recognize email addresses.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>AURL_ENABLETELNO</c></description>
+		/// <description><c>Windows 8</c>: Recognize telephone numbers.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>AURL_ENABLEURL</c></description>
+		/// <description><c>Windows 8</c>: Recognize URLs that include the path.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter determines the URL schemes recognized if <c>AURL_ENABLEURL</c> is active. If lParam is NULL, the default scheme name list is used (see Remarks). Alternatively, lParam can point to a null-terminated string consisting of up to 50 colon-terminated scheme names that supersede the default scheme name list. For example, the string could be "news:http:ftp:telnet:". The scheme name syntax is defined in the Uniform Resource Identifiers (URI): Generic Syntax document on The Internet Engineering Task Force (IETF) website. Specifically, a scheme name can contain up to 13 characters (including the colon), must start with an ASCII alphabetic, and can be followed by a mixture of ASCII alphabetics, digits, and the three punctuation characters: ".", "+", and "-". The string type can be either <c>char*</c> or <c>WCHAR*</c>; the rich edit control automatically detects the type.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the message succeeds, the return value is zero.</para>
+		/// <para>If the message fails, the return value is a nonzero value. For example, the message might fail due to insufficient memory, an invalid detection option, or an invalid scheme-name string.</para>
+		/// <para>If lParam contains more than 50 scheme names, the message fails with a return value of <c>E_INVALIDARG</c>.</para>
+		/// <remarks>
+		/// <para>If automatic URL detection is enabled (that is, wParam includes <c>AURL_ENABLEURL</c>), the rich edit control scans any modified text to determine whether the text matches the format of a URL (or more generally in Windows 8 or later an IRI International Resource Identifier). If lParam is NULL, the control detects URLs that begin with the following scheme names:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>callto</description>
+		/// </item>
+		/// <item>
+		/// <description>file</description>
+		/// </item>
+		/// <item>
+		/// <description>ftp</description>
+		/// </item>
+		/// <item>
+		/// <description>gopher</description>
+		/// </item>
+		/// <item>
+		/// <description>http</description>
+		/// </item>
+		/// <item>
+		/// <description>https</description>
+		/// </item>
+		/// <item>
+		/// <description>mailto</description>
+		/// </item>
+		/// <item>
+		/// <description>news</description>
+		/// </item>
+		/// <item>
+		/// <description>notes</description>
+		/// </item>
+		/// <item>
+		/// <description>nntp</description>
+		/// </item>
+		/// <item>
+		/// <description>onenote</description>
+		/// </item>
+		/// <item>
+		/// <description>outlook</description>
+		/// </item>
+		/// <item>
+		/// <description>prospero</description>
+		/// </item>
+		/// <item>
+		/// <description>tel</description>
+		/// </item>
+		/// <item>
+		/// <description>telnet</description>
+		/// </item>
+		/// <item>
+		/// <description>wais</description>
+		/// </item>
+		/// <item>
+		/// <description>webcal</description>
+		/// </item>
+		/// </list>
+		/// <para>When automatic link detection is enabled, the rich edit control removes the <c>CFE_LINK</c> effect from modified text that does not have a format recognized by the control. If your application uses the <c>CFE_LINK</c> effect to mark other types of text, do not enable automatic link detection. The rich edit control does not check whether a detected link exists; that responsibility belongs to the client.</para>
+		/// <para>A rich edit control sends the EN_LINK notification when it receives various messages while the mouse pointer is over text that has the <c>CFE_LINK</c> effect. For more information, see Automatic RichEdit Hyperlinks and RichEdit Friendly Name Hyperlinks.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-autourldetect
+		EM_AUTOURLDETECT = WindowMessage.WM_USER + 91,
+		/// <summary>Indicates whether the auto URL detection is turned on in the rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If auto-URL detection is active, the return value is 1.</para>
+		/// <para>If auto-URL detection is inactive, the return value is 0.</para>
+		/// <remarks>
+		/// <para>When auto URL detection is on, Microsoft Rich Edit is constantly checking typed text for a valid URL. Rich Edit recognizes URLs that start with these prefixes:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>http:</description>
+		/// </item>
+		/// <item>
+		/// <description>file:</description>
+		/// </item>
+		/// <item>
+		/// <description>mailto:</description>
+		/// </item>
+		/// <item>
+		/// <description>ftp:</description>
+		/// </item>
+		/// <item>
+		/// <description>https:</description>
+		/// </item>
+		/// <item>
+		/// <description>gopher:</description>
+		/// </item>
+		/// <item>
+		/// <description>nntp:</description>
+		/// </item>
+		/// <item>
+		/// <description>prospero:</description>
+		/// </item>
+		/// <item>
+		/// <description>telnet:</description>
+		/// </item>
+		/// <item>
+		/// <description>news:</description>
+		/// </item>
+		/// <item>
+		/// <description>wais:</description>
+		/// </item>
+		/// <item>
+		/// <description>outlook:</description>
+		/// </item>
+		/// </list>
+		/// <para>Rich Edit also recognizes standard path names that start with \\. When Rich Edit locates a URL, it changes the URL text color, underlines the text, and notifies the client using EN_LINK.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getautourldetect
+		EM_GETAUTOURLDETECT = WindowMessage.WM_USER + 92,
+		/// <summary>Changes the palette that a rich edit control uses for its display window.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Handle to the new palette used by the rich edit control.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>The rich edit control does not check whether the new palette is valid.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setpalette
+		EM_SETPALETTE = WindowMessage.WM_USER + 93,
+		/// <summary>Gets the text from a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Pointer to a <c>GETTEXTEX</c> structure, which indicates how to translate the text before putting it into the output buffer.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to the buffer to receive the text. The size of this buffer, in bytes, is specified by the <c>cb</c> member of the <c>GETTEXTEX</c> structure. Use the <c>EM_GETTEXTLENGTHEX</c> message to get the required size of the buffer.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the number of <c>TCHAR</c>s copied into the output buffer, not including the null terminator.</para>
+		/// <remarks>
+		/// <para>If the size of the output buffer is less than the size of the text in the control, the edit control will copy text from its beginning and place it in the buffer until the buffer is full. A terminating null character will still be placed at the end of the buffer.</para>
+		/// <para>If ANSI text is requested, <c>EM_GETTEXTEX</c> uses the <c>WideCharToMultiByte</c> function to translate the Unicode characters to ANSI. It allows you to go from Unicode to ANSI using a particular code page. The <c>GETTEXTEX</c> structure contains members (<c>lpDefaultChar</c> and <c>lpUsedDefChar</c>) that are used in the translation from Unicode to ANSI.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gettextex
+		EM_GETTEXTEX = WindowMessage.WM_USER + 94,
+		/// <summary>Calculates text length in various ways. It is usually called before creating a buffer to receive the text from the control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Pointer to a <c>GETTEXTLENGTHEX</c> structure that receives the text length information.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The message returns the number of <c>TCHAR</c>s in the edit control, depending on the setting of the flags in the <c>GETTEXTLENGTHEX</c> structure. If incompatible flags were set in the <c>flags</c> member, the message returns E_INVALIDARG .</para>
+		/// <remarks>This message is a fast and easy way to determine the number of characters in the Unicode version of the rich edit control. However, for a non-Unicode target code page you will potentially be converting to a combination of single-byte and double-byte characters.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gettextlengthex
+		EM_GETTEXTLENGTHEX = WindowMessage.WM_USER + 95,
+		/// <summary>Shows or hides one of the scroll bars in the host window of a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Identifies which scroll bar to display: horizontal or vertical. This parameter must be <c>SB_VERT</c> or <c>SB_HORZ</c>.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Specifies whether to show the scroll bar or hide it. Specify <c>TRUE</c> to show the scroll bar and <c>FALSE</c> to hide it.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>This method is only valid when the control is in-place active. Calls made while the control is inactive may fail.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-showscrollbar
+		EM_SHOWSCROLLBAR = WindowMessage.WM_USER + 96,
+		/// <summary>Combines the functionality of the <c>WM_SETTEXT</c> and <c>EM_REPLACESEL</c> messages, and adds the ability to set text using a code page and to use either rich text or plain text.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Pointer to a <c>SETTEXTEX</c> structure that specifies flags and an optional code page to use in translating to Unicode.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to the null-terminated text to insert. This text is an ANSI string, unless the code page is 1200 (Unicode). If lParam starts with a valid RTF ASCII sequence for example, "{\rtf" or "{urtf" the text is read in using the RTF reader.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation is setting all of the text and succeeds, the return value is 1.</para>
+		/// <para>If the operation is setting the selection and succeeds, the return value is the number of bytes or characters copied.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-settextex
+		EM_SETTEXTEX = WindowMessage.WM_USER + 97,
+		/// <summary>
+		/// <para>Sets the punctuation characters for a rich edit control.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the punctuation type, which can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>PC_LEADING</c></description>
+		/// <description>Leading punctuation characters.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PC_FOLLOWING</c></description>
+		/// <description>Following punctuation characters.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PC_DELIMITER</c></description>
+		/// <description>Delimiter.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PC_OVERFLOW</c></description>
+		/// <description>Not supported.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>PUNCTUATION</c> structure that contains the punctuation characters.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setpunctuation
+		EM_SETPUNCTUATION = WindowMessage.WM_USER + 100,
+		/// <summary>
+		/// <para>Gets the current punctuation characters for the rich edit control.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions of Rich Edit.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The punctuation type can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>PC_LEADING</c></description>
+		/// <description>Leading punctuation characters</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PC_FOLLOWING</c></description>
+		/// <description>Following punctuation characters</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PC_DELIMITER</c></description>
+		/// <description>Delimiter</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PC_OVERFLOW</c></description>
+		/// <description>Not supported</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>PUNCTUATION</c> structure that receives the punctuation characters.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getpunctuation
+		EM_GETPUNCTUATION = WindowMessage.WM_USER + 101,
+		/// <summary>
+		/// <para>Sets the word-wrapping and word-breaking options for a rich edit control.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>WBF_WORDWRAP</c></description>
+		/// <description>Enables Asian-specific word wrap operations, such as kinsoku in Japanese.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WBF_WORDBREAK</c></description>
+		/// <description>Enables English word-breaking operations in Japanese and Chinese. Enables Hangeul word-breaking operation.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WBF_OVERFLOW</c></description>
+		/// <description>Recognizes overflow punctuation. (Not currently supported.)</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WBF_LEVEL1</c></description>
+		/// <description>Sets the Level 1 punctuation table as the default.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WBF_LEVEL2</c></description>
+		/// <description>Sets the Level 2 punctuation table as the default.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>WBF_CUSTOM</c></description>
+		/// <description>Sets the application-defined punctuation table.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the current word-wrapping and word-breaking options.</para>
+		/// <remarks>This message must not be sent by the application defined word breaking procedure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setwordwrapmode
+		EM_SETWORDWRAPMODE = WindowMessage.WM_USER + 102,
+		/// <summary>
+		/// <para>Gets the current word wrap and word-break options for the rich edit control.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions of Rich Edit.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The message returns the current word wrap and word-break options.</para>
+		/// <remarks>This message must not be sent by the application-defined, word-break procedure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getwordwrapmode
+		EM_GETWORDWRAPMODE = WindowMessage.WM_USER + 103,
+		/// <summary>
+		/// <para>Sets the Input Method Editor (IME) composition color for a rich edit control.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>COMPCOLOR</c> structure that contains the composition color to be set.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setimecolor
+		EM_SETIMECOLOR = WindowMessage.WM_USER + 104,
+		/// <summary>
+		/// <para>Retrieves the Input Method Editor (IME) composition color.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions of Rich Edit.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A four-element array of <c>COMPCOLOR</c> structures that receives the composition color.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/Controls/em-getimecolor
+		EM_GETIMECOLOR = WindowMessage.WM_USER + 105,
+		/// <summary>
+		/// <para>Sets the Input Method Editor (IME) options.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>ECOOP_SET</c></description>
+		/// <description>Sets the options to those specified by <c>lParam</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECOOP_OR</c></description>
+		/// <description>Combines the specified options with the current options.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECOOP_AND</c></description>
+		/// <description>Retains only those current options that are also specified by <c>lParam</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ECOOP_XOR</c></description>
+		/// <description>Logically exclusive OR the current options with those specified by <c>lParam.</c></description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Specifies one of more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>IMF_CLOSESTATUSWINDOW</c></description>
+		/// <description>Closes the IME status window when the control receives the input focus.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_FORCEACTIVE</c></description>
+		/// <description>Activates the IME when the control receives the input focus.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_FORCEDISABLE</c></description>
+		/// <description>Disables the IME when the control receives the input focus.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_FORCEENABLE</c></description>
+		/// <description>Enables the IME when the control receives the input focus.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_FORCEINACTIVE</c></description>
+		/// <description>Inactivates the IME when the control receives the input focus.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_FORCENONE</c></description>
+		/// <description>Disables IME handling.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_FORCEREMEMBER</c></description>
+		/// <description>Restores the previous IME status when the control receives the input focus.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_MULTIPLEEDIT</c></description>
+		/// <description>Specifies that the composition string will not be canceled or determined by focus changes. This allows an application to have separate composition strings on each rich edit control.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_VERTICAL</c></description>
+		/// <description>Note used in Rich Edit 2.0 and later.</description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is a nonzero value.</para>
+		/// <para>If the operation fails, the return value is zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setimeoptions
+		EM_SETIMEOPTIONS = WindowMessage.WM_USER + 106,
+		/// <summary>
+		/// <para>Retrieves the current Input Method Editor (IME) options.</para>
+		/// <para><para>Note</para> <para>This message is supported only in Asian-language versions of Microsoft Rich Edit 1.0. It is not supported in any later versions of Rich Edit.</para></para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns one or more of the IME option flag values described in the <c>EM_SETIMEOPTIONS</c> message.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getimeoptions
+		EM_GETIMEOPTIONS = WindowMessage.WM_USER + 107,
+		/// <summary>
+		/// <para>This message is not implemented.</para>
+		/// <para>Â</para>
+		/// <para>Â</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-convposition
+		EM_CONVPOSITION = WindowMessage.WM_USER + 108,
+		/// <summary>Sets options for Input Method Editor (IME) and Asian language support in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Specifies the language options. For a list of possible values, see <c>EM_GETLANGOPTIONS</c>.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns a value of 1.</para>
+		/// <remarks>
+		/// <para>The <c>EM_SETLANGOPTIONS</c> message controls the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>Automatic font binding.</description>
+		/// </item>
+		/// <item>
+		/// <description>Automatic keyboard switching.</description>
+		/// </item>
+		/// <item>
+		/// <description>Automatic font size adjustment.</description>
+		/// </item>
+		/// <item>
+		/// <description>Use of user-interface default fonts instead of document default fonts.</description>
+		/// </item>
+		/// <item>
+		/// <description>Notifications to client during IME composition.</description>
+		/// </item>
+		/// <item>
+		/// <description>How IME aborts composition mode.</description>
+		/// </item>
+		/// <item>
+		/// <description>Spell checking, autocorrect, and touch keyboard prediction.</description>
+		/// </item>
+		/// </list>
+		/// <para>This message sets the values of all language option flags. To change a subset of the flags, send the <c>EM_GETLANGOPTIONS</c> message to get the current option flags, change the flags that you need to change, and then send the <c>EM_SETLANGOPTIONS</c> message with the result.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setlangoptions
+		EM_SETLANGOPTIONS = WindowMessage.WM_USER + 120,
+		/// <summary>Gets a rich edit control's option settings for Input Method Editor (IME) and Asian language support.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns the IME and Asian language settings, which can be zero or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>IMF_AUTOFONT</c></description>
+		/// <description>If this flag is set, the control automatically changes fonts when the user explicitly changes to a different keyboard layout. It is useful to turn off <c>IMF_AUTOFONT</c> for universal Unicode fonts. This option is turned on by default (1).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_AUTOFONTSIZEADJUST</c></description>
+		/// <description>If this flag is set, the control scales font-bound font sizes from insertion point size according to script. For example, Asian fonts are slightly larger than Western ones. This option is turned on by default (1).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_AUTOKEYBOARD</c></description>
+		/// <description>If this flag is set, the control automatically changes the keyboard layout when the user explicitly changes to a different font, or when the user explicitly changes the insertion point to a new location in the text. Will be turned on automatically for bidirectional controls. For all other controls, it is turned off by default. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_DISABLEAUTOBIDIAUTOKEYBOARD</c></description>
+		/// <description><c>Windows 8</c>: If this flag is set, the control uses language neutral logic for automatic keyboard switching. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_DUALFONT</c></description>
+		/// <description>If this flag is set, the control uses dual-font mode. Used for Asian language support. The control uses an English font for ASCII text and a Asian font for Asian text. This option is turned on by default (1).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_IMEALWAYSSENDNOTIFY</c></description>
+		/// <description>This flag controls how the rich edit control notifies the client during IME composition: 0: No EN_CHANGE or EN_SELCHANGE notifications during undetermined state. Send notification when the final string comes in. This is the default. 1: Send EN_CHANGE and EN_SELCHANGE events during undetermined state.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_IMECANCELCOMPLETE</c></description>
+		/// <description>This flag determines how the control uses the composition string of an IME if the user cancels it. If this flag is set, the control discards the composition string. If this flag is not set, the control uses the composition string as the result string. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_NOIMPLICITLANG</c></description>
+		/// <description><c>Windows 8</c>: If this flag is set, disable stamping keyboard input with the keyboard language and ensuring that non-East Asian language IDss are compatible with the character repertoire. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_NOKBDLIDFIXUP</c></description>
+		/// <description><c>Windows 8</c>: If this flag is set, the rich edit control disables stamping keyboard language on an empty control. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_SPELLCHECKING</c></description>
+		/// <description><c>Windows 8</c>: If this flag is set, the rich edit control turns on spell checking. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_TKBAUTOCORRECTION</c></description>
+		/// <description><c>Windows 8</c>: If this flag is set, enable touch keyboard autocorrect. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_TKBPREDICTION</c></description>
+		/// <description><c>Windows 10</c>: Ignored. <c>Windows 8</c>: If this flag is set, the rich edit control enables touch keyboard prediction. This option is turned off by default (0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_UIFONTS</c></description>
+		/// <description>Use user-interface default fonts. This option is turned off by default (0).</description>
+		/// </item>
+		/// </list>
+		/// <remarks>The <c>IMF_AUTOFONT</c> flag is set by default. The <c>IMF_AUTOKEYBOARD</c> and <c>IMF_IMECANCELCOMPLETE</c> flags are cleared by default.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getlangoptions
+		EM_GETLANGOPTIONS = WindowMessage.WM_USER + 121,
+		/// <summary>Retrieves the current Input Method Editor (IME) mode for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>ICM_NOTOPEN</c></description>
+		/// <description>IME is not open.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ICM_LEVEL3</c></description>
+		/// <description>True inline mode.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ICM_LEVEL2</c></description>
+		/// <description>Level 2.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ICM_LEVEL2_5</c></description>
+		/// <description>Level 2.5</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ICM_LEVEL2_SUI</c></description>
+		/// <description>Special UI.</description>
+		/// </item>
+		/// </list>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getimecompmode
+		EM_GETIMECOMPMODE = WindowMessage.WM_USER + 122,
+		/// <summary>Finds Unicode text within a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the parameters of the search operation. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>FR_DOWN</c></description>
+		/// <description>If set, the operation searches from the end of the current selection to the end of the document. If not set, the operation searches from the end of the current selection to the beginning of the document.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHALEFHAMZA</c></description>
+		/// <description>By default, Arabic and Hebrew alefs with different accents are all matched by the alef character. Set this flag if you want the search to differentiate between alefs with different accents.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHCASE</c></description>
+		/// <description>If set, the search operation is case-sensitive. If not set, the search operation is case-insensitive.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHDIAC</c></description>
+		/// <description>By default, Arabic and Hebrew diacritical marks are ignored. Set this flag if you want the search operation to consider diacritical marks.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHKASHIDA</c></description>
+		/// <description>By default, Arabic and Hebrew kashidas are ignored. Set this flag if you want the search operation to consider kashidas.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_WHOLEWORD</c></description>
+		/// <description>If set, the operation searches only for whole words that match the search string. If not set, the operation also searches for word fragments that match the search string.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>FINDTEXTW</c> structure containing information about the find operation.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the target string is found, the return value is the zero-based position of the first character of the match. If the target is not found, the return value is -1.</para>
+		/// <remarks><c>EM_FINDTEXTW</c> uses the <c>FINDTEXTW</c> structure, while <c>EM_FINDTEXTEXW</c> uses the <c>FINDTEXTEXW</c> structure. The difference is that <c>FINDTEXTEXW</c> reports back the range of text that was found.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-findtextw
+		EM_FINDTEXTW = WindowMessage.WM_USER + 123,
+		/// <summary>Finds Unicode text within a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the behavior of the search operation. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>FR_DOWN</c></description>
+		/// <description>Microsoft Rich Edit 2.0 and later: If set, the search is forward from <c>FINDTEXTEX.chrg.cpMin</c>; if not set, the search is backward from <c>FINDTEXTEX.chrg.cpMin</c>. Microsoft Rich Edit 1.0: The FR_DOWN flag is ignored. The search is always forward.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHALEFHAMZA</c></description>
+		/// <description>If set, the search differentiates between alefs with different accents. If not set, Arabic and Hebrew alefs with different accents are all matched by the alef character.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHCASE</c></description>
+		/// <description>If set, the search operation is case-sensitive. If not set, the search operation is case-insensitive.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHDIAC</c></description>
+		/// <description>If set, the search operation considers diacritical marks. If not set, Arabic and Hebrew diacritical marks are ignored.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_MATCHKASHIDA</c></description>
+		/// <description>If set, the search operation considers kashidas. If not set, Arabic and Hebrew kashidas are ignored.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>FR_WHOLEWORD</c></description>
+		/// <description>If set, the operation searches only for whole words that match the search string. If not set, the operation also searches for word fragments that match the search string.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>FINDTEXTEXW</c> structure containing information about the find operation.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the target string is found, the return value is the zero-based position of the first character of the match. If the target is not found, the return value is -1.</para>
+		/// <remarks>
+		/// <para>Use this message to find Unicode strings. For ANSI;, use <c>EM_FINDTEXTEX</c>.</para>
+		/// <para>The <c>cpMin</c> member of <c>FINDTEXTEX.chrg</c> always specifies the starting-point of the search, and <c>cpMax</c> specifies the end point. When searching backward, <c>cpMin</c> must be equal to or greater than <c>cpMax</c>. When searching forward, a value of -1 in <c>cpMax</c> extends the search range to the end of the text.</para>
+		/// <para>If the search operation finds a match, the <c>chrgText</c> member of the <c>FINDTEXTEX</c> structure returns the range of character positions that contains the matching text.</para>
+		/// <para><c>EM_FINDTEXTEXW</c> uses the <c>FINDTEXTEXW</c> structure, while <c>EM_FINDTEXTW</c> uses the <c>FINDTEXTW</c> structure. The difference is that <c>EM_FINDTEXTEXW</c> reports the range of text that was found.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-findtextexw
+		EM_FINDTEXTEXW = WindowMessage.WM_USER + 124,
+		/// <summary>Invokes the Input Method Editor (IME) reconversion dialog box.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message always returns zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-reconversion
+		EM_RECONVERSION = WindowMessage.WM_USER + 125,
+		/// <summary>Set the Input Method Editor (IME) mode bias for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>IME mode bias value. It can be one of the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>IMF_SMODE_PLAURALCLAUSE</c></description>
+		/// <description>Sets the IME mode bias to Name.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IMF_SMODE_NONE</c></description>
+		/// <description>No bias.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>This must be the same value as wParam.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the new IME mode bias setting.</para>
+		/// <remarks>
+		/// <para>When the IME generates a list of alternative choices for a set of characters, this message sets the criteria by which some of the choices will appear at the top of the list.</para>
+		/// <para>To set the Text Services Framework (TSF) mode bias, use <c>EM_SETCTFMODEBIAS</c>.</para>
+		/// <para>The application should call <c>EM_ISIME</c> before calling this function.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setimemodebias
+		EM_SETIMEMODEBIAS = WindowMessage.WM_USER + 126,
+		/// <summary>Retrieves the Input Method Editor (IME) mode bias for a Microsoft Rich Edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns the current IME mode bias setting.</para>
+		/// <remarks>
+		/// <para>To get the Text Services Framework mode bias, use <c>EM_GETCTFMODEBIAS</c>.</para>
+		/// <para>The application should call <c>EM_ISIME</c> before calling this function.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getimemodebias
+		EM_GETIMEMODEBIAS = WindowMessage.WM_USER + 127,
+		/// <summary>The <c>EM_SETBIDIOPTIONS</c> message sets the current state of the bidirectional options in the rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>BIDIOPTIONS</c> structure that indicates how to set the state of the bidirectional options in the rich edit control.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>
+		/// <para>The rich edit control must be in plain text mode or <c>EM_SETBIDIOPTIONS</c> will not do anything.</para>
+		/// <para>In plain text controls, <c>EM_SETBIDIOPTIONS</c> automatically determines the paragraph direction and/or alignment based on the context rules. These rules state that the direction and/or alignment is derived from the first strong character in the control. A strong character is one from which text direction can be determined (see Unicode Standard version 2.0). The paragraph direction and/or alignment is applied to the default format.</para>
+		/// <para><c>EM_SETBIDIOPTIONS</c> only switches the default paragraph format to RTL (right to left) if it finds an RTL character,</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setbidioptions
+		EM_SETBIDIOPTIONS = WindowMessage.WM_USER + 200,
+		/// <summary>Indicates the current state of the bidirectional options in the rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A <c>BIDIOPTIONS</c> structure that receives the current state of the bidirectional options in the rich edit control.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message does not return a value.</para>
+		/// <remarks>This message sets the values of the <c>wMask</c> and <c>wEffects</c> members to the value of the current state of the bidirectional options in the rich edit control.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getbidioptions
+		EM_GETBIDIOPTIONS = WindowMessage.WM_USER + 201,
+		/// <summary>Sets the current state of the typography options of a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies one or both of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>TO_ADVANCEDTYPOGRAPHY</c></description>
+		/// <description>Advanced line breaking and line formatting is turned on.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>TO_SIMPLELINEBREAK</c></description>
+		/// <description>Faster line breaking for simple text (requires <c>TO_ADVANCEDTYPOGRAPHY</c>).</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>A mask consisting of one or more of the flags in wParam. Only the flags that are set in this mask will be set or cleared. This allows a single flag to be set or cleared without reading the current flag states.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns <c>TRUE</c> if wParam is valid, otherwise <c>FALSE</c>.</para>
+		/// <remarks>Advanced line breaking is turned on automatically by the rich edit control when needed, such as for handling complex scripts like Arabic and Hebrew, and for mathematics. It s also needed for justified paragraphs, hyphenation, and other typographic features.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-settypographyoptions
+		EM_SETTYPOGRAPHYOPTIONS = WindowMessage.WM_USER + 202,
+		/// <summary>Returns the current state of the typography options of a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns the current typography options. For a list of options, see <c>EM_SETTYPOGRAPHYOPTIONS</c>.</para>
+		/// <remarks>You can turn on advanced line breaking by sending the <c>EM_SETTYPOGRAPHYOPTIONS</c> message. Advanced and normal line breaking may also be turned on automatically by the rich edit control if it is needed for certain languages.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gettypographyoptions
+		EM_GETTYPOGRAPHYOPTIONS = WindowMessage.WM_USER + 203,
+		/// <summary>Sets the current edit style flags for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies one or more edit style flags. For a list of possible values, see <c>EM_GETEDITSTYLE</c>.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A mask consisting of one or more of the wParam values. Only the values specified in this mask will be set or cleared. This allows a single flag to be set or cleared without reading the current flag states.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the state of the edit style flags after the rich edit control has attempted to implement your edit style changes. The edit style flags are a set of flags that indicate the current edit style.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-seteditstyle
+		EM_SETEDITSTYLE = WindowMessage.WM_USER + 204,
+		/// <summary>Retrieves the current edit style flags.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns the current edit style flags, which can include one or more of the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SES_BEEPONMAXTEXT</c></description>
+		/// <description>Rich Edit will call the system beeper if the user attempts to enter more than the maximum characters.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_BIDI</c></description>
+		/// <description>Turns on bidirectional processing. This is automatically turned on by Rich Edit if any of the following window styles are active: <c>WS_EX_RIGHT</c>, <c>WS_EX_RTLREADING</c>, <c>WS_EX_LEFTSCROLLBAR</c>. However, this setting is useful for handling these window styles when using a custom implementation of <c>ITextHost</c> (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_CTFALLOWEMBED</c></description>
+		/// <description><c>Windows XP with SP1</c>: Allow embedded objects to be inserted using TSF (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_CTFALLOWPROOFING</c></description>
+		/// <description><c>Windows XP with SP1</c>: Allows TSF proofing tips (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_CTFALLOWSMARTTAG</c></description>
+		/// <description><c>Windows XP with SP1</c>: Allows TSF SmartTag tips (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_CTFNOLOCK</c></description>
+		/// <description><c>Windows 8</c>: Do not allow the TSF lock read/write access. This pauses TSF input.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_DEFAULTLATINLIGA</c></description>
+		/// <description><c>Windows 8</c>: Fonts with an fi ligature are displayed with default OpenType features resulting in improved typography (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_DRAFTMODE</c></description>
+		/// <description><c>Windows XP with SP1</c>: Use draft mode fonts to display text. Draft mode is an accessibility option where the control displays the text with a single font; the font is determined by the system setting for the font used in message boxes. For example, accessible users may read text easier if it is uniform, rather than a mix of fonts and styles (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EMULATE10</c></description>
+		/// <description><c>Windows 8</c>: Emulate RichEdit 1.0 behavior.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EMULATESYSEDIT</c></description>
+		/// <description>When this bit is on, rich edit attempts to emulate the system edit control (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EXTENDBACKCOLOR</c></description>
+		/// <description>Extends the background color all the way to the edges of the client rectangle (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_HIDEGRIDLINES</c></description>
+		/// <description><c>Windows XP with SP1</c>: If the width of table gridlines is zero, gridlines are not displayed. This is equivalent to the hide gridlines feature in Word's table menu (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_HYPERLINKTOOLTIPS</c></description>
+		/// <description><c>Windows 8</c>: When the cursor is over a link, display a tooltip with the target link address (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_LOGICALCARET</c></description>
+		/// <description><c>Windows 8</c>: Provide logical caret information instead of a caret bitmap as described in <c>ITextHost::TxSetCaretPos</c> (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_LOWERCASE</c></description>
+		/// <description>Converts all input characters to lowercase (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_MAPCPS</c></description>
+		/// <description>Obsolete. Do not use.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_MULTISELECT</c></description>
+		/// <description><c>Windows 8</c>: Enable multiselection with individual mouse selections made while the Ctrl key is pressed (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_NOEALINEHEIGHTADJUST</c></description>
+		/// <description><c>Windows 8</c>: Do not adjust line height for East Asian text (default: 0 which adjusts the line height by 15%).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_NOFOCUSLINKNOTIFY</c></description>
+		/// <description>Sends EN_LINK notification from links that do not have focus.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_NOIME</c></description>
+		/// <description>Disallows IMEs for this instance of the rich edit control (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_NOINPUTSEQUENCECHK</c></description>
+		/// <description>When this bit is on, rich edit does not verify the sequence of typed text. Some languages (such as Thai and Vietnamese) require verifying the input sequence order before submitting it to the backing store (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_SCROLLONKILLFOCUS</c></description>
+		/// <description>When KillFocus occurs, scroll to the beginning of the text (character position equal to 0) (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_SMARTDRAGDROP</c></description>
+		/// <description><c>Windows 8</c>: Add or delete a space according to the context when dropping text (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_USECRLF</c></description>
+		/// <description>Obsolete. Do not use.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_WORDDRAGDROP</c></description>
+		/// <description><c>Windows 8</c>: If word select is active, ensure that the drop location is at a word boundary (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_UPPERCASE</c></description>
+		/// <description>Converts all input characters to uppercase (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_USEAIMM</c></description>
+		/// <description>Uses the Active IMM input method component that ships with Internet Explorer 4.0 or later (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_USEATFONT</c></description>
+		/// <description><c>Windows XP with SP1</c>: Uses an @ font, which is designed for vertical text; this is used with the <c>ES_VERTICAL</c> window style. The name of an @ font begins with the @ symbol, for example, "@Batang" (default: 0, but is automatically turned on for vertical text layout).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_USECTF</c></description>
+		/// <description><c>Windows XP with SP1</c>: Turns on TSF support. (default: 0)</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_XLTCRCRLFTOCR</c></description>
+		/// <description>Turns on translation of CRCRLFs to CRs. When this bit is on and a file is read in, all instances of CRCRLF will be converted to hard CRs internally. This will affect the text wrapping. Note that if such a file is saved as plain text, the CRs will be replaced by CRLFs. This is the .txt standard for plain text (default: 0, which deletes CRCRLFs on input).</description>
+		/// </item>
+		/// </list>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-geteditstyle
+		EM_GETEDITSTYLE = WindowMessage.WM_USER + 205,
+		/// <summary>Undocumented</summary>
+		EM_OUTLINE = WindowMessage.WM_USER + 220,
+		/// <summary>Obtains the current scroll position of the edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>POINT</c> structure. After calling <c>EM_GETSCROLLPOS</c>, this parameters contains a point in the virtual text space of the document, expressed in pixels. This point will be the point that is currently located in the upper-left corner of the edit control window.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message always returns 1.</para>
+		/// <remarks>The values returned in the <c>POINT</c> structure are 16-bit values (even in the 32-bit wide fields).</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getscrollpos
+		EM_GETSCROLLPOS = WindowMessage.WM_USER + 221,
+		/// <summary>Scrolls the contents of a rich edit control to the specified point.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a <c>POINT</c> structure which specifies a point in the virtual text space of the document, expressed in pixels. The document will be scrolled until this point is located in the upper-left corner of the edit control window. If you want to change the view such that the upper left corner of the view is two lines down and one character in from the left edge. You would pass a point of (7, 22).</para>
+		/// <para>The rich edit control checks the x and y coordinates and adjusts them if necessary, so that a complete line is displayed at the top. It also ensures that the text is never completely scrolled off the view rectangle.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message always returns 1.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setscrollpos
+		EM_SETSCROLLPOS = WindowMessage.WM_USER + 222,
+		/// <summary>Sets the font size for the selected text in a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Change in point size of the selected text. The result will be rounded according to values shown in the following table. This parameter should be in the range of -1637 to 1638. The resulting font size will be within the range of 1 to 1638.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This parameter is not used; it must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If no error occurred, the return value is <c>TRUE</c>.</para>
+		/// <para>If an error occurred, the return value is <c>FALSE</c>.</para>
+		/// <remarks>
+		/// <para>You can easily get the font size by sending the <c>EM_GETCHARFORMAT</c> message.</para>
+		/// <para>Rich Edit first adds wParam to the current font size and then uses the resulting size and the following table to determine the rounding value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Band</description>
+		/// <description>Rounding value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>&lt;=12</description>
+		/// <description>1</description>
+		/// </item>
+		/// <item>
+		/// <description>28</description>
+		/// <description>2</description>
+		/// </item>
+		/// <item>
+		/// <description>36</description>
+		/// <description>0</description>
+		/// </item>
+		/// <item>
+		/// <description>48</description>
+		/// <description>0</description>
+		/// </item>
+		/// <item>
+		/// <description>72</description>
+		/// <description>0</description>
+		/// </item>
+		/// <item>
+		/// <description>80</description>
+		/// <description>0</description>
+		/// </item>
+		/// <item>
+		/// <description>&gt; 80</description>
+		/// <description>10</description>
+		/// </item>
+		/// </list>
+		/// <para>If the resulting font size is not evenly divisible by the rounding value, the font size is then rounded to a number evenly divisible by the rounding value. So if the font size is less than or equal to 12, the rounding value will be 1. Similarly, if the font size is less than or equal to 28, the rounding value is 2. For values greater than 28, font sizes are rounded to the next band. So, the font size jumps to 36, 48, 72, 80. After 80, all rounding is done in increments of ten points.</para>
+		/// <para>The font size is rounded up or down depending on the sign of wParam. If wParam is positive, the rounding is always up. Otherwise, rounding is always down. So, if the current font size is 10 and wParam is 3, the resulting font size would be 14 (10 + 3 = 13, which is not divisible by 2, so the size rounds up to 14). Conversely, if the current font size is 14 and wParam is -3, the resulting font size would be 10 (14 - 3 = 11, which is not divisible by 2, so the size rounds down to 10).</para>
+		/// <para>The change is applied to each part of the selection. So, if some of the text is 10pt and some 20pt, after a call with wParam set to 1, the font sizes become 11pt and 22pt, respectively.</para>
+		/// <para>Additional examples are shown in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Original font size</description>
+		/// <description><c>wParam</c></description>
+		/// <description>Resulting font size</description>
+		/// </listheader>
+		/// <item>
+		/// <description>7</description>
+		/// <description>1</description>
+		/// <description>8</description>
+		/// </item>
+		/// <item>
+		/// <description>7</description>
+		/// <description>3</description>
+		/// <description>10</description>
+		/// </item>
+		/// <item>
+		/// <description>10</description>
+		/// <description>3</description>
+		/// <description>14</description>
+		/// </item>
+		/// <item>
+		/// <description>14</description>
+		/// <description>-3</description>
+		/// <description>10</description>
+		/// </item>
+		/// <item>
+		/// <description>28</description>
+		/// <description>1</description>
+		/// <description>36</description>
+		/// </item>
+		/// <item>
+		/// <description>28</description>
+		/// <description>3</description>
+		/// <description>36</description>
+		/// </item>
+		/// <item>
+		/// <description>80</description>
+		/// <description>1</description>
+		/// <description>90</description>
+		/// </item>
+		/// <item>
+		/// <description>80</description>
+		/// <description>-1</description>
+		/// <description>72</description>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setfontsize
+		EM_SETFONTSIZE = WindowMessage.WM_USER + 223,
+		/// <summary>Gets the current zoom ratio for a multiline edit control or a rich edit control. The zoom ration is always between 1/64 and 64.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Receives the numerator of the zoom ratio.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Receives the denominator of the zoom ratio.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The message returns <c>TRUE</c> if message is processed, which it will be if both wParam and lParam are not <c>NULL</c>.</para>
+		/// <remarks><c>Edit:</c> Supported in Windows 10 1809 and later. The edit control needs to have the <c>ES_EX_ZOOMABLE</c> extended style set, for this message to have an effect, see Edit Control Extended Styles. For information about the edit control, see Edit Controls.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getzoom
+		EM_GETZOOM = WindowMessage.WM_USER + 224,
+		/// <summary>Sets the zoom ratio for a multiline edit control or a rich edit control. The ratio must be a value between 1/64 and 64. The edit control needs to have the <c>ES_EX_ZOOMABLE</c> extended style set, for this message to have an effect, see Edit Control Extended Styles.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Numerator of the zoom ratio.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Denominator of the zoom ratio. These parameters can have the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>Both 0</c></description>
+		/// <description>Turns off zooming by using the <c>EM_SETZOOM</c> message (zooming may still occur using <c>TxGetExtent</c>).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>1/64 &lt; (wParam / lParam) &lt; 64</c></description>
+		/// <description>Zooms display by the zoom ratio numerator/denominator</description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the new zoom setting is accepted, the return value is <c>TRUE</c>.</para>
+		/// <para>If the new zoom setting is not accepted, the return value is <c>FALSE</c>.</para>
+		/// <remarks><c>Edit:</c> Supported in Windows 10 1809 and later. The edit control needs to have the <c>ES_EX_ZOOMABLE</c> extended style set, for this message to have an effect, see Edit Control Extended Styles. For information about the edit control, see Edit Controls.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setzoom
+		EM_SETZOOM = WindowMessage.WM_USER + 225,
+		/// <summary>Undocumented</summary>
+		EM_GETVIEWKIND = WindowMessage.WM_USER + 226,
+		/// <summary>Undocumented</summary>
+		EM_SETVIEWKIND = WindowMessage.WM_USER + 227,
+		/// <summary>Undocumented</summary>
+		EM_GETPAGE = WindowMessage.WM_USER + 228,
+		/// <summary>Undocumented</summary>
+		EM_SETPAGE = WindowMessage.WM_USER + 229,
+		/// <summary>Retrieves information about hyphenation for a Microsoft Rich Edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The <c>HYPHENATEINFO</c> structure.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gethyphenateinfo
+		EM_GETHYPHENATEINFO = WindowMessage.WM_USER + 230,
+		/// <summary>Sets the way a rich edit control does hyphenation.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Pointer to a <c>HYPHENATEINFO</c> structure.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used, must be zero.</para>
+		/// <remarks><para>Note</para><para>To enable hyphenation, the client must call <c>EM_SETTYPOGRAPHYOPTIONS</c>, specifying TO_ADVANCEDTYPOGRAPHY.</para></remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-sethyphenateinfo
+		EM_SETHYPHENATEINFO = WindowMessage.WM_USER + 231,
+		/// <summary>
+		/// <para>[<c>EM_GETPAGEROTATE</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]</para>
+		/// <para>Gets the text layout for a Microsoft Rich Edit control.</para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Gets the current text layout. For a list of possible text layout values, see <c>EM_SETPAGEROTATE</c>.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getpagerotate
+		EM_GETPAGEROTATE = WindowMessage.WM_USER + 235,
+		/// <summary>
+		/// <para>[<c>EM_SETPAGEROTATE</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]</para>
+		/// <para>Sets the text layout for a rich edit control.</para>
+		/// </summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Text layout value. This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>EPR_0</c></description>
+		/// <description>Text flows from left to right and from top to bottom.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>EPR_90</c></description>
+		/// <description>Text flows from bottom to top and from left to right.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>EPR_180</c></description>
+		/// <description>Text flows from right to left and from bottom to top.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>EPR_270</c></description>
+		/// <description>Text flows from top to bottom and from right to left.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>EPR_SE</c></description>
+		/// <description><c>Windows 8:</c> Text flows top to bottom and left to right (Mongolian text layout).</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Return value is the new text layout value.</para>
+		/// <remarks>This message sets the text layout for the entire document. However, embedded contents are not rotated and must be rotated separately by the application.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setpagerotate
+		EM_SETPAGEROTATE = WindowMessage.WM_USER + 236,
+		/// <summary>Gets the Text Services Framework mode bias values for a Microsoft Rich Edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The current Text Services Framework mode bias value.</para>
+		/// <remarks>To get the IME mode bias, call <c>EM_GETIMEMODEBIAS</c>.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getctfmodebias
+		EM_GETCTFMODEBIAS = WindowMessage.WM_USER + 237,
+		/// <summary>Sets the Text Services Framework (TSF) mode bias for a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Mode bias value. This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_DEFAULT</c></description>
+		/// <description>There is no mode bias.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_FILENAME</c></description>
+		/// <description>The bias is to a filename.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_NAME</c></description>
+		/// <description>The bias is to a name.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_READING</c></description>
+		/// <description>The bias is to the reading.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_DATETIME</c></description>
+		/// <description>The bias is to a date or time.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_CONVERSATION</c></description>
+		/// <description>The bias is to a conversation.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_NUMERIC</c></description>
+		/// <description>The bias is to a number.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_HIRAGANA</c></description>
+		/// <description>The bias is to hiragana strings.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_KATAKANA</c></description>
+		/// <description>The bias is to katakana strings.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_HANGUL</c></description>
+		/// <description>The bias is to Hangul characters.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_HALFWIDTHKATAKANA</c></description>
+		/// <description>The bias is to half-width katakana strings.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_FULLWIDTHALPHANUMERIC</c></description>
+		/// <description>The bias is to full-width alphanumeric characters.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CTFMODEBIAS_HALFWIDTHALPHANUMERIC</c></description>
+		/// <description>The bias is to half-width alphanumeric characters.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If successful, the return value is the new TSF mode bias value. If unsuccessful, the return value is the old TSF mode bias value.</para>
+		/// <remarks>
+		/// <para>When a Microsoft Rich Edit application uses TSF, it can select the TSF mode bias. This message sets the criteria by which an alternative choice appears at the top of the list for selection.</para>
+		/// <para>To set the mode bias for the Input Method Editor (IME), use <c>EM_SETIMEMODEBIAS</c>.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/Controls/em-setctfmodebias
+		EM_SETCTFMODEBIAS = WindowMessage.WM_USER + 238,
+		/// <summary>Determines if the Text Services Framework (TSF) keyboard is open or closed.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the TSF keyboard is open, the return value is <c>TRUE</c>. Otherwise, it is <c>FALSE</c>.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getctfopenstatus
+		EM_GETCTFOPENSTATUS = WindowMessage.WM_USER + 240,
+		/// <summary>Opens or closes the Text Services Framework (TSF) keyboard.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>To turn on the TSF keyboard, use <c>TRUE</c>. To turn off the TSF keyboard, use <c>FALSE</c>.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If successful, this message returns <c>TRUE</c>. If unsuccessful, this message returns <c>FALSE</c>.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setctfopenstatus
+		EM_SETCTFOPENSTATUS = WindowMessage.WM_USER + 241,
+		/// <summary>Retrieves the Input Method Editor (IME) composition text.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The <c>IMECOMPTEXT</c> structure.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>The buffer that receives the composition text. The size of this buffer is contained in the <c>cb</c> member of the wParam structure.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If successful, the return value is the number of Unicode characters copied to the buffer. Otherwise, it is zero.</para>
+		/// <remarks>
+		/// <para>This message only takes Unicode strings.</para>
+		/// <para><c>Security Warning:</c> Be sure to have a buffer sufficient for the size of the input. Failure to do so could cause problems for your application.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getimecomptext
+		EM_GETIMECOMPTEXT = WindowMessage.WM_USER + 242,
+		/// <summary>Determine with a rich edit control's current input locale is an East Asian locale.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns <c>TRUE</c> if it is an East Asian locale. Otherwise, it returns <c>FALSE</c>.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-isime
+		EM_ISIME = WindowMessage.WM_USER + 243,
+		/// <summary>Retrieves the property and capabilities of the Input Method Editor (IME) associated with the current input locale.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies the type of property information to retrieve. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>IGP_PROPERTY</c></description>
+		/// <description>Property information.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IGP_CONVERSION</c></description>
+		/// <description>Conversion capabilities.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IGP_SENTENCE</c></description>
+		/// <description>Sentence mode capabilities.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IGP_UI</c></description>
+		/// <description>User interface capabilities.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IGP_SETCOMPSTR</c></description>
+		/// <description>Composition string capabilities.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IGP_SELECT</c></description>
+		/// <description>Selection inheritance capabilities.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>IGP_GETIMEVERSION</c></description>
+		/// <description>Retrieves the system version number for which the specified IME was created.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns the property or capability value, depending on the value of the lParam parameter. For more information, see the Remarks.</para>
+		/// <remarks>
+		/// <para>If wParam is IGP_PROPERTY, it returns one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Requirement</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>IME_PROP_AT_CARET</description>
+		/// <description>If set, conversion window is at the caret position. If clear, the window is near caret position.</description>
+		/// </item>
+		/// <item>
+		/// <description>IME_PROP_SPECIAL_UI</description>
+		/// <description>If set, IME has a nonstandard user interface. The application should not draw in the IME window.</description>
+		/// </item>
+		/// <item>
+		/// <description>IME_PROP_CANDLIST_START_FROM_1</description>
+		/// <description>If set, strings in the candidate list are numbered starting at 1. If clear, strings start at zero.</description>
+		/// </item>
+		/// <item>
+		/// <description>IME_PROP_UNICODE</description>
+		/// <description>If set, the IME is viewed as a UnicodeIME. The system and the IME will communicate through the UnicodeIME interface. If clear, IME will use the ANSI interface to communicate with the system.</description>
+		/// </item>
+		/// <item>
+		/// <description>IME_PROP_COMPLETE_ON_UNSELECT</description>
+		/// <description>If set, conversion window is at the caret position. If clear, the window is near caret position.</description>
+		/// </item>
+		/// <item>
+		/// <description>IME_PROP_ACCEPT_WIDE_VKEY</description>
+		/// <description>If set, the IME processes the injected Unicode that came from the <c>SendInput</c> function by using VK_PACKET. If clear, the IME might not process the injected Unicode, and the injected Unicode might be sent to the application directly.</description>
+		/// </item>
+		/// </list>
+		/// <para>If wParam is IGP_UI, it returns one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Requirement</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>UI_CAP_2700</description>
+		/// <description>Supports text escapement values of 0 or 2700. For more information, see <c>lfEscapement</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description>UI_CAP_ROT90</description>
+		/// <description>Supports text escapement values of 0, 900, 1800, or 2700. For more information, see <c>lfEscapement</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description>UI_CAP_ROTANY</description>
+		/// <description>Supports any text escapement value. For more information, see <c>lfEscapement</c>.</description>
+		/// </item>
+		/// </list>
+		/// <para>If wParam is IGP_SETCOMPSTR, it returns one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Requirement</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>SCS_CAP_COMPSTR</description>
+		/// <description>Can create the composition string by calling the <c>ImmSetCompositionString</c> function with the SCS_SETSTR value.</description>
+		/// </item>
+		/// <item>
+		/// <description>SCS_CAP_MAKEREAD</description>
+		/// <description>Can create the reading string from corresponding composition string when using the <c>ImmSetCompositionString</c> function with SCS_SETSTR and without setting <c>lpRead</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description>SCS_CAP_SETRECONVERTSTRING</description>
+		/// <description>This IME can support reconversion. Use <c>ImmSetCompositionString</c> to do the reconversion.</description>
+		/// </item>
+		/// </list>
+		/// <para>If wParam is IGP_SELECT, it returns one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Requirement</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>SELECT_CAP_CONVMODE</description>
+		/// <description>Inherits conversion mode when a new IME is selected.</description>
+		/// </item>
+		/// <item>
+		/// <description>SELECT_CAP_SENTENCE</description>
+		/// <description>Inherits sentence mode when a new IME is selected.</description>
+		/// </item>
+		/// </list>
+		/// <para>If wParam is IGP_GETIMEVERSION, it returns one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Requirement</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>IMEVER_0310</description>
+		/// <description>The IME was created for Windows 3.1.</description>
+		/// </item>
+		/// <item>
+		/// <description>IMEVER_0400</description>
+		/// <description>The IME was created for Windows 95 or later</description>
+		/// </item>
+		/// </list>
+		/// <para>This message is similar to <c>ImmGetProperty</c>, except that it uses the current input locale. The application should call <c>EM_ISIME</c> before calling this function.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getimeproperty
+		EM_GETIMEPROPERTY = WindowMessage.WM_USER + 244,
+		/// <summary>Undocumented</summary>
+		EM_GETQUERYRTFOBJ = WindowMessage.WM_USER + 269,
+		/// <summary>Undocumented</summary>
+		EM_SETQUERYRTFOBJ = WindowMessage.WM_USER + 270,
+		/// <summary>Gets a pointer to the application-defined AutoCorrectProc function.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns a pointer to the application-defined AutoCorrectProc function.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getautocorrectproc
+		EM_GETAUTOCORRECTPROC = WindowMessage.WM_USER + 233,
+		/// <summary>Defines the current autocorrect callback procedure.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The AutoCorrectProc callback function.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If the operation succeeds, the return value is zero. If the operation fails, the return value is a nonzero value.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setautocorrectproc
+		EM_SETAUTOCORRECTPROC = WindowMessage.WM_USER + 234,
+		/// <summary>Calls the autocorrect callback function that is stored by the <c>EM_SETAUTOCORRECTPROC</c> message, provided that the text preceding the insertion point is a candidate for autocorrection.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>A character of type <c>WCHAR</c>. If this character is a tab (U+0009), and the character preceding the insertion point isn t a tab, then the character preceding the insertion point is treated as part of the autocorrect candidate string instead of as a string delimiter; otherwise, wParam has no effect.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is zero if the message succeeds, or nonzero if an error occurs.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-callautocorrectproc
+		EM_CALLAUTOCORRECTPROC = WindowMessage.WM_USER + 255,
+		/// <summary>Retrieves the table parameters for a table row and the cell parameters for the specified number of cells.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>A pointer to a <c>TABLEROWPARMS</c> structure.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to a <c>TABLECELLPARMS</c> structure.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns S_OK if successful, or one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>E_FAIL</c></description>
+		/// <description>Changes cannot be made. This can occur if the control is a plain-text or single-line control, or if the insertion point is inside a math object. It also occurs if tables are disabled if the <c>EM_SETEDITSTYLEEX</c> message sets the <c>SES_EX_NOTABLE</c> value.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_INVALIDARG</c></description>
+		/// <description>The <c>wParam</c> or <c>lParam</c> is NULL or points to an invalid structure. The <c>cbRow</c> member of the <c>TABLEROWPARMS</c> structure must equal <code>sizeof(TABLEROWPARMS)</code> or sizeof(TABLEROWPARMS) 2*sizeof(long). The latter value is the size of the RichEdit 4.1 <c>TABLEROWPARMS</c> structure. The <c>cbCell</c> member of the <c>TABLEROWPARMS</c> structure must equal <code>sizeof(TABLECELLPARMS)</code>. The query character position must be at a table row delimiter.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_OUTOFMEMORY</c></description>
+		/// <description>Insufficient memory is available.</description>
+		/// </item>
+		/// </list>
+		/// <remarks>
+		/// <para>This message gets the table parameters for the row at the character position specified by the <c>cpStartRow</c> member of the <c>TABLEROWPARMS</c> structure, and the number of cells specified by the <c>cCells</c> member of the <c>TABLECELLPARMS</c> structure.</para>
+		/// <para>The character position specified by the <c>cpStartRow</c> member of the <c>TABLEROWPARMS</c> structure should be at the start of the table row, or at the end delimiter of the table row. If <c>cpStartRow</c> is set to 1, the character position is given by the current selection. In this case, position the selection at the end of the row (between the cell mark and the end delimiter of the table row), or select the row.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gettableparms
+		EM_GETTABLEPARMS = WindowMessage.WM_USER + 265,
+		/// <summary>Sets the current extended edit style flags.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Specifies one or more extended edit style flags. For a list of possible values, see <c>EM_GETEDITSTYLEEX</c>.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A mask consisting of one or more of the wParam values. Only the values specified in this mask will be set or cleared. This allows a single flag to be set or cleared without reading the current flag states.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is the state of the extended edit style flags after rich edit has attempted to implement your edit style changes. The edit style flags are a set of flags that indicate the current edit style.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-seteditstyleex
+		EM_SETEDITSTYLEEX = WindowMessage.WM_USER + 275,
+		/// <summary>Retrieves the current extended edit style flags.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns the extended edit style flags, which can include one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SES_EX_HANDLEFRIENDLYURL</c></description>
+		/// <description>Display friendly name links with the same text color and underlining as automatic links, provided that temporary formatting isn t used or uses text autocolor (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EX_MULTITOUCH</c></description>
+		/// <description>Enable touch support in Rich Edit. This includes selection, caret placement, and context-menu invocation. When this flag is not set, touch is emulated by mouse commands, which do not take touch-mode specifics into account (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EX_NOACETATESELECTION</c></description>
+		/// <description>Display selected text using classic Windows selection text and background colors instead of background acetate color (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EX_NOMATH</c></description>
+		/// <description>Disable insertion of math zones (default: 1). To enable math editing and display, send the <c>EM_SETEDITSTYLEEX</c> message with <c>wParam</c> set to 0, and <c>lParam</c> set to <c>SES_EX_NOMATH</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EX_NOTABLE</c></description>
+		/// <description>Disable insertion of tables. The <c>EM_INSERTTABLE</c> message returns <c>E_FAIL</c> and RTF tables are skipped (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EX_USESINGLELINE</c></description>
+		/// <description>Enable a multiline control to act like a single-line control with the ability to scroll vertically when the single-line height is greater than the window height (default: 0).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_HIDETEMPFORMAT</c></description>
+		/// <description>Hide temporary formatting that is created when <c>ITextFont.Reset</c> is called with <c>tomApplyTmp</c>. For example, such formatting is used by spell checkers to display a squiggly underline under possibly misspelled words.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SES_EX_USEMOUSEWPARAM</c></description>
+		/// <description>Use <c>wParam</c> when handling the <c>WM_MOUSEMOVE</c> message and do not call <c>GetAsyncKeyState</c>.</description>
+		/// </item>
+		/// </list>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-geteditstyleex
+		EM_GETEDITSTYLEEX = WindowMessage.WM_USER + 276,
+		/// <summary>Gets the story type.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The story index.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Reserved; must be 0.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns the story type, which can be a client-defined custom value, or one of the following values:</para>
+		/// <list />
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getstorytype
+		EM_GETSTORYTYPE = WindowMessage.WM_USER + 290,
+		/// <summary>Sets the story type.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The story index.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>The new story type. For a list of story types, see <c>EM_GETSTORYTYPE</c>.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The story type that was set.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setstorytype
+		EM_SETSTORYTYPE = WindowMessage.WM_USER + 291,
+		/// <summary>Retrieves the current ellipsis mode. When enabled, an ellipsis ( ) is displayed for text that doesn t fit in the display window. The ellipsis is only used when the control is not active. When active, scroll bars are used to reveal text that doesn t fit into the display window.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to a DWORD which receives one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>ELLIPSIS_NONE</c></description>
+		/// <description>No ellipsis is used.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ELLIPSIS_END</c></description>
+		/// <description>Ellipsis at the end (forced break).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ELLIPSIS_WORD</c></description>
+		/// <description>Ellipsis at the end (word break).</description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If wparam is 0 and lparam is not NULL, the return value equals TRUE; otherwise, the return value equals FALSE.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getellipsismode
+		EM_GETELLIPSISMODE = WindowMessage.WM_USER + 305,
+		/// <summary>This message sets the current ellipsis mode. When enabled, an ellipsis ( ) is displayed for text that doesn t fit in the display window. The ellipsis is only used when the control isn t active. When active, scroll bars are used to reveal text that doesn t fit into the display window.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A DWORD which receives one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>ELLIPSIS_NONE</c></description>
+		/// <description>No ellipsis is used.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ELLIPSIS_END</c></description>
+		/// <description>Ellipsis at the end (forced break).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>ELLIPSIS_WORD</c></description>
+		/// <description>Ellipsis at the end (word break).</description>
+		/// </item>
+		/// </list>
+		/// <para>The bits for these values all fit in the <c>ELLIPSIS_MASK</c>.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>If wparam is 0 and lparam is one of the values in the table above, the return value equals TRUE; otherwise, the return value equals FALSE.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setellipsismode
+		EM_SETELLIPSISMODE = WindowMessage.WM_USER + 306,
+		/// <summary>Changes the parameters of rows in a table.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>A pointer to a <c>TABLEROWPARMS</c> structure.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to a <c>TABLECELLPARMS</c> structure.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns S_OK if successful, or one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>E_FAIL</c></description>
+		/// <description>Changes cannot be made. This can occur if the control is a plain-text or single-line control, or if the insertion point is inside a math object. It also occurs if tables are disabled, or if the <c>EM_SETEDITSTYLEEX</c> message sets the <c>SES_EX_NOTABLE</c> value.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_INVALIDARG</c></description>
+		/// <description>The <c>wParam</c> or <c>lParam</c> is NULL or points to an invalid structure. The <c>cCell</c> member of the <c>TABLEROWPARMS</c> structure must be at least 1 and not more than 63. The <c>cbRow</c> member must equal <code>sizeof(TABLEROWPARMS)</code> or <code>sizeof(TABLEROWPARMS) 2*sizeof(long)</code>. The latter value is the size of the RichEdit 4.1 <c>TABLEROWPARMS</c> structure. The <c>cbCell</c> member of <c>TABLEROWPARMS</c> must equal <code>sizeof(TABLECELLPARMS)</code>. The insertion point must be at the start of a table or inside a table row, and the number of cells can only change by one.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_OUTOFMEMORY</c></description>
+		/// <description>Insufficient memory is available.</description>
+		/// </item>
+		/// </list>
+		/// <remarks>This message changes the parameters of the number of rows specified by the <c>cRow</c> member of the <c>TABLEROWPARMS</c> structure, if the table has that many consecutive rows. If <c>cRow</c> is less than 0, the message iterates until the end of the table. If the new cell count differs from the current cell count by +1 or 1, it inserts or deletes the cell at the index specified by the <c>iCell</c> member of <c>TABLEROWPARMS</c>. The starting table row is identified by a character position. This position is specified by <c>cpStartRow</c> members with values that are greater than or equal to zero. The position should be inside the table row, but not inside a nested table, unless you want to change that table s parameters. If the <c>cpStartRow</c> member is 1, the character position is given by the current selection. For this, position the selection anywhere inside the table row, or select the row with the active end of the selection at the end of the table row.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-settableparms
+		EM_SETTABLEPARMS = WindowMessage.WM_USER + 307,
+		/// <summary>Retrieves the touch options that are associated with a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The touch options to retrieve. It can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>RTO_SHOWHANDLES</c></description>
+		/// <description>Retrieves whether the touch grippers are visible.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>RTO_DISABLEHANDLES</c></description>
+		/// <description>Retrieving this flag is not implemented.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns the value of the option specified by the wParam parameter. It is nonzero if wParam is <c>RTO_SHOWHANDLES</c> and the touch grippers are visible; zero, otherwise.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-gettouchoptions
+		EM_GETTOUCHOPTIONS = WindowMessage.WM_USER + 310,
+		/// <summary>Sets the touch options associated with a rich edit control.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>The touch option to set. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>RTO_SHOWHANDLES</c></description>
+		/// <description>Show or hide the touch gripper handles, depending on the value of <c>lParam</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>RTO_DISABLEHANDLES</c></description>
+		/// <description>Enable or disable the touch gripper handles, depending on the value of <c>lParam</c>. When handles are disabled, they are hidden if they are visible and remain hidden until an <c>EM_SETTOUCHOPTIONS</c> message changes their status.</description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Set to <c>TRUE</c> to show/enable the touch selection handles, or <c>FALSE</c> to hide/disable the touch selection handles.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>This message returns zero.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-settouchoptions
+		EM_SETTOUCHOPTIONS = WindowMessage.WM_USER + 311,
+		/// <summary>Replaces the selection with a blob that displays an image.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to a <c>RICHEDIT_IMAGE_PARAMETERS</c> structure that contains the image blob.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>Returns S_OK if successful, or one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>E_FAIL</c></description>
+		/// <description>Cannot insert the image.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_INVALIDARG</c></description>
+		/// <description>The <c>lParam</c> parameter is NULL or points to an invalid image.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_OUTOFMEMORY</c></description>
+		/// <description>Insufficient memory is available.</description>
+		/// </item>
+		/// </list>
+		/// <remarks>If the selection is an insertion point, the image blob is inserted at the insertion point.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-insertimage
+		EM_INSERTIMAGE = WindowMessage.WM_USER + 314,
+		/// <summary>Sets the name of a rich edit control for UI Automation (UIA).</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>A pointer to the null-terminated name string.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>TRUE if the name for UIA is successfully set, otherwise FALSE.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setuianame
+		EM_SETUIANAME = WindowMessage.WM_USER + 320,
+		/// <summary>Retrieves the current ellipsis state.</summary>
+		/// <para>
+		/// <strong>Parameters</strong>
+		/// </para>
+		/// <para><em>wParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used; must be zero.</para>
+		/// <para>
+		/// <strong>Returns</strong>
+		/// </para>
+		/// <para>The return value is TRUE if an ellipsis is being displayed and FALSE otherwise.</para>
+		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getellipsisstate
+		EM_GETELLIPSISSTATE = WindowMessage.WM_USER + 322,
+	}
+
+	/// <summary>Notification codes sent by a rich edit control to its parent window. These are in addition to the standard notification codes.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/controls/bumper-rich-edit-control-reference-notifications
+	[PInvokeData("richedit.h")]
+	public enum RichEditNotification
+	{
+		EN_MSGFILTER			= 0x0700,
+		EN_REQUESTRESIZE		= 0x0701,
+		EN_SELCHANGE			= 0x0702,
+		EN_DROPFILES			= 0x0703,
+		EN_PROTECTED			= 0x0704,
+		EN_CORRECTTEXT			= 0x0705,
+		EN_STOPNOUNDO			= 0x0706,
+		EN_IMECHANGE			= 0x0707,
+		EN_SAVECLIPBOARD		= 0x0708,
+		EN_OLEOPFAILED			= 0x0709,
+		EN_OBJECTPOSITIONS		= 0x070a,
+		EN_LINK 				= 0x070b,
+		EN_DRAGDROPDONE 		= 0x070c,
+		EN_PARAGRAPHEXPANDED	= 0x070d,
+		EN_PAGECHANGE			= 0x070e,
+		EN_LOWFIRTF 			= 0x070f,
+		EN_ALIGNLTR 			= 0x0710,
+		EN_ALIGNRTL 			= 0x0711,
+		EN_CLIPFORMAT			= 0x0712,
+		EN_STARTCOMPOSITION		= 0x0713,
+		EN_ENDCOMPOSITION		= 0x0714,
+	}
+
 	/// <summary>Styles for the rich edit control.</summary>
 	[PInvokeData("Winuser.h", MSDNShortId = "edit_control_constants")]
 	[Flags]
@@ -1342,6 +4494,17 @@ public static partial class MsftEdit
 	[DllImport(Lib_Riched20, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool REExtendedRegisterClass();
+
+	/// <summary>Retrives a related <see cref="IRichEditOle"/> instance from a Rich Edit control by sending a EM_GETOLEINTERFACE message.</summary>
+	/// <param name="hRichEditWnd">The rich edit control window handle.</param>
+	/// <returns>The <see cref="IRichEditOle"/> instance.</returns>
+	public static IRichEditOle RichEdit_GetOleInterface(HWND hRichEditWnd)
+	{
+		IntPtr ptr = IntPtr.Zero;
+		if (IntPtr.Zero == SendMessage(hRichEditWnd, RichEditMessage.EM_GETOLEINTERFACE, default, ref ptr))
+			Win32Error.ThrowLastError();
+		return (IRichEditOle)Marshal.GetObjectForIUnknown(ptr);
+	}
 
 	/// <summary>
 	/// Contains bidirectional information about a rich edit control. This structure is used by the EM_GETBIDIOPTIONS and EM_SETBIDIOPTIONS
