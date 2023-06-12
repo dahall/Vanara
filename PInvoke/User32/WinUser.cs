@@ -47,6 +47,123 @@ public static partial class User32
 		AR_LAPTOP = 0x80,
 	}
 
+	/// <summary>
+	/// A set of bit flags that you can use to initialize the dialog box. The dialog box sets these flags when it sends the
+	/// FINDMSGSTRING registered message to indicate the user's input.
+	/// </summary>
+	[PInvokeData("commdlg.h", MSDNShortId = "NS:commdlg.tagFINDREPLACEA")]
+	[Flags]
+	public enum FR : uint
+	{
+		/// <summary>
+		/// If set in a FINDMSGSTRING message, indicates that the dialog box is closing. When you receive a message with this flag set,
+		/// the dialog box handle returned by the FindText or ReplaceText function is no longer valid.
+		/// </summary>
+		FR_DIALOGTERM = 0x00000040,
+
+		/// <summary>
+		/// If set, the Down button of the direction radio buttons in a Find dialog box is selected indicating that you should search
+		/// from the current location to the end of the document. If not set, the Up button is selected so you should search to the
+		/// beginning of the document. You can set this flag to initialize the dialog box. If set in a FINDMSGSTRING message, indicates
+		/// the user's selection.
+		/// </summary>
+		FR_DOWN = 0x00000001,
+
+		/// <summary>
+		/// Enables the hook function specified in the lpfnHook member. This flag is used only to initialize the dialog box.
+		/// </summary>
+		FR_ENABLEHOOK = 0x00000100,
+
+		/// <summary>
+		/// Indicates that the hInstance and lpTemplateName members specify a dialog box template to use in place of the default
+		/// template. This flag is used only to initialize the dialog box.
+		/// </summary>
+		FR_ENABLETEMPLATE = 0x00000200,
+
+		/// <summary>
+		/// Indicates that the hInstance member identifies a data block that contains a preloaded dialog box template. The system
+		/// ignores the lpTemplateName member if this flag is specified.
+		/// </summary>
+		FR_ENABLETEMPLATEHANDLE = 0x00002000,
+
+		/// <summary>
+		/// If set in a FINDMSGSTRING message, indicates that the user clicked the Find Next button in a Find or Replace dialog box. The
+		/// lpstrFindWhat member specifies the string to search for.
+		/// </summary>
+		FR_FINDNEXT = 0x00000008,
+
+		/// <summary>If set when initializing a Find dialog box, hides the search direction radio buttons.</summary>
+		FR_HIDEUPDOWN = 0x00004000,
+
+		/// <summary>If set when initializing a Find or Replace dialog box, hides the Match Case check box.</summary>
+		FR_HIDEMATCHCASE = 0x00008000,
+
+		/// <summary>If set when initializing a Find or Replace dialog box, hides the Match Whole Word Only check box.</summary>
+		FR_HIDEWHOLEWORD = 0x00010000,
+
+		/// <summary>
+		/// If set, the Match Case check box is selected indicating that the search should be case-sensitive. If not set, the check box
+		/// is unselected so the search should be case-insensitive. You can set this flag to initialize the dialog box. If set in a
+		/// FINDMSGSTRING message, indicates the user's selection.
+		/// </summary>
+		FR_MATCHCASE = 0x00000004,
+
+		/// <summary>If set when initializing a Find or Replace dialog box, disables the Match Case check box.</summary>
+		FR_NOMATCHCASE = 0x00000800,
+
+		/// <summary>If set when initializing a Find dialog box, disables the search direction radio buttons.</summary>
+		FR_NOUPDOWN = 0x00000400,
+
+		/// <summary>If set when initializing a Find or Replace dialog box, disables the Whole Word check box.</summary>
+		FR_NOWHOLEWORD = 0x00001000,
+
+		/// <summary>
+		/// If set in a FINDMSGSTRING message, indicates that the user clicked the Replace button in a Replace dialog box. The
+		/// lpstrFindWhat member specifies the string to be replaced and the lpstrReplaceWith member specifies the replacement string.
+		/// </summary>
+		FR_REPLACE = 0x00000010,
+
+		/// <summary>
+		/// If set in a FINDMSGSTRING message, indicates that the user clicked the Replace All button in a Replace dialog box. The
+		/// lpstrFindWhat member specifies the string to be replaced and the lpstrReplaceWith member specifies the replacement string.
+		/// </summary>
+		FR_REPLACEALL = 0x00000020,
+
+		/// <summary>
+		/// Causes the dialog box to display the Help button. The hwndOwner member must specify the window to receive the HELPMSGSTRING
+		/// registered messages that the dialog box sends when the user clicks the Help button.
+		/// </summary>
+		FR_SHOWHELP = 0x00000080,
+
+		/// <summary>
+		/// If set, the Match Whole Word Only check box is selected indicating that you should search only for whole words that match
+		/// the search string. If not set, the check box is unselected so you should also search for word fragments that match the
+		/// search string. You can set this flag to initialize the dialog box. If set in a FINDMSGSTRING message, indicates the user's selection.
+		/// </summary>
+		FR_WHOLEWORD = 0x00000002,
+
+		/// <summary/>
+		FR_RAW = 0x00020000,
+
+		/// <summary/>
+		FR_SHOWWRAPAROUND = 0x00040000,
+
+		/// <summary/>
+		FR_NOWRAPAROUND = 0x00080000,
+
+		/// <summary/>
+		FR_WRAPAROUND = 0x00100000,
+
+		/// <summary/>
+		FR_MATCHDIAC = 0x20000000,
+
+		/// <summary/>
+		FR_MATCHKASHIDA = 0x40000000,
+
+		/// <summary/>
+		FR_MATCHALEFHAMZA = 0x80000000,
+	}
+
 	/// <summary>Defines constants that indicate whether a window is registered or unregistered to receive tooltip dismiss notifications.</summary>
 	/// <remarks>This enumeration is used by the RegisterForTooltipDismissNotification function.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ne-winuser-tooltip_dismiss_flags

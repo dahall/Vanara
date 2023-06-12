@@ -215,7 +215,7 @@ public static partial class Kernel32
 		public unsafe struct NVDIMM_NStruct
 		{
 			public byte CriticalHealth;
-			public byte ModuleHealth[2];
+			public fixed byte ModuleHealth[2];
 			public byte ErrorThresholdStatus;
 		}
 
