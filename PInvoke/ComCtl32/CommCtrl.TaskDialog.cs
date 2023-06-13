@@ -246,6 +246,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-navigate-page
+		[MsgParams(null, typeof(TASKDIALOGCONFIG), LResultType = null)]
 		TDM_NAVIGATE_PAGE = WindowMessage.WM_USER + 101,
 
 		/// <summary>Simulates the action of a button click in a task dialog.
@@ -263,6 +264,7 @@ public static partial class ComCtl32
 		/// from the callback function. If S_FALSE was returned from the callback function, the task dialog remains active.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-click-button
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TDM_CLICK_BUTTON = WindowMessage.WM_USER + 102, // wParam = Button ID
 
 		/// <summary>Indicates whether the hosted progress bar of a task dialog should be displayed in marquee mode.
@@ -279,6 +281,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>For information on marquee mode, see Progress Bar Control.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-marquee-progress-bar
+		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		TDM_SET_MARQUEE_PROGRESS_BAR = WindowMessage.WM_USER + 103, // wParam = 0 (nonMarque) wParam != 0 (Marquee)
 
 		/// <summary>Sets the state of the progress bar in a task dialog.
@@ -310,6 +313,7 @@ public static partial class ComCtl32
 		/// <para>If the function fails, the return value is zero. To get extended error information call GetLastError.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-state
+		[MsgParams(typeof(ProgressState), null, LResultType = typeof(int))]
 		TDM_SET_PROGRESS_BAR_STATE = WindowMessage.WM_USER + 104, // wParam = new progress state
 
 		/// <summary>Sets the minimum and maximum values for the progress bar in a task dialog.
@@ -328,6 +332,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-range
+		[MsgParams(null, typeof(uint), LResultType = typeof(uint))]
 		TDM_SET_PROGRESS_BAR_RANGE = WindowMessage.WM_USER + 105, // lParam = MAKELPARAM(nMinRange, nMaxRange)
 
 		/// <summary>Sets the position of the progress bar in a task dialog.
@@ -340,6 +345,7 @@ public static partial class ComCtl32
 		/// <para>Returns the previous position.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-pos
+		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		TDM_SET_PROGRESS_BAR_POS = WindowMessage.WM_USER + 106, // wParam = new position
 
 		/// <summary>Starts and stops the marquee display of the progress bar in a task dialog, and sets the speed of the marquee.
@@ -359,6 +365,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>For information on marquee mode, see Progress Bar Control.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-marquee
+		[MsgParams(typeof(BOOL), typeof(uint), LResultType = null)]
 		TDM_SET_PROGRESS_BAR_MARQUEE = WindowMessage.WM_USER + 107, // wParam = 0 (stop marquee), wParam != 0 (start marquee), lparam = speed (milliseconds between repaints)
 
 		/// <summary>Updates a text element in a task dialog.
@@ -396,6 +403,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The size or layout of the task dialog may change to accommodate the new text.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-element-text
+		[MsgParams(typeof(TASKDIALOG_ELEMENTS), typeof(string), LResultType = null)]
 		TDM_SET_ELEMENT_TEXT = WindowMessage.WM_USER + 108, // wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)
 
 		/// <summary>Simulates the action of a radio button click in a task dialog.
@@ -412,6 +420,7 @@ public static partial class ComCtl32
 		/// TDN_RADIO_BUTTON_CLICKED notification code. After the callback function returns, the radio button will be selected.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-click-radio-button
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TDM_CLICK_RADIO_BUTTON = WindowMessage.WM_USER + 110, // wParam = Radio Button ID
 
 		/// <summary>Enables or disables a push button in a task dialog.
@@ -424,6 +433,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-enable-button
+		[MsgParams(typeof(int), typeof(BOOL), LResultType = null)]
 		TDM_ENABLE_BUTTON = WindowMessage.WM_USER + 111, // lParam = 0 (disable), lParam != 0 (enable), wParam = Button ID
 
 		/// <summary>Enables or disables a radio button in a task dialog.
@@ -436,6 +446,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-enable-radio-button
+		[MsgParams(typeof(int), typeof(BOOL), LResultType = null)]
 		TDM_ENABLE_RADIO_BUTTON = WindowMessage.WM_USER + 112, // lParam = 0 (disable), lParam != 0 (enable), wParam = Radio Button ID
 
 		/// <summary>Simulates a click of the verification checkbox of a task dialog, if it exists.
@@ -448,6 +459,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-click-verification
+		[MsgParams(typeof(BOOL), typeof(BOOL), LResultType = null)]
 		TDM_CLICK_VERIFICATION = WindowMessage.WM_USER + 113, // wParam = 0 (unchecked), 1 (checked), lParam = 1 (set key focus)
 
 		/// <summary>Updates a text element in a task dialog.
@@ -496,6 +508,7 @@ public static partial class ComCtl32
 		/// <para>The above also applies to the footer and TDE_FOOTER.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-update-element-text
+		[MsgParams(typeof(TASKDIALOG_ELEMENTS), typeof(string), LResultType = null)]
 		TDM_UPDATE_ELEMENT_TEXT = WindowMessage.WM_USER + 114, // wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)
 
 		/// <summary>
@@ -513,6 +526,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-button-elevation-required-state
+		[MsgParams(typeof(int), typeof(BOOL), LResultType = null)]
 		TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE = WindowMessage.WM_USER + 115, // wParam = Button ID, lParam = 0 (elevation not required), lParam != 0 (elevation required)
 
 		/// <summary>Refreshes the icon of a task dialog.
@@ -595,6 +609,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-update-icon
+		[MsgParams(typeof(TASKDIALOG_ICON_ELEMENTS), typeof(IntPtr), LResultType = null)]
 		TDM_UPDATE_ICON = WindowMessage.WM_USER + 116 // wParam = icon element (TASKDIALOG_ICON_ELEMENTS), lParam = new icon (hIcon if TDF_USE_HICON_* was set, PCWSTR otherwise)
 	}
 
@@ -619,6 +634,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-created
+		[MsgParams(LResultType = null)]
 		TDN_CREATED = 0,
 
 		/// <summary>
@@ -638,6 +654,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-navigated
+		[MsgParams(LResultType = null)]
 		TDN_NAVIGATED = 1,
 
 		/// <summary>
@@ -660,6 +677,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-button-clicked
+		[MsgParams(typeof(int), null, LResultType = typeof(HRESULT))]
 		TDN_BUTTON_CLICKED = 2,
 
 		/// <summary>
@@ -679,6 +697,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-hyperlink-clicked
+		[MsgParams(null, typeof(string), LResultType = null)]
 		TDN_HYPERLINK_CLICKED = 3,
 
 		/// <summary>
@@ -702,6 +721,7 @@ public static partial class ComCtl32
 		/// <para>To reset the tickcount, the application must return <c>S_FALSE</c>, otherwise the tickcount will continue to increment.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-timer
+		[MsgParams(typeof(uint), null, LResultType = typeof(HRESULT))]
 		TDN_TIMER = 4,
 
 		/// <summary>
@@ -721,6 +741,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-destroyed
+		[MsgParams(null, null, LResultType = null)]
 		TDN_DESTROYED = 5,
 
 		/// <summary>
@@ -740,6 +761,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-radio-button-clicked
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TDN_RADIO_BUTTON_CLICKED = 6,
 
 		/// <summary>
@@ -759,6 +781,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-dialog-constructed
+		[MsgParams(null, null, LResultType = null)]
 		TDN_DIALOG_CONSTRUCTED = 7,
 
 		/// <summary>
@@ -781,6 +804,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-verification-clicked
+		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		TDN_VERIFICATION_CLICKED = 8,
 
 		/// <summary>
@@ -800,6 +824,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-help
+		[MsgParams(null, null, LResultType = null)]
 		TDN_HELP = 9,
 
 		/// <summary>
@@ -823,6 +848,7 @@ public static partial class ComCtl32
 		/// must be zero.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-expando-button-clicked
+		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		TDN_EXPANDO_BUTTON_CLICKED = 10
 	}
 

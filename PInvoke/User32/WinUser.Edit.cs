@@ -207,7 +207,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the starting and ending character positions (in <c>TCHAR</c> s) of the current selection in an edit control. You can send
 		/// this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A pointer to a <c>DWORD</c> value that receives the starting position of the selection. This parameter can be <c>NULL</c>.</para>
@@ -223,6 +222,7 @@ public static partial class User32
 		/// return value is -1.
 		/// </para>
 		/// <para>It is better to use the values returned in wParam and lParam because they are full 32-bit values.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>If there is no selection, the starting and ending values are both the position of the caret.</para>
 		/// <para>
@@ -240,7 +240,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Selects a range of characters in an edit control. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The starting character position of the selection.</para>
@@ -248,6 +247,7 @@ public static partial class User32
 		/// <para>The ending character position of the selection.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The start value can be greater than the end value. The lower of the two values specifies the character position of the first
@@ -280,7 +280,6 @@ public static partial class User32
 		/// Gets the formatting rectangle of an edit control. The formatting rectangle is the limiting rectangle into which the control draws
 		/// the text. The limiting rectangle is independent of the size of the edit-control window. You can send this message to either an
 		/// edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -288,6 +287,7 @@ public static partial class User32
 		/// <para>A pointer to a <c>RECT</c> structure that receives the formatting rectangle.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is not meaningful.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// You can modify the formatting rectangle of a multiline edit control by using the <c>EM_SETRECT</c> and <c>EM_SETRECTNP</c> messages.
@@ -314,7 +314,6 @@ public static partial class User32
 		/// <para>
 		/// This message is processed only by multiline edit controls. You can send this message to either an edit control or a rich edit control.
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -330,6 +329,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Setting lParam to <c>NULL</c> has no effect if a touch device is installed, or if <c>EM_SETRECT</c> is sent from a thread that
@@ -375,7 +375,6 @@ public static partial class User32
 		/// <para>
 		/// This message is processed only by multiline edit controls. You can send this message to either an edit control or a rich edit control.
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -391,6 +390,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <c>Rich Edit:</c> Supported in Microsoft Rich Edit 3.0 and later. For information about the compatibility of rich edit versions
 		/// with the various system versions, see About Rich Edit Controls.
@@ -402,7 +402,6 @@ public static partial class User32
 		/// <summary>
 		/// Scrolls the text vertically in a multiline edit control. This message is equivalent to sending a <c>WM_VSCROLL</c> message to the
 		/// edit control. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The action the scroll bar is to take. This parameter can be one of the following values.</para>
@@ -436,6 +435,7 @@ public static partial class User32
 		/// that the command scrolls. The number returned may not be the same as the actual number of lines scrolled if the scrolling moves
 		/// to the beginning or the end of the text. If the wParam parameter specifies an invalid value, the return value is <c>FALSE</c>.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// To scroll to a specific line or character position, use the <c>EM_LINESCROLL</c> message. To scroll the caret into view, use the
@@ -450,7 +450,8 @@ public static partial class User32
 		[MsgParams(typeof(SBCMD), null, LResultType = typeof(uint))]
 		EM_SCROLL = 0x00B5,
 
-		/// <summary>Scrolls the text in a multiline edit control.</summary>
+		/// <summary>
+		/// Scrolls the text in a multiline edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para><c>Edit controls:</c> The number of characters to scroll horizontally.</para>
@@ -460,6 +461,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message is sent to a multiline edit control, the return value is <c>TRUE</c>.</para>
 		/// <para>If the message is sent to a single-line edit control, the return value is <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The control does not scroll vertically past the last line of text in the edit control. If the current line plus the number of
@@ -482,7 +484,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Scrolls the caret into view in an edit control. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is reserved. It should be set to zero.</para>
@@ -490,6 +491,7 @@ public static partial class User32
 		/// <para>This parameter is reserved. It should be set to zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is not meaningful.</para>
+		/// </summary>
 		/// <remarks>
 		/// <c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions
 		/// with the various system versions, see About Rich Edit Controls.
@@ -501,7 +503,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the state of an edit control's modification flag. The flag indicates whether the contents of the edit control have been
 		/// modified. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -509,6 +510,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the contents of edit control have been modified, the return value is nonzero; otherwise, it is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The system automatically clears the modification flag to zero when the control is created. If the user changes the control's
@@ -526,7 +528,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets or clears the modification flag for an edit control. The modification flag indicates whether the text within the edit
 		/// control has been modified. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -537,6 +538,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The system automatically clears the modification flag to zero when the control is created. If the user changes the control's
@@ -558,7 +560,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Gets the number of lines in a multiline edit control. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -569,6 +570,7 @@ public static partial class User32
 		/// The return value is an integer specifying the total number of text lines in the multiline edit control or rich edit control. If
 		/// the control has no text, the return value is 1. The return value will never be less than 1.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>EM_GETLINECOUNT</c> message retrieves the total number of text lines, not just the number of lines that are currently visible.
@@ -587,7 +589,6 @@ public static partial class User32
 		/// Gets the character index of the first character of a specified line in a multiline edit control. A character index is the
 		/// zero-based index of the character from the beginning of the edit control. You can send this message to either an edit control or
 		/// a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based line number. A value of -1 specifies the current line number (the line that contains the caret).</para>
@@ -598,6 +599,7 @@ public static partial class User32
 		/// The return value is the character index of the line specified in the wParam parameter, or it is -1 if the specified line number
 		/// is greater than the number of lines in the edit control.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions
 		/// with the various system versions, see About Rich Edit Controls.
@@ -606,7 +608,8 @@ public static partial class User32
 		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		EM_LINEINDEX = 0x00BB,
 
-		/// <summary>Sets the handle of the memory that will be used by a multiline edit control.</summary>
+		/// <summary>
+		/// Sets the handle of the memory that will be used by a multiline edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -617,6 +620,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Before an application sets a new memory handle, it should send an <c>EM_GETHANDLE</c> message to retrieve the handle of the
@@ -638,7 +642,8 @@ public static partial class User32
 		[MsgParams(typeof(Kernel32.HLOCAL), null, LResultType = null)]
 		EM_SETHANDLE = 0x00BC,
 
-		/// <summary>Gets a handle of the memory currently allocated for a multiline edit control's text.</summary>
+		/// <summary>
+		/// Gets a handle of the memory currently allocated for a multiline edit control's text.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -649,6 +654,7 @@ public static partial class User32
 		/// The return value is a memory handle identifying the buffer that holds the content of the edit control. If an error occurs, such
 		/// as sending the message to a single-line edit control, the return value is zero.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the function succeeds, the application can access the contents of the edit control by casting the return value to
@@ -680,7 +686,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the position of the scroll box (thumb) in the vertical scroll bar of a multiline edit control. You can send this message to
 		/// either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -688,6 +693,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the position of the scroll box.</para>
+		/// </summary>
 		/// <remarks>
 		/// <c>Rich Edit:</c> Supported in Microsoft Rich Edit 2.0 and later. For information about the compatibility of rich edit versions
 		/// with the various system versions, see About Rich Edit Controls.
@@ -699,7 +705,6 @@ public static partial class User32
 		/// <summary>
 		/// Retrieves the length, in characters, of a line in an edit control. You can send this message to either an edit control or a rich
 		/// edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -721,6 +726,7 @@ public static partial class User32
 		/// </para>
 		/// <para>For single-line edit controls, the return value is the length, in <c>TCHAR</c> s, of the text in the edit control.</para>
 		/// <para>If wParam is greater than the number of characters in the control, the return value is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the <c>EM_LINEINDEX</c> message to retrieve a character index for a given line number within a multiline edit control.</para>
 		/// <para>
@@ -732,7 +738,8 @@ public static partial class User32
 		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		EM_LINELENGTH = 0x00C1,
 
-		/// <summary>Replaces the selected text in an edit control or a rich edit control with the specified text.</summary>
+		/// <summary>
+		/// Replaces the selected text in an edit control or a rich edit control with the specified text.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -743,6 +750,7 @@ public static partial class User32
 		/// <para>A pointer to a null-terminated string containing the replacement text.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Use the <c>EM_REPLACESEL</c> message to replace only a portion of the text in an edit control. To replace all of the text, use
@@ -765,7 +773,6 @@ public static partial class User32
 		/// <summary>
 		/// Copies a line of text from an edit control and places it in a specified buffer. You can send this message to either an edit
 		/// control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -783,6 +790,7 @@ public static partial class User32
 		/// The return value is the number of <c>TCHAR</c> s copied. The return value is zero if the line number specified by the wParam
 		/// parameter is greater than the number of lines in the edit control.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para><c>Edit controls:</c> The copied line does not contain a terminating null character.</para>
 		/// <para>
@@ -801,7 +809,6 @@ public static partial class User32
 		/// into the edit control. You can send this message to either an edit control or a rich edit control.
 		/// </para>
 		/// <para>For edit controls and Microsoft Rich Edit 1.0, bytes are used. For Microsoft Rich Edit 2.0 and later, characters are used.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -816,6 +823,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>EM_LIMITTEXT</c> message limits only the text the user can enter. It does not affect any text already in the edit control
@@ -843,7 +851,6 @@ public static partial class User32
 		/// <summary>
 		/// Determines whether there are any actions in an edit control's undo queue. You can send this message to either an edit control or
 		/// a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -852,6 +859,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If there are actions in the control's undo queue, the return value is nonzero.</para>
 		/// <para>If the undo queue is empty, the return value is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>If the undo queue is not empty, you can send the <c>EM_UNDO</c> message to the control to undo the most recent operation.</para>
 		/// <para><c>Edit controls and Rich Edit 1.0:</c> The undo queue contains only the most recent operation.</para>
@@ -868,7 +876,6 @@ public static partial class User32
 		/// <summary>
 		/// This message undoes the last edit control operation in the control's undo queue. You can send this message to either an edit
 		/// control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -880,6 +887,7 @@ public static partial class User32
 		/// For a multiline edit control, the return value is <c>TRUE</c> if the undo operation is successful, or <c>FALSE</c> if the undo
 		/// operation fails.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>Edit controls and Rich Edit 1.0:</c> An undo operation can also be undone. For example, you can restore deleted text with the
@@ -902,7 +910,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets a flag that determines whether a multiline edit control includes soft line-break characters. A soft line break consists of
 		/// two carriage returns and a line feed and is inserted at the end of a line that is broken because of wordwrapping.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -913,6 +920,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is identical to the wParam parameter.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message affects only the buffer returned by the <c>EM_GETHANDLE</c> message and the text returned by the <c>WM_GETTEXT</c>
@@ -936,7 +944,6 @@ public static partial class User32
 		/// Gets the index of the line that contains the specified character index in a multiline edit control. A character index is the
 		/// zero-based index of the character from the beginning of the edit control. You can send this message to either an edit control or
 		/// a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -948,6 +955,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the zero-based line number of the line containing the character index specified by wParam.</para>
+		/// </summary>
 		/// <remarks>
 		/// <c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. If the character index is greater than 64,000, use the
 		/// <c>EM_EXLINEFROMCHAR</c> message. For information about the compatibility of rich edit versions with the various system versions,
@@ -965,7 +973,6 @@ public static partial class User32
 		/// <para>
 		/// This message is processed only by multiline edit controls. You can send this message to either an edit control or a rich edit control.
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -981,6 +988,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If all the tabs are set, the return value is <c>TRUE</c>.</para>
 		/// <para>If all the tabs are not set, the return value is <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>EM_SETTABSTOPS</c> message does not automatically redraw the edit control window. If the application is changing the tab
@@ -1003,7 +1011,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets or removes the password character for an edit control. When a password character is set, that character is displayed in
 		/// place of the characters typed by the user. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1014,6 +1021,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When an edit control receives the <c>EM_SETPASSWORDCHAR</c> message, the control redraws all visible characters using the
@@ -1039,7 +1047,6 @@ public static partial class User32
 		/// <summary>
 		/// Resets the undo flag of an edit control. The undo flag is set whenever an operation within the edit control can be undone. You
 		/// can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1047,6 +1054,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The undo flag is automatically reset whenever the edit control receives a <c>WM_SETTEXT</c> or <c>EM_SETHANDLE</c> message.</para>
 		/// <para><c>Edit controls and Rich Edit 1.0:</c> The control can only undo or redo the most recent operation.</para>
@@ -1066,7 +1074,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the zero-based index of the uppermost visible line in a multiline edit control. You can send this message to either an edit
 		/// control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1076,6 +1083,7 @@ public static partial class User32
 		/// <para>The return value is the zero-based index of the uppermost visible line in a multiline edit control.</para>
 		/// <para><c>Edit controls:</c> For single-line edit controls, the return value is the zero-based index of the first visible character.</para>
 		/// <para><c>Rich edit controls:</c> For single-line rich edit controls, the return value is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The number of lines and the length of the lines in an edit control depend on the width of the control and the current Wordwrap setting.
@@ -1092,7 +1100,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets or removes the read-only style ( <c>ES_READONLY</c>) of an edit control. You can send this message to either an edit control
 		/// or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1104,6 +1111,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the operation succeeds, the return value is nonzero.</para>
 		/// <para>If the operation fails, the return value is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>When an edit control has the <c>ES_READONLY</c> style, the user cannot change the text within the edit control.</para>
 		/// <para>
@@ -1121,7 +1129,6 @@ public static partial class User32
 		/// <summary>
 		/// Replaces an edit control's default Wordwrap function with an application-defined Wordwrap function. You can send this message to
 		/// either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1132,6 +1139,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A Wordwrap function scans a text buffer that contains text to be sent to the screen, looking for the first word that does not fit
@@ -1155,7 +1163,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Gets the address of the current Wordwrap function. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1166,6 +1173,7 @@ public static partial class User32
 		/// The return value specifies the address of the application-defined Wordwrap function. The return value is <c>NULL</c> if no
 		/// Wordwrap function exists.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A Wordwrap function scans a text buffer that contains text to be sent to the display, looking for the first word that does not
@@ -1185,7 +1193,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the password character that an edit control displays when the user enters text. You can send this message to either an edit
 		/// control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1196,6 +1203,7 @@ public static partial class User32
 		/// The return value specifies the character to be displayed in place of any characters typed by the user. If the return value is
 		/// <c>NULL</c>, there is no password character, and the control displays the characters typed by the user.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If an edit control is created with the <c>ES_PASSWORD</c> style, the default password character is set to an asterisk (*). If an
@@ -1216,7 +1224,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets the widths of the left and right margins for an edit control. The message redraws the control to reflect the new margins.
 		/// You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The margins to set. This parameter can be one or more of the following values.</para>
@@ -1262,6 +1269,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para><c>Edit controls:</c> You cannot use <c>EC_USEFONTINFO</c> in the wParam parameter, but you can use it in the lParam parameter.</para>
 		/// <para>
@@ -1274,7 +1282,8 @@ public static partial class User32
 		[MsgParams(typeof(EC), typeof(uint), LResultType = null)]
 		EM_SETMARGINS = 0x00D3,
 
-		/// <summary>Gets the widths of the left and right margins for an edit control.</summary>
+		/// <summary>
+		/// Gets the widths of the left and right margins for an edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1282,6 +1291,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the width of the left margin in the LOWORD, and the width of the right margin in the HIWORD.</para>
+		/// </summary>
 		/// <remarks><c>Rich Edit:</c> The <c>EM_GETMARGINS</c> message is not supported.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getmargins
 		[MsgParams(LResultType = typeof(uint))]
@@ -1293,7 +1303,6 @@ public static partial class User32
 		/// into the edit control. You can send this message to either an edit control or a rich edit control.
 		/// </para>
 		/// <para>For edit controls and Microsoft Rich Edit 1.0, bytes are used. For Microsoft Rich Edit 2.0 and later, characters are used.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1308,6 +1317,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>EM_LIMITTEXT</c> message limits only the text the user can enter. It does not affect any text already in the edit control
@@ -1334,7 +1344,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Gets the current text limit for an edit control. You can send this message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1342,6 +1351,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the text limit.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>Edit controls, Rich Edit 2.0 and later:</c> The text limit is the maximum amount of text, in <c>TCHAR</c> s, that the control
@@ -1361,7 +1371,6 @@ public static partial class User32
 		/// <summary>
 		/// Retrieves the client area coordinates of a specified character in an edit control. You can send this message to either an edit
 		/// control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1378,6 +1387,7 @@ public static partial class User32
 		/// <c>Edit controls and Rich Edit 2.0:</c> The return value contains the client area coordinates of the character. The <c>LOWORD</c>
 		/// contains the horizontal coordinate and the <c>HIWORD</c> contains the vertical coordinate.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A returned coordinate can be a negative value if the specified character is not displayed in the edit control's client area. The
@@ -1404,7 +1414,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets information about the character closest to a specified point in the client area of an edit control. You can send this
 		/// message to either an edit control or a rich edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1428,6 +1437,7 @@ public static partial class User32
 		/// index of the line that contains the character. For single-line edit controls, this value is zero. The index indicates the line
 		/// delimiter if the specified point is beyond the last visible character in a line.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. For information about the compatibility of rich edit versions
@@ -1442,7 +1452,8 @@ public static partial class User32
 		[MsgParams(null, typeof(IntPtr), LResultType = typeof(uint))]
 		EM_CHARFROMPOS = 0x00D7,
 
-		/// <summary>Sets the status flags that determine how an edit control interacts with the Input Method Editor (IME).</summary>
+		/// <summary>
+		/// Sets the status flags that determine how an edit control interacts with the Input Method Editor (IME).
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of status to set. This parameter can be the following value.</para>
@@ -1491,12 +1502,14 @@ public static partial class User32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the previous value of the lParam parameter.</para>
+		/// </summary>
 		/// <remarks><c>Rich Edit:</c> The <c>EM_SETIMESTATUS</c> message is not supported.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setimestatus
 		[MsgParams(typeof(EMSIS), typeof(EIMES), LResultType = typeof(EIMES))]
 		EM_SETIMESTATUS = 0x00D8,
 
-		/// <summary>Gets a set of status flags that indicate how the edit control interacts with the Input Method Editor (IME).</summary>
+		/// <summary>
+		/// Gets a set of status flags that indicate how the edit control interacts with the Input Method Editor (IME).
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of status to retrieve. This parameter can be the following value.</para>
@@ -1546,6 +1559,7 @@ public static partial class User32
 		/// </description>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks><c>Rich Edit:</c> The <c>EM_GETIMESTATUS</c> message is not supported.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getimestatus
 		[MsgParams(typeof(EMSIS), null, LResultType = typeof(EIMES))]
@@ -1554,7 +1568,8 @@ public static partial class User32
 		/// <summary>Undocumented</summary>
 		EM_ENABLEFEATURE = 0x00DA,
 
-		/// <summary>Sets the textual cue, or tip, that is displayed by the edit control to prompt the user for information.</summary>
+		/// <summary>
+		/// Sets the textual cue, or tip, that is displayed by the edit control to prompt the user for information.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1565,6 +1580,7 @@ public static partial class User32
 		/// <para>A pointer to a Unicode string that contains the text to display as the textual cue.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// An edit control that is used to begin a search may display "Enter search here" in gray text as a textual cue. When the user
@@ -1583,7 +1599,8 @@ public static partial class User32
 		[MsgParams(typeof(BOOL), typeof(StrPtrUni), LResultType = typeof(BOOL))]
 		EM_SETCUEBANNER = ECM_FIRST + 1,     // Set the cue banner with the lParm = LPCWSTR
 
-		/// <summary>Gets the text that is displayed as the textual cue, or tip, in an edit control.</summary>
+		/// <summary>
+		/// Gets the text that is displayed as the textual cue, or tip, in an edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1593,6 +1610,7 @@ public static partial class User32
 		/// <para>The size of the buffer pointed to by wParam in <c>WCHARs</c>, including the terminating <c>NULL</c>.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Note</para>
 		/// <para>
@@ -1604,7 +1622,8 @@ public static partial class User32
 		[MsgParams(typeof(StrPtrUni), typeof(uint), LResultType = typeof(BOOL))]
 		EM_GETCUEBANNER = ECM_FIRST + 2,     // Set the cue banner with the lParm = LPCWSTR
 
-		/// <summary>The <c>EM_SHOWBALLOONTIP</c> message displays a balloon tip associated with an edit control.</summary>
+		/// <summary>
+		/// The <c>EM_SHOWBALLOONTIP</c> message displays a balloon tip associated with an edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1612,6 +1631,7 @@ public static partial class User32
 		/// <para>A pointer to an <c>EDITBALLOONTIP</c> structure that contains information about the balloon tip to display.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Note</para>
 		/// <para>
@@ -1623,7 +1643,8 @@ public static partial class User32
 		[MsgParams(null, typeof(EDITBALLOONTIP?), LResultType = typeof(BOOL))]
 		EM_SHOWBALLOONTIP = ECM_FIRST + 3,     // Show a balloon tip associated to the edit control
 
-		/// <summary>Hides any balloon tip associated with an edit control.</summary>
+		/// <summary>
+		/// Hides any balloon tip associated with an edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1631,6 +1652,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Note</para>
 		/// <para>
@@ -1653,7 +1675,6 @@ public static partial class User32
 		/// Prevents a single-line edit control from receiving keyboard focus. You can send this message explicitly or by using the
 		/// <c>Edit_NoSetFocus</c> macro.
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1661,6 +1682,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is not used.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>This message is ignored if the edit control is not a single-line edit control.</para>
 		/// <para>After this message is sent, the effect is permanent.</para>
@@ -1677,7 +1699,6 @@ public static partial class User32
 		/// Forces a single-line edit control to receive keyboard focus. You can send this message explicitly or by using the
 		/// <c>Edit_TakeFocus</c> macro.
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1685,6 +1706,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is not used.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>This message is ignored if the edit control is not a single-line edit control.</para>
 		/// <para>
@@ -1696,7 +1718,8 @@ public static partial class User32
 		[MsgParams(LResultType = null)]
 		EM_TAKEFOCUS = ECM_FIRST + 8,
 
-		/// <summary>Informs the edit control to set extended styles. Send this message or use the macro <c>Edit_SetExtendedStyle</c>.</summary>
+		/// <summary>
+		/// Informs the edit control to set extended styles. Send this message or use the macro <c>Edit_SetExtendedStyle</c>.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Mask used to select the styles to be set.</para>
@@ -1704,6 +1727,7 @@ public static partial class User32
 		/// <para>Value that indicates the extended style. For more information on styles, see Edit Control Extended Styles.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If this message succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </summary>
 		/// <remarks>
 		/// The extended styles for an edit control have nothing to do with the extended styles used with function <c>CreateWindowEx</c> or
 		/// function <c>SetWindowLong</c>.
@@ -1714,7 +1738,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Retrieves the extended style for a tree-view control. Send this message explicitly or by using the <c>Edit_GetExtendedStyle</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1722,6 +1745,7 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the value of extended style.For more information on styles, see Edit Control Extended Styles.</para>
+		/// </summary>
 		/// <remarks>
 		/// The extended styles for an edit control have nothing to do with the extended styles used with function <c>CreateWindowEx</c> or
 		/// function <c>SetWindowLong</c>.
@@ -1730,7 +1754,8 @@ public static partial class User32
 		[MsgParams(LResultType = typeof(EditStylesEx))]
 		EM_GETEXTENDEDSTYLE = ECM_FIRST + 11,
 
-		/// <summary>Sets the end-of-line character used when a linebreak is inserted.</summary>
+		/// <summary>
+		/// Sets the end-of-line character used when a linebreak is inserted.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the end-of-line character used when a linebreak is inserted. This can be one of the following values.</para>
@@ -1761,6 +1786,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the operation succeeds, the return value is nonzero.</para>
 		/// <para>If the operation fails, the return value is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// When the end-of-line character set is <c>EC_ENDOFLINE_DETECTFROMCONTENT</c>, the edit control will only detect end-of-line
 		/// characters supported according to its extended window style, see Edit Control Extended Styles.
@@ -1771,7 +1797,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Retrieves the end-of-line character for an edit control. Send this message explicitly or by using the <c>Edit_GetEndOfLine</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1797,6 +1822,7 @@ public static partial class User32
 		/// <description>The end-of-line character used for new linebreaks is linefeed (LF).</description>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// When the end-of-line character used is set to <c>EC_ENDOFLINE_DETECTFROMCONTENT</c> using <c>Edit_SetEndOfLine</c>, this message
 		/// will return the detected end-of-line character.
@@ -1805,7 +1831,8 @@ public static partial class User32
 		[MsgParams(LResultType = typeof(EC_ENDOFLINE))]
 		EM_GETENDOFLINE = ECM_FIRST + 13,
 
-		/// <summary>Enables or disables the "Search the web" feature and context menu entry.</summary>
+		/// <summary>
+		/// Enables or disables the "Search the web" feature and context menu entry.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A value of <c>TRUE</c> indicates the "Search the web" feature is enabled, and a value of <c>FALSE</c> indicates it is disabled.</para>
@@ -1813,12 +1840,14 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>If you disable "Search the web" using this message, the <c>EM_SEARCHWEB</c> message has no effect.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/em-enablesearchweb
 		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		EM_ENABLESEARCHWEB = ECM_FIRST + 14,
 
-		/// <summary>Opens the browser and performs a web search with the selected text as the search term.</summary>
+		/// <summary>
+		/// Opens the browser and performs a web search with the selected text as the search term.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -1826,12 +1855,14 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>If the "Search the web" feature is disabled using the <c>EM_ENABLESEARCHWEB</c> message, this message has no effect.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-searchweb
 		[MsgParams(LResultType = null)]
 		EM_SEARCHWEB = ECM_FIRST + 15,
 
-		/// <summary>Sets the zero-based index value of the position of the caret in an edit control.</summary>
+		/// <summary>
+		/// Sets the zero-based index value of the position of the caret in an edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The new zero-based index value of the position of the caret.</para>
@@ -1839,6 +1870,7 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the index is out of the range of the text in an edit control, the index will be adjusted to fit inside the range of the text.
 		/// </remarks>
@@ -1846,7 +1878,8 @@ public static partial class User32
 		[MsgParams(typeof(uint), null, LResultType = null)]
 		EM_SETCARETINDEX = ECM_FIRST + 17,
 
-		/// <summary>Gets the zero-based index of the position of the caret in an edit control.</summary>
+		/// <summary>
+		/// Gets the zero-based index of the position of the caret in an edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1854,13 +1887,13 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is a zero-based index value of the position of the caret.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getcaretindex
 		[MsgParams(LResultType = typeof(uint))]
 		EM_GETCARETINDEX = ECM_FIRST + 18,
 
 		/// <summary>
 		/// Gets the current zoom ratio for a multiline edit control or a rich edit control. The zoom ration is always between 1/64 and 64.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Receives the numerator of the zoom ratio.</para>
@@ -1868,6 +1901,7 @@ public static partial class User32
 		/// <para>Receives the denominator of the zoom ratio.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The message returns <c>TRUE</c> if message is processed, which it will be if both wParam and lParam are not <c>NULL</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <c>Edit:</c> Supported in Windows 10 1809 and later. The edit control needs to have the <c>ES_EX_ZOOMABLE</c> extended style set,
 		/// for this message to have an effect, see Edit Control Extended Styles. For information about the edit control, see Edit Controls.
@@ -1879,7 +1913,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets the zoom ratio for a multiline edit control or a rich edit control. The ratio must be a value between 1/64 and 64. The edit
 		/// control needs to have the <c>ES_EX_ZOOMABLE</c> extended style set, for this message to have an effect, see Edit Control Extended Styles.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Numerator of the zoom ratio.</para>
@@ -1902,6 +1935,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the new zoom setting is accepted, the return value is <c>TRUE</c>.</para>
 		/// <para>If the new zoom setting is not accepted, the return value is <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <c>Edit:</c> Supported in Windows 10 1809 and later. The edit control needs to have the <c>ES_EX_ZOOMABLE</c> extended style set,
 		/// for this message to have an effect, see Edit Control Extended Styles. For information about the edit control, see Edit Controls.
@@ -1913,7 +1947,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the index of the line that contains the specified character index in a multiline edit control, independently of how lines
 		/// are displayed on the screen. A character index is the zero-based index of the character from the beginning of the edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1928,6 +1961,7 @@ public static partial class User32
 		/// The return value is the zero-based line number of the line containing the character index specified by wParam, independently of
 		/// how lines are displayed on the screen.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-filelinefromchar
 		[MsgParams(typeof(int), null, LResultType = typeof(uint))]
 		EM_FILELINEFROMCHAR = ECM_FIRST + 19,
@@ -1935,7 +1969,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the character index of the first character of a specified line in a multiline edit control, independently of how lines are
 		/// displayed on the screen.. A character index is the zero-based index of the character from the beginning of the edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based line number. A value of -1 specifies the current line number (the line that contains the caret).</para>
@@ -1946,13 +1979,13 @@ public static partial class User32
 		/// The return value is the character index of the line specified in the wParam parameter, independently of how lines are displayed
 		/// on the screen, or it is -1 if the specified line number is greater than the number of lines in the edit control.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-filelineindex
 		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		EM_FILELINEINDEX = ECM_FIRST + 20,
 
 		/// <summary>
 		/// Retrieves the length, in characters, of a line in an edit control, independently of how lines are displayed on the screen.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1974,6 +2007,7 @@ public static partial class User32
 		/// </para>
 		/// <para>For single-line edit controls, the return value is the length, in <c>TCHAR</c> s, of the text in the edit control.</para>
 		/// <para>If wParam is greater than the number of characters in the control, the return value is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// Use the <c>EM_FILELINEINDEX</c> message to retrieve a character index for a given line number within a multiline edit control,
 		/// independently of how lines are displayed on the screen.
@@ -1984,7 +2018,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Copies a line of text from an edit control, independently of how lines are displayed on the screen, and places it in a specified buffer.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -2002,11 +2035,13 @@ public static partial class User32
 		/// The return value is the number of <c>TCHAR</c> s copied. The return value is zero if the line number specified by the wParam
 		/// parameter is greater than the number of lines in the edit control.
 		/// </para>
+		/// </summary>
 		/// <remarks>The copied line does not contain a terminating null character.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getfileline
 		EM_GETFILELINE = ECM_FIRST + 22,
 
-		/// <summary>Gets the number of lines in a multiline edit control, independently of how lines are displayed on the screen.</summary>
+		/// <summary>
+		/// Gets the number of lines in a multiline edit control, independently of how lines are displayed on the screen.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -2017,6 +2052,7 @@ public static partial class User32
 		/// The return value is an integer specifying the total number of text lines in the multiline edit control, independently of how
 		/// lines are displayed on the screen. If the control has no text, the return value is 1. The return value will never be less than 1.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>EM_GETFILELINECOUNT</c> message retrieves the total number of text lines, independently of how lines are displayed on the
@@ -2038,12 +2074,12 @@ public static partial class User32
 		/// <summary>
 		/// Sent after an edit control performed a web search when the "Search the web" feature is enabled, see EM_ENABLESEARCHWEB. The
 		/// parent window of the edit control receives this notification code through a <c>WM_NOTIFY</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Handle to the edit control.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A pointer to a <c>NMSEARCHWEB</c> structure.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/en-searchweb
 		[MsgParams(typeof(HWND), typeof(NMSEARCHWEB?))]
 		EN_SEARCHWEB = unchecked((uint)EN_FIRST - 0),
@@ -2051,12 +2087,12 @@ public static partial class User32
 		/// <summary>
 		/// Sent when an edit control receives the keyboard focus. The parent window of the edit control receives this notification code
 		/// through a <c>WM_COMMAND</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The parent window always receives a <c>WM_COMMAND</c> message for this event, it does not require a notification mask sent with <c>EM_SETEVENTMASK</c>.
@@ -2073,12 +2109,12 @@ public static partial class User32
 		/// <summary>
 		/// Sent when an edit control loses the keyboard focus. The parent window of the edit control receives this notification code through
 		/// a <c>WM_COMMAND</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>Handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The parent window always receives a <c>WM_COMMAND</c> message for this event, it does not require a notification mask sent with <c>EM_SETEVENTMASK</c>.
@@ -2096,12 +2132,12 @@ public static partial class User32
 		/// Sent when the user has taken an action that may have altered text in an edit control. Unlike the EN_UPDATE notification code,
 		/// this notification code is sent after the system updates the screen. The parent window of the edit control receives this
 		/// notification code through a <c>WM_COMMAND</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>Rich Edit:</c> Supported in Microsoft Rich Edit 1.0 and later. To receive EN_CHANGE notification codes, specify
@@ -2118,12 +2154,12 @@ public static partial class User32
 		/// Sent when an edit control is about to redraw itself. This notification code is sent after the control has formatted the text, but
 		/// before it displays the text. This makes it possible to resize the edit control window, if necessary. The parent window of the
 		/// edit control receives this notification code through a <c>WM_COMMAND</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>Rich Edit 1.0:</c> To receive EN_UPDATE notification codes, specify <c>ENM_UPDATE</c> in the mask sent with the
@@ -2143,12 +2179,12 @@ public static partial class User32
 		/// <summary>
 		/// Sent when an edit control cannot allocate enough memory to meet a specific request. The parent window of the edit control
 		/// receives this notification code through a <c>WM_COMMAND</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The parent window will always get a <c>WM_COMMAND</c> message for this event; it does not require a notification mask sent with
@@ -2177,12 +2213,12 @@ public static partial class User32
 		/// lines resulting from a text insertion would exceed the height of the edit control.
 		/// </para>
 		/// <para>The parent window of the edit control receives this notification code through a <c>WM_COMMAND</c> message.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The parent window always receives a <c>WM_COMMAND</c> message for this event, it does not require a notification mask sent with <c>EM_SETEVENTMASK</c>.
@@ -2199,12 +2235,12 @@ public static partial class User32
 		/// <summary>
 		/// Sent when the user clicks an edit control's horizontal scroll bar. The parent window of the edit control receives this
 		/// notification code through a <c>WM_COMMAND</c> message. The parent window is notified before the screen is updated.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This notification code is sent for the following mouse events on the horizontal scroll bar: clicking either arrow button or
@@ -2226,12 +2262,12 @@ public static partial class User32
 		/// Sent when the user clicks an edit control's vertical scroll bar or when the user scrolls the mouse wheel over the edit control.
 		/// The parent window of the edit control receives this notification code through a <c>WM_COMMAND</c> message. The parent window is
 		/// notified before the screen is updated.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message is sent for the following mouse events on the vertical scroll bar: clicking either arrow button or clicking between
@@ -2255,12 +2291,12 @@ public static partial class User32
 		/// <summary>
 		/// Sent when the user has changed the edit control direction to left-to-right. The parent window of the edit control receives this
 		/// notification code through a <c>WM_COMMAND</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control sending the notification code.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If there is a bidirectional language installed on your system, for example, Arabic or Hebrew, you can change the edit control
@@ -2275,12 +2311,12 @@ public static partial class User32
 		/// <summary>
 		/// Sent when the user has changed the edit control direction to right-to-left. The parent window of the edit control receives this
 		/// notification code through a <c>WM_COMMAND</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The <c>LOWORD</c> contains the identifier of the edit control. The <c>HIWORD</c> specifies the notification code.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the edit control sending the notification code.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If there is a bidirectional language installed on your system, for example, Arabic or Hebrew, you can change the edit control

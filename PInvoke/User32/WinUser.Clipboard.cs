@@ -15,7 +15,6 @@ public static partial class User32
 		/// <summary>
 		/// <para>Sent to the clipboard owner by a clipboard viewer window to request the name of a <c>CF_OWNERDISPLAY</c> clipboard format.</para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The size, in characters, of the buffer pointed to by the lParam parameter.</para>
@@ -23,6 +22,7 @@ public static partial class User32
 		/// <para>A pointer to the buffer that is to receive the clipboard format name.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// In response to this message, the clipboard owner should copy the name of the owner-display format to the specified buffer, not
@@ -34,12 +34,12 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-askcbformatname
+		[MsgParams(typeof(uint), typeof(IntPtr))]
 		WM_ASKCBFORMATNAME = 0x030C,
 
 		/// <summary>
 		/// <para>Sent to the first window in the clipboard viewer chain when a window is being removed from the chain.</para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window being removed from the clipboard viewer chain.</para>
@@ -50,6 +50,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Each clipboard viewer window saves the handle to the next window in the clipboard viewer chain. Initially, this handle is the
@@ -62,24 +63,25 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-changecbchain
+		[MsgParams(typeof(HWND), typeof(HWND))]
 		WM_CHANGECBCHAIN = 0x030D,
 
-		/// <summary>Sent when the contents of the clipboard have changed.</summary>
+		/// <summary>Sent when the contents of the clipboard have changed.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
-		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If an application processes this message, it should return zero.</para></summary>
 		/// <remarks>To register a window to receive this message, use the <c>AddClipboardFormatListener</c> function.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-clipboardupdate
+		[MsgParams()]
 		WM_CLIPBOARDUPDATE = 0x031D,
 
 		/// <summary>
 		/// <para>Sent to the clipboard owner when a call to the <c>EmptyClipboard</c> function empties the clipboard.</para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -87,7 +89,9 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-destroyclipboard
+		[MsgParams()]
 		WM_DESTROYCLIPBOARD = 0x0307,
 
 		/// <summary>
@@ -96,12 +100,12 @@ public static partial class User32
 		/// window to display the new content of the clipboard.
 		/// </para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Only clipboard viewer windows receive this message. These are windows that have been added to the clipboard viewer chain by using
@@ -114,13 +118,13 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-drawclipboard
+		[MsgParams()]
 		WM_DRAWCLIPBOARD = 0x0308,
 
 		/// <summary>
 		/// Sent to the clipboard owner by a clipboard viewer window. This occurs when the clipboard contains data in the
 		/// <c>CF_OWNERDISPLAY</c> format and an event occurs in the clipboard viewer's horizontal scroll bar. The owner should scroll the
 		/// clipboard image and update the scroll bar values.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -170,17 +174,18 @@ public static partial class User32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and invalidate
 		/// the appropriate region.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-hscrollclipboard
+		[MsgParams(typeof(HWND), typeof(SB))]
 		WM_HSCROLLCLIPBOARD = 0x030E,
 
 		/// <summary>
 		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c> format
 		/// and the clipboard viewer's client area needs repainting.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -191,6 +196,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// To determine whether the entire client area or just a portion of it needs repainting, the clipboard owner must compare the
@@ -203,6 +209,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-paintclipboard
+		[MsgParams(typeof(HWND), typeof(PAINTSTRUCT?))]
 		WM_PAINTCLIPBOARD = 0x0309,
 
 		/// <summary>
@@ -212,7 +219,6 @@ public static partial class User32
 		/// formats it is capable of generating, and place the data on the clipboard by calling the <c>SetClipboardData</c> function.
 		/// </para>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -220,6 +226,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When responding to a <c>WM_RENDERALLFORMATS</c> message, the application must call the <c>OpenClipboard</c> function and then
@@ -240,13 +247,13 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-renderallformats
+		[MsgParams()]
 		WM_RENDERALLFORMATS = 0x0306,
 
 		/// <summary>
 		/// Sent to the clipboard owner if it has delayed rendering a specific clipboard format and if an application has requested data in
 		/// that format. The clipboard owner must render data in the specified format and place it on the clipboard by calling the
 		/// <c>SetClipboardData</c> function.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The clipboard format to be rendered.</para>
@@ -254,6 +261,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// When responding to a <c>WM_RENDERFORMAT</c> message, the clipboard owner must not open the clipboard before calling
 		/// <c>SetClipboardData</c>. Opening the clipboard is not necessary before placing data in response to <c>WM_RENDERFORMAT</c>, and
@@ -261,12 +269,12 @@ public static partial class User32
 		/// the format to be rendered.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-renderformat
+		[MsgParams(typeof(ushort), null)]
 		WM_RENDERFORMAT = 0x0305,
 
 		/// <summary>
 		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c> format
 		/// and the clipboard viewer's client area has changed size.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -277,6 +285,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the clipboard viewer window is about to be destroyed or resized, a <c>WM_SIZECLIPBOARD</c> message is sent with a null
@@ -288,13 +297,13 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-sizeclipboard
+		[MsgParams(typeof(HWND), typeof(RECT?))]
 		WM_SIZECLIPBOARD = 0x030B,
 
 		/// <summary>
 		/// Sent to the clipboard owner by a clipboard viewer window when the clipboard contains data in the <c>CF_OWNERDISPLAY</c> format
 		/// and an event occurs in the clipboard viewer's vertical scroll bar. The owner should scroll the clipboard image and update the
 		/// scroll bar values.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -344,11 +353,13 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and invalidate
 		/// the appropriate region.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/dataxchg/wm-vscrollclipboard
+		[MsgParams(typeof(HWND), typeof(SB))]
 		WM_VSCROLLCLIPBOARD = 0x030A,
 	}
 

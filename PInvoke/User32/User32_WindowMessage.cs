@@ -515,7 +515,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NULL 0x0000</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -524,6 +523,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application returns zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// For example, if an application has installed a <c>WH_GETMESSAGE</c> hook and wants to prevent a message from being processed, the
@@ -548,7 +548,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CREATE 0x0001</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -560,6 +559,7 @@ public static partial class User32
 		/// If an application processes this message, it should return zero to continue creation of the window. If the application returns
 		/// –1, the window is destroyed and the <c>CreateWindowEx</c> or <c>CreateWindow</c> function returns a <c>NULL</c> handle.
 		/// </para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-create
 		[MsgParams(LParamType = typeof(CREATESTRUCT?))]
 		WM_CREATE = 0x0001,
@@ -577,7 +577,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_DESTROY 0x0002</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -586,6 +585,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the window being destroyed is part of the clipboard viewer chain (set by calling the <c>SetClipboardViewer</c> function), the
 		/// window must remove itself from the chain by processing the <c>ChangeClipboardChain</c> function before returning from the
@@ -601,7 +601,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOVE 0x0003</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -613,6 +612,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The parameters are given in screen coordinates for overlapped and pop-up windows and in parent-client coordinates for child windows.
@@ -638,7 +638,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SIZE 0x0005</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of resizing requested. This parameter can be one of the following values.</para>
@@ -674,6 +673,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the <c>SetScrollPos</c> or <c>MoveWindow</c> function is called for a child window as a result of the <c>WM_SIZE</c> message,
@@ -702,7 +702,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ACTIVATE 0x0006</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -739,6 +738,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the window is being activated and is not minimized, the <c>DefWindowProc</c> function sets the keyboard focus to the window.
 		/// If the window is activated by a mouse click, it also receives a <c>WM_MOUSEACTIVATE</c> message.
@@ -752,7 +752,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SETFOCUS 0x0007</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window that has lost the keyboard focus. This parameter can be <c>NULL</c>.</para>
@@ -760,6 +759,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// To display a caret, an application should call the appropriate caret functions when it receives the <c>WM_SETFOCUS</c> message.
 		/// </remarks>
@@ -772,7 +772,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_KILLFOCUS 0x0008</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window that receives the keyboard focus. This parameter can be <c>NULL</c>.</para>
@@ -780,6 +779,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>If an application is displaying a caret, the caret should be destroyed at this point.</para>
 		/// <para>
@@ -801,7 +801,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ENABLE 0x000A</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -813,6 +812,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-enable
 		[MsgParams(typeof(BOOL), null)]
 		WM_ENABLE = 0x000A,
@@ -878,7 +878,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SETTEXT 0x000C</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -891,6 +890,7 @@ public static partial class User32
 		/// box), or <c>CB_ERRSPACE</c> (for a combo box) if insufficient space is available to set the text in the edit control. It is
 		/// <c>CB_ERR</c> if this message is sent to a combo box without an edit control.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function sets and displays the window text. For an edit control, the text is the contents of the edit
@@ -911,7 +911,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETTEXT 0x000D</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The maximum number of characters to be copied, including the terminating null character.</para>
@@ -924,6 +923,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>The return value is the number of characters copied, not including the terminating null character.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function copies the text associated with the window into the specified buffer and returns the number of
@@ -958,7 +958,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETTEXTLENGTH 0x000E</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -967,6 +966,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>The return value is the length of the text in characters, not including the terminating null character.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// For an edit control, the text to be copied is the content of the edit control. For a combo box, the text is the content of the
@@ -1005,7 +1005,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1013,6 +1012,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application returns zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>WM_PAINT</c> message is generated by the system and should not be sent by an application. To force a window to draw into a
@@ -1061,7 +1061,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CLOSE 0x0010</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1070,6 +1069,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// An application can prompt the user for confirmation, prior to destroying a window, by processing the <c>WM_CLOSE</c> message and
@@ -1095,7 +1095,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, // handle to window UINT uMsg, // message identifier WPARAM wParam, // not used LPARAM lParam // logoff option );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to the window.</para>
@@ -1139,6 +1138,7 @@ public static partial class User32
 		/// If shutting down would corrupt the system or media that is being burned, the application can return <c>FALSE</c>. However, it is
 		/// good practice to respect the user's actions.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When an application returns <c>TRUE</c> for this message, it receives the <c>WM_ENDSESSION</c> message, regardless of how the
@@ -1167,7 +1167,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_QUERYOPEN 0x0013</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1179,6 +1178,7 @@ public static partial class User32
 		/// If the icon can be opened, an application that processes this message should return <c>TRUE</c>; otherwise, it should return
 		/// <c>FALSE</c> to prevent the icon from being opened.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>By default, the <c>DefWindowProc</c> function returns <c>TRUE</c>.</para>
 		/// <para>
@@ -1199,7 +1199,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, // handle to window UINT uMsg, // message identifier WPARAM wParam, // end-session option LPARAM lParam // logoff option );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to the window.</para>
@@ -1242,6 +1241,7 @@ public static partial class User32
 		/// <para>Note that this parameter is a bit mask. To test for this value, use a bit-wise operation; do not test for equality.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Applications that have unsaved data could save the data to a temporary location and restore it the next time the application
@@ -1262,7 +1262,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_QUIT 0x0012</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The exit code given in the <c>PostQuitMessage</c> function.</para>
@@ -1274,6 +1273,7 @@ public static partial class User32
 		/// This message does not have a return value because it causes the message loop to terminate before the message is sent to the
 		/// application's window procedure.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>WM_QUIT</c> message is not associated with a window and therefore will never be received through a window's window
@@ -1293,7 +1293,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ERASEBKGND 0x0014</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the device context.</para>
@@ -1302,6 +1301,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return nonzero if it erases the background; otherwise, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function erases the background by using the class background brush specified by the <c>hbrBackground</c>
@@ -1324,12 +1324,12 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The system sends a <c>WM_PAINT</c> message to any window that is affected by a system color change.</para>
 		/// <para>
@@ -1354,7 +1354,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SHOWWINDOW 0x0018</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1391,6 +1390,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function hides or shows the window, as specified by the message. If a window has the <c>WS_VISIBLE</c>
@@ -1427,7 +1427,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_WININICHANGE 0x001A</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1442,6 +1441,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If you process this message, return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// To send the <c>WM_WININICHANGE</c> message to all top-level windows, use the <c>SendMessage</c> function with the hWnd parameter
@@ -1472,7 +1472,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_WININICHANGE 0x001A #define WM_SETTINGCHANGE WM_WININICHANGE</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1504,6 +1503,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If you process this message, return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// The lParam parameter indicates which system metric has changed, for example, "ConvertibleSlateMode" if the CONVERTIBLESLATEMODE
 		/// indicator was toggled or "SystemDockMode" if the DOCKED indicator was toggled.
@@ -1518,7 +1518,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to a window.</para>
@@ -1530,6 +1529,7 @@ public static partial class User32
 		/// <para>A pointer to a string that specifies the device name.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// This message cannot be sent directly to a window. To send the <c>WM_DEVMODECHANGE</c> message to all top-level windows, use the
 		/// <c>SendMessageTimeout</c> function with the hWnd parameter set to HWND_BROADCAST.
@@ -1547,7 +1547,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ACTIVATEAPP 0x001C</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1562,6 +1561,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-activateapp
 		[MsgParams(typeof(BOOL), typeof(uint))]
 		WM_ACTIVATEAPP = 0x001C,
@@ -1574,12 +1574,12 @@ public static partial class User32
 		/// <para>
 		/// <code>SendMessage( (HWND) hWnd, WM_FONTCHANGE, (WPARAM) wParam, (LPARAM) lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// An application that adds or removes fonts from the system (for example, by using the <c>AddFontResource</c> or
@@ -1600,7 +1600,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, // handle to window UINT uMsg, // message identifier WPARAM wParam, // not used; must be zero LPARAM lParam // not used; must be zero );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -1612,6 +1611,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// An application should not broadcast this message, because the system will broadcast this message when the application changes the
 		/// system time.
@@ -1630,7 +1630,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CANCELMODE 0x001F</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1639,6 +1638,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// When the <c>WM_CANCELMODE</c> message is sent, the <c>DefWindowProc</c> function cancels internal processing of standard scroll
 		/// bar input, cancels internal menu processing, and releases the mouse capture.
@@ -1652,7 +1652,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SETCURSOR 0x0020</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window that contains the cursor.</para>
@@ -1667,6 +1666,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return <c>TRUE</c> to halt further processing or <c>FALSE</c> to continue.</para>
+		/// </summary>
 		/// <remarks>
 		/// The <c>DefWindowProc</c> function passes the <c>WM_SETCURSOR</c> message to a parent window before processing. If the parent
 		/// window returns <c>TRUE</c>, further processing is halted. Passing the message to a window's parent window gives the parent window
@@ -1688,7 +1688,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOUSEACTIVATE 0x0021</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the top-level parent window of the window being activated.</para>
@@ -1728,6 +1727,7 @@ public static partial class User32
 		/// <term>Does not activate the window, but discards the mouse message.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// The <c>DefWindowProc</c> function passes the message to a child window's parent window before any processing occurs. The parent
 		/// window determines whether to activate the child window. If it activates the child window, the parent window should return
@@ -1743,7 +1743,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CHILDACTIVATE 0x0022</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1752,6 +1751,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-childactivate
 		[MsgParams()]
 		WM_CHILDACTIVATE = 0x0022,
@@ -1764,7 +1764,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_QUEUESYNC 0x0023</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1773,6 +1772,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>void</c></para>
 		/// <para>A CBT application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Whenever a CBT application uses the <c>WH_JOURNALPLAYBACK</c> procedure, the first and last messages are <c>WM_QUEUESYNC</c>.
@@ -1793,7 +1793,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETMINMAXINFO 0x0024</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1805,6 +1804,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// The maximum tracking size is the largest window size that can be produced by using the borders to size the window. The minimum
 		/// tracking size is the smallest window size that can be produced by using the borders to size the window.
@@ -1822,7 +1822,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_PAINTICON 0x0026</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1831,6 +1830,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// The DefWindowProc function draws the class icon. For compatibility with Windows 3.x, wParam is TRUE. However, this value has no significance.
 		/// </remarks>
@@ -1846,7 +1846,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ICONERASEBKGND 0x0027</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Type: HDC. Identifies the device context of the icon.</para>
@@ -1855,6 +1854,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>The DefWindowProc function fills the icon background with the class background brush of the parent window.</remarks>
 		[MsgParams(typeof(HDC), null)]
 		WM_ICONERASEBKGND = 0x0027,
@@ -1864,7 +1864,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NEXTDLGCTL 0x0028</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1880,6 +1879,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message performs additional dialog box management operations beyond those performed by the <c>SetFocus</c> function
@@ -1903,7 +1903,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The PR_JOBSTATUS flag.</para>
@@ -1911,6 +1910,7 @@ public static partial class User32
 		/// <para>The low-order word specifies the number of jobs remaining in the Print Manager queue.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message is for informational purposes only. This message is advisory and does not have guaranteed delivery semantics.
@@ -1934,7 +1934,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_DRAWITEM WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1947,6 +1946,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return <c>TRUE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>By default, the <c>DefWindowProc</c> function draws the focus rectangle for an owner-drawn list box item.</para>
 		/// <para>
@@ -1967,7 +1967,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_MEASUREITEM WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1982,6 +1981,7 @@ public static partial class User32
 		/// <para>Pointer to a <c>MEASUREITEMSTRUCT</c> structure that contains the dimensions of the owner-drawn control or menu item.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return <c>TRUE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the owner window receives the <c>WM_MEASUREITEM</c> message, the owner fills in the <c>MEASUREITEMSTRUCT</c> structure
@@ -2010,7 +2010,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_DELETEITEM WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the identifier of the control that sent the <c>WM_DELETEITEM</c> message.</para>
@@ -2018,6 +2017,7 @@ public static partial class User32
 		/// <para>Pointer to a <c>DELETEITEMSTRUCT</c> structure that contains information about the item deleted from a list box.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return <c>TRUE</c> if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Microsoft Windows NT and later: Windows sends a <c>WM_DELETEITEM</c> message only for items deleted from an owner-drawn list box
@@ -2037,7 +2037,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_VKEYTOITEM WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -2054,6 +2053,7 @@ public static partial class User32
 		/// 0 or greater specifies the index of an item in the list box and indicates that the list box should perform the default action for
 		/// the keystroke on the specified item.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A return value of -2 is valid only for keys that are not translated into characters by the list box control. If the
@@ -2086,7 +2086,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_CHARTOITEM WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -2102,6 +2101,7 @@ public static partial class User32
 		/// value of 0 or greater specifies the zero-based index of an item in the list box and indicates that the list box should perform
 		/// the default action for the keystroke on the specified item.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The <c>DefWindowProc</c> function returns -1.</para>
 		/// <para>Only owner-drawn list boxes that do not have the <c>LBS_HASSTRINGS</c> style can receive this message.</para>
@@ -2119,7 +2119,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SETFONT 0x0030</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -2133,6 +2132,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The <c>WM_SETFONT</c> message applies to all controls, not just those in dialog boxes.</para>
 		/// <para>
@@ -2173,7 +2173,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETFONT 0x0031</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -2182,6 +2181,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>HFONT</c></para>
 		/// <para>The return value is a handle to the font used by the control, or <c>NULL</c> if the control is using the system font.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-getfont
 		[MsgParams(LResultType = typeof(HFONT))]
 		WM_GETFONT = 0x0031,
@@ -2191,7 +2191,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SETHOTKEY 0x0032</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The low-order word specifies the virtual-key code to associate with the window.</para>
@@ -2245,6 +2244,7 @@ public static partial class User32
 		/// <term>The function is successful, but another window already has the same hot key.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>A hot key cannot be associated with a child window.</para>
 		/// <para><c>VK_ESCAPE</c>, <c>VK_SPACE</c>, and <c>VK_TAB</c> are invalid hot keys.</para>
@@ -2268,7 +2268,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETHOTKEY 0x0033</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -2302,6 +2301,7 @@ public static partial class User32
 		/// <term>SHIFT key</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>These hot keys are unrelated to the hot keys set by the <c>RegisterHotKey</c> function.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-gethotkey
 		[MsgParams(LResultType = typeof(uint))]
@@ -2316,7 +2316,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_QUERYDRAGICON 0x0037</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -2329,6 +2328,7 @@ public static partial class User32
 		/// or icon must be compatible with the display driver's resolution. If the application returns <c>NULL</c>, the system displays the
 		/// default cursor.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the user drags the icon of a window without a class icon, the system replaces the icon with a default cursor. If the
@@ -2355,7 +2355,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_COMPAREITEM WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the identifier of the control that sent the <c>WM_COMPAREITEM</c> message.</para>
@@ -2388,6 +2387,7 @@ public static partial class User32
 		/// <term>Item 1 follows item 2 in the sorted order.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the owner of an owner-drawn combo box or list box receives this message, the owner returns a value indicating which of the
@@ -2418,7 +2418,6 @@ public static partial class User32
 		/// <para>
 		/// <code>dwFlags = (WPARAM)(DWORD) wParam; dwObjId = (LPARAM)(DWORD) lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>dwFlags</em></para>
 		/// <para>
@@ -2482,6 +2481,7 @@ public static partial class User32
 		/// </term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When a client calls <c>AccessibleObjectFromWindow</c> or any of the other <c>AccessibleObjectFrom</c> X functions that retrieve
@@ -2532,7 +2532,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_COMPACTING 0x0041</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -2544,6 +2543,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// When an application receives this message, it should free as much memory as possible, taking into account the current level of
 		/// activity of the application and the total number of applications running on the system.
@@ -2615,7 +2615,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc HWND hwnd, // handle to window UINT uMsg, // WM_POWER WPARAM wParam, // power-event notification LPARAM lParam // not used );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -2656,6 +2655,7 @@ public static partial class User32
 		/// value is <c>PWR_FAIL</c> to prevent the system from entering the suspended state; otherwise, it is <c>PWR_OK</c>. If wParam is
 		/// <c>PWR_SUSPENDRESUME</c> or <c>PWR_CRITICALRESUME</c>, the return value is zero.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message is broadcast only to an application that is running on a system that conforms to the Advanced Power Management (APM)
@@ -2676,7 +2676,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_COPYDATA 0x004A</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window passing the data.</para>
@@ -2684,6 +2683,7 @@ public static partial class User32
 		/// <para>A pointer to a <c>COPYDATASTRUCT</c> structure that contains the data to be passed.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the receiving application processes this message, it should return <c>TRUE</c>; otherwise, it should return <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The data being passed must not contain pointers or other references to objects not accessible to the application receiving the data.
@@ -2707,7 +2707,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CANCELJOURNAL 0x004B</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -2719,6 +2718,7 @@ public static partial class User32
 		/// This message does not return a value. It is meant to be processed from within an application's main loop or a <c>GetMessage</c>
 		/// hook procedure, not from a window procedure.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Journal record and playback modes are modes imposed on the system that let an application sequentially record or play back user
@@ -2755,7 +2755,8 @@ public static partial class User32
 		[MsgParams(LResultType = null)]
 		WM_CANCELJOURNAL = 0x004B,
 
-		/// <summary>Sent by a common control to its parent window when an event has occurred or the control requires some information.</summary>
+		/// <summary>
+		/// Sent by a common control to its parent window when an event has occurred or the control requires some information.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -2769,6 +2770,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is ignored except for notification messages that specify otherwise.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The destination of the message must be the <c>HWND</c> of the parent of the control. This value can be obtained by using
@@ -2812,7 +2814,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_INPUTLANGCHANGEREQUEST 0x0050</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The new input locale. This parameter can be a combination of the following flags.</para>
@@ -2848,6 +2849,7 @@ public static partial class User32
 		/// This message is posted, not sent, to the application, so the return value is ignored. To accept the change, the application
 		/// should pass the message to <c>DefWindowProc</c>. To reject the change, the application should return zero without calling <c>DefWindowProc</c>.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the <c>DefWindowProc</c> function receives the <c>WM_INPUTLANGCHANGEREQUEST</c> message, it activates the new input locale
@@ -2873,7 +2875,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_INPUTLANGCHANGE 0x0051</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Type: **WPARAM**</para>
@@ -2884,6 +2885,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return nonzero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>You can retrieve keyboard locale name via LCIDToLocaleName function. With locale name you can use modern locale functions:</para>
 		/// <para>
@@ -2898,7 +2900,6 @@ public static partial class User32
 		/// Sent to an application that has initiated a training card with Windows Help. The message informs the application when the user
 		/// clicks an authorable button. An application initiates a training card by specifying the HELP_TCARD command in a call to the
 		/// <c>WinHelp</c> function.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>idAction</em></para>
 		/// <para>A value that indicates the action the user has taken. This can be one of the following values.</para>
@@ -2926,6 +2927,7 @@ public static partial class User32
 		/// <para>The user clicked an authorable <c>Yes</c> button.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is ignored; use zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/wm-tcard
 		[MsgParams(typeof(MB_RESULT), typeof(int))]
 		WM_TCARD = 0x0052,
@@ -2934,7 +2936,6 @@ public static partial class User32
 		/// Indicates that the user pressed the F1 key. If a menu is active when F1 is pressed, <c>WM_HELP</c> is sent to the window
 		/// associated with the menu; otherwise, <c>WM_HELP</c> is sent to the window that has the keyboard focus. If no window has the
 		/// keyboard focus, <c>WM_HELP</c> is sent to the currently active window.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -2945,6 +2946,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// The <c>DefWindowProc</c> function passes <c>WM_HELP</c> to the parent window of a child window or to the owner of a top-level window.
 		/// </remarks>
@@ -2965,7 +2967,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_USERCHANGED 0x0054</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -2974,6 +2975,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-userchanged
 		[MsgParams()]
 		WM_USERCHANGED = 0x0054,
@@ -2981,7 +2983,6 @@ public static partial class User32
 		/// <summary>
 		/// Determines if a window accepts ANSI or Unicode structures in the <c>WM_NOTIFY</c> notification message. <c>WM_NOTIFYFORMAT</c>
 		/// messages are sent from a common control to its parent window and from the parent window to the common control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3031,6 +3032,7 @@ public static partial class User32
 		/// <term>An error occurred.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When a common control is created, the control sends a <c>WM_NOTIFYFORMAT</c> message to its parent window to determine the type
@@ -3062,7 +3064,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CONTEXTMENU 0x007B</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3074,6 +3075,7 @@ public static partial class User32
 		/// <para>The high-order word specifies the vertical position of the cursor, in screen coordinates, at the time of the mouse click.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>No return value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A window can process this message by displaying a shortcut menu using the <c>TrackPopupMenu</c> or <c>TrackPopupMenuEx</c>
@@ -3107,7 +3109,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_STYLECHANGING 0x007C</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3135,6 +3136,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-stylechanging
 		[MsgParams(typeof(WindowLongFlags), typeof(STYLESTRUCT))]
 		WM_STYLECHANGING = 0x007C,
@@ -3145,7 +3147,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_STYLECHANGED 0x007D</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3173,6 +3174,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-stylechanged
 		[MsgParams(typeof(WindowLongFlags), typeof(STYLESTRUCT))]
 		WM_STYLECHANGED = 0x007D,
@@ -3183,13 +3185,13 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The new image depth of the display, in bits per pixel.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>The low-order word specifies the horizontal resolution of the screen.</para>
 		/// <para>The high-order word specifies the vertical resolution of the screen.</para>
+		/// </summary>
 		/// <remarks>This message is only sent to top-level windows. For all other windows it is posted.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/gdi/wm-displaychange
 		[MsgParams(typeof(ushort), typeof(SIZES))]
@@ -3204,7 +3206,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETICON 0x007F</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of icon being retrieved. This parameter can be one of the following values.</para>
@@ -3237,6 +3238,7 @@ public static partial class User32
 		/// The return value is a handle to the large or small icon, depending on the value of wParam. When an application receives this
 		/// message, it can return a handle to a large or small icon, or pass the message to the <c>DefWindowProc</c> function.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>When an application receives this message, it can return a handle to a large or small icon, or pass the message to <c>DefWindowProc</c>.</para>
 		/// <para>
@@ -3260,7 +3262,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SETICON 0x0080</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of icon to be set. This parameter can be one of the following values.</para>
@@ -3286,6 +3287,7 @@ public static partial class User32
 		/// The return value is a handle to the previous large or small icon, depending on the value of wParam. It is <c>NULL</c> if the
 		/// window previously had no icon of the type indicated by wParam.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// The <c>DefWindowProc</c> function returns a handle to the previous large or small icon associated with the window, depending on
 		/// the value of wParam.
@@ -3300,7 +3302,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCCREATE 0x0081</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -3315,6 +3316,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c> to continue creation of the window. If the application
 		/// returns <c>FALSE</c>, the <c>CreateWindow</c> or <c>CreateWindowEx</c> function will return a <c>NULL</c> handle.
 		/// </para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-nccreate
 		[MsgParams(null, typeof(CREATESTRUCT?), LResultType = typeof(BOOL))]
 		WM_NCCREATE = 0x0081,
@@ -3333,7 +3335,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCDESTROY 0x0082</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -3342,6 +3343,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>This message frees any memory internally allocated for the window.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-ncdestroy
 		[MsgParams()]
@@ -3356,7 +3358,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCCALCSIZE 0x0083</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3445,6 +3446,7 @@ public static partial class User32
 		/// </term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The window may be redrawn, depending on whether the CS_HREDRAW or CS_VREDRAW class style is specified. This is the default,
@@ -3477,7 +3479,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCHITTEST 0x0084</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -3608,6 +3609,7 @@ public static partial class User32
 		/// <term>In a <c>Maximize</c> button.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -3643,7 +3645,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the update region of the window. The update region is clipped to the window frame.</para>
@@ -3651,6 +3652,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application returns zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The <c>DefWindowProc</c> function paints the window frame.</para>
 		/// <para>
@@ -3672,7 +3674,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCACTIVATE 0x0086</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3692,6 +3693,7 @@ public static partial class User32
 		/// with the default processing, or it should return <c>FALSE</c> to prevent the change. When wParam is <c>TRUE</c>, the return value
 		/// is ignored.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Processing messages related to the nonclient area of a standard window is not recommended, because the application must be able
@@ -3717,7 +3719,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETDLGCODE 0x0087</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3779,6 +3780,7 @@ public static partial class User32
 		/// <term>TAB key.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Although the <c>DefWindowProc</c> function always returns zero in response to the <c>WM_GETDLGCODE</c> message, the window
@@ -3799,7 +3801,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -3807,6 +3808,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application returns zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// When a window has been hidden, shown, moved, or sized, the system may determine that it is necessary to send a
 		/// <c>WM_SYNCPAINT</c> message to the top-level windows of other threads. Applications must pass <c>WM_SYNCPAINT</c> to
@@ -3844,7 +3846,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCMOUSEMOVE 0x00A0</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3858,6 +3859,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>If it is appropriate to do so, the system sends the <c>WM_SYSCOMMAND</c> message to the window.</para>
 		/// <para>
@@ -3888,7 +3890,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCLBUTTONDOWN 0x00A1</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3902,6 +3903,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function tests the specified point to find the location of the cursor and performs the appropriate
@@ -3935,7 +3937,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCLBUTTONUP 0x00A2</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3949,6 +3950,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function tests the specified point to find out the location of the cursor and performs the appropriate
@@ -3983,7 +3985,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCLBUTTONDBLCLK 0x00A3</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -3997,6 +3998,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// You can also use the <c>GET_X_LPARAM</c> and <c>GET_Y_LPARAM</c> macros to extract the values of the x- and y- coordinates from lParam.
@@ -4036,7 +4038,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCRBUTTONDOWN 0x00A4</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4050,6 +4051,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// You can also use the <c>GET_X_LPARAM</c> and <c>GET_Y_LPARAM</c> macros to extract the values of the x- and y- coordinates from lParam.
@@ -4080,7 +4082,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCRBUTTONUP 0x00A5</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4094,6 +4095,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// You can also use the <c>GET_X_LPARAM</c> and <c>GET_Y_LPARAM</c> macros to extract the values of the x- and y- coordinates from lParam.
@@ -4124,7 +4126,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCRBUTTONDBLCLK 0x00A6</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4138,6 +4139,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>A window need not have the <c>CS_DBLCLKS</c> style to receive <c>WM_NCRBUTTONDBLCLK</c> messages.</para>
 		/// <para>
@@ -4174,7 +4176,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCMBUTTONDOWN 0x00A7</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4188,6 +4189,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// You can also use the <c>GET_X_LPARAM</c> and <c>GET_Y_LPARAM</c> macros to extract the values of the x- and y- coordinates from lParam.
@@ -4218,7 +4220,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCMBUTTONUP 0x00A8</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4232,6 +4233,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// You can also use the <c>GET_X_LPARAM</c> and <c>GET_Y_LPARAM</c> macros to extract the values of the x- and y- coordinates from lParam.
@@ -4262,7 +4264,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCMBUTTONDBLCLK 0x00A9</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4276,6 +4277,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>A window need not have the <c>CS_DBLCLKS</c> style to receive <c>WM_NCMBUTTONDBLCLK</c> messages.</para>
 		/// <para>
@@ -4312,7 +4314,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCXBUTTONDOWN 0x00AB</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4344,6 +4345,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c>. For more information about processing the return value,
 		/// see the Remarks section.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to get the information in the wParam parameter.</para>
 		/// <para>
@@ -4385,7 +4387,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCXBUTTONUP 0x00AC</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4417,6 +4418,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c>. For more information about processing the return value,
 		/// see the Remarks section.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to get the information in the wParam parameter.</para>
 		/// <para>
@@ -4457,7 +4459,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCXBUTTONDBLCLK 0x00AD</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -4489,6 +4490,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c>. For more information about processing the return value,
 		/// see the Remarks section.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to get the information in the wParam parameter.</para>
 		/// <para>
@@ -4530,7 +4532,6 @@ public static partial class User32
 		/// <summary>
 		/// Simulates the user clicking a button. This message causes the button to receive the <c>WM_LBUTTONDOWN</c> and <c>WM_LBUTTONUP</c>
 		/// messages, and the button's parent window to receive a BN_CLICKED notification code.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -4538,6 +4539,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the button is in a dialog box and the dialog box is not active, the <c>BM_CLICK</c> message might fail. To ensure success in
 		/// this situation, call the <c>SetActiveWindow</c> function to activate the dialog box before sending the <c>BM_CLICK</c> message to
@@ -4554,7 +4556,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_INPUT_DEVICE_CHANGE 0x00FE</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Type: <c>WPARAM</c></para>
@@ -4578,6 +4579,7 @@ public static partial class User32
 		/// <para>The <c>HANDLE</c> to the raw input device.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-input-device-change
 		[MsgParams(typeof(GIDC), typeof(HANDLE))]
 		WM_INPUT_DEVICE_CHANGE = 0x00FE,
@@ -4588,7 +4590,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_INPUT 0x00FF</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The input code. Use <c>GET_RAWINPUT_CODE_WPARAM</c> macro to get the value.</para>
@@ -4617,6 +4618,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>Raw input is available only when the application calls <c>RegisterRawInputDevices</c> with valid device specifications.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-input
 		[MsgParams(typeof(RIM_CODE), typeof(HRAWINPUT))]
@@ -4630,7 +4632,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_KEYDOWN 0x0100</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The virtual-key code of the nonsystem key. See Virtual-Key Codes.</para>
@@ -4681,6 +4682,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the F10 key is pressed, the <c>DefWindowProc</c> function sets an internal flag. When <c>DefWindowProc</c> receives the
@@ -4710,7 +4712,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_KEYDOWN 0x0100</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The virtual-key code of the nonsystem key. See Virtual-Key Codes.</para>
@@ -4761,6 +4762,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the F10 key is pressed, the <c>DefWindowProc</c> function sets an internal flag. When <c>DefWindowProc</c> receives the
@@ -4791,7 +4793,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_KEYUP 0x0101</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The virtual-key code of the nonsystem key. See Virtual-Key Codes.</para>
@@ -4843,6 +4844,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function sends a <c>WM_SYSCOMMAND</c> message to the top-level window if the F10 key or the ALT key was
@@ -4867,7 +4869,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CHAR 0x0102</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The character code of the key.</para>
@@ -4919,6 +4920,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The <c>WM_CHAR</c> message uses Unicode Transformation Format (UTF)-16.</para>
 		/// <para>
@@ -4950,7 +4952,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_DEADCHAR 0x0103</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The character code generated by the dead key.</para>
@@ -5002,6 +5003,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>WM_DEADCHAR</c> message typically is used by applications to give the user feedback about each key pressed. For example,
@@ -5032,7 +5034,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SYSKEYDOWN 0x0104</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The virtual-key code of the key being pressed. See <c>Virtual-Key Codes</c>.</para>
@@ -5087,6 +5088,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function examines the specified key and generates a <c>WM_SYSCOMMAND</c> message if the key is either
@@ -5124,7 +5126,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SYSKEYUP 0x0105</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The virtual-key code of the key being released. See <c>Virtual-Key Codes</c>.</para>
@@ -5179,6 +5180,7 @@ public static partial class User32
 		/// <para>For more details, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>DefWindowProc</c> function sends a <c>WM_SYSCOMMAND</c> message to the top-level window if the F10 key or the ALT key was
@@ -5233,7 +5235,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SYSCHAR 0x0106</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The character code of the window menu key.</para>
@@ -5285,6 +5286,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the context code is zero, the message can be passed to the <c>TranslateAccelerator</c> function, which will handle it as
@@ -5311,7 +5313,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SYSDEADCHAR 0x0107</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The character code generated by the system dead key that is, a dead key that is pressed while holding down the ALT key.</para>
@@ -5363,6 +5364,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// For enhanced 101- and 102-key keyboards, extended keys are the right ALT and CTRL keys on the main section of the keyboard; the
 		/// INS, DEL, HOME, END, PAGE UP, PAGE DOWN, and arrow keys in the clusters to the left of the numeric keypad; and the divide (/) and
@@ -5381,7 +5383,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_UNICHAR 0x0109</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The character code of the key.</para>
@@ -5442,6 +5443,7 @@ public static partial class User32
 		/// <para>For more detail, see Keystroke Message Flags.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>WM_UNICHAR</c> message is similar to <c>WM_CHAR</c>, but it uses Unicode Transformation Format (UTF)-32, whereas
@@ -5479,10 +5481,10 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_STARTCOMPOSITION, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message has no return value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message is a notification to an IME window to open its composition window. An application should process this message if it
@@ -5502,10 +5504,10 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_ENDCOMPOSITION, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message has no return value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>An application should process this message if it displays composition characters itself.</para>
 		/// <para>
@@ -5525,7 +5527,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_COMPOSITION, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -5561,6 +5562,7 @@ public static partial class User32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message has no return value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// An application should process this message if it displays composition characters itself. Otherwise, it should send the message to
@@ -5591,7 +5593,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_INITDIALOG 0x0110</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -5614,6 +5615,7 @@ public static partial class User32
 		/// The dialog box procedure should return the value directly. The <c>DWL_MSGRESULT</c> value set by the <c>SetWindowLong</c>
 		/// function is ignored.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The control to receive the default keyboard focus is always the first control in the dialog box that is visible, not disabled,
@@ -5635,7 +5637,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_COMMAND 0x0111</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>For a description of this parameter, see Remarks.</para>
@@ -5643,6 +5644,7 @@ public static partial class User32
 		/// <para>For a description of this parameter, see Remarks.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use of the wParam and lParam parameters are summarized here.</para>
 		/// <list type="table">
@@ -5699,7 +5701,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SYSCOMMAND 0x0112</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of system command requested. This parameter can be one of the following values.</para>
@@ -5804,6 +5805,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>To obtain the position coordinates in screen coordinates, use the following code:</para>
 		/// <para>
@@ -5853,7 +5855,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_TIMER 0x0113</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The timer identifier.</para>
@@ -5864,6 +5865,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// You can process the message by providing a <c>WM_TIMER</c> case in the window procedure. Otherwise, <c>DispatchMessage</c> will
@@ -5887,7 +5889,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_HSCROLL WPARAM wParam LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -5952,6 +5953,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The SB_THUMBTRACK request code is typically used by applications that provide feedback as the user drags the scroll box.</para>
 		/// <para>
@@ -5981,7 +5983,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_VSCROLL WPARAM wParam LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -6047,6 +6048,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The SB_THUMBTRACK request code is typically used by applications that provide feedback as the user drags the scroll box.</para>
 		/// <para>
@@ -6076,7 +6078,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_INITMENU 0x0116</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the menu to be initialized.</para>
@@ -6084,6 +6085,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// A <c>WM_INITMENU</c> message is sent only when a menu is first accessed; only one <c>WM_INITMENU</c> message is generated for
 		/// each access. For example, moving the mouse across several menu items while holding down the button does not generate new
@@ -6101,7 +6103,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_INITMENUPOPUP 0x0117</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the drop-down menu or submenu.</para>
@@ -6113,6 +6114,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/menurc/wm-initmenupopup
 		[MsgParams(typeof(HMENU), typeof(uint))]
 		WM_INITMENUPOPUP = 0x0117,
@@ -6122,7 +6124,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MENUSELECT 0x011F</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -6178,6 +6179,7 @@ public static partial class User32
 		/// <para>A handle to the menu that was clicked.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the high-order word of wParam contains 0xFFFF and the lParam parameter contains <c>NULL</c>, the system has closed the menu.
@@ -6199,7 +6201,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MENUCHAR 0x0120</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The low-order word specifies the character code that corresponds to the key the user pressed.</para>
@@ -6249,6 +6250,7 @@ public static partial class User32
 		/// <term>Informs the system that it should select the item specified in the low-order word of the return value.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>The low-order word is ignored if the high-order word contains 0 or 1.</para>
 		/// <para>An application should process this message when an accelerator is used to select a menu item that displays a bitmap.</para>
@@ -6265,7 +6267,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ENTERIDLE 0x0121</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter can be one of the following values.</para>
@@ -6287,6 +6288,7 @@ public static partial class User32
 		/// <para>A handle to the dialog box (if wParam is <c>MSGF_DIALOGBOX</c>) or window containing the displayed menu (if wParam is <c>MSGF_MENU</c>).</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// You can suppress the <c>WM_ENTERIDLE</c> message for a dialog box by creating the dialog box with the <c>DS_NOIDLEMSG</c> style.
 		/// </remarks>
@@ -6299,12 +6301,12 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MENURBUTTONUP 0x0122</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the menu item on which the right mouse button was released.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the menu containing the item.</para>
+		/// </summary>
 		/// <remarks>
 		/// The <c>WM_MENURBUTTONUP</c> message allows applications to provide a context-sensitive menu also known as a shortcut menu for the
 		/// menu item specified in this message. To display a context-sensitive menu for a menu item, call the <c>TrackPopupMenuEx</c>
@@ -6319,7 +6321,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MENUDRAG 0x0123</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The position of the item where the drag operation began.</para>
@@ -6341,6 +6342,7 @@ public static partial class User32
 		/// <term>Menu should be ended.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>The application can call the <c>DoDragDrop</c> function in response to this message.</para>
 		/// <para>To create a drag-and-drop menu, call <c>SetMenuInfo</c> with <c>MNS_DRAGDROP</c>.</para>
@@ -6357,7 +6359,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MENUGETOBJECT 0x0124</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -6379,6 +6380,7 @@ public static partial class User32
 		/// <term>The interface is not supported.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/menurc/wm-menugetobject
 		[MsgParams(null, typeof(MENUGETOBJECTINFO?), LResultType = typeof(MNGO))]
 		WM_MENUGETOBJECT = 0x0124,
@@ -6388,7 +6390,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_UNINITMENUPOPUP 0x0125</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the menu</para>
@@ -6396,6 +6397,7 @@ public static partial class User32
 		/// <para>
 		/// The high-order word identifies the menu that was destroyed. Currently, this parameter can only be <c>MF_SYSMENU</c> (the window menu).
 		/// </para>
+		/// </summary>
 		/// <remarks>If an application receives a <c>WM_INITMENUPOPUP</c> message, it will receive a <c>WM_UNINITMENUPOPUP</c> message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/menurc/wm-uninitmenupopup
 		[MsgParams(typeof(HMENU), typeof(uint))]
@@ -6406,12 +6408,12 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MENUCOMMAND 0x0126</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the item selected.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A handle to the menu for the item selected.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>WM_MENUCOMMAND</c> message gives you a handle to the menu so you can access the menu data in the <c>MENUINFO</c> structure
@@ -6432,7 +6434,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CHANGEUISTATE 0x0127</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The low-order word specifies the action to be taken. This member can be one of the following values.</para>
@@ -6480,6 +6481,7 @@ public static partial class User32
 		/// </list>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used and must be 0.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A window should send this message to itself or its parent when it must change the UI state elements of all windows in the same
@@ -6506,7 +6508,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_UPDATEUISTATE 0x0128</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The low-order word specifies the action to be performed. This parameter can be one of the following values.</para>
@@ -6554,6 +6555,7 @@ public static partial class User32
 		/// </list>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A window should send this message to change the UI state of all its child windows. In contrast to the <c>WM_CHANGEUISTATE</c>
@@ -6575,7 +6577,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_QUERYUISTATE 0x0129</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be 0.</para>
@@ -6604,6 +6605,7 @@ public static partial class User32
 		/// <term>Focus indicators are hidden.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/menurc/wm-queryuistate
 		[MsgParams(null, null, LResultType = typeof(UISF))]
 		WM_QUERYUISTATE = 0x0129,
@@ -6640,7 +6642,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_CTLCOLOREDIT WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the device context for the edit control window.</para>
@@ -6651,6 +6652,7 @@ public static partial class User32
 		/// If an application processes this message, it must return the handle of a brush. The system uses the brush to paint the background
 		/// of the edit control.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the application returns a brush that it created (for example, by using the <c>CreateSolidBrush</c> or
@@ -6686,7 +6688,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_CTLCOLORLISTBOX WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Handle to the device context for the list box.</para>
@@ -6697,6 +6698,7 @@ public static partial class User32
 		/// If an application processes this message, it must return a handle to a brush. The system uses the brush to paint the background
 		/// of the list box.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>By default, the <c>DefWindowProc</c> function selects the default system colors for the list box.</para>
 		/// <para>The <c>WM_CTLCOLORLISTBOX</c> message is never sent between threads. It is sent only within one thread.</para>
@@ -6718,7 +6720,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_CTLCOLORBTN WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>An <c>HDC</c> that specifies the handle to the display context for the button.</para>
@@ -6729,6 +6730,7 @@ public static partial class User32
 		/// If an application processes this message, it must return a handle to a brush. The system uses the brush to paint the background
 		/// of the button.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the application returns a brush that it created (for example, by using the <c>CreateSolidBrush</c> or
@@ -6768,7 +6770,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CTLCOLORDLG 0x0136</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the device context for the dialog box.</para>
@@ -6779,6 +6780,7 @@ public static partial class User32
 		/// If an application processes this message, it must return a handle to a brush. The system uses the brush to paint the background
 		/// of the dialog box.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>By default, the <c>DefWindowProc</c> function selects the default system colors for the dialog box.</para>
 		/// <para>
@@ -6810,7 +6812,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_CTLCOLORSCROLLBAR WPARAM wParam LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Handle to the device context for the scroll bar control.</para>
@@ -6821,6 +6822,7 @@ public static partial class User32
 		/// If an application processes this message, it must return the handle to a brush. The system uses the brush to paint the background
 		/// of the scroll bar control.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the application returns a brush that it created (for example, by using the <c>CreateSolidBrush</c> or
@@ -6854,7 +6856,6 @@ public static partial class User32
 		/// <para>
 		/// <code>WM_CTLCOLORSTATIC WPARAM wParam; LPARAM lParam;</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Handle to the device context for the static control window.</para>
@@ -6865,6 +6866,7 @@ public static partial class User32
 		/// If an application processes this message, the return value is a handle to a brush that the system uses to paint the background of
 		/// the static control.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the application returns a brush that it created (for example, by using the <c>CreateSolidBrush</c> or
@@ -6904,7 +6906,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOUSEMOVE 0x0200</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -6951,6 +6952,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -6985,7 +6987,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_LBUTTONDOWN 0x0201</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7032,6 +7033,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// As noted above, the x-coordinate is in the low-order <c>short</c> of the return value; the y-coordinate is in the high-order
@@ -7065,7 +7067,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_LBUTTONUP 0x0202</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7108,6 +7109,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -7142,7 +7144,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_LBUTTONDBLCLK 0x0203</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7189,6 +7190,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -7229,7 +7231,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_RBUTTONDOWN 0x0204</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7276,6 +7277,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -7313,7 +7315,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_RBUTTONUP 0x0205</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7356,6 +7357,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -7390,7 +7392,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_RBUTTONDBLCLK 0x0206</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7437,6 +7438,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Only windows that have the <c>CS_DBLCLKS</c> style can receive <c>WM_RBUTTONDBLCLK</c> messages, which the system generates
@@ -7477,7 +7479,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MBUTTONDOWN 0x0207</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7524,6 +7525,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -7560,7 +7562,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MBUTTONUP 0x0208</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7613,6 +7614,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -7647,7 +7649,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MBUTTONDBLCLK 0x0209</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -7694,6 +7695,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
 		/// <para>
@@ -7734,7 +7736,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOUSEWHEEL 0x020A</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -7784,6 +7785,7 @@ public static partial class User32
 		/// <para>The high-order word specifies the y-coordinate of the pointer, relative to the upper-left corner of the screen.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to get the information in the wParam parameter:</para>
 		/// <para>
@@ -7840,7 +7842,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_XBUTTONDOWN 0x020B</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The low-order word indicates whether various virtual keys are down. It can be one or more of the following values.</para>
@@ -7905,6 +7906,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c>. For more information about processing the return value,
 		/// see the Remarks section.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to get the information in the wParam parameter:</para>
 		/// <para>
@@ -7948,7 +7950,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_XBUTTONUP 0x020C</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The low-order word indicates whether various virtual keys are down. It can be one or more of the following values.</para>
@@ -8013,6 +8014,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c>. For more information about processing the return value,
 		/// see the Remarks section.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to get the information in the wParam parameter:</para>
 		/// <para>
@@ -8056,7 +8058,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_XBUTTONDBLCLK 0x020D</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The low-order word indicates whether various virtual keys are down. It can be one or more of the following values.</para>
@@ -8121,6 +8122,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c>. For more information about processing the return value,
 		/// see the Remarks section.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to get the information in the wParam parameter:</para>
 		/// <para>
@@ -8171,7 +8173,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOUSEHWHEEL 0x020E</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -8221,6 +8222,7 @@ public static partial class User32
 		/// <para>The high-order word specifies the y-coordinate of the pointer, relative to the upper-left corner of the screen.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use the following code to obtain the information in the wParam parameter.</para>
 		/// <para>
@@ -8282,7 +8284,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_PARENTNOTIFY 0x0210</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -8368,6 +8369,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the application processes this message, it returns zero.</para>
 		/// <para>If the application does not process this message, it calls <c>DefWindowProc</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>This message is also sent to all ancestor windows of the child window, including the top-level window.</para>
 		/// <para>
@@ -8389,7 +8391,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ENTERMENULOOP 0x0211</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -8400,6 +8401,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>The <c>DefWindowProc</c> function returns zero.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/menurc/wm-entermenuloop
 		[MsgParams(typeof(BOOL), null)]
@@ -8410,7 +8412,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_EXITMENULOOP 0x0212</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -8421,6 +8422,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>The <c>DefWindowProc</c> function returns zero.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/menurc/wm-exitmenuloop
 		[MsgParams(typeof(BOOL), null)]
@@ -8431,12 +8433,12 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NEXTMENU 0x0213</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The virtual-key code of the key. See <c>Virtual-Key Codes</c>.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A pointer to a <c>MDINEXTMENU</c> structure that contains information about the menu to be activated.</para>
+		/// </summary>
 		/// <remarks>
 		/// In responding to this message, the application can specify the menu to switch to in the <c>hmenuNext</c> member of
 		/// <c>MDINEXTMENU</c> and the window to receive the menu notification messages in the <c>hwndNext</c> member of the
@@ -8455,7 +8457,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SIZING 0x0214</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The edge of the window that is being sized. This parameter can be one of the following values.</para>
@@ -8505,6 +8506,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return <c>TRUE</c> if it processes this message.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-sizing
 		[MsgParams(typeof(WMSZ), typeof(RECT?))]
 		WM_SIZING = 0x0214,
@@ -8515,7 +8517,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CAPTURECHANGED 0x0215</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -8523,6 +8524,7 @@ public static partial class User32
 		/// <para>A handle to the window gaining the mouse capture.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A window receives this message even if it calls <c>ReleaseCapture</c> itself. An application should not attempt to set the mouse
@@ -8543,7 +8545,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOVING 0x0216</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -8555,6 +8556,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return <c>TRUE</c> if it processes this message.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-moving
 		[MsgParams(null, typeof(RECT?), LResultType = typeof(BOOL))]
 		WM_MOVING = 0x0216,
@@ -8565,7 +8567,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, // handle to window UINT uMsg, // WM_POWERBROADCAST WPARAM wParam, // power-management event LPARAM lParam // function-specific data );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -8618,6 +8619,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return <c>TRUE</c> if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The system always sends a PBT_APMRESUMEAUTOMATIC message whenever the system resumes. If the system resumes in response to user
@@ -8658,7 +8660,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc(HWND hwnd, // handle to window UINT uMsg, // WM_DEVICECHANGE WPARAM wParam, // device-change event LPARAM lParam ); // event-specific data</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to the window.</para>
@@ -8728,6 +8729,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Return <c>TRUE</c> to grant the request.</para>
 		/// <para>Return <c>BROADCAST_QUERY_DENY</c> to deny the request.</para>
+		/// </summary>
 		/// <remarks>
 		/// For devices that offer software-controllable features, such as ejection and locking, the system typically sends a
 		/// DBT_DEVICEREMOVEPENDING message to let applications and device drivers end their use of the device gracefully. If the system
@@ -8744,7 +8746,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDICREATE 0x0220</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -8754,6 +8755,7 @@ public static partial class User32
 		/// <para>Type: <c>HWND</c></para>
 		/// <para>If the message succeeds, the return value is the handle to the new child window.</para>
 		/// <para>If the message fails, the return value is <c>NULL</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The MDI child window is created with the <c>window style</c> bits <c>WS_CHILD</c>, <c>WS_CLIPSIBLINGS</c>,
@@ -8787,7 +8789,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDIDESTROY 0x0221</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the MDI child window to be closed.</para>
@@ -8796,6 +8797,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>zero</c></para>
 		/// <para>This message always returns zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message removes the title of the MDI child window from the MDI frame window and deactivates the child window. An application
@@ -8818,7 +8820,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDIACTIVATE 0x0222</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the MDI child window to be activated.</para>
@@ -8828,6 +8829,7 @@ public static partial class User32
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application sends this message to an MDI client window, the return value is zero.</para>
 		/// <para>An MDI child window should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// As the client window processes this message, it sends <c>WM_MDIACTIVATE</c> to the child window being deactivated and to the
@@ -8861,7 +8863,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDIRESTORE 0x0223</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the MDI child window to be restored.</para>
@@ -8870,6 +8871,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>zero</c></para>
 		/// <para>The return value is always zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-mdirestore
 		[MsgParams(typeof(HWND), null)]
 		WM_MDIRESTORE = 0x0223,
@@ -8882,7 +8884,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDINEXT 0x0224</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -8899,6 +8900,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>zero</c></para>
 		/// <para>The return value is always zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// If an MDI client window receives any message that changes the activation of its child windows while the active MDI child window
 		/// is maximized, the system restores the active child window and maximizes the newly activated child window.
@@ -8917,7 +8919,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDIMAXIMIZE 0x0225</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the MDI child window to be maximized.</para>
@@ -8926,6 +8927,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>zero</c></para>
 		/// <para>The return value is always zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// If an MDI client window receives any message that changes the activation of its child windows while the currently active MDI
 		/// child window is maximized, the system restores the active child window and maximizes the newly activated child window.
@@ -8942,7 +8944,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDITILE 0x0226</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -8969,6 +8970,7 @@ public static partial class User32
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>If the message succeeds, the return value is <c>TRUE</c>.</para>
 		/// <para>If the message fails, the return value is <c>FALSE</c>.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-mditile
 		[MsgParams(typeof(MdiTileFlags), null, LResultType = typeof(BOOL))]
 		WM_MDITILE = 0x0226,
@@ -8981,7 +8983,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDICASCADE 0x0227</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The cascade behavior. This parameter can be one or more of the following values.</para>
@@ -9005,6 +9006,7 @@ public static partial class User32
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>If the message succeeds, the return value is <c>TRUE</c>.</para>
 		/// <para>If the message fails, the return value is <c>FALSE</c>.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-mdicascade
 		[MsgParams(typeof(MdiTileFlags), null, LResultType = typeof(BOOL))]
 		WM_MDICASCADE = 0x0227,
@@ -9017,12 +9019,12 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDIICONARRANGE 0x0228</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used; it must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used; it must be zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-mdiiconarrange
 		[MsgParams()]
 		WM_MDIICONARRANGE = 0x0228,
@@ -9035,7 +9037,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDIGETACTIVE 0x0229</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -9048,6 +9049,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>HWND</c></para>
 		/// <para>The return value is the handle to the active MDI child window.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-mdigetactive
 		[MsgParams(null, typeof(BOOL), LResultType = typeof(HWND))]
 		WM_MDIGETACTIVE = 0x0229,
@@ -9060,7 +9062,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDISETMENU 0x0230</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the new frame window menu. If this parameter is <c>NULL</c>, the frame window menu is not changed.</para>
@@ -9070,6 +9071,7 @@ public static partial class User32
 		/// <para>Type: <c>HMENU</c></para>
 		/// <para>If the message succeeds, the return value is the handle to the old frame window menu.</para>
 		/// <para>If the message fails, the return value is zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>After sending this message, an application must call the <c>DrawMenuBar</c> function to update the menu bar.</para>
 		/// <para>
@@ -9097,7 +9099,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ENTERSIZEMOVE 0x0231</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -9106,6 +9107,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-entersizemove
 		[MsgParams()]
 		WM_ENTERSIZEMOVE = 0x0231,
@@ -9121,7 +9123,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_EXITSIZEMOVE 0x0232</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -9130,6 +9131,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-exitsizemove
 		[MsgParams()]
 		WM_EXITSIZEMOVE = 0x0232,
@@ -9139,7 +9141,6 @@ public static partial class User32
 		/// <para>
 		/// <code>PostMessage( (HWND) hWndControl, // handle to destination control (UINT) WM_DROPFILES, // message ID (WPARAM) wParam, // = (WPARAM) (HDROP) hDrop; (LPARAM) lParam // = 0; not used, must be zero );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hDrop</em></para>
 		/// <para>
@@ -9150,6 +9151,7 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return zero if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// The HDROP handle is declared in Shellapi.h. You must include this header in your build to use <c>WM_DROPFILES</c>. For further
 		/// discussion of how to use drag-and-drop to transfer Shell data, see Transferring Shell Data Using Drag-and-Drop or the Clipboard.
@@ -9166,7 +9168,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MDIREFRESHMENU 0x0234</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -9176,6 +9177,7 @@ public static partial class User32
 		/// <para>Type: <c>HMENU</c></para>
 		/// <para>If the message succeeds, the return value is the handle to the frame window menu.</para>
 		/// <para>If the message fails, the return value is <c>NULL</c>.</para>
+		/// </summary>
 		/// <remarks>After sending this message, an application must call the <c>DrawMenuBar</c> function to update the menu bar.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-mdirefreshmenu
 		[MsgParams(null, null, LResultType = typeof(HMENU))]
@@ -9186,7 +9188,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_SETCONTEXT, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -9230,6 +9231,7 @@ public static partial class User32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the value returned by <c>DefWindowProc</c> or <c>ImmIsUIMessage</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the application has created an IME window, it should call <c>ImmIsUIMessage</c>. Otherwise, it should pass this message to <c>DefWindowProc</c>.
@@ -9252,7 +9254,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_NOTIFY, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -9266,6 +9267,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value depends on the command sent.</para>
+		/// </summary>
 		/// <remarks>An application processes this message if it is responsible for managing the IME window.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/intl/wm-ime-notify
 		[MsgParams(typeof(IntPtr), typeof(IntPtr), LResultType = typeof(IntPtr))]
@@ -9280,7 +9282,6 @@ public static partial class User32
 		/// <para>
 		/// <code>SendMessage( HWND hwnd, WM_IME_CONTROL, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>Handle to the window.</para>
@@ -9294,6 +9295,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The message returns a command-specific value.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/intl/wm-ime-control
 		[MsgParams(typeof(IntPtr), typeof(IntPtr), LResultType = typeof(IntPtr))]
 		WM_IME_CONTROL = 0x0283,
@@ -9306,10 +9308,10 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_COMPOSITIONFULL, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message has no return value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The application should use the IMC_SETCOMPOSITIONWINDOW command to specify how the window should be displayed.</para>
 		/// <para>The IME window, instead of the IME, sends this notification message by the <c>SendMessage</c> function.</para>
@@ -9326,7 +9328,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_SELECT, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -9339,6 +9340,7 @@ public static partial class User32
 		/// <para>Input locale identifier associated with the IME.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message has no return value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// An application that has created an IME window should pass this message to that window so that it can retrieve the keyboard layout
@@ -9358,7 +9360,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_CHAR, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -9407,6 +9408,7 @@ public static partial class User32
 		/// <term>Transition state.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Unlike the <c>WM_CHAR</c> message for a non-Unicode window, this message can include double-byte and single-byte character
@@ -9428,7 +9430,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_REQUEST, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -9439,6 +9440,7 @@ public static partial class User32
 		/// <para>Command-specific data. For more information, see the description for each command.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns a command-specific value.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/intl/wm-ime-request
 		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
 		WM_IME_REQUEST = 0x0288,
@@ -9451,7 +9453,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_KEYDOWN, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -9498,6 +9499,7 @@ public static partial class User32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return 0 if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// An application can process this message or pass it to the <c>DefWindowProc</c> function to generate a matching <c>WM_KEYDOWN</c> message.
 		/// </remarks>
@@ -9513,7 +9515,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, WM_IME_KEYUP, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hwnd</em></para>
 		/// <para>A handle to window.</para>
@@ -9559,6 +9560,7 @@ public static partial class User32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>An application should return 0 if it processes this message.</para>
+		/// </summary>
 		/// <remarks>
 		/// An application can process this message or pass it to the <c>DefWindowProc</c> function to generate a matching <c>WM_KEYUP</c> message.
 		/// </remarks>
@@ -9574,7 +9576,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOUSEHOVER 0x02A1</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Indicates whether various virtual keys are down. This parameter can be one or more of the following values.</para>
@@ -9621,6 +9622,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Hover tracking stops when <c>WM_MOUSEHOVER</c> is generated. The application must call <c>TrackMouseEvent</c> again if it
@@ -9655,7 +9657,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_MOUSELEAVE 0x02A3</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -9663,6 +9664,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// All tracking requested by <c>TrackMouseEvent</c> is canceled when this message is generated. The application must call
 		/// <c>TrackMouseEvent</c> when the mouse reenters its window if it requires further tracking of mouse hover behavior.
@@ -9680,7 +9682,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCMOUSEHOVER 0x02A0</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -9694,6 +9695,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Hover tracking stops when this message is generated. The application must call <c>TrackMouseEvent</c> again if it requires
@@ -9724,7 +9726,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_NCMOUSELEAVE 0x02A2</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -9732,6 +9733,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// All tracking requested by <c>TrackMouseEvent</c> is canceled when this message is generated. The application must call
 		/// <c>TrackMouseEvent</c> when the mouse reenters its window if it requires further tracking of mouse hover behavior.
@@ -9746,7 +9748,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hWnd, // handle to window UINT Msg, // WM_WTSSESSION_CHANGE WPARAM wParam, // session state change event LPARAM lParam // session ID );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>hWnd</em></para>
 		/// <para>Handle to the window.</para>
@@ -9783,6 +9784,7 @@ public static partial class User32
 		/// <para>Reserved for future use.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is ignored.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>This message is sent only to applications that have registered to receive this message by calling <c>WTSRegisterSessionNotification</c>.</para>
 		/// <para>
@@ -9817,7 +9819,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_DPICHANGED 0x02E0</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -9832,6 +9833,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message is only relevant for <c>PROCESS_PER_MONITOR_DPI_AWARE</c> applications or <c>DPI_AWARENESS_PER_MONITOR_AWARE</c>
@@ -9900,7 +9902,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CUT 0x0300</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -9908,6 +9909,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The deletion performed by the <c>WM_CUT</c> message can be undone by sending the edit control an <c>EM_UNDO</c> message.</para>
 		/// <para>To delete the current selection without placing the deleted text on the clipboard, use the <c>WM_CLEAR</c> message.</para>
@@ -9928,7 +9930,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_COPY 0x0301</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -9936,6 +9937,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns nonzero value on success, else zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// When sent to a combo box, the <c>WM_COPY</c> message is handled by its edit control. This message has no effect when sent to a
 		/// combo box with the <c>CBS_DROPDOWNLIST</c> style.
@@ -9952,7 +9954,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_PASTE 0x0302</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -9960,6 +9961,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// When sent to a combo box, the <c>WM_PASTE</c> message is handled by its edit control. This message has no effect when sent to a
 		/// combo box with the <c>CBS_DROPDOWNLIST</c> style.
@@ -9976,7 +9978,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CLEAR 0x0303</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -9984,6 +9985,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The deletion performed by the <c>WM_CLEAR</c> message can be undone by sending the edit control an <c>EM_UNDO</c> message.</para>
 		/// <para>To delete the current selection and place the deleted content on the clipboard, use the <c>WM_CUT</c> message.</para>
@@ -9999,7 +10001,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>WM_UNDO</c> message to an edit control to undo the last operation. When this message is sent to an edit
 		/// control, the previously deleted text is restored or the previously added text is deleted.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -10008,6 +10009,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, the return value is <c>TRUE</c>.</para>
 		/// <para>If the message fails, the return value is <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks><c>Rich Edit:</c> It is recommended that <c>EM_UNDO</c> be used instead of <c>WM_UNDO</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/wm-undo
 		[MsgParams(LResultType = typeof(BOOL))]
@@ -10022,7 +10024,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_RENDERFORMAT 0x0305</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The clipboard format to be rendered.</para>
@@ -10030,6 +10031,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// When responding to a <c>WM_RENDERFORMAT</c> message, the clipboard owner must not open the clipboard before calling
 		/// <c>SetClipboardData</c>. Opening the clipboard is not necessary before placing data in response to <c>WM_RENDERFORMAT</c>, and
@@ -10050,7 +10052,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_RENDERALLFORMATS 0x0306</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -10058,6 +10059,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When responding to a <c>WM_RENDERALLFORMATS</c> message, the application must call the <c>OpenClipboard</c> function and then
@@ -10087,7 +10089,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_DESTROYCLIPBOARD 0x0307</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -10095,6 +10096,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/dataxchg/wm-destroyclipboard
 		[MsgParams()]
 		WM_DESTROYCLIPBOARD = 0x0307,
@@ -10108,12 +10110,12 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_DRAWCLIPBOARD 0x0308</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Only clipboard viewer windows receive this message. These are windows that have been added to the clipboard viewer chain by using
@@ -10137,7 +10139,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_PAINTCLIPBOARD 0x0309</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -10148,6 +10149,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// To determine whether the entire client area or just a portion of it needs repainting, the clipboard owner must compare the
@@ -10172,7 +10174,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_VSCROLLCLIPBOARD 0x030A</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -10222,6 +10223,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and invalidate
 		/// the appropriate region.
@@ -10238,7 +10240,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_SIZECLIPBOARD 0x030B</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -10249,6 +10250,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the clipboard viewer window is about to be destroyed or resized, a <c>WM_SIZECLIPBOARD</c> message is sent with a null
@@ -10269,7 +10271,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_ASKCBFORMATNAME 0x030C</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The size, in characters, of the buffer pointed to by the lParam parameter.</para>
@@ -10277,6 +10278,7 @@ public static partial class User32
 		/// <para>A pointer to the buffer that is to receive the clipboard format name.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// In response to this message, the clipboard owner should copy the name of the owner-display format to the specified buffer, not
@@ -10297,7 +10299,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CHANGECBCHAIN 0x030D</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window being removed from the clipboard viewer chain.</para>
@@ -10308,6 +10309,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Each clipboard viewer window saves the handle to the next window in the clipboard viewer chain. Initially, this handle is the
@@ -10332,7 +10334,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_HSCROLLCLIPBOARD 0x030E</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the clipboard viewer window.</para>
@@ -10382,6 +10383,7 @@ public static partial class User32
 		/// </list>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// The clipboard owner can use the <c>ScrollWindow</c> function to scroll the image in the clipboard viewer window and invalidate
 		/// the appropriate region.
@@ -10399,7 +10401,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -10407,6 +10408,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the window realizes its logical palette, it must return <c>TRUE</c>; otherwise, it must return <c>FALSE</c>.</para>
+		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/gdi/wm-querynewpalette
 		[MsgParams(LResultType = typeof(BOOL))]
 		WM_QUERYNEWPALETTE = 0x030F,
@@ -10417,7 +10419,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window that is going to realize its logical palette.</para>
@@ -10425,6 +10426,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The application changing its palette does not wait for acknowledgment of this message before changing the palette and sending the
@@ -10449,12 +10451,12 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the window that caused the system palette to change.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This message must be sent to all top-level and overlapped windows, including the one that changed the system palette. If any
@@ -10477,7 +10479,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_HOTKEY 0x0312</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -10529,6 +10530,7 @@ public static partial class User32
 		/// </term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <c>WM_HOTKEY</c> is unrelated to the <c>WM_GETHOTKEY</c> and <c>WM_SETHOTKEY</c> hot keys. The <c>WM_HOTKEY</c> message is sent
 		/// for generic hot keys while the <c>WM_SETHOTKEY</c> and <c>WM_GETHOTKEY</c> messages relate to window activation hot keys.
@@ -10546,7 +10548,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the device context to draw in.</para>
@@ -10582,6 +10583,7 @@ public static partial class User32
 		/// <term>Draws all owned windows.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// The <c>DefWindowProc</c> function processes this message based on which drawing option is specified: if PRF_CHECKVISIBLE is
 		/// specified and the window is not visible, do nothing, if PRF_NONCLIENT is specified, draw the nonclient area in the specified
@@ -10605,7 +10607,6 @@ public static partial class User32
 		/// <para>
 		/// <code>LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A handle to the device context to draw in.</para>
@@ -10641,6 +10642,7 @@ public static partial class User32
 		/// <term>Draws all owned windows.</term>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A window can process this message in much the same manner as <c>WM_PAINT</c>, except that <c>BeginPaint</c> and <c>EndPaint</c>
@@ -10664,7 +10666,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_APPCOMMAND 0x0319</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -10967,6 +10968,7 @@ public static partial class User32
 		/// If an application processes this message, it should return <c>TRUE</c>. For more information about processing the return value,
 		/// see the Remarks section.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>DefWindowProc</c> generates the <c>WM_APPCOMMAND</c> message when it processes the <c>WM_XBUTTONUP</c> or
@@ -10999,7 +11001,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_THEMECHANGED 0x031A</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is reserved.</para>
@@ -11008,6 +11009,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// <para>
@@ -11033,7 +11035,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_CLIPBOARDUPDATE 0x031D</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be zero.</para>
@@ -11041,6 +11042,7 @@ public static partial class User32
 		/// <para>This parameter is not used and must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>To register a window to receive this message, use the <c>AddClipboardFormatListener</c> function.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/dataxchg/wm-clipboardupdate
 		[MsgParams()]
@@ -11052,7 +11054,6 @@ public static partial class User32
 		/// <para>Note</para>
 		/// <para>As of Windows 8, DWM composition is always enabled, so this message is not sent regardless of video mode changes.</para>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used.</para>
@@ -11060,6 +11061,7 @@ public static partial class User32
 		/// <para>Not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// <para>The <c>DwmIsCompositionEnabled</c> function can be used to determine the current composition state.</para>
@@ -11068,7 +11070,8 @@ public static partial class User32
 		[MsgParams()]
 		WM_DWMCOMPOSITIONCHANGED = 0x031E,
 
-		/// <summary>Sent when the non-client area rendering policy has changed.</summary>
+		/// <summary>
+		/// Sent when the non-client area rendering policy has changed.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies whether DWM rendering is enabled for the non-client area of the window. <c>TRUE</c> if enabled; otherwise, <c>FALSE</c>.</para>
@@ -11076,6 +11079,7 @@ public static partial class User32
 		/// <para>Not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// <para>
@@ -11086,7 +11090,8 @@ public static partial class User32
 		[MsgParams(typeof(BOOL), null)]
 		WM_DWMNCRENDERINGCHANGED = 0x031F,
 
-		/// <summary>Informs all top-level windows that the colorization color has changed.</summary>
+		/// <summary>
+		/// Informs all top-level windows that the colorization color has changed.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the new colorization color. The color format is 0xAARRGGBB.</para>
@@ -11094,6 +11099,7 @@ public static partial class User32
 		/// <para>Specifies whether the new color is blended with opacity.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
 		/// <para><c>DwmGetColorizationColor</c> is used to determine the current color value.</para>
@@ -11102,7 +11108,8 @@ public static partial class User32
 		[MsgParams(typeof(COLORREF), typeof(BOOL))]
 		WM_DWMCOLORIZATIONCOLORCHANGED = 0x0320,
 
-		/// <summary>Sent when a Desktop Window Manager (DWM) composed window is maximized.</summary>
+		/// <summary>
+		/// Sent when a Desktop Window Manager (DWM) composed window is maximized.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Set to true to specify that the window has been maximized.</para>
@@ -11110,6 +11117,7 @@ public static partial class User32
 		/// <para>Not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
 		/// <remarks>A window receives this message through its <c>WindowProc</c> function.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/dwm/wm-dwmwindowmaximizedchange
 		[MsgParams(typeof(BOOL), null)]
@@ -11120,7 +11128,6 @@ public static partial class User32
 		/// <para>
 		/// <code>#define WM_GETTITLEBARINFOEX 0x033F</code>
 		/// </para>
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used and must be 0.</para>
@@ -11131,6 +11138,7 @@ public static partial class User32
 		/// <code>sizeof(TITLEBARINFOEX)</code>
 		/// before passing this structure with the message.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The following example shows how the message receiver casts an <c>LPARAM</c> value to retrieve the <c>TITLEBARINFOEX</c> structure.

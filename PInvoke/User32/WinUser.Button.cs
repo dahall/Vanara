@@ -15,7 +15,6 @@ public static partial class User32
 	{
 		/// <summary>
 		/// Gets the check state of a radio button or check box. You can send this message explicitly or use the <c>Button_GetCheck</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -46,6 +45,7 @@ public static partial class User32
 		/// <description>Button is cleared</description>
 		/// </item>
 		/// </list>
+		/// </summary>
 		/// <remarks>If the button has a style other than those listed, the return value is zero.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bm-getcheck
 		[MsgParams(LResultType = typeof(ButtonStateFlags))]
@@ -53,7 +53,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Sets the check state of a radio button or check box. You can send this message explicitly or by using the <c>Button_SetCheck</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The check state. This parameter can be one of the following values.</para>
@@ -82,6 +81,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message always returns zero.</para>
+		/// </summary>
 		/// <remarks>The <c>BM_SETCHECK</c> message has no effect on push buttons.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bm-setcheck
 		[MsgParams(typeof(ButtonStateFlags), null, LResultType = null)]
@@ -89,7 +89,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Retrieves the state of a button or check box. You can send this message explicitly or use the <c>Button_GetState</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -135,6 +134,7 @@ public static partial class User32
 		/// <description>No special state. Equivalent to zero.</description>
 		/// </item>
 		/// </list>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bm-getstate
 		[MsgParams(LResultType = typeof(ButtonStateFlags))]
 		BM_GETSTATE = 0x00F2,
@@ -142,7 +142,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets the highlight state of a button. The highlight state indicates whether the button is highlighted as if the user had pushed
 		/// it. You can send this message explicitly or use the <c>Button_SetState</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -153,6 +152,7 @@ public static partial class User32
 		/// <para>Not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message always returns zero.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Highlighting affects only the appearance of a button. It has no effect on the check state of a radio button or check box.</para>
 		/// <para>
@@ -164,7 +164,7 @@ public static partial class User32
 		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		BM_SETSTATE = 0x00F3,
 
-		/// <summary>Sets the style of a button. You can send this message explicitly or use the <c>Button_SetStyle</c> macro.</summary>
+		/// <summary>Sets the style of a button. You can send this message explicitly or use the <c>Button_SetStyle</c> macro.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The button style. This parameter can be a combination of button styles. For a table of button styles, see Button Styles.</para>
@@ -174,7 +174,7 @@ public static partial class User32
 		/// the button; a value of <c>FALSE</c> does not redraw the button.
 		/// </para>
 		/// <para><strong>Returns</strong></para>
-		/// <para>This message always returns zero.</para>
+		/// <para>This message always returns zero.</para></summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bm-setstyle
 		[MsgParams(typeof(ButtonStyle), typeof(BOOL), LResultType = null)]
 		BM_SETSTYLE = 0x00F4,
@@ -182,7 +182,6 @@ public static partial class User32
 		/// <summary>
 		/// Simulates the user clicking a button. This message causes the button to receive the <c>WM_LBUTTONDOWN</c> and <c>WM_LBUTTONUP</c>
 		/// messages, and the button's parent window to receive a BN_CLICKED notification code.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -190,6 +189,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the button is in a dialog box and the dialog box is not active, the <c>BM_CLICK</c> message might fail. To ensure success in
 		/// this situation, call the <c>SetActiveWindow</c> function to activate the dialog box before sending the <c>BM_CLICK</c> message to
@@ -199,7 +199,7 @@ public static partial class User32
 		[MsgParams(LResultType = null)]
 		BM_CLICK = 0x00F5,
 
-		/// <summary>Retrieves a handle to the image (icon or bitmap) associated with the button.</summary>
+		/// <summary>Retrieves a handle to the image (icon or bitmap) associated with the button.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of image to associate with the button. This parameter can be one of the following values.</para>
@@ -220,12 +220,12 @@ public static partial class User32
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
-		/// <para>The return value is a handle to the image, if any; otherwise, it is <c>NULL</c>.</para>
+		/// <para>The return value is a handle to the image, if any; otherwise, it is <c>NULL</c>.</para></summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bm-getimage
 		[MsgParams(typeof(LoadImageType), null, LResultType = typeof(IntPtr))]
 		BM_GETIMAGE = 0x00F6,
 
-		/// <summary>Associates a new image (icon or bitmap) with the button.</summary>
+		/// <summary>Associates a new image (icon or bitmap) with the button.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The type of image to associate with the button. This parameter can be one of the following values:</para>
@@ -240,7 +240,7 @@ public static partial class User32
 		/// <para><em>lParam</em></para>
 		/// <para>A handle ( <c>HICON</c> or <c>HBITMAP</c>) to the image to associate with the button.</para>
 		/// <para><strong>Returns</strong></para>
-		/// <para>The return value is a handle to the image previously associated with the button, if any; otherwise, it is <c>NULL</c>.</para>
+		/// <para>The return value is a handle to the image previously associated with the button, if any; otherwise, it is <c>NULL</c>.</para></summary>
 		/// <remarks>
 		/// <para>
 		/// The appearance of text, an icon, or both on a button control depends on the <c>BS_ICON</c> and <c>BS_BITMAP</c> styles, and
@@ -278,14 +278,14 @@ public static partial class User32
 		[MsgParams(typeof(LoadImageType), typeof(IntPtr), LResultType = typeof(IntPtr))]
 		BM_SETIMAGE = 0x00F7,
 
-		/// <summary>Sets a flag on a radio button that controls the generation of BN_CLICKED messages when the button receives focus.</summary>
+		/// <summary>Sets a flag on a radio button that controls the generation of BN_CLICKED messages when the button receives focus.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A <c>BOOL</c> that specifies the state. <c>TRUE</c> to set the flag, otherwise <c>FALSE</c>.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>Not used. Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
-		/// <para>No return value.</para>
+		/// <para>No return value.</para></summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bm-setdontclick
 		[MsgParams(typeof(BOOL), null, LResultType = null)]
 		BM_SETDONTCLICK = 0x00F8,
@@ -293,7 +293,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the size of the button that best fits its text and image, if an image list is present. You can send this message explicitly
 		/// or use the <c>Button_GetIdealSize</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -306,6 +305,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <para>Note</para>
@@ -335,7 +335,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Assigns an image list to a button control. You can send this message explicitly or use the <c>Button_SetImageList</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -343,6 +342,7 @@ public static partial class User32
 		/// <para>A pointer to a <c>BUTTON_IMAGELIST</c> structure that contains image list information.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <para>Note</para>
@@ -369,7 +369,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the <c>BUTTON_IMAGELIST</c> structure that describes the image list assigned to a button control. You can send this message
 		/// explicitly or use the <c>Button_GetImageList</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -377,6 +376,7 @@ public static partial class User32
 		/// <para>A pointer to a <c>BUTTON_IMAGELIST</c> structure that contains image list information.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Note</para>
 		/// <para>
@@ -388,14 +388,14 @@ public static partial class User32
 		[MsgParams(null, typeof(IntPtr), LResultType = typeof(BOOL))]
 		BCM_GETIMAGELIST = BCM_FIRST + 0x0003,
 
-		/// <summary>The <c>BCM_SETTEXTMARGIN</c> message sets the margins for drawing text in a button control.</summary>
+		/// <summary>The <c>BCM_SETTEXTMARGIN</c> message sets the margins for drawing text in a button control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>A pointer to a <c>RECT</c> structure that specifies the margins to use for drawing text.</para>
 		/// <para><strong>Returns</strong></para>
-		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para></summary>
 		/// <remarks>
 		/// <para>Note</para>
 		/// <para>
@@ -410,7 +410,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the margins used to draw text in a button control. You can send this message explicitly or use the
 		/// <c>Button_GetTextMargin</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -418,6 +417,7 @@ public static partial class User32
 		/// <para>A pointer to a <c>RECT</c> structure that contains the margins to use for drawing text.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Note</para>
 		/// <para>
@@ -432,7 +432,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets the drop down state for a button with style <c>TBSTYLE_DROPDOWN</c>. Send this message explicitly or by using the
 		/// <c>Button_SetDropDownState</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A <c>BOOL</c> that is <c>TRUE</c> for state of BST_DROPDOWNPUSHED, or <c>FALSE</c> otherwise.</para>
@@ -440,13 +439,13 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bcm-setdropdownstate
 		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
 		BCM_SETDROPDOWNSTATE = BCM_FIRST + 0x0006,
 
 		/// <summary>
 		/// Sets information for a split button control. Send this message explicitly or by using the <c>Button_SetSplitInfo</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -454,6 +453,7 @@ public static partial class User32
 		/// <para>A pointer to a <c>BUTTON_SPLITINFO</c> structure containing information about the split button.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+		/// </summary>
 		/// <remarks>Use this message only with the <c>BS_SPLITBUTTON</c> and <c>BS_DEFSPLITBUTTON</c> button styles.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bcm-setsplitinfo
 		[MsgParams(null, typeof(IntPtr), LResultType = typeof(BOOL))]
@@ -461,7 +461,6 @@ public static partial class User32
 
 		/// <summary>
 		/// Gets information for a split button control. Send this message explicitly or by using the <c>Button_GetSplitInfo</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -472,6 +471,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+		/// </summary>
 		/// <remarks>Use this message only with the <c>BS_SPLITBUTTON</c> and <c>BS_DEFSPLITBUTTON</c> button styles.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bcm-getsplitinfo
 		[MsgParams(null, typeof(IntPtr), LResultType = typeof(BOOL))]
@@ -480,7 +480,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets the text of the note associated with a command link button. You can send this message explicitly or use the
 		/// <c>Button_SetNote</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -488,6 +487,7 @@ public static partial class User32
 		/// <para>A pointer to a null-terminated <c>WCHAR</c> string that contains the note.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Beginning with comctl32 DLL version 6.01, command link buttons may have a note.</para>
 		/// <para>The <c>BCM_SETNOTE</c> message works only with the <c>BS_COMMANDLINK</c> and <c>BS_DEFCOMMANDLINK</c> button styles.</para>
@@ -499,7 +499,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the text of the note associated with a command link button. You can send this message explicitly or use the
 		/// <c>Button_GetNote</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A <c>DWORD</c> that specifies the size of the buffer pointed to by lParam, in characters.</para>
@@ -507,6 +506,7 @@ public static partial class User32
 		/// <para>The string buffer to receive the text. The buffer must be large enough to accommodate the terminating NULL character.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, it returns <c>TRUE</c>. Otherwise it returns <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>BCM_GETNOTE</c> message works only with buttons that have the <c>BS_COMMANDLINK</c> or <c>BS_DEFCOMMANDLINK</c> button style.
@@ -530,7 +530,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the length of the note text that may be displayed in the description for a command link button. Send this message explicitly
 		/// or by using the <c>Button_GetNoteLength</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -540,6 +539,7 @@ public static partial class User32
 		/// <para>
 		/// Returns the length of the note text in <c>WCHARs</c>, not including any terminating <c>NULL</c>, or zero if there is no note text.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Beginning with comctl32 DLL version 6.01, command link buttons may have a note. For information on DLL versions, see Common
@@ -554,7 +554,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets the elevation required state for a specified button or command link to display an elevated icon. Send this message
 		/// explicitly or by using the <c>Button_SetElevationRequiredState</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -562,6 +561,7 @@ public static partial class User32
 		/// <para>A <c>BOOL</c> that is <c>TRUE</c> to draw an elevated icon, or <c>FALSE</c> otherwise.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns 1 if successful, or an error code otherwise.</para>
+		/// </summary>
 		/// <remarks>An application must be manifested to use comctl32.dll version 6 to gain this functionality.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bcm-setshield
 		[MsgParams(null, typeof(BOOL), LResultType = typeof(int))]

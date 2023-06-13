@@ -30,7 +30,8 @@ public static partial class User32
 	/// <summary>Windows messages for combo-boxes.</summary>
 	public enum ComboBoxMessage
 	{
-		/// <summary>Gets the starting and ending character positions of the current selection in the edit control of a combo box.</summary>
+		/// <summary>
+		/// Gets the starting and ending character positions of the current selection in the edit control of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A pointer to a <c>DWORD</c> value that receives the starting position of the selection. This parameter can be <c>NULL</c>.</para>
@@ -41,11 +42,13 @@ public static partial class User32
 		/// The return value is a zero-based <c>DWORD</c> value with the starting position of the selection in the <c>LOWORD</c> and with the
 		/// ending position of the first character after the last selected character in the <c>HIWORD</c>.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-geteditsel
 		[MsgParams(typeof(uint?), typeof(uint?), LResultType = typeof(uint))]
 		CB_GETEDITSEL = 0x0140,
 
-		/// <summary>Limits the length of the text the user may type into the edit control of a combo box.</summary>
+		/// <summary>
+		/// Limits the length of the text the user may type into the edit control of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -56,6 +59,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is always <c>TRUE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the combo box does not have the <c>CBS_AUTOHSCROLL</c> style, setting the text limit to be larger than the size of the edit
@@ -71,7 +75,8 @@ public static partial class User32
 		[MsgParams(typeof(uint), null, LResultType = null)]
 		CB_LIMITTEXT = 0x0141,
 
-		/// <summary>An application sends a <c>CB_SETEDITSEL</c> message to select characters in the edit control of a combo box.</summary>
+		/// <summary>
+		/// An application sends a <c>CB_SETEDITSEL</c> message to select characters in the edit control of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -86,6 +91,7 @@ public static partial class User32
 		/// If the message succeeds, the return value is <c>TRUE</c>. If the message is sent to a combo box with the <c>CBS_DROPDOWNLIST</c>
 		/// style, it is CB_ERR.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// The positions are zero-based. The first character of the edit control is in the zero position. The first character after the last
 		/// selected character is in the ending position. For example, to select the first four characters of the edit control, use a
@@ -98,7 +104,6 @@ public static partial class User32
 		/// <summary>
 		/// Adds a string to the list box of a combo box. If the combo box does not have the <c>CBS_SORT</c> style, the string is added to
 		/// the end of the list. Otherwise, the string is inserted into the list, and the list is sorted.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -113,6 +118,7 @@ public static partial class User32
 		/// The return value is the zero-based index to the string in the list box of the combo box. If an error occurs, the return value is
 		/// CB_ERR. If insufficient space is available to store the new string, it is CB_ERRSPACE.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If you create an owner-drawn combo box with the <c>CBS_SORT</c> style but without the <c>CBS_HASSTRINGS</c> style, the
@@ -133,7 +139,8 @@ public static partial class User32
 		[MsgParams(null, typeof(StrPtrAuto), LResultType = typeof(int))]
 		CB_ADDSTRING = 0x0143,
 
-		/// <summary>Deletes a string in the list box of a combo box.</summary>
+		/// <summary>
+		/// Deletes a string in the list box of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the string to delete.</para>
@@ -144,6 +151,7 @@ public static partial class User32
 		/// The return value is a count of the strings remaining in the list. If the wParam parameter specifies an index greater than the
 		/// number of items in the list, the return value is CB_ERR.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// If you create the combo box with an owner-drawn style but without the <c>CBS_HASSTRINGS</c> style, the system sends a
 		/// <c>WM_DELETEITEM</c> message to the owner of the combo box so the application can free any additional data associated with the item.
@@ -155,7 +163,6 @@ public static partial class User32
 		/// <summary>
 		/// Adds names to the list displayed by the combo box. The message adds the names of directories and files that match a specified
 		/// string and set of file attributes. <c>CB_DIR</c> can also add mapped drive letters to the list.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -216,6 +223,7 @@ public static partial class User32
 		/// <para>
 		/// If an error occurs, the return value is CB_ERR. If there is insufficient space to store the new strings, the return value is CB_ERRSPACE.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If wParam includes the DDL_DIRECTORY flag and lParam specifies all the subdirectories of a first-level directory, such as
@@ -229,7 +237,8 @@ public static partial class User32
 		[MsgParams(typeof(DDL), typeof(StrPtrAuto), LResultType = typeof(int))]
 		CB_DIR = 0x0145,
 
-		/// <summary>Gets the number of items in the list box of a combo box.</summary>
+		/// <summary>
+		/// Gets the number of items in the list box of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -237,6 +246,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the number of items in the list box. If an error occurs, it is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>The index is zero-based, so the returned count is one greater than the index value of the last item.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getcount
 		[MsgParams(LResultType = typeof(int))]
@@ -245,7 +255,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>CB_GETCURSEL</c> message to retrieve the index of the currently selected item, if any, in the list box
 		/// of a combo box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -253,11 +262,13 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the zero-based index of the currently selected item. If no item is selected, it is CB_ERR.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getcursel
 		[MsgParams(LResultType = typeof(int))]
 		CB_GETCURSEL = 0x0147,
 
-		/// <summary>Gets a string from the list of a combo box.</summary>
+		/// <summary>
+		/// Gets a string from the list of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the string to retrieve.</para>
@@ -273,6 +284,7 @@ public static partial class User32
 		/// The return value is the length of the string, in <c>TCHAR</c> s, excluding the terminating null character. If wParam does not
 		/// specify a valid index, the return value is CB_ERR.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// <c>Security Warning:</c> Using this message incorrectly can compromise the security of your program. This message does not
@@ -289,7 +301,8 @@ public static partial class User32
 		[MsgParams(typeof(int), typeof(StrPtrAuto), LResultType = typeof(int))]
 		CB_GETLBTEXT = 0x0148,
 
-		/// <summary>Gets the length, in characters, of a string in the list of a combo box.</summary>
+		/// <summary>
+		/// Gets the length, in characters, of a string in the list of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the string.</para>
@@ -302,6 +315,7 @@ public static partial class User32
 		/// actually be greater than the length of the text. For more information, see the Remarks section.
 		/// </para>
 		/// <para>If the wParam parameter does not specify a valid index, the return value is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Under certain conditions, the return value is larger than the actual length of the text. This occurs with certain mixtures of
@@ -322,7 +336,6 @@ public static partial class User32
 		/// <summary>
 		/// Inserts a string or item data into the list of a combo box. Unlike the <c>CB_ADDSTRING</c> message, the <c>CB_INSERTSTRING</c>
 		/// message does not cause a list with the <c>CBS_SORT</c> style to be sorted.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -343,11 +356,13 @@ public static partial class User32
 		/// If the combo box has <c>WS_HSCROLL</c> style and you insert a string wider than the combo box, you should send a
 		/// <c>LB_SETHORIZONTALEXTENT</c> message to ensure the horizontal scroll bar appears.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-insertstring
 		[MsgParams(typeof(int), typeof(string), LResultType = typeof(int))]
 		CB_INSERTSTRING = 0x014A,
 
-		/// <summary>Removes all items from the list box and edit control of a combo box.</summary>
+		/// <summary>
+		/// Removes all items from the list box and edit control of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -355,6 +370,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message always returns CB_OKAY.</para>
+		/// </summary>
 		/// <remarks>
 		/// If you create the combo box with an owner-drawn style but without the <c>CBS_HASSTRINGS</c> style, the owner of the combo box
 		/// receives a <c>WM_DELETEITEM</c> message for each item in the combo box.
@@ -363,7 +379,8 @@ public static partial class User32
 		[MsgParams()]
 		CB_RESETCONTENT = 0x014B,
 
-		/// <summary>Searches the list box of a combo box for an item beginning with the characters in a specified string.</summary>
+		/// <summary>
+		/// Searches the list box of a combo box for an item beginning with the characters in a specified string.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -378,6 +395,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the zero-based index of the matching item. If the search is unsuccessful, it is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// If you create the combo box with an owner-drawn style but without the <c>CBS_HASSTRINGS</c> style, what the <c>CB_FINDSTRING</c>
 		/// message does depends on whether your application uses the <c>CBS_SORT</c> style. If you use the <c>CBS_SORT</c> style,
@@ -392,7 +410,6 @@ public static partial class User32
 		/// <summary>
 		/// Searches the list of a combo box for an item that begins with the characters in a specified string. If a matching item is found,
 		/// it is selected and copied to the edit control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -410,6 +427,7 @@ public static partial class User32
 		/// If the string is found, the return value is the index of the selected item. If the search is unsuccessful, the return value is
 		/// CB_ERR and the current selection is not changed.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>A string is selected only if the characters from the starting point match the characters in the prefix string.</para>
 		/// <para>
@@ -428,7 +446,6 @@ public static partial class User32
 		/// An application sends a <c>CB_SETCURSEL</c> message to select a string in the list of a combo box. If necessary, the list scrolls
 		/// the string into view. The text in the edit control of the combo box changes to reflect the new selection, and any previous
 		/// selection in the list is removed.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -442,6 +459,7 @@ public static partial class User32
 		/// If the message is successful, the return value is the index of the item selected. If wParam is greater than the number of items
 		/// in the list or if wParam is -1, the return value is CB_ERR and the selection is cleared.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-setcursel
 		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		CB_SETCURSEL = 0x014E,
@@ -449,7 +467,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>CB_SHOWDROPDOWN</c> message to show or hide the list box of a combo box that has the
 		/// <c>CBS_DROPDOWN</c> or <c>CBS_DROPDOWNLIST</c> style.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -460,6 +477,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is always <c>TRUE</c>.</para>
+		/// </summary>
 		/// <remarks>This message has no effect on a combo box created with the <c>CBS_SIMPLE</c> style.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-showdropdown
 		[MsgParams(typeof(bool), null, LResultType = typeof(bool))]
@@ -468,7 +486,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>CB_GETITEMDATA</c> message to a combo box to retrieve the application-supplied value associated with
 		/// the specified item in the combo box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the item.</para>
@@ -482,13 +499,13 @@ public static partial class User32
 		/// box. If the <c>CBS_HASSTRINGS</c> style was not used, the return value is the lParam parameter contained in a
 		/// <c>CB_SETITEMDATA</c> message.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getitemdata
 		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		CB_GETITEMDATA = 0x0150,
 
 		/// <summary>
 		/// An application sends a <c>CB_SETITEMDATA</c> message to set the value associated with the specified item in a combo box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the item's zero-based index.</para>
@@ -496,6 +513,7 @@ public static partial class User32
 		/// <para>Specifies the new value to be associated with the item.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the specified item is in an owner-drawn combo box created without the <c>CBS_HASSTRINGS</c> style, this message replaces the
 		/// value in the lParam parameter of the <c>CB_ADDSTRING</c> or <c>CB_INSERTSTRING</c> message that added the item to the combo box.
@@ -507,7 +525,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>CB_GETDROPPEDCONTROLRECT</c> message to retrieve the screen coordinates of a combo box in its
 		/// dropped-down state.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -516,13 +533,13 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, the return value is nonzero.</para>
 		/// <para>If the message fails, the return value is zero.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getdroppedcontrolrect
 		[MsgParams(null, typeof(RECT), LResultType = typeof(BOOL))]
 		CB_GETDROPPEDCONTROLRECT = 0x0152,
 
 		/// <summary>
 		/// An application sends a <c>CB_SETITEMHEIGHT</c> message to set the height of list items or the selection field in a combo box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the component of the combo box for which to set the height.</para>
@@ -535,6 +552,7 @@ public static partial class User32
 		/// <para>Specifies the height, in pixels, of the combo box component identified by wParam.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the index or height is invalid, the return value is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// The selection field height in a combo box is set independently of the height of the list items. An application must ensure that
 		/// the height of the selection field is not smaller than the height of a particular list item.
@@ -543,7 +561,8 @@ public static partial class User32
 		[MsgParams(typeof(int), typeof(int), LResultType = typeof(int))]
 		CB_SETITEMHEIGHT = 0x0153,
 
-		/// <summary>Determines the height of list items or the selection field in a combo box.</summary>
+		/// <summary>
+		/// Determines the height of list items or the selection field in a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -559,6 +578,7 @@ public static partial class User32
 		/// <c>CBS_OWNERDRAWVARIABLE</c> style, it is the height of the item specified by the wParam parameter. If wParam is -1, the return
 		/// value is the height of the edit control (or static-text) portion of the combo box. If an error occurs, the return value is CB_ERR.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/cb-getitemheight
 		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		CB_GETITEMHEIGHT = 0x0154,
@@ -566,7 +586,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>CB_SETEXTENDEDUI</c> message to select either the default UI or the extended UI for a combo box that
 		/// has the <c>CBS_DROPDOWN</c> or <c>CBS_DROPDOWNLIST</c> style.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>A <c>BOOL</c> that specifies whether the combo box uses the extended UI ( <c>TRUE</c>) or the default UI ( <c>FALSE</c>).</para>
@@ -574,6 +593,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the operation succeeds, the return value is CB_OKAY. If an error occurs, it is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// By default, the F4 key opens or closes the list and the DOWN ARROW changes the current selection. In the extended UI, the F4 key
 		/// is disabled and the DOWN ARROW key opens the drop-down list. The mouse wheel, which normally scrolls through the items in the
@@ -583,7 +603,8 @@ public static partial class User32
 		[MsgParams(typeof(BOOL), null, LResultType = typeof(int))]
 		CB_SETEXTENDEDUI = 0x0155,
 
-		/// <summary>Determines whether a combo box has the default user interface or the extended user interface.</summary>
+		/// <summary>
+		/// Determines whether a combo box has the default user interface or the extended user interface.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -591,6 +612,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the combo box has the extended user interface, the return value is <c>TRUE</c>; otherwise, it is <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// By default, the F4 key opens or closes the list and the DOWN ARROW changes the current selection. In a combo box with the
 		/// extended user interface, the F4 key is disabled and pressing the DOWN ARROW key opens the drop-down list.
@@ -599,7 +621,8 @@ public static partial class User32
 		[MsgParams(LResultType = typeof(BOOL))]
 		CB_GETEXTENDEDUI = 0x0156,
 
-		/// <summary>Determines whether the list box of a combo box is dropped down.</summary>
+		/// <summary>
+		/// Determines whether the list box of a combo box is dropped down.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -607,11 +630,13 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the list box is visible, the return value is <c>TRUE</c>; otherwise, it is <c>FALSE</c>.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getdroppedstate
 		[MsgParams(LResultType = typeof(BOOL))]
 		CB_GETDROPPEDSTATE = 0x0157,
 
-		/// <summary>Finds the first list box string in a combo box that matches the string specified in the lParam parameter.</summary>
+		/// <summary>
+		/// Finds the first list box string in a combo box that matches the string specified in the lParam parameter.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -626,6 +651,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the zero-based index of the matching item. If the search is unsuccessful, it is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This function is successful only if the specified string and a combo box item have the same length (except for the terminating
@@ -646,7 +672,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>CB_SETLOCALE</c> message to set the current locale of the combo box. If the combo box has the
 		/// <c>CBS_SORT</c> style and strings are added using <c>CB_ADDSTRING</c>, the locale of a combo box affects how list items are sorted.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the locale identifier for the combo box to use for sorting when adding text.</para>
@@ -657,6 +682,7 @@ public static partial class User32
 		/// The return value is the previous locale identifier. If wParam specifies a locale not installed on the system, the return value is
 		/// CB_ERR and the current combo box locale is not changed.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// Use the <c>MAKELCID</c> macro to construct a locale identifier and the <c>MAKELANGID</c> macro to construct a language
 		/// identifier. The language identifier is made up of a primary language identifier and a sublanguage identifier.
@@ -668,7 +694,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the current locale of the combo box. The locale is used to determine the correct sorting order of displayed text for combo
 		/// boxes with the <c>CBS_SORT</c> style and text added by using the <c>CB_ADDSTRING</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -679,6 +704,7 @@ public static partial class User32
 		/// The return value specifies the current locale of the combo box. The <c>HIWORD</c> contains the country/region code and the
 		/// <c>LOWORD</c> contains the language identifier.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// The language identifier is made up of a sublanguage identifier and a primary language identifier. The <c>PRIMARYLANGID</c> macro
 		/// obtains the primary language identifier and the <c>SUBLANGID</c> macro obtains the sublanguage identifier.
@@ -691,7 +717,6 @@ public static partial class User32
 		/// An application sends the <c>CB_GETTOPINDEX</c> message to retrieve the zero-based index of the first visible item in the list box
 		/// portion of a combo box. Initially, the item with index 0 is at the top of the list box, but if the list box contents have been
 		/// scrolled, another item may be at the top.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -700,6 +725,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message is successful, the return value is the index of the first visible item in the list box of the combo box.</para>
 		/// <para>If the message fails, the return value is CB_ERR.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/cb-gettopindex
 		[MsgParams(LResultType = typeof(int))]
 		CB_GETTOPINDEX = 0x015b,
@@ -708,7 +734,6 @@ public static partial class User32
 		/// An application sends the <c>CB_SETTOPINDEX</c> message to ensure that a particular item is visible in the list box of a combo
 		/// box. The system scrolls the list box contents so that either the specified item appears at the top of the list box or the maximum
 		/// scroll range has been reached.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the zero-based index of the list item.</para>
@@ -717,6 +742,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message is successful, the return value is zero.</para>
 		/// <para>If the message fails, the return value is CB_ERR.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/cb-settopindex
 		[MsgParams(typeof(int), null)]
 		CB_SETTOPINDEX = 0x015c,
@@ -724,7 +750,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the width, in pixels, that the list box can be scrolled horizontally (the scrollable width). This is applicable only if the
 		/// list box has a horizontal scroll bar.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -732,6 +757,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the scrollable width, in pixels.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-gethorizontalextent
 		[MsgParams(LResultType = typeof(int))]
 		CB_GETHORIZONTALEXTENT = 0x015d,
@@ -741,12 +767,12 @@ public static partial class User32
 		/// horizontally (the scrollable width). If the width of the list box is smaller than this value, the horizontal scroll bar
 		/// horizontally scrolls items in the list box. If the width of the list box is equal to or greater than this value, the horizontal
 		/// scroll bar is hidden or, if the combo box has the <c>CBS_DISABLENOSCROLL</c> style, disabled.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the scrollable width of the list box, in pixels.</para>
 		/// <para><em>lParam</em></para>
 		/// <para>This parameter is not used.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-sethorizontalextent
 		[MsgParams(typeof(int), null)]
 		CB_SETHORIZONTALEXTENT = 0x015e,
@@ -754,7 +780,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the minimum allowable width, in pixels, of the list box of a combo box with the <c>CBS_DROPDOWN</c> or
 		/// <c>CBS_DROPDOWNLIST</c> style.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -763,6 +788,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, the return value is the width, in pixels.</para>
 		/// <para>If the message fails, the return value is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// By default, the minimum allowable width of the drop-down list box is zero. The width of the list box is either the minimum
 		/// allowable width or the combo box width, whichever is larger.
@@ -774,7 +800,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends the <c>CB_SETDROPPEDWIDTH</c> message to set the minimum allowable width, in pixels, of the list box of a
 		/// combo box with the <c>CBS_DROPDOWN</c> or <c>CBS_DROPDOWNLIST</c> style.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The minimum allowable width of the list box, in pixels.</para>
@@ -783,6 +808,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message is successful, The return value is the new width of the list box.</para>
 		/// <para>If the message fails, the return value is CB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// By default, the minimum allowable width of the drop-down list box is zero. The width of the list box is either the minimum
 		/// allowable width or the combo box width, whichever is larger.
@@ -794,7 +820,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends the <c>CB_INITSTORAGE</c> message before adding a large number of items to the list box portion of a combo
 		/// box. This message allocates memory for storing list box items.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The number of items to add.</para>
@@ -807,6 +832,7 @@ public static partial class User32
 		/// </para>
 		/// <para>If the message fails, the return value is CB_ERRSPACE.</para>
 		/// <para>The message allocates memory and returns the success and error values described above.</para>
+		/// </summary>
 		/// <remarks>
 		/// The <c>CB_INITSTORAGE</c> message helps speed up the initialization of combo boxes that have a large number of items (over 100).
 		/// It reserves the specified amount of memory so that subsequent <c>CB_ADDSTRING</c>, <c>CB_INSERTSTRING</c>, and <c>CB_DIR</c>
@@ -820,7 +846,8 @@ public static partial class User32
 		/// <summary/>
 		CB_MULTIPLEADDSTRING = 0x0163,
 
-		/// <summary>Gets information about the specified combo box.</summary>
+		/// <summary>
+		/// Gets information about the specified combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -829,6 +856,7 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </summary>
 		/// <remarks>This message is equivalent to <c>GetComboBoxInfo</c>.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getcomboboxinfo
 		[MsgParams(null, typeof(COMBOBOXINFO?), LResultType = typeof(BOOL))]
@@ -837,7 +865,6 @@ public static partial class User32
 		/// <summary>
 		/// An application sends a <c>CB_SETMINVISIBLE</c> message to set the minimum number of visible items in the drop-down list of a
 		/// combo box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the minimum number of visible items.</para>
@@ -845,6 +872,7 @@ public static partial class User32
 		/// <para>This parameter is not used; it must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message is successful, the return value is <c>TRUE</c>. Otherwise the return value is <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the number of items in the drop-down list is greater than the minimum, the combo box uses a scroll bar. By default, 30 is
@@ -860,7 +888,8 @@ public static partial class User32
 		[MsgParams(typeof(int), null, LResultType = typeof(BOOL))]
 		CB_SETMINVISIBLE = CBM_FIRST + 1,
 
-		/// <summary>Gets the minimum number of visible items in the drop-down list of a combo box.</summary>
+		/// <summary>
+		/// Gets the minimum number of visible items in the drop-down list of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -868,6 +897,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the minimum number of visible items.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>When the number of items in the drop-down list is greater than the minimum, the combo box uses a scroll bar.</para>
 		/// <para>This message is ignored if the combo box control has style <c>CBS_NOINTEGRALHEIGHT</c>.</para>
@@ -880,7 +910,8 @@ public static partial class User32
 		[MsgParams()]
 		CB_GETMINVISIBLE = CBM_FIRST + 2,
 
-		/// <summary>Sets the cue banner text that is displayed for the edit control of a combo box.</summary>
+		/// <summary>
+		/// Sets the cue banner text that is displayed for the edit control of a combo box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -888,6 +919,7 @@ public static partial class User32
 		/// <para>A pointer to a null-terminated Unicode string buffer that contains the text.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns 1 if successful, or an error value otherwise.</para>
+		/// </summary>
 		/// <remarks>The cue banner is text that is displayed in the edit control of a combo box when there is no selection.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-setcuebanner
 		[MsgParams(null, typeof(StrPtrUni), LResultType = typeof(int))]
@@ -896,7 +928,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the cue banner text displayed in the edit control of a combo box. Send this message explicitly or by using the
 		/// <c>ComboBox_GetCueBannerText</c> macro.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -912,11 +943,13 @@ public static partial class User32
 		/// If there is no cue banner text to get, the return value is 0. If the calling application fails to allocate a buffer, or set
 		/// lParam before sending this message, undefined behavior may result and the return value may not be reliable.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getcuebanner
 		[MsgParams(typeof(StrPtrUni), typeof(int), LResultType = typeof(int))]
 		CB_GETCUEBANNER = CBM_FIRST + 4,
 
-		/// <summary>Sets an image list for a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Sets an image list for a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -927,6 +960,7 @@ public static partial class User32
 		/// Returns the handle to the image list previously associated with the control, or returns <c>NULL</c> if no image list was
 		/// previously set.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Important</para>
 		/// <para>
@@ -938,7 +972,8 @@ public static partial class User32
 		[MsgParams(null, typeof(HIMAGELIST), LResultType = typeof(HIMAGELIST))]
 		CBEM_SETIMAGELIST = WindowMessage.WM_USER + 2,
 
-		/// <summary>Gets the handle to an image list assigned to a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Gets the handle to an image list assigned to a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -946,11 +981,13 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the handle to the image list assigned to the control if successful, or <c>NULL</c> otherwise.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getimagelist
 		[MsgParams(LResultType = typeof(HIMAGELIST))]
 		CBEM_GETIMAGELIST = WindowMessage.WM_USER + 3,
 
-		/// <summary>Removes an item from a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Removes an item from a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the item to be removed.</para>
@@ -960,12 +997,14 @@ public static partial class User32
 		/// <para>
 		/// Returns an INT value that represents the number of items remaining in the control. If iIndex is invalid, the message returns CB_ERR.
 		/// </para>
+		/// </summary>
 		/// <remarks>This message maps to the combo box control message <c>CB_DELETESTRING</c>.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-deleteitem
 		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		CBEM_DELETEITEM = CB_DELETESTRING,
 
-		/// <summary>Gets the handle to the child combo box control.</summary>
+		/// <summary>
+		/// Gets the handle to the child combo box control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -973,6 +1012,7 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the handle to the combo box control within the ComboBoxEx control.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getcombocontrol
 		[MsgParams(LResultType = typeof(HWND))]
 		CBEM_GETCOMBOCONTROL = WindowMessage.WM_USER + 6,
@@ -980,7 +1020,6 @@ public static partial class User32
 		/// <summary>
 		/// Gets the handle to the edit control portion of a ComboBoxEx control. A ComboBoxEx control uses an edit box when it is set to the
 		/// <c>CBS_DROPDOWN</c> style.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -991,6 +1030,7 @@ public static partial class User32
 		/// Returns the handle to the edit control within the ComboBoxEx control if it uses the <c>CBS_DROPDOWN</c> style. Otherwise, the
 		/// message returns <c>NULL</c>.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-geteditcontrol
 		[MsgParams(LResultType = typeof(HWND))]
 		CBEM_GETEDITCONTROL = WindowMessage.WM_USER + 7,
@@ -999,7 +1039,8 @@ public static partial class User32
 		[Obsolete("Use CBEM_SETEXTENDEDSTYLE instead.", false)]
 		CBEM_SETEXSTYLE = WindowMessage.WM_USER + 8,
 
-		/// <summary>Sets extended styles within a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Sets extended styles within a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1010,6 +1051,7 @@ public static partial class User32
 		/// <para>A <c>DWORD</c> value that contains the ComboBoxEx Control Extended Styles to set for the control.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns a <c>DWORD</c> value that contains the extended styles previously used for the control.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// wParam enables you to modify one or more extended styles without having to retrieve the existing styles first. For example, if
@@ -1028,7 +1070,8 @@ public static partial class User32
 		[Obsolete("Use CBEM_GETEXTENDEDSTYLE instead.", false)]
 		CBEM_GETEXSTYLE = WindowMessage.WM_USER + 9,
 
-		/// <summary>Gets the extended styles that are in use for a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Gets the extended styles that are in use for a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1036,6 +1079,7 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns a DWORD value that contains the ComboBoxEx control extended styles in use for the control.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getextendedstyle
 		[MsgParams(LResultType = typeof(int))]
 		CBEM_GETEXTENDEDSTYLE = WindowMessage.WM_USER + 9,
@@ -1043,7 +1087,6 @@ public static partial class User32
 		/// <summary>
 		/// Sets the UNICODE character format flag for the control. This message enables you to change the character set used by the control
 		/// at run time rather than having to re-create the control.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -1054,12 +1097,14 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the previous Unicode format flag for the control.</para>
+		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setunicodeformat
 		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
 		CBEM_SETUNICODEFORMAT = 0x2005,
 
-		/// <summary>Gets the UNICODE character format flag for the control.</summary>
+		/// <summary>
+		/// Gets the UNICODE character format flag for the control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1070,12 +1115,14 @@ public static partial class User32
 		/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this value
 		/// is zero, the control is using ANSI characters.
 		/// </para>
+		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-getunicodeformat
 		[MsgParams(LResultType = typeof(BOOL))]
 		CBEM_GETUNICODEFORMAT = 0x2006,
 
-		/// <summary>Determines whether the user has changed the text of a ComboBoxEx edit control.</summary>
+		/// <summary>
+		/// Determines whether the user has changed the text of a ComboBoxEx edit control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1083,6 +1130,7 @@ public static partial class User32
 		/// <para>Must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns <c>TRUE</c> if the text in the control's edit box has been changed, or <c>FALSE</c> otherwise.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// A ComboBoxEx control uses an edit box control when it is set to the <c>CBS_DROPDOWN</c> style. You can retrieve the edit box
@@ -1101,7 +1149,8 @@ public static partial class User32
 		[MsgParams(LResultType = typeof(BOOL))]
 		CBEM_HASEDITCHANGED = WindowMessage.WM_USER + 10,
 
-		/// <summary>Inserts a new item in a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Inserts a new item in a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1113,11 +1162,13 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns the index at which the new item was inserted if successful, or -1 otherwise.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-insertitem
 		[MsgParams(null, typeof(IntPtr), LResultType = typeof(int))]
 		CBEM_INSERTITEM = WindowMessage.WM_USER + 11,
 
-		/// <summary>Sets the attributes for an item in a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Sets the attributes for an item in a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1129,11 +1180,13 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns nonzero if successful, or zero otherwise.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setitem
 		[MsgParams(null, typeof(IntPtr), LResultType = typeof(BOOL))]
 		CBEM_SETITEM = WindowMessage.WM_USER + 12,
 
-		/// <summary>Gets item information for a given ComboBoxEx item.</summary>
+		/// <summary>
+		/// Gets item information for a given ComboBoxEx item.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1141,6 +1194,7 @@ public static partial class User32
 		/// <para>A pointer to a <c>COMBOBOXEXITEM</c> structure that receives the item information.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>Returns nonzero if successful, or zero otherwise.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// When the message is sent, the <c>iItem</c> and <c>mask</c> members of the structure must be set to indicate the index of the
@@ -1158,7 +1212,8 @@ public static partial class User32
 		[MsgParams(null, typeof(IntPtr), LResultType = typeof(BOOL))]
 		CBEM_GETITEM = WindowMessage.WM_USER + 13,
 
-		/// <summary>Sets the visual style of a ComboBoxEx control.</summary>
+		/// <summary>
+		/// Sets the visual style of a ComboBoxEx control.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Must be zero.</para>
@@ -1166,6 +1221,7 @@ public static partial class User32
 		/// <para>A pointer to a Unicode string that contains the control visual style to set.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is not used.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Note</para>
 		/// <para>

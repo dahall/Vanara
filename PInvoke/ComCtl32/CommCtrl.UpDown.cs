@@ -34,6 +34,7 @@ public static partial class ComCtl32
 		/// <para>The return value is the number of accelerators currently set for the control.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getaccel
+		[MsgParams(typeof(int), typeof(UDACCEL[]))]
 		UDM_GETACCEL = WindowMessage.WM_USER + 108,
 
 		/// <summary>Retrieves the current radix base (that is, either base 10 or 16) for an up-down control.
@@ -50,6 +51,7 @@ public static partial class ComCtl32
 		/// <para>The return value is the current base value.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getbase
+		[MsgParams(null, null, LResultType = typeof(int))]
 		UDM_GETBASE = WindowMessage.WM_USER + 110,
 
 		/// <summary>Retrieves the handle to the current buddy window.
@@ -66,6 +68,7 @@ public static partial class ComCtl32
 		/// <para>The return value is the handle to the current buddy window.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getbuddy
+		[MsgParams(null, null, LResultType = typeof(HWND))]
 		UDM_GETBUDDY = WindowMessage.WM_USER + 106,
 
 		/// <summary>Returns the 32-bit position of an up-down control.
@@ -84,6 +87,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>When it processes this message, the up-down control updates its current position based on the caption of the buddy window. It returns an error if there is no buddy window or if the caption specifies an invalid or out-of-range value.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getpos32
+		[MsgParams(null, typeof(BOOL?), LResultType = typeof(int))]
 		UDM_GETPOS = WindowMessage.WM_USER + 104,
 
 		/// <summary>Returns the 32-bit position of an up-down control.
@@ -102,6 +106,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>When it processes this message, the up-down control updates its current position based on the caption of the buddy window. It returns an error if there is no buddy window or if the caption specifies an invalid or out-of-range value.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getpos32
+		[MsgParams(null, typeof(BOOL?), LResultType = typeof(int))]
 		UDM_GETPOS32 = WindowMessage.WM_USER + 114,
 
 		/// <summary>Retrieves the minimum and maximum positions (range) for an up-down control.
@@ -118,6 +123,7 @@ public static partial class ComCtl32
 		/// <para>The return value is a 32-bit value that contains the minimum and maximum positions. The <c>LOWORD</c> is the maximum position for the control, and the <c>HIWORD</c> is the minimum position.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getrange
+		[MsgParams(null, null, LResultType = typeof(int))]
 		UDM_GETRANGE = WindowMessage.WM_USER + 102,
 
 		/// <summary>Retrieves the 32-bit range of an up-down control.
@@ -134,6 +140,7 @@ public static partial class ComCtl32
 		/// <para>The return value for this message is not used.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getrange32
+		[MsgParams(typeof(int), typeof(int), LResultType = null)]
 		UDM_GETRANGE32 = WindowMessage.WM_USER + 112,
 
 		/// <summary>Retrieves the Unicode character format flag for the control.
@@ -151,6 +158,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getunicodeformat
+		[MsgParams(null, null, LResultType = typeof(BOOL))]
 		UDM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT,
 
 		/// <summary>Sets the acceleration for an up-down control.
@@ -167,6 +175,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setaccel
+		[MsgParams(typeof(int), typeof(UDACCEL[]), LResultType = typeof(BOOL))]
 		UDM_SETACCEL = WindowMessage.WM_USER + 107,
 
 		/// <summary>Sets the radix base for an up-down control. The base value determines whether the buddy window displays numbers in decimal or hexadecimal digits. Hexadecimal numbers are always unsigned, and decimal numbers are signed.
@@ -183,6 +192,7 @@ public static partial class ComCtl32
 		/// <para>The return value is the previous base value. If an invalid base is given, the return value is zero.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setbase
+		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		UDM_SETBASE = WindowMessage.WM_USER + 109,
 
 		/// <summary>Sets the buddy window for an up-down control.
@@ -199,6 +209,7 @@ public static partial class ComCtl32
 		/// <para>The return value is the handle to the previous buddy window.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setbuddy
+		[MsgParams(typeof(HWND), null, LResultType = typeof(HWND))]
 		UDM_SETBUDDY = WindowMessage.WM_USER + 105,
 
 		/// <summary>Sets the current position for an up-down control with 16-bit precision.
@@ -216,6 +227,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>This message only supports 16-bit positions. If 32-bit values have been enabled for an up-down control with <c>UDM_SETRANGE32</c>, use <c>UDM_SETPOS32</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setpos
+		[MsgParams(null, typeof(int), LResultType = typeof(int))]
 		UDM_SETPOS = WindowMessage.WM_USER + 103,
 
 		/// <summary>Sets the position of an up-down control with 32-bit precision.
@@ -232,6 +244,7 @@ public static partial class ComCtl32
 		/// <para>Returns the previous position.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setpos32
+		[MsgParams(null, typeof(int), LResultType = typeof(int))]
 		UDM_SETPOS32 = WindowMessage.WM_USER + 113,
 
 		/// <summary>Sets the minimum and maximum positions (range) for an up-down control.
@@ -249,6 +262,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The maximum position can be less than the minimum position. Clicking the up arrow button moves the current position closer to the maximum position, and clicking the down arrow button moves toward the minimum position.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setrange
+		[MsgParams(null, typeof(uint), LResultType = null)]
 		UDM_SETRANGE = WindowMessage.WM_USER + 101,
 
 		/// <summary>Sets the 32-bit range of an up-down control.
@@ -265,6 +279,7 @@ public static partial class ComCtl32
 		/// <para>The return value for this message is not used.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setrange32
+		[MsgParams(typeof(int), typeof(int), LResultType = null)]
 		UDM_SETRANGE32 = WindowMessage.WM_USER + 111,
 
 		/// <summary>Sets the Unicode character format flag for the control. This message allows you to change the character set used by the control at run time rather than having to re-create the control.
@@ -282,6 +297,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setunicodeformat
+		[MsgParams(typeof(BOOL), typeof(int), LResultType = typeof(BOOL))]
 		UDM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
 	}
 
@@ -302,6 +318,7 @@ public static partial class ComCtl32
 		/// <para>Unless otherwise specified, the control ignores the return value from this notification code.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/nm-releasedcapture
+		[MsgParams(null, typeof(NMHDR?), LResultType = null)]
 		NM_RELEASEDCAPTURE = UDN_FIRST - 1,
 
 		/// <summary>
@@ -319,6 +336,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>The UDN_DELTAPOS notification code is sent before the <c>WM_VSCROLL</c> or <c>WM_HSCROLL</c> message, which actually changes the control's position. This lets you examine, allow, modify, or disallow the change.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/udn-deltapos
+		[MsgParams(null, typeof(NMUPDOWN?), LResultType = typeof(int))]
 		UDN_DELTAPOS = UDN_FIRST
 	}
 

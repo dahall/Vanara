@@ -362,6 +362,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-deleteitem
+		[MsgParams(null, typeof(HTREEITEM), LResultType = typeof(BOOL))]
 		TVM_DELETEITEM = TV_FIRST + 1,
 
 		/// <summary>
@@ -425,6 +426,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-expand
+		[MsgParams(typeof(TreeViewExpandFlags), typeof(HTREEITEM), LResultType = typeof(BOOL))]
 		TVM_EXPAND = TV_FIRST + 2,
 
 		/// <summary>
@@ -460,6 +462,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getitemrect
+		[MsgParams(typeof(BOOL), typeof(RECT?), LResultType = typeof(BOOL))]
 		TVM_GETITEMRECT = TV_FIRST + 4,
 
 		/// <summary>
@@ -479,6 +482,7 @@ public static partial class ComCtl32
 		/// empty with no scrollbars.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getcount
+		[MsgParams(null, null, LResultType = typeof(int))]
 		TVM_GETCOUNT = TV_FIRST + 5,
 
 		/// <summary>
@@ -493,6 +497,7 @@ public static partial class ComCtl32
 		/// <para>Returns the amount of indentation.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getindent
+		[MsgParams(null, null, LResultType = typeof(int))]
 		TVM_GETINDENT = TV_FIRST + 6,
 
 		/// <summary>
@@ -515,6 +520,7 @@ public static partial class ComCtl32
 		/// <c>TVM_GETINDENT</c> message to retrieve the minimum indent value.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setindent
+		[MsgParams(typeof(int), null, LResultType = null)]
 		TVM_SETINDENT = TV_FIRST + 7,
 
 		/// <summary>
@@ -548,6 +554,7 @@ public static partial class ComCtl32
 		/// <para>Returns an HIMAGELIST handle to the specified image list.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getimagelist
+		[MsgParams(typeof(TreeViewSetImageListType), null, LResultType = typeof(HIMAGELIST))]
 		TVM_GETIMAGELIST = TV_FIRST + 8,
 
 		/// <summary>
@@ -587,6 +594,7 @@ public static partial class ComCtl32
 		/// list when it is no longer needed.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setimagelist
+		[MsgParams(typeof(TreeViewSetImageListType), typeof(HIMAGELIST), LResultType = typeof(HIMAGELIST))]
 		TVM_SETIMAGELIST = TV_FIRST + 9,
 
 		/// <summary>
@@ -728,6 +736,7 @@ public static partial class ComCtl32
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getnextitem
+		[MsgParams(typeof(TreeViewActionFlag), typeof(HTREEITEM), LResultType = typeof(HTREEITEM))]
 		TVM_GETNEXTITEM = TV_FIRST + 10,
 
 		/// <summary>
@@ -787,6 +796,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-selectitem
+		[MsgParams(typeof(TreeViewActionFlag), typeof(HTREEITEM), LResultType = typeof(BOOL))]
 		TVM_SELECTITEM = TV_FIRST + 11,
 
 		/// <summary>
@@ -812,6 +822,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-geteditcontrol
+		[MsgParams(null, null, LResultType = typeof(HWND))]
 		TVM_GETEDITCONTROL = TV_FIRST + 15,
 
 		/// <summary>
@@ -836,6 +847,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getvisiblecount
+		[MsgParams(null, null, LResultType = typeof(int))]
 		TVM_GETVISIBLECOUNT = TV_FIRST + 16,
 
 		/// <summary>
@@ -857,6 +869,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-hittest
+		[MsgParams(null, typeof(TVHITTESTINFO), LResultType = typeof(HTREEITEM))]
 		TVM_HITTEST = TV_FIRST + 17,
 
 		/// <summary>
@@ -879,6 +892,7 @@ public static partial class ComCtl32
 		/// <para>Your application is responsible for destroying the image list when it is no longer needed.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-createdragimage
+		[MsgParams(null, typeof(HTREEITEM), LResultType = typeof(HIMAGELIST))]
 		TVM_CREATEDRAGIMAGE = TV_FIRST + 18,
 
 		/// <summary>
@@ -900,6 +914,7 @@ public static partial class ComCtl32
 		/// message to customize the ordering behavior.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-sortchildren
+		[MsgParams(typeof(BOOL), typeof(HTREEITEM), LResultType = typeof(BOOL))]
 		TVM_SORTCHILDREN = TV_FIRST + 19,
 
 		/// <summary>
@@ -921,6 +936,7 @@ public static partial class ComCtl32
 		/// TVN_ITEMEXPANDED notification codes.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-ensurevisible
+		[MsgParams(null, typeof(HTREEITEM), LResultType = typeof(BOOL))]
 		TVM_ENSUREVISIBLE = TV_FIRST + 20,
 
 		/// <summary>
@@ -939,6 +955,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-sortchildrencb
+		[MsgParams(null, typeof(TVSORTCB?), LResultType = typeof(BOOL))]
 		TVM_SORTCHILDRENCB = TV_FIRST + 21,
 
 		/// <summary>
@@ -957,6 +974,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>This message causes the TVN_ENDLABELEDIT notification code to be sent to the parent window of the tree-view control.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-endeditlabelnow
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
 		TVM_ENDEDITLABELNOW = TV_FIRST + 22,
 
 		/// <summary>
@@ -978,6 +996,7 @@ public static partial class ComCtl32
 		/// tooltips, create the control with the <c>TVS_NOTOOLTIPS</c> style.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-settooltips
+		[MsgParams(typeof(HWND), null, LResultType = typeof(HWND))]
 		TVM_SETTOOLTIPS = TV_FIRST + 24,
 
 		/// <summary>
@@ -996,6 +1015,7 @@ public static partial class ComCtl32
 		/// tooltips, create the control with the <c>TVS_NOTOOLTIPS</c> style.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-gettooltips
+		[MsgParams(null, null, LResultType = typeof(HWND))]
 		TVM_GETTOOLTIPS = TV_FIRST + 25,
 
 		/// <summary>
@@ -1021,6 +1041,7 @@ public static partial class ComCtl32
 		/// it is recommended that you force a refresh of the control after expanding a node.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setinsertmark
+		[MsgParams(typeof(BOOL), typeof(HTREEITEM), LResultType = typeof(BOOL))]
 		TVM_SETINSERTMARK = TV_FIRST + 26,
 
 		/// <summary>
@@ -1040,6 +1061,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setunicodeformat
+		[MsgParams(typeof(BOOL), null, LResultType = typeof(BOOL))]
 		TVM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
 
 		/// <summary>
@@ -1058,6 +1080,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getunicodeformat
+		[MsgParams(null, null, LResultType = typeof(BOOL))]
 		TVM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT,
 
 		/// <summary>
@@ -1079,6 +1102,7 @@ public static partial class ComCtl32
 		/// description of the <c>iIntegral</c> member of the <c>TVITEMEX</c> structure.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setitemheight
+		[MsgParams(typeof(int), null, LResultType = typeof(int))]
 		TVM_SETITEMHEIGHT = TV_FIRST + 27,
 
 		/// <summary>
@@ -1093,6 +1117,7 @@ public static partial class ComCtl32
 		/// <para>Returns the height of each item, in pixels.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getitemheight
+		[MsgParams(null, null, LResultType = typeof(int))]
 		TVM_GETITEMHEIGHT = TV_FIRST + 28,
 
 		/// <summary>
@@ -1112,6 +1137,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setbkcolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		TVM_SETBKCOLOR = TV_FIRST + 29,
 
 		/// <summary>
@@ -1131,6 +1157,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-settextcolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		TVM_SETTEXTCOLOR = TV_FIRST + 30,
 
 		/// <summary>
@@ -1148,6 +1175,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getbkcolor
+		[MsgParams(null, null, LResultType = typeof(COLORREF))]
 		TVM_GETBKCOLOR = TV_FIRST + 31,
 
 		/// <summary>
@@ -1165,6 +1193,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-gettextcolor
+		[MsgParams(null, null, LResultType = typeof(COLORREF))]
 		TVM_GETTEXTCOLOR = TV_FIRST + 32,
 
 		/// <summary>
@@ -1183,6 +1212,7 @@ public static partial class ComCtl32
 		/// the scroll will take place within the maximum scroll time. A scroll operation may take less time than the maximum.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setscrolltime
+		[MsgParams(typeof(uint), null, LResultType = typeof(uint))]
 		TVM_SETSCROLLTIME = TV_FIRST + 33,
 
 		/// <summary>
@@ -1201,6 +1231,7 @@ public static partial class ComCtl32
 		/// that the scroll will take place within the maximum scroll time. A scroll operation may take less time than the maximum.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getscrolltime
+		[MsgParams(null, null, LResultType = typeof(uint))]
 		TVM_GETSCROLLTIME = TV_FIRST + 34,
 
 		/// <summary>
@@ -1215,6 +1246,7 @@ public static partial class ComCtl32
 		/// <para>Returns a <c>COLORREF</c> value that contains the previous insertion mark color.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setinsertmarkcolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		TVM_SETINSERTMARKCOLOR = TV_FIRST + 37,
 
 		/// <summary>
@@ -1229,6 +1261,7 @@ public static partial class ComCtl32
 		/// <para>Returns a <c>COLORREF</c> value that contains the current insertion mark color.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getinsertmarkcolor
+		[MsgParams(null, null, LResultType = typeof(COLORREF))]
 		TVM_GETINSERTMARKCOLOR = TV_FIRST + 38,
 
 		/// <summary>
@@ -1277,6 +1310,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setborder
+		[MsgParams(typeof(TreeViewSetBorderFlags), typeof(SIZES), LResultType = typeof(int))]
 		TVM_SETBORDER = TV_FIRST + 35,
 
 		/// <summary>
@@ -1294,6 +1328,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getitemstate
+		[MsgParams(typeof(HTREEITEM), typeof(TreeViewItemStates), LResultType = typeof(TreeViewItemStates))]
 		TVM_GETITEMSTATE = TV_FIRST + 39,
 
 		/// <summary>The <c>TVM_SETLINECOLOR</c> message sets the current line color.
@@ -1310,6 +1345,7 @@ public static partial class ComCtl32
 		/// <c>TVM_SETTEXTCOLOR</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setlinecolor
+		[MsgParams(null, typeof(COLORREF), LResultType = typeof(COLORREF))]
 		TVM_SETLINECOLOR = TV_FIRST + 40,
 
 		/// <summary>The <c>TVM_GETLINECOLOR</c> message gets the current line color.
@@ -1326,6 +1362,7 @@ public static partial class ComCtl32
 		/// <c>TVM_GETTEXTCOLOR</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getlinecolor
+		[MsgParams(null, null, LResultType = typeof(COLORREF))]
 		TVM_GETLINECOLOR = TV_FIRST + 41,
 
 		/// <summary>Maps an accessibility ID to an <c>HTREEITEM</c>.
@@ -1348,6 +1385,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-mapaccidtohtreeitem
+		[MsgParams(typeof(uint), null, LResultType = typeof(HTREEITEM))]
 		TVM_MAPACCIDTOHTREEITEM = TV_FIRST + 42,
 
 		/// <summary>Maps an <c>HTREEITEM</c> to an accessibility ID.
@@ -1370,6 +1408,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-maphtreeitemtoaccid
+		[MsgParams(typeof(HTREEITEM), null, LResultType = typeof(uint))]
 		TVM_MAPHTREEITEMTOACCID = TV_FIRST + 43,
 
 		/// <summary>Informs the tree-view control to set extended styles. Send this message or use the macro <c>TreeView_SetExtendedStyle</c>.
@@ -1386,6 +1425,7 @@ public static partial class ComCtl32
 		/// <c>CreateWindowEx</c> or function <c>SetWindowLong</c>.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setextendedstyle
+		[MsgParams(typeof(TreeViewStyleEx), typeof(TreeViewStyleEx), LResultType = typeof(HRESULT))]
 		TVM_SETEXTENDEDSTYLE = TV_FIRST + 44,
 
 		/// <summary>
@@ -1404,6 +1444,7 @@ public static partial class ComCtl32
 		/// <c>CreateWindowEx</c> or function <c>SetWindowLong</c>.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getextendedstyle
+		[MsgParams(null, null, LResultType = typeof(TreeViewStyleEx))]
 		TVM_GETEXTENDEDSTYLE = TV_FIRST + 45,
 
 		/// <summary>
@@ -1417,6 +1458,7 @@ public static partial class ComCtl32
 		/// <para>Returns the <c>HTREEITEM</c> handle to the new item if successful, or <c>NULL</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-insertitem
+		[MsgParams(null, typeof(TVINSERTSTRUCT?), LResultType = typeof(HTREEITEM))]
 		TVM_INSERTITEM = TV_FIRST + 50,
 
 		/// <summary>
@@ -1438,6 +1480,7 @@ public static partial class ComCtl32
 		/// extended style. For information on extended styles, see Tree-View Control Extended Styles.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setautoscrollinfo
+		[MsgParams(typeof(uint), typeof(uint), LResultType = typeof(BOOL))]
 		TVM_SETAUTOSCROLLINFO = TV_FIRST + 59,
 
 		/// <summary>
@@ -1465,6 +1508,7 @@ public static partial class ComCtl32
 		/// <para>This message is ignored if lParam is <c>NULL</c> and the tree-view control is tracking the mouse.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-sethot
+		[MsgParams(null, typeof(HTREEITEM), LResultType = typeof(BOOL))]
 		TVM_SETHOT = TV_FIRST + 58,
 
 		/// <summary>
@@ -1492,6 +1536,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getitem
+		[MsgParams(null, typeof(TVITEM?), LResultType = typeof(BOOL))]
 		TVM_GETITEM = TV_FIRST + 62,
 
 		/// <summary>
@@ -1513,6 +1558,7 @@ public static partial class ComCtl32
 		/// specifies which attributes to set.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setitem
+		[MsgParams(null, typeof(TVITEM?), LResultType = typeof(BOOL))]
 		TVM_SETITEM = TV_FIRST + 63,
 
 		/// <summary>
@@ -1537,6 +1583,7 @@ public static partial class ComCtl32
 		/// <para>If the tree-view control is not in incremental search mode, the return value is zero.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getisearchstring
+		[MsgParams(null, typeof(IntPtr), LResultType = typeof(int))]
 		TVM_GETISEARCHSTRING = TV_FIRST + 64,
 
 		/// <summary>
@@ -1562,6 +1609,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-editlabel
+		[MsgParams(null, typeof(HWND), LResultType = typeof(HWND))]
 		TVM_EDITLABEL = TV_FIRST + 65,
 
 		/// <summary>This message is not implemented.</summary>
@@ -1584,6 +1632,7 @@ public static partial class ComCtl32
 		/// Infotips in the About Tree-View Controls overview.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-showinfotip
+		[MsgParams(null, typeof(HTREEITEM), LResultType = typeof(int))]
 		TVM_SHOWINFOTIP = TV_FIRST + 71,
 
 		/// <summary>This message is not implemented.</summary>
@@ -1645,6 +1694,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-asyncdraw
+		[MsgParams(null, typeof(NMTVASYNCDRAW?), LResultType = null)]
 		TVN_ASYNCDRAW = TVN_FIRST - 20,
 
 		/// <summary>
@@ -1667,6 +1717,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>A tree-view control that has the <c>TVS_DISABLEDRAGDROP</c> style does not send this notification code.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-begindrag
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = null)]
 		TVN_BEGINDRAG = TVN_FIRST - 56,
 
 		/// <summary>
@@ -1699,6 +1750,7 @@ public static partial class ComCtl32
 		/// <para>When the user cancels or completes the editing, the parent window receives a TVN_ENDLABELEDIT notification code.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-beginlabeledit
+		[MsgParams(null, typeof(NMTVDISPINFO?), LResultType = typeof(BOOL))]
 		TVN_BEGINLABELEDIT = TVN_FIRST - 59,
 
 		/// <summary>
@@ -1720,6 +1772,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-beginrdrag
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = null)]
 		TVN_BEGINRDRAG = TVN_FIRST - 57,
 
 		/// <summary>
@@ -1744,6 +1797,7 @@ public static partial class ComCtl32
 		/// when you receive the TVN_DELETEITEM notification code.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-deleteitem
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = null)]
 		TVN_DELETEITEM = TVN_FIRST - 58,
 
 		/// <summary>
@@ -1776,6 +1830,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-endlabeledit
+		[MsgParams(null, typeof(NMTVDISPINFO?), LResultType = typeof(BOOL))]
 		TVN_ENDLABELEDIT = TVN_FIRST - 60,
 
 		/// <summary>
@@ -1823,6 +1878,7 @@ public static partial class ComCtl32
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-getdispinfo
+		[MsgParams(null, typeof(NMTVDISPINFO?), LResultType = null)]
 		TVN_GETDISPINFO = TVN_FIRST - 52,
 
 		/// <summary>
@@ -1842,6 +1898,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>This notification code is only sent by tree-view controls that have the <c>TVS_INFOTIP</c> style.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-getinfotip
+		[MsgParams(null, typeof(NMTVGETINFOTIP?), LResultType = null)]
 		TVN_GETINFOTIP = TVN_FIRST - 14,
 
 		/// <summary>
@@ -1861,6 +1918,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>FALSE</c> to accept the change, or <c>TRUE</c> to prevent the change.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemchanged
+		[MsgParams(null, typeof(NMTVITEMCHANGE?), LResultType = typeof(BOOL))]
 		TVN_ITEMCHANGED = TVN_FIRST - 19,
 
 		/// <summary>
@@ -1880,6 +1938,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>FALSE</c> to accept the change, or <c>TRUE</c> to prevent the change.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemchanging
+		[MsgParams(null, typeof(NMTVITEMCHANGE?), LResultType = typeof(BOOL))]
 		TVN_ITEMCHANGING = TVN_FIRST - 17,
 
 		/// <summary>
@@ -1901,6 +1960,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemexpanded
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = null)]
 		TVN_ITEMEXPANDED = TVN_FIRST - 55,
 
 		/// <summary>
@@ -1923,6 +1983,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> to prevent the list from expanding or collapsing.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemexpanding
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = typeof(BOOL))]
 		TVN_ITEMEXPANDING = TVN_FIRST - 54,
 
 		/// <summary>
@@ -1944,6 +2005,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-keydown
+		[MsgParams(null, typeof(NMTVKEYDOWN?), LResultType = typeof(BOOL))]
 		TVN_KEYDOWN = TVN_FIRST - 12,
 
 		/// <summary>
@@ -1986,6 +2048,7 @@ public static partial class ComCtl32
 		/// <para>The return value is ignored.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-selchanged
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = null)]
 		TVN_SELCHANGED = TVN_FIRST - 51,
 
 		/// <summary>
@@ -2010,6 +2073,7 @@ public static partial class ComCtl32
 		/// When responding to this notification code, applications should not delete the items that are gaining or losing the selection.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-selchanging
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = typeof(BOOL))]
 		TVN_SELCHANGING = TVN_FIRST - 50,
 
 		/// <summary>
@@ -2042,6 +2106,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-setdispinfo
+		[MsgParams(null, typeof(NMTVDISPINFO?), LResultType = null)]
 		TVN_SETDISPINFO = TVN_FIRST - 53,
 
 		/// <summary>
@@ -2080,6 +2145,7 @@ public static partial class ComCtl32
 		/// <para>This notification code is only sent by tree-view controls that have the <c>TVS_SINGLEEXPAND</c> style.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-singleexpand
+		[MsgParams(null, typeof(NMTREEVIEW?), LResultType = typeof(TreeViewNotificationReturnBehavior))]
 		TVN_SINGLEEXPAND = TVN_FIRST - 15,
 	}
 

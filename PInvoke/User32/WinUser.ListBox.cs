@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -13,7 +14,6 @@ public static partial class User32
 		/// <summary>
 		/// Adds a string to a list box. If the list box does not have the <c>LBS_SORT</c> style, the string is added to the end of the list.
 		/// Otherwise, the string is inserted into the list and the list is sorted.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -28,6 +28,7 @@ public static partial class User32
 		/// The return value is the zero-based index of the string in the list box. If an error occurs, the return value is LB_ERR. If there
 		/// is insufficient space to store the new string, the return value is LB_ERRSPACE.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the list box has an owner-drawn style and the <c>LBS_SORT</c> style, but not the <c>LBS_HASSTRINGS</c> style, the system sends
@@ -50,12 +51,12 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-addstring
+		[MsgParams(null, typeof(string))]
 		LB_ADDSTRING = 0x0180,
 
 		/// <summary>
 		/// Inserts a string or item data into a list box. Unlike the <c>LB_ADDSTRING</c> message, the <c>LB_INSERTSTRING</c> message does
 		/// not cause a list with the <c>LBS_SORT</c> style to be sorted.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -73,6 +74,7 @@ public static partial class User32
 		/// The return value is the index of the position at which the string was inserted. If an error occurs, the return value is LB_ERR.
 		/// If there is insufficient space to store the new string, the return value is LB_ERRSPACE.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>LB_INITSTORAGE</c> message helps speed up the initialization of list boxes that have a large number of items (more than
@@ -91,9 +93,11 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-insertstring
+		[MsgParams(typeof(int), typeof(string))]
 		LB_INSERTSTRING = 0x0181,
 
-		/// <summary>Deletes a string in a list box.</summary>
+		/// <summary>
+		/// Deletes a string in a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the string to be deleted.</para>
@@ -109,14 +113,17 @@ public static partial class User32
 		/// The return value is a count of the strings remaining in the list. The return value is LB_ERR if the wParam parameter specifies an
 		/// index greater than the number of items in the list.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// If an application creates the list box with an owner-drawn style but without the <c>LBS_HASSTRINGS</c> style, the system sends a
 		/// <c>WM_DELETEITEM</c> message to the owner of the list box so the application can free any additional data associated with the item.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-deletestring
+		[MsgParams(typeof(int), null)]
 		LB_DELETESTRING = 0x0182,
 
-		/// <summary>Selects one or more consecutive items in a multiple-selection list box.</summary>
+		/// <summary>
+		/// Selects one or more consecutive items in a multiple-selection list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the zero-based index of the first item to select.</para>
@@ -129,6 +136,7 @@ public static partial class User32
 		/// <para>Specifies the zero-based index of the last item to select.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is LB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// If the wParam parameter is less than the lParam parameter, the specified range of items is selected. If wParam is greater than or
@@ -139,9 +147,11 @@ public static partial class User32
 		/// <para>This message can select a range only within the first 65,536 items.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-selitemrangeex
+		[MsgParams(typeof(int), typeof(int))]
 		LB_SELITEMRANGEEX = 0x0183,
 
-		/// <summary>Removes all items from a list box.</summary>
+		/// <summary>
+		/// Removes all items from a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -149,14 +159,17 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the list box has an owner-drawn style but not the <c>LBS_HASSTRINGS</c> style, the owner of the list box receives a
 		/// <c>WM_DELETEITEM</c> message for each item in the list box.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-resetcontent
+		[MsgParams(LResultType = null)]
 		LB_RESETCONTENT = 0x0184,
 
-		/// <summary>Selects an item in a multiple-selection list box and, if necessary, scrolls the item into view.</summary>
+		/// <summary>
+		/// Selects an item in a multiple-selection list box and, if necessary, scrolls the item into view.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -170,14 +183,15 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is LB_ERR.</para>
+		/// </summary>
 		/// <remarks>Use this message only with multiple-selection list boxes.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-setsel
+		[MsgParams(typeof(BOOL), typeof(int))]
 		LB_SETSEL = 0x0185,
 
 		/// <summary>
 		/// Selects a string and scrolls it into view, if necessary. When the new string is selected, the list box removes the highlight from
 		/// the previously selected string.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -194,14 +208,17 @@ public static partial class User32
 		/// <para>
 		/// If an error occurs, the return value is LB_ERR. If the wParam parameter is -1, the return value is LB_ERR even though no error occurred.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// Use this message only with single-selection list boxes. You cannot use it to set or remove a selection in a multiple-selection
 		/// list box.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-setcursel
+		[MsgParams(typeof(int), null)]
 		LB_SETCURSEL = 0x0186,
 
-		/// <summary>Gets the selection state of an item.</summary>
+		/// <summary>
+		/// Gets the selection state of an item.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the item.</para>
@@ -216,10 +233,13 @@ public static partial class User32
 		/// <para>
 		/// If an item is selected, the return value is greater than zero; otherwise, it is zero. If an error occurs, the return value is LB_ERR.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getsel
+		[MsgParams(typeof(int), null)]
 		LB_GETSEL = 0x0187,
 
-		/// <summary>Gets the index of the currently selected item, if any, in a single-selection list box.</summary>
+		/// <summary>
+		/// Gets the index of the currently selected item, if any, in a single-selection list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -230,6 +250,7 @@ public static partial class User32
 		/// In a single-selection list box, the return value is the zero-based index of the currently selected item. If there is no
 		/// selection, the return value is LB_ERR.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// To retrieve the indexes of the selected items in a multiple-selection list box, use the <c>LB_GETSELITEMS</c> message. To
@@ -241,9 +262,11 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getcursel
+		[MsgParams()]
 		LB_GETCURSEL = 0x0188,
 
-		/// <summary>Gets a string from a list box.</summary>
+		/// <summary>
+		/// Gets a string from a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the string to retrieve.</para>
@@ -263,14 +286,17 @@ public static partial class User32
 		/// The return value is the length of the string, in <c>TCHAR</c> s, excluding the terminating null character. If wParam does not
 		/// specify a valid index, the return value is LB_ERR.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// If the list box has an owner-drawn style but not the <c>LBS_HASSTRINGS</c> style, the buffer pointed to by the lParam parameter
 		/// receives the value associated with the item (the item data).
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-gettext
+		[MsgParams(typeof(int), typeof(StrPtrAuto))]
 		LB_GETTEXT = 0x0189,
 
-		/// <summary>Gets the length of a string in a list box.</summary>
+		/// <summary>
+		/// Gets the length of a string in a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the string.</para>
@@ -287,6 +313,7 @@ public static partial class User32
 		/// conditions, this value may actually be greater than the length of the text. For more information, see the following Remarks section.
 		/// </para>
 		/// <para>If the wParam parameter does not specify a valid index, the return value is LB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// Under certain conditions, the return value is larger than the actual length of the text. This occurs with certain mixtures of
@@ -305,9 +332,11 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-gettextlen
+		[MsgParams(typeof(int), null)]
 		LB_GETTEXTLEN = 0x018A,
 
-		/// <summary>Gets the number of items in a list box.</summary>
+		/// <summary>
+		/// Gets the number of items in a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -315,13 +344,14 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the number of items in the list box, or LB_ERR if an error occurs.</para>
+		/// </summary>
 		/// <remarks>The returned count is one greater than the index value of the last item (the index is zero-based).</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getcount
+		[MsgParams()]
 		LB_GETCOUNT = 0x018B,
 
 		/// <summary>
 		/// Searches a list box for an item that begins with the characters in a specified string. If a matching item is found, the item is selected.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -344,6 +374,7 @@ public static partial class User32
 		/// If the search is successful, the return value is the index of the selected item. If the search is unsuccessful, the return value
 		/// is LB_ERR and the current selection is not changed.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The list box is scrolled, if necessary, to bring the selected item into view.</para>
 		/// <para>Do not use this message with a list box that has the <c>LBS_MULTIPLESEL</c> or the <c>LBS_EXTENDEDSEL</c> styles.</para>
@@ -360,12 +391,12 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-selectstring
+		[MsgParams(typeof(int), typeof(string))]
 		LB_SELECTSTRING = 0x018C,
 
 		/// <summary>
 		/// Adds names to the list displayed by a list box. The message adds the names of directories and files that match a specified string
 		/// and set of file attributes. <c>LB_DIR</c> can also add mapped drive letters to the list box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -428,6 +459,7 @@ public static partial class User32
 		/// <para>
 		/// If an error occurs, the return value is LB_ERR. If there is insufficient space to store the new strings, the return value is LB_ERRSPACE.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>LB_INITSTORAGE</c> message helps speed up the initialization of list boxes that have a large number of items (more than
@@ -449,13 +481,13 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-dir
+		[MsgParams(typeof(DDL), typeof(StrPtrAuto))]
 		LB_DIR = 0x018D,
 
 		/// <summary>
 		/// Gets the index of the first visible item in a list box. Initially the item with index 0 is at the top of the list box, but if the
 		/// list box contents have been scrolled another item may be at the top. The first visible item in a multiple-column list box is the
 		/// top-left item.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -463,10 +495,13 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the index of the first visible item in the list box.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-gettopindex
+		[MsgParams()]
 		LB_GETTOPINDEX = 0x018E,
 
-		/// <summary>Finds the first string in a list box that begins with the specified string.</summary>
+		/// <summary>
+		/// Finds the first string in a list box that begins with the specified string.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -486,6 +521,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the index of the matching item, or LB_ERR if the search was unsuccessful.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the list box has the owner-drawn style but not the <c>LBS_HASSTRINGS</c> style, the action taken by <c>LB_FINDSTRING</c>
 		/// depends on whether the <c>LBS_SORT</c> style is used. If <c>LBS_SORT</c> is used, the system sends <c>WM_COMPAREITEM</c> messages
@@ -494,9 +530,11 @@ public static partial class User32
 		/// matches the lParam parameter.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-findstring
+		[MsgParams(typeof(int), typeof(string))]
 		LB_FINDSTRING = 0x018F,
 
-		/// <summary>Gets the total number of selected items in a multiple-selection list box.</summary>
+		/// <summary>
+		/// Gets the total number of selected items in a multiple-selection list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -507,12 +545,13 @@ public static partial class User32
 		/// The return value is the count of selected items in the list box. If the list box is a single-selection list box, the return value
 		/// is LB_ERR.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getselcount
+		[MsgParams()]
 		LB_GETSELCOUNT = 0x0190,
 
 		/// <summary>
 		/// Fills a buffer with an array of integers that specify the item numbers of selected items in a multiple-selection list box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The maximum number of selected items whose item numbers are to be placed in the buffer.</para>
@@ -527,10 +566,13 @@ public static partial class User32
 		/// <para>
 		/// The return value is the number of items placed in the buffer. If the list box is a single-selection list box, the return value is LB_ERR.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getselitems
+		[MsgParams(typeof(int), typeof(int[]))]
 		LB_GETSELITEMS = 0x0191,
 
-		/// <summary>Sets the tab-stop positions in a list box.</summary>
+		/// <summary>
+		/// Sets the tab-stop positions in a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the number of tab stops.</para>
@@ -543,6 +585,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If all the specified tabs are set, the return value is <c>TRUE</c>; otherwise, it is <c>FALSE</c>.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>To respond to the <c>LB_SETTABSTOPS</c> message, the list box must have been created with the <c>LBS_USETABSTOPS</c> style.</para>
 		/// <para>
@@ -562,12 +605,12 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-settabstops
+		[MsgParams(typeof(int), typeof(int[]), LResultType = typeof(BOOL))]
 		LB_SETTABSTOPS = 0x0192,
 
 		/// <summary>
 		/// Gets the width, in pixels, that a list box can be scrolled horizontally (the scrollable width) if the list box has a horizontal
 		/// scroll bar.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -575,6 +618,7 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the scrollable width, in pixels, of the list box.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// To respond to the <c>LB_GETHORIZONTALEXTENT</c> message, the list box must have been defined with the <c>WS_HSCROLL</c> style.
@@ -585,13 +629,13 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-gethorizontalextent
+		[MsgParams()]
 		LB_GETHORIZONTALEXTENT = 0x0193,
 
 		/// <summary>
 		/// Sets the width, in pixels, by which a list box can be scrolled horizontally (the scrollable width). If the width of the list box
 		/// is smaller than this value, the horizontal scroll bar horizontally scrolls items in the list box. If the width of the list box is
 		/// equal to or greater than this value, the horizontal scroll bar is hidden.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the number of pixels by which the list box can be scrolled.</para>
@@ -600,6 +644,7 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// To respond to the <c>LB_SETHORIZONTALEXTENT</c> message, the list box must have been defined with the <c>WS_HSCROLL</c> style.
@@ -608,9 +653,11 @@ public static partial class User32
 		/// <para>This message has no effect on a multiple-column list box.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-sethorizontalextent
+		[MsgParams()]
 		LB_SETHORIZONTALEXTENT = 0x0194,
 
-		/// <summary>Sets the width, in pixels, of all columns in a multiple-column list box.</summary>
+		/// <summary>
+		/// Sets the width, in pixels, of all columns in a multiple-column list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the width, in pixels, of all columns.</para>
@@ -618,10 +665,13 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>This message does not return a value.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-setcolumnwidth
+		[MsgParams(typeof(int), null, LResultType = null)]
 		LB_SETCOLUMNWIDTH = 0x0195,
 
-		/// <summary>Adds the specified filename to a list box that contains a directory listing.</summary>
+		/// <summary>
+		/// Adds the specified filename to a list box that contains a directory listing.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -629,6 +679,7 @@ public static partial class User32
 		/// <para>A pointer to a buffer that specifies the name of the file to add.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the zero-based index of the file that was added, or LB_ERR if an error occurs.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>The list box to which lParam is added must have been filled by the <c>DlgDirList</c> function.</para>
 		/// <para>
@@ -644,9 +695,11 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-addfile
+		[MsgParams(null, typeof(string))]
 		LB_ADDFILE = 0x0196,
 
-		/// <summary>Ensures that the specified item in a list box is visible.</summary>
+		/// <summary>
+		/// Ensures that the specified item in a list box is visible.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the item in the list box.</para>
@@ -659,14 +712,17 @@ public static partial class User32
 		/// <para>This parameter is not used.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is LB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// The system scrolls the list box contents so that either the specified item appears at the top of the list box or the maximum
 		/// scroll range has been reached.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-settopindex
+		[MsgParams(typeof(int), null)]
 		LB_SETTOPINDEX = 0x0197,
 
-		/// <summary>Gets the dimensions of the rectangle that bounds a list box item as it is currently displayed in the list box.</summary>
+		/// <summary>
+		/// Gets the dimensions of the rectangle that bounds a list box item as it is currently displayed in the list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The zero-based index of the item.</para>
@@ -679,10 +735,13 @@ public static partial class User32
 		/// <para>A pointer to a <c>RECT</c> structure that will receive the client coordinates for the item in the list box.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is LB_ERR.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getitemrect
+		[MsgParams(typeof(int), typeof(RECT?))]
 		LB_GETITEMRECT = 0x0198,
 
-		/// <summary>Gets the application-defined value associated with the specified list box item.</summary>
+		/// <summary>
+		/// Gets the application-defined value associated with the specified list box item.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The index of the item.</para>
@@ -700,10 +759,13 @@ public static partial class User32
 		/// <c>LB_INSERTSTRING</c> message that added the item to the list box. Otherwise, it is the value in the lParam of the
 		/// <c>LB_SETITEMDATA</c> message.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getitemdata
+		[MsgParams(typeof(int), null)]
 		LB_GETITEMDATA = 0x0199,
 
-		/// <summary>Sets a value associated with the specified item in a list box.</summary>
+		/// <summary>
+		/// Sets a value associated with the specified item in a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the zero-based index of the item. If this value is -1, the lParam value applies to all items in the list box.</para>
@@ -716,14 +778,17 @@ public static partial class User32
 		/// <para>Specifies the value to be associated with the item.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is LB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// If the item is in an owner-drawn list box created without the <c>LBS_HASSTRINGS</c> style, this message replaces the value
 		/// contained in the lParam parameter of the <c>LB_ADDSTRING</c> or <c>LB_INSERTSTRING</c> message that added the item to the list box.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-setitemdata
+		[MsgParams(typeof(int), typeof(IntPtr))]
 		LB_SETITEMDATA = 0x019A,
 
-		/// <summary>Selects or deselects one or more consecutive items in a multiple-selection list box.</summary>
+		/// <summary>
+		/// Selects or deselects one or more consecutive items in a multiple-selection list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para><c>TRUE</c> to select the range of items, or <c>FALSE</c> to deselect it.</para>
@@ -734,17 +799,18 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is LB_ERR.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>Use this message only with multiple-selection list boxes.</para>
 		/// <para>This message can select a range only within the first 65,536 items.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-selitemrange
+		[MsgParams(typeof(BOOL), typeof(uint))]
 		LB_SELITEMRANGE = 0x019B,
 
 		/// <summary>
 		/// Sets the anchor item that is, the item from which a multiple selection starts. A multiple selection spans all items from the
 		/// anchor item to the caret item.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the index of the new anchor item.</para>
@@ -758,13 +824,14 @@ public static partial class User32
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the message succeeds, the return value is zero.</para>
 		/// <para>If the message fails, the return value is LB_ERR.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-setanchorindex
+		[MsgParams(typeof(int), null)]
 		LB_SETANCHORINDEX = 0x019C,
 
 		/// <summary>
 		/// Gets the index of the anchor item that is, the item from which a multiple selection starts. A multiple selection spans all items
 		/// from the anchor item to the caret item.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -772,13 +839,14 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the index of the anchor item.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getanchorindex
+		[MsgParams()]
 		LB_GETANCHORINDEX = 0x019D,
 
 		/// <summary>
 		/// Sets the focus rectangle to the item at the specified index in a multiple-selection list box. If the item is not visible, it is
 		/// scrolled into view.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the zero-based index of the list box item that is to receive the focus rectangle.</para>
@@ -794,14 +862,17 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If an error occurs, the return value is LB_ERR (-1). Otherwise, LB_OKAY (0) is returned.</para>
+		/// </summary>
 		/// <remarks>
 		/// If this message is sent to a single-selection list box that does not contain a selected item, the caret index is set to the item
 		/// specified by the wParam parameter. If the single-selection list box does contain a selected item, the list box returns LB_ERR.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-setcaretindex
+		[MsgParams(typeof(int), typeof(BOOL))]
 		LB_SETCARETINDEX = 0x019E,
 
-		/// <summary>Retrieves the index of the item that has the focus in a multiple-selection list box. The item may or may not be selected.</summary>
+		/// <summary>
+		/// Retrieves the index of the item that has the focus in a multiple-selection list box. The item may or may not be selected.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -809,16 +880,17 @@ public static partial class User32
 		/// <para>Not used; must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the zero-based index of the focused list box item, or 0 if no item has the focus.</para>
+		/// </summary>
 		/// <remarks>
 		/// This message can also be used to get the index of the item that is currently selected in a single-selection list box.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getcaretindex
+		[MsgParams()]
 		LB_GETCARETINDEX = 0x019F,
 
 		/// <summary>
 		/// Sets the height, in pixels, of items in a list box. If the list box has the <c>LBS_OWNERDRAWVARIABLE</c> style, this message sets
 		/// the height of the item specified by the wParam parameter. Otherwise, this message sets the height of all items in the list box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -834,10 +906,13 @@ public static partial class User32
 		/// <para>Specifies the height, in pixels, of the item. The maximum height is 255 pixels.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>If the index or height is invalid, the return value is LB_ERR.</para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-setitemheight
+		[MsgParams(typeof(int), typeof(int))]
 		LB_SETITEMHEIGHT = 0x01A0,
 
-		/// <summary>Gets the height of items in a list box.</summary>
+		/// <summary>
+		/// Gets the height of items in a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -856,10 +931,13 @@ public static partial class User32
 		/// The return value is the height, in pixels, of each item in the list box. The return value is the height of the item specified by
 		/// the wParam parameter if the list box has the <c>LBS_OWNERDRAWVARIABLE</c> style. The return value is LB_ERR if an error occurs.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getitemheight
+		[MsgParams(typeof(int), null)]
 		LB_GETITEMHEIGHT = 0x01A1,
 
-		/// <summary>Finds the first list box string that exactly matches the specified string, except that the search is not case sensitive.</summary>
+		/// <summary>
+		/// Finds the first list box string that exactly matches the specified string, except that the search is not case sensitive.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>
@@ -879,6 +957,7 @@ public static partial class User32
 		/// </para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the zero-based index of the matching item, or LB_ERR if the search was unsuccessful.</para>
+		/// </summary>
 		/// <remarks>
 		/// <para>
 		/// This function is only successful if the specified string and a list box item have the same length (except for the null at the end
@@ -893,12 +972,12 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-findstringexact
+		[MsgParams(typeof(int), typeof(string))]
 		LB_FINDSTRINGEXACT = 0x01A2,
 
 		/// <summary>
 		/// Sets the current locale of the list box. You can use the locale to determine the correct sorting order of displayed text (for
 		/// list boxes with the <c>LBS_SORT</c> style) and of text added by the <c>LB_ADDSTRING</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the locale identifier that the list box will use for sorting when adding text.</para>
@@ -909,14 +988,15 @@ public static partial class User32
 		/// The return value is the previous locale identifier. If the wParam parameter specifies a locale that is not installed on the
 		/// system, the return value is LB_ERR and the current list box locale is not changed.
 		/// </para>
+		/// </summary>
 		/// <remarks>Use the <c>MAKELCID</c> macro to construct a locale identifier.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-setlocale
+		[MsgParams(typeof(LCID), null, LResultType = typeof(LCID))]
 		LB_SETLOCALE = 0x01A5,
 
 		/// <summary>
 		/// Gets the current locale of the list box. You can use the locale to determine the correct sorting order of displayed text (for
 		/// list boxes with the <c>LBS_SORT</c> style) and of text added by the <c>LB_ADDSTRING</c> message.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Not used; must be zero.</para>
@@ -927,17 +1007,18 @@ public static partial class User32
 		/// The return value specifies the current locale of the list box. The <c>HIWORD</c> contains the country/region code and the
 		/// <c>LOWORD</c> contains the language identifier.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// The language identifier consists of a sublanguage identifier and a primary language identifier. Use the <c>PRIMARYLANGID</c>
 		/// macro to extract the primary language identifier from the <c>LOWORD</c> of the return value, and the <c>SUBLANGID</c> macro to
 		/// extract the sublanguage identifier.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-getlocale
+		[MsgParams(LResultType = typeof(LCID))]
 		LB_GETLOCALE = 0x01A6,
 
 		/// <summary>
 		/// Sets the count of items in a list box created with the <c>LBS_NODATA</c> style and not created with the <c>LBS_HASSTRINGS</c> style.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>Specifies the new count of items in the list box.</para>
@@ -952,16 +1033,17 @@ public static partial class User32
 		/// <para>
 		/// If an error occurs, the return value is LB_ERR. If there is insufficient memory to store the items, the return value is LB_ERRSPACE.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// The <c>LB_SETCOUNT</c> message is supported only by list boxes created with the <c>LBS_NODATA</c> style and not created with the
 		/// <c>LBS_HASSTRINGS</c> style. All other list boxes return LB_ERR.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-setcount
+		[MsgParams(typeof(int), null)]
 		LB_SETCOUNT = 0x01A7,
 
 		/// <summary>
 		/// Allocates memory for storing list box items. This message is used before an application adds a large number of items to a list box.
-		/// </summary>
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>The number of items to add.</para>
@@ -982,6 +1064,7 @@ public static partial class User32
 		/// Microsoft Windows NT 4.0 : This message does not allocate the specified amount of memory; however, it always returns the value
 		/// specified in the wParam parameter.
 		/// </para>
+		/// </summary>
 		/// <remarks>
 		/// The <c>LB_INITSTORAGE</c> message helps speed up the initialization of list boxes that have a large number of items (more than
 		/// 100). It reserves the specified amount of memory so that subsequent <c>LB_ADDSTRING</c>, <c>LB_INSERTSTRING</c>, <c>LB_DIR</c>,
@@ -990,9 +1073,11 @@ public static partial class User32
 		/// requested amount.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/Controls/lb-initstorage
+		[MsgParams(typeof(int), typeof(int))]
 		LB_INITSTORAGE = 0x01A8,
 
-		/// <summary>Gets the zero-based index of the item nearest the specified point in a list box.</summary>
+		/// <summary>
+		/// Gets the zero-based index of the item nearest the specified point in a list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used.</para>
@@ -1008,13 +1093,16 @@ public static partial class User32
 		/// The return value contains the index of the nearest item in the <c>LOWORD</c>. The <c>HIWORD</c> is zero if the specified point is
 		/// in the client area of the list box, or one if it is outside the client area.
 		/// </para>
+		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-itemfrompoint
+		[MsgParams(null, typeof(uint), LResultType = typeof(uint))]
 		LB_ITEMFROMPOINT = 0x01A9,
 
 		/// <summary>Undocumented.</summary>
 		LB_MULTIPLEADDSTRING = 0x01B1,
 
-		/// <summary>Gets the number of items per column in a specified list box.</summary>
+		/// <summary>
+		/// Gets the number of items per column in a specified list box.
 		/// <para><strong>Parameters</strong></para>
 		/// <para><em>wParam</em></para>
 		/// <para>This parameter is not used; it must be zero.</para>
@@ -1022,8 +1110,10 @@ public static partial class User32
 		/// <para>This parameter is not used; it must be zero.</para>
 		/// <para><strong>Returns</strong></para>
 		/// <para>The return value is the number of items per column.</para>
+		/// </summary>
 		/// <remarks>This message is equivalent to <c>GetListBoxInfo</c>.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-getlistboxinfo
+		[MsgParams()]
 		LB_GETLISTBOXINFO = 0x01B2,
 	}
 
