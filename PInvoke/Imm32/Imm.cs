@@ -1227,12 +1227,12 @@ public static partial class Imm32
 	/// <summary>Retrieves a candidate list.</summary>
 	/// <param name="hIMC">Handle to the input context.</param>
 	/// <param name="deIndex">Zero-based index of the candidate list.</param>
-	/// <returns>The resulting <see cref="CANDIDATELIST"/> and the list of extracted candidate names.</returns>
+	/// <returns>The resulting <see cref="CANDIDATELIST_MGD"/> and the list of extracted candidate names.</returns>
 	public static CANDIDATELIST_MGD ImmGetCandidateList([In] HIMC hIMC, uint deIndex)
 	{
-		using SafeCoTaskMemStruct<CANDIDATELIST> mem = new(Win32Error.ThrowLastErrorIf(ImmGetCandidateList(hIMC, deIndex, default, 0), i => i == 0));
+		using SafeCoTaskMemHandle mem = new(Win32Error.ThrowLastErrorIf(ImmGetCandidateList(hIMC, deIndex, default, 0), i => i == 0));
 		Win32Error.ThrowLastErrorIf(ImmGetCandidateList(hIMC, deIndex, mem, mem.Size), i => i == 0);
-		return mem.GetManagedResult();
+		return mem.ToStructure<CANDIDATELIST_MGD>();
 	}
 
 	/// <summary>Retrieves the size of the candidate lists.</summary>
@@ -1341,7 +1341,7 @@ public static partial class Imm32
 	{
 		using SafeCoTaskMemString str = new(Win32Error.ThrowLastErrorIf(ImmGetCompositionString(hIMC, dwIndex, default, 0), i => i < 0) + 2, CharSet.Auto);
 		Win32Error.ThrowLastErrorIf(ImmGetCompositionString(hIMC, dwIndex, str, str.Size), i => i < 0);
-		return str.ToString();
+		return str.ToString()!;
 	}
 
 	/// <summary>Retrieves information about the composition window.</summary>
@@ -1443,12 +1443,12 @@ public static partial class Imm32
 	/// </item>
 	/// </list>
 	/// </param>
-	/// <returns>A CANDIDATELIST structure with the conversion result list of characters or words.</returns>
+	/// <returns>A CANDIDATELIST_MGD structure with the conversion result list of characters or words.</returns>
 	public static CANDIDATELIST_MGD ImmGetConversionList(HKL hKL, HIMC hIMC, [MarshalAs(UnmanagedType.LPTStr)] string lpSrc, GCL uFlag)
 	{
-		using SafeCoTaskMemStruct<CANDIDATELIST> mem = new(Win32Error.ThrowLastErrorIf(ImmGetConversionList(hKL, hIMC, lpSrc, default, 0, uFlag), i => i == 0));
+		using SafeCoTaskMemHandle mem = new(Win32Error.ThrowLastErrorIf(ImmGetConversionList(hKL, hIMC, lpSrc, default, 0, uFlag), i => i == 0));
 		Win32Error.ThrowLastErrorIf(ImmGetConversionList(hKL, hIMC, lpSrc, mem, mem.Size, uFlag), i => i == 0);
-		return mem.GetManagedResult();
+		return mem.ToStructure<CANDIDATELIST_MGD>();
 	}
 
 	/// <summary>Retrieves the current conversion status.</summary>
@@ -1687,7 +1687,7 @@ public static partial class Imm32
 	// LPSTR lpszFileName, [in] UINT uBufLen );
 	[DllImport(Lib_Imm32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetIMEFileNameA")]
-	public static extern uint ImmGetIMEFileName(HKL hKL, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszFileName, uint uBufLen);
+	public static extern uint ImmGetIMEFileName(HKL hKL, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpszFileName, uint uBufLen);
 
 	/// <summary>Retrieves the menu items that are registered in the IME menu of a specified input context.</summary>
 	/// <param name="hIMC">Handle to the input context.</param>
@@ -1759,11 +1759,8 @@ public static partial class Imm32
 	// LPIMEMENUITEMINFOA lpImeMenu, [in] DWORD dwSize );
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetImeMenuItemsA")]
 	public static uint ImmGetImeMenuItems(HIMC hIMC, IGIMIF dwFlags, IGIMII dwType,
-		out IMEMENUITEMINFO lpImeParentMenu, [Out, Optional, MarshalAs(UnmanagedType.LPArray)] IMEMENUITEMINFO[]? lpImeMenu)
-	{
-		return ImmGetImeMenuItems(hIMC, dwFlags, dwType, out lpImeParentMenu, lpImeMenu,
-lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Length);
-	}
+		out IMEMENUITEMINFO lpImeParentMenu, [Out, Optional, MarshalAs(UnmanagedType.LPArray)] IMEMENUITEMINFO[]? lpImeMenu) =>
+		ImmGetImeMenuItems(hIMC, dwFlags, dwType, out lpImeParentMenu, lpImeMenu, lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Length);
 
 	/// <summary>Determines whether the IME is open or closed.</summary>
 	/// <param name="hIMC">Handle to the input context.</param>
@@ -2323,30 +2320,9 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ImmUnregisterWord(HKL hKL, [MarshalAs(UnmanagedType.LPTStr)] string lpszReading, IME_REGWORD_STYLE dwStyle, [MarshalAs(UnmanagedType.LPTStr)] string lpszUnregister);
 
-	private static CANDIDATELIST_MGD GetManagedResult(this SafeCoTaskMemStruct<CANDIDATELIST> mem)
-	{
-		CANDIDATELIST info = mem.Value;
-		return new() { style = info.dwStyle, selectedIndex = info.dwSelection, pageSize = info.dwPageSize, pageStartIndex = info.dwPageStart, candidates = GetCand() };
-
-		string[] GetCand()
-		{
-			if (info.dwCount == 0)
-			{
-				return new string[0];
-			}
-
-			if (info.dwStyle == IME_CAND.IME_CAND_CODE && info.dwCount == 1)
-			{
-				return new[] { StringHelper.GetString(mem.GetFieldAddress(nameof(CANDIDATELIST.dwOffset)), 1, CharSet.Unicode) };
-			}
-
-			return Array.ConvertAll(info.dwOffset, o => StringHelper.GetString(mem.DangerousGetHandle().Offset(o)));
-		}
-	}
-
 	[DllImport(Lib_Imm32, SetLastError = false, CharSet = CharSet.Auto)]
-	private static extern uint ImmGetImeMenuItems(HIMC hIMC, IGIMIF dwFlags, IGIMII dwType,
-				out IMEMENUITEMINFO lpImeParentMenu, [Out, Optional, MarshalAs(UnmanagedType.LPArray)] IMEMENUITEMINFO[]? lpImeMenu, int dwSize);
+	private static extern uint ImmGetImeMenuItems(HIMC hIMC, IGIMIF dwFlags, IGIMII dwType, out IMEMENUITEMINFO lpImeParentMenu,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray)] IMEMENUITEMINFO[]? lpImeMenu, int dwSize);
 
 	/// <summary>Contains information about a candidate list.</summary>
 	/// <remarks>The candidate strings immediately follow the last offset in the <c>dwOffset</c> array.</remarks>
@@ -2354,7 +2330,6 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 	// dwStyle; DWORD dwCount; DWORD dwSelection; DWORD dwPageStart; DWORD dwPageSize; DWORD dwOffset[1]; } CANDIDATELIST,
 	// *PCANDIDATELIST, *NPCANDIDATELIST, *LPCANDIDATELIST;
 	[PInvokeData("imm.h", MSDNShortId = "NS:imm.tagCANDIDATELIST")]
-	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<CANDIDATELIST>), nameof(dwCount))]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CANDIDATELIST
 	{
@@ -2423,13 +2398,13 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 		/// Offset to the start of the first candidate string, relative to the start of this structure. The offsets for subsequent
 		/// strings immediately follow this member, forming an array of 32-bit offsets.
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public uint[] dwOffset;
+		public uint dwOffset;
 	}
 
 	/// <summary>Contains information about a candidate list.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imm/ns-imm-candidatelist
 	[PInvokeData("imm.h", MSDNShortId = "NS:imm.tagCANDIDATELIST")]
+	[VanaraMarshaler(typeof(CANDIDATELISTMarshaler))]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CANDIDATELIST_MGD
 	{
@@ -2459,7 +2434,7 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 		public uint pageSize;
 
 		/// <summary>The candidate strings.</summary>
-		public string[] candidates;
+		public string?[] candidates;
 	}
 
 	/// <summary>Contains style and position information for a composition window.</summary>
@@ -2742,5 +2717,30 @@ lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Leng
 		/// <summary><c>szDescription</c> Array of characters that contains the description of the style.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = STYLE_DESCRIPTION_SIZE)]
 		public string szDescription;
+	}
+
+	private class CANDIDATELISTMarshaler : IVanaraMarshaler
+	{
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(CANDIDATELIST));
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeHGlobalStruct<CANDIDATELIST>();
+
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			var mem = new SafeHGlobalStruct<CANDIDATELIST>(pNativeData, false, allocatedBytes);
+			CANDIDATELIST info = mem.Value;
+			return new CANDIDATELIST_MGD() { style = info.dwStyle, selectedIndex = info.dwSelection, pageSize = info.dwPageSize, pageStartIndex = info.dwPageStart, candidates = GetCand() };
+
+			string?[] GetCand()
+			{
+				if (info.dwCount == 0)
+					return new string[0];
+
+				var offsetPtr = mem.GetFieldAddress(nameof(CANDIDATELIST.dwOffset));
+				if (info.dwStyle == IME_CAND.IME_CAND_CODE && info.dwCount == 1)
+					return new[] { StringHelper.GetString(offsetPtr, 1, CharSet.Unicode) };
+				return Array.ConvertAll(offsetPtr.ToArray<uint>((int)info.dwCount)!, o => StringHelper.GetString(pNativeData.Offset(o)));
+			}
+		}
 	}
 }
