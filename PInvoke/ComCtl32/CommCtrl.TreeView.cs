@@ -2480,7 +2480,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information specific to an NM_CUSTOMDRAW (tree view) notification code sent by a tree-view control.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773415")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NMTVCUSTOMDRAW
+	public struct NMTVCUSTOMDRAW : INotificationInfo
 	{
 		/// <summary>NMCUSTOMDRAW structure that contains general custom draw information.</summary>
 		public NMCUSTOMDRAW nmcd;
@@ -2837,7 +2837,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets the text.</summary>
 		/// <value>The text.</value>
-		public string Text => pszText == LPSTR_TEXTCALLBACK ? null : Marshal.PtrToStringUni(pszText);
+		public string? Text => pszText == LPSTR_TEXTCALLBACK ? null : Marshal.PtrToStringUni(pszText);
 
 		/// <summary>Gets or sets a value indicating whether to use text callback.</summary>
 		/// <value><c>true</c> if to use text callback; otherwise, <c>false</c>.</value>
@@ -3094,7 +3094,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets the text.</summary>
 		/// <value>The text.</value>
-		public string Text => (IntPtr)pszText == LPSTR_TEXTCALLBACK ? null : pszText.ToString();
+		public string? Text => (IntPtr)pszText == LPSTR_TEXTCALLBACK ? null : pszText.ToString();
 
 		/// <summary>Gets or sets a value indicating whether to use text callback.</summary>
 		/// <value><c>true</c> if to use text callback; otherwise, <c>false</c>.</value>

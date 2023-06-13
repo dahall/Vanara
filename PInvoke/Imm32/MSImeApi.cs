@@ -86,12 +86,10 @@ public static partial class Imm32
 	/// <summary>CLSID_ImePlugInDictDictionaryList_JPN</summary>
 	[PInvokeData("msimeapi.h")]
 	[ComImport, Guid("4FE2776B-B0F9-4396-B5FC-E9D4CF1EC195"), ClassInterface(ClassInterfaceType.None)]
-	public class ImePlugInDictDictionaryList1041
-	{ }
+	public class ImePlugInDictDictionaryList1041 { }
 
 	/// <summary>CLSID_ImePlugInDictDictionaryList_CHS</summary>
 	[PInvokeData("msimeapi.h")]
 	[ComImport, Guid("7BF0129B-5BEF-4DE4-9B0B-5EDB66AC2FA6"), ClassInterface(ClassInterfaceType.None)]
-	public class ImePlugInDictDictionaryList2052
-	{ }
+	public class ImePlugInDictDictionaryList2052 { }
 }

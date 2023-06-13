@@ -385,7 +385,7 @@ public static partial class Imm32
 		// https://docs.microsoft.com/en-us/windows/win32/api/msime/nf-msime-ifecommon-isdefaultime HRESULT IsDefaultIME( [out] const
 		// CHAR *szName, [in] INT cszName );
 		[PreserveSig]
-		HRESULT IsDefaultIME([Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder szName, [In] int cszName);
+		HRESULT IsDefaultIME([Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? szName, [In] int cszName);
 
 		/// <summary>
 		/// Allows the Microsoft IME to become the default IME in the keyboard layout.
@@ -722,8 +722,8 @@ public static partial class Imm32
 		// *pwchFirst, [in] const WCHAR *pwchLast, [in] const WCHAR *pwchDisplay, [in] ULONG ulPos, [in] ULONG ulSelect, [in] ULONG
 		// ulWordSrc, [in, out] UCHAR *pchBuffer, [in] ULONG cbBuffer, [out] ULONG *pcWrd );
 		[PreserveSig]
-		HRESULT GetWords([MarshalAs(UnmanagedType.LPWStr)] string pwchFirst, [MarshalAs(UnmanagedType.LPWStr)] string pwchLast,
-			[MarshalAs(UnmanagedType.LPWStr)] string pwchDisplay, IFED_POS ulPos, IFED_SELECT ulSelect, IFED_REG ulWordSrc,
+		HRESULT GetWords([MarshalAs(UnmanagedType.LPWStr)] string? pwchFirst, [MarshalAs(UnmanagedType.LPWStr)] string? pwchLast,
+			[MarshalAs(UnmanagedType.LPWStr)] string? pwchDisplay, IFED_POS ulPos, IFED_SELECT ulSelect, IFED_REG ulWordSrc,
 			IntPtr pchBuffer, uint cbBuffer, out uint pcWrd);
 
 		/// <summary>This method is used only after GetWords to get additional words.</summary>
@@ -1246,7 +1246,7 @@ public static partial class Imm32
 		// DWORD dwRequest, [in] DWORD dwCMode, [in] INT cwchInput, [in] const WCHAR *pwchInput, [in] DWORD *pfCInfo, [out] MORRSLT
 		// **ppResult );
 		[PreserveSig]
-		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string pwchInput,
+		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string? pwchInput,
 			[MarshalAs(UnmanagedType.LPArray)] FELANG_CLMN[] pfCInfo, out SafeCoTaskMemStruct<MORRSLT> ppResult);
 
 		/// <summary>Gets the conversion mode capability of the IFELanguage object.</summary>
@@ -1391,7 +1391,7 @@ public static partial class Imm32
 
 		/// <summary><see langword="null"/>, or the string to be registered. It shows in the Word Register Dialog's "Display" field.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpwstrWord;
+		public string? lpwstrWord;
 
 		/// <summary>The initial tab ID, 0 or 1.</summary>
 		public int nTabId;
@@ -1402,7 +1402,7 @@ public static partial class Imm32
 		/// <see langword="null"/>, or the string to be registered. It shows in the Word Register Dialog's "Display" field.
 		/// </param>
 		/// <param name="tabId">The initial tab ID, 0 or 1.</param>
-		public IMEDLG(HWND hwnd, string display = null, int tabId = 0)
+		public IMEDLG(HWND hwnd, string? display = null, int tabId = 0)
 		{
 			cbIMEDLG = Marshal.SizeOf(typeof(IMEDLG));
 			this.hwnd = hwnd;
