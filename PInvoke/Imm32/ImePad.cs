@@ -907,7 +907,8 @@ public static partial class Imm32
 		/// <returns><c>S_OK</c> if successful, otherwise <c>E_FAIL</c>.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/imepad/nf-imepad-iimespecifyapplets-getappletiidlist HRESULT GetAppletIIDList(
 		// [in] REFIID refiid, [in, out] LPAPPLETIDLIST lpIIDList );
-		void GetAppletIIDList(in Guid refiid, ref APPLETIDLIST lpIIDList);
+		[PreserveSig]
+		HRESULT GetAppletIIDList(in Guid refiid, ref APPLETIDLIST lpIIDList);
 	}
 
 	/// <summary>Undocumented.</summary>
@@ -924,7 +925,7 @@ public static partial class Imm32
 	// *pIIDList; } APPLETIDLIST, *LPAPPLETIDLIST;
 	[PInvokeData("imepad.h", MSDNShortId = "NS:imepad.tagAPPLETIDLIST")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct APPLETIDLIST
+	public struct APPLETIDLIST : IArrayStruct<Guid>
 	{
 		/// <summary>The number of the IID's implemented in this applet.</summary>
 		public int count;
