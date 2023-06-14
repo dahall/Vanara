@@ -616,7 +616,7 @@ public static partial class Rpc
 		public RPC_AUTH_IDENTITY_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="RPC_AUTH_IDENTITY_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static RPC_AUTH_IDENTITY_HANDLE NULL => new RPC_AUTH_IDENTITY_HANDLE(IntPtr.Zero);
+		public static RPC_AUTH_IDENTITY_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -629,7 +629,7 @@ public static partial class Rpc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="RPC_AUTH_IDENTITY_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RPC_AUTH_IDENTITY_HANDLE(IntPtr h) => new RPC_AUTH_IDENTITY_HANDLE(h);
+		public static implicit operator RPC_AUTH_IDENTITY_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -644,7 +644,7 @@ public static partial class Rpc
 		public static bool operator ==(RPC_AUTH_IDENTITY_HANDLE h1, RPC_AUTH_IDENTITY_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is RPC_AUTH_IDENTITY_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is RPC_AUTH_IDENTITY_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -665,7 +665,7 @@ public static partial class Rpc
 		public RPC_AUTHZ_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="RPC_AUTHZ_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static RPC_AUTHZ_HANDLE NULL => new RPC_AUTHZ_HANDLE(IntPtr.Zero);
+		public static RPC_AUTHZ_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -678,7 +678,7 @@ public static partial class Rpc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="RPC_AUTHZ_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RPC_AUTHZ_HANDLE(IntPtr h) => new RPC_AUTHZ_HANDLE(h);
+		public static implicit operator RPC_AUTHZ_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -693,7 +693,7 @@ public static partial class Rpc
 		public static bool operator ==(RPC_AUTHZ_HANDLE h1, RPC_AUTHZ_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is RPC_AUTHZ_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is RPC_AUTHZ_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -713,7 +713,7 @@ public static partial class Rpc
 		public RPC_BINDING_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="RPC_BINDING_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static RPC_BINDING_HANDLE NULL => new RPC_BINDING_HANDLE(IntPtr.Zero);
+		public static RPC_BINDING_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -726,7 +726,7 @@ public static partial class Rpc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="RPC_BINDING_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RPC_BINDING_HANDLE(IntPtr h) => new RPC_BINDING_HANDLE(h);
+		public static implicit operator RPC_BINDING_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -741,7 +741,7 @@ public static partial class Rpc
 		public static bool operator ==(RPC_BINDING_HANDLE h1, RPC_BINDING_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is RPC_BINDING_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is RPC_BINDING_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1047,7 +1047,7 @@ public static partial class Rpc
 		/// <c>NULL</c>. After the endpoint is resolved, use RpcBindingToStringBinding to obtain it.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string StringEndpoint;
+		public string? StringEndpoint;
 
 		/// <summary>Reserved. This member must be set to <c>NULL</c>.</summary>
 		public IntPtr u1;
@@ -1145,7 +1145,7 @@ public static partial class Rpc
 		/// Protseq parameter. Specify <c>NULL</c> to use dynamic endpoints.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string Endpoint;
+		public string? Endpoint;
 
 		/// <summary>
 		/// Pointer to an optional parameter provided for the security subsystem. Used only for ncacn_np and ncalrpc protocol sequences.
@@ -1613,7 +1613,7 @@ public static partial class Rpc
 		public RPC_IF_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="RPC_IF_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static RPC_IF_HANDLE NULL => new RPC_IF_HANDLE(IntPtr.Zero);
+		public static RPC_IF_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1626,7 +1626,7 @@ public static partial class Rpc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="RPC_IF_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RPC_IF_HANDLE(IntPtr h) => new RPC_IF_HANDLE(h);
+		public static implicit operator RPC_IF_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1641,7 +1641,7 @@ public static partial class Rpc
 		public static bool operator ==(RPC_IF_HANDLE h1, RPC_IF_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is RPC_IF_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is RPC_IF_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1712,7 +1712,7 @@ public static partial class Rpc
 		public RPC_INTERFACE_GROUP(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="RPC_INTERFACE_GROUP"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static RPC_INTERFACE_GROUP NULL => new RPC_INTERFACE_GROUP(IntPtr.Zero);
+		public static RPC_INTERFACE_GROUP NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1725,7 +1725,7 @@ public static partial class Rpc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="RPC_INTERFACE_GROUP"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RPC_INTERFACE_GROUP(IntPtr h) => new RPC_INTERFACE_GROUP(h);
+		public static implicit operator RPC_INTERFACE_GROUP(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1740,7 +1740,7 @@ public static partial class Rpc
 		public static bool operator ==(RPC_INTERFACE_GROUP h1, RPC_INTERFACE_GROUP h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is RPC_INTERFACE_GROUP h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is RPC_INTERFACE_GROUP h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1855,7 +1855,7 @@ public static partial class Rpc
 		/// registered interface can have a different callback function.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public RPC_INTERFACE_GROUP_IDLE_CALLBACK_FN IfCallback;
+		public RPC_INTERFACE_GROUP_IDLE_CALLBACK_FN? IfCallback;
 
 		/// <summary>
 		/// Pointer to a vector of object UUIDs offered by the server to be registered with the RPC endpoint mapper. The server
@@ -1875,7 +1875,7 @@ public static partial class Rpc
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string Annotation;
+		public string? Annotation;
 
 		/// <summary>Optional security descriptor describing which clients have the right to access the interface.</summary>
 		public IntPtr SecurityDescriptor;
@@ -3163,7 +3163,7 @@ public static partial class Rpc
 		/// password, see Handling Passwords.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string Password;
+		public string? Password;
 
 		/// <summary>The length, in characters, of the password string, not including the terminating null character.</summary>
 		public uint PasswordLength;
@@ -3188,13 +3188,13 @@ public static partial class Rpc
 		public SEC_WINNT_AUTH_IDENTITY_CHARSET Flags;
 
 		/// <summary>Gets the default value of the instance and sets <see cref="Flags"/> to the value defined by the runtime.</summary>
-		public static readonly SEC_WINNT_AUTH_IDENTITY Default = new SEC_WINNT_AUTH_IDENTITY { Flags = OsCharSet };
+		public static readonly SEC_WINNT_AUTH_IDENTITY Default = new() { Flags = OsCharSet };
 
 		/// <summary>Initializes a new instance of the <see cref="SEC_WINNT_AUTH_IDENTITY"/> struct.</summary>
 		/// <param name="user">The user name.</param>
 		/// <param name="domain">The domain name or the workgroup name.</param>
 		/// <param name="password">The password of the user in the domain or workgroup.</param>
-		public SEC_WINNT_AUTH_IDENTITY(string user, string domain, string password = null)
+		public SEC_WINNT_AUTH_IDENTITY(string user, string domain, string? password = null)
 		{
 			User = user;
 			UserLength = (uint)(user?.Length ?? 0);

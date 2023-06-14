@@ -2104,7 +2104,7 @@ public static partial class Rpc
 	[DllImport(Lib_rpcrt4, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("rpcdce.h", MSDNShortId = "NF:rpcdce.RpcServerRegisterIfEx")]
 	public static extern Win32Error RpcServerRegisterIfEx(RPC_IF_HANDLE IfSpec, in Guid MgrTypeUuid, [In] IntPtr MgrEpv, RPC_IF Flags, uint MaxCalls,
-		[Optional, MarshalAs(UnmanagedType.FunctionPtr)] RPC_IF_CALLBACK_FN IfCallback);
+		[Optional, MarshalAs(UnmanagedType.FunctionPtr)] RPC_IF_CALLBACK_FN? IfCallback);
 
 	/// <summary>The <c>RpcServerUnregisterIf</c> function removes an interface from the RPC run-time library registry.</summary>
 	/// <param name="IfSpec">
@@ -2511,10 +2511,11 @@ public static partial class Rpc
 
 		public IntPtr MarshalManagedToNative(object ManagedObj) => throw new NotImplementedException();
 
-		public object MarshalNativeToManaged(IntPtr pNativeData) => StringHelper.GetString(pNativeData);
+		public object MarshalNativeToManaged(IntPtr pNativeData) => StringHelper.GetString(pNativeData) ?? "";
 	}
 
-	/*
+	/* TODO: Add these RPC functions
+	 * 
 	RpcBindingSetObject
 	RpcBindingSetOption
 	RpcBindingToStringBinding
