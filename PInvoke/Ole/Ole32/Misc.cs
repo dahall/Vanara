@@ -39,7 +39,8 @@ public static partial class Ole32
 	// iidIntercepted, IUnknown *punkOuter, REFIID iid, void **ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("callobj.h", MSDNShortId = "d1ffee1d-f907-4091-b993-cf13d8ce616c")]
-	public static extern HRESULT CoGetInterceptor(in Guid iidIntercepted, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT CoGetInterceptor(in Guid iidIntercepted, [MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter,
+		in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 	/// <summary>
 	/// The <c>StgConvertVariantToProperty</c> function converts a <c>PROPVARIANT</c> data type to a <c>SERIALIZEDPROPERTYVALUE</c> data type.
@@ -61,7 +62,8 @@ public static partial class Ole32
 	// BOOLEAN fReserved, ULONG *pcIndirect );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propidl.h", MSDNShortId = "3d35b808-4fa6-44ec-9c46-96ceee1dafd0")]
-	public static extern IntPtr StgConvertVariantToProperty([In] PROPVARIANT pvar, ushort CodePage, [Optional] IntPtr pprop, ref uint pcb, uint pid, [MarshalAs(UnmanagedType.U1), Optional] bool fReserved, ref uint pcIndirect);
+	public static extern IntPtr StgConvertVariantToProperty([In] PROPVARIANT pvar, ushort CodePage, [Optional] IntPtr pprop, ref uint pcb,
+		uint pid, [MarshalAs(UnmanagedType.U1), Optional] bool fReserved, ref uint pcIndirect);
 
 	/// <summary>
 	/// The <c>StgPropertyLengthAsVariant</c> function examines a <c>SERIALIZEDPROPERTYVALUE</c> and returns the amount of memory that

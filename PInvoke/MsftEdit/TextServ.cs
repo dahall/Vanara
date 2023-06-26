@@ -3200,7 +3200,7 @@ public static partial class MsftEdit
 		// dwDrawAspect, LONG lindex, [in] void *pvAspect, [in] DVTARGETDEVICE *ptd, [in] HDC hdcDraw, [in] HDC hicTargetDev, [in] LPCRECTL
 		// lprcBounds, [in] LPCRECTL lprcWBounds, [in] LPRECT lprcUpdate, BOOL(* )(DWORD) pfnContinue, DWORD dwContinue, LONG lViewId );
 		[PreserveSig]
-		HRESULT TxDraw(DVASPECT dwDrawAspect, int lindex, IntPtr pvAspect, in DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcBounds,
+		HRESULT TxDraw(DVASPECT dwDrawAspect, int lindex, IntPtr pvAspect, [In] DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcBounds,
 			in RECT lprcWBounds, in RECT lprcUpdate, IntPtr pfnContinue, uint dwContinue, TXTVIEW lViewId);
 
 		/// <summary>Returns horizontal scroll bar information.</summary>
@@ -3386,7 +3386,7 @@ public static partial class MsftEdit
 		// DWORD dwDrawAspect, LONG lindex, [in] void *pvAspect, [in] DVTARGETDEVICE *ptd, [in] HDC hdcDraw, [in] HDC hicTargetDev, [in]
 		// LPCRECT lprcClient, [in] INT x, [in] INT y );
 		[PreserveSig]
-		HRESULT OnTxSetCursor(uint dwDrawAspect, int lindex, [In] IntPtr pvAspect, in DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcClient, int x, int y);
+		HRESULT OnTxSetCursor(uint dwDrawAspect, int lindex, [In] IntPtr pvAspect, [In] DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcClient, int x, int y);
 
 		/// <summary>Tests whether a specified point is within the rectangle of the text services object.</summary>
 		/// <param name="dwDrawAspect">
@@ -3485,7 +3485,7 @@ public static partial class MsftEdit
 		// [in] DWORD dwDrawAspect, LONG lindex, [in] void *pvAspect, [in] DVTARGETDEVICE *ptd, [in] HDC hdcDraw, [in] HDC hicTargetDev, [in]
 		// LPCRECT lprcClient, [in] INT x, [in] INT y, [out] DWORD *pHitResult );
 		[PreserveSig]
-		HRESULT TxQueryHitPoint(DVASPECT dwDrawAspect, int lindex, [In] IntPtr pvAspect, in DVTARGETDEVICE ptd, [In] HDC hdcDraw,
+		HRESULT TxQueryHitPoint(DVASPECT dwDrawAspect, int lindex, [In] IntPtr pvAspect, [In] DVTARGETDEVICE ptd, [In] HDC hdcDraw,
 			[In] HDC hicTargetDev, in RECT lprcClient, int x, int y, out uint pHitResult);
 
 		/// <summary>Notifies the text services object that this control is in-place active.</summary>
@@ -3833,7 +3833,7 @@ public static partial class MsftEdit
 		// DWORD dwAspect, HDC hdcDraw, HDC hicTargetDev, DVTARGETDEVICE *ptd, DWORD dwMode, const SIZEL *psizelExtent, [in, out] LONG
 		// *pwidth, [in, out] LONG *pheight );
 		[PreserveSig]
-		HRESULT TxGetNaturalSize(DVASPECT dwAspect, HDC hdcDraw, HDC hicTargetDev, in DVTARGETDEVICE ptd, TXTNATURALSIZE dwMode, in SIZE psizelExtent, ref int pwidth, ref int pheight);
+		HRESULT TxGetNaturalSize(DVASPECT dwAspect, HDC hdcDraw, HDC hicTargetDev, [In] DVTARGETDEVICE ptd, TXTNATURALSIZE dwMode, in SIZE psizelExtent, ref int pwidth, ref int pheight);
 
 		/// <summary>Gets the drop target for the text control.</summary>
 		/// <param name="ppDropTarget">
@@ -4314,7 +4314,7 @@ public static partial class MsftEdit
 		// dwDrawAspect, LONG lindex, [in] void *pvAspect, [in] DVTARGETDEVICE *ptd, [in] HDC hdcDraw, [in] HDC hicTargetDev, [in] LPCRECTL
 		// lprcBounds, [in] LPCRECTL lprcWBounds, [in] LPRECT lprcUpdate, BOOL(* )(DWORD) pfnContinue, DWORD dwContinue, LONG lViewId );
 		[PreserveSig]
-		new HRESULT TxDraw(DVASPECT dwDrawAspect, int lindex, IntPtr pvAspect, in DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcBounds,
+		new HRESULT TxDraw(DVASPECT dwDrawAspect, int lindex, IntPtr pvAspect, [In] DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcBounds,
 			in RECT lprcWBounds, in RECT lprcUpdate, IntPtr pfnContinue, uint dwContinue, TXTVIEW lViewId);
 
 		/// <summary>Returns horizontal scroll bar information.</summary>
@@ -4500,7 +4500,7 @@ public static partial class MsftEdit
 		// DWORD dwDrawAspect, LONG lindex, [in] void *pvAspect, [in] DVTARGETDEVICE *ptd, [in] HDC hdcDraw, [in] HDC hicTargetDev, [in]
 		// LPCRECT lprcClient, [in] INT x, [in] INT y );
 		[PreserveSig]
-		new HRESULT OnTxSetCursor(uint dwDrawAspect, int lindex, [In] IntPtr pvAspect, in DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcClient, int x, int y);
+		new HRESULT OnTxSetCursor(uint dwDrawAspect, int lindex, [In] IntPtr pvAspect, [In] DVTARGETDEVICE ptd, [In] HDC hdcDraw, [In] HDC hicTargetDev, in RECT lprcClient, int x, int y);
 
 		/// <summary>Tests whether a specified point is within the rectangle of the text services object.</summary>
 		/// <param name="dwDrawAspect">
@@ -4599,7 +4599,7 @@ public static partial class MsftEdit
 		// [in] DWORD dwDrawAspect, LONG lindex, [in] void *pvAspect, [in] DVTARGETDEVICE *ptd, [in] HDC hdcDraw, [in] HDC hicTargetDev, [in]
 		// LPCRECT lprcClient, [in] INT x, [in] INT y, [out] DWORD *pHitResult );
 		[PreserveSig]
-		new HRESULT TxQueryHitPoint(DVASPECT dwDrawAspect, int lindex, [In] IntPtr pvAspect, in DVTARGETDEVICE ptd, [In] HDC hdcDraw,
+		new HRESULT TxQueryHitPoint(DVASPECT dwDrawAspect, int lindex, [In] IntPtr pvAspect, [In] DVTARGETDEVICE ptd, [In] HDC hdcDraw,
 			[In] HDC hicTargetDev, in RECT lprcClient, int x, int y, out uint pHitResult);
 
 		/// <summary>Notifies the text services object that this control is in-place active.</summary>
@@ -4947,7 +4947,7 @@ public static partial class MsftEdit
 		// DWORD dwAspect, HDC hdcDraw, HDC hicTargetDev, DVTARGETDEVICE *ptd, DWORD dwMode, const SIZEL *psizelExtent, [in, out] LONG
 		// *pwidth, [in, out] LONG *pheight );
 		[PreserveSig]
-		new HRESULT TxGetNaturalSize(DVASPECT dwAspect, HDC hdcDraw, HDC hicTargetDev, in DVTARGETDEVICE ptd, TXTNATURALSIZE dwMode, in SIZE psizelExtent, ref int pwidth, ref int pheight);
+		new HRESULT TxGetNaturalSize(DVASPECT dwAspect, HDC hdcDraw, HDC hicTargetDev, [In] DVTARGETDEVICE ptd, TXTNATURALSIZE dwMode, in SIZE psizelExtent, ref int pwidth, ref int pheight);
 
 		/// <summary>Gets the drop target for the text control.</summary>
 		/// <param name="ppDropTarget">
@@ -5330,7 +5330,7 @@ public static partial class MsftEdit
 		// TxGetNaturalSize2( DWORD dwAspect, HDC hdcDraw, HDC hicTargetDev, DVTARGETDEVICE *ptd, DWORD dwMode, const SIZEL *psizelExtent,
 		// LONG *pwidth, LONG *pheight, LONG *pascent );
 		[PreserveSig]
-		HRESULT TxGetNaturalSize2(DVASPECT dwAspect, HDC hdcDraw, HDC hicTargetDev, in DVTARGETDEVICE ptd, TXTNATURALSIZE dwMode, in SIZE psizelExtent, ref int pwidth, ref int pheight, out int pascent);
+		HRESULT TxGetNaturalSize2(DVASPECT dwAspect, HDC hdcDraw, HDC hicTargetDev, [In] DVTARGETDEVICE ptd, TXTNATURALSIZE dwMode, in SIZE psizelExtent, ref int pwidth, ref int pheight, out int pascent);
 
 		/// <summary>Draws the text services object by using Direct2D rendering.</summary>
 		/// <param name="pRenderTarget">

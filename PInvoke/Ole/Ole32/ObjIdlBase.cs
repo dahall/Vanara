@@ -294,7 +294,7 @@ public static partial class Ole32
 	public enum RPCOPT_PROPERTIES
 	{
 		/// <summary>Controls how long your machine will attempt to establish RPC communications with another before failing.</summary>
-		[CorrespondingType(typeof(Rpc.RCP_C_BINDING_TIMEOUT), CorrespondingAction.GetSet)]
+		[CorrespondingType(typeof(RCP_C_BINDING_TIMEOUT), CorrespondingAction.GetSet)]
 		COMBND_RPCTIMEOUT = 0x01,
 
 		/// <summary>Describes the degree of remoteness of the RPC connection.</summary>
@@ -420,7 +420,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-icallfactory-createcall HRESULT CreateCall( REFIID riid,
 		// IUnknown *pCtrlUnk, REFIID riid2, IUnknown **ppv );
 		[PreserveSig]
-		HRESULT CreateCall(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object pCtrlUnk,
+		HRESULT CreateCall(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pCtrlUnk,
 			in Guid riid2, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
 	}
 
@@ -799,7 +799,7 @@ public static partial class Ole32
 		// *pAuthInfo, DWORD dwCapabilities );
 		[PreserveSig]
 		HRESULT SetBlanket([In, MarshalAs(UnmanagedType.IUnknown)] object pProxy, RPC_C_AUTHN dwAuthnSvc, RPC_C_AUTHZ dwAuthzSvc,
-			[MarshalAs(UnmanagedType.LPWStr)] string pServerPrincName, RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel,
+			[MarshalAs(UnmanagedType.LPWStr)] string? pServerPrincName, RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel,
 			[In, Optional] IntPtr pAuthInfo, EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities);
 
 		/// <summary>Makes a private copy of the proxy for the specified interface.</summary>
@@ -1398,58 +1398,133 @@ public static partial class Ole32
 	/// <term>Values</term>
 	/// </listheader>
 	/// <item>
-	/// <term>COMGLB_APPID</term>
-	/// <term>The AppID for the process. This is the only supported property on Windows XP.</term>
+	/// <description>COMGLB_APPID</description>
+	/// <description>The AppID for the process. This is the only supported property on Windows XP.</description>
 	/// </item>
 	/// <item>
-	/// <term>COMGLB_EXCEPTION_HANDLING</term>
-	/// <term>
-	/// Possible values for the COMGLB_EXCEPTION_HANDLING property are: By default, the COM runtime handles fatal exceptions raised
-	/// during method invocations by returning the RPC_E_SERVERFAULT error code to the client. An application disables this behavior to
-	/// allow exceptions to propagate to WER, which creates application process dumps and terminates the application. This prevents
-	/// possible data corruption and allows an application vendor to debug the dumps. For new applications, it is recommended that the
-	/// COMGLB_EXCEPTION_HANDLING property be set to COMGLB_EXCEPTION_DONOT_HANDLE_ANY.
-	/// </term>
-	/// </item>
+	/// <description>COMGLB_EXCEPTION_HANDLING</description>
+	/// <description>
+	/// <para>Possible values for the COMGLB_EXCEPTION_HANDLING property are:</para>
+	/// <list type="bullet">
+	/// <item>COMGLB_EXCEPTION_HANDLE: This is the default behavior. This setting causes the COM runtime to handle fatal exceptions.</item>
+	/// <item>COMGLB_EXCEPTION_DONOT_HANDLE: This causes the COM runtime not to handle fatal exceptions.</item>
+	/// <item>COMGLB_EXCEPTION_DONOT_HANDLE_FATAL: Alias for COMGLB_EXCEPTION_DONOT_HANDLE. Supported in Windows 7 and later.</item>
 	/// <item>
-	/// <term>COMGLB_RPC_THREADPOOL_SETTING</term>
-	/// <term>
-	/// Possible values for the COMGLB_RPC_THREADPOOL_SETTING property in the Set method are: Possible values for the
-	/// COMGLB_RPC_THREADPOOL_SETTING property in the Query method are: RPC uses the system thread pool by default in Windows 7. Since
-	/// the system thread pool is shared by multiple components in the process, COM and RPC operations may behave incorrectly if the
-	/// thread pool state is corrupted by a component. The COMGLB_RPC_THREADPOOL_SETTING property can be used to change the RPC thread
-	/// pool behavior. Changing the default behavior will incur a performance penalty since this causes RPC to use an extra thread.
-	/// Therefore, care should be exercised when changing this setting. It is recommended that this setting is changed only for
-	/// application compatibility reasons. Note This property is only supported in Windows 7 and later versions of Windows.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>COMGLB_RO_SETTINGS</term>
-	/// <term>
-	/// Possible values for the COMGLB_RO_SETTINGS property are: Note This property is only supported in Windows 8 and later versions of Windows.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>COMGLB_UNMARSHALING_POLICY</term>
-	/// <term>
-	/// Possible values for the COMGLB_UNMARSHALING_POLICY property are: Note This property is only supported in Windows 8 and later
-	/// versions of Windows.
-	/// </term>
+	/// COMGLB_EXCEPTION_DONOT_HANDLE_ANY: When set and a fatal exception occurs in a COM method, this causes the COM runtime to not handle
+	/// the exception. <br/> When set and a non-fatal exception occurs in a COM method, this causes the COM runtime to create a Windows Error
+	/// Reporting (WER) dump and terminate the process. Supported in Windows 7 and later.
 	/// </item>
 	/// </list>
 	/// <para>
-	/// It's important for applications that detect crashes and other exceptions that might be generated while executing inbound COM
-	/// calls, for example a call on a local server or when executing the IDropTarget::Drop method, to set COMGLB_EXCEPTION_HANDLING to
-	/// COMGLB_EXCEPTION_DONOT_HANDLE to disable COM behavior of catching exceptions. Failure to do this can lead to corrupt process
-	/// state, for example locks held when these exceptions are thrown are abandoned, and the process could enter an inconsistent state.
+	/// By default, the COM runtime handles fatal exceptions raised during method invocations by returning the RPC_E_SERVERFAULT error code
+	/// to the client. An application disables this behavior to allow exceptions to propagate to WER, which creates application process dumps
+	/// and terminates the application. This prevents possible data corruption and allows an application vendor to debug the dumps.
+	/// </para>
+	/// <para>
+	/// <note type="note">Even if COM runtime exception handling is disabled, exceptions might not propagate to WER if there is another
+	/// application-level exception handler in the process that handles the exception.</note>
+	/// </para>
+	/// <para>For new applications, it is recommended that the COMGLB_EXCEPTION_HANDLING property be set to COMGLB_EXCEPTION_DONOT_HANDLE_ANY.</para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>COMGLB_RPC_THREADPOOL_SETTING</description>
+	/// <description>
+	/// <para>Possible values for the COMGLB_RPC_THREADPOOL_SETTING property in the Set method are:</para>
+	/// <list type="bullet">
+	/// <item>COMGLB_RPC_THREADPOOL_SETTING_PRIVATE_POOL: Instructs RPC to use a dedicated private thread pool.</item>
+	/// </list>
+	/// <para>Possible values for the COMGLB_RPC_THREADPOOL_SETTING property in the Query method are:</para>
+	/// <list type="bullet">
+	/// <item>COMGLB_RPC_THREADPOOL_SETTING_PRIVATE_POOL: RPC uses a dedicated private thread pool.</item>
+	/// <item>COMGLB_RPC_THREADPOOL_SETTING_DEFAULT_POOL: RPC uses the system default thread pool.</item>
+	/// </list>
+	/// <para>
+	/// RPC uses the system thread pool by default in WindowsÂ 7. Since the system thread pool is shared by multiple components in the
+	/// process, COM and RPC operations may behave incorrectly if the thread pool state is corrupted by a component. The
+	/// COMGLB_RPC_THREADPOOL_SETTING property can be used to change the RPC thread pool behavior. Changing the default behavior will incur a
+	/// performance penalty since this causes RPC to use an extra thread. Therefore, care should be exercised when changing this setting. It
+	/// is recommended that this setting is changed only for application compatibility reasons.
+	/// </para>
+	/// <para><br/></para>
+	/// <para>
+	/// <note type="note">This property must be set immediately after COM is initialized in the process. If this property is set after
+	/// performing any operations that cause COM to initialize the RPC channel (for example, marshaling or unmarshalling object references),
+	/// the Set method will fail.</note>
+	/// </para>
+	/// <para><br/></para>
+	/// <para><strong>Note:</strong> This property is only supported in WindowsÂ 7 and later versions of Windows.</para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>COMGLB_RO_SETTINGS</description>
+	/// <description>
+	/// <para>Possible values for the COMGLB_RO_SETTINGS property are:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// COMGLB_FAST_RUNDOWN: Indicates that stubs in the current process are subjected to fast stub rundown behavior, which means that stubs
+	/// are run down on termination of the client process, instead of waiting for normal cleanup timeouts to expire.
+	/// </item>
+	/// <item>COMGLB_STA_MODALLOOP_REMOVE_TOUCH_MESSAGES: Remove touch messages from the message queue in the STA modal loop.</item>
+	/// <item>
+	/// COMGLB_STA_MODALLOOP_SHARED_QUEUE_REMOVE_INPUT_MESSAGES: Input messages are removed in the STA modal loop when the thread's message
+	/// queue is attached.
+	/// </item>
+	/// <item>
+	/// COMGLB_STA_MODALLOOP_SHARED_QUEUE_DONOT_REMOVE_INPUT_MESSAGES: Input messages aren't removed in the STA modal loop when the thread's
+	/// message queue is attached.
+	/// </item>
+	/// <item>
+	/// COMGLB_STA_MODALLOOP_SHARED_QUEUE_REORDER_POINTER_MESSAGES: Pointer input messages aren't removed in the STA modal loop when the
+	/// thread's message queue is attached but are temporarily masked to avoid deadlocks arising from the attached queue.
+	/// </item>
+	/// <item>COMGLB_RESERVED1: Reserved for future use.</item>
+	/// <item>COMGLB_RESERVED2: Reserved for future use.</item>
+	/// <item>COMGLB_RESERVED3: Reserved for future use.</item>
+	/// </list>
+	/// <para><strong>Note</strong> This property is only supported in WindowsÂ 8 and later versions of Windows.</para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>COMGLB_UNMARSHALING_POLICY</description>
+	/// <description>
+	/// <para>Possible values for the COMGLB_UNMARSHALING_POLICY property are:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// COMGLB_UNMARSHALING_POLICY_NORMAL: Unmarshaling behavior is the same as versions before than Windows 8. EOAC_NO_CUSTOM_MARSHAL
+	/// restrictions apply if this flag is set in CoInitializeSecurity. Otherwise, there are no restrictions. This is the default for
+	/// processes that aren't in the app container.
+	/// </item>
+	/// <item>
+	/// COMGLB_UNMARSHALING_POLICY_STRONG: Unmarshaling allows only a system-trusted list of hardened unmarshalers and unmarshalers allowed
+	/// per-process by the CoAllowUnmarshalerCLSID function. This is the default for processes in the app container.
+	/// </item>
+	/// <item>
+	/// COMGLB_UNMARSHALING_POLICY_HYBRID: Unmarshaling data whose source is app container allows only a system-trusted list of hardened
+	/// unmarshalers and unmarshalers allowed per-process by the CoAllowUnmarshalerCLSID function. Unmarshaling behavior for data with a
+	/// source that's not app container is unchanged from previous versions.
+	/// </item>
+	/// </list>
+	/// <para><font color="#333333"><strong>Note</strong></font> This property is only supported in WindowsÂ 8 and later versions of Windows.</para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// It's important for applications that detect crashes and other exceptions that might be generated while executing inbound COM calls,
+	/// for example a call on a local server or when executing the IDropTarget::Drop method, to set COMGLB_EXCEPTION_HANDLING to
+	/// COMGLB_EXCEPTION_DONOT_HANDLE to disable COM behavior of catching exceptions. Failure to do this can lead to corrupt process state,
+	/// for example locks held when these exceptions are thrown are abandoned, and the process could enter an inconsistent state.
 	/// </para>
 	/// <para>All such applications should execute this code at startup.</para>
 	/// <para>
-	/// <code> IGlobalOptions *pGlobalOptions; hr = CoCreateInstance(CLSID_GlobalOptions, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&amp;pGlobalOptions)); if (SUCCEEDED(hr)) { hr = pGlobalOptions-&gt;Set(COMGLB_EXCEPTION_HANDLING, COMGLB_EXCEPTION_DONOT_HANDLE); pGlobalOptions-&gt;Release(); }</code>
+	/// <span id="cbc_1" codelanguage="CSharp" x-lang="CSharp"></span><div class="highlight-title"><span tabindex="0"
+	/// class="highlight-copycode"></span> C#</div><div class="code"><pre xml:space="preserve">IGlobalOptions *pGlobalOptions; <br/> hr =
+	/// CoCreateInstance(CLSID_GlobalOptions, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&amp;pGlobalOptions)); <br/> if (SUCCEEDED(hr)) <br/>{
+	/// <br/> hr = pGlobalOptions-&gt;Set(COMGLB_EXCEPTION_HANDLING, COMGLB_EXCEPTION_DONOT_HANDLE); <br/> pGlobalOptions-&gt;Release(); <br/>}</pre></div>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/objidlbase/nn-objidlbase-iglobaloptions
-	[PInvokeData("objidlbase.h", MSDNShortId = "NN:objidlbase.IGlobalOptions")]
+	// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-iglobaloptions
+	[PInvokeData("objidl.h", MSDNShortId = "NN:objidl.IGlobalOptions")]
 	[ComImport, Guid("0000015B-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IGlobalOptions
 	{
@@ -1516,7 +1591,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidlbase/nf-objidlbase-iinternalunknown-queryinternalinterface HRESULT
 		// QueryInternalInterface( REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT QueryInternalInterface(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+		HRESULT QueryInternalInterface(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 	}
 
 	/// <summary>Allocates, frees, and manages memory.</summary>
@@ -1888,7 +1963,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-getunmarshalclass HRESULT GetUnmarshalClass(
 		// REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags, CLSID *pCid );
-		Guid GetUnmarshalClass(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pv, [In] MSHCTX dwDestContext,
+		Guid GetUnmarshalClass(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pv, [In] MSHCTX dwDestContext,
 			[In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
 
 		/// <summary>Retrieves the maximum size of the buffer that will be needed during marshaling.</summary>
@@ -1960,7 +2035,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-getmarshalsizemax HRESULT GetMarshalSizeMax(
 		// REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags, DWORD *pSize );
-		uint GetMarshalSizeMax(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pv, [In] MSHCTX dwDestContext,
+		uint GetMarshalSizeMax(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pv, [In] MSHCTX dwDestContext,
 			[In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
 
 		/// <summary>Marshals an interface pointer.</summary>
@@ -2046,7 +2121,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-marshalinterface HRESULT MarshalInterface(
 		// IStream *pStm, REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags );
-		void MarshalInterface([In] IStream pStm, in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pv,
+		void MarshalInterface([In] IStream pStm, in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pv,
 			[In] MSHCTX dwDestContext, [In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
 
 		/// <summary>Unmarshals an interface pointer.</summary>
@@ -2472,7 +2547,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-istream-clone HRESULT Clone( IStream **ppstm );
 		[PreserveSig]
-		new HRESULT Clone(out IStream ppstm);
+		new HRESULT Clone(out IStream? ppstm);
 
 		/// <summary>Gets information about the marshaling context.</summary>
 		/// <param name="attribute">The attribute to query.</param>
@@ -2703,7 +2778,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidlbase/nf-objidlbase-ipsfactorybuffer-createstub HRESULT CreateStub(
 		// REFIID riid, IUnknown *pUnkServer, IRpcStubBuffer **ppStub );
 		[PreserveSig]
-		HRESULT CreateStub(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnkServer, out IRpcStubBuffer ppStub);
+		HRESULT CreateStub(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkServer, out IRpcStubBuffer ppStub);
 	}
 
 	/// <summary>Marshals data between a COM client proxy and a COM server stub.</summary>
@@ -2753,7 +2828,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-irpcchannelbuffer-getdestctx HRESULT GetDestCtx( DWORD
 		// *pdwDestContext, void **ppvDestContext );
 		[PreserveSig]
-		HRESULT GetDestCtx(out MSHCTX pdwDestContext, out IntPtr ppvDestContext);
+		HRESULT GetDestCtx(out MSHCTX pdwDestContext, [Optional] IntPtr ppvDestContext);
 
 		/// <summary>Determines whether the RPC channel is connected.</summary>
 		/// <returns>If the RPC channel exists, the return value is <c>TRUE</c>. Otherwise, it is <c>FALSE</c>.</returns>
@@ -2924,7 +2999,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-irpcstubbuffer-isiidsupported IRpcStubBuffer *
 		// IsIIDSupported( REFIID riid );
 		[PreserveSig]
-		IRpcStubBuffer IsIIDSupported(in Guid riid);
+		IRpcStubBuffer? IsIIDSupported(in Guid riid);
 
 		/// <summary>Retrieves the total number of references that a stub has on the server object to which it is connected.</summary>
 		/// <returns>This method returns the total number of references that a stub has on the server object to which it is connected.</returns>
@@ -3077,8 +3152,8 @@ public static partial class Ole32
 		// *pAuthnSvc, DWORD *pAuthzSvc, OLECHAR **pServerPrincName, DWORD *pAuthnLevel, DWORD *pImpLevel, void **pPrivs, DWORD
 		// *pCapabilities );
 		[PreserveSig]
-		HRESULT QueryBlanket(out Rpc.RPC_C_AUTHN pAuthnSvc, out Rpc.RPC_C_AUTHZ pAuthzSvc, [MarshalAs(UnmanagedType.LPWStr)] out string pServerPrincName,
-			out Rpc.RPC_C_AUTHN_LEVEL pAuthnLevel, out Rpc.RPC_C_IMP_LEVEL pImpLevel, out IntPtr pPrivs, ref uint pCapabilities);
+		HRESULT QueryBlanket(out RPC_C_AUTHN pAuthnSvc, out RPC_C_AUTHZ pAuthzSvc, [MarshalAs(UnmanagedType.LPWStr)] out string pServerPrincName,
+			out RPC_C_AUTHN_LEVEL pAuthnLevel, out RPC_C_IMP_LEVEL pImpLevel, out IntPtr pPrivs, ref uint pCapabilities);
 
 		/// <summary>Enables a server to impersonate a client for the duration of a call.</summary>
 		/// <returns>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</returns>
@@ -3576,7 +3651,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-istream-clone HRESULT Clone( IStream **ppstm );
 		[PreserveSig]
-		HRESULT Clone(out IStream ppstm);
+		HRESULT Clone(out IStream? ppstm);
 	}
 
 	/// <summary>
@@ -3851,7 +3926,8 @@ public static partial class Ole32
 		public GuidPtr pIID;
 
 		/// <summary>A pointer to the interface requested in <c>pIID</c>. This member must be <c>NULL</c> on input.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)] public object pItf;
+		[MarshalAs(UnmanagedType.IUnknown)]
+		public object? pItf;
 
 		/// <summary>
 		/// The return value of the QueryInterface call to locate the requested interface. Common return values include S_OK and
@@ -3954,7 +4030,7 @@ public static partial class Ole32
 	// tagSOLE_AUTHENTICATION_LIST { DWORD cAuthInfo; SOLE_AUTHENTICATION_INFO *aAuthInfo; } SOLE_AUTHENTICATION_LIST, *PSOLE_AUTHENTICATION_LIST;
 	[PInvokeData("objidl.h", MSDNShortId = "21f7aef3-b6be-41cc-a6ed-16d3778e3cee")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct SOLE_AUTHENTICATION_LIST : IArrayStruct<SOLE_AUTHENTICATION_INFO>
+	public class SOLE_AUTHENTICATION_LIST : IArrayStruct<SOLE_AUTHENTICATION_INFO>
 	{
 		/// <summary>
 		/// <para>The count of pointers in the array pointed to by <c>aAuthInfo</c>.</para>
@@ -3996,7 +4072,7 @@ public static partial class Ole32
 		/// RPC_E_NO_GOOD_SECURITY_PACKAGES is returned.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pPrincipalName;
+		public string? pPrincipalName;
 
 		/// <summary>
 		/// When used in CoInitializeSecurity, set on return to indicate the status of the call to register the authentication services.

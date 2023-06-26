@@ -1794,7 +1794,7 @@ public static partial class OleAut32
 	public static extern HRESULT SafeArrayUnlock(SafeSAFEARRAY psa);
 
 	/// <summary>Represents a safe array.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	[PInvokeData("OaIdl.h", MSDNShortId = "ms221482")]
 	public struct SAFEARRAY
@@ -1852,7 +1852,7 @@ public static partial class OleAut32
 	///}
 	/// </code>
 	/// </example>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("OleAuto.h")]
 	public class SafeArrayScopedAccessData : IDisposable
 	{
@@ -1883,7 +1883,7 @@ public static partial class OleAut32
 	}
 
 	/// <summary>Provides a safe handle for items created with <see cref="SafeArrayAllocDescriptor"/>.</summary>
-	/// <seealso cref="Vanara.PInvoke.OleAut32.SafeSAFEARRAY"/>
+	/// <seealso cref="SafeSAFEARRAY"/>
 	public class SafeDescriptorSAFEARRAY : SafeSAFEARRAY
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeDescriptorSAFEARRAY"/> class and assigns an existing handle.</summary>

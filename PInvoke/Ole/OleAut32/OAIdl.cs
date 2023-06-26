@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -456,7 +460,7 @@ public static partial class OleAut32
 		public IntPtr prgCustData;
 
 		/// <summary>Gets the array of <see cref="CUSTDATAITEM"/> structures.</summary>
-		public CUSTDATAITEM[] Items => prgCustData.ToArray<CUSTDATAITEM>((int)cCustData);
+		public CUSTDATAITEM[] Items => prgCustData.ToArray<CUSTDATAITEM>((int)cCustData) ?? new CUSTDATAITEM[0];
 	}
 
 	/// <summary>Represents a custom data item.</summary>

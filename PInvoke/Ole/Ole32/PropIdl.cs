@@ -376,7 +376,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertysetstorage-create
 		[PreserveSig]
-		HRESULT Create(in Guid rfmtid, [In] IntPtr pclsid, [In] PROPSETFLAG grfFlags, [In] STGM grfMode, out IPropertyStorage ppprstg);
+		HRESULT Create(in Guid rfmtid, [In, Optional] IntPtr pclsid, [In] PROPSETFLAG grfFlags, [In] STGM grfMode, out IPropertyStorage ppprstg);
 
 		/// <summary>
 		/// <para>The <c>Open</c> method opens a property set contained in the property set storage object.</para>
@@ -739,7 +739,8 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-readpropertynames
 		[PreserveSig]
-		HRESULT ReadPropertyNames(uint cpropid, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgpropid, [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rglpwstrName);
+		HRESULT ReadPropertyNames(uint cpropid, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgpropid,
+			[In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rglpwstrName);
 
 		/// <summary>
 		/// <para>
@@ -791,7 +792,8 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-writepropertynames
 		[PreserveSig]
-		HRESULT WritePropertyNames(uint cpropid, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgpropid, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rglpwstrName);
+		HRESULT WritePropertyNames(uint cpropid, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgpropid,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rglpwstrName);
 
 		/// <summary>
 		/// <para>The <c>DeletePropertyNames</c> method deletes specified string names from the current property set.</para>
@@ -980,7 +982,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-settimes
 		[PreserveSig]
-		HRESULT SetTimes(in FILETIME pctime, in FILETIME patime, in FILETIME pmtime);
+		HRESULT SetTimes([In, Optional] IntPtr pctime, [In, Optional] IntPtr patime, [In, Optional] IntPtr pmtime);
 
 		/// <summary>
 		/// <para>
@@ -1105,7 +1107,7 @@ public static partial class Ole32
 	/// <para>For more information, see Property Storage Considerations.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-readmultiple
-	public static HRESULT ReadMultiple(this IPropertyStorage ipst, PROPSPEC[] rgpspec, out PROPVARIANT[] rgpropvar)
+	public static HRESULT ReadMultiple(this IPropertyStorage ipst, PROPSPEC[] rgpspec, out PROPVARIANT[]? rgpropvar)
 	{
 		if (ipst is null) throw new ArgumentNullException(nameof(ipst));
 		if (rgpspec is null) throw new ArgumentNullException(nameof(rgpspec));
@@ -1114,6 +1116,52 @@ public static partial class Ole32
 		rgpropvar = hr.Succeeded ? Array.ConvertAll(outVals, p => (PROPVARIANT)p) : null;
 		return hr;
 	}
+
+	/// <summary>
+	/// <para>
+	/// The <c>SetTimes</c> method sets the modification, access, and creation times of this property set, if supported by the
+	/// implementation. Not all implementations support all these time values.
+	/// </para>
+	/// </summary>
+	/// <param name="ipst">The <see cref="IPropertyStorage" /> reference.</param>
+	/// <param name="pctime">
+	/// <para>
+	/// Pointer to the new creation time for the property set. May be <c>NULL</c>, indicating that this time is not to be modified by
+	/// this call.
+	/// </para>
+	/// </param>
+	/// <param name="patime">
+	/// <para>
+	/// Pointer to the new access time for the property set. May be <c>NULL</c>, indicating that this time is not to be modified by
+	/// this call.
+	/// </para>
+	/// </param>
+	/// <param name="pmtime">
+	/// <para>
+	/// Pointer to the new modification time for the property set. May be <c>NULL</c>, indicating that this time is not to be
+	/// modified by this call.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>This method supports the standard return value E_UNEXPECTED, in addition to the following:</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Sets the modification, access, and creation times of the current open property set, if supported by the implementation (not
+	/// all implementations support all these time values). Unsupported time stamps are always reported as zero, enabling the caller
+	/// to test for support. A call to IPropertyStorage::Stat supplies (among other data) time-stamp information.
+	/// </para>
+	/// <para>
+	/// Notice that this functionality is provided as an IPropertyStorage method on a property-storage object that is already open,
+	/// in contrast to being provided as a method in IPropertySetStorage. Normally, when the <c>SetTimes</c> method is not explicitly
+	/// called, the access and modification times are updated as a side effect of reading and writing the property set. When
+	/// <c>SetTimes</c> is used, the latest specified times supersede either default times or time values specified in previous calls
+	/// to <c>SetTimes</c>.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-settimes
+	public static HRESULT SetTimes(this IPropertyStorage ipst, [In, Optional] FILETIME? pctime, [In, Optional] FILETIME? patime, [In, Optional] FILETIME? pmtime) =>
+		ipst.SetTimes((SafeCoTaskMemStruct<FILETIME>)pctime, (SafeCoTaskMemStruct<FILETIME>)patime, (SafeCoTaskMemStruct<FILETIME>)pmtime);
 
 	/// <summary>
 	/// The <c>WriteMultiple</c> method writes a specified group of properties to the current property set. If a property with a

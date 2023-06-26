@@ -194,47 +194,32 @@ public static partial class Ole32
 		/// </summary>
 		/// <param name="pmkObjectName">A pointer to the IMoniker interface on the moniker.</param>
 		/// <returns>
-		/// <para>This method can return the following values.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>S_OK</term>
-		/// <term>Indicates that pmkObjectName was found in the ROT and a pointer was retrieved.</term>
-		/// </item>
-		/// <item>
-		/// <term>S_FALSE</term>
-		/// <term>
-		/// There is no entry for pmkObjectName in the ROT, or that the object it identifies is no longer running (in which case, the
-		/// entry is revoked).
-		/// </term>
-		/// </item>
-		/// </list>
+		/// A pointer to an IUnknown pointer variable that receives the interface pointer to the running object. When successful, the
+		/// implementation calls AddRef on the object; it is the caller's responsibility to call Release. If the object is not running or if
+		/// an error occurs, the implementation sets * <c>ppunkObject</c> to <c>NULL</c>.
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// This method checks the ROT for the moniker specified by pmkObjectName. If that moniker had previously been registered with a
-		/// call to IRunningObjectTable::Register, this method returns the pointer that was registered at that time.
+		/// This method checks the ROT for the moniker specified by <c>pmkObjectName</c>. If that moniker had previously been registered with
+		/// a call to IRunningObjectTable::Register, this method returns the pointer that was registered at that time.
 		/// </para>
 		/// <para>Notes to Callers</para>
 		/// <para>
-		/// Generally, you call the <c>IRunningObjectTable::GetObject</c> method only if you are writing your own moniker class (that
-		/// is, implementing the IMoniker interface). You typically call this method from your implementation of IMoniker::BindToObject.
+		/// Generally, you call the <c>IRunningObjectTable::GetObject</c> method only if you are writing your own moniker class (that is,
+		/// implementing the IMoniker interface). You typically call this method from your implementation of IMoniker::BindToObject.
 		/// </para>
 		/// <para>
-		/// However, note that not all implementations of IMoniker::BindToObject need to call this method. If you expect your moniker to
-		/// have a prefix (indicated by a non- <c>NULL</c> pmkToLeft parameter to <c>IMoniker::BindToObject</c>), you should not check
-		/// the ROT. The reason for this is that only complete monikers are registered with the ROT, and if your moniker has a prefix,
-		/// your moniker is part of a composite and thus not complete. Instead, your moniker should request services from the object
-		/// identified by the prefix (for example, the container of the object identified by your moniker).
+		/// However, note that not all implementations of IMoniker::BindToObject need to call this method. If you expect your moniker to have
+		/// a prefix (indicated by a non- <c>NULL</c><c>pmkToLeft</c> parameter to <c>IMoniker::BindToObject</c>), you should not check the
+		/// ROT. The reason for this is that only complete monikers are registered with the ROT, and if your moniker has a prefix, your
+		/// moniker is part of a composite and thus not complete. Instead, your moniker should request services from the object identified by
+		/// the prefix (for example, the container of the object identified by your moniker).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-getobject HRESULT GetObject(
-		// IMoniker *pmkObjectName, IUnknown **ppunkObject );
+		// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-irunningobjecttable-getobject
+		// HRESULT GetObject( [in] IMoniker *pmkObjectName, [out] IUnknown **ppunkObject );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object GetObject([In] IMoniker pmkObjectName);
+		object? GetObject([In] IMoniker pmkObjectName);
 
 		/// <summary>
 		/// Records the time that a running object was last modified. The object must have previously been registered with the running
@@ -313,7 +298,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-enumrunning HRESULT EnumRunning(
 		// IEnumMoniker **ppenumMoniker );
-		IEnumMoniker EnumRunning();
+		IEnumMoniker? EnumRunning();
 	}
 
 	/// <summary>
@@ -363,9 +348,7 @@ public static partial class Ole32
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IStream CreateStream([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
-			[In] STGM grfMode,
-			[In, Optional] uint reserved1,
-			[In, Optional] uint reserved2);
+			[In] STGM grfMode, [In, Optional] uint reserved1, [In, Optional] uint reserved2);
 
 		/// <summary>The OpenStream method opens an existing stream object within this storage object in the specified access mode.</summary>
 		/// <param name="pwcsName">
@@ -383,8 +366,7 @@ public static partial class Ole32
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IStream OpenStream([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName, [In, Optional] IntPtr reserved1,
-			[In] STGM grfMode,
-			[In, Optional] uint reserved2);
+			[In] STGM grfMode, [In, Optional] uint reserved2);
 
 		/// <summary>
 		/// The CreateStorage method creates and opens a new storage object nested within this storage object with the specified name in
@@ -405,9 +387,7 @@ public static partial class Ole32
 		/// <returns>On return, the new IStorage interface pointer.</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IStorage CreateStorage([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
-			[In] STGM grfMode,
-			[In, Optional] uint reserved1,
+		IStorage CreateStorage([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName, [In] STGM grfMode, [In, Optional] uint reserved1,
 			[In, Optional] uint reserved2);
 
 		/// <summary>The OpenStorage method opens an existing storage object with the specified name in the specified access mode.</summary>
@@ -426,11 +406,8 @@ public static partial class Ole32
 		/// <returns>On return, the IStorage interface pointer to the opened storage.</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IStorage OpenStorage([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
-			[In, Optional, MarshalAs(UnmanagedType.Interface)] IStorage pstgPriority,
-			[In] STGM grfMode,
-			[In, Optional] SNB snbExclude,
-			[In, Optional] uint reserved);
+		IStorage OpenStorage([In, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, [In, Optional, MarshalAs(UnmanagedType.Interface)] IStorage? pstgPriority,
+			[In] STGM grfMode, [In, Optional] SNB? snbExclude, [In, Optional] uint reserved);
 
 		/// <summary>The CopyTo method copies the entire contents of an open storage object to another storage object.</summary>
 		/// <param name="ciidExclude">
@@ -455,10 +432,8 @@ public static partial class Ole32
 		/// calling its IStorage::Revert method.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		void CopyTo([In, Optional] uint ciidExclude,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[]? rgiidExclude,
-			[In] SNB snbExclude,
-			[In, MarshalAs(UnmanagedType.Interface)] IStorage pstgDest);
+		void CopyTo([In, Optional] uint ciidExclude, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[]? rgiidExclude,
+			[In, Optional] SNB? snbExclude, [In, MarshalAs(UnmanagedType.Interface)] IStorage pstgDest);
 
 		/// <summary>
 		/// The MoveElementTo method copies or moves a substorage or stream from this storage object to another storage object.
@@ -470,9 +445,8 @@ public static partial class Ole32
 		/// Specifies whether the operation should be a move (STGMOVE_MOVE) or a copy (STGMOVE_COPY). See the STGMOVE enumeration.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		void MoveElementTo([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
-			[In, MarshalAs(UnmanagedType.Interface)] IStorage pstgDest, [In, MarshalAs(UnmanagedType.LPWStr)] string pwcsNewName,
-			[In] STGMOVE grfFlags);
+		void MoveElementTo([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName, [In, MarshalAs(UnmanagedType.Interface)] IStorage pstgDest,
+			[In, MarshalAs(UnmanagedType.LPWStr)] string pwcsNewName, [In] STGMOVE grfFlags);
 
 		/// <summary>
 		/// The Commit method ensures that any changes made to a storage object open in transacted mode are reflected in the parent
@@ -657,7 +631,7 @@ public static partial class Ole32
 	/// </typeparam>
 	/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
 	/// <returns>The enumerated values.</returns>
-	public static IEnumerable<T> Enumerate<T>(this IEnumUnknown e) where T : class => e.Enumerate().Select(p => p == IntPtr.Zero ? null : (T)Marshal.GetObjectForIUnknown(p));
+	public static IEnumerable<T?> Enumerate<T>(this IEnumUnknown e) where T : class => e.Enumerate().Select(p => p == IntPtr.Zero ? null : (T)Marshal.GetObjectForIUnknown(p));
 
 	/// <summary>Structure returned by IEnumContextProps::Enum</summary>
 	[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
@@ -691,35 +665,67 @@ public static partial class Ole32
 	// tdSize; WORD tdDriverNameOffset; WORD tdDeviceNameOffset; WORD tdPortNameOffset; WORD tdExtDevmodeOffset; BYTE tdData[1]; } DVTARGETDEVICE;
 	[PInvokeData("objidl.h", MSDNShortId = "724ff714-c170-4d06-92cb-e042e41c0af2")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DVTARGETDEVICE
+	public class DVTARGETDEVICE : SafeCoTaskMemHandle
 	{
-		/// <summary>
-		/// The size, in bytes, of the <c>DVTARGETDEVICE</c> structure. The initial size is included so the structure can be copied more easily.
-		/// </summary>
-		public uint tdSize;
+		private const int structSz = 13;
+		private readonly List<string?> names = new() { "", null, null };
+		private readonly ushort dataOff = 12, nameOff;
+
+		/// <summary>Initializes a new instance of the <see cref="DVTARGETDEVICE"/> class.</summary>
+		public DVTARGETDEVICE() : base(structSz + Marshal.SizeOf(typeof(DEVMODE)) + 8)
+		{
+			nameOff = (ushort)(dataOff + Marshal.SizeOf(typeof(DEVMODE)));
+			Write((uint)structSz, false, 0); // tdSize
+			Write(dataOff, false, 10); // tdExtDevmodeOffset
+			UpdateNames();
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="DVTARGETDEVICE"/> class with values.</summary>
+		/// <param name="driverName">Name of the driver.</param>
+		/// <param name="deviceName">Name of the device.</param>
+		/// <param name="portName">Name of the port.</param>
+		/// <param name="devMode">The DEVMODE structure reference retrieved by calling DocumentProperties.</param>
+		public DVTARGETDEVICE(string driverName, string? deviceName, string? portName, DEVMODE? devMode = null) : this()
+		{
+			names[0] = driverName;
+			names[1] = deviceName;
+			names[2] = portName;
+			UpdateNames();
+			if (devMode.HasValue)
+				Write(devMode.Value, false, dataOff);
+		}
+
+		private void UpdateNames()
+		{
+			using SafeCoTaskMemHandle mem = CreateFromStringList(names.Select(n => n ?? ""), StringListPackMethod.Concatenated, CharSet.Unicode);
+			Size = (uint)nameOff + mem.Size;
+			mem.DangerousGetHandle().CopyTo(handle.Offset(nameOff), mem.Size);
+
+			var off = nameOff;
+			mem.Write(off, false, 4); // tdDriverNameOffset
+			off += (ushort)names[0].GetByteCount(true, CharSet.Unicode);
+			mem.Write(names[1] is null ? 0 : off, false, 6); // tdDeviceNameOffset
+			off += (ushort)(names[1] ?? "").GetByteCount(true, CharSet.Unicode);
+			mem.Write(names[2] is null ? 0 : off, false, 8); // tdPortNameOffset
+		}
 
 		/// <summary>
-		/// The offset, in bytes, from the beginning of the structure to the device driver name, which is stored as a NULL-terminated
-		/// string in the <c>tdData</c> buffer.
+		/// The device driver name.
 		/// </summary>
-		public ushort tdDriverNameOffset;
+		public string tdDriverName { get => names[0]!; set { names[0] = value ?? throw new ArgumentNullException(); UpdateNames(); } }
 
 		/// <summary>
-		/// The offset, in bytes, from the beginning of the structure to the device name, which is stored as a NULL-terminated string in
-		/// the <c>tdData</c> buffer. This value can be zero to indicate no device name.
+		/// The device name, which can be <see langword="null"/> to indicate no device name.
 		/// </summary>
-		public ushort tdDeviceNameOffset;
+		public string? tdDeviceName { get => names[1] == string.Empty ? null : names[1]; set { names[1] = value; UpdateNames(); } }
 
 		/// <summary>
-		/// The offset, in bytes, from the beginning of the structure to the port name, which is stored as a NULL-terminated string in
-		/// the <c>tdData</c> buffer. This value can be zero to indicate no port name.
+		/// The port name, which can be <see langword="null"/> to indicate no port name.
 		/// </summary>
-		public ushort tdPortNameOffset;
+		public string? tdPortName { get => names[2] == string.Empty ? null : names[2]; set { names[2] = value; UpdateNames(); } }
 
-		/// <summary>The offset, in bytes, from the beginning of the structure to the DEVMODE structure retrieved by calling DocumentProperties.</summary>
-		public ushort tdExtDevmodeOffset;
-
-		private byte _tdData;
+		/// <summary>The DEVMODE structure reference retrieved by calling DocumentProperties.</summary>
+		public ref DEVMODE tdExtDevmode => ref handle.AsRef<DEVMODE>(dataOff, Size);
 	}
 
 	/// <summary>
@@ -863,7 +869,8 @@ public static partial class Ole32
 		/// <param name="bo">The <see cref="BIND_OPTS_V"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator System.Runtime.InteropServices.ComTypes.BIND_OPTS(BIND_OPTS_V bo) =>
-			new System.Runtime.InteropServices.ComTypes.BIND_OPTS { cbStruct = (int)bo.cbStruct, grfFlags = (int)bo.grfFlags, grfMode = (int)bo.grfFlags, dwTickCountDeadline = (int)bo.dwTickCountDeadline };
+			new()
+			{ cbStruct = (int)bo.cbStruct, grfFlags = (int)bo.grfFlags, grfMode = (int)bo.grfFlags, dwTickCountDeadline = (int)bo.dwTickCountDeadline };
 
 		/// <summary>
 		/// Performs an implicit conversion from <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/> to <see cref="BIND_OPTS_V"/>.
@@ -871,7 +878,7 @@ public static partial class Ole32
 		/// <param name="bo">The <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator BIND_OPTS_V(System.Runtime.InteropServices.ComTypes.BIND_OPTS bo) =>
-			new BIND_OPTS_V() { grfFlags = (BIND_FLAGS)bo.grfFlags, grfMode = (STGM)bo.grfFlags, dwTickCountDeadline = (uint)bo.dwTickCountDeadline };
+			new() { grfFlags = (BIND_FLAGS)bo.grfFlags, grfMode = (STGM)bo.grfFlags, dwTickCountDeadline = (uint)bo.dwTickCountDeadline };
 	}
 
 	/// <summary>Contains parameters used during a moniker-binding operation.</summary>
@@ -969,8 +976,8 @@ public static partial class Ole32
 
 	/// <summary>Simple generic implementation of <see cref="IEnumUnknown"/>.</summary>
 	/// <typeparam name="T">The type to enumerate.</typeparam>
-	/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
-	/// <seealso cref="Vanara.PInvoke.Ole32.IEnumUnknown"/>
+	/// <seealso cref="IReadOnlyList{T}"/>
+	/// <seealso cref="IEnumUnknown"/>
 	public class IEnumUnknownImpl<T> : IReadOnlyList<T>, IEnumUnknown where T : class
 	{
 		private int current = -1;
@@ -1073,7 +1080,8 @@ public static partial class Ole32
 	public class INTERFACEINFO
 	{
 		/// <summary>A pointer to the IUnknown interface on the object.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)] public object pUnk;
+		[MarshalAs(UnmanagedType.IUnknown)]
+		public object? pUnk;
 
 		/// <summary>The identifier of the requested interface.</summary>
 		public Guid iid;
@@ -1087,7 +1095,7 @@ public static partial class Ole32
 	/// used by the IStorage interface and by function calls that open storage objects. The strings point to contained storage objects
 	/// or streams that are to be excluded in the open calls.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public class SNB : IDisposable
 	{
@@ -1095,10 +1103,10 @@ public static partial class Ole32
 
 		/// <summary>Initializes a new instance of the <see cref="SNB"/> class.</summary>
 		/// <param name="names">The list of names to associate with this instance.</param>
-		public SNB(IEnumerable<string> names) => ptr = names == null ? SafeCoTaskMemHandle.Null : SafeCoTaskMemHandle.CreateFromStringList(names, StringListPackMethod.Packed, CharSet.Unicode);
+		public SNB(IEnumerable<string?> names) => ptr = names == null ? SafeCoTaskMemHandle.Null : SafeCoTaskMemHandle.CreateFromStringList(names!, StringListPackMethod.Packed, CharSet.Unicode);
 
 		/// <summary>Prevents a default instance of the <see cref="SNB"/> class from being created.</summary>
-		private SNB() { }
+		private SNB() => ptr = SafeCoTaskMemHandle.Null;
 
 		/// <summary>Initializes a new instance of the <see cref="SNB"/> class.</summary>
 		/// <param name="p">The native pointer.</param>
@@ -1106,19 +1114,19 @@ public static partial class Ole32
 
 		/// <summary>Gets the names.</summary>
 		/// <value>The names.</value>
-		public IEnumerable<string> Names => ptr.ToStringEnum(Count, CharSet.Unicode);
+		public IEnumerable<string?> Names => ptr.ToStringEnum(Count, CharSet.Unicode);
 
 		private int Count => ptr.DangerousGetHandle().GetNulledPtrArrayLength();
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SNB"/>.</summary>
 		/// <param name="p">The native pointer to take ownership of.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SNB(IntPtr p) => new SNB(p);
+		public static implicit operator SNB(IntPtr p) => new(p);
 
 		/// <summary>Performs an implicit conversion from <see cref="IEnumerable{T}"/> to <see cref="SNB"/>.</summary>
 		/// <param name="names">The names.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SNB(string[] names) => new SNB(names);
+		public static implicit operator SNB(string?[] names) => new(names);
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		void IDisposable.Dispose() => ptr?.Dispose();

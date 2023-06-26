@@ -556,7 +556,7 @@ public static partial class PropSys
 	/// <summary>
 	/// Exposes a method to create a specified IPropertyStore object in circumstances where property access is potentially slow.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.PropSys.IPropertyStoreFactory"/>
+	/// <seealso cref="IPropertyStoreFactory"/>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nn-propsys-idelayedpropertystorefactory
 	[PInvokeData("propsys.h", MSDNShortId = "855c9f10-9f40-4c60-a669-551fa51133f5")]
 	[ComImport, Guid("40d4577f-e237-4bdb-bd69-58f089431b6a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1168,7 +1168,7 @@ public static partial class PropSys
 	}
 
 	/// <summary>Exposes methods that extract data from enumeration information. IPropertyEnumType2 extends IPropertyEnumType.</summary>
-	/// <seealso cref="Vanara.PInvoke.PropSys.IPropertyEnumType"/>
+	/// <seealso cref="IPropertyEnumType"/>
 	[ComImport, Guid("9b6e051c-5ddd-4321-9070-fe2acb55e794"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[PInvokeData("Propsys.h")]
 	public interface IPropertyEnumType2 : IPropertyEnumType
@@ -2156,7 +2156,7 @@ public static class PSExtensions
 	/// <summary>Enumerates the keys of a property store.</summary>
 	/// <param name="ps">The <see cref="PropSys.IPropertyStore"/> instance used to retrieve the keys.</param>
 	/// <returns>A sequence of keys found in the property store.</returns>
-	public static System.Collections.Generic.IEnumerable<PROPERTYKEY> EnumKeys(this PropSys.IPropertyStore ps)
+	public static IEnumerable<PROPERTYKEY> EnumKeys(this PropSys.IPropertyStore ps)
 	{
 		for (var i = 0U; i < ps.GetCount(); i++)
 			yield return ps.GetAt(i);

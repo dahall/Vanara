@@ -721,7 +721,7 @@ public static partial class Ole32
 	/// instantiate objects through <c>IClassFactory2</c> when a full machine license does not exist.
 	/// </para>
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.Ole32.IClassFactory"/>
+	/// <seealso cref="IClassFactory"/>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nn-ocidl-iclassfactory2
 	[PInvokeData("ocidl.h", MSDNShortId = "c49c7612-3b1f-4535-baf3-8458b3f34f95")]
 	[ComImport, Guid("B196B28F-BAB4-101A-B69C-00AA00341D07"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -809,7 +809,8 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/unknwn/nf-unknwn-iclassfactory-createinstance HRESULT CreateInstance(
 		// IUnknown *pUnkOuter, REFIID riid, void **ppvObject );
 		[PreserveSig]
-		new HRESULT CreateInstance([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
+		new HRESULT CreateInstance([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid,
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject);
 
 		/// <summary>Locks an object application open in memory. This enables instances to be created more quickly.</summary>
 		/// <param name="fLock">If <c>TRUE</c>, increments the lock count; if <c>FALSE</c>, decrements the lock count.</param>
@@ -930,7 +931,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-iclassfactory2-requestlickey HRESULT RequestLicKey( DWORD
 		// dwReserved, BSTR *pBstrKey );
 		[PreserveSig]
-		HRESULT RequestLicKey([Optional] uint dwReserved, [MarshalAs(UnmanagedType.BStr)] out string pBstrKey);
+		HRESULT RequestLicKey([Optional] uint dwReserved, [MarshalAs(UnmanagedType.BStr)] out string? pBstrKey);
 
 		/// <summary>
 		/// Creates an instance of the licensed object for the specified license key. This method is the only possible means to create
@@ -998,8 +999,8 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-iclassfactory2-createinstancelic HRESULT
 		// CreateInstanceLic( IUnknown *pUnkOuter, IUnknown *pUnkReserved, REFIID riid, BSTR bstrKey, PVOID *ppvObj );
 		[PreserveSig]
-		HRESULT CreateInstanceLic([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkReserved,
-			in Guid riid, [In, MarshalAs(UnmanagedType.BStr)] string bstrKey, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvObj);
+		HRESULT CreateInstanceLic([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkReserved,
+			in Guid riid, [In, MarshalAs(UnmanagedType.BStr)] string bstrKey, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvObj);
 	}
 
 	/// <summary>Enumerates the undo units on the undo or redo stack.</summary>
@@ -1898,7 +1899,7 @@ public static partial class Ole32
 		/// <para>E_NOTIMPL is not allowed without implementation of the <c>SetSite</c> method, the IObjectWithSite interface is unnecessary.</para>
 		/// </remarks>
 		[PreserveSig]
-		HRESULT SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite);
+		HRESULT SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkSite);
 
 		/// <summary>
 		/// <para>Retrieves the latest site passed using SetSite.</para>
@@ -1936,7 +1937,7 @@ public static partial class Ole32
 		/// <para>E_NOTIMPL is not allowed any object implementing this interface must be able to return the last site seen in IObjectWithSite::SetSite.</para>
 		/// </remarks>
 		[PreserveSig]
-		HRESULT GetSite(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvSite);
+		HRESULT GetSite(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvSite);
 	}
 
 	/// <summary>Provides the features for supporting keyboard mnemonics, ambient properties, and events in control objects.</summary>
@@ -2142,7 +2143,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-iolecontrolsite-getextendedcontrol HRESULT
 		// GetExtendedControl( IDispatch **ppDisp );
 		[PreserveSig]
-		HRESULT GetExtendedControl([MarshalAs(UnmanagedType.IDispatch)] out object ppDisp);
+		HRESULT GetExtendedControl([MarshalAs(UnmanagedType.IDispatch)] out object? ppDisp);
 
 		/// <summary>
 		/// Converts coordinates expressed in <c>HIMETRIC</c> units (as is standard in OLE) to the units specified by the container.
@@ -3735,7 +3736,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleinplacesitewindowless-getdc HRESULT GetDC( LPCRECT
 		// pRect, DWORD grfFlags, HDC *phDC );
 		[PreserveSig]
-		HRESULT GetDC([In, Optional] PRECT pRect, OLEDCFLAGS grfFlags, out HDC phDC);
+		HRESULT GetDC([In, Optional] PRECT? pRect, OLEDCFLAGS grfFlags, out HDC phDC);
 
 		/// <summary>Releases the device context previously obtained by a call to IOleInPlaceSiteWindowless::GetDC.</summary>
 		/// <param name="hDC">The device context to be released.</param>
@@ -3768,7 +3769,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleinplacesitewindowless-invalidaterect HRESULT
 		// InvalidateRect( LPCRECT pRect, BOOL fErase );
 		[PreserveSig]
-		HRESULT InvalidateRect([In, Optional] PRECT pRect, [MarshalAs(UnmanagedType.Bool)] bool fErase);
+		HRESULT InvalidateRect([In, Optional] PRECT? pRect, [MarshalAs(UnmanagedType.Bool)] bool fErase);
 
 		/// <summary>Enables an object to invalidate a specified region of its in-place image on the screen.</summary>
 		/// <param name="hRGN">
@@ -3787,7 +3788,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleinplacesitewindowless-invalidatergn HRESULT
 		// InvalidateRgn( HRGN hRGN, BOOL fErase );
 		[PreserveSig]
-		HRESULT InvalidateRgn(HRGN hRGN, [MarshalAs(UnmanagedType.Bool)] bool fErase);
+		HRESULT InvalidateRgn([Optional] HRGN hRGN, [MarshalAs(UnmanagedType.Bool)] bool fErase);
 
 		/// <summary>Enables an object to scroll an area within its in-place active image on the screen.</summary>
 		/// <param name="dx">The amount to scroll the x-axis.</param>
@@ -3851,7 +3852,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleinplacesitewindowless-scrollrect HRESULT ScrollRect(
 		// INT dx, INT dy, LPCRECT pRectScroll, LPCRECT pRectClip );
 		[PreserveSig]
-		HRESULT ScrollRect(int dx, int dy, [In, Optional] PRECT pRectScroll, [In, Optional] PRECT pRectClip);
+		HRESULT ScrollRect(int dx, int dy, [In, Optional] PRECT? pRectScroll, [In, Optional] PRECT? pRectClip);
 
 		/// <summary>Adjusts a specified rectangle if it is entirely or partially covered by overlapping, opaque objects.</summary>
 		/// <param name="prc">The rectangle to be adjusted.</param>
@@ -4089,7 +4090,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleundounit-do HRESULT Do( IOleUndoManager *pUndoManager );
 		[PreserveSig]
-		new HRESULT Do(IOleUndoManager pUndoManager);
+		new HRESULT Do(IOleUndoManager? pUndoManager);
 
 		/// <summary>Retrieves a description of the undo unit that can be used in the undo or redo user interface.</summary>
 		/// <param name="pBstr">A pointer to string that describes this undo unit.</param>
@@ -4588,7 +4589,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleundomanager-discardfrom HRESULT DiscardFrom(
 		// IOleUndoUnit *pUU );
 		[PreserveSig]
-		HRESULT DiscardFrom(IOleUndoUnit pUU);
+		HRESULT DiscardFrom(IOleUndoUnit? pUU);
 
 		/// <summary>
 		/// Instructs the undo manager to invoke undo actions back through the undo stack, down to and including the specified undo unit.
@@ -4650,7 +4651,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleundomanager-undoto HRESULT UndoTo( IOleUndoUnit *pUU );
 		[PreserveSig]
-		HRESULT UndoTo(IOleUndoUnit pUU);
+		HRESULT UndoTo(IOleUndoUnit? pUU);
 
 		/// <summary>
 		/// Instructs the undo manager to invoke undo actions back through the redo stack, down to and including the specified undo unit.
@@ -4704,7 +4705,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleundomanager-redoto HRESULT RedoTo( IOleUndoUnit *pUU );
 		[PreserveSig]
-		HRESULT RedoTo(IOleUndoUnit pUU);
+		HRESULT RedoTo(IOleUndoUnit? pUU);
 
 		/// <summary>
 		/// Creates an enumerator object that the caller can use to iterate through a series of top-level undo units from the undo stack.
@@ -4916,7 +4917,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ioleundounit-do HRESULT Do( IOleUndoManager *pUndoManager );
 		[PreserveSig]
-		HRESULT Do(IOleUndoManager pUndoManager);
+		HRESULT Do(IOleUndoManager? pUndoManager);
 
 		/// <summary>Retrieves a description of the undo unit that can be used in the undo or redo user interface.</summary>
 		/// <param name="pBstr">A pointer to string that describes this undo unit.</param>
@@ -5195,7 +5196,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-iperpropertybrowsing-getpredefinedvalue HRESULT
 		// GetPredefinedValue( DISPID dispID, DWORD dwCookie, VARIANT *pVarOut );
 		[PreserveSig]
-		HRESULT GetPredefinedValue(int dispID, uint dwCookie, out OleAut32.VARIANT pVarOut);
+		HRESULT GetPredefinedValue(int dispID, uint dwCookie, out object pVarOut);
 	}
 
 	/// <summary>Works with IPropertyBag and IErrorlog to define an individual property-based persistence mechanism.</summary>
@@ -5287,7 +5288,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ipersistpropertybag-load HRESULT Load( IPropertyBag
 		// *pPropBag, IErrorLog *pErrorLog );
-		void Load(OleAut32.IPropertyBag pPropBag, [Optional] OleAut32.IErrorLog pErrorLog);
+		void Load(OleAut32.IPropertyBag pPropBag, [Optional] OleAut32.IErrorLog? pErrorLog);
 
 		/// <summary>
 		/// Instructs the object to save its properties to the given property bag, and optionally, to clear the object's dirty flag.
@@ -5785,7 +5786,7 @@ public static partial class Ole32
 		// LONG cx, LONG cy, OLE_XPOS_HIMETRIC xSrc, OLE_YPOS_HIMETRIC ySrc, OLE_XSIZE_HIMETRIC cxSrc, OLE_YSIZE_HIMETRIC cySrc, LPCRECT
 		// pRcWBounds );
 		[PreserveSig]
-		HRESULT Render(HDC hDC, int x, int y, int cx, int cy, int xSrc, int ySrc, int cxSrc, int cySrc, [In, Optional] PRECT pRcWBounds);
+		HRESULT Render(HDC hDC, int x, int y, int cx, int cy, int xSrc, int ySrc, int cxSrc, int cySrc, [In, Optional] PRECT? pRcWBounds);
 
 		/// <summary>Assigns a GDI palette to the picture contained in the picture object.</summary>
 		/// <param name="hPal">A handle to the GDI palette assigned to the picture.</param>
@@ -6231,7 +6232,7 @@ public static partial class Ole32
 		// LONG cx, LONG cy, OLE_XPOS_HIMETRIC xSrc, OLE_YPOS_HIMETRIC ySrc, OLE_XSIZE_HIMETRIC cxSrc, OLE_YSIZE_HIMETRIC cySrc, LPCRECT
 		// pRcWBounds );
 		[PreserveSig]
-		HRESULT Render(HDC hDC, int x, int y, int cx, int cy, int xSrc, int ySrc, int cxSrc, int cySrc, [In, Optional] PRECT pRcWBounds);
+		HRESULT Render(HDC hDC, int x, int y, int cx, int cy, int xSrc, int ySrc, int cxSrc, int cySrc, [In, Optional] PRECT? pRcWBounds);
 
 		/// <summary>Assigns a GDI palette to the picture contained in the picture object.</summary>
 		/// <param name="hPal">A handle to the GDI palette assigned to the picture.</param>
@@ -6682,7 +6683,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ipropertypage-setpagesite HRESULT SetPageSite(
 		// IPropertyPageSite *pPageSite );
 		[PreserveSig]
-		HRESULT SetPageSite(IPropertyPageSite pPageSite);
+		HRESULT SetPageSite(IPropertyPageSite? pPageSite);
 
 		/// <summary>
 		/// <para>Creates the dialog box window for the property page.</para>
@@ -7061,7 +7062,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ipropertypage-setpagesite HRESULT SetPageSite(
 		// IPropertyPageSite *pPageSite );
 		[PreserveSig]
-		new HRESULT SetPageSite(IPropertyPageSite pPageSite);
+		new HRESULT SetPageSite(IPropertyPageSite? pPageSite);
 
 		/// <summary>
 		/// <para>Creates the dialog box window for the property page.</para>
@@ -7528,7 +7529,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ipropertypagesite-getpagecontainer HRESULT
 		// GetPageContainer( IUnknown **ppUnk );
 		[PreserveSig]
-		HRESULT GetPageContainer([MarshalAs(UnmanagedType.IUnknown)] out object ppUnk);
+		HRESULT GetPageContainer([MarshalAs(UnmanagedType.IUnknown)] out object? ppUnk);
 
 		/// <summary>Passes a keystroke to the property frame for processing.</summary>
 		/// <param name="pMsg">A pointer to the MSG structure to be processed.</param>
@@ -8203,9 +8204,9 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-draw HRESULT Draw( DWORD dwDrawAspect, LONG
 		// lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hdcTargetDev, HDC hdcDraw, LPCRECTL lprcBounds, LPCRECTL lprcWBounds, BOOL(*
 		// )(ULONG_PTR dwContinue) pfnContinue, ULONG_PTR dwContinue );
-		new unsafe HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
-			[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT lprcBounds, [In, Optional] PRECT lprcWBounds,
-			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL> pfnContinue, [In, Optional] IntPtr dwContinue);
+		new HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, [In, Optional] DVTARGETDEVICE? ptd,
+			[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT? lprcBounds, [In, Optional] PRECT? lprcWBounds,
+			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL>? pfnContinue, [In, Optional] IntPtr dwContinue);
 
 		/// <summary>
 		/// Returns the logical palette that the object will use for drawing in its IViewObject::Draw method with the corresponding parameters.
@@ -8288,7 +8289,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getcolorset HRESULT GetColorSet( DWORD
 		// dwDrawAspect, LONG lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hicTargetDev, LOGPALETTE **ppColorSet );
-		new unsafe HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
+		new HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, [In, Optional] DVTARGETDEVICE? ptd,
 			[In, Optional] HDC hicTargetDev, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<LOGPALETTE>))] out LOGPALETTE ppColorSet);
 
 		/// <summary>
@@ -8353,7 +8354,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-freeze HRESULT Freeze( DWORD dwDrawAspect,
 		// LONG lindex, void *pvAspect, DWORD *pdwFreeze );
-		new unsafe HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, out uint pdwFreeze);
+		new HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, out uint pdwFreeze);
 
 		/// <summary>
 		/// Releases a drawing that was previously frozen using IViewObject::Freeze. The most common use of this method is for banded printing.
@@ -8452,7 +8453,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-setadvise HRESULT SetAdvise( DWORD aspects,
 		// DWORD advf, IAdviseSink *pAdvSink );
-		new HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink pAdvSink);
+		new HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink? pAdvSink);
 
 		/// <summary>Retrieves the advisory connection on the object that was used in the most recent call to IViewObject::SetAdvise.</summary>
 		/// <param name="pAspects">
@@ -8516,7 +8517,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject2-getextent
 		// HRESULT GetExtent( DWORD dwDrawAspect, LONG lindex, DVTARGETDEVICE *ptd, LPSIZEL lpsizel );
-		new HRESULT GetExtent(uint dwDrawAspect, int lindex, in DVTARGETDEVICE ptd, out SIZE lpsizel);
+		new HRESULT GetExtent(uint dwDrawAspect, int lindex, [In] DVTARGETDEVICE ptd, out SIZE lpsizel);
 
 		/// <summary>Retrieves a rectangle describing a requested drawing aspect.</summary>
 		/// <param name="dwAspect">The drawing aspect requested.</param>
@@ -8882,14 +8883,14 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-iviewobjectex-getnaturalextent HRESULT GetNaturalExtent(
 		// DWORD dwAspect, LONG lindex, DVTARGETDEVICE *ptd, HDC hicTargetDev, DVEXTENTINFO *pExtentInfo, LPSIZEL pSizel );
 		[PreserveSig]
-		HRESULT GetNaturalExtent(DVASPECT2 dwAspect, int lindex, in DVTARGETDEVICE ptd, HDC hicTargetDev, in DVEXTENTINFO pExtentInfo, out SIZE pSizel);
+		HRESULT GetNaturalExtent(DVASPECT2 dwAspect, int lindex, [In] DVTARGETDEVICE? ptd, HDC hicTargetDev, in DVEXTENTINFO pExtentInfo, out SIZE pSizel);
 	}
 
 	/// <summary>Extension method to simplify using the <see cref="IObjectWithSite.GetSite"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
 	/// <param name="ows">An <see cref="IObjectWithSite"/> instance.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T GetSite<T>(this IObjectWithSite ows) where T : class { ows.GetSite(typeof(T).GUID, out var pSite).ThrowIfFailed(); return (T)pSite; }
+	public static T? GetSite<T>(this IObjectWithSite ows) where T : class { ows.GetSite(typeof(T).GUID, out object? pSite).ThrowIfFailed(); return (T?)pSite; }
 
 	/// <summary>
 	/// Specifies a counted array of values that can be used to obtain the value corresponding to one of the predefined strings for a property.
@@ -9019,7 +9020,7 @@ public static partial class Ole32
 	// dwFlags; } DVASPECTINFO;
 	[PInvokeData("ocidl.h", MSDNShortId = "NS:ocidl.tagAspectInfo")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DVASPECTINFO
+	public class DVASPECTINFO
 	{
 		/// <summary>The size of the structure, in bytes.</summary>
 		public uint cb;

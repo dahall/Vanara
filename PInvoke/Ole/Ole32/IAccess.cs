@@ -7,6 +7,73 @@ namespace Vanara.PInvoke;
 
 public static partial class Ole32
 {
+	/// <summary>
+	/// The following values are used as flags in the access mask of an Access Control Entry (ACE) in a component-related security descriptor.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-coma/a7395012-15a8-4f7c-ada9-d16bef022be3
+	[PInvokeData("combaseapi.h")]
+	[Flags]
+	public enum COM_RIGHTS : uint
+	{
+		/// <summary>
+		/// In an OldVersionComponentAccessMask (section 2.2.2.21.1.2), this value represents a combination of all of the rights represented
+		/// by COM_RIGHTS_EXECUTE_LOCAL, COM_RIGHTS_EXECUTE_REMOTE, COM_RIGHTS_ACTIVATE_LOCAL, and COM_RIGHTS_ACTIVATE_REMOTE.
+		/// <para>
+		/// In a NewVersionComponentAccessMask (section 2.2.2.21.1.3), this flag has no specific meaning but is required to be set for
+		/// historical reasons.
+		/// </para>
+		/// </summary>
+		COM_RIGHTS_EXECUTE = 0x00000001,
+
+		/// <summary>
+		/// In a NewVersionComponentAccessMask, this value represents the right of a security principal to use ORB-specific local mechanisms
+		/// to cause a component to be executed, where the precise meaning of execute depends on the context.
+		/// <para>
+		/// In a component access security descriptor, this right controls whether or not a principal is authorized to execute method calls
+		/// on component instances.
+		/// </para>
+		/// <para>
+		/// In a component launch security descriptor, this right controls whether or not a principal is authorized to create a process in
+		/// which the component will be hosted.
+		/// </para>
+		/// </summary>
+		COM_RIGHTS_EXECUTE_LOCAL = 0x00000002,
+
+		/// <summary>
+		/// In a NewVersionComponentAccessMask, this value represents the right of a security principal to use ORB-specific remote mechanisms
+		/// to cause a component to be executed, where the precise meaning of execute depends on the context.
+		/// <para>
+		/// In a component access security descriptor, this right controls whether or not a principal is authorized to execute method calls
+		/// on component instances.
+		/// </para>
+		/// <para>
+		/// In a component launch security descriptor, this right controls whether or not a principal is authorized to create a process in
+		/// which the component will be hosted.
+		/// </para>
+		/// </summary>
+		COM_RIGHTS_EXECUTE_REMOTE = 0x00000004,
+
+		/// <summary>
+		/// In a NewVersionComponentAccessMask, this value represents the right of a security principal to use ORB-specific local mechanisms
+		/// to activate a component.
+		/// <para>This right is meaningful only in a component launch security descriptor.</para>
+		/// </summary>
+		COM_RIGHTS_ACTIVATE_LOCAL = 0x00000008,
+
+		/// <summary>
+		/// In a NewVersionComponentAccessMask, this value represents the right of a security principal to use ORB-specific local mechanisms
+		/// to activate a component.
+		/// <para>This right is meaningful only in a component launch security descriptor.</para>
+		/// </summary>
+		COM_RIGHTS_ACTIVATE_REMOTE = 0x000000010,
+
+		/// <summary></summary>
+		COM_RIGHTS_RESERVED1 = 32,
+
+		/// <summary></summary>
+		COM_RIGHTS_RESERVED2 = 64,
+	}
+
 	/// <summary>Enables the management of access to objects and properties on the objects.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iaccess/nn-iaccess-iaccesscontrol
 	[PInvokeData("iaccess.h", MSDNShortId = "NN:iaccess.IAccessControl")]
@@ -79,7 +146,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/iaccess/nf-iaccess-iaccesscontrol-revokeaccessrights HRESULT
 		// RevokeAccessRights( LPWSTR lpProperty, ULONG cTrustees, TRUSTEEW [] prgTrustees );
 		[PreserveSig]
-		HRESULT RevokeAccessRights([MarshalAs(UnmanagedType.LPWStr)] string lpProperty, uint cTrustees,
+		HRESULT RevokeAccessRights([MarshalAs(UnmanagedType.LPWStr)] string? lpProperty, uint cTrustees,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TRUSTEE[] prgTrustees);
 
 		/// <summary>Gets the entire list of access rights and/or the owner and group for the specified object.</summary>
@@ -109,7 +176,7 @@ public static partial class Ole32
 		// GetAllAccessRights( LPWSTR lpProperty, PACTRL_ACCESSW_ALLOCATE_ALL_NODES *ppAccessList, PTRUSTEEW *ppOwner, PTRUSTEEW
 		// *ppGroup );
 		[PreserveSig]
-		HRESULT GetAllAccessRights([MarshalAs(UnmanagedType.LPWStr)] string lpProperty, out SafeCoTaskMemHandle ppAccessList,
+		HRESULT GetAllAccessRights([MarshalAs(UnmanagedType.LPWStr)] string? lpProperty, out SafeCoTaskMemHandle ppAccessList,
 			out SafeCoTaskMemHandle ppOwner, out SafeCoTaskMemHandle ppGroup);
 
 		/// <summary>Determines whether the specified trustee has access rights to the object or property.</summary>
@@ -451,7 +518,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/iaccess/nf-iaccess-iaccesscontrol-isaccessallowed HRESULT IsAccessAllowed(
 		// PTRUSTEEW pTrustee, LPWSTR lpProperty, ACCESS_RIGHTS AccessRights, BOOL *pfAccessAllowed );
 		[PreserveSig]
-		HRESULT IsAccessAllowed(in TRUSTEE pTrustee, [MarshalAs(UnmanagedType.LPWStr)] string lpProperty, uint AccessRights,
+		HRESULT IsAccessAllowed(in TRUSTEE pTrustee, [MarshalAs(UnmanagedType.LPWStr)] string? lpProperty, COM_RIGHTS AccessRights,
 			[MarshalAs(UnmanagedType.Bool)] out bool pfAccessAllowed);
 	}
 }

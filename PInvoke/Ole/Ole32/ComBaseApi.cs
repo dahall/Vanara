@@ -700,7 +700,7 @@ public static partial class Ole32
 	// rclsid, LPUNKNOWN pUnkOuter, DWORD dwClsContext, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "7295a55b-12c7-4ed0-a7a4-9ecee16afdec")]
-	public static extern HRESULT CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object pUnkOuter,
+	public static extern HRESULT CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter,
 		CLSCTX dwClsContext, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
 
 	/// <summary>
@@ -800,8 +800,8 @@ public static partial class Ole32
 	// REFCLSID Clsid, IUnknown *punkOuter, DWORD dwClsCtx, COSERVERINFO *pServerInfo, DWORD dwCount, MULTI_QI *pResults );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "3b414b95-e8d2-42e8-b4f2-5cc5189a3d08")]
-	public static extern HRESULT CoCreateInstanceEx(in Guid Clsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter,
-		CLSCTX dwClsCtx, [Optional] COSERVERINFO pServerInfo, uint dwCount,
+	public static extern HRESULT CoCreateInstanceEx(in Guid Clsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter,
+		CLSCTX dwClsCtx, [Optional] COSERVERINFO? pServerInfo, uint dwCount,
 		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] MULTI_QI[] pResults);
 
 	/// <summary>Creates an instance of a specific class on a specific computer from within an app container.</summary>
@@ -881,7 +881,7 @@ public static partial class Ole32
 	// CoCreateInstanceFromApp( REFCLSID Clsid, IUnknown *punkOuter, DWORD dwClsCtx, PVOID reserved, DWORD dwCount, MULTI_QI *pResults );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "1C773D78-5B33-44FE-A09B-AB8087F678A1")]
-	public static extern HRESULT CoCreateInstanceFromApp(in Guid Clsid, [MarshalAs(UnmanagedType.IUnknown)] object punkOuter, uint dwClsCtx, IntPtr reserved, uint dwCount, ref MULTI_QI pResults);
+	public static extern HRESULT CoCreateInstanceFromApp(in Guid Clsid, [MarshalAs(UnmanagedType.IUnknown)] object? punkOuter, uint dwClsCtx, IntPtr reserved, uint dwCount, ref MULTI_QI pResults);
 
 	/// <summary>
 	/// Locates the implementation of a Component Object Model (COM) interface in a server process given an interface to a proxied object.
@@ -1594,7 +1594,7 @@ public static partial class Ole32
 	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
-	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
 
 	/// <summary>
 	/// <para>
@@ -1743,7 +1743,7 @@ public static partial class Ole32
 	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
-	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [In, Optional] COSERVERINFO pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [In, Optional] COSERVERINFO? pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
 
 	/// <summary>Returns a pointer to an implementation of IObjContext for the current context.</summary>
 	/// <param name="pToken">A pointer to an implementation of IObjContext for the current context.</param>
@@ -2225,7 +2225,7 @@ public static partial class Ole32
 	// REFIID riid, LPUNKNOWN pUnk, DWORD dwDestContext, LPVOID pvDestContext, DWORD mshlflags, LPMARSHAL *ppMarshal );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "0cb74adc-e192-4ae5-9267-02c79e301681")]
-	public static extern HRESULT CoGetStandardMarshal(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk,
+	public static extern HRESULT CoGetStandardMarshal(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnk,
 		MSHCTX dwDestContext, [Optional] IntPtr pvDestContext, MSHLFLAGS mshlflags, out IMarshal ppMarshal);
 
 	/// <summary>Creates an aggregated standard marshaler for use with lightweight client-side handlers.</summary>
@@ -2701,7 +2701,7 @@ public static partial class Ole32
 	// CoMarshalInterThreadInterfaceInStream( REFIID riid, LPUNKNOWN pUnk, LPSTREAM *ppStm );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "c9ab8713-8604-4f0b-a11b-bdfb7d595d95")]
-	public static extern HRESULT CoMarshalInterThreadInterfaceInStream(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk, out IStream ppStm);
+	public static extern HRESULT CoMarshalInterThreadInterfaceInStream(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnk, out IStream ppStm);
 
 	/// <summary>Retrieves a list of the authentication services registered when the process called CoInitializeSecurity.</summary>
 	/// <param name="pcAuthSvc">A pointer to a variable that receives the number of entries returned in the asAuthSvc array.</param>
@@ -3253,7 +3253,7 @@ public static partial class Ole32
 	// IUnknown *pUnk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "0978e252-2206-4597-abf2-fe0dac32efc4")]
-	public static extern HRESULT CoSetCancelObject([In, MarshalAs(UnmanagedType.IUnknown)] object pUnk);
+	public static extern HRESULT CoSetCancelObject([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnk);
 
 	/// <summary>
 	/// Sets the authentication information that will be used to make calls on the specified proxy. This is a helper function for IClientSecurity::SetBlanket.
@@ -3375,7 +3375,7 @@ public static partial class Ole32
 	[PInvokeData("combaseapi.h", MSDNShortId = "c2e5e681-8fa5-4b02-b59d-ba796eb0dccf")]
 	public static extern HRESULT CoSetProxyBlanket([In, MarshalAs(UnmanagedType.IUnknown)] object pProxy,
 		RPC_C_AUTHN dwAuthnSvc = RPC_C_AUTHN.RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ dwAuthzSvc = RPC_C_AUTHZ.RPC_C_AUTHZ_DEFAULT,
-		string pServerPrincName = COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL dwAuthnLevel = RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_DEFAULT,
+		string? pServerPrincName = COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL dwAuthnLevel = RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_DEFAULT,
 		RPC_C_IMP_LEVEL dwImpLevel = RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_DEFAULT, RPC_AUTH_IDENTITY_HANDLE pAuthInfo = default,
 		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_DEFAULT);
 
@@ -3439,7 +3439,7 @@ public static partial class Ole32
 	// IUnknown *pNewObject, IUnknown **ppOldObject );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "146855a2-97ec-4e71-88dc-316eaa1a24a0")]
-	public static extern HRESULT CoSwitchCallContext([In, MarshalAs(UnmanagedType.IUnknown)] object pNewObject,
+	public static extern HRESULT CoSwitchCallContext([In, MarshalAs(UnmanagedType.IUnknown)] object? pNewObject,
 		[MarshalAs(UnmanagedType.IUnknown)] out object ppOldObject);
 
 	/// <summary>Allocates a block of task memory in the same way that IMalloc::Alloc does.</summary>
@@ -3899,7 +3899,7 @@ public static partial class Ole32
 	// CreateStreamOnHGlobal( HGLOBAL hGlobal, BOOL fDeleteOnRelease, LPSTREAM *ppstm );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "413c107b-a943-4c02-9c00-aea708e876d7")]
-	public static extern HRESULT CreateStreamOnHGlobal(IntPtr hGlobal, [MarshalAs(UnmanagedType.Bool)] bool fDeleteOnRelease, out IStream ppstm);
+	public static extern HRESULT CreateStreamOnHGlobal([Optional] IntPtr hGlobal, [MarshalAs(UnmanagedType.Bool)] bool fDeleteOnRelease, out IStream ppstm);
 
 	/// <summary>
 	/// <para>Determines whether the DLL that implements this function is in use. If not, the caller can unload the DLL from memory.</para>
@@ -4017,7 +4017,7 @@ public static partial class Ole32
 	// FreePropVariantArray( ULONG cVariants, PROPVARIANT *rgvars );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "2eefb57e-9311-46e1-9eed-e25aa3b5afaa")]
-	public static extern HRESULT FreePropVariantArray(uint cVariants, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgvars);
+	public static extern HRESULT FreePropVariantArray(uint cVariants, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[]? rgvars);
 
 	/// <summary>
 	/// The <c>GetHGlobalFromStream</c> function retrieves the global memory handle to a stream that was created through a call to the

@@ -35,7 +35,7 @@ public static partial class PropSys
 	}
 
 	/// <summary>Exposes a method that encapsulates a change to a single property.</summary>
-	/// <seealso cref="Vanara.PInvoke.PropSys.IObjectWithPropertyKey"/>
+	/// <seealso cref="IObjectWithPropertyKey"/>
 	[PInvokeData("Propsys.h", MSDNShortId = "bb775244")]
 	[ComImport, Guid("f917bc8a-1bba-4478-a245-1bde03eb9431"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPropertyChange : IObjectWithPropertyKey

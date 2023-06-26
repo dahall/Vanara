@@ -130,8 +130,7 @@ public static class TestCaseSources
 			if (first)
 			{
 				hdr = items;
-				if (cols is null)
-					cols = items;
+				cols ??= items;
 				idxs = cols.Select(s => Array.IndexOf(items, s)).ToArray();
 				first = false;
 				continue;

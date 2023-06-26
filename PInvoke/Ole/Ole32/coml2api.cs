@@ -477,7 +477,7 @@ public static partial class Ole32
 	// *pwcsName, DWORD grfMode, DWORD reserved, IStorage **ppstgOpen );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "3292484b-8eff-438d-b989-b58ae323872b")]
-	public static extern HRESULT StgCreateDocfile([MarshalAs(UnmanagedType.LPWStr)] string pwcsName, STGM grfMode, [Optional] uint reserved, out IStorage ppstgOpen);
+	public static extern HRESULT StgCreateDocfile([MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, [Optional] uint reserved, out IStorage ppstgOpen);
 
 	/// <summary>
 	/// The <c>StgCreateDocfileOnILockBytes</c> function creates and opens a new compound file storage object on top of a byte-array
@@ -644,150 +644,58 @@ public static partial class Ole32
 	public static extern HRESULT StgCreatePropStg([In, MarshalAs(UnmanagedType.IUnknown)] object pUnk, in Guid fmtid, in Guid pclsid, PROPSETFLAG grfFlags, [Optional] uint dwReserved, out IPropertyStorage ppPropStg);
 
 	/// <summary>
-	/// <para>
-	/// The <c>StgCreateStorageEx</c> function creates a new storage object using a provided implementation for the IStorage or
-	/// IPropertySetStorage interfaces. To open an existing file, use the StgOpenStorageEx function instead.
-	/// </para>
-	/// <para>
-	/// Applications written for Windows 2000, Windows Server 2003 and Windows XP must use <c>StgCreateStorageEx</c> rather than
-	/// StgCreateDocfile to take advantage of the enhanced Windows 2000 and Windows XP Structured Storage features.
-	/// </para>
+	/// The <c>StgCreatePropStg</c> function creates and opens a property set in a specified storage or stream object. The property set
+	/// supplies the system-provided, stand-alone implementation of the IPropertyStorage interface.
 	/// </summary>
-	/// <param name="pwcsName">
-	/// <para>
-	/// A pointer to the path of the file to create. It is passed uninterpreted to the file system. This can be a relative name or
-	/// <c>NULL</c>. If <c>NULL</c>, a temporary file is allocated with a unique name. If non- <c>NULL</c>, the string size must not
-	/// exceed MAX_PATH characters.
-	/// </para>
-	/// <para><c>Windows 2000:</c> Unlike the CreateFile function, you cannot exceed the MAX_PATH limit by using the "\?" prefix.</para>
+	/// <param name="pUnk">
+	/// A pointer to the <c>IUnknown</c> interface on the storage or stream object that stores the new property set.
 	/// </param>
-	/// <param name="grfMode">
-	/// A value that specifies the access mode to use when opening the new storage object. For more information, see STGM Constants. If
-	/// the caller specifies transacted mode together with STGM_CREATE or STGM_CONVERT, the overwrite or conversion takes place when the
-	/// commit operation is called for the root storage. If IStorage::Commit is not called for the root storage object, previous contents
-	/// of the file will be restored. STGM_CREATE and STGM_CONVERT cannot be combined with the STGM_NOSNAPSHOT flag, because a snapshot
-	/// copy is required when a file is overwritten or converted in the transacted mode.
+	/// <param name="fmtid">The FMTID of the property set to be created.</param>
+	/// <param name="pclsid">
+	/// A Pointer to the initial CLSID for this property set. May be <c>NULL</c>, in which case pclsid is set to all zeroes.
 	/// </param>
-	/// <param name="stgfmt">A value that specifies the storage file format. For more information, see the STGFMT enumeration.</param>
-	/// <param name="grfAttrs">
-	/// <para>A value that depends on the value of the stgfmt parameter.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Parameter Values</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>STGFMT_DOCFILE</term>
-	/// <term>
-	/// 0, or FILE_FLAG_NO_BUFFERING. For more information, see CreateFile. If the sector size of the file, specified in pStgOptions, is
-	/// not an integer multiple of the underlying disk's physical sector size, this operation will fail.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>All other values of stgfmt</term>
-	/// <term>Must be 0.</term>
-	/// </item>
-	/// </list>
+	/// <param name="grfFlags">The values from PROPSETFLAG Constants that determine how the property set is created and opened.</param>
+	/// <param name="dwReserved">Reserved; must be zero.</param>
+	/// <param name="ppPropStg">
+	/// The address of an IPropertyStorage* pointer variable that receives the interface pointer to the new property set.
 	/// </param>
-	/// <param name="pStgOptions">
-	/// The pStgOptions parameter is valid only if the stgfmt parameter is set to STGFMT_DOCFILE. If the stgfmt parameter is set to
-	/// STGFMT_DOCFILE, pStgOptions points to the STGOPTIONS structure, which specifies features of the storage object, such as the
-	/// sector size. This parameter may be <c>NULL</c>, which creates a storage object with a default sector size of 512 bytes. If non-
-	/// <c>NULL</c>, the <c>ulSectorSize</c> member must be set to either 512 or 4096. If set to 4096, STGM_SIMPLE may not be specified
-	/// in the grfMode parameter. The <c>usVersion</c> member must be set before calling <c>StgCreateStorageEx</c>. For more information,
-	/// see <c>STGOPTIONS</c>.
-	/// </param>
-	/// <param name="pSecurityDescriptor">
-	/// <para>
-	/// Enables the ACLs to be set when the file is created. If not <c>NULL</c>, needs to be a pointer to the SECURITY_ATTRIBUTES
-	/// structure. See CreateFile for information on how to set ACLs on files.
-	/// </para>
-	/// <para><c>Windows Server 2003, Windows 2000 Server, Windows XP and Windows 2000 Professional:</c> Value must be <c>NULL</c>.</para>
-	/// </param>
-	/// <param name="riid">
-	/// A value that specifies the interface identifier (IID) of the interface pointer to return. This IID may be for the IStorage
-	/// interface or the IPropertySetStorage interface.
-	/// </param>
-	/// <param name="ppObjectOpen">
-	/// A pointer to an interface pointer variable that receives a pointer for an interface on the new storage object; contains
-	/// <c>NULL</c> if operation failed.
-	/// </param>
-	/// <returns>
-	/// This function can also return any file system errors or system errors wrapped in an <c>HRESULT</c>. For more information, see
-	/// Error Handling Strategies and Handling Unknown Errors.
-	/// </returns>
+	/// <returns>This function supports the standard return values E_INVALIDARG and E_UNEXPECTED, in addition to the following:</returns>
 	/// <remarks>
 	/// <para>
-	/// When an application modifies its file, it usually creates a copy of the original. The <c>StgCreateStorageEx</c> function is one
-	/// way for creating a copy. This function works indirectly with the Encrypting File System (EFS) duplication API. When you use this
-	/// function, you will need to set the options for the file storage in the STGOPTIONS structure.
+	/// <c>StgCreatePropStg</c> creates and opens a new property set which supplies the system-provided, stand-alone implementation of
+	/// the IPropertyStorage interface. The new property set is contained in the storage or stream object specified by pUnk. The value of
+	/// the grfFlags parameter indicates whether pUnk specifies a storage or stream object. For example, if PROPSETFLAG_NONSIMPLE is set,
+	/// then pUnk can be queried for an IStorage interface on a storage object.
 	/// </para>
 	/// <para>
-	/// <c>StgCreateStorageEx</c> is a superset of the StgCreateDocfile function, and should be used by new code. Future enhancements to
-	/// Structured Storage will be exposed through the <c>StgCreateStorageEx</c> function. See the following Requirements section for
-	/// information on supported platforms.
+	/// In either case, this function calls pUnk-&gt;AddRef for the storage or stream object containing the property set. It is the
+	/// responsibility of the caller to release the object when it is no longer needed.
 	/// </para>
 	/// <para>
-	/// The <c>StgCreateStorageEx</c> function creates a new storage object using one of the system-provided, structured-storage
-	/// implementations. This function can be used to obtain an IStorage compound file implementation, an IPropertySetStorage compound
-	/// file implementation, or to obtain an IPropertySetStorage NTFS implementation.
+	/// This function is similar to the IPropertySetStorage::Create method. However, <c>StgCreatePropStg</c> adds the pUnk parameter and
+	/// supports the PROPSETFLAG_UNBUFFERED value for the grfFlags parameter. Use this function instead of the <c>Create</c> method if
+	/// you have an IStorage interface that does not support the IPropertySetStorage interface, or if you want to use the
+	/// PROPSETFLAG_UNBUFFERED value. For more information about using this PROPSETFLAG_UNBUFFERED enumeration value, see PROPSETFLAG Constants.
 	/// </para>
 	/// <para>
-	/// When a new file is created, the storage implementation used depends on the flag that you specify and on the type of drive on
-	/// which the file is stored. For more information, see the STGFMT enumeration.
+	/// The property set automatically contains code page and locale identifier (ID) properties. These are set to the current system
+	/// default and the current user default, respectively.
 	/// </para>
 	/// <para>
-	/// <c>StgCreateStorageEx</c> creates the file if it does not exist. If it does exist, the use of the STGM_CREATE, STGM_CONVERT, and
-	/// STGM_FAILIFTHERE flags in the grfMode parameter indicate how to proceed. For more information on these values, see STGM
-	/// Constants. It is not valid, in direct mode, to specify the STGM_READ mode in the grfMode parameter (direct mode is indicated by
-	/// not specifying the STGM_TRANSACTED flag). This function cannot be used to open an existing file; use the StgOpenStorageEx
-	/// function instead.
+	/// The grfFlags parameter is a combination of values taken from PROPSETFLAG Constants. The new enumeration value
+	/// PROPSETFLAG_UNBUFFERED is supported. For more information, see <c>PROPSETFLAG Constants</c>.
 	/// </para>
 	/// <para>
-	/// You can use the <c>StgCreateStorageEx</c> function to get access to the root storage of a structured-storage document or the
-	/// property set storage of any file that supports property sets. See the STGFMT documentation for information about which IIDs are
-	/// supported for different <c>STGFMT</c> values.
-	/// </para>
-	/// <para>
-	/// When a file is created with this function to access the NTFS property set implementation, special sharing rules apply. For more
-	/// information, see IPropertySetStorage-NTFS Implementation.
-	/// </para>
-	/// <para>
-	/// If a compound file is created in transacted mode (by specifying STGM_TRANSACTED) and read-only mode (by specifying STGM_READ), it
-	/// is possible to make changes to the returned storage object. For example, it is possible to call IStorage::CreateStream. However,
-	/// it is not possible to commit those changes by calling IStorage::Commit. Therefore, such changes will be lost.
-	/// </para>
-	/// <para>
-	/// Specifying STGM_SIMPLE provides a much faster implementation of a compound file object in a limited, but frequently used case
-	/// involving applications that require a compound file implementation with multiple streams and no storages. For more information,
-	/// see STGM Constants. It is not valid to specify that STGM_TRANSACTED if STGM_SIMPLE is specified.
-	/// </para>
-	/// <para>
-	/// The simple mode does not support all the methods on IStorage. Specifically, in simple mode, supported <c>IStorage</c> methods are
-	/// CreateStream, Commit, and SetClass as well as the COM IUnknown methods of QueryInterface, AddRef and Release. In addition,
-	/// SetElementTimes is supported with a <c>NULL</c> name, allowing applications to set times on a root storage. All the other methods
-	/// of <c>IStorage</c> return STG_E_INVALIDFUNCTION.
-	/// </para>
-	/// <para>
-	/// If the grfMode parameter specifies STGM_TRANSACTED and no file yet exists with the name specified by the pwcsName parameter, the
-	/// file is created immediately. In an access-controlled file system, the caller must have write permissions for the file system
-	/// directory in which the compound file is created. If STGM_TRANSACTED is not specified, and STGM_CREATE is specified, an existing
-	/// file with the same name is destroyed before creating the new file.
-	/// </para>
-	/// <para>
-	/// You can also use <c>StgCreateStorageEx</c> to create a temporary compound file by passing a <c>NULL</c> value for the pwcsName
-	/// parameter. However, these files are temporary only in the sense that they have a unique system-provided name – one that is
-	/// probably meaningless to the user. The caller is responsible for deleting the temporary file when finished with it, unless
-	/// STGM_DELETEONRELEASE was specified for the grfMode parameter. For more information on these flags, see STGM Constants.
+	/// This function is exported out of the redistributable Iprop.dll, which is included in Windows NT 4.0 with Service Pack 2 (SP2) and
+	/// later and available as a redistributable in Windows 95, Windows 98 and later. In Windows 2000 and Windows XP, it is exported out
+	/// of ole32.dll. It can also be exported out of iprop.dll in Windows 2000 and Windows XP, but the call gets forwarded to ole32.dll.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/coml2api/nf-coml2api-stgcreatestorageex HRESULT StgCreateStorageEx( const
-	// WCHAR *pwcsName, DWORD grfMode, DWORD stgfmt, DWORD grfAttrs, STGOPTIONS *pStgOptions, PSECURITY_DESCRIPTOR pSecurityDescriptor,
-	// REFIID riid, void **ppObjectOpen );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/coml2api/nf-coml2api-stgcreatepropstg HRESULT StgCreatePropStg( IUnknown
+	// *pUnk, REFFMTID fmtid, const CLSID *pclsid, DWORD grfFlags, DWORD dwReserved, IPropertyStorage **ppPropStg );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("coml2api.h", MSDNShortId = "6442977d-e980-419e-abe9-9d15dbb045c1")]
-	public static extern HRESULT StgCreateStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions,
-		[Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+	[PInvokeData("coml2api.h", MSDNShortId = "fc171888-3723-4894-a356-1b234352c4e8")]
+	public static extern HRESULT StgCreatePropStg([In, MarshalAs(UnmanagedType.IUnknown)] object pUnk, in Guid fmtid, [In, Optional] IntPtr pclsid, PROPSETFLAG grfFlags, [Optional] uint dwReserved, out IPropertyStorage ppPropStg);
 
 	/// <summary>
 	/// <para>
@@ -932,8 +840,156 @@ public static partial class Ole32
 	// REFIID riid, void **ppObjectOpen );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "6442977d-e980-419e-abe9-9d15dbb045c1")]
-	public static extern HRESULT StgCreateStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions,
-		[Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+	public static extern HRESULT StgCreateStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
+		FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+
+	/// <summary>
+	/// <para>
+	/// The <c>StgCreateStorageEx</c> function creates a new storage object using a provided implementation for the IStorage or
+	/// IPropertySetStorage interfaces. To open an existing file, use the StgOpenStorageEx function instead.
+	/// </para>
+	/// <para>
+	/// Applications written for Windows 2000, Windows Server 2003 and Windows XP must use <c>StgCreateStorageEx</c> rather than
+	/// StgCreateDocfile to take advantage of the enhanced Windows 2000 and Windows XP Structured Storage features.
+	/// </para>
+	/// </summary>
+	/// <param name="pwcsName">
+	/// <para>
+	/// A pointer to the path of the file to create. It is passed uninterpreted to the file system. This can be a relative name or
+	/// <c>NULL</c>. If <c>NULL</c>, a temporary file is allocated with a unique name. If non- <c>NULL</c>, the string size must not
+	/// exceed MAX_PATH characters.
+	/// </para>
+	/// <para><c>Windows 2000:</c> Unlike the CreateFile function, you cannot exceed the MAX_PATH limit by using the "\?" prefix.</para>
+	/// </param>
+	/// <param name="grfMode">
+	/// A value that specifies the access mode to use when opening the new storage object. For more information, see STGM Constants. If
+	/// the caller specifies transacted mode together with STGM_CREATE or STGM_CONVERT, the overwrite or conversion takes place when the
+	/// commit operation is called for the root storage. If IStorage::Commit is not called for the root storage object, previous contents
+	/// of the file will be restored. STGM_CREATE and STGM_CONVERT cannot be combined with the STGM_NOSNAPSHOT flag, because a snapshot
+	/// copy is required when a file is overwritten or converted in the transacted mode.
+	/// </param>
+	/// <param name="stgfmt">A value that specifies the storage file format. For more information, see the STGFMT enumeration.</param>
+	/// <param name="grfAttrs">
+	/// <para>A value that depends on the value of the stgfmt parameter.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Parameter Values</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STGFMT_DOCFILE</term>
+	/// <term>
+	/// 0, or FILE_FLAG_NO_BUFFERING. For more information, see CreateFile. If the sector size of the file, specified in pStgOptions, is
+	/// not an integer multiple of the underlying disk's physical sector size, this operation will fail.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>All other values of stgfmt</term>
+	/// <term>Must be 0.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pStgOptions">
+	/// The pStgOptions parameter is valid only if the stgfmt parameter is set to STGFMT_DOCFILE. If the stgfmt parameter is set to
+	/// STGFMT_DOCFILE, pStgOptions points to the STGOPTIONS structure, which specifies features of the storage object, such as the
+	/// sector size. This parameter may be <c>NULL</c>, which creates a storage object with a default sector size of 512 bytes. If non-
+	/// <c>NULL</c>, the <c>ulSectorSize</c> member must be set to either 512 or 4096. If set to 4096, STGM_SIMPLE may not be specified
+	/// in the grfMode parameter. The <c>usVersion</c> member must be set before calling <c>StgCreateStorageEx</c>. For more information,
+	/// see <c>STGOPTIONS</c>.
+	/// </param>
+	/// <param name="pSecurityDescriptor">
+	/// <para>
+	/// Enables the ACLs to be set when the file is created. If not <c>NULL</c>, needs to be a pointer to the SECURITY_ATTRIBUTES
+	/// structure. See CreateFile for information on how to set ACLs on files.
+	/// </para>
+	/// <para><c>Windows Server 2003, Windows 2000 Server, Windows XP and Windows 2000 Professional:</c> Value must be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="riid">
+	/// A value that specifies the interface identifier (IID) of the interface pointer to return. This IID may be for the IStorage
+	/// interface or the IPropertySetStorage interface.
+	/// </param>
+	/// <param name="ppObjectOpen">
+	/// A pointer to an interface pointer variable that receives a pointer for an interface on the new storage object; contains
+	/// <c>NULL</c> if operation failed.
+	/// </param>
+	/// <returns>
+	/// This function can also return any file system errors or system errors wrapped in an <c>HRESULT</c>. For more information, see
+	/// Error Handling Strategies and Handling Unknown Errors.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// When an application modifies its file, it usually creates a copy of the original. The <c>StgCreateStorageEx</c> function is one
+	/// way for creating a copy. This function works indirectly with the Encrypting File System (EFS) duplication API. When you use this
+	/// function, you will need to set the options for the file storage in the STGOPTIONS structure.
+	/// </para>
+	/// <para>
+	/// <c>StgCreateStorageEx</c> is a superset of the StgCreateDocfile function, and should be used by new code. Future enhancements to
+	/// Structured Storage will be exposed through the <c>StgCreateStorageEx</c> function. See the following Requirements section for
+	/// information on supported platforms.
+	/// </para>
+	/// <para>
+	/// The <c>StgCreateStorageEx</c> function creates a new storage object using one of the system-provided, structured-storage
+	/// implementations. This function can be used to obtain an IStorage compound file implementation, an IPropertySetStorage compound
+	/// file implementation, or to obtain an IPropertySetStorage NTFS implementation.
+	/// </para>
+	/// <para>
+	/// When a new file is created, the storage implementation used depends on the flag that you specify and on the type of drive on
+	/// which the file is stored. For more information, see the STGFMT enumeration.
+	/// </para>
+	/// <para>
+	/// <c>StgCreateStorageEx</c> creates the file if it does not exist. If it does exist, the use of the STGM_CREATE, STGM_CONVERT, and
+	/// STGM_FAILIFTHERE flags in the grfMode parameter indicate how to proceed. For more information on these values, see STGM
+	/// Constants. It is not valid, in direct mode, to specify the STGM_READ mode in the grfMode parameter (direct mode is indicated by
+	/// not specifying the STGM_TRANSACTED flag). This function cannot be used to open an existing file; use the StgOpenStorageEx
+	/// function instead.
+	/// </para>
+	/// <para>
+	/// You can use the <c>StgCreateStorageEx</c> function to get access to the root storage of a structured-storage document or the
+	/// property set storage of any file that supports property sets. See the STGFMT documentation for information about which IIDs are
+	/// supported for different <c>STGFMT</c> values.
+	/// </para>
+	/// <para>
+	/// When a file is created with this function to access the NTFS property set implementation, special sharing rules apply. For more
+	/// information, see IPropertySetStorage-NTFS Implementation.
+	/// </para>
+	/// <para>
+	/// If a compound file is created in transacted mode (by specifying STGM_TRANSACTED) and read-only mode (by specifying STGM_READ), it
+	/// is possible to make changes to the returned storage object. For example, it is possible to call IStorage::CreateStream. However,
+	/// it is not possible to commit those changes by calling IStorage::Commit. Therefore, such changes will be lost.
+	/// </para>
+	/// <para>
+	/// Specifying STGM_SIMPLE provides a much faster implementation of a compound file object in a limited, but frequently used case
+	/// involving applications that require a compound file implementation with multiple streams and no storages. For more information,
+	/// see STGM Constants. It is not valid to specify that STGM_TRANSACTED if STGM_SIMPLE is specified.
+	/// </para>
+	/// <para>
+	/// The simple mode does not support all the methods on IStorage. Specifically, in simple mode, supported <c>IStorage</c> methods are
+	/// CreateStream, Commit, and SetClass as well as the COM IUnknown methods of QueryInterface, AddRef and Release. In addition,
+	/// SetElementTimes is supported with a <c>NULL</c> name, allowing applications to set times on a root storage. All the other methods
+	/// of <c>IStorage</c> return STG_E_INVALIDFUNCTION.
+	/// </para>
+	/// <para>
+	/// If the grfMode parameter specifies STGM_TRANSACTED and no file yet exists with the name specified by the pwcsName parameter, the
+	/// file is created immediately. In an access-controlled file system, the caller must have write permissions for the file system
+	/// directory in which the compound file is created. If STGM_TRANSACTED is not specified, and STGM_CREATE is specified, an existing
+	/// file with the same name is destroyed before creating the new file.
+	/// </para>
+	/// <para>
+	/// You can also use <c>StgCreateStorageEx</c> to create a temporary compound file by passing a <c>NULL</c> value for the pwcsName
+	/// parameter. However, these files are temporary only in the sense that they have a unique system-provided name – one that is
+	/// probably meaningless to the user. The caller is responsible for deleting the temporary file when finished with it, unless
+	/// STGM_DELETEONRELEASE was specified for the grfMode parameter. For more information on these flags, see STGM Constants.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/coml2api/nf-coml2api-stgcreatestorageex HRESULT StgCreateStorageEx( const
+	// WCHAR *pwcsName, DWORD grfMode, DWORD stgfmt, DWORD grfAttrs, STGOPTIONS *pStgOptions, PSECURITY_DESCRIPTOR pSecurityDescriptor,
+	// REFIID riid, void **ppObjectOpen );
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("coml2api.h", MSDNShortId = "6442977d-e980-419e-abe9-9d15dbb045c1")]
+	public static extern HRESULT StgCreateStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
+		FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 	/// <summary>The <c>StgIsStorageFile</c> function indicates whether a particular disk file contains a storage object.</summary>
 	/// <param name="pwcsName">
@@ -1119,7 +1175,8 @@ public static partial class Ole32
 	// *pwcsName, IStorage *pstgPriority, DWORD grfMode, SNB snbExclude, DWORD reserved, IStorage **ppstgOpen );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "5ff18dc8-b24f-42bb-8c32-efc4d3696687")]
-	public static extern HRESULT StgOpenStorage([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, [In, Optional] IStorage pstgPriority, STGM grfMode, SNB snbExclude, [Optional] uint reserved, out IStorage ppstgOpen);
+	public static extern HRESULT StgOpenStorage([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, [In, Optional] IStorage? pstgPriority,
+		STGM grfMode, [Optional] SNB? snbExclude, [Optional] uint reserved, out IStorage ppstgOpen);
 
 	/// <summary>
 	/// <para>
@@ -1241,8 +1298,9 @@ public static partial class Ole32
 	// riid, void **ppObjectOpen );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "4f2138fb-1f80-4345-a3cb-9c11023457b1")]
-	public static extern HRESULT StgOpenStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions,
-		[Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+	public static extern HRESULT StgOpenStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
+		FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 	/// <summary>
 	/// <para>
@@ -1364,8 +1422,9 @@ public static partial class Ole32
 	// riid, void **ppObjectOpen );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "4f2138fb-1f80-4345-a3cb-9c11023457b1")]
-	public static extern HRESULT StgOpenStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions,
-		[Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+	public static extern HRESULT StgOpenStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
+		FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 	/// <summary>
 	/// The <c>StgOpenStorageOnILockBytes</c> function opens an existing storage object that does not reside in a disk file, but instead
@@ -1431,7 +1490,8 @@ public static partial class Ole32
 	// **ppstgOpen );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "7920bd46-0a8f-42e0-9988-59d85edb64e2")]
-	public static extern HRESULT StgOpenStorageOnILockBytes([In] ILockBytes plkbyt, [In, Optional] IStorage pstgPriority, STGM grfMode, SNB snbExclude, [Optional] uint reserved, out IStorage ppstgOpen);
+	public static extern HRESULT StgOpenStorageOnILockBytes([In] ILockBytes plkbyt, [In, Optional] IStorage? pstgPriority, STGM grfMode,
+		SNB? snbExclude, [Optional] uint reserved, out IStorage ppstgOpen);
 
 	/// <summary>
 	/// The <c>StgSetTimes</c> function sets the creation, access, and modification times of the indicated file, if supported by the

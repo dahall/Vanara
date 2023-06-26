@@ -605,7 +605,7 @@ public static partial class Ole32
 		// LPOLESTR pszKey, IUnknown **ppunk );
 		[PInvokeData("objidl.h", MSDNShortId = "8f423495-7a34-4901-968e-1fe204680d8a")]
 		[PreserveSig]
-		HRESULT GetObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [MarshalAs(UnmanagedType.Interface)] out object ppunk);
+		HRESULT GetObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [MarshalAs(UnmanagedType.Interface)] out object? ppunk);
 
 		/// <summary>
 		/// Retrieves a pointer to an interface that can be used to enumerate the keys of the bind context's string-keyed table of pointers.
@@ -633,7 +633,7 @@ public static partial class Ole32
 		// IEnumString **ppenum );
 		[PInvokeData("objidl.h", MSDNShortId = "9e799ce4-e9b3-4b31-98a0-2167a0c19848")]
 		[PreserveSig]
-		HRESULT EnumObjectParam(out IEnumString ppenum);
+		HRESULT EnumObjectParam(out IEnumString? ppenum);
 
 		/// <summary>
 		/// Removes the specified key and its associated pointer from the bind context's string-keyed table of objects. The key must
@@ -802,7 +802,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataadviseholder-advise HRESULT Advise( IDataObject
 		// *pDataObject, FORMATETC *pFetc, DWORD advf, IAdviseSink *pAdvise, DWORD *pdwConnection );
 		[PreserveSig]
-		HRESULT Advise([Optional] IDataObject pDataObject, in FORMATETC pFetc, ADVF advf, IAdviseSink pAdvise, out uint pdwConnection);
+		HRESULT Advise([Optional] IDataObject? pDataObject, in FORMATETC pFetc, ADVF advf, IAdviseSink pAdvise, out uint pdwConnection);
 
 		/// <summary>
 		/// Removes a connection between a data object and an advisory sink that was set up through a previous call to
@@ -850,7 +850,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/zh-cn/windows/win32/api/objidl/nf-objidl-idataadviseholder-enumadvise HRESULT EnumAdvise(
 		// IEnumSTATDATA **ppenumAdvise );
 		[PreserveSig]
-		HRESULT EnumAdvise(out IEnumSTATDATA ppenumAdvise);
+		HRESULT EnumAdvise(out IEnumSTATDATA? ppenumAdvise);
 
 		/// <summary>
 		/// Sends notifications to each advise sink for which there is a connection established by calling the IAdviseSink::OnDataChange
@@ -885,7 +885,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataadviseholder-sendondatachange HRESULT
 		// SendOnDataChange( IDataObject *pDataObject, DWORD dwReserved, DWORD advf );
 		[PreserveSig]
-		HRESULT SendOnDataChange(IDataObject pDataObject, [Optional] uint dwReserved, ADVF advf);
+		HRESULT SendOnDataChange(IDataObject pDataObject, [Optional] uint dwReserved, [Optional] ADVF advf);
 	}
 
 	/// <summary>
@@ -1539,7 +1539,7 @@ public static partial class Ole32
 		// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-dadvise HRESULT DAdvise( [in] FORMATETC
 		// *pformatetc, [in] DWORD advf, [in] IAdviseSink *pAdvSink, [out] DWORD *pdwConnection );
 		[PreserveSig]
-		HRESULT DAdvise(in FORMATETC pformatetc, ADVF advf, [In, Optional, MarshalAs(UnmanagedType.Interface)] IAdviseSink pAdvSink, out uint pdwConnection);
+		HRESULT DAdvise(in FORMATETC pformatetc, ADVF advf, [In, Optional, MarshalAs(UnmanagedType.Interface)] IAdviseSink? pAdvSink, out uint pdwConnection);
 
 		/// <summary>Destroys a notification connection that had been previously set up.</summary>
 		/// <param name="dwConnection">
@@ -1618,7 +1618,7 @@ public static partial class Ole32
 		// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-enumdadvise HRESULT EnumDAdvise( [out]
 		// IEnumSTATDATA **ppenumAdvise );
 		[PreserveSig]
-		HRESULT EnumDAdvise([Optional, MarshalAs(UnmanagedType.Interface)] out IEnumSTATDATA ppenumAdvise);
+		HRESULT EnumDAdvise([Optional, MarshalAs(UnmanagedType.Interface)] out IEnumSTATDATA? ppenumAdvise);
 	}
 
 	/// <summary>

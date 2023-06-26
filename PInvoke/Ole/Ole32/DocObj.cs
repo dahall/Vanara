@@ -832,7 +832,7 @@ public static partial class Ole32
 		/// <param name="pvaOut">Pointer to a VARIANTARG structure to receive command output. This parameter can be NULL.</param>
 		/// <returns>This method returns S_OK on success.</returns>
 		[PreserveSig]
-		HRESULT Exec([In, Optional] GuidPtr pguidCmdGroup, uint nCmdID, uint nCmdexecopt, [In, Optional] /* VARIANT* */ IntPtr pvaIn, [In, Out, Optional] /* VARIANT* */ IntPtr pvaOut);
+		HRESULT Exec([In, Optional] GuidPtr pguidCmdGroup, uint nCmdID, uint nCmdexecopt, [In, Optional] object? pvaIn, [In, Out, Optional] object? pvaOut);
 	}
 
 	/// <summary>
@@ -900,7 +900,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/docobj/nf-docobj-ioledocument-createview HRESULT CreateView(
 		// IOleInPlaceSite *pIPSite, IStream *pstm, DWORD dwReserved, IOleDocumentView **ppView );
 		[PreserveSig]
-		HRESULT CreateView([In, Optional] IOleInPlaceSite pIPSite, [In, Optional] IStream pstm, [In, Optional] uint dwReserved, out IOleDocumentView ppView);
+		HRESULT CreateView([In, Optional] IOleInPlaceSite? pIPSite, [In, Optional] IStream? pstm, [In, Optional] uint dwReserved, out IOleDocumentView ppView);
 
 		/// <summary>Retrieves status information about the document object.</summary>
 		/// <param name="pdwStatus">
@@ -1059,7 +1059,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/docobj/nf-docobj-ioledocumentsite-activateme HRESULT ActivateMe(
 		// IOleDocumentView *pViewToActivate );
 		[PreserveSig]
-		HRESULT ActivateMe([In] IOleDocumentView pViewToActivate);
+		HRESULT ActivateMe([In] IOleDocumentView? pViewToActivate);
 	}
 
 	/// <summary>
@@ -1127,7 +1127,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/docobj/nf-docobj-ioledocumentview-setinplacesite HRESULT SetInPlaceSite(
 		// IOleInPlaceSite *pIPSite );
 		[PreserveSig]
-		HRESULT SetInPlaceSite([In, Optional] IOleInPlaceSite pIPSite);
+		HRESULT SetInPlaceSite([In, Optional] IOleInPlaceSite? pIPSite);
 
 		/// <summary>Retrieves the view site associated with this view object.</summary>
 		/// <param name="ppIPSite">
@@ -1313,7 +1313,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/docobj/nf-docobj-ioledocumentview-setrectcomplex HRESULT SetRectComplex(
 		// LPRECT prcView, LPRECT prcHScroll, LPRECT prcVScroll, LPRECT prcSizeBox );
 		[PreserveSig]
-		HRESULT SetRectComplex([In, Optional] PRECT prcView, [In, Optional] PRECT prcHScroll, [In, Optional] PRECT prcVScroll, [In, Optional] PRECT prcSizeBox);
+		HRESULT SetRectComplex([In, Optional] PRECT? prcView, [In, Optional] PRECT? prcHScroll, [In, Optional] PRECT? prcVScroll, [In, Optional] PRECT? prcSizeBox);
 
 		/// <summary>Activates or deactivates a view.</summary>
 		/// <param name="fShow">If <c>TRUE</c>, the view is to show itself. If <c>FALSE</c>, the view is to hide itself.</param>
@@ -1607,7 +1607,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/docobj/nf-docobj-ioledocumentview-clone HRESULT Clone( IOleInPlaceSite
 		// *pIPSiteNew, IOleDocumentView **ppViewNew );
 		[PreserveSig]
-		HRESULT Clone(IOleInPlaceSite pIPSiteNew, out IOleDocumentView ppViewNew);
+		HRESULT Clone(IOleInPlaceSite? pIPSiteNew, out IOleDocumentView ppViewNew);
 	}
 
 	/// <summary>Enables compound documents in general and active documents in particular to support programmatic printing.</summary>
@@ -1743,7 +1743,7 @@ public static partial class Ole32
 		// *pcPagesPrinted, LONG *pnLastPage );
 		[PreserveSig]
 		HRESULT Print(PRINTFLAG grfFlags, [In, Out] IntPtr /*DVTARGETDEVICE** */ pptd, [In, Out] IntPtr /*PAGESET***/ ppPageSet,
-			[In, Out, Optional] IntPtr /*STGMEDIUM**/ pstgmOptions, [In] IContinueCallback pcallback, int nFirstPage,
+			[In, Out, Optional] IntPtr /*STGMEDIUM**/ pstgmOptions, [In] IContinueCallback? pcallback, int nFirstPage,
 			out int pcPagesPrinted, out int pnLastPage);
 	}
 
@@ -1903,13 +1903,13 @@ public static partial class Ole32
 		/// Gets or sets the command name or status text. When setting, this value must not be longer than <see cref="cwBuf"/> and the
 		/// <see cref="cwActual"/> field will be updated based on the character count of the value provided.
 		/// </summary>
-		public string rgwz
+		public string? rgwz
 #pragma warning restore IDE1006 // Naming Styles
 		{
 			get => cwBuf > 0 ? _rgwz.ToString() : null;
 			set
 			{
-				if (value == null) value = string.Empty;
+				value ??= string.Empty;
 				if (value.Length + 1 > cwBuf)
 					throw new ArgumentOutOfRangeException(nameof(rgwz), "Set value must be of a length that will fit into supplied buffer of length 'cwBuf'.");
 				unsafe

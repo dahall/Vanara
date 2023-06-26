@@ -424,7 +424,7 @@ public static partial class Ole32
 	/// pointer to the element type.
 	/// </para>
 	/// </returns>
-	public static Type GetCorrespondingType(this VARTYPE vt)
+	public static Type? GetCorrespondingType(this VARTYPE vt)
 	{
 		var elemVT = vt & ~(VARTYPE)0xF000;
 		var specVT = vt & (VARTYPE)0xF000;

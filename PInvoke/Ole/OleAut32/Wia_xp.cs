@@ -19,7 +19,7 @@ public static partial class OleAut32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/ns-wia_xp-wia_propid_to_name typedef struct _WIA_PROPID_TO_NAME {
 	// PROPID propid; LPOLESTR pszName; } WIA_PROPID_TO_NAME, *PWIA_PROPID_TO_NAME;
 	[PInvokeData("wia_xp.h")]
-	public static Dictionary<WIA_PROPID, string> WIA_PROPID_TO_NAME = new Dictionary<WIA_PROPID, string>
+	public static Dictionary<WIA_PROPID, string> WIA_PROPID_TO_NAME = new()
 	{
 		{ WIA_PROPID.WIA_DIP_BAUDRATE                                     , "BaudRate" },
 		{ WIA_PROPID.WIA_DIP_DEV_DESC                                     , "Description" },

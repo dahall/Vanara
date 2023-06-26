@@ -1060,9 +1060,7 @@ public static partial class Ole32
 		// rgelt, ULONG *pceltFetched );
 		[PInvokeData("oleidl.h", MSDNShortId = "bb934017-9054-42b5-89d4-a24f12829503")]
 		[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		HRESULT Next([In] uint celt,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] OLEVERB[] rgelt,
-			out uint pceltFetched);
+		HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] OLEVERB[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
 		/// <param name="celt">The number of items to be skipped.</param>
@@ -1374,7 +1372,7 @@ public static partial class Ole32
 		/// data stored in an array of STATDATA structures containing information about current cache connections.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-enumcache
-		IEnumSTATDATA EnumCache();
+		IEnumSTATDATA? EnumCache();
 
 		/// <summary>Fills the cache as needed using the data provided by the specified data object.</summary>
 		/// <param name="pDataObject">A pointer to the IDataObject interface on the data object from which the cache is to be initialized.</param>
@@ -1526,7 +1524,7 @@ public static partial class Ole32
 		/// data stored in an array of STATDATA structures containing information about current cache connections.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-enumcache
-		new IEnumSTATDATA EnumCache();
+		new IEnumSTATDATA? EnumCache();
 
 		/// <summary>Fills the cache as needed using the data provided by the specified data object.</summary>
 		/// <param name="pDataObject">A pointer to the IDataObject interface on the data object from which the cache is to be initialized.</param>
@@ -1660,7 +1658,7 @@ public static partial class Ole32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache2-updatecache HRESULT UpdateCache( LPDATAOBJECT
 		// pDataObject, DWORD grfUpdf, LPVOID pReserved );
-		HRESULT UpdateCache(IDataObject pDataObject, UPDFCACHE grfUpdf, [In, Optional] IntPtr pReserved);
+		HRESULT UpdateCache(IDataObject? pDataObject, UPDFCACHE grfUpdf, [In, Optional] IntPtr pReserved);
 
 		/// <summary>Discards the caches found in memory.</summary>
 		/// <param name="dwDiscardOptions">
@@ -1894,7 +1892,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleclientsite-getmoniker HRESULT GetMoniker( DWORD
 		// dwAssign, DWORD dwWhichMoniker, IMoniker **ppmk );
 		[PreserveSig]
-		HRESULT GetMoniker(OLEGETMONIKER dwAssign, OLEWHICHMK dwWhichMoniker, out IMoniker ppmk);
+		HRESULT GetMoniker(OLEGETMONIKER dwAssign, OLEWHICHMK dwWhichMoniker, out IMoniker? ppmk);
 
 		/// <summary>Retrieves a pointer to the object's container.</summary>
 		/// <param name="ppContainer">
@@ -1937,7 +1935,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleclientsite-getcontainer HRESULT GetContainer(
 		// IOleContainer **ppContainer );
 		[PreserveSig]
-		HRESULT GetContainer(out IOleContainer ppContainer);
+		HRESULT GetContainer(out IOleContainer? ppContainer);
 
 		/// <summary>
 		/// Asks a container to display its object to the user. This method ensures that the container itself is visible and not minimized.
@@ -2094,7 +2092,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iparsedisplayname-parsedisplayname HRESULT
 		// ParseDisplayName( IBindCtx *pbc, LPOLESTR pszDisplayName, ULONG *pchEaten, IMoniker **ppmkOut );
 		[PreserveSig]
-		new HRESULT ParseDisplayName(IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out IMoniker ppmkOut);
+		new HRESULT ParseDisplayName(IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out IMoniker? ppmkOut);
 
 		/// <summary>Enumerates the objects in the current container.</summary>
 		/// <param name="grfFlags">Specifies which objects in a container are to be enumerated, as defined in the enumeration OLECONTF.</param>
@@ -2112,7 +2110,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecontainer-enumobjects HRESULT EnumObjects( DWORD
 		// grfFlags, IEnumUnknown **ppenum );
 		[PreserveSig]
-		HRESULT EnumObjects(OLECONTF grfFlags, out IEnumUnknown ppenum);
+		HRESULT EnumObjects(OLECONTF grfFlags, out IEnumUnknown? ppenum);
 
 		/// <summary>Keeps the container for embedded objects running until explicitly released.</summary>
 		/// <param name="fLock">Indicates whether to lock ( <c>TRUE</c>) or unlock ( <c>FALSE</c>) a container.</param>
@@ -2681,7 +2679,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setborderspace HRESULT
 		// SetBorderSpace( LPCBORDERWIDTHS pborderwidths );
-		new void SetBorderSpace(in RECT pborderwidths);
+		new void SetBorderSpace([In] PRECT? pborderwidths);
 
 		/// <summary>Provides a direct channel of communication between the object and each of the frame and document windows.</summary>
 		/// <param name="pActiveObject">A pointer to the IOleInPlaceActiveObject interface on the active in-place object.</param>
@@ -2719,7 +2717,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setactiveobject HRESULT
 		// SetActiveObject( IOleInPlaceActiveObject *pActiveObject, LPCOLESTR pszObjName );
-		new void SetActiveObject([In] IOleInPlaceActiveObject pActiveObject, [MarshalAs(UnmanagedType.LPWStr)] string pszObjName);
+		new void SetActiveObject([In] IOleInPlaceActiveObject pActiveObject, [MarshalAs(UnmanagedType.LPWStr)] string? pszObjName);
 
 		/// <summary>Enables the container to insert menu groups into the composite menu to be used during the in-place session.</summary>
 		/// <param name="hmenuShared">A handle to an empty menu.</param>
@@ -2829,7 +2827,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceframe-setstatustext HRESULT SetStatusText(
 		// LPCOLESTR pszStatusText );
-		void SetStatusText([MarshalAs(UnmanagedType.LPWStr)] string pszStatusText);
+		void SetStatusText([MarshalAs(UnmanagedType.LPWStr)] string? pszStatusText);
 
 		/// <summary>Enables or disables a frame's modeless dialog boxes.</summary>
 		/// <param name="fEnable">
@@ -3525,7 +3523,7 @@ public static partial class Ole32
 		// GetWindowContext( IOleInPlaceFrame **ppFrame, IOleInPlaceUIWindow **ppDoc, LPRECT lprcPosRect, LPRECT lprcClipRect,
 		// LPOLEINPLACEFRAMEINFO lpFrameInfo );
 		[PreserveSig]
-		unsafe HRESULT GetWindowContext(out IOleInPlaceFrame ppFrame, out IOleInPlaceUIWindow ppDoc, [Out] RECT* lprcPosRect, [Out] RECT* lprcClipRect, [Out] OLEINPLACEFRAMEINFO* lpFrameInfo);
+		unsafe HRESULT GetWindowContext(out IOleInPlaceFrame? ppFrame, out IOleInPlaceUIWindow? ppDoc, [Out] RECT* lprcPosRect, [Out] RECT* lprcClipRect, [Out] OLEINPLACEFRAMEINFO* lpFrameInfo);
 
 		/// <summary>Instructs the container to scroll the view of the object by the specified number of pixels.</summary>
 		/// <param name="scrollExtant">The number of pixels by which to scroll in the X and Y directions.</param>
@@ -3977,7 +3975,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setborderspace HRESULT
 		// SetBorderSpace( LPCBORDERWIDTHS pborderwidths );
-		void SetBorderSpace(in RECT pborderwidths);
+		void SetBorderSpace([In] PRECT? pborderwidths);
 
 		/// <summary>Provides a direct channel of communication between the object and each of the frame and document windows.</summary>
 		/// <param name="pActiveObject">A pointer to the IOleInPlaceActiveObject interface on the active in-place object.</param>
@@ -4015,7 +4013,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setactiveobject HRESULT
 		// SetActiveObject( IOleInPlaceActiveObject *pActiveObject, LPCOLESTR pszObjName );
-		void SetActiveObject([In] IOleInPlaceActiveObject pActiveObject, [MarshalAs(UnmanagedType.LPWStr)] string pszObjName);
+		void SetActiveObject([In] IOleInPlaceActiveObject pActiveObject, [MarshalAs(UnmanagedType.LPWStr)] string? pszObjName);
 	}
 
 	/// <summary>
@@ -4161,7 +4159,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-setsourcemoniker HRESULT SetSourceMoniker( [in]
 		// IMoniker *pmk, [in] REFCLSID rclsid );
 		[PreserveSig]
-		HRESULT SetSourceMoniker([In, Optional] IMoniker pmk, in Guid rclsid);
+		HRESULT SetSourceMoniker([In, Optional] IMoniker? pmk, in Guid rclsid);
 
 		/// <summary>Retrieves the moniker identifying the link source of a linked object.</summary>
 		/// <param name="ppmk">
@@ -4212,7 +4210,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-getsourcemoniker HRESULT GetSourceMoniker( [out]
 		// IMoniker **ppmk );
 		[PreserveSig]
-		HRESULT GetSourceMoniker(out IMoniker ppmk);
+		HRESULT GetSourceMoniker(out IMoniker? ppmk);
 
 		/// <summary>Sets the display name for the link source.</summary>
 		/// <param name="pszStatusText">A pointer to the display name of the new link source. This parameter cannot be <c>NULL</c>.</param>
@@ -4302,7 +4300,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-getsourcedisplayname HRESULT
 		// GetSourceDisplayName( [out] LPOLESTR *ppszDisplayName );
 		[PreserveSig]
-		HRESULT GetSourceDisplayName(out IntPtr ppszDisplayName);
+		HRESULT GetSourceDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string ppszDisplayName);
 
 		/// <summary>Activates the connection to the link source by binding the moniker stored within the linked object.</summary>
 		/// <param name="bindflags">
@@ -4386,7 +4384,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-bindtosource HRESULT BindToSource( [in] DWORD
 		// bindflags, [in] IBindCtx *pbc );
 		[PreserveSig]
-		HRESULT BindToSource(OLELINKBIND bindflags, [In, Optional] IBindCtx pbc);
+		HRESULT BindToSource(OLELINKBIND bindflags, [In, Optional] IBindCtx? pbc);
 
 		/// <summary>Activates the connection between the linked object and the link source if the link source is already running.</summary>
 		/// <returns>
@@ -4442,7 +4440,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-getboundsource HRESULT GetBoundSource( [out]
 		// IUnknown **ppunk );
 		[PreserveSig]
-		HRESULT GetBoundSource(out IDataObject ppunk);
+		HRESULT GetBoundSource(out IDataObject? ppunk);
 
 		/// <summary>Breaks the connection between a linked object and its link source.</summary>
 		/// <returns>This method returns S_OK on success.</returns>
@@ -4523,7 +4521,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-update HRESULT Update( [in] IBindCtx *pbc );
 		[PreserveSig]
-		HRESULT Update([In, Optional] IBindCtx pbc);
+		HRESULT Update([In, Optional] IBindCtx? pbc);
 	}
 
 	/// <summary>
@@ -4580,7 +4578,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-setclientsite HRESULT SetClientSite(
 		// IOleClientSite *pClientSite );
 		[PreserveSig]
-		HRESULT SetClientSite(IOleClientSite pClientSite);
+		HRESULT SetClientSite(IOleClientSite? pClientSite);
 
 		/// <summary>Retrieves a pointer to an embedded object's client site.</summary>
 		/// <param name="ppClientSite">
@@ -4610,7 +4608,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-getclientsite HRESULT GetClientSite(
 		// IOleClientSite **ppClientSite );
 		[PreserveSig]
-		HRESULT GetClientSite(out IOleClientSite ppClientSite);
+		HRESULT GetClientSite(out IOleClientSite? ppClientSite);
 
 		/// <summary>Provides an object with the names of its container application and the compound document in which it is embedded.</summary>
 		/// <param name="szContainerApp">Pointer to the name of the container application in which the object is running.</param>
@@ -4645,7 +4643,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-sethostnames HRESULT SetHostNames( LPCOLESTR
 		// szContainerApp, LPCOLESTR szContainerObj );
 		[PreserveSig]
-		HRESULT SetHostNames([MarshalAs(UnmanagedType.LPWStr)] string szContainerApp, [MarshalAs(UnmanagedType.LPWStr)] string szContainerObj);
+		HRESULT SetHostNames([MarshalAs(UnmanagedType.LPWStr)] string szContainerApp, [MarshalAs(UnmanagedType.LPWStr)] string? szContainerObj);
 
 		/// <summary>Changes an embedded object from the running to the loaded state. Disconnects a linked object from its link source.</summary>
 		/// <param name="dwSaveOption">
@@ -4826,7 +4824,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-getmoniker HRESULT GetMoniker( DWORD dwAssign,
 		// DWORD dwWhichMoniker, IMoniker **ppmk );
 		[PreserveSig]
-		HRESULT GetMoniker(OLEGETMONIKER dwAssign, OLEWHICHMK dwWhichMoniker, out IMoniker ppmk);
+		HRESULT GetMoniker(OLEGETMONIKER dwAssign, OLEWHICHMK dwWhichMoniker, out IMoniker? ppmk);
 
 		/// <summary>
 		/// Initializes a newly created object with data from a specified data object, which can reside either in the same container or
@@ -4907,7 +4905,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-initfromdata HRESULT InitFromData( IDataObject
 		// *pDataObject, BOOL fCreation, DWORD dwReserved );
 		[PreserveSig]
-		HRESULT InitFromData(IDataObject pDataObject, [MarshalAs(UnmanagedType.Bool)] bool fCreation, uint dwReserved = 0);
+		HRESULT InitFromData(IDataObject? pDataObject, [MarshalAs(UnmanagedType.Bool)] bool fCreation, uint dwReserved = 0);
 
 		/// <summary>
 		/// Retrieves a data object containing the current contents of the embedded object on which this method is called. Using the
@@ -4955,7 +4953,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-getclipboarddata HRESULT GetClipboardData(
 		// DWORD dwReserved, IDataObject **ppDataObject );
 		[PreserveSig]
-		HRESULT GetClipboardData([Optional] uint dwReserved, out IDataObject ppDataObject);
+		HRESULT GetClipboardData([Optional] uint dwReserved, out IDataObject? ppDataObject);
 
 		/// <summary>
 		/// Requests that an object perform an action in response to an end-user's action. The possible actions are enumerated for the
@@ -5192,7 +5190,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-enumverbs HRESULT EnumVerbs( IEnumOLEVERB
 		// **ppEnumOleVerb );
 		[PreserveSig]
-		HRESULT EnumVerbs(out IEnumOLEVERB ppEnumOleVerb);
+		HRESULT EnumVerbs(out IEnumOLEVERB? ppEnumOleVerb);
 
 		/// <summary>Updates an object handler's or link object's data or view caches.</summary>
 		/// <returns>
@@ -5363,7 +5361,7 @@ public static partial class Ole32
 		// dwFormOfType, LPOLESTR *pszUserType );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		[PreserveSig]
-		HRESULT GetUserType(USERCLASSTYPE dwFormOfType, [MarshalAs(UnmanagedType.LPWStr)] out string pszUserType);
+		HRESULT GetUserType(USERCLASSTYPE dwFormOfType, [MarshalAs(UnmanagedType.LPWStr)] out string? pszUserType);
 
 		/// <summary>Informs an object of how much display space its container has assigned it.</summary>
 		/// <param name="dwDrawAspect">
@@ -5601,7 +5599,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-enumadvise HRESULT EnumAdvise( IEnumSTATDATA
 		// **ppenumAdvise );
 		[PreserveSig]
-		HRESULT EnumAdvise(out IEnumSTATDATA ppenumAdvise);
+		HRESULT EnumAdvise(out IEnumSTATDATA? ppenumAdvise);
 
 		/// <summary>Retrieves the status of an object at creation and loading.</summary>
 		/// <param name="dwAspect">
@@ -5931,7 +5929,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iparsedisplayname-parsedisplayname HRESULT
 		// ParseDisplayName( IBindCtx *pbc, LPOLESTR pszDisplayName, ULONG *pchEaten, IMoniker **ppmkOut );
 		[PreserveSig]
-		HRESULT ParseDisplayName(IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out IMoniker ppmkOut);
+		HRESULT ParseDisplayName(IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out IMoniker? ppmkOut);
 	}
 
 	/// <summary>
@@ -6123,9 +6121,9 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-draw HRESULT Draw( DWORD dwDrawAspect, LONG
 		// lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hdcTargetDev, HDC hdcDraw, LPCRECTL lprcBounds, LPCRECTL lprcWBounds, BOOL(*
 		// )(ULONG_PTR dwContinue) pfnContinue, ULONG_PTR dwContinue );
-		unsafe HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
-			[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT lprcBounds, [In, Optional] PRECT lprcWBounds,
-			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL> pfnContinue, [In, Optional] IntPtr dwContinue);
+		HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, [In, Optional] DVTARGETDEVICE? ptd,
+			[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT? lprcBounds, [In, Optional] PRECT? lprcWBounds,
+			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL>? pfnContinue, [In, Optional] IntPtr dwContinue);
 
 		/// <summary>
 		/// Returns the logical palette that the object will use for drawing in its IViewObject::Draw method with the corresponding parameters.
@@ -6208,7 +6206,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getcolorset HRESULT GetColorSet( DWORD
 		// dwDrawAspect, LONG lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hicTargetDev, LOGPALETTE **ppColorSet );
-		unsafe HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
+		HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, [In, Optional] DVTARGETDEVICE? ptd,
 			[In, Optional] HDC hicTargetDev, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<LOGPALETTE>))] out LOGPALETTE ppColorSet);
 
 		/// <summary>
@@ -6273,7 +6271,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-freeze HRESULT Freeze( DWORD dwDrawAspect,
 		// LONG lindex, void *pvAspect, DWORD *pdwFreeze );
-		unsafe HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, out uint pdwFreeze);
+		HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, out uint pdwFreeze);
 
 		/// <summary>
 		/// Releases a drawing that was previously frozen using IViewObject::Freeze. The most common use of this method is for banded printing.
@@ -6372,7 +6370,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-setadvise HRESULT SetAdvise( DWORD aspects,
 		// DWORD advf, IAdviseSink *pAdvSink );
-		HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink pAdvSink);
+		HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink? pAdvSink);
 
 		/// <summary>Retrieves the advisory connection on the object that was used in the most recent call to IViewObject::SetAdvise.</summary>
 		/// <param name="pAspects">
@@ -6573,9 +6571,9 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-draw HRESULT Draw( DWORD dwDrawAspect, LONG
 		// lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hdcTargetDev, HDC hdcDraw, LPCRECTL lprcBounds, LPCRECTL lprcWBounds, BOOL(*
 		// )(ULONG_PTR dwContinue) pfnContinue, ULONG_PTR dwContinue );
-		new unsafe HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
-			[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT lprcBounds, [In, Optional] PRECT lprcWBounds,
-			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL> pfnContinue, [In, Optional] IntPtr dwContinue);
+		new HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, [In, Optional] DVTARGETDEVICE? ptd,
+			[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT? lprcBounds, [In, Optional] PRECT? lprcWBounds,
+			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL>? pfnContinue, [In, Optional] IntPtr dwContinue);
 
 		/// <summary>
 		/// Returns the logical palette that the object will use for drawing in its IViewObject::Draw method with the corresponding parameters.
@@ -6658,7 +6656,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getcolorset HRESULT GetColorSet( DWORD
 		// dwDrawAspect, LONG lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hicTargetDev, LOGPALETTE **ppColorSet );
-		new unsafe HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
+		new HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, [In, Optional] DVTARGETDEVICE? ptd,
 			[In, Optional] HDC hicTargetDev, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<LOGPALETTE>))] out LOGPALETTE ppColorSet);
 
 		/// <summary>
@@ -6723,7 +6721,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-freeze HRESULT Freeze( DWORD dwDrawAspect,
 		// LONG lindex, void *pvAspect, DWORD *pdwFreeze );
-		new unsafe HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, out uint pdwFreeze);
+		new HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO? pvAspect, out uint pdwFreeze);
 
 		/// <summary>
 		/// Releases a drawing that was previously frozen using IViewObject::Freeze. The most common use of this method is for banded printing.
@@ -6822,7 +6820,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-setadvise HRESULT SetAdvise( DWORD aspects,
 		// DWORD advf, IAdviseSink *pAdvSink );
-		new HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink pAdvSink);
+		new HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink? pAdvSink);
 
 		/// <summary>Retrieves the advisory connection on the object that was used in the most recent call to IViewObject::SetAdvise.</summary>
 		/// <param name="pAspects">
@@ -6886,7 +6884,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject2-getextent HRESULT GetExtent( DWORD
 		// dwDrawAspect, LONG lindex, DVTARGETDEVICE *ptd, LPSIZEL lpsizel );
-		HRESULT GetExtent(uint dwDrawAspect, int lindex, in DVTARGETDEVICE ptd, out SIZE lpsizel);
+		HRESULT GetExtent(uint dwDrawAspect, int lindex, [In] DVTARGETDEVICE ptd, out SIZE lpsizel);
 	}
 
 	/// <summary>

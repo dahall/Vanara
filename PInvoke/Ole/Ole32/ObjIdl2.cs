@@ -497,7 +497,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imessagefilter-handleincomingcall DWORD
 		// HandleInComingCall( DWORD dwCallType, HTASK htaskCaller, DWORD dwTickCount, LPINTERFACEINFO lpInterfaceInfo );
 		[PreserveSig]
-		SERVERCALL HandleInComingCall(CALLTYPE dwCallType, HTASK htaskCaller, uint dwTickCount, [Optional] INTERFACEINFO lpInterfaceInfo);
+		SERVERCALL HandleInComingCall(CALLTYPE dwCallType, HTASK htaskCaller, uint dwTickCount, [Optional] INTERFACEINFO? lpInterfaceInfo);
 
 		/// <summary>
 		/// Provides applications with an opportunity to display a dialog box offering retry, cancel, or task-switching options.
@@ -1039,7 +1039,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ipersiststorage-savecompleted HRESULT SaveCompleted(
 		// IStorage *pStgNew );
-		void SaveCompleted([In] IStorage pStgNew);
+		void SaveCompleted([In] IStorage? pStgNew);
 
 		/// <summary>
 		/// Instructs the object to release all storage objects that have been passed to it by its container and to enter HandsOff mode.
@@ -1501,7 +1501,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-irunnableobject-run HRESULT Run( LPBINDCTX pbc );
 		[PreserveSig]
-		HRESULT Run(IBindCtx pbc);
+		HRESULT Run(IBindCtx? pbc);
 
 		/// <summary>Determines whether an object is currently in the running state.</summary>
 		/// <returns>If the object is in the running state, the return value is <c>TRUE</c>. Otherwise, it is <c>FALSE</c>.</returns>

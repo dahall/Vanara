@@ -378,11 +378,11 @@ public static partial class Ole32
 	// CoSetMessageDispatcher( PMessageDispatcher pMessageDispatcher );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("messagedispatcherapi.h", MSDNShortId = "3D6CFE01-8D3D-474E-A7D0-9B129ECD4EEA")]
-	public static extern void CoSetMessageDispatcher(IMessageDispatcher pMessageDispatcher);
+	public static extern void CoSetMessageDispatcher(IMessageDispatcher? pMessageDispatcher);
 
 
 	/// <summary>Marshals HSTRING values.</summary>
-	/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
+	/// <seealso cref="ICustomMarshaler"/>
 	internal class HStringMarshaler : ICustomMarshaler
 	{
 		private HStringMarshaler(string cookie)
@@ -426,18 +426,130 @@ public static partial class Ole32
 		/// <param name="pNativeData">A pointer to the unmanaged data to be wrapped.</param>
 		/// <returns>Returns the managed view of the COM data.</returns>
 		[SecurityCritical]
-		public object MarshalNativeToManaged(IntPtr pNativeData) => pNativeData == IntPtr.Zero ? null : (string)WindowsGetStringRawBuffer(pNativeData, out var len);
+		public object MarshalNativeToManaged(IntPtr pNativeData) => (pNativeData == IntPtr.Zero ? null : (string?)WindowsGetStringRawBuffer(pNativeData, out _)) ?? "";
 
+		/// <summary>Creates a new <c>HSTRING</c> based on the specified source string.</summary>
+		/// <param name="sourceString">
+		/// <para>Type: [in, optional] <c>LPCWSTR</c></para>
+		/// <para>
+		/// A null-terminated string to use as the source for the new <c>HSTRING</c>. To create a new, empty, or <c>NULL</c> string, pass
+		/// <c>NULL</c> for <c>sourceString</c> and 0 for <c>length</c>.
+		/// </para>
+		/// </param>
+		/// <param name="length">
+		/// <para>Type: [in] <c>UINT32</c></para>
+		/// <para>The length of <c>sourceString</c>, in Unicode characters. Must be 0 if <c>sourceString</c> is <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="hstring">
+		/// <para>Type: [out] <c><c>HSTRING</c>*</c></para>
+		/// <para>
+		/// A pointer to the newly created <c>HSTRING</c>, or <c>NULL</c> if an error occurs. Any existing content in <c>string</c> is
+		/// overwritten. The <c>HSTRING</c> is a standard handle type.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>S_OK</c></description>
+		/// <description>The [**HSTRING**](/windows/win32/winrt/hstring) was created successfully.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_INVALIDARG</c></description>
+		/// <description><c>string</c> is <c>NULL</c>.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_OUTOFMEMORY</c></description>
+		/// <description>Failed to allocate the new [**HSTRING**](/windows/win32/winrt/hstring).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_POINTER</c></description>
+		/// <description><c>sourceString</c> is <c>NULL</c> and <c>length</c> is non-zero.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Use the <c>WindowsCreateString</c> function to allocate a new <c>HSTRING</c>. The Windows Runtime copies <c>string</c> to the
+		/// backing buffer of the new <c>HSTRING</c> and manages the buffer lifetime by using a reference count. Call the
+		/// WindowsCreateStringReference function to create a <c>fast-pass string</c>, which uses an existing string without copying it.
+		/// </para>
+		/// <para>
+		/// Call the WindowsDeleteString function to de-allocate the <c>HSTRING</c>. Each call to the <c>WindowsCreateString</c> function
+		/// must be matched by a call to <c>WindowsDeleteString</c>.
+		/// </para>
+		/// <para>To create a new, empty, or <c>NULL</c> string, pass <c>NULL</c> for <c>sourceString</c> and 0 for <c>length</c>.</para>
+		/// <para>
+		/// If <c>sourceString</c> has embedded null characters, the <c>WindowsCreateString</c> function copies all characters to the
+		/// terminating null character.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winstring/nf-winstring-windowscreatestring HRESULT WindowsCreateString(
+		// PCNZWCH sourceString, UINT32 length, HSTRING *string );
+		[PInvokeData("winstring.h", MSDNShortId = "NF:winstring.WindowsCreateString")]
 		[DllImport("api-ms-win-core-winrt-string-l1-1-0.dll", CallingConvention = CallingConvention.StdCall)]
 		[SecurityCritical]
 		[SuppressUnmanagedCodeSecurity]
-		private static extern HRESULT WindowsCreateString([MarshalAs(UnmanagedType.LPWStr)] string sourceString, int length, out IntPtr hstring);
+		private static extern HRESULT WindowsCreateString([MarshalAs(UnmanagedType.LPWStr)] string? sourceString, int length, out IntPtr hstring);
 
+		/// <summary>Decrements the reference count of a string buffer.</summary>
+		/// <param name="hstring">
+		/// <para>Type: [in] <c>HSTRING</c></para>
+		/// <para>
+		/// The string to be deleted. If <c>string</c> is a fast-pass string created by WindowsCreateStringReference, or if <c>string</c> is
+		/// <c>NULL</c> or empty, no action is taken and <c>S_OK</c> is returned.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>This function always returns <c>S_OK</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// Use the <c>WindowsDeleteString</c> function to de-allocate an <c>HSTRING</c>. Calling <c>WindowsDeleteString</c> decrements the
+		/// reference count of the backing buffer, and if the reference count reaches 0, the Windows Runtime de-allocates the buffer.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winstring/nf-winstring-windowsdeletestring HRESULT WindowsDeleteString(
+		// HSTRING string );
+		[PInvokeData("winstring.h", MSDNShortId = "NF:winstring.WindowsDeleteString")]
 		[DllImport("api-ms-win-core-winrt-string-l1-1-0.dll", CallingConvention = CallingConvention.StdCall)]
 		[SecurityCritical]
 		[SuppressUnmanagedCodeSecurity]
 		private static extern HRESULT WindowsDeleteString(IntPtr hstring);
 
+		/// <summary>Retrieves the backing buffer for the specified string.</summary>
+		/// <param name="hstring">
+		/// <para>Type: [in, optional] <c>HSTRING</c></para>
+		/// <para>An optional string for which the backing buffer is to be retrieved. Can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="length">
+		/// <para>Type: [out, optional] <c>UINT32 *</c></para>
+		/// <para>
+		/// An optional pointer to a <c>UINT32</c>. If <c>NULL</c> is passed for length, then it is ignored. If length is a valid pointer to
+		/// a <c>UINT32</c>, and string is a valid <c>HSTRING</c>, then on successful completion the function sets the value pointed to by
+		/// length to the number of Unicode characters in the backing buffer for string (including embedded null characters, but excluding
+		/// the terminating null). If length is a valid pointer to a <c>UINT32</c>, and string is <c>NULL</c>, then the value pointed to by
+		/// length is set to 0.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to the buffer that provides the backing store for <c>string</c>, or the empty string if <c>string</c> is <c>NULL</c> or
+		/// the empty string.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Use the <c>WindowsGetStringRawBuffer</c> function to obtain a pointer to the backing buffer of an <c>HSTRING</c>.</para>
+		/// <para>Don't change the contents of the bufferâan <c>HSTRING</c> is required to be immutable.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winstring/nf-winstring-windowsgetstringrawbuffer PCWSTR
+		// WindowsGetStringRawBuffer( HSTRING string, UINT32 *length );
+		[PInvokeData("winstring.h", MSDNShortId = "NF:winstring.WindowsGetStringRawBuffer")]
 		[DllImport("api-ms-win-core-winrt-string-l1-1-0.dll", CallingConvention = CallingConvention.StdCall)]
 		[SecurityCritical]
 		[SuppressUnmanagedCodeSecurity]

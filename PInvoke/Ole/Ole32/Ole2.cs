@@ -283,7 +283,7 @@ public static partial class Ole32
 	// LPSTGMEDIUM pmedium, OUT LPOLESTREAM polestm );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "a6026b71-4223-40ab-b209-44531480db57")]
-	public static extern HRESULT OleConvertIStorageToOLESTREAMEx([In] IStorage pstg, CLIPFORMAT cfFormat, int lWidth, int lHeight, uint dwSize, in STGMEDIUM pmedium, out OLESTREAM polestm);
+	public static extern HRESULT OleConvertIStorageToOLESTREAMEx([In] IStorage pstg, [Optional] CLIPFORMAT cfFormat, int lWidth, int lHeight, uint dwSize, in STGMEDIUM pmedium, out OLESTREAM polestm);
 
 	/// <summary>
 	/// <para>
@@ -345,7 +345,7 @@ public static partial class Ole32
 	// OleConvertOLESTREAMToIStorage( IN LPOLESTREAM lpolestream, OUT LPSTORAGE pstg, IN const DVTARGETDEVICE *ptd );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "8fed879c-5f97-4450-8259-da9643dd828c")]
-	public static extern HRESULT OleConvertOLESTREAMToIStorage(in OLESTREAM lpolestream, out IStorage pstg, in DVTARGETDEVICE ptd);
+	public static extern HRESULT OleConvertOLESTREAMToIStorage(in OLESTREAM lpolestream, out IStorage pstg, [In] DVTARGETDEVICE ptd);
 
 	/// <summary>
 	/// The <c>OleConvertOLESTREAMToIStorageEx</c> function converts the specified object from the OLE 1 storage model to an OLE 2
@@ -387,7 +387,8 @@ public static partial class Ole32
 	// LONG *plHeight, OUT DWORD *pdwSize, OUT LPSTGMEDIUM pmedium );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "2e77fa0e-1d98-4c59-8d3c-65bd7235ec8f")]
-	public static extern HRESULT OleConvertOLESTREAMToIStorageEx(in OLESTREAM polestm, out IStorage pstg, out CLIPFORMAT pcfFormat, out int plwWidth, out int plHeight, out uint pdwSize, out STGMEDIUM pmedium);
+	public static extern HRESULT OleConvertOLESTREAMToIStorageEx(in OLESTREAM polestm, out IStorage pstg, out CLIPFORMAT pcfFormat,
+		out int plwWidth, out int plHeight, out uint pdwSize, out STGMEDIUM pmedium);
 
 	/// <summary>
 	/// Creates an embedded object identified by a CLSID. You use it typically to implement the menu item that allows the end user to
@@ -467,7 +468,8 @@ public static partial class Ole32
 	// IN DWORD renderopt, IN LPFORMATETC pFormatEtc, IN LPOLECLIENTSITE pClientSite, IN LPSTORAGE pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "00b7edd2-8e2e-4e0a-91a6-d966f6c8d456")]
-	public static extern HRESULT OleCreate(in Guid rclsid, in Guid riid, OLERENDER renderopt, in FORMATETC pFormatEtc, [In, Optional] IOleClientSite pClientSite, [In] IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreate(in Guid rclsid, in Guid riid, OLERENDER renderopt, in FORMATETC pFormatEtc, [In, Optional] IOleClientSite? pClientSite,
+		[In] IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Creates a new instance of the default embedding handler. This instance is initialized so it creates a local server when the
@@ -501,7 +503,8 @@ public static partial class Ole32
 	// REFCLSID clsid, IN LPUNKNOWN pUnkOuter, IN REFIID riid, OUT LPVOID *lplpObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "ffe87012-b000-4ed7-b0b2-78ffdc794d3b")]
-	public static extern HRESULT OleCreateDefaultHandler(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object lplpObj);
+	public static extern HRESULT OleCreateDefaultHandler(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter,
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object lplpObj);
 
 	/// <summary>
 	/// Creates an OLE embedding helper object using application-supplied code aggregated with pieces of the OLE default object handler.
@@ -616,7 +619,8 @@ public static partial class Ole32
 	// REFCLSID clsid, IN LPUNKNOWN pUnkOuter, IN DWORD flags, IN LPCLASSFACTORY pCF, IN REFIID riid, OUT LPVOID *lplpObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "5c67b513-0692-4e0a-beab-8b514089699c")]
-	public static extern HRESULT OleCreateEmbeddingHelper(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object pUnkOuter, EMBDHLP flags, [Optional] IClassFactory pCF, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object lplpObj);
+	public static extern HRESULT OleCreateEmbeddingHelper(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter,
+		EMBDHLP flags, [Optional] IClassFactory? pCF, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object lplpObj);
 
 	/// <summary>
 	/// Extends OleCreate functionality by supporting more efficient instantiation of objects in containers requiring caching of multiple
@@ -721,8 +725,9 @@ public static partial class Ole32
 	// *lpAdviseSink, OUT DWORD *rgdwConnection, IN LPOLECLIENTSITE pClientSite, IN LPSTORAGE pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "11f2703c-b596-4cb9-855a-d8cf4b947fae")]
-	public static extern HRESULT OleCreateEx(in Guid rclsid, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc,
-		[Optional] IAdviseSink lpAdviseSink, [Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateEx(in Guid rclsid, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats,
+		[In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc, [Optional] IAdviseSink? lpAdviseSink,
+		[Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Creates an embedded object from a data transfer object retrieved either from the clipboard or as part of an OLE drag-and-drop
@@ -854,7 +859,8 @@ public static partial class Ole32
 	// LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "aa5e997e-60d4-472d-9c81-5359c277bde3")]
-	public static extern HRESULT OleCreateFromData(IDataObject pSrcDataObj, in Guid riid, OLERENDER renderopt, in FORMATETC pFormatEtc, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateFromData(IDataObject pSrcDataObj, in Guid riid, OLERENDER renderopt, in FORMATETC pFormatEtc,
+		[Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Extends OleCreateFromData functionality by supporting more efficient instantiation of objects in containers requiring caching of
@@ -962,8 +968,9 @@ public static partial class Ole32
 	// LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "10091a24-6a50-4eb2-a518-b92a572daa6c")]
-	public static extern HRESULT OleCreateFromDataEx(IDataObject pSrcDataObj, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc,
-		[Optional] IAdviseSink lpAdviseSink, [Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateFromDataEx(IDataObject pSrcDataObj, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt,
+		uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc, [Optional] IAdviseSink? lpAdviseSink,
+		[Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>Creates an embedded object from the contents of a named file.</summary>
 	/// <param name="rclsid">This parameter is reserved and must be CLSID_NULL.</param>
@@ -1036,7 +1043,8 @@ public static partial class Ole32
 	// LPSTORAGE pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "98c63646-6617-46b6-8c3e-82d1c4d0adb6")]
-	public static extern HRESULT OleCreateFromFile(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid, OLERENDER renderopt, in FORMATETC lpFormatEtc, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateFromFile(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid,
+		OLERENDER renderopt, in FORMATETC lpFormatEtc, [Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Extends OleCreateFromFile functionality by supporting more efficient instantiation of objects in containers requiring caching of
@@ -1145,8 +1153,10 @@ public static partial class Ole32
 	// pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "a75bb031-6e4a-4440-82f3-6a6f9417c62b")]
-	public static extern HRESULT OleCreateFromFileEx(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc,
-		[Optional] IAdviseSink lpAdviseSink, [Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateFromFileEx(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid,
+		OLECREATE dwFlags, OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc,
+		[Optional] IAdviseSink? lpAdviseSink, [Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite? pClientSite, IStorage pStg,
+		[MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>Creates an OLE compound-document linked object.</summary>
 	/// <param name="pmkLinkSrc">
@@ -1191,7 +1201,8 @@ public static partial class Ole32
 	// REFIID riid, IN DWORD renderopt, IN LPFORMATETC lpFormatEtc, IN LPOLECLIENTSITE pClientSite, IN LPSTORAGE pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "ef52dc37-aa63-47f3-a04f-f9d22178690f")]
-	public static extern HRESULT OleCreateLink(IMoniker pmkLinkSrc, in Guid riid, OLERENDER renderopt, in FORMATETC lpFormatEtc, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateLink(IMoniker pmkLinkSrc, in Guid riid, OLERENDER renderopt, in FORMATETC lpFormatEtc,
+		[Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Extends <c>OleCreateLink</c> functionality by supporting more efficient instantiation of objects in containers requiring caching
@@ -1298,8 +1309,9 @@ public static partial class Ole32
 	// IAdviseSink *lpAdviseSink, OUT DWORD *rgdwConnection, IN LPOLECLIENTSITE pClientSite, IN LPSTORAGE pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "b43acd14-3cf8-45da-8c2c-f2f6dc2ada78")]
-	public static extern HRESULT OleCreateLinkEx(IMoniker pmkLinkSrc, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc,
-		[Optional] IAdviseSink lpAdviseSink, [Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateLinkEx(IMoniker pmkLinkSrc, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats,
+		[In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc, [Optional] IAdviseSink? lpAdviseSink,
+		[Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Creates a linked object from a data transfer object retrieved either from the clipboard or as part of an OLE drag-and-drop operation.
@@ -1386,7 +1398,8 @@ public static partial class Ole32
 	// LPSTORAGE pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "3eda0cf5-c33d-43cf-ba8a-02a4f6383adc")]
-	public static extern HRESULT OleCreateLinkFromData(IDataObject pSrcDataObj, in Guid riid, OLERENDER renderopt, in FORMATETC pFormatEtc, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateLinkFromData(IDataObject pSrcDataObj, in Guid riid, OLERENDER renderopt, in FORMATETC pFormatEtc,
+		[Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Extends OleCreateLinkFromData functionality by supporting more efficient instantiation of objects in containers requiring caching
@@ -1494,8 +1507,9 @@ public static partial class Ole32
 	// pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "f486dc73-3cb9-4839-931a-91cc3a5837d3")]
-	public static extern HRESULT OleCreateLinkFromDataEx(IDataObject pSrcDataObj, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc,
-		[Optional] IAdviseSink lpAdviseSink, [Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateLinkFromDataEx(IDataObject pSrcDataObj, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt,
+		uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc, [Optional] IAdviseSink? lpAdviseSink,
+		[Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>Creates an object that is linked to a file.</summary>
 	/// <param name="lpszFileName">Pointer to a string naming the source file to be linked to.</param>
@@ -1546,7 +1560,8 @@ public static partial class Ole32
 	// OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "06b013db-0554-4dbc-b19d-28314fb4fee0")]
-	public static extern HRESULT OleCreateLinkToFile([MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid, OLERENDER renderopt, in FORMATETC lpFormatEtc, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateLinkToFile([MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid, OLERENDER renderopt,
+		in FORMATETC lpFormatEtc, [Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Extends OleCreateLinkToFile functionality by supporting more efficient instantiation of objects in containers requiring caching
@@ -1654,8 +1669,9 @@ public static partial class Ole32
 	// LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "9a333bac-8ee3-4941-8e4b-78a2befceff8")]
-	public static extern HRESULT OleCreateLinkToFileEx([MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid, OLECREATE dwFlags, OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc,
-		[Optional] IAdviseSink lpAdviseSink, [Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateLinkToFileEx([MarshalAs(UnmanagedType.LPWStr)] string lpszFileName, in Guid riid, OLECREATE dwFlags,
+		OLERENDER renderopt, uint cFormats, [In, Optional] ADVF[]? rgAdvf, [In, Optional] FORMATETC[]? rgFormatEtc, [Optional] IAdviseSink? lpAdviseSink,
+		[Out, Optional] uint[]? rgdwConnection, [Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>
 	/// Creates and returns an OLE menu descriptor (that is, an OLE-provided data structure that describes the menus) for OLE to use when
@@ -1736,7 +1752,8 @@ public static partial class Ole32
 	// LPSTORAGE pStg, OUT LPVOID *ppvObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "847d82f5-149d-48a4-a228-f5551a07a790")]
-	public static extern HRESULT OleCreateStaticFromData(IDataObject pSrcDataObj, in Guid iid, OLERENDER renderopt, in FORMATETC pFormatEtc, [Optional] IOleClientSite pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+	public static extern HRESULT OleCreateStaticFromData(IDataObject pSrcDataObj, in Guid iid, OLERENDER renderopt, in FORMATETC pFormatEtc,
+		[Optional] IOleClientSite? pClientSite, IStorage pStg, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
 
 	/// <summary>Called by the container to free the shared menu descriptor allocated by the OleCreateMenuDescriptor function.</summary>
 	/// <param name="holemenu">Handle to the shared menu descriptor that was returned by the OleCreateMenuDescriptor function.</param>
@@ -1887,7 +1904,7 @@ public static partial class Ole32
 	// CLIPFORMAT cfFormat, IN UINT uiFlags );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "c4ba0b54-e9e1-4c05-b4f8-ce5390cada17")]
-	public static extern HANDLE OleDuplicateData(HANDLE hSrc, CLIPFORMAT cfFormat, Kernel32.GMEM uiFlags);
+	public static extern HANDLE OleDuplicateData(HANDLE hSrc, CLIPFORMAT cfFormat, Kernel32.GMEM uiFlags = Kernel32.GMEM.GMEM_MOVEABLE);
 
 	/// <summary>
 	/// Carries out the clipboard shutdown sequence. It also releases the IDataObject pointer that was placed on the clipboard by the
@@ -2189,7 +2206,8 @@ public static partial class Ole32
 	// *targetDescription, PWSTR *dataDescription );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ole2.h", MSDNShortId = "1DAD2A9A-EDA2-49D2-90F7-2A9022988177")]
-	public static extern HRESULT OleGetClipboardWithEnterpriseInfo(out IDataObject dataObject, out StrPtrUni dataEnterpriseId, out StrPtrUni sourceDescription, out StrPtrUni targetDescription, out StrPtrUni dataDescription);
+	public static extern HRESULT OleGetClipboardWithEnterpriseInfo(out IDataObject dataObject, out StrPtrUni dataEnterpriseId,
+		out StrPtrUni sourceDescription, out StrPtrUni targetDescription, out StrPtrUni dataDescription);
 
 	/// <summary>Returns a handle to a metafile containing an icon and a string label for the specified CLSID.</summary>
 	/// <param name="rclsid">The CLSID for which the icon and string are to be requested.</param>
@@ -2203,7 +2221,8 @@ public static partial class Ole32
 	// LPOLESTR lpszLabel, IN BOOL fUseTypeAsLabel );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "88ac1c14-b5a8-4100-9fa5-d7af35052b48")]
-	public static extern SafeHGlobalHandle OleGetIconOfClass(in Guid rclsid, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? lpszLabel, [MarshalAs(UnmanagedType.Bool)] bool fUseTypeAsLabel);
+	public static extern SafeHGlobalHandle OleGetIconOfClass(in Guid rclsid, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? lpszLabel,
+		[MarshalAs(UnmanagedType.Bool)] bool fUseTypeAsLabel);
 
 	/// <summary>Returns a handle to a metafile containing an icon and string label for the specified file name.</summary>
 	/// <param name="lpszPath">A pointer to a file for which the icon and string are to be requested.</param>
@@ -2487,7 +2506,8 @@ public static partial class Ole32
 	// OleMetafilePictFromIconAndLabel( IN HICON hIcon, LPOLESTR lpszLabel, LPOLESTR lpszSourceFile, IN UINT iIconIndex );
 	[DllImport(Lib.Ole32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "627a79eb-46dd-4df7-a0d6-cab37b73387a")]
-	public static extern SafeHGlobalHandle OleMetafilePictFromIconAndLabel(HICON hIcon, [MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszLabel, [MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszSourceFile, [In] uint iIconIndex);
+	public static extern SafeHGlobalHandle OleMetafilePictFromIconAndLabel(HICON hIcon, [MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszLabel,
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszSourceFile, [In] uint iIconIndex);
 
 	/// <summary>Increments or decrements an external reference that keeps an object in the running state.</summary>
 	/// <param name="pUnknown">Pointer to the IUnknown interface on the object that is to be locked or unlocked.</param>
@@ -3139,7 +3159,7 @@ public static partial class Ole32
 	// https://docs.microsoft.com/en-us/windows/win32/api/ole2/nf-ole2-olesetclipboard HRESULT OleSetClipboard( IN LPDATAOBJECT pDataObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "741def10-d2b5-4395-8049-1eba2e29b0e8")]
-	public static extern HRESULT OleSetClipboard([In, Optional] IDataObject pDataObj);
+	public static extern HRESULT OleSetClipboard([In, Optional] IDataObject? pDataObj);
 
 	/// <summary>
 	/// Notifies an object that it is embedded in an OLE container, which ensures that reference counting is done correctly for
@@ -3206,7 +3226,8 @@ public static partial class Ole32
 	// holemenu, IN HWND hwndFrame, IN HWND hwndActiveObject, IN LPOLEINPLACEFRAME lpFrame, IN LPOLEINPLACEACTIVEOBJECT lpActiveObj );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "c80fe36d-5093-4814-83a9-0c11c5a7cf5f")]
-	public static extern HRESULT OleSetMenuDescriptor([In] HOLEMENU holemenu, [In] HWND hwndFrame, [In] HWND hwndActiveObject, [In] IOleInPlaceFrame lpFrame, [In] IOleInPlaceActiveObject lpActiveObj);
+	public static extern HRESULT OleSetMenuDescriptor([In, Optional] HOLEMENU holemenu, [In] HWND hwndFrame, [In] HWND hwndActiveObject,
+		[In] IOleInPlaceFrame? lpFrame, [In] IOleInPlaceActiveObject? lpActiveObj);
 
 	/// <summary>
 	/// Called by the object application, allows an object's container to translate accelerators according to the container's accelerator table.
@@ -3500,7 +3521,7 @@ public static partial class Ole32
 		public HOLEMENU(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HOLEMENU"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HOLEMENU NULL => new HOLEMENU(IntPtr.Zero);
+		public static HOLEMENU NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -3513,7 +3534,7 @@ public static partial class Ole32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HOLEMENU"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HOLEMENU(IntPtr h) => new HOLEMENU(h);
+		public static implicit operator HOLEMENU(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -3528,7 +3549,7 @@ public static partial class Ole32
 		public static bool operator ==(HOLEMENU h1, HOLEMENU h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HOLEMENU h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HOLEMENU h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -72,7 +72,7 @@ public static partial class Ole32
 		public uint ClipboardFormat => ulClipFmt is (-1) or (-2) ? (uint)Marshal.ReadInt32(pClipData) : 0;
 
 		/// <summary>The clipboard name.</summary>
-		public string ClipboardFormatName => ulClipFmt > 0 ? Marshal.PtrToStringUni(pClipData) : null;
+		public string? ClipboardFormatName => ulClipFmt > 0 ? Marshal.PtrToStringUni(pClipData) : null;
 
 		/// <summary>The clipboard format id.</summary>
 		public Guid FMTID => ulClipFmt == -3 ? pClipData.ToStructure<Guid>() : Guid.Empty;
@@ -169,7 +169,7 @@ public static partial class Ole32
 		public bool boolVal => GetRawValue<bool>().GetValueOrDefault();
 
 		/// <summary>Gets the BSTR value.</summary>
-		public string bstrVal => GetString(VarType);
+		public string? bstrVal => GetString(VarType);
 
 		/// <summary>Gets the byte value.</summary>
 		public byte bVal => GetRawValue<byte>().GetValueOrDefault();
@@ -178,7 +178,7 @@ public static partial class Ole32
 		public IEnumerable<bool> cabool => GetVector<short>().Select(s => s != 0);
 
 		/// <summary>Gets the string array value.</summary>
-		public IEnumerable<string> cabstr => GetStringVector();
+		public IEnumerable<string?> cabstr => GetStringVector();
 
 		/// <summary>Gets the sbyte array value.</summary>
 		public IEnumerable<sbyte> cac => GetVector<sbyte>();
@@ -211,10 +211,10 @@ public static partial class Ole32
 		public IEnumerable<int> cal => GetVector<int>();
 
 		/// <summary>Gets the ANSI string array value.</summary>
-		public IEnumerable<string> calpstr => GetStringVector();
+		public IEnumerable<string?> calpstr => GetStringVector();
 
 		/// <summary>Gets the Unicode string array value.</summary>
-		public IEnumerable<string> calpwstr => GetStringVector();
+		public IEnumerable<string?> calpwstr => GetStringVector();
 
 		/// <summary>Gets the PROPVARIANT array value.</summary>
 		public IEnumerable<PROPVARIANT> capropvar => GetVector<PROPVARIANT>();
@@ -286,7 +286,7 @@ public static partial class Ole32
 		public int lVal => GetRawValue<int>().GetValueOrDefault();
 
 		/// <summary>Gets the array of objects.</summary>
-		public IEnumerable<object> parray => GetSafeArray();
+		public IEnumerable<object?> parray => GetSafeArray();
 
 		/// <summary>Gets the "by value" boolean value.</summary>
 		public bool? pboolVal => GetRawValue<bool>();
@@ -330,7 +330,7 @@ public static partial class Ole32
 		public decimal? pdecVal => GetRawValue<decimal>();
 
 		/// <summary>Gets the "by value" pointer value.</summary>
-		public object pdispVal => punkVal;
+		public object? pdispVal => punkVal;
 
 		/// <summary>Gets the "by value" float value.</summary>
 		public float? pfltVal => GetRawValue<float>();
@@ -361,13 +361,13 @@ public static partial class Ole32
 		}
 
 		/// <summary>Gets the IStorage value.</summary>
-		public IStorage pStorage => (IStorage)punkVal;
+		public IStorage? pStorage => (IStorage?)punkVal;
 
 		/// <summary>Gets the IStream value.</summary>
-		public IStream pStream => (IStream)punkVal;
+		public IStream? pStream => (IStream?)punkVal;
 
 		/// <summary>Gets the ANSI string value.</summary>
-		public string pszVal => GetString(VarType);
+		public string? pszVal => GetString(VarType);
 
 		/// <summary>Gets the "by value" uint value.</summary>
 		public uint? puintVal => GetRawValue<uint>();
@@ -379,19 +379,19 @@ public static partial class Ole32
 		public uint? pulVal => GetRawValue<uint>();
 
 		/// <summary>Gets the "by value" IUnknown value.</summary>
-		public object punkVal => _ptr == IntPtr.Zero ? null : Marshal.GetObjectForIUnknown(_ptr);
+		public object? punkVal => _ptr == IntPtr.Zero ? null : Marshal.GetObjectForIUnknown(_ptr);
 
 		/// <summary>Gets the "by value" Guid value.</summary>
 		public Guid? puuid => GetRawValue<Guid>();
 
 		/// <summary>Gets the "by value" PROPVARIANT value.</summary>
-		public PROPVARIANT pvarVal => _ptr.ToStructure<PROPVARIANT>();
+		public PROPVARIANT? pvarVal => _ptr.ToStructure<PROPVARIANT>();
 
 		/// <summary>Gets a stream with a Guid version.</summary>
 		public IntPtr pVersionedStream => GetRawValue<IntPtr>().GetValueOrDefault();
 
 		/// <summary>Gets the Unicode string value.</summary>
-		public string pwszVal => GetString(VarType);
+		public string? pwszVal => GetString(VarType);
 
 		/// <summary>Gets the Win32Error value.</summary>
 		public Win32Error scode => new(GetRawValue<uint>().GetValueOrDefault());
@@ -409,7 +409,7 @@ public static partial class Ole32
 		public uint ulVal => GetRawValue<uint>().GetValueOrDefault();
 
 		/// <summary>Gets the value base on the <see cref="vt"/> value.</summary>
-		public object Value
+		public object? Value
 		{
 			get => GetValue();
 			private set => SetValue(value);
@@ -439,7 +439,7 @@ public static partial class Ole32
 		/// <summary>Gets the Type for a provided VARTYPE.</summary>
 		/// <param name="vt">The VARTYPE value to lookup.</param>
 		/// <returns>A best fit <see cref="Type"/> for the provided VARTYPE.</returns>
-		public static Type GetType(VARTYPE vt)
+		public static Type? GetType(VARTYPE vt)
 		{
 			// Safe arrays are always pointers
 			if (vt.IsFlagSet(VARTYPE.VT_ARRAY)) return typeof(IntPtr);
@@ -447,17 +447,17 @@ public static partial class Ole32
 			// VT_NULL is always DBNull
 			if (elemType == VARTYPE.VT_NULL) return typeof(DBNull);
 			// Get type of element, return null if VT_EMPTY or not found
-			var type = CorrespondingTypeAttribute.GetCorrespondingTypes(elemType).FirstOrDefault();
+			Type? type = CorrespondingTypeAttribute.GetCorrespondingTypes(elemType).FirstOrDefault();
 			if (type == null || elemType == 0) return null;
 			// Change type if by reference
 			if (vt.IsFlagSet(VARTYPE.VT_BYREF))
 			{
 				type = Nullable.GetUnderlyingType(type);
-				if (type.IsValueType)
+				if (type is not null && type.IsValueType)
 					type = typeof(Nullable<>).MakeGenericType(type);
 			}
 			// Change type if vector
-			if (vt.IsFlagSet(VARTYPE.VT_VECTOR))
+			if (vt.IsFlagSet(VARTYPE.VT_VECTOR) && type is not null)
 			{
 				type = typeof(IEnumerable<>).MakeGenericType(type);
 			}
@@ -467,7 +467,7 @@ public static partial class Ole32
 		/// <summary>Gets the VARTYPE for a provided type.</summary>
 		/// <param name="type">The type to analyze.</param>
 		/// <returns>A best fit <see cref="VARTYPE"/> for the provided type.</returns>
-		public static VARTYPE GetVarType(Type type)
+		public static VARTYPE GetVarType(Type? type)
 		{
 			if (type == null)
 				return VARTYPE.VT_NULL;
@@ -508,7 +508,9 @@ public static partial class Ole32
 				return ret | VARTYPE.VT_HRESULT;
 			if (elemtype.IsCOMObject)
 			{
-				Type[] intf = elemtype.GetInterfaces();
+#pragma warning disable IL2065 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
+				Type[] intf = elemtype!.GetInterfaces();
+#pragma warning restore IL2065 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
 				if (intf.Contains(typeof(IStream))) return ret | VARTYPE.VT_STREAM;
 				if (intf.Contains(typeof(IStorage))) return ret | VARTYPE.VT_STORAGE;
 				return ret | VARTYPE.VT_UNKNOWN;
@@ -610,7 +612,7 @@ public static partial class Ole32
 		/// position in the sort order as <paramref name="other"/>. Greater than zero This instance follows <paramref name="other"/> in
 		/// the sort order.
 		/// </returns>
-		public int CompareTo(object other)
+		public int CompareTo(object? other)
 		{
 			var v = Value;
 			if (other is null) return v == null ? 0 : 1;
@@ -632,12 +634,12 @@ public static partial class Ole32
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj is PROPVARIANT pv ? Equals(pv.Value) : obj == this;
+		public override bool Equals(object? obj) => obj is PROPVARIANT pv ? Equals(pv.Value) : obj == this;
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(PROPVARIANT other) => CompareTo(other) == 0;
+		public bool Equals(PROPVARIANT? other) => CompareTo(other) == 0;
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -647,7 +649,7 @@ public static partial class Ole32
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString()
 		{
-			string s = null;
+			string s = "";
 			if (IsVector && Value is IEnumerable ie)
 				s = string.Join(",", ie.Cast<object>().Select(o => o.ToString()).ToArray());
 			else if (PropVariantToStringAlloc(this, out var str).Succeeded)
@@ -670,11 +672,11 @@ public static partial class Ole32
 		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is
 		/// equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
-		int IComparable<PROPVARIANT>.CompareTo(PROPVARIANT other) => CompareTo(other);
+		int IComparable<PROPVARIANT>.CompareTo(PROPVARIANT? other) => CompareTo(other);
 
-		private static IEnumerable<T> ConvertToEnum<T>(object array, Func<object, T> conv = null)
+		private static IEnumerable<T> ConvertToEnum<T>(object array, Func<object, T>? conv = null)
 		{
-			if (array is null) return null;
+			if (array is null) return new T[0];
 
 			if (array is IEnumerable<T> iet) return iet;
 
@@ -687,11 +689,11 @@ public static partial class Ole32
 			}
 			catch
 			{
-				return null;
+				return new T[0];
 			}
 		}
 
-		private static string GetString(VarEnum ve, IntPtr ptr) => (VARTYPE)ve switch
+		private static string? GetString(VarEnum ve, IntPtr ptr) => (VARTYPE)ve switch
 		{
 			VARTYPE.VT_LPSTR => Marshal.PtrToStringAnsi(ptr),
 			VARTYPE.VT_LPWSTR => Marshal.PtrToStringUni(ptr),
@@ -729,9 +731,9 @@ public static partial class Ole32
 			return _ptr.ToNullableStructure<T>();
 		}
 
-		private IEnumerable<object> GetSafeArray()
+		private IEnumerable<object?> GetSafeArray()
 		{
-			if (_ptr == IntPtr.Zero) return null;
+			if (_ptr == IntPtr.Zero) return new object[0];
 			var sa = new SafeSAFEARRAY(_ptr, false);
 			var dims = SafeArrayGetDim(sa);
 			if (dims != 1) throw new NotSupportedException("Only single-dimensional arrays are supported");
@@ -752,19 +754,22 @@ public static partial class Ole32
 				if (elemSz == 0) throw new Win32Exception();
 				using var mem = new SafeCoTaskMemHandle(elemSz);
 				SafeArrayGetVartype(sa, out var elemVT);
-				var elemType = GetType(elemVT);
-				for (int i = lBound; i <= uBound; i++)
+				Type? elemType = GetType(elemVT);
+				if (elemType is not null)
 				{
-					SafeArrayGetElement(sa, i, mem).ThrowIfFailed();
-					ret[i - lBound] = mem.DangerousGetHandle().Convert(mem.Size, elemType);
+					for (int i = lBound; i <= uBound; i++)
+					{
+						SafeArrayGetElement(sa, i, mem).ThrowIfFailed();
+						ret[i - lBound] = mem.DangerousGetHandle().Convert(mem.Size, elemType)!;
+					}
 				}
 				return ret;
 			}
 		}
 
-		private string GetString(VarEnum ve) => GetString(ve, _ptr);
+		private string? GetString(VarEnum ve) => GetString(ve, _ptr);
 
-		private string[] GetStringVector()
+		private string?[] GetStringVector()
 		{
 			var ve = (VarEnum)((int)vt & 0x0FFF);
 			if (ve == VarEnum.VT_LPSTR)
@@ -773,7 +778,7 @@ public static partial class Ole32
 			return vals;
 		}
 
-		private object GetValue()
+		private object? GetValue()
 		{
 			if (vt.IsFlagSet(VARTYPE.VT_ARRAY)) return GetSafeArray();
 			var isVector = vt.IsFlagSet(VARTYPE.VT_VECTOR);
@@ -794,7 +799,7 @@ public static partial class Ole32
 				VARTYPE.VT_R8 => isRef ? dblVal : (isVector ? cadbl : dblVal),
 				VARTYPE.VT_BOOL => isRef ? pboolVal : (isVector ? cabool : boolVal),
 				VARTYPE.VT_ERROR => isRef ? pscode : (isVector ? cascode : scode),
-				VARTYPE.VT_HRESULT => isRef ? (pulVal.HasValue ? new HRESULT(plVal.Value) : (HRESULT?)null) : (isVector ? cal.Select(u => new HRESULT(u)) : new HRESULT(lVal)),
+				VARTYPE.VT_HRESULT => isRef ? (pulVal.HasValue ? new HRESULT(plVal.GetValueOrDefault()) : (HRESULT?)null) : (isVector ? cal.Select(u => new HRESULT(u)) : new HRESULT(lVal)),
 				VARTYPE.VT_CY => isRef ? pcyVal : (isVector ? cacy : cyVal),
 				VARTYPE.VT_DATE => isRef ? pdate : (isVector ? cadate : date),
 				VARTYPE.VT_FILETIME => isRef ? filetime : (isVector ? cafiletime : filetime),
@@ -814,7 +819,7 @@ public static partial class Ole32
 			};
 		}
 
-		private IEnumerable<T> GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToArray<T>((int)_blob.cbSize)) : throw new InvalidCastException();
+		private IEnumerable<T> GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToArray<T>((int)_blob.cbSize))! : throw new InvalidCastException();
 
 		private void SetSafeArray(IList<object> array)
 		{
@@ -851,13 +856,13 @@ public static partial class Ole32
 				case VARTYPE.VT_BSTR:
 					vt = svt | VARTYPE.VT_VECTOR;
 					_blob.cbSize = (uint)sc.Length;
-					_blob.pBlobData = value.Select(Marshal.StringToBSTR).MarshalToPtr<IntPtr>(Marshal.AllocCoTaskMem, out var _);
+					_blob.pBlobData = value.Select(Marshal.StringToBSTR).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 					break;
 
 				case VARTYPE.VT_LPSTR:
 					vt = svt | VARTYPE.VT_VECTOR;
 					_blob.cbSize = (uint)sc.Length;
-					_blob.pBlobData = value.Select(Marshal.StringToCoTaskMemAnsi).MarshalToPtr<IntPtr>(Marshal.AllocCoTaskMem, out var _);
+					_blob.pBlobData = value.Select(Marshal.StringToCoTaskMemAnsi).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 					break;
 
 				case VARTYPE.VT_LPWSTR:
@@ -894,7 +899,7 @@ public static partial class Ole32
 		/// <param name="vEnum">
 		/// If this value equals VT_EMPTY, the method will attempt to ascertain the value type from the <paramref name="value"/>.
 		/// </param>
-		private void SetValue(object value, VarEnum vEnum = VarEnum.VT_EMPTY)
+		private void SetValue(object? value, VarEnum vEnum = VarEnum.VT_EMPTY)
 		{
 			Clear();
 			var newVT = vt = vEnum == VarEnum.VT_EMPTY ? GetVarType(value?.GetType()) : (VARTYPE)vEnum;
@@ -913,7 +918,7 @@ public static partial class Ole32
 				}
 				else
 				{
-					SetSafeArray(ConvertToEnum<object>(value).ToList());
+					SetSafeArray(ConvertToEnum<object>(value!).ToList());
 					vt = VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 				}
 				return;
@@ -1032,37 +1037,37 @@ public static partial class Ole32
 					if (isVector)
 						AllocVector(GetArray<CLIPDATA>(out sz), sz);
 					else
-						_ptr = ((CLIPDATA)value).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+						_ptr = ((CLIPDATA)value!).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 					break;
 
 				case VARTYPE.VT_BSTR:
 					if (isVector)
-						SetStringVector(ConvertToEnum<string>(value), VarType);
+						SetStringVector(ConvertToEnum<string>(value!), VarType);
 					else
 					{
 						if (isRef)
-							SetStruct((IntPtr?)value, VarType);
+							SetStruct<IntPtr>((IntPtr)value!, VarType);
 						else
-							_ptr = Marshal.StringToBSTR(value?.ToString());
+							_ptr = Marshal.StringToBSTR(value!.ToString());
 					}
 					break;
 
 				case VARTYPE.VT_BLOB:
 				case VARTYPE.VT_BLOB_OBJECT:
 					if (!isVector && !isRef)
-						_blob = (BLOB)value;
+						_blob = (BLOB)value!;
 					break;
 
 				case VARTYPE.VT_LPSTR:
 					if (isVector)
-						SetStringVector(ConvertToEnum<string>(value), VarType);
+						SetStringVector(ConvertToEnum<string>(value!), VarType);
 					else
 						_ptr = Marshal.StringToCoTaskMemAnsi(value?.ToString());
 					break;
 
 				case VARTYPE.VT_LPWSTR:
 					if (isVector)
-						SetStringVector(ConvertToEnum<string>(value), VarType);
+						SetStringVector(ConvertToEnum<string>(value!), VarType);
 					else
 						_ptr = Marshal.StringToCoTaskMemUni(value?.ToString());
 					break;
@@ -1072,7 +1077,7 @@ public static partial class Ole32
 					if (isVector)
 						AllocVector(GetArray(out sz, ToIUnkPtr), sz);
 					else
-						SetStruct<IntPtr>(ToIUnkPtr(value), VarType);
+						SetStruct<IntPtr>(ToIUnkPtr(value!), VarType);
 					break;
 
 #if !(NETSTANDARD2_0)
@@ -1081,20 +1086,20 @@ public static partial class Ole32
 					if (isVector)
 						AllocVector(GetArray(out sz, ToIDispPtr), sz);
 					else
-						SetStruct<IntPtr>(ToIDispPtr(value), VarType);
+						SetStruct<IntPtr>(ToIDispPtr(value!), VarType);
 					break;
 #endif
 
 				case VARTYPE.VT_STREAM:
 				case VARTYPE.VT_STREAMED_OBJECT:
 					if (!isVector && !isRef)
-						SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value, typeof(IStream)), VarType);
+						SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value!, typeof(IStream)), VarType);
 					break;
 
 				case VARTYPE.VT_STORAGE:
 				case VARTYPE.VT_STORED_OBJECT:
 					if (!isVector && !isRef)
-						SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value, typeof(IStorage)), VarType);
+						SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value!, typeof(IStorage)), VarType);
 					break;
 
 				case VARTYPE.VT_DECIMAL:
@@ -1110,7 +1115,7 @@ public static partial class Ole32
 					if (isVector)
 						AllocVector(GetArray(out sz, o => { ((PROPVARIANT)o).Clone(out var oo); return oo; }), sz);
 					else if (isRef)
-						InitPropVariantVectorFromPropVariant((PROPVARIANT)value, this);
+						InitPropVariantVectorFromPropVariant((PROPVARIANT)value!, this);
 					break;
 
 				case VARTYPE.VT_USERDEFINED:
@@ -1121,26 +1126,26 @@ public static partial class Ole32
 					throw new ArgumentOutOfRangeException(nameof(Value), $"{vt}={value}");
 			}
 
-			HRESULT AllocVector<T>(T[] vector, uint vsz, PROPVARIANT pv = null)
+			HRESULT AllocVector<T>(T[] vector, uint vsz, PROPVARIANT? pv = null)
 			{
 				_blob.cbSize = vsz;
 				_blob.pBlobData = vector.MarshalToPtr<T>(global::System.Runtime.InteropServices.Marshal.AllocCoTaskMem, out var _);
 				return HRESULT.S_OK;
 			}
 
-			T[] GetArray<T>(out uint len, Func<object, T> conv = null)
+			T[] GetArray<T>(out uint len, Func<object, T>? conv = null)
 			{
-				var ret = ConvertToEnum<T>(value, conv).ToArray();
+				var ret = ConvertToEnum<T>(value!, conv).ToArray();
 				len = (uint)ret.Length;
 				return ret;
 			}
 
-			void Init<T>(Func<T[], uint, PROPVARIANT, HRESULT> init, Func<object, T> conv = null) where T : struct
+			void Init<T>(Func<T[], uint, PROPVARIANT, HRESULT> init, Func<object, T>? conv = null) where T : struct
 			{
 				if (isVector)
 					init(GetArray<T>(out sz, conv), sz, this).ThrowIfFailed();
 				else
-					SetStruct((T?)(conv?.Invoke(value) ?? value), VarType);
+					SetStruct((T?)(conv?.Invoke(value!) ?? value), VarType);
 			}
 		}
 	}

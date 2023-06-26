@@ -590,7 +590,7 @@ public static partial class Ole32
 	// grfOpt, REFIID iidResult, LPVOID *ppvResult );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "5a022c39-fc2c-458b-9dfe-fed1255d49a4")]
-	public static extern HRESULT BindMoniker(IMoniker pmk, [Optional] uint grfOpt, in Guid iidResult, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResult);
+	public static extern HRESULT BindMoniker(IMoniker pmk, [Optional] uint grfOpt, in Guid iidResult, [MarshalAs(UnmanagedType.IUnknown)] out object? ppvResult);
 
 	/// <summary>
 	/// This function passes the foreground privilege (the privilege to set the foreground window) from one process to another. The
@@ -831,7 +831,9 @@ public static partial class Ole32
 	// MULTI_QI *pResults );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "f8a22f5f-a21f-49e7-bd6c-ca987206ee46")]
-	public static extern HRESULT CoGetInstanceFromFile([Optional] COSERVERINFO pServerInfo, in Guid pClsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter, CLSCTX dwClsCtx, STGM grfMode, [MarshalAs(UnmanagedType.LPWStr)] string pwszName, uint dwCount, [In, Out] MULTI_QI[] pResults);
+	public static extern HRESULT CoGetInstanceFromFile([Optional] COSERVERINFO? pServerInfo, in Guid pClsid,
+		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, STGM grfMode,
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszName, uint dwCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
 
 	/// <summary>Creates a new object and initializes it from a file using IPersistFile::Load.</summary>
 	/// <param name="pServerInfo">
@@ -905,7 +907,9 @@ public static partial class Ole32
 	// MULTI_QI *pResults );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "f8a22f5f-a21f-49e7-bd6c-ca987206ee46")]
-	public static extern HRESULT CoGetInstanceFromFile([Optional] COSERVERINFO pServerInfo, [Optional] IntPtr pClsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter, CLSCTX dwClsCtx, STGM grfMode, [MarshalAs(UnmanagedType.LPWStr)] string pwszName, uint dwCount, [In, Out] MULTI_QI[] pResults);
+	public static extern HRESULT CoGetInstanceFromFile([Optional] COSERVERINFO? pServerInfo, [Optional] IntPtr pClsid,
+		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, STGM grfMode,
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszName, uint dwCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
 
 	/// <summary>Creates a new object and initializes it from a storage object through an internal call to IPersistFile::Load.</summary>
 	/// <param name="pServerInfo">
@@ -980,7 +984,9 @@ public static partial class Ole32
 	// dwCount, MULTI_QI *pResults );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
-	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO pServerInfo, in Guid pClsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount, [In, Out] MULTI_QI[] pResults);
+	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO? pServerInfo, in Guid pClsid,
+		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount,
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
 
 	/// <summary>Creates a new object and initializes it from a storage object through an internal call to IPersistFile::Load.</summary>
 	/// <param name="pServerInfo">
@@ -1055,7 +1061,9 @@ public static partial class Ole32
 	// dwCount, MULTI_QI *pResults );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
-	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO pServerInfo, [Optional] IntPtr pClsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount, [In, Out] MULTI_QI[] pResults);
+	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO? pServerInfo, [Optional] IntPtr pClsid,
+		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount,
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
 
 	/// <summary>
 	/// Converts a display name into a moniker that identifies the object named, and then binds to the object identified by the moniker.
@@ -1115,7 +1123,8 @@ public static partial class Ole32
 	// *pBindOptions, REFIID riid, void **ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "0f5c9ef5-3918-4f93-bfd1-1017029b3dc1")]
-	public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, in BIND_OPTS pBindOptions, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, in BIND_OPTS pBindOptions, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 	/// <summary>
 	/// Converts a display name into a moniker that identifies the object named, and then binds to the object identified by the moniker.
@@ -1175,67 +1184,8 @@ public static partial class Ole32
 	// *pBindOptions, REFIID riid, void **ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "0f5c9ef5-3918-4f93-bfd1-1017029b3dc1")]
-	public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, [In] BIND_OPTS_V pBindOptions, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
-
-	/// <summary>
-	/// Converts a display name into a moniker that identifies the object named, and then binds to the object identified by the moniker.
-	/// </summary>
-	/// <param name="pszName">The display name of the object to be created.</param>
-	/// <param name="pBindOptions">
-	/// The binding options used to create a moniker that creates the actual object. For details, see BIND_OPTS. This parameter can be <c>NULL</c>.
-	/// </param>
-	/// <param name="riid">A reference to the identifier of an interface that is implemented on the object to be created.</param>
-	/// <param name="ppv">The address of a pointer to the interface specified by riid on the object that is created.</param>
-	/// <returns>
-	/// <para>
-	/// This function can return the standard return values E_FAIL, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>S_OK</term>
-	/// <term>The object was created successfully.</term>
-	/// </item>
-	/// <item>
-	/// <term>MK_E_SYNTAX</term>
-	/// <term>The pszName parameter is not a properly formed display name.</term>
-	/// </item>
-	/// <item>
-	/// <term>MK_E_NOOBJECT</term>
-	/// <term>
-	/// The object identified by this moniker, or some object identified by the composite moniker of which this moniker is a part, could
-	/// not be found.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>MK_E_EXCEEDEDDEADLINE</term>
-	/// <term>The binding operation could not be completed within the time limit specified by the BIND_OPTS structure passed in pBindOptions.</term>
-	/// </item>
-	/// <item>
-	/// <term>MK_E_CONNECTMANUALLY</term>
-	/// <term>
-	/// The binding operation requires assistance from the end user. The most common reasons for returning this value are that a
-	/// password is needed or that a floppy needs to be mounted.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>MK_E_INTERMEDIATEINTERFACENOTSUPPORTED</term>
-	/// <term>
-	/// An intermediate object was found but it did not support an interface required to complete the binding operation. For example, an
-	/// item moniker returns this value if its container does not support the IOleItemContainer interface.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks><c>CoGetObject</c> encapsulates calls to the COM library functions CreateBindCtx, MkParseDisplayName, and IMoniker::BindToObject.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-cogetobject HRESULT CoGetObject( LPCWSTR pszName, BIND_OPTS
-	// *pBindOptions, REFIID riid, void **ppv );
-	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("objbase.h", MSDNShortId = "0f5c9ef5-3918-4f93-bfd1-1017029b3dc1")]
-	public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, [Optional] IntPtr pBindOptions, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, [In, Optional] BIND_OPTS_V? pBindOptions, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 	/// <summary>
 	/// Returns the default values of the Security Descriptors of the machine-wide launch and access permissions, as well as launch and
@@ -1383,7 +1333,7 @@ public static partial class Ole32
 	/// </returns>
 	[DllImport(Lib.Ole32, ExactSpelling = true, CallingConvention = CallingConvention.StdCall, SetLastError = false)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms695279")]
-	public static extern HRESULT CoInitializeEx([Optional] IntPtr pvReserved, COINIT coInit);
+	public static extern HRESULT CoInitializeEx([Optional] IntPtr pvReserved, COINIT coInit = COINIT.COINIT_MULTITHREADED);
 
 	/// <summary>Registers security and sets the default security values for the process.</summary>
 	/// <param name="pSecDesc">
@@ -1468,9 +1418,186 @@ public static partial class Ole32
 	// dwCapabilities, _In_opt_ void *pReserved3); https://msdn.microsoft.com/en-us/library/windows/desktop/ms693736(v=vs.85).aspx
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
-	public static extern HRESULT CoInitializeSecurity([Optional] IntPtr pSecDesc, int cAuthSvc, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[] asAuthSvc,
-		[Optional] IntPtr pReserved1, RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, in SOLE_AUTHENTICATION_LIST pAuthList, EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities,
-		[Optional] IntPtr pReserved3);
+	public static extern HRESULT CoInitializeSecurity([Optional] PSECURITY_DESCRIPTOR pSecDesc, int cAuthSvc,
+		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
+		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities, IntPtr pReserved3 = default);
+
+	/// <summary>Registers security and sets the default security values for the process.</summary>
+	/// <param name="pSecDesc">
+	/// The access permissions that a server will use to receive calls. This parameter is used by COM only when a server calls
+	/// <c>CoInitializeSecurity</c>. Its value is a pointer to one of three types: an AppID, an <c>IAccessControl</c> object, or a
+	/// <c>SECURITY_DESCRIPTOR</c>, in absolute format. See the Remarks section for more information.
+	/// </param>
+	/// <param name="cAuthSvc">
+	/// The count of entries in the asAuthSvc parameter. This parameter is used by COM only when a server calls
+	/// <c>CoInitializeSecurity</c>. If this parameter is 0, no authentication services will be registered and the server cannot receive
+	/// secure calls. A value of -1 tells COM to choose which authentication services to register, and if this is the case, the
+	/// asAuthSvc parameter must be <c>NULL</c>. However, Schannel will never be chosen as an authentication service by the server if
+	/// this parameter is -1.
+	/// </param>
+	/// <param name="asAuthSvc">
+	/// An array of authentication services that a server is willing to use to receive a call. This parameter is used by COM only when a
+	/// server calls <c>CoInitializeSecurity</c>. For more information, see <c>SOLE_AUTHENTICATION_SERVICE</c>.
+	/// </param>
+	/// <param name="pReserved1">This parameter is reserved and must be <c>NULL</c>.</param>
+	/// <param name="dwAuthnLevel">
+	/// The default authentication level for the process. Both servers and clients use this parameter when they call
+	/// <c>CoInitializeSecurity</c>. COM will fail calls that arrive with a lower authentication level. By default, all proxies will use
+	/// at least this authentication level. This value should contain one of the authentication level constants. By default, all calls
+	/// to <c>IUnknown</c> are made at this level.
+	/// </param>
+	/// <param name="dwImpLevel">
+	/// <para>
+	/// The default impersonation level for proxies. The value of this parameter is used only when the process is a client. It should be
+	/// a value from the impersonation level constants, except for RPC_C_IMP_LEVEL_DEFAULT, which is not for use with <c>CoInitializeSecurity</c>.
+	/// </para>
+	/// <para>
+	/// Outgoing calls from the client always use the impersonation level as specified. (It is not negotiated.) Incoming calls to the
+	/// client can be at any impersonation level. By default, all <c>IUnknown</c> calls are made with this impersonation level, so even
+	/// security-aware applications should set this level carefully. To determine which impersonation levels each authentication service
+	/// supports, see the description of the authentication services in COM and Security Packages. For more information about
+	/// impersonation levels, see Impersonation.
+	/// </para>
+	/// </param>
+	/// <param name="pAuthList">
+	/// A pointer to <c>SOLE_AUTHENTICATION_LIST</c>, which is an array of <c>SOLE_AUTHENTICATION_INFO</c> structures. This list
+	/// indicates the information for each authentication service that a client can use to call a server. This parameter is used by COM
+	/// only when a client calls <c>CoInitializeSecurity</c>.
+	/// </param>
+	/// <param name="dwCapabilities">
+	/// Additional capabilities of the client or server, specified by setting one or more <c>EOLE_AUTHENTICATION_CAPABILITIES</c>
+	/// values. Some of these value cannot be used simultaneously, and some cannot be set when particular authentication services are
+	/// being used. For more information about these flags, see the Remarks section.
+	/// </param>
+	/// <param name="pReserved3">This parameter is reserved and must be <c>NULL</c>.</param>
+	/// <returns>
+	/// <para>This function can return the standard return value E_INVALIDARG, as well as the following values.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>S_OK</term>
+	/// <term>Indicates success.</term>
+	/// </item>
+	/// <item>
+	/// <term>RPC_E_TOO_LATE</term>
+	/// <term>CoInitializeSecurity has already been called.</term>
+	/// </item>
+	/// <item>
+	/// <term>RPC_E_NO_GOOD_SECURITY_PACKAGES</term>
+	/// <term>
+	/// The asAuthSvc parameter was not NULL, and none of the authentication services in the list could be registered. Check the results
+	/// saved in asAuthSvc for authentication service–specific error codes.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUT_OF_MEMORY</term>
+	/// <term>Out of memory.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </returns>
+	// HRESULT CoInitializeSecurity( _In_opt_ PSECURITY_DESCRIPTOR pSecDesc, _In_ LONG cAuthSvc, _In_opt_ SOLE_AUTHENTICATION_SERVICE
+	// *asAuthSvc, _In_opt_ void *pReserved1, _In_ DWORD dwAuthnLevel, _In_ DWORD dwImpLevel, _In_opt_ void *pAuthList, _In_ DWORD
+	// dwCapabilities, _In_opt_ void *pReserved3); https://msdn.microsoft.com/en-us/library/windows/desktop/ms693736(v=vs.85).aspx
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
+	public static extern HRESULT CoInitializeSecurity([Optional] IAccessControl? pSecDesc, int cAuthSvc,
+		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
+		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_ACCESS_CONTROL, IntPtr pReserved3 = default);
+
+	/// <summary>Registers security and sets the default security values for the process.</summary>
+	/// <param name="pSecDesc">
+	/// The access permissions that a server will use to receive calls. This parameter is used by COM only when a server calls
+	/// <c>CoInitializeSecurity</c>. Its value is a pointer to one of three types: an AppID, an <c>IAccessControl</c> object, or a
+	/// <c>SECURITY_DESCRIPTOR</c>, in absolute format. See the Remarks section for more information.
+	/// </param>
+	/// <param name="cAuthSvc">
+	/// The count of entries in the asAuthSvc parameter. This parameter is used by COM only when a server calls
+	/// <c>CoInitializeSecurity</c>. If this parameter is 0, no authentication services will be registered and the server cannot receive
+	/// secure calls. A value of -1 tells COM to choose which authentication services to register, and if this is the case, the
+	/// asAuthSvc parameter must be <c>NULL</c>. However, Schannel will never be chosen as an authentication service by the server if
+	/// this parameter is -1.
+	/// </param>
+	/// <param name="asAuthSvc">
+	/// An array of authentication services that a server is willing to use to receive a call. This parameter is used by COM only when a
+	/// server calls <c>CoInitializeSecurity</c>. For more information, see <c>SOLE_AUTHENTICATION_SERVICE</c>.
+	/// </param>
+	/// <param name="pReserved1">This parameter is reserved and must be <c>NULL</c>.</param>
+	/// <param name="dwAuthnLevel">
+	/// The default authentication level for the process. Both servers and clients use this parameter when they call
+	/// <c>CoInitializeSecurity</c>. COM will fail calls that arrive with a lower authentication level. By default, all proxies will use
+	/// at least this authentication level. This value should contain one of the authentication level constants. By default, all calls
+	/// to <c>IUnknown</c> are made at this level.
+	/// </param>
+	/// <param name="dwImpLevel">
+	/// <para>
+	/// The default impersonation level for proxies. The value of this parameter is used only when the process is a client. It should be
+	/// a value from the impersonation level constants, except for RPC_C_IMP_LEVEL_DEFAULT, which is not for use with <c>CoInitializeSecurity</c>.
+	/// </para>
+	/// <para>
+	/// Outgoing calls from the client always use the impersonation level as specified. (It is not negotiated.) Incoming calls to the
+	/// client can be at any impersonation level. By default, all <c>IUnknown</c> calls are made with this impersonation level, so even
+	/// security-aware applications should set this level carefully. To determine which impersonation levels each authentication service
+	/// supports, see the description of the authentication services in COM and Security Packages. For more information about
+	/// impersonation levels, see Impersonation.
+	/// </para>
+	/// </param>
+	/// <param name="pAuthList">
+	/// A pointer to <c>SOLE_AUTHENTICATION_LIST</c>, which is an array of <c>SOLE_AUTHENTICATION_INFO</c> structures. This list
+	/// indicates the information for each authentication service that a client can use to call a server. This parameter is used by COM
+	/// only when a client calls <c>CoInitializeSecurity</c>.
+	/// </param>
+	/// <param name="dwCapabilities">
+	/// Additional capabilities of the client or server, specified by setting one or more <c>EOLE_AUTHENTICATION_CAPABILITIES</c>
+	/// values. Some of these value cannot be used simultaneously, and some cannot be set when particular authentication services are
+	/// being used. For more information about these flags, see the Remarks section.
+	/// </param>
+	/// <param name="pReserved3">This parameter is reserved and must be <c>NULL</c>.</param>
+	/// <returns>
+	/// <para>This function can return the standard return value E_INVALIDARG, as well as the following values.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>S_OK</term>
+	/// <term>Indicates success.</term>
+	/// </item>
+	/// <item>
+	/// <term>RPC_E_TOO_LATE</term>
+	/// <term>CoInitializeSecurity has already been called.</term>
+	/// </item>
+	/// <item>
+	/// <term>RPC_E_NO_GOOD_SECURITY_PACKAGES</term>
+	/// <term>
+	/// The asAuthSvc parameter was not NULL, and none of the authentication services in the list could be registered. Check the results
+	/// saved in asAuthSvc for authentication service–specific error codes.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUT_OF_MEMORY</term>
+	/// <term>Out of memory.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </returns>
+	// HRESULT CoInitializeSecurity( _In_opt_ PSECURITY_DESCRIPTOR pSecDesc, _In_ LONG cAuthSvc, _In_opt_ SOLE_AUTHENTICATION_SERVICE
+	// *asAuthSvc, _In_opt_ void *pReserved1, _In_ DWORD dwAuthnLevel, _In_ DWORD dwImpLevel, _In_opt_ void *pAuthList, _In_ DWORD
+	// dwCapabilities, _In_opt_ void *pReserved3); https://msdn.microsoft.com/en-us/library/windows/desktop/ms693736(v=vs.85).aspx
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
+	public static extern HRESULT CoInitializeSecurity(in Guid pSecDesc, int cAuthSvc,
+		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
+		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_APPID, IntPtr pReserved3 = default);
 
 	/// <summary>Determines whether the specified CLSID represents an OLE 1 object.</summary>
 	/// <param name="rclsid">The CLSID to be checked.</param>
@@ -1664,7 +1791,7 @@ public static partial class Ole32
 	// LPMESSAGEFILTER lpMessageFilter, LPMESSAGEFILTER *lplpMessageFilter );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "caa5b277-ddbd-4ba9-892d-590d953b8433")]
-	public static extern HRESULT CoRegisterMessageFilter(IMessageFilter lpMessageFilter, out IMessageFilter lplpMessageFilter);
+	public static extern HRESULT CoRegisterMessageFilter(IMessageFilter? lpMessageFilter, out IMessageFilter lplpMessageFilter);
 
 	/// <summary>Revokes a registered implementation of the IInitializeSpy interface.</summary>
 	/// <param name="uliCookie">A ULARGE_INTEGER cookie identifying the registration.</param>
@@ -1865,7 +1992,7 @@ public static partial class Ole32
 	// *ppmk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "1f8fcbd6-8f05-4d32-af8a-d8de1b56dacf")]
-	public static extern HRESULT CreateAntiMoniker(out IMoniker ppmk);
+	public static extern HRESULT CreateAntiMoniker(out IMoniker? ppmk);
 
 	/// <summary>
 	/// Returns a pointer to an implementation of IBindCtx (a bind context object). This object stores information about a particular
@@ -1880,7 +2007,7 @@ public static partial class Ole32
 	/// <returns>This function can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
 	[DllImport(Lib.Ole32, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms678542")]
-	public static extern HRESULT CreateBindCtx([Optional] uint reserved, out IBindCtx ppbc);
+	public static extern HRESULT CreateBindCtx([Optional] uint reserved, out IBindCtx? ppbc);
 
 	/// <summary>Creates a class moniker that refers to the specified class.</summary>
 	/// <param name="rclsid">A reference to the CLSID of the object type to which this moniker binds.</param>
@@ -1911,7 +2038,7 @@ public static partial class Ole32
 	// rclsid, LPMONIKER *ppmk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "9361b2c1-ef26-4225-92ff-e0bef0285bc4")]
-	public static extern HRESULT CreateClassMoniker(in Guid rclsid, out IMoniker ppmk);
+	public static extern HRESULT CreateClassMoniker(in Guid rclsid, out IMoniker? ppmk);
 
 	/// <summary>Retrieves a pointer to a new instance of an OLE-provided implementation of a data cache.</summary>
 	/// <param name="pUnkOuter">
@@ -1956,7 +2083,8 @@ public static partial class Ole32
 	// pUnkOuter, REFCLSID rclsid, REFIID iid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "8a64675b-1337-4555-b9a6-e19f9b987ba2")]
-	public static extern HRESULT CreateDataCache([MarshalAs(UnmanagedType.IUnknown), Optional] object pUnkOuter, in Guid rclsid, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT CreateDataCache([MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter, in Guid rclsid, in Guid iid,
+		[MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 
 	/// <summary>Creates a file moniker based on the specified path.</summary>
 	/// <param name="lpszPathName">
@@ -2014,7 +2142,7 @@ public static partial class Ole32
 	// lpszPathName, LPMONIKER *ppmk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "d9677fa0-cda0-4b63-a21f-1fd0e27c8f3f")]
-	public static extern HRESULT CreateFileMoniker([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, out IMoniker ppmk);
+	public static extern HRESULT CreateFileMoniker([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, out IMoniker? ppmk);
 
 	/// <summary>Performs a generic composition of two monikers and supplies a pointer to the resulting composite moniker.</summary>
 	/// <param name="pmkFirst">
@@ -2076,7 +2204,7 @@ public static partial class Ole32
 	// LPMONIKER pmkFirst, LPMONIKER pmkRest, LPMONIKER *ppmkComposite );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "7fe5b3ff-6e9b-4a28-93d3-52c76d3e8b77")]
-	public static extern HRESULT CreateGenericComposite(IMoniker pmkFirst, IMoniker pmkRest, out IMoniker ppmkComposite);
+	public static extern HRESULT CreateGenericComposite(IMoniker pmkFirst, IMoniker pmkRest, out IMoniker? ppmkComposite);
 
 	/// <summary>Creates an item moniker that identifies an object within a containing object (typically a compound document).</summary>
 	/// <param name="lpszDelim">
@@ -2129,7 +2257,7 @@ public static partial class Ole32
 	// lpszDelim, LPCOLESTR lpszItem, LPMONIKER *ppmk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "339919ed-660c-4239-825b-7fa96c48e5cd")]
-	public static extern HRESULT CreateItemMoniker([MarshalAs(UnmanagedType.LPWStr)] string lpszDelim, [MarshalAs(UnmanagedType.LPWStr)] string lpszItem, out IMoniker ppmk);
+	public static extern HRESULT CreateItemMoniker([MarshalAs(UnmanagedType.LPWStr)] string lpszDelim, [MarshalAs(UnmanagedType.LPWStr)] string lpszItem, out IMoniker? ppmk);
 
 	/// <summary>Creates an OBJREF moniker based on a pointer to an object.</summary>
 	/// <param name="punk">A pointer to the IUnknown interface on the object that the moniker is to represent.</param>
@@ -2190,7 +2318,7 @@ public static partial class Ole32
 	// LPUNKNOWN punk, LPMONIKER *ppmk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "d4d40fd5-6035-4ddc-a443-01d32dcf4bca")]
-	public static extern HRESULT CreatePointerMoniker([MarshalAs(UnmanagedType.IUnknown)] object punk, out IMoniker ppmk);
+	public static extern HRESULT CreatePointerMoniker([MarshalAs(UnmanagedType.IUnknown)] object punk, out IMoniker? ppmk);
 
 	/// <summary>Returns the CLSID associated with the specified file name.</summary>
 	/// <param name="szFilename">A pointer to the filename for which you are requesting the associated CLSID.</param>
@@ -2472,7 +2600,7 @@ public static partial class Ole32
 	// LPMONIKER pmkThis, LPMONIKER pmkOther, LPMONIKER *ppmkCommon );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "6caa8c2e-c3d6-45d5-8efe-74d6a2c4a926")]
-	public static extern HRESULT MonikerCommonPrefixWith(IMoniker pmkThis, IMoniker pmkOther, out IMoniker ppmkCommon);
+	public static extern HRESULT MonikerCommonPrefixWith(IMoniker pmkThis, IMoniker pmkOther, out IMoniker? ppmkCommon);
 
 	/// <summary>
 	/// <para>
@@ -2537,7 +2665,8 @@ public static partial class Ole32
 	// LPMONIKER pmkSrc, LPMONIKER pmkDest, LPMONIKER *ppmkRelPath, BOOL dwReserved );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "55ab4db3-a94e-48ba-abe3-44963c35e062")]
-	public static extern HRESULT MonikerRelativePathTo(IMoniker pmkSrc, IMoniker pmkDest, out IMoniker ppmkRelPath, [MarshalAs(UnmanagedType.Bool)] bool dwReserved = false);
+	public static extern HRESULT MonikerRelativePathTo(IMoniker pmkSrc, IMoniker pmkDest, out IMoniker? ppmkRelPath,
+		[MarshalAs(UnmanagedType.Bool)] bool dwReserved = false);
 
 	/// <summary>Provides a CO_MTA_USAGE_COOKIE.</summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -2550,7 +2679,7 @@ public static partial class Ole32
 		public CO_MTA_USAGE_COOKIE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="CO_MTA_USAGE_COOKIE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static CO_MTA_USAGE_COOKIE NULL => new CO_MTA_USAGE_COOKIE(IntPtr.Zero);
+		public static CO_MTA_USAGE_COOKIE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2563,7 +2692,7 @@ public static partial class Ole32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="CO_MTA_USAGE_COOKIE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CO_MTA_USAGE_COOKIE(IntPtr h) => new CO_MTA_USAGE_COOKIE(h);
+		public static implicit operator CO_MTA_USAGE_COOKIE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2578,7 +2707,7 @@ public static partial class Ole32
 		public static bool operator ==(CO_MTA_USAGE_COOKIE h1, CO_MTA_USAGE_COOKIE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is CO_MTA_USAGE_COOKIE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is CO_MTA_USAGE_COOKIE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2680,7 +2809,7 @@ public static partial class Ole32
 
 		/// <summary>The name of the computer.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwszName;
+		public string? pwszName;
 
 		/// <summary>
 		/// A pointer to a COAUTHINFO structure to override the default activation security for machine remote activations. Otherwise,

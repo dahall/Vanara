@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -2363,6 +2364,59 @@ public static partial class OleAut32
 	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
 	public static extern HRESULT VariantCopyInd(out VARIANT pvarDest, in VARIANT pvargSrc);
 
+	/// <summary>
+	/// Frees the destination variant and makes a copy of the source variant, performing the necessary indirection if the source is
+	/// specified to be VT_BYREF.
+	/// </summary>
+	/// <param name="pvarDest">The destination variant.</param>
+	/// <param name="pvargSrc">The source variant.</param>
+	/// <returns>
+	/// <para>This function can return one of these values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>S_OK</term>
+	/// <term>Success.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_ARRAYISLOCKED</term>
+	/// <term>The variant contains an array that is locked.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_BADVARTYPE</term>
+	/// <term>The variant type is not a valid type of variant.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One of the arguments is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>Insufficient memory to complete the operation.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This function is useful when a copy of a variant is needed, and to guarantee that it is not VT_BYREF, such as when handling
+	/// arguments in an implementation of IDispatch::Invoke.
+	/// </para>
+	/// <para>
+	/// For example, if the source is a (VT_BYREF | VT_I2), the destination will be a BYVAL | VT_I2. The same is true for all legal
+	/// VT_BYREF combinations, including VT_VARIANT.
+	/// </para>
+	/// <para>If pvargSrc is (VT_BYREF | VT_VARIANT), and the contained variant is VT_BYREF, the contained variant is also dereferenced.</para>
+	/// <para>This function frees any existing contents of pvarDest.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-variantcopyind HRESULT VariantCopyInd( VARIANT *pvarDest,
+	// const VARIANTARG *pvargSrc );
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
+	public static extern HRESULT VariantCopyInd(out VARIANT pvarDest, [In] object pvargSrc);
+
 	/// <summary>Initializes a variant.</summary>
 	/// <param name="pvarg">The variant to initialize.</param>
 	/// <returns>This function does not return a value.</returns>
@@ -3065,6 +3119,14 @@ public static partial class OleAut32
 		{
 			private readonly IntPtr _record;
 			private readonly IntPtr _recordInfo;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="VARIANT"/> struct.</summary>
+		/// <param name="o">An object value.</param>
+		public VARIANT(object o)
+		{
+			VariantCopyInd(out var v, o).ThrowIfFailed();
+			this = v;
 		}
 	}
 }

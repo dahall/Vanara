@@ -1999,7 +1999,7 @@ public static partial class OleAut32
 		public ushort wFlags;
 
 		/// <summary>The return type for the method.</summary>
-		public Ole32.VARTYPE vtReturn;
+		public VARTYPE vtReturn;
 	}
 
 	/// <summary>Specifies numeric parsing information.</summary>
@@ -2077,7 +2077,7 @@ public static partial class OleAut32
 		public StrPtrUni szName;
 
 		/// <summary>The parameter type. If more than one parameter type is accepted, VT_VARIANT should be specified.</summary>
-		public Ole32.VARTYPE vt;
+		public VARTYPE vt;
 	}
 
 	/// <summary>Represents an unpacked date.</summary>
