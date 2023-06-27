@@ -78,5 +78,5 @@ public static class FileTimeExtensions
 	/// <summary>Converts a <see cref="FILETIME"/> structure to its 64-bit representation.</summary>
 	/// <param name="ft">The value to be converted.</param>
 	/// <returns>The return value is a 64-bit value that represented the <see cref="FILETIME"/>.</returns>
-	public static ulong ToUInt64(this FILETIME ft) => ((ulong)ft.dwHighDateTime << 32) | (uint)ft.dwLowDateTime;
+	public static ulong ToUInt64(this FILETIME ft) => (unchecked((ulong)ft.dwHighDateTime) << 32) + unchecked((uint)ft.dwLowDateTime);
 }
