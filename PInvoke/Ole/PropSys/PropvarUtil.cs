@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
@@ -164,7 +163,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762288")]
-	public static extern HRESULT InitPropVariantFromBooleanVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.Bool)] bool[] prgf, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromBooleanVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.Bool)] bool[]? prgf, uint cElems, [In, Out] PROPVARIANT ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure using the contents of a buffer.</summary>
 	/// <param name="pv">Pointer to the buffer.</param>
@@ -193,7 +192,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762292")]
-	public static extern HRESULT InitPropVariantFromDoubleVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.R8)] double[] prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromDoubleVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.R8)] double[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on information stored in a <see cref="FILETIME"/> structure.</summary>
 	/// <param name="pftIn">Pointer to the date and time as a <see cref="FILETIME"/> structure.</param>
@@ -213,7 +212,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762294")]
-	public static extern HRESULT InitPropVariantFromFileTimeVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FILETIME[] prgft, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromFileTimeVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FILETIME[]? prgft, uint cElems, [In, Out] PROPVARIANT ppropvar);
 
 	/// <summary>
 	/// <para>Initializes a PROPVARIANT structure based on a <c>GUID</c>. The structure is initialized as VT_LPWSTR.</para>
@@ -268,7 +267,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762302")]
-	public static extern HRESULT InitPropVariantFromInt64Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I8)] long[] prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromInt64Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I8)] long[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified <see cref="PROPVARIANT"/> vector element.</summary>
 	/// <remarks>
@@ -330,7 +329,7 @@ public static partial class PropSys
 	[PInvokeData("propvarutil.h", MSDNShortId = "cee95d17-532d-8e34-a392-a04778f9bc00")]
 	public static HRESULT InitPropVariantFromString(string psz, [In, Out] PROPVARIANT ppropvar)
 	{
-		PropVariantClear(ppropvar);
+		_ = PropVariantClear(ppropvar);
 		if (psz is null) return HRESULT.E_INVALIDARG;
 		ppropvar._ptr = Marshal.StringToCoTaskMemUni(psz);
 		ppropvar.vt = VARTYPE.VT_LPWSTR;
@@ -367,7 +366,7 @@ public static partial class PropSys
 	// InitPropVariantFromStringAsVector( PCWSTR psz, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "fc48f2e0-ce4a-4f48-a624-202def4bcff0")]
-	public static extern HRESULT InitPropVariantFromStringAsVector([MarshalAs(UnmanagedType.LPWStr)] string psz, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromStringAsVector([MarshalAs(UnmanagedType.LPWStr)] string? psz, [In, Out] PROPVARIANT ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified string vector.</summary>
 	/// <param name="prgsz">Pointer to a buffer that contains the source string vector.</param>
@@ -427,7 +426,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762312")]
-	public static extern HRESULT InitPropVariantFromUInt32Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U4)] uint[] prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromUInt32Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U4)] uint[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a vector of 64-bit unsigned integer values.</summary>
 	/// <param name="prgn">
@@ -438,7 +437,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762314")]
-	public static extern HRESULT InitPropVariantFromUInt64Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U8)] ulong[] prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromUInt64Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U8)] ulong[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
 
 	/// <summary>Initializes a vector element in a <see cref="PROPVARIANT"/> structure with a value stored in another PROPVARIANT.</summary>
 	/// <param name="propvarSingle">Reference to the source <see cref="PROPVARIANT"/> structure that contains a single value.</param>
@@ -984,10 +983,7 @@ public static partial class PropSys
 	/// </list>
 	/// </returns>
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776516")]
-	public static int PropVariantCompare(PROPVARIANT propvar1, PROPVARIANT propvar2)
-	{
-		return PropVariantCompareEx(propvar1, propvar2, PROPVAR_COMPARE_UNIT.PVCU_DEFAULT, PROPVAR_COMPARE_FLAGS.PVCF_DEFAULT);
-	}
+	public static int PropVariantCompare(PROPVARIANT propvar1, PROPVARIANT propvar2) => PropVariantCompareEx(propvar1, propvar2, PROPVAR_COMPARE_UNIT.PVCU_DEFAULT, PROPVAR_COMPARE_FLAGS.PVCF_DEFAULT);
 
 	/// <summary>Compares two <see cref="PROPVARIANT"/> structures, based on specified comparison units and flags.</summary>
 	/// <param name="propvar1">Reference to the first <see cref="PROPVARIANT"/> structure.</param>
@@ -1270,8 +1266,8 @@ public static partial class PropSys
 
 	/// <summary>
 	/// <para>
-	/// Extracts a single Unicode string element from a PROPVARIANT structure of type VT_LPWSTR, VT_BSTR, VT_VECTOR | VT_LPWSTR,
-	/// VT_VECTOR | VT_BSTR, or VT_ARRAY | VT_BSTR.
+	/// Extracts a single Unicode string element from a PROPVARIANT structure of type VT_LPWSTR, VT_BSTR, VT_VECTOR | VT_LPWSTR, VT_VECTOR |
+	/// VT_BSTR, or VT_ARRAY | VT_BSTR.
 	/// </para>
 	/// </summary>
 	/// <param name="propvar">
@@ -1285,8 +1281,8 @@ public static partial class PropSys
 	/// <param name="ppszVal">
 	/// <para>Type: <c>PWSTR*</c></para>
 	/// <para>
-	/// When this function returns, contains the extracted string value. The calling application is responsible for freeing this string
-	/// by calling CoTaskMemFree when it is no longer needed.
+	/// When this function returns, contains the extracted string value. The calling application is responsible for freeing this string by
+	/// calling CoTaskMemFree when it is no longer needed.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -1296,25 +1292,15 @@ public static partial class PropSys
 	/// <remarks>
 	/// <para>This helper function works for PROPVARIANT structures of the following types:</para>
 	/// <list type="bullet">
-	/// <item>
-	/// <term>VT_LPWSTR</term>
-	/// </item>
-	/// <item>
-	/// <term>VT_BSTR</term>
-	/// </item>
-	/// <item>
-	/// <term>VT_VECTOR | VT_LPWSTR</term>
-	/// </item>
-	/// <item>
-	/// <term>VT_VECTOR | VT_BSTR</term>
-	/// </item>
-	/// <item>
-	/// <term>VT_ARRAY | VT_BSTR</term>
-	/// </item>
+	/// <item>VT_LPWSTR</item>
+	/// <item>VT_BSTR</item>
+	/// <item>VT_VECTOR | VT_LPWSTR</item>
+	/// <item>VT_VECTOR | VT_BSTR</item>
+	/// <item>VT_ARRAY | VT_BSTR</item>
 	/// </list>
 	/// <para>
-	/// If the source PROPVARIANT has type VT_LPWSTR or VT_BSTR, iElem must be 0. Otherwise iElem must be less than the number of
-	/// elements in the vector or array. You can use PropVariantGetElementCount to obtain the number of elements in the vector or array.
+	/// If the source PROPVARIANT has type VT_LPWSTR or VT_BSTR, iElem must be 0. Otherwise iElem must be less than the number of elements in
+	/// the vector or array. You can use PropVariantGetElementCount to obtain the number of elements in the vector or array.
 	/// </para>
 	/// <para>If a BSTR element has a <c>NULL</c> pointer, this function allocates an empty string.</para>
 	/// <para>Examples</para>
@@ -1322,6 +1308,27 @@ public static partial class PropSys
 	/// The following code example, to be included as part of a larger program, demonstrates how to use PropVariantGetStringElem with an
 	/// iteration statement to access the values in a PROPVARIANT.
 	/// </para>
+	/// <code language="cpp"><![CDATA[// PROPVARIANT propvar;
+	/// // Assume the variable propvar is initialized and valid
+	/// 
+	/// if ((propvar.vt & VT_TYPEMASK) == VT_LPWSTR || (propvar.vt & VT_TYPEMASK) == VT_BSTR)
+	/// {
+	///     UINT cElem = PropVariantGetElementCount(propvar);
+	/// 	HRESULT hr = < mark type="const">S_OK</mark>;
+	/// 
+	///     for (UINT iElem = 0; SUCCEEDED(hr) && iElem<cElem; iElem ++)
+	///     {
+	///         PWSTR pszValue;
+	///         hr = PropVariantGetStringElem(propvar, iElem, &pszValue);
+	/// 
+	///         if (SUCCEEDED(hr))
+	///         {
+	///             // pszValue is valid now
+	///             CoTaskMemFree(pszValue);
+	///         }
+	///     }
+	/// }
+	/// ]]></code>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propvarutil/nf-propvarutil-propvariantgetstringelem PSSTDAPI
 	// PropVariantGetStringElem( REFPROPVARIANT propvar, ULONG iElem, PWSTR *ppszVal );
@@ -2375,6 +2382,28 @@ public static partial class PropSys
 	/// If a <c>BSTR</c> in the source PROPVARIANT is <c>NULL</c>, it is converted to a newly allocated string containing "" in the output.
 	/// </para>
 	/// <para>Examples</para>
+	/// <code language="cpp"><![CDATA[// PROPVARIANT propvar;
+	/// // Assume the variable propvar is initialized and valid
+	/// LPWSTR rgszStrings; // The application is expecting propvar to hold 4 strings in a vector
+	/// ULONG cElems;
+	/// HRESULT hr = PropVariantToStringVector(propvar, rgszStrings, ARRAYSIZE(rgszStrings), &cElems);
+	/// if (SUCCEEDED(hr))
+	/// {
+	///      if (cElems == ARRAYSIZE(rgszStrings))
+	///      {
+	///          // The application got 4 string which are now stored in rgszStrings
+	///      }
+	///      else
+	///      {
+	///          // The application got cElems which are stored in the first cElems elements of rgLongs
+	///      }
+	///  
+	///     // Free the cElems strings that PropVariantToStringVector allocated
+	///     for (ULONG i = 0; i<cElems; i++)
+	///     {
+	///         CoTaskMemFree(rgszStrings[i]);
+	///     }
+	/// }]]></code>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propvarutil/nf-propvarutil-propvarianttostringvector PSSTDAPI
 	// PropVariantToStringVector( REFPROPVARIANT propvar, PWSTR *prgsz, ULONG crgsz, ULONG *pcElem );
@@ -2444,25 +2473,24 @@ public static partial class PropSys
 	/// <para>
 	/// If a <c>BSTR</c> in the source PROPVARIANT is <c>NULL</c>, it is converted to a newly allocated string containing "" in the output.
 	/// </para>
-	/// <para>Examples</para>
 	/// </remarks>
 	public static HRESULT PropVariantToStringVector([In] PROPVARIANT propvar, out string[] prgsz)
 	{
-		var ve = (VarEnum)((int)propvar.vt & 0x0FFF);
+		VarEnum ve = (VarEnum)((int)propvar.vt & 0x0FFF);
 		if ((!propvar.vt.HasFlag(VARTYPE.VT_VECTOR) || ve != VarEnum.VT_LPWSTR && ve != VarEnum.VT_BSTR) && (!propvar.vt.HasFlag(VARTYPE.VT_ARRAY) || ve != VarEnum.VT_BSTR))
 			throw new ArgumentException("Unsupported element type.", nameof(propvar));
-		HRESULT hr = PropVariantToStringVectorAlloc(propvar, out var ptr, out uint cnt);
+		HRESULT hr = PropVariantToStringVectorAlloc(propvar, out SafeCoTaskMemHandle? ptr, out uint cnt);
 		if (hr.Failed)
 		{
 			prgsz = new string[0];
 			return hr;
 		}
 		prgsz = new string[(int)cnt];
-		var sptrs = ptr.ToArray<IntPtr>((int)cnt);
+		StrPtrUni[] sptrs = ptr.ToArray<StrPtrUni>((int)cnt);
 		for (int i = 0; i < cnt; i++)
 		{
-			prgsz[i] = Marshal.PtrToStringUni(sptrs[i]);
-			Marshal.FreeCoTaskMem(sptrs[i]);
+			prgsz[i] = sptrs[i].ToString();
+			Marshal.FreeCoTaskMem((IntPtr)sptrs[i]);
 		}
 		ptr.Dispose();
 		return hr;
@@ -2491,7 +2519,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.LPWStr)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776563")]
-	public static extern string PropVariantToStringWithDefault([In] PROPVARIANT propvarIn, [In, MarshalAs(UnmanagedType.LPWStr)] string pszDefault);
+	public static extern string PropVariantToStringWithDefault([In] PROPVARIANT propvarIn, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszDefault);
 
 	/// <summary>
 	/// <para>Extracts a string from a PROPVARIANT structure and places it into a STRRET structure.</para>
@@ -2975,7 +3003,7 @@ public static partial class PropSys
 	// PropVariantToWinRTPropertyValue( REFPROPVARIANT propvar, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "38DD3673-17FD-4F2A-BA58-A1A9983B92BF")]
-	public static extern HRESULT PropVariantToWinRTPropertyValue([In] PROPVARIANT propvar, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT PropVariantToWinRTPropertyValue([In] PROPVARIANT propvar, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 
 	/// <summary>Deserializes a specified <c>SERIALIZEDPROPERTYVALUE</c> structure, creating a <c>PROPVARIANT</c> structure.</summary>
 	/// <param name="pprop">

@@ -131,11 +131,16 @@ public class PropSysTests
 	[Test()]
 	public void InitPropVariantFromStringVectorTest()
 	{
-		var pv = new PROPVARIANT();
-		InitPropVariantFromStringVector(new [] {"1","2","3","4"}, 4, pv);
+		using var pv = new PROPVARIANT();
+		var a = new[] { "1", "2", "3", "4" };
+		var c = (uint)a.Length;
+
+		Assert.That(InitPropVariantFromStringVector(a, c, pv), ResultIs.Successful);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_LPWSTR));
-		Assert.That(pv.Value as IEnumerable<string>, Is.Not.Null.And.Exactly(4).Items);
-		pv.Dispose();
+		Assert.That(pv.Value as IEnumerable<string>, Is.EquivalentTo(a));
+
+		Assert.That(PropVariantToStringVector(pv, out var sa), ResultIs.Successful);
+		Assert.That(sa, Is.EquivalentTo(a));
 	}
 
 	[Test()]

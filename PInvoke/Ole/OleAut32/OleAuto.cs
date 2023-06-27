@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using DISPPARAMS = System.Runtime.InteropServices.ComTypes.DISPPARAMS;
+using EXCEPINFO = System.Runtime.InteropServices.ComTypes.EXCEPINFO;
 using SYSKIND = System.Runtime.InteropServices.ComTypes.SYSKIND;
 
 namespace Vanara.PInvoke;
@@ -237,7 +238,8 @@ public static partial class OleAut32
 	// *punkOuter, void *pvThis, ITypeInfo *ptinfo, IUnknown **ppunkStdDisp );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "45a59243-df93-41ca-ac60-354cb1165004")]
-	public static extern HRESULT CreateStdDispatch([MarshalAs(UnmanagedType.IUnknown)] object punkOuter, IntPtr pvThis, ITypeInfo ptinfo, [MarshalAs(UnmanagedType.IUnknown)] out object ppunkStdDisp);
+	public static extern HRESULT CreateStdDispatch([MarshalAs(UnmanagedType.IUnknown)] object punkOuter, IntPtr pvThis, ITypeInfo ptinfo,
+		[MarshalAs(UnmanagedType.IUnknown)] out object? ppunkStdDisp);
 
 	/// <summary>Provides access to a new object instance that supports the ICreateTypeLib interface.</summary>
 	/// <param name="syskind">The target operating system for which to create a type library.</param>
@@ -564,7 +566,8 @@ public static partial class OleAut32
 	// *ptinfo, DISPID dispidMember, WORD wFlags, DISPPARAMS *pparams, VARIANT *pvarResult, EXCEPINFO *pexcepinfo, UINT *puArgErr );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "69b89e5c-2a04-4a6a-beb0-18e68f8866ac")]
-	public static extern HRESULT DispInvoke(IntPtr _this, ITypeInfo ptinfo, int dispidMember, DispInvokeFlags wFlags, in DISPPARAMS pparams, out object pvarResult, IntPtr pexcepinfo, out uint puArgErr);
+	public static extern HRESULT DispInvoke(IntPtr _this, ITypeInfo ptinfo, int dispidMember, DispInvokeFlags wFlags, in DISPPARAMS pparams,
+		[MarshalAs(UnmanagedType.Struct)] out object pvarResult, out EXCEPINFO pexcepinfo, out uint puArgErr);
 
 	/// <summary>
 	/// Automatically calls member functions on an interface, given the type information for the interface. You can describe an
@@ -699,7 +702,8 @@ public static partial class OleAut32
 	// *ptinfo, DISPID dispidMember, WORD wFlags, DISPPARAMS *pparams, VARIANT *pvarResult, EXCEPINFO *pexcepinfo, UINT *puArgErr );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "69b89e5c-2a04-4a6a-beb0-18e68f8866ac")]
-	public static extern HRESULT DispInvoke(IntPtr _this, ITypeInfo ptinfo, int dispidMember, DispInvokeFlags wFlags, in DISPPARAMS pparams, [Optional] IntPtr pvarResult, IntPtr pexcepinfo, out uint puArgErr);
+	public static extern HRESULT DispInvoke(IntPtr _this, ITypeInfo ptinfo, int dispidMember, DispInvokeFlags wFlags, in DISPPARAMS pparams,
+		[Optional] IntPtr pvarResult, out EXCEPINFO pexcepinfo, out uint puArgErr);
 
 	/// <summary>Converts the MS-DOS representation of time to the date and time representation stored in a variant.</summary>
 	/// <param name="wDosDate">
@@ -1531,6 +1535,35 @@ public static partial class OleAut32
 	public static extern SafeBSTR SysAllocStringByteLen(byte[] psz, uint len);
 
 	/// <summary>
+	/// Takes an ANSI string as input, and returns a BSTR that contains an ANSI string. Does not perform any ANSI-to-Unicode translation.
+	/// </summary>
+	/// <param name="psz">The string to copy, or NULL to keep the string uninitialized.</param>
+	/// <param name="len">
+	/// The number of bytes to copy. A null character is placed afterwards, allocating a total of len plus the size of <c>OLECHAR</c> bytes.
+	/// </param>
+	/// <returns>A copy of the string, or NULL if there is insufficient memory to complete the operation.</returns>
+	/// <remarks>
+	/// <para>
+	/// This function is provided to create BSTRs that contain binary data. You can use this type of BSTR only in situations where it
+	/// will not be translated from ANSI to Unicode, or vice versa.
+	/// </para>
+	/// <para>
+	/// For example, do not use these BSTRs between a 16-bit and a 32-bit application running on a 32-bit Windows system. The OLE 16-bit
+	/// to 32-bit (and 32-bit to 16-bit) interoperability layer will translate the BSTR and corrupt the binary data. The preferred
+	/// method of passing binary data is to use a SAFEARRAY of VT_UI1, which will not be translated by OLE.
+	/// </para>
+	/// <para>
+	/// If psz is Null, a string of the requested length is allocated, but not initialized. The string psz can contain embedded null
+	/// characters, and does not need to end with a Null. Free the returned string later with SysFreeString.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-sysallocstringbytelen BSTR SysAllocStringByteLen( LPCSTR
+	// psz, UINT len );
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("oleauto.h", MSDNShortId = "e7f49441-eff1-4c00-b61f-8522c4e250ef")]
+	public static extern SafeBSTR SysAllocStringByteLen([MarshalAs(UnmanagedType.LPStr), Optional] string? psz, uint len);
+
+	/// <summary>
 	/// Allocates a new string, copies the specified number of characters from the passed string, and appends a null-terminating character.
 	/// </summary>
 	/// <param name="strIn">The input string.</param>
@@ -1559,7 +1592,7 @@ public static partial class OleAut32
 	// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-sysfreestring void SysFreeString( BSTR bstrString );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "8f230ee3-5f6e-4cb9-a910-9c90b754dcd3")]
-	public static extern void SysFreeString(IntPtr bstrString);
+	public static extern void SysFreeString([In, Optional] IntPtr bstrString);
 
 	/// <summary>
 	/// Reallocates a previously allocated string to be the size of a second string and copies the second string into the reallocated memory.

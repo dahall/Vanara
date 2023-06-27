@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -100,56 +101,46 @@ public static partial class OleAut32
 	public static extern HRESULT SafeArrayAccessData(SafeSAFEARRAY psa, out IntPtr ppvData);
 
 	/// <summary>
+	/// <note type="note">You should only call <c>SafeArrayAddRef</c> if you are implementing a scripting engine that needs to guard against
+	/// running potentially malicious scripts.</note>
 	/// <para>
-	/// The safe array for which the pinning reference count of the descriptor should increase. While that count remains greater than 0,
-	/// the memory for the descriptor is prevented from being freed by calls to the SafeArrayDestroy or SafeArrayDestroyDescriptor functions.
-	/// </para>
-	/// <para>
-	/// Returns the safe array data for which a pinning reference was added, if <c>SafeArrayAddRef</c> also added a pinning reference
-	/// for the safe array data. This parameter is NULL if <c>SafeArrayAddRef</c> did not add a pinning reference for the safe array
-	/// data. <c>SafeArrayAddRef</c> does not add a pinning reference for the safe array data if that safe array data was not
-	/// dynamically allocated.
+	/// Increases the pinning reference count of the descriptor for the specified safe array by one, and may increase the pinning reference
+	/// count of the data for the specified safe array by one if that data was dynamically allocated, as determined by the descriptor of the
+	/// safe array.
 	/// </para>
 	/// </summary>
 	/// <param name="psa">
-	/// <para>
-	/// The safe array for which the pinning reference count of the descriptor should increase. While that count remains greater than 0,
-	/// the memory for the descriptor is prevented from being freed by calls to the SafeArrayDestroy or SafeArrayDestroyDescriptor functions.
-	/// </para>
+	/// The safe array for which the pinning reference count of the descriptor should increase. While that count remains greater than 0, the
+	/// memory for the descriptor is prevented from being freed by calls to the SafeArrayDestroy or SafeArrayDestroyDescriptor functions.
 	/// </param>
 	/// <param name="ppDataToRelease">
-	/// <para>
-	/// Returns the safe array data for which a pinning reference was added, if <c>SafeArrayAddRef</c> also added a pinning reference
-	/// for the safe array data. This parameter is NULL if <c>SafeArrayAddRef</c> did not add a pinning reference for the safe array
-	/// data. <c>SafeArrayAddRef</c> does not add a pinning reference for the safe array data if that safe array data was not
-	/// dynamically allocated.
-	/// </para>
+	/// Returns the safe array data for which a pinning reference was added, if <c>SafeArrayAddRef</c> also added a pinning reference for the
+	/// safe array data. This parameter is NULL if <c>SafeArrayAddRef</c> did not add a pinning reference for the safe array data.
+	/// <c>SafeArrayAddRef</c> does not add a pinning reference for the safe array data if that safe array data was not dynamically allocated.
 	/// </param>
-	/// <returns>
-	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
-	/// </returns>
+	/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 	/// <remarks>
 	/// <para>
-	/// Safe arrays have not traditionally had a reference count. All existing usage of safe arrays will continue to work with no
-	/// changes. The <c>SafeArrayAddRef</c>, SafeArrayReleaseData, SafeArrayReleaseDescriptor functions add the ability to use reference
-	/// counting to pin the safe array into memory before calling from an untrusted script into an IDispatch method that may not expect
-	/// the script to free that memory before the method returns, so that the script cannot force the code for that method into
-	/// accessing memory that has been freed. After such a method safely returns, the pinning references should be released. You can
-	/// release the pinning references by calling the following functions:
+	/// Safe arrays have not traditionally had a reference count. All existing usage of safe arrays will continue to work with no changes.
+	/// The <c>SafeArrayAddRef</c>, SafeArrayReleaseData, SafeArrayReleaseDescriptor functions add the ability to use reference counting to
+	/// pin the safe array into memory before calling from an untrusted script into an IDispatch method that may not expect the script to
+	/// free that memory before the method returns, so that the script cannot force the code for that method into accessing memory that has
+	/// been freed. After such a method safely returns, the pinning references should be released. You can release the pinning references by
+	/// calling the following functions:
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
-	/// <term>SafeArrayReleaseData, for the data that the ppDataToRelease parameter points to, if it is not null.</term>
+	/// <description>SafeArrayReleaseData, for the data that the <c>ppDataToRelease</c> parameter points to, if it is not null.</description>
 	/// </item>
 	/// <item>
-	/// <term>SafeArrayReleaseDescriptor, for the descriptor that the psa parameter specifies.</term>
+	/// <description>SafeArrayReleaseDescriptor, for the descriptor that the <c>psa</c> parameter specifies.</description>
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleauto/nf-oleauto-safearrayaddref HRESULT SafeArrayAddRef( SAFEARRAY *psa,
-	// PVOID *ppDataToRelease );
+	// https://learn.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-safearrayaddref
+	// HRESULT SafeArrayAddRef( [in] SAFEARRAY *psa, [out] PVOID *ppDataToRelease );
+	[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.SafeArrayAddRef")]
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("oleauto.h", MSDNShortId = "0745D2E7-447E-4688-ADCF-1F889BC55BFB")]
 	public static extern HRESULT SafeArrayAddRef(SafeSAFEARRAY psa, out IntPtr ppDataToRelease);
 
 	/// <summary>
@@ -1818,7 +1809,7 @@ public static partial class OleAut32
 		public IntPtr rgsabound;
 
 		/// <summary>Gets the bounds pointed to by <see cref="rgsabound"/>.</summary>
-		public SAFEARRAYBOUND[] Bounds => rgsabound.ToArray<SAFEARRAYBOUND>(cDims);
+		public readonly SAFEARRAYBOUND[] Bounds => rgsabound.ToArray<SAFEARRAYBOUND>(cDims) ?? new SAFEARRAYBOUND[0];
 	}
 
 	/// <summary>Represents the bounds of one dimension of the array.</summary>
@@ -1865,7 +1856,7 @@ public static partial class OleAut32
 		/// <param name="psa">An array descriptor created by SafeArrayCreate.</param>
 		public SafeArrayScopedAccessData(SafeSAFEARRAY psa)
 		{
-			var hr = SafeArrayAccessData(psa, out ppvData);
+			HRESULT hr = SafeArrayAccessData(psa, out ppvData);
 			hr.ThrowIfFailed();
 			this.psa = psa;
 		}
@@ -1877,7 +1868,7 @@ public static partial class OleAut32
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
 		{
-			SafeArrayUnaccessData(psa);
+			_ = SafeArrayUnaccessData(psa);
 			ppvData = IntPtr.Zero;
 		}
 	}
@@ -1903,7 +1894,7 @@ public static partial class OleAut32
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a safe array that releases a created SAFEARRAY instance at disposal using SafeArrayDestroy.
 	/// </summary>
-	public class SafeSAFEARRAY : SafeHANDLE
+	public class SafeSAFEARRAY : SafeHANDLE, System.Collections.IEnumerable
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeSAFEARRAY"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1921,12 +1912,12 @@ public static partial class OleAut32
 		{
 			get
 			{
-				var len = 0;
+				int len = 0;
 				for (uint d = 1; d <= SafeArrayGetDim(this); d++)
 				{
-					SafeArrayGetLBound(this, d, out var lb);
-					SafeArrayGetUBound(this, d, out var ub);
-					var cnt = ub - lb + 1;
+					_ = SafeArrayGetLBound(this, d, out int lb);
+					_ = SafeArrayGetUBound(this, d, out int ub);
+					int cnt = ub - lb + 1;
 					len = len == 0 ? cnt : len * cnt;
 				}
 				return len;
@@ -1946,7 +1937,7 @@ public static partial class OleAut32
 		/// If FADF_HAVEVARTYPE is set, <c>SafeArrayGetVartype</c> returns the VARTYPE stored in the array descriptor. If FADF_RECORD is
 		/// set, it returns VT_RECORD; if FADF_DISPATCH is set, it returns VT_DISPATCH; and if FADF_UNKNOWN is set, it returns VT_UNKNOWN.
 		/// </remarks>
-		public VARTYPE VarType { get { SafeArrayGetVartype(this, out var vt).ThrowIfFailed(); return vt; } }
+		public VARTYPE VarType { get { SafeArrayGetVartype(this, out VARTYPE vt).ThrowIfFailed(); return vt; } }
 
 		/// <summary>Creates a SAFEARRAY from a .NET array.</summary>
 		/// <param name="array">
@@ -1957,28 +1948,28 @@ public static partial class OleAut32
 		/// <returns>A SafeSAFEARRAY initialize with the values in <paramref name="array"/>.</returns>
 		public static SafeSAFEARRAY CreateFromArray(Array array, VARTYPE elementVarType)
 		{
-			var elemType = array.GetType().GetElementType();
+			Type elemType = array.GetType().GetElementType()!;
 			if (elemType.IsArray) throw new ArgumentException("Input array cannot be jagged.", nameof(array));
 			// Create list of bounds in reverse
-			var bounds = new SAFEARRAYBOUND[array.Rank];
+			SAFEARRAYBOUND[] bounds = new SAFEARRAYBOUND[array.Rank];
 			for (int d = 0; d < bounds.Length; d++)
 				bounds[bounds.Length - d - 1] = new SAFEARRAYBOUND(array.GetUpperBound(d), array.GetLowerBound(d));
 			// Create safe array
-			var sa = SafeArrayCreate(elementVarType, (uint)array.Rank, bounds);
+			SafeSAFEARRAY sa = SafeArrayCreate(elementVarType, (uint)array.Rank, bounds);
 			// Copy values
 			if (elemType == typeof(object))
 			{
 				switch (elementVarType)
 				{
 					case VARTYPE.VT_VARIANT:
-						foreach (var (from, to) in BuildIndexList(bounds))
-							SafeArrayPutElement(sa, to, array.GetValue(from)).ThrowIfFailed();
+						foreach ((int[] from, int[] to) in BuildIndexList(bounds))
+							SafeArrayPutElement(sa, to, array.GetValue(from)!).ThrowIfFailed();
 						break;
 
 					case VARTYPE.VT_DISPATCH:
 					case VARTYPE.VT_UNKNOWN:
-						foreach (var (from, to) in BuildIndexList(bounds))
-							SafeArrayPutElement(sa, to, Marshal.GetIUnknownForObject(array.GetValue(from))).ThrowIfFailed();
+						foreach ((int[] from, int[] to) in BuildIndexList(bounds))
+							SafeArrayPutElement(sa, to, Marshal.GetIUnknownForObject(array.GetValue(from)!)).ThrowIfFailed();
 						break;
 
 					default:
@@ -1991,20 +1982,26 @@ public static partial class OleAut32
 				switch (elementVarType)
 				{
 					case VARTYPE.VT_LPSTR:
-						foreach (var (from, to) in BuildIndexList(bounds))
-							using (var str = new SafeCoTaskMemString(array.GetValue(from).ToString(), CharSet.Ansi))
-								SafeArrayPutElement(sa, to, (IntPtr)str).ThrowIfFailed();
+						foreach ((int[] from, int[] to) in BuildIndexList(bounds))
+						{
+							using SafeCoTaskMemString str = new(array.GetValue(from)!.ToString(), CharSet.Ansi);
+							SafeArrayPutElement(sa, to, (IntPtr)str).ThrowIfFailed();
+						}
+
 						break;
 
 					case VARTYPE.VT_LPWSTR:
-						foreach (var (from, to) in BuildIndexList(bounds))
-							using (var str = new SafeCoTaskMemString(array.GetValue(from).ToString(), CharSet.Unicode))
-								SafeArrayPutElement(sa, to, (IntPtr)str).ThrowIfFailed();
+						foreach ((int[] from, int[] to) in BuildIndexList(bounds))
+						{
+							using SafeCoTaskMemString str = new(array.GetValue(from)!.ToString(), CharSet.Unicode);
+							SafeArrayPutElement(sa, to, (IntPtr)str).ThrowIfFailed();
+						}
+
 						break;
 
 					case VARTYPE.VT_BSTR:
-						foreach (var (from, to) in BuildIndexList(bounds))
-							SafeArrayPutElement(sa, to, array.GetValue(from).ToString()).ThrowIfFailed();
+						foreach ((int[] from, int[] to) in BuildIndexList(bounds))
+							SafeArrayPutElement(sa, to, array.GetValue(from)!.ToString()!).ThrowIfFailed();
 						break;
 
 					default:
@@ -2014,10 +2011,10 @@ public static partial class OleAut32
 			}
 			else if (elemType.IsBlittable())
 			{
-				using var mem = new SafeCoTaskMemHandle(Vanara.Extensions.InteropExtensions.SizeOf(elemType));
-				foreach (var (from, to) in BuildIndexList(bounds))
+				using SafeCoTaskMemHandle mem = new(Vanara.Extensions.InteropExtensions.SizeOf(elemType));
+				foreach ((int[] from, int[] to) in BuildIndexList(bounds))
 				{
-					Marshal.StructureToPtr(array.GetValue(from), mem.DangerousGetHandle(), false);
+					Marshal.StructureToPtr(array.GetValue(from)!, mem.DangerousGetHandle(), false);
 					SafeArrayPutElement(sa, to, (IntPtr)mem).ThrowIfFailed();
 				}
 			}
@@ -2039,7 +2036,7 @@ public static partial class OleAut32
 		/// <returns>The lower bound.</returns>
 		public int GetLowerBound(int dimension)
 		{
-			SafeArrayGetLBound(this, (uint)dimension + 1, out var lb).ThrowIfFailed();
+			SafeArrayGetLBound(this, (uint)dimension + 1, out int lb).ThrowIfFailed();
 			return lb;
 		}
 
@@ -2048,17 +2045,17 @@ public static partial class OleAut32
 		/// <returns>The upper bound.</returns>
 		public int GetUpperBound(int dimension)
 		{
-			SafeArrayGetUBound(this, (uint)dimension + 1, out var ub).ThrowIfFailed();
+			SafeArrayGetUBound(this, (uint)dimension + 1, out int ub).ThrowIfFailed();
 			return ub;
 		}
 
 		/// <summary>Gets the value at the specified position in the one-dimensional Array. The index is specified as a 32-bit integer.</summary>
 		/// <param name="index">A 32-bit integer that represents the position of the Array element to get.</param>
 		/// <returns>The value returned from the specified position in the one-dimensional array.</returns>
-		public object GetValue(int index)
+		public object? GetValue(int index)
 		{
-			using var mem = GetValuePointer(index);
-			return mem.DangerousGetHandle().Convert(mem.Size, VarType.GetCorrespondingType());
+			using SafeCoTaskMemHandle mem = GetValuePointer(index);
+			return mem.DangerousGetHandle().Convert(mem.Size, VarType.GetCorrespondingType() ?? throw new InvalidCastException("Unable to determine output type"));
 		}
 
 		/// <summary>
@@ -2069,10 +2066,10 @@ public static partial class OleAut32
 		/// <para>The order of the indices follows .NET <see cref="Array"/> order and not the backwards ordering imposed by <c>SafeArrayGetElement</c>.</para>
 		/// </param>
 		/// <returns>The value returned from the specified position in the multi-dimensional array.</returns>
-		public object GetValue(params int[] indices)
+		public object? GetValue(params int[] indices)
 		{
-			using var mem = GetValuePointer(indices);
-			return mem.DangerousGetHandle().Convert(mem.Size, VarType.GetCorrespondingType());
+			using SafeCoTaskMemHandle mem = GetValuePointer(indices);
+			return mem.DangerousGetHandle().Convert(mem.Size, VarType.GetCorrespondingType() ?? throw new InvalidCastException("Unable to determine output type"));
 		}
 
 		/// <summary>
@@ -2084,7 +2081,7 @@ public static partial class OleAut32
 		/// <returns>The value returned from the specified position in the one-dimensional array.</returns>
 		public T GetValue<T>(int index) where T : struct
 		{
-			using var mem = GetValuePointer(index);
+			using SafeCoTaskMemHandle mem = GetValuePointer(index);
 			return mem.ToStructure<T>();
 		}
 
@@ -2100,7 +2097,7 @@ public static partial class OleAut32
 		/// <returns>The value returned from the specified position in the multi-dimensional array.</returns>
 		public T GetValue<T>(params int[] indices) where T : struct
 		{
-			using var mem = GetValuePointer(indices);
+			using SafeCoTaskMemHandle mem = GetValuePointer(indices);
 			return mem.ToStructure<T>();
 		}
 
@@ -2112,7 +2109,7 @@ public static partial class OleAut32
 		/// <returns>The handle of the memory returned from the specified position in the one-dimensional array.</returns>
 		public SafeCoTaskMemHandle GetValuePointer(int index)
 		{
-			var mem = new SafeCoTaskMemHandle(SafeArrayGetElemsize(this));
+			SafeCoTaskMemHandle mem = new(SafeArrayGetElemsize(this));
 			SafeArrayGetElement(this, index, mem).ThrowIfFailed();
 			return mem;
 		}
@@ -2129,7 +2126,7 @@ public static partial class OleAut32
 		public SafeCoTaskMemHandle GetValuePointer(params int[] indices)
 		{
 			Array.Reverse(indices);
-			var mem = new SafeCoTaskMemHandle(SafeArrayGetElemsize(this));
+			SafeCoTaskMemHandle mem = new(SafeArrayGetElemsize(this));
 			SafeArrayGetElement(this, indices, mem).ThrowIfFailed();
 			return mem;
 		}
@@ -2216,7 +2213,7 @@ public static partial class OleAut32
 		/// <exception cref="ArgumentException">To take objects, the SAFEARRAY must be for VARIANTS.</exception>
 		public void SetValue<T>(in T value, int index) where T : struct
 		{
-			using var mem = SafeCoTaskMemHandle.CreateFromStructure(value);
+			using SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.CreateFromStructure(value);
 			SafeArrayPutElement(this, index, (IntPtr)mem).ThrowIfFailed();
 		}
 
@@ -2234,7 +2231,7 @@ public static partial class OleAut32
 		public void SetValue<T>(in T value, params int[] indices) where T : struct
 		{
 			Array.Reverse(indices);
-			using var mem = SafeCoTaskMemHandle.CreateFromStructure(value);
+			using SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.CreateFromStructure(value);
 			SafeArrayPutElement(this, indices, (IntPtr)mem).ThrowIfFailed();
 		}
 
@@ -2244,29 +2241,29 @@ public static partial class OleAut32
 		public Array ToArray()
 		{
 			// Determine element type
-			var vt = VarType;
-			var eType = CorrespondingTypeAttribute.GetCorrespondingTypes(vt).FirstOrDefault();
-			if (eType is null && eType != typeof(string) && eType != typeof(object) && !eType.IsValueType)
+			VARTYPE vt = VarType;
+			Type? eType = vt.GetCorrespondingType();
+			if (eType is null || eType != typeof(string) && eType != typeof(object) && !eType.IsValueType)
 				throw new InvalidCastException("Unable to extract a valid type from the SAFEARRAY.");
-			var eTypeVal = Activator.CreateInstance(eType);
+			object eTypeVal = Activator.CreateInstance(eType)!;
 
 			// Get details and build Array instance
-			var dims = Rank;
-			var bounds = new SAFEARRAYBOUND[dims];
+			int dims = Rank;
+			SAFEARRAYBOUND[] bounds = new SAFEARRAYBOUND[dims];
 			for (int i = 1; i <= dims; i++)
 			{
-				SafeArrayGetLBound(this, (uint)i, out var lb);
-				SafeArrayGetUBound(this, (uint)i, out var ub);
+				_ = SafeArrayGetLBound(this, (uint)i, out int lb);
+				_ = SafeArrayGetUBound(this, (uint)i, out int ub);
 				bounds[dims - i] = new SAFEARRAYBOUND(ub, lb);
 			}
-			var ret = Array.CreateInstance(eType, Array.ConvertAll(bounds, b => (int)b.cElements), Array.ConvertAll(bounds, b => b.lLbound));
+			Array ret = Array.CreateInstance(eType, Array.ConvertAll(bounds, b => (int)b.cElements), Array.ConvertAll(bounds, b => b.lLbound));
 
 			// Fill in values
-			using var mem = new SafeCoTaskMemHandle(SafeArrayGetElemsize(this));
-			foreach (var (from, to) in BuildIndexList(bounds))
+			using SafeCoTaskMemHandle mem = new(SafeArrayGetElemsize(this));
+			foreach ((int[] from, int[] to) in BuildIndexList(bounds))
 			{
 				SafeArrayGetElement(this, from, mem).ThrowIfFailed();
-				object val = eTypeVal switch
+				object? val = eTypeVal switch
 				{
 					string when vt == VARTYPE.VT_BSTR => Marshal.PtrToStringBSTR(mem),
 					string when vt == VARTYPE.VT_LPSTR => Marshal.PtrToStringAnsi(mem),
@@ -2330,15 +2327,20 @@ public static partial class OleAut32
 					f[dim] = i;
 					if (dim + 1 == bounds.Length)
 					{
-						var rev = (int[])f.Clone();
+						int[] rev = (int[])f.Clone();
 						Array.Reverse(rev);
 						yield return (rev, (int[])f.Clone());
 					}
 					else
-						foreach (var v in DimRecurse(dim + 1, f))
+					{
+						foreach ((int[] from, int[] to) v in DimRecurse(dim + 1, f))
 							yield return v;
+					}
 				}
 			}
 		}
+
+		/// <inheritdoc/>
+		IEnumerator IEnumerable.GetEnumerator() => ToArray().GetEnumerator();
 	}
 }

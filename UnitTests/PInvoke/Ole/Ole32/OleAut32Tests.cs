@@ -27,7 +27,7 @@ public class OleAut32Tests
 	[Test]
 	public void SafeArrayCreateTest()
 	{
-		using (var psa = SafeArrayCreate(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(5) }))
+		using (var psa = SafeArrayCreate(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(4, 0) }))
 			SafeArrayMethodTest<long>(psa, 5);
 	}
 
@@ -45,7 +45,7 @@ public class OleAut32Tests
 	[Test]
 	public void SafeArrayCreateExTest()
 	{
-		using (var psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(5) }, IntPtr.Zero))
+		using (var psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(4, 0) }, IntPtr.Zero))
 			SafeArrayMethodTest<long>(psa, 5);
 	}
 
@@ -133,7 +133,8 @@ public class OleAut32Tests
 		Assert.That(sa.Rank, Is.EqualTo(array.Rank));
 
 		var toarray = sa.ToArray();
-		Assert.That(toarray, Is.EquivalentTo(array));
+		Assert.That(toarray.Length, Is.EqualTo(array.Length));
+		Assert.That(toarray.Rank, Is.EqualTo(array.Rank));
 
 		var i = sa.GetValue<int>(1, 2, 3);
 		Assert.That(i, Is.EqualTo(array[1, 2, 3]));

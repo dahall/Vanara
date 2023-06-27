@@ -550,7 +550,7 @@ public static partial class PropSys
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject HRESULT CreateObject(
 		// REFCLSID clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
 		[PInvokeData("propsys.h", MSDNShortId = "72c56de7-4c04-4bcf-b6bb-6e41d12b68a3")]
-		void CreateObject(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		void CreateObject(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 	}
 
 	/// <summary>
@@ -599,7 +599,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertystorefactory-getpropertystore HRESULT
 		// GetPropertyStore( GETPROPERTYSTOREFLAGS flags, IUnknown *pUnkFactory, REFIID riid, void **ppv );
-		new void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional, MarshalAs(UnmanagedType.IUnknown)] ICreateObject pUnkFactory, in Guid riid, out IPropertyStore ppv);
+		new void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional, MarshalAs(UnmanagedType.IUnknown)] ICreateObject? pUnkFactory, in Guid riid, out IPropertyStore ppv);
 
 		/// <summary>
 		/// <para>
@@ -1505,7 +1505,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertystorefactory-getpropertystore HRESULT
 		// GetPropertyStore( GETPROPERTYSTOREFLAGS flags, IUnknown *pUnkFactory, REFIID riid, void **ppv );
-		void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional, MarshalAs(UnmanagedType.IUnknown)] ICreateObject pUnkFactory, in Guid riid, out IPropertyStore ppv);
+		void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional, MarshalAs(UnmanagedType.IUnknown)] ICreateObject? pUnkFactory, in Guid riid, out IPropertyStore ppv);
 
 		/// <summary>
 		/// <para>
@@ -2143,7 +2143,7 @@ public static partial class PropSys
 	/// <remarks>This method can be used with GetPropertyStoreWithCreateObject.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject HRESULT CreateObject( REFCLSID
 	// clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
-	public static T CreateObject<T>(this ICreateObject co, in Guid clsid, [In, MarshalAs(UnmanagedType.IUnknown), Optional] object pUnkOuter) where T : class
+	public static T CreateObject<T>(this ICreateObject co, in Guid clsid, [In, MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter) where T : class
 	{
 		co.CreateObject(clsid, pUnkOuter, typeof(T).GUID, out var ppv);
 		return (T)ppv;
@@ -2166,7 +2166,7 @@ public static class PSExtensions
 	/// <param name="ps">The <see cref="PropSys.IPropertyStore"/> instance from which to request the value.</param>
 	/// <param name="pkey">The key whose value to retrieve.</param>
 	/// <returns>An object with the property data or <see langword="null"/> if <paramref name="pkey"/> was not found.</returns>
-	public static object GetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey)
+	public static object? GetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey)
 	{
 		using var pv = new PROPVARIANT();
 		ps.GetValue(pkey, pv);
@@ -2181,7 +2181,7 @@ public static class PSExtensions
 	/// <param name="commit">
 	/// If <see langword="true"/>, the <see cref="PropSys.IPropertyStore.Commit"/> method is called after setting the value.
 	/// </param>
-	public static void SetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey, object value, bool commit = true)
+	public static void SetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey, object? value, bool commit = true)
 	{
 		using var pv = new PROPVARIANT(value);
 		ps.SetValue(pkey, pv);

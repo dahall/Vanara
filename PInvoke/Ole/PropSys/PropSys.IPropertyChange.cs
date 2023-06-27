@@ -121,9 +121,9 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propsys.h", MSDNShortId = "bb776491")]
 	public static extern HRESULT PSCreatePropertyChangeArray(
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPERTYKEY[] rgpropkey,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PKA_FLAGS[] rgflags,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPVARIANT[] rgpropvar,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPERTYKEY[]? rgpropkey,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PKA_FLAGS[]? rgflags,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPVARIANT[]? rgpropvar,
 		uint cChanges, in Guid riid, out IPropertyChangeArray ppv);
 
 	/// <summary>Creates a simple property change.</summary>

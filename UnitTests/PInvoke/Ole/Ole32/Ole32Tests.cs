@@ -100,6 +100,6 @@ public class Ole32Tests
 	public void ContextSwitcher()
 	{
 		Assert.AreEqual(CLSID_ContextSwitcher, typeof(ContextSwitcher).GUID);
-		IContextCallback contextCallback = new ContextSwitcher();
+		IContextCallback contextCallback = new();
 	}
 }

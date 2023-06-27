@@ -146,7 +146,7 @@ public static partial class Ole32
 		/// <summary>Initializes a new instance of the <see cref="PROPVARIANT"/> class with an object.</summary>
 		/// <param name="obj">The object to wrap. Based on the object type, it will infer the value type and allocate memory as needed.</param>
 		/// <param name="type">If not VT_EMPTY, this value will override the inferred value type.</param>
-		public PROPVARIANT(object obj, VarEnum type = VarEnum.VT_EMPTY)
+		public PROPVARIANT(object? obj, VarEnum type = VarEnum.VT_EMPTY)
 		{
 			if (obj is null)
 				VarType = type;
@@ -549,13 +549,8 @@ public static partial class Ole32
 			switch (vt)
 			{
 				case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
-					foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
-						Marshal.FreeBSTR(Marshal.ReadIntPtr(ptr));
-					Marshal.FreeCoTaskMem(_blob.pBlobData);
-					break;
 				case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
-					//foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
-					//	Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(ptr));
+				case VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR:
 					Marshal.FreeCoTaskMem(_blob.pBlobData);
 					break;
 				case VARTYPE.VT_VECTOR | VARTYPE.VT_I1:

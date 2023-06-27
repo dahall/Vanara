@@ -2711,7 +2711,7 @@ public static partial class OleAut32
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarFormatFromTokens")]
 	public static extern HRESULT VarFormatFromTokens(in VARIANT pvarIn, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pstrFormat,
-		[In] IntPtr pbTokCur, VarFlags dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut, LCID lcid);
+		[In] byte[] pbTokCur, VarFlags dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut, LCID lcid);
 
 	/// <summary>Formats a variant containing numbers into a string form.</summary>
 	/// <param name="pvarIn">The variant containing the value to format.</param>

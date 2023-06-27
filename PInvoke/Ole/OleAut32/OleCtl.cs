@@ -115,7 +115,7 @@ public static partial class OleAut32
 	// LPFONTDESC lpFontDesc, REFIID riid, LPVOID *lplpvObj );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "9ab384d6-fc21-4152-a0cf-744948f2f72c")]
-	public static extern HRESULT OleCreateFontIndirect(in FONTDESC lpFontDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object lplpvObj);
+	public static extern HRESULT OleCreateFontIndirect(in FONTDESC lpFontDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? lplpvObj);
 
 	/// <summary>Creates a new picture object initialized according to a PICTDESC structure.</summary>
 	/// <param name="lpPictDesc">
@@ -159,7 +159,53 @@ public static partial class OleAut32
 	// OleCreatePictureIndirect( LPPICTDESC lpPictDesc, REFIID riid, BOOL fOwn, LPVOID *lplpvObj );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "fb021348-07d4-4974-a71e-abb1b8d760c4")]
-	public static extern HRESULT OleCreatePictureIndirect(in PICTDESC lpPictDesc, in Guid riid, [MarshalAs(UnmanagedType.Bool)] bool fOwn, [MarshalAs(UnmanagedType.Interface)] out object lplpvObj);
+	public static extern HRESULT OleCreatePictureIndirect(in PICTDESC lpPictDesc, in Guid riid, [MarshalAs(UnmanagedType.Bool)] bool fOwn,
+		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? lplpvObj);
+
+	/// <summary>Creates a new picture object initialized according to a PICTDESC structure.</summary>
+	/// <param name="lpPictDesc">
+	/// Pointer to a caller-allocated structure containing the initial state of the picture. The specified structure can be <c>NULL</c>
+	/// to create an uninitialized object, in the event the picture needs to initialize via IPersistStream::Load.
+	/// </param>
+	/// <param name="riid">Reference to the identifier of the interface describing the type of interface pointer to return in lplpvObj.</param>
+	/// <param name="fOwn">
+	/// If <c>TRUE</c>, the picture object is to destroy its picture when the object is destroyed. If <c>FALSE</c>, the caller is
+	/// responsible for destroying the picture.
+	/// </param>
+	/// <param name="lplpvObj">
+	/// Address of pointer variable that receives the interface pointer requested in riid. Upon successful return, this parameter
+	/// contains the requested interface pointer on the newly created object. If the call is successful, the caller is responsible for
+	/// calling Release through this interface pointer when the new object is no longer needed. If the call fails, the value is set to <c>NULL</c>.
+	/// </param>
+	/// <returns>
+	/// <para>This function returns S_OK on success. Other possible values include the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>E_NOINTERFACE</term>
+	/// <term>The object does not support the interface specified in riid.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_POINTER</term>
+	/// <term>The address in pPictDesc or lplpvObj is not valid. For example, it may be NULL.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// The fOwn parameter indicates whether the picture is to own the GDI picture handle for the picture it contains, so that the
+	/// picture object will destroy its picture when the object itself is destroyed. The function returns an interface pointer to the
+	/// new picture object specified by the caller in the riid parameter. A QueryInterface is built into this call. The caller is
+	/// responsible for calling Release through the interface pointer returned.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/olectl/nf-olectl-olecreatepictureindirect WINOLECTLAPI
+	// OleCreatePictureIndirect( LPPICTDESC lpPictDesc, REFIID riid, BOOL fOwn, LPVOID *lplpvObj );
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("olectl.h", MSDNShortId = "fb021348-07d4-4974-a71e-abb1b8d760c4")]
+	public static extern HRESULT OleCreatePictureIndirect([In, Optional] IntPtr lpPictDesc, in Guid riid, [MarshalAs(UnmanagedType.Bool)] bool fOwn,
+		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? lplpvObj);
 
 	/// <summary>
 	/// Invokes a new property frame, that is, a property sheet dialog box, whose parent is hwndOwner, where the dialog is positioned at
@@ -332,7 +378,8 @@ public static partial class OleAut32
 	// lpstream, LONG lSize, BOOL fRunmode, REFIID riid, LPVOID *lplpvObj );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "de1847cd-ecc0-4941-9dbc-a60b8ef0b1c1")]
-	public static extern HRESULT OleLoadPicture(IStream lpstream, int lSize, [MarshalAs(UnmanagedType.Bool)] bool fRunmode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object lplpvObj);
+	public static extern HRESULT OleLoadPicture(IStream lpstream, int lSize, [MarshalAs(UnmanagedType.Bool)] bool fRunmode, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? lplpvObj);
 
 	/// <summary>
 	/// Creates a new picture object and initializes it from the contents of a stream. This is equivalent to calling
@@ -389,7 +436,8 @@ public static partial class OleAut32
 	// lpstream, LONG lSize, BOOL fRunmode, REFIID riid, DWORD xSizeDesired, DWORD ySizeDesired, DWORD dwFlags, LPVOID *lplpvObj );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "c903096f-f15f-4a36-8efc-20cf7102e77d")]
-	public static extern HRESULT OleLoadPictureEx(IStream lpstream, int lSize, [MarshalAs(UnmanagedType.Bool)] bool fRunmode, in Guid riid, uint xSizeDesired, uint ySizeDesired, uint dwFlags, [MarshalAs(UnmanagedType.IUnknown)] out object lplpvObj);
+	public static extern HRESULT OleLoadPictureEx(IStream lpstream, int lSize, [MarshalAs(UnmanagedType.Bool)] bool fRunmode, in Guid riid,
+		uint xSizeDesired, uint ySizeDesired, uint dwFlags, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? lplpvObj);
 
 	/// <summary>Creates an <c>IPictureDisp</c> object from a picture file on disk.</summary>
 	/// <param name="varFileName">The path and name of the picture file to load.</param>
@@ -416,7 +464,7 @@ public static partial class OleAut32
 	// varFileName, LPDISPATCH *lplpdispPicture );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "ecfbf297-88fa-42bf-afa7-f7884be17b15")]
-	public static extern HRESULT OleLoadPictureFile(object varFileName, [MarshalAs(UnmanagedType.Interface)] out object lplpdispPicture);
+	public static extern HRESULT OleLoadPictureFile([MarshalAs(UnmanagedType.Struct)] object varFileName, [MarshalAs(UnmanagedType.IDispatch)] out dynamic lplpdispPicture);
 
 	/// <summary>Loads a picture from a file.</summary>
 	/// <param name="varFileName">The path and name of the picture file to load.</param>
@@ -472,7 +520,7 @@ public static partial class OleAut32
 	// VARIANT varFileName, DWORD xSizeDesired, DWORD ySizeDesired, DWORD dwFlags, LPDISPATCH *lplpdispPicture );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "39a2c814-97f6-4157-8884-8b3f268d3f7f")]
-	public static extern HRESULT OleLoadPictureFileEx(object varFileName, uint xSizeDesired, uint ySizeDesired, LoadPictureFlag dwFlags, [MarshalAs(UnmanagedType.Interface)] out object lplpdispPicture);
+	public static extern HRESULT OleLoadPictureFileEx([MarshalAs(UnmanagedType.Struct)] object varFileName, uint xSizeDesired, uint ySizeDesired, LoadPictureFlag dwFlags, [MarshalAs(UnmanagedType.IDispatch)] out dynamic lplpdispPicture);
 
 	/// <summary>
 	/// Creates a new picture object and initializes it from the contents of a stream. This is equivalent to calling
@@ -519,8 +567,8 @@ public static partial class OleAut32
 	// szURLorPath, LPUNKNOWN punkCaller, DWORD dwReserved, OLE_COLOR clrReserved, REFIID riid, LPVOID *ppvRet );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "08bad900-815a-4b6d-b977-92d5fdd7d9e8")]
-	public static extern HRESULT OleLoadPicturePath([MarshalAs(UnmanagedType.LPWStr)] string szURLorPath, [MarshalAs(UnmanagedType.IUnknown)] object punkCaller,
-		[Optional] uint dwReserved, uint clrReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvRet);
+	public static extern HRESULT OleLoadPicturePath([MarshalAs(UnmanagedType.LPWStr)] string szURLorPath, [MarshalAs(UnmanagedType.IUnknown)] object? punkCaller,
+		[Optional] uint dwReserved, uint clrReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppvRet);
 
 	/// <summary>Saves a picture to a file.</summary>
 	/// <param name="lpdispPicture">Points to the <c>IPictureDisp</c> picture object.</param>
@@ -550,7 +598,7 @@ public static partial class OleAut32
 	// LPDISPATCH lpdispPicture, BSTR bstrFileName );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "ac46d390-9e08-4f79-a621-60ea75f4acff")]
-	public static extern HRESULT OleSavePictureFile([MarshalAs(UnmanagedType.Interface)] object lpdispPicture, [MarshalAs(UnmanagedType.BStr)] string bstrFileName);
+	public static extern HRESULT OleSavePictureFile([In, MarshalAs(UnmanagedType.Interface)] object lpdispPicture, [MarshalAs(UnmanagedType.BStr)] string bstrFileName);
 
 	/// <summary>Converts an <c>OLE_COLOR</c> type to a <c>COLORREF</c>.</summary>
 	/// <param name="clr">The OLE color to be converted into a <c>COLORREF</c>.</param>

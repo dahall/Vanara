@@ -2087,7 +2087,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-iwiadevmgr-selectdevicedlg HRESULT SelectDeviceDlg( HWND
 		// hwndParent, LONG lDeviceType, LONG lFlags, BSTR *pbstrDeviceID, IWiaItem **ppItemRoot );
 		[PreserveSig]
-		HRESULT SelectDeviceDlg(HWND hwndParent, int lDeviceType, int lFlags, [MarshalAs(UnmanagedType.BStr)] ref string pbstrDeviceID, out IWiaItem ppItemRoot);
+		HRESULT SelectDeviceDlg(HWND hwndParent, int lDeviceType, int lFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrDeviceID, out IWiaItem ppItemRoot);
 
 		/// <summary>
 		/// The <c>IWiaDevMgr::SelectDeviceDlgID</c> method displays a dialog box that enables the user to select a hardware device for
@@ -2295,7 +2295,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-iwiadevmgr-getimagedlg HRESULT GetImageDlg( HWND
 		// hwndParent, LONG lDeviceType, LONG lFlags, LONG lIntent, IWiaItem *pItemRoot, BSTR bstrFilename, GUID *pguidFormat );
 		[PreserveSig]
-		HRESULT GetImageDlg(HWND hwndParent, int lDeviceType, int lFlags, int lIntent, IWiaItem pItemRoot, [MarshalAs(UnmanagedType.BStr)] string bstrFilename, ref Guid pguidFormat);
+		HRESULT GetImageDlg(HWND hwndParent, int lDeviceType, int lFlags, int lIntent, IWiaItem? pItemRoot, [MarshalAs(UnmanagedType.BStr)] string bstrFilename, ref Guid pguidFormat);
 
 		/// <summary>
 		/// The <c>IWiaDevMgr::RegisterEventCallbackProgram</c> method registers an application to receive device events. It is
@@ -2390,7 +2390,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-iwiadevmgr-registereventcallbackprogram HRESULT
 		// RegisterEventCallbackProgram( LONG lFlags, BSTR bstrDeviceID, const GUID *pEventGUID, BSTR bstrCommandline, BSTR bstrName,
 		// BSTR bstrDescription, BSTR bstrIcon );
-		void RegisterEventCallbackProgram(int lFlags, [MarshalAs(UnmanagedType.BStr)] string bstrDeviceID, in Guid pEventGUID, [MarshalAs(UnmanagedType.BStr)] string bstrCommandline,
+		void RegisterEventCallbackProgram(int lFlags, [MarshalAs(UnmanagedType.BStr)] string? bstrDeviceID, in Guid pEventGUID, [MarshalAs(UnmanagedType.BStr)] string bstrCommandline,
 			[MarshalAs(UnmanagedType.BStr)] string bstrName, [MarshalAs(UnmanagedType.BStr)] string bstrDescription, [MarshalAs(UnmanagedType.BStr)] string bstrIcon);
 
 		/// <summary>
@@ -3669,7 +3669,7 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-settimes
 		[PreserveSig]
-		HRESULT SetTimes(in FILETIME pctime, in FILETIME patime, in FILETIME pmtime);
+		HRESULT SetTimes([In, Optional] PFILETIME? pctime, [In, Optional] PFILETIME? patime, [In, Optional] PFILETIME? pmtime);
 
 		/// <summary>
 		/// <para>
@@ -3951,7 +3951,7 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-iwiapropertystorage-setpropertystream HRESULT
 		// SetPropertyStream( GUID *pCompatibilityId, IStream *pIStream );
-		void SetPropertyStream(in Guid pCompatibilityId, IStream pIStream);
+		void SetPropertyStream(in Guid pCompatibilityId, IStream? pIStream);
 	}
 
 	/// <summary>Frees resources on the server side when called by RPC stub files.</summary>

@@ -2255,6 +2255,101 @@ public static partial class OleAut32
 	[PInvokeData("oleauto.h", MSDNShortId = "f2ef2e5f-e247-4abd-890f-f096d956cf4f")]
 	public static extern HRESULT VariantChangeTypeEx(out VARIANT pvargDest, in VARIANT pvarSrc, LCID lcid, VarChangeFlag wFlags, VARTYPE vt);
 
+	/// <summary>Converts a variant from one type to another, using an LCID.</summary>
+	/// <param name="pvargDest">The destination variant. If this is the same as pvarSrc, the variant will be converted in place.</param>
+	/// <param name="pvarSrc">The variant to convert.</param>
+	/// <param name="lcid">
+	/// The locale identifier. The LCID is useful when the type of the source or destination VARIANTARG is VT_BSTR, VT_DISPATCH, or VT_DATE.
+	/// </param>
+	/// <param name="wFlags">
+	/// <para>Flags.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>VARIANT_NOVALUEPROP</term>
+	/// <term>
+	/// Prevents the function from attempting to coerce an object to a fundamental type by getting the Value property. Applications
+	/// should set this flag only if necessary, because it makes their behavior inconsistent with other applications.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>VARIANT_ALPHABOOL</term>
+	/// <term>Converts a VT_BOOL value to a string containing either "True" or "False".</term>
+	/// </item>
+	/// <item>
+	/// <term>VARIANT_NOUSEROVERRIDE</term>
+	/// <term>For conversions to or from VT_BSTR, passes LOCALE_NOUSEROVERRIDE to the core coercion routines.</term>
+	/// </item>
+	/// <item>
+	/// <term>VARIANT_LOCALBOOL</term>
+	/// <term>For conversions from VT_BOOL to VT_BSTR and back, uses the language specified by the locale in use on the local computer.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="vt">
+	/// The type to convert to. If the return code is S_OK, the <c>vt</c> field of the *pvargDest is guaranteed to be equal to this value.
+	/// </param>
+	/// <returns>
+	/// <para>This function can return one of these values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>S_OK</term>
+	/// <term>Success.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_BADVARTYPE</term>
+	/// <term>The variant type is not a valid type of variant.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_OVERFLOW</term>
+	/// <term>The data pointed to by pvarSrc does not fit in the destination type.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_TYPEMISMATCH</term>
+	/// <term>The argument could not be coerced to the specified type.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One of the arguments is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>Insufficient memory to complete the operation.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>VariantChangeTypeEx</c> function handles coercions between the fundamental types (including numeric-to-string and
+	/// string-to-numeric coercions). A variant that has VT_BYREF set is coerced to a value by obtaining the referenced value. An object
+	/// is coerced to a value by invoking the object's <c>Value</c> property (DISPID_VALUE).
+	/// </para>
+	/// <para>
+	/// Typically, the implementor of IDispatch::Invoke determines which member is being accessed, and then calls VariantChangeType to
+	/// get the value of one or more arguments. For example, if the IDispatch call specifies a SetTitle member that takes one string
+	/// argument, the implementor would call <c>VariantChangeTypeEx</c> to attempt to coerce the argument to VT_BSTR.
+	/// </para>
+	/// <para>
+	/// If <c>VariantChangeTypeEx</c> does not return an error, the argument could then be obtained directly from the <c>bstrVal</c>
+	/// field of the VARIANTARG. If <c>VariantChangeTypeEx</c> returns DISP_E_TYPEMISMATCH, the implementor would set *puArgErr to 0
+	/// (indicating the argument in error) and return DISP_E_TYPEMISMATCH from IDispatch::Invoke.
+	/// </para>
+	/// <para>Arrays of one type cannot be converted to arrays of another type with this function.</para>
+	/// <para><c>Note</c> The type of a VARIANTARG should not be changed in the rgvarg array in place.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-variantchangetypeex HRESULT VariantChangeTypeEx( VARIANTARG
+	// *pvargDest, const VARIANTARG *pvarSrc, LCID lcid, USHORT wFlags, VARTYPE vt );
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("oleauto.h", MSDNShortId = "f2ef2e5f-e247-4abd-890f-f096d956cf4f")]
+	public static extern HRESULT VariantChangeTypeEx([MarshalAs(UnmanagedType.Struct)] out object pvargDest, [MarshalAs(UnmanagedType.Struct)] in object pvarSrc, LCID lcid, VarChangeFlag wFlags, VARTYPE vt);
+
 	/// <summary>Frees the destination variant and makes a copy of the source variant.</summary>
 	/// <param name="pvargDest">The destination variant.</param>
 	/// <param name="pvargSrc">The source variant.</param>
@@ -2415,7 +2510,113 @@ public static partial class OleAut32
 	// const VARIANTARG *pvargSrc );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
-	public static extern HRESULT VariantCopyInd(out VARIANT pvarDest, [In] object pvargSrc);
+	public static extern HRESULT VariantCopyInd(out VARIANT pvarDest, [MarshalAs(UnmanagedType.Struct)] in object pvargSrc);
+
+	/// <summary>
+	/// Frees the destination variant and makes a copy of the source variant, performing the necessary indirection if the source is
+	/// specified to be VT_BYREF.
+	/// </summary>
+	/// <param name="pvarDest">The destination variant.</param>
+	/// <param name="pvargSrc">The source variant.</param>
+	/// <returns>
+	/// <para>This function can return one of these values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>S_OK</term>
+	/// <term>Success.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_ARRAYISLOCKED</term>
+	/// <term>The variant contains an array that is locked.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_BADVARTYPE</term>
+	/// <term>The variant type is not a valid type of variant.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One of the arguments is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>Insufficient memory to complete the operation.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This function is useful when a copy of a variant is needed, and to guarantee that it is not VT_BYREF, such as when handling
+	/// arguments in an implementation of IDispatch::Invoke.
+	/// </para>
+	/// <para>
+	/// For example, if the source is a (VT_BYREF | VT_I2), the destination will be a BYVAL | VT_I2. The same is true for all legal
+	/// VT_BYREF combinations, including VT_VARIANT.
+	/// </para>
+	/// <para>If pvargSrc is (VT_BYREF | VT_VARIANT), and the contained variant is VT_BYREF, the contained variant is also dereferenced.</para>
+	/// <para>This function frees any existing contents of pvarDest.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-variantcopyind HRESULT VariantCopyInd( VARIANT *pvarDest,
+	// const VARIANTARG *pvargSrc );
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
+	public static extern HRESULT VariantCopyInd([MarshalAs(UnmanagedType.Struct)] out object pvarDest, in VARIANT pvargSrc);
+
+	/// <summary>
+	/// Frees the destination variant and makes a copy of the source variant, performing the necessary indirection if the source is
+	/// specified to be VT_BYREF.
+	/// </summary>
+	/// <param name="pvarDest">The destination variant.</param>
+	/// <param name="pvargSrc">The source variant.</param>
+	/// <returns>
+	/// <para>This function can return one of these values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>S_OK</term>
+	/// <term>Success.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_ARRAYISLOCKED</term>
+	/// <term>The variant contains an array that is locked.</term>
+	/// </item>
+	/// <item>
+	/// <term>DISP_E_BADVARTYPE</term>
+	/// <term>The variant type is not a valid type of variant.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One of the arguments is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>Insufficient memory to complete the operation.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This function is useful when a copy of a variant is needed, and to guarantee that it is not VT_BYREF, such as when handling
+	/// arguments in an implementation of IDispatch::Invoke.
+	/// </para>
+	/// <para>
+	/// For example, if the source is a (VT_BYREF | VT_I2), the destination will be a BYVAL | VT_I2. The same is true for all legal
+	/// VT_BYREF combinations, including VT_VARIANT.
+	/// </para>
+	/// <para>If pvargSrc is (VT_BYREF | VT_VARIANT), and the contained variant is VT_BYREF, the contained variant is also dereferenced.</para>
+	/// <para>This function frees any existing contents of pvarDest.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-variantcopyind HRESULT VariantCopyInd( VARIANT *pvarDest,
+	// const VARIANTARG *pvargSrc );
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
+	public static extern HRESULT VariantCopyInd([MarshalAs(UnmanagedType.Struct)] out object pvarDest, [In, MarshalAs(UnmanagedType.Struct)] in object pvargSrc);
 
 	/// <summary>Initializes a variant.</summary>
 	/// <param name="pvarg">The variant to initialize.</param>
@@ -2924,7 +3125,7 @@ public static partial class OleAut32
 	[PInvokeData("oleauto.h", MSDNShortId = "395cc5fe-8694-47a9-8e92-1768c300ba7e")]
 	public static extern HRESULT VarSub(in VARIANT pvarLeft, in VARIANT pvarRight, out VARIANT pvarResult);
 
-	/// <summary>Parses the actual format string into a series of tokens which can be used to format variants using VarFormatFromTokens.</summary>
+	/// <summary>Parses the actual format string into a series of tokens which can be used to format variants using <see cref="VarFormatFromTokens"/>.</summary>
 	/// <param name="pstrFormat">The format string. For example "mm-dd-yy".</param>
 	/// <param name="rgbTok">The destination token buffer.</param>
 	/// <param name="cbTok">The size of the destination token buffer.</param>
@@ -3030,7 +3231,8 @@ public static partial class OleAut32
 	// LPOLESTR pstrFormat, LPBYTE rgbTok, int cbTok, int iFirstDay, int iFirstWeek, LCID lcid, int *pcbActual );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "7cec1bc5-39ea-4b47-880b-62584ff23536")]
-	public static extern HRESULT VarTokenizeFormatString([MarshalAs(UnmanagedType.LPWStr), Optional] string? pstrFormat, byte[] rgbTok, int cbTok, int iFirstDay, int iFirstWeek, LCID lcid, IntPtr pcbActual);
+	public static extern HRESULT VarTokenizeFormatString([MarshalAs(UnmanagedType.LPWStr), Optional] string? pstrFormat, byte[] rgbTok, int cbTok,
+		int iFirstDay, int iFirstWeek, LCID lcid, [Optional] IntPtr pcbActual);
 
 	/// <summary>Performs a logical exclusion on two variants.</summary>
 	/// <param name="pvarLeft">The first variant.</param>
@@ -3115,7 +3317,7 @@ public static partial class OleAut32
 		[FieldOffset(0)] public decimal decVal;
 
 		[StructLayout(LayoutKind.Sequential)]
-		private struct Record
+		private readonly struct Record
 		{
 			private readonly IntPtr _record;
 			private readonly IntPtr _recordInfo;
@@ -3125,8 +3327,16 @@ public static partial class OleAut32
 		/// <param name="o">An object value.</param>
 		public VARIANT(object o)
 		{
-			VariantCopyInd(out var v, o).ThrowIfFailed();
+			VariantCopyInd(out VARIANT v, o).ThrowIfFailed();
 			this = v;
+		}
+
+		/// <summary>Performs a conversion from <see cref="VARIANT"/> to <see cref="System.Object"/>.</summary>
+		/// <returns>The result of the conversion.</returns>
+		public readonly object ToObject()
+		{
+			VariantCopyInd(out object o, this).ThrowIfFailed();
+			return o;
 		}
 	}
 }
