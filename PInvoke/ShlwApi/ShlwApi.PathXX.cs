@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -48,7 +49,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathaddbackslasha LPSTR PathAddBackslashA( LPSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "27d8aec7-8b00-412a-9a42-8ce27e262781")]
-	public static extern IntPtr PathAddBackslash(StringBuilder pszPath);
+	public static extern StrPtrAuto PathAddBackslash(StringBuilder pszPath);
 
 	/// <summary>
 	/// <para>Adds a file name extension to a path string.</para>
@@ -83,7 +84,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2c113d11-11d5-4362-bad5-c859d65aca2a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathAddExtension(StringBuilder pszPath, string pszExt);
+	public static extern bool PathAddExtension(StringBuilder? pszPath, string? pszExt);
 
 	/// <summary>
 	/// <para>Appends one path to the end of another.</para>
@@ -144,7 +145,7 @@ public static partial class ShlwApi
 	// iDrive );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "0a6895bd-54cf-499c-9057-f2d721bce5d9")]
-	public static extern IntPtr PathBuildRoot(StringBuilder pszRoot, int iDrive);
+	public static extern StrPtrAuto PathBuildRoot(StringBuilder pszRoot, int iDrive);
 
 	/// <summary>
 	/// <para>Simplifies a path by removing navigation elements such as "." and ".." to produce a direct, well-formed path.</para>
@@ -220,7 +221,7 @@ public static partial class ShlwApi
 	// pszDir, LPCSTR pszFile );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "ed03334b-f688-4993-9685-092135ca29c9")]
-	public static extern IntPtr PathCombine(StringBuilder pszDest, string pszDir, string pszFile);
+	public static extern StrPtrAuto PathCombine(StringBuilder pszDest, [Optional] string? pszDir, [Optional] string? pszFile);
 
 	/// <summary>
 	/// <para>Compares two paths to determine if they share a common prefix. A prefix is one of these types: "C:\", ".", "..", "..\".</para>
@@ -282,7 +283,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b8184c98-1f86-4714-baf8-af4ef3e71cf2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathCompactPath(HDC hDC, StringBuilder pszPath, uint dx);
+	public static extern bool PathCompactPath([Optional] HDC hDC, StringBuilder pszPath, uint dx);
 
 	/// <summary>
 	/// <para>Truncates a path to fit within a certain number of characters by replacing path components with ellipses.</para>
@@ -434,7 +435,7 @@ public static partial class ShlwApi
 	// pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "afebd4b7-2685-4b6e-8f8a-d43944dacef5")]
-	public static extern IntPtr PathFindExtension(string pszPath);
+	public static extern StrPtrAuto PathFindExtension(string pszPath);
 
 	/// <summary>
 	/// <para>Searches a path for a file name.</para>
@@ -449,7 +450,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindfilenamea LPCSTR PathFindFileNameA( LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f3824dee-1169-4f89-9844-35aa8a1830c4")]
-	public static extern IntPtr PathFindFileName(string pszPath);
+	public static extern StrPtrAuto PathFindFileName(string pszPath);
 
 	/// <summary>
 	/// <para>Parses a path and returns the portion of that path that follows the first backslash.</para>
@@ -485,7 +486,7 @@ public static partial class ShlwApi
 	// LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2c76b901-dc0e-4f26-93c8-3c59b8f7147d")]
-	public static extern IntPtr PathFindNextComponent(string pszPath);
+	public static extern StrPtrAuto PathFindNextComponent(string pszPath);
 
 	/// <summary>
 	/// <para>Searches for a file.</para>
@@ -551,7 +552,7 @@ public static partial class ShlwApi
 	// pszPath, const LPCSTR *apszSuffix, int iArraySize );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e2285f7d-bb5d-48c5-bdf1-10ca410389f0")]
-	public static extern IntPtr PathFindSuffixArray(string pszPath, string[] apszSuffix, int iArraySize);
+	public static extern StrPtrAuto PathFindSuffixArray(string pszPath, string[] apszSuffix, int iArraySize);
 
 	/// <summary>
 	/// <para>Finds the command line arguments within a given path.</para>
@@ -576,7 +577,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathgetargsa LPCSTR PathGetArgsA( LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "17dfb601-1306-41b6-a504-8bf69ff204c9")]
-	public static extern IntPtr PathGetArgs(string pszPath);
+	public static extern StrPtrAuto PathGetArgs(string pszPath);
 
 	/// <summary>
 	/// <para>Determines the type of character in relation to a path.</para>
@@ -899,7 +900,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "796901a8-1bc1-4fd1-b5b8-acd8f930ff14")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathIsSystemFolder(string pszPath, FileFlagsAndAttributes dwAttrb);
+	public static extern bool PathIsSystemFolder([Optional] string? pszPath, FileFlagsAndAttributes dwAttrb);
 
 	/// <summary>
 	/// <para>Determines if a path string is a valid Universal Naming Convention (UNC) path, as opposed to a path based on a drive letter.</para>
@@ -1248,7 +1249,7 @@ public static partial class ShlwApi
 	// pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "58d13c38-40aa-4aaa-81dc-2b68425f1fe0")]
-	public static extern IntPtr PathRemoveBackslash(StringBuilder pszPath);
+	public static extern StrPtrAuto PathRemoveBackslash(StringBuilder pszPath);
 
 	/// <summary>
 	/// <para>Removes all leading and trailing spaces from a string.</para>
@@ -1396,7 +1397,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathskiproota LPCSTR PathSkipRootA( LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "528a3953-26d7-4fff-be31-9c9788d429ab")]
-	public static extern IntPtr PathSkipRoot(string pszPath);
+	public static extern StrPtrAuto PathSkipRoot(string pszPath);
 
 	/// <summary>
 	/// <para>Removes the path portion of a fully qualified path and file.</para>

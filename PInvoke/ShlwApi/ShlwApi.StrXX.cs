@@ -1238,7 +1238,7 @@ public static partial class ShlwApi
 	// WORD wMatch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "7f1e91ad-aaa0-4449-834e-8e309c88d6b1")]
-	public static extern StrPtrAuto StrRChr(string pszStart, string pszEnd, char wMatch);
+	public static extern StrPtrAuto StrRChr(string pszStart, [Optional] string? pszEnd, char wMatch);
 
 	/// <summary>
 	/// <para>Searches a string for the last occurrence of a specified character. The comparison is not case-sensitive.</para>
@@ -1269,7 +1269,7 @@ public static partial class ShlwApi
 	// WORD wMatch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "3dc39c2a-d621-4f46-b65b-eb8a531e5abe")]
-	public static extern StrPtrAuto StrRChrI(string pszStart, string pszEnd, char wMatch);
+	public static extern StrPtrAuto StrRChrI(string pszStart, [Optional] string? pszEnd, char wMatch);
 
 	/// <summary>
 	/// Accepts a STRRET structure returned by IShellFolder::GetDisplayNameOf that contains or points to a string, and returns that
@@ -1399,7 +1399,7 @@ public static partial class ShlwApi
 	// PCSTR pszSrch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "41057976-6443-40dc-96f7-f2cbd5d494de")]
-	public static extern StrPtrAuto StrRStrI(string pszSource, string pszLast, string pszSrch);
+	public static extern StrPtrAuto StrRStrI(string pszSource, [Optional] string? pszLast, string pszSrch);
 
 	/// <summary>
 	/// <para>Obtains the length of a substring within a string that consists entirely of characters contained in a specified buffer.</para>

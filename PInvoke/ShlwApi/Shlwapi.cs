@@ -1071,8 +1071,8 @@ public static partial class ShlwApi
 	// IConnectionPoint **ppcpOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f0c6051e-cced-4f38-a35d-d4c184d39084")]
-	public static extern HRESULT ConnectToConnectionPoint([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riidEvent,
-		[MarshalAs(UnmanagedType.Bool)] bool fConnect, [In, MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, out IConnectionPoint ppcpOut);
+	public static extern HRESULT ConnectToConnectionPoint([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? punk, in Guid riidEvent,
+		[MarshalAs(UnmanagedType.Bool)] bool fConnect, [In, MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, out IConnectionPoint? ppcpOut);
 
 	/// <summary>
 	/// <para>
@@ -1125,7 +1125,7 @@ public static partial class ShlwApi
 	// IConnectionPoint **ppcpOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f0c6051e-cced-4f38-a35d-d4c184d39084")]
-	public static extern HRESULT ConnectToConnectionPoint([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riidEvent,
+	public static extern HRESULT ConnectToConnectionPoint([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? punk, in Guid riidEvent,
 		[MarshalAs(UnmanagedType.Bool)] bool fConnect, [In, MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, IntPtr ppcpOut = default);
 
 	/// <summary>
@@ -1169,7 +1169,7 @@ public static partial class ShlwApi
 	// pszLanguages, DWORD *pcchLanguages );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "a680a7fd-f980-485d-b52a-eb4d482ebc17")]
-	public static extern HRESULT GetAcceptLanguages(StringBuilder pszLanguages, ref uint pcchLanguages);
+	public static extern HRESULT GetAcceptLanguages(StringBuilder? pszLanguages, ref uint pcchLanguages);
 
 	/// <summary>
 	/// <para>
@@ -1616,11 +1616,9 @@ public static partial class ShlwApi
 	// PIDLIST_RELATIVE *ppidlOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "63b1f842-139b-4558-8105-4986ce592b56")]
-	public static extern HRESULT IStream_ReadPidl(IStream pstm, out IntPtr ppidlOut);
+	public static extern HRESULT IStream_ReadPidl([In] IStream pstm, out IntPtr ppidlOut);
 
-	/// <summary>
-	/// <para>Reads from a stream and writes into a string.</para>
-	/// </summary>
+	/// <summary>Reads from a stream and writes into a string.</summary>
 	/// <param name="pstm">
 	/// <para>Type: <c>IStream*</c></para>
 	/// <para>A pointer to the stream from which to read.</para>
@@ -1637,11 +1635,9 @@ public static partial class ShlwApi
 	// PWSTR *ppsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e3f140c4-4033-4c82-af2c-4a7744461920")]
-	public static extern HRESULT IStream_ReadStr(IStream pstm, [MarshalAs(UnmanagedType.LPWStr)] ref StringBuilder ppsz);
+	public static extern HRESULT IStream_ReadStr([In] IStream pstm, out StrPtrUni ppsz);
 
-	/// <summary>
-	/// <para>Moves the seek position in a specified stream to the beginning of the stream.</para>
-	/// </summary>
+	/// <summary>Moves the seek position in a specified stream to the beginning of the stream.</summary>
 	/// <param name="pstm">
 	/// <para>Type: <c>IStream*</c></para>
 	/// <para>A pointer to the IStream interface of the stream whose position is to be reset.</para>
@@ -1652,13 +1648,11 @@ public static partial class ShlwApi
 	/// Returns <c>S_OK</c> on success or a COM failure code otherwise. See IStream::Seek for further discussion of possible error codes.
 	/// </para>
 	/// </returns>
-	/// <remarks>
-	/// <para>This function calls IStream::Seek to move the stream's seek position to the beginning of the stream.</para>
-	/// </remarks>
+	/// <remarks>This function calls IStream::Seek to move the stream's seek position to the beginning of the stream.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-istream_reset LWSTDAPI IStream_Reset( IStream *pstm );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "1e7a881d-decb-4018-b2e8-e0cba454236d")]
-	public static extern HRESULT IStream_Reset(IStream pstm);
+	public static extern HRESULT IStream_Reset([In] IStream pstm);
 
 	/// <summary>
 	/// <para>Retrieves the size, in bytes, of a specified stream.</para>
@@ -1813,7 +1807,7 @@ public static partial class ShlwApi
 	// **ppunk );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6bb3f9cf-bf28-4f94-8557-56c1952384ec")]
-	public static extern void IUnknown_AtomicRelease([MarshalAs(UnmanagedType.IUnknown)] out object ppunk);
+	public static extern void IUnknown_AtomicRelease([MarshalAs(UnmanagedType.IUnknown)] out object? ppunk);
 
 	/// <summary>
 	/// <para>Calls the specified object's IObjectWithSite::GetSite method.</para>
@@ -1930,7 +1924,8 @@ public static partial class ShlwApi
 	// IUnknown *punk, REFGUID guidService, REFIID riid, void **ppvOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "3e3f3ed0-ad36-40ef-b30c-8c85ff159f21")]
-	public static extern HRESULT IUnknown_QueryService([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvOut);
+	public static extern HRESULT IUnknown_QueryService([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvOut);
 
 	/// <summary>Retrieves an interface for a service from a specified object.</summary>
 	/// <typeparam name="TOut">The type of the desired service interface.</typeparam>
@@ -1960,11 +1955,11 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-iunknown_queryservice LWSTDAPI IUnknown_QueryService(
 	// IUnknown *punk, REFGUID guidService, REFIID riid, void **ppvOut );
 	[PInvokeData("shlwapi.h", MSDNShortId = "3e3f3ed0-ad36-40ef-b30c-8c85ff159f21")]
-	public static TOut IUnknown_QueryService<TOut>(object punk, in Guid guidService, in Guid? riid = null)
+	public static TOut? IUnknown_QueryService<TOut>(object punk, in Guid guidService, in Guid? riid = null)
 	{
 		var iid = riid ?? typeof(TOut).GUID;
 		IUnknown_QueryService(punk, guidService, iid, out var ppvOut).ThrowIfFailed();
-		return (TOut)ppvOut;
+		return (TOut?)ppvOut;
 	}
 
 	/// <summary>
@@ -2005,7 +2000,7 @@ public static partial class ShlwApi
 	// *punk );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b3c4bee2-12cb-483e-9a46-f09d63ae9a2e")]
-	public static extern void IUnknown_Set([MarshalAs(UnmanagedType.IUnknown)] ref object ppunk, [MarshalAs(UnmanagedType.IUnknown)] object punk);
+	public static extern void IUnknown_Set([MarshalAs(UnmanagedType.IUnknown)] ref object ppunk, [In, MarshalAs(UnmanagedType.IUnknown)] object punk);
 
 	/// <summary>
 	/// <para>Sets the specified object's site by calling its IObjectWithSite::SetSite method.</para>
@@ -2141,7 +2136,7 @@ public static partial class ShlwApi
 	// REFIID riid, void **ppv );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "8429778b-bc9c-43f6-8d75-0fb78e36e790")]
-	public static extern HRESULT QISearch(IntPtr that, QITAB[] pqit, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
+	public static extern HRESULT QISearch(IntPtr that, QITAB[] pqit, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -2175,7 +2170,7 @@ public static partial class ShlwApi
 	// DWORD dwSize, DWORD dwProcessId );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "0388b6a0-24d9-48eb-bef2-3a1658d8bb3c")]
-	public static extern IntPtr SHAllocShared(IntPtr pvData, uint dwSize, uint dwProcessId);
+	public static extern IntPtr SHAllocShared([Optional] IntPtr pvData, uint dwSize, uint dwProcessId);
 
 	/// <summary>
 	/// <para>
@@ -2498,7 +2493,7 @@ public static partial class ShlwApi
 	// *pInit, UINT cbInit );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f3ae8241-f3a6-4007-a10f-ff05960c5de8")]
-	public static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
+	public static extern IStream? SHCreateMemStream([Optional] IntPtr pInit, [Optional] uint cbInit);
 
 	/// <summary>
 	/// <para>Creates a halftone palette for the specified device context.</para>
@@ -2532,7 +2527,7 @@ public static partial class ShlwApi
 	// hdc );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "49afb04a-34e3-4696-a046-bc9308ae7adf")]
-	public static extern IntPtr SHCreateShellPalette(HDC hdc);
+	public static extern HPALETTE SHCreateShellPalette([Optional] HDC hdc);
 
 	/// <summary>
 	/// <para>
@@ -2665,7 +2660,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f948f7dd-987d-4c2d-b650-62081133c3f4")]
 	public static extern HRESULT SHCreateStreamOnFileEx(string pszFile, STGM grfMode, FileFlagsAndAttributes dwAttributes,
-		[MarshalAs(UnmanagedType.Bool)] bool fCreate, [Optional] IStream pstmTemplate, out IStream ppstm);
+		[MarshalAs(UnmanagedType.Bool)] bool fCreate, [Optional] IStream? pstmTemplate, out IStream ppstm);
 
 	/// <summary>
 	/// <para>Creates a thread.</para>
@@ -2716,7 +2711,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2140e396-29cd-4665-b684-337170570b73")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SHCreateThread(ThreadProc pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, ThreadProc pfnCallback);
+	public static extern bool SHCreateThread(ThreadProc pfnThreadProc, [Optional] IntPtr pData, SHCT_FLAGS flags, [Optional] ThreadProc? pfnCallback);
 
 	/// <summary>
 	/// <para>Creates a per-thread reference to a Component Object Model (COM) object.</para>
@@ -2811,11 +2806,9 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "22a3a97a-857f-46b8-a2e0-8f3a14f40322")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SHCreateThreadWithHandle(ThreadProc pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, ThreadProc pfnCallback, out SafeHFILE pHandle);
+	public static extern bool SHCreateThreadWithHandle(ThreadProc pfnThreadProc, [Optional] IntPtr pData, SHCT_FLAGS flags, [Optional] ThreadProc? pfnCallback, out SafeHFILE pHandle);
 
-	/// <summary>
-	/// <para>Deletes an empty key.</para>
-	/// </summary>
+	/// <summary>Deletes an empty key.</summary>
 	/// <param name="hkey">
 	/// <para>Type: <c>HKEY</c></para>
 	/// <para>A handle to an open registry key, or one of the following predefined keys:</para>
@@ -2833,8 +2826,8 @@ public static partial class ShlwApi
 	/// <returns>
 	/// <para>Type: <c>LSTATUS</c></para>
 	/// <para>
-	/// Returns <c>ERROR_SUCCESS</c> if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the
-	/// FormatMessage function with the <c>FORMAT_MESSAGE_FROM_SYSTEM</c> flag to retrieve a generic description of the error.
+	/// Returns <c>ERROR_SUCCESS</c> if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the FormatMessage
+	/// function with the <c>FORMAT_MESSAGE_FROM_SYSTEM</c> flag to retrieve a generic description of the error.
 	/// </para>
 	/// </returns>
 	/// <remarks>
@@ -2847,9 +2840,7 @@ public static partial class ShlwApi
 	[PInvokeData("shlwapi.h", MSDNShortId = "6a560bc3-f65e-4b7d-9fbc-b4f2971ce2a9")]
 	public static extern Win32Error SHDeleteEmptyKey(HKEY hkey, string pszSubKey);
 
-	/// <summary>
-	/// <para>Deletes a subkey and all its descendants. This function removes the key and all the key's values from the registry.</para>
-	/// </summary>
+	/// <summary>Deletes a subkey and all its descendants. This function removes the key and all the key's values from the registry.</summary>
 	/// <param name="hkey">
 	/// <para>Type: <c>HKEY</c></para>
 	/// <para>A handle to an open registry key, or one of the following predefined keys:</para>
@@ -2867,22 +2858,18 @@ public static partial class ShlwApi
 	/// <returns>
 	/// <para>Type: <c>LSTATUS</c></para>
 	/// <para>
-	/// Returns <c>ERROR_SUCCESS</c> if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the
-	/// FormatMessage function with the <c>FORMAT_MESSAGE_FROM_SYSTEM</c> flag to retrieve a generic description of the error.
+	/// Returns <c>ERROR_SUCCESS</c> if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the FormatMessage
+	/// function with the <c>FORMAT_MESSAGE_FROM_SYSTEM</c> flag to retrieve a generic description of the error.
 	/// </para>
 	/// </returns>
-	/// <remarks>
-	/// <para>Alternatively, use the RegDeleteKey or RegDeleteTree function.</para>
-	/// </remarks>
+	/// <remarks>Alternatively, use the RegDeleteKey or RegDeleteTree function.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shdeletekeya LSTATUS SHDeleteKeyA( HKEY hkey, LPCSTR
 	// pszSubKey );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "3c46db08-52d8-48fa-bda5-3c087908a1d3")]
 	public static extern Win32Error SHDeleteKey(HKEY hkey, string pszSubKey);
 
-	/// <summary>
-	/// <para>Deletes a named value from the specified registry key.</para>
-	/// </summary>
+	/// <summary>Deletes a named value from the specified registry key.</summary>
 	/// <param name="hkey">
 	/// <para>Type: <c>HKEY</c></para>
 	/// <para>A handle to the currently open key, or any of the following predefined values.</para>
@@ -2904,8 +2891,8 @@ public static partial class ShlwApi
 	/// <returns>
 	/// <para>Type: <c>LSTATUS</c></para>
 	/// <para>
-	/// Returns ERROR_SUCCESS if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the FormatMessage
-	/// function with the FORMAT_MESSAGE_FROM_SYSTEM flag to retrieve a generic description of the error.
+	/// Returns ERROR_SUCCESS if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the FormatMessage function
+	/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to retrieve a generic description of the error.
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shdeletevaluea LSTATUS SHDeleteValueA( HKEY hkey, LPCSTR
@@ -3015,7 +3002,8 @@ public static partial class ShlwApi
 	// dwIndex, PSTR pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
-	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName,
+		out REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>Enumerates the values of the specified open registry key.</para>
@@ -3077,7 +3065,8 @@ public static partial class ShlwApi
 	// dwIndex, PSTR pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
-	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
+	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName,
+		ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>
@@ -3498,7 +3487,7 @@ public static partial class ShlwApi
 	// SHGetViewStatePropertyBag( PCIDLIST_ABSOLUTE pidl, PCWSTR pszBagName, DWORD dwFlags, REFIID riid, void **ppv );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6852867a-30a5-4d4e-b790-3746104e3ed8")]
-	public static extern HRESULT SHGetViewStatePropertyBag(IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName, SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHGetViewStatePropertyBag([Optional] IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName, SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 	/// <summary>
 	/// <para>
@@ -3839,7 +3828,7 @@ public static partial class ShlwApi
 	// LPCSTR pszText, LPCSTR pszCaption, UINT uType, int iDefault, LPCSTR pszRegVal );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "7e62cde0-2b9f-44d3-afb8-5df71f98453a")]
-	public static extern int SHMessageBoxCheck(HWND hwnd, string pszText, string pszCaption, uint uType, int iDefault, string pszRegVal);
+	public static extern int SHMessageBoxCheck([Optional] HWND hwnd, string pszText, [Optional] string? pszCaption, uint uType, int iDefault, string pszRegVal);
 
 	/// <summary></summary>
 	/// <returns></returns>
@@ -3937,7 +3926,7 @@ public static partial class ShlwApi
 	// pszValue, DWORD *pdwReserved, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "9969acae-5965-40fe-bde9-6de9ddf26bb8")]
-	public static extern Win32Error SHQueryValueEx(HKEY hkey, string pszValue, [Optional] IntPtr pdwReserved, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHQueryValueEx(HKEY hkey, string pszValue, [Optional] IntPtr pdwReserved, out REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>Closes a handle to a user-specific registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4022,7 +4011,7 @@ public static partial class ShlwApi
 	// pszPath, REGSAM samDesired, HUSKEY hRelativeUSKey, PHUSKEY phNewUSKey, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "10e3e31e-bff6-4260-95fa-2d750de16ab3")]
-	public static extern Win32Error SHRegCreateUSKey(string pszPath, uint samDesired, HUSKEY hRelativeUSKey, out SafeHUSKEY phNewUSKey, SHREGSET dwFlags);
+	public static extern Win32Error SHRegCreateUSKey([Optional] string? pszPath, uint samDesired, [Optional] HUSKEY hRelativeUSKey, out SafeHUSKEY phNewUSKey, SHREGSET dwFlags);
 
 	/// <summary>
 	/// <para>Deletes an empty registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4205,7 +4194,8 @@ public static partial class ShlwApi
 	// https://msdn.microsoft.com/en-us/windows/desktop/bb773520
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Shlwapi.h", MSDNShortId = "bb773520")]
-	public static extern Win32Error SHRegEnumUSValue(HUSKEY hUSKey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueNameLen, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData, SHREGENUM_FLAGS enumRegFlags);
+	public static extern Win32Error SHRegEnumUSValue(HUSKEY hUSKey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueNameLen,
+		out REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData, SHREGENUM_FLAGS enumRegFlags);
 
 	/// <summary>
 	/// <para>Retrieves a Boolean value from a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4241,7 +4231,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "afd95ce4-0ced-48ce-814f-1d02d7913be5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SHRegGetBoolUSValue(string pszSubKey, string pszValue, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, [MarshalAs(UnmanagedType.Bool)] bool fDefault);
+	public static extern bool SHRegGetBoolUSValue(string pszSubKey, [Optional] string? pszValue, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, [MarshalAs(UnmanagedType.Bool)] bool fDefault);
 
 	/// <summary>
 	/// <para>[This function is no longer supported.]</para>
@@ -4451,7 +4441,8 @@ public static partial class ShlwApi
 	// dwDefaultDataSize );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "4d3b3bbe-dc2e-40c9-8ff1-0f9d2e323743")]
-	public static extern Win32Error SHRegGetUSValue(string pszSubKey, string pszValue, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
+	public static extern Win32Error SHRegGetUSValue(string pszSubKey, [Optional] string? pszValue, ref REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData,
+		ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, [Optional] IntPtr pvDefaultData, uint dwDefaultDataSize);
 
 	/// <summary>
 	/// <para>Retrieves a value from a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4528,7 +4519,8 @@ public static partial class ShlwApi
 	// dwDefaultDataSize );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "4d3b3bbe-dc2e-40c9-8ff1-0f9d2e323743")]
-	public static extern Win32Error SHRegGetUSValue(string pszSubKey, string pszValue, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, SafeAllocatedMemoryHandle pvDefaultData, uint dwDefaultDataSize);
+	public static extern Win32Error SHRegGetUSValue(string pszSubKey, [Optional] string? pszValue, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData,
+		ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, SafeAllocatedMemoryHandle pvDefaultData, uint dwDefaultDataSize);
 
 	/// <summary>
 	/// <para>
@@ -4672,7 +4664,8 @@ public static partial class ShlwApi
 	// pszSubKey, LPCSTR pszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5650eb4c-40fd-47d7-af76-2688d62d9bca")]
-	public static extern Win32Error SHRegGetValue(HKEY hkey, string pszSubKey, string pszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHRegGetValue(HKEY hkey, [Optional] string? pszSubKey, [Optional] string? pszValue, SRRF srrfFlags,
+		ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>
@@ -4816,7 +4809,8 @@ public static partial class ShlwApi
 	// pszSubKey, LPCSTR pszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5650eb4c-40fd-47d7-af76-2688d62d9bca")]
-	public static extern Win32Error SHRegGetValue(HKEY hkey, string pszSubKey, string pszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
+	public static extern Win32Error SHRegGetValue(HKEY hkey, [Optional] string? pszSubKey, [Optional] string? pszValue, SRRF srrfFlags,
+		ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>[This function is no longer supported.]</para>
@@ -4878,7 +4872,7 @@ public static partial class ShlwApi
 	// SHRegGetValueFromHKCUHKLM( PCWSTR pwszKey, PCWSTR pwszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5c4b13f4-0dd8-476e-9e89-ace23d541389")]
-	public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, string pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, [Optional] string? pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>[This function is no longer supported.]</para>
@@ -4940,7 +4934,7 @@ public static partial class ShlwApi
 	// SHRegGetValueFromHKCUHKLM( PCWSTR pwszKey, PCWSTR pwszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5c4b13f4-0dd8-476e-9e89-ace23d541389")]
-	public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, string pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
+	public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, [Optional] string? pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>Opens a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4981,7 +4975,7 @@ public static partial class ShlwApi
 	// REGSAM samDesired, HUSKEY hRelativeUSKey, PHUSKEY phNewUSKey, BOOL fIgnoreHKCU );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "756430a9-a495-412e-95c3-a93222bc467a")]
-	public static extern Win32Error SHRegOpenUSKey(string pszPath, uint samDesired, HUSKEY hRelativeUSKey, out SafeHUSKEY phNewUSKey, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU);
+	public static extern Win32Error SHRegOpenUSKey(string pszPath, uint samDesired, [Optional] HUSKEY hRelativeUSKey, out SafeHUSKEY phNewUSKey, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU);
 
 	/// <summary>
 	/// <para>Retrieves information about a specified registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -5112,7 +5106,8 @@ public static partial class ShlwApi
 	// dwDefaultDataSize );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "302a51b5-9cf9-46e5-908c-df0d3c31c91c")]
-	public static extern Win32Error SHRegQueryUSValue(HUSKEY hUSKey, string pszValue, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
+	public static extern Win32Error SHRegQueryUSValue(HUSKEY hUSKey, string pszValue, ref REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData,
+		ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, [Optional] IntPtr pvDefaultData, [Optional] uint dwDefaultDataSize);
 
 	/// <summary>
 	/// <para>Takes a file path, replaces folder names with environment strings, and places the resulting string in the registry.</para>
@@ -5410,7 +5405,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shsetthreadref LWSTDAPI SHSetThreadRef( IUnknown *punk );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "1d0d70ca-a0e6-4620-9a01-8d4986990b9c")]
-	public static extern HRESULT SHSetThreadRef([MarshalAs(UnmanagedType.IUnknown)] object punk);
+	public static extern HRESULT SHSetThreadRef([MarshalAs(UnmanagedType.IUnknown)] object? punk);
 
 	/// <summary>
 	/// <para>Sets the value of a registry key.</para>
@@ -5462,7 +5457,7 @@ public static partial class ShlwApi
 	// pszSubKey, LPCSTR pszValue, DWORD dwType, LPCVOID pvData, DWORD cbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6cd5b7fd-8fb9-4c24-9670-20c23ca709bf")]
-	public static extern Win32Error SHSetValue(HKEY hkey, string pszSubKey, string pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData);
+	public static extern Win32Error SHSetValue(HKEY hkey, [Optional] string? pszSubKey, [Optional] string? pszValue, REG_VALUE_TYPE dwType, [Optional] IntPtr pvData, [Optional] uint cbData);
 
 	/// <summary>
 	/// <para>Sets the value of a registry key.</para>
@@ -5514,7 +5509,7 @@ public static partial class ShlwApi
 	// pszSubKey, LPCSTR pszValue, DWORD dwType, LPCVOID pvData, DWORD cbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6cd5b7fd-8fb9-4c24-9670-20c23ca709bf")]
-	public static extern Win32Error SHSetValue(HKEY hkey, string pszSubKey, string pszValue, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle pvData, uint cbData);
+	public static extern Win32Error SHSetValue(HKEY hkey, [Optional] string? pszSubKey, [Optional] string? pszValue, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle pvData, uint cbData);
 
 	/// <summary>
 	/// <para>Checks a bind context to see if it is safe to bind to a particular component object.</para>
@@ -5576,7 +5571,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shstrdupa LWSTDAPI SHStrDupA( LPCSTR psz, LPWSTR *ppwsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6f014fb4-7637-48a8-9bec-d3278c46a6d8")]
-	public static extern HRESULT SHStrDup(string psz, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler), MarshalCookie = "Auto")] out string ppwsz);
+	public static extern HRESULT SHStrDup(string psz, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler), MarshalCookie = "Auto")] out string? ppwsz);
 
 	/// <summary>
 	/// <para>
@@ -5816,17 +5811,17 @@ public static partial class ShlwApi
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HUSKEY : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HUSKEY"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		public HUSKEY(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HUSKEY"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HUSKEY NULL => new HUSKEY(IntPtr.Zero);
+		public static HUSKEY NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
+		public readonly bool IsNull => handle == IntPtr.Zero;
 
 		/// <summary>Performs an explicit conversion from <see cref="HUSKEY"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -5836,7 +5831,7 @@ public static partial class ShlwApi
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HUSKEY"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HUSKEY(IntPtr h) => new HUSKEY(h);
+		public static implicit operator HUSKEY(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -5851,13 +5846,13 @@ public static partial class ShlwApi
 		public static bool operator ==(HUSKEY h1, HUSKEY h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HUSKEY h ? handle == h.handle : false;
+		public override readonly bool Equals(object obj) => obj is HUSKEY h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
 
 		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		public readonly IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>

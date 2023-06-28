@@ -616,7 +616,7 @@ public static partial class ShlwApi
 	// ASSOCKEY key, LPCSTR pszAssoc, LPCSTR pszExtra, HKEY *phkeyOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "9eaeb885-0428-48c3-82a7-5dc21d5015ce")]
-	public static extern HRESULT AssocQueryKey(ASSOCF flags, ASSOCKEY key, string pszAssoc, string pszExtra, out HKEY phkeyOut);
+	public static extern HRESULT AssocQueryKey(ASSOCF flags, ASSOCKEY key, string pszAssoc, [Optional] string? pszExtra, out HKEY phkeyOut);
 
 	/// <summary>
 	/// <para>Searches for and retrieves a file or protocol association-related string from the registry.</para>
@@ -713,5 +713,5 @@ public static partial class ShlwApi
 	// flags, ASSOCSTR str, LPCSTR pszAssoc, LPCSTR pszExtra, LPSTR pszOut, DWORD *pcchOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "026b841d-b831-475e-a788-2c79801e20b8")]
-	public static extern HRESULT AssocQueryString(ASSOCF flags, ASSOCSTR str, string pszAssoc, string pszExtra, StringBuilder pszOut, ref uint pcchOut);
+	public static extern HRESULT AssocQueryString(ASSOCF flags, ASSOCSTR str, string pszAssoc, [Optional] string? pszExtra, StringBuilder? pszOut, ref uint pcchOut);
 }
