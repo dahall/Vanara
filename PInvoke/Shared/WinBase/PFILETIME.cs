@@ -125,6 +125,27 @@ public class PFILETIME : IEquatable<PFILETIME>, IEquatable<FILETIME>, IEquatable
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator PFILETIME?(FILETIME? ft) => ft.HasValue ? new(ft.Value) : null;
 
+	/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="System.Nullable{PFILETIME}"/>.</summary>
+	/// <param name="p">The pointer to memory that has a 16 byte FILETIME instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	/// <exception cref="ArgumentException">Pointer must be to a FILETIME structure.</exception>
+	public static explicit operator PFILETIME?(IntPtr p)
+	{
+		if (p == IntPtr.Zero) return null;
+		try { return new(unchecked((ulong)Marshal.ReadInt64(p))); }
+		catch { throw new ArgumentException(@"Pointer must be to a FILETIME structure.", nameof(p)); }
+	}
+
+	/// <summary>Performs an explicit conversion from <see cref="FILETIME"/>* to <see cref="System.Nullable{PFILETIME}"/>.</summary>
+	/// <param name="p">The pointer to FILETIME instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	/// <exception cref="ArgumentException">Pointer must be to a FILETIME structure.</exception>
+	public static unsafe explicit operator PFILETIME?(FILETIME* p)
+	{
+		if (p is null) return null;
+		return new(*p);
+	}
+
 	/// <inheritdoc/>
 	public int CompareTo(FILETIME other) => ft.CompareTo(other);
 
