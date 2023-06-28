@@ -1519,35 +1519,7 @@ public static partial class Ole32
 	// const FILETIME *pctime, const FILETIME *patime, const FILETIME *pmtime );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "5ade3e7a-a22a-458f-b463-1680893edc15")]
-	public static extern HRESULT StgSetTimes([In, MarshalAs(UnmanagedType.LPWStr)] string lpszName, in FILETIME pctime, in FILETIME patime, in FILETIME pmtime);
-
-	/// <summary>
-	/// The <c>StgSetTimes</c> function sets the creation, access, and modification times of the indicated file, if supported by the
-	/// underlying file system.
-	/// </summary>
-	/// <param name="lpszName">Pointer to the name of the file to be changed.</param>
-	/// <param name="pctime">Pointer to the new value for the creation time.</param>
-	/// <param name="patime">Pointer to the new value for the access time.</param>
-	/// <param name="pmtime">Pointer to the new value for the modification time.</param>
-	/// <returns>
-	/// The <c>StgSetTimes</c> function can also return any file system errors or system errors wrapped in an <c>HRESULT</c>. See Error
-	/// Handling Strategies and Handling Unknown Errors.
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The <c>StgSetTimes</c> function sets the time values for the specified file. Each of the time value parameters can be
-	/// <c>NULL</c>, indicating that no modification should occur.
-	/// </para>
-	/// <para>
-	/// It is possible that one or more of these time values are not supported by the underlying file system. This function sets the
-	/// times that can be set and ignores the rest.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/coml2api/nf-coml2api-stgsettimes HRESULT StgSetTimes( const WCHAR *lpszName,
-	// const FILETIME *pctime, const FILETIME *patime, const FILETIME *pmtime );
-	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("coml2api.h", MSDNShortId = "5ade3e7a-a22a-458f-b463-1680893edc15")]
-	public static extern HRESULT StgSetTimes([In, MarshalAs(UnmanagedType.LPWStr)] string lpszName, [Optional] IntPtr pctime, [Optional] IntPtr patime, [Optional] IntPtr pmtime);
+	public static extern HRESULT StgSetTimes([In, MarshalAs(UnmanagedType.LPWStr)] string lpszName, [Optional] PFILETIME pctime, [Optional] PFILETIME patime, [Optional] PFILETIME pmtime);
 
 	/// <summary>The <c>WriteClassStg</c> function stores the specified class identifier (CLSID) in a storage object.</summary>
 	/// <param name="pStg">IStorage pointer to the storage object that gets a new CLSID.</param>

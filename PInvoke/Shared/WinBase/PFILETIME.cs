@@ -140,11 +140,7 @@ public class PFILETIME : IEquatable<PFILETIME>, IEquatable<FILETIME>, IEquatable
 	/// <param name="p">The pointer to FILETIME instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	/// <exception cref="ArgumentException">Pointer must be to a FILETIME structure.</exception>
-	public static unsafe explicit operator PFILETIME?(FILETIME* p)
-	{
-		if (p is null) return null;
-		return new(*p);
-	}
+	public static unsafe implicit operator PFILETIME?(FILETIME* p) => p is null ? null : new(*p);
 
 	/// <inheritdoc/>
 	public int CompareTo(FILETIME other) => ft.CompareTo(other);
