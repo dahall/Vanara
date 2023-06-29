@@ -2,10 +2,14 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Vanara.PInvoke;
 
 namespace Accessibility;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+/// <summary>
+/// The IAccessibleHandler and all of its exposed members are part of a managed wrapper for the Component Object Model (COM) accessibility interface.
+/// </summary>
 [StructLayout(LayoutKind.Explicit, Size = 4, Pack = 4)]
 public struct __MIDL_IWinTypes_0009
 {
@@ -15,24 +19,51 @@ public struct __MIDL_IWinTypes_0009
 	public int hRemote;
 }
 
+/// <summary>
+/// The IAccessibleHandler and all of its exposed members are part of a managed wrapper for the Component Object Model (COM) accessibility interface.
+/// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct _RemotableHandle
 {
+	/// <summary>
+	/// The IAccessibleHandler and all of its exposed members are part of a managed wrapper for the Component Object Model (COM)
+	/// accessibility interface.
+	/// </summary>
 	public int fContext;
+
+	/// <summary>
+	/// The IAccessibleHandler and all of its exposed members are part of a managed wrapper for the Component Object Model (COM)
+	/// accessibility interface.
+	/// </summary>
 	public __MIDL_IWinTypes_0009 u;
 }
 
+/// <summary>
+/// The AnnoScope and all of its exposed members are part of a managed wrapper for the Component Object Model (COM) accessibility interface.
+/// </summary>
+// https://learn.microsoft.com/en-us/dotnet/api/accessibility.annoscope?view=windowsdesktop-8.0
 public enum AnnoScope
 {
 	ANNO_THIS,
 	ANNO_CONTAINER
 }
 
+/// <summary>
+/// The CAccPropServices and all of its exposed members are part of a managed wrapper for the Component Object Model (COM) IAccPropServices interface.
+/// </summary>
+/// <remarks>For more information, see the Microsoft Active Accessibility documentation.</remarks>
+// https://learn.microsoft.com/en-us/dotnet/api/accessibility.caccpropservices?view=windowsdesktop-7.0
 [ComImport, Guid("6E26E776-04F0-495D-80E4-3330352E3169"), CoClass(typeof(CAccPropServicesClass))]
 public interface CAccPropServices : IAccPropServices
 {
 }
 
+/// <summary>
+/// The CAccPropServicesClass and all of its exposed members are part of a managed wrapper for the Component Object Model (COM)
+/// IAccPropServices interface.
+/// </summary>
+/// <remarks>For more information, see the Microsoft Active Accessibility documentation.</remarks>
+// https://learn.microsoft.com/en-us/dotnet/api/accessibility.caccpropservicesclass?view=windowsdesktop-7.0
 [ComImport, Guid("B5F8350B-0548-48B1-A6EE-88BD00B4A5E7"), ClassInterface(ClassInterfaceType.None)]
 public class CAccPropServicesClass : IAccPropServices, CAccPropServices
 {
@@ -68,9 +99,23 @@ public class CAccPropServicesClass : IAccPropServices, CAccPropServices
 	public virtual extern void SetPropValue([In] ref byte pIDString, [In] uint dwIDStringLen, [In] Guid idProp, [In, MarshalAs(UnmanagedType.Struct)] object var);
 }
 
+/// <summary>Exposes methods and properties that make a user interface element and its children accessible to client applications.</summary>
+// https://learn.microsoft.com/en-us/windows/win32/api/oleacc/nn-oleacc-iaccessible
+[PInvokeData("oleacc.h", MSDNShortId = "NN:oleacc.IAccessible")]
 [ComImport, Guid("618736E0-3C3D-11CF-810C-00AA00389B71"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
 public interface IAccessible
 {
+	/// <summary>
+	/// The <c>IAccessible::get_accParent</c> method retrieves the IDispatch of the object's parent. All objects support this property.
+	/// </summary>
+	/// <returns>
+	/// <para>
+	/// Receives the address of the parent object's IDispatch interface. If no parent exists or if the child cannot access its parent, the
+	/// variable is set to <c>NULL</c>.
+	/// </para>
+	/// </returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/oleacc/nf-oleacc-iaccessible-get_accparent HRESULT get_accParent( [out, retval]
+	// IDispatch **ppdispParent );
 	[DispId(-5000)]
 	object accParent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(-5000)] get; }
 
@@ -145,6 +190,10 @@ public interface IAccessible
 	void put_accValue(object varChild, [In, MarshalAs(UnmanagedType.BStr)] string szValue);
 }
 
+/// <summary>
+/// The IAccessibleHandler and all of its exposed members are part of a managed wrapper for the Component Object Model (COM)
+/// IAccessibleHandler interface.
+/// </summary>
 [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("03022430-ABC4-11D0-BDE2-00AA001A1953")]
 public interface IAccessibleHandler
 {
@@ -152,6 +201,9 @@ public interface IAccessibleHandler
 	void AccessibleObjectFromID([In] int hwnd, [In] int lObjectID, [MarshalAs(UnmanagedType.Interface)] out IAccessible pIAccessible);
 }
 
+/// <summary>Exposes a method that provides a unique identifier for an accessible element.</summary>
+// https://learn.microsoft.com/en-us/windows/win32/api/oleacc/nn-oleacc-iaccidentity
+[PInvokeData("oleacc.h", MSDNShortId = "NN:oleacc.IAccIdentity")]
 [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("7852B78D-1CFD-41C1-A615-9C0C85960B5F")]
 public interface IAccIdentity
 {
@@ -159,6 +211,9 @@ public interface IAccIdentity
 	void GetIdentityString([In] uint dwIDChild, [Out] IntPtr ppIDString, out uint pdwIDStringLen);
 }
 
+/// <summary>Exposes a method that retrieves a property value for an accessible element.</summary>
+// https://learn.microsoft.com/en-us/windows/win32/api/oleacc/nn-oleacc-iaccpropserver
+[PInvokeData("oleacc.h", MSDNShortId = "NN:oleacc.IAccPropServer")]
 [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("76C0DBBB-15E0-4E7B-B61B-20EEEA2001E0")]
 public interface IAccPropServer
 {
@@ -166,6 +221,9 @@ public interface IAccPropServer
 	void GetPropValue([In] ref byte pIDString, [In] uint dwIDStringLen, [In] Guid idProp, [MarshalAs(UnmanagedType.Struct)] out object pvarValue, out int pfHasProp);
 }
 
+/// <summary>Exposes methods for annotating accessible elements and for manipulating identity strings.</summary>
+// https://learn.microsoft.com/en-us/windows/win32/api/oleacc/nn-oleacc-iaccpropservices
+[PInvokeData("oleacc.h", MSDNShortId = "NN:oleacc.IAccPropServices")]
 [ComImport, Guid("6E26E776-04F0-495D-80E4-3330352E3169"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 public interface IAccPropServices
 {
