@@ -196,7 +196,7 @@ public static class PathEx
 	/// </summary>
 	/// <param name="path">The UNC path.</param>
 	/// <returns>On success, the server portion of the UNC path. On failure, <see langword="null"/> is returned.</returns>
-	public static string GetUNCServer(string path) => PathIsUNCEx(path, out var ptr) ? ptr.ToString() : null;
+	public static string? GetUNCServer(string path) => PathIsUNCEx(path, out var ptr) ? ptr.ToString() : null;
 
 	/// <summary>
 	/// Searches a path to determine if it contains a valid prefix of the type passed by <paramref name="prefix"/>. A prefix is one of
@@ -214,7 +214,7 @@ public static class PathEx
 	/// A string with the matching suffix if successful, or <see langword="null"/> if <paramref name="path"/> does not end with one of
 	/// the specified suffixes.
 	/// </returns>
-	public static string HasSuffix(string path, string[] suffixes) => Vanara.Extensions.StringHelper.GetString(PathFindSuffixArray(path, suffixes, suffixes.Length));
+	public static string HasSuffix(string path, string[] suffixes) => PathFindSuffixArray(path, suffixes, suffixes.Length).ToString();
 
 	/// <summary>Compares two paths to determine if they have a common root component.</summary>
 	/// <param name="path1">A string of maximum length MAX_PATH that contains the first path to be compared.</param>
