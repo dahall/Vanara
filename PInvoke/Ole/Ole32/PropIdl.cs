@@ -113,8 +113,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nn-propidl-ienumstatpropsetstg
-		[PInvokeData("propidl.h", MSDNShortId = "0000013B-0000-0000-C000-000000000046")]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0e6d4d92-6738-11cf-9608-00aa00680db4")]
+		[PInvokeData("propidl.h", MSDNShortId = "8d5e658f-312c-4c91-8794-808b2e8dd182")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0000013B-0000-0000-C000-000000000046")]
 		public interface IEnumSTATPROPSETSTG : Vanara.Collections.ICOMEnum<STATPROPSETSTG>
 		{
 			/// <summary>
