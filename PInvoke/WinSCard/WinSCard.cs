@@ -1150,7 +1150,7 @@ public static partial class WinSCard
 	// hContext, [in] LPCVOID pvMem );
 	[DllImport(Lib_Winscard, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardFreeMemory")]
-	public static extern SCARD_RET SCardFreeMemory([In] SCARDCONTEXT hContext, [In] IntPtr pvMem);
+	public static extern SCARD_RET SCardFreeMemory([In, Optional] SCARDCONTEXT hContext, [In] IntPtr pvMem);
 
 	/// <summary>
 	/// The <c>SCardGetAttrib</c> function retrieves the current reader attributes for the given handle. It does not affect the state of the
@@ -1369,6 +1369,447 @@ public static partial class WinSCard
 	public static extern SCARD_RET SCardGetAttrib([In] SCARDHANDLE hCard, [In] uint dwAttrId, [Out] IntPtr pbAttr, ref uint pcbAttrLen);
 
 	/// <summary>
+	/// The <c>SCardGetAttrib</c> function retrieves the current reader attributes for the given handle. It does not affect the state of the
+	/// reader, driver, or card.
+	/// </summary>
+	/// <typeparam name="T">The type of the value to return.</typeparam>
+	/// <param name="hCard">Reference value returned from SCardConnect.</param>
+	/// <param name="dwAttrId">
+	/// <para>
+	/// Identifier for the attribute to get. The following table lists possible values for <c>dwAttrId</c>. These values are read-only. Note
+	/// that vendors may not support all attributes.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>SCARD_ATTR_ATR_STRING</c></term>
+	/// <term>Answer to reset (ATR) string.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CHANNEL_ID</c></term>
+	/// <term><c>DWORD</c> encoded as 0x <c>DDDDCCCC</c>, where <c>DDDD</c> = data channel type and <c>CCCC</c> = channel number:</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CHARACTERISTICS</c></term>
+	/// <term>
+	/// <c>DWORD</c> indicating which mechanical characteristics are supported. If zero, no special characteristics are supported. Note that
+	/// multiple bits can be set: All other values are reserved for future use (RFU).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_BWT</c></term>
+	/// <term>Current block waiting time.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_CLK</c></term>
+	/// <term>Current clock rate, in kHz.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_CWT</c></term>
+	/// <term>Current character waiting time.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_D</c></term>
+	/// <term>Bit rate conversion factor.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_EBC_ENCODING</c></term>
+	/// <term>Current error block control encoding. 0 = longitudinal redundancy check (LRC) 1 = cyclical redundancy check (CRC)</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_F</c></term>
+	/// <term>Clock conversion factor.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_IFSC</c></term>
+	/// <term>Current byte size for information field size card.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_IFSD</c></term>
+	/// <term>Current byte size for information field size device.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_N</c></term>
+	/// <term>Current guard time.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_PROTOCOL_TYPE</c></term>
+	/// <term>
+	/// <c>DWORD</c> encoded as 0x0 <c>rrrpppp</c> where <c>rrr</c> is RFU and should be 0x000. <c>pppp</c> encodes the current protocol
+	/// type. Whichever bit has been set indicates which ISO protocol is currently in use. (For example, if bit zero is set, T=0 protocol is
+	/// in effect.)
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_CURRENT_W</c></term>
+	/// <term>Current work waiting time.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_DEFAULT_CLK</c></term>
+	/// <term>Default clock rate, in kHz.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_DEFAULT_DATA_RATE</c></term>
+	/// <term>Default data rate, in bps.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_DEVICE_FRIENDLY_NAME</c></term>
+	/// <term>Reader's display name.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_DEVICE_IN_USE</c></term>
+	/// <term>Reserved for future use.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_DEVICE_SYSTEM_NAME</c></term>
+	/// <term>Reader's system name.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_DEVICE_UNIT</c></term>
+	/// <term>
+	/// Instance of this vendor's reader attached to the computer. The first instance will be device unit 0, the next will be unit 1 (if it
+	/// is the same brand of reader) and so on. Two different brands of readers will both have zero for this value.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_ICC_INTERFACE_STATUS</c></term>
+	/// <term>Single byte. Zero if smart card electrical contact is not active; nonzero if contact is active.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_ICC_PRESENCE</c></term>
+	/// <term>
+	/// Single byte indicating smart card presence: 0 = not present 1 = card present but not swallowed (applies only if reader supports smart
+	/// card swallowing) 2 = card present (and swallowed if reader supports smart card swallowing) 4 = card confiscated.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_ICC_TYPE_PER_ATR</c></term>
+	/// <term>Single byte indicating smart card type: 0 = unknown type 1 = 7816 Asynchronous 2 = 7816 Synchronous Other values RFU.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_MAX_CLK</c></term>
+	/// <term>Maximum clock rate, in kHz.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_MAX_DATA_RATE</c></term>
+	/// <term>Maximum data rate, in bps.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_MAX_IFSD</c></term>
+	/// <term>Maximum bytes for information file size device.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_POWER_MGMT_SUPPORT</c></term>
+	/// <term>Zero if device does not support power down while smart card is inserted. Nonzero otherwise.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_PROTOCOL_TYPES</c></term>
+	/// <term>
+	/// <c>DWORD</c> encoded as 0x0 <c>rrrpppp</c> where <c>rrr</c> is RFU and should be 0x000. <c>pppp</c> encodes the supported protocol
+	/// types. A '1' in a given bit position indicates support for the associated ISO protocol, so if bits zero and one are set, both T=0 and
+	/// T=1 protocols are supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_VENDOR_IFD_SERIAL_NO</c></term>
+	/// <term>Vendor-supplied interface device serial number.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_VENDOR_IFD_TYPE</c></term>
+	/// <term>Vendor-supplied interface device type (model designation of reader).</term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_VENDOR_IFD_VERSION</c></term>
+	/// <term>
+	/// Vendor-supplied interface device version ( <c>DWORD</c> in the form 0x <c>MMmmbbbb</c> where <c>MM</c> = major version, <c>mm</c> =
+	/// minor version, and <c>bbbb</c> = build number).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>SCARD_ATTR_VENDOR_NAME</c></term>
+	/// <term>Vendor name.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>The attribute whose ID is supplied in <paramref name="dwAttrId"/>.</returns>
+	/// <remarks>
+	/// The <c>SCardGetAttrib</c> function is a direct card access function. For more information on other direct access functions, see
+	/// Direct Card Access Functions.
+	/// </remarks>
+	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardGetAttrib")]
+	public static T SCardGetAttrib<T>([In] SCARDHANDLE hCard, [In] uint dwAttrId) where T : struct
+	{
+		uint len = SCARD_AUTOALLOCATE;
+		IntPtr attrib = IntPtr.Zero;
+		using var pAttrib = new PinnedObject(attrib);
+		var ret = SCardGetAttrib(hCard, dwAttrId, pAttrib, ref len);
+		try
+		{
+			ret.ThrowIfFailed();
+			return len > 0 ? attrib.ToStructure<T>(len)! : default;
+		}
+		finally
+		{
+			SCardFreeMemory(hCard, attrib);
+		}
+	}
+
+	/// <summary>
+	/// The <c>SCardGetAttrib</c> function retrieves the current reader string attributes for the given handle. It does not affect the state of the
+	/// reader, driver, or card.
+	/// </summary>
+	/// <param name="hCard">Reference value returned from SCardConnect.</param>
+	/// <param name="dwAttrId"><para>
+	/// Identifier for the attribute to get. The following table lists possible values for <c>dwAttrId</c>. These values are read-only. Note
+	/// that vendors may not support all attributes.
+	/// </para>
+	/// <list type="table">
+	///   <listheader>
+	///     <term>Value</term>
+	///     <term>Meaning</term>
+	///   </listheader>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_ATR_STRING</c>
+	///     </term>
+	///     <term>Answer to reset (ATR) string.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CHANNEL_ID</c>
+	///     </term>
+	///     <term>
+	///       <c>DWORD</c> encoded as 0x <c>DDDDCCCC</c>, where <c>DDDD</c> = data channel type and <c>CCCC</c> = channel number:</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CHARACTERISTICS</c>
+	///     </term>
+	///     <term>
+	///       <c>DWORD</c> indicating which mechanical characteristics are supported. If zero, no special characteristics are supported. Note that
+	/// multiple bits can be set: All other values are reserved for future use (RFU).
+	/// </term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_BWT</c>
+	///     </term>
+	///     <term>Current block waiting time.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_CLK</c>
+	///     </term>
+	///     <term>Current clock rate, in kHz.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_CWT</c>
+	///     </term>
+	///     <term>Current character waiting time.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_D</c>
+	///     </term>
+	///     <term>Bit rate conversion factor.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_EBC_ENCODING</c>
+	///     </term>
+	///     <term>Current error block control encoding. 0 = longitudinal redundancy check (LRC) 1 = cyclical redundancy check (CRC)</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_F</c>
+	///     </term>
+	///     <term>Clock conversion factor.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_IFSC</c>
+	///     </term>
+	///     <term>Current byte size for information field size card.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_IFSD</c>
+	///     </term>
+	///     <term>Current byte size for information field size device.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_N</c>
+	///     </term>
+	///     <term>Current guard time.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_PROTOCOL_TYPE</c>
+	///     </term>
+	///     <term>
+	///       <c>DWORD</c> encoded as 0x0 <c>rrrpppp</c> where <c>rrr</c> is RFU and should be 0x000. <c>pppp</c> encodes the current protocol
+	/// type. Whichever bit has been set indicates which ISO protocol is currently in use. (For example, if bit zero is set, T=0 protocol is
+	/// in effect.)
+	/// </term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_CURRENT_W</c>
+	///     </term>
+	///     <term>Current work waiting time.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_DEFAULT_CLK</c>
+	///     </term>
+	///     <term>Default clock rate, in kHz.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_DEFAULT_DATA_RATE</c>
+	///     </term>
+	///     <term>Default data rate, in bps.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_DEVICE_FRIENDLY_NAME</c>
+	///     </term>
+	///     <term>Reader's display name.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_DEVICE_IN_USE</c>
+	///     </term>
+	///     <term>Reserved for future use.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_DEVICE_SYSTEM_NAME</c>
+	///     </term>
+	///     <term>Reader's system name.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_DEVICE_UNIT</c>
+	///     </term>
+	///     <term>
+	/// Instance of this vendor's reader attached to the computer. The first instance will be device unit 0, the next will be unit 1 (if it
+	/// is the same brand of reader) and so on. Two different brands of readers will both have zero for this value.
+	/// </term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_ICC_INTERFACE_STATUS</c>
+	///     </term>
+	///     <term>Single byte. Zero if smart card electrical contact is not active; nonzero if contact is active.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_ICC_PRESENCE</c>
+	///     </term>
+	///     <term>
+	/// Single byte indicating smart card presence: 0 = not present 1 = card present but not swallowed (applies only if reader supports smart
+	/// card swallowing) 2 = card present (and swallowed if reader supports smart card swallowing) 4 = card confiscated.
+	/// </term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_ICC_TYPE_PER_ATR</c>
+	///     </term>
+	///     <term>Single byte indicating smart card type: 0 = unknown type 1 = 7816 Asynchronous 2 = 7816 Synchronous Other values RFU.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_MAX_CLK</c>
+	///     </term>
+	///     <term>Maximum clock rate, in kHz.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_MAX_DATA_RATE</c>
+	///     </term>
+	///     <term>Maximum data rate, in bps.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_MAX_IFSD</c>
+	///     </term>
+	///     <term>Maximum bytes for information file size device.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_POWER_MGMT_SUPPORT</c>
+	///     </term>
+	///     <term>Zero if device does not support power down while smart card is inserted. Nonzero otherwise.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_PROTOCOL_TYPES</c>
+	///     </term>
+	///     <term>
+	///       <c>DWORD</c> encoded as 0x0 <c>rrrpppp</c> where <c>rrr</c> is RFU and should be 0x000. <c>pppp</c> encodes the supported protocol
+	/// types. A '1' in a given bit position indicates support for the associated ISO protocol, so if bits zero and one are set, both T=0 and
+	/// T=1 protocols are supported.
+	/// </term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_VENDOR_IFD_SERIAL_NO</c>
+	///     </term>
+	///     <term>Vendor-supplied interface device serial number.</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_VENDOR_IFD_TYPE</c>
+	///     </term>
+	///     <term>Vendor-supplied interface device type (model designation of reader).</term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_VENDOR_IFD_VERSION</c>
+	///     </term>
+	///     <term>
+	/// Vendor-supplied interface device version ( <c>DWORD</c> in the form 0x <c>MMmmbbbb</c> where <c>MM</c> = major version, <c>mm</c> =
+	/// minor version, and <c>bbbb</c> = build number).
+	/// </term>
+	///   </item>
+	///   <item>
+	///     <term>
+	///       <c>SCARD_ATTR_VENDOR_NAME</c>
+	///     </term>
+	///     <term>Vendor name.</term>
+	///   </item>
+	/// </list></param>
+	/// <param name="charSet">The character set for the string.</param>
+	/// <returns>The string attribute whose ID is supplied in <paramref name="dwAttrId" />.</returns>
+	/// <remarks>
+	/// The <c>SCardGetAttrib</c> function is a direct card access function. For more information on other direct access functions, see
+	/// Direct Card Access Functions.
+	/// </remarks>
+	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardGetAttrib")]
+	public static string SCardGetAttribString([In] SCARDHANDLE hCard, [In] uint dwAttrId, CharSet charSet = CharSet.Auto)
+	{
+		uint len = SCARD_AUTOALLOCATE;
+		IntPtr attrib = IntPtr.Zero;
+		using var pAttrib = new PinnedObject(attrib);
+		var ret = SCardGetAttrib(hCard, dwAttrId, pAttrib, ref len);
+		try
+		{
+			ret.ThrowIfFailed();
+			return len == 0 || attrib == IntPtr.Zero ? string.Empty : StringHelper.GetString(attrib, charSet, len)!;
+		}
+		finally
+		{
+			SCardFreeMemory(hCard, attrib);
+		}
+	}
+
+	/// <summary>
 	/// The <c>SCardGetCardTypeProviderName</c> function returns the name of the module (dynamic link library) that contains the provider for
 	/// a given card name and provider type.
 	/// </summary>
@@ -1461,7 +1902,7 @@ public static partial class WinSCard
 	// [in, out] LPDWORD pcchProvider );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardGetCardTypeProviderNameA")]
-	public static extern SCARD_RET SCardGetCardTypeProviderName([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName, [In] SCARD_PROVIDER dwProviderId,
+	public static extern SCARD_RET SCardGetCardTypeProviderName([In, Optional] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName, [In] SCARD_PROVIDER dwProviderId,
 		[Out] StringBuilder szProvider, ref uint pcchProvider);
 
 	/// <summary>
@@ -1638,7 +2079,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardGetReaderDeviceInstanceIdA")]
 	public static extern SCARD_RET SCardGetReaderDeviceInstanceId([In] SCARDCONTEXT hContext, [In, MarshalAs(UnmanagedType.LPTStr)] string szReaderName,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szDeviceInstanceId, ref uint pcchDeviceInstanceId);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szDeviceInstanceId, ref uint pcchDeviceInstanceId);
 
 	/// <summary>
 	/// The <c>SCardGetReaderIcon</c> function gets an icon of the smart card reader for a given reader's name. This function does not affect
@@ -1696,7 +2137,7 @@ public static partial class WinSCard
 	// SCARDCONTEXT hContext, [in] LPCSTR szReaderName, [out] LPBYTE pbIcon, [in, out] LPDWORD pcbIcon );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardGetReaderIconA")]
-	public static extern SCARD_RET SCardGetReaderIcon([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szReaderName, [Out] IntPtr pbIcon, ref uint pcbIcon);
+	public static extern SCARD_RET SCardGetReaderIcon([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szReaderName, [Out, Optional] IntPtr pbIcon, ref uint pcbIcon);
 
 	/// <summary>
 	/// <para>
@@ -1868,7 +2309,7 @@ public static partial class WinSCard
 	public static extern SCARD_RET SCardIntroduceCardType([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName,
 		in Guid pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[]? rgguidInterfaces,
 		[In] uint dwInterfaceCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtr,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtrMask, [In] uint cbAtrLen);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[]? pbAtrMask, [In] uint cbAtrLen);
 
 	/// <summary>
 	/// The <c>SCardIntroduceCardType</c> function introduces a smart card to the smart card subsystem (for the active user) by adding it to
@@ -1949,7 +2390,7 @@ public static partial class WinSCard
 	public static extern SCARD_RET SCardIntroduceCardType([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName,
 		[In, Optional] IntPtr pguidPrimaryProvider, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Guid[]? rgguidInterfaces,
 		[In] uint dwInterfaceCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtr,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[] pbAtrMask, [In] uint cbAtrLen);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] byte[]? pbAtrMask, [In] uint cbAtrLen);
 
 	/// <summary>
 	/// <para>The <c>SCardIntroduceReader</c> function introduces a new name for an existing smart card reader.</para>
@@ -2100,7 +2541,7 @@ public static partial class WinSCard
 	// [in] SCARDCONTEXT hContext, [in] LPCSTR szGroupName );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardIntroduceReaderGroupA")]
-	public static extern SCARD_RET SCardIntroduceReaderGroup([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szGroupName);
+	public static extern SCARD_RET SCardIntroduceReaderGroup([In, Optional] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szGroupName);
 
 	/// <summary>The <c>SCardIsValidContext</c> function determines whether a smart card context handle is valid.</summary>
 	/// <param name="hContext">
@@ -2235,9 +2676,9 @@ public static partial class WinSCard
 	// LPDWORD pcchCards );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListCardsA")]
-	public static extern SCARD_RET SCardListCards([In] SCARDCONTEXT hContext, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? pbAtr,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[]? rgquidInterfaces, [In] uint cguidInterfaceCount,
-		[Out] IntPtr mszCards, ref uint pcchCards);
+	public static extern SCARD_RET SCardListCards([In, Optional] SCARDCONTEXT hContext, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? pbAtr,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[]? rgquidInterfaces, [In, Optional] uint cguidInterfaceCount,
+		[Out, Optional] IntPtr mszCards, ref uint pcchCards);
 
 	/// <summary>
 	/// <para>
@@ -2303,7 +2744,7 @@ public static partial class WinSCard
 	/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> Not applicable.</para>
 	/// </remarks>
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListCardsA")]
-	public static SCARD_RET SCardListCards(SCARDCONTEXT hContext, [Optional] byte[]? pbAtr, [Optional] Guid[]? rgquidInterfaces, out string[] mszCards) =>
+	public static SCARD_RET SCardListCards([In, Optional] SCARDCONTEXT hContext, [Optional] byte[]? pbAtr, [Optional] Guid[]? rgquidInterfaces, out string[] mszCards) =>
 		ListSCardFunc((IntPtr p, ref uint c) => SCardListCards(hContext, pbAtr, rgquidInterfaces, (uint)(rgquidInterfaces?.Length ?? 0), p, ref c), out mszCards);
 
 	/// <summary>
@@ -2374,7 +2815,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListInterfacesA")]
 	public static extern SCARD_RET SCardListInterfaces([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCard,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[] pguidInterfaces, ref uint pcguidInterfaces);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Guid[]? pguidInterfaces, ref uint pcguidInterfaces);
 
 	/// <summary>
 	/// <para>The <c>SCardListInterfaces</c> function provides a list of interfaces supplied by a given card.</para>
@@ -2444,7 +2885,7 @@ public static partial class WinSCard
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListInterfacesA")]
 	public static extern SCARD_RET SCardListInterfaces([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCard,
-		[Out] IntPtr pguidInterfaces, ref uint pcguidInterfaces);
+		[Out, Optional] IntPtr pguidInterfaces, ref uint pcguidInterfaces);
 
 	/// <summary>
 	/// <para>The <c>SCardListInterfaces</c> function provides a list of interfaces supplied by a given card.</para>
@@ -2776,7 +3217,7 @@ public static partial class WinSCard
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersA")]
 	public static extern SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext,
 		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[]? mszGroups,
-		[Out] IntPtr mszReaders, ref uint pcchReaders);
+		[Out, Optional] IntPtr mszReaders, ref uint pcchReaders);
 
 	/// <summary>
 	/// <para>The <c>SCardListReaders</c> function provides the list of readers within a set of named reader groups, eliminating duplicates.</para>
@@ -2911,8 +3352,54 @@ public static partial class WinSCard
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>
-	/// <code> szDeviceInstanceIdcchReaderNameLONG lReturn, lReturn2; LPTSTR pmszReaders = NULL; LPTSTR pReader = NULL;WCHAR DWORD cchReaderName = SCARD_AUTOALLOCATE; // Retrieve the reader’s name from it’s device instance ID // hContext was set by a previous call to SCardEstablishContext. // szDeviceInstanceId was obtained by calling SetupDiGetDeviceInstanceId lReturn = SCardListReadersWithDeviceInstanceId (hContext, szDeviceInstanceId, (LPTSTR)&amp;pmszReaders, &amp;cchReaderName); switch( lReturn ) { case SCARD_E_NO_READERS_AVAILABLE: printf("No readers have the provided device instance ID.\n"); // Take appropriate action. // ... break; case SCARD_S_SUCCESS: // Do something with the multi string of readers. // Output the values. // A double-null terminates the list of values. pReader = pmszReaders; while ( '\0' != *pReader ) { // Display the value. printf("Reader: %S\n", pReader ); // Advance to the next value. pReader = pReader + wcslen((wchar_t *)pReader) + 1; } // Free the memory. lReturn2 = SCardFreeMemory( hContext, pmszReaders ); if ( SCARD_S_SUCCESS != lReturn2 ) printf("Failed SCardFreeMemory\n"); break; default: printf("Failed SCardListReaders\n"); // Take appropriate action. // ... break;</code>
-	/// </para>
+	/// <code language="cpp"><![CDATA[szDeviceInstanceIdcchReaderNameLONG     lReturn, lReturn2;
+	/// 
+	/// LPTSTR   pmszReaders = NULL;
+	/// LPTSTR   pReader = NULL;WCHAR
+	/// DWORD    cchReaderName = SCARD_AUTOALLOCATE;
+	/// 
+	/// // Retrieve the reader’s name from it’s device instance ID
+	/// // hContext was set by a previous call to SCardEstablishContext. 
+	/// 
+	/// // szDeviceInstanceId was obtained by calling SetupDiGetDeviceInstanceId
+	/// lReturn = SCardListReadersWithDeviceInstanceId (hContext,
+	///                          szDeviceInstanceId,
+	///                          (LPTSTR)&pmszReaders,
+	///                          &cchReaderName);
+	/// 
+	/// switch( lReturn )
+	/// {
+	///     case SCARD_E_NO_READERS_AVAILABLE:
+	///         printf("No readers have the provided device instance ID.\n");
+	///         // Take appropriate action.
+	///         // ...
+	///         break;
+	/// 
+	///     case SCARD_S_SUCCESS:
+	///         // Do something with the multi string of readers.
+	///         // Output the values.
+	///         // A double-null terminates the list of values.
+	///         pReader = pmszReaders;
+	///         while ( '\0' != *pReader )
+	///         {
+	///             // Display the value.
+	///             printf("Reader: %S\n", pReader );
+	///             // Advance to the next value.
+	///             pReader = pReader + wcslen((wchar_t *)pReader) + 1;
+	///         }
+	///         // Free the memory.
+	///         lReturn2 = SCardFreeMemory( hContext,
+	///                                    pmszReaders );
+	///         if ( SCARD_S_SUCCESS != lReturn2 )
+	///             printf("Failed SCardFreeMemory\n");
+	///         break;
+	/// 
+	/// default:
+	///         printf("Failed SCardListReaders\n");
+	///         // Take appropriate action.
+	///         // ...
+	///         break;
+	/// ]]></code></para>
 	/// <para>
 	/// <para>Note</para>
 	/// <para>
@@ -3525,7 +4012,7 @@ public static partial class WinSCard
 	// SCardSetCardTypeProviderNameA( [in] SCARDCONTEXT hContext, [in] LPCSTR szCardName, [in] DWORD dwProviderId, [in] LPCSTR szProvider );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardSetCardTypeProviderNameA")]
-	public static extern SCARD_RET SCardSetCardTypeProviderName([In] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName, [In] SCARD_PROVIDER dwProviderId,
+	public static extern SCARD_RET SCardSetCardTypeProviderName([In, Optional] SCARDCONTEXT hContext, [MarshalAs(UnmanagedType.LPTStr)] string szCardName, [In] SCARD_PROVIDER dwProviderId,
 		[MarshalAs(UnmanagedType.LPTStr)] string szProvider);
 
 	/// <summary>
@@ -3881,7 +4368,7 @@ public static partial class WinSCard
 		/// <c>NULL</c>, the default group (Scard$DefaultReaders) is searched.
 		/// </summary>
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")]
-		public string[] lpstrGroupNames;
+		public string[]? lpstrGroupNames;
 
 		/// <summary>The maximum number of bytes (ANSI version) or characters (Unicode version) in the <c>lpstrGroupNames</c> string.</summary>
 		public uint nMaxGroupNames;
@@ -3910,7 +4397,7 @@ public static partial class WinSCard
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public LPOCNCHKPROC lpfnCheck;
+		public LPOCNCHKPROC? lpfnCheck;
 
 		/// <summary>
 		/// <para>
@@ -3920,7 +4407,7 @@ public static partial class WinSCard
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public LPOCNCONNPROC lpfnConnect;
+		public LPOCNCONNPROC? lpfnConnect;
 
 		/// <summary>
 		/// <para>A pointer to the caller's card disconnect routine.</para>
@@ -3985,7 +4472,7 @@ public static partial class WinSCard
 		/// <c>NULL</c>, the default group (Scard$DefaultReaders) is searched.
 		/// </summary>
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")]
-		public string[] lpstrGroupNames;
+		public string[]? lpstrGroupNames;
 
 		/// <summary>The maximum number of bytes (ANSI version) or characters (Unicode version) in the <c>lpstrGroupNames</c> string.</summary>
 		public uint nMaxGroupNames;
@@ -4038,7 +4525,7 @@ public static partial class WinSCard
 		/// title "Select Card:".
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpstrTitle;
+		public string? lpstrTitle;
 
 		/// <summary>
 		/// <para>
@@ -4098,7 +4585,7 @@ public static partial class WinSCard
 		/// </para>
 		/// <para>The prototype for the connect routine is as follows.</para>
 		/// </summary>
-		public LPOCNCONNPROC lpfnConnect;
+		public LPOCNCONNPROC? lpfnConnect;
 
 		/// <summary>
 		/// <para>A pointer to the card verify routine of the caller. If no special card verification is required, this pointer is <c>NULL</c>.</para>
@@ -4110,7 +4597,7 @@ public static partial class WinSCard
 		/// </para>
 		/// <para>The prototype for the check routine is as follows.</para>
 		/// </summary>
-		public LPOCNCHKPROC lpfnCheck;
+		public LPOCNCHKPROC? lpfnCheck;
 
 		/// <summary>
 		/// <para>A pointer to the card disconnect routine of the caller.</para>
@@ -4198,14 +4685,14 @@ public static partial class WinSCard
 		/// title "Select Card:".
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpstrTitle;
+		public string? lpstrTitle;
 
 		/// <summary>
 		/// A pointer to a string to be displayed to the user as a prompt to insert the smart card. If this member is <c>NULL</c>, the system
 		/// uses the default text "Please insert a smart card".
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpstrSearchDesc;
+		public string? lpstrSearchDesc;
 
 		/// <summary>
 		/// A handle to an icon (32 x 32 pixels). You can specify a vendor-specific icon to display in the dialog box. If this value is
@@ -4500,6 +4987,11 @@ public static partial class WinSCard
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(SCARDHANDLE h) => h.handle;
 
+		/// <summary>Performs an explicit conversion from <see cref="SCARDHANDLE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator UIntPtr(SCARDHANDLE h) => h.handle.ToUIntPtr();
+
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SCARDHANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -4518,7 +5010,7 @@ public static partial class WinSCard
 		public static bool operator ==(SCARDHANDLE h1, SCARDHANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is SCARDHANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is SCARDHANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

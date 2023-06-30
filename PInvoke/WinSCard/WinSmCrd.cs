@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
+using System.Text;
 using static Vanara.PInvoke.WinSCard.SCARD_CLASS;
 
 namespace Vanara.PInvoke;
@@ -102,54 +103,136 @@ public static partial class WinSCard
 
 	public static readonly uint IOCTL_SMARTCARD_TRANSMIT = SCARD_CTL_CODE(5);
 
+	/// <summary>Answer to reset (ATR) string.</summary>
+	[CorrespondingType(typeof(string), EncodingType = typeof(ASCIIEncoding))]
 	public static readonly uint SCARD_ATTR_ATR_STRING = SCARD_ATTR_VALUE(SCARD_CLASS_ICC_STATE, 0x0303);
 
+	/// <summary>
+	/// <para>DWORD encoded as 0xDDDDCCCC, where DDDD = data channel type and CCCC = channel number:</para>
+	/// <para>The following encodings are defined for DDDD:</para>
+	/// <list type="bullet">
+	/// <item>0x01 serial I/O; CCCC is a port number.</item>
+	/// <item>0x02 parallel I/O; CCCC is a port number.</item>
+	/// <item>0x04 PS/2 keyboard port; CCCC is zero.</item>
+	/// <item>0x08 SCSI; CCCC is SCSI ID number.</item>
+	/// <item>0x10 IDE; CCCC is device number.</item>
+	/// <item>0x20 USB; CCCC is device number.</item>
+	/// <item>0xFy vendor-defined interface with y in the range zero through 15;</item>
+	/// </list>
+	/// <para>CCCC is vendor defined.</para>
+	/// </summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CHANNEL_ID = SCARD_ATTR_VALUE(SCARD_CLASS_COMMUNICATIONS, 0x0110);
 
+	/// <summary>
+	/// <para>
+	/// DWORD indicating which mechanical characteristics are supported. If zero, no special characteristics are supported. Note that
+	/// multiple bits can be set:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>0x00000001 Card swallowing mechanism</item>
+	/// <item>0x00000002 Card ejection mechanism</item>
+	/// <item>0x00000004 Card capture mechanism</item>
+	/// </list>
+	/// <para>All other values are reserved for future use (RFU).</para>
+	/// </summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CHARACTERISTICS = SCARD_ATTR_VALUE(SCARD_CLASS_MECHANICAL, 0x0150);
 
+	/// <summary>Current block waiting time.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_BWT = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0209);
 
+	/// <summary>Current clock rate, in kHz.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_CLK = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0202);
 
+	/// <summary>Current character waiting time.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_CWT = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x020a);
 
+	/// <summary>Bit rate conversion factor.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_D = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0204);
 
+	/// <summary>
+	/// <para>Current error block control encoding.</para>
+	/// <para>0 = longitudinal redundancy check (LRC)</para>
+	/// <para>1 = cyclical redundancy check (CRC)</para>
+	/// </summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_EBC_ENCODING = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x020b);
 
+	/// <summary>Clock conversion factor.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_F = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0203);
 
+	/// <summary>Current byte size for information field size card.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_IFSC = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0207);
 
+	/// <summary>Current byte size for information field size device.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_IFSD = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0208);
 
 	public static readonly uint SCARD_ATTR_CURRENT_IO_STATE = SCARD_ATTR_VALUE(SCARD_CLASS_ICC_STATE, 0x0302);
 
+	/// <summary>Current guard time.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_N = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0205);
 
+	/// <summary>
+	/// DWORD encoded as 0x0rrrpppp where rrr is RFU and should be 0x000. pppp encodes the current protocol type. Whichever bit has been set
+	/// indicates which ISO protocol is currently in use. (For example, if bit zero is set, T=0 protocol is in effect.)
+	/// </summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_PROTOCOL_TYPE = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0201);
 
+	/// <summary>Current work waiting time.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_CURRENT_W = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x0206);
 
+	/// <summary>Default clock rate, in kHz.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_DEFAULT_CLK = SCARD_ATTR_VALUE(SCARD_CLASS_PROTOCOL, 0x0121);
 
+	/// <summary>Default data rate, in bps.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_DEFAULT_DATA_RATE = SCARD_ATTR_VALUE(SCARD_CLASS_PROTOCOL, 0x0123);
 
+	/// <summary>Reader's display name.</summary>
+	[CorrespondingType(typeof(string))]
 	public static readonly uint SCARD_ATTR_DEVICE_FRIENDLY_NAME = Marshal.SystemDefaultCharSize == 2 ? SCARD_ATTR_DEVICE_FRIENDLY_NAME_W : SCARD_ATTR_DEVICE_FRIENDLY_NAME_A;
 
+	/// <summary>Reader's display name.</summary>
+	[CorrespondingType(typeof(string), EncodingType = typeof(ASCIIEncoding))]
 	public static readonly uint SCARD_ATTR_DEVICE_FRIENDLY_NAME_A = SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0003);
 
+	/// <summary>Reader's display name.</summary>
+	[CorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 	public static readonly uint SCARD_ATTR_DEVICE_FRIENDLY_NAME_W = SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0005);
 
+	/// <summary>Reserved for future use.</summary>
+	[CorrespondingType(typeof(BOOL))]
 	public static readonly uint SCARD_ATTR_DEVICE_IN_USE = SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0002);
 
+	/// <summary>Reader's system name.</summary>
+	[CorrespondingType(typeof(string))]
 	public static readonly uint SCARD_ATTR_DEVICE_SYSTEM_NAME = Marshal.SystemDefaultCharSize == 2 ? SCARD_ATTR_DEVICE_SYSTEM_NAME_W : SCARD_ATTR_DEVICE_SYSTEM_NAME_A;
 
+	/// <summary>Reader's system name.</summary>
+	[CorrespondingType(typeof(string), EncodingType = typeof(ASCIIEncoding))]
 	public static readonly uint SCARD_ATTR_DEVICE_SYSTEM_NAME_A = SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0004);
 
+	/// <summary>Reader's system name.</summary>
+	[CorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 	public static readonly uint SCARD_ATTR_DEVICE_SYSTEM_NAME_W = SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0006);
 
+	/// <summary>
+	/// Instance of this vendor's reader attached to the computer. The first instance will be device unit 0, the next will be unit 1 (if it
+	/// is the same brand of reader) and so on. Two different brands of readers will both have zero for this value.
+	/// </summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_DEVICE_UNIT = SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0001);
 
 	public static readonly uint SCARD_ATTR_ESC_AUTHREQUEST = SCARD_ATTR_VALUE(SCARD_CLASS_VENDOR_DEFINED, 0xA005);
@@ -160,22 +243,53 @@ public static partial class WinSCard
 
 	public static readonly uint SCARD_ATTR_EXTENDED_BWT = SCARD_ATTR_VALUE(SCARD_CLASS_IFD_PROTOCOL, 0x020c);
 
+	/// <summary>Single byte. Zero if smart card electrical contact is not active; nonzero if contact is active.</summary>
+	[CorrespondingType(typeof(byte))]
 	public static readonly uint SCARD_ATTR_ICC_INTERFACE_STATUS = SCARD_ATTR_VALUE(SCARD_CLASS_ICC_STATE, 0x0301);
 
+	/// <summary>
+	/// <para>Single byte indicating smart card presence:</para>
+	/// <para>0 = not present</para>
+	/// <para>1 = card present but not swallowed (applies only if reader supports smart card swallowing)</para>
+	/// <para>2 = card present (and swallowed if reader supports smart card swallowing)</para>
+	/// <para>4 = card confiscated.</para>
+	/// </summary>
+	[CorrespondingType(typeof(byte))]
 	public static readonly uint SCARD_ATTR_ICC_PRESENCE = SCARD_ATTR_VALUE(SCARD_CLASS_ICC_STATE, 0x0300);
 
+	/// <summary>
+	/// <para>Single byte indicating smart card type:</para>
+	/// <para>0 = unknown type</para>
+	/// <para>1 = 7816 Asynchronous</para>
+	/// <para>2 = 7816 Synchronous</para>
+	/// <para>Other values RFU.</para>
+	/// </summary>
+	[CorrespondingType(typeof(byte))]
 	public static readonly uint SCARD_ATTR_ICC_TYPE_PER_ATR = SCARD_ATTR_VALUE(SCARD_CLASS_ICC_STATE, 0x0304);
 
+	/// <summary>Maximum clock rate, in kHz.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_MAX_CLK = SCARD_ATTR_VALUE(SCARD_CLASS_PROTOCOL, 0x0122);
 
+	/// <summary>Maximum data rate, in bps.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_MAX_DATA_RATE = SCARD_ATTR_VALUE(SCARD_CLASS_PROTOCOL, 0x0124);
 
+	/// <summary>Maximum bytes for information file size device.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_MAX_IFSD = SCARD_ATTR_VALUE(SCARD_CLASS_PROTOCOL, 0x0125);
 
 	public static readonly uint SCARD_ATTR_MAXINPUT = SCARD_ATTR_VALUE(SCARD_CLASS_VENDOR_DEFINED, 0xA007);
 
+	/// <summary>Zero if device does not support power down while smart card is inserted. Nonzero otherwise.</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_POWER_MGMT_SUPPORT = SCARD_ATTR_VALUE(SCARD_CLASS_POWER_MGMT, 0x0131);
 
+	/// <summary>
+	/// DWORD encoded as 0x0rrrpppp where rrr is RFU and should be 0x000. pppp encodes the supported protocol types. A '1' in a given bit
+	/// position indicates support for the associated ISO protocol, so if bits zero and one are set, both T=0 and T=1 protocols are supported.
+	/// </summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_PROTOCOL_TYPES = SCARD_ATTR_VALUE(SCARD_CLASS_PROTOCOL, 0x0120);
 
 	public static readonly uint SCARD_ATTR_SUPRESS_T1_IFS_REQUEST = SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0007);
@@ -184,12 +298,22 @@ public static partial class WinSCard
 
 	public static readonly uint SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE = SCARD_ATTR_VALUE(SCARD_CLASS_SECURITY, 0x0140);
 
+	/// <summary>Vendor-supplied interface device serial number.</summary>
+	[CorrespondingType(typeof(string), EncodingType = typeof(ASCIIEncoding))]
 	public static readonly uint SCARD_ATTR_VENDOR_IFD_SERIAL_NO = SCARD_ATTR_VALUE(SCARD_CLASS_VENDOR_INFO, 0x0103);
 
+	/// <summary>Vendor-supplied interface device type (model designation of reader).</summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_VENDOR_IFD_TYPE = SCARD_ATTR_VALUE(SCARD_CLASS_VENDOR_INFO, 0x0101);
 
+	/// <summary>
+	/// Vendor-supplied interface device version (DWORD in the form 0xMMmmbbbb where MM = major version, mm = minor version, and bbbb = build number).
+	/// </summary>
+	[CorrespondingType(typeof(uint))]
 	public static readonly uint SCARD_ATTR_VENDOR_IFD_VERSION = SCARD_ATTR_VALUE(SCARD_CLASS_VENDOR_INFO, 0x0102);
 
+	/// <summary>Vendor name.</summary>
+	[CorrespondingType(typeof(string), EncodingType = typeof(ASCIIEncoding))]
 	public static readonly uint SCARD_ATTR_VENDOR_NAME = SCARD_ATTR_VALUE(SCARD_CLASS_VENDOR_INFO, 0x0100);
 
 	public static readonly uint SCARD_ATTR_VENDOR_SPECIFIC_INFO = SCARD_ATTR_VALUE(SCARD_CLASS_VENDOR_DEFINED, 0xA008);

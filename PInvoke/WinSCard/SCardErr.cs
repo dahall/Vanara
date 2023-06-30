@@ -270,22 +270,22 @@ public static partial class WinSCard
 		public bool Succeeded => value == SCARD_S_SUCCESS;
 
 		/// <inheritdoc/>
-		public Exception GetException(string message = null) => ToHRESULT().GetException();
+		public Exception? GetException(string? message = null) => ToHRESULT().GetException();
 
 		/// <inheritdoc/>
-		public void ThrowIfFailed(string message = null)
-		{ if (Failed) throw GetException(message); }
+		public void ThrowIfFailed(string? message = null)
+		{ if (Failed) throw GetException(message) ?? new Exception(message); }
 
 		/// <inheritdoc/>
 		public HRESULT ToHRESULT() => unchecked((int)value);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is SCARD_RET rET&&Equals(rET);
+		public override bool Equals(object? obj) => obj is SCARD_RET rET && Equals(rET);
 
 		/// <inheritdoc/>
-		public bool Equals(SCARD_RET other) => value==other.value;
+		public bool Equals(SCARD_RET other) => value == other.value;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => -1584136870+value.GetHashCode();
+		public override int GetHashCode() => -1584136870 + value.GetHashCode();
 	}
 }
