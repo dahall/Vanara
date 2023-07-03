@@ -548,12 +548,12 @@ namespace Vanara.PInvoke
 				{
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
 						foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
-							Marshal.FreeBSTR(Marshal.ReadIntPtr(ptr));
+							Marshal.FreeBSTR(ptr);
 						Marshal.FreeCoTaskMem(_blob.pBlobData);
 						break;
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
-						//foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
-						//	Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(ptr));
+						foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
+							Marshal.FreeCoTaskMem(ptr);
 						Marshal.FreeCoTaskMem(_blob.pBlobData);
 						break;
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_I1:
