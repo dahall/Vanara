@@ -108,7 +108,6 @@ namespace Vanara.PInvoke.Tests
 				foreach (var prv in prvs)
 					prv.Dispose();
 			}
-
 		}
 
 		[Test]
