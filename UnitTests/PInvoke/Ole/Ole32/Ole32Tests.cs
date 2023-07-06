@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
@@ -67,32 +68,45 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void IPropSetStorageTest()
 		{
-			var propKey = PROPERTYKEY.System.Title;
+			var propSetKey = PROPERTYKEY.System.Title.Key;
 
 			// creates a new storage object using NTFS implementation
 			StgOpenStorageEx(TestCaseSources.LogFile, STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE,
 				STGFMT.STGFMT_ANY, default, default, default, typeof(IPropertySetStorage).GUID, out var iptr).ThrowIfFailed();
 			using var istg = ComReleaserFactory.Create((IPropertySetStorage)iptr);
 
-			var prc = new PROPSPEC(propKey.Id);
+			var prcs = new[] { PROPERTYKEY.System.Title.Id, PROPERTYKEY.System.Author.Id, PROPERTYKEY.System.Comment.Id }.Select(propid => new PROPSPEC(propid)).ToArray();
+			var vals = prcs.Select((prc, idx) => "VALUE" + idx).ToArray();
 
 			// creates propertystorage
-			istg.Item.Create(propKey.Key, default, PROPSETFLAG.PROPSETFLAG_DEFAULT, STGM.STGM_CREATE | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, out var ipse).ThrowIfFailed();
+			istg.Item.Create(propSetKey, default, PROPSETFLAG.PROPSETFLAG_DEFAULT, STGM.STGM_CREATE | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, out var ipse).ThrowIfFailed();
 			using (var pipse = ComReleaserFactory.Create(ipse))
 			{
-				// write property
-				using var prv = new PROPVARIANT("VALUE", VarEnum.VT_LPWSTR);
-				ipse.WriteMultiple(new[] { prc }, new[] { prv }, PID_FIRST_USABLE).ThrowIfFailed();
+				// write properties
+				var prvs = vals.Select(val => new PROPVARIANT(val, VarEnum.VT_LPWSTR)).ToArray();
+				try
+				{
+					ipse.WriteMultiple(prcs, prvs, PID_FIRST_USABLE).ThrowIfFailed();
+				}
+				finally
+				{
+					foreach (var prv in prvs)
+						prv.Dispose();
+				}
 			}
 
 			//hr = ipse.Commit((uint)STGC.STGC_DEFAULT);
 			// read property
-			istg.Item.Open(propKey.Key, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, out ipse).ThrowIfFailed();
+			istg.Item.Open(propSetKey, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, out ipse).ThrowIfFailed();
 			using (var pipse = ComReleaserFactory.Create(ipse))
 			{
-				ipse.ReadMultiple(new[] { prc }, out var prvRead).ThrowIfFailed();
-				Assert.That(prvRead.Length, Is.EqualTo(1));
-				Assert.That(prvRead[0].Value, Is.EqualTo("VALUE"));
+				var prvs = new PROPVARIANT[0];
+				ipse.ReadMultiple(prcs, out var prvRead).ThrowIfFailed();
+			
+				CollectionAssert.AreEqual(prvRead.Select(prv => prv.Value), vals);
+				
+				foreach (var prv in prvs)
+					prv.Dispose();
 			}
 		}
 
