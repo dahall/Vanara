@@ -29,7 +29,7 @@ namespace Vanara.Windows.Shell
 		/// <exception cref="PlatformNotSupportedException"></exception>
 		public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() =>
 		{
-			SafeHBITMAP hbmp = null;
+			SafeHBITMAP hbmp = SafeHBITMAP.Null;
 			HRESULT hr = HRESULT.E_FAIL;
 			var sz = (uint)size.Width;
 			if (!forcePreVista && ShellItem.IsMinVista)
@@ -47,13 +47,14 @@ namespace Vanara.Windows.Shell
 			}
 
 			// If before Vista, or if Vista interfaces failed, try using IExtractImage and IExtractIcon
-			if (hr != HRESULT.S_OK && !flags.IsFlagSet(ShellItemGetImageOptions.IconOnly))
-				hr = LoadImageFromExtractImage(shellItem.Parent.IShellFolder, shellItem.PIDL.LastId, ref sz, out hbmp);
-			if (hr != HRESULT.S_OK)
+			var isf = shellItem.Parent?.IShellFolder;
+			if (hr != HRESULT.S_OK && !flags.IsFlagSet(ShellItemGetImageOptions.IconOnly) && isf is not null)
+				hr = LoadImageFromExtractImage(isf, shellItem.PIDL.LastId, ref sz, out hbmp);
+			if (hr != HRESULT.S_OK && isf is not null)
 			{
 				if (!flags.IsFlagSet(ShellItemGetImageOptions.ThumbnailOnly))
 				{
-					LoadIconFromExtractIcon(shellItem.Parent.IShellFolder, shellItem.PIDL.LastId, ref sz, out SafeHICON hIcon).ThrowIfFailed();
+					LoadIconFromExtractIcon(isf, shellItem.PIDL.LastId, ref sz, out SafeHICON hIcon).ThrowIfFailed();
 					using (hIcon)
 						hbmp = hIcon.ToHBITMAP();
 				}
