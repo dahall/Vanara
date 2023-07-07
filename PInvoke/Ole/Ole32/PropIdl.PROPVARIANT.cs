@@ -108,7 +108,7 @@ namespace Vanara.PInvoke
 		/// The middle three members are reserved for future use.
 		/// </para>
 		/// </summary>
-		[StructLayout(LayoutKind.Explicit, Size = 16, Pack = 8)]
+		[StructLayout(LayoutKind.Explicit)]
 		public sealed class PROPVARIANT : ICloneable, IComparable, IComparable<PROPVARIANT>, IDisposable, IEquatable<PROPVARIANT>
 		{
 			/// <summary>Value type tag.</summary>
@@ -548,12 +548,12 @@ namespace Vanara.PInvoke
 				{
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
 						foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
-							Marshal.FreeBSTR(Marshal.ReadIntPtr(ptr));
+							Marshal.FreeBSTR(ptr);
 						Marshal.FreeCoTaskMem(_blob.pBlobData);
 						break;
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
-						//foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
-						//	Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(ptr));
+						foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
+							Marshal.FreeCoTaskMem(ptr);
 						Marshal.FreeCoTaskMem(_blob.pBlobData);
 						break;
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_I1:
@@ -588,7 +588,7 @@ namespace Vanara.PInvoke
 						break;
 				}
 				vt = 0;
-				_ulong = 0;
+				_blob = new();
 			}
 
 			/// <summary>Copies the contents of one PROPVARIANT structure to another.</summary>
@@ -1158,7 +1158,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <note>This structure is mostly used for arrays where the fixed structure size is critical for interop.</note>
 		/// </summary>
-		[StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct PROPVARIANT_IMMUTABLE
 		{
 			/// <summary>Value type tag.</summary>
@@ -1173,18 +1173,18 @@ namespace Vanara.PInvoke
 			/// <summary>Reserved for future use.</summary>
 			private ushort wReserved3;
 
-			/// <summary>The value when a numeric value less than 8 bytes.</summary>
-			private ulong _ulong;
+			/// <summary>The BLOB when VT_BLOB</summary>
+			private BLOB _blob;
 
 			/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT"/> to <see cref="PROPVARIANT_IMMUTABLE"/>.</summary>
 			/// <param name="pv">The PROPVARIANT instance.</param>
 			/// <returns>The resulting <see cref="PROPVARIANT_IMMUTABLE"/> instance from the conversion.</returns>
-			public static implicit operator PROPVARIANT_IMMUTABLE(PROPVARIANT pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
+			public static implicit operator PROPVARIANT_IMMUTABLE(PROPVARIANT pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _blob = pv._blob };
 
 			/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT_IMMUTABLE"/> to <see cref="PROPVARIANT"/>.</summary>
 			/// <param name="pv">The PROPVARIANT_IMMUTABLE instance.</param>
 			/// <returns>The resulting <see cref="PROPVARIANT"/> instance from the conversion.</returns>
-			public static explicit operator PROPVARIANT(in PROPVARIANT_IMMUTABLE pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
+			public static explicit operator PROPVARIANT(in PROPVARIANT_IMMUTABLE pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _blob = pv._blob };
 		}
 	}
 }
