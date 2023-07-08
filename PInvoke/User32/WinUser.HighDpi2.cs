@@ -739,5 +739,81 @@ public static partial class User32
 
 		/// <inheritdoc/>
 		public IntPtr DangerousGetHandle() => handle;
+
+		/// <summary>
+		/// DPI unaware. This window does not scale for DPI changes and is always assumed to have a scale factor of 100% (96 DPI). It
+		/// will be automatically scaled by the system on any other DPI setting.
+		/// </summary>
+		public static readonly DPI_AWARENESS_CONTEXT DPI_AWARENESS_CONTEXT_UNAWARE = new(new(-1));
+
+		/// <summary>
+		/// System DPI aware. This window does not scale for DPI changes. It will query for the DPI once and use that value for the
+		/// lifetime of the process. If the DPI changes, the process will not adjust to the new DPI value. It will be automatically
+		/// scaled up or down by the system when the DPI changes from the system value.
+		/// </summary>
+		public static readonly DPI_AWARENESS_CONTEXT DPI_AWARENESS_CONTEXT_SYSTEM_AWARE = new(new(-2));
+
+		/// <summary>
+		/// Per monitor DPI aware. This window checks for the DPI when it is created and adjusts the scale factor whenever the DPI
+		/// changes. These processes are not automatically scaled by the system.
+		/// </summary>
+		public static readonly DPI_AWARENESS_CONTEXT DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE = new(new(-3));
+
+		/// <summary>
+		/// <para>
+		/// Also known as Per Monitor v2. An advancement over the original per-monitor DPI awareness mode, which enables applications to
+		/// access new DPI-related scaling behaviors on a per top-level window basis.
+		/// </para>
+		/// <para>
+		/// Per Monitor v2 was made available in the Creators Update of Windows 10, and is not available on earlier versions of the
+		/// operating system.
+		/// </para>
+		/// <para>The additional behaviors introduced are as follows:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Child window DPI change notifications</term>
+		/// <description>In Per Monitor v2 contexts, the entire window tree is notified of any DPI changes that occur.</description>
+		/// </item>
+		/// <item>
+		/// <term>Scaling of non-client area</term>
+		/// <description>
+		/// All windows will automatically have their non-client area drawn in a DPI sensitive fashion. Calls to
+		/// EnableNonClientDpiScaling are unnecessary.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>Scaling of Win32 menus</term>
+		/// <description>All NTUSER menus created in Per Monitor v2 contexts will be scaling in a per-monitor fashion.</description>
+		/// </item>
+		/// <item>
+		/// <term>Dialog Scaling</term>
+		/// <description>Win32 dialogs created in Per Monitor v2 contexts will automatically respond to DPI changes.</description>
+		/// </item>
+		/// <item>
+		/// <term>Improved scaling of comctl32 controls</term>
+		/// <description>Various comctl32 controls have improved DPI scaling behavior in Per Monitor v2 contexts.</description>
+		/// </item>
+		/// <item>
+		/// <term>Improved theming behavior</term>
+		/// <description>
+		/// UxTheme handles opened in the context of a Per Monitor v2 window will operate in terms of the DPI associated with that window.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public static readonly DPI_AWARENESS_CONTEXT DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = new(new(-4));
+
+		/// <summary>
+		/// <para>
+		/// DPI unaware with improved quality of GDI-based content. This mode behaves similarly to DPI_AWARENESS_CONTEXT_UNAWARE, but
+		/// also enables the system to automatically improve the rendering quality of text and other GDI-based primitives when the window
+		/// is displayed on a high-DPI monitor.
+		/// </para>
+		/// <para>For more details, see Improving the high-DPI experience in GDI-based Desktop apps.</para>
+		/// <para>
+		/// DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED was introduced in the October 2018 update of Windows 10 (also known as version 1809).
+		/// </para>
+		/// </summary>
+		public static readonly DPI_AWARENESS_CONTEXT DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED = new(new(-5));
 	}
 }
