@@ -39,7 +39,7 @@ public class EventLogFile
 		set => m_log.LoggerName = value;
 	}
 
-	public Version LoggerVersion => new Version(m_log.LogfileHeader.VersionDetail.MajorVersion, m_log.LogfileHeader.VersionDetail.MinorVersion, m_log.LogfileHeader.VersionDetail.SubMinorVersion, m_log.LogfileHeader.VersionDetail.SubVersion);
+	public Version LoggerVersion => new(m_log.LogfileHeader.VersionDetail.MajorVersion, m_log.LogfileHeader.VersionDetail.MinorVersion, m_log.LogfileHeader.VersionDetail.SubMinorVersion, m_log.LogfileHeader.VersionDetail.SubVersion);
 
 	public PROCESS_TRACE_MODE ProcessTraceMode
 	{

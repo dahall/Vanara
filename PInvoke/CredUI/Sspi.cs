@@ -10,13 +10,13 @@ namespace Vanara.PInvoke;
 public static partial class CredUI
 {
 	/// <summary>The credential is a certificate.</summary>
-	public static readonly Guid SEC_WINNT_AUTH_DATA_TYPE_CERT = new Guid("{0x235f69ad, 0x73fb, 0x4dbc, { 0x82, 0x3, 0x6, 0x29, 0xe7, 0x39, 0x33, 0x9b } }");
+	public static readonly Guid SEC_WINNT_AUTH_DATA_TYPE_CERT = new("{0x235f69ad, 0x73fb, 0x4dbc, { 0x82, 0x3, 0x6, 0x29, 0xe7, 0x39, 0x33, 0x9b } }");
 
 	/// <summary>The credential is authentication data from a cryptographic service provider (CSP).</summary>
-	public static readonly Guid SEC_WINNT_AUTH_DATA_TYPE_CSP_DATA = new Guid("{0x68fd9879, 0x79c, 0x4dfe, { 0x82, 0x81, 0x57, 0x8a, 0xad, 0xc1, 0xc1, 0x0 } }");
+	public static readonly Guid SEC_WINNT_AUTH_DATA_TYPE_CSP_DATA = new("{0x68fd9879, 0x79c, 0x4dfe, { 0x82, 0x81, 0x57, 0x8a, 0xad, 0xc1, 0xc1, 0x0 } }");
 
 	/// <summary>The credential is a password.</summary>
-	public static readonly Guid SEC_WINNT_AUTH_DATA_TYPE_PASSWORD = new Guid("{0x28bfc32f, 0x10f6, 0x4738, { 0x98, 0xd1, 0x1a, 0xc0, 0x61, 0xdf, 0x71, 0x6a } }");
+	public static readonly Guid SEC_WINNT_AUTH_DATA_TYPE_PASSWORD = new("{0x28bfc32f, 0x10f6, 0x4738, { 0x98, 0xd1, 0x1a, 0xc0, 0x61, 0xdf, 0x71, 0x6a } }");
 
 	/// <summary>Flags that determine the behavior of this function.</summary>
 	[Flags]

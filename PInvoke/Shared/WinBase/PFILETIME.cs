@@ -146,13 +146,13 @@ public class PFILETIME : IEquatable<PFILETIME>, IEquatable<FILETIME>, IEquatable
 	public int CompareTo(FILETIME other) => ft.CompareTo(other);
 
 	/// <inheritdoc/>
-	public int CompareTo(PFILETIME other) => ft.CompareTo(other.ft);
+	public int CompareTo(PFILETIME? other) => other is null ? 1 : ft.CompareTo(other.ft);
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is PFILETIME pFILETIME && Equals(pFILETIME.ft);
 
 	/// <inheritdoc/>
-	public bool Equals(PFILETIME other) => Equals(other.ft);
+	public bool Equals(PFILETIME? other) => other is not null && Equals(other.ft);
 
 	/// <inheritdoc/>
 	public bool Equals(FILETIME other) => ft.CompareTo(other) == 0;

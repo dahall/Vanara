@@ -22,9 +22,9 @@ public static class CSharpRunner
 	public static object Run(MethodInfo methodInfo, params object[] args) =>
 		Invoke(CompileLib(Decompile(methodInfo.DeclaringType), methodInfo.DeclaringType.GetReferencedAssemblyNames()), methodInfo.DeclaringType.FullName, methodInfo.Name, args);
 
-	public static Process RunProcess<T>(string args = null) where T : class => RunProcess(typeof(T), args);
+	public static Process RunProcess<T>(string? args = null) where T : class => RunProcess(typeof(T), args);
 
-	public static Process RunProcess(Type mainType, string args = null)
+	public static Process RunProcess(Type mainType, string? args = null)
 	{
 		if (mainType.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) is null)
 			throw new ArgumentException("Supplied type must include a static Main method.");
@@ -33,14 +33,14 @@ public static class CSharpRunner
 		return CreateProcess(exe, args, Path.GetDirectoryName(mainType.Assembly.Location));
 	}
 
-	public static Process RunProcess(string snippet, string workingDir, IEnumerable<string> references = null, string typeName = null, string args = null)
+	public static Process RunProcess(string snippet, string workingDir, IEnumerable<string> references = null, string? typeName = null, string? args = null)
 	{
 		var exe = Path.Combine(workingDir, "tmp" + Guid.NewGuid().ToString("N") + ".exe");
 		CompileExe(exe, Parse(snippet), references, typeName);
 		return CreateProcess(exe, args, workingDir);
 	}
 
-	private static void CompileExe(string outputExePath, SyntaxTree syntaxTree, IEnumerable<string> references = null, string mainTypeName = null)
+	private static void CompileExe(string outputExePath, SyntaxTree syntaxTree, IEnumerable<string> references = null, string? mainTypeName = null)
 	{
 		var mrefs = (references ?? StdRefs).Select(a => MetadataReference.CreateFromFile(a));
 		var opts = new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true, mainTypeName: mainTypeName);

@@ -5157,7 +5157,7 @@ public static partial class NTDSApi
 		private SafeAuthIdentityHandle() : base() { }
 
 		/// <summary>Gets a value that marshals as NULL so that the local thread's identity is used.</summary>
-		public static readonly SafeAuthIdentityHandle LocalThreadIdentity = new SafeAuthIdentityHandle();
+		public static readonly SafeAuthIdentityHandle LocalThreadIdentity = new();
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() { DsFreePasswordCredentials(handle); return true; }

@@ -10,8 +10,8 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public class AuditTests
 {
-	private static readonly Guid objAccAudit = new Guid("6997984a-797a-11d9-bed3-505054503030");
-	private static readonly Guid regAudit = new Guid("0cce921e-69ae-11d9-bed3-505054503030");
+	private static readonly Guid objAccAudit = new("6997984a-797a-11d9-bed3-505054503030");
+	private static readonly Guid regAudit = new("0cce921e-69ae-11d9-bed3-505054503030");
 	private static SafePSID? pCurSid;
 	private ElevPriv? secPriv;
 

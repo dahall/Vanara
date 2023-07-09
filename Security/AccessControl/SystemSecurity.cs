@@ -18,7 +18,7 @@ public class SystemSecurity : IDisposable
 	/// <summary>Initializes a new instance of the <see cref="SystemSecurity"/> class.</summary>
 	/// <param name="access">The access rights mask for the actions to be taken.</param>
 	/// <param name="server">The server. Use <c>null</c> for the local server.</param>
-	public SystemSecurity(DesiredAccess access = DesiredAccess.AllAccess, string server = null)
+	public SystemSecurity(DesiredAccess access = DesiredAccess.AllAccess, string? server = null)
 	{
 		Handle = LsaOpenPolicy((LsaPolicyRights)(ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | (uint)access), server);
 		svr = server;
@@ -119,7 +119,7 @@ public class SystemSecurity : IDisposable
 
 	/// <summary>Gets a <see cref="SystemSecurity"/> instance for the local server and rights to lookup names.</summary>
 	/// <value>A <see cref="SystemSecurity"/> instance for the local server.</value>
-	public static SystemSecurity Local => new SystemSecurity();
+	public static SystemSecurity Local => new();
 
 	/// <summary>Gets the current user's system access.</summary>
 	/// <value>The current user's system access.</value>
@@ -231,12 +231,12 @@ public class SystemSecurity : IDisposable
 	/// <summary>Gets the system access for the specified user.</summary>
 	/// <param name="user">The user name of the account for which to manage privileges.</param>
 	/// <returns>A <see cref="LogonRights"/> instance for the specified user.</returns>
-	public LogonRights UserLogonRights(string user) => new LogonRights(this, user);
+	public LogonRights UserLogonRights(string user) => new(this, user);
 
 	/// <summary>Gets the account rights for the specified user.</summary>
 	/// <param name="user">The user name of the account for which to manage privileges.</param>
 	/// <returns>A <see cref="AccountPrivileges"/> instance for the specified user.</returns>
-	public AccountPrivileges UserPrivileges(string user) => new AccountPrivileges(this, user);
+	public AccountPrivileges UserPrivileges(string user) => new(this, user);
 
 	private static string FromPriv(SystemPrivilege priv) => SystemPrivilegeTypeConverter.PrivLookup[priv];
 
@@ -306,7 +306,7 @@ public class SystemSecurity : IDisposable
 		/// <summary>Initializes a new instance of the <see cref="AccountPrivileges"/> class.</summary>
 		/// <param name="parent">The parent.</param>
 		/// <param name="userName">Name of the user.</param>
-		public AccountPrivileges(SystemSecurity parent, string userName = null)
+		public AccountPrivileges(SystemSecurity parent, string? userName = null)
 		{
 			ctrl = parent;
 
@@ -365,7 +365,7 @@ public class SystemSecurity : IDisposable
 		/// <summary>Initializes a new instance of the <see cref="AccountPrivileges"/> class.</summary>
 		/// <param name="parent">The parent.</param>
 		/// <param name="userName">Name of the user.</param>
-		public LogonRights(SystemSecurity parent, string userName = null)
+		public LogonRights(SystemSecurity parent, string? userName = null)
 		{
 			ctrl = parent;
 

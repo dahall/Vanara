@@ -244,12 +244,12 @@ public static partial class NetApi32
 		/// Pointer to a null-terminated Unicode string that contains the DNS domain name. This member is optional and may be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string DomainNameDns;
+		public string? DomainNameDns;
 
 		/// <summary>
 		/// <para>Pointer to a null-terminated Unicode string that contains the forest name. This member is optional and may be <c>NULL</c>.</para>
 		/// </summary>
-		public string DomainForestName;
+		public string? DomainForestName;
 
 		/// <summary>
 		/// <para>

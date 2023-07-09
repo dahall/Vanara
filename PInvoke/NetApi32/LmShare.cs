@@ -522,7 +522,7 @@ public static partial class NetApi32
 	// NetFileGetInfo( LMSTR servername, DWORD fileid, DWORD level, LPBYTE *bufptr );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmshare.h", MSDNShortId = "d50c05e7-7ddd-4a7d-96f6-51878e52373c")]
-	public static extern Win32Error NetFileGetInfo(string servername, uint fileid, uint level, out SafeNetApiBuffer bufptr);
+	public static extern Win32Error NetFileGetInfo([Optional] string? servername, uint fileid, uint level, out SafeNetApiBuffer bufptr);
 
 	/// <summary>Ends a network session between a server and a workstation.</summary>
 	/// <param name="servername">
@@ -581,7 +581,7 @@ public static partial class NetApi32
 	// NetSessionDel( LMSTR servername, LMSTR UncClientName, LMSTR username );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmshare.h", MSDNShortId = "a1360f5d-9fd0-44af-b9f5-ab9bc057dfe6")]
-	public static extern Win32Error NetSessionDel(string servername, string UncClientName, string username);
+	public static extern Win32Error NetSessionDel([Optional] string? servername, [Optional] string? UncClientName, [Optional] string? username);
 
 	/// <summary>Provides information about sessions established on a server.</summary>
 	/// <param name="servername">
@@ -726,7 +726,7 @@ public static partial class NetApi32
 	// entriesread, LPDWORD totalentries, LPDWORD resume_handle );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmshare.h", MSDNShortId = "5923a8cc-bf7a-4ffa-b089-fd7f26ee42d2")]
-	public static extern Win32Error NetSessionEnum([Optional] string? servername, string UncClientName, [Optional] string? username, uint level, out SafeNetApiBuffer bufptr,
+	public static extern Win32Error NetSessionEnum([Optional] string? servername, [Optional] string? UncClientName, [Optional] string? username, uint level, out SafeNetApiBuffer bufptr,
 		uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
 
 	/// <summary>Retrieves information about a session established between a particular server and workstation.</summary>
@@ -2137,7 +2137,7 @@ public static partial class NetApi32
 		public STYPE shi1_type;
 
 		/// <summary>Pointer to a Unicode string specifying an optional comment about the shared resource.</summary>
-		public string shi1_remark;
+		public string? shi1_remark;
 	}
 
 	/// <summary>Contains a comment associated with the shared resource.</summary>
@@ -2148,7 +2148,7 @@ public static partial class NetApi32
 	public struct SHARE_INFO_1004
 	{
 		/// <summary>Pointer to a Unicode string that contains an optional comment about the shared resource.</summary>
-		public string shi1004_remark;
+		public string? shi1004_remark;
 	}
 
 	/// <summary>Contains information about the shared resource.</summary>
@@ -2347,7 +2347,7 @@ public static partial class NetApi32
 		public STYPE shi2_type;
 
 		/// <summary>Pointer to a Unicode string that contains an optional comment about the shared resource.</summary>
-		public string shi2_remark;
+		public string? shi2_remark;
 
 		/// <summary>
 		/// <para>
@@ -2492,7 +2492,7 @@ public static partial class NetApi32
 		public STYPE shi501_type;
 
 		/// <summary>Pointer to a Unicode string that contains an optional comment about the shared resource.</summary>
-		public string shi501_remark;
+		public string? shi501_remark;
 
 		/// <summary>
 		/// <para>A bitmask of flags that specify information about the shared resource.</para>
@@ -2641,7 +2641,7 @@ public static partial class NetApi32
 		public STYPE shi502_type;
 
 		/// <summary>Pointer to a Unicode string specifying an optional comment about the shared resource.</summary>
-		public string shi502_remark;
+		public string? shi502_remark;
 
 		/// <summary>
 		/// <para>
@@ -2806,7 +2806,7 @@ public static partial class NetApi32
 		public STYPE shi503_type;
 
 		/// <summary>A pointer to a Unicode string specifying an optional comment about the shared resource.</summary>
-		public string shi503_remark;
+		public string? shi503_remark;
 
 		/// <summary>
 		/// <para>

@@ -86,7 +86,7 @@ public static class TestCaseSources
 	/// <param name="key">The key.</param>
 	/// <param name="defaultValue">The default value.</param>
 	/// <returns>The value corresponding to key or the default value if not found.</returns>
-	public static string GetValueOrDefault(string key, string defaultValue = null) => lookup.TryGetValue(key, out var value) ? value : defaultValue;
+	public static string GetValueOrDefault(string key, string? defaultValue = null) => lookup.TryGetValue(key, out var value) ? value : defaultValue;
 
 	public static IEnumerable<TestCaseData> RemoteConnections(bool? named, int flags = 0)
 	{

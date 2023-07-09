@@ -23,12 +23,12 @@ public static class AccessExtension
 	/// <summary>Converts a PSECURITY_DESCRIPTOR to a managed RawSecurityDescriptor.</summary>
 	/// <param name="securityDescriptor">The security descriptor.</param>
 	/// <returns>The RawSecurityDescriptor.</returns>
-	public static RawSecurityDescriptor ToManaged(this PSECURITY_DESCRIPTOR securityDescriptor) => new RawSecurityDescriptor(securityDescriptor.ToByteArray(), 0);
+	public static RawSecurityDescriptor ToManaged(this PSECURITY_DESCRIPTOR securityDescriptor) => new(securityDescriptor.ToByteArray(), 0);
 
 	/// <summary>Converts a RawSecurityDescriptor to a native safe handle.</summary>
 	/// <param name="rawSD">The RawSecurityDescriptor.</param>
 	/// <returns>A native safe handle for PSECURITY_DESCRIPTOR.</returns>
-	public static SafePSECURITY_DESCRIPTOR ToNative(this RawSecurityDescriptor rawSD) => new SafePSECURITY_DESCRIPTOR(rawSD.ToByteArray());
+	public static SafePSECURITY_DESCRIPTOR ToNative(this RawSecurityDescriptor rawSD) => new(rawSD.ToByteArray());
 
 	/// <summary>Converts a RawSecurityDescriptor to a byte array.</summary>
 	/// <param name="rawSD">The RawSecurityDescriptor.</param>

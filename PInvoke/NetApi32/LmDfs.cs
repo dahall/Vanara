@@ -1,10 +1,76 @@
 using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
 public static partial class NetApi32
 {
+	/// <summary>
+	/// <para>
+	/// The <c>FSCTL_DFS_GET_PKT_ENTRY_STATE</c> control code can get the same information as the <c>NetDfsGetClientInfo</c> function but can
+	/// provide better performance in some configurations with high latencies to the DFS servers. It is not recommended to use the
+	/// <c>FSCTL_DFS_GET_PKT_ENTRY_STATE</c> control code unless there are performance issues.
+	/// </para>
+	/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+	/// <para><em>hDevice</em></para>
+	/// <para>A handle to the device. To obtain a device handle, call the <c>CreateFile</c> function.</para>
+	/// <para><em>dwIoControlCode</em></para>
+	/// <para>The control code for the operation. Use <c>FSCTL_DFS_GET_PKT_ENTRY_STATE</c> for this operation.</para>
+	/// <para><em>lpInBuffer</em></para>
+	/// <para>Address of a <c>DFS_GET_PKT_ENTRY_STATE_ARG</c> structure and the 1-3 Unicode strings that follow.</para>
+	/// <para><em>nInBufferSize</em></para>
+	/// <para>Size, in bytes, of the buffer pointed to by the lpInBuffer parameter.</para>
+	/// <para>lpOutBuffer</para>
+	/// <para>
+	/// Address of a <c>DFS_INFO_#</c> structure and any strings and structures pointed to by the <c>DFS_INFO_#</c> structure. The specific
+	/// structure returned depends on the <c>Level</c> member in the <c>DFS_GET_PKT_ENTRY_STATE_ARG</c> structure passed in the input buffer.
+	/// </para>
+	/// <para><em>nOutBufferSize</em></para>
+	/// <para>
+	/// Size, in bytes, of the buffer pointed to by the lpOutBuffer parameter. Due to the strings and structures referenced by the returned
+	/// <c>DFS_INFO_#</c> structure that are also in the output buffer, this buffer should be larger than the <c>DFS_INFO_#</c> structure specified.
+	/// </para>
+	/// <para><em>lpBytesReturned</em></para>
+	/// <para>A pointer to a variable that receives the size of the data stored in the output buffer, in bytes.</para>
+	/// <para>
+	/// If the output buffer is too small, but at least large enough to hold a <c>DWORD</c>, the call fails, <c>GetLastError</c> returns
+	/// <c>ERROR_MORE_DATA</c>, and the first <c>DWORD</c> of the output buffer contains the size that would have been required. If the
+	/// output buffer cannot hold a <c>DWORD</c> then the call fails with <c>ERROR_INSUFFICIENT_BUFFER</c>, and lpBytesReturned is zero.
+	/// </para>
+	/// <para>
+	/// If lpOverlapped is <c>NULL</c>, lpBytesReturned cannot be <c>NULL</c>. Even when an operation returns no output data and lpOutBuffer
+	/// is <c>NULL</c>, <c>DeviceIoControl</c> makes use of lpBytesReturned. After such an operation, the value of lpBytesReturned is meaningless.
+	/// </para>
+	/// <para>
+	/// If lpOverlapped is not <c>NULL</c>, lpBytesReturned can be <c>NULL</c>. If this parameter is not <c>NULL</c> and the operation
+	/// returns data, lpBytesReturned is meaningless until the overlapped operation has completed. To retrieve the number of bytes returned,
+	/// call <c>GetOverlappedResult</c>. If the hDevice parameter is associated with an I/O completion port, you can retrieve the number of
+	/// bytes returned by calling <c>GetQueuedCompletionStatus</c>.
+	/// </para>
+	/// <para><em>lpOverlapped</em></para>
+	/// <para>A pointer to an <c>OVERLAPPED</c> structure.</para>
+	/// <para>If hDevice was opened without specifying <c>FILE_FLAG_OVERLAPPED</c>, lpOverlapped is ignored.</para>
+	/// <para>
+	/// If hDevice was opened with the <c>FILE_FLAG_OVERLAPPED</c> flag, the operation is performed as an overlapped (asynchronous)
+	/// operation. In this case, lpOverlapped must point to a valid <c>OVERLAPPED</c> structure that contains a handle to an event object.
+	/// Otherwise, the function fails in unpredictable ways.
+	/// </para>
+	/// <para>
+	/// For overlapped operations, <c>DeviceIoControl</c> returns immediately, and the event object is signaled when the operation has been
+	/// completed. Otherwise, the function does not return until the operation has been completed or an error occurs.
+	/// </para>
+	/// </summary>
+	/// <returns>
+	/// <para>If the operation completes successfully, <c>DeviceIoControl</c> returns a nonzero value.</para>
+	/// <para>If the operation fails or is pending, <c>DeviceIoControl</c> returns zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	// https://learn.microsoft.com/en-us/windows/win32/dfs/fsctl-dfs-get-pkt-entry-state
+	[PInvokeData("LmDfs.h")]
+	[CorrespondingType(typeof(DFS_GET_PKT_ENTRY_STATE_ARG))]
+	public static uint FSCTL_DFS_GET_PKT_ENTRY_STATE => Kernel32.CTL_CODE(6 /*FSCTL_DFS_BASE*/, 2031, (byte)Kernel32.IOMethod.METHOD_BUFFERED, (byte)Kernel32.IOAccess.FILE_ANY_ACCESS);
+
 	/// <summary>Identifies the origin of DFS namespace version information.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ne-lmdfs-dfs_namespace_version_origin typedef enum {
 	// DFS_NAMESPACE_VERSION_ORIGIN_COMBINED, DFS_NAMESPACE_VERSION_ORIGIN_SERVER, DFS_NAMESPACE_VERSION_ORIGIN_DOMAIN } *PDFS_NAMESPACE_VERSION_ORIGIN;
@@ -333,7 +399,7 @@ public static partial class NetApi32
 	// DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, LPWSTR Comment, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "2c8816b2-5489-486e-b749-605932ba9fe9")]
-	public static extern Win32Error NetDfsAdd(string DfsEntryPath, string ServerName, string ShareName, string Comment, DfsAddFlags Flags);
+	public static extern Win32Error NetDfsAdd(string DfsEntryPath, string ServerName, string ShareName, [Optional] string? Comment, DfsAddFlags Flags);
 
 	/// <summary>
 	/// Creates a new domain-based Distributed File System (DFS) namespace. If the namespace already exists, the function adds the
@@ -472,7 +538,7 @@ public static partial class NetApi32
 	// NetDfsAddRootTarget( LPWSTR pDfsPath, LPWSTR pTargetPath, ULONG MajorVersion, LPWSTR pComment, ULONG Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "c4ce8f50-f090-4783-b6c9-834d9e0c33de")]
-	public static extern Win32Error NetDfsAddRootTarget(string pDfsPath, string pTargetPath, uint MajorVersion, [Optional] string? pComment, uint Flags = 0);
+	public static extern Win32Error NetDfsAddRootTarget(string pDfsPath, [Optional] string? pTargetPath, uint MajorVersion, [Optional] string? pComment, uint Flags = 0);
 
 	/// <summary>Creates a new stand-alone Distributed File System (DFS) namespace.</summary>
 	/// <param name="ServerName">
@@ -1292,7 +1358,7 @@ public static partial class NetApi32
 	// NetDfsRemoveRootTarget( LPWSTR pDfsPath, LPWSTR pTargetPath, ULONG Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "9a8c78f4-3170-4568-940c-1c51aebad3ae")]
-	public static extern Win32Error NetDfsRemoveRootTarget(string pDfsPath, string pTargetPath, DfsRemoveFlags Flags);
+	public static extern Win32Error NetDfsRemoveRootTarget(string pDfsPath, [Optional] string? pTargetPath, DfsRemoveFlags Flags);
 
 	/// <summary>Deletes a stand-alone Distributed File System (DFS) namespace.</summary>
 	/// <param name="ServerName">
@@ -1385,7 +1451,7 @@ public static partial class NetApi32
 	// NetDfsSetClientInfo( LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, DWORD Level, LPBYTE Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "4c95dffb-a092-45ad-9a3f-37d3abbf4427")]
-	public static extern Win32Error NetDfsSetClientInfo(string DfsEntryPath, [Optional] string? ServerName, string ShareName, uint Level, IntPtr Buffer);
+	public static extern Win32Error NetDfsSetClientInfo(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, uint Level, IntPtr Buffer);
 
 	/// <summary>
 	/// Sets the security descriptor of the container object for the domain-based DFS namespaces in the specified Active Directory domain.
@@ -1529,7 +1595,7 @@ public static partial class NetApi32
 	// LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, DWORD Level, LPBYTE Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "5526afa7-82bc-47c7-99d6-44e41ef772b1")]
-	public static extern Win32Error NetDfsSetInfo(string DfsEntryPath, [Optional] string? ServerName, string ShareName, uint Level, IntPtr Buffer);
+	public static extern Win32Error NetDfsSetInfo(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, uint Level, IntPtr Buffer);
 
 	/// <summary>Sets the security descriptor for the root object of the specified DFS namespace.</summary>
 	/// <param name="DfsEntryPath">
@@ -1601,23 +1667,25 @@ public static partial class NetApi32
 	[PInvokeData("lmdfs.h", MSDNShortId = "BC408A12-5106-45A0-BBED-0468D51708BC")]
 	public static extern Win32Error NetDfsSetStdContainerSecurity(string MachineName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
-	/// <summary>Input buffer used with the FSCTL_DFS_GET_PKT_ENTRY_STATE control code.</summary>
+	/// <summary>
+	/// <para>Input buffer used with the FSCTL_DFS_GET_PKT_ENTRY_STATE control code.</para>
+	/// <note type="important">This structure does not match the native Win32 structure and can only be used when using a Vanara memory
+	/// allocator that supports IVanaraMarshaler. This is done automatically when calling DeviceIOControl generic overloads.</note>
+	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-__unnamed_struct_2 typedef struct { USHORT DfsEntryPathLen;
 	// USHORT ServerNameLen; USHORT ShareNameLen; ULONG Level; WCHAR Buffer[1]; } DFS_GET_PKT_ENTRY_STATE_ARG, *PDFS_GET_PKT_ENTRY_STATE_ARG;
 	[PInvokeData("lmdfs.h", MSDNShortId = "eb69d346-d88c-48e8-abd7-5cbb5976f41f")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4, Size = 16)]
+	[VanaraMarshaler(typeof(DFS_GET_PKT_ENTRY_STATE_ARG_Marshaler))]
 	public struct DFS_GET_PKT_ENTRY_STATE_ARG
 	{
-		/// <summary>Length of the DFS Entry Path Unicode string in bytes stored in the Buffer parameter.</summary>
-		public ushort DfsEntryPathLen;
+		/// <summary>The DFS Entry Path Unicode string.</summary>
+		public string DfsEntryPath;
 
-		/// <summary>
-		/// Length of the Server Name Unicode string in bytes stored in the Buffer parameter following the DFS Entry Path string.
-		/// </summary>
-		public ushort ServerNameLen;
+		/// <summary>The Server Name Unicode string.</summary>
+		public string? ServerName;
 
-		/// <summary>Length of the Share Name Unicode string in bytes stored in the Buffer parameter following the Server Name string.</summary>
-		public ushort ShareNameLen;
+		/// <summary>The Share Name Unicode string.</summary>
+		public string? ShareName;
 
 		/// <summary>
 		/// <para>Length of the Level string in bytes.</para>
@@ -1649,11 +1717,39 @@ public static partial class NetApi32
 		/// </summary>
 		public uint Level;
 
-		/// <summary>
-		/// On input this contains the three Unicode strings in order. The Unicode strings are not <c>NULL</c> terminated and there is no
-		/// delimiter between the strings.
-		/// </summary>
-		public string Buffer;
+		[StructLayout(LayoutKind.Sequential)]
+		private struct DFS_GET_PKT_ENTRY_STATE_ARG_NATIVE
+		{
+			public ushort DfsEntryPathLen;
+			public ushort ServerNameLen;
+			public ushort ShareNameLen;
+			public uint Level;
+			public ushort Buffer;
+		}
+
+		private class DFS_GET_PKT_ENTRY_STATE_ARG_Marshaler : IVanaraMarshaler
+		{
+			static readonly long bufferOffset = Marshal.OffsetOf(typeof(DFS_GET_PKT_ENTRY_STATE_ARG_NATIVE), "Buffer").ToInt64();
+			public SizeT GetNativeSize() => Marshal.SizeOf(typeof(DFS_GET_PKT_ENTRY_STATE_ARG_NATIVE));
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
+			{
+				if (managedObject is not DFS_GET_PKT_ENTRY_STATE_ARG arg)
+					throw new ArgumentException("Managed object must be a DFS_GET_PKT_ENTRY_STATE_ARG struct.", nameof(managedObject));
+				DFS_GET_PKT_ENTRY_STATE_ARG_NATIVE narg = new()
+				{
+					DfsEntryPathLen = (ushort)StringHelper.GetByteCount(arg.DfsEntryPath, false, CharSet.Unicode),
+					ServerNameLen = (ushort)StringHelper.GetByteCount(arg.ServerName, false, CharSet.Unicode),
+					ShareNameLen = (ushort)StringHelper.GetByteCount(arg.ShareName, false, CharSet.Unicode),
+					Level = arg.Level,
+				};
+				string buffer = string.Concat(arg.DfsEntryPath, arg.ServerName, arg.ShareName);
+				var mem = new SafeHGlobalHandle(GetNativeSize() + StringHelper.GetByteCount(buffer, false, CharSet.Unicode) - sizeof(ushort));
+				mem.Write(narg, false);
+				StringHelper.Write(buffer, ((IntPtr)mem).Offset(bufferOffset), out _, false, CharSet.Unicode);
+				return mem;
+			}
+			object? IVanaraMarshaler.MarshalNativeToManaged(nint pNativeData, SizeT allocatedBytes) => throw new NotImplementedException();
+		}
 	}
 
 	/// <summary>

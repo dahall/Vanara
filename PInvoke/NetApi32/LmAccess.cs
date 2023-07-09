@@ -3314,7 +3314,8 @@ public static partial class NetApi32
 	// resume_handle );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "b26ef3c0-934a-4840-8c06-4eaff5c9ff86")]
-	public static extern Win32Error NetUserEnum([Optional] string? servername, uint level, UserEnumFilter filter, out SafeNetApiBuffer bufptr, uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
+	public static extern Win32Error NetUserEnum([Optional] string? servername, uint level, UserEnumFilter filter, out SafeNetApiBuffer bufptr,
+		uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
 
 	/// <summary>The <c>NetUserGetGroups</c> function retrieves a list of global groups to which a specified user belongs.</summary>
 	/// <param name="servername">
@@ -3719,7 +3720,8 @@ public static partial class NetApi32
 	// entriesread, LPDWORD totalentries );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "cc5c1c15-cad7-4103-a2c9-1a8adf742703")]
-	public static extern Win32Error NetUserGetLocalGroups([Optional] string? servername, string username, uint level, GetLocalGroupFlags flags, out SafeNetApiBuffer bufptr, uint prefmaxlen, out uint entriesread, out uint totalentries);
+	public static extern Win32Error NetUserGetLocalGroups([Optional] string? servername, string username, uint level, GetLocalGroupFlags flags,
+		out SafeNetApiBuffer bufptr, uint prefmaxlen, out uint entriesread, out uint totalentries);
 
 	/// <summary>
 	/// The <c>NetUserModalsGet</c> function retrieves global information for all users and global groups in the security database, which
@@ -4741,7 +4743,7 @@ public static partial class NetApi32
 		/// Pointer to a null-terminated Unicode character string that specifies a remark associated with the global group. This member
 		/// can be a null string. The comment can contain MAXCOMMENTSZ characters.
 		/// </summary>
-		public string grpi1_comment;
+		public string? grpi1_comment;
 	}
 
 	/// <summary>The <c>GROUP_INFO_1002</c> structure contains a comment to associate with a global group.</summary>
@@ -4755,7 +4757,7 @@ public static partial class NetApi32
 		/// Pointer to a null-terminated Unicode character string that contains a remark to associate with the global group. This member
 		/// can be a null string. The comment can contain MAXCOMMENTSZ characters.
 		/// </summary>
-		public string grpi1002_comment;
+		public string? grpi1002_comment;
 	}
 
 	/// <summary>The <c>GROUP_INFO_1005</c> structure contains the resource attributes associated with a global group.</summary>
@@ -4802,7 +4804,7 @@ public static partial class NetApi32
 		/// Pointer to a null-terminated Unicode character string that contains a remark associated with the global group. This member
 		/// can be a null string. The comment can contain MAXCOMMENTSZ characters.
 		/// </summary>
-		public string grpi2_comment;
+		public string? grpi2_comment;
 
 		/// <summary>
 		/// The relative identifier (RID) of the global group. The NetUserAdd and NetUserSetInfo functions ignore this member. For more
@@ -4837,7 +4839,7 @@ public static partial class NetApi32
 		/// Pointer to a null-terminated Unicode character string that contains a remark associated with the global group. This member
 		/// can be a null string. The comment can contain MAXCOMMENTSZ characters.
 		/// </summary>
-		public string grpi3_comment;
+		public string? grpi3_comment;
 
 		/// <summary>
 		/// Pointer to a SID structure that contains the security identifier (SID) that uniquely identifies the global group. The
@@ -5015,7 +5017,7 @@ public static partial class NetApi32
 		/// Pointer to a Unicode string that contains a remark associated with the local group. This member can be a null string. The
 		/// comment can have as many as MAXCOMMENTSZ characters.
 		/// </summary>
-		public string lgrpi1_comment;
+		public string? lgrpi1_comment;
 	}
 
 	/// <summary>The <c>LOCALGROUP_INFO_1002</c> structure contains a comment describing a local group.</summary>
@@ -5029,7 +5031,7 @@ public static partial class NetApi32
 		/// Pointer to a Unicode string that specifies a remark associated with the local group. This member can be a null string. The
 		/// comment can have as many as MAXCOMMENTSZ characters.
 		/// </summary>
-		public string lgrpi1002_comment;
+		public string? lgrpi1002_comment;
 	}
 
 	/// <summary>
@@ -5258,7 +5260,7 @@ public static partial class NetApi32
 		/// have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string grpi3_comment;
+		public string? grpi3_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -5313,7 +5315,7 @@ public static partial class NetApi32
 		/// can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri2_comment;
+		public string? usri2_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -5477,7 +5479,7 @@ public static partial class NetApi32
 		/// have any number of characters before the terminating null character (MAXCOMMENTSZ).
 		/// </para>
 		/// </summary>
-		public string usri1_comment;
+		public string? usri1_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -5603,7 +5605,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri1_full_name;
+		public string? usri1_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -6040,7 +6042,7 @@ public static partial class NetApi32
 		/// </para>
 		/// <para>By convention, the length of passwords is limited to LM20_PWLEN characters.</para>
 		/// </summary>
-		public string usri1_password;
+		public string? usri1_password;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -6087,7 +6089,7 @@ public static partial class NetApi32
 		/// member. The string can be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri1_home_dir;
+		public string? usri1_home_dir;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -6096,7 +6098,7 @@ public static partial class NetApi32
 		/// string, or it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri1_comment;
+		public string? usri1_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -6226,7 +6228,7 @@ public static partial class NetApi32
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri1_script_path;
+		public string? usri1_script_path;
 	}
 
 	/// <summary>
@@ -6254,19 +6256,19 @@ public static partial class NetApi32
 		/// Pointer to a Unicode string that contains a comment associated with the user account. The string can be a null string, or can
 		/// have any number of characters before the terminating null character.
 		/// </summary>
-		public string usri10_comment;
+		public string? usri10_comment;
 
 		/// <summary>
 		/// Pointer to a Unicode string that contains a user comment. This string can be a null string, or it can have any number of
 		/// characters before the terminating null character.
 		/// </summary>
-		public string usri10_usr_comment;
+		public string? usri10_usr_comment;
 
 		/// <summary>
 		/// Pointer to a Unicode string that contains the full name of the user. This string can be a null string, or it can have any
 		/// number of characters before the terminating null character.
 		/// </summary>
-		public string usri10_full_name;
+		public string? usri10_full_name;
 	}
 
 	/// <summary>
@@ -6339,7 +6341,7 @@ public static partial class NetApi32
 		/// Pointer to a Unicode string specifying the path of the home directory for the user account specified in the username
 		/// parameter to the <c>NetUserSetInfo</c> function. The string can be null.
 		/// </summary>
-		public string usri1006_home_dir;
+		public string? usri1006_home_dir;
 	}
 
 	/// <summary>
@@ -6357,7 +6359,7 @@ public static partial class NetApi32
 		/// the <c>NetUserSetInfo</c> function. This string can be a null string, or it can have any number of characters before the
 		/// terminating null character.
 		/// </summary>
-		public string usri1007_comment;
+		public string? usri1007_comment;
 	}
 
 	/// <summary>
@@ -6509,7 +6511,7 @@ public static partial class NetApi32
 		/// parameter to the <c>NetUserSetInfo</c> function. The script file can be a .CMD file, an .EXE file, or a .BAT file. The string
 		/// can also be null.
 		/// </summary>
-		public string usri1009_script_path;
+		public string? usri1009_script_path;
 	}
 
 	/// <summary>
@@ -6572,7 +6574,7 @@ public static partial class NetApi32
 		/// <c>NetUserSetInfo</c> function. This string can be a null string, or it can have any number of characters before the
 		/// terminating null character.
 		/// </summary>
-		public string usri1011_full_name;
+		public string? usri1011_full_name;
 	}
 
 	/// <summary>
@@ -6590,7 +6592,7 @@ public static partial class NetApi32
 		/// <c>NetUserSetInfo</c> function. This string can be a null string, or it can have any number of characters before the
 		/// terminating null character.
 		/// </summary>
-		public string usri1012_usr_comment;
+		public string? usri1012_usr_comment;
 	}
 
 	/// <summary>
@@ -6614,7 +6616,7 @@ public static partial class NetApi32
 		/// Access Server (RAS).
 		/// </para>
 		/// </summary>
-		public string usri1013_parms;
+		public string? usri1013_parms;
 	}
 
 	/// <summary>
@@ -6637,7 +6639,7 @@ public static partial class NetApi32
 		/// no restriction.
 		/// </para>
 		/// </summary>
-		public string usri1014_workstations;
+		public string? usri1014_workstations;
 	}
 
 	/// <summary>
@@ -6742,7 +6744,7 @@ public static partial class NetApi32
 		/// server, specify an asterisk (\*) for the server name. A null string indicates that requests should be sent to the domain controller.
 		/// </para>
 		/// </summary>
-		public string usri1023_logon_server;
+		public string? usri1023_logon_server;
 	}
 
 	/// <summary>
@@ -6817,7 +6819,7 @@ public static partial class NetApi32
 		/// Specifies a Unicode string that contains the path to the user's profile. The user is specified in the username parameter to
 		/// the <c>NetUserSetInfo</c> function. This value can be a null string, a local absolute path, or a UNC path.
 		/// </summary>
-		public string usri1052_profile;
+		public string? usri1052_profile;
 	}
 
 	/// <summary>
@@ -6872,7 +6874,7 @@ public static partial class NetApi32
 		/// string, or it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri11_comment;
+		public string? usri11_comment;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -6881,7 +6883,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri11_usr_comment;
+		public string? usri11_usr_comment;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -6890,7 +6892,7 @@ public static partial class NetApi32
 		/// have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri11_full_name;
+		public string? usri11_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -6983,7 +6985,7 @@ public static partial class NetApi32
 		/// member. The string can be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri11_home_dir;
+		public string? usri11_home_dir;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -6993,7 +6995,7 @@ public static partial class NetApi32
 		/// configuration information. Do not modify this information.
 		/// </para>
 		/// </summary>
-		public string usri11_parms;
+		public string? usri11_parms;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7061,7 +7063,7 @@ public static partial class NetApi32
 		/// For Windows servers, NetUserGetInfo and NetUserEnum return \*. The NetUserAdd and NetUserSetInfo functions ignore this member.
 		/// </para>
 		/// </summary>
-		public string usri11_logon_server;
+		public string? usri11_logon_server;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7078,7 +7080,7 @@ public static partial class NetApi32
 		/// <c>usri11_flags</c> member.
 		/// </para>
 		/// </summary>
-		public string usri11_workstations;
+		public string? usri11_workstations;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7166,7 +7168,7 @@ public static partial class NetApi32
 		/// </para>
 		/// <para>By convention, the length of passwords is limited to LM20_PWLEN characters.</para>
 		/// </summary>
-		public string usri2_password;
+		public string? usri2_password;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7213,7 +7215,7 @@ public static partial class NetApi32
 		/// member. The string can be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri2_home_dir;
+		public string? usri2_home_dir;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -7222,7 +7224,7 @@ public static partial class NetApi32
 		/// string, or it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri2_comment;
+		public string? usri2_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7352,7 +7354,7 @@ public static partial class NetApi32
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri2_script_path;
+		public string? usri2_script_path;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7407,7 +7409,7 @@ public static partial class NetApi32
 		/// have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri2_full_name;
+		public string? usri2_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -7416,7 +7418,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri2_usr_comment;
+		public string? usri2_usr_comment;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -7426,7 +7428,7 @@ public static partial class NetApi32
 		/// configuration information. Do not modify this information.
 		/// </para>
 		/// </summary>
-		public string usri2_parms;
+		public string? usri2_parms;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -7437,7 +7439,7 @@ public static partial class NetApi32
 		/// <c>usri2_flags</c> member.
 		/// </para>
 		/// </summary>
-		public string usri2_workstations;
+		public string? usri2_workstations;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7553,7 +7555,7 @@ public static partial class NetApi32
 		/// For Windows servers, NetUserGetInfo and NetUserEnum return \*. The NetUserAdd and NetUserSetInfo functions ignore this member.
 		/// </para>
 		/// </summary>
-		public string usri2_logon_server;
+		public string? usri2_logon_server;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7606,7 +7608,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri20_full_name;
+		public string? usri20_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -7615,7 +7617,7 @@ public static partial class NetApi32
 		/// it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri20_comment;
+		public string? usri20_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7842,7 +7844,7 @@ public static partial class NetApi32
 		/// member. The string can be null.
 		/// </para>
 		/// </summary>
-		public string usri22_home_dir;
+		public string? usri22_home_dir;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -7851,7 +7853,7 @@ public static partial class NetApi32
 		/// it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri22_comment;
+		public string? usri22_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -7981,7 +7983,7 @@ public static partial class NetApi32
 		/// .EXE file, or a .BAT file. The string can also be null.
 		/// </para>
 		/// </summary>
-		public string usri22_script_path;
+		public string? usri22_script_path;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8036,7 +8038,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri22_full_name;
+		public string? usri22_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8045,7 +8047,7 @@ public static partial class NetApi32
 		/// characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri22_usr_comment;
+		public string? usri22_usr_comment;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8055,7 +8057,7 @@ public static partial class NetApi32
 		/// information. Do not modify this information.
 		/// </para>
 		/// </summary>
-		public string usri22_parms;
+		public string? usri22_parms;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8065,7 +8067,7 @@ public static partial class NetApi32
 		/// To disable logons from all workstations to this account, set the UF_ACCOUNTDISABLE value in the <c>usri22_flags</c> member.
 		/// </para>
 		/// </summary>
-		public string usri22_workstations;
+		public string? usri22_workstations;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8181,7 +8183,7 @@ public static partial class NetApi32
 		/// functions ignore this member.
 		/// </para>
 		/// </summary>
-		public string usri22_logon_server;
+		public string? usri22_logon_server;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8230,7 +8232,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri23_full_name;
+		public string? usri23_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8239,7 +8241,7 @@ public static partial class NetApi32
 		/// it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri23_comment;
+		public string? usri23_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8463,7 +8465,7 @@ public static partial class NetApi32
 		/// </para>
 		/// <para>By convention, the length of passwords is limited to LM20_PWLEN characters.</para>
 		/// </summary>
-		public string usri3_password;
+		public string? usri3_password;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8508,7 +8510,7 @@ public static partial class NetApi32
 		/// member. The string can be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri3_home_dir;
+		public string? usri3_home_dir;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8517,7 +8519,7 @@ public static partial class NetApi32
 		/// string, or it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri3_comment;
+		public string? usri3_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8647,7 +8649,7 @@ public static partial class NetApi32
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri3_script_path;
+		public string? usri3_script_path;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8691,7 +8693,7 @@ public static partial class NetApi32
 		/// have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri3_full_name;
+		public string? usri3_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8700,7 +8702,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri3_usr_comment;
+		public string? usri3_usr_comment;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8710,7 +8712,7 @@ public static partial class NetApi32
 		/// configuration information. Do not modify this information.
 		/// </para>
 		/// </summary>
-		public string usri3_parms;
+		public string? usri3_parms;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8721,7 +8723,7 @@ public static partial class NetApi32
 		/// value in the <c>usri3_flags</c> member.
 		/// </para>
 		/// </summary>
-		public string usri3_workstations;
+		public string? usri3_workstations;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8837,7 +8839,7 @@ public static partial class NetApi32
 		/// For Windows servers, NetUserGetInfo and NetUserEnum return \*. The NetUserAdd and NetUserSetInfo functions ignore this member.
 		/// </para>
 		/// </summary>
-		public string usri3_logon_server;
+		public string? usri3_logon_server;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8878,7 +8880,7 @@ public static partial class NetApi32
 		/// absolute path, or a UNC path.
 		/// </para>
 		/// </summary>
-		public string usri3_profile;
+		public string? usri3_profile;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8943,7 +8945,7 @@ public static partial class NetApi32
 		/// </para>
 		/// <para>By convention, the length of passwords is limited to LM20_PWLEN characters.</para>
 		/// </summary>
-		public string usri4_password;
+		public string? usri4_password;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8988,7 +8990,7 @@ public static partial class NetApi32
 		/// member. The string can be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri4_home_dir;
+		public string? usri4_home_dir;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -8997,7 +8999,7 @@ public static partial class NetApi32
 		/// string, or it can have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri4_comment;
+		public string? usri4_comment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -9127,7 +9129,7 @@ public static partial class NetApi32
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public string usri4_script_path;
+		public string? usri4_script_path;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -9171,7 +9173,7 @@ public static partial class NetApi32
 		/// have any number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri4_full_name;
+		public string? usri4_full_name;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -9180,7 +9182,7 @@ public static partial class NetApi32
 		/// number of characters before the terminating null character.
 		/// </para>
 		/// </summary>
-		public string usri4_usr_comment;
+		public string? usri4_usr_comment;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -9190,7 +9192,7 @@ public static partial class NetApi32
 		/// configuration information. Do not modify this information.
 		/// </para>
 		/// </summary>
-		public string usri4_parms;
+		public string? usri4_parms;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -9201,7 +9203,7 @@ public static partial class NetApi32
 		/// value in the <c>usri4_flags</c> member.
 		/// </para>
 		/// </summary>
-		public string usri4_workstations;
+		public string? usri4_workstations;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -9316,7 +9318,7 @@ public static partial class NetApi32
 		/// <para>For Windows servers, the NetUserGetInfo function returns \*.</para>
 		/// <para>The NetUserAdd and NetUserSetInfo functions ignore this member.</para>
 		/// </summary>
-		public string usri4_logon_server;
+		public string? usri4_logon_server;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -9356,7 +9358,7 @@ public static partial class NetApi32
 		/// absolute path, or a UNC path.
 		/// </para>
 		/// </summary>
-		public string usri4_profile;
+		public string? usri4_profile;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>

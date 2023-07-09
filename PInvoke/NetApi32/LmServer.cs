@@ -266,7 +266,7 @@ public static partial class NetApi32
 	// NetServerComputerNameAdd( LMSTR ServerName, LMSTR EmulatedDomainName, LMSTR EmulatedServerName );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmserver.h", MSDNShortId = "0789fbfe-be91-4849-a31c-1e1a6ae1e70d")]
-	public static extern Win32Error NetServerComputerNameAdd([Optional] string? ServerName, string EmulatedDomainName, string EmulatedServerName);
+	public static extern Win32Error NetServerComputerNameAdd([Optional] string? ServerName, [Optional] string? EmulatedDomainName, string EmulatedServerName);
 
 	/// <summary>
 	/// <para>
@@ -1457,11 +1457,11 @@ public static partial class NetApi32
 
 		/// <summary>A pointer to a Unicode string specifying a comment describing the server. The comment can be null.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string sv101_comment;
+		public string? sv101_comment;
 
 		/// <summary>Gets the version composed of both <see cref="sv101_version_major"/> and <see cref="sv101_version_minor"/>.</summary>
 		/// <value>The version.</value>
-		public Version Version => new Version(sv101_version_major, sv101_version_minor);
+		public readonly Version Version => new(sv101_version_major, sv101_version_minor);
 	}
 
 	/// <summary>
@@ -1498,7 +1498,7 @@ public static partial class NetApi32
 
 		/// <summary>A pointer to a Unicode string specifying a comment describing the server. The comment can be null.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string sv102_comment;
+		public string? sv102_comment;
 
 		/// <summary>
 		/// The number of users who can attempt to log on to the system server. Note that it is the license server that determines how
@@ -1540,7 +1540,7 @@ public static partial class NetApi32
 
 		/// <summary>Gets the version composed of both <see cref="sv102_version_major"/> and <see cref="sv102_version_minor"/>.</summary>
 		/// <value>The version.</value>
-		public Version Version => new Version(sv102_version_major, sv102_version_minor);
+		public readonly Version Version => new(sv102_version_major, sv102_version_minor);
 	}
 
 	/// <summary>

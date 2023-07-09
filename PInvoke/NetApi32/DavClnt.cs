@@ -194,7 +194,7 @@ public static partial class NetApi32
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "d69cba04-503c-4d21-b762-3094c0921e28")]
 	[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
-	public static extern Win32Error DavAddConnection(out SafeDavConnectionHandle ConnectionHandle, string RemoteName, string UserName, string Password, IntPtr ClientCert, uint CertSize);
+	public static extern Win32Error DavAddConnection(out SafeDavConnectionHandle ConnectionHandle, string RemoteName, [Optional] string? UserName, [Optional] string? Password, IntPtr ClientCert, uint CertSize);
 
 	/// <summary>Closes all connections to a WebDAV server or a remote file or directory on a WebDAV server.</summary>
 	/// <param name="lpName">
@@ -468,7 +468,7 @@ public static partial class NetApi32
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "94a4607c-2770-4656-8710-987d6b951e0e")]
 	[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
-	public static extern Win32Error DavGetTheLockOwnerOfTheFile(string FileName, StringBuilder LockOwnerName, ref uint LockOwnerNameLengthInBytes);
+	public static extern Win32Error DavGetTheLockOwnerOfTheFile(string FileName, StringBuilder? LockOwnerName, ref uint LockOwnerNameLengthInBytes);
 
 	/// <summary>Converts the specified HTTP path to an equivalent UNC path.</summary>
 	/// <param name="Url">

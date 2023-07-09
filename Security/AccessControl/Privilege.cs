@@ -183,7 +183,7 @@ public static class PrivilegeExtension
 	/// Name of the system on which to check for the LUID value. A <see langword="null"/> will use the local system.
 	/// </param>
 	/// <returns>The associated LUID.</returns>
-	public static LUID GetLUID(this SystemPrivilege systemPrivilege, string systemName = null) => SystemPrivilegeTypeConverter.GetLUID(systemPrivilege, systemName);
+	public static LUID GetLUID(this SystemPrivilege systemPrivilege, string? systemName = null) => SystemPrivilegeTypeConverter.GetLUID(systemPrivilege, systemName);
 
 	/// <summary>Gets the <see cref="SystemPrivilege"/> value for this <see cref="LUID"/>.</summary>
 	/// <param name="luid">The luid.</param>
@@ -191,7 +191,7 @@ public static class PrivilegeExtension
 	/// Name of the system on which to check for the LUID value. A <see langword="null"/> will use the local system.
 	/// </param>
 	/// <returns>The associated <see cref="SystemPrivilege"/>.</returns>
-	public static SystemPrivilege GetPrivilege(this LUID luid, string systemName = null) => SystemPrivilegeTypeConverter.GetPrivilege(luid, systemName);
+	public static SystemPrivilege GetPrivilege(this LUID luid, string? systemName = null) => SystemPrivilegeTypeConverter.GetPrivilege(luid, systemName);
 
 	/// <summary>Enumerates all the privileges held by a security token.</summary>
 	/// <param name="hObj">The security token object.</param>
@@ -223,7 +223,7 @@ public static class PrivilegeExtension
 internal class SystemPrivilegeTypeConverter : TypeConverter
 {
 	internal static readonly Dictionary<SystemPrivilege, string> PrivLookup =
-		new Dictionary<SystemPrivilege, string>(35)
+		new(35)
 	{
 		{ SystemPrivilege.AssignPrimaryToken, "SeAssignPrimaryTokenPrivilege" },
 		{ SystemPrivilege.Audit, "SeAuditPrivilege" },
@@ -273,7 +273,7 @@ internal class SystemPrivilegeTypeConverter : TypeConverter
 		{ SystemPrivilege.DenyRemoteInteractiveLogon, "SeDenyRemoteInteractiveLogonRight" },
 	};
 
-	private static readonly Dictionary<SystemPrivilege, LUID> luidLookup = new Dictionary<SystemPrivilege, LUID>();
+	private static readonly Dictionary<SystemPrivilege, LUID> luidLookup = new();
 
 	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
 		sourceType == typeof(string) || sourceType == typeof(LUID) || base.CanConvertFrom(context, sourceType);
@@ -308,7 +308,7 @@ internal class SystemPrivilegeTypeConverter : TypeConverter
 		catch { throw new ArgumentOutOfRangeException(nameof(s), "Unrecognized privilege string."); }
 	}
 
-	internal static LUID GetLUID(SystemPrivilege systemPrivilege, string systemName = null)
+	internal static LUID GetLUID(SystemPrivilege systemPrivilege, string? systemName = null)
 	{
 		LUID val;
 		lock (luidLookup)
@@ -322,5 +322,5 @@ internal class SystemPrivilegeTypeConverter : TypeConverter
 		return val;
 	}
 
-	internal static SystemPrivilege GetPrivilege(LUID luid, string systemName = null) => ConvertKnownString(luid.GetName(systemName));
+	internal static SystemPrivilege GetPrivilege(LUID luid, string? systemName = null) => ConvertKnownString(luid.GetName(systemName));
 }

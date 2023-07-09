@@ -12,8 +12,8 @@ public class PerfLibTests
 {
 	//private SafePPERF_COUNTERSET_INSTANCE hinst;
 	//private SafeHPERFPROV hprov;
-	private static readonly Guid provGuid = new Guid("1232C7F8-4B6F-47A6-9078-8F62CF3F53CB");
-	private static readonly Guid instGuid = new Guid("1232C7F9-4B6F-47A6-9078-8F62CF3F53CB");
+	private static readonly Guid provGuid = new("1232C7F8-4B6F-47A6-9078-8F62CF3F53CB");
+	private static readonly Guid instGuid = new("1232C7F9-4B6F-47A6-9078-8F62CF3F53CB");
 
 	//[OneTimeSetUp]
 	//public void _Setup()

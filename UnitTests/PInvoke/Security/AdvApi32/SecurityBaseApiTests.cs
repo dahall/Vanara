@@ -752,5 +752,5 @@ public class SecurityBaseApiTests
 		Assert.That(SetSecurityDescriptorRMControl(pSD, 0), ResultIs.Successful);
 	}
 
-	private SafePACL GetAcl() => new SafePACL(256);
+	private SafePACL GetAcl() => new(256);
 }

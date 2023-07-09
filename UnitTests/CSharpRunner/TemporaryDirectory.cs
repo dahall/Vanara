@@ -40,7 +40,7 @@ public sealed class TemporaryDirectory : IDisposable
 	{
 	}
 
-	public TemporaryDirectory(bool isNetwork, string folderPrefix = null, string root = null)
+	public TemporaryDirectory(bool isNetwork, string? folderPrefix = null, string? root = null)
 	{
 		if (string.IsNullOrWhiteSpace(folderPrefix))
 			folderPrefix = "Vanara.TempRoot";
@@ -169,7 +169,7 @@ public sealed class TemporaryDirectory : IDisposable
 	public DirectoryInfo CreateSubDirectory(string directoryName) => CreateDirectoryCore(Combine(Directory.FullName, directoryName));
 
 	/// <summary>Returns a <see cref="FileInfo"/> instance to an existing file.</summary>
-	public FileInfo CreateSubDirectoryFile(DirectoryInfo directoryInfo, string fileName = null, int fileSize = OneMebibyte) => CreateFileCore(Combine(directoryInfo.FullName, fileName ?? RandomTxtFileName), fileSize: fileSize);
+	public FileInfo CreateSubDirectoryFile(DirectoryInfo directoryInfo, string? fileName = null, int fileSize = OneMebibyte) => CreateFileCore(Combine(directoryInfo.FullName, fileName ?? RandomTxtFileName), fileSize: fileSize);
 
 	/// <summary>Creates a directory structure populated with subdirectories and files of random size.</summary>
 	public DirectoryInfo CreateTree(int level = 1) => CreateTreeCore(null, level);

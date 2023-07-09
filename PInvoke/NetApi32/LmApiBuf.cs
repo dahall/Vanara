@@ -110,7 +110,7 @@ public static partial class NetApi32
 		/// <value>The size of the allocated memory in bytes.</value>
 		public uint Size
 		{
-			get { var err = NetApiBufferSize(handle, out var sz); return err.Succeeded ? sz : throw err.GetException(); }
+			get { var err = NetApiBufferSize(handle, out var sz); return err.Succeeded ? sz : throw err.GetException()!; }
 			set { NetApiBufferReallocate(handle, value, out var h).ThrowIfFailed(); SetHandle(h); }
 		}
 
@@ -127,15 +127,15 @@ public static partial class NetApi32
 		/// <typeparam name="T">The type of the structure.</typeparam>
 		/// <param name="count">The count of structures in the list.</param>
 		/// <returns>The list of structures.</returns>
-		public IEnumerable<T> ToIEnum<T>(int count) => handle.ToIEnum<T>(count);
+		public IEnumerable<T?> ToIEnum<T>(int count) => handle.ToIEnum<T>(count);
 
 		/// <inheritdoc/>
-		public override string ToString() => Extensions.StringHelper.GetString(handle);
+		public override string? ToString() => StringHelper.GetString(handle);
 
 		/// <summary>Extracts a list of strings. Used by <see cref="DsAddressToSiteNames"/>.</summary>
 		/// <param name="count">The number of elements in the list.</param>
 		/// <returns>The list of strings.</returns>
-		public IEnumerable<string> ToStringEnum(int count) => handle.ToStringEnum(count);
+		public IEnumerable<string?> ToStringEnum(int count) => handle.ToStringEnum(count);
 
 		/// <summary>Returns an extracted structure from this buffer.</summary>
 		/// <typeparam name="T">The structure type to extract.</typeparam>
@@ -152,13 +152,9 @@ public static partial class NetApi32
 	{
 		public static ICustomMarshaler GetInstance(string cookie) => new NetApiBufferUnicodeStringMarshaler();
 
-		public void CleanUpManagedData(object ManagedObj)
-		{
-		}
+		public void CleanUpManagedData(object ManagedObj) { }
 
-		public void CleanUpNativeData(IntPtr pNativeData)
-		{
-		}
+		public void CleanUpNativeData(IntPtr pNativeData) { }
 
 		public int GetNativeDataSize() => 0;
 
@@ -166,10 +162,9 @@ public static partial class NetApi32
 
 		public object MarshalNativeToManaged(IntPtr pNativeData)
 		{
-			if (pNativeData == IntPtr.Zero) return null;
-			var s = StringHelper.GetString(pNativeData, CharSet.Unicode);
-			NetApiBufferFree(pNativeData);
-			return s;
+			if (pNativeData == IntPtr.Zero) return string.Empty;
+			try { return StringHelper.GetString(pNativeData, CharSet.Unicode) ?? string.Empty; }
+			finally { NetApiBufferFree(pNativeData); }
 		}
 	}
 }

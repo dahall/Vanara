@@ -417,7 +417,7 @@ public static partial class NetApi32
 	// DsDeregisterDnsHostRecordsA( LPSTR ServerName, LPSTR DnsDomainName, GUID *DomainGuid, GUID *DsaGuid, LPSTR DnsHostName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "18ab6455-dab2-42d9-b68e-a8f0ad2d8091")]
-	public static extern Win32Error DsDeregisterDnsHostRecords([Optional] string? ServerName, string DnsDomainName, in Guid DomainGuid, in Guid DsaGuid, string DnsHostName);
+	public static extern Win32Error DsDeregisterDnsHostRecords([Optional] string? ServerName, [Optional] string? DnsDomainName, in Guid DomainGuid, in Guid DsaGuid, string DnsHostName);
 
 	/// <summary>
 	/// <para>
@@ -465,7 +465,7 @@ public static partial class NetApi32
 	// DsDeregisterDnsHostRecordsA( LPSTR ServerName, LPSTR DnsDomainName, GUID *DomainGuid, GUID *DsaGuid, LPSTR DnsHostName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "18ab6455-dab2-42d9-b68e-a8f0ad2d8091")]
-	public static extern Win32Error DsDeregisterDnsHostRecords([Optional] string? ServerName, string DnsDomainName, IntPtr DomainGuid, IntPtr DsaGuid, string DnsHostName);
+	public static extern Win32Error DsDeregisterDnsHostRecords([Optional] string? ServerName, [Optional] string? DnsDomainName, IntPtr DomainGuid, [Optional] IntPtr DsaGuid, string DnsHostName);
 
 	/// <summary>The <c>DsEnumerateDomainTrusts</c> function obtains domain trust data for a specified domain.</summary>
 	/// <param name="ServerName"><para>
@@ -867,7 +867,8 @@ public static partial class NetApi32
 	// DSGETDCAPI DWORD DsGetDcNameA( IN LPCSTR ComputerName, IN LPCSTR DomainName, IN GUID *DomainGuid, IN LPCSTR SiteName, IN ULONG Flags, OUT PDOMAIN_CONTROLLER_INFOA *DomainControllerInfo );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "da8b2983-5e45-40b0-b552-c9b3a1d8ae94")]
-	public static extern Win32Error DsGetDcName([Optional] string? ComputerName, [Optional] string? DomainName, in Guid DomainGuid, [Optional] string? SiteName, DsGetDcNameFlags Flags, out SafeNetApiBuffer DomainControllerInfo);
+	public static extern Win32Error DsGetDcName([Optional] string? ComputerName, [Optional] string? DomainName, in Guid DomainGuid,
+		[Optional] string? SiteName, DsGetDcNameFlags Flags, out SafeNetApiBuffer DomainControllerInfo);
 
 	/// <summary>
 	/// The DsGetDcName function returns the name of a domain controller in a specified domain. This function accepts additional domain
@@ -919,7 +920,8 @@ public static partial class NetApi32
 	/// </returns>
 	[DllImport(Lib.NetApi32, CharSet = CharSet.Auto)]
 	[PInvokeData("DsGetDC.h", MSDNShortId = "ms675983")]
-	public static extern Win32Error DsGetDcName([Optional] string? ComputerName, [Optional] string? DomainName, [Optional] IntPtr DomainGuid, [Optional] string? SiteName, DsGetDcNameFlags Flags, out SafeNetApiBuffer DomainControllerInfo);
+	public static extern Win32Error DsGetDcName([Optional] string? ComputerName, [Optional] string? DomainName, [Optional] GuidPtr DomainGuid,
+		[Optional] string? SiteName, DsGetDcNameFlags Flags, out SafeNetApiBuffer DomainControllerInfo);
 
 	/// <summary>
 	/// <para>The <c>DsGetDcNext</c> function retrieves the next domain controller in a domain controller enumeration operation.</para>
@@ -983,7 +985,8 @@ public static partial class NetApi32
 	// GetDcContextHandle, OUT PULONG SockAddressCount, OUT LPSOCKET_ADDRESS *SockAddresses, OUT LPSTR *DnsHostName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "2906772f-4391-411b-b0a9-5a20ebb6c0ee")]
-	public static extern Win32Error DsGetDcNext(SafeDCEnumHandle GetDcContextHandle, out uint SockAddressCount, out SafeLocalHandle SockAddresses, out SafeNetApiBuffer DnsHostName);
+	public static extern Win32Error DsGetDcNext(SafeDCEnumHandle GetDcContextHandle, out uint SockAddressCount,
+		out SafeLocalHandle SockAddresses, out SafeNetApiBuffer DnsHostName);
 
 	/// <summary>
 	/// <para>The <c>DsGetDcOpen</c> function opens a new domain controller enumeration operation.</para>
@@ -1079,7 +1082,8 @@ public static partial class NetApi32
 	// RetGetDcContext );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "2811cc30-f367-4f1a-8f0c-ed0a77dad24c")]
-	public static extern Win32Error DsGetDcOpen(string DnsName, DsGetDcOpenOptions OptionFlags, [Optional] string? SiteName, in Guid DomainGuid, [Optional] string? DnsForestName, DsGetDcNameFlags DcFlags, out SafeDCEnumHandle RetGetDcContext);
+	public static extern Win32Error DsGetDcOpen(string DnsName, DsGetDcOpenOptions OptionFlags, [Optional] string? SiteName, in Guid DomainGuid,
+		[Optional] string? DnsForestName, DsGetDcNameFlags DcFlags, out SafeDCEnumHandle RetGetDcContext);
 
 	/// <summary>
 	/// <para>The <c>DsGetDcOpen</c> function opens a new domain controller enumeration operation.</para>
@@ -1175,7 +1179,8 @@ public static partial class NetApi32
 	// RetGetDcContext );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "2811cc30-f367-4f1a-8f0c-ed0a77dad24c")]
-	public static extern Win32Error DsGetDcOpen(string DnsName, DsGetDcOpenOptions OptionFlags, [Optional] string? SiteName, [Optional] IntPtr DomainGuid, [Optional] string? DnsForestName, DsGetDcNameFlags DcFlags, out SafeDCEnumHandle RetGetDcContext);
+	public static extern Win32Error DsGetDcOpen(string DnsName, DsGetDcOpenOptions OptionFlags, [Optional] string? SiteName,
+		[Optional] GuidPtr DomainGuid, [Optional] string? DnsForestName, DsGetDcNameFlags DcFlags, out SafeDCEnumHandle RetGetDcContext);
 
 	/// <summary>
 	/// <para>The <c>DsGetDcSiteCoverage</c> function returns the site names of all sites covered by a domain controller.</para>
@@ -1242,7 +1247,8 @@ public static partial class NetApi32
 	// PLSA_FOREST_TRUST_INFORMATION *ForestTrustInfo );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "c94fdc5b-920b-4807-9cbf-3172ec1c7386")]
-	public static extern Win32Error DsGetForestTrustInformationW([Optional] string? ServerName, [Optional] string? TrustedDomainName, DsGetForestTrustInformationFlags Flags, out SafeNetApiBuffer ForestTrustInfo);
+	public static extern Win32Error DsGetForestTrustInformationW([Optional] string? ServerName, [Optional] string? TrustedDomainName,
+		DsGetForestTrustInformationFlags Flags, out SafeNetApiBuffer ForestTrustInfo);
 
 	/// <summary>
 	/// <para>
@@ -1275,7 +1281,8 @@ public static partial class NetApi32
 	// ComputerName, OUT LPSTR *SiteName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "2dfffd9a-af4f-4a93-8b3c-966e4f7c455f")]
-	public static extern Win32Error DsGetSiteName([Optional] string? ComputerName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NetApiBufferUnicodeStringMarshaler))] out string SiteName);
+	public static extern Win32Error DsGetSiteName([Optional] string? ComputerName,
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NetApiBufferUnicodeStringMarshaler))] out string SiteName);
 
 	/// <summary>
 	/// <para>
@@ -1310,7 +1317,8 @@ public static partial class NetApi32
 	// PLSA_FOREST_TRUST_INFORMATION OldForestTrustInfo, OUT PLSA_FOREST_TRUST_INFORMATION *MergedForestTrustInfo );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "f42e16d0-62b2-49c4-b182-d1e744afe58c")]
-	public static extern Win32Error DsMergeForestTrustInformationW(string DomainName, in LSA_FOREST_TRUST_INFORMATION NewForestTrustInfo, in LSA_FOREST_TRUST_INFORMATION OldForestTrustInfo, out SafeNetApiBuffer MergedForestTrustInfo);
+	public static extern Win32Error DsMergeForestTrustInformationW(string DomainName, in LSA_FOREST_TRUST_INFORMATION NewForestTrustInfo,
+		in LSA_FOREST_TRUST_INFORMATION OldForestTrustInfo, out SafeNetApiBuffer MergedForestTrustInfo);
 
 	/// <summary>
 	/// <para>
@@ -1345,7 +1353,8 @@ public static partial class NetApi32
 	// PLSA_FOREST_TRUST_INFORMATION OldForestTrustInfo, OUT PLSA_FOREST_TRUST_INFORMATION *MergedForestTrustInfo );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "f42e16d0-62b2-49c4-b182-d1e744afe58c")]
-	public static extern Win32Error DsMergeForestTrustInformationW(string DomainName, in LSA_FOREST_TRUST_INFORMATION NewForestTrustInfo, [Optional] IntPtr OldForestTrustInfo, out SafeNetApiBuffer MergedForestTrustInfo);
+	public static extern Win32Error DsMergeForestTrustInformationW(string DomainName, in LSA_FOREST_TRUST_INFORMATION NewForestTrustInfo,
+		[Optional] IntPtr OldForestTrustInfo, out SafeNetApiBuffer MergedForestTrustInfo);
 
 	/// <summary>
 	/// <para>
@@ -1418,14 +1427,14 @@ public static partial class NetApi32
 		/// Pointer to a null-terminated string that specifies the name of the site where the domain controller is located. This member
 		/// may be NULL if the domain controller is not in a site; for example, the domain controller is a Windows NT 4.0 domain controller.
 		/// </summary>
-		public string DcSiteName;
+		public string? DcSiteName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the site that the computer belongs to. The computer is
 		/// specified in the ComputerName parameter passed to DsGetDcName. This member may be NULL if the site that contains the computer
 		/// cannot be found; for example, if the DS administrator has not associated the subnet that the computer is in with a valid site.
 		/// </summary>
-		public string ClientSiteName;
+		public string? ClientSiteName;
 	}
 
 	/// <summary>
@@ -1446,7 +1455,7 @@ public static partial class NetApi32
 		/// <summary>
 		/// <para>Pointer to a null-terminated string that contains the DNS name of the domain. This member may be <c>NULL</c>.</para>
 		/// </summary>
-		public string DnsDomainName;
+		public string? DnsDomainName;
 
 		/// <summary>
 		/// <para>

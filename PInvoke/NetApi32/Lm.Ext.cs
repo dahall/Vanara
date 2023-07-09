@@ -30,7 +30,7 @@ public static partial class NetApi32
 	[PInvokeData("dsgetdc.h", MSDNShortId = "60ac6195-6e43-46da-a1e6-74ec989cd0c4")]
 	public static IEnumerable<(SOCKET_ADDRESS address, string site, string subnet)> DsAddressToSiteNamesEx(string ComputerName, SOCKET_ADDRESS[] SocketAddresses)
 	{
-		DsAddressToSiteNamesEx(ComputerName, (uint)(SocketAddresses?.Length ?? 0), SocketAddresses, out var sites, out var subnets).ThrowIfFailed();
+		DsAddressToSiteNamesEx(ComputerName, (uint)SocketAddresses.Length, SocketAddresses, out var sites, out var subnets).ThrowIfFailed();
 		return from addr in SocketAddresses
 			   from site in sites.ToStringEnum(SocketAddresses.Length)
 			   from sub in subnets.ToStringEnum(SocketAddresses.Length)
@@ -72,7 +72,7 @@ public static partial class NetApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsenumeratedomaintrustsa DSGETDCAPI DWORD
 	// DsEnumerateDomainTrustsA( LPSTR ServerName, ULONG Flags, PDS_DOMAIN_TRUSTSA *Domains, PULONG DomainCount );
 	[PInvokeData("dsgetdc.h", MSDNShortId = "6c3b788f-ee53-4637-acdb-04316e8464fe")]
-	public static IEnumerable<DS_DOMAIN_TRUSTS> DsEnumerateDomainTrusts(DomainTrustFlag Flags, string ServerName = null)
+	public static IEnumerable<DS_DOMAIN_TRUSTS> DsEnumerateDomainTrusts(DomainTrustFlag Flags, string? ServerName = null)
 	{
 		DsEnumerateDomainTrusts(ServerName, Flags, out var buf, out var cnt).ThrowIfFailed();
 		return buf.ToIEnum<DS_DOMAIN_TRUSTS>((int)cnt);
@@ -149,7 +149,8 @@ public static partial class NetApi32
 	// DnsName, IN ULONG OptionFlags, IN LPCSTR SiteName, IN GUID *DomainGuid, IN LPCSTR DnsForestName, IN ULONG DcFlags, OUT PHANDLE
 	// RetGetDcContext );
 	[PInvokeData("dsgetdc.h", MSDNShortId = "2811cc30-f367-4f1a-8f0c-ed0a77dad24c")]
-	public static IEnumerable<(string dnsHostName, SOCKET_ADDRESS[] sockets)> DsGetDcEnum(string DnsName, [Optional] DsGetDcOpenOptions OptionFlags, [Optional] DsGetDcNameFlags DcFlags, [Optional] string? SiteName, [Optional] Guid? DomainGuid, [Optional] string? DnsForestName)
+	public static IEnumerable<(string? dnsHostName, SOCKET_ADDRESS[] sockets)> DsGetDcEnum(string DnsName, [Optional] DsGetDcOpenOptions OptionFlags,
+		[Optional] DsGetDcNameFlags DcFlags, [Optional] string? SiteName, [Optional] Guid? DomainGuid, [Optional] string? DnsForestName)
 	{
 		SafeDCEnumHandle h;
 		if (DomainGuid.HasValue)
@@ -520,7 +521,7 @@ public static partial class NetApi32
 	/// <returns>An array of strings containing the site names.</returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsgetdcsitecoveragea
 	[PInvokeData("dsgetdc.h", MSDNShortId = "e0f757d9-36b6-40f8-a1db-fb5b9862b46a")]
-	public static IEnumerable<string> DsGetDcSiteCoverage(string ServerName = null)
+	public static IEnumerable<string?> DsGetDcSiteCoverage(string? ServerName = null)
 	{
 		DsGetDcSiteCoverage(ServerName, out var c, out var b).ThrowIfFailed();
 		return b.ToStringEnum((int)c);
@@ -1082,9 +1083,9 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	[PInvokeData("lmdfs.h", MSDNShortId = "4c95dffb-a092-45ad-9a3f-37d3abbf4427")]
-	public static void NetDfsSetClientInfo<T>(string DfsEntryPath, [Optional] string? ServerName, string ShareName, in T Buffer, uint Level = uint.MaxValue) where T : struct
+	public static void NetDfsSetClientInfo<T>(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, in T Buffer, uint Level = uint.MaxValue) where T : struct
 	{
-		var mem = SafeHGlobalHandle.CreateFromStructure(Buffer);
+		using var mem = SafeHGlobalHandle.CreateFromStructure(Buffer);
 		if (Level == uint.MaxValue) Level = (uint)GetLevelFromStructure<T>();
 		NetDfsSetClientInfo(DfsEntryPath, ServerName, ShareName, Level, mem).ThrowIfFailed();
 	}
@@ -1194,9 +1195,9 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	[PInvokeData("lmdfs.h", MSDNShortId = "5526afa7-82bc-47c7-99d6-44e41ef772b1")]
-	public static void NetDfsSetInfo<T>(string DfsEntryPath, [Optional] string? ServerName, string ShareName, in T Buffer, uint Level = uint.MaxValue) where T : struct
+	public static void NetDfsSetInfo<T>(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, in T Buffer, uint Level = uint.MaxValue) where T : struct
 	{
-		var mem = SafeHGlobalHandle.CreateFromStructure(Buffer);
+		using var mem = SafeHGlobalHandle.CreateFromStructure(Buffer);
 		if (Level == uint.MaxValue) Level = (uint)GetLevelFromStructure<T>();
 		NetDfsSetInfo(DfsEntryPath, ServerName, ShareName, Level, mem).ThrowIfFailed();
 	}
@@ -1250,7 +1251,7 @@ public static partial class NetApi32
 	// NetEnumerateComputerNames( LPCWSTR Server, NET_COMPUTER_NAME_TYPE NameType, ULONG Reserved, PDWORD EntryCount, LPWSTR
 	// **ComputerNames );
 	[PInvokeData("lmjoin.h", MSDNShortId = "c657ae33-404e-4c36-a956-5fbcfa540be7")]
-	public static IEnumerable<string> NetEnumerateComputerNames([Optional] string? Server, NET_COMPUTER_NAME_TYPE NameType = NET_COMPUTER_NAME_TYPE.NetAllComputerNames)
+	public static IEnumerable<string?> NetEnumerateComputerNames([Optional] string? Server, NET_COMPUTER_NAME_TYPE NameType = NET_COMPUTER_NAME_TYPE.NetAllComputerNames)
 	{
 		NetEnumerateComputerNames(Server, NameType, 0, out var c, out var buf).ThrowIfFailed();
 		return buf.ToStringEnum((int)c);
@@ -1397,7 +1398,7 @@ public static partial class NetApi32
 	/// <para>For more information about organizational units, see Managing Users in the Active Directory documentation.</para>
 	/// </remarks>
 	[PInvokeData("lmjoin.h", MSDNShortId = "1faa912b-c56d-431c-95d5-d36790b0d467")]
-	public static IEnumerable<string> NetGetJoinableOUs(string lpDomain, [Optional] string? lpServer, [Optional] string? lpAccount, [Optional] string? lpPassword)
+	public static IEnumerable<string?> NetGetJoinableOUs(string lpDomain, [Optional] string? lpServer, [Optional] string? lpAccount, [Optional] string? lpPassword)
 	{
 		NetGetJoinableOUs(lpServer, lpDomain, lpAccount, lpPassword, out var cnt, out var buf).ThrowIfFailed();
 		return buf.ToStringEnum((int)cnt);
@@ -1474,11 +1475,13 @@ public static partial class NetApi32
 	public static void NetGroupAdd<T>([In, Optional] string? servername, in T buf, uint level = uint.MaxValue) where T : struct
 	{
 		if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-		var mem = SafeHGlobalHandle.CreateFromStructure(buf);
+		using var mem = SafeHGlobalHandle.CreateFromStructure(buf);
 		var err = NetGroupAdd(servername, level, mem, out var perr);
 		if (err.Succeeded) return;
-		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		if (err == Win32Error.ERROR_INVALID_PARAMETER)
+			throw err.GetException($"Invalid parameter. Index: {perr}")!;
+		else
+			err.ThrowIfFailed();
 	}
 
 	/// <summary>
@@ -1491,7 +1494,7 @@ public static partial class NetApi32
 	/// recommended that you use <c>NetQueryDisplayInformation</c> instead of the <c>NetGroupEnum</c> function.
 	/// </para>
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The type of the return value.</typeparam>
 	/// <param name="servername">
 	/// Pointer to a constant string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If
 	/// this parameter is <c>NULL</c>, the local computer is used.
@@ -1571,7 +1574,7 @@ public static partial class NetApi32
 	/// The <c>NetGroupGetInfo</c> function retrieves information about a particular global group in the security database, which is the
 	/// security accounts manager (SAM) database or, in the case of domain controllers, the Active Directory.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The type of the return value based on the <paramref name="level"/>.</typeparam>
 	/// <param name="servername">
 	/// Pointer to a constant string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If
 	/// this parameter is <c>NULL</c>, the local computer is used.
@@ -1644,7 +1647,7 @@ public static partial class NetApi32
 	/// The <c>NetGroupGetUsers</c> function retrieves a list of the members in a particular global group in the security database, which
 	/// is the security accounts manager (SAM) database or, in the case of domain controllers, the Active Directory.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The type of the return value based on the <paramref name="level"/>.</typeparam>
 	/// <param name="servername">
 	/// A pointer to a constant string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute.
 	/// If this parameter is <c>NULL</c>, the local computer is used.
@@ -1708,7 +1711,7 @@ public static partial class NetApi32
 	/// The <c>NetGroupSetInfo</c> function sets the parameters of a global group in the security database, which is the security
 	/// accounts manager (SAM) database or, in the case of domain controllers, the Active Directory.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The type of the value based on the <paramref name="level"/>.</typeparam>
 	/// <param name="servername">
 	/// Pointer to a constant string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If
 	/// this parameter is <c>NULL</c>, the local computer is used.
@@ -1821,7 +1824,7 @@ public static partial class NetApi32
 		var err = NetGroupSetInfo(servername, groupname, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>
@@ -1988,7 +1991,7 @@ public static partial class NetApi32
 		var err = NetLocalGroupAdd(servername, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>
@@ -2126,7 +2129,7 @@ public static partial class NetApi32
 	}
 
 	/// <summary>The <c>NetLocalGroupEnum</c> function returns information about each local group account on the specified server.</summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The type of the return enumeration value based on the <paramref name="level"/>.</typeparam>
 	/// <param name="servername">
 	/// Pointer to a constant string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If
 	/// this parameter is <c>NULL</c>, the local computer is used.
@@ -2247,7 +2250,7 @@ public static partial class NetApi32
 	/// which is the security accounts manager (SAM) database or, in the case of domain controllers, the Active Directory. Local group
 	/// members can be users or global groups.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The type of the return value based on the <paramref name="level"/>.</typeparam>
 	/// <param name="servername">
 	/// Pointer to a constant string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If
 	/// this parameter is <c>NULL</c>, the local computer is used.
@@ -2426,7 +2429,7 @@ public static partial class NetApi32
 		var err = NetLocalGroupSetInfo(servername, groupname, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>
@@ -2608,7 +2611,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	[PInvokeData("lmserver.h", MSDNShortId = "56c981f4-7a1d-4465-bd7b-5996222c4210")]
-	public static IEnumerable<string> NetServerDiskEnum([Optional] string? servername)
+	public static IEnumerable<string?> NetServerDiskEnum([Optional] string? servername)
 	{
 		var h = 0U;
 		NetServerDiskEnum(servername, 0, out var buf, MAX_PREFERRED_LENGTH, out var cnt, out var _, ref h).ThrowIfFailed();
@@ -2634,7 +2637,7 @@ public static partial class NetApi32
 	/// SERVER_INFO_101 produces 101).
 	/// </param>
 	/// <returns>A managed array of the requested type.</returns>
-	public static IEnumerable<T> NetServerEnum<T>(NetServerEnumFilter netServerEnumFilter = NetServerEnumFilter.SV_TYPE_WORKSTATION | NetServerEnumFilter.SV_TYPE_SERVER, string domain = null, int level = 0) where T : struct, INetServerInfo
+	public static IEnumerable<T> NetServerEnum<T>(NetServerEnumFilter netServerEnumFilter = NetServerEnumFilter.SV_TYPE_WORKSTATION | NetServerEnumFilter.SV_TYPE_SERVER, string? domain = null, int level = 0) where T : struct, INetServerInfo
 	{
 		if (level == 0) level = GetLevelFromStructure<T>();
 		if (level != 100 && level != 101)
@@ -2947,7 +2950,7 @@ public static partial class NetApi32
 		var err = NetShareAdd(servername, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>
@@ -3278,7 +3281,7 @@ public static partial class NetApi32
 		var err = NetShareSetInfo(servername, netname, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>
@@ -3383,7 +3386,7 @@ public static partial class NetApi32
 		var err = NetUseAdd(servername, LevelFlags, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>
@@ -3667,7 +3670,7 @@ public static partial class NetApi32
 		var err = NetUserAdd(servername, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>The <c>NetUserEnum</c> function retrieves information about all user accounts on a server.</summary>
@@ -4325,7 +4328,7 @@ public static partial class NetApi32
 		var err = NetUserModalsSet(servername, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>The <c>NetUserSetGroups</c> function sets global group memberships for a specified user account.</summary>
@@ -4744,7 +4747,7 @@ public static partial class NetApi32
 		var err = NetUserSetInfo(servername, username, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>The <c>NetWkstaGetInfo</c> function returns information about the configuration of a workstation.</summary>
@@ -5033,7 +5036,7 @@ public static partial class NetApi32
 		var err = NetWkstaSetInfo(servername, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	/// <summary>
@@ -5242,7 +5245,7 @@ public static partial class NetApi32
 		var err = NetWkstaSetInfo(null, level, mem, out var perr);
 		if (err.Succeeded) return;
 		if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
-		throw err.GetException($"Invalid parameter. Index: {perr}");
+		throw err.GetException($"Invalid parameter. Index: {perr}")!;
 	}
 
 	private static int GetLevelFromStructure<T>()

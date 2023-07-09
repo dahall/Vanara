@@ -8,6 +8,9 @@ namespace Vanara.PInvoke;
 
 public static partial class NetApi32
 {
+	/// <summary>The version for this package is Windows Server 2012.</summary>
+	public const uint NETSETUP_PROVISIONING_PARAMS_CURRENT_VERSION = 1;
+
 	/// <summary>
 	/// <para>Specifies the possible ways that a device can be joined to Microsoft Azure Active Directory.</para>
 	/// </summary>
@@ -701,7 +704,7 @@ public static partial class NetApi32
 	// *pdwPackageBinDataSize, LPWSTR *ppPackageTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "6E2A5578-8308-41E2-B5E9-5E34E9E76C0B")]
-	public static extern Win32Error NetCreateProvisioningPackage(ref NETSETUP_PROVISIONING_PARAMS pProvisioningParams, out IntPtr ppPackageBinData,
+	public static extern Win32Error NetCreateProvisioningPackage(in NETSETUP_PROVISIONING_PARAMS pProvisioningParams, out IntPtr ppPackageBinData,
 		out uint pdwPackageBinDataSize, IntPtr ppPackageTextData = default);
 
 	/// <summary>
@@ -1010,8 +1013,8 @@ public static partial class NetApi32
 	// *pdwPackageBinDataSize, LPWSTR *ppPackageTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "6E2A5578-8308-41E2-B5E9-5E34E9E76C0B")]
-	public static extern Win32Error NetCreateProvisioningPackage(ref NETSETUP_PROVISIONING_PARAMS pProvisioningParams, [Optional] IntPtr ppPackageBinData,
-		[Optional] IntPtr pdwPackageBinDataSize, ref StringBuilder ppPackageTextData);
+	public static extern Win32Error NetCreateProvisioningPackage(in NETSETUP_PROVISIONING_PARAMS pProvisioningParams, [Optional] IntPtr ppPackageBinData,
+		[Optional] IntPtr pdwPackageBinDataSize, out string ppPackageTextData);
 
 	/// <summary>The <c>NetEnumerateComputerNames</c> function enumerates names for the specified computer.</summary>
 	/// <param name="Server">
@@ -1114,7 +1117,7 @@ public static partial class NetApi32
 	// **ComputerNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "c657ae33-404e-4c36-a956-5fbcfa540be7")]
-	public static extern Win32Error NetEnumerateComputerNames(string Server, NET_COMPUTER_NAME_TYPE NameType, [Optional] uint Reserved,
+	public static extern Win32Error NetEnumerateComputerNames([Optional] string? Server, NET_COMPUTER_NAME_TYPE NameType, [Optional] uint Reserved,
 		out uint EntryCount, out SafeNetApiBuffer ComputerNames);
 
 	/// <summary>
@@ -1153,7 +1156,7 @@ public static partial class NetApi32
 	// NetGetAadJoinInformation( LPCWSTR pcszTenantId, PDSREG_JOIN_INFO *ppJoinInfo );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "C63B3AA7-FC7E-4CB9-9318-BD25560591AB")]
-	public static extern HRESULT NetGetAadJoinInformation([MarshalAs(UnmanagedType.LPWStr), Optional] string? pcszTenantId, out DSREG_JOIN_INFO ppJoinInfo);
+	public static extern HRESULT NetGetAadJoinInformation([MarshalAs(UnmanagedType.LPWStr), Optional] string? pcszTenantId, out DSREG_JOIN_INFO? ppJoinInfo);
 
 	/// <summary>
 	/// The <c>NetGetJoinableOUs</c> function retrieves a list of organizational units (OUs) in which a computer account can be created.
@@ -1724,8 +1727,8 @@ public static partial class NetApi32
 	// dwOptions, PBYTE *pProvisionBinData, DWORD *pdwProvisionBinDataSize, LPWSTR *pProvisionTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "4c854258-b84d-4ef3-a6da-ce0a9540ffd5")]
-	public static extern Win32Error NetProvisionComputerAccount(string lpDomain, string lpMachineName, [Optional] string? lpMachineAccountOU, string lpDcName, NETSETUP_PROVISION dwOptions,
-		out IntPtr pProvisionBinData, out uint pdwProvisionBinDataSize, [Optional] IntPtr pProvisionTextData);
+	public static extern Win32Error NetProvisionComputerAccount(string lpDomain, string lpMachineName, [Optional] string? lpMachineAccountOU,
+		[Optional] string? lpDcName, NETSETUP_PROVISION dwOptions, out IntPtr pProvisionBinData, out uint pdwProvisionBinDataSize, [Optional] IntPtr pProvisionTextData);
 
 	/// <summary>
 	/// The <c>NetProvisionComputerAccount</c> function provisions a computer account for later use in an offline domain join operation.
@@ -1983,8 +1986,8 @@ public static partial class NetApi32
 	// dwOptions, PBYTE *pProvisionBinData, DWORD *pdwProvisionBinDataSize, LPWSTR *pProvisionTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "4c854258-b84d-4ef3-a6da-ce0a9540ffd5")]
-	public static extern Win32Error NetProvisionComputerAccount(string lpDomain, string lpMachineName, [Optional] string? lpMachineAccountOU, string lpDcName, NETSETUP_PROVISION dwOptions,
-		[Optional] IntPtr pProvisionBinData, [Optional] IntPtr pdwProvisionBinDataSize, ref StringBuilder pProvisionTextData);
+	public static extern Win32Error NetProvisionComputerAccount(string lpDomain, string lpMachineName, [Optional] string? lpMachineAccountOU,
+		[Optional] string? lpDcName, NETSETUP_PROVISION dwOptions, [Optional] IntPtr pProvisionBinData, [Optional] IntPtr pdwProvisionBinDataSize, out string pProvisionTextData);
 
 	/// <summary>The <c>NetRemoveAlternateComputerName</c> function removes an alternate name for the specified computer.</summary>
 	/// <param name="Server">
@@ -2256,7 +2259,7 @@ public static partial class NetApi32
 	/// </item>
 	/// <item>
 	/// <term>
-	/// <c>NetRequestOfflineDomainJoin</c> , an image initialization function, is then called to inject the output from the
+	/// <c>NetRequestOfflineDomainJoin</c>, an image initialization function, is then called to inject the output from the
 	/// NetProvisionComputerAccount provisioning function into a Windows operating system image to be used during installation. Changes
 	/// to Windows initialization code will detect this saved state and affect the local only portion of domain join.
 	/// </term>
@@ -2891,7 +2894,10 @@ public static partial class NetApi32
 		/// </summary>
 		public string lpDomain;
 
-		/// <summary>The lp host name</summary>
+		/// <summary>
+		/// A pointer to a NULL-terminated character string that specifies the short name of the machine from which the computer account
+		/// attribute sAMAccountName is derived by appending a '$'. This parameter must contain a valid DNS or NetBIOS machine name.
+		/// </summary>
 		public string lpHostName;
 
 		/// <summary>
@@ -2902,12 +2908,12 @@ public static partial class NetApi32
 		/// </para>
 		/// <para>If this parameter is <c>NULL</c>, the well known computer object container will be used as published in the domain.</para>
 		/// </summary>
-		public string lpMachineAccountOU;
+		public string? lpMachineAccountOU;
 
 		/// <summary>
 		/// An optional pointer to a <c>NULL</c>-terminated character string that contains the name of the domain controller to target.
 		/// </summary>
-		public string lpDcName;
+		public string? lpDcName;
 
 		/// <summary>
 		/// <para>
@@ -2959,7 +2965,7 @@ public static partial class NetApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint dwProvisionOptions;
+		public NETSETUP_PROVISION dwProvisionOptions;
 
 		/// <summary>A pointer to an array of <c>NULL</c>-terminated certificate template names.</summary>
 		public IntPtr aCertTemplateNames;
@@ -3019,31 +3025,31 @@ public static partial class NetApi32
 		public Crypt32.CERT_CONTEXT? pJoinCertificate => Value.pJoinCertificate.ToNullableStructure<Crypt32.CERT_CONTEXT>();
 
 		/// <summary>The PSZ device identifier</summary>
-		public string pszDeviceId => Value.pszDeviceId;
+		public string? pszDeviceId => Value.pszDeviceId;
 
 		/// <summary>A string that represents Azure Active Directory (Azure AD).</summary>
-		public string pszIdpDomain => Value.pszIdpDomain;
+		public string? pszIdpDomain => Value.pszIdpDomain;
 
 		/// <summary>The identifier of the joined Azure AD tenant.</summary>
-		public string pszTenantId => Value.pszTenantId;
+		public string? pszTenantId => Value.pszTenantId;
 
 		/// <summary>The email address for the joined account.</summary>
-		public string pszJoinUserEmail => Value.pszJoinUserEmail;
+		public string? pszJoinUserEmail => Value.pszJoinUserEmail;
 
 		/// <summary>The display name for the joined account.</summary>
-		public string pszTenantDisplayName => Value.pszTenantDisplayName;
+		public string? pszTenantDisplayName => Value.pszTenantDisplayName;
 
 		/// <summary>The URL to use to enroll in the Mobile Device Management (MDM) service.</summary>
-		public string pszMdmEnrollmentUrl => Value.pszMdmEnrollmentUrl;
+		public string? pszMdmEnrollmentUrl => Value.pszMdmEnrollmentUrl;
 
 		/// <summary>The URL that provides information about the terms of use for the MDM service.</summary>
-		public string pszMdmTermsOfUseUrl => Value.pszMdmTermsOfUseUrl;
+		public string? pszMdmTermsOfUseUrl => Value.pszMdmTermsOfUseUrl;
 
 		/// <summary>The URL that provides information about compliance for the MDM service.</summary>
-		public string pszMdmComplianceUrl => Value.pszMdmComplianceUrl;
+		public string? pszMdmComplianceUrl => Value.pszMdmComplianceUrl;
 
 		/// <summary>The URL for synchronizing user settings.</summary>
-		public string pszUserSettingSyncUrl => Value.pszUserSettingSyncUrl;
+		public string? pszUserSettingSyncUrl => Value.pszUserSettingSyncUrl;
 
 		/// <summary>Information about the user account that was used to join a device to Azure AD.</summary>
 		public DSREG_USER_INFO? pUserInfo => Value.pUserInfo.ToNullableStructure<DSREG_USER_INFO>();

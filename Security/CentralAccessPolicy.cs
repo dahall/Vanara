@@ -49,7 +49,7 @@ public static partial class AccountUtils
 		/// the Active Directory on the specified computer's domain controller. Look for the object whose
 		/// <c>msAuthz-CentralAccessPolicyID</c> attribute matches one of the returned CAPIDs.
 		/// </remarks>
-		public static IEnumerable<CentralAccessPolicy> GetAppliedPolicies(string systemName = null)
+		public static IEnumerable<CentralAccessPolicy> GetAppliedPolicies(string? systemName = null)
 		{
 			LsaGetAppliedCAPIDs(systemName, out var h, out var c).ThrowIfFailed();
 			using (h)

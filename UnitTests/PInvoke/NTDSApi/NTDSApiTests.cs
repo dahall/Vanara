@@ -70,7 +70,7 @@ public class NTDSApiTests
 		uint szSC = 1, szSN = 1, szIN = 1, szSPN = 0;
 		var tmp = new StringBuilder(1);
 		var ret = DsCrackSpn(spn, ref szSC, tmp, ref szSN, tmp, ref szIN, tmp, out var port);
-		StringBuilder sSC = new StringBuilder((int)szSC), sSN = new StringBuilder((int)szSN), sIN = new StringBuilder((int)szIN);
+		StringBuilder sSC = new((int)szSC), sSN = new((int)szSN), sIN = new((int)szIN);
 		ret = DsCrackSpn(spn, ref szSC, sSC, ref szSN, sSN, ref szIN, sIN, out port);
 		ret.ThrowIfFailed();
 

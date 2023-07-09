@@ -210,7 +210,7 @@ public static partial class NetApi32
 	// servername, DWORD LevelFlags, LPBYTE buf, LPDWORD parm_err );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Auto)]
 	[PInvokeData("lmuse.h", MSDNShortId = "22550c17-003a-4f59-80f0-58fa3e286844")]
-	public static extern Win32Error NetUseAdd(string servername, uint LevelFlags, IntPtr buf, out uint parm_err);
+	public static extern Win32Error NetUseAdd([Optional] string? servername, uint LevelFlags, IntPtr buf, out uint parm_err);
 
 	/// <summary>
 	/// <para>The <c>NetUseDel</c> function ends a connection to a shared resource.</para>
@@ -502,7 +502,7 @@ public static partial class NetApi32
 		/// </para>
 		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> are defined.</para>
 		/// </summary>
-		public string ui1_local;
+		public string? ui1_local;
 
 		/// <summary>
 		/// <para>Type: <c>LMSTR</c></para>
@@ -636,7 +636,7 @@ public static partial class NetApi32
 		/// </para>
 		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> are defined.</para>
 		/// </summary>
-		public string ui2_local;
+		public string? ui2_local;
 
 		/// <summary>
 		/// <para>Type: <c>LMSTR</c></para>
