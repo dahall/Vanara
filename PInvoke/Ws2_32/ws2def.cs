@@ -564,7 +564,7 @@ public static partial class Ws2_32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public ADDRESS_FAMILY ai_family { get => (ADDRESS_FAMILY)_ai_family; set => _ai_family = (ushort)value; }
+		public ADDRESS_FAMILY ai_family { readonly get => (ADDRESS_FAMILY)_ai_family; set => _ai_family = (ushort)value; }
 
 		/// <summary>
 		/// <para>The socket type. Possible values for the socket type are defined in the Winsock2.h include file.</para>
@@ -712,10 +712,10 @@ public static partial class Ws2_32
 		/// <c>ai_addrlen</c> member.
 		/// </para>
 		/// </summary>
-		public SOCKADDR addr => new(ai_addr, false, ai_addrlen);
+		public readonly SOCKADDR addr => new(ai_addr, false, ai_addrlen);
 
 		/// <inheritdoc/>
-		public override string ToString() => $"{ai_fqdn}::{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
+		public override readonly string ToString() => $"{ai_fqdn}::{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
 	}
 
 	/// <summary>The <c>addrinfoex</c> structure is used by the GetAddrInfoEx function to hold host address information.</summary>
@@ -924,7 +924,7 @@ public static partial class Ws2_32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public ADDRESS_FAMILY ai_family { get => (ADDRESS_FAMILY)_ai_family; set => _ai_family = (ushort)value; }
+		public ADDRESS_FAMILY ai_family { readonly get => (ADDRESS_FAMILY)_ai_family; set => _ai_family = (ushort)value; }
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
@@ -1089,10 +1089,10 @@ public static partial class Ws2_32
 		/// <c>ai_addrlen</c> member.
 		/// </para>
 		/// </summary>
-		public SOCKADDR addr => new(ai_addr, false, ai_addrlen);
+		public readonly SOCKADDR addr => new(ai_addr, false, ai_addrlen);
 
 		/// <inheritdoc/>
-		public override string ToString() => $"{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
+		public override readonly string ToString() => $"{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
 	}
 
 	/// <summary>
@@ -1333,7 +1333,7 @@ public static partial class Ws2_32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public ADDRESS_FAMILY ai_family { get => (ADDRESS_FAMILY)_ai_family; set => _ai_family = (ushort)value; }
+		public ADDRESS_FAMILY ai_family { readonly get => (ADDRESS_FAMILY)_ai_family; set => _ai_family = (ushort)value; }
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
@@ -1476,10 +1476,10 @@ public static partial class Ws2_32
 		/// <c>ai_addrlen</c> member.
 		/// </para>
 		/// </summary>
-		public SOCKADDR addr => new(ai_addr, false, ai_addrlen);
+		public readonly SOCKADDR addr => new(ai_addr, false, ai_addrlen);
 
 		/// <inheritdoc/>
-		public override string ToString() => $"{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
+		public override readonly string ToString() => $"{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
 	}
 
 	/// <summary>The scope identifier for the IPv6 transport address.</summary>
@@ -1506,7 +1506,7 @@ public static partial class Ws2_32
 		/// <value>The zone index.</value>
 		public uint Zone
 		{
-			get => BitHelper.GetBits(Value, 0, 28);
+			readonly get => BitHelper.GetBits(Value, 0, 28);
 			set => BitHelper.SetBits(ref Value, 0, 28, value);
 		}
 
@@ -1533,7 +1533,7 @@ public static partial class Ws2_32
 		/// <value>The level.</value>
 		public byte Level
 		{
-			get => (byte)BitHelper.GetBits(Value, 28, 4);
+			readonly get => (byte)BitHelper.GetBits(Value, 28, 4);
 			set => BitHelper.SetBits(ref Value, 28, 4, value);
 		}
 	}
@@ -1583,7 +1583,7 @@ public static partial class Ws2_32
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => $"{sin_addr}:{sin_port}";
+		public override readonly string ToString() => $"{sin_addr}:{sin_port}";
 	}
 
 	/// <summary>The SOCKADDR_STORAGE structure is a generic structure that specifies a transport address.</summary>
@@ -1712,11 +1712,11 @@ public static partial class Ws2_32
 		private IntPtr len;
 
 		/// <summary>The length, in bytes, of the socket address.</summary>
-		public int iSockaddrLength { get => len.ToInt32(); set => len = new(value); }
+		public int iSockaddrLength { readonly get => len.ToInt32(); set => len = new(value); }
 
 		/// <summary>Gets the <see cref="SOCKADDR_INET"/> from this instance.</summary>
 		/// <returns>The <see cref="SOCKADDR_INET"/> value pointed to by this instance.</returns>
-		public SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>(iSockaddrLength);
+		public readonly SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>(iSockaddrLength);
 
 		/// <summary>Performs an implicit conversion from <see cref="SOCKET_ADDRESS"/> to <see cref="SOCKADDR"/>.</summary>
 		/// <param name="address">The address.</param>

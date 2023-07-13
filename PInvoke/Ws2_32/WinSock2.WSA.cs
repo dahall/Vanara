@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
@@ -294,7 +295,7 @@ public static partial class Ws2_32
 	// *addr, LPINT addrlen, LPCONDITIONPROC lpfnCondition, DWORD_PTR dwCallbackData );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "f385f63f-49b2-4eb7-8717-ad4cca1a2252")]
-	public static extern SOCKET WSAAccept(SOCKET s, SOCKADDR addr, ref int addrlen, [In, Out, Optional] ConditionFunc lpfnCondition, [In, Out, Optional] IntPtr dwCallbackData);
+	public static extern SOCKET WSAAccept(SOCKET s, [Optional] SOCKADDR addr, ref int addrlen, [In, Out, Optional] ConditionFunc lpfnCondition, [In, Out, Optional] IntPtr dwCallbackData);
 
 	/// <summary>
 	/// <para>
@@ -400,7 +401,7 @@ public static partial class Ws2_32
 	// lpdwAddressStringLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-	public static extern WSRESULT WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+	public static extern WSRESULT WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder? lpszAddressString, ref uint lpdwAddressStringLength);
 
 	/// <summary>
 	/// <para>
@@ -571,7 +572,7 @@ public static partial class Ws2_32
 	// lpdwAddressStringLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-	public static extern WSRESULT WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+	public static extern WSRESULT WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder? lpszAddressString, ref uint lpdwAddressStringLength);
 
 	/// <summary>
 	/// <para>The <c>WSAAsyncGetHostByAddr</c> function asynchronously retrieves host information that corresponds to an address.</para>
@@ -3621,7 +3622,7 @@ public static partial class Ws2_32
 	// WSAEVENT hEventObject, long lNetworkEvents );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "f98a71e4-47fb-47a4-b37e-e4cc801a8f98")]
-	public static extern WSRESULT WSAEventSelect(SOCKET s, WSAEVENT hEventObject, FD lNetworkEvents);
+	public static extern WSRESULT WSAEventSelect(SOCKET s, [Optional] WSAEVENT hEventObject, FD lNetworkEvents);
 
 	/// <summary>The <c>WSAGetLastError</c> function returns the error status for the last Windows Sockets operation that failed.</summary>
 	/// <returns>The return value indicates the error code for this thread's last Windows Sockets operation that failed.</returns>
@@ -4428,7 +4429,7 @@ public static partial class Ws2_32
 	[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
 	public static extern WSRESULT WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer,
 		uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped,
-		[Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		[Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
 	/// <param name="s">A descriptor identifying a socket.</param>
@@ -4669,7 +4670,7 @@ public static partial class Ws2_32
 	[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
 	public static extern WSRESULT WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer,
 		uint cbOutBuffer, out uint lpcbBytesReturned, ref WSAOVERLAPPED lpOverlapped,
-		[Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		[Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
 	/// <param name="s">A descriptor identifying a socket.</param>
@@ -5090,7 +5091,368 @@ public static partial class Ws2_32
 	// sockaddr *name, int namelen, LPWSABUF lpCallerData, LPWSABUF lpCalleeData, LPQOS lpSQOS, LPQOS lpGQOS, DWORD dwFlags );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "ef9efa03-feed-4f0d-b874-c646cce745c9")]
-	public static extern SOCKET WSAJoinLeaf(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData, [Out, Optional] IntPtr lpCalleeData, [In, Optional] IntPtr lpSQOS, [In, Optional] IntPtr lpGQOS, JL dwFlags);
+	public static extern SOCKET WSAJoinLeaf(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData,
+		[Out, Optional] IntPtr lpCalleeData, [In, Optional] IntPtr lpSQOS, [In, Optional] IntPtr lpGQOS, JL dwFlags);
+
+	/// <summary>
+	/// The <c>WSALookupServiceBegin</c> function initiates a client query that is constrained by the information contained within a
+	/// WSAQUERYSET structure. <c>WSALookupServiceBegin</c> only returns a handle, which should be used by subsequent calls to
+	/// WSALookupServiceNext to get the actual results.
+	/// </summary>
+	/// <param name="restrictions">A pointer to the search criteria. See the Remarks for details.</param>
+	/// <param name="criteriaFlags">
+	///   <para>
+	/// A set of flags that controls the depth of the search. This value is supplied to the <c>dwControlFlags</c> parameter of <see cref="WSALookupServiceBegin" /> and more detail about its use can be found in it's documentation.
+	/// </para>
+	///   <para>
+	/// Supported values for the criteriaFlags parameter are defined in the Winsock2.h header file and can be a combination of the following options.
+	/// </para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Flag</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>LUP_DEEP 0x0001</description>
+	///       <description>Queries deep as opposed to just the first level.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_CONTAINERS 0x0002</description>
+	///       <description>Returns containers only.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_NOCONTAINERS 0x0004</description>
+	///       <description>Do not return containers.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_NEAREST 0x0008</description>
+	///       <description>If possible, returns results in the order of distance. The measure of distance is provider specific.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_NAME 0x0010</description>
+	///       <description>Retrieves the name as lpszServiceInstanceName.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_TYPE 0x0020</description>
+	///       <description>Retrieves the type as lpServiceClassId.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_VERSION 0x0040</description>
+	///       <description>Retrieves the version as lpVersion.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_COMMENT 0x0080</description>
+	///       <description>Retrieves the comment as lpszComment.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_ADDR 0x0100</description>
+	///       <description>Retrieves the addresses as lpcsaBuffer.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_BLOB 0x0200</description>
+	///       <description>Retrieves the private data as lpBlob.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_ALIASES 0x0400</description>
+	///       <description>
+	/// Any available alias information is to be returned in successive calls to WSALookupServiceNext, and each alias returned will have the
+	/// RESULT_IS_ALIAS flag set.
+	/// </description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_QUERY_STRING 0x0800</description>
+	///       <description>Retrieves the query string used for the request.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_ALL 0x0FF0</description>
+	///       <description>A set of flags that retrieves all of the LUP_RETURN_* values.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_FLUSHPREVIOUS 0x1000</description>
+	///       <description>
+	/// Used as a value for the dwControlFlags parameter in WSALookupServiceNext. Setting this flag instructs the provider to discard the
+	/// last result set, which was too large for the specified buffer, and move on to the next result set.
+	/// </description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_FLUSHCACHE 0x2000</description>
+	///       <description>If the provider has been caching information, ignores the cache, and queries the namespace itself.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RES_SERVICE 0x8000</description>
+	///       <description>
+	/// This indicates whether prime response is in the remote or local part of CSADDR_INFO structure. The other part needs to be usable in
+	/// either case.
+	/// </description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <param name="controlFlags">
+	///   <para>
+	/// A set of flags that controls the operation. The values passed in the <paramref name="criteriaFlags" /> parameter determine the
+	/// possible criteria. Any values passed in the controlFlags parameter to the iterative query that further restrict the criteria for the
+	/// service lookup. This value is supplied to the <c>dwControlFlags</c> parameter of <see cref="WSALookupServiceNext" /> and more detail
+	/// about its use can be found in it's documentation.
+	/// </para>
+	///   <para>
+	/// Currently, LUP_FLUSHPREVIOUS is defined as a means to cope with a result set that is too large. If an application does not (or
+	/// cannot) supply a large enough buffer, setting LUP_FLUSHPREVIOUS instructs the provider to discard the last result set—which was too
+	/// large—and move on to the next set for this call.
+	/// </para>
+	///   <para>
+	/// Supported values for the dwControlFlags parameter are defined in the Winsock2.h header file and can be a combination of the following options.
+	/// </para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Flag</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>LUP_DEEP 0x0001</description>
+	///       <description>Queries deep as opposed to just the first level.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_CONTAINERS 0x0002</description>
+	///       <description>Returns containers only.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_NOCONTAINERS 0x0004</description>
+	///       <description>Do not return containers.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_NEAREST 0x0008</description>
+	///       <description>If possible, returns results in the order of distance. The measure of distance is provider specific.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_NAME 0x0010</description>
+	///       <description>Retrieves the name as lpszServiceInstanceName.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_TYPE 0x0020</description>
+	///       <description>Retrieves the type as lpServiceClassId.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_VERSION 0x0040</description>
+	///       <description>Retrieves the version as lpVersion.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_COMMENT 0x0080</description>
+	///       <description>Retrieves the comment as lpszComment.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_ADDR 0x0100</description>
+	///       <description>Retrieves the addresses as lpcsaBuffer.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_BLOB 0x0200</description>
+	///       <description>Retrieves the private data as lpBlob.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_ALIASES 0x0400</description>
+	///       <description>
+	/// Any available alias information is to be returned in successive calls to WSALookupServiceNext, and each alias returned will have the
+	/// RESULT_IS_ALIAS flag set.
+	/// </description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_QUERY_STRING 0x0800</description>
+	///       <description>Retrieves the query string used for the request.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RETURN_ALL 0x0FF0</description>
+	///       <description>A set of flags that retrieves all of the LUP_RETURN_* values.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_FLUSHPREVIOUS 0x1000</description>
+	///       <description>
+	/// Used as a value for the dwControlFlags parameter in WSALookupServiceNext. Setting this flag instructs the provider to discard the
+	/// last result set, which was too large for the specified buffer, and move on to the next result set.
+	/// </description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_FLUSHCACHE 0x2000</description>
+	///       <description>If the provider has been caching information, ignores the cache, and queries the namespace itself.</description>
+	///     </item>
+	///     <item>
+	///       <description>LUP_RES_SERVICE 0x8000</description>
+	///       <description>
+	/// This indicates whether prime response is in the remote or local part of CSADDR_INFO structure. The other part needs to be usable in
+	/// either case.
+	/// </description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <returns>A sequence of <see cref="WSAQUERYSET_MGD" /> instances with the requested lookup information.</returns>
+	/// <remarks>
+	///   <para>
+	/// The <paramref name="restrictions"/> parameter points to a buffer containing a WSAQUERYSET structure. At a minimum, the <c>dwSize</c> member of the
+	/// <c>WSAQUERYSET</c> must be set to the length of the buffer before calling the <c>WSALookupServiceBegin</c> function. Applications can
+	/// restrict the query by specifying other members in the <c>WSAQUERYSET</c>.
+	/// </para>
+	///   <para>
+	/// In most instances, applications interested in only a particular transport protocol should constrain their query by address family and
+	/// protocol using the <c>dwNumberOfProtocols</c> and <c>lpafpProtocols</c> members of the WSAQUERYSET rather than by specifiying the
+	/// namespace in the <c>dwNameSpace</c> member.
+	/// </para>
+	///   <para>
+	/// Information on supported network transport protocols can be retreived using the EnumProtocols, WSAEnumProtocols, WSCEnumProtocols, or
+	/// WSCEnumProtocols32 function.
+	/// </para>
+	///   <para>
+	/// It is also possible to constrain the query to a single namespace. For example, a query that only wants results from DNS (not results
+	/// from the local hosts file and other naming services) would set the <c>dwNameSpace</c> member to NS_DNS. For example, a bluetooth
+	/// device discovery would set the the <c>dwNameSpace</c> member to NS_BTH.
+	/// </para>
+	///   <para>
+	/// Applications can also restrict the query to a specific namespace provider by specifying a pointer to the GUID for the provider in the
+	/// <c>lpNSProviderId</c> member.
+	/// </para>
+	///   <para>
+	/// Information on namespace providers on the local computer can be retrieved using the WSAEnumNameSpaceProviders,
+	/// WSAEnumNameSpaceProvidersEx, WSCEnumNameSpaceProviders32, or WSCEnumNameSpaceProvidersEx32 function.
+	/// </para>
+	///   <para>
+	/// If LUP_CONTAINERS is specified in a call, other restriction values should be avoided. If any are specified, it is up to the name
+	/// service provider to decide if it can support this restriction over the containers. If it cannot, it should return an error.
+	/// </para>
+	///   <para>
+	/// Some name service providers can have other means of finding containers. For example, containers might all be of some well-known type,
+	/// or of a set of well-known types, and therefore a query restriction can be created for finding them. No matter what other means the
+	/// name service provider has for locating containers, LUP_CONTAINERS and LUP_NOCONTAINERS take precedence. Hence, if a query restriction
+	/// is given that includes containers, specifying LUP_NOCONTAINERS will prevent the container items from being returned. Similarly, no
+	/// matter the query restriction, if LUP_CONTAINERS is given, only containers should be returned. If a namespace does not support
+	/// containers, and LUP_CONTAINERS is specified, it should simply return WSANO_DATA.
+	/// </para>
+	///   <para>The preferred method of obtaining the containers within another container, is the call:</para>
+	///   <para>
+	/// This call is followed by the requisite number of WSALookupServiceNext calls. This will return all containers contained immediately
+	/// within the starting context; that is, it is not a deep query. With this, one can map the address space structure by walking the
+	/// hierarchy, perhaps enumerating the content of selected containers. Subsequent uses of <c>WSALookupServiceBegin</c> use the containers
+	/// returned from a previous call.
+	/// </para>
+	///   <para>
+	/// As mentioned above, a WSAQUERYSET structure is used as an input parameter to <c>WSALookupBegin</c> in order to qualify the query. The
+	/// following table indicates how the <c>WSAQUERYSET</c> is used to construct a query. When a parameter is marked as (Optional) a
+	/// <c>NULL</c> pointer can be specified, indicating that the parameter will not be used as a search criteria. See section Query-Related
+	/// Data Structures for additional information.
+	/// </para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>WSAQUERYSET member</term>
+	///       <term>Query interpretation</term>
+	///     </listheader>
+	///     <item>
+	///       <description>dwSize</description>
+	///       <description>Must be set to sizeof(WSAQUERYSET). This is a versioning mechanism.</description>
+	///     </item>
+	///     <item>
+	///       <description>dwOutputFlags</description>
+	///       <description>Ignored for queries.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpszServiceInstanceName</description>
+	///       <description>
+	/// (Optional) Referenced string contains service name. The semantics for wildcarding within the string are not defined, but can be
+	/// supported by certain namespace providers.
+	/// </description>
+	///     </item>
+	///     <item>
+	///       <description>lpServiceClassId</description>
+	///       <description>(Required) The GUID corresponding to the service class.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpVersion</description>
+	///       <description>
+	/// (Optional) References desired version number and provides version comparison semantics (that is, version must match exactly, or
+	/// version must be not less than the value specified).
+	/// </description>
+	///     </item>
+	///     <item>
+	///       <description>lpszComment</description>
+	///       <description>Ignored for queries.</description>
+	///     </item>
+	///     <item>
+	///       <description>dwNameSpace See the Important note that follows.</description>
+	///       <description>Identifier of a single namespace in which to constrain the search, or NS_ALL to include all namespaces.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpNSProviderId</description>
+	///       <description>(Optional) References the GUID of a specific namespace provider, and limits the query to this provider only.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpszContext</description>
+	///       <description>(Optional) Specifies the starting point of the query in a hierarchical namespace.</description>
+	///     </item>
+	///     <item>
+	///       <description>dwNumberOfProtocols</description>
+	///       <description>Size of the protocol constraint array, can be zero.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpafpProtocols</description>
+	///       <description>(Optional) References an array of AFPROTOCOLS structure. Only services that utilize these protocols will be returned.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpszQueryString</description>
+	///       <description>
+	/// (Optional) Some namespaces (such as whois++) support enriched SQL-like queries that are contained in a simple text string. This
+	/// parameter is used to specify that string.
+	/// </description>
+	///     </item>
+	///     <item>
+	///       <description>dwNumberOfCsAddrs</description>
+	///       <description>Ignored for queries.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpcsaBuffer</description>
+	///       <description>Ignored for queries.</description>
+	///     </item>
+	///     <item>
+	///       <description>lpBlob</description>
+	///       <description>(Optional) This is a pointer to a provider-specific entity.</description>
+	///     </item>
+	///   </list>
+	///   <note type="important"> In most instances, applications interested in only a particular transport protocol should constrain their
+	/// query by address family and protocol rather than by namespace. This would allow an application that needs to locate a TCP/IP service,
+	/// for example, to have its query processed by all available namespaces such as the local hosts file, DNS, and NIS. </note>
+	///   <para>
+	///     <c>Windows Phone 8:</c> The <c>WSALookupServiceBeginW</c> function is supported for Windows Phone Store apps on Windows Phone 8 and later.
+	/// </para>
+	///   <para>
+	///     <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: The <c>WSALookupServiceBeginW</c> function is supported for Windows Store apps
+	/// on Windows 8.1, Windows Server 2012 R2, and later.
+	/// </para>
+	/// </remarks>
+	public static IEnumerable<WSAQUERYSET_MGD> WSALookupService([In] WSAQUERYSET restrictions, LUP criteriaFlags = LUP.LUP_RETURN_ALL, LUP controlFlags = 0)
+	{
+		using var wsa = SafeWSA.Initialize();
+		if (WSALookupServiceBegin(restrictions, criteriaFlags, out var hLookup) != 0)
+			WSAGetLastError().ThrowIfFailed();
+		try
+		{
+			using SafeCoTaskMemStruct<WSAQUERYSET_MGD> pqs = new(512);
+			uint dwLen = pqs.Size;
+			do
+			{
+				var ret = WSALookupServiceNext(hLookup, controlFlags, ref dwLen, pqs);
+				if (ret == 0)
+					yield return pqs.Value;
+				else
+				{
+					var err = WSAGetLastError();
+					if (err == WSRESULT.WSAEFAULT)
+						pqs.Size = dwLen;
+					else if ((int)err is WSRESULT.WSA_E_NO_MORE or WSRESULT.WSAENOMORE)
+						yield break;
+					else
+						err.ThrowIfFailed();
+				}
+			} while (true);
+		}
+		finally
+		{
+			WSALookupServiceEnd(hLookup);
+		}
+	}
 
 	/// <summary>
 	/// The <c>WSALookupServiceBegin</c> function initiates a client query that is constrained by the information contained within a
@@ -5101,8 +5463,7 @@ public static partial class Ws2_32
 	/// <param name="dwControlFlags">
 	/// <para>A set of flags that controls the depth of the search.</para>
 	/// <para>
-	/// Supported values for the dwControlFlags parameter are defined in the Winsock2.h header file and can be a combination of the
-	/// following options.
+	/// Supported values for the dwControlFlags parameter are defined in the Winsock2.h header file and can be a combination of the following options.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -5152,8 +5513,8 @@ public static partial class Ws2_32
 	/// <item>
 	/// <term>LUP_RETURN_ALIASES 0x0400</term>
 	/// <term>
-	/// Any available alias information is to be returned in successive calls to WSALookupServiceNext, and each alias returned will have
-	/// the RESULT_IS_ALIAS flag set.
+	/// Any available alias information is to be returned in successive calls to WSALookupServiceNext, and each alias returned will have the
+	/// RESULT_IS_ALIAS flag set.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -5167,8 +5528,8 @@ public static partial class Ws2_32
 	/// <item>
 	/// <term>LUP_FLUSHPREVIOUS 0x1000</term>
 	/// <term>
-	/// Used as a value for the dwControlFlags parameter in WSALookupServiceNext. Setting this flag instructs the provider to discard
-	/// the last result set, which was too large for the specified buffer, and move on to the next result set.
+	/// Used as a value for the dwControlFlags parameter in WSALookupServiceNext. Setting this flag instructs the provider to discard the
+	/// last result set, which was too large for the specified buffer, and move on to the next result set.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -5178,8 +5539,8 @@ public static partial class Ws2_32
 	/// <item>
 	/// <term>LUP_RES_SERVICE 0x8000</term>
 	/// <term>
-	/// This indicates whether prime response is in the remote or local part of CSADDR_INFO structure. The other part needs to be usable
-	/// in either case.
+	/// This indicates whether prime response is in the remote or local part of CSADDR_INFO structure. The other part needs to be usable in
+	/// either case.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -5187,8 +5548,8 @@ public static partial class Ws2_32
 	/// <param name="lphLookup">A handle to be used when calling WSALookupServiceNext in order to start retrieving the results set.</param>
 	/// <returns>
 	/// <para>
-	/// The return value is zero if the operation was successful. Otherwise, the value SOCKET_ERROR is returned, and a specific error
-	/// number can be retrieved by calling WSAGetLastError.
+	/// The return value is zero if the operation was successful. Otherwise, the value SOCKET_ERROR is returned, and a specific error number
+	/// can be retrieved by calling WSAGetLastError.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -5209,42 +5570,40 @@ public static partial class Ws2_32
 	/// </item>
 	/// <item>
 	/// <term>WSANOTINITIALISED</term>
-	/// <term>
-	/// The WS2_32.DLL has not been initialized. The application must first call WSAStartup before calling any Windows Sockets functions.
-	/// </term>
+	/// <term>The WS2_32.DLL has not been initialized. The application must first call WSAStartup before calling any Windows Sockets functions.</term>
 	/// </item>
 	/// <item>
 	/// <term>WSASERVICE_NOT_FOUND</term>
 	/// <term>
-	/// No such service is known. The service cannot be found in the specified name space. This error is returned for a bluetooth
-	/// service discovery request if no remote bluetooth devices were found.
+	/// No such service is known. The service cannot be found in the specified name space. This error is returned for a bluetooth service
+	/// discovery request if no remote bluetooth devices were found.
 	/// </term>
 	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// The lpqsRestrictions parameter points to a buffer containing a WSAQUERYSET structure. At a minimum, the <c>dwSize</c> member of
-	/// the <c>WSAQUERYSET</c> must be set to the length of the buffer before calling the <c>WSALookupServiceBegin</c> function.
-	/// Applications can restrict the query by specifying other members in the <c>WSAQUERYSET</c>.
+	/// The lpqsRestrictions parameter points to a buffer containing a WSAQUERYSET structure. At a minimum, the <c>dwSize</c> member of the
+	/// <c>WSAQUERYSET</c> must be set to the length of the buffer before calling the <c>WSALookupServiceBegin</c> function. Applications can
+	/// restrict the query by specifying other members in the <c>WSAQUERYSET</c>.
 	/// </para>
 	/// <para>
-	/// In most instances, applications interested in only a particular transport protocol should constrain their query by address
-	/// family and protocol using the <c>dwNumberOfProtocols</c> and <c>lpafpProtocols</c> members of the WSAQUERYSET rather than by
-	/// specifiying the namespace in the <c>dwNameSpace</c> member.
+	/// In most instances, applications interested in only a particular transport protocol should constrain their query by address family and
+	/// protocol using the <c>dwNumberOfProtocols</c> and <c>lpafpProtocols</c> members of the WSAQUERYSET rather than by specifiying the
+	/// namespace in the <c>dwNameSpace</c> member.
 	/// </para>
 	/// <para>
-	/// Information on supported network transport protocols can be retreived using the EnumProtocols, WSAEnumProtocols,
-	/// WSCEnumProtocols, or WSCEnumProtocols32 function.
+	/// Information on supported network transport protocols can be retreived using the EnumProtocols, WSAEnumProtocols, WSCEnumProtocols, or
+	/// WSCEnumProtocols32 function.
 	/// </para>
 	/// <para>
-	/// It is also possible to constrain the query to a single namespace. For example, a query that only wants results from DNS (not
-	/// results from the local hosts file and other naming services) would set the <c>dwNameSpace</c> member to NS_DNS. For example, a
-	/// bluetooth device discovery would set the the <c>dwNameSpace</c> member to NS_BTH.
+	/// It is also possible to constrain the query to a single namespace. For example, a query that only wants results from DNS (not results
+	/// from the local hosts file and other naming services) would set the <c>dwNameSpace</c> member to NS_DNS. For example, a bluetooth
+	/// device discovery would set the the <c>dwNameSpace</c> member to NS_BTH.
 	/// </para>
 	/// <para>
-	/// Applications can also restrict the query to a specific namespace provider by specifying a pointer to the GUID for the provider
-	/// in the <c>lpNSProviderId</c> member.
+	/// Applications can also restrict the query to a specific namespace provider by specifying a pointer to the GUID for the provider in the
+	/// <c>lpNSProviderId</c> member.
 	/// </para>
 	/// <para>
 	/// Information on namespace providers on the local computer can be retrieved using the WSAEnumNameSpaceProviders,
@@ -5255,25 +5614,25 @@ public static partial class Ws2_32
 	/// service provider to decide if it can support this restriction over the containers. If it cannot, it should return an error.
 	/// </para>
 	/// <para>
-	/// Some name service providers can have other means of finding containers. For example, containers might all be of some well-known
-	/// type, or of a set of well-known types, and therefore a query restriction can be created for finding them. No matter what other
-	/// means the name service provider has for locating containers, LUP_CONTAINERS and LUP_NOCONTAINERS take precedence. Hence, if a
-	/// query restriction is given that includes containers, specifying LUP_NOCONTAINERS will prevent the container items from being
-	/// returned. Similarly, no matter the query restriction, if LUP_CONTAINERS is given, only containers should be returned. If a
-	/// namespace does not support containers, and LUP_CONTAINERS is specified, it should simply return WSANO_DATA.
+	/// Some name service providers can have other means of finding containers. For example, containers might all be of some well-known type,
+	/// or of a set of well-known types, and therefore a query restriction can be created for finding them. No matter what other means the
+	/// name service provider has for locating containers, LUP_CONTAINERS and LUP_NOCONTAINERS take precedence. Hence, if a query restriction
+	/// is given that includes containers, specifying LUP_NOCONTAINERS will prevent the container items from being returned. Similarly, no
+	/// matter the query restriction, if LUP_CONTAINERS is given, only containers should be returned. If a namespace does not support
+	/// containers, and LUP_CONTAINERS is specified, it should simply return WSANO_DATA.
 	/// </para>
 	/// <para>The preferred method of obtaining the containers within another container, is the call:</para>
 	/// <para>
-	/// This call is followed by the requisite number of WSALookupServiceNext calls. This will return all containers contained
-	/// immediately within the starting context; that is, it is not a deep query. With this, one can map the address space structure by
-	/// walking the hierarchy, perhaps enumerating the content of selected containers. Subsequent uses of <c>WSALookupServiceBegin</c>
-	/// use the containers returned from a previous call.
+	/// This call is followed by the requisite number of WSALookupServiceNext calls. This will return all containers contained immediately
+	/// within the starting context; that is, it is not a deep query. With this, one can map the address space structure by walking the
+	/// hierarchy, perhaps enumerating the content of selected containers. Subsequent uses of <c>WSALookupServiceBegin</c> use the containers
+	/// returned from a previous call.
 	/// </para>
 	/// <para>
-	/// As mentioned above, a WSAQUERYSET structure is used as an input parameter to <c>WSALookupBegin</c> in order to qualify the
-	/// query. The following table indicates how the <c>WSAQUERYSET</c> is used to construct a query. When a parameter is marked as
-	/// (Optional) a <c>NULL</c> pointer can be specified, indicating that the parameter will not be used as a search criteria. See
-	/// section Query-Related Data Structures for additional information.
+	/// As mentioned above, a WSAQUERYSET structure is used as an input parameter to <c>WSALookupBegin</c> in order to qualify the query. The
+	/// following table indicates how the <c>WSAQUERYSET</c> is used to construct a query. When a parameter is marked as (Optional) a
+	/// <c>NULL</c> pointer can be specified, indicating that the parameter will not be used as a search criteria. See section Query-Related
+	/// Data Structures for additional information.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -5350,18 +5709,15 @@ public static partial class Ws2_32
 	/// <term>(Optional) This is a pointer to a provider-specific entity.</term>
 	/// </item>
 	/// </list>
+	/// <note type="important"> In most instances, applications interested in only a particular transport protocol should constrain their
+	/// query by address family and protocol rather than by namespace. This would allow an application that needs to locate a TCP/IP service,
+	/// for example, to have its query processed by all available namespaces such as the local hosts file, DNS, and NIS. </note>
 	/// <para>
-	/// <c>Important</c> In most instances, applications interested in only a particular transport protocol should constrain their query
-	/// by address family and protocol rather than by namespace. This would allow an application that needs to locate a TCP/IP service,
-	/// for example, to have its query processed by all available namespaces such as the local hosts file, DNS, and NIS.
+	/// <c>Windows Phone 8:</c> The <c>WSALookupServiceBeginW</c> function is supported for Windows Phone Store apps on Windows Phone 8 and later.
 	/// </para>
 	/// <para>
-	/// <c>Windows Phone 8:</c> The <c>WSALookupServiceBeginW</c> function is supported for Windows Phone Store apps on Windows Phone 8
-	/// and later.
-	/// </para>
-	/// <para>
-	/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: The <c>WSALookupServiceBeginW</c> function is supported for Windows Store
-	/// apps on Windows 8.1, Windows Server 2012 R2, and later.
+	/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: The <c>WSALookupServiceBeginW</c> function is supported for Windows Store apps
+	/// on Windows 8.1, Windows Server 2012 R2, and later.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsalookupservicebegina INT WSAAPI WSALookupServiceBeginA(
@@ -6766,7 +7122,7 @@ public static partial class Ws2_32
 	[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
 	public static extern WSRESULT WSARecv(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WSABUF[] lpBuffers,
 		uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
-		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSARecv</c> function receives data from a connected socket or a bound connectionless socket.</summary>
 	/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -7160,8 +7516,8 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
 	public static extern WSRESULT WSARecv(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WSABUF[] lpBuffers,
-		uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, ref WSAOVERLAPPED lpOverlapped,
-		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		uint dwBufferCount, [In, Optional] IntPtr lpNumberOfBytesRecvd, ref MsgFlags lpFlags, ref WSAOVERLAPPED lpOverlapped,
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>
 	/// The <c>WSARecvDisconnect</c> function terminates reception on a socket, and retrieves the disconnect data if the socket is
@@ -7555,8 +7911,9 @@ public static partial class Ws2_32
 	// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "8617dbb8-0e4e-4cd3-9597-5d20de6778f6")]
-	public static extern WSRESULT WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[]? lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
-		[Out] SOCKADDR lpFrom, ref int lpFromlen, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+	public static extern WSRESULT WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[]? lpBuffers, uint dwBufferCount,
+		out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [Out] SOCKADDR lpFrom, ref int lpFromlen, [In, Out, Optional] IntPtr lpOverlapped,
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSARecvFrom</c> function receives a datagram and stores the source address.</summary>
 	/// <param name="s">A descriptor identifying a socket.</param>
@@ -7856,8 +8213,9 @@ public static partial class Ws2_32
 	// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "8617dbb8-0e4e-4cd3-9597-5d20de6778f6")]
-	public static extern WSRESULT WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[]? lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
-		[Out] SOCKADDR lpFrom, ref int lpFromlen, ref WSAOVERLAPPED lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+	public static extern WSRESULT WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[]? lpBuffers, uint dwBufferCount,
+		[In, Optional] IntPtr lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [Out] SOCKADDR lpFrom, ref int lpFromlen, ref WSAOVERLAPPED lpOverlapped,
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSARemoveServiceClass</c> function permanently removes the service class schema from the registry.</summary>
 	/// <param name="lpServiceClassId">Pointer to the GUID for the service class you want to remove.</param>
@@ -8248,7 +8606,7 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "764339e6-a1ac-455d-8ebd-ad0fa50dc3b0")]
 	public static extern WSRESULT WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
-		MsgFlags dwFlags, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		MsgFlags dwFlags, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSASend</c> function sends data on a connected socket.</summary>
 	/// <param name="s">A descriptor that identifies a connected socket.</param>
@@ -8543,8 +8901,8 @@ public static partial class Ws2_32
 	// lpCompletionRoutine );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "764339e6-a1ac-455d-8ebd-ad0fa50dc3b0")]
-	public static extern WSRESULT WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
-		MsgFlags dwFlags, ref WSAOVERLAPPED lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+	public static extern WSRESULT WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, [In, Optional] IntPtr lpNumberOfBytesSent,
+		MsgFlags dwFlags, ref WSAOVERLAPPED lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>
 	/// The <c>WSASendDisconnect</c> function initiates termination of the connection for the socket and sends disconnect data.
@@ -9018,7 +9376,7 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "3b2ba645-6a70-4ba2-b4a2-5bde0c7f8d08")]
 	public static extern WSRESULT WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
-		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSASendMsg</c> function sends data and optional control information from connected and unconnected sockets.</summary>
 	/// <param name="Handle">A descriptor identifying the socket.</param>
@@ -9325,8 +9683,8 @@ public static partial class Ws2_32
 	// lpCompletionRoutine );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "3b2ba645-6a70-4ba2-b4a2-5bde0c7f8d08")]
-	public static extern WSRESULT WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, ref WSAOVERLAPPED lpOverlapped,
-		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+	public static extern WSRESULT WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, [In, Optional] IntPtr lpNumberOfBytesSent, ref WSAOVERLAPPED lpOverlapped,
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSASendTo</c> function sends data to a specific destination, using overlapped I/O where applicable.</summary>
 	/// <param name="s">A descriptor identifying a (possibly connected) socket.</param>
@@ -9633,7 +9991,7 @@ public static partial class Ws2_32
 	[PInvokeData("winsock2.h", MSDNShortId = "e3a11522-871c-4d6b-a2e6-ca91ffc2b698")]
 	public static extern WSRESULT WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 		MsgFlags dwFlags, [In, Optional] SOCKADDR lpTo, int iTolen, [In, Out, Optional] IntPtr lpOverlapped,
-		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSASendTo</c> function sends data to a specific destination, using overlapped I/O where applicable.</summary>
 	/// <param name="s">A descriptor identifying a (possibly connected) socket.</param>
@@ -9940,7 +10298,7 @@ public static partial class Ws2_32
 	[PInvokeData("winsock2.h", MSDNShortId = "e3a11522-871c-4d6b-a2e6-ca91ffc2b698")]
 	public static extern WSRESULT WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 		MsgFlags dwFlags, [In, Optional] SOCKADDR lpTo, int iTolen, ref WSAOVERLAPPED lpOverlapped,
-		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>The <c>WSASetEvent</c> function sets the state of the specified event object to signaled.</summary>
 	/// <param name="hEvent">Handle that identifies an open event object.</param>
@@ -10295,7 +10653,7 @@ public static partial class Ws2_32
 	// lpqsRegInfo, WSAESETSERVICEOP essoperation, DWORD dwControlFlags );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "21a8ff26-4c9e-4846-a75a-1a27c746edab")]
-	public static extern WSRESULT WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, ServiceInstallFlags dwControlFlags);
+	public static extern WSRESULT WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, [Optional] ServiceInstallFlags dwControlFlags);
 
 	/// <summary>The <c>WSASocket</c> function creates a socket that is bound to a specific transport-service provider.</summary>
 	/// <param name="af">
@@ -11480,19 +11838,19 @@ public static partial class Ws2_32
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
-	/// <term>1.0</term>
+	/// <definition>1.0</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.1</term>
+	/// <definition>1.1</definition>
 	/// </item>
 	/// <item>
-	/// <term>2.0</term>
+	/// <definition>2.0</definition>
 	/// </item>
 	/// <item>
-	/// <term>2.1</term>
+	/// <definition>2.1</definition>
 	/// </item>
 	/// <item>
-	/// <term>2.2</term>
+	/// <definition>2.2</definition>
 	/// </item>
 	/// </list>
 	/// <para>
@@ -11539,92 +11897,92 @@ public static partial class Ws2_32
 	/// <term>End result</term>
 	/// </listheader>
 	/// <item>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>use 1.1</term>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>use 1.1</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.0 1.1</term>
-	/// <term>1.0</term>
-	/// <term>1.1</term>
-	/// <term>1.0</term>
-	/// <term>1.0</term>
-	/// <term>use 1.0</term>
+	/// <definition>1.0 1.1</definition>
+	/// <definition>1.0</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.0</definition>
+	/// <definition>1.0</definition>
+	/// <definition>use 1.0</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.0</term>
-	/// <term>1.0 1.1</term>
-	/// <term>1.0</term>
-	/// <term>1.0</term>
-	/// <term>1.1</term>
-	/// <term>use 1.0</term>
+	/// <definition>1.0</definition>
+	/// <definition>1.0 1.1</definition>
+	/// <definition>1.0</definition>
+	/// <definition>1.0</definition>
+	/// <definition>1.1</definition>
+	/// <definition>use 1.0</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.1</term>
-	/// <term>1.0 1.1</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>use 1.1</term>
+	/// <definition>1.1</definition>
+	/// <definition>1.0 1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>use 1.1</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.1</term>
-	/// <term>1.0</term>
-	/// <term>1.1</term>
-	/// <term>1.0</term>
-	/// <term>1.0</term>
-	/// <term>Application fails</term>
+	/// <definition>1.1</definition>
+	/// <definition>1.0</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.0</definition>
+	/// <definition>1.0</definition>
+	/// <definition>Application fails</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.0</term>
-	/// <term>1.1</term>
-	/// <term>1.0</term>
-	/// <term>—</term>
-	/// <term>—</term>
-	/// <term>WSAVERNOTSUPPORTED</term>
+	/// <definition>1.0</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.0</definition>
+	/// <definition>—</definition>
+	/// <definition>—</definition>
+	/// <definition>WSAVERNOTSUPPORTED</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.0 1.1</term>
-	/// <term>1.0 1.1</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>use 1.1</term>
+	/// <definition>1.0 1.1</definition>
+	/// <definition>1.0 1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>use 1.1</definition>
 	/// </item>
 	/// <item>
-	/// <term>1.1 2.0</term>
-	/// <term>1.0 1.1</term>
-	/// <term>2.0</term>
-	/// <term>1.1</term>
-	/// <term>1.1</term>
-	/// <term>use 1.1</term>
+	/// <definition>1.1 2.0</definition>
+	/// <definition>1.0 1.1</definition>
+	/// <definition>2.0</definition>
+	/// <definition>1.1</definition>
+	/// <definition>1.1</definition>
+	/// <definition>use 1.1</definition>
 	/// </item>
 	/// <item>
-	/// <term>2.0</term>
-	/// <term>1.0 1.1 2.0</term>
-	/// <term>2.0</term>
-	/// <term>2.0</term>
-	/// <term>2.0</term>
-	/// <term>use 2.0</term>
+	/// <definition>2.0</definition>
+	/// <definition>1.0 1.1 2.0</definition>
+	/// <definition>2.0</definition>
+	/// <definition>2.0</definition>
+	/// <definition>2.0</definition>
+	/// <definition>use 2.0</definition>
 	/// </item>
 	/// <item>
-	/// <term>2.0 2.2</term>
-	/// <term>1.0 1.1 2.0</term>
-	/// <term>2.2</term>
-	/// <term>2.0</term>
-	/// <term>2.0</term>
-	/// <term>use 2.0</term>
+	/// <definition>2.0 2.2</definition>
+	/// <definition>1.0 1.1 2.0</definition>
+	/// <definition>2.2</definition>
+	/// <definition>2.0</definition>
+	/// <definition>2.0</definition>
+	/// <definition>use 2.0</definition>
 	/// </item>
 	/// <item>
-	/// <term>2.2</term>
-	/// <term>1.0 1.1 2.0 2.1 2.2</term>
-	/// <term>2.2</term>
-	/// <term>2.2</term>
-	/// <term>2.2</term>
-	/// <term>use 2.2</term>
+	/// <definition>2.2</definition>
+	/// <definition>1.0 1.1 2.0 2.1 2.2</definition>
+	/// <definition>2.2</definition>
+	/// <definition>2.2</definition>
+	/// <definition>2.2</definition>
+	/// <definition>use 2.2</definition>
 	/// </item>
 	/// </list>
 	/// <para>
@@ -11749,7 +12107,8 @@ public static partial class Ws2_32
 	// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-	public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+	public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily,
+		in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
 
 	/// <summary>
 	/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -11830,7 +12189,8 @@ public static partial class Ws2_32
 	// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-	public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+	public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily,
+		[In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
 
 	/// <summary>
 	/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -11911,7 +12271,8 @@ public static partial class Ws2_32
 	// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-	public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] IntPtr lpAddress, ref int lpAddressLength);
+	public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily,
+		[In, Optional] IntPtr lpProtocolInfo, [Out] IntPtr lpAddress, ref int lpAddressLength);
 
 	/// <summary>
 	/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary

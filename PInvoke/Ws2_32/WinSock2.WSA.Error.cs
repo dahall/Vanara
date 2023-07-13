@@ -20,11 +20,11 @@ public static partial class Ws2_32
 
 		/// <summary>Gets a value indicating whether this <see cref="WSRESULT"/> is a failure (Severity bit 31 equals 1).</summary>
 		/// <value><c>true</c> if failed; otherwise, <c>false</c>.</value>
-		public bool Failed => _value != 0;
+		public readonly bool Failed => _value != 0;
 
 		/// <summary>Gets a value indicating whether this <see cref="WSRESULT"/> is a success (Severity bit 31 equals 0).</summary>
 		/// <value><c>true</c> if succeeded; otherwise, <c>false</c>.</value>
-		public bool Succeeded => _value == 0;
+		public readonly bool Succeeded => _value == 0;
 
 		/// <summary>Performs an explicit conversion from <see cref="WSRESULT"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -92,12 +92,12 @@ public static partial class Ws2_32
 		/// <param name="value">The 32-bit raw WSRESULT value.</param>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
-		public static void ThrowIfFailed(int value, string message = null) => new WSRESULT(value).ThrowIfFailed(message);
+		public static void ThrowIfFailed(int value, string? message = null) => new WSRESULT(value).ThrowIfFailed(message);
 
 		/// <summary>Throws the last error.</summary>
 		/// <param name="message">The message.</param>
 		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
-		public static void ThrowLastError(string message = null) => GetLastError().ThrowIfFailed(message);
+		public static void ThrowLastError(string? message = null) => GetLastError().ThrowIfFailed(message);
 
 		/// <summary>Throws the last error if the predicate delegate returns <see langword="true"/>.</summary>
 		/// <typeparam name="T">The type of the value to evaluate.</typeparam>
@@ -106,7 +106,7 @@ public static partial class Ws2_32
 		/// <param name="message">The message.</param>
 		/// <returns>The <paramref name="value"/> passed in on success.</returns>
 		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
-		public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string message = null)
+		public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string? message = null)
 		{
 			if (valueIsFailure(value))
 				GetLastError().ThrowIfFailed(message);
@@ -117,13 +117,13 @@ public static partial class Ws2_32
 		/// <param name="value">The value to check.</param>
 		/// <param name="message">The message.</param>
 		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
-		public static bool ThrowLastErrorIfFalse(bool value, string message = null) => ThrowLastErrorIf(value, v => !v, message);
+		public static bool ThrowLastErrorIfFalse(bool value, string? message = null) => ThrowLastErrorIf(value, v => !v, message);
 
 		/// <summary>Throws the last error if the value is an invalid handle.</summary>
 		/// <param name="value">The SafeHandle to check.</param>
 		/// <param name="message">The message.</param>
 		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
-		public static T ThrowLastErrorIfInvalid<T>(T value, string message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
+		public static T ThrowLastErrorIfInvalid<T>(T value, string? message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
 
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -132,7 +132,7 @@ public static partial class Ws2_32
 		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
 		/// to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
-		public int CompareTo(WSRESULT other) => _value.CompareTo(other._value);
+		public readonly int CompareTo(WSRESULT other) => _value.CompareTo(other._value);
 
 		/// <summary>
 		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
@@ -144,7 +144,7 @@ public static partial class Ws2_32
 		/// than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the
 		/// sort order as <paramref name="obj"/> . Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 		/// </returns>
-		public int CompareTo(object obj) => obj switch
+		public int CompareTo(object? obj) => obj switch
 		{
 			WSRESULT r => CompareTo(r),
 			int i => i.CompareTo(_value),
@@ -156,12 +156,12 @@ public static partial class Ws2_32
 		/// <summary>Indicates whether the current object is equal to an <see cref="int"/>.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(int other) => other == _value;
+		public readonly bool Equals(int other) => other == _value;
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj switch
+		public override bool Equals(object? obj) => obj switch
 		{
 			null => false,
 			WSRESULT r => Equals(r),
@@ -175,18 +175,18 @@ public static partial class Ws2_32
 		/// <summary>Indicates whether the current object is equal to an <see cref="SocketError"/>.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(SocketError other) => (int)other == _value;
+		public readonly bool Equals(SocketError other) => (int)other == _value;
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(WSRESULT other) => other._value == _value;
+		public readonly bool Equals(WSRESULT other) => other._value == _value;
 
 		/// <summary>Gets the .NET <see cref="Exception"/> associated with the WSRESULT value and optionally adds the supplied message.</summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		/// <returns>The associated <see cref="Exception"/> or <c>null</c> if this WSRESULT is not a failure.</returns>
 		[SecurityCritical, SecuritySafeCritical]
-		public Exception GetException(string message = null) => _value switch
+		public readonly Exception? GetException(string? message = null) => _value switch
 		{
 			0 => null,
 			SOCKET_ERROR => new SocketException((int)GetLastError()),
@@ -195,7 +195,7 @@ public static partial class Ws2_32
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => _value;
+		public override readonly int GetHashCode() => _value;
 
 		/// <summary>Gets the last error.</summary>
 		/// <returns>The last error.</returns>
@@ -207,55 +207,55 @@ public static partial class Ws2_32
 		/// </summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		[SecurityCritical, SecuritySafeCritical, System.Diagnostics.DebuggerStepThrough]
-		public void ThrowIfFailed(string message = null)
+		public void ThrowIfFailed(string? message = null)
 		{
-			Exception exception = GetException(message);
+			Exception? exception = GetException(message);
 			if (exception is not null)
 				throw exception;
 		}
 
 		/// <summary>Converts this error to an <see cref="HRESULT"/>.</summary>
 		/// <returns>An equivalent <see cref="HRESULT"/>.</returns>
-		public HRESULT ToHRESULT() => HRESULT.HRESULT_FROM_WIN32((Win32Error)this);
+		public readonly HRESULT ToHRESULT() => HRESULT.HRESULT_FROM_WIN32((Win32Error)this);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => StaticFieldValueHash.TryGetFieldName<WSRESULT, int>(_value, out var err) ? err : ToHRESULT().ToString();
+		public override string ToString() => StaticFieldValueHash.TryGetFieldName<WSRESULT, int>(_value, out string? err) ? err : ToHRESULT().ToString();
 
-		TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
+		readonly TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
 
-		bool IConvertible.ToBoolean(IFormatProvider provider) => Succeeded;
+		readonly bool IConvertible.ToBoolean(IFormatProvider? provider) => Succeeded;
 
-		byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)_value).ToByte(provider);
+		readonly byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)_value).ToByte(provider);
 
-		char IConvertible.ToChar(IFormatProvider provider) => throw new NotSupportedException();
+		readonly char IConvertible.ToChar(IFormatProvider? provider) => throw new NotSupportedException();
 
-		DateTime IConvertible.ToDateTime(IFormatProvider provider) => throw new NotSupportedException();
+		readonly DateTime IConvertible.ToDateTime(IFormatProvider? provider) => throw new NotSupportedException();
 
-		decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)_value).ToDecimal(provider);
+		readonly decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)_value).ToDecimal(provider);
 
-		double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)_value).ToDouble(provider);
+		readonly double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)_value).ToDouble(provider);
 
-		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)_value).ToInt16(provider);
+		readonly short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)_value).ToInt16(provider);
 
-		int IConvertible.ToInt32(IFormatProvider provider) => _value;
+		readonly int IConvertible.ToInt32(IFormatProvider? provider) => _value;
 
-		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)_value).ToInt64(provider);
+		readonly long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)_value).ToInt64(provider);
 
-		sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)_value).ToSByte(provider);
+		readonly sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)_value).ToSByte(provider);
 
-		float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)_value).ToSingle(provider);
+		readonly float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)_value).ToSingle(provider);
 
-		string IConvertible.ToString(IFormatProvider provider) => ToString();
+		string IConvertible.ToString(IFormatProvider? provider) => ToString();
 
-		object IConvertible.ToType(Type conversionType, IFormatProvider provider) =>
+		readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) =>
 			((IConvertible)_value).ToType(conversionType, provider);
 
-		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)unchecked((uint)_value)).ToUInt16(provider);
+		readonly ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)unchecked((uint)_value)).ToUInt16(provider);
 
-		uint IConvertible.ToUInt32(IFormatProvider provider) => unchecked((uint)_value);
+		readonly uint IConvertible.ToUInt32(IFormatProvider? provider) => unchecked((uint)_value);
 
-		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)unchecked((uint)_value)).ToUInt64(provider);
+		readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)unchecked((uint)_value)).ToUInt64(provider);
 
 		/// <summary>
 		/// Specified event object handle is invalid.

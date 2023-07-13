@@ -2305,7 +2305,7 @@ public static partial class Ws2_32
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-inet_addr unsigned long WSAAPI inet_addr( const char *cp );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("winsock2.h", MSDNShortId = "7d6df658-9d83-45c7-97e7-b2a016a73847")]
-	public static extern uint inet_addr(string cp);
+	public static extern uint inet_addr(string? cp);
 
 	/// <summary>
 	/// <para>
@@ -3200,7 +3200,7 @@ public static partial class Ws2_32
 	// flags, sockaddr *from, int *fromlen );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsock.h", MSDNShortId = "3e4282e0-3ed0-43e7-9b27-72ec36b9cfa1")]
-	public static extern int recvfrom(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR from, ref int fromlen);
+	public static extern int recvfrom(SOCKET s, [Optional] IntPtr buf, [Optional] int len, int flags, SOCKADDR from, ref int fromlen);
 
 	/// <summary>The <c>recvfrom</c> function receives a datagram and stores the source address.</summary>
 	/// <param name="s">A descriptor identifying a bound socket.</param>
@@ -3383,7 +3383,7 @@ public static partial class Ws2_32
 	// flags, sockaddr *from, int *fromlen );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsock.h", MSDNShortId = "3e4282e0-3ed0-43e7-9b27-72ec36b9cfa1")]
-	public static extern int recvfrom(SOCKET s, byte[] buf, int len, int flags, SOCKADDR from, ref int fromlen);
+	public static extern int recvfrom(SOCKET s, [Optional] byte[]? buf, [Optional] int len, int flags, SOCKADDR from, ref int fromlen);
 
 	/// <summary>
 	/// The <c>select</c> function determines the status of one or more sockets, waiting if necessary, to perform synchronous I/O.
@@ -6275,7 +6275,7 @@ public static partial class Ws2_32
 		public short p_proto;
 
 		/// <summary>Array of alternate names extracted from <see cref="p_aliases"/>.</summary>
-		public string[] Aliases => p_aliases.ToStringEnum(p_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).ToArray();
+		public readonly string?[] Aliases => p_aliases.ToStringEnum(p_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).ToArray();
 	}
 
 	/// <summary>The <c>servent</c> structure is used to store or return the name and service number for a given service name.</summary>
@@ -6287,34 +6287,34 @@ public static partial class Ws2_32
 	public struct SERVENT : IVanaraMarshaler
 	{
 		/// <summary>The official name of the service.</summary>
-		public string s_name;
+		public string? s_name;
 
-		/// <summary>A <c>NULL</c>-terminated array of alternate names.</summary>
+		/// <summary>An array of alternate names.</summary>
 		public string[] s_aliases;
 
 		/// <summary>The port number at which the service can be contacted. Port numbers are returned in network byte order.</summary>
 		public short s_port;
 
 		/// <summary>The name of the protocol to use when contacting the service.</summary>
-		public string s_proto;
+		public string? s_proto;
 
 		/// <summary>Use this method to address different structure layouts on 64-bit systems.</summary>
 		/// <param name="ptr">The ptr to convert.</param>
 		/// <returns>A SERVENT structure aligned correctly.</returns>
-		public SERVENT FromIntPtr(IntPtr ptr)
+		public static SERVENT FromIntPtr(IntPtr ptr)
 		{
 			if (IntPtr.Size == 8)
 			{
 				var x = ptr.ToStructure<SERVENTx64>();
-				return new SERVENT { s_name = x.s_name, s_aliases = x.s_aliases.ToStringEnum(x.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).ToArray(), s_port = x.s_port, s_proto = x.s_proto };
+				return new SERVENT { s_name = x.s_name, s_aliases = x.s_aliases.ToStringEnum(x.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).Where(s => s is not null).ToArray()!, s_port = x.s_port, s_proto = x.s_proto };
 			}
 			var s = ptr.ToStructure<SERVENTx32>();
-			return new SERVENT { s_name = s.s_name, s_aliases = s.s_aliases.ToStringEnum(s.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).ToArray(), s_port = s.s_port, s_proto = s.s_proto };
+			return new SERVENT { s_name = s.s_name, s_aliases = s.s_aliases.ToStringEnum(s.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).Where(s => s is not null).ToArray()!, s_port = s.s_port, s_proto = s.s_proto };
 		}
 
-		SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size == 8 ? Marshal.SizeOf(typeof(SERVENTx64)) : Marshal.SizeOf(typeof(SERVENT));
+		readonly SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size == 8 ? Marshal.SizeOf(typeof(SERVENTx64)) : Marshal.SizeOf(typeof(SERVENT));
 
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
+		readonly SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
 			if (managedObject is SERVENT s)
 			{

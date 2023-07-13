@@ -1,7 +1,10 @@
 ﻿using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ws2_32;
@@ -102,5 +105,20 @@ public class WSATests
 	{
 		Assert.That(WSAHtonl(tcpSocket, 0x01020304, out var ret), ResultIs.Successful);
 		Assert.That(ret, Is.EqualTo(0x04030201));
+	}
+
+	[Test]
+	public void WSALookupServiceTest()
+	{
+		WSAQUERYSET qsr = new(NS.NS_BTH);
+		foreach (var qs in WSALookupService(qsr, LUP.LUP_CONTAINERS, LUP.LUP_RETURN_ALL))
+			TestContext.WriteLine($"Name: {qs.lpszServiceInstanceName}; Guid: {qs.lpServiceClassId}; NS: {qs.dwNameSpace}; PrNum: {qs.lpafpProtocols?.Length ?? 0}; Ver: {qs.lpVersion}");
+	}
+
+	[Test]
+	public void WSCEnumProtocolsTest()
+	{
+		foreach (var p in WSCEnumProtocols())
+			TestContext.WriteLine($"{p.szProtocol}: {(ADDRESS_FAMILY)p.iAddressFamily}, {p.iSocketType}, {p.iProtocol}");
 	}
 }

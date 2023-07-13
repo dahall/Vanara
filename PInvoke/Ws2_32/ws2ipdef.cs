@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -793,7 +794,7 @@ public static partial class Ws2_32
 		public static readonly SOCKADDR_IN6 IN6ADDR_LOOPBACK = new() { sin6_family = ADDRESS_FAMILY.AF_INET6, sin6_addr = IN6_ADDR.Loopback };
 
 		/// <inheritdoc/>
-		public override string ToString() => $"{sin6_addr}" + (sin6_scope_id == 0 ? "" : "%" + sin6_scope_id.ToString()) + $":{sin6_port}";
+		public override readonly string ToString() => $"{sin6_addr}" + (sin6_scope_id == 0 ? "" : "%" + sin6_scope_id.ToString()) + $":{sin6_port}";
 	}
 
 	/// <summary>
@@ -827,21 +828,20 @@ public static partial class Ws2_32
 		/// IPv6 address, port, flow information, and zone ID are in network byte order.
 		/// </summary>
 		/// <value>The source address.</value>
-		public SOCKADDR_IN6 SourceAddress => _SourceAddress.ToStructure<SOCKADDR_IN6>();
+		public readonly SOCKADDR_IN6 SourceAddress => _SourceAddress.ToStructure<SOCKADDR_IN6>();
 
 		/// <summary>
 		/// A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the
 		/// IPv6 address, port, flow information, and zone ID are in network byte order.
 		/// </summary>
 		/// <value>The destination address.</value>
-		public SOCKADDR_IN6 DestinationAddress => _DestinationAddress.ToStructure<SOCKADDR_IN6>();
+		public readonly SOCKADDR_IN6 DestinationAddress => _DestinationAddress.ToStructure<SOCKADDR_IN6>();
 
 		/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6_PAIR"/> to <see cref="SOCKADDR_IN6_PAIR_NATIVE"/>.</summary>
 		/// <param name="unmgd">The unmanaged value.</param>
 		/// <returns>The resulting <see cref="SOCKADDR_IN6_PAIR_NATIVE"/> instance from the conversion.</returns>
 		public static implicit operator SOCKADDR_IN6_PAIR_NATIVE(SOCKADDR_IN6_PAIR unmgd) =>
-			new()
-			{ SourceAddress = unmgd.SourceAddress, DestinationAddress = unmgd.DestinationAddress };
+			new() { SourceAddress = unmgd.SourceAddress, DestinationAddress = unmgd.DestinationAddress };
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -884,7 +884,7 @@ public static partial class Ws2_32
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		/// <inheritdoc/>
-		public override string ToString() => $"{SourceAddress} : {DestinationAddress}";
+		public override readonly string ToString() => $"{SourceAddress} : {DestinationAddress}";
 	}
 
 	/// <summary>The <c>SOCKADDR_INET</c> union contains an IPv4, an IPv6 address, or an address family.</summary>
@@ -939,22 +939,40 @@ public static partial class Ws2_32
 		public ADDRESS_FAMILY si_family;
 
 		/// <summary>Gets the size of the actual address (not necessarily the size of the structure).</summary>
-		public int Size => si_family == ADDRESS_FAMILY.AF_INET ? Marshal.SizeOf(typeof(SOCKADDR_IN)) : Marshal.SizeOf(typeof(SOCKADDR_IN6));
+		public readonly int Size => si_family == ADDRESS_FAMILY.AF_INET ? Marshal.SizeOf(typeof(SOCKADDR_IN)) : Marshal.SizeOf(typeof(SOCKADDR_IN6));
 
 		/// <summary>Specifies whether this instance is equal to the specified object.</summary>
 		/// <param name="other">The object to test for equality.</param>
 		/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
-		public bool Equals(SOCKADDR_INET other) => (si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other.Ipv4)) || (si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other.Ipv6));
+		public readonly bool Equals(SOCKADDR_INET other) => (si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other.Ipv4)) || (si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other.Ipv6));
 
 		/// <summary>Specifies whether this instance is equal to the specified object.</summary>
 		/// <param name="other">The object to test for equality.</param>
 		/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
-		public bool Equals(SOCKADDR_IN other) => si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other);
+		public readonly bool Equals(SOCKADDR_IN other) => si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other);
 
 		/// <summary>Specifies whether this instance is equal to the specified object.</summary>
 		/// <param name="other">The object to test for equality.</param>
 		/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
-		public bool Equals(SOCKADDR_IN6 other) => si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other);
+		public readonly bool Equals(SOCKADDR_IN6 other) => si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other);
+
+		/// <inheritdoc/>
+		public override readonly bool Equals([NotNullWhen(true)] object? obj) => obj switch
+		{
+			SOCKADDR_INET a => Equals(a),
+			SOCKADDR_IN a => Equals(a),
+			SOCKADDR_IN6 a => Equals(a),
+			_ => false,
+		};
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => Ipv6.GetHashCode();
+
+		/// <inheritdoc/>
+		public static bool operator ==(SOCKADDR_INET left, SOCKADDR_INET right) => left.Equals(right);
+
+		/// <inheritdoc/>
+		public static bool operator !=(SOCKADDR_INET left, SOCKADDR_INET right) => !(left == right);
 
 		/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR_INET"/>.</summary>
 		/// <param name="address">The address.</param>
@@ -978,13 +996,13 @@ public static partial class Ws2_32
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString()
+		public override readonly string ToString()
 		{
 			var sb = new System.Text.StringBuilder($"{si_family}");
 			if (si_family == ADDRESS_FAMILY.AF_INET)
-				sb.Append(":").Append(Ipv4);
+				sb.Append(':').Append(Ipv4);
 			else if (si_family == ADDRESS_FAMILY.AF_INET6)
-				sb.Append(":").Append(Ipv6);
+				sb.Append(':').Append(Ipv6);
 			return sb.ToString();
 		}
 	}

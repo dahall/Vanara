@@ -60,7 +60,7 @@ public class Winsock2Tests
 	}
 
 	[Test]
-	public unsafe void getservbynameTest()
+	public void getservbynameTest()
 	{
 		const string svcName = "finger";
 		var ps = getservbyname(svcName);
@@ -70,7 +70,7 @@ public class Winsock2Tests
 	}
 
 	[Test]
-	public unsafe void getservbyportTest()
+	public void getservbyportTest()
 	{
 		const short svcPort = 20224; // finger (79 reversed)
 		var ps = getservbyport(svcPort, "TCP");

@@ -12,8 +12,8 @@ public static partial class Ws2_32
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const int RIO_MAX_CQ_SIZE = 0x8000000;
-	public static readonly RIO_CQ RIO_CORRUPT_CQ = (RIO_CQ)0xFFFFFFFF;
-	public static readonly RIO_BUFFERID RIO_INVALID_BUFFERID = (RIO_BUFFERID)0xFFFFFFFF;
+	public static readonly RIO_CQ RIO_CORRUPT_CQ = (RIO_CQ)unchecked((int)0xFFFFFFFF);
+	public static readonly RIO_BUFFERID RIO_INVALID_BUFFERID = (RIO_BUFFERID)unchecked((int)0xFFFFFFFF);
 	public static readonly RIO_CQ RIO_INVALID_CQ = (RIO_CQ)0;
 	public static readonly RIO_RQ RIO_INVALID_RQ = (RIO_RQ)0;
 	public static readonly uint SIO_SET_COMPATIBILITY_MODE = _WSAIOW(IOC_VENDOR, 300);
@@ -30,12 +30,17 @@ public static partial class Ws2_32
 		RIO_MSG_DONT_NOTIFY = 0x00000001,
 
 		/// <summary>
+		/// <para>
 		/// The request does not need to be executed immediately. This will insert the request into the request queue, but it may or may not
-		/// trigger the execution of the request. Sending data may be delayed until a send request is made on the <c>RIO_RQ</c> passed in the
-		/// <c>SocketQueue</c> parameter without the <c>RIO_MSG_DEFER</c> flag set. To trigger execution for all sends in a send queue, call
-		/// the <c>RIOSend</c> or <c>RIOSendEx</c> function without the <c>RIO_MSG_DEFER</c> flag set. <c>Note</c> The send request is
-		/// charged against the outstanding I/O capacity on the <c>RIO_RQ</c> passed in the <c>SocketQueue</c> parameter regardless of
-		/// whether <c>RIO_MSG_DEFER</c> is set.
+		/// trigger the execution of the request.
+		/// </para>
+		/// <para>
+		/// Sending data may be delayed until a send request is made on the <c>RIO_RQ</c> passed in the <c>SocketQueue</c> parameter without
+		/// the <c>RIO_MSG_DEFER</c> flag set. To trigger execution for all sends in a send queue, call the <c>RIOSend</c> or
+		/// <c>RIOSendEx</c> function without the <c>RIO_MSG_DEFER</c> flag set. <c>Note</c> The send request is charged against the
+		/// outstanding I/O capacity on the <c>RIO_RQ</c> passed in the <c>SocketQueue</c> parameter regardless of whether
+		/// <c>RIO_MSG_DEFER</c> is set.
+		/// </para>
 		/// </summary>
 		RIO_MSG_DEFER = 0x00000002,
 
@@ -45,15 +50,22 @@ public static partial class Ws2_32
 		RIO_MSG_WAITALL = 0x00000004,
 
 		/// <summary>
-		/// Previous requests added with <c>RIO_MSG_DEFER</c> flag will be committed. When the <c>RIO_MSG_COMMIT_ONLY</c> flag is set, no
-		/// other flags may be specified. When the <c>RIO_MSG_COMMIT_ONLY</c> flag is set, the <c>pData</c>, <c>pLocalAddress</c>,
-		/// <c>pRemoteAddress</c>, <c>pControlContext</c>, <c>pFlags</c>, and <c>RequestContext</c> parameters must be NULL and the
-		/// <c>DataBufferCount</c> parameter must be zero. This flag would normally be used occasionally after a number of requests were
-		/// issued with the <c>RIO_MSG_DEFER</c> flag set. This eliminates the need when using the <c>RIO_MSG_DEFER</c> flag to make the last
-		/// request without the <c>RIO_MSG_DEFER</c> flag, which causes the last request to complete much slower than other requests. Unlike
-		/// other calls to the <c>RIOSendEx</c> function, when the <c>RIO_MSG_COMMIT_ONLY</c> flag is set calls to the <c>RIOSendEx</c>
-		/// function do not need to be serialized. For a single <c>RIO_RQ</c>, the <c>RIOSendEx</c> function can be called with
-		/// <c>RIO_MSG_COMMIT_ONLY</c> on one thread while calling the <c>RIOSendEx</c> function on another thread.
+		/// <para>Previous requests added with <c>RIO_MSG_DEFER</c> flag will be committed.</para>
+		/// <para>
+		/// When the <c>RIO_MSG_COMMIT_ONLY</c> flag is set, no other flags may be specified. When the <c>RIO_MSG_COMMIT_ONLY</c> flag is
+		/// set, the <c>pData</c>, <c>pLocalAddress</c>, <c>pRemoteAddress</c>, <c>pControlContext</c>, <c>pFlags</c>, and
+		/// <c>RequestContext</c> parameters must be NULL and the <c>DataBufferCount</c> parameter must be zero.
+		/// </para>
+		/// <para>
+		/// This flag would normally be used occasionally after a number of requests were issued with the <c>RIO_MSG_DEFER</c> flag set. This
+		/// eliminates the need when using the <c>RIO_MSG_DEFER</c> flag to make the last request without the <c>RIO_MSG_DEFER</c> flag,
+		/// which causes the last request to complete much slower than other requests.
+		/// </para>
+		/// <para>
+		/// Unlike other calls to the <c>RIOSendEx</c> function, when the <c>RIO_MSG_COMMIT_ONLY</c> flag is set calls to the
+		/// <c>RIOSendEx</c> function do not need to be serialized. For a single <c>RIO_RQ</c>, the <c>RIOSendEx</c> function can be called
+		/// with <c>RIO_MSG_COMMIT_ONLY</c> on one thread while calling the <c>RIOSendEx</c> function on another thread.
+		/// </para>
 		/// </summary>
 		RIO_MSG_COMMIT_ONLY = 0x00000008,
 	}

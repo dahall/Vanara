@@ -42,7 +42,7 @@ public static partial class Ws2_32
 
 	/// <summary>If TRUE, the SO_LINGER option is disabled.</summary>
 	[CorrespondingType(typeof(BOOL))]
-	public const int SO_DONTLINGER = (int)~SO_LINGER;
+	public const int SO_DONTLINGER = ~SO_LINGER;
 
 	/// <summary>
 	/// Routing is disabled. Setting this succeeds but is ignored on AF_INET sockets; fails on AF_INET6 sockets with WSAENOPROTOOPT.
@@ -59,7 +59,7 @@ public static partial class Ws2_32
 	/// Prevents any other socket from binding to the same address and port. This option must be set before calling the bind function.
 	/// </summary>
 	[CorrespondingType(typeof(BOOL))]
-	public const int SO_EXCLUSIVEADDRUSE = (int)~SO_REUSEADDR;
+	public const int SO_EXCLUSIVEADDRUSE = ~SO_REUSEADDR;
 
 	/// <summary>Reserved.</summary>
 	[CorrespondingType(typeof(GROUP))]
@@ -225,7 +225,7 @@ public static partial class Ws2_32
 	/// <returns></returns>
 	[PInvokeData("winsock2.h", MSDNShortId = "f385f63f-49b2-4eb7-8717-ad4cca1a2252")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-	public delegate CF ConditionFunc(in WSABUF lpCallerId, in WSABUF lpCallerData, IntPtr lpSQOS, IntPtr lpGQOS, in WSABUF lpCalleeId, in WSABUF lpCalleeData, out GROUP g, IntPtr dwCallbackData);
+	public delegate CF ConditionFunc(in WSABUF lpCallerId, in WSABUF lpCallerData, [Optional] IntPtr lpSQOS, [Optional] IntPtr lpGQOS, in WSABUF lpCalleeId, in WSABUF lpCalleeData, out GROUP g, IntPtr dwCallbackData);
 
 	/// <summary>The address family specification.</summary>
 	[PInvokeData("winsock2.h")]
@@ -874,9 +874,9 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
 	public static extern uint ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[]? registrationInfos,
-		uint timeoutMs, uint completionCount,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Kernel32.OVERLAPPED_ENTRY[] completionPortEntries, out uint receivedEntryCount);
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[]? registrationInfos, uint timeoutMs,
+		uint completionCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Kernel32.OVERLAPPED_ENTRY[]? completionPortEntries,
+		out uint receivedEntryCount);
 
 	/// <summary>
 	/// <para>
@@ -973,8 +973,9 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
 	public static extern Win32Error ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[]? registrationInfos,
-		uint timeoutMs, [Optional] uint completionCount, [In, Optional] IntPtr completionPortEntries, [In, Optional] IntPtr receivedEntryCount);
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[]? registrationInfos, uint timeoutMs,
+		[Optional] uint completionCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Kernel32.OVERLAPPED_ENTRY[]? completionPortEntries,
+		[In, Optional] IntPtr receivedEntryCount);
 
 	/// <summary/>
 	/// <param name="b"/>
@@ -1142,7 +1143,7 @@ public static partial class Ws2_32
 
 		/// <summary>Gets the address represented as four bytes.</summary>
 		/// <value>An IPv4 address formatted as four u_chars.</value>
-		public byte[] S_un_b => BitConverter.GetBytes(S_addr);
+		public readonly byte[] S_un_b => BitConverter.GetBytes(S_addr);
 
 		/// <summary/>
 		public static readonly IN_ADDR INADDR_ANY = new(0U);
@@ -1168,12 +1169,12 @@ public static partial class Ws2_32
 		/// <returns>The result of the operator.</returns>
 		public static bool operator !=(IN_ADDR left, IN_ADDR right) => !left.Equals(right);
 
-		/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="System.UInt32"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="uint"/>.</summary>
 		/// <param name="a">An IN_ADDR value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator uint(IN_ADDR a) => a.S_addr;
 
-		/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="System.Int64"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="long"/>.</summary>
 		/// <param name="a">An IN_ADDR value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator long(IN_ADDR a) => a.S_addr;
@@ -1183,12 +1184,12 @@ public static partial class Ws2_32
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator byte[](IN_ADDR a) => BitConverter.GetBytes(a.S_addr);
 
-		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="IN_ADDR"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="IN_ADDR"/>.</summary>
 		/// <param name="a">A UInt32 value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IN_ADDR(uint a) => new(a);
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Int64"/> to <see cref="IN_ADDR"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="long"/> to <see cref="IN_ADDR"/>.</summary>
 		/// <param name="a">An Int64 value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IN_ADDR(long a) => new((uint)a);
@@ -1201,22 +1202,22 @@ public static partial class Ws2_32
 		/// <summary>Determines equality between this instance and <paramref name="other"/>.</summary>
 		/// <param name="other">The other value to compare.</param>
 		/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
-		public bool Equals(IN_ADDR other) => S_addr == other.S_addr;
+		public readonly bool Equals(IN_ADDR other) => S_addr == other.S_addr;
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-		public override bool Equals(object obj) => obj is IN_ADDR i ? Equals(i) : base.Equals(obj);
+		public override readonly bool Equals(object? obj) => obj is IN_ADDR i ? Equals(i) : base.Equals(obj);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => S_addr.GetHashCode();
 
-		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString()
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
+		public override readonly string ToString()
 		{
-			var b = S_un_b;
+			byte[] b = S_un_b;
 			return $"{b[0]}.{b[1]}.{b[2]}.{b[3]}";
 		}
 	}
@@ -1258,14 +1259,14 @@ public static partial class Ws2_32
 		/// <exception cref="ArgumentException">Byte array must have 16 items. - value</exception>
 		public byte[] bytes
 		{
-			get
+			readonly get
 			{
 				unsafe
 				{
-					var v6addr = new byte[IN6_ADDR_SIZE];
+					byte[] v6addr = new byte[IN6_ADDR_SIZE];
 					fixed (byte* usp = &v6addr[0])
 					{
-						var ulp2 = (ulong*)usp;
+						ulong* ulp2 = (ulong*)usp;
 						ulp2[0] = lower;
 						ulp2[1] = upper;
 					}
@@ -1276,12 +1277,12 @@ public static partial class Ws2_32
 			{
 				unsafe
 				{
-					if (value == null) value = new byte[IN6_ADDR_SIZE];
+					value ??= new byte[IN6_ADDR_SIZE];
 					if (value.Length != IN6_ADDR_SIZE)
 						throw new ArgumentException("Byte array must have 16 items.", nameof(value));
 					fixed (byte* bp = &value[0])
 					{
-						var ulp = (ulong*)bp;
+						ulong* ulp = (ulong*)bp;
 						lower = ulp[0];
 						upper = ulp[1];
 					}
@@ -1291,102 +1292,102 @@ public static partial class Ws2_32
 
 		/// <summary>Gets a value indicating whether this instance is an anycast address.</summary>
 		/// <value><see langword="true"/> if this instance is an anycast address; otherwise, <see langword="false"/>.</value>
-		public bool IsAnycast => IsSubnetRerservedAnycast || IsSubnetRouterAnycast;
+		public readonly bool IsAnycast => IsSubnetRerservedAnycast || IsSubnetRouterAnycast;
 
 		/// <summary>Gets a value indicating whether this instance uses EUI-64 interface identifiers.</summary>
 		/// <value><see langword="true"/> if this instance uses EUI-64 interface identifiers; otherwise, <see langword="false"/>.</value>
-		public bool IsEUI64 => (bytes[0] & 0xe0) != 0 && !IsMulticast;
+		public readonly bool IsEUI64 => (bytes[0] & 0xe0) != 0 && !IsMulticast;
 
 		/// <summary>Gets a value indicating whether this instance is a global address.</summary>
 		/// <value><see langword="true"/> if this instance is a global  address; otherwise, <see langword="false"/>.</value>
-		public bool IsGlobal
+		public readonly bool IsGlobal
 		{
 			get
 			{
-				var High = bytes[0] & 0xf0u;
-				return High != 0 && High != 0xf0;
+				uint High = bytes[0] & 0xf0u;
+				return High is not 0 and not 0xf0;
 			}
 		}
 
 		/// <summary>Gets a value indicating whether this instance is a link local address.</summary>
 		/// <value><see langword="true"/> if this instance is a link local address; otherwise, <see langword="false"/>.</value>
-		public bool IsLinkLocal
+		public readonly bool IsLinkLocal
 		{
 			get
 			{
-				var b = bytes;
+				byte[] b = bytes;
 				return b[0] == 0xfe && (b[1] & 0xc0) == 0x80;
 			}
 		}
 
 		/// <summary>Gets a value indicating whether this instance is a LOOPBACK address.</summary>
 		/// <value><see langword="true"/> if this instance is a LOOPBACK address; otherwise, <see langword="false"/>.</value>
-		public bool IsLoopback => Equals(Loopback);
+		public readonly bool IsLoopback => Equals(Loopback);
 
 		/// <summary>Gets a value indicating whether this instance is a MULTICAST address.</summary>
 		/// <value><see langword="true"/> if this instance is a MULTICAST address; otherwise, <see langword="false"/>.</value>
-		public bool IsMulticast => bytes[0] == 0xff;
+		public readonly bool IsMulticast => bytes[0] == 0xff;
 
 		/// <summary>Gets a value indicating whether this instance is a site local address.</summary>
 		/// <value><see langword="true"/> if this instance is a site local address; otherwise, <see langword="false"/>.</value>
-		public bool IsSiteLocal
+		public readonly bool IsSiteLocal
 		{
 			get
 			{
-				var b = bytes;
+				byte[] b = bytes;
 				return b[0] == 0xfe && (b[1] & 0xc0) == 0xc0;
 			}
 		}
 
 		/// <summary>Gets a value indicating whether the subnet router anycast address.</summary>
 		/// <value><see langword="true"/> if the subnet router anycast address; otherwise, <see langword="false"/>.</value>
-		public bool IsSubnetRouterAnycast => IsEUI64 && upper == 0;
+		public readonly bool IsSubnetRouterAnycast => IsEUI64 && upper == 0;
 
 		/// <summary>Gets a value indicating whether the subnet reserved anycast address.</summary>
 		/// <value><see langword="true"/> if the subnet reserved anycast address; otherwise, <see langword="false"/>.</value>
-		public bool IsSubnetRerservedAnycast
+		public readonly bool IsSubnetRerservedAnycast
 		{
 			get
 			{
-				var w = words;
+				ushort[] w = words;
 				return IsEUI64 && w[4] == 0xfffd && w[5] == 0xffff && w[6] == 0xffff && (w[7] & 0x80ff) == 0x80ff;
 			}
 		}
 
 		/// <summary>Gets a value indicating whether this instance is an UNSPECIFIED address.</summary>
 		/// <value><see langword="true"/> if this instance is an UNSPECIFIED address; otherwise, <see langword="false"/>.</value>
-		public bool IsUnspecified => Equals(Unspecified);
+		public readonly bool IsUnspecified => Equals(Unspecified);
 
 		/// <summary>Gets a value indicating whether this instance is an IPv4 compatible address.</summary>
 		/// <value><see langword="true"/> if this instance is an IPv4 compatible address; otherwise, <see langword="false"/>.</value>
-		public bool IsV4Compatible
+		public readonly bool IsV4Compatible
 		{
 			get
 			{
-				var w = words;
-				var b = bytes;
-				return lower == 0 && w[4] == 0 && w[5] ==  0 && w[6] == 0 && b[14] == 0 && (b[15] == 0 || b[15] == 1);
+				ushort[] w = words;
+				byte[] b = bytes;
+				return lower == 0 && w[4] == 0 && w[5] == 0 && w[6] == 0 && b[14] == 0 && (b[15] == 0 || b[15] == 1);
 			}
 		}
 
 		/// <summary>Gets a value indicating whether this instance is an IPv4 mapped address.</summary>
 		/// <value><see langword="true"/> if this instance is an IPv4 mapped address; otherwise, <see langword="false"/>.</value>
-		public bool IsV4Mapped
+		public readonly bool IsV4Mapped
 		{
 			get
 			{
-				var w = words;
+				ushort[] w = words;
 				return lower == 0 && w[4] == 0 && w[5] == 0xffff;
 			}
 		}
 
 		/// <summary>Gets a value indicating whether this instance is an IPv4 translated address.</summary>
 		/// <value><see langword="true"/> if this instance is an IPv4 translated address; otherwise, <see langword="false"/>.</value>
-		public bool IsV4Translated
+		public readonly bool IsV4Translated
 		{
 			get
 			{
-				var w = words;
+				ushort[] w = words;
 				return lower == 0 && w[4] == 0xffff && w[5] == 0;
 			}
 		}
@@ -1396,10 +1397,10 @@ public static partial class Ws2_32
 		/// <exception cref="ArgumentException">UInt16 array must have 8 items. - value</exception>
 		public ushort[] words
 		{
-			get
+			readonly get
 			{
-				var v6addr = new ushort[IN6_ADDR_SIZE / 2];
-				var b = bytes;
+				ushort[] v6addr = new ushort[IN6_ADDR_SIZE / 2];
+				byte[] b = bytes;
 				for (int i = 0; i < v6addr.Length; i++)
 					v6addr[i] = (ushort)(b[i * 2] * 256 + b[i * 2 + 1]);
 				return v6addr;
@@ -1448,26 +1449,25 @@ public static partial class Ws2_32
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-		public override bool Equals(object obj) => obj is IN6_ADDR i ? Equals(i) : base.Equals(obj);
+		public override readonly bool Equals(object? obj) => obj is IN6_ADDR i ? Equals(i) : base.Equals(obj);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => (lower, upper).GetHashCode();
+		public override readonly int GetHashCode() => (lower, upper).GetHashCode();
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString()
+		public override readonly string ToString()
 		{
 			System.Text.StringBuilder sb = new(64);
-			var p = InetNtopW(ADDRESS_FAMILY.AF_INET6, this, sb, sb.Capacity);
-			if (p.IsNull) throw WSAGetLastError().GetException();
-			return sb.ToString();
+			StrPtrUni p = InetNtopW(ADDRESS_FAMILY.AF_INET6, this, sb, sb.Capacity);
+			return p.IsNull ? throw WSAGetLastError().GetException() : sb.ToString();
 		}
 
 		/// <summary>Determines whether the specified <paramref name="other"/> value is equal to this instance.</summary>
 		/// <param name="other">The value to compare with this instance.</param>
 		/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(IN6_ADDR other) => lower == other.lower && upper == other.upper;
+		public readonly bool Equals(IN6_ADDR other) => lower == other.lower && upper == other.upper;
 	}
 
 	/// <summary>
@@ -1714,7 +1714,7 @@ public static partial class Ws2_32
 	/// <seealso cref="Vanara.PInvoke.IHandle"/>
 	[PInvokeData("winsock2.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SOCKET : IHandle
+	public readonly struct SOCKET : IHandle
 	{
 		/// <summary>The handle</summary>
 		private readonly IntPtr handle;
@@ -1733,7 +1733,7 @@ public static partial class Ws2_32
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		/// <value><see langword="true"/> if this instance is null; otherwise, <see langword="false"/>.</value>
-		public bool IsNull => handle == IntPtr.Zero;
+		public readonly bool IsNull => handle == IntPtr.Zero;
 
 		/// <summary>Performs an explicit conversion from <see cref="SOCKET"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -1757,26 +1757,26 @@ public static partial class Ws2_32
 		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(SOCKET h1, SOCKET h2) => h1.Equals(h2);
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns>
-		/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
+		/// <see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.
 		/// </returns>
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is SOCKET h && handle == h.handle;
+		public override readonly bool Equals(object? obj) => obj is SOCKET h && handle == h.handle;
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
+		public override readonly int GetHashCode() => handle.GetHashCode();
 
 		/// <summary>Returns the value of the handle field.</summary>
 		/// <returns>An IntPtr representing the value of the handle field.</returns>
 		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		public readonly IntPtr DangerousGetHandle() => handle;
 
 		/// <inheritdoc/>
-		public override string ToString() => handle.ToString();
+		public override readonly string ToString() => handle.ToString();
 	}
 
 	/// <summary>
@@ -1813,7 +1813,7 @@ public static partial class Ws2_32
 		/// <returns>The resulting <see cref="TIMEVAL"/> instance from the conversion.</returns>
 		public static explicit operator TIMEVAL(TimeSpan timeSpan)
 		{
-			var tr = Math.Truncate(timeSpan.TotalSeconds);
+			double tr = Math.Truncate(timeSpan.TotalSeconds);
 			return new TIMEVAL { tv_sec = (int)tr, tv_usec = (int)((timeSpan.Ticks - TimeSpan.TicksPerSecond * (long)tr) / TimeSpan.TicksPerMillisecond) };
 		}
 	}
@@ -2576,16 +2576,18 @@ public static partial class Ws2_32
 		{
 			if (addr.Length == 4)
 			{
-				var in4 = new SOCKADDR_IN(new IN_ADDR(addr), port);
+				SOCKADDR_IN in4 = new(new IN_ADDR(addr), port);
 				Marshal.StructureToPtr(in4, handle, false);
 			}
 			else if (addr.Length == 16)
 			{
-				var in6 = new SOCKADDR_IN6(addr, scopeId, port);
+				SOCKADDR_IN6 in6 = new(addr, scopeId, port);
 				Marshal.StructureToPtr(in6, handle, false);
 			}
 			else
+			{
 				throw new ArgumentOutOfRangeException(nameof(addr));
+			}
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SOCKADDR"/> class.</summary>
@@ -2621,7 +2623,7 @@ public static partial class Ws2_32
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SOCKADDR"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SOCKADDR CreateFromStructure<T>(T value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), true, s);
+		public static SOCKADDR CreateFromStructure<T>(T value = default) where T : struct => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), true, s);
 
 		/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
 		/// <param name="addr">The address.</param>

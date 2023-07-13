@@ -359,7 +359,8 @@ public static partial class Ws2_32
 		/// string are not defined, but can be supported by certain namespace providers.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpszServiceInstanceName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpszServiceInstanceName;
 
 		/// <summary>
 		/// <para>Type: <c>LPGUID</c></para>
@@ -380,7 +381,8 @@ public static partial class Ws2_32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>This member is ignored for queries.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpszComment;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpszComment;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -450,7 +452,8 @@ public static partial class Ws2_32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A pointer to an optional starting point of the query in a hierarchical namespace.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpszContext;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpszContext;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -471,7 +474,8 @@ public static partial class Ws2_32
 		/// that are contained in a simple text string. This parameter is used to specify that string.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpszQueryString;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpszQueryString;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -507,6 +511,162 @@ public static partial class Ws2_32
 			dwSize = (uint)Marshal.SizeOf(this);
 			dwNameSpace = nameSpace;
 		}
+
+		/// <summary>Initializes a new instance of the <see cref="WSAQUERYSET"/> struct.</summary>
+		/// <param name="svcClass">The GUID corresponding to the service class.</param>
+		public WSAQUERYSET(GuidPtr svcClass) : this()
+		{
+			dwSize = (uint)Marshal.SizeOf(this);
+			lpServiceClassId = svcClass;
+		}
+	}
+
+	/// <summary>
+	/// The <c>WSAQUERYSET</c> structure provides relevant information about a given service, including service class ID, service name,
+	/// applicable namespace identifier and protocol information, as well as a set of transport addresses at which the service listens.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The <c>WSAQUERYSET</c> structure is used as part of the original namespace provider version 1 architecture available on Windows
+	/// 95 and later. A newer version 2 of the namespace architecture is available on Windows Vista and later.
+	/// </para>
+	/// <para>
+	/// In most instances, applications interested in only a particular transport protocol should constrain their query by address
+	/// family and protocol rather than by namespace. This would allow an application that needs to locate a TCP/IP service, for
+	/// example, to have its query processed by all available namespaces such as the local hosts file, DNS, and NIS.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsaquerysetw typedef struct _WSAQuerySetW { DWORD dwSize;
+	// LPWSTR lpszServiceInstanceName; LPGUID lpServiceClassId; LPWSAVERSION lpVersion; LPWSTR lpszComment; DWORD dwNameSpace; LPGUID
+	// lpNSProviderId; LPWSTR lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; LPWSTR lpszQueryString; DWORD
+	// dwNumberOfCsAddrs; LPCSADDR_INFO lpcsaBuffer; DWORD dwOutputFlags; LPBLOB lpBlob; } WSAQUERYSETW, *PWSAQUERYSETW, *LPWSAQUERYSETW;
+	[PInvokeData("winsock2.h", MSDNShortId = "6c81fbba-aaf4-49ca-ab79-b6fe5dfb0076")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct WSAQUERYSET_MGD : IVanaraMarshaler
+	{
+		/// <summary>
+		/// An optional string that contains service name. The semantics for using wildcards within the string are not defined, but can be
+		/// supported by certain namespace providers.
+		/// </summary>
+		public string? lpszServiceInstanceName;
+
+		/// <summary>The GUID corresponding to the service class. This member is required to be set.</summary>
+		public Guid? lpServiceClassId;
+
+		/// <summary>
+		/// An optional desired version number of the namespace provider. This member provides version comparison semantics (that is, the
+		/// version requested must match exactly, or version must be not less than the value supplied).
+		/// </summary>
+		public WSAVERSION? lpVersion;
+
+		/// <summary>This member is ignored for queries.</summary>
+		public string? lpszComment;
+
+		/// <summary>
+		/// <para>
+		/// A namespace identifier that determines which namespace providers are queried. Passing a specific namespace identifier will result
+		/// in only namespace providers that support the specified namespace being queried. Specifying <c>NS_ALL</c> will result in all
+		/// installed and active namespace providers being queried.
+		/// </para>
+		/// <para>
+		/// Options for the <c>dwNameSpace</c> member are listed in the Winsock2.h include file. Several new namespace providers are included
+		/// with Windows Vista and later. Other namespace providers can be installed, so the following possible values are only those
+		/// commonly available. Many other values are possible.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NS_ALL</term>
+		/// <term>All installed and active namespaces.</term>
+		/// </item>
+		/// <item>
+		/// <term>NS_BTH</term>
+		/// <term>The Bluetooth namespace. This namespace identifier is supported on Windows Vista and later.</term>
+		/// </item>
+		/// <item>
+		/// <term>NS_DNS</term>
+		/// <term>The domain name system (DNS) namespace.</term>
+		/// </item>
+		/// <item>
+		/// <term>NS_EMAIL</term>
+		/// <term>The email namespace. This namespace identifier is supported on Windows Vista and later.</term>
+		/// </item>
+		/// <item>
+		/// <term>NS_NLA</term>
+		/// <term>The network location awareness (NLA) namespace. This namespace identifier is supported on Windows XP and later.</term>
+		/// </item>
+		/// <item>
+		/// <term>NS_PNRPNAME</term>
+		/// <term>The peer-to-peer name space for a specific peer name. This namespace identifier is supported on Windows Vista and later.</term>
+		/// </item>
+		/// <item>
+		/// <term>NS_PNRPCLOUD</term>
+		/// <term>
+		/// The peer-to-peer name space for a collection of peer names. This namespace identifier is supported on Windows Vista and later.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public NS dwNameSpace;
+
+		/// <summary>
+		/// An optional GUID of a specific namespace provider to query in the case where multiple namespace providers are registered under a
+		/// single namespace such as <c>NS_DNS</c>. Passing the GUID for a specific namespace provider will result in only the specified
+		/// namespace provider being queried. The WSAEnumNameSpaceProviders and WSAEnumNameSpaceProvidersEx functions can be called to
+		/// retrieve the GUID for a namespace provider.
+		/// </summary>
+		public Guid? lpNSProviderId;
+
+		/// <summary>An optional starting point of the query in a hierarchical namespace.</summary>
+		public string? lpszContext;
+
+		/// <summary>An optional array of AFPROTOCOLS structures. Only services that utilize these protocols will be returned.</summary>
+		public AFPROTOCOLS[]? lpafpProtocols;
+
+		/// <summary>
+		/// An optional query string. Some namespaces, such as Whois++, support enriched SQL-like queries that are contained in a simple text
+		/// string. This parameter is used to specify that string.
+		/// </summary>
+		public string? lpszQueryString;
+
+		/// <summary>This member is ignored for queries.</summary>
+		public CSADDR_INFO[]? lpcsaBuffer;
+
+		/// <summary>This member is ignored for queries.</summary>
+		public uint dwOutputFlags;
+
+		/// <summary>
+		/// Optional data that is used to query or set provider-specific namespace information. The format of this information is specific to
+		/// the namespace provider.
+		/// </summary>
+		public byte[]? lpBlob;
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(WSAQUERYSET));
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => throw new NotImplementedException();
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero) return null;
+			WSAQUERYSET qs = (WSAQUERYSET)Marshal.PtrToStructure(pNativeData, typeof(WSAQUERYSET))!;
+			BLOB? blob = qs.lpBlob.ToNullableStructure<BLOB>();
+			return new WSAQUERYSET_MGD()
+			{
+				lpszServiceInstanceName = qs.lpszServiceInstanceName,
+				lpServiceClassId = qs.lpServiceClassId,
+				lpVersion = qs.lpVersion.ToNullableStructure<WSAVERSION>(),
+				lpszComment = qs.lpszComment,
+				dwNameSpace = qs.dwNameSpace,
+				lpNSProviderId = qs.lpNSProviderId,
+				lpszContext = qs.lpszContext,
+				lpafpProtocols = qs.lpafpProtocols.ToArray<AFPROTOCOLS>((int)qs.dwNumberOfProtocols),
+				lpszQueryString = qs.lpszQueryString,
+				lpcsaBuffer = qs.lpcsaBuffer.ToArray<CSADDR_INFO>((int)qs.dwNumberOfCsAddrs),
+				dwOutputFlags = qs.dwOutputFlags,
+				lpBlob = blob.HasValue ? blob.Value.pBlobData.ToByteArray((int)blob.Value.cbSize) : null
+			};
+		}
 	}
 
 	/// <summary>
@@ -534,7 +694,7 @@ public static partial class Ws2_32
 		public IntPtr lpClassInfos;
 
 		/// <summary>Marshaled array of WSANSCLASSINFO structures that contains information about the service class.</summary>
-		public WSANSCLASSINFO[] ClassInfos => lpClassInfos.ToArray<WSANSCLASSINFO>((int)dwCount);
+		public readonly WSANSCLASSINFO[]? ClassInfos => lpClassInfos.ToArray<WSANSCLASSINFO>((int)dwCount);
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSAEVENT"/> that is disposed using <see cref="WSACloseEvent"/>.</summary>

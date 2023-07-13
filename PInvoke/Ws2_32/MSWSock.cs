@@ -1356,7 +1356,7 @@ public static partial class Ws2_32
 	// pControlContext, PRIO_BUF pFlags, DWORD Flags, PVOID RequestContext ) {...}
 	[PInvokeData("mswsock.h", MSDNShortId = "NC:mswsock.LPFN_RIORECEIVEEX")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
-	public delegate int LPFN_RIORECEIVEEX(RIO_RQ SocketQueue, PRIO_BUF pData, uint DataBufferCount, [In, Optional] PRIO_BUF pLocalAddress,
+	public delegate int LPFN_RIORECEIVEEX(RIO_RQ SocketQueue, [In, Optional] PRIO_BUF pData, uint DataBufferCount, [In, Optional] PRIO_BUF pLocalAddress,
 		[In, Optional] PRIO_BUF pRemoteAddress, [In, Optional] PRIO_BUF pControlContext, PRIO_BUF pFlags, RIO_MSG Flags, IntPtr RequestContext);
 
 	/// <summary>
@@ -1733,7 +1733,52 @@ public static partial class Ws2_32
 	/// <param name="Flags">
 	/// <para>A set of flags that modify the behavior of the <c>RIOSendEx</c> function.</para>
 	/// <para>The Flags parameter can contain a combination of the following options defined in the Mswsockdef.h header file:</para>
-	/// <list type="table"/>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>RIO_MSG_COMMIT_ONLY</term>
+	/// <description>
+	/// <para>Previous requests added with <c>RIO_MSG_DEFER</c> flag will be committed.</para>
+	/// <para>
+	/// When the <c>RIO_MSG_COMMIT_ONLY</c> flag is set, no other flags may be specified. When the <c>RIO_MSG_COMMIT_ONLY</c> flag is set,
+	/// the <c>pData</c>, <c>pLocalAddress</c>, <c>pRemoteAddress</c>, <c>pControlContext</c>, <c>pFlags</c>, and <c>RequestContext</c>
+	/// parameters must be NULL and the <c>DataBufferCount</c> parameter must be zero.
+	/// </para>
+	/// <para>
+	/// This flag would normally be used occasionally after a number of requests were issued with the <c>RIO_MSG_DEFER</c> flag set. This
+	/// eliminates the need when using the <c>RIO_MSG_DEFER</c> flag to make the last request without the <c>RIO_MSG_DEFER</c> flag, which
+	/// causes the last request to complete much slower than other requests.
+	/// </para>
+	/// <para>
+	/// Unlike other calls to the <c>RIOSendEx</c> function, when the <c>RIO_MSG_COMMIT_ONLY</c> flag is set calls to the <c>RIOSendEx</c>
+	/// function do not need to be serialized. For a single <c>RIO_RQ</c>, the <c>RIOSendEx</c> function can be called with
+	/// <c>RIO_MSG_COMMIT_ONLY</c> on one thread while calling the <c>RIOSendEx</c> function on another thread.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <term>RIO_MSG_DONT_NOTIFY</term>
+	/// <description>
+	/// The request should not trigger the <c>RIONotify</c> function when request completion is inserted into its completion queue.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <term>RIO_MSG_DEFER</term>
+	/// <description>
+	/// <para>
+	/// The request does not need to be executed immediately. This will insert the request into the request queue, but it may or may not
+	/// trigger the execution of the request.
+	/// </para>
+	/// <para>
+	/// Sending data may be delayed until a send request is made on the <c>RIO_RQ</c> passed in the <c>SocketQueue</c> parameter without the
+	/// <c>RIO_MSG_DEFER</c> flag set. To trigger execution for all sends in a send queue, call the <c>RIOSend</c> or <c>RIOSendEx</c>
+	/// function without the <c>RIO_MSG_DEFER</c> flag set. <c>Note</c> The send request is charged against the outstanding I/O capacity on
+	/// the <c>RIO_RQ</c> passed in the <c>SocketQueue</c> parameter regardless of whether <c>RIO_MSG_DEFER</c> is set.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <note type="note">The receive request is charged against the outstanding I/O capacity on the [
+	/// <c>RIO_RQ</c>](/windows/win32/winsock/riorqueue) passed in the SocketQueue parameter regardless of whether <c>RIO_MSG_DEFER</c> is set.</note>
 	/// </param>
 	/// <param name="RequestContext">The request context to associate with this send operation.</param>
 	/// <returns>
@@ -1752,31 +1797,31 @@ public static partial class Ws2_32
 	/// <term>Description</term>
 	/// </listheader>
 	/// <item>
-	/// <term><c>WSAEFAULT</c></term>
-	/// <term>
+	/// <description><c>WSAEFAULT</c></description>
+	/// <description>
 	/// The system detected an invalid pointer address in attempting to use a pointer argument in a call. This error is returned if a buffer
 	/// identifier is deregistered or a buffer is freed for any of the <c>RIO_BUF</c> structures passed in parameters before the operation is
 	/// queued or invoked.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term><c>WSAEINVAL</c></term>
-	/// <term>
+	/// <description><c>WSAEINVAL</c></description>
+	/// <description>
 	/// An invalid parameter was passed to the function. This error is returned if the <c>SocketQueue</c> parameter is not valid, the
 	/// <c>Flags</c> parameter contains a value not valid for a send operation, or the integrity of the completion queue has been
 	/// compromised. This error can also be returned for other issues with parameters.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term><c>WSAENOBUFS</c></term>
-	/// <term>
+	/// <description><c>WSAENOBUFS</c></description>
+	/// <description>
 	/// Sufficient memory could not be allocated. This error is returned if the I/O completion queue associated with the <c>SocketQueue</c>
 	/// parameter is full or the I/O completion queue was created with zero send entries.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term><c>WSA_IO_PENDING</c></term>
-	/// <term>The operation has been successfully initiated and the completion will be queued at a later time.</term>
+	/// <description><c>WSA_IO_PENDING</c></description>
+	/// <description>The operation has been successfully initiated and the completion will be queued at a later time.</description>
 	/// </item>
 	/// </list>
 	/// </returns>
@@ -1811,52 +1856,55 @@ public static partial class Ws2_32
 	/// <term>Description</term>
 	/// </listheader>
 	/// <item>
-	/// <term>IPv4</term>
-	/// <term>IPPROTO_IP</term>
-	/// <term>IP_PKTINFO</term>
-	/// <term>Specifies/receives packet information. For more information, see the IPPROTO_IP Socket Options for the IP_PKTINFO socket option.</term>
+	/// <description>IPv4</description>
+	/// <description>IPPROTO_IP</description>
+	/// <description>IP_PKTINFO</description>
+	/// <description>
+	/// Specifies/receives packet information. For more information, see the IPPROTO_IP Socket Options for the IP_PKTINFO socket option.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>IPv6</term>
-	/// <term>IPPROTO_IPV6</term>
-	/// <term>IPV6_DSTOPTS</term>
-	/// <term>Specifies/receives destination options.</term>
+	/// <description>IPv6</description>
+	/// <description>IPPROTO_IPV6</description>
+	/// <description>IPV6_DSTOPTS</description>
+	/// <description>Specifies/receives destination options.</description>
 	/// </item>
 	/// <item>
-	/// <term>IPv6</term>
-	/// <term>IPPROTO_IPV6</term>
-	/// <term>IPV6_HOPLIMIT</term>
-	/// <term>
+	/// <description>IPv6</description>
+	/// <description>IPPROTO_IPV6</description>
+	/// <description>IPV6_HOPLIMIT</description>
+	/// <description>
 	/// Specifies/receives hop limit. For more information, see the <c>IPPROTO_IPV6 Socket Options</c> for the IPV6_HOPLIMIT socket option.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>IPv6</term>
-	/// <term>IPPROTO_IPV6</term>
-	/// <term>IPV6_HOPOPTS</term>
-	/// <term>Specifies/receives hop-by-hop options.</term>
+	/// <description>IPv6</description>
+	/// <description>IPPROTO_IPV6</description>
+	/// <description>IPV6_HOPOPTS</description>
+	/// <description>Specifies/receives hop-by-hop options.</description>
 	/// </item>
 	/// <item>
-	/// <term>IPv6</term>
-	/// <term>IPPROTO_IPV6</term>
-	/// <term>IPV6_NEXTHOP</term>
-	/// <term>Specifies next-hop address.</term>
+	/// <description>IPv6</description>
+	/// <description>IPPROTO_IPV6</description>
+	/// <description>IPV6_NEXTHOP</description>
+	/// <description>Specifies next-hop address.</description>
 	/// </item>
 	/// <item>
-	/// <term>IPv6</term>
-	/// <term>IPPROTO_IPV6</term>
-	/// <term>IPV6_PKTINFO</term>
-	/// <term>
+	/// <description>IPv6</description>
+	/// <description>IPPROTO_IPV6</description>
+	/// <description>IPV6_PKTINFO</description>
+	/// <description>
 	/// Specifies/receives packet information. For more information, see the <c>IPPROTO_IPV6 Socket Options</c> for the IPV6_PKTINFO socket option.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>IPv6</term>
-	/// <term>IPPROTO_IPV6</term>
-	/// <term>IPV6_RTHDR</term>
-	/// <term>Specifies/receives routing header.</term>
+	/// <description>IPv6</description>
+	/// <description>IPPROTO_IPV6</description>
+	/// <description>IPV6_RTHDR</description>
+	/// <description>Specifies/receives routing header.</description>
 	/// </item>
 	/// </list>
+	/// <para>Â</para>
 	/// <para>
 	/// Control data is made up of one or more control data objects, each beginning with a <c>WSACMSGHDR</c> structure, defined as the following:
 	/// </para>
@@ -1867,21 +1915,22 @@ public static partial class Ws2_32
 	/// <term>Description</term>
 	/// </listheader>
 	/// <item>
-	/// <term>cmsg_len</term>
-	/// <term>
+	/// <description>cmsg_len</description>
+	/// <description>
 	/// The number of bytes of data starting from the beginning of the <c>WSACMSGHDR</c> to the end of data (excluding padding bytes that may
 	/// follow data).
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>cmsg_level</term>
-	/// <term>The protocol that originated the control information.</term>
+	/// <description>cmsg_level</description>
+	/// <description>The protocol that originated the control information.</description>
 	/// </item>
 	/// <item>
-	/// <term>cmsg_type</term>
-	/// <term>The protocol-specific type of control information.</term>
+	/// <description>cmsg_type</description>
+	/// <description>The protocol-specific type of control information.</description>
 	/// </item>
 	/// </list>
+	/// <para>Â</para>
 	/// <para>
 	/// The Flags parameter can be used to influence the behavior of the <c>RIOSendEx</c> function beyond the options specified for the
 	/// associated socket. The behavior of this function is determined by a combination of any socket options set on the socket associated
@@ -1899,20 +1948,20 @@ public static partial class Ws2_32
 	/// is defined in the Mswsock.h header file.
 	/// </para>
 	/// </para>
-	/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+	/// <para>Â</para>
+	/// <para><c>WindowsÂ PhoneÂ 8:</c> This function is supported for Windows Phone Store apps on WindowsÂ PhoneÂ 8 and later.</para>
 	/// <para>
-	/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
-	/// Server 2012 R2, and later.
+	/// <c>WindowsÂ 8.1</c> and <c>Windows ServerÂ 2012Â R2</c>: This function is supported for Windows Store apps on WindowsÂ 8.1, Windows
+	/// ServerÂ 2012Â R2, and later.
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/mswsock/nc-mswsock-lpfn_riosendex LPFN_RIOSENDEX LpfnRiosendex; BOOL
-	// LpfnRiosendex( RIO_RQ SocketQueue, PRIO_BUF pData, ULONG DataBufferCount, PRIO_BUF pLocalAddress, PRIO_BUF pRemoteAddress, PRIO_BUF
-	// pControlContext, PRIO_BUF pFlags, DWORD Flags, PVOID RequestContext ) {...}
+	// https://learn.microsoft.com/en-us/windows/win32/api/mswsock/nc-mswsock-lpfn_riosendex
+	// LPFN_RIOSENDEX LpfnRiosendex; BOOL LpfnRiosendex( RIO_RQ SocketQueue, PRIO_BUF pData, ULONG DataBufferCount, PRIO_BUF pLocalAddress, PRIO_BUF pRemoteAddress, PRIO_BUF pControlContext, PRIO_BUF pFlags, DWORD Flags, PVOID RequestContext ) {...}
 	[PInvokeData("mswsock.h", MSDNShortId = "NC:mswsock.LPFN_RIOSENDEX")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool LPFN_RIOSENDEX(RIO_RQ SocketQueue, [In, Optional] PRIO_BUF pData, uint DataBufferCount, [In, Optional] PRIO_BUF pLocalAddress,
-		[In, Optional] PRIO_BUF pRemoteAddress, [In, Optional] PRIO_BUF pControlContext, [In, Optional] PRIO_BUF pFlags, uint Flags, IntPtr RequestContext);
+		[In, Optional] PRIO_BUF pRemoteAddress, [In, Optional] PRIO_BUF pControlContext, [In, Optional] PRIO_BUF pFlags, RIO_MSG Flags, IntPtr RequestContext);
 
 	/// <summary>
 	/// The <c>TransmitPackets</c> function transmits in-memory data or file data over a connected socket. The <c>TransmitPackets</c>
@@ -2521,7 +2570,7 @@ public static partial class Ws2_32
 	// LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 	[PInvokeData("mswsock.h", MSDNShortId = "NC:mswsock.LPFN_WSARECVMSG")]
-	public delegate int LPFN_WSARECVMSG(SOCKET s, ref WSAMSG lpMsg, out uint lpdwNumberOfBytesRecvd, ref WSAOVERLAPPED lpOverlapped, [In, Optional] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+	public delegate int LPFN_WSARECVMSG(SOCKET s, ref WSAMSG lpMsg, out uint lpdwNumberOfBytesRecvd, ref WSAOVERLAPPED lpOverlapped, [In, Optional] LPWSAOVERLAPPED_COMPLETION_ROUTINE? lpCompletionRoutine);
 
 	/// <summary>
 	/// The <c>RIO_NOTIFICATION_COMPLETION_TYPE</c> enumeration specifies the type of completion queue notifications to use with the
@@ -3191,7 +3240,7 @@ public static partial class Ws2_32
 	[PInvokeData("mswsock.h", MSDNShortId = "NF:mswsock.TransmitFile")]
 	[DllImport(Lib_Mswsock, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TransmitFile(SOCKET hSocket, HFILE hFile, uint nNumberOfBytesToWrite,
+	public static extern bool TransmitFile(SOCKET hSocket, [Optional] HFILE hFile, uint nNumberOfBytesToWrite,
 		uint nNumberOfBytesPerSend, in NativeOverlapped lpOverlapped, in TRANSMIT_FILE_BUFFERS lpTransmitBuffers,
 		uint dwReserved = 0);
 
@@ -3492,7 +3541,7 @@ public static partial class Ws2_32
 	[PInvokeData("mswsock.h", MSDNShortId = "NF:mswsock.TransmitFile")]
 	[DllImport(Lib_Mswsock, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TransmitFile(SOCKET hSocket, HFILE hFile, uint nNumberOfBytesToWrite,
+	public static extern bool TransmitFile(SOCKET hSocket, [Optional] HFILE hFile, uint nNumberOfBytesToWrite,
 		uint nNumberOfBytesPerSend, [In, Optional] IntPtr lpOverlapped, [In, Optional] IntPtr lpTransmitBuffers,
 		uint dwReserved = 0);
 
