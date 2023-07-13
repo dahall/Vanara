@@ -66,7 +66,7 @@ public static partial class AccountUtils
 	/// <summary>Gets the SDDL formatted SID value from a user name.</summary>
 	/// <param name="userName">Name of the user.</param>
 	/// <returns>The SDDL SID string.</returns>
-	public static string SidStringFromUserName(string userName)
+	public static string? SidStringFromUserName(string userName)
 	{
 		var acct = new NTAccount(userName);
 		try
@@ -81,7 +81,7 @@ public static partial class AccountUtils
 	/// <summary>Get a user name for a supplied SDDL SID string.</summary>
 	/// <param name="sid">The SID string in SDDL format.</param>
 	/// <returns>The full user name of the identity referred to by <paramref name="sid"/>.</returns>
-	public static string UserNameFromSidString(string sid)
+	public static string? UserNameFromSidString(string sid)
 	{
 		try
 		{

@@ -275,13 +275,13 @@ internal class SystemPrivilegeTypeConverter : TypeConverter
 
 	private static readonly Dictionary<SystemPrivilege, LUID> luidLookup = new();
 
-	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+	public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
 		sourceType == typeof(string) || sourceType == typeof(LUID) || base.CanConvertFrom(context, sourceType);
 
-	public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+	public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType) =>
 		destinationType == typeof(string) || destinationType == typeof(LUID) || base.CanConvertTo(context, destinationType);
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+	public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
 	{
 		if (value is string s)
 		{
@@ -293,12 +293,15 @@ internal class SystemPrivilegeTypeConverter : TypeConverter
 		return base.ConvertFrom(context, culture, value);
 	}
 
-	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
 	{
-		if (destinationType == typeof(string))
-			return PrivLookup[(SystemPrivilege)value];
-		if (destinationType == typeof(LUID))
-			return GetLUID((SystemPrivilege)value);
+		if (value is not null)
+		{
+			if (destinationType == typeof(string))
+				return PrivLookup[(SystemPrivilege)value];
+			if (destinationType == typeof(LUID))
+				return GetLUID((SystemPrivilege)value);
+		}
 		return base.ConvertTo(context, culture, value, destinationType);
 	}
 

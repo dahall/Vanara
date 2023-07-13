@@ -11,7 +11,7 @@ namespace Vanara.Security.Principal;
 /// </summary>
 public class WindowsLoggedInIdentity : IDisposable, IIdentity
 {
-	private readonly SafeHTOKEN hToken;
+	private readonly SafeHTOKEN hToken = new(IntPtr.Zero, false);
 	private readonly bool ownId = true;
 
 	/// <summary>
@@ -68,19 +68,18 @@ public class WindowsLoggedInIdentity : IDisposable, IIdentity
 	public WindowsIdentity AuthenticatedIdentity { get; private set; }
 
 	/// <summary>Gets the type of authentication used.</summary>
-	string IIdentity.AuthenticationType => AuthenticatedIdentity?.AuthenticationType;
+	string? IIdentity.AuthenticationType => AuthenticatedIdentity?.AuthenticationType;
 
 	/// <summary>Gets a value that indicates whether the user has been authenticated.</summary>
 	bool IIdentity.IsAuthenticated => AuthenticatedIdentity?.IsAuthenticated ?? false;
 
 	/// <summary>Gets the name of the current user.</summary>
-	string IIdentity.Name => AuthenticatedIdentity?.Name;
+	string? IIdentity.Name => AuthenticatedIdentity?.Name;
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public virtual void Dispose()
 	{
 		if (ownId) AuthenticatedIdentity?.Dispose();
 		hToken?.Dispose();
-		AuthenticatedIdentity = null;
 	}
 }

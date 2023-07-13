@@ -137,7 +137,7 @@ internal class ClaimValueDictionary : Dictionary<string, ClaimValue>
 			i++;
 		}
 
-		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] claimOps = null;
+		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] claimOps = new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[0];
 		if (claimInfo.AttributeCount != 0)
 		{
 			claimOps = new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[claimInfo.AttributeCount];

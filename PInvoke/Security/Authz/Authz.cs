@@ -2543,7 +2543,7 @@ public static partial class Authz
 	{
 		/// <summary>A pointer to a name of a security attribute.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pName;
+		public string? pName;
 
 		/// <summary>The data type of the values pointed to by the Values member.</summary>
 		public AUTHZ_SECURITY_ATTRIBUTE_DATATYPE ValueType;
@@ -2563,34 +2563,34 @@ public static partial class Authz
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 		/// <param name="name">The name.</param>
 		/// <param name="values">The value.</param>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params long[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64, values.Length) => Values.pInt64 = values;
+		public AUTHZ_SECURITY_ATTRIBUTE_V1(string? name, params long[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64, values.Length) => Values.pInt64 = values;
 
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 		/// <param name="name">The name.</param>
 		/// <param name="values">The value.</param>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params ulong[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64, values.Length) => Values.pUInt64 = values;
+		public AUTHZ_SECURITY_ATTRIBUTE_V1(string? name, params ulong[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64, values.Length) => Values.pUInt64 = values;
 
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 		/// <param name="name">The name.</param>
 		/// <param name="values">The value.</param>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params bool[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN, values.Length) => Values.pInt64 = Array.ConvertAll(values, Convert.ToInt64);
+		public AUTHZ_SECURITY_ATTRIBUTE_V1(string? name, params bool[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN, values.Length) => Values.pInt64 = Array.ConvertAll(values, Convert.ToInt64);
 
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 		/// <param name="name">The name.</param>
 		/// <param name="values">The value.</param>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params string[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING, values.Length) => Values.ppString = values;
+		public AUTHZ_SECURITY_ATTRIBUTE_V1(string? name, params string[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING, values.Length) => Values.ppString = values;
 
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 		/// <param name="name">The name.</param>
 		/// <param name="values">The value.</param>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_FQBN, values.Length) => Values.pFqbn = values;
+		public AUTHZ_SECURITY_ATTRIBUTE_V1(string? name, params AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_FQBN, values.Length) => Values.pFqbn = values;
 
 		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 		/// <param name="name">The name.</param>
 		/// <param name="values">The value.</param>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING, values.Length) => Values.pOctetString = values;
+		public AUTHZ_SECURITY_ATTRIBUTE_V1(string? name, params AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING, values.Length) => Values.pOctetString = values;
 
-		private AUTHZ_SECURITY_ATTRIBUTE_V1(string name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE type, int count) : this()
+		private AUTHZ_SECURITY_ATTRIBUTE_V1(string? name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE type, int count) : this()
 		{
 			pName = name;
 			ValueType = type;
@@ -3061,7 +3061,7 @@ public static partial class Authz
 				var v1 = attrInfo.pAttributeV1[i];
 				if (string.IsNullOrEmpty(v1.pName))
 					throw new InvalidOperationException("Every instance of AUTHZ_SECURITY_ATTRIBUTE_V1 in the AUTHZ_SECURITY_ATTRIBUTES_INFORMATION.Values field must have a valid string for pName.");
-				sz2 += (v1.pName.Length + 1) * 2;
+				sz2 += ((v1.pName?.Length ?? 0) + 1) * 2;
 				switch (v1.ValueType)
 				{
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN:

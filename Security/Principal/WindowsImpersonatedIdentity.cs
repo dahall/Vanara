@@ -20,7 +20,7 @@ namespace Vanara.Security.Principal;
 /// </remarks>
 public class WindowsImpersonatedIdentity : WindowsLoggedInIdentity
 {
-	private readonly WindowsImpersonationContext impersonationContext;
+	private readonly WindowsImpersonationContext? impersonationContext;
 
 	/// <summary>
 	/// Starts the impersonation with the given credentials. Please note that the account that instantiates this class needs to have the

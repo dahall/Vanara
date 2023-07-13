@@ -14,7 +14,7 @@ public sealed class PrivilegedCodeBlock : IDisposable
 {
 	private bool disposed;
 	private readonly TOKEN_PRIVILEGES prev;
-	private readonly SafeHTOKEN hObj;
+	private readonly SafeHTOKEN hObj = new(IntPtr.Zero, false);
 
 	/// <summary>Initializes a new instance of the <see cref="PrivilegedCodeBlock"/> class.</summary>
 	/// <param name="systemPrivileges">The privileges.</param>
@@ -54,9 +54,9 @@ public sealed class PrivilegedCodeBlock : IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	internal static string EnvironmentGetResourceString(string key, params object[] values)
+	internal static string? EnvironmentGetResourceString(string key, params object[] values)
 	{
-		var str = new System.Resources.ResourceManager(typeof(Environment)).GetString(key);
+		string? str = new System.Resources.ResourceManager(typeof(Environment)).GetString(key);
 		return values.Length == 0 || str == null ? str : string.Format(CultureInfo.CurrentCulture, str, values);
 	}
 

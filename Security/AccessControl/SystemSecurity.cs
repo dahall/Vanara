@@ -13,7 +13,7 @@ namespace Vanara.Security.AccessControl;
 /// <summary>Provides access to the local security authority on a given server.</summary>
 public class SystemSecurity : IDisposable
 {
-	private readonly string svr;
+	private readonly string? svr;
 
 	/// <summary>Initializes a new instance of the <see cref="SystemSecurity"/> class.</summary>
 	/// <param name="access">The access rights mask for the actions to be taken.</param>
@@ -168,7 +168,7 @@ public class SystemSecurity : IDisposable
 	/// names can be DNS domain names or NetBIOS domain names.
 	/// </param>
 	/// <returns>A <see cref="SystemAccountInfo"/> for the <paramref name="name"/>.</returns>
-	public SystemAccountInfo GetAccountInfo(string name) => GetAccountInfo(false, name).FirstOrDefault();
+	public SystemAccountInfo? GetAccountInfo(string name) => GetAccountInfo(false, name).FirstOrDefault();
 
 	/// <summary>
 	/// Looks up a list of account names and returns information about each in a <see cref="SystemAccountInfo"/> class. Requires the
@@ -285,10 +285,10 @@ public class SystemSecurity : IDisposable
 	private PSID GetSid(string accountName)
 	{
 		int sidSize = 0, nameSize = 0;
-		LookupAccountName(svr, accountName, SafePSID.Null, ref sidSize, null, ref nameSize, out SID_NAME_USE accountType);
+		LookupAccountName(svr, accountName, SafePSID.Null, ref sidSize, null, ref nameSize, out _);
 		var domainName = new System.Text.StringBuilder(nameSize);
 		var sid = new SafePSID((SizeT)sidSize);
-		if (!LookupAccountName(string.Empty, accountName, sid, ref sidSize, domainName, ref nameSize, out accountType))
+		if (!LookupAccountName(string.Empty, accountName, sid, ref sidSize, domainName, ref nameSize, out _))
 			throw new System.ComponentModel.Win32Exception();
 		return sid;
 	}
@@ -312,12 +312,11 @@ public class SystemSecurity : IDisposable
 
 			if (!string.IsNullOrEmpty(userName))
 			{
-				user = userName;
+				user = userName!;
 			}
 			else
 			{
 				using var identity = WindowsIdentity.GetCurrent();
-
 				user = identity.Name;
 			}
 		}
@@ -371,12 +370,11 @@ public class SystemSecurity : IDisposable
 
 			if (!string.IsNullOrEmpty(userName))
 			{
-				user = userName;
+				user = userName!;
 			}
 			else
 			{
 				using var identity = WindowsIdentity.GetCurrent();
-
 				user = identity.Name;
 			}
 
@@ -423,7 +421,7 @@ public class SystemSecurity : IDisposable
 	/// </summary>
 	public class SystemAccountInfo
 	{
-		internal SystemAccountInfo(string name, SID_NAME_USE use, SecurityIdentifier sid, int domainIndex, IList<LSA_TRUST_INFORMATION> domains)
+		internal SystemAccountInfo(string name, SID_NAME_USE use, SecurityIdentifier? sid, int domainIndex, IList<LSA_TRUST_INFORMATION> domains)
 		{
 			Name = name;
 			SidType = use;
@@ -432,13 +430,13 @@ public class SystemSecurity : IDisposable
 		}
 
 		/// <summary>Gets the domain associated with the supplied <see cref="Name"/>.</summary>
-		public string Domain { get; }
+		public string? Domain { get; }
 
 		/// <summary>Gets the corresponding lookup name.</summary>
 		public string Name { get; }
 
 		/// <summary>Gets the <see cref="SecurityIdentifier"/> associated with the supplied <see cref="Name"/>.</summary>
-		public SecurityIdentifier Sid { get; }
+		public SecurityIdentifier? Sid { get; }
 
 		/// <summary>Gets the <see cref="SID_NAME_USE"/> associated with the supplied <see cref="Name"/>.</summary>
 		public SID_NAME_USE SidType { get; }

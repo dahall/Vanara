@@ -20,12 +20,12 @@ public static partial class UAC
 	/// </summary>
 	/// <param name="process">The process. If this value is <c>null</c>, then the current process is used.</param>
 	/// <returns><c>true</c> if this process can be elevated; otherwise, <c>false</c>.</returns>
-	public static bool CanElevate(Process process = null) => IsEnabled() && IsRunningAsAdmin(process);
+	public static bool CanElevate(Process? process = null) => IsEnabled() && IsRunningAsAdmin(process);
 
 	/// <summary>Determines whether the specified process is elevated.</summary>
 	/// <param name="process">The process. If this value is <c>null</c>, then the current process is used.</param>
 	/// <returns><c>true</c> if the specified process is elevated; otherwise, <c>false</c>.</returns>
-	public static bool IsElevated(Process process = null)
+	public static bool IsElevated(Process? process = null)
 	{
 		try
 		{
@@ -47,9 +47,9 @@ public static partial class UAC
 				enabled = true;
 			else
 				enabled = Registry.GetValue(
-					@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System", "EnableLUA", 0).Equals(1);
+					@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System", "EnableLUA", 0)?.Equals(1);
 		}
-		return enabled.Value;
+		return enabled.GetValueOrDefault();
 	}
 
 	/// <summary>
@@ -61,9 +61,9 @@ public static partial class UAC
 	/// Returns true if the primary access token of the process belongs to user account that is a member of the local Administrators group. Returns false
 	/// if the token does not.
 	/// </returns>
-	public static bool IsRunningAsAdmin(Process proc = null)
+	public static bool IsRunningAsAdmin(Process? proc = null)
 	{
-		SafeHTOKEN hObjectToCheck = null;
+		SafeHTOKEN? hObjectToCheck = null;
 
 		// Open the access token of the current process for query and duplicate.
 		using (var hObject = SafeHTOKEN.FromProcess(proc, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
@@ -85,14 +85,14 @@ public static partial class UAC
 
 			// CheckTokenMembership requires an impersonation token. If we just got a linked token, it already is an impersonation token. If we did not get a
 			// linked token, duplicate the original into an impersonation token for CheckTokenMembership.
-			if (hObjectToCheck == null)
+			if (hObjectToCheck is null)
 			{
 				if (!DuplicateToken(hObject, SECURITY_IMPERSONATION_LEVEL.SecurityIdentification, out hObjectToCheck))
 					throw new Win32Exception();
 			}
 		}
 
-		if (hObjectToCheck == null || hObjectToCheck.IsInvalid) return false;
+		if (hObjectToCheck is null || hObjectToCheck.IsInvalid) return false;
 
 		// Check if the token to be checked contains admin SID.
 		using (hObjectToCheck)

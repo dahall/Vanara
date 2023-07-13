@@ -41,6 +41,8 @@ public static class AccessControlHelper
 	/// <returns>The access rights bitmask.</returns>
 	public static uint GetEffectiveRights(this RawSecurityDescriptor sd, SecurityIdentifier sid)
 	{
+		if (sd.DiscretionaryAcl is null)
+			throw new ArgumentException("Security descriptor does not contain a DACL.");
 		BuildTrusteeWithSid(out var t, GetPSID(sid));
 		using var pDacl = new PinnedAcl(sd.DiscretionaryAcl);
 		GetEffectiveRightsFromAcl(pDacl.PACL, t, out var access);
@@ -59,7 +61,7 @@ public static class AccessControlHelper
 	/// <summary>Gets the <see cref="RawAcl"/> equivalent of an ACL.</summary>
 	/// <param name="pAcl">The pointer to an ACL structure.</param>
 	/// <returns>The <see cref="RawAcl"/> instance.</returns>
-	public static RawAcl RawAclFromPtr(PACL pAcl) => new(((IntPtr)pAcl).ToByteArray((int)pAcl.Length()), 0);
+	public static RawAcl? RawAclFromPtr(PACL pAcl) => pAcl.IsValidAcl() ? new(((IntPtr)pAcl).ToByteArray((int)pAcl.Length())!, 0) : null;
 
 	/// <summary>Converts a security descriptor to its SDDL string format.</summary>
 	/// <param name="pSD">The security descriptor.</param>
