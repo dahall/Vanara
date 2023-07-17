@@ -695,7 +695,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <param name="flags">One or more of the option flags.</param>
 	/// <returns>The resulting image.</returns>
 	/// <exception cref="PlatformNotSupportedException"></exception>
-	public SafeHBITMAP GetImage(SIZE size, ShellItemGetImageOptions flags) => Images.GetImageAsync(size, flags).Result;
+	public SafeHBITMAP GetImage(SIZE size, ShellItemGetImageOptions flags) => Images.GetImage(size, flags);
 
 	/// <summary>Gets a property description list object given a reference to a property key.</summary>
 	/// <param name="keyType">

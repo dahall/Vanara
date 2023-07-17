@@ -27,9 +27,9 @@ public class ShellItemImages
 	/// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
 	/// <returns>The resulting image.</returns>
 	/// <exception cref="PlatformNotSupportedException"></exception>
-	public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() =>
+	public SafeHBITMAP GetImage(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
 	{
-		SafeHBITMAP hbmp = null;
+		SafeHBITMAP hbmp = SafeHBITMAP.Null;
 		HRESULT hr = HRESULT.E_FAIL;
 		var sz = (uint)size.Width;
 		if (!forcePreVista && ShellItem.IsMinVista)
@@ -47,19 +47,20 @@ public class ShellItemImages
 		}
 
 		// If before Vista, or if Vista interfaces failed, try using IExtractImage and IExtractIcon
-		if (hr != HRESULT.S_OK && !flags.IsFlagSet(ShellItemGetImageOptions.IconOnly))
-			hr = LoadImageFromExtractImage(shellItem.Parent.IShellFolder, shellItem.PIDL.LastId, ref sz, out hbmp);
-		if (hr != HRESULT.S_OK)
+		var isf = shellItem.Parent?.IShellFolder;
+		if (hr != HRESULT.S_OK && !flags.IsFlagSet(ShellItemGetImageOptions.IconOnly) && isf is not null)
+			hr = LoadImageFromExtractImage(isf, shellItem.PIDL.LastId, ref sz, out hbmp);
+		if (hr != HRESULT.S_OK && isf is not null)
 		{
 			if (!flags.IsFlagSet(ShellItemGetImageOptions.ThumbnailOnly))
 			{
-				LoadIconFromExtractIcon(shellItem.Parent.IShellFolder, shellItem.PIDL.LastId, ref sz, out SafeHICON hIcon).ThrowIfFailed();
+				LoadIconFromExtractIcon(isf, shellItem.PIDL.LastId, ref sz, out SafeHICON hIcon).ThrowIfFailed();
 				using (hIcon)
 					hbmp = hIcon.ToHBITMAP();
 			}
 			else
 			{
-				throw hr.GetException();
+				throw hr.GetException()!;
 			}
 		}
 
@@ -75,5 +76,16 @@ public class ShellItemImages
 		}
 
 		return hbmp;
-	}, System.Threading.CancellationToken.None);
+	}
+
+	/// <summary>
+	/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current
+	/// item, it retrieves the icon of the item. The thumbnail or icon is extracted if it is not currently cached.
+	/// </summary>
+	/// <param name="size">A structure that specifies the size of the image to be received.</param>
+	/// <param name="flags">One or more of the option flags.</param>
+	/// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
+	/// <returns>The resulting image.</returns>
+	/// <exception cref="PlatformNotSupportedException"></exception>
+	public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run<SafeHBITMAP>(() => GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
 }
