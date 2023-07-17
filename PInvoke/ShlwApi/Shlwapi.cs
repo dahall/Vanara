@@ -1,11 +1,12 @@
+global using System;
+global using System.Runtime.InteropServices;
+global using System.Runtime.InteropServices.ComTypes;
+global using System.Text;
+global using Vanara.InteropServices;
+global using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+
 using Microsoft.Win32.SafeHandles;
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 
@@ -1072,7 +1073,8 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f0c6051e-cced-4f38-a35d-d4c184d39084")]
 	public static extern HRESULT ConnectToConnectionPoint([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? punk, in Guid riidEvent,
-		[MarshalAs(UnmanagedType.Bool)] bool fConnect, [In, MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, out IConnectionPoint? ppcpOut);
+		[MarshalAs(UnmanagedType.Bool)] bool fConnect, [In, MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie,
+		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out IConnectionPoint? ppcpOut);
 
 	/// <summary>
 	/// <para>
@@ -1809,9 +1811,7 @@ public static partial class ShlwApi
 	[PInvokeData("shlwapi.h", MSDNShortId = "6bb3f9cf-bf28-4f94-8557-56c1952384ec")]
 	public static extern void IUnknown_AtomicRelease([MarshalAs(UnmanagedType.IUnknown)] out object? ppunk);
 
-	/// <summary>
-	/// <para>Calls the specified object's IObjectWithSite::GetSite method.</para>
-	/// </summary>
+	/// <summary>Calls the specified object's IObjectWithSite::GetSite method.</summary>
 	/// <param name="punk">
 	/// <para>Type: <c>IUnknown*</c></para>
 	/// <para>A pointer to the COM object whose IObjectWithSite::GetSite method is to be called.</para>
@@ -1820,18 +1820,14 @@ public static partial class ShlwApi
 	/// <para>Type: <c>REFIID</c></para>
 	/// <para>The IID of the interface pointer that should be returned in ppvSite.</para>
 	/// </param>
-	/// <param name="ppv">
-	/// <para>TBD</para>
-	/// </param>
+	/// <param name="ppv">TBD</param>
 	/// <returns>
 	/// <para>Type: <c>HRESULT</c></para>
 	/// <para>Returns <c>S_OK</c> if the site was successfully retrieved or a COM error code otherwise.</para>
 	/// </returns>
 	/// <remarks>
-	/// <para>
-	/// This function calls the specified object's QueryInterface method to obtain the IObjectWithSite interface. If successful, the
-	/// function calls the interface's IObjectWithSite::GetSite method to obtain the site.
-	/// </para>
+	/// This function calls the specified object's QueryInterface method to obtain the IObjectWithSite interface. If successful, the function
+	/// calls the interface's IObjectWithSite::GetSite method to obtain the site.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-iunknown_getsite LWSTDAPI IUnknown_GetSite( IUnknown
 	// *punk, REFIID riid, void **ppv );
@@ -1955,10 +1951,13 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-iunknown_queryservice LWSTDAPI IUnknown_QueryService(
 	// IUnknown *punk, REFGUID guidService, REFIID riid, void **ppvOut );
 	[PInvokeData("shlwapi.h", MSDNShortId = "3e3f3ed0-ad36-40ef-b30c-8c85ff159f21")]
-	public static TOut? IUnknown_QueryService<TOut>(object punk, in Guid guidService, in Guid? riid = null)
+	[return: MarshalAs(UnmanagedType.Interface)]
+	public static TOut? IUnknown_QueryService<TOut>([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid? riid = null) where TOut : class
 	{
 		var iid = riid ?? typeof(TOut).GUID;
-		IUnknown_QueryService(punk, guidService, iid, out var ppvOut).ThrowIfFailed();
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+		IUnknown_QueryService(punk, guidService, iid, out object? ppvOut).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return (TOut?)ppvOut;
 	}
 
@@ -2000,7 +1999,7 @@ public static partial class ShlwApi
 	// *punk );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b3c4bee2-12cb-483e-9a46-f09d63ae9a2e")]
-	public static extern void IUnknown_Set([MarshalAs(UnmanagedType.IUnknown)] ref object ppunk, [In, MarshalAs(UnmanagedType.IUnknown)] object punk);
+	public static extern void IUnknown_Set([MarshalAs(UnmanagedType.IUnknown)] ref object? ppunk, [In, MarshalAs(UnmanagedType.IUnknown)] object? punk);
 
 	/// <summary>
 	/// <para>Sets the specified object's site by calling its IObjectWithSite::SetSite method.</para>
@@ -2058,7 +2057,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Shlwapi.h", MSDNShortId = "bb773822")]
 	[Obsolete]
-	public static extern IntPtr MLLoadLibrary(string lpszLibFileName, HINSTANCE hModule, uint dwCrossCodePage);
+	public static extern HINSTANCE MLLoadLibrary(string lpszLibFileName, HINSTANCE hModule, uint dwCrossCodePage = 0);
 
 	/// <summary>
 	/// <para>A table-driven implementation of the IUnknown::QueryInterface method.</para>
@@ -3066,7 +3065,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
 	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName,
-		ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
+		out REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>
@@ -3487,7 +3486,8 @@ public static partial class ShlwApi
 	// SHGetViewStatePropertyBag( PCIDLIST_ABSOLUTE pidl, PCWSTR pszBagName, DWORD dwFlags, REFIID riid, void **ppv );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6852867a-30a5-4d4e-b790-3746104e3ed8")]
-	public static extern HRESULT SHGetViewStatePropertyBag([Optional] IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName, SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHGetViewStatePropertyBag([Optional] IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName,
+		SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
 
 	/// <summary>
 	/// <para>
@@ -5332,7 +5332,7 @@ public static partial class ShlwApi
 	// hUSKey, LPCSTR pszValue, DWORD dwType, const void *pvData, DWORD cbData, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f94569c6-415b-4263-bab4-8a5baca47901")]
-	public static extern Win32Error SHRegWriteUSValue(HUSKEY hUSKey, string pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
+	public static extern Win32Error SHRegWriteUSValue(HUSKEY hUSKey, string? pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
 
 	/// <summary>
 	/// <para>Releases a thread reference before the thread procedure returns.</para>
@@ -5846,7 +5846,7 @@ public static partial class ShlwApi
 		public static bool operator ==(HUSKEY h1, HUSKEY h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override readonly bool Equals(object obj) => obj is HUSKEY h && handle == h.handle;
+		public override readonly bool Equals(object? obj) => obj is HUSKEY h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

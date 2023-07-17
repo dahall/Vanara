@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class ShlwApi
 {
@@ -26,6 +21,41 @@ public static partial class ShlwApi
 
 		/// <summary>Force <c>UrlApplyScheme</c> to determine a scheme for pszIn.</summary>
 		URL_APPLY_FORCEAPPLY = 0x08,
+	}
+
+	/// <summary>The flags that specify which part of the URL to retrieve.</summary>
+	[PInvokeData("shlwapi.h", MSDNShortId = "5f43dedd-c543-46b2-b90e-f0af576d2605")]
+	public enum URL_PART
+	{
+		/// <summary>No parts.</summary>
+		URL_PART_NONE = 0,
+
+		/// <summary>The URL scheme.</summary>
+		URL_PART_SCHEME = 1,
+
+		/// <summary>The host name.</summary>
+		URL_PART_HOSTNAME,
+
+		/// <summary>The username.</summary>
+		URL_PART_USERNAME,
+
+		/// <summary>The password.</summary>
+		URL_PART_PASSWORD,
+
+		/// <summary>The port number.</summary>
+		URL_PART_PORT,
+
+		/// <summary>The query portion of the URL.</summary>
+		URL_PART_QUERY,
+	}
+
+	/// <summary>A flag that can be set to keep the URL scheme, in addition to the part that is specified by dwPart.</summary>
+	[PInvokeData("shlwapi.h", MSDNShortId = "5f43dedd-c543-46b2-b90e-f0af576d2605")]
+	[Flags]
+	public enum URL_PARTFLAG : uint
+	{
+		/// <summary>Keep the URL scheme.</summary>
+		URL_PARTFLAG_KEEPSCHEME = 1
 	}
 
 	/// <summary>
@@ -954,7 +984,7 @@ public static partial class ShlwApi
 	// pszOut, DWORD *pcchOut, DWORD dwPart, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5f43dedd-c543-46b2-b90e-f0af576d2605")]
-	public static extern HRESULT UrlGetPart(string pszIn, StringBuilder pszOut, ref uint pcchOut, uint dwPart, uint dwFlags);
+	public static extern HRESULT UrlGetPart(string pszIn, StringBuilder pszOut, ref uint pcchOut, URL_PART dwPart, URL_PARTFLAG dwFlags);
 
 	/// <summary>
 	/// <para>Hashes a URL string.</para>

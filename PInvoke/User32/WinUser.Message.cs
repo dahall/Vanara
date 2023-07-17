@@ -3631,7 +3631,7 @@ public static partial class User32
 	public static IntPtr SendMessage<TMsg, TWP, TLP>(HWND hWnd, TMsg msg, TWP wParam, [In] TLP lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible where TLP : class
 	{
-		if (typeof(TLP).StructLayoutAttribute.Value != LayoutKind.Sequential)
+		if (typeof(TLP).StructLayoutAttribute?.Value != LayoutKind.Sequential)
 			throw new ArgumentException("lParam must be a struct with sequential layout.", nameof(lParam));
 		using var plp = new PinnedObject(lParam);
 		return SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), plp);

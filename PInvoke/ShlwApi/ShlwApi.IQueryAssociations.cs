@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class ShlwApi
 {
@@ -406,7 +402,7 @@ public static partial class ShlwApi
 		/// </para>
 		/// <para>If pwszOut is NULL, the function returns S_FALSE and pcchOut points to the required size of the buffer.</para>
 		/// </param>
-		void GetString(ASSOCF flags, ASSOCSTR str, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszExtra, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOut, ref uint pcchOut);
+		void GetString(ASSOCF flags, ASSOCSTR str, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszExtra, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pszOut, ref uint pcchOut);
 
 		/// <summary>Searches for and retrieves a file or protocol association-related key from the registry.</summary>
 		/// <param name="flags">The ASSOCF value that can be used to control the search.</param>
@@ -471,7 +467,9 @@ public static partial class ShlwApi
 
 	/// <summary>Returns a pointer to an IQueryAssociations object.</summary>
 	/// <returns>The requested IQueryAssociations interface pointer.</returns>
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static IQueryAssociations AssocCreate() { AssocCreate(CLSID_QueryAssociations, typeof(IQueryAssociations).GUID, out var qa).ThrowIfFailed(); return qa; }
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>
 	/// <para>Retrieves a file's perceived type based on its extension.</para>
@@ -526,7 +524,7 @@ public static partial class ShlwApi
 	// PCWSTR pszExt, PERCEIVED *ptype, PERCEIVEDFLAG *pflag, PWSTR *ppszType );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "d37f1574-b261-43bf-9712-05a569ab4246")]
-	public static extern HRESULT AssocGetPerceivedType([MarshalAs(UnmanagedType.LPWStr)] string pszExt, out PERCEIVED ptype, out PERCEIVEDFLAG pflag, [MarshalAs(UnmanagedType.LPWStr)] ref StringBuilder ppszType);
+	public static extern HRESULT AssocGetPerceivedType([MarshalAs(UnmanagedType.LPWStr)] string pszExt, out PERCEIVED ptype, out PERCEIVEDFLAG pflag, [MarshalAs(UnmanagedType.LPWStr)] out string ppszType);
 
 	/// <summary>
 	/// <para>Determines whether a file type is considered a potential security risk.</para>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class ShlwApi
 {
@@ -381,7 +376,7 @@ public static partial class ShlwApi
 	// PCWSTR pszIn, PWSTR *ppszOut, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "274411cd-5922-4db8-8775-feb93cae32dd")]
-	public static extern HRESULT PathCreateFromUrlAlloc(string pszIn, ref StringBuilder ppszOut, uint dwFlags = 0);
+	public static extern HRESULT PathCreateFromUrlAlloc(string pszIn, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string ppszOut, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>Determines whether a path to a file system object such as a file or folder is valid.</para>
@@ -488,11 +483,13 @@ public static partial class ShlwApi
 	[PInvokeData("shlwapi.h", MSDNShortId = "2c76b901-dc0e-4f26-93c8-3c59b8f7147d")]
 	public static extern StrPtrAuto PathFindNextComponent(string pszPath);
 
-	/// <summary>
-	/// <para>Searches for a file.</para>
-	/// </summary>
+	/// <summary>Searches for a file.</summary>
 	/// <param name="pszPath">
-	/// <para>TBD</para>
+	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>
+	/// A pointer to a null-terminated string of length MAX_PATH that contains the file name for which to search. If the search is
+	/// successful, this parameter is used to return the fully qualified path name.
+	/// </para>
 	/// </param>
 	/// <param name="ppszOtherDirs">
 	/// <para>Type: <c>LPCTSTR*</c></para>
@@ -504,19 +501,28 @@ public static partial class ShlwApi
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// <c>PathFindOnPath</c> searches for the file specified by pszFile. If no directories are specified in ppszOtherDirs, it attempts
-	/// to find the file by searching standard directories such as System32 and the directories specified in the PATH environment
-	/// variable. To expedite the process or enable <c>PathFindOnPath</c> to search a wider range of directories, use the ppszOtherDirs
-	/// parameter to specify one or more directories to be searched first. If more than one file has the name specified by pszFile,
-	/// <c>PathFindOnPath</c> returns the first instance it finds.
+	/// <c>PathFindOnPath</c> searches for the file specified by <c>pszFile</c>. If no directories are specified in <c>ppszOtherDirs</c>, it
+	/// attempts to find the file by searching standard directories such as System32 and the directories specified in the PATH environment
+	/// variable. To expedite the process or enable <c>PathFindOnPath</c> to search a wider range of directories, use the
+	/// <c>ppszOtherDirs</c> parameter to specify one or more directories to be searched first. If more than one file has the name specified
+	/// by <c>pszFile</c>, <c>PathFindOnPath</c> returns the first instance it finds.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The shlwapi.h header defines PathFindOnPath as an alias which automatically selects the ANSI or Unicode version of this function
+	/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindonpatha BOOL PathFindOnPathA( LPSTR pszPath,
-	// PZPCSTR ppszOtherDirs );
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathfindonpatha
+	// BOOL PathFindOnPathA( [in, out] LPSTR pszPath, [in, optional] PZPCSTR ppszOtherDirs );
+	[PInvokeData("shlwapi.h", MSDNShortId = "NF:shlwapi.PathFindOnPathA")]
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
-	[PInvokeData("shlwapi.h", MSDNShortId = "d9281eb2-39b7-444f-85b7-1e1e76c38ae2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathFindOnPath(StringBuilder pszPath, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr)] string[] ppszOtherDirs);
+	public static extern bool PathFindOnPath([In, Out] StringBuilder pszPath, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr)] string[]? ppszOtherDirs);
 
 	/// <summary>
 	/// <para>Determines whether a given file name has one of a list of suffixes.</para>
@@ -554,13 +560,9 @@ public static partial class ShlwApi
 	[PInvokeData("shlwapi.h", MSDNShortId = "e2285f7d-bb5d-48c5-bdf1-10ca410389f0")]
 	public static extern StrPtrAuto PathFindSuffixArray(string pszPath, string[] apszSuffix, int iArraySize);
 
-	/// <summary>
-	/// <para>Finds the command line arguments within a given path.</para>
-	/// </summary>
-	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
-	/// <para>Pointer to a null-terminated string of maximum length MAX_PATH that contains the path to be searched.</para>
-	/// </param>
+	/// <summary>Finds the command line arguments within a given path.</summary>
+	/// <param name="pszPath"><para>Type: <c>PTSTR</c></para>
+	/// <para>Pointer to a null-terminated string of maximum length MAX_PATH that contains the path to be searched.</para></param>
 	/// <returns>
 	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>Returns a pointer to a null-terminated string that contains the arguments portion of the path if successful.</para>
@@ -572,7 +574,6 @@ public static partial class ShlwApi
 	/// This function should not be used on generic command path templates (from users or the registry), but rather should be used only
 	/// on templates that the application knows to be well formed.
 	/// </para>
-	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathgetargsa LPCSTR PathGetArgsA( LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
@@ -595,24 +596,24 @@ public static partial class ShlwApi
 	/// <term>Description</term>
 	/// </listheader>
 	/// <item>
-	/// <term>GCT_INVALID</term>
-	/// <term>The character is not valid in a path.</term>
+	/// <description>GCT_INVALID</description>
+	/// <description>The character is not valid in a path.</description>
 	/// </item>
 	/// <item>
-	/// <term>GCT_LFNCHAR</term>
-	/// <term>The character is valid in a long file name.</term>
+	/// <description>GCT_LFNCHAR</description>
+	/// <description>The character is valid in a long file name.</description>
 	/// </item>
 	/// <item>
-	/// <term>GCT_SEPARATOR</term>
-	/// <term>The character is a path separator.</term>
+	/// <description>GCT_SEPARATOR</description>
+	/// <description>The character is a path separator.</description>
 	/// </item>
 	/// <item>
-	/// <term>GCT_SHORTCHAR</term>
-	/// <term>The character is valid in a short (8.3) file name.</term>
+	/// <description>GCT_SHORTCHAR</description>
+	/// <description>The character is valid in a short (8.3) file name.</description>
 	/// </item>
 	/// <item>
-	/// <term>GCT_WILD</term>
-	/// <term>The character is a wildcard character.</term>
+	/// <description>GCT_WILD</description>
+	/// <description>The character is a wildcard character.</description>
 	/// </item>
 	/// </list>
 	/// </returns>
@@ -621,20 +622,27 @@ public static partial class ShlwApi
 	[PInvokeData("shlwapi.h", MSDNShortId = "838a255f-413e-424c-819e-47265224208d")]
 	public static extern GCT PathGetCharType(char ch);
 
-	/// <summary>
-	/// <para>Searches a path for a drive letter within the range of 'A' to 'Z' and returns the corresponding drive number.</para>
-	/// </summary>
+	/// <summary>Searches a path for a drive letter within the range of 'A' to 'Z' and returns the corresponding drive number.</summary>
 	/// <param name="pszPath">
-	/// <para>TBD</para>
+	/// <para>Type: <c>LPCTSTR</c></para>
+	/// <para>A pointer to a null-terminated string of maximum length MAX_PATH that contains the path to be searched.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>int</c></para>
 	/// <para>Returns 0 through 25 (corresponding to 'A' through 'Z') if the path has a drive letter, or -1 otherwise.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathgetdrivenumbera int PathGetDriveNumberA( LPCSTR
-	// pszPath );
+	/// <remarks>
+	/// <note>
+	/// The shlwapi.h header defines PathGetDriveNumber as an alias which automatically selects the ANSI or Unicode version of this function
+	/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </note>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathgetdrivenumbera
+	// int PathGetDriveNumberA( [in] LPCSTR pszPath );
+	[PInvokeData("shlwapi.h", MSDNShortId = "NF:shlwapi.PathGetDriveNumberA")]
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
-	[PInvokeData("shlwapi.h", MSDNShortId = "38914866-fdd4-47f2-b0e7-d09d1cfb0eee")]
 	public static extern int PathGetDriveNumber(string pszPath);
 
 	/// <summary>
