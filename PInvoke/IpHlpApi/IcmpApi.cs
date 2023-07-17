@@ -302,7 +302,7 @@ public static partial class IpHlpApi
 	// RequestData, WORD RequestSize, PIP_OPTION_INFORMATION RequestOptions, LPVOID ReplyBuffer, DWORD ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "622c769b-ede8-4bc2-ac54-98de47ae1fed")]
-	public static extern Win32Error Icmp6SendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HANDLE Event, [Optional] PIO_APC_ROUTINE ApcRoutine, [Optional] IntPtr ApcContext, in SOCKADDR_IN6 SourceAddress,
+	public static extern Win32Error Icmp6SendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HEVENT Event, [Optional] PIO_APC_ROUTINE? ApcRoutine, [Optional] IntPtr ApcContext, in SOCKADDR_IN6 SourceAddress,
 		in SOCKADDR_IN6 DestinationAddress, [In] IntPtr RequestData, ushort RequestSize, in IP_OPTION_INFORMATION RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>
@@ -517,7 +517,7 @@ public static partial class IpHlpApi
 	// RequestData, WORD RequestSize, PIP_OPTION_INFORMATION RequestOptions, LPVOID ReplyBuffer, DWORD ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "622c769b-ede8-4bc2-ac54-98de47ae1fed")]
-	public static extern Win32Error Icmp6SendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HANDLE Event, [Optional] PIO_APC_ROUTINE ApcRoutine, [Optional] IntPtr ApcContext, in SOCKADDR_IN6 SourceAddress,
+	public static extern Win32Error Icmp6SendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HEVENT Event, [Optional] PIO_APC_ROUTINE? ApcRoutine, [Optional] IntPtr ApcContext, in SOCKADDR_IN6 SourceAddress,
 		in SOCKADDR_IN6 DestinationAddress, [In] IntPtr RequestData, ushort RequestSize, [Optional] IntPtr RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>The <c>IcmpCloseHandle</c> function closes a handle opened by a call to the IcmpCreateFile or Icmp6CreateFile functions.</summary>
@@ -706,7 +706,8 @@ public static partial class IpHlpApi
 	// ReplyBuffer, DWORD ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "c3cdc535-2c13-48c6-9ab1-88cc5e5119b5")]
-	public static extern uint IcmpSendEcho(SafeIcmpHandle IcmpHandle, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, in IP_OPTION_INFORMATION RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
+	public static extern uint IcmpSendEcho(SafeIcmpHandle IcmpHandle, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize,
+		in IP_OPTION_INFORMATION RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>
 	/// The <c>IcmpSendEcho</c> function sends an IPv4 ICMP echo request and returns any echo response replies. The call returns when the
@@ -811,7 +812,8 @@ public static partial class IpHlpApi
 	// ReplyBuffer, DWORD ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "c3cdc535-2c13-48c6-9ab1-88cc5e5119b5")]
-	public static extern uint IcmpSendEcho(SafeIcmpHandle IcmpHandle, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, [Optional] IntPtr RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
+	public static extern uint IcmpSendEcho(SafeIcmpHandle IcmpHandle, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize,
+		[Optional] IntPtr RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>
 	/// The <c>IcmpSendEcho2</c> function sends an IPv4 ICMP echo request and returns either immediately (if Event or ApcRoutine is non-
@@ -1031,7 +1033,8 @@ public static partial class IpHlpApi
 	// RequestSize, PIP_OPTION_INFORMATION RequestOptions, LPVOID ReplyBuffer, DWORD ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "1f70b6cc-9085-4eb8-b2cc-3b3d98d0ea46")]
-	public static extern uint IcmpSendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HANDLE Event, [Optional] PIO_APC_ROUTINE ApcRoutine, [Optional] IntPtr ApcContext, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, in IP_OPTION_INFORMATION RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
+	public static extern uint IcmpSendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HEVENT Event, [Optional] PIO_APC_ROUTINE? ApcRoutine, [Optional] IntPtr ApcContext,
+		IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, in IP_OPTION_INFORMATION RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>
 	/// The <c>IcmpSendEcho2</c> function sends an IPv4 ICMP echo request and returns either immediately (if Event or ApcRoutine is non-
@@ -1251,7 +1254,8 @@ public static partial class IpHlpApi
 	// RequestSize, PIP_OPTION_INFORMATION RequestOptions, LPVOID ReplyBuffer, DWORD ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "1f70b6cc-9085-4eb8-b2cc-3b3d98d0ea46")]
-	public static extern uint IcmpSendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HANDLE Event, [Optional] PIO_APC_ROUTINE ApcRoutine, [Optional] IntPtr ApcContext, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, [Optional] IntPtr RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
+	public static extern uint IcmpSendEcho2(SafeIcmpHandle IcmpHandle, [Optional] HEVENT Event, [Optional] PIO_APC_ROUTINE? ApcRoutine, [Optional] IntPtr ApcContext,
+		IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, [Optional] IntPtr RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>
 	/// The <c>IcmpSendEcho2Ex</c> function sends an IPv4 ICMP echo request and returns either immediately (if Event or ApcRoutine is
@@ -1438,7 +1442,9 @@ public static partial class IpHlpApi
 	// ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "7b2b2cae-650f-4ecb-aa2e-a55ee4026999")]
-	public static extern uint IcmpSendEcho2Ex(SafeIcmpHandle IcmpHandle, [Optional] HANDLE Event, [Optional] PIO_APC_ROUTINE ApcRoutine, [Optional] IntPtr ApcContext, IN_ADDR SourceAddress, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, in IP_OPTION_INFORMATION RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
+	public static extern uint IcmpSendEcho2Ex(SafeIcmpHandle IcmpHandle, [Optional] HEVENT Event, [Optional] PIO_APC_ROUTINE? ApcRoutine,
+		[Optional] IntPtr ApcContext, IN_ADDR SourceAddress, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize,
+		in IP_OPTION_INFORMATION RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>
 	/// The <c>IcmpSendEcho2Ex</c> function sends an IPv4 ICMP echo request and returns either immediately (if Event or ApcRoutine is
@@ -1625,7 +1631,9 @@ public static partial class IpHlpApi
 	// ReplySize, DWORD Timeout );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("icmpapi.h", MSDNShortId = "7b2b2cae-650f-4ecb-aa2e-a55ee4026999")]
-	public static extern uint IcmpSendEcho2Ex(SafeIcmpHandle IcmpHandle, [Optional] HANDLE Event, [Optional] PIO_APC_ROUTINE ApcRoutine, [Optional] IntPtr ApcContext, IN_ADDR SourceAddress, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize, [Optional] IntPtr RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
+	public static extern uint IcmpSendEcho2Ex(SafeIcmpHandle IcmpHandle, [Optional] HEVENT Event, [Optional] PIO_APC_ROUTINE? ApcRoutine,
+		[Optional] IntPtr ApcContext, IN_ADDR SourceAddress, IN_ADDR DestinationAddress, IntPtr RequestData, ushort RequestSize,
+		[Optional] IntPtr RequestOptions, IntPtr ReplyBuffer, uint ReplySize, uint Timeout);
 
 	/// <summary>
 	/// A driver sets an IRP's I/O status block to indicate the final status of an I/O request, before calling IoCompleteRequest for the IRP.

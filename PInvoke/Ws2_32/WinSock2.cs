@@ -1461,7 +1461,7 @@ public static partial class Ws2_32
 		{
 			System.Text.StringBuilder sb = new(64);
 			StrPtrUni p = InetNtopW(ADDRESS_FAMILY.AF_INET6, this, sb, sb.Capacity);
-			return p.IsNull ? throw WSAGetLastError().GetException() : sb.ToString();
+			return p.IsNull ? throw WSAGetLastError().GetException()! : sb.ToString();
 		}
 
 		/// <summary>Determines whether the specified <paramref name="other"/> value is equal to this instance.</summary>

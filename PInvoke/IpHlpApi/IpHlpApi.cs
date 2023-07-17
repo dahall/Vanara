@@ -76,7 +76,7 @@ public static partial class IpHlpApi
 	// INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK InterfaceTimestampConfigChangeCallback; void InterfaceTimestampConfigChangeCallback( PVOID CallerContext ) {...}
 	[PInvokeData("iphlpapi.h", MSDNShortId = "NC:iphlpapi.INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK", MinClient = PInvokeClient.Windows11)]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK(IntPtr CallerContext);
+	public delegate void INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK([Optional] IntPtr CallerContext);
 
 	/// <summary>The type of addresses to retrieve in <see cref="GetAdaptersAddresses(GetAdaptersAddressesFlags, ADDRESS_FAMILY)"/>.</summary>
 	[PInvokeData("iptypes.h")]
@@ -2360,7 +2360,7 @@ public static partial class IpHlpApi
 	// *pHandle, OVERLAPPED *pOverLapped );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "ec845db8-d544-4291-8221-0fde82c2de27")]
-	public static extern unsafe Win32Error DisableMediaSense(out HANDLE pHandle, [In] System.Threading.NativeOverlapped* pOverLapped);
+	public static extern unsafe Win32Error DisableMediaSense(out HANDLE pHandle, [In, Optional] System.Threading.NativeOverlapped* pOverLapped);
 
 	/// <summary>
 	/// <para>
@@ -2716,7 +2716,7 @@ public static partial class IpHlpApi
 	// Family, ULONG Flags, PVOID Reserved, PIP_ADAPTER_ADDRESSES AdapterAddresses, PULONG SizePointer );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "7b34138f-7263-4b73-95df-9e854fd81135")]
-	public static extern Win32Error GetAdaptersAddresses(uint Family, GetAdaptersAddressesFlags Flags, IntPtr Reserved, IntPtr AdapterAddresses, ref uint SizePointer);
+	public static extern Win32Error GetAdaptersAddresses(uint Family, GetAdaptersAddressesFlags Flags, [Optional] IntPtr Reserved, IntPtr AdapterAddresses, ref uint SizePointer);
 
 	/// <summary>The <c>GetAdaptersAddresses</c> function retrieves the addresses associated with the adapters on the local computer.</summary>
 	/// <param name="Flags">
@@ -2828,7 +2828,7 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "8cdecc84-6566-438b-86d0-3c55490a9a59")]
 	[Obsolete("On Windows XP and later: Use the GetAdaptersAddresses function instead of GetAdaptersInfo.")]
 	public static IEnumerable<IP_ADAPTER_INFO> GetAdaptersInfo() =>
-		GetTable((IntPtr p, ref uint l) => GetAdaptersInfo(p, ref l), l => new IP_ADAPTER_INFO_RESULT(l), Win32Error.ERROR_BUFFER_OVERFLOW);
+		GetTable(GetAdaptersInfo, l => new IP_ADAPTER_INFO_RESULT(l), Win32Error.ERROR_BUFFER_OVERFLOW);
 
 	/// <summary>
 	/// <para>
@@ -3206,7 +3206,7 @@ public static partial class IpHlpApi
 		if (ulAf == ADDRESS_FAMILY.AF_INET && (int)TableClass > 2 && typeof(T).Name.Contains("6"))
 			throw new InvalidOperationException("Type mismatch with supplied options.");
 
-		return GetTable((IntPtr p, ref uint len) => GetExtendedTcpTable(p, ref len, sorted, (uint)ulAf, TableClass), len => (T)Activator.CreateInstance(typeof(T), len));
+		return GetTable((IntPtr p, ref uint len) => GetExtendedTcpTable(p, ref len, sorted, (uint)ulAf, TableClass), len => (T)Activator.CreateInstance(typeof(T), len)!);
 	}
 
 	/// <summary>
@@ -3393,7 +3393,7 @@ public static partial class IpHlpApi
 			throw new InvalidOperationException("Type mismatch with supplied options.");
 		if (ulAf == ADDRESS_FAMILY.AF_INET && typeof(T).Name.Contains("6"))
 			throw new InvalidOperationException("Type mismatch with supplied options.");
-		return GetTable((IntPtr p, ref uint len) => GetExtendedUdpTable(p, ref len, sorted, (uint)ulAf, TableClass), len => (T)Activator.CreateInstance(typeof(T), len));
+		return GetTable((IntPtr p, ref uint len) => GetExtendedUdpTable(p, ref len, sorted, (uint)ulAf, TableClass), len => (T)Activator.CreateInstance(typeof(T), len)!);
 	}
 
 	/// <summary>
@@ -3790,7 +3790,7 @@ public static partial class IpHlpApi
 	/// </summary>
 	/// <returns>An IP_INTERFACE_INFO structure that receives the list of adapters.</returns>
 	[PInvokeData("iphlpapi.h", MSDNShortId = "efc0d175-2c6d-4608-b385-1623a9e0375c")]
-	public static IP_INTERFACE_INFO GetInterfaceInfo() => GetTable((IntPtr p, ref uint len) => GetInterfaceInfo(p, ref len), len => new IP_INTERFACE_INFO(len));
+	public static IP_INTERFACE_INFO GetInterfaceInfo() => GetTable(GetInterfaceInfo, len => new IP_INTERFACE_INFO(len));
 
 	/// <summary>
 	/// <para>Retrieves the supported timestamp capabilities of a network adapter.</para>
@@ -4394,9 +4394,9 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "5f54a120-5db9-4b8d-a281-1112be0042d6")]
 	public static FIXED_INFO GetNetworkParams()
 	{
-		var mem = SafeCoTaskMemHandle.CreateFromStructure<FIXED_INFO>();
-		var len = (uint)mem.Size;
-		var e = GetNetworkParams(mem, ref len);
+		SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.CreateFromStructure<FIXED_INFO>();
+		uint len = (uint)mem.Size;
+		Win32Error e = GetNetworkParams(mem, ref len);
 		if (e == Win32Error.ERROR_BUFFER_OVERFLOW)
 		{
 			mem.Size = (int)len;
@@ -4593,7 +4593,7 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "021679fc-91de-4e3b-956d-bb00b1856f20")]
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromTcp6Entry(in MIB_TCP6ROW_OWNER_MODULE pTcpEntry)
 	{
-		var s = pTcpEntry;
+		MIB_TCP6ROW_OWNER_MODULE s = pTcpEntry;
 		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromTcp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
@@ -4794,7 +4794,7 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "12162f0a-56c1-4f81-a1f5-3cd5ad975d0d")]
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromTcpEntry(in MIB_TCPROW_OWNER_MODULE pTcpEntry)
 	{
-		var s = pTcpEntry;
+		MIB_TCPROW_OWNER_MODULE s = pTcpEntry;
 		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromTcpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
@@ -4891,7 +4891,7 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "01ed27b6-3ca6-4c9c-8910-a71a073c2ca2")]
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromUdp6Entry(in MIB_UDP6ROW_OWNER_MODULE pUdpEntry)
 	{
-		var s = pUdpEntry;
+		MIB_UDP6ROW_OWNER_MODULE s = pUdpEntry;
 		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromUdp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
@@ -4986,7 +4986,7 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "bd8f82b0-4a2d-48f1-8ae7-85257c6ae656")]
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromUdpEntry(in MIB_UDPROW_OWNER_MODULE pUdpEntry)
 	{
-		var s = pUdpEntry;
+		MIB_UDPROW_OWNER_MODULE s = pUdpEntry;
 		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromUdpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
@@ -5062,13 +5062,13 @@ public static partial class IpHlpApi
 	public static PIP_PER_ADAPTER_INFO GetPerAdapterInfo(uint IfIndex)
 	{
 		uint len = 0;
-		var e = GetPerAdapterInfo(IfIndex, IntPtr.Zero, ref len);
+		Win32Error e = GetPerAdapterInfo(IfIndex, IntPtr.Zero, ref len);
 		if (e != Win32Error.ERROR_BUFFER_OVERFLOW)
 		{
 			e.ThrowIfFailed();
 		}
 
-		var mem = new PIP_PER_ADAPTER_INFO(len);
+		PIP_PER_ADAPTER_INFO mem = new(len);
 		GetPerAdapterInfo(IfIndex, mem, ref len).ThrowIfFailed();
 		return mem;
 	}
@@ -5509,22 +5509,22 @@ public static partial class IpHlpApi
 	// GetPerTcp6ConnectionEStats( PMIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, PUCHAR Rw, ULONG RwVersion, ULONG RwSize, PUCHAR Ros,
 	// ULONG RosVersion, ULONG RosSize, PUCHAR Rod, ULONG RodVersion, ULONG RodSize );
 	[PInvokeData("iphlpapi.h", MSDNShortId = "291aabe7-a4e7-4cc7-9cf3-4a4bc021e15e")]
-	public static Win32Error GetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, out object Rw, out object Ros, out object Rod)
+	public static Win32Error GetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, out object? Rw, out object? Ros, out object? Rod)
 	{
-		var types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
-		var trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
-		var tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
-		var trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
-		var srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
-		var sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
-		var srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;
-		var mrw = new SafeCoTaskMemHandle((int)srw);
-		var mros = new SafeCoTaskMemHandle((int)sros);
-		var mrod = new SafeCoTaskMemHandle((int)srod);
-		var ret = GetPerTcp6ConnectionEStats(Row, EstatsType, mrw, 0, srw, mros, 0, sros, mrod, 0, srod);
-		Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure(mrw, trw);
-		Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure(mros, tros);
-		Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure(mrod, trod);
+		IEnumerable<Type> types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
+		Type? trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
+		Type? tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
+		Type? trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
+		uint srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
+		uint sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
+		uint srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;
+		using SafeCoTaskMemHandle mrw = new((int)srw);
+		using SafeCoTaskMemHandle mros = new((int)sros);
+		using SafeCoTaskMemHandle mrod = new((int)srod);
+		Win32Error ret = GetPerTcp6ConnectionEStats(Row, EstatsType, mrw, 0, srw, mros, 0, sros, mrod, 0, srod);
+		Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure(mrw, trw!);
+		Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure(mros, tros!);
+		Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure(mrod, trod!);
 		return ret;
 	}
 
@@ -5965,22 +5965,22 @@ public static partial class IpHlpApi
 	// GetPerTcp6ConnectionEStats( PMIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, PUCHAR Rw, ULONG RwVersion, ULONG RwSize, PUCHAR Ros,
 	// ULONG RosVersion, ULONG RosSize, PUCHAR Rod, ULONG RodVersion, ULONG RodSize );
 	[PInvokeData("iphlpapi.h", MSDNShortId = "291aabe7-a4e7-4cc7-9cf3-4a4bc021e15e")]
-	public static Win32Error GetPerTcpConnectionEStats(in MIB_TCPROW Row, TCP_ESTATS_TYPE EstatsType, out object Rw, out object Ros, out object Rod)
+	public static Win32Error GetPerTcpConnectionEStats(in MIB_TCPROW Row, TCP_ESTATS_TYPE EstatsType, out object? Rw, out object? Ros, out object? Rod)
 	{
-		var types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
-		var trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
-		var tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
-		var trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
-		var srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
-		var sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
-		var srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;
-		var mrw = new SafeCoTaskMemHandle((int)srw);
-		var mros = new SafeCoTaskMemHandle((int)sros);
-		var mrod = new SafeCoTaskMemHandle((int)srod);
-		var ret = GetPerTcpConnectionEStats(Row, EstatsType, mrw, 0, srw, mros, 0, sros, mrod, 0, srod);
-		Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure(mrw, trw);
-		Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure(mros, tros);
-		Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure(mrod, trod);
+		IEnumerable<Type> types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
+		Type? trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
+		Type? tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
+		Type? trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
+		uint srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
+		uint sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
+		uint srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;
+		using SafeCoTaskMemHandle mrw = new((int)srw);
+		using SafeCoTaskMemHandle mros = new((int)sros);
+		using SafeCoTaskMemHandle mrod = new((int)srod);
+		Win32Error ret = GetPerTcpConnectionEStats(Row, EstatsType, mrw, 0, srw, mros, 0, sros, mrod, 0, srod);
+		Rw = ret.Failed || srw == 0 ? null : Marshal.PtrToStructure(mrw, trw!);
+		Ros = ret.Failed || sros == 0 ? null : Marshal.PtrToStructure(mros, tros!);
+		Rod = ret.Failed || srod == 0 ? null : Marshal.PtrToStructure(mrod, trod!);
 		return ret;
 	}
 
@@ -6914,13 +6914,9 @@ public static partial class IpHlpApi
 	public static IP_UNIDIRECTIONAL_ADAPTER_ADDRESS GetUniDirectionalAdapterInfo()
 	{
 		uint len = 0;
-		var e = GetUniDirectionalAdapterInfo(IntPtr.Zero, ref len);
-		if (e != Win32Error.ERROR_MORE_DATA)
-		{
-			e.ThrowIfFailed();
-		}
+		GetUniDirectionalAdapterInfo(IntPtr.Zero, ref len).ThrowUnless(Win32Error.ERROR_MORE_DATA);
 
-		var mem = new IP_UNIDIRECTIONAL_ADAPTER_ADDRESS(len);
+		IP_UNIDIRECTIONAL_ADAPTER_ADDRESS mem = new(len);
 		GetUniDirectionalAdapterInfo(mem, ref len).ThrowIfFailed();
 		return mem;
 	}
@@ -7198,7 +7194,7 @@ public static partial class IpHlpApi
 	/// </summary>
 	/// <param name="Handle">
 	/// <para>
-	/// A pointer to a <c>HANDLE</c> variable that receives a file handle for use in a subsequent call to the GetOverlappedResult function.
+	/// A pointer to a <c>HANDLE</c> variable that receives a file handle for use in a subsequent call to the <c>GetOverlappedResult</c> function.
 	/// </para>
 	/// <para><c>Warning</c> Do not close this handle, and do not associate it with a completion port.</para>
 	/// </param>
@@ -7301,7 +7297,7 @@ public static partial class IpHlpApi
 	// LPOVERLAPPED overlapped );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "22ac3b5b-452c-454b-8fbd-47a873675c6c")]
-	public static extern unsafe Win32Error NotifyAddrChange(out IntPtr Handle, System.Threading.NativeOverlapped* overlapped);
+	public static extern unsafe Win32Error NotifyAddrChange([Optional] HFILE* Handle, [Optional] System.Threading.NativeOverlapped* overlapped);
 
 	/// <summary>
 	/// <para>
@@ -7416,7 +7412,7 @@ public static partial class IpHlpApi
 	// Handle, LPOVERLAPPED overlapped );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "39f2ec4d-131a-4a0a-9740-0d96aaea2dc7")]
-	public static extern unsafe Win32Error NotifyRouteChange(out IntPtr Handle, System.Threading.NativeOverlapped* overlapped);
+	public static extern unsafe Win32Error NotifyRouteChange([Optional] HFILE* Handle, [Optional] System.Threading.NativeOverlapped* overlapped);
 
 	/// <summary>
 	/// The <c>ParseNetworkString</c> function parses the input network string and checks whether it is a legal representation of the
@@ -7911,7 +7907,7 @@ public static partial class IpHlpApi
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "NF:iphlpapi.RegisterInterfaceTimestampConfigChange", MinClient = PInvokeClient.Windows11)]
 	public static extern Win32Error RegisterInterfaceTimestampConfigChange([In] INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK Callback,
-		IntPtr CallerContext, out HIFTIMESTAMPCHANGE NotificationHandle);
+		[Optional] IntPtr CallerContext, out HIFTIMESTAMPCHANGE NotificationHandle);
 
 	/// <summary>
 	/// The <c>RestoreMediaSense</c> function restores the media sensing capability of the TCP/IP stack on a local computer on which the
@@ -8031,7 +8027,7 @@ public static partial class IpHlpApi
 	// RestoreMediaSense( OVERLAPPED *pOverlapped, LPDWORD lpdwEnableCount );
 	[DllImport(Lib.IpHlpApi, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "1a959da7-5fdb-4749-a4be-5d44e80ca2ea")]
-	public static extern unsafe Win32Error RestoreMediaSense([In] System.Threading.NativeOverlapped* pOverlapped, out uint lpdwEnableCount);
+	public static extern unsafe Win32Error RestoreMediaSense([In, Optional] System.Threading.NativeOverlapped* pOverlapped, out uint lpdwEnableCount);
 
 	/// <summary>
 	/// <para>
@@ -8200,7 +8196,7 @@ public static partial class IpHlpApi
 	// PVOID pMacAddr, PULONG PhyAddrLen );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "5cbaf45a-a64e-49fd-a920-01759b5c4f81")]
-	public static extern Win32Error SendARP(IN_ADDR DestIP, IN_ADDR SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
+	public static extern Win32Error SendARP(IN_ADDR DestIP, [Optional] IN_ADDR SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
 
 	/// <summary>
 	/// The SendARP function sends an Address Resolution Protocol (ARP) request to obtain the physical address that corresponds to the
@@ -8219,7 +8215,7 @@ public static partial class IpHlpApi
 	public static byte[] SendARP(IN_ADDR DestIP, IN_ADDR SrcIP = default)
 	{
 		uint len = 6;
-		var ret = new byte[(int)len];
+		byte[] ret = new byte[(int)len];
 		SendARP(DestIP, SrcIP, ret, ref len).ThrowIfFailed();
 		return ret;
 	}
@@ -8822,7 +8818,7 @@ public static partial class IpHlpApi
 	/// </param>
 	/// <param name="Rw">
 	/// A pointer to a buffer that contains the read/write information to set. The buffer should contain a value from the
-	/// TCP_BOOLEAN_OPTIONAL enumeration for each structure member that specifies how each member should be updated.
+	/// <see cref="TCP_BOOLEAN_OPTIONAL"/> enumeration for each structure member that specifies how each member should be updated.
 	/// </param>
 	/// <param name="RwVersion">
 	/// The version of the read/write information to be set. This parameter should be set to zero for Windows Vista, Windows Server 2008,
@@ -9696,11 +9692,8 @@ public static partial class IpHlpApi
 	private static TRet GetTable<TRet>(FunctionHelper.PtrFunc<uint> func, Func<uint, TRet> make, uint memErr = Win32Error.ERROR_INSUFFICIENT_BUFFER) where TRet : SafeHandle
 	{
 		uint len = 0;
-		var e = func(IntPtr.Zero, ref len);
-		if (e != memErr)
-			e.ThrowIfFailed();
-
-		var mem = make(len);
+		func(IntPtr.Zero, ref len).ThrowUnless(memErr);
+		TRet mem = make(len);
 		func(mem.DangerousGetHandle(), ref len).ThrowIfFailed();
 		return mem;
 	}
@@ -9744,7 +9737,7 @@ public static partial class IpHlpApi
 		public static bool operator ==(HIFTIMESTAMPCHANGE h1, HIFTIMESTAMPCHANGE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIFTIMESTAMPCHANGE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HIFTIMESTAMPCHANGE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

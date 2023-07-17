@@ -610,7 +610,7 @@ public static partial class IpHlpApi
 		/// <param name="ifIdx">The index of the adapter.</param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
 		/// <param name="type">The type of ARP entry.</param>
-		public MIB_IPNETROW(IN_ADDR ipV4, uint ifIdx, byte[] macAddr = null, MIB_IPNET_TYPE? type = null)
+		public MIB_IPNETROW(IN_ADDR ipV4, uint ifIdx, byte[]? macAddr = null, MIB_IPNET_TYPE? type = null)
 		{
 			dwIndex = ifIdx;
 			dwAddr = ipV4;
@@ -1096,7 +1096,7 @@ public static partial class IpHlpApi
 		/// </summary>
 		public MIB_IPADDRROW[] table { get => Elements; set => Elements = value; }
 
-		/// <summary>Performs an implicit conversion from <see cref="MIB_IPADDRTABLE"/> to <see cref="System.IntPtr"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="MIB_IPADDRTABLE"/> to <see cref="nint"/>.</summary>
 		/// <param name="table">The MIB_IPADDRTABLE instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IntPtr(MIB_IPADDRTABLE table) => table.DangerousGetHandle();

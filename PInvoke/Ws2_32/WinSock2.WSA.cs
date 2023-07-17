@@ -465,7 +465,7 @@ public static partial class Ws2_32
 			err = WSAAddressToString(lpsaAddress, (uint)lpsaAddress.Size, pc, sb, ref sz);
 			if (err == 0) return sb.ToString();
 		}
-		throw err.GetException();
+		throw err.GetException()!;
 	}
 
 	/// <summary>

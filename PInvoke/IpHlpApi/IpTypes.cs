@@ -86,7 +86,7 @@ public static partial class IpHlpApi
 	{
 		if (includeFirst(start))
 			yield return start;
-		for (var cur = ((ILinkedListElement<T>)start).GetNext(); cur != null; cur = ((ILinkedListElement<T>)cur).GetNext())
+		for (T? cur = ((ILinkedListElement<T>)start).GetNext(); cur != null; cur = ((ILinkedListElement<T>)cur).GetNext())
 			yield return cur.Value;
 	}
 
@@ -213,7 +213,7 @@ public static partial class IpHlpApi
 			{
 				if (DnsServerList.IpAddress.String != null)
 					yield return DnsServerList;
-				var next = DnsServerList.GetNext();
+				IP_ADDR_STRING? next = DnsServerList.GetNext();
 				while (next != null)
 				{
 					yield return next.Value;

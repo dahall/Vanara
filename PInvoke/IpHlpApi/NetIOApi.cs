@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ws2_32;
 
@@ -42,7 +44,7 @@ public static partial class IpHlpApi
 	/// The notification type. This member can be one of the values from the MIB_NOTIFICATION_TYPE enumeration type.
 	/// </param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void PIPINTERFACE_CHANGE_CALLBACK(IntPtr CallerContext, IntPtr Row, MIB_NOTIFICATION_TYPE NotificationType);
+	public delegate void PIPINTERFACE_CHANGE_CALLBACK(IntPtr CallerContext, [Optional] IntPtr Row, MIB_NOTIFICATION_TYPE NotificationType);
 
 	/// <summary>
 	/// <para>
@@ -672,15 +674,9 @@ public static partial class IpHlpApi
 	[PInvokeData("netioapi.h", MSDNShortId = "daceabf9-ff43-4206-9f8f-f3924de9c5a5")]
 	public static extern Win32Error ConvertInterfaceNameToLuid(string InterfaceName, out NET_LUID InterfaceLuid);
 
-	/// <summary>
-	/// <para>The <c>ConvertIpv4MaskToLength</c> function converts an IPv4 subnet mask to an IPv4 prefix length.</para>
-	/// </summary>
-	/// <param name="Mask">
-	/// <para>The IPv4 subnet mask.</para>
-	/// </param>
-	/// <param name="MaskLength">
-	/// <para>A pointer to a <c>UINT8</c> value to hold the IPv4 prefix length, in bits, when the function returns successfully.</para>
-	/// </param>
+	/// <summary>The <c>ConvertIpv4MaskToLength</c> function converts an IPv4 subnet mask to an IPv4 prefix length.</summary>
+	/// <param name="Mask">The IPv4 subnet mask.</param>
+	/// <param name="MaskLength">A pointer to a <c>UINT8</c> value to hold the IPv4 prefix length, in bits, when the function returns successfully.</param>
 	/// <returns>
 	/// <para>On success, <c>ConvertIpv4MaskToLength</c> returns <c>NO_ERROR</c>. Any nonzero return value indicates failure.</para>
 	/// <list type="table">
@@ -694,28 +690,20 @@ public static partial class IpHlpApi
 	/// </item>
 	/// </list>
 	/// </returns>
-	/// <remarks>
-	/// <para>The <c>ConvertIpv4MaskToLength</c> function is available on Windows Vista and later.</para>
-	/// </remarks>
+	/// <remarks>The <c>ConvertIpv4MaskToLength</c> function is available on Windows Vista and later.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-convertipv4masktolength NETIOAPI_API
 	// ConvertIpv4MaskToLength( ULONG Mask, PUINT8 MaskLength );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "63a3c558-24e0-41ef-9417-a3b6b2075977")]
 	public static extern Win32Error ConvertIpv4MaskToLength(uint Mask, out byte MaskLength);
 
-	/// <summary>
-	/// <para>The <c>ConvertLengthToIpv4Mask</c> function converts an IPv4 prefix length to an IPv4 subnet mask.</para>
-	/// </summary>
-	/// <param name="MaskLength">
-	/// <para>The IPv4 prefix length, in bits.</para>
-	/// </param>
-	/// <param name="Mask">
-	/// <para>A pointer to a <c>LONG</c> value to hold the IPv4 subnet mask when the function returns successfully.</para>
-	/// </param>
+	/// <summary>The <c>ConvertLengthToIpv4Mask</c> function converts an IPv4 prefix length to an IPv4 subnet mask.</summary>
+	/// <param name="MaskLength">The IPv4 prefix length, in bits.</param>
+	/// <param name="Mask">A pointer to a <c>LONG</c> value to hold the IPv4 subnet mask when the function returns successfully.</param>
 	/// <returns>
 	/// <para>
-	/// On success, <c>ConvertLengthToIpv4Mask</c> returns <c>NO_ERROR</c>. Any nonzero return value indicates failure and the Mask
-	/// parameter is set to <c>INADDR_NONE</c> defined in the Ws2def.h header file.
+	/// On success, <c>ConvertLengthToIpv4Mask</c> returns <c>NO_ERROR</c>. Any nonzero return value indicates failure and the Mask parameter
+	/// is set to <c>INADDR_NONE</c> defined in the Ws2def.h header file.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -728,21 +716,15 @@ public static partial class IpHlpApi
 	/// </item>
 	/// </list>
 	/// </returns>
-	/// <remarks>
-	/// <para>The <c>ConvertLengthToIpv4Mask</c> function is available on Windows Vista and later.</para>
-	/// </remarks>
+	/// <remarks>The <c>ConvertLengthToIpv4Mask</c> function is available on Windows Vista and later.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-convertlengthtoipv4mask NETIOAPI_API
 	// ConvertLengthToIpv4Mask( ULONG MaskLength, PULONG Mask );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "5d986301-368e-4984-9f90-e2af1f87cbea")]
 	public static extern Win32Error ConvertLengthToIpv4Mask(uint MaskLength, out uint Mask);
 
-	/// <summary>
-	/// <para>The <c>CreateAnycastIpAddressEntry</c> function adds a new anycast IP address entry on the local computer.</para>
-	/// </summary>
-	/// <param name="Row">
-	/// <para>A pointer to a MIB_ANYCASTIPADDRESS_ROW structure entry for an anycast IP address entry.</para>
-	/// </param>
+	/// <summary>The <c>CreateAnycastIpAddressEntry</c> function adds a new anycast IP address entry on the local computer.</summary>
+	/// <param name="Row">A pointer to a MIB_ANYCASTIPADDRESS_ROW structure entry for an anycast IP address entry.</param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is NO_ERROR.</para>
 	/// <para>If the function fails, the return value is one of the following error codes.</para>
@@ -755,16 +737,16 @@ public static partial class IpHlpApi
 	/// <term>ERROR_ACCESS_DENIED</term>
 	/// <term>
 	/// Access is denied. This error is returned under several conditions that include the following: the user lacks the required
-	/// administrative privileges on the local computer or the application is not running in an enhanced shell as the built-in
-	/// Administrator (RunAs administrator).
+	/// administrative privileges on the local computer or the application is not running in an enhanced shell as the built-in Administrator
+	/// (RunAs administrator).
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>ERROR_INVALID_PARAMETER</term>
 	/// <term>
-	/// An invalid parameter was passed to the function. This error is returned if a NULL pointer is passed in the Row parameter, the
-	/// Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter was not set to a valid unicast IPv4 or IPv6
-	/// address, or both the InterfaceLuid or InterfaceIndex members of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter were unspecified.
+	/// An invalid parameter was passed to the function. This error is returned if a NULL pointer is passed in the Row parameter, the Address
+	/// member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter was not set to a valid unicast IPv4 or IPv6 address, or both
+	/// the InterfaceLuid or InterfaceIndex members of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter were unspecified.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -777,17 +759,17 @@ public static partial class IpHlpApi
 	/// <item>
 	/// <term>ERROR_NOT_SUPPORTED</term>
 	/// <term>
-	/// The request is not supported. This error is returned if no IPv4 stack is on the local computer and an IPv4 address was specified
-	/// in the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter. This error is also returned if no IPv6
-	/// stack is on the local computer and an IPv6 address was specified in the Address member.
+	/// The request is not supported. This error is returned if no IPv4 stack is on the local computer and an IPv4 address was specified in
+	/// the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter. This error is also returned if no IPv6 stack is
+	/// on the local computer and an IPv6 address was specified in the Address member.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>ERROR_OBJECT_ALREADY_EXISTS</term>
 	/// <term>
 	/// The object already exists. This error is returned if the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row
-	/// parameter is a duplicate of an existing anycast IP address on the interface specified by the InterfaceLuid or InterfaceIndex
-	/// member of the MIB_ANYCASTIPADDRESS_ROW.
+	/// parameter is a duplicate of an existing anycast IP address on the interface specified by the InterfaceLuid or InterfaceIndex member
+	/// of the MIB_ANYCASTIPADDRESS_ROW.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -800,10 +782,9 @@ public static partial class IpHlpApi
 	/// <para>The <c>CreateAnycastIpAddressEntry</c> function is defined on Windows Vista and later.</para>
 	/// <para>The <c>CreateAnycastIpAddressEntry</c> function is used to add a new anycast IP address entry on a local computer.</para>
 	/// <para>
-	/// The <c>Address</c> member in the MIB_ANYCASTIPADDRESS_ROW structure pointed to by the Row parameter must be initialized to a
-	/// valid unicast IPv4 or IPv6 address and family. In addition, at least one of the following members in the
-	/// <c>MIB_ANYCASTIPADDRESS_ROW</c> structure pointed to the Row parameter must be initialized to the interface: the
-	/// <c>InterfaceLuid</c> or <c>InterfaceIndex</c>.
+	/// The <c>Address</c> member in the MIB_ANYCASTIPADDRESS_ROW structure pointed to by the Row parameter must be initialized to a valid
+	/// unicast IPv4 or IPv6 address and family. In addition, at least one of the following members in the <c>MIB_ANYCASTIPADDRESS_ROW</c>
+	/// structure pointed to the Row parameter must be initialized to the interface: the <c>InterfaceLuid</c> or <c>InterfaceIndex</c>.
 	/// </para>
 	/// <para>
 	/// The <c>ScopeId</c> member of the MIB_ANYCASTIPADDRESS_ROW structure pointed to by the Row is ignored when the
@@ -815,14 +796,14 @@ public static partial class IpHlpApi
 	/// MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter is a duplicate of an existing anycast IP address on the interface.
 	/// </para>
 	/// <para>
-	/// The <c>CreateAnycastIpAddressEntry</c> function can only be called by a user logged on as a member of the Administrators group.
-	/// If <c>CreateAnycastIpAddressEntry</c> is called by a user that is not a member of the Administrators group, the function call
-	/// will fail and <c>ERROR_ACCESS_DENIED</c> is returned. This function can also fail because of user account control (UAC) on
-	/// Windows Vista and later. If an application that contains this function is executed by a user logged on as a member of the
-	/// Administrators group other than the built-in Administrator, this call will fail unless the application has been marked in the
-	/// manifest file with a <c>requestedExecutionLevel</c> set to requireAdministrator. If the application lacks this manifest file, a
-	/// user logged on as a member of the Administrators group other than the built-in Administrator must then be executing the
-	/// application in an enhanced shell as the built-in Administrator (RunAs administrator) for this function to succeed.
+	/// The <c>CreateAnycastIpAddressEntry</c> function can only be called by a user logged on as a member of the Administrators group. If
+	/// <c>CreateAnycastIpAddressEntry</c> is called by a user that is not a member of the Administrators group, the function call will fail
+	/// and <c>ERROR_ACCESS_DENIED</c> is returned. This function can also fail because of user account control (UAC) on Windows Vista and
+	/// later. If an application that contains this function is executed by a user logged on as a member of the Administrators group other
+	/// than the built-in Administrator, this call will fail unless the application has been marked in the manifest file with a
+	/// <c>requestedExecutionLevel</c> set to requireAdministrator. If the application lacks this manifest file, a user logged on as a member
+	/// of the Administrators group other than the built-in Administrator must then be executing the application in an enhanced shell as the
+	/// built-in Administrator (RunAs administrator) for this function to succeed.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-createanycastipaddressentry _NETIOAPI_SUCCESS_
@@ -1130,7 +1111,9 @@ public static partial class IpHlpApi
 	// *SortedAddressPairCount );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "cdc90d63-15a4-4278-afc3-dbf9ad6ba698")]
-	public static extern Win32Error CreateSortedAddressPairs([Optional] IntPtr SourceAddressList, uint SourceAddressCount, [In] SOCKADDR_IN6[] DestinationAddressList, uint DestinationAddressCount, uint AddressSortOptions, out SafeMibTableHandle SortedAddressPairList, out uint SortedAddressPairCount);
+	public static extern Win32Error CreateSortedAddressPairs([Optional] IntPtr SourceAddressList, [Optional] uint SourceAddressCount,
+		[In] SOCKADDR_IN6[] DestinationAddressList, uint DestinationAddressCount, uint AddressSortOptions,
+		out SafeMibTableHandle SortedAddressPairList, out uint SortedAddressPairCount);
 
 	/// <summary>
 	/// The <c>CreateSortedAddressPairs</c> function takes a supplied list of potential IP destination addresses, pairs the destination
@@ -1144,8 +1127,8 @@ public static partial class IpHlpApi
 	/// <returns>An array of SOCKADDR_IN6_PAIR structures that contain the sorted address pairs.</returns>
 	public static SOCKADDR_IN6_PAIR_NATIVE[] CreateSortedAddressPairs(SOCKADDR_IN6[] DestinationAddressList)
 	{
-		CreateSortedAddressPairs(IntPtr.Zero, 0, DestinationAddressList, (uint)DestinationAddressList.Length, 0, out var pairs, out var cnt).ThrowIfFailed();
-		return Array.ConvertAll(pairs.ToArray<SOCKADDR_IN6_PAIR>((int)cnt), up => (SOCKADDR_IN6_PAIR_NATIVE)up);
+		CreateSortedAddressPairs(IntPtr.Zero, 0, DestinationAddressList, (uint)DestinationAddressList.Length, 0, out SafeMibTableHandle? pairs, out uint cnt).ThrowIfFailed();
+		return Array.ConvertAll(pairs.ToArray<SOCKADDR_IN6_PAIR>((int)cnt)!, up => (SOCKADDR_IN6_PAIR_NATIVE)up);
 	}
 
 	/// <summary>
@@ -2185,7 +2168,8 @@ public static partial class IpHlpApi
 	// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-	public static extern Win32Error GetBestRoute2(in NET_LUID InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+	public static extern Win32Error GetBestRoute2(in NET_LUID InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress,
+		in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 	/// <summary>
 	/// <para>
@@ -2275,7 +2259,8 @@ public static partial class IpHlpApi
 	// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-	public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+	public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, in SOCKADDR_INET SourceAddress,
+		in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 	/// <summary>
 	/// <para>
@@ -2365,7 +2350,8 @@ public static partial class IpHlpApi
 	// *DestinationAddress, ULONG AddressSortOptions, PMIB_IPFORWARD_ROW2 BestRoute, SOCKADDR_INET *BestSourceAddress );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "7bc16824-c98f-4cd5-a589-e198b48b637c")]
-	public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, [Optional] IntPtr SourceAddress, in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
+	public static extern Win32Error GetBestRoute2([Optional] IntPtr InterfaceLuid, uint InterfaceIndex, [Optional] IntPtr SourceAddress,
+		in SOCKADDR_INET DestinationAddress, uint AddressSortOptions, out MIB_IPFORWARD_ROW2 BestRoute, out SOCKADDR_INET BestSourceAddress);
 
 	/// <summary>
 	/// <para>The <c>GetIfEntry2</c> function retrieves information for the specified interface on the local computer.</para>
@@ -4496,7 +4482,8 @@ public static partial class IpHlpApi
 	// InitialNotification, HANDLE *NotificationHandle );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "745128cf-7737-4f95-9712-26e0f6ae39b4")]
-	public static extern Win32Error NotifyIpInterfaceChange(ADDRESS_FAMILY Family, PIPINTERFACE_CHANGE_CALLBACK Callback, [Optional] IntPtr CallerContext, [MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
+	public static extern Win32Error NotifyIpInterfaceChange(ADDRESS_FAMILY Family, PIPINTERFACE_CHANGE_CALLBACK Callback, [Optional] IntPtr CallerContext,
+		[MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
 
 	/// <summary>
 	/// Registers an application-defined callback function, to be called when the aggregate network connectivity level and cost hints change.
@@ -4681,7 +4668,8 @@ public static partial class IpHlpApi
 	// InitialNotification, HANDLE *NotificationHandle );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "f104dc0c-b3e0-4f22-ac5f-5dbf967be31b")]
-	public static extern Win32Error NotifyRouteChange2(ADDRESS_FAMILY AddressFamily, PIPFORWARD_CHANGE_CALLBACK Callback, [Optional] IntPtr CallerContext, [MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
+	public static extern Win32Error NotifyRouteChange2(ADDRESS_FAMILY AddressFamily, PIPFORWARD_CHANGE_CALLBACK Callback,
+		[Optional] IntPtr CallerContext, [MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
 
 	/// <summary>
 	/// <para>The <c>NotifyStableUnicastIpAddressTable</c> function retrieves the stable unicast IP address table on a local computer.</para>
@@ -4873,7 +4861,8 @@ public static partial class IpHlpApi
 	// PSTABLE_UNICAST_IPADDRESS_TABLE_CALLBACK CallerCallback, PVOID CallerContext, HANDLE *NotificationHandle );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "80d10088-79ef-41fd-add7-994d2a780ddb")]
-	public static extern Win32Error NotifyStableUnicastIpAddressTable(ADDRESS_FAMILY Family, out IntPtr Table, PSTABLE_UNICAST_IPADDRESS_TABLE_CALLBACK CallerCallback, [Optional] IntPtr CallerContext, out IntPtr NotificationHandle);
+	public static extern Win32Error NotifyStableUnicastIpAddressTable(ADDRESS_FAMILY Family, out IntPtr Table,
+		PSTABLE_UNICAST_IPADDRESS_TABLE_CALLBACK CallerCallback, [Optional] IntPtr CallerContext, out IntPtr NotificationHandle);
 
 	/// <summary>
 	/// <para>
@@ -5009,7 +4998,8 @@ public static partial class IpHlpApi
 	// *NotificationHandle );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "c0c23531-7629-41c9-acf2-9d2f5e98e02c")]
-	public static extern Win32Error NotifyTeredoPortChange(PTEREDO_PORT_CHANGE_CALLBACK Callback, [Optional] IntPtr CallerContext, [MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
+	public static extern Win32Error NotifyTeredoPortChange(PTEREDO_PORT_CHANGE_CALLBACK Callback, [Optional] IntPtr CallerContext,
+		[MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
 
 	/// <summary>
 	/// <para>
@@ -5176,7 +5166,8 @@ public static partial class IpHlpApi
 	// CallerContext, BOOLEAN InitialNotification, HANDLE *NotificationHandle );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "56945aa2-ca1e-44b3-9765-d862978a9dbe")]
-	public static extern Win32Error NotifyUnicastIpAddressChange(ADDRESS_FAMILY Family, PUNICAST_IPADDRESS_CHANGE_CALLBACK Callback, [Optional] IntPtr CallerContext, [MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
+	public static extern Win32Error NotifyUnicastIpAddressChange(ADDRESS_FAMILY Family, PUNICAST_IPADDRESS_CHANGE_CALLBACK Callback,
+		[Optional] IntPtr CallerContext, [MarshalAs(UnmanagedType.U1)] bool InitialNotification, out IntPtr NotificationHandle);
 
 	/// <summary>
 	/// <para>The <c>ResolveIpNetEntry2</c> function resolves the physical address for a neighbor IP address entry on the local computer.</para>
@@ -6167,11 +6158,17 @@ public static partial class IpHlpApi
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
 		/// <param name="interfaceIndex">Index of the interface.</param>
-		public MIB_IF_ROW2(uint interfaceIndex) : this() => InterfaceIndex = interfaceIndex;
+		public MIB_IF_ROW2(uint interfaceIndex) : this(false) => InterfaceIndex = interfaceIndex;
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
 		/// <param name="interfaceLuid">The interface luid.</param>
-		public MIB_IF_ROW2(NET_LUID interfaceLuid) : this() => InterfaceLuid = interfaceLuid;
+		public MIB_IF_ROW2(NET_LUID interfaceLuid) : this(false) => InterfaceLuid = interfaceLuid;
+
+		private MIB_IF_ROW2(bool ingored) : this()
+		{
+			Alias = Description = string.Empty;
+			PhysicalAddress = PermanentPhysicalAddress = new byte[0];
+		}
 	}
 
 	/// <summary>The MIB_IFSTACK_ROW structure represents the relationship between two network interfaces.</summary>
@@ -6929,7 +6926,7 @@ public static partial class IpHlpApi
 		/// <param name="ipV4">The neighbor IP address.</param>
 		/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceLuid = ifLuid;
+		public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, NET_LUID ifLuid, byte[]? macAddr = null) : this(ipV4, macAddr) => InterfaceLuid = ifLuid;
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
 		/// <param name="ipV4">The neighbor IP address.</param>
@@ -6938,13 +6935,13 @@ public static partial class IpHlpApi
 		/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
 		/// </param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, uint ifIdx, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceIndex = ifIdx;
+		public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, uint ifIdx, byte[]? macAddr = null) : this(ipV4, macAddr) => InterfaceIndex = ifIdx;
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
 		/// <param name="ipV6">The neighbor IP address.</param>
 		/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceLuid = ifLuid;
+		public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, NET_LUID ifLuid, byte[]? macAddr = null) : this(ipV6, macAddr) => InterfaceLuid = ifLuid;
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
 		/// <param name="ipV6">The neighbor IP address.</param>
@@ -6953,26 +6950,26 @@ public static partial class IpHlpApi
 		/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
 		/// </param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, uint ifIdx, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceIndex = ifIdx;
+		public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, uint ifIdx, byte[]? macAddr = null) : this(ipV6, macAddr) => InterfaceIndex = ifIdx;
 
-		private MIB_IPNET_ROW2(SOCKADDR_IN ipV4, byte[] macAddr) : this()
+		private MIB_IPNET_ROW2(SOCKADDR_IN ipV4, byte[]? macAddr) : this()
 		{
 			Address.Ipv4 = ipV4;
+			PhysicalAddress = new byte[0];
 			SetMac(macAddr);
 		}
 
-		private MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, byte[] macAddr) : this()
+		private MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, byte[]? macAddr) : this()
 		{
 			Address.Ipv6 = ipV6;
+			PhysicalAddress = new byte[0];
 			SetMac(macAddr);
 		}
 
-		private void SetMac(byte[] macAddr)
+		private void SetMac(byte[]? macAddr)
 		{
 			if (macAddr == null)
-			{
 				return;
-			}
 
 			PhysicalAddressLength = IF_MAX_PHYS_ADDRESS_LENGTH;
 			PhysicalAddress = new byte[IF_MAX_PHYS_ADDRESS_LENGTH];
@@ -7111,12 +7108,11 @@ public static partial class IpHlpApi
 		/// </summary>
 		public uint ReachabilityTime;
 
-
 		/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
 		/// <param name="ipV4">The neighbor IP address.</param>
 		/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceLuid = ifLuid;
+		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, NET_LUID ifLuid, byte[]? macAddr = null) : this(ipV4, macAddr) => InterfaceLuid = ifLuid;
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2_Unmanaged"/> struct.</summary>
 		/// <param name="ipV4">The neighbor IP address.</param>
@@ -7125,13 +7121,13 @@ public static partial class IpHlpApi
 		/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
 		/// </param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, uint ifIdx, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceIndex = ifIdx;
+		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, uint ifIdx, byte[]? macAddr = null) : this(ipV4, macAddr) => InterfaceIndex = ifIdx;
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2_Unmanaged"/> struct.</summary>
 		/// <param name="ipV6">The neighbor IP address.</param>
 		/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceLuid = ifLuid;
+		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, NET_LUID ifLuid, byte[]? macAddr = null) : this(ipV6, macAddr) => InterfaceLuid = ifLuid;
 
 		/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2_Unmanaged"/> struct.</summary>
 		/// <param name="ipV6">The neighbor IP address.</param>
@@ -7140,29 +7136,26 @@ public static partial class IpHlpApi
 		/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
 		/// </param>
 		/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, uint ifIdx, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceIndex = ifIdx;
+		public MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, uint ifIdx, byte[]? macAddr = null) : this(ipV6, macAddr) => InterfaceIndex = ifIdx;
 
-		private MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, byte[] macAddr) : this()
+		private MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN ipV4, byte[]? macAddr) : this()
 		{
 			Address.Ipv4 = ipV4;
 			SetMac(macAddr);
 		}
 
-		private MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, byte[] macAddr) : this()
+		private MIB_IPNET_ROW2_Unmanaged(SOCKADDR_IN6 ipV6, byte[]? macAddr) : this()
 		{
 			Address.Ipv6 = ipV6;
 			SetMac(macAddr);
 		}
 
-		private void SetMac(byte[] macAddr)
+		private void SetMac(byte[]? macAddr)
 		{
 			if (macAddr == null)
-			{
 				return;
-			}
 
 			PhysicalAddressLength = IF_MAX_PHYS_ADDRESS_LENGTH;
-
 			fixed (byte* physicalAddress = PhysicalAddress)
 			{
 				Marshal.Copy(macAddr, 0, (IntPtr)physicalAddress, 6);
@@ -7174,8 +7167,7 @@ public static partial class IpHlpApi
 		{
 			fixed (byte* physicalAddress = PhysicalAddress)
 			{
-				return
-					$"{Address}; MAC:{PhysicalAddressToString(physicalAddress)}; If:{(InterfaceIndex != 0 ? InterfaceIndex.ToString() : InterfaceLuid.ToString())}";
+				return $"{Address}; MAC:{PhysicalAddressToString(physicalAddress)}; If:{(InterfaceIndex != 0 ? InterfaceIndex.ToString() : InterfaceLuid.ToString())}";
 			}
 		}
 	}
@@ -7826,7 +7818,7 @@ public static partial class IpHlpApi
 		public virtual uint NumEntries => IsInvalid ? 0 : handle.ToStructure<uint>();
 
 		/// <summary>Gets the array of <typeparamref name="T"/> structures containing interface entries.</summary>
-		public virtual T[] Table => ToArray<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
+		public virtual T[]? Table => ToArray<T>((int)NumEntries, Marshal.SizeOf(typeof(ulong)));
 
 #if ALLOWSPAN
 		/// <summary>Gets the <see cref="Span{T}"/> containing interface entries.</summary>
@@ -7834,7 +7826,7 @@ public static partial class IpHlpApi
 #endif
 
 		/// <summary>Gets the enumerator.</summary>
-		public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>) Table).GetEnumerator();
+		public IEnumerator<T> GetEnumerator() => (Table ?? Enumerable.Empty<T>()).GetEnumerator();
 
 		/// <summary>Gets the enumerator.</summary>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -7890,6 +7882,6 @@ public static partial class IpHlpApi
 		/// <typeparam name="T">The structure type of the array.</typeparam>
 		/// <param name="count">The number of items.</param>
 		/// <param name="prefixBytes">The number of bytes to skip before processing the array.</param>
-		public T[] ToArray<T>(int count, int prefixBytes = 0) => IsInvalid ? null : handle.ToArray<T>(count, prefixBytes);
+		public T[]? ToArray<T>(int count, int prefixBytes = 0) => IsInvalid ? null : handle.ToArray<T>(count, prefixBytes);
 	}
 }

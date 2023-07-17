@@ -166,13 +166,13 @@ public static partial class IpHlpApi
 		/// A pointer to the name of the module. This field should be a <c>NULL</c> pointer when passed to GetOwnerModuleFromTcpEntry or
 		/// GetOwnerModuleFromTcp6Entry function.
 		/// </summary>
-		public string pModuleName;
+		public string? pModuleName;
 
 		/// <summary>
 		/// A pointer to the full path of the module, including the module name. This field should be a <c>NULL</c> pointer when passed
 		/// to GetOwnerModuleFromTcpEntry or GetOwnerModuleFromTcp6Entry function.
 		/// </summary>
-		public string pModulePath;
+		public string? pModulePath;
 	}
 
 	/// <summary>
@@ -211,6 +211,6 @@ public static partial class IpHlpApi
 		/// <summary>Performs an implicit conversion from <see cref="TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD"/> to <see cref="TCPIP_OWNER_MODULE_BASIC_INFO"/>.</summary>
 		/// <param name="unmgd">The unmanaged structure.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator TCPIP_OWNER_MODULE_BASIC_INFO(TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD unmgd) => new TCPIP_OWNER_MODULE_BASIC_INFO { pModuleName = unmgd.pModuleName, pModulePath = unmgd.pModulePath };
+		public static implicit operator TCPIP_OWNER_MODULE_BASIC_INFO(TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD unmgd) => new() { pModuleName = unmgd.pModuleName, pModulePath = unmgd.pModulePath };
 	}
 }

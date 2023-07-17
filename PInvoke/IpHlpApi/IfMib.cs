@@ -292,9 +292,11 @@ public static partial class IpHlpApi
 		/// The index that identifies the interface. This index value may change when a network adapter is disabled and then enabled, and
 		/// should not be considered persistent.
 		/// </param>
-		public MIB_IFROW(uint ifIndex) : this()
+		public MIB_IFROW(uint ifIndex)
 		{
+			wszName = string.Empty;
 			dwIndex = ifIndex;
+			bPhysAddr = bDescr = new byte[0];
 		}
 	}
 
