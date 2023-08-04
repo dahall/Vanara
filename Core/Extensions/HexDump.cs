@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.Extensions;
+﻿namespace Vanara.Extensions;
 
 /// <summary>Extension to dump a byte array.</summary>
 public static class HexDempHelpers
@@ -17,12 +15,12 @@ public static class HexDempHelpers
 	/// A pointer location to show to the left of the row identifier. If set to <c>IntPtr.Zero</c>, no location value is shown.
 	/// </param>
 	/// <returns>A multi-line string that contains a hexadecimal dump of <paramref name="bytes"/>.</returns>
-	/// <exception cref="System.ArgumentNullException">bytes</exception>
+	/// <exception cref="ArgumentNullException">bytes</exception>
 	/// <exception cref="ArgumentNullException">bytes</exception>
 	public static string ToHexDumpString(this byte[] bytes, int bytesPerRow = 16, int gapEvery = 4, int rowIdLen = -1, IntPtr location = default)
 	{
 		if (bytes == null) throw new ArgumentNullException(nameof(bytes));
-		var sb = new System.Text.StringBuilder();
+		var sb = new StringBuilder();
 		var hdrlen = rowIdLen == -1 ? (((bytes.Length.ToString("X").Length - 1) / 4) + 1) * 4 : rowIdLen;
 		var hdrfmt = hdrlen == 0 ? "" : $"{{0:X{hdrlen}}}: ";
 		if (location != IntPtr.Zero) hdrfmt = $"0x{{1:X{IntPtr.Size * 2}}} " + hdrfmt;

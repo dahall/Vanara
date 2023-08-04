@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 

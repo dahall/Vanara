@@ -1,8 +1,6 @@
-using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
@@ -14,9 +12,9 @@ namespace Vanara.PInvoke;
 /// automatically convert between the 4-byte values and the 2-byte value.
 /// </para>
 /// </summary>
-/// <seealso cref="System.IComparable"/>
-/// <seealso cref="System.IComparable{CLIPFORMAT}"/>
-/// <seealso cref="System.IEquatable{CLIPFORMAT}"/>
+/// <seealso cref="IComparable"/>
+/// <seealso cref="IComparable{CLIPFORMAT}"/>
+/// <seealso cref="IEquatable{CLIPFORMAT}"/>
 [StructLayout(LayoutKind.Sequential)]
 [PInvokeData("wtypes.h", MSDNShortId = "fe42baec-6b00-4816-b379-7f335da8a197")]
 public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>, IEquatable<CLIPFORMAT>
@@ -240,7 +238,7 @@ public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>
 	/// Text format containing characters in the OEM character set. Each line ends with a carriage return/linefeed (CR-LF) combination. A
 	/// null character signals the end of the data.
 	/// </summary>
-	[ClipCorrespondingType(typeof(string), EncodingType = typeof(System.Text.ASCIIEncoding))]
+	[ClipCorrespondingType(typeof(string), EncodingType = typeof(ASCIIEncoding))]
 	public static readonly CLIPFORMAT CF_OEMTEXT = 7;
 
 	/// <summary>
@@ -290,7 +288,7 @@ public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>
 	/// Text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
 	/// Use this format for ANSI text.
 	/// </summary>
-	[ClipCorrespondingType(typeof(string), EncodingType = typeof(System.Text.UTF8Encoding))]
+	[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 	public static readonly CLIPFORMAT CF_TEXT = 1;
 
 	/// <summary>Tagged-image file format.</summary>
@@ -299,7 +297,7 @@ public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>
 	/// <summary>
 	/// Unicode text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
 	/// </summary>
-	[ClipCorrespondingType(typeof(string), EncodingType = typeof(System.Text.UnicodeEncoding))]
+	[ClipCorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 	public static readonly CLIPFORMAT CF_UNICODETEXT = 13;
 
 	/// <summary>Represents audio data in one of the standard wave formats, such as 11 kHz or 22 kHz PCM.</summary>
@@ -307,9 +305,9 @@ public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>
 }
 
 /// <summary>Indicates the type, medium and method for getting and setting the payload associated with known clipboard formats.</summary>
-/// <seealso cref="Vanara.InteropServices.CorrespondingTypeAttribute"/>
+/// <seealso cref="CorrespondingTypeAttribute"/>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
-public class ClipCorrespondingTypeAttribute : Vanara.InteropServices.CorrespondingTypeAttribute
+public class ClipCorrespondingTypeAttribute : CorrespondingTypeAttribute
 {
 	/// <summary>Initializes a new instance of the <see cref="ClipCorrespondingTypeAttribute"/> class.</summary>
 	/// <param name="typeRef">The type that corresponds to this entity.</param>
@@ -322,7 +320,7 @@ public class ClipCorrespondingTypeAttribute : Vanara.InteropServices.Correspondi
 
 	/// <summary>
 	/// Gets or sets the formatter type used to place the contents of the object of <see
-	/// cref="InteropServices.CorrespondingTypeAttribute.TypeRef"/>. If not specified, it can be assumed the type will be directly marshaled.
+	/// cref="CorrespondingTypeAttribute.TypeRef"/>. If not specified, it can be assumed the type will be directly marshaled.
 	/// </summary>
 	/// <value>The optional formatter type.</value>
 	public Type? Formatter { get; set; }
@@ -335,12 +333,12 @@ public interface IClipboardFormatter
 	/// <summary>Extracts the object from an HGLOBAL handle.</summary>
 	/// <param name="hGlobal">The HGLOBAL handle.</param>
 	/// <returns>The extracted object.</returns>
-	public object Read(IntPtr hGlobal);
+	public object? Read(IntPtr hGlobal);
 
 	/// <summary>Inserts the specified object into an allocated HGLOBAL handle.</summary>
 	/// <param name="value">The object value.</param>
 	/// <returns>
 	/// A pointer to allocated memory holding the content. This should be created using GlobalAlloc with the GMEM_MOVEABLE flag.
 	/// </returns>
-	public IntPtr Write(object value);
+	public IntPtr Write(object? value);
 }

@@ -1,12 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
-using Vanara.PInvoke.Tests;
-using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;
 

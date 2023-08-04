@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -25,7 +22,7 @@ public static partial class Gdi32
 	/// }
 	/// </code>
 	/// </example>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	public class GdiObjectContext : IDisposable
 	{
 		private readonly HDC hDC;
@@ -47,7 +44,7 @@ public static partial class Gdi32
 	}
 
 	/// <summary>
-	/// Provides a <see cref="System.Runtime.InteropServices.SafeHandle"/> to a graphics bitmap object that releases a created HBITMAP instance at disposal using DeleteObject.
+	/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HBITMAP instance at disposal using DeleteObject.
 	/// </summary>
 	public class SafeHBITMAP : SafeHANDLE, IGraphicsObjectHandle
 	{

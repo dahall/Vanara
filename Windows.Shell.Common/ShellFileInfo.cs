@@ -1,8 +1,5 @@
-using System;
 using System.IO;
 using System.Security;
-using System.Text;
-using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Shell32;

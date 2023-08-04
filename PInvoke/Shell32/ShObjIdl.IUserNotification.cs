@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -128,7 +125,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iusernotification-seticoninfo HRESULT
 		// SetIconInfo( HICON hIcon, LPCWSTR pszToolTip );
-		void SetIconInfo(HICON hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszToolTip);
+		void SetIconInfo(HICON hIcon, [MarshalAs(UnmanagedType.LPWStr)] string? pszToolTip);
 
 		/// <summary>Displays the notification.</summary>
 		/// <param name="pqc">
@@ -145,7 +142,7 @@ public static partial class Shell32
 		/// <remarks>This method is equivalent to calling Show with pSink= <c>NULL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iusernotification-show HRESULT Show(
 		// IQueryContinue *pqc, DWORD dwContinuePollInterval );
-		void Show(IQueryContinue pqc, uint dwContinuePollInterval);
+		void Show(IQueryContinue? pqc, uint dwContinuePollInterval);
 
 		/// <summary>Plays a sound in conjunction with the notification.</summary>
 		/// <param name="pszSoundName">
@@ -169,6 +166,6 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iusernotification-playsound HRESULT
 		// PlaySound( LPCWSTR pszSoundName );
-		void PlaySound([MarshalAs(UnmanagedType.LPWStr)] string pszSoundName);
+		void PlaySound([MarshalAs(UnmanagedType.LPWStr)] string? pszSoundName);
 	}
 }

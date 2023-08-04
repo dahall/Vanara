@@ -3187,7 +3187,7 @@ public static partial class WinBio
 							fixed (void* d = &_Data)
 							{
 								var ret = new SafeCoTaskMemHandle(WINBIO_OPAQUE_ENGINE_DATA_ITEM_COUNT * 4);
-								Vanara.Extensions.InteropExtensions.CopyTo((IntPtr)d, ret, ret.Size);
+								InteropExtensions.CopyTo((IntPtr)d, ret, ret.Size);
 								return ret.ToArray<uint>(WINBIO_OPAQUE_ENGINE_DATA_ITEM_COUNT);
 							}
 						}

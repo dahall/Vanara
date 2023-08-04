@@ -1,10 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in Crypt32.dll.</summary>
 public static partial class Crypt32
@@ -2346,7 +2340,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a5beba30-f32b-4d57-8a54-7d9096459c50")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashCertificate([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags, [In] IntPtr pbEncoded, 
+	public static extern bool CryptHashCertificate([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags, [In] IntPtr pbEncoded,
 		uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>The <c>CryptHashCertificate2</c> function hashes a block of data by using a CNG hash provider.</summary>
@@ -6326,7 +6320,7 @@ public static partial class Crypt32
 	}
 
 	/// <summary>Standard crypto memory allocation methods.</summary>
-	/// <seealso cref="Vanara.InteropServices.IMemoryMethods"/>
+	/// <seealso cref="IMemoryMethods"/>
 	public class CryptMemMethods : MemoryMethodsBase
 	{
 		/// <summary>Gets a static instance of this class.</summary>
@@ -6351,12 +6345,12 @@ public static partial class Crypt32
 	}
 
 	/// <summary>Safe handle for crypto memory.</summary>
-	/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{T}"/>
+	/// <seealso cref="SafeMemoryHandle{T}"/>
 	public class SafeCryptMem : SafeMemoryHandleExt<CryptMemMethods>
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 		public SafeCryptMem(SizeT size = default) : base(size) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>

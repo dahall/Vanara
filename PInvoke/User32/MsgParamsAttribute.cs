@@ -1,8 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
+﻿using System.Reflection;
 using Vanara.Extensions.Reflection;
 
 namespace Vanara.PInvoke;
@@ -10,7 +6,7 @@ namespace Vanara.PInvoke;
 /// <summary>
 /// Use this attribute to specify the types of the wParam and lParam values of a message. If not specified, the default is IntPtr for both.
 /// </summary>
-/// <seealso cref="System.Attribute"/>
+/// <seealso cref="Attribute"/>
 public class MsgParamsAttribute : Attribute
 {
 	/// <summary>Initializes a new instance of the <see cref="MsgParamsAttribute"/> class.</summary>

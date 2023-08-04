@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
 
@@ -123,7 +120,7 @@ public static partial class Ole32
 		/// approximately a 120 by 120 pixel, 16-color (recommended), device-independent bitmap potentially wrapped in a metafile.
 		/// </summary>
 		DVASPECT_THUMBNAIL = 2,
-		
+
 		/// <summary>Represents the opaque, easy to clip parts of an object. Objects may or may not support this aspect.</summary>
 		DVASPECT_OPAQUE = 16,
 

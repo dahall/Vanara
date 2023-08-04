@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
@@ -214,7 +211,7 @@ public abstract class SafeAnysizeStructBase<T> : SafeMemoryHandle<CoTaskMemoryMe
 /// name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
 /// </summary>
 /// <typeparam name="T">The structure type to be marshaled.</typeparam>
-/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
+/// <seealso cref="IVanaraMarshaler"/>
 public class SafeAnysizeStructMarshaler<T> : IVanaraMarshaler
 {
 	private readonly string sizeFieldName;

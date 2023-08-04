@@ -24,9 +24,9 @@ public abstract class OSPlatformAttribute : Attribute
 /// Callers can apply a SupportedOSPlatformAttribute or use guards to prevent calls to APIs on unsupported operating systems. A given
 /// platform should only be specified once.
 /// </remarks>
-[System.AttributeUsage(System.AttributeTargets.Assembly | System.AttributeTargets.Class | System.AttributeTargets.Constructor |
-	System.AttributeTargets.Enum | System.AttributeTargets.Event | System.AttributeTargets.Field | System.AttributeTargets.Interface |
-	System.AttributeTargets.Method | System.AttributeTargets.Module | System.AttributeTargets.Property | System.AttributeTargets.Struct,
+[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Constructor |
+	AttributeTargets.Enum | AttributeTargets.Event | AttributeTargets.Field | AttributeTargets.Interface |
+	AttributeTargets.Method | AttributeTargets.Module | AttributeTargets.Property | AttributeTargets.Struct,
 	AllowMultiple = true, Inherited = false)]
 public class SupportedOSPlatformAttribute : OSPlatformAttribute
 {

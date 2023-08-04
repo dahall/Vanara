@@ -76,9 +76,9 @@ public class WinCredTests
 	public void CredWriteTest()
 	{
 		const string targetName = "my.urn.pri";
-		using var target = new SafeCoTaskMemString(targetName, System.Runtime.InteropServices.CharSet.Auto);
-		using var user = new SafeCoTaskMemString("dahall@github.com", System.Runtime.InteropServices.CharSet.Auto);
-		using var pwd = new SafeCoTaskMemString("asldfjua(#)$#$Jdf-0934390".ToSecureString(), System.Runtime.InteropServices.CharSet.Auto);
+		using var target = new SafeCoTaskMemString(targetName, CharSet.Auto);
+		using var user = new SafeCoTaskMemString("dahall@github.com", CharSet.Auto);
+		using var pwd = new SafeCoTaskMemString("asldfjua(#)$#$Jdf-0934390".ToSecureString(), CharSet.Auto);
 		var cred = new CREDENTIAL
 		{
 			Type = CRED_TYPE.CRED_TYPE_GENERIC,

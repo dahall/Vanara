@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 
 namespace Vanara.InteropServices;
 
 /// <summary>A <see cref="Stream"/> derivative for working with unmanaged memory.</summary>
-/// <seealso cref="System.IO.Stream"/>
+/// <seealso cref="Stream"/>
 public class NativeMemoryStream : Stream
 {
 	private const long DefaultCapacity = 256;
@@ -161,9 +158,9 @@ public class NativeMemoryStream : Stream
 	/// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not
 	/// currently available, or zero (0) if the end of the stream has been reached.
 	/// </returns>
-	/// <exception cref="System.ArgumentNullException">buffer</exception>
-	/// <exception cref="System.ArgumentException"></exception>
-	/// <exception cref="System.ArgumentOutOfRangeException"></exception>
+	/// <exception cref="ArgumentNullException">buffer</exception>
+	/// <exception cref="ArgumentException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public override int Read(byte[] buffer, int offset, int count)
 	{
 		if (buffer == null) throw new ArgumentNullException(nameof(buffer));
@@ -307,7 +304,7 @@ public class NativeMemoryStream : Stream
 	/// A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point used to obtain the new position.
 	/// </param>
 	/// <returns>The new position within the current stream.</returns>
-	/// <exception cref="System.ArgumentException"></exception>
+	/// <exception cref="ArgumentException"></exception>
 	public override long Seek(long offset, SeekOrigin origin)
 	{
 		ThrowIfDisposed();
@@ -320,7 +317,7 @@ public class NativeMemoryStream : Stream
 
 	/// <summary>Sets the length of the current stream.</summary>
 	/// <param name="value">The desired length of the current stream in bytes.</param>
-	/// <exception cref="System.InvalidOperationException"></exception>
+	/// <exception cref="InvalidOperationException"></exception>
 	public override void SetLength(long value)
 	{
 		if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
@@ -339,9 +336,9 @@ public class NativeMemoryStream : Stream
 	/// The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the current stream.
 	/// </param>
 	/// <param name="count">The number of bytes to be written to the current stream.</param>
-	/// <exception cref="System.ArgumentNullException">buffer</exception>
-	/// <exception cref="System.ArgumentException"></exception>
-	/// <exception cref="System.ArgumentOutOfRangeException"></exception>
+	/// <exception cref="ArgumentNullException">buffer</exception>
+	/// <exception cref="ArgumentException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public override void Write(byte[] buffer, int offset, int count)
 	{
 		if (buffer == null) throw new ArgumentNullException(nameof(buffer));
@@ -464,7 +461,7 @@ public class NativeMemoryStream : Stream
 	/// or flushed.
 	/// </summary>
 	/// <param name="value">The value.</param>
-	public void WriteReference<T>(Nullable<T> value) where T : unmanaged => WriteReferenceObject(value.HasValue ? value.Value : null);
+	public void WriteReference<T>(T? value) where T : unmanaged => WriteReferenceObject(value.HasValue ? value.Value : null);
 
 	/// <summary>
 	/// Writes a reference to the string (memory address as IntPtr) into the stream and then appends the string to the stream when closed

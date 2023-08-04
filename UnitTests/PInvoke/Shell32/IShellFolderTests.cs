@@ -1,11 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using Vanara.Collections;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests;
@@ -16,7 +10,7 @@ public class IShellFolderTests
 	[Test]
 	public void DetailsTest()
 	{
-		using var pFolder = ComReleaserFactory.Create(new MyDocuments() as IShellFolder2);
+		using var pFolder = ComReleaserFactory.Create((IShellFolder2)new MyDocuments());
 
 		// Get folder details
 		pFolder.Item.GetDefaultColumn(0, out var sortIdx, out var dispIdx);
@@ -36,7 +30,7 @@ public class IShellFolderTests
 		//foreach (KNOWNFOLDERID kf in Enum.GetValues(typeof(KNOWNFOLDERID)))
 		{
 			//using var pFolder = ComReleaserFactory.Create(KNOWNFOLDERID.FOLDERID_ConnectionsFolder.GetIShellFolder() as IShellFolder2);
-			using var pFolder = ComReleaserFactory.Create(new Printers() as IShellFolder2);
+			using var pFolder = ComReleaserFactory.Create((IShellFolder2)new Printers());
 			try
 			{
 				pFolder.Item.GetDefaultSearchGUID(out var defGuid).ThrowIfFailed();

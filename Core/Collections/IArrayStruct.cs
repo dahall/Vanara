@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -28,7 +25,7 @@ public static class IArrayStructExtensions
 
 /// <summary>Allows marshaling of arrays in place of a structure supporting <see cref="IArrayStruct{T}"/>.</summary>
 /// <typeparam name="T">The type of the array element.</typeparam>
-/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
+/// <seealso cref="IVanaraMarshaler"/>
 public class IArrayStructMarshaler<T> : IVanaraMarshaler where T : struct
 {
 	/// <summary>The header size.</summary>

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using Vanara.Collections;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -12,22 +9,22 @@ public static partial class Ole32
 	public const uint OLE_E_LAST = 0x800400FF;
 
 	/// <summary>The lowest allowed value for an OLE command error code.</summary>
-	public const uint OLECMDERR_E_FIRST        = OLE_E_LAST+1;
+	public const uint OLECMDERR_E_FIRST = OLE_E_LAST + 1;
 
 	/// <summary>Command parameter is not recognized as a valid command</summary>
 	public const uint OLECMDERR_E_NOTSUPPORTED = OLECMDERR_E_FIRST;
 
 	/// <summary>The command identified by nCmdID is currently disabled and cannot be executed.</summary>
-	public const uint OLECMDERR_E_DISABLED     = OLECMDERR_E_FIRST+1;
+	public const uint OLECMDERR_E_DISABLED = OLECMDERR_E_FIRST + 1;
 
 	/// <summary>The caller has asked for help on the command identified by nCmdID, but no help is available.</summary>
-	public const uint OLECMDERR_E_NOHELP       = OLECMDERR_E_FIRST+2;
+	public const uint OLECMDERR_E_NOHELP = OLECMDERR_E_FIRST + 2;
 
 	/// <summary>The user canceled the execution of the command.</summary>
-	public const uint OLECMDERR_E_CANCELED     = OLECMDERR_E_FIRST+3;
+	public const uint OLECMDERR_E_CANCELED = OLECMDERR_E_FIRST + 3;
 
 	/// <summary>Command group parameter is non-NULL but does not specify a recognized command group</summary>
-	public const uint OLECMDERR_E_UNKNOWNGROUP = OLECMDERR_E_FIRST+4;
+	public const uint OLECMDERR_E_UNKNOWNGROUP = OLECMDERR_E_FIRST + 4;
 
 	/// <summary>Indicates that all the remaining pages should be printed.</summary>
 	public const ushort PAGESET_TOLASTPAGE = unchecked((ushort)-1);
@@ -1917,7 +1914,7 @@ public static partial class Ole32
 					fixed (char* p = value)
 					{
 						var dest = (byte*)(IntPtr)_rgwz;
-						System.Text.Encoding.Unicode.GetEncoder().Convert(p, value.Length, dest, (int)cwBuf, true, out var actual, out var offset, out var _);
+						Encoding.Unicode.GetEncoder().Convert(p, value.Length, dest, (int)cwBuf, true, out var actual, out var offset, out var _);
 						cwActual = (uint)actual;
 						dest[offset] = dest[offset + 1] = 0;
 					}

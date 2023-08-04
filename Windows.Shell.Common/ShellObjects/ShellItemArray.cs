@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell;
@@ -17,10 +15,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem" /> class.</summary>
 	/// <param name="shellItems">The shell items.</param>
-	public ShellItemArray(IShellItemArray shellItems)
-	{
-		array = shellItems;
-	}
+	public ShellItemArray(IShellItemArray shellItems) => array = shellItems;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
 	/// <param name="shellItems">The shell items to add to this array.</param>
@@ -34,23 +29,27 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	{
 	}
 
-	/// <summary>
-	/// Initializes a new instance of the <see cref="ShellItemArray" /> class.
-	/// </summary>
+	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
 	/// <param name="parent">The Shell data source object that is the parent of the child items specified in <paramref name="pidls"/>.</param>
 	/// <param name="pidls">The list of child item IDs for which the array is being created. This value can be <see langword="null"/>.</param>
-	public ShellItemArray(IShellFolder parent, IEnumerable<PIDL> pidls)
+	public ShellItemArray(IShellFolder parent, IEnumerable<PIDL>? pidls)
 	{
 		var pa = pidls?.Cast<IntPtr>().ToArray();
 		SHCreateShellItemArray(PIDL.Null, parent, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
-	/// <param name="pidls">The IDList items to add to this array.</param>
-	private ShellItemArray(IntPtr[] pidls)
+	/// <param name="pidlParent">The ID list of the parent folder of the items specified in ppidl.</param>
+	/// <param name="pidls">The list of child item IDs for which the array is being created. This value can be <see langword="null"/>.</param>
+	public ShellItemArray(PIDL pidlParent, IEnumerable<PIDL>? pidls)
 	{
-		SHCreateShellItemArrayFromIDLists((uint)pidls.Length, pidls, out array).ThrowIfFailed();
+		var pa = pidls?.Cast<IntPtr>().ToArray();
+		SHCreateShellItemArray(pidlParent, null, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
 	}
+
+	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
+	/// <param name="pidls">The IDList items to add to this array.</param>
+	private ShellItemArray(IntPtr[] pidls) => SHCreateShellItemArrayFromIDLists((uint)pidls.Length, pidls, out array).ThrowIfFailed();
 
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
 	public int Count => (int)(array?.GetCount() ?? 0);

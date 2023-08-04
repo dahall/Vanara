@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.Collections.Generic;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -43,7 +40,7 @@ public enum LibraryViewTemplate
 }
 
 /// <summary>Shell library encapsulation.</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class ShellLibrary : ShellFolder
 {
 	//private const string ext = ".library-ms";
@@ -190,8 +187,8 @@ public class ShellLibrary : ShellFolder
 	}
 
 	/// <summary>Folders of a <see cref="ShellLibrary"/>.</summary>
-	/// <seealso cref="Vanara.Windows.Shell.ShellItemArray"/>
-	/// <seealso cref="System.Collections.Generic.ICollection{ShellItem}"/>
+	/// <seealso cref="ShellItemArray"/>
+	/// <seealso cref="ICollection{ShellItem}"/>
 	public class ShellLibraryFolders : ShellItemArray, ICollection<ShellItem>
 	{
 		private IShellLibrary lib;

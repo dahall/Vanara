@@ -1,15 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 
 namespace Vanara.InteropServices;
 
 /// <summary>An safe unmanaged array of bytes allocated on the global heap.</summary>
 /// <seealso cref="byte"/>
-/// <seealso cref="System.ICloneable"/>
-/// <seealso cref="System.Collections.IList"/>
+/// <seealso cref="ICloneable"/>
+/// <seealso cref="IList"/>
 /// <seealso cref="SafeHGlobalHandle"/>
 public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>, ICloneable, IList, IStructuralComparable, IStructuralEquatable
 {
@@ -64,8 +62,8 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 	/// <value>The <see cref="byte"/>.</value>
 	/// <param name="index">The index.</param>
 	/// <returns></returns>
-	/// <exception cref="System.ArgumentOutOfRangeException">index</exception>
-	/// <exception cref="System.InvalidOperationException">Object is not valid.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">index</exception>
+	/// <exception cref="InvalidOperationException">Object is not valid.</exception>
 	public byte this[int index]
 	{
 		get
@@ -91,7 +89,7 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 	}
 
 	/// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</summary>
-	/// <exception cref="System.NotSupportedException"></exception>
+	/// <exception cref="NotSupportedException"></exception>
 	public void Clear() => Size = 0;
 
 	/// <summary>Creates a new object that is a copy of the current instance.</summary>
@@ -114,8 +112,8 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 	/// cref="T:System.Collections.Generic.ICollection{T}"/> . The <see cref="T:System.Array"/> must have zero-based indexing.
 	/// </param>
 	/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
-	/// <exception cref="System.ArgumentNullException">array</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">array</exception>
+	/// <exception cref="ArgumentNullException">array</exception>
+	/// <exception cref="ArgumentOutOfRangeException">array</exception>
 	public void CopyTo(byte[] array, int arrayIndex)
 	{
 		if (array == null) throw new ArgumentNullException(nameof(array));
@@ -164,7 +162,7 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 
 	/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</summary>
 	/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</param>
-	/// <exception cref="System.NotSupportedException"></exception>
+	/// <exception cref="NotSupportedException"></exception>
 	[ExcludeFromCodeCoverage]
 	void ICollection<byte>.Add(byte item) => ((IList)this).Add(item);
 
@@ -216,8 +214,8 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 	/// cref="T:System.Collections.ICollection"/>. The <see cref="T:System.Array"/> must have zero-based indexing.
 	/// </param>
 	/// <param name="index">The zero-based index in <paramref name="array"/> at which copying begins.</param>
-	/// <exception cref="System.ArgumentNullException">array</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">array</exception>
+	/// <exception cref="ArgumentNullException">array</exception>
+	/// <exception cref="ArgumentOutOfRangeException">array</exception>
 	void ICollection.CopyTo(Array array, int index)
 	{
 		if (array == null) throw new ArgumentNullException(nameof(array));
@@ -264,7 +262,7 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <param name="comparer">The comparer.</param>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	/// <exception cref="System.ArgumentNullException">comparer</exception>
+	/// <exception cref="ArgumentNullException">comparer</exception>
 	int IStructuralEquatable.GetHashCode(IEqualityComparer comparer)
 	{
 		if (comparer == null)
@@ -290,7 +288,7 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 	/// <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList{T}"/> at the specified index.</summary>
 	/// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
 	/// <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList{T}"/>.</param>
-	/// <exception cref="System.NotSupportedException"></exception>
+	/// <exception cref="NotSupportedException"></exception>
 	void IList<byte>.Insert(int index, byte item) => throw new NotSupportedException();
 
 	/// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.IList"/>.</summary>
@@ -304,12 +302,12 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 	/// true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection{T}"/>;
 	/// otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection{T}"/>.
 	/// </returns>
-	/// <exception cref="System.NotSupportedException"></exception>
+	/// <exception cref="NotSupportedException"></exception>
 	bool ICollection<byte>.Remove(byte item) => throw new NotSupportedException();
 
 	/// <summary>Removes the <see cref="T:System.Collections.Generic.IList{T}"/> item at the specified index.</summary>
 	/// <param name="index">The zero-based index of the item to remove.</param>
-	/// <exception cref="System.NotSupportedException"></exception>
+	/// <exception cref="NotSupportedException"></exception>
 	void IList.RemoveAt(int index) => throw new NotSupportedException();
 
 	/// <summary>Removes the <see cref="T:System.Collections.Generic.IList{T}"/> item at the specified index.</summary>

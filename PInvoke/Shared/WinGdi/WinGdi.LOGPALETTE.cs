@@ -1,7 +1,4 @@
 ﻿#nullable enable
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 

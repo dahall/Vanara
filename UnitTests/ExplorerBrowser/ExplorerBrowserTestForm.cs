@@ -49,7 +49,7 @@ public partial class ExplorerBrowserTestForm : Form
 		uiDecoupleTimer.Start();
 	}
 
-	private void DebugEnterFunc([System.Runtime.CompilerServices.CallerMemberName] string func = "") => System.Diagnostics.Debug.WriteLine($"Entering {func}...");
+	private void DebugEnterFunc([System.Runtime.CompilerServices.CallerMemberName] string func = "") => Debug.WriteLine($"Entering {func}...");
 
 	private void backButton_Click(object sender, EventArgs e) =>
 		// Move backwards through navigation log

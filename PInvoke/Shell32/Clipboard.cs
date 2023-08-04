@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Text.RegularExpressions;
-using Vanara.Extensions;
 using Vanara.Extensions.Reflection;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.User32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 
@@ -40,13 +34,13 @@ public static partial class Shell32
 		DROPIMAGE_NONE = 0,
 
 		/// <summary>A plus sign (+) that indicates a copy operation.</summary>
-		DROPIMAGE_COPY = (int)Ole32.DROPEFFECT.DROPEFFECT_COPY,
+		DROPIMAGE_COPY = (int)DROPEFFECT.DROPEFFECT_COPY,
 
 		/// <summary>An arrow that indicates a move operation.</summary>
-		DROPIMAGE_MOVE = (int)Ole32.DROPEFFECT.DROPEFFECT_MOVE,
+		DROPIMAGE_MOVE = (int)DROPEFFECT.DROPEFFECT_MOVE,
 
 		/// <summary>An arrow that indicates a link.</summary>
-		DROPIMAGE_LINK = (int)Ole32.DROPEFFECT.DROPEFFECT_LINK,
+		DROPIMAGE_LINK = (int)DROPEFFECT.DROPEFFECT_LINK,
 
 		/// <summary>A tag icon that indicates that the metadata will be changed.</summary>
 		DROPIMAGE_LABEL = 6,
@@ -100,9 +94,8 @@ public static partial class Shell32
 	public static string AnsiToUnicode(string value)
 	{
 		if (string.IsNullOrEmpty(value)) return value;
-		byte[] ret = null;
-		var sz = MultiByteToWideChar(0, 0, value, value.Length, ret, 0);
-		ret = new byte[(int)sz];
+		var sz = MultiByteToWideChar(0, 0, value, value.Length);
+		var ret = new byte[sz];
 		MultiByteToWideChar(0, 0, value, value.Length, ret, sz);
 		return Encoding.Unicode.GetString(ret);
 	}
@@ -112,7 +105,7 @@ public static partial class Shell32
 	/// <returns>A sequence of <see cref="FORMATETC"/> structures.</returns>
 	public static IEnumerable<FORMATETC> EnumFormats(this IDataObject dataObj)
 	{
-		IEnumFORMATETC e = null;
+		IEnumFORMATETC? e = null;
 		try { e = dataObj.EnumFormatEtc(DATADIR.DATADIR_GET); e.Reset(); }
 		catch { }
 		if (e is null) yield break;
@@ -131,7 +124,7 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="sourceUrl"></param>
 	/// <returns></returns>
-	public static byte[] FormatHtmlForClipboard(string htmlFragment, string sourceUrl = null)
+	public static byte[] FormatHtmlForClipboard(string htmlFragment, string? sourceUrl = null)
 	{
 		const string Header = "Version:0.9\nStartHTML:{0:0000000000}\nEndHTML:{1:0000000000}\nStartFragment:{2:0000000000}\nEndFragment:{3:0000000000}\n";
 		const string htmlDocType = "<!DOCTYPE html>";
@@ -214,7 +207,7 @@ public static partial class Shell32
 	/// </param>
 	/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
 	/// <exception cref="InvalidOperationException">Unrecognized TYMED value.</exception>
-	public static object GetData(this IDataObject dataObj, string format, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
+	public static object? GetData(this IDataObject dataObj, string format, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
 		GetData(dataObj, RegisterClipboardFormat(format), aspect, index);
 
 	/// <summary>Obtains data from a source data object.</summary>
@@ -313,9 +306,9 @@ public static partial class Shell32
 	/// </list>
 	/// </returns>
 	/// <exception cref="InvalidOperationException">Unrecognized TYMED value.</exception>
-	public static object GetData(this IDataObject dataObj, uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
+	public static object? GetData(this IDataObject dataObj, uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
 	{
-		ClipCorrespondingTypeAttribute attr = ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null;
+		ClipCorrespondingTypeAttribute? attr = ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute? attr) data) ? data.attr : null;
 		TYMED tymed = attr?.Medium ?? AllTymed.Value;
 		FORMATETC formatetc = new()
 		{
@@ -370,10 +363,11 @@ public static partial class Shell32
 			// Use clipboard formatter if available
 			if (attr.Formatter is not null)
 			{
-				return ((IClipboardFormatter)Activator.CreateInstance(attr.Formatter)).Read(hmem);
+				return ((IClipboardFormatter)Activator.CreateInstance(attr.Formatter)!).Read(hmem);
 			}
 
 			CharSet charSet = GetCharSet(attr);
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			return attr.TypeRef switch
 			{
 				// Handle strings
@@ -381,10 +375,13 @@ public static partial class Shell32
 				// Handle string[]
 				Type t when t == typeof(string[]) => hmem.ToStringEnum(charSet).ToArray(),
 				// Handle IStream on memory
-				Type t when t == typeof(IStream) => hmem.CallLocked(p => ShlwApi.SHCreateMemStream(p, hmem.Size)),
-				// Handle other types
-				_ => hmem.CallLocked(p => p.Convert(hmem.Size, attr.TypeRef, charSet)),
+				Type t when t == typeof(IStream) => hmem.CallLocked(p => { CreateStreamOnHGlobal(p, false, out var s).ThrowIfFailed(); return s; }),
+				// Handle other defined types
+				_ when attr.TypeRef is not null => hmem.CallLocked(p => p.Convert(hmem.Size, attr.TypeRef, charSet)),
+				// Handle unknown types
+				_ => hmem.GetBytes(),
 			};
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		}
 		finally
 		{
@@ -403,7 +400,7 @@ public static partial class Shell32
 	/// <param name="charSet">The character set to use for string types.</param>
 	/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
 	/// <exception cref="ArgumentException">This format does not support direct type access. - formatId</exception>
-	public static T GetData<T>(this IDataObject dataObj, string format, int index = -1, CharSet charSet = CharSet.Auto) =>
+	public static T? GetData<T>(this IDataObject dataObj, string format, int index = -1, CharSet charSet = CharSet.Auto) =>
 		GetData<T>(dataObj, RegisterClipboardFormat(format), index, charSet);
 
 	/// <summary>Obtains data from a source data object.</summary>
@@ -417,7 +414,7 @@ public static partial class Shell32
 	/// <param name="charSet">The character set to use for string types.</param>
 	/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
 	/// <exception cref="ArgumentException">This format does not support direct type access. - formatId</exception>
-	public static T GetData<T>(this IDataObject dataObj, uint formatId, int index = -1, CharSet charSet = CharSet.Auto)
+	public static T? GetData<T>(this IDataObject dataObj, uint formatId, int index = -1, CharSet charSet = CharSet.Auto)
 	{
 		FORMATETC formatetc = new()
 		{
@@ -443,34 +440,31 @@ public static partial class Shell32
 	/// <returns>A list of strings containing a new name for each file.</returns>
 	public static string[] GetFileNameMap(this IDataObject dataObj)
 	{
+		string[]? ret = null;
 		if (dataObj.IsFormatAvailable(RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPW)))
-			return dataObj.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPW) as string[];
+			ret = dataObj.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPW) as string[];
 		else if (dataObj.IsFormatAvailable(RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPA)))
-			return dataObj.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPA) as string[];
-		return new string[0];
+			ret = dataObj.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPA) as string[];
+		return ret ?? new string[0];
 	}
 
 	/// <summary>Gets an HTML string from bytes returned from the clipboard.</summary>
 	/// <param name="bytes">The bytes from the clipboard.</param>
 	/// <returns>The string representing the HTML.</returns>
 	/// <exception cref="InvalidOperationException">HTML format header cannot be processed.</exception>
-	public static string GetHtmlFromClipboard(byte[] bytes)
+	public static string? GetHtmlFromClipboard(byte[] bytes)
 	{
 		const string HdrRegEx = @"Version:\d\.\d\s+StartHTML:(\d+)\s+EndHTML:(\d+)\s+StartFragment:(\d+)\s+EndFragment:(\d+)\s+(?:StartSelection:(\d+)\s+EndSelection:(\d+)\s+)?";
 
 		if (bytes is null)
-		{
 			return null;
-		}
 
 		// Get UTF8 encoded string
 		string utf8String = Encoding.UTF8.GetString(bytes);
 		// Find markers
 		Match match = Regex.Match(utf8String, HdrRegEx);
 		if (!match.Success)
-		{
 			throw new InvalidOperationException("HTML format header cannot be processed.");
-		}
 
 		//int startHtml = int.Parse(match.Groups[1].Value.TrimStart('0'));
 		//int endHtml = int.Parse(match.Groups[2].Value.TrimStart('0'));
@@ -486,13 +480,13 @@ public static partial class Shell32
 	/// <param name="dataObj">The data object.</param>
 	/// <param name="formatId">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
 	/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
-	public static string GetText(this IDataObject dataObj, uint formatId) => GetData(dataObj, formatId)?.ToString();
+	public static string? GetText(this IDataObject dataObj, uint formatId) => GetData(dataObj, formatId)?.ToString();
 
 	/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
 	/// <param name="dataObj">The data object.</param>
 	/// <param name="format">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
 	/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
-	public static string GetText(this IDataObject dataObj, string format) => GetData(dataObj, format)?.ToString();
+	public static string? GetText(this IDataObject dataObj, string format) => GetData(dataObj, format)?.ToString();
 
 	/// <summary>
 	/// Determines whether the data object is capable of rendering the data described in the parameters. Objects attempting a paste or
@@ -549,11 +543,11 @@ public static partial class Shell32
 	/// </param>
 	public static void SetData(this IDataObject dataObj, uint formatId, object obj, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
 	{
-		ClipCorrespondingTypeAttribute attr = ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null;
+		ClipCorrespondingTypeAttribute? attr = ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute? attr) data) ? data.attr : null;
 
 		TYMED tymed = attr?.Medium ?? TYMED.TYMED_HGLOBAL;
 		CharSet charSet = GetCharSet(attr);
-		IntPtr mbr = attr?.Formatter is null ? default : ((IClipboardFormatter)Activator.CreateInstance(attr.Formatter)).Write(obj);
+		IntPtr mbr = attr?.Formatter is null ? default : ((IClipboardFormatter)Activator.CreateInstance(attr.Formatter)!).Write(obj);
 		if (mbr == default)
 		{
 			switch (obj)
@@ -582,7 +576,7 @@ public static partial class Shell32
 					//if (CLIPFORMAT.CF_TEXT.Equals(formatId))
 					//	mbr = ClipboardBytesFormatter.Instance.Write(UnicodeToAnsiBytes(str));
 					//else
-					mbr = ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, GetEncoding(attr), true));
+					mbr = ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, attr is null ? Encoding.Unicode : GetEncoding(attr), true));
 					break;
 
 				case IEnumerable<string> strlist:
@@ -682,7 +676,7 @@ public static partial class Shell32
 	/// <param name="text">The Unicode Text value.</param>
 	/// <param name="htmlText">The HTML text value. If <see langword="null"/>, this format will not be set.</param>
 	/// <param name="rtfText">The Rich Text Format value. If <see langword="null"/>, this format will not be set.</param>
-	public static void SetText(this IDataObject dataObj, string text, string htmlText = null, string rtfText = null)
+	public static void SetText(this IDataObject dataObj, string text, string? htmlText = null, string? rtfText = null)
 	{
 		if (text is not null) dataObj.SetData(CLIPFORMAT.CF_UNICODETEXT, text);
 		if (htmlText is not null) dataObj.SetData(ShellClipboardFormat.CF_HTML, htmlText);
@@ -694,7 +688,7 @@ public static partial class Shell32
 	/// <param name="url">The URL.</param>
 	/// <param name="title">The title. This value can be <see langword="null"/>.</param>
 	/// <exception cref="ArgumentNullException">url</exception>
-	public static void SetUrl(this IDataObject dataObj, string url, string title = null)
+	public static void SetUrl(this IDataObject dataObj, string url, string? title = null)
 	{
 		if (url is null) throw new ArgumentNullException(nameof(url));
 		dataObj.SetData(CLIPFORMAT.CF_UNICODETEXT, url);
@@ -713,12 +707,12 @@ public static partial class Shell32
 	/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 	/// </param>
 	/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
-	public static bool TryGetData<T>(this IDataObject dataObj, uint formatId, out T obj, int index = -1)
+	public static bool TryGetData<T>(this IDataObject dataObj, uint formatId, out T? obj, int index = -1)
 	{
 		if (IsFormatAvailable(dataObj, formatId))
 			try
 			{
-				var charSet = GetCharSet(ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null);
+				var charSet = GetCharSet(ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute? attr) data) ? data.attr : null);
 				obj = GetData<T>(dataObj, formatId, index, charSet);
 				return true;
 			}
@@ -733,14 +727,13 @@ public static partial class Shell32
 	public static byte[] UnicodeToAnsiBytes(string value)
 	{
 		if (string.IsNullOrEmpty(value)) return new byte[0];
-		byte[] ret = null;
-		var sz = WideCharToMultiByte(0, 0, value, value.Length, ret, 0);
-		ret = new byte[sz == 0 ? 0 : sz + 1];
+		var sz = WideCharToMultiByte(0, 0, value, value.Length, (byte[]?)null, 0);
+		var ret = new byte[sz == 0 ? 0 : sz + 1];
 		WideCharToMultiByte(0, 0, value, value.Length, ret, sz);
 		return ret;
 	}
 
-	private static CharSet GetCharSet(ClipCorrespondingTypeAttribute attr)
+	private static CharSet GetCharSet(ClipCorrespondingTypeAttribute? attr)
 	{
 		CharSet charSet = CharSet.Auto;
 		if (attr is not null)
@@ -753,7 +746,7 @@ public static partial class Shell32
 		return charSet;
 	}
 
-	private static Encoding GetEncoding(ClipCorrespondingTypeAttribute attr) => (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding));
+	private static Encoding GetEncoding(ClipCorrespondingTypeAttribute attr) => (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding))!;
 
 	/// <summary>
 	/// <para>
@@ -883,6 +876,7 @@ public static partial class Shell32
 		[MarshalAs(UnmanagedType.Bool)]
 		public bool fWide;
 
+		/// <summary>
 		/// Gets the file name array appended to a <see cref="DROPFILES"/> struture in memory. It consists of a series of strings, each
 		/// containing one file's fully qualified path. This method should only be called when <paramref name="pDropFiles"/> is a valid
 		/// pointer to a <see cref="DROPFILES"/> structure.
@@ -1132,6 +1126,7 @@ public static partial class Shell32
 	/// must be represented as offsets within the memory.</note>
 	/// </summary>
 	/// <remarks>
+	/// <note type="important">This is a duplicate of the same structure declared in <c>Vanara.PInvoke.Mpr</c>, but defined as a struct.</note>
 	/// <note type="">The winnetwk.h header defines NETRESOURCE as an alias which automatically selects the ANSI or Unicode version of
 	/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
 	/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
@@ -1746,15 +1741,15 @@ public static partial class Shell32
 		[ClipCorrespondingType(typeof(uint))]
 		public const string CFSTR_ZONEIDENTIFIER = "ZoneIdentifier";
 
-		internal static readonly Lazy<Dictionary<uint, (string name, ClipCorrespondingTypeAttribute attr)>> clipFmtIds = new(() =>
+		internal static readonly Lazy<Dictionary<uint, (string name, ClipCorrespondingTypeAttribute? attr)>> clipFmtIds = new(() =>
 		{
 			Type cftype = typeof(CLIPFORMAT);
-			var knownIds = cftype.GetFields(BindingFlags.Static | BindingFlags.Public).
+			Dictionary<uint, (string name, ClipCorrespondingTypeAttribute? attr)> knownIds = cftype.GetFields(BindingFlags.Static | BindingFlags.Public).
 				Where(f => f.FieldType == cftype && f.IsInitOnly).
-				ToDictionary(f => (uint)(CLIPFORMAT)f.GetValue(null), f => (f.Name, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
+				ToDictionary(f => (uint)(CLIPFORMAT)f.GetValue(null)!, f => (f.Name, (ClipCorrespondingTypeAttribute?)f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
 			foreach (FieldInfo f in typeof(ShellClipboardFormat).GetConstants().Where(f => f.FieldType == typeof(string)))
 			{
-				string s = (string)f.GetValue(null);
+				string s = (string)f.GetValue(null)!;
 				uint id = RegisterClipboardFormat(s);
 				if (!knownIds.ContainsKey(id))
 					knownIds.Add(id, (s, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
@@ -1811,18 +1806,18 @@ public static partial class Shell32
 	{
 		public static ClipboardBytesFormatter Instance { get; } = new();
 
-		public virtual object Read(IntPtr hGlobal) => new SafeMoveableHGlobalHandle(hGlobal, false).GetBytes();
+		public virtual object? Read(IntPtr hGlobal) => new SafeMoveableHGlobalHandle(hGlobal, false).GetBytes();
 
-		public virtual IntPtr Write(object value) => new SafeMoveableHGlobalHandle((byte[])value).TakeOwnership();
+		public virtual IntPtr Write(object? value) => new SafeMoveableHGlobalHandle(value as byte[] ?? new byte[0]).TakeOwnership();
 	}
 
 	internal class ClipboardHDROPFormatter : IClipboardFormatter
 	{
-		public object Read(IntPtr hGlobal) => DROPFILES.DangerousGetFileList(hGlobal);
+		public object? Read(IntPtr hGlobal) => DROPFILES.DangerousGetFileList(hGlobal);
 
-		public IntPtr Write(object value) => Write(value, Marshal.SystemDefaultCharSize != 1);
+		public IntPtr Write(object? value) => Write(value, Marshal.SystemDefaultCharSize != 1);
 
-		public IntPtr Write(object value, bool wideChar)
+		public IntPtr Write(object? value, bool wideChar)
 		{
 			if (value is not string[] vals) throw new ArgumentException(null, nameof(value));
 			if (!wideChar) vals = Array.ConvertAll(vals, ClipboardShortFileNameFormatter.GetShortPath);
@@ -1838,9 +1833,9 @@ public static partial class Shell32
 	{
 		public new static IClipboardFormatter Instance { get; } = new ClipboardHtmlFormatter();
 
-		public override object Read(IntPtr hGlobal) => GetHtmlFromClipboard((byte[])base.Read(hGlobal));
+		public override object? Read(IntPtr hGlobal) => GetHtmlFromClipboard((byte[])base.Read(hGlobal)!);
 
-		public override IntPtr Write(object value) => base.Write(FormatHtmlForClipboard((string)value));
+		public override IntPtr Write(object? value) => base.Write(FormatHtmlForClipboard(value as string ?? string.Empty));
 	}
 
 	internal class ClipboardSerializedFormatter : IClipboardFormatter
@@ -1850,9 +1845,9 @@ public static partial class Shell32
 
 		public static bool IsSerialized(SafeMoveableHGlobalHandle h) => h.Size >= 16 && h.ToStructure<Guid>() == guid;
 
-		public object Read(IntPtr hGlobal)
+		public object? Read(IntPtr hGlobal)
 		{
-			byte[] bytes = (byte[])ClipboardBytesFormatter.Instance.Read(hGlobal);
+			byte[] bytes = (byte[])ClipboardBytesFormatter.Instance.Read(hGlobal)!;
 			if (bytes.Length <= guidBytes.Length || !Equals(bytes, guidBytes, guidBytes.Length))
 			{
 				throw new InvalidDataException();
@@ -1870,9 +1865,9 @@ public static partial class Shell32
 			}
 		}
 
-		public IntPtr Write(object value)
+		public IntPtr Write(object? value)
 		{
-			System.Runtime.Serialization.ISerializable ser = (System.Runtime.Serialization.ISerializable)value;
+			System.Runtime.Serialization.ISerializable ser = value as System.Runtime.Serialization.ISerializable ?? throw new ArgumentException("Only ISerializable objects can be used", nameof(value));
 			MemoryStream ms = new();
 			new BinaryWriter(ms).Write(guidBytes);
 			new BinaryFormatter().Serialize(ms, ser);
@@ -1882,9 +1877,9 @@ public static partial class Shell32
 
 	internal class ClipboardShortFileNameFormatter : IClipboardFormatter
 	{
-		public object Read(IntPtr hGlobal) => new SafeMoveableHGlobalHandle(hGlobal, false).ToString(-1, CharSet.Ansi);
+		public object? Read(IntPtr hGlobal) => new SafeMoveableHGlobalHandle(hGlobal, false).ToString(-1, CharSet.Ansi);
 
-		public IntPtr Write(object value) => value is string s ? new SafeMoveableHGlobalHandle(GetShortPathBytes(s)) : throw new ArgumentException(null, nameof(value));
+		public IntPtr Write(object? value) => value is string s ? new SafeMoveableHGlobalHandle(GetShortPathBytes(s)) : throw new ArgumentException(null, nameof(value));
 
 		internal static string GetShortPath(string path)
 		{

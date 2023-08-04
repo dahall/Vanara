@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -2314,7 +2309,7 @@ public static partial class Gdi32
 	/// </param>
 	/// <returns>A sequence of tuples that contain the ENUMLOGFONTEXDV, ENUMTEXTMETRIC and FontType for each font family.</returns>
 	[PInvokeData("wingdi.h", MSDNShortId = "4d70906d-8005-4c4a-869e-16dd3e6fa3f2")]
-	public static IEnumerable<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> EnumFontFamiliesEx(HDC hdc, PInvoke.CharacterSet lfCharSet = PInvoke.CharacterSet.ANSI_CHARSET, string lfFaceName = "")
+	public static IEnumerable<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> EnumFontFamiliesEx(HDC hdc, CharacterSet lfCharSet = CharacterSet.ANSI_CHARSET, string lfFaceName = "")
 	{
 		LOGFONT lf = new() { lfCharSet = lfCharSet, lfFaceName = lfFaceName };
 		List<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> l = new();
@@ -4503,12 +4498,12 @@ public static partial class Gdi32
 		/// <summary>The fractional value.</summary>
 		public ushort fract;
 
-		/// <summary>Performs an implicit conversion from <see cref="Vanara.PInvoke.Gdi32.FIXED"/> to <see cref="decimal"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="FIXED"/> to <see cref="decimal"/>.</summary>
 		/// <param name="f">The FIXED instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator decimal(FIXED f) => decimal.Parse($"{f.value.ToString(NumberFormatInfo.InvariantInfo)}{NumberFormatInfo.InvariantInfo.NumberDecimalSeparator}{f.fract.ToString(NumberFormatInfo.InvariantInfo)}", NumberFormatInfo.InvariantInfo);
 
-		/// <summary>Performs an implicit conversion from <see cref="decimal"/> to <see cref="Vanara.PInvoke.Gdi32.FIXED"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="decimal"/> to <see cref="FIXED"/>.</summary>
 		/// <param name="d">The decimal value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator FIXED(decimal d) => new() { value = (short)Math.Truncate(d), fract = ushort.Parse(d.ToString(NumberFormatInfo.InvariantInfo).Split(new[] { NumberFormatInfo.InvariantInfo.NumberDecimalSeparator }, StringSplitOptions.None)[1], NumberFormatInfo.InvariantInfo) };

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>The state of the other mouse buttons plus the SHIFT and CTRL keys.</summary>
 [PInvokeData("winuser.h")]

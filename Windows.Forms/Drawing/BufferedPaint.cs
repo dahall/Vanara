@@ -75,7 +75,7 @@ public static class BufferedPaint
 	{
 		try
 		{
-			if (System.Environment.OSVersion.Version.Major >= 6)
+			if (Environment.OSVersion.Version.Major >= 6)
 			{
 				// If this handle is running with a different state, stop the animations
 				if (paintAnimationInstances.TryGetValue(ctrl.Handle, out var val))

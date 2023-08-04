@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.IO;
 
 namespace Vanara.PInvoke;
 
@@ -230,7 +228,7 @@ public static partial class Shell32
 		/// IFileOperation::Advise for the overall operation, progress status and error notifications for the rename operation are
 		/// included there, so set this parameter to NULL.
 		/// </param>
-		void RenameItem(IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, IFileOperationProgressSink pfopsItem);
+		void RenameItem(IShellItem psiItem, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, [Optional] IFileOperationProgressSink? pfopsItem);
 
 		/// <summary>Declares a set of items that are to be given a new display name. All items are given the same name.</summary>
 		/// <param name="pUnkItems">
@@ -255,7 +253,7 @@ public static partial class Shell32
 		/// operation. If you call IFileOperation::Advise for the overall operation, progress status and error notifications for the move
 		/// operation are included there, so set this parameter to NULL.
 		/// </param>
-		void MoveItem(IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName, IFileOperationProgressSink pfopsItem);
+		void MoveItem(IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string? pszNewName, [Optional] IFileOperationProgressSink? pfopsItem);
 
 		/// <summary>Declares a set of items that are to be moved to a specified destination.</summary>
 		/// <param name="punkItems">
@@ -282,7 +280,7 @@ public static partial class Shell32
 		/// operation. If you call IFileOperation::Advise for the overall operation, progress status and error notifications for the copy
 		/// operation are included there, so set this parameter to NULL.
 		/// </param>
-		void CopyItem(IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszCopyName, IFileOperationProgressSink pfopsItem);
+		void CopyItem(IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string? pszCopyName, [Optional] IFileOperationProgressSink? pfopsItem);
 
 		/// <summary>Declares a set of items that are to be copied to a specified destination.</summary>
 		/// <param name="punkItems">
@@ -302,7 +300,7 @@ public static partial class Shell32
 		/// delete operation. If you call IFileOperation::Advise for the overall operation, progress status and error notifications for
 		/// the delete operation are included there, so set this parameter to NULL.
 		/// </param>
-		void DeleteItem(IShellItem psiItem, IFileOperationProgressSink pfopsItem);
+		void DeleteItem(IShellItem psiItem, [Optional] IFileOperationProgressSink? pfopsItem);
 
 		/// <summary>Declares a set of items that are to be deleted.</summary>
 		/// <param name="punkItems">
@@ -348,8 +346,8 @@ public static partial class Shell32
 		/// included there, so set this parameter to NULL.
 		/// </param>
 		void NewItem(IShellItem psiDestinationFolder, FileAttributes dwFileAttributes,
-			[MarshalAs(UnmanagedType.LPWStr)] string pszName, [MarshalAs(UnmanagedType.LPWStr)] string pszTemplateName,
-			IFileOperationProgressSink pfopsItem);
+			[MarshalAs(UnmanagedType.LPWStr)] string pszName, [MarshalAs(UnmanagedType.LPWStr)] string? pszTemplateName,
+			[Optional] IFileOperationProgressSink? pfopsItem);
 
 		/// <summary>Executes all selected operations.</summary>
 		/// <remarks>

@@ -9090,94 +9090,94 @@ public partial struct Win32Error
 	public const uint ISDSC_NON_SPECIFIC_ERROR = 0xEFFF0001;
 
 	/// <summary>Login Failed.</summary>
-	public const uint ISDSC_LOGIN_FAILED               = 0xEFFF0002;
+	public const uint ISDSC_LOGIN_FAILED = 0xEFFF0002;
 
 	/// <summary>Connection Failed.</summary>
-	public const uint ISDSC_CONNECTION_FAILED          = 0xEFFF0003;
+	public const uint ISDSC_CONNECTION_FAILED = 0xEFFF0003;
 
 	/// <summary>Initiator Node Already Exists.</summary>
 	public const uint ISDSC_INITIATOR_NODE_ALREADY_EXISTS = 0xEFFF0004;
 
 	/// <summary>Initiator Node Does Not Exist.</summary>
-	public const uint ISDSC_INITIATOR_NODE_NOT_FOUND   = 0xEFFF0005;
+	public const uint ISDSC_INITIATOR_NODE_NOT_FOUND = 0xEFFF0005;
 
 	/// <summary>Target Moved Temporarily.</summary>
-	public const uint ISDSC_TARGET_MOVED_TEMPORARILY   = 0xEFFF0006;
+	public const uint ISDSC_TARGET_MOVED_TEMPORARILY = 0xEFFF0006;
 
 	/// <summary>Target Moved Permanently.</summary>
-	public const uint ISDSC_TARGET_MOVED_PERMANENTLY   = 0xEFFF0007;
+	public const uint ISDSC_TARGET_MOVED_PERMANENTLY = 0xEFFF0007;
 
 	/// <summary>Initiator Error.</summary>
-	public const uint ISDSC_INITIATOR_ERROR            = 0xEFFF0008;
+	public const uint ISDSC_INITIATOR_ERROR = 0xEFFF0008;
 
 	/// <summary>Authentication Failure.</summary>
-	public const uint ISDSC_AUTHENTICATION_FAILURE     = 0xEFFF0009;
+	public const uint ISDSC_AUTHENTICATION_FAILURE = 0xEFFF0009;
 
 	/// <summary>Authorization Failure.</summary>
-	public const uint ISDSC_AUTHORIZATION_FAILURE      = 0xEFFF000A;
+	public const uint ISDSC_AUTHORIZATION_FAILURE = 0xEFFF000A;
 
 	/// <summary>Not Found.</summary>
-	public const uint ISDSC_NOT_FOUND                  = 0xEFFF000B;
+	public const uint ISDSC_NOT_FOUND = 0xEFFF000B;
 
 	/// <summary>Target Removed.</summary>
-	public const uint ISDSC_TARGET_REMOVED             = 0xEFFF000C;
+	public const uint ISDSC_TARGET_REMOVED = 0xEFFF000C;
 
 	/// <summary>Unsupported Version.</summary>
-	public const uint ISDSC_UNSUPPORTED_VERSION        = 0xEFFF000D;
+	public const uint ISDSC_UNSUPPORTED_VERSION = 0xEFFF000D;
 
 	/// <summary>Too many Connections.</summary>
-	public const uint ISDSC_TOO_MANY_CONNECTIONS       = 0xEFFF000E;
+	public const uint ISDSC_TOO_MANY_CONNECTIONS = 0xEFFF000E;
 
 	/// <summary>Missing Parameter.</summary>
-	public const uint ISDSC_MISSING_PARAMETER          = 0xEFFF000F;
+	public const uint ISDSC_MISSING_PARAMETER = 0xEFFF000F;
 
 	/// <summary>Can not include in session.</summary>
-	public const uint ISDSC_CANT_INCLUDE_IN_SESSION    = 0xEFFF0010;
+	public const uint ISDSC_CANT_INCLUDE_IN_SESSION = 0xEFFF0010;
 
 	/// <summary>Session type not supported.</summary>
 	public const uint ISDSC_SESSION_TYPE_NOT_SUPPORTED = 0xEFFF0011;
 
 	/// <summary>Target Error.</summary>
-	public const uint ISDSC_TARGET_ERROR               = 0xEFFF0012;
+	public const uint ISDSC_TARGET_ERROR = 0xEFFF0012;
 
 	/// <summary>Service Unavailable.</summary>
-	public const uint ISDSC_SERVICE_UNAVAILABLE        = 0xEFFF0013;
+	public const uint ISDSC_SERVICE_UNAVAILABLE = 0xEFFF0013;
 
 	/// <summary>Out of Resources.</summary>
-	public const uint ISDSC_OUT_OF_RESOURCES           = 0xEFFF0014;
+	public const uint ISDSC_OUT_OF_RESOURCES = 0xEFFF0014;
 
 	/// <summary>Connections already exist on initiator node.</summary>
-	public const uint ISDSC_CONNECTION_ALREADY_EXISTS  = 0xEFFF0015;
+	public const uint ISDSC_CONNECTION_ALREADY_EXISTS = 0xEFFF0015;
 
 	/// <summary>Session Already Exists.</summary>
-	public const uint ISDSC_SESSION_ALREADY_EXISTS     = 0xEFFF0016;
+	public const uint ISDSC_SESSION_ALREADY_EXISTS = 0xEFFF0016;
 
 	/// <summary>Initiator Instance Does Not Exist.</summary>
 	public const uint ISDSC_INITIATOR_INSTANCE_NOT_FOUND = 0xEFFF0017;
 
 	/// <summary>Target Already Exists.</summary>
-	public const uint ISDSC_TARGET_ALREADY_EXISTS      = 0xEFFF0018;
+	public const uint ISDSC_TARGET_ALREADY_EXISTS = 0xEFFF0018;
 
 	/// <summary>The iscsi driver implementation did not complete an operation correctly.</summary>
-	public const uint ISDSC_DRIVER_BUG                 = 0xEFFF0019;
+	public const uint ISDSC_DRIVER_BUG = 0xEFFF0019;
 
 	/// <summary>An invalid key text was encountered.</summary>
-	public const uint ISDSC_INVALID_TEXT_KEY           = 0xEFFF001A;
+	public const uint ISDSC_INVALID_TEXT_KEY = 0xEFFF001A;
 
 	/// <summary>Invalid SendTargets response text was encountered.</summary>
-	public const uint ISDSC_INVALID_SENDTARGETS_TEXT   = 0xEFFF001B;
+	public const uint ISDSC_INVALID_SENDTARGETS_TEXT = 0xEFFF001B;
 
 	/// <summary>Invalid Session Id.</summary>
-	public const uint ISDSC_INVALID_SESSION_ID         = 0xEFFF001C;
+	public const uint ISDSC_INVALID_SESSION_ID = 0xEFFF001C;
 
 	/// <summary>The scsi request failed.</summary>
-	public const uint ISDSC_SCSI_REQUEST_FAILED        = 0xEFFF001D;
+	public const uint ISDSC_SCSI_REQUEST_FAILED = 0xEFFF001D;
 
 	/// <summary>Exceeded max sessions for this initiator.</summary>
-	public const uint ISDSC_TOO_MANY_SESSIONS          = 0xEFFF001E;
+	public const uint ISDSC_TOO_MANY_SESSIONS = 0xEFFF001E;
 
 	/// <summary>Session is busy since a request is already in progress.</summary>
-	public const uint ISDSC_SESSION_BUSY               = 0xEFFF001F;
+	public const uint ISDSC_SESSION_BUSY = 0xEFFF001F;
 
 	/// <summary>The target mapping requested is not available.</summary>
 	public const uint ISDSC_TARGET_MAPPING_UNAVAILABLE = 0xEFFF0020;
@@ -9186,16 +9186,16 @@ public partial struct Win32Error
 	public const uint ISDSC_ADDRESS_TYPE_NOT_SUPPORTED = 0xEFFF0021;
 
 	/// <summary>Logon Failed.</summary>
-	public const uint ISDSC_LOGON_FAILED               = 0xEFFF0022;
+	public const uint ISDSC_LOGON_FAILED = 0xEFFF0022;
 
 	/// <summary>TCP Send Failed.</summary>
-	public const uint ISDSC_SEND_FAILED                = 0xEFFF0023;
+	public const uint ISDSC_SEND_FAILED = 0xEFFF0023;
 
 	/// <summary>TCP Transport Error</summary>
-	public const uint ISDSC_TRANSPORT_ERROR            = 0xEFFF0024;
+	public const uint ISDSC_TRANSPORT_ERROR = 0xEFFF0024;
 
 	/// <summary>iSCSI Version Mismatch</summary>
-	public const uint ISDSC_VERSION_MISMATCH           = 0xEFFF0025;
+	public const uint ISDSC_VERSION_MISMATCH = 0xEFFF0025;
 
 	/// <summary>The Target Mapping Address passed is out of range for the adapter configuration.</summary>
 	public const uint ISDSC_TARGET_MAPPING_OUT_OF_RANGE = 0xEFFF0026;
@@ -9207,22 +9207,22 @@ public partial struct Win32Error
 	public const uint ISDSC_TARGET_AUTHINFO_UNAVAILABLE = 0xEFFF0028;
 
 	/// <summary>The target name is not found or is marked as hidden from login.</summary>
-	public const uint ISDSC_TARGET_NOT_FOUND           = 0xEFFF0029;
+	public const uint ISDSC_TARGET_NOT_FOUND = 0xEFFF0029;
 
 	/// <summary>One or more parameters specified in LoginTargetIN structure is invalid.</summary>
-	public const uint ISDSC_LOGIN_USER_INFO_BAD        = 0xEFFF002A;
+	public const uint ISDSC_LOGIN_USER_INFO_BAD = 0xEFFF002A;
 
 	/// <summary>Given target mapping already exists.</summary>
-	public const uint ISDSC_TARGET_MAPPING_EXISTS      = 0xEFFF002B;
+	public const uint ISDSC_TARGET_MAPPING_EXISTS = 0xEFFF002B;
 
 	/// <summary>The HBA security information cache is full.</summary>
-	public const uint ISDSC_HBA_SECURITY_CACHE_FULL    = 0xEFFF002C;
+	public const uint ISDSC_HBA_SECURITY_CACHE_FULL = 0xEFFF002C;
 
 	/// <summary>The port number passed is not valid for the initiator.</summary>
-	public const uint ISDSC_INVALID_PORT_NUMBER        = 0xEFFF002D;
+	public const uint ISDSC_INVALID_PORT_NUMBER = 0xEFFF002D;
 
 	/// <summary>The operation was not successful for all initiators or discovery methods.</summary>
-	public const uint ISDSC_OPERATION_NOT_ALL_SUCCESS  = 0xAFFF002E;
+	public const uint ISDSC_OPERATION_NOT_ALL_SUCCESS = 0xAFFF002E;
 
 	/// <summary>The HBA security information cache is not supported by this adapter.</summary>
 	public const uint ISDSC_HBA_SECURITY_CACHE_NOT_SUPPORTED = 0xEFFF002F;
@@ -9240,43 +9240,43 @@ public partial struct Win32Error
 	public const uint ISDSC_TARGET_ADDRESS_ALREADY_EXISTS = 0xEFFF0033;
 
 	/// <summary>There is no IKE authentication information available.</summary>
-	public const uint ISDSC_NO_AUTH_INFO_AVAILABLE     = 0xEFFF0034;
+	public const uint ISDSC_NO_AUTH_INFO_AVAILABLE = 0xEFFF0034;
 
 	/// <summary>There is no tunnel mode outer address specified.</summary>
 	public const uint ISDSC_NO_TUNNEL_OUTER_MODE_ADDRESS = 0xEFFF0035;
 
 	/// <summary>Authentication or tunnel address cache is corrupted.</summary>
-	public const uint ISDSC_CACHE_CORRUPTED            = 0xEFFF0036;
+	public const uint ISDSC_CACHE_CORRUPTED = 0xEFFF0036;
 
 	/// <summary>The request or operation is not supported.</summary>
-	public const uint ISDSC_REQUEST_NOT_SUPPORTED      = 0xEFFF0037;
+	public const uint ISDSC_REQUEST_NOT_SUPPORTED = 0xEFFF0037;
 
 	/// <summary>The target does not have enough resources to process the given request.</summary>
-	public const uint ISDSC_TARGET_OUT_OF_RESORCES     = 0xEFFF0038;
+	public const uint ISDSC_TARGET_OUT_OF_RESORCES = 0xEFFF0038;
 
 	/// <summary>The initiator service did not respond to the request sent by the driver.</summary>
-	public const uint ISDSC_SERVICE_DID_NOT_RESPOND    = 0xEFFF0039;
+	public const uint ISDSC_SERVICE_DID_NOT_RESPOND = 0xEFFF0039;
 
 	/// <summary>The Internet Storage Name Server (iSNS) server was not found or is unavailable.</summary>
-	public const uint ISDSC_ISNS_SERVER_NOT_FOUND      = 0xEFFF003A;
+	public const uint ISDSC_ISNS_SERVER_NOT_FOUND = 0xEFFF003A;
 
 	/// <summary>The operation was successful but requires a driver reload or reboot to become effective.</summary>
-	public const uint ISDSC_OPERATION_REQUIRES_REBOOT  = 0xAFFF003B;
+	public const uint ISDSC_OPERATION_REQUIRES_REBOOT = 0xAFFF003B;
 
 	/// <summary>There is no target portal available to complete the login.</summary>
-	public const uint ISDSC_NO_PORTAL_SPECIFIED        = 0xEFFF003C;
+	public const uint ISDSC_NO_PORTAL_SPECIFIED = 0xEFFF003C;
 
 	/// <summary>Cannot remove the last connection for a session.</summary>
 	public const uint ISDSC_CANT_REMOVE_LAST_CONNECTION = 0xEFFF003D;
 
 	/// <summary>The Microsoft iSCSI Initiator Service is not running. Please start the service and retry.</summary>
-	public const uint ISDSC_SERVICE_NOT_RUNNING        = 0xEFFF003E;
+	public const uint ISDSC_SERVICE_NOT_RUNNING = 0xEFFF003E;
 
 	/// <summary>The target has already been logged in via an iSCSI session.</summary>
-	public const uint ISDSC_TARGET_ALREADY_LOGGED_IN   = 0xEFFF003F;
+	public const uint ISDSC_TARGET_ALREADY_LOGGED_IN = 0xEFFF003F;
 
 	/// <summary>The session cannot be logged out since a device on that session is currently being used.</summary>
-	public const uint ISDSC_DEVICE_BUSY_ON_SESSION     = 0xEFFF0040;
+	public const uint ISDSC_DEVICE_BUSY_ON_SESSION = 0xEFFF0040;
 
 	/// <summary>Failed to save persistent login information.</summary>
 	public const uint ISDSC_COULD_NOT_SAVE_PERSISTENT_LOGIN_DATA = 0xEFFF0041;
@@ -9285,28 +9285,28 @@ public partial struct Win32Error
 	public const uint ISDSC_COULD_NOT_REMOVE_PERSISTENT_LOGIN_DATA = 0xEFFF0042;
 
 	/// <summary>The specified portal was not found.</summary>
-	public const uint ISDSC_PORTAL_NOT_FOUND           = 0xEFFF0043;
+	public const uint ISDSC_PORTAL_NOT_FOUND = 0xEFFF0043;
 
 	/// <summary>The specified initiator name was not found.</summary>
-	public const uint ISDSC_INITIATOR_NOT_FOUND        = 0xEFFF0044;
+	public const uint ISDSC_INITIATOR_NOT_FOUND = 0xEFFF0044;
 
 	/// <summary>The specified discovery mechanism was not found.</summary>
 	public const uint ISDSC_DISCOVERY_MECHANISM_NOT_FOUND = 0xEFFF0045;
 
 	/// <summary>iSCSI does not support IPSEC for this version of the OS.</summary>
-	public const uint ISDSC_IPSEC_NOT_SUPPORTED_ON_OS  = 0xEFFF0046;
+	public const uint ISDSC_IPSEC_NOT_SUPPORTED_ON_OS = 0xEFFF0046;
 
 	/// <summary>The iSCSI service timed out waiting for all persistent logins to complete.</summary>
-	public const uint ISDSC_PERSISTENT_LOGIN_TIMEOUT   = 0xEFFF0047;
+	public const uint ISDSC_PERSISTENT_LOGIN_TIMEOUT = 0xEFFF0047;
 
 	/// <summary>The specified CHAP secret is less than 96 bits and will not be usable for authenticating over non ipsec connections.</summary>
-	public const uint ISDSC_SHORT_CHAP_SECRET          = 0xAFFF0048;
+	public const uint ISDSC_SHORT_CHAP_SECRET = 0xAFFF0048;
 
 	/// <summary>The evaluation period for the iSCSI initiator service has expired.</summary>
-	public const uint ISDSC_EVALUATION_PEROID_EXPIRED  = 0xEFFF0049;
+	public const uint ISDSC_EVALUATION_PEROID_EXPIRED = 0xEFFF0049;
 
 	/// <summary>CHAP secret given does not conform to the standard. Please see system event log for more information.</summary>
-	public const uint ISDSC_INVALID_CHAP_SECRET        = 0xEFFF004A;
+	public const uint ISDSC_INVALID_CHAP_SECRET = 0xEFFF004A;
 
 	/// <summary>Target CHAP secret given is invalid. Maximum size of CHAP secret is 16 bytes. Minimum size is 12 bytes if IPSec is not used.</summary>
 	public const uint ISDSC_INVALID_TARGET_CHAP_SECRET = 0xEFFF004B;
@@ -9315,73 +9315,73 @@ public partial struct Win32Error
 	public const uint ISDSC_INVALID_INITIATOR_CHAP_SECRET = 0xEFFF004C;
 
 	/// <summary>CHAP Username given is invalid.</summary>
-	public const uint ISDSC_INVALID_CHAP_USER_NAME     = 0xEFFF004D;
+	public const uint ISDSC_INVALID_CHAP_USER_NAME = 0xEFFF004D;
 
 	/// <summary>Logon Authentication type given is invalid.</summary>
-	public const uint ISDSC_INVALID_LOGON_AUTH_TYPE    = 0xEFFF004E;
+	public const uint ISDSC_INVALID_LOGON_AUTH_TYPE = 0xEFFF004E;
 
 	/// <summary>Target Mapping information given is invalid.</summary>
-	public const uint ISDSC_INVALID_TARGET_MAPPING     = 0xEFFF004F;
+	public const uint ISDSC_INVALID_TARGET_MAPPING = 0xEFFF004F;
 
 	/// <summary>Target Id given in Target Mapping is invalid.</summary>
-	public const uint ISDSC_INVALID_TARGET_ID          = 0xEFFF0050;
+	public const uint ISDSC_INVALID_TARGET_ID = 0xEFFF0050;
 
 	/// <summary>The iSCSI name specified contains invalid characters or is too long.</summary>
-	public const uint ISDSC_INVALID_ISCSI_NAME         = 0xEFFF0051;
+	public const uint ISDSC_INVALID_ISCSI_NAME = 0xEFFF0051;
 
 	/// <summary>The version number returned from the Internet Storage Name Server (iSNS) server is not compatible with this version of the iSNS client.</summary>
-	public const uint ISDSC_INCOMPATIBLE_ISNS_VERSION  = 0xEFFF0052;
+	public const uint ISDSC_INCOMPATIBLE_ISNS_VERSION = 0xEFFF0052;
 
 	/// <summary>Initiator failed to configure IPSec for the given connection. This could be because of low resources.</summary>
-	public const uint ISDSC_FAILED_TO_CONFIGURE_IPSEC  = 0xEFFF0053;
+	public const uint ISDSC_FAILED_TO_CONFIGURE_IPSEC = 0xEFFF0053;
 
 	/// <summary>The buffer given for processing the request is too small.</summary>
-	public const uint ISDSC_BUFFER_TOO_SMALL           = 0xEFFF0054;
+	public const uint ISDSC_BUFFER_TOO_SMALL = 0xEFFF0054;
 
 	/// <summary>The given Load Balance policy is not recognized by iScsi initiator.</summary>
 	public const uint ISDSC_INVALID_LOAD_BALANCE_POLICY = 0xEFFF0055;
 
 	/// <summary>One or more paramaters specified is not valid.</summary>
-	public const uint ISDSC_INVALID_PARAMETER          = 0xEFFF0056;
+	public const uint ISDSC_INVALID_PARAMETER = 0xEFFF0056;
 
 	/// <summary>Duplicate PathIds were specified in the call to set Load Balance Policy.</summary>
-	public const uint ISDSC_DUPLICATE_PATH_SPECIFIED   = 0xEFFF0057;
+	public const uint ISDSC_DUPLICATE_PATH_SPECIFIED = 0xEFFF0057;
 
 	/// <summary>Number of paths specified in Set Load Balance Policy does not match the number of paths to the target.</summary>
-	public const uint ISDSC_PATH_COUNT_MISMATCH        = 0xEFFF0058;
+	public const uint ISDSC_PATH_COUNT_MISMATCH = 0xEFFF0058;
 
 	/// <summary>Path Id specified in the call to set Load Balance Policy is not valid</summary>
-	public const uint ISDSC_INVALID_PATH_ID            = 0xEFFF0059;
+	public const uint ISDSC_INVALID_PATH_ID = 0xEFFF0059;
 
 	/// <summary>Multiple primary paths specified when only one primary path is expected.</summary>
 	public const uint ISDSC_MULTIPLE_PRIMARY_PATHS_SPECIFIED = 0xEFFF005A;
 
 	/// <summary>No primary path specified when at least one is expected.</summary>
-	public const uint ISDSC_NO_PRIMARY_PATH_SPECIFIED  = 0xEFFF005B;
+	public const uint ISDSC_NO_PRIMARY_PATH_SPECIFIED = 0xEFFF005B;
 
 	/// <summary>Device is already a persistently bound device.</summary>
 	public const uint ISDSC_DEVICE_ALREADY_PERSISTENTLY_BOUND = 0xEFFF005C;
 
 	/// <summary>Device was not found.</summary>
-	public const uint ISDSC_DEVICE_NOT_FOUND           = 0xEFFF005D;
+	public const uint ISDSC_DEVICE_NOT_FOUND = 0xEFFF005D;
 
 	/// <summary>The device specified does not originate from an iSCSI disk or a persistent iSCSI login.</summary>
 	public const uint ISDSC_DEVICE_NOT_ISCSI_OR_PERSISTENT = 0xEFFF005E;
 
 	/// <summary>The DNS name specified was not resolved.</summary>
-	public const uint ISDSC_DNS_NAME_UNRESOLVED        = 0xEFFF005F;
+	public const uint ISDSC_DNS_NAME_UNRESOLVED = 0xEFFF005F;
 
 	/// <summary>There is no connection available in the iSCSI session to process the request.</summary>
-	public const uint ISDSC_NO_CONNECTION_AVAILABLE    = 0xEFFF0060;
+	public const uint ISDSC_NO_CONNECTION_AVAILABLE = 0xEFFF0060;
 
 	/// <summary>The given Load Balance policy is not supported.</summary>
-	public const uint ISDSC_LB_POLICY_NOT_SUPPORTED    = 0xEFFF0061;
+	public const uint ISDSC_LB_POLICY_NOT_SUPPORTED = 0xEFFF0061;
 
 	/// <summary>A remove connection request is already in progress for this session.</summary>
 	public const uint ISDSC_REMOVE_CONNECTION_IN_PROGRESS = 0xEFFF0062;
 
 	/// <summary>Given connection was not found in the session.</summary>
-	public const uint ISDSC_INVALID_CONNECTION_ID      = 0xEFFF0063;
+	public const uint ISDSC_INVALID_CONNECTION_ID = 0xEFFF0063;
 
 	/// <summary>The leading connection in the session cannot be removed.</summary>
 	public const uint ISDSC_CANNOT_REMOVE_LEADING_CONNECTION = 0xEFFF0064;
@@ -9390,11 +9390,11 @@ public partial struct Win32Error
 	public const uint ISDSC_RESTRICTED_BY_GROUP_POLICY = 0xEFFF0065;
 
 	/// <summary>The operation cannot be performed since the Internet Storage Name Server (iSNS) firewall exception has not been enabled.</summary>
-	public const uint ISDSC_ISNS_FIREWALL_BLOCKED      = 0xEFFF0066;
+	public const uint ISDSC_ISNS_FIREWALL_BLOCKED = 0xEFFF0066;
 
 	/// <summary>Failed to persist load balancing policy parameters.</summary>
 	public const uint ISDSC_FAILURE_TO_PERSIST_LB_POLICY = 0xEFFF0067;
 
 	/// <summary>The name could not be resolved to an IP Address.</summary>
-	public const uint ISDSC_INVALID_HOST               = 0xEFFF0068;
+	public const uint ISDSC_INVALID_HOST = 0xEFFF0068;
 }

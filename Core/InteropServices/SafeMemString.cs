@@ -1,18 +1,15 @@
 ﻿#nullable enable
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 using System.Security;
-using Vanara.Extensions;
 
 namespace Vanara.InteropServices;
 
 /// <summary>Base abstract class for a string handler based on <see cref="SafeMemoryHandle{TMem}"/>.</summary>
 /// <typeparam name="TMem">The type of the memory.</typeparam>
-/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/>
+/// <seealso cref="SafeMemoryHandle{TMem}"/>
 public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible, IComparable<SafeMemString<TMem>>, IComparable, IComparable<string>, IEnumerable, IEnumerable<char>, IEquatable<SafeMemString<TMem>>, IEquatable<string> where TMem : IMemoryMethods, new()
 {
 	/// <summary>The system default character set for evaluating CharSet.Auto.</summary>
@@ -80,7 +77,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <value>The <see cref="char"/>.</value>
 	/// <param name="index">The index of the character in the in-memory string.</param>
 	/// <returns>The character.</returns>
-	/// <exception cref="System.IndexOutOfRangeException"></exception>
+	/// <exception cref="IndexOutOfRangeException"></exception>
 	public char this[int index]
 	{
 		get
@@ -88,13 +85,13 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 			var cs = StringHelper.GetCharSize(CharSet);
 			return index * cs >= Capacity || index < 0
 				? throw new IndexOutOfRangeException()
-				: CharSet == CharSet.Ansi ? System.Text.Encoding.UTF8.GetChars(GetBytes(index * cs, cs))[0] : System.Text.Encoding.Unicode.GetChars(GetBytes(index * cs, cs))[0];
+				: CharSet == CharSet.Ansi ? Encoding.UTF8.GetChars(GetBytes(index * cs, cs))[0] : Encoding.Unicode.GetChars(GetBytes(index * cs, cs))[0];
 		}
 		set
 		{
 			var cs = StringHelper.GetCharSize(CharSet);
 			if (index * cs >= Capacity || index < 0) throw new IndexOutOfRangeException();
-			var bytes = CharSet == CharSet.Ansi ? System.Text.Encoding.UTF8.GetBytes(new[] { value }) : System.Text.Encoding.Unicode.GetBytes(new[] { value });
+			var bytes = CharSet == CharSet.Ansi ? Encoding.UTF8.GetBytes(new[] { value }) : Encoding.Unicode.GetBytes(new[] { value });
 			handle.Write(bytes, index * cs, Size);
 		}
 	}
@@ -134,37 +131,37 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <param name="left">The left value.</param>
 	/// <param name="right">The right value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => !(left==right);
+	public static bool operator !=(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => !(left == right);
 
 	/// <summary>Implements the operator !=.</summary>
 	/// <param name="left">The left value.</param>
 	/// <param name="right">The right value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(SafeMemString<TMem>? left, string right) => !(left==right);
+	public static bool operator !=(SafeMemString<TMem>? left, string right) => !(left == right);
 
 	/// <summary>Implements the operator &lt;.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator <(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is null || left.IsNull ? right is not null && !right.IsNull : left.CompareTo(right)<0;
+	public static bool operator <(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is null || left.IsNull ? right is not null && !right.IsNull : left.CompareTo(right) < 0;
 
 	/// <summary>Implements the operator &lt;.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator <(SafeMemString<TMem>? left, string right) => left is null || left.IsNull ? right is not null : left.CompareTo(right)<0;
+	public static bool operator <(SafeMemString<TMem>? left, string right) => left is null || left.IsNull ? right is not null : left.CompareTo(right) < 0;
 
 	/// <summary>Implements the operator &lt;=.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator <=(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is null || left.IsNull || left.CompareTo(right)<=0;
+	public static bool operator <=(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is null || left.IsNull || left.CompareTo(right) <= 0;
 
 	/// <summary>Implements the operator &lt;=.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator <=(SafeMemString<TMem>? left, string right) => left is null || left.IsNull || left.CompareTo(right)<=0;
+	public static bool operator <=(SafeMemString<TMem>? left, string right) => left is null || left.IsNull || left.CompareTo(right) <= 0;
 
 	/// <summary>Implements the operator ==.</summary>
 	/// <param name="left">The left value.</param>
@@ -182,25 +179,25 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator >(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is not null && !left.IsNull && left.CompareTo(right)>0;
+	public static bool operator >(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is not null && !left.IsNull && left.CompareTo(right) > 0;
 
 	/// <summary>Implements the operator &gt;.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator >(SafeMemString<TMem>? left, string right) => left is not null && !left.IsNull && left.CompareTo(right)>0;
+	public static bool operator >(SafeMemString<TMem>? left, string right) => left is not null && !left.IsNull && left.CompareTo(right) > 0;
 
 	/// <summary>Implements the operator &gt;=.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator >=(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is null || left.IsNull ? right is null || right.IsNull : left.CompareTo(right)>=0;
+	public static bool operator >=(SafeMemString<TMem>? left, SafeMemString<TMem>? right) => left is null || left.IsNull ? right is null || right.IsNull : left.CompareTo(right) >= 0;
 
 	/// <summary>Implements the operator &gt;=.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator >=(SafeMemString<TMem>? left, string right) => left is null || left.IsNull ? right is null : left.CompareTo(right)>=0;
+	public static bool operator >=(SafeMemString<TMem>? left, string right) => left is null || left.IsNull ? right is null : left.CompareTo(right) >= 0;
 
 	/// <summary>Removes all characters from the current instance.</summary>
 	public void Clear()
@@ -423,7 +420,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <summary>Inserts a string into this instance at the specified character position.</summary>
 	/// <param name="index">The position in this instance where insertion begins.</param>
 	/// <param name="value">The string to insert.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <paramref name="index"/> is less than zero or greater than the current length of this instance.
 	/// </exception>
 	protected virtual void Insert(int index, string? value)
@@ -442,7 +439,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <summary>Removes the specified range of characters from this instance.</summary>
 	/// <param name="startIndex">The zero-based position in this instance where removal begins.</param>
 	/// <param name="length">The number of characters to remove.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// If <paramref name="startIndex"/> or <paramref name="length"/> is less than zero, or <paramref name="startIndex"/> + <paramref
 	/// name="length"/> is greater than the length of this instance.
 	/// </exception>
@@ -463,7 +460,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	protected virtual void Replace(string oldValue, string? newValue, int startIndex, int count)
 	{
 		if (IsNull || Length == 0) return;
-		var sb = new System.Text.StringBuilder(ToString());
+		var sb = new StringBuilder(ToString());
 		sb.Replace(oldValue, newValue, startIndex, count);
 		Capacity = sb.Length;
 		Set(sb.ToString());
@@ -474,7 +471,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <param name="newChar">The character that replaces <paramref name="oldChar"/>.</param>
 	/// <param name="startIndex">The position in this instance where the substring begins.</param>
 	/// <param name="count">The length of the substring.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <para><paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of the value of this instance.</para>
 	/// <para>-or-</para>
 	/// <para><paramref name="startIndex"/> or <paramref name="count"/> is less than zero.</para>

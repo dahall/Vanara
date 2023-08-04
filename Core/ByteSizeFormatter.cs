@@ -1,4 +1,3 @@
-using System;
 using System.Text.RegularExpressions;
 
 namespace Vanara;
@@ -63,7 +62,7 @@ public class ByteSizeFormatter : Formatter
 		try { bytes = Convert.ToInt64(arg); }
 		catch { return HandleOtherFormats(format, arg); }
 		if (bytes == 0) return "0" + suffixes[0];
-		var m = format is not null ? System.Text.RegularExpressions.Regex.Match(format, @"^[B|b](?<prec>\d+)?$") : null;
+		var m = format is not null ? Regex.Match(format, @"^[B|b](?<prec>\d+)?$") : null;
 		if (m is null || !m.Success) return HandleOtherFormats(format, arg);
 		var prec = m.Groups["prec"].Success ? byte.Parse(m.Groups["prec"].Value) : 0;
 		var place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));

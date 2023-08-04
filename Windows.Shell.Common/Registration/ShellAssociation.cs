@@ -1,9 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
@@ -169,7 +166,7 @@ public class ShellAssociation
 			qassoc.GetData(flags, data, extra, ret, ref sz);
 			return ret;
 		}
-		catch (System.Runtime.InteropServices.COMException e) when (e.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_NO_ASSOCIATION))
+		catch (COMException e) when (e.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_NO_ASSOCIATION))
 		{
 			return null;
 		}
@@ -209,7 +206,7 @@ public class ShellAssociation
 			qassoc.GetString(flags, astr, extra, sb, ref sz);
 			return sb.ToString();
 		}
-		catch (System.Runtime.InteropServices.COMException e) when (e.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_NO_ASSOCIATION))
+		catch (COMException e) when (e.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_NO_ASSOCIATION))
 		{
 			return null;
 		}

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
 using Vanara.Extensions.Reflection;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;
@@ -2498,7 +2493,7 @@ public static partial class User32
 	/// If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended
 	/// error information, call GetLastError.
 	/// </returns>
-	/// <exception cref="System.ArgumentException">Type mismatch</exception>
+	/// <exception cref="ArgumentException">Type mismatch</exception>
 	public static T GetWindowLong<T>(HWND hWnd, WindowLongFlags nIndex)
 	{
 		if (!CorrespondingTypeAttribute.CanGet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");

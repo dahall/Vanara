@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.InteropServices;
+﻿namespace Vanara.InteropServices;
 
 /// <summary>Factory for creating <see cref="ComReleaser{T}"/> objects.</summary>
 public static class ComReleaserFactory
@@ -14,7 +12,7 @@ public static class ComReleaserFactory
 
 /// <summary>A safe variable to hold an instance of a COM class that automatically releases the instance on disposal.</summary>
 /// <typeparam name="T">The type of the COM object.</typeparam>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class ComReleaser<T> : IDisposable where T : class
 {
 	private T? item;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -117,7 +114,7 @@ public static partial class Shell32
 	}
 
 	/// <summary>Undocumented.</summary>
-	/// <seealso cref="Vanara.PInvoke.Shell32.IHandlerInfo"/>
+	/// <seealso cref="IHandlerInfo"/>
 	[PInvokeData("shobjidl_core.h")]
 	[ComImport, Guid("31cca04c-04d3-4ea9-90de-97b15e87a532"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IHandlerInfo2 : IHandlerInfo

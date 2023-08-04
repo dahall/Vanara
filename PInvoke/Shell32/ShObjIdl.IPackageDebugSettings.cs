@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -204,7 +201,7 @@ public static partial class Shell32
 	}
 
 	/// <summary>Undocumented.</summary>
-	/// <seealso cref="Vanara.PInvoke.Shell32.IPackageDebugSettings"/>
+	/// <seealso cref="IPackageDebugSettings"/>
 	[PInvokeData("shobjidl_core.h")]
 	[ComImport, Guid("6E3194BB-AB82-4D22-93F5-FABDA40E7B16"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPackageDebugSettings2 : IPackageDebugSettings

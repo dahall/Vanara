@@ -1,15 +1,13 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
 
 namespace Vanara.Windows.Shell;
 
 /// <summary></summary>
-/// <seealso cref="System.IComparable{T}"/>
-/// <seealso cref="System.IDisposable"/>
-/// <seealso cref="System.IEquatable{T}"/>
-/// <seealso cref="System.IEquatable{T}"/>
-/// <seealso cref="System.ComponentModel.INotifyPropertyChanged"/>
+/// <seealso cref="IComparable{T}"/>
+/// <seealso cref="IDisposable"/>
+/// <seealso cref="IEquatable{T}"/>
+/// <seealso cref="IEquatable{T}"/>
+/// <seealso cref="INotifyPropertyChanged"/>
 public abstract class ComObjWrapper<TObj, TComType> : IDisposable, IEquatable<TComType>, INotifyPropertyChanged where TObj : ComObjWrapper<TObj, TComType> where TComType : class
 {
 	/// <summary>The internal reference to the COM object.</summary>

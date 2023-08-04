@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -303,7 +300,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellmenu-initialize HRESULT Initialize(
 		// IShellMenuCallback *psmc, UINT uId, UINT uIdAncestor, DWORD dwFlags );
-		void Initialize([In, Optional] IShellMenuCallback psmc, uint uId, uint uIdAncestor, SMINIT dwFlags);
+		void Initialize([In, Optional] IShellMenuCallback? psmc, uint uId, uint uIdAncestor, SMINIT dwFlags);
 
 		/// <summary>Gets information from the IShellMenu::Initialize method.</summary>
 		/// <param name="ppsmc">
@@ -370,7 +367,7 @@ public static partial class Shell32
 		/// <remarks>Call this method after you call IShellMenu::Initialize.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellmenu-setshellfolder HRESULT
 		// SetShellFolder( IShellFolder *psf, PCIDLIST_ABSOLUTE pidlFolder, HKEY hKey, DWORD dwFlags );
-		void SetShellFolder([In, Optional] IShellFolder psf, [In, Optional] PIDL pidlFolder, [In, Optional] HKEY hKey, SMSET dwFlags);
+		void SetShellFolder([In, Optional] IShellFolder? psf, [In, Optional] PIDL pidlFolder, [In, Optional] HKEY hKey, SMSET dwFlags);
 
 		/// <summary>Gets the folder that the menu band is set to browse.</summary>
 		/// <param name="pdwFlags">
@@ -431,7 +428,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellmenu-getshellfolder HRESULT
 		// GetShellFolder( DWORD *pdwFlags, PIDLIST_ABSOLUTE *ppidl, REFIID riid, void **ppv );
-		void GetShellFolder(out SMINIT pdwFlags, out PIDL ppidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
+		void GetShellFolder(out SMINIT pdwFlags, out PIDL ppidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Appends a static menu to the menu band.</summary>
 		/// <param name="hmenu">
@@ -502,7 +499,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellmenu-invalidateitem HRESULT
 		// InvalidateItem( LPSMDATA psmd, DWORD dwFlags );
-		void InvalidateItem([In, Optional] IntPtr psmd, [In] SMINV dwFlags);
+		void InvalidateItem([In, Optional] IntPtr psmd, [In] SMINV dwFlags = SMINV.SMINV_REFRESH);
 
 		/// <summary>Gets a filled SMDATA structure.</summary>
 		/// <returns>
@@ -532,6 +529,18 @@ public static partial class Shell32
 		// SetMenuToolbar( IUnknown *punk, DWORD dwFlags );
 		void SetMenuToolbar([In, MarshalAs(UnmanagedType.IUnknown)] object punk, SMSET dwFlags);
 	}
+
+	/// <summary>Redraws an item in a menu band.</summary>
+	/// <param name="shMenu">The <see cref="IShellMenu"/> instance.</param>
+	/// <param name="psmd">
+	/// <para>Type: <c>LPSMDATA</c></para>
+	/// <para>
+	/// A pointer to an SMDATA structure that identifies the item to be redrawn.
+	/// </para>
+	/// </param>
+	// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellmenu-invalidateitem HRESULT
+	// InvalidateItem( LPSMDATA psmd, DWORD dwFlags );
+	public static void InvalidateItem(this IShellMenu shMenu, in SMDATA psmd) => shMenu.InvalidateItem(SafeCoTaskMemHandle.CreateFromStructure(psmd), SMINV.SMINV_ID | SMINV.SMINV_REFRESH);
 
 	/// <summary>A callback interface that exposes a method that receives messages from a menu band.</summary>
 	/// <remarks>

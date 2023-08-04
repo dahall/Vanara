@@ -1,9 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Ole32;
 

@@ -1,6 +1,4 @@
-﻿using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {

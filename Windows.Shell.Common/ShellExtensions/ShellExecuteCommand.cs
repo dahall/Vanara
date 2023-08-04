@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
@@ -69,8 +68,8 @@ namespace Vanara.Windows.Shell;
 ///      ShellRegistrar.UnregisterLocalServer&lt;MyExecCmd&gt;(false);
 ///   }
 ///}</code></remarks>
-/// <seealso cref="Vanara.PInvoke.Shell32.IExecuteCommand" />
-/// <seealso cref="Vanara.PInvoke.Shell32.IObjectWithSelection" />
+/// <seealso cref="IExecuteCommand" />
+/// <seealso cref="IObjectWithSelection" />
 public abstract class ShellExecuteCommand : ShellCommand, IExecuteCommand, IObjectWithSelection
 {
 	/// <summary>Initializes a new instance of the <see cref="ShellExecuteCommand"/> class.</summary>

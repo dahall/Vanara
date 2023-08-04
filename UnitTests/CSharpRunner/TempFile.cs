@@ -1,11 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;
 
 /// <summary>Creates a unique temporary file in the %APPDATA%\Temp folder and deletes it when disposed.</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class TempFile : IDisposable
 {
 	/// <summary>The default value inserted into the file if not overridden by constructor parameter.</summary>
@@ -50,7 +49,7 @@ public class TempFile : IDisposable
 	public string FullName { get; }
 
 	/// <summary>
-	/// Gets the file handle if created with the <see cref="TempFile.TempFile(Kernel32.FileAccess, FileShare, FileMode,
+	/// Gets the file handle if created with the <see cref="TempFile(Kernel32.FileAccess, FileShare, FileMode,
 	/// FileFlagsAndAttributes)"/> constructor.
 	/// </summary>
 	/// <value>The file handle.</value>

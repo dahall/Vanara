@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
 namespace Vanara.Windows.Shell;
 
 /// <summary>A dictionary of Command Verbs defined in the Windows Registry.</summary>
-/// <seealso cref="Vanara.Windows.Shell.RegBasedDictionary{T}"/>
+/// <seealso cref="RegBasedDictionary{T}"/>
 public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 {
 	private const string rootKeyName = "shell";

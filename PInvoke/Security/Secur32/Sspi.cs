@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Crypt32;
 using static Vanara.PInvoke.Schannel;
@@ -3866,7 +3862,7 @@ public static partial class Secur32
 	///   </item>
 	/// </list>
 	/// </returns>
-	/// <exception cref="System.ArgumentNullException">phContext</exception>
+	/// <exception cref="ArgumentNullException">phContext</exception>
 	/// <remarks>
 	/// <para>
 	/// The caller is responsible for determining whether the final context attributes are sufficient. If, for example, confidentiality
@@ -7620,7 +7616,7 @@ public static partial class Secur32
 		/// <summary>Performs an implicit conversion from <see cref="SafeCredHandle"/> to <see cref="CredHandle"/>.</summary>
 		/// <param name="h">The safe handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static unsafe implicit operator CredHandle* (SafeCredHandle h)
+		public static unsafe implicit operator CredHandle*(SafeCredHandle h)
 		{
 			fixed (CredHandle* hp = &h.handle)
 				return hp;
@@ -7782,7 +7778,7 @@ public static partial class Secur32
 		/// <summary>Performs an implicit conversion from <see cref="SafeCtxtHandle"/> to <see cref="CtxtHandle"/>.</summary>
 		/// <param name="h">The safe handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static unsafe implicit operator CtxtHandle* (SafeCtxtHandle h)
+		public static unsafe implicit operator CtxtHandle*(SafeCtxtHandle h)
 		{
 			if (h.handle.IsNull)
 				return null;
@@ -7879,12 +7875,12 @@ public static partial class Secur32
 		/// <summary>Performs an implicit conversion from <see cref="SafeSecBufferDesc"/> to <see cref="SecBufferDesc"/>.</summary>
 		/// <param name="sbd">The <see cref="SafeSecBufferDesc"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static unsafe implicit operator SecBufferDesc* (SafeSecBufferDesc sbd) => (SecBufferDesc*)sbd.handle;
+		public static unsafe implicit operator SecBufferDesc*(SafeSecBufferDesc sbd) => (SecBufferDesc*)sbd.handle;
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeSecBufferDesc"/> to <see cref="SecBufferDesc"/>.</summary>
 		/// <param name="sbd">The <see cref="SafeSecBufferDesc"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SecBufferDesc? (SafeSecBufferDesc sbd) => sbd.handle.ToNullableStructure<SecBufferDesc>();
+		public static implicit operator SecBufferDesc?(SafeSecBufferDesc sbd) => sbd.handle.ToNullableStructure<SecBufferDesc>();
 
 		/// <summary>Adds the specified type with an empty value as a new SecBuffer item.</summary>
 		/// <param name="type">The type of the SecBuffer.</param>

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.FunctionHelper;
 using static Vanara.PInvoke.Kernel32;
 
@@ -4414,7 +4410,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </param>
 	/// <returns>The requested information.</returns>
-	/// <exception cref="System.InvalidCastException"></exception>
+	/// <exception cref="InvalidCastException"></exception>
 	// https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-gettokeninformation
 	// BOOL GetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength, PDWORD ReturnLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "NF:securitybaseapi.GetTokenInformation")]
@@ -6177,14 +6173,14 @@ public static partial class AdvApi32
 	internal static int GetSize<T>() where T : struct
 	{
 		if (!StructSizes.TryGetValue(typeof(T), out var sz))
-			StructSizes.Add(typeof(T), sz = Vanara.Extensions.InteropExtensions.SizeOf<T>());
+			StructSizes.Add(typeof(T), sz = InteropExtensions.SizeOf<T>());
 		return sz;
 	}
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle" /> to a that releases a created HTOKEN instance at disposal using CloseHandle.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.Kernel32.SafeKernelHandle" />
+	/// <seealso cref="SafeKernelHandle" />
 	public class SafeHTOKEN : SafeKernelHandle
 	{
 		private const TokenAccess defDupAccess = TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_ASSIGN_PRIMARY | TokenAccess.TOKEN_ADJUST_DEFAULT | TokenAccess.TOKEN_ADJUST_SESSIONID | TokenAccess.TOKEN_IMPERSONATE;

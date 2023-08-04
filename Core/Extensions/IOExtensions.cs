@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using System.IO;
 
 namespace Vanara.Extensions;
 

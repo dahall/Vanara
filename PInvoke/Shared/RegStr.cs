@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>A device's configuration flags</summary>
 [PInvokeData("regstr.h")]

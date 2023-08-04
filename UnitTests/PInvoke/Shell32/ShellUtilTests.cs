@@ -1,9 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.Shell32.ShellUtil;
 
@@ -36,16 +31,16 @@ public class ShellUtilTests
 	[Test]
 	public void GetPathFromShellItemTest()
 	{
-		IShellItem shi = null;
-		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.SmallFile), Throws.Nothing);
+		IShellItem? shi = null;
+		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.SmallFile)!, Throws.Nothing);
 		try
 		{
 			Assert.NotNull(shi);
-			Assert.AreEqual(GetPathFromShellItem(shi), TestCaseSources.SmallFile);
+			Assert.AreEqual(GetPathFromShellItem(shi!), TestCaseSources.SmallFile);
 		}
 		finally
 		{
-			Marshal.ReleaseComObject(shi);
+			Marshal.ReleaseComObject(shi!);
 		}
 	}
 
@@ -66,11 +61,11 @@ public class ShellUtilTests
 	[Test]
 	public void LoadIconFromExtractIconTest()
 	{
-		IShellItem shi = null;
+		IShellItem? shi = null;
 		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.WordDoc), Throws.Nothing);
 		try
 		{
-			var pi = GetParentAndItem(shi);
+			var pi = GetParentAndItem(shi!);
 			pi.GetParentAndItem(out _, out var psf, out var pChild);
 			uint sz = 32;
 			Assert.That(LoadIconFromExtractIcon(psf, pChild, ref sz, out var hIcon), ResultIs.Successful);
@@ -80,18 +75,18 @@ public class ShellUtilTests
 		}
 		finally
 		{
-			Marshal.ReleaseComObject(shi);
+			Marshal.ReleaseComObject(shi!);
 		}
 	}
 
 	[Test]
 	public void LoadImageFromExtractImageTest()
 	{
-		IShellItem shi = null;
+		IShellItem? shi = null;
 		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.ImageFile), Throws.Nothing);
 		try
 		{
-			var pi = GetParentAndItem(shi);
+			var pi = GetParentAndItem(shi!);
 			pi.GetParentAndItem(out _, out var psf, out var pChild);
 			uint sz = 32;
 			Assert.That(LoadImageFromExtractImage(psf, pChild, ref sz, out var hBmp), ResultIs.Successful);
@@ -101,37 +96,37 @@ public class ShellUtilTests
 		}
 		finally
 		{
-			Marshal.ReleaseComObject(shi);
+			Marshal.ReleaseComObject(shi!);
 		}
 	}
 
 	[Test]
 	public void LoadImageFromThumbnailProviderTest()
 	{
-		IShellItem shi = null;
+		IShellItem? shi = null;
 		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.LargeFile), Throws.Nothing);
 		try
 		{
 			uint sz = 32;
-			Assert.That(LoadImageFromThumbnailProvider(shi, ref sz, out var hBmp), ResultIs.Successful);
+			Assert.That(LoadImageFromThumbnailProvider(shi!, ref sz, out var hBmp), ResultIs.Successful);
 			Assert.IsFalse(hBmp.IsInvalid);
 			Assert.That(sz, Is.EqualTo(32));
 			hBmp.Dispose();
 		}
 		finally
 		{
-			Marshal.ReleaseComObject(shi);
+			Marshal.ReleaseComObject(shi!);
 		}
 	}
 
 	[Test]
 	public void LoadImageFromThumbnailProviderTest2()
 	{
-		IShellItem shi = null;
+		IShellItem? shi = null;
 		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.LargeFile), Throws.Nothing);
 		try
 		{
-			var pi = GetParentAndItem(shi);
+			var pi = GetParentAndItem(shi!);
 			pi.GetParentAndItem(out _, out var psf, out var pChild);
 			uint sz = 32;
 			Assert.That(LoadImageFromThumbnailProvider(psf, pChild, ref sz, out var hBmp), ResultIs.Successful);
@@ -141,7 +136,7 @@ public class ShellUtilTests
 		}
 		finally
 		{
-			Marshal.ReleaseComObject(shi);
+			Marshal.ReleaseComObject(shi!);
 		}
 	}
 

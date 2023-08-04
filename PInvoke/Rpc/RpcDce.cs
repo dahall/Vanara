@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the Rpc.dll</summary>
@@ -3205,7 +3201,7 @@ public static partial class Rpc
 			Flags = OsCharSet;
 		}
 
-		private static readonly SEC_WINNT_AUTH_IDENTITY_CHARSET OsCharSet = Vanara.Extensions.StringHelper.GetCharSize() == 1 ? SEC_WINNT_AUTH_IDENTITY_CHARSET.SEC_WINNT_AUTH_IDENTITY_ANSI : SEC_WINNT_AUTH_IDENTITY_CHARSET.SEC_WINNT_AUTH_IDENTITY_UNICODE;
+		private static readonly SEC_WINNT_AUTH_IDENTITY_CHARSET OsCharSet = StringHelper.GetCharSize() == 1 ? SEC_WINNT_AUTH_IDENTITY_CHARSET.SEC_WINNT_AUTH_IDENTITY_ANSI : SEC_WINNT_AUTH_IDENTITY_CHARSET.SEC_WINNT_AUTH_IDENTITY_UNICODE;
 	}
 
 	/// <summary>The <c>UUID_VECTOR</c> structure contains a list of UUIDs.</summary>

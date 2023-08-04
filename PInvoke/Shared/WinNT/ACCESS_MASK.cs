@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Access flags.</summary>
 [PInvokeData("winnt.h")]
@@ -108,7 +105,7 @@ public partial struct ACCESS_MASK : IEquatable<ACCESS_MASK>
 	/// <typeparam name="TEnum">The type of the enum.</typeparam>
 	/// <param name="enum">The enum value.</param>
 	/// <returns>The converted <c>ACCESS_MASK</c> value.</returns>
-	public static ACCESS_MASK FromEnum<TEnum>(TEnum @enum) where TEnum : System.Enum => new(@enum);
+	public static ACCESS_MASK FromEnum<TEnum>(TEnum @enum) where TEnum : Enum => new(@enum);
 
 	/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="ACCESS_MASK"/>.</summary>
 	/// <param name="value">The value.</param>

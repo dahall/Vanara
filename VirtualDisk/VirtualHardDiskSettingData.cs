@@ -55,9 +55,9 @@ public class VirtualDiskSettingData
 	/// <returns>A <see cref="VirtualDiskSettingData"/> object with the data contained in the embedded instance.</returns>
 	/// <exception cref="ArgumentNullException">If either param is null.</exception>
 	/// <exception cref="FormatException">If there was a problem parsing the embedded instance.</exception>
-	internal static VirtualDiskSettingData Parse(string embeddedInstance) => Vanara.Management.ManagementExtensions.Parse<VirtualDiskSettingData>(embeddedInstance);
+	internal static VirtualDiskSettingData Parse(string embeddedInstance) => Management.ManagementExtensions.Parse<VirtualDiskSettingData>(embeddedInstance);
 
 	/// <summary>Gets the embedded instance string usable by WMI</summary>
 	/// <returns>Embedded instance string usable by WMI.</returns>
-	internal string GetInstanceText(string serverName = ".") => Vanara.Management.ManagementExtensions.GetInstanceText(this, serverName);
+	internal string GetInstanceText(string serverName = ".") => Management.ManagementExtensions.GetInstanceText(this, serverName);
 }

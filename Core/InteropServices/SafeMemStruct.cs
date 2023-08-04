@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 
 #if ALLOWSPAN

@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using static Vanara.PInvoke.OleAut32;
+﻿using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke;
 

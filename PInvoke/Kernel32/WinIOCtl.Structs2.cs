@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -7005,7 +7001,7 @@ public static partial class Kernel32
 
 	private class STORAGE_DEVICE_DESCRIPTOR_Marshaler : IVanaraMarshaler
 	{
-		static readonly Lazy<long> propOffset = new (() => Marshal.OffsetOf(typeof(STORAGE_DEVICE_DESCRIPTOR), nameof(STORAGE_DEVICE_DESCRIPTOR.RawDeviceProperties)).ToInt64());
+		static readonly Lazy<long> propOffset = new(() => Marshal.OffsetOf(typeof(STORAGE_DEVICE_DESCRIPTOR), nameof(STORAGE_DEVICE_DESCRIPTOR.RawDeviceProperties)).ToInt64());
 
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(STORAGE_DEVICE_DESCRIPTOR));
 

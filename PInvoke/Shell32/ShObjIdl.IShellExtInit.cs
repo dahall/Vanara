@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
 
@@ -27,6 +25,6 @@ public static partial class Shell32
 		/// <param name="hkeyProgId">The registry key for the file object or folder type.</param>
 		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT Initialize([Optional] PIDL pidlFolder, [In, Optional] IDataObject pdtobj, [Optional] HKEY hkeyProgId);
+		HRESULT Initialize([Optional] PIDL pidlFolder, [In, Optional] IDataObject? pdtobj, [Optional] HKEY hkeyProgId);
 	}
 }

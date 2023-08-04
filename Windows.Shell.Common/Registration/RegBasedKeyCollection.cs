@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Linq;
 namespace Vanara.Windows.Shell.Registration;
 
 /// <summary>A collection of values under a key that is treated as a collection of strings.</summary>
-/// <seealso cref="System.Collections.Generic.ICollection{T}"/>
+/// <seealso cref="ICollection{T}"/>
 internal class RegBasedKeyCollection : ICollection<string>, IDisposable
 {
 	/// <summary>The base key from which to perform all queries.</summary>

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
@@ -455,7 +452,7 @@ public static partial class Shell32
 		/// <param name="riid">IID of the object type to retrieve.</param>
 		/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
-		object BindToHandler(IBindCtx pbc, in Guid bhid, in Guid riid);
+		object BindToHandler(IBindCtx? pbc, in Guid bhid, in Guid riid);
 
 		/// <summary>Gets the parent of an IShellItem object.</summary>
 		/// <returns>The address of a pointer to the parent of an IShellItem interface.</returns>
@@ -617,7 +614,7 @@ public static partial class Shell32
 		/// <summary>Gets the date and time value of a specified property key.</summary>
 		/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 		/// <returns>A pointer to a date and time value.</returns>
-		System.Runtime.InteropServices.ComTypes.FILETIME GetFileTime(in PROPERTYKEY key);
+		FILETIME GetFileTime(in PROPERTYKEY key);
 
 		/// <summary>Gets the Int32 value of specified property key.</summary>
 		/// <param name="key">A reference to a PROPERTYKEY structure.</param>
@@ -685,7 +682,7 @@ public static partial class Shell32
 		/// When this /// methods returns, contains the object specified in riid that is returned by the handler specified by rbhid.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)]
-		object BindToHandler(IBindCtx pbc, in Guid rbhid, in Guid riid);
+		object BindToHandler(IBindCtx? pbc, in Guid rbhid, in Guid riid);
 
 		/// <summary>Gets a property store.</summary>
 		/// <param name="flags">One of the GETPROPERTYSTOREFLAGS constants.</param>
@@ -793,7 +790,7 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="bhid">Reference to a GUID that specifies which handler will be created.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx pbc, in Guid bhid) where T : class => (T)si.BindToHandler(pbc, bhid, typeof(T).GUID);
+	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc, in Guid bhid) where T : class => (T)si.BindToHandler(pbc, bhid, typeof(T).GUID);
 
 	/// <summary>Extension method to simplify using the <see cref="IShellItem.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -805,7 +802,7 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="bhid">A BHID enumeration value that specifies which handler will be created.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx pbc, BHID bhid) where T : class => (T)si.BindToHandler(pbc, bhid.Guid(), typeof(T).GUID);
+	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc, BHID bhid) where T : class => (T)si.BindToHandler(pbc, bhid.Guid(), typeof(T).GUID);
 
 	/// <summary>Extension method to simplify using the <see cref="IShellItemArray.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -817,7 +814,7 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="rbhid">Reference to a GUID that specifies which handler will be created.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToHandler<T>(this IShellItemArray sia, [In] IBindCtx pbc, in Guid rbhid) where T : class => (T)sia.BindToHandler(pbc, rbhid, typeof(T).GUID);
+	public static T BindToHandler<T>(this IShellItemArray sia, [In] IBindCtx? pbc, in Guid rbhid) where T : class => (T)sia.BindToHandler(pbc, rbhid, typeof(T).GUID);
 
 	/// <summary>Extension method to simplify using the <see cref="IShellItemArray.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -829,7 +826,7 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="bhid">A BHID enumeration value that specifies which handler will be created.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToHandler<T>(this IShellItemArray sia, [In] IBindCtx pbc, BHID bhid) where T : class => (T)sia.BindToHandler(pbc, bhid.Guid(), typeof(T).GUID);
+	public static T BindToHandler<T>(this IShellItemArray sia, [In] IBindCtx? pbc, BHID bhid) where T : class => (T)sia.BindToHandler(pbc, bhid.Guid(), typeof(T).GUID);
 
 	/// <summary>Extension method to simplify using the <see cref="IShellItemArray.GetPropertyStore"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>

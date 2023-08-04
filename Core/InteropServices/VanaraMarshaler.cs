@@ -1,8 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
@@ -41,7 +38,7 @@ public static class VanaraMarshaler
 		if (vattr != null)
 		{
 			var cookie = vattr.Cookie;
-			marshaler = cookie is null ? 
+			marshaler = cookie is null ?
 				Activator.CreateInstance(vattr.MarshalType) as IVanaraMarshaler :
 				Activator.CreateInstance(vattr.MarshalType, cookie) as IVanaraMarshaler;
 			return marshaler != null;
@@ -66,7 +63,7 @@ public static class VanaraMarshaler
 /// <typeparam name="T">
 /// The type that either implements <see cref="IVanaraMarshaler"/> or uses <see cref="VanaraMarshalerAttribute"/> to specify a type.
 /// </typeparam>
-/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
+/// <seealso cref="ICustomMarshaler"/>
 public class VanaraCustomMarshaler<T> : ICustomMarshaler
 {
 	private SafeAllocatedMemoryHandle? mem;
@@ -93,7 +90,7 @@ public class VanaraCustomMarshaler<T> : ICustomMarshaler
 }
 
 /// <summary>Apply this attribute to a class or structure to have all Vanara interop function process via the marshaler.</summary>
-/// <seealso cref="System.Attribute"/>
+/// <seealso cref="Attribute"/>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
 public class VanaraMarshalerAttribute : Attribute
 {

@@ -4,7 +4,6 @@ using System.Buffers;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.PInvoke;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.InteropServices.Tests;
 

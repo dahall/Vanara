@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
+﻿using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -656,7 +652,7 @@ public static partial class Kernel32
 		if (count == 0 || err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			return err;
 
-		using InteropServices.SafeCoTaskMemHandle mem = new(count * IntPtr.Size + bufferLength * StringHelper.GetCharSize(CharSet.Unicode) + count * sizeof(uint));
+		using SafeCoTaskMemHandle mem = new(count * IntPtr.Size + bufferLength * StringHelper.GetCharSize(CharSet.Unicode) + count * sizeof(uint));
 		IntPtr buffer = mem.DangerousGetHandle().Offset(count * IntPtr.Size);
 		IntPtr props = mem.DangerousGetHandle().Offset(count * IntPtr.Size + bufferLength * StringHelper.GetCharSize(CharSet.Unicode));
 		err = FindPackagesByPackageFamily(packageFamilyName, packageFilters, ref count, mem, ref bufferLength, buffer, props);
@@ -1731,7 +1727,7 @@ public static partial class Kernel32
 		if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			return err;
 
-		using InteropServices.SafeCoTaskMemHandle mem = new(count * IntPtr.Size + bufferLength * StringHelper.GetCharSize(CharSet.Unicode));
+		using SafeCoTaskMemHandle mem = new(count * IntPtr.Size + bufferLength * StringHelper.GetCharSize(CharSet.Unicode));
 		IntPtr buffer = mem.DangerousGetHandle().Offset(count * IntPtr.Size);
 		err = GetPackagesByPackageFamily(packageFamilyName, ref count, mem, ref bufferLength, buffer);
 		if (err.Succeeded)

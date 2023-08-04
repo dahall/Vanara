@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using static Vanara.PInvoke.Shell32;
+﻿using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell;
 

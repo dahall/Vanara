@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using System.Collections.Generic;
 
 namespace Vanara.PInvoke;
 
@@ -967,7 +964,7 @@ public static partial class Kernel32
 
 		private IEnumerable<TStruct> EnumSnap<TStruct>(FirstNext<TStruct> first, FirstNext<TStruct> next) where TStruct : struct
 		{
-			var pe = Vanara.Extensions.ReflectionExtensions.GetStaticFieldValue<TStruct>("Default");
+			var pe = ReflectionExtensions.GetStaticFieldValue<TStruct>("Default");
 			Win32Error.ThrowLastErrorIfFalse(first(handle, ref pe));
 			do { yield return pe; } while (next(handle, ref pe));
 			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_FILES);

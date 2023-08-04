@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.Extensions;
+﻿namespace Vanara.Extensions;
 
 /// <summary>Static methods to help with bit manipulation.</summary>
 /// <remarks>This class is intended to support whole numbers. Without a specific constraint for numbers, the list of constraints helps to limit incorrect types, but is NOT foolproof.</remarks>

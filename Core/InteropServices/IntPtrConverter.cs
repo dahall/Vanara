@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-
-namespace Vanara.InteropServices;
+﻿namespace Vanara.InteropServices;
 
 /// <summary>Functions to safely convert a memory pointer to a type.</summary>
 public static class IntPtrConverter

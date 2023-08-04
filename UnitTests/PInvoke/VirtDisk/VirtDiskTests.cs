@@ -11,8 +11,8 @@ namespace Vanara.PInvoke.Tests;
 public class VirtDiskTests
 {
 	private const int vdSize = 0x03010400;
-	private static readonly string tmpcfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD - Diff.vhdx";
-	private static readonly string tmpfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD.vhdx";
+	private static readonly string tmpcfn = TestCaseSources.TempDirWhack + "TestVHD - Diff.vhdx";
+	private static readonly string tmpfn = TestCaseSources.TempDirWhack + "TestVHD.vhdx";
 
 	[Test]
 	public void _StructTest()

@@ -1,19 +1,14 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.Windows.Shell.Tests;
 
@@ -21,8 +16,8 @@ namespace Vanara.Windows.Shell.Tests;
 public class ShellItemTests
 {
 	internal const string badTestDoc = @"C:\Temp\BadTest.doc";
-	internal static readonly string testDoc = PInvoke.Tests.TestCaseSources.WordDoc;
-	internal static readonly string testLinkDoc = PInvoke.Tests.TestCaseSources.WordDocLink;
+	internal static readonly string testDoc = TestCaseSources.WordDoc;
+	internal static readonly string testLinkDoc = TestCaseSources.WordDocLink;
 
 	[Test]
 	public void EqualityTest()
@@ -55,7 +50,7 @@ public class ShellItemTests
 									   Assert.That(i.IsFolder, Is.False);
 									   Assert.That(i.IsLink, Is.False);
 									   Assert.That(i.IShellItem, Is.Not.Null);
-									   Assert.That(i.Name, Is.EqualTo(System.IO.Path.GetFileName(testDoc)));
+									   Assert.That(i.Name, Is.EqualTo(Path.GetFileName(testDoc)));
 									   Assert.That(i.ParsingName, Is.EqualTo(testDoc));
 									   Assert.That(i.Name, Is.EqualTo(i.ToString()));
 									   Assert.That(i.ToolTipText, Is.Not.Null);
@@ -77,10 +72,10 @@ public class ShellItemTests
 		using var i = new ShellItem(testDoc);
 		PropSys.IPropertyStore ps = i.GetHandler<PropSys.IPropertyStore>(BHID.BHID_PropertyStore);
 		Assert.That(ps, Is.Not.Null.And.InstanceOf<PropSys.IPropertyStore>());
-		System.Runtime.InteropServices.Marshal.ReleaseComObject(ps);
+		Marshal.ReleaseComObject(ps);
 		ps = i.GetHandler<PropSys.IPropertyStore>();
 		Assert.That(ps, Is.Not.Null.And.InstanceOf<PropSys.IPropertyStore>());
-		System.Runtime.InteropServices.Marshal.ReleaseComObject(ps);
+		Marshal.ReleaseComObject(ps);
 		IExtractIconW ei = i.GetHandler<IExtractIconW>();
 		Assert.That(ei, Is.Not.Null.And.InstanceOf<IExtractIconW>());
 		//Assert.That(() => i.GetHandler<IExtractIcon>(), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -89,7 +84,7 @@ public class ShellItemTests
 	[Test]
 	public void GetHandlerTest2()
 	{
-		using var shellItem = new ShellItem(PInvoke.Tests.TestCaseSources.LargeFile);
+		using var shellItem = new ShellItem(TestCaseSources.LargeFile);
 		if (!shellItem.IsFolder)
 			TestContext.WriteLine(shellItem.Properties[PROPERTYKEY.System.MIMEType]);
 
@@ -108,7 +103,7 @@ public class ShellItemTests
 			var bmi = GetObject<BITMAP>(bmp);
 			Assert.That(new SIZE(bmi.bmWidth, bmi.bmHeight), Is.EqualTo(sz));
 		}
-		using (var i = new ShellItem(PInvoke.Tests.TestCaseSources.LargeFile))
+		using (var i = new ShellItem(TestCaseSources.LargeFile))
 		{
 			var sz = new Size(1024, 1024);
 			SafeHBITMAP bmp = i.GetImage(sz, ShellItemGetImageOptions.ThumbnailOnly | ShellItemGetImageOptions.ScaleUp);
@@ -131,7 +126,7 @@ public class ShellItemTests
 	public void GetParentTest() => Assert.That(() =>
 									 {
 										 using var i = new ShellItem(testDoc);
-										 using var p = new ShellItem(System.IO.Path.GetDirectoryName(testDoc));
+										 using var p = new ShellItem(Path.GetDirectoryName(testDoc));
 										 Assert.That(i.Parent == p, Is.True);
 										 Assert.That(ShellFolder.Desktop.Parent, Is.Null);
 									 }, Throws.Nothing);
@@ -244,7 +239,7 @@ public class ShellItemTests
 			i.Update();
 		}, Throws.Nothing);
 		Assert.That(() => new ShellItem((string)null), Throws.ArgumentNullException);
-		Assert.That(() => new ShellItem(badTestDoc), Throws.InstanceOf<System.IO.FileNotFoundException>());
+		Assert.That(() => new ShellItem(badTestDoc), Throws.InstanceOf<FileNotFoundException>());
 	}
 
 	[Test]

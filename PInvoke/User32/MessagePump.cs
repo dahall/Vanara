@@ -1,5 +1,4 @@
-﻿using System;
-using static Vanara.PInvoke.User32;
+﻿using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 

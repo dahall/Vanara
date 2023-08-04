@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -6663,7 +6659,7 @@ public static partial class ComCtl32
 	/// Contains information about the background image of a list-view control. This structure is used for both setting and retrieving
 	/// background image information.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774742")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class LVBKIMAGE : IDisposable
@@ -6769,7 +6765,7 @@ public static partial class ComCtl32
 	/// Contains information about a column in report view. This structure is used both for creating and manipulating columns. This structure
 	/// supersedes the LV_COLUMN structure.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774743")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class LVCOLUMN : IDisposable
@@ -6906,7 +6902,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Used to set and retrieve groups.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774769")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class LVGROUP : IDisposable
@@ -7181,7 +7177,7 @@ public static partial class ComCtl32
 	/// Specifies or receives the attributes of a list-view item. This structure has been updated to support a new mask value (LVIF_INDENT)
 	/// that enables item indenting. This structure supersedes the LV_ITEM structure.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774760")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class LVITEM : IDisposable
@@ -7419,12 +7415,12 @@ public static partial class ComCtl32
 				}
 				if (cColumns > 0)
 				{
-					puColumns = cols.MarshalToPtr<int>(Marshal.AllocHGlobal, out _);
+					puColumns = cols.MarshalToPtr(Marshal.AllocHGlobal, out _);
 				}
 				EnumExtensions.SetFlags(ref mask, ListViewItemMask.LVIF_COLUMNS);
 				if (hasFmts)
 				{
-					piColFmt = fmts.MarshalToPtr<int>(Marshal.AllocHGlobal, out _);
+					piColFmt = fmts.MarshalToPtr(Marshal.AllocHGlobal, out _);
 					EnumExtensions.SetFlags(ref mask, ListViewItemMask.LVIF_COLFMT);
 				}
 			}

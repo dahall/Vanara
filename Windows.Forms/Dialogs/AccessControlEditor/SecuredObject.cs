@@ -282,8 +282,8 @@ internal class SecuredObject
 	{
 		try
 		{
-			var tsType = Vanara.Extensions.ReflectionExtensions.LoadType("Microsoft.Win32.TaskScheduler.TaskService", "Microsoft.Win32.TaskScheduler.dll") ??
-						 Vanara.Extensions.ReflectionExtensions.LoadType("Microsoft.Win32.TaskScheduler.TaskService", "Microsoft.Win32.TaskScheduler-Merged.dll");
+			var tsType = Extensions.ReflectionExtensions.LoadType("Microsoft.Win32.TaskScheduler.TaskService", "Microsoft.Win32.TaskScheduler.dll") ??
+						 Extensions.ReflectionExtensions.LoadType("Microsoft.Win32.TaskScheduler.TaskService", "Microsoft.Win32.TaskScheduler-Merged.dll");
 			if (tsType != null)
 			{
 				var ts = Activator.CreateInstance(tsType, serverName, null, null, null, false);

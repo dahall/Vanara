@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+﻿using System.Collections.Generic;
 
 namespace Vanara.PInvoke;
 

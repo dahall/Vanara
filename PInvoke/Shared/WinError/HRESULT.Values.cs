@@ -535,31 +535,31 @@ public partial struct HRESULT
 
 	/// <summary>Operation is prohibited during change notification.</summary>
 	public const int RO_E_CHANGE_NOTIFICATION_IN_PROGRESS = unchecked((int)0x80000015);
-	
+
 	/// <summary>The text associated with this error code could not be found.</summary>
 	public const int RO_E_ERROR_STRING_NOT_FOUND = unchecked((int)0x80000016);
-	
+
 	/// <summary>String not null terminated.</summary>
 	public const int E_STRING_NOT_NULL_TERMINATED = unchecked((int)0x80000017);
-	
+
 	/// <summary>A delegate was assigned when not allowed.</summary>
 	public const int E_ILLEGAL_DELEGATE_ASSIGNMENT = unchecked((int)0x80000018);
-	
+
 	/// <summary>An async operation was not properly started.</summary>
 	public const int E_ASYNC_OPERATION_NOT_STARTED = unchecked((int)0x80000019);
-	
+
 	/// <summary>The application is exiting and cannot service this request.</summary>
 	public const int E_APPLICATION_EXITING = unchecked((int)0x8000001A);
-	
+
 	/// <summary>The application view is exiting and cannot service this request.</summary>
 	public const int E_APPLICATION_VIEW_EXITING = unchecked((int)0x8000001B);
-	
+
 	/// <summary>The object must support the IAgileObject interface.</summary>
 	public const int RO_E_MUST_BE_AGILE = unchecked((int)0x8000001C);
-	
+
 	/// <summary>Activating a single-threaded class from MTA is not supported.</summary>
 	public const int RO_E_UNSUPPORTED_FROM_MTA = unchecked((int)0x8000001D);
-	
+
 	/// <summary>The object has been committed.</summary>
 	public const int RO_E_COMMITTED = unchecked((int)0x8000001E);
 

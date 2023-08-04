@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell;
@@ -35,9 +34,9 @@ public partial class ShellFileOperations
 		internal ShellFileOpEventArgs(TRANSFER_SOURCE_FLAGS flags, IShellItem source, IShellItem folder = null, IShellItem dest = null, string name = null, HRESULT hr = default)
 		{
 			Flags = (TransferFlags)flags;
-			if (source != null) try { SourceItem = ShellItem.Open(source); } catch {}
-			if (folder != null) try { DestFolder = ShellItem.Open(folder); } catch {}
-			if (dest != null) try { DestItem = ShellItem.Open(dest); } catch {}
+			if (source != null) try { SourceItem = ShellItem.Open(source); } catch { }
+			if (folder != null) try { DestFolder = ShellItem.Open(folder); } catch { }
+			if (dest != null) try { DestItem = ShellItem.Open(dest); } catch { }
 			Name = name;
 			Result = hr;
 		}

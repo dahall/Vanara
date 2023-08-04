@@ -1,10 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -724,10 +718,10 @@ public static partial class Kernel32
 	/// to a negative number, lpCharType is an array of words with lpSrcStr + 1 elements. When the function returns, this array contains
 	/// one word corresponding to each character in the source string.
 	/// </returns>
-	/// <exception cref="System.ArgumentException"></exception>
-	/// <exception cref="System.ArgumentNullException">lpSrcStr</exception>
+	/// <exception cref="ArgumentException"></exception>
+	/// <exception cref="ArgumentNullException">lpSrcStr</exception>
 	[PInvokeData("winnls.h", MSDNShortId = "e0cd051f-6627-457a-9a83-d71de607f67f")]
-	public static TCtype[] GetStringTypeEx<TCtype>(string lpSrcStr, LCID Locale) where TCtype : unmanaged, System.Enum
+	public static TCtype[] GetStringTypeEx<TCtype>(string lpSrcStr, LCID Locale) where TCtype : unmanaged, Enum
 	{
 		if (!CorrespondingTypeAttribute.CanGet<TCtype, CHAR_TYPE_INFO>(out var ct)) throw new ArgumentException($"{nameof(TCtype)} must be one of the CtypeX enumerated types.");
 		if (string.IsNullOrEmpty(lpSrcStr)) throw new ArgumentNullException(nameof(lpSrcStr));
@@ -1056,7 +1050,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [MarshalAs(UnmanagedType.LPStr)] string lpMultiByteStr,
-		int cbMultiByte, [Out] byte[] lpWideCharStr, int cchWideChar);
+		int cbMultiByte, [Out, Optional] byte[]? lpWideCharStr, [Optional] int cchWideChar);
 
 	/// <summary>
 	/// Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte
@@ -1216,7 +1210,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
 	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string lpWideCharStr,
-		int cchWideChar, [Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? lpMultiByteStr, int cbMultiByte, 
+		int cchWideChar, [Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? lpMultiByteStr, int cbMultiByte,
 		[Optional, MarshalAs(UnmanagedType.LPStr)] string? lpDefaultChar, [MarshalAs(UnmanagedType.Bool)] out bool lpUsedDefaultChar);
 
 	/// <summary>
@@ -1376,7 +1370,7 @@ public static partial class Kernel32
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
-	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In] [MarshalAs(UnmanagedType.LPWStr)] string lpWideCharStr,
+	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In][MarshalAs(UnmanagedType.LPWStr)] string lpWideCharStr,
 		int cchWideChar, [Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? lpMultiByteStr, int cbMultiByte,
 		IntPtr lpDefaultChar = default, IntPtr lpUsedDefaultChar = default);
 

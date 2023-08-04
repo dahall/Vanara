@@ -1,8 +1,4 @@
 ﻿// Credit due to Gong-Shell from which this was largely taken.
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
@@ -468,7 +464,7 @@ public class ShellContextMenu : IDisposable
 		/// </summary>
 		public MenuItemInfo[] SubMenus { get; }
 
-		/// <summary>The contents of the menu item. The meaning of this member depends on the value of <see cref="MenuItemInfo.Type"/>.</summary>
+		/// <summary>The contents of the menu item. The meaning of this member depends on the value of <see cref="Type"/>.</summary>
 		public string Text { get; }
 
 		/// <summary>

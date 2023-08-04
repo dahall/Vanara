@@ -1,11 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Shell32;
 

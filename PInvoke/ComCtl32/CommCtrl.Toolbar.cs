@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 
@@ -3467,7 +3464,7 @@ public static partial class ComCtl32
 	/// <summary>
 	/// A structure that provides an accelerator and that receives a value specifying whether multiple toolbars respond to the same character.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.User32.INotificationInfo"/>
+	/// <seealso cref="INotificationInfo"/>
 	[PInvokeData("Commctrl.h")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct NMTBDUPACCELERATOR : INotificationInfo

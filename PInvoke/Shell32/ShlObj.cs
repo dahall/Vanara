@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using System.Text;
-using Vanara.InteropServices;
 using static Vanara.Extensions.BitHelper;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
@@ -15,6 +11,7 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 [SuppressUnmanagedCodeSecurity]
 public static partial class Shell32
 {
@@ -109,25 +106,19 @@ public static partial class Shell32
 	// uMsg, WPARAM wParam, LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776770(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("Shlobj_core.h", MSDNShortId = "bb776770")]
-	public delegate HRESULT LPFNDFMCALLBACK(IShellFolder psf, HWND hwnd, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
+	public delegate HRESULT LPFNDFMCALLBACK([In, Optional] IShellFolder? psf, [In, Optional] HWND hwnd, [In, Optional] IDataObject? pdtobj, DFM uMsg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
-	/// <para>
-	/// [This interface is supported through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be unsupported in
-	/// subsequent versions of Windows.]
-	/// </para>
-	/// <para>
 	/// Defines the prototype for the callback function used by the system folder view object. This function essentially duplicates the
-	/// functionality of <c>IShellFolderViewCB</c>.
-	/// </para>
+	/// functionality of IShellFolderViewCB.
 	/// </summary>
 	/// <param name="psvOuter">
-	/// <para>Type: <c><c>IShellView</c>*</c></para>
-	/// <para>A pointer to the owning instance of <c>IShellView</c>, if applicable. This parameter can be <c>NULL</c>.</para>
+	/// <para>Type: <c>IShellView*</c></para>
+	/// <para>A pointer to the owning instance of IShellView, if applicable. This parameter can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="psf">
-	/// <para>Type: <c><c>IShellFolder</c>*</c></para>
-	/// <para>A pointer to the instance of <c>IShellFolder</c> the message applies to.</para>
+	/// <para>Type: <c>IShellFolder*</c></para>
+	/// <para>A pointer to the instance of IShellFolder the message applies to.</para>
 	/// </param>
 	/// <param name="hwndMain">
 	/// <para>Type: <c>HWND</c></para>
@@ -136,24 +127,91 @@ public static partial class Shell32
 	/// <param name="uMsg">
 	/// <para>Type: <c>UINT</c></para>
 	/// <para>One of the following notifications.</para>
+	/// <para>SFVM_ADDPROPERTYPAGES</para>
+	/// <para>Allows the callback object to provide a page to add to the <c>Properties</c> property sheet of the selected object.</para>
+	/// <para>SFVM_BACKGROUNDENUM</para>
+	/// <para>Allows the callback object to request that enumeration be done on a background thread.</para>
+	/// <para>SFVM_BACKGROUNDENUMDONE</para>
+	/// <para>Notifies the callback object that background enumeration is complete.</para>
+	/// <para>SFVM_COLUMNCLICK</para>
+	/// <para>Notifies the callback object that the user has clicked a column header to sort the list of objects in the folder view.</para>
+	/// <para>SFVM_DEFITEMCOUNT</para>
+	/// <para>Allows the callback object to specify the number of items in the folder view.</para>
+	/// <para>SFVM_DEFVIEWMODE</para>
+	/// <para>Allows the callback object to specify the view mode.</para>
+	/// <para>SFVM_DIDDRAGDROP</para>
+	/// <para>Notifies the callback function that a drag-and-drop operation has begun.</para>
+	/// <para>SFVM_FSNOTIFY</para>
+	/// <para>Notifies the callback object that an event has taken place that affects one of its items.</para>
+	/// <para>SFVM_GETANIMATION</para>
+	/// <para>Allows the callback object to specify that an animation be displayed while items are enumerated on a background thread.</para>
+	/// <para>SFVM_GETBUTTONINFO</para>
+	/// <para>Allows the callback object to add buttons to the toolbar.</para>
+	/// <para>SFVM_GETBUTTONS</para>
+	/// <para>Allows the callback object to specify the buttons to be added to the toolbar.</para>
+	/// <para>SFVM_GETDETAILSOF</para>
+	/// <para>
+	/// Allows the callback object to provide the details for an item in a Shell folder. Use only if a call to IShellFolder2::GetDetailsOf
+	/// fails and there is no IShellDetails::GetDetailsOf method available to call.
+	/// </para>
+	/// <para>SFVM_GETHELPTEXT</para>
+	/// <para>Allows the callback object to specify a help text string for menu items or toolbar buttons.</para>
+	/// <para>SFVM_GETHELPTOPIC</para>
+	/// <para>Allows the callback object to specify a Help file and topic.</para>
+	/// <para>SFVM_GETNOTIFY</para>
+	/// <para>Specifies which events will generate an SFVM_FSNOTIFY message for a given item.</para>
+	/// <para>SFVM_GETPANE</para>
+	/// <para>Allows the callback object to provide the status bar pane in which to display the Internet zone information.</para>
+	/// <para>SFVM_GETSORTDEFAULTS</para>
+	/// <para>Allows the callback object to specify default sorting parameters.</para>
+	/// <para>SFVM_GETTOOLTIPTEXT</para>
+	/// <para>Allows the callback object to specify a tooltip text string for menu items or toolbar buttons.</para>
+	/// <para>SFVM_GETZONE</para>
+	/// <para>Allows the callback object to provide Internet zone information.</para>
+	/// <para>SFVM_INITMENUPOPUP</para>
+	/// <para>Allows the callback object to modify an item's context menu.</para>
+	/// <para>SFVM_INVOKECOMMAND</para>
+	/// <para>Notifies the callback object that one of its toolbar or menu commands has been invoked.</para>
+	/// <para>SFVM_MERGEMENU</para>
+	/// <para>Allows the callback object to merge menu items into the Windows Explorer menus.</para>
+	/// <para>SFVM_QUERYFSNOTIFY</para>
+	/// <para>Allows the callback object to register a folder so that changes to that folder's view will generate notifications.</para>
+	/// <para>SFVM_SETISFV</para>
+	/// <para>
+	/// Notifies the callback object of the container site. This is used only when IObjectWithSite::SetSite is not supported and
+	/// SHCreateShellFolderViewEx is used.
+	/// </para>
+	/// <para>SFVM_SIZE</para>
+	/// <para>Notifies the callback object that the folder view has been resized.</para>
+	/// <para>SFVM_THISIDLIST</para>
+	/// <para>
+	/// Allows the callback object to specify the view's PIDL. This is used only when IPersistIDList::SetIDList and
+	/// IPersistFolder2::GetCurFolder have failed.
+	/// </para>
+	/// <para>SFVM_UNMERGEMENU</para>
+	/// <para>Notifies the callback object that a menu is being removed.</para>
+	/// <para>SFVM_UPDATESTATUSBAR</para>
+	/// <para>Allows the callback object to request that the status bar be updated.</para>
+	/// <para>SFVM_WINDOWCREATED</para>
+	/// <para>Notifies the callback object that the folder view window is being created.</para>
 	/// </param>
 	/// <param name="wParam">
 	/// <para>Type: <c>WPARAM</c></para>
-	/// <para>Additional information dependent on the value in uMsg. See the individual notification pages for specific requirements.</para>
+	/// <para>Additional information dependent on the value in <c>uMsg</c>. See the individual notification pages for specific requirements.</para>
 	/// </param>
 	/// <param name="lParam">
 	/// <para>Type: <c>LPARAM</c></para>
-	/// <para>Additional information dependent on the value in uMsg. See the individual notification pages for specific requirements.</para>
+	/// <para>Additional information dependent on the value in <c>uMsg</c>. See the individual notification pages for specific requirements.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>HRESULT</c></para>
-	/// <para>If this function pointer succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// <para>If this callback function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
-	// typedef HRESULT ( CALLBACK *LPFNVIEWCALLBACK)( _In_ IShellView *psvOuter, _In_ IShellFolder *psf, _In_ HWND hwndMain, UINT uMsg,
-	// WPARAM wParam, LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776771(v=vs.85).aspx
-	[PInvokeData("Shlobj_core.h", MSDNShortId = "bb776771")]
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nc-shlobj_core-lpfnviewcallback
+	// LPFNVIEWCALLBACK Lpfnviewcallback; HRESULT Lpfnviewcallback( [in] IShellView *psvOuter, [in] IShellFolder *psf, [in] HWND hwndMain, UINT uMsg, WPARAM wParam, LPARAM lParam ) {...}
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NC:shlobj_core.LPFNVIEWCALLBACK")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate HRESULT LPFNVIEWCALLBACK(IShellView psvOuter, IShellFolder psf, HWND hwndMain, uint uMsg, IntPtr wParam, IntPtr lParam);
+	public delegate HRESULT LPFNVIEWCALLBACK([In, Optional] IShellView? psvOuter, IShellFolder psf, HWND hwndMain, SFVM uMsg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>A flag that controls how PifMgr_CloseProperties operates.</summary>
 	[PInvokeData("shlobj_core.h", MSDNShortId = "fd50d4f8-87c8-4162-9e88-3c8592b929fa")]
@@ -456,6 +514,653 @@ public static partial class Shell32
 
 		/// <summary>The folder that represents other computers in your workgroup.</summary>
 		CSIDL_COMPUTERSNEARME = 0x003d,
+	}
+
+	/// <summary>Contains information for merging menu items into Windows Explorer menus.</summary>
+	/// <remarks>
+	/// See IContextMenu::QueryContextMenu as this structure performs the same role as the parameters of that method. Note, however, that the
+	/// information provided by the return value of that method is not a parallel to the information provided by the return value of an
+	/// operation involving <c>QCMINFO</c>.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-qcminfo typedef struct _QCMINFO { HMENU hmenu; UINT
+	// indexMenu; UINT idCmdFirst; UINT idCmdLast; QCMINFO_IDMAP const *pIdMap; } QCMINFO;
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core._QCMINFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct QCMINFO
+	{
+		/// <summary>
+		/// <para>Type: <c>HMENU</c></para>
+		/// <para>[in] The handle of the menu where the new commands are to be added.</para>
+		/// </summary>
+		public HMENU hmenu;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>[in] The zero-based index where the first menu item are to be inserted.</para>
+		/// </summary>
+		public uint indexMenu;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// [in, out] On entry, this member contains the first available ID to be used for the context menu. On exit, it contains the last ID
+		/// added plus one.
+		/// </para>
+		/// </summary>
+		public uint idCmdFirst;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// [in] The maximum value for a menu item identifier. The difference between the input value of <c>idCmdFirst</c> and
+		/// <c>idCmdLast</c> is the maximum number of menu items that can be added.
+		/// </para>
+		/// </summary>
+		public uint idCmdLast;
+
+		/// <summary>
+		/// <para>Type: <c>QCMINFO_IDMAP*</c></para>
+		/// <para>Not used, must be <c>NULL</c>.</para>
+		/// </summary>
+		public IntPtr /*QCMINFO_IDMAP*/ pIdMap;
+	}
+
+	/// <summary>The command ID of the selected menu command.</summary>
+	[PInvokeData("Shlobj_core.h")]
+	public enum DFM_CMD
+	{
+		/// <summary>Windows Vista and later. Delete the current item.</summary>
+		DFM_CMD_DELETE = -1,
+
+		/// <summary>Windows Vista and later. Move the current item.</summary>
+		DFM_CMD_MOVE = -2,
+
+		/// <summary>Windows Vista and later. Copy the current item.</summary>
+		DFM_CMD_COPY = -3,
+
+		/// <summary>Windows Vista and later. Create a link to the current item.</summary>
+		DFM_CMD_LINK = -4,
+
+		/// <summary>Show the Properties UI for the item the menu was invoked on.</summary>
+		DFM_CMD_PROPERTIES = -5,
+
+		/// <summary>Not supported.</summary>
+		DFM_CMD_NEWFOLDER = -6,
+
+		/// <summary>Windows Vista and later. Paste an item to the current location.</summary>
+		DFM_CMD_PASTE = -7,
+
+		/// <summary>Not supported.</summary>
+		DFM_CMD_VIEWLIST = -8,
+
+		/// <summary>Not supported.</summary>
+		DFM_CMD_VIEWDETAILS = -9,
+
+		/// <summary>Windows Vista and later. Paste a link at the current location.</summary>
+		DFM_CMD_PASTELINK = -10,
+
+		/// <summary>Not supported.</summary>
+		DFM_CMD_PASTESPECIAL = -11,
+
+		/// <summary>Not supported.</summary>
+		DFM_CMD_MODALPROP = -12,
+
+		/// <summary>Windows Vista and later. Rename the current item.</summary>
+		DFM_CMD_RENAME = -13,
+
+	}
+
+	/// <summary>Contains additional arguments used by DFM_INVOKECOMMANDEX.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-dfmics typedef struct { DWORD cbSize; DWORD fMask;
+	// LPARAM lParam; UINT idCmdFirst; UINT idDefMax; LPCMINVOKECOMMANDINFO pici; IUnknown *punkSite; } DFMICS, *PDFMICS;
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core.DFMICS")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct DFMICS
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The size of this structure, in bytes.</para>
+		/// </summary>
+		public uint cbSize;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// Zero, or one or more of the following flags that specify how to handle the data in the CMINVOKECOMMANDINFO or
+		/// CMINVOKECOMMANDINFOEX structure pointed to by <c>pici</c>.
+		/// </para>
+		/// <para>CMIC_MASK_HOTKEY</para>
+		/// <para>The <c>dwHotKey</c> member is valid.</para>
+		/// <para>CMIC_MASK_ICON</para>
+		/// <para>Not used.</para>
+		/// <para>CMIC_MASK_FLAG_NO_UI</para>
+		/// <para>
+		/// The implementation of IContextMenu::InvokeCommand is prevented from displaying user interface elements (for example, error
+		/// messages) while carrying out a command.
+		/// </para>
+		/// <para>CMIC_MASK_UNICODE</para>
+		/// <para>
+		/// Used only when <c>pici</c> points to a CMINVOKECOMMANDINFOEX structure. Indicates that the shortcut menu handler should use
+		/// <c>lpVerbW</c>, <c>lpParametersW</c>, <c>lpTitleW</c>, and <c>lpDirectoryW</c> members instead of their ANSI equivalents. Because
+		/// some shortcut menu handlers may not support Unicode, you should also pass valid ANSI strings in the <c>lpVerb</c>,
+		/// <c>lpParameters</c>, <c>lpTitleW</c>, and <c>lpDirectory</c> members.
+		/// </para>
+		/// <para>CMIC_MASK_NO_CONSOLE</para>
+		/// <para>
+		/// If a shortcut menu handler needs to create a new process, it normally creates a new console. Setting the
+		/// <c>CMIC_MASK_NO_CONSOLE</c> flag suppresses the creation of a new console.
+		/// </para>
+		/// <para>CMIC_MASK_FLAG_SEP_VDM</para>
+		/// <para>
+		/// This flag is valid only when referring to a 16-bit Windows-based application. If set, the application that the shortcut points to
+		/// runs in a private Virtual DOS Machine (VDM). See Remarks.
+		/// </para>
+		/// <para>CMIC_MASK_ASYNCOK</para>
+		/// <para>
+		/// The implementation of IContextMenu::InvokeCommand can spin off a new thread or process to handle the call and does not need to
+		/// block on completion of the function being invoked. For example, if the verb is "delete" the <c>IContextMenu::InvokeCommand</c>
+		/// call may return before all of the items have been deleted. Since this is advisory, calling applications that specify this flag
+		/// cannot guarantee that this request will be honored if they are not familiar with the implementation of the verb that they are invoking.
+		/// </para>
+		/// <para>CMIC_MASK_NOASYNC</para>
+		/// <para>
+		/// <c>Windows Vista and later.</c> The implementation of IContextMenu::InvokeCommand should be synchronous, not returning before it
+		/// is complete. Since this is recommended, calling applications that specify this flag cannot guarantee that this request will be
+		/// honored if they are not familiar with the implementation of the verb that they are invoking.
+		/// </para>
+		/// <para>CMIC_MASK_SHIFT_DOWN</para>
+		/// <para>
+		/// The SHIFT key is pressed. Use this instead of polling the current state of the keyboard that may have changed since the verb was invoked.
+		/// </para>
+		/// <para>CMIC_MASK_CONTROL_DOWN</para>
+		/// <para>
+		/// The CTRL key is pressed. Use this instead of polling the current state of the keyboard that may have changed since the verb was invoked.
+		/// </para>
+		/// <para>CMIC_MASK_FLAG_LOG_USAGE</para>
+		/// <para>
+		/// Indicates that the implementation of IContextMenu::InvokeCommand might want to keep track of the item being invoked for features
+		/// like the "Recent documents" menu.
+		/// </para>
+		/// <para>CMIC_MASK_NOZONECHECKS</para>
+		/// <para>Do not perform a zone check. This flag allows ShellExecuteEx to bypass zone checking put into place by IAttachmentExecute.</para>
+		/// <para>CMIC_MASK_PTINVOKE</para>
+		/// <para>Used only when <c>pici</c> points to a CMINVOKECOMMANDINFOEX structure. The <c>ptInvoke</c> member is valid.</para>
+		/// </summary>
+		public CMIC fMask;
+
+		/// <summary>
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>
+		/// A pointer to a null-terminated string that contains additional arguments to the selected menu command. This member can be <c>NULL</c>.
+		/// </para>
+		/// </summary>
+		public IntPtr lParam;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The minimum value that the handler can specify for a menu item identifier.</para>
+		/// </summary>
+		public uint idCmdFirst;
+
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The maximum value that the handler can specify for a menu item identifier.</para>
+		/// </summary>
+		public uint idDefMax;
+
+		/// <summary>
+		/// <para>Type: <c>LPCMINVOKECOMMANDINFO</c></para>
+		/// <para>A pointer to a CMINVOKECOMMANDINFO or <c>CMINVOKECOMMANDINFO</c> structure.</para>
+		/// </summary>
+		public IntPtr /*CMINVOKECOMMANDINFO*/ pici;
+
+		/// <summary>
+		/// <para>Type: <c>IUnknown*</c></para>
+		/// <para>A pointer to the site of the context menu handler.</para>
+		/// </summary>
+		public IntPtr /*IUnknown*/ punkSite;
+
+	}
+
+	/// <summary>Context menu callback messages. These are passed in the uMsg parameter of the LPFNDFMCALLBACK callback function.</summary>
+	[PInvokeData("Shlobj_core.h")]
+	public enum DFM
+	{
+		/// <summary>
+		/// <para>Allows the callback to add items to the menu.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>pqcminfo</em></para>
+		/// <para>A pointer to a <c>QCMINFO</c> structure containing the information used in the merge.</para>
+		/// <para><em>uFlags</em></para>
+		/// <para>Flags specifying how the context menu can be changed. This parameter uses the CMF_* values described in <c>IContextMenu::QueryContextMenu</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If items are added to the context menu, they must be supported with routines that respond appropriately when one of those items
+		/// is invoked using <c>DFM_INVOKECOMMAND</c>.
+		/// </para>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// implemented. There are two APIs for its implementation, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-mergecontextmenu
+		[MsgParams(typeof(CMF), typeof(QCMINFO?))]
+		DFM_MERGECONTEXTMENU = 1,
+
+		/// <summary>
+		/// <para>
+		/// Sent by the default context menu implementation to request the callback function that handles the menu ( <c>LPFNDFMCALLBACK</c>)
+		/// to invoke a menu command.
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>id</em></para>
+		/// <para>The command ID of the selected menu command. The following flags are recognized:</para>
+		/// <para><em><c>DFM_CMD_DELETE</c></em></para>
+		/// <para><c>Windows Vista and later</c>. Delete the current item.</para>
+		/// <para><em><c>DFM_CMD_MOVE</c></em></para>
+		/// <para><c>Windows Vista and later</c>. Move the current item.</para>
+		/// <para><em><c>DFM_CMD_COPY</c></em></para>
+		/// <para><c>Windows Vista and later</c>. Copy the current item.</para>
+		/// <para><em><c>DFM_CMD_LINK</c></em></para>
+		/// <para><c>Windows Vista and later</c>. Create a link to the current item.</para>
+		/// <para><em><c>DFM_CMD_PROPERTIES</c></em></para>
+		/// <para>Show the <c>Properties</c> UI for the item on which the menu was invoked.</para>
+		/// <para><em><c>DFM_CMD_NEWFOLDER</c></em></para>
+		/// <para>Not supported.</para>
+		/// <para><em><c>DFM_CMD_PASTE</c></em></para>
+		/// <para><c>Windows Vista and later</c>. Paste an item to the current location.</para>
+		/// <para><em><c>DFM_CMD_VIEWLIST</c></em></para>
+		/// <para>Not supported.</para>
+		/// <para><em><c>DFM_CMD_VIEWDETAILS</c></em></para>
+		/// <para>Not supported.</para>
+		/// <para><em><c>DFM_CMD_PASTELINK</c></em></para>
+		/// <para><c>Windows Vista and later</c>. Paste a link at the current location.</para>
+		/// <para><em><c>DFM_CMD_PASTESPECIAL</c></em></para>
+		/// <para>Not supported.</para>
+		/// <para><em><c>DFM_CMD_MODALPROP</c></em></para>
+		/// <para>Not supported.</para>
+		/// <para><em><c>DFM_CMD_RENAME</c></em></para>
+		/// <para><c>Windows Vista and later</c>. Rename the current item.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>
+		/// The handler for this message needs to return S_FALSE if you want the default implementation to invoke the default handler for the
+		/// command. Return S_OK if the message was handled. Otherwise, return a standard HRESULT error code.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the callback is implemented. There
+		/// are two APIs for callback construction, <c>CDefFolderMenu_Create2</c> that takes a pointer to a callback function, or
+		/// <c>SHCreateDefaultContextMenu</c> that uses a callback object that supports <c>IContextMenuCB</c>.
+		/// </para>
+		/// <para>
+		/// The items on which the command is being invoked are provided in a data object passed to the callback function or to the
+		/// <c>IContextMenuCB::CallBack</c> method. This data object is provided by the data source that implements the callback. To extract
+		/// the items from the data object, use <c>SHCreateShellItemArrayFromDataObject</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-invokecommand
+		[MsgParams(typeof(DFM_CMD), typeof(string), LResultType = typeof(HRESULT))]
+		DFM_INVOKECOMMAND = 2,
+
+		/// <summary>
+		/// <para>Allows the callback object to specify a help text string.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>idCmd_cchMax</em></para>
+		/// <para>
+		/// The low-order word of this parameter holds the command ID. The high-order word holds the number of characters in the pszText buffer.
+		/// </para>
+		/// <para><em>pszText</em></para>
+		/// <para>A null-terminated ANSI string containing the help text.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// constructed. There are two APIs for its construction, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptext
+		[MsgParams(typeof(uint), typeof(StrPtrAnsi))]
+		DFM_GETHELPTEXT = 5,
+
+		/// <summary>
+		/// <para>Sent to the owner window of a control or menu item when the control or menu is created.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>
+		/// The value of the <c>CtlID</c> member of the <c>MEASUREITEMSTRUCT</c> structure pointed to by the lpMeasureItem parameter. This
+		/// value identifies the control that sent the <c>DFM_WM_MEASUREITEM</c> message.
+		/// </para>
+		/// <para><em>lpMeasureItem</em></para>
+		/// <para>A pointer to a <c>MEASUREITEMSTRUCT</c> structure that contains the dimensions of the owner-drawn control or menu item.</para>
+		/// </summary>
+		/// <remarks>
+		/// When the owner window receives the <c>DFM_WM_MEASUREITEM</c> message, the owner fills in the <c>MEASUREITEMSTRUCT</c> structure
+		/// pointed to by the lpMeasureItem parameter of the message and returns; this informs the system of the dimensions of the control.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-wm-measureitem
+		[MsgParams(typeof(uint), typeof(MEASUREITEMSTRUCT?))]
+		DFM_WM_MEASUREITEM = 6,
+
+		/// <summary>
+		/// <para>Sent to the parent window of an owner-drawn control or menu when a visual aspect of the control or menu has changed.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>
+		/// The identifier of the control that sent the <c>DFM_WM_DRAWITEM</c> message. If the message was sent by a menu, this parameter is zero.
+		/// </para>
+		/// <para><em>lpDrawItem</em></para>
+		/// <para>
+		/// A pointer to a <c>DRAWITEMSTRUCT</c> structure containing information about the item to be drawn and the type of drawing required.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return <c>TRUE</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>itemAction</c> member of the <c>DRAWITEMSTRUCT</c> structure specifies the drawing operation that an application should perform.
+		/// </para>
+		/// <para>
+		/// Before returning from processing this message, an application should ensure that the device context identified by the <c>hDC</c>
+		/// member of the <c>DRAWITEMSTRUCT</c> structure is in the default state.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-wm-drawitem
+		[MsgParams(typeof(uint), typeof(DRAWITEMSTRUCT?), LResultType = typeof(BOOL))]
+		DFM_WM_DRAWITEM = 7,
+
+		/// <summary>
+		/// <para>
+		/// Sent when a drop-down menu or submenu is about to become active. This allows an application to modify the menu before it is
+		/// displayed, without changing the entire menu.
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>A handle to the drop-down menu or submenu.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>The low-order word specifies the zero-based relative position of the menu item that opens the drop-down menu or submenu.</para>
+		/// <para>
+		/// The high-order word indicates whether the drop-down menu is the window menu. If the menu is the window menu, this parameter is
+		/// <c>TRUE</c>; otherwise, it is <c>FALSE</c>.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-wm-initmenupopup
+		[MsgParams(typeof(HMENU), typeof(uint), LResultType = typeof(uint))]
+		DFM_WM_INITMENUPOPUP = 8,
+
+		/// <summary>
+		/// <para>Sent to verify the existence of a menu command.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>idCmd</em></para>
+		/// <para>The menu command identifier offset.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Not used. Must be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>Returns S_OK if the command exists, or S_FALSE otherwise.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// constructed. There are two APIs for its construction, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-validatecmd
+		[MsgParams(typeof(uint), null, LResultType = typeof(HRESULT))]
+		DFM_VALIDATECMD = 9,
+
+		/// <summary>
+		/// <para>Allows the callback to add items to the top of the extended menu.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>pqcminfo</em></para>
+		/// <para>A pointer to a <c>QCMINFO</c> structure containing the information used in the merge.</para>
+		/// <para><em>uFlags</em></para>
+		/// <para>Flags specifying how the context menu can be changed. This parameter uses the CMF_* values described in <c>IContextMenu::QueryContextMenu</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If items are added to the extended context menu, they must be supported with routines that respond appropriately when one of
+		/// those items is invoked using <c>DFM_INVOKECOMMAND</c>.
+		/// </para>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// implemented. There are two APIs for its implementation, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-mergecontextmenu-top
+		[MsgParams(typeof(CMF), typeof(QCMINFO?))]
+		DFM_MERGECONTEXTMENU_TOP = 10,
+
+		/// <summary>
+		/// <para>Allows the callback object to specify a help text string.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>idCmd_cchMax</em></para>
+		/// <para>
+		/// The low-order word of this parameter holds the command ID. The high-order word holds the number of characters in the pszText buffer.
+		/// </para>
+		/// <para><em>pszText</em></para>
+		/// <para>A null-terminated Unicode string containing the help text.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// constructed. There are two APIs for its construction, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptextw
+		[MsgParams(typeof(uint), typeof(StrPtrUni))]
+		DFM_GETHELPTEXTW = 11,
+
+		/// <summary>
+		/// <para>Sent by the default context menu implementation to request <c>LPFNDFMCALLBACK</c> to invoke an extended menu command.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>idCmd</em></para>
+		/// <para>The command ID of the selected menu command. The following flags are recognized.</para>
+		/// <para><em><c>DFM_CMD_DELETE</c></em></para>
+		/// <para><em><c>DFM_CMD_MOVE</c></em></para>
+		/// <para><em><c>DFM_CMD_COPY</c></em></para>
+		/// <para><em><c>DFM_CMD_LINK</c></em></para>
+		/// <para><em><c>DFM_CMD_PROPERTIES</c></em></para>
+		/// <para>Show the <c>Properties</c> UI for the item the menu was invoked on.</para>
+		/// <para><em><c>DFM_CMD_NEWFOLDER</c></em></para>
+		/// <para><em><c>DFM_CMD_PASTE</c></em></para>
+		/// <para><em><c>DFM_CMD_VIEWLIST</c></em></para>
+		/// <para><em><c>DFM_CMD_VIEWDETAILS</c></em></para>
+		/// <para><em><c>DFM_CMD_PASTELINK</c></em></para>
+		/// <para><em><c>DFM_CMD_PASTESPECIAL</c></em></para>
+		/// <para><em><c>DFM_CMD_MODALPROP</c></em></para>
+		/// <para><em><c>DFM_CMD_RENAME</c></em></para>
+		/// <para><i>PDFMICS [in]</i></para>
+		/// <para>
+		/// A pointer to a DFMICS structure that contains additional arguments to the selected menu command. This parameter can be NULL.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Upon receipt of this message, your function should return S_FALSE if you want the default implementation to invoke the default
+		/// handler for the command. Return S_OK if the message was handled. Otherwise, return a standard HRESULT error code.
+		/// </para>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the callback is implemented. There
+		/// are two APIs for callback construction, <c>CDefFolderMenu_Create2</c> that takes a pointer to a callback function, or
+		/// <c>SHCreateDefaultContextMenu</c> that uses a callback object that supports <c>IContextMenuCB</c>.
+		/// </para>
+		/// <para>
+		/// The items on which the command is being invoked are provided in a data object passed to the callback function or to the
+		/// <c>IContextMenuCB::CallBack</c> method. This data object is provided by the data source that implements the callback. To extract
+		/// the items from the data object, use <c>SHCreateShellItemArrayFromDataObject</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMAND</c> is a simpler version of this message which does not provide as much information to the callback. Use
+		/// <c>DFM_INVOKECOMMAND</c> if the additional information provided by <c>DFM_INVOKECOMMANDEX</c> is not needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-invokecommandex
+		[MsgParams(typeof(DFM_CMD), typeof(DFMICS?))]
+		DFM_INVOKECOMMANDEX = 12,
+
+		/// <summary>
+		/// <para>Sent by the default context menu implementation to assign a name to a menu command.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>defaultID</em></para>
+		/// <para>A pointer to the ID of the selected menu command.</para>
+		/// <para><em>pszCommandName</em></para>
+		/// <para>A pointer to a Unicode string containing the name of the command.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// implemented. There are two APIs for its implementation, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-mapcommandname
+		[MsgParams(typeof(StrPtrAuto), typeof(int?))]
+		DFM_MAPCOMMANDNAME = 13,
+
+		/// <summary>
+		/// <para>
+		/// Sent by the default context menu implementation during creation, specifying the default menu command and allowing an alternate
+		/// choice to be made. Used by <c>LPFNDFMCALLBACK</c>.
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>defaultID</em></para>
+		/// <para>A pointer to the ID of the selected menu command. The following flag is recognized.</para>
+		/// <para><em><c>DFM_CMD_PROPERTIES</c></em></para>
+		/// <para>Show the <c>Properties</c> UI for the item the menu was invoked on.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// To override the default command choice, your handler should, upon receipt of this message, set the value pointed to by defaultID
+		/// to the ID of the replacement command and return S_OK. Return a failure code otherwise.
+		/// </para>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// constructed. There are two APIs for its construction, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getdefstaticid
+		[MsgParams(null, typeof(int?))]
+		DFM_GETDEFSTATICID = 14,
+
+		/// <summary>
+		/// <para>Sent by the default context menu implementation to get the verb for the given command ID in the context menu.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>idCmd_cchMax</em></para>
+		/// <para>
+		/// The low-order word of this parameter holds the command ID. The high-order word holds the number of characters in the pszText buffer.
+		/// </para>
+		/// <para><em>pszText</em></para>
+		/// <para>A pointer to a null-terminated string that contains the verb text.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// constructed. There are two APIs for its construction, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
+		[MsgParams(typeof(uint), typeof(StrPtrUni))]
+		DFM_GETVERBW = 15,
+
+		/// <summary>
+		/// <para>Sent by the default context menu implementation to get the verb for the given command ID in the context menu.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>idCmd_cchMax</em></para>
+		/// <para>
+		/// The low-order word of this parameter holds the command ID. The high-order word holds the number of characters in the pszText buffer.
+		/// </para>
+		/// <para><em>pszText</em></para>
+		/// <para>A pointer to a null-terminated string that contains the verb text.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// constructed. There are two APIs for its construction, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
+		[MsgParams(typeof(uint), typeof(StrPtrAnsi))]
+		DFM_GETVERBA = 16,
+
+		/// <summary>
+		/// <para>Allows the callback to add items to the bottom of the extended menu.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>pqcminfo</em></para>
+		/// <para>A pointer to a <c>QCMINFO</c> structure containing the information used in the merge.</para>
+		/// <para><em>uFlags</em></para>
+		/// <para>Flags specifying how the context menu can be changed. This parameter uses the CMF_* values described in <c>IContextMenu::QueryContextMenu</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If items are added to the extended context menu, they must be supported with routines that respond appropriately when one of
+		/// those items is invoked using <c>DFM_INVOKECOMMAND</c>.
+		/// </para>
+		/// <para>
+		/// This message is sent to either the callback function or the callback object depending on how the default context menu object is
+		/// constructed. There are two APIs for its construction, <c>CDefFolderMenu_Create2</c>, <c>SHCreateDefaultContextMenu</c>.
+		/// </para>
+		/// <para>
+		/// <c>DFM_INVOKECOMMANDEX</c> is an extended version of this message and provides more information to the callback. Use
+		/// <c>DFM_INVOKECOMMANDEX</c> if the additional information provided by that interface is needed in your implementation.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-mergecontextmenu-bottom
+		[MsgParams(typeof(CMF), typeof(QCMINFO?))]
+		DFM_MERGECONTEXTMENU_BOTTOM = 17,
+
+		/// <summary>
+		/// <para>Allows the callback to modify the CFM_XXX values passed to <c>IContextMenu::QueryContextMenu</c>.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>puNewFlags</em></para>
+		/// <para>A pointer to the new flag values.</para>
+		/// <para><em>uFlags</em></para>
+		/// <para>Flags that specify how the context menu can be changed. This parameter uses the CMF_XXX values described in <c>IContextMenu::QueryContextMenu</c>.</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-modifyqcmflags
+		[MsgParams(typeof(CMF), typeof(CMF))]
+		DFM_MODIFYQCMFLAGS = 18,
 	}
 
 	/// <summary>A flag that controls the action of SHGetSetFolderCustomSettings.</summary>
@@ -2065,7 +2770,7 @@ public static partial class Shell32
 		/// Format used for network resources. The pv parameter is the address of a NETRESOURCE structure. The NETRESOURCE structure is
 		/// defined in the <c>Vanara.PInvoke.Mpr</c> library.
 		/// </summary>
-		// [CorrespondingType(typeof(Vanara.PInvoke.Mpr.NETRESOURCE), CorrepsondingAction.Get)] -- Chose not to link Mpr library just for this.
+		[CorrespondingType(typeof(NETRESOURCE), CorrespondingAction.Get)]
 		SHGDFIL_NETRESOURCE = 2,
 
 		/// <summary>Version 4.71. Format used for network resources. The pv parameter is the address of an SHDESCRIPTIONID structure.</summary>
@@ -2433,7 +3138,9 @@ public static partial class Shell32
 	// LPFNDFMCALLBACK pfn, UINT nKeys, const HKEY *ahkeys, IContextMenu **ppcm );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "7b5e012d-1c8b-42c5-8181-9923fd389fc5")]
-	public static extern HRESULT CDefFolderMenu_Create2(PIDL pidlFolder, HWND hwnd, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] apidl, IShellFolder psf, LPFNDFMCALLBACK pfn, uint nKeys, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] HKEY[] ahkeys, out IContextMenu ppcm);
+	public static extern HRESULT CDefFolderMenu_Create2([Optional] PIDL pidlFolder, [Optional] HWND hwnd, uint cidl,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] apidl, IShellFolder psf, [Optional] LPFNDFMCALLBACK? pfn, uint nKeys,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] HKEY[] ahkeys, out IContextMenu ppcm);
 
 	/// <summary>
 	/// <para>
@@ -2498,7 +3205,9 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj.h", MSDNShortId = "1f075051-18c8-4ec2-b010-f983ba2d3303")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileNameFromBrowse(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszFilePath, uint cchFilePath, [MarshalAs(UnmanagedType.LPWStr)] string pszWorkingDir, [MarshalAs(UnmanagedType.LPWStr)] string pszDefExt, [MarshalAs(UnmanagedType.LPWStr)] string pszFilters, [MarshalAs(UnmanagedType.LPWStr)] string pszTitle);
+	public static extern bool GetFileNameFromBrowse([Optional] HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszFilePath, uint cchFilePath,
+		[MarshalAs(UnmanagedType.LPWStr)] string pszWorkingDir, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pszDefExt,
+		[MarshalAs(UnmanagedType.LPWStr)] string pszFilters, [MarshalAs(UnmanagedType.LPWStr)] string pszTitle);
 
 	/// <summary>
 	/// <para>Appends or prepends an SHITEMID structure to an ITEMIDLIST structure.</para>
@@ -2710,7 +3419,7 @@ public static partial class Shell32
 	// PCWSTR pszSubkey, PCWSTR pszValue, DWORD grfMode );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "e1e35c94-84ac-4aa1-b2a1-47b37a7f224e")]
-	public static extern IStream OpenRegStream(HKEY hkey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubkey, [MarshalAs(UnmanagedType.LPWStr)] string pszValue, STGM grfMode);
+	public static extern IStream? OpenRegStream(HKEY hkey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubkey, [MarshalAs(UnmanagedType.LPWStr)] string pszValue, STGM grfMode);
 
 	/// <summary>
 	/// <para>
@@ -2794,7 +3503,7 @@ public static partial class Shell32
 	// pszDir, PWSTR pszSpec );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "593fd2b7-44ae-4309-a185-97e42f3cc0fa")]
-	public static extern PCS PathCleanupSpec([MarshalAs(UnmanagedType.LPWStr)] string pszDir, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSpec);
+	public static extern PCS PathCleanupSpec([MarshalAs(UnmanagedType.LPWStr)] string? pszDir, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSpec);
 
 	/// <summary>
 	/// <para>
@@ -2984,7 +3693,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "84bf0b56-513f-4ac6-b2cf-11f0c471da1e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathResolve(StringBuilder pszPath, string[] dirs, PRF fFlags);
+	public static extern bool PathResolve(StringBuilder pszPath, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? dirs, PRF fFlags);
 
 	/// <summary>
 	/// <para>Creates a unique filename based on an existing filename.</para>
@@ -3029,7 +3738,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1f76ecfa-6f2f-4dde-b05e-4252c92660d9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathYetAnotherMakeUniqueName(StringBuilder pszUniqueName, string pszPath, string pszShort, string pszFileSpec);
+	public static extern bool PathYetAnotherMakeUniqueName(StringBuilder pszUniqueName, [Optional] string? pszPath, [Optional] string? pszShort, string pszFileSpec);
 
 	/// <summary>
 	/// <para>
@@ -3354,7 +4063,7 @@ public static partial class Shell32
 	// pszPrompt, DWORD dwReturn );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "ec1e3c11-9960-482c-8461-72c4d41dff3c")]
-	public static extern int RestartDialog(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPrompt, uint dwReturn);
+	public static extern int RestartDialog(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPrompt, ExitWindowsFlags dwReturn);
 
 	/// <summary>
 	/// <para>
@@ -3415,7 +4124,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
-	public static extern void SHAddToRecentDocs(SHARD uFlags, IShellItem pv);
+	public static extern void SHAddToRecentDocs(SHARD uFlags, IShellItem? pv);
 
 	/// <summary>
 	/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
@@ -3439,7 +4148,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
-	public static extern void SHAddToRecentDocs(SHARD uFlags, IShellLinkW pv);
+	public static extern void SHAddToRecentDocs(SHARD uFlags, IShellLinkW? pv);
 
 	/// <summary>
 	/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
@@ -3463,7 +4172,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
-	public static extern void SHAddToRecentDocs(SHARD uFlags, [MarshalAs(UnmanagedType.LPWStr)] string pv);
+	public static extern void SHAddToRecentDocs(SHARD uFlags, [MarshalAs(UnmanagedType.LPWStr)] string? pv);
 
 	/// <summary>
 	/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
@@ -3512,7 +4221,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
-	public static extern void SHAddToRecentDocs(SHARD uFlags, IntPtr pv);
+	public static extern void SHAddToRecentDocs(SHARD uFlags, [In, Optional] IntPtr pv);
 
 	/// <summary>
 	/// <para>
@@ -3562,7 +4271,7 @@ public static partial class Shell32
 	// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
-	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder? psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>
 	/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this
@@ -3590,8 +4299,8 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparent SHSTDAPI
 	// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
-	public static TIntf SHBindToFolderIDListParent<TIntf>(IShellFolder psfRoot = null, PIDL pidl = null) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHBindToFolderIDListParent(psfRoot, pidl, g, out o, out var _));
+	public static TIntf? SHBindToFolderIDListParent<TIntf>(IShellFolder? psfRoot = null, PIDL? pidl = null) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToFolderIDListParent(psfRoot, pidl ?? PIDL.Null, g, out o, out _));
 
 	/// <summary>
 	/// <para>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</para>
@@ -3641,7 +4350,8 @@ public static partial class Shell32
 	// PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
-	public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder? psfRoot, PIDL pidl, [Optional] IBindCtx? ppbc, in Guid riid,
+		[MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</summary>
 	/// <typeparam name="TIntf">
@@ -3671,8 +4381,8 @@ public static partial class Shell32
 	// SHBindToFolderIDListParentEx( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, IBindCtx *ppbc, REFIID riid, void **ppv,
 	// PCUITEMID_CHILD *ppidlLast );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
-	public static TIntf SHBindToFolderIDListParentEx<TIntf>(IShellFolder psfRoot = null, PIDL pidl = null, IBindCtx ppbc = null) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHBindToFolderIDListParentEx(psfRoot, pidl, ppbc, g, out o, out var _));
+	public static TIntf? SHBindToFolderIDListParentEx<TIntf>(IShellFolder? psfRoot = null, PIDL? pidl = null, IBindCtx? ppbc = null) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToFolderIDListParentEx(psfRoot, pidl ?? PIDL.Null, ppbc, g, out o, out var _));
 
 	/// <summary>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</summary>
 	/// <param name="psf">
@@ -3716,7 +4426,7 @@ public static partial class Shell32
 	// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
-	public static extern HRESULT SHBindToObject(IShellFolder psf, PIDL pidl, IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHBindToObject(IShellFolder? psf, PIDL pidl, IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 
 	/// <summary>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</summary>
 	/// <typeparam name="TIntf">Type of the interface to return.</typeparam>
@@ -3749,8 +4459,8 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoobject SHSTDAPI SHBindToObject(
 	// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
-	public static TIntf SHBindToObject<TIntf>(IShellFolder psf, PIDL pidl, IBindCtx pbc) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHBindToObject(psf, pidl, pbc, g, out o));
+	public static TIntf? SHBindToObject<TIntf>(IShellFolder? psf, PIDL? pidl, IBindCtx? pbc) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToObject(psf, pidl ?? PIDL.Null, pbc, g, out o));
 
 	/// <summary>
 	/// <para>
@@ -3788,7 +4498,7 @@ public static partial class Shell32
 	// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
-	public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>
 	/// Takes a pointer to a fully qualified item identifier list (PIDL), and returns a specified interface pointer on the parent object.
@@ -3802,8 +4512,8 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoparent SHSTDAPI SHBindToParent(
 	// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
-	public static TIntf SHBindToParent<TIntf>(PIDL pidl) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHBindToParent(pidl, g, out o, out var _));
+	public static TIntf? SHBindToParent<TIntf>(PIDL pidl) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToParent(pidl, g, out o, out _));
 
 	/// <summary>Displays a dialog box that enables the user to select a Shell folder.</summary>
 	/// <param name="lpbi">A pointer to a BROWSEINFO structure that contains information used to display the dialog box.</param>
@@ -3895,7 +4605,7 @@ public static partial class Shell32
 	/// <param name="dwItem2">Optional. Second event-dependent value.</param>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h")]
-	public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, [MarshalAs(UnmanagedType.LPWStr)] string dwItem1, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? dwItem2);
+	public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, [MarshalAs(UnmanagedType.LPWStr)] string? dwItem1, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? dwItem2);
 
 	/// <summary>
 	/// Notifies the system of an event that an application has performed. An application should use this function if it performs an
@@ -3950,8 +4660,8 @@ public static partial class Shell32
 	/// <para>Type: <c>int</c></para>
 	/// <para>One or more of the following values that indicate the type of events for which to receive notifications.</para>
 	/// <para>
-	/// <c>Note</c> In earlier versions of the SDK, these flags are not defined in a header file and implementers must define these
-	/// values themselves or use their numeric values directly. As of Windows Vista, these flags are defined in Shlobj.h.
+	/// <c>Note</c> In earlier versions of the SDK, these flags are not defined in a header file and implementers must define these values
+	/// themselves or use their numeric values directly. As of Windows Vista, these flags are defined in Shlobj.h.
 	/// </para>
 	/// <para>SHCNRF_InterruptLevel (0x0001)</para>
 	/// <para>Interrupt level notifications from the file system.</para>
@@ -3959,26 +4669,22 @@ public static partial class Shell32
 	/// <para>Shell-level notifications from the shell.</para>
 	/// <para>SHCNRF_RecursiveInterrupt (0x1000)</para>
 	/// <para>
-	/// Interrupt events on the whole subtree. This flag must be combined with the <c>SHCNRF_InterruptLevel</c> flag. When using this
-	/// flag, notifications must also be made recursive by setting the <c>fRecursive</c> member of the corresponding SHChangeNotifyEntry
-	/// structure referenced by to <c>TRUE</c>. Use of <c>SHCNRF_RecursiveInterrupt</c> on a single level view—for example, a PIDL that
-	/// is relative and contains only one SHITEMID—will block event notification at the highest level and thereby prevent a recursive,
-	/// child update. Thus, an icon dragged into the lowest level of a folder hierarchy may fail to appear in the view as expected.
+	/// Interrupt events on the whole subtree. This flag must be combined with the <c>SHCNRF_InterruptLevel</c> flag. When using this flag,
+	/// notifications must also be made recursive by setting the <c>fRecursive</c> member of the corresponding SHChangeNotifyEntry structure
+	/// referenced by to <c>TRUE</c>. Use of <c>SHCNRF_RecursiveInterrupt</c> on a single level view—for example, a PIDL that is relative and
+	/// contains only one SHITEMID—will block event notification at the highest level and thereby prevent a recursive, child update. Thus, an
+	/// icon dragged into the lowest level of a folder hierarchy may fail to appear in the view as expected.
 	/// </para>
 	/// <para>SHCNRF_NewDelivery (0x8000)</para>
 	/// <para>
-	/// Messages received use shared memory. Call SHChangeNotification_Lock to access the actual data. Call SHChangeNotification_Unlock
-	/// to release the memory when done.
+	/// Messages received use shared memory. Call SHChangeNotification_Lock to access the actual data. Call SHChangeNotification_Unlock to
+	/// release the memory when done.
 	/// </para>
-	/// <para>
-	/// <c>Note</c> We recommend this flag because it provides a more robust delivery method. All clients should specify this flag.
-	/// </para>
+	/// <para><c>Note</c> We recommend this flag because it provides a more robust delivery method. All clients should specify this flag.</para>
 	/// </param>
 	/// <param name="fEvents">
 	/// <para>Type: <c>LONG</c></para>
-	/// <para>
-	/// Change notification events for which to receive notification. See the SHCNE flags listed in SHChangeNotify for possible values.
-	/// </para>
+	/// <para>Change notification events for which to receive notification. See the SHCNE flags listed in SHChangeNotify for possible values.</para>
 	/// </param>
 	/// <param name="wMsg">
 	/// <para>Type: <c>UINT</c></para>
@@ -4001,31 +4707,23 @@ public static partial class Shell32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// See the Change Notify Watcher Sample in the Windows Software Development Kit (SDK) for a full example that demonstrates the use
-	/// of this function.
+	/// See the Change Notify Watcher Sample in the Windows Software Development Kit (SDK) for a full example that demonstrates the use of
+	/// this function.
 	/// </para>
 	/// <para>When a change notification event is raised, the message indicated by is delivered to the window specified by the parameter.</para>
 	/// <list type="bullet">
 	/// <item>
-	/// If SHCNRF_NewDelivery is specified, the and values in the message should be passed to SHChangeNotification_Lock as the and
-	/// parameters respectively.
+	/// If SHCNRF_NewDelivery is specified, the and values in the message should be passed to SHChangeNotification_Lock as the and parameters respectively.
 	/// </item>
 	/// <item>
 	/// If SHCNRF_NewDelivery is not specified, is a pointer to two PIDLIST_ABSOLUTE pointers, and specifies the event. The two
 	/// PIDLIST_ABSOLUTE pointers can be <c>NULL</c>, depending on the event being sent.
 	/// </item>
 	/// </list>
-	/// <para>When a relevant file system event takes place and the</para>
-	/// <para>hwnd</para>
-	/// <para>parameter is not</para>
-	/// <para>NULL</para>
-	/// <para>, then the message indicated by</para>
-	/// <para>wMsg</para>
-	/// <para>is posted to the specified window. Otherwise, if the</para>
-	/// <para>pshcne</para>
-	/// <para>parameter is not</para>
-	/// <para>NULL</para>
-	/// <para>, then that notification entry is used.</para>
+	/// <para>
+	/// When a relevant file system event takes place and the hwnd parameter is not NULL, then the message indicated by wMsg is posted to the
+	/// specified window. Otherwise, if the pshcne parameter is not NULL then that notification entry is used.
+	/// </para>
 	/// <para>
 	/// For performance reasons, multiple notifications can be combined into a single notification. For example, if a large number of
 	/// SHCNE_UPDATEITEM notifications are generated for files in the same folder, they can be joined into a single SHCNE_UPDATEDIR notification.
@@ -4039,7 +4737,8 @@ public static partial class Shell32
 	// SHChangeNotifyRegister( HWND hwnd, int fSources, LONG fEvents, UINT wMsg, int cEntries, const SHChangeNotifyEntry *pshcne );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "73143865-ca2f-4578-a7a2-2ba4833eddd8")]
-	public static extern uint SHChangeNotifyRegister(HWND hwnd, SHCNRF fSources, SHCNE fEvents, uint wMsg, int cEntries, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SHChangeNotifyEntry[] pshcne);
+	public static extern uint SHChangeNotifyRegister(HWND hwnd, SHCNRF fSources, SHCNE fEvents, uint wMsg, int cEntries,
+		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SHChangeNotifyEntry[] pshcne);
 
 	/// <summary>
 	/// <para>Enables asynchronous register and deregister of a thread.</para>
@@ -4120,7 +4819,7 @@ public static partial class Shell32
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, uint cidl,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? apidl, [In, Optional] IDataObject pdtInner,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? apidl, [In, Optional] IDataObject? pdtInner,
 		in Guid riid, out IDataObject ppv);
 
 	/// <summary>Creates a data object in a parent folder.</summary>
@@ -4176,7 +4875,7 @@ public static partial class Shell32
 	// [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional]
 	// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
-	public static HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, [In, Optional] IEnumerable<PIDL> apidl, [In, Optional] IDataObject pdtInner, out IDataObject ppv) =>
+	public static HRESULT SHCreateDataObject([In, Optional] PIDL? pidlFolder, [In, Optional] IEnumerable<PIDL>? apidl, [In, Optional] IDataObject? pdtInner, out IDataObject ppv) =>
 		SHCreateDataObject(pidlFolder ?? PIDL.Null, (uint)(apidl?.Count() ?? 0), apidl is null ? null : apidl.Select(p => p.DangerousGetHandle()).ToArray(),
 			pdtInner, typeof(IDataObject).GUID, out ppv);
 
@@ -4359,7 +5058,7 @@ public static partial class Shell32
 	// hwnd, LPCTSTR pszPath, const SECURITY_ATTRIBUTES *psa );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "7f44f907-cd12-4156-91c0-76e577ae25f6")]
-	public static extern Win32Error SHCreateDirectoryEx([Optional] HWND hwnd, string pszPath, [In] SECURITY_ATTRIBUTES psa);
+	public static extern Win32Error SHCreateDirectoryEx([Optional] HWND hwnd, string pszPath, [In] SECURITY_ATTRIBUTES? psa);
 
 	/// <summary>
 	/// <para>[</para>
@@ -4403,7 +5102,8 @@ public static partial class Shell32
 	// SHCreateFileExtractIconW( LPCWSTR pszFile, DWORD dwFileAttributes, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "af3beb0a-892b-43e5-b5b8-8005f497b6e5")]
-	public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes,
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 	/// <summary>
 	/// <para>
@@ -4483,7 +5183,7 @@ public static partial class Shell32
 	// SHCreateShellFolderView( const SFV_CREATE *pcsfv, IShellView **ppsv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "f2948a6d-84a5-456b-b328-ba76dba46e9d")]
-	public static extern HRESULT SHCreateShellFolderView(in SFV_CREATE pcsfv, out IShellView ppsv);
+	public static extern HRESULT SHCreateShellFolderView(in SFV_CREATE pcsfv, out IShellView? ppsv);
 
 	/// <summary>
 	/// <para>
@@ -4520,7 +5220,7 @@ public static partial class Shell32
 	// SHCreateShellFolderViewEx( CSFV *pcsfv, IShellView **ppsv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "7edd6786-7d74-4065-8cf1-cbb489007a46")]
-	public static extern HRESULT SHCreateShellFolderViewEx(in CSFV pcsfv, out IShellView ppsv);
+	public static extern HRESULT SHCreateShellFolderViewEx(in CSFV pcsfv, out IShellView? ppsv);
 
 	/// <summary>
 	/// <para>Creates an IShellItem object.</para>
@@ -4568,7 +5268,7 @@ public static partial class Shell32
 	// PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psfParent, PCUITEMID_CHILD pidl, IShellItem **ppsi );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "d4371cdf-a8f4-4a39-ba66-97fd40ed46ae")]
-	public static extern HRESULT SHCreateShellItem(PIDL pidlParent, IShellFolder psfParent, PIDL pidl, out IShellItem ppsi);
+	public static extern HRESULT SHCreateShellItem(PIDL pidlParent, IShellFolder? psfParent, PIDL pidl, out IShellItem ppsi);
 
 	/// <summary>
 	/// <para>
@@ -4597,7 +5297,7 @@ public static partial class Shell32
 	// SHCreateStdEnumFmtEtc( UINT cfmt, const FORMATETC [] afmt, IEnumFORMATETC **ppenumFormatEtc );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "c391c8c8-6062-4e70-9a1f-de0eb610250d")]
-	public static extern HRESULT SHCreateStdEnumFmtEtc(uint cfmt, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] FORMATETC[] afmt, out IEnumFORMATETC ppenumFormatEtc);
+	public static extern HRESULT SHCreateStdEnumFmtEtc(uint cfmt, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] FORMATETC[] afmt, out IEnumFORMATETC? ppenumFormatEtc);
 
 	/// <summary>Provides a default handler to extract an icon from a file.</summary>
 	/// <param name="pszIconFile">
@@ -4785,7 +5485,7 @@ public static partial class Shell32
 	// IDataObject *pdata, IDropSource *pdsrc, DWORD dwEffect, DWORD *pdwEffect );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "76c98516-ede9-47de-b4ad-257a162775b9")]
-	public static extern HRESULT SHDoDragDrop(HWND hwnd, IDataObject pdata, [Optional] IDropSource pdsrc, DROPEFFECT dwEffect, ref DROPEFFECT pdwEffect);
+	public static extern HRESULT SHDoDragDrop([Optional] HWND hwnd, IDataObject pdata, [Optional] IDropSource pdsrc, DROPEFFECT dwEffect, out DROPEFFECT pdwEffect);
 
 	/// <summary>
 	/// <para>
@@ -4948,7 +5648,7 @@ public static partial class Shell32
 	// SHFind_InitMenuPopup( HMENU hmenu, HWND hwndOwner, UINT idCmdFirst, UINT idCmdLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "ca44bd57-6af0-45b3-9331-914e93360743")]
-	public static extern IContextMenu SHFind_InitMenuPopup(HMENU hmenu, HWND hwndOwner, uint idCmdFirst, uint idCmdLast);
+	public static extern IContextMenu? SHFind_InitMenuPopup(HMENU hmenu, HWND hwndOwner, uint idCmdFirst, uint idCmdLast);
 
 	/// <summary>
 	/// <para>
@@ -5107,13 +5807,7 @@ public static partial class Shell32
 	[PInvokeData("shlobj_core.h", MSDNShortId = "c9a532ad-ae24-4505-9e7b-577b90365441")]
 	public static extern void SHFree(IntPtr pv);
 
-	/// <summary>
-	/// <para>
-	/// [SHGetAttributesFromDataObject is available for use in the operating systems specified in the Requirements section. It may be
-	/// altered or unavailable in subsequent versions.]
-	/// </para>
-	/// <para>Retrieves specified pieces of information from a system data object.</para>
-	/// </summary>
+	/// <summary>Retrieves specified pieces of information from a system data object.</summary>
 	/// <param name="pdo">
 	/// <para>Type: <c>IDataObject*</c></para>
 	/// <para>The data object from which to retrieve the information.</para>
@@ -5125,16 +5819,16 @@ public static partial class Shell32
 	/// <param name="pdwAttributes">
 	/// <para>Type: <c>DWORD*</c></para>
 	/// <para>
-	/// A pointer to a <c>DWORD</c> value that, when this function returns successfully, receives one or more SFGAO flags that indicate
-	/// the attributes, among those requested, that are common to all items in . This pointer can be <c>NULL</c> if this information is
+	/// A pointer to a <c>DWORD</c> value that, when this function returns successfully, receives one or more SFGAO flags that indicate the
+	/// attributes, among those requested, that are common to all items in <c>pdo</c>. This pointer can be <c>NULL</c> if this information is
 	/// not needed.
 	/// </para>
 	/// </param>
 	/// <param name="pcItems">
 	/// <para>Type: <c>UINT*</c></para>
 	/// <para>
-	/// A pointer to a <c>UINT</c> that, when this function returns successfully, receives the number of PIDLs in the data object pointed
-	/// to by . This pointer can be <c>NULL</c> if this information is not needed.
+	/// A pointer to a <c>UINT</c> that, when this function returns successfully, receives the number of PIDLs in the data object pointed to
+	/// by <c>pdo</c>. This pointer can be <c>NULL</c> if this information is not needed.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -5142,23 +5836,23 @@ public static partial class Shell32
 	/// <para>This function can return one of these values.</para>
 	/// <list type="table">
 	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
+	/// <description>Return code</description>
+	/// <description>Description</description>
 	/// </listheader>
 	/// <item>
-	/// <term>S_OK</term>
-	/// <term>Success.</term>
+	/// <description><c>S_OK</c></description>
+	/// <description>Success.</description>
 	/// </item>
 	/// <item>
-	/// <term>S_FALSE</term>
-	/// <term>The object is not a system data object. In this case, is set to 0.</term>
+	/// <description><c>S_FALSE</c></description>
+	/// <description>The object is not a system data object. In this case, <c>pdwAttributes</c> is set to 0.</description>
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetattributesfromdataobject HRESULT
-	// SHGetAttributesFromDataObject( IDataObject *pdo, DWORD dwAttributeMask, DWORD *pdwAttributes, UINT *pcItems );
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetattributesfromdataobject
+	// HRESULT SHGetAttributesFromDataObject( [in, optional] IDataObject *pdo, DWORD dwAttributeMask, [out, optional] DWORD *pdwAttributes, [out, optional] UINT *pcItems );
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHGetAttributesFromDataObject")]
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("shlobj_core.h", MSDNShortId = "bdc583ef-a5b6-4665-949c-50f79ace39dc")]
 	public static extern HRESULT SHGetAttributesFromDataObject(IDataObject pdo, SFGAO dwAttributeMask, out SFGAO pdwAttributes, out uint pcItems);
 
 	/// <summary>Retrieves extended property data from a relative identifier list.</summary>
@@ -5195,6 +5889,39 @@ public static partial class Shell32
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762174")]
 	public static extern HRESULT SHGetDataFromIDList([In, MarshalAs(UnmanagedType.Interface)] IShellFolder psf, [In] PIDL pidl, SHGetDataFormat nFormat,
 		[In, Out] IntPtr pv, int cb);
+
+	/// <summary>Retrieves extended property data from a relative identifier list.</summary>
+	/// <param name="psf">
+	/// The address of the parent IShellFolder interface. This must be the immediate parent of the ITEMIDLIST structure referenced by the
+	/// pidl parameter.
+	/// </param>
+	/// <param name="pidl">A pointer to an ITEMIDLIST structure that identifies the object relative to the folder specified in psf.</param>
+	/// <param name="nFormat">The format in which the data is being requested.</param>
+	/// <returns>The requested data. The format of this buffer is determined by nFormat and <typeparamref name="T"/>.</returns>
+	/// <remarks>
+	/// This function extracts only information that is present in the pointer to an item identifier list (PIDL). Since the content of a PIDL
+	/// depends on the folder object that created the PIDL, there is no guarantee that all requested information will be available. In
+	/// addition, the information that is returned reflects the state of the object at the time the PIDL was created. The current state of
+	/// the object could be different. For example, if you set nFormat to SHGDFIL_FINDDATA, the function might assign meaningful values to
+	/// only some of the members of the WIN32_FIND_DATA structure. The remaining members will be set to zero. To retrieve complete current
+	/// information on a file system file or folder, use standard file system functions such as GetFileTime or FindFirstFile.
+	/// <para>
+	/// E_INVALIDARG is returned if the psf, pidl, pv, or cb parameter does not match the nFormat parameter, or if nFormat is not one of the
+	/// specific SHGDFIL_ values shown above.
+	/// </para>
+	/// </remarks>
+	[SecurityCritical, SuppressUnmanagedCodeSecurity]
+	[PInvokeData("Shlobj.h", MSDNShortId = "bb762174")]
+	public static T SHGetDataFromIDList<T>(IShellFolder psf, PIDL pidl, SHGetDataFormat? nFormat = null) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, SHGetDataFormat>(nFormat, out var fmt))
+			throw new ArgumentException($"{nameof(nFormat)} value of {nFormat} is not valid for type {typeof(T).Name}.");
+		using SafeCoTaskMemStruct<T> mem = new();
+		//if (fmt == SHGetDataFormat.SHGDFIL_NETRESOURCE)
+		//	mem.Size += ((MAX_PATH * 3) + 1024) * Marshal.SystemDefaultCharSize;
+		SHGetDataFromIDList(psf, pidl, fmt, mem, mem.Size).ThrowIfFailed();
+		return mem.Value;
+	}
 
 	/// <summary>Retrieves the IShellFolder interface for the desktop folder, which is the root of the Shell's namespace.</summary>
 	/// <param name="ppv">
@@ -5430,7 +6157,7 @@ public static partial class Shell32
 	// LPCSTR pszIconPath, int iIconIndex );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "20001ae0-05d0-46a7-8bb8-9bb722f5d795")]
-	public static extern int SHGetIconOverlayIndex(string pszIconPath, int iIconIndex);
+	public static extern int SHGetIconOverlayIndex(string? pszIconPath, int iIconIndex);
 
 	/// <summary>Retrieves the pointer to an item identifier list (PIDL) of an object.</summary>
 	/// <param name="iUnknown">A pointer to the IUnknown of the object from which to get the PIDL.</param>
@@ -5553,7 +6280,7 @@ public static partial class Shell32
 	/// <param name="ppv">When this method returns, contains the interface pointer requested in riid.</param>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
-	public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+	public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
 
 	/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
 	/// <typeparam name="TIntf">The Type of the interface that represents the item, usually IShellItem or IShellItem2.</typeparam>
@@ -5580,8 +6307,8 @@ public static partial class Shell32
 	/// </param>
 	/// <returns>When this method returns, contains the interface pointer requested.</returns>
 	[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
-	public static TIntf SHGetKnownFolderItem<TIntf>(KNOWNFOLDERID rfid, KNOWN_FOLDER_FLAG dwFlags = KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, [In] HTOKEN hToken = default) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHGetKnownFolderItem(rfid.Guid(), dwFlags, hToken, g, out o));
+	public static TIntf? SHGetKnownFolderItem<TIntf>(KNOWNFOLDERID rfid, KNOWN_FOLDER_FLAG dwFlags = KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, [In] HTOKEN hToken = default) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetKnownFolderItem(rfid.Guid(), dwFlags, hToken, g, out o));
 
 	/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 	/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
@@ -6066,7 +6793,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "7517c461-955b-446e-85d7-a707c9bd183a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SHObjectProperties(HWND hwnd, SHOP shopObjectType, string pszObjectName, string pszPropertyPage);
+	public static extern bool SHObjectProperties([Optional] HWND hwnd, SHOP shopObjectType, string pszObjectName, string? pszPropertyPage);
 
 	/// <summary>Opens a Windows Explorer window with specified items in a particular folder selected.</summary>
 	/// <param name="pidlFolder">A pointer to a fully qualified item ID list that specifies the folder.</param>
@@ -6083,7 +6810,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762232")]
 	public static extern HRESULT SHOpenFolderAndSelectItems(PIDL pidlFolder, uint cidl,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, OFASI dwFlags);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [Optional] OFASI dwFlags);
 
 	/// <summary>
 	/// <para>Displays the <c>Open With</c> dialog box.</para>
@@ -6115,7 +6842,7 @@ public static partial class Shell32
 	// hwndParent, const OPENASINFO *poainfo );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "026bfb34-a8a5-4bd7-9bc0-4aa395e6d535")]
-	public static extern HRESULT SHOpenWithDialog(HWND hwndParent, in OPENASINFO poainfo);
+	public static extern HRESULT SHOpenWithDialog([Optional] HWND hwndParent, in OPENASINFO poainfo);
 
 	/// <summary>
 	/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This
@@ -6211,7 +6938,7 @@ public static partial class Shell32
 	// SHPathPrepareForWriteA( HWND hwnd, IUnknown *punkEnableModless, LPCSTR pszPath, DWORD dwFlags );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1b65e34f-2c31-421b-9d27-ed263dfb372b")]
-	public static extern HRESULT SHPathPrepareForWrite(HWND hwnd, [MarshalAs(UnmanagedType.IUnknown)] object punkEnableModless, string pszPath, SHPPFW dwFlags);
+	public static extern HRESULT SHPathPrepareForWrite([Optional] HWND hwnd, [MarshalAs(UnmanagedType.IUnknown)] object punkEnableModless, string pszPath, SHPPFW dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -6278,6 +7005,67 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "fd99e04e-ef96-4357-9226-da6604fb0e84")]
 	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, in Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
+
+	/// <summary>Ensures proper handling of code page retrieval or assignment for the requested property set operation.</summary>
+	/// <param name="psstg">
+	/// <para>Type: <c>IPropertySetStorage*</c></para>
+	/// <para>A pointer to an IPropertySetStorage interface.</para>
+	/// </param>
+	/// <param name="fmtid">
+	/// <para>Type: <c>REFFMTID</c></para>
+	/// <para>
+	/// A property set ID to open. The values for this parameter can be either one of those defined in Predefined Property Set Format
+	/// Identifiers or any other FMTID that you register.
+	/// </para>
+	/// </param>
+	/// <param name="pclsid">
+	/// <para>Type: <c>const CLSID*</c></para>
+	/// <para>A pointer to the CLSID associated with the set. This parameter can be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="grfFlags">
+	/// <para>Type: <c>DWORD</c></para>
+	/// <para>
+	/// One or more members of the PROPSETFLAG enumeration that determine how the property set is created and opened. All sets containing
+	/// ANSI bytes should be created with PROPSETFLAG_ANSI, otherwise PROPSETFLAG_DEFAULT.
+	/// </para>
+	/// </param>
+	/// <param name="grfMode">
+	/// <para>Type: <c>DWORD</c></para>
+	/// <para>
+	/// The flags from the STGM enumeration that indicate conditions for creating and deleting the object and access modes for the object.
+	/// Must contain STGM_DIRECT | STGM_SHARE_EXCLUSIVE.
+	/// </para>
+	/// </param>
+	/// <param name="dwDisposition">
+	/// <para>Type: <c>DWORD</c></para>
+	/// <para>One of the following values, defined in Fileapi.h.</para>
+	/// <para>CREATE_NEW (1)</para>
+	/// <para>Create a new set if one does not already exist.</para>
+	/// <para>CREATE_ALWAYS (2)</para>
+	/// <para>Always create a new set, overwriting any existing set.</para>
+	/// <para>OPEN_EXISTING (3)</para>
+	/// <para>Open the existing set.</para>
+	/// <para>OPEN_ALWAYS (4)</para>
+	/// </param>
+	/// <param name="ppstg">
+	/// <para>Type: <c>IPropertyStorage**</c></para>
+	/// <para>When this method returns, contains an IPropertyStorage interface pointer.</para>
+	/// </param>
+	/// <param name="puCodePage">
+	/// <para>Type: <c>UINT*</c></para>
+	/// <para>When this method returns, contains the address of the code page ID for the set.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shpropstgcreate SHSTDAPI SHPropStgCreate( [in]
+	// IPropertySetStorage *psstg, [in] REFFMTID fmtid, [in, optional] const CLSID *pclsid, DWORD grfFlags, DWORD grfMode, DWORD
+	// dwDisposition, [out] IPropertyStorage **ppstg, [out, optional] UINT *puCodePage );
+	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHPropStgCreate")]
+	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, [Optional] GuidPtr pclsid, PROPSETFLAG grfFlags,
+		STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
 
 	/// <summary>
 	/// <para>
@@ -6462,7 +7250,7 @@ public static partial class Shell32
 	// IUnknown *punk );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "86f29587-8347-4e88-87bc-83ef2b8a7728")]
-	public static extern void SHSetInstanceExplorer([MarshalAs(UnmanagedType.IUnknown)] object punk);
+	public static extern void SHSetInstanceExplorer([MarshalAs(UnmanagedType.IUnknown)] object? punk);
 
 	/// <summary>
 	/// <para>Redirects a known folder to a new location.</para>
@@ -6700,7 +7488,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "42394650-5571-4165-84f1-19a26fb4a1b8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SHValidateUNC(HWND hwndOwner, [MarshalAs(UnmanagedType.LPWStr)] string pszFile, VALIDATEUNC fConnect);
+	public static extern bool SHValidateUNC([Optional] HWND hwndOwner, [MarshalAs(UnmanagedType.LPWStr)] string pszFile, VALIDATEUNC fConnect);
 
 	/// <summary>
 	/// <para>
@@ -6764,7 +7552,7 @@ public static partial class Shell32
 	// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
-	public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 
 	/// <summary>Creates a unique name for a stream or storage object from a template.</summary>
 	/// <typeparam name="TIntf">The type of the interface to retrieve through, typically IStorage or IStream.</typeparam>
@@ -6787,8 +7575,8 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-stgmakeuniquename HRESULT StgMakeUniqueName(
 	// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
-	public static TIntf StgMakeUniqueName<TIntf>(IStorage pstgParent, string pszFileSpec, STGM grfMode) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => StgMakeUniqueName(pstgParent, pszFileSpec, grfMode, g, out o));
+	public static TIntf? StgMakeUniqueName<TIntf>(IStorage pstgParent, string pszFileSpec, STGM grfMode) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => StgMakeUniqueName(pstgParent, pszFileSpec, grfMode, g, out o));
 
 	/// <summary>
 	/// <para>
@@ -6883,7 +7671,7 @@ public static partial class Shell32
 		/// <para>FALSE</para>
 		/// <para>Display only the file name in the title bar.</para>
 		/// </summary>
-		public bool fFullPathTitle { get => GetBit(fFlags, 0); set => SetBit(ref fFlags, 0, value); }
+		public bool fFullPathTitle { readonly get => GetBit(fFlags, 0); set => SetBit(ref fFlags, 0, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -6892,25 +7680,25 @@ public static partial class Shell32
 		/// <para>FALSE</para>
 		/// <para>Use global settings for all folders.</para>
 		/// </summary>
-		public bool fSaveLocalView { get => GetBit(fFlags, 1); set => SetBit(ref fFlags, 1, value); }
+		public bool fSaveLocalView { readonly get => GetBit(fFlags, 1); set => SetBit(ref fFlags, 1, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fNotShell { get => GetBit(fFlags, 2); set => SetBit(ref fFlags, 2, value); }
+		public bool fNotShell { readonly get => GetBit(fFlags, 2); set => SetBit(ref fFlags, 2, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fSimpleDefault { get => GetBit(fFlags, 3); set => SetBit(ref fFlags, 3, value); }
+		public bool fSimpleDefault { readonly get => GetBit(fFlags, 3); set => SetBit(ref fFlags, 3, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fDontShowDescBar { get => GetBit(fFlags, 4); set => SetBit(ref fFlags, 4, value); }
+		public bool fDontShowDescBar { readonly get => GetBit(fFlags, 4); set => SetBit(ref fFlags, 4, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -6919,7 +7707,7 @@ public static partial class Shell32
 		/// <para>FALSE</para>
 		/// <para>Display in the current window.</para>
 		/// </summary>
-		public bool fNewWindowMode { get => GetBit(fFlags, 5); set => SetBit(ref fFlags, 5, value); }
+		public bool fNewWindowMode { readonly get => GetBit(fFlags, 5); set => SetBit(ref fFlags, 5, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -6928,13 +7716,13 @@ public static partial class Shell32
 		/// <para>FALSE</para>
 		/// <para>Do not show encrypted or compressed NTFS files in color.</para>
 		/// </summary>
-		public bool fShowCompColor { get => GetBit(fFlags, 6); set => SetBit(ref fFlags, 6, value); }
+		public bool fShowCompColor { readonly get => GetBit(fFlags, 6); set => SetBit(ref fFlags, 6, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fDontPrettyNames { get => GetBit(fFlags, 7); set => SetBit(ref fFlags, 7, value); }
+		public bool fDontPrettyNames { readonly get => GetBit(fFlags, 7); set => SetBit(ref fFlags, 7, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -6944,22 +7732,7 @@ public static partial class Shell32
 		/// <para>FALSE</para>
 		/// <para>Add the icon to only the current user (CSIDL_STARTMENU).</para>
 		/// </summary>
-		public bool fAdminsCreateCommonGroups { get => GetBit(fFlags, 8); set => SetBit(ref fFlags, 8, value); }
-	}
-
-	/// <summary>
-	/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top,
-	/// left cell of the buffer.
-	/// </summary>
-	[PInvokeData("wincon.h")]
-	[StructLayout(LayoutKind.Sequential, Pack = 2)]
-	public struct COORD
-	{
-		/// <summary>The horizontal coordinate or column value. The units depend on the function call.</summary>
-		public short X;
-
-		/// <summary>The vertical coordinate or row value. The units depend on the function call.</summary>
-		public short Y;
+		public bool fAdminsCreateCommonGroups { readonly get => GetBit(fFlags, 8); set => SetBit(ref fFlags, 8, value); }
 	}
 
 	/// <summary>
@@ -6988,7 +7761,7 @@ public static partial class Shell32
 		/// <para>Type: <c>IShellView*</c></para>
 		/// <para>A pointer to the parent IShellView interface. This parameter can be <c>NULL</c>.</para>
 		/// </summary>
-		public IShellView psvOuter;
+		public IShellView? psvOuter;
 
 		/// <summary>
 		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
@@ -7007,7 +7780,7 @@ public static partial class Shell32
 		/// A pointer to the LPFNVIEWCALLBACK function used by this folder view to handle callback messages. This parameter can be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public LPFNVIEWCALLBACK pfnCallback;
+		public LPFNVIEWCALLBACK? pfnCallback;
 
 		/// <summary>
 		/// <para>Type: <c>FOLDERVIEWMODE</c></para>
@@ -7038,7 +7811,7 @@ public static partial class Shell32
 		/// <summary>
 		/// A pointer to the IContextMenuCB interface supported by the callback object. This value is optional and can be NULL.
 		/// </summary>
-		public IContextMenuCB pcmcb;
+		public IContextMenuCB? pcmcb;
 
 		/// <summary>
 		/// The PIDL of the folder that contains the selected file object(s) or the folder of the context menu if no file objects are
@@ -7068,7 +7841,7 @@ public static partial class Shell32
 		/// IShellFolder::GetUIObjectOf returns E_NOTIMPL, a default implementation is provided based on the SFGAO_FOLDER and
 		/// SFGAO_FILESYSTEM attributes returned from IShellFolder::GetAttributesOf.
 		/// </summary>
-		public IQueryAssociations punkAssociationInfo;
+		public IQueryAssociations? punkAssociationInfo;
 
 		/// <summary>
 		/// The count of items in member aKeys. This value can be zero. If the value is zero, the extensions are loaded based on the
@@ -7084,7 +7857,7 @@ public static partial class Shell32
 		/// specified in punkAssociationInfo.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-		public HKEY[] aKeys;
+		public HKEY[]? aKeys;
 	}
 
 	/// <summary>Holds an extra data block used by IShellLinkDataList. It holds the link's Windows Installer ID.</summary>
@@ -7159,10 +7932,10 @@ public static partial class Shell32
 		public HLOCK(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HLOCK"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HLOCK NULL => new HLOCK(IntPtr.Zero);
+		public static HLOCK NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
+		public readonly bool IsNull => handle == IntPtr.Zero;
 
 		/// <summary>Performs an explicit conversion from <see cref="HLOCK"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -7172,7 +7945,7 @@ public static partial class Shell32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HLOCK"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HLOCK(IntPtr h) => new HLOCK(h);
+		public static implicit operator HLOCK(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -7187,13 +7960,13 @@ public static partial class Shell32
 		public static bool operator ==(HLOCK h1, HLOCK h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HLOCK h ? handle == h.handle : false;
+		public override readonly bool Equals(object? obj) => obj is HLOCK h && handle == h.handle;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
+		public override readonly int GetHashCode() => handle.GetHashCode();
 
 		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		public readonly IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Provides a handle to a .pif file.</summary>
@@ -7207,10 +7980,10 @@ public static partial class Shell32
 		public HPIF(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPIF"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPIF NULL => new HPIF(IntPtr.Zero);
+		public static HPIF NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
+		public readonly bool IsNull => handle == IntPtr.Zero;
 
 		/// <summary>Performs an explicit conversion from <see cref="HPIF"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -7220,7 +7993,7 @@ public static partial class Shell32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPIF"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPIF(IntPtr h) => new HPIF(h);
+		public static implicit operator HPIF(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -7235,13 +8008,13 @@ public static partial class Shell32
 		public static bool operator ==(HPIF h1, HPIF h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPIF h ? handle == h.handle : false;
+		public override readonly bool Equals(object? obj) => obj is HPIF h && handle == h.handle;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
+		public override readonly int GetHashCode() => handle.GetHashCode();
 
 		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		public readonly IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Provides a handle to a property sheet array.</summary>
@@ -7255,10 +8028,10 @@ public static partial class Shell32
 		public HPSXA(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPSXA"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPSXA NULL => new HPSXA(IntPtr.Zero);
+		public static HPSXA NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
+		public readonly bool IsNull => handle == IntPtr.Zero;
 
 		/// <summary>Performs an explicit conversion from <see cref="HPSXA"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -7268,7 +8041,7 @@ public static partial class Shell32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPSXA"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPSXA(IntPtr h) => new HPSXA(h);
+		public static implicit operator HPSXA(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -7283,13 +8056,13 @@ public static partial class Shell32
 		public static bool operator ==(HPSXA h1, HPSXA h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPSXA h ? handle == h.handle : false;
+		public override readonly bool Equals(object? obj) => obj is HPSXA h && handle == h.handle;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
+		public override readonly int GetHashCode() => handle.GetHashCode();
 
 		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		public readonly IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Holds an extra data block used by IShellLinkDataList. It holds console properties.</summary>
@@ -7407,7 +8180,7 @@ public static partial class Shell32
 		/// <para>Type: <c>LPCWSTR</c></para>
 		/// <para>A pointer to the file type description. Set this parameter to <c>NULL</c> to use the file name extension of <c>pcszFile</c>.</para>
 		/// </summary>
-		public string pcszClass;
+		public string? pcszClass;
 
 		/// <summary>
 		/// <para>Type: <c>OPEN_AS_INFO_FLAGS</c></para>
@@ -7591,13 +8364,13 @@ public static partial class Shell32
 		/// A pointer to the parent IShellView interface. This parameter may be NULL. This parameter is used only when the view created
 		/// by SHCreateShellFolderView is hosted in a common dialog box.
 		/// </summary>
-		public IShellView psvOuter;
+		public IShellView? psvOuter;
 
 		/// <summary>
 		/// A pointer to the IShellFolderViewCB interface that handles the view's callbacks when various events occur. This parameter may
 		/// be NULL.
 		/// </summary>
-		public IShellFolderViewCB psfvcb;
+		public IShellFolderViewCB? psfvcb;
 	}
 
 	/// <summary>
@@ -7648,7 +8421,7 @@ public static partial class Shell32
 		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
 		/// <para>An absolute PIDL that gives the full path of the item in the Shell namespace.</para>
 		/// </summary>
-		public PIDL pidl { get => _pidl == IntPtr.Zero ? null : new PIDL(_pidl); set => _pidl = value?.DangerousGetHandle() ?? IntPtr.Zero; }
+		public PIDL? pidl { readonly get => _pidl == IntPtr.Zero ? null : new PIDL(_pidl); set => _pidl = value?.DangerousGetHandle() ?? IntPtr.Zero; }
 	}
 
 	/// <summary>
@@ -7775,13 +8548,13 @@ public static partial class Shell32
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show all objects, including hidden files and folders. <c>FALSE</c> to hide hidden files and folders.</para>
 		/// </summary>
-		public bool fShowAllObjects { get => GetBit(bits1, 0); set => SetBit(ref bits1, 0, value); }
+		public bool fShowAllObjects { readonly get => GetBit(bits1, 0); set => SetBit(ref bits1, 0, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show file name extensions, <c>FALSE</c> to hide them.</para>
 		/// </summary>
-		public bool fShowExtensions { get => GetBit(bits1, 1); set => SetBit(ref bits1, 1, value); }
+		public bool fShowExtensions { readonly get => GetBit(bits1, 1); set => SetBit(ref bits1, 1, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -7790,67 +8563,67 @@ public static partial class Shell32
 		/// confirmation dialog box.
 		/// </para>
 		/// </summary>
-		public bool fNoConfirmRecycle { get => GetBit(bits1, 2); set => SetBit(ref bits1, 2, value); }
+		public bool fNoConfirmRecycle { readonly get => GetBit(bits1, 2); set => SetBit(ref bits1, 2, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show system files, <c>FALSE</c> to hide them.</para>
 		/// </summary>
-		public bool fShowSysFiles { get => GetBit(bits1, 3); set => SetBit(ref bits1, 3, value); }
+		public bool fShowSysFiles { readonly get => GetBit(bits1, 3); set => SetBit(ref bits1, 3, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show encrypted or compressed NTFS files in color.</para>
 		/// </summary>
-		public bool fShowCompColor { get => GetBit(bits1, 4); set => SetBit(ref bits1, 4, value); }
+		public bool fShowCompColor { readonly get => GetBit(bits1, 4); set => SetBit(ref bits1, 4, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to require a double-click to open an item when in web view.</para>
 		/// </summary>
-		public bool fDoubleClickInWebView { get => GetBit(bits1, 5); set => SetBit(ref bits1, 5, value); }
+		public bool fDoubleClickInWebView { readonly get => GetBit(bits1, 5); set => SetBit(ref bits1, 5, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to use Active Desktop, <c>FALSE</c> otherwise.</para>
 		/// </summary>
-		public bool fDesktopHTML { get => GetBit(bits1, 6); set => SetBit(ref bits1, 6, value); }
+		public bool fDesktopHTML { readonly get => GetBit(bits1, 6); set => SetBit(ref bits1, 6, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to enforce Windows 95 Shell behavior and restrictions.</para>
 		/// </summary>
-		public bool fWin95Classic { get => GetBit(bits1, 7); set => SetBit(ref bits1, 7, value); }
+		public bool fWin95Classic { readonly get => GetBit(bits1, 7); set => SetBit(ref bits1, 7, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to prevent the conversion of the path to all lowercase characters.</para>
 		/// </summary>
-		public bool fDontPrettyPath { get => GetBit(bits1, 8); set => SetBit(ref bits1, 8, value); }
+		public bool fDontPrettyPath { readonly get => GetBit(bits1, 8); set => SetBit(ref bits1, 8, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fShowAttribCol { get => GetBit(bits1, 9); set => SetBit(ref bits1, 9, value); }
+		public bool fShowAttribCol { readonly get => GetBit(bits1, 9); set => SetBit(ref bits1, 9, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to display a <c>Map Network Drive</c> button.</para>
 		/// </summary>
-		public bool fMapNetDrvBtn { get => GetBit(bits1, 10); set => SetBit(ref bits1, 10, value); }
+		public bool fMapNetDrvBtn { readonly get => GetBit(bits1, 10); set => SetBit(ref bits1, 10, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show a pop-up description for folders and files.</para>
 		/// </summary>
-		public bool fShowInfoTip { get => GetBit(bits1, 11); set => SetBit(ref bits1, 11, value); }
+		public bool fShowInfoTip { readonly get => GetBit(bits1, 11); set => SetBit(ref bits1, 11, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to hide desktop icons, <c>FALSE</c> to show them.</para>
 		/// </summary>
-		public bool fHideIcons { get => GetBit(bits1, 12); set => SetBit(ref bits1, 12, value); }
+		public bool fHideIcons { readonly get => GetBit(bits1, 12); set => SetBit(ref bits1, 12, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -7859,7 +8632,7 @@ public static partial class Shell32
 		/// classic views.
 		/// </para>
 		/// </summary>
-		public bool fAutoCheckSelect { get => GetBit(bits1, 13); set => SetBit(ref bits1, 13, value); }
+		public bool fAutoCheckSelect { readonly get => GetBit(bits1, 13); set => SetBit(ref bits1, 13, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -7867,7 +8640,7 @@ public static partial class Shell32
 		/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to show generic icons only, <c>FALSE</c> to show thumbnail-style icons in folders.
 		/// </para>
 		/// </summary>
-		public bool fIconsOnly { get => GetBit(bits1, 14); set => SetBit(ref bits1, 14, value); }
+		public bool fIconsOnly { readonly get => GetBit(bits1, 14); set => SetBit(ref bits1, 14, value); }
 	}
 
 	/// <summary>Contains settings for the Shell's state. This structure is used with the <c>SHGetSetSettings</c> function.</summary>
@@ -7927,13 +8700,13 @@ public static partial class Shell32
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show all objects, including hidden files and folders. <c>FALSE</c> to hide hidden files and folders.</para>
 		/// </summary>
-		public bool fShowAllObjects { get => GetBit(bits1, 0); set => SetBit(ref bits1, 0, value); }
+		public bool fShowAllObjects { readonly get => GetBit(bits1, 0); set => SetBit(ref bits1, 0, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show file name extensions, <c>FALSE</c> to hide them.</para>
 		/// </summary>
-		public bool fShowExtensions { get => GetBit(bits1, 1); set => SetBit(ref bits1, 1, value); }
+		public bool fShowExtensions { readonly get => GetBit(bits1, 1); set => SetBit(ref bits1, 1, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -7942,97 +8715,97 @@ public static partial class Shell32
 		/// confirmation dialog box.
 		/// </para>
 		/// </summary>
-		public bool fNoConfirmRecycle { get => GetBit(bits1, 2); set => SetBit(ref bits1, 2, value); }
+		public bool fNoConfirmRecycle { readonly get => GetBit(bits1, 2); set => SetBit(ref bits1, 2, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show system files, <c>FALSE</c> to hide them.</para>
 		/// </summary>
-		public bool fShowSysFiles { get => GetBit(bits1, 3); set => SetBit(ref bits1, 3, value); }
+		public bool fShowSysFiles { readonly get => GetBit(bits1, 3); set => SetBit(ref bits1, 3, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show encrypted or compressed NTFS files in color.</para>
 		/// </summary>
-		public bool fShowCompColor { get => GetBit(bits1, 4); set => SetBit(ref bits1, 4, value); }
+		public bool fShowCompColor { readonly get => GetBit(bits1, 4); set => SetBit(ref bits1, 4, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to require a double-click to open an item when in web view.</para>
 		/// </summary>
-		public bool fDoubleClickInWebView { get => GetBit(bits1, 5); set => SetBit(ref bits1, 5, value); }
+		public bool fDoubleClickInWebView { readonly get => GetBit(bits1, 5); set => SetBit(ref bits1, 5, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to use Active Desktop, <c>FALSE</c> otherwise.</para>
 		/// </summary>
-		public bool fDesktopHTML { get => GetBit(bits1, 6); set => SetBit(ref bits1, 6, value); }
+		public bool fDesktopHTML { readonly get => GetBit(bits1, 6); set => SetBit(ref bits1, 6, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to enforce Windows 95 Shell behavior and restrictions.</para>
 		/// </summary>
-		public bool fWin95Classic { get => GetBit(bits1, 7); set => SetBit(ref bits1, 7, value); }
+		public bool fWin95Classic { readonly get => GetBit(bits1, 7); set => SetBit(ref bits1, 7, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to prevent the conversion of the path to all lowercase characters.</para>
 		/// </summary>
-		public bool fDontPrettyPath { get => GetBit(bits1, 8); set => SetBit(ref bits1, 8, value); }
+		public bool fDontPrettyPath { readonly get => GetBit(bits1, 8); set => SetBit(ref bits1, 8, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fShowAttribCol { get => GetBit(bits1, 9); set => SetBit(ref bits1, 9, value); }
+		public bool fShowAttribCol { readonly get => GetBit(bits1, 9); set => SetBit(ref bits1, 9, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to display a <c>Map Network Drive</c> button.</para>
 		/// </summary>
-		public bool fMapNetDrvBtn { get => GetBit(bits1, 10); set => SetBit(ref bits1, 10, value); }
+		public bool fMapNetDrvBtn { readonly get => GetBit(bits1, 10); set => SetBit(ref bits1, 10, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show a pop-up description for folders and files.</para>
 		/// </summary>
-		public bool fShowInfoTip { get => GetBit(bits1, 11); set => SetBit(ref bits1, 11, value); }
+		public bool fShowInfoTip { readonly get => GetBit(bits1, 11); set => SetBit(ref bits1, 11, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to hide desktop icons, <c>FALSE</c> to show them.</para>
 		/// </summary>
-		public bool fHideIcons { get => GetBit(bits1, 12); set => SetBit(ref bits1, 12, value); }
+		public bool fHideIcons { readonly get => GetBit(bits1, 12); set => SetBit(ref bits1, 12, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to display as a web view.</para>
 		/// </summary>
-		public bool fWebView { get => GetBit(bits1, 13); set => SetBit(ref bits1, 13, value); }
+		public bool fWebView { readonly get => GetBit(bits1, 13); set => SetBit(ref bits1, 13, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fFilter { get => GetBit(bits1, 14); set => SetBit(ref bits1, 14, value); }
+		public bool fFilter { readonly get => GetBit(bits1, 14); set => SetBit(ref bits1, 14, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to show operating system files.</para>
 		/// </summary>
-		public bool fShowSuperHidden { get => GetBit(bits1, 15); set => SetBit(ref bits1, 15, value); }
+		public bool fShowSuperHidden { readonly get => GetBit(bits1, 15); set => SetBit(ref bits1, 15, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to disable automatic searching for network folders and printers.</para>
 		/// </summary>
-		public bool fNoNetCrawling { get => GetBit(bits1, 16); set => SetBit(ref bits1, 16, value); }
+		public bool fNoNetCrawling { readonly get => GetBit(bits1, 16); set => SetBit(ref bits1, 16, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>TRUE</c> to launch folder windows in separate processes, <c>FALSE</c> to launch in the same process.</para>
 		/// </summary>
-		public bool fSepProcess { get => GetBit(bits2, 0); set => SetBit(ref bits2, 0, value); }
+		public bool fSepProcess { readonly get => GetBit(bits2, 0); set => SetBit(ref bits2, 0, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -8040,13 +8813,13 @@ public static partial class Shell32
 		/// <c>Windows XP only</c>. <c>TRUE</c> to use the Windows XP-style Start menu, <c>FALSE</c> to use the classic Start menu.
 		/// </para>
 		/// </summary>
-		public bool fStartPanelOn { get => GetBit(bits2, 1); set => SetBit(ref bits2, 1, value); }
+		public bool fStartPanelOn { readonly get => GetBit(bits2, 1); set => SetBit(ref bits2, 1, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public bool fShowStartPage { get => GetBit(bits2, 2); set => SetBit(ref bits2, 2, value); }
+		public bool fShowStartPage { readonly get => GetBit(bits2, 2); set => SetBit(ref bits2, 2, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -8055,7 +8828,7 @@ public static partial class Shell32
 		/// classic views.
 		/// </para>
 		/// </summary>
-		public bool fAutoCheckSelect { get => GetBit(bits2, 3); set => SetBit(ref bits2, 3, value); }
+		public bool fAutoCheckSelect { readonly get => GetBit(bits2, 3); set => SetBit(ref bits2, 3, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -8063,7 +8836,7 @@ public static partial class Shell32
 		/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to show generic icons only, <c>FALSE</c> to show thumbnail-style icons in folders.
 		/// </para>
 		/// </summary>
-		public bool fIconsOnly { get => GetBit(bits2, 4); set => SetBit(ref bits2, 4, value); }
+		public bool fIconsOnly { readonly get => GetBit(bits2, 4); set => SetBit(ref bits2, 4, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -8072,13 +8845,13 @@ public static partial class Shell32
 		/// opening the item, <c>FALSE</c> indicates that no application will be shown.
 		/// </para>
 		/// </summary>
-		public bool fShowTypeOverlay { get => GetBit(bits2, 5); set => SetBit(ref bits2, 5, value); }
+		public bool fShowTypeOverlay { readonly get => GetBit(bits2, 5); set => SetBit(ref bits2, 5, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para><c>Introduced in Windows 8</c>. <c>TRUE</c> to show the status bar; otherwise, <c>FALSE</c>.</para>
 		/// </summary>
-		public bool fShowStatusBar { get => GetBit(bits2, 6); set => SetBit(ref bits2, 6, value); }
+		public bool fShowStatusBar { readonly get => GetBit(bits2, 6); set => SetBit(ref bits2, 6, value); }
 	}
 
 	/// <summary>

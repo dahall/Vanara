@@ -2688,7 +2688,7 @@ public static partial class Mpr
 		public int dwDevNum;
 
 		/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
-		public static CONNECTDLGSTRUCT Empty => new CONNECTDLGSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(CONNECTDLGSTRUCT)) };
+		public static CONNECTDLGSTRUCT Empty => new() { cbStructure = (uint)Marshal.SizeOf(typeof(CONNECTDLGSTRUCT)) };
 	}
 
 	/// <summary>
@@ -2763,7 +2763,7 @@ public static partial class Mpr
 		public DISC dwFlags;
 
 		/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
-		public static DISCDLGSTRUCT Empty => new DISCDLGSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(DISCDLGSTRUCT)) };
+		public static DISCDLGSTRUCT Empty => new() { cbStructure = (uint)Marshal.SizeOf(typeof(DISCDLGSTRUCT)) };
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DISCDLGSTRUCT"/> struct.
@@ -2874,7 +2874,7 @@ public static partial class Mpr
 		public uint dwOptDataSize;
 
 		/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
-		public static NETCONNECTINFOSTRUCT Empty => new NETCONNECTINFOSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(NETCONNECTINFOSTRUCT)) };
+		public static NETCONNECTINFOSTRUCT Empty => new() { cbStructure = (uint)Marshal.SizeOf(typeof(NETCONNECTINFOSTRUCT)) };
 	}
 
 	/// <summary>
@@ -2994,7 +2994,7 @@ public static partial class Mpr
 		public uint dwDrives;
 
 		/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
-		public static NETINFOSTRUCT Empty => new NETINFOSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(NETINFOSTRUCT)) };
+		public static NETINFOSTRUCT Empty => new() { cbStructure = (uint)Marshal.SizeOf(typeof(NETINFOSTRUCT)) };
 	}
 
 	/// <summary>The <c>NETRESOURCE</c> structure contains information about a network resource.</summary>
@@ -3024,7 +3024,7 @@ public static partial class Mpr
 		/// character string that specifies the name of a local device. This member is NULL if the connection does not use a device.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
-		public string lpLocalName;
+		public string? lpLocalName;
 
 		/// <summary>
 		/// If the entry is a network resource, this member is a pointer to a null-terminated character string that specifies the remote
@@ -3036,21 +3036,21 @@ public static partial class Mpr
 		/// <para>The string can be MAX_PATH characters in length, and it must follow the network provider's naming conventions.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
-		public string lpRemoteName;
+		public string? lpRemoteName;
 
 		/// <summary>A pointer to a NULL-terminated string that contains a comment supplied by the network provider.</summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 1024)]
-		public string lpComment;
+		public string? lpComment;
 
 		/// <summary>
 		/// A pointer to a NULL-terminated string that contains the name of the provider that owns the resource. This member can be NULL
 		/// if the provider name is unknown. To retrieve the provider name, you can call the WNetGetProviderName function.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
-		public string lpProvider;
+		public string? lpProvider;
 
 		/// <summary>The root network resource.</summary>
-		public static readonly NETRESOURCE Root = new NETRESOURCE();
+		public static readonly NETRESOURCE Root = new();
 
 		/// <summary>Initializes a new instance of the <see cref="NETRESOURCE"/> class.</summary>
 		public NETRESOURCE() { }
@@ -3079,7 +3079,7 @@ public static partial class Mpr
 		/// determine which provider the network name maps to.
 		/// </para>
 		/// </param>
-		public NETRESOURCE(string remoteName, string localName = null, string provider = null)
+		public NETRESOURCE(string remoteName, string? localName = null, string? provider = null)
 		{
 			lpLocalName = localName;
 			lpRemoteName = remoteName;

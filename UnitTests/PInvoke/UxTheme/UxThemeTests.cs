@@ -286,7 +286,7 @@ public class UxThemeTests
 	{
 		Assert.That(GetThemeFont(hbt, HDC.NULL, 6, 0, (int)ThemeProperty.TMT_FONT, out var result).Succeeded);
 		Assert.That(result.lfHeight, Is.EqualTo(-16));
-		Assert.That(() => System.Drawing.Font.FromLogFont(result), Throws.Nothing);
+		Assert.That(() => Font.FromLogFont(result), Throws.Nothing);
 	}
 
 	[Test]
@@ -363,7 +363,7 @@ public class UxThemeTests
 			Assert.That(h.IsInvalid, Is.False);
 			using (var hInstance = Kernel32.LoadLibraryEx(@"C:\Windows\resources\themes\Aero\Aero.msstyles", Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
 			{
-				var hr = UxTheme.GetThemeStream(h, 0, 0, 213, out var themeStream, out var streamSize, hInstance);
+				var hr = GetThemeStream(h, 0, 0, 213, out var themeStream, out var streamSize, hInstance);
 				Assert.That(hr.Succeeded);
 				Assert.That(streamSize, Is.GreaterThan(0));
 				Assert.That(() => themeStream.ToByteArray((int)streamSize), Throws.Nothing);

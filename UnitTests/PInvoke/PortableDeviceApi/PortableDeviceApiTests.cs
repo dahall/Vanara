@@ -185,7 +185,7 @@ namespace Vanara.PInvoke.Tests;
         }
 
         private static PropertyInfo GetPI<T>(T t, string prefix) =>
-            typeof(PortableDeviceApi).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).
+            typeof(PortableDeviceApi).GetProperties(BindingFlags.Public | BindingFlags.Static).
             FirstOrDefault(pi => pi.Name.StartsWith(prefix) && pi.PropertyType.Equals(typeof(T)) && t.Equals(pi.GetValue(null)));
 
         private IPortableDeviceValues GetClientInfo(bool readOnly = true)

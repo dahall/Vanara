@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.User32;
+﻿using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
@@ -1329,7 +1325,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Contains information about an item in a header control. This structure supersedes the HD_ITEM structure.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775247")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class HDITEM : IDisposable
@@ -1586,7 +1582,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the text.</summary>
 		/// <value>The text.</value>
-		/// <exception cref="System.ArgumentOutOfRangeException">Text - A header control will only display the first 260 characters.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Text - A header control will only display the first 260 characters.</exception>
 		public string? Text
 		{
 			get => mask.IsFlagSet(HeaderItemMask.HDI_TEXT) ? pszText.ToString() : null;
@@ -1644,7 +1640,7 @@ public static partial class ComCtl32
 	/// Contains information used to set the size and position of a header control. HDLAYOUT is used with the HDM_LAYOUT message. This
 	/// structure supersedes the HD_LAYOUT structure.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775249")]
 	[StructLayout(LayoutKind.Sequential)]
 	public sealed class HDLAYOUT : IDisposable

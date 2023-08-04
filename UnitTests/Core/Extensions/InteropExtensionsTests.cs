@@ -100,7 +100,7 @@ public class InteropExtensionsTests
 			var chSz = 2;
 			Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + intSz));
 			var ro = h.ToByteArray(a - intSz, intSz);
-			var chars = System.Text.Encoding.Unicode.GetChars(ro);
+			var chars = Encoding.Unicode.GetChars(ro);
 			Assert.That(chars.Length, Is.EqualTo((a - intSz) / chSz));
 			Assert.That(chars[0], Is.EqualTo('s'));
 			Assert.That(chars[4], Is.EqualTo('\0'));
@@ -113,7 +113,7 @@ public class InteropExtensionsTests
 			chSz = 1;
 			Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + intSz));
 			ro = h.ToByteArray(a - intSz, intSz);
-			chars = System.Text.Encoding.ASCII.GetChars(ro);
+			chars = Encoding.ASCII.GetChars(ro);
 			Assert.That(chars.Length, Is.EqualTo((a - intSz) / chSz));
 			Assert.That(chars[0], Is.EqualTo('s'));
 			Assert.That(chars[4], Is.EqualTo('\0'));

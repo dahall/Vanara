@@ -4,7 +4,6 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.WinINet;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.Network;
 
@@ -116,7 +115,7 @@ public class InternetProxyOptions : IDisposable
 			throw new InvalidOperationException("Invalid output type specified.");
 
 		var ico = new INTERNET_PER_CONN_OPTION { dwOption = pco };
-		using var pIco = new SafeCoTaskMemStruct<INTERNET_PER_CONN_OPTION>(ico, Marshal.SizeOf(typeof(INTERNET_PER_CONN_OPTION)) + (Kernel32.MAX_PATH * Vanara.Extensions.StringHelper.GetCharSize()));
+		using var pIco = new SafeCoTaskMemStruct<INTERNET_PER_CONN_OPTION>(ico, Marshal.SizeOf(typeof(INTERNET_PER_CONN_OPTION)) + (Kernel32.MAX_PATH * StringHelper.GetCharSize()));
 
 		var perConnOptList = INTERNET_PER_CONN_OPTION_LIST.Default;
 		perConnOptList.dwOptionCount = 1;

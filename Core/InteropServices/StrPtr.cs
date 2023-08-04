@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 
 namespace Vanara.InteropServices;
 
@@ -68,7 +65,7 @@ public struct GuidPtr : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatable<IntPt
 	/// <inheritdoc/>
 	public override string ToString() => Value?.ToString("B") ?? "";
 
-	/// <summary>Performs an implicit conversion from <see cref="GuidPtr"/> to <see cref="System.Nullable{Guid}"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="GuidPtr"/> to <see cref="Nullable{Guid}"/>.</summary>
 	/// <param name="g">The pointer to a Guid.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator Guid?(GuidPtr g) => g.Value;
@@ -187,7 +184,7 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 	/// <returns>The resulting <see cref="sbyte"/>* from the conversion.</returns>
 	public static unsafe explicit operator sbyte*(StrPtrAnsi p) => (sbyte*)p.ptr;
 
-	/// <summary>Performs an explicit conversion from <see cref="StrPtrAnsi"/> to <see cref="System.IntPtr"/>.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="StrPtrAnsi"/> to <see cref="IntPtr"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrAnsi"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator IntPtr(StrPtrAnsi p) => p.ptr;
@@ -260,7 +257,7 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator string?(StrPtrAuto p) => p.IsNull ? null : p.ToString();
 
-	/// <summary>Performs an explicit conversion from <see cref="StrPtrAuto"/> to <see cref="System.IntPtr"/>.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="StrPtrAuto"/> to <see cref="IntPtr"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrAuto"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator IntPtr(StrPtrAuto p) => p.ptr;
@@ -369,7 +366,7 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 	/// <returns>The resulting <see cref="char"/>* from the conversion.</returns>
 	public static unsafe explicit operator char*(StrPtrUni p) => (char*)p.ptr;
 
-	/// <summary>Performs an explicit conversion from <see cref="StrPtrUni"/> to <see cref="System.IntPtr"/>.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="StrPtrUni"/> to <see cref="IntPtr"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrUni"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator IntPtr(StrPtrUni p) => p.ptr;
@@ -445,7 +442,7 @@ public class SafeGuidPtr : SafeMemStruct<Guid, CoTaskMemoryMethods>
 	/// <param name="guid">The unique identifier to assign to the pointer.</param>
 	public SafeGuidPtr(in Guid guid) : base(guid) { }
 
-	/// <summary>Performs an implicit conversion from <see cref="System.Nullable{Guid}"/> to <see cref="SafeGuidPtr"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="Nullable{Guid}"/> to <see cref="SafeGuidPtr"/>.</summary>
 	/// <param name="guid">The unique identifier.</param>
 	/// <returns>The resulting <see cref="SafeGuidPtr"/> instance from the conversion.</returns>
 	public static implicit operator SafeGuidPtr(Guid? guid) => guid.HasValue ? new SafeGuidPtr(guid.Value) : Null;

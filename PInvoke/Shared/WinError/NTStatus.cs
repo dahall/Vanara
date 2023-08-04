@@ -1,8 +1,6 @@
-using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Security;
 
 namespace Vanara.PInvoke;
@@ -30,9 +28,9 @@ namespace Vanara.PInvoke;
 /// </item>
 /// </list>
 /// </summary>
-/// <seealso cref="System.IComparable"/>
-/// <seealso cref="System.IComparable{NTStatus}"/>
-/// <seealso cref="System.IEquatable{NTStatus}"/>
+/// <seealso cref="IComparable"/>
+/// <seealso cref="IComparable{NTStatus}"/>
+/// <seealso cref="IEquatable{NTStatus}"/>
 [StructLayout(LayoutKind.Sequential)]
 [TypeConverter(typeof(NTStatusTypeConverter))]
 [PInvokeData("winerr.h")]

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
@@ -330,10 +325,10 @@ public enum ShellItemToolTipOptions
 }
 
 /// <summary>Encapsulates an item in the Windows Shell.</summary>
-/// <seealso cref="System.IComparable{ShellItem}"/>
-/// <seealso cref="System.IDisposable"/>
-/// <seealso cref="System.IEquatable{IShellItem}"/>
-/// <seealso cref="System.IEquatable{ShellItem}"/>
+/// <seealso cref="IComparable{ShellItem}"/>
+/// <seealso cref="IDisposable"/>
+/// <seealso cref="IEquatable{IShellItem}"/>
+/// <seealso cref="IEquatable{ShellItem}"/>
 [TypeConverter(typeof(ShellItemTypeConverter))]
 public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellItem>, IEquatable<ShellItem>, INotifyPropertyChanged
 {
@@ -528,7 +523,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <note>Initially, this property store is the read-only store (change from R/W in v3.2.9) and should always have properties.
 	/// However, setting any of the properties of this value change the function of all subsequent uses. For example, if you set the
 	/// <see cref="ShellItemPropertyStore.ReadOnly"/> value to <see langword="false"/>, all subsequent calls to <see
-	/// cref="ShellItem.Properties"/> will access the read-write property store. If this <see cref="ShellItem"/> does not support
+	/// cref="Properties"/> will access the read-write property store. If this <see cref="ShellItem"/> does not support
 	/// properties directly, your use of this property will fail. It is important that you check for exceptions when changing the
 	/// properties of this value to prevent unexpected failures.</note>
 	/// </summary>
@@ -777,8 +772,63 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 			return new Uri(path.ToString());
 		}
+
+		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net45)'
+		Before:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		After:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		*/
+
+		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net48)'
+		Before:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		After:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		*/
+
+		/* Unmerged change from project 'Vanara.Windows.Shell.Common (netstandard2.0)'
+		Before:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		After:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		*/
+
+		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net6.0)'
+		Before:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		After:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		*/
+
+		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net7.0)'
+		Before:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		After:
+				catch { }
+
+				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		*/
 		catch { }
-		
+
 		return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
 	}
 
@@ -822,7 +872,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		while (true)
 		{
 			try { method(ret, ret.Capacity); }
-			catch (COMException ex) when (ex.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_INSUFFICIENT_BUFFER) || 
+			catch (COMException ex) when (ex.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_INSUFFICIENT_BUFFER) ||
 				ex.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_MORE_DATA) || ret.Capacity <= 8192)
 			{ ret.Capacity *= 2; }
 			return ret.ToString();
@@ -885,8 +935,8 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	}
 
 	/// <summary>Local implementation of IShellItem.</summary>
-	/// <seealso cref="System.IDisposable"/>
-	/// <seealso cref="Vanara.PInvoke.Shell32.IShellItem"/>
+	/// <seealso cref="IDisposable"/>
+	/// <seealso cref="Shell32.IShellItem"/>
 	protected class ShellItemImpl : IDisposable, IShellItem
 	{
 		/// <summary>Initializes a new instance of the <see cref="ShellItemImpl"/> class.</summary>

@@ -39,7 +39,7 @@ internal class CollapsiblePanelDesigner : AttributedParentControlDesignerEx<Coll
 	public override void Initialize(IComponent component)
 	{
 		base.Initialize(component);
-		base.AutoResizeHandles = true;
+		AutoResizeHandles = true;
 		if (Control != null)
 			EnableDesignMode(Control.Content, "Content");
 		//base.Glyphs.Add(new WizardPageContainerDesignerGlyph(this));

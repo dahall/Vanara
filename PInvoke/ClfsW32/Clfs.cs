@@ -6,7 +6,6 @@ global using System.Threading;
 global using Vanara.InteropServices;
 
 global using CLFS_CONTAINER_ID = System.UInt32;
-global using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 using Vanara.Extensions;
 
 namespace Vanara.PInvoke;

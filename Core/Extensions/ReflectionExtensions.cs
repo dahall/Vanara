@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 
 namespace Vanara.Extensions.Reflection
 {
@@ -357,7 +354,7 @@ namespace Vanara.Extensions
 		/// <param name="bindingFlags">The binding flags.</param>
 		/// <returns>An ordered sequence of <see cref="FieldInfo"/> instances representing the fields in the structure.</returns>
 		public static IEnumerable<FieldInfo> GetOrderedFields(this Type type, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) =>
-			type.GetFields(bindingFlags).Select(fi => (System.Runtime.InteropServices.Marshal.OffsetOf(type, fi.Name).ToInt64(), fi)).OrderBy(t => t.Item1).Select(t => t.fi);
+			type.GetFields(bindingFlags).Select(fi => (Marshal.OffsetOf(type, fi.Name).ToInt64(), fi)).OrderBy(t => t.Item1).Select(t => t.fi);
 
 		/// <summary>Gets a named field value from an object.</summary>
 		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
@@ -446,7 +441,7 @@ public static partial class Authz
 		AUTHZ_WPD_CATEGORY_FLAG = 0x00000010,
 	}
 
-	/// <summary>Flags for the <see cref="Authz.AuthzInitializeContextFromSid"/> method.</summary>
+	/// <summary>Flags for the <see cref="AuthzInitializeContextFromSid"/> method.</summary>
 	[PInvokeData("authz.h")]
 	[Flags]
 	public enum AuthzContextFlags
@@ -484,7 +479,7 @@ public static partial class Authz
 		AUTHZ_COMPUTE_PRIVILEGES = 0x8
 	}
 
-	/// <summary>Flags for the <see cref="Authz.AuthzInitializeResourceManager"/> method.</summary>
+	/// <summary>Flags for the <see cref="AuthzInitializeResourceManager"/> method.</summary>
 	[PInvokeData("authz.h")]
 	[Flags]
 	public enum AuthzResourceManagerFlags
@@ -1067,7 +1062,7 @@ public static partial class Authz
 	/// A value of the AUTHZ_CONTEXT_INFORMATION_CLASS enumeration that indicates the type of information to be returned.
 	/// </param>
 	/// <returns>The information requested in the InfoClass parameter.</returns>
-	/// <exception cref="System.ArgumentException">No corresponding AUTHZ_CONTEXT_INFORMATION_CLASS for type " + typeof(T).Name</exception>
+	/// <exception cref="ArgumentException">No corresponding AUTHZ_CONTEXT_INFORMATION_CLASS for type " + typeof(T).Name</exception>
 	[PInvokeData("authz.h", MSDNShortId = "c365029a-3ff3-49c1-9dfc-b52948e466f3")]
 	public static T? AuthzGetInformationFromContext<T>(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS? InfoClass = null)
 	{
@@ -3149,7 +3144,7 @@ public static partial class Authz
 
 		public object MarshalNativeToManaged(IntPtr pNativeData)
 		{
-			if (pNativeData == IntPtr.Zero) return new ();
+			if (pNativeData == IntPtr.Zero) return new();
 			var attrInfo = pNativeData.ToStructure<Internal_AUTHZ_SECURITY_ATTRIBUTES_INFORMATION>();
 			return new AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(attrInfo.pAttributeV1 == IntPtr.Zero ? null :
 				Array.ConvertAll(attrInfo.pAttributeV1.ToArray<Internal_AUTHZ_SECURITY_ATTRIBUTE_V1>((int)attrInfo.AttributeCount)!, Conv));

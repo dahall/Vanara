@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
@@ -12,7 +10,7 @@ using static Vanara.PInvoke.Shell32;
 namespace Vanara.Windows.Shell;
 
 /// <summary>Represents a <see cref="DataTable"/> that is populated asynchronously with information about shell items.</summary>
-/// <seealso cref="System.Data.DataTable"/>
+/// <seealso cref="DataTable"/>
 public class ShellDataTable : DataTable
 {
 	private const string colId = "IDList";
@@ -166,7 +164,7 @@ public class ShellDataTable : DataTable
 
 			return o switch
 			{
-				System.Runtime.InteropServices.ComTypes.FILETIME ft => ft.ToDateTime(),
+				FILETIME ft => ft.ToDateTime(),
 				_ => o
 			};
 		}
@@ -218,7 +216,7 @@ public class ShellDataTable : DataTable
 		static Type GetPropType(PropertyDescription pd)
 		{
 			var t = pd?.PropertyType;
-			if (t.Equals(typeof(System.Runtime.InteropServices.ComTypes.FILETIME)))
+			if (t.Equals(typeof(FILETIME)))
 				t = typeof(DateTime);
 			return t;
 		}

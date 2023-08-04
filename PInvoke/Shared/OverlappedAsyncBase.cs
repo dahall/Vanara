@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
 using System.Security;
 using System.Threading;
 
@@ -14,9 +12,9 @@ public static class OverlappedAsync
 	/// <summary>Cleans up at the end of the <see cref="Overlapped.Pack(IOCompletionCallback, object)"/> callback method.</summary>
 	/// <param name="asyncResult">The asynchronous result.</param>
 	/// <returns>The object passed into the <see cref="Overlapped.Pack(IOCompletionCallback, object)"/> method.</returns>
-	/// <exception cref="System.ArgumentNullException">asyncResult</exception>
-	/// <exception cref="System.ArgumentException">Argument must be of type AsyncResult - asyncResult</exception>
-	/// <exception cref="System.InvalidOperationException">Asynchronous end method called twice.</exception>
+	/// <exception cref="ArgumentNullException">asyncResult</exception>
+	/// <exception cref="ArgumentException">Argument must be of type AsyncResult - asyncResult</exception>
+	/// <exception cref="InvalidOperationException">Asynchronous end method called twice.</exception>
 	/// <exception cref="Win32Exception">Another Win32 error.</exception>
 	public static object? EndOverlappedFunction(IAsyncResult asyncResult)
 	{
@@ -112,7 +110,7 @@ public static class OverlappedAsync
 	}
 
 	/// <summary>Holds all pertinent information for handling results and errors in an overlapped set of method calls.</summary>
-	/// <seealso cref="System.IAsyncResult"/>
+	/// <seealso cref="IAsyncResult"/>
 	public sealed class OverlappedAsyncResult : IAsyncResult
 	{
 		internal int endCalled;

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.Runtime.CompilerServices;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
 
 /// <summary>A memory block aligned on a specific byte boundary.</summary>
 /// <typeparam name="TMem">The type of the memory.</typeparam>
-/// <seealso cref="Vanara.InteropServices.SafeAllocatedMemoryHandle"/>
+/// <seealso cref="SafeAllocatedMemoryHandle"/>
 public class AlignedMemory<TMem> : SafeAllocatedMemoryHandle where TMem : IMemoryMethods, new()
 {
 	/// <summary>The <see cref="IMemoryMethods"/> implementation instance.</summary>

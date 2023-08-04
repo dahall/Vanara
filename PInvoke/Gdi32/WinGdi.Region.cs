@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -740,7 +736,7 @@ public static partial class Gdi32
 			{
 				((IDisposable)this).Dispose();
 				value = value ?? new RECT[0];
-				_Buffer = value.MarshalToPtr<RECT>(Marshal.AllocHGlobal, out rdh.nRgnSize);
+				_Buffer = value.MarshalToPtr(Marshal.AllocHGlobal, out rdh.nRgnSize);
 				rdh.nCount = (uint)value.Length;
 			}
 		}

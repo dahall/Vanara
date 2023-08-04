@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using System.Collections.Generic;
 
 namespace Vanara.PInvoke;
 
@@ -1037,7 +1034,7 @@ public static partial class User32
 	/// </list>
 	/// </param>
 	/// <param name="info">A buffer containing the object information, or a BOOL.</param>
-	/// <exception cref="System.ArgumentException">Type mismatch</exception>
+	/// <exception cref="ArgumentException">Type mismatch</exception>
 	public static void SetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex, T info)
 	{
 		if (!CorrespondingTypeAttribute.CanSet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");

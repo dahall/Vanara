@@ -84,7 +84,7 @@ public static partial class VisualStylesRendererExtension
 	/// <param name="enable">if set to <c>true</c> enable the attribute, otherwise disable it.</param>
 	public static void SetWindowThemeAttribute(this IWin32Window window, WTNCA attr, bool enable = true)
 	{
-		try { UxTheme.SetWindowThemeNonClientAttributes(window.Handle, attr, enable); }
+		try { SetWindowThemeNonClientAttributes(window.Handle, attr, enable); }
 		catch (EntryPointNotFoundException) { }
 	}
 

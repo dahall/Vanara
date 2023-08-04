@@ -1,10 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class User32
 {
@@ -2906,7 +2900,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 	public static IntPtr SendMessage<TMsg>(HWND hWnd, TMsg msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam)
-		where TMsg : struct, IConvertible 
+		where TMsg : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), wParam, lParam);
 
 	/// <summary>

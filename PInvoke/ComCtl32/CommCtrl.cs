@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.User32;
+﻿using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
@@ -972,7 +970,7 @@ public static partial class ComCtl32
 			lpInfo[(i + 1) * 2] = 1;
 			lpInfo[(i + 1) * 2 + 1] = controlIdentifiers[i];
 		}
-		var ptr = InteropServices.SafeCoTaskMemHandle.CreateFromList(lpInfo);
+		var ptr = SafeCoTaskMemHandle.CreateFromList(lpInfo);
 		GetEffectiveClientRect(hWnd, out var rect, (IntPtr)ptr);
 		return rect;
 	}

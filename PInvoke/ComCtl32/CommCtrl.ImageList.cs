@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 

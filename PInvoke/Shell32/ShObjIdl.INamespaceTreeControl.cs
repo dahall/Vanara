@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -574,7 +570,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-appendroot HRESULT
 		// AppendRoot( IShellItem *psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, IShellItemFilter *pif );
 		[PreserveSig]
-		HRESULT AppendRoot(IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In, Optional] IShellItemFilter pif);
+		HRESULT AppendRoot(IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In, Optional] IShellItemFilter? pif);
 
 		/// <summary>Inserts a Shell item on a root item in a tree.</summary>
 		/// <param name="iIndex">
@@ -615,7 +611,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-insertroot HRESULT
 		// InsertRoot( int iIndex, IShellItem *psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, IShellItemFilter *pif );
 		[PreserveSig]
-		HRESULT InsertRoot(int iIndex, IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In, Optional] IShellItemFilter pif);
+		HRESULT InsertRoot(int iIndex, IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In, Optional] IShellItemFilter? pif);
 
 		/// <summary>Removes a root and its children from a tree.</summary>
 		/// <param name="psiRoot">
@@ -830,7 +826,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-getnextitem HRESULT
 		// GetNextItem( IShellItem *psi, NSTCGNI nstcgi, IShellItem **ppsiNext );
 		[PreserveSig]
-		HRESULT GetNextItem([In] IShellItem psi, NSTCGNI nstcgi, out IShellItem ppsiNext);
+		HRESULT GetNextItem([In] IShellItem? psi, NSTCGNI nstcgi, out IShellItem? ppsiNext);
 
 		/// <summary>Retrieves the item that a given point is in, if any.</summary>
 		/// <param name="ppt">
@@ -849,7 +845,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-hittest HRESULT
 		// HitTest( POINT *ppt, IShellItem **ppsiOut );
 		[PreserveSig]
-		HRESULT HitTest(in POINT ppt, out IShellItem ppsiOut);
+		HRESULT HitTest(in POINT ppt, out IShellItem? ppsiOut);
 
 		/// <summary>Gets the RECT structure that describes the size and position of a given item.</summary>
 		/// <param name="psi">
@@ -986,7 +982,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-appendroot HRESULT
 		// AppendRoot( IShellItem *psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, IShellItemFilter *pif );
 		[PreserveSig]
-		new HRESULT AppendRoot(IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In] IShellItemFilter pif);
+		new HRESULT AppendRoot(IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In] IShellItemFilter? pif);
 
 		/// <summary>Inserts a Shell item on a root item in a tree.</summary>
 		/// <param name="iIndex">
@@ -1027,7 +1023,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-insertroot HRESULT
 		// InsertRoot( int iIndex, IShellItem *psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, IShellItemFilter *pif );
 		[PreserveSig]
-		new HRESULT InsertRoot(int iIndex, IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In] IShellItemFilter pif);
+		new HRESULT InsertRoot(int iIndex, IShellItem psiRoot, SHCONTF grfEnumFlags, NSTCROOTSTYLE grfRootStyle, [In] IShellItemFilter? pif);
 
 		/// <summary>Removes a root and its children from a tree.</summary>
 		/// <param name="psiRoot">
@@ -1242,7 +1238,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-getnextitem HRESULT
 		// GetNextItem( IShellItem *psi, NSTCGNI nstcgi, IShellItem **ppsiNext );
 		[PreserveSig]
-		new HRESULT GetNextItem([In] IShellItem psi, NSTCGNI nstcgi, out IShellItem ppsiNext);
+		new HRESULT GetNextItem([In] IShellItem? psi, NSTCGNI nstcgi, out IShellItem? ppsiNext);
 
 		/// <summary>Retrieves the item that a given point is in, if any.</summary>
 		/// <param name="ppt">
@@ -1261,7 +1257,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-hittest HRESULT
 		// HitTest( POINT *ppt, IShellItem **ppsiOut );
 		[PreserveSig]
-		new HRESULT HitTest(in POINT ppt, out IShellItem ppsiOut);
+		new HRESULT HitTest(in POINT ppt, out IShellItem? ppsiOut);
 
 		/// <summary>Gets the RECT structure that describes the size and position of a given item.</summary>
 		/// <param name="psi">
@@ -1419,7 +1415,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontroldrophandler-ondragenter HRESULT
 		// OnDragEnter( IShellItem *psiOver, IShellItemArray *psiaData, BOOL fOutsideSource, DWORD grfKeyState, DWORD *pdwEffect );
 		[PreserveSig]
-		HRESULT OnDragEnter([In, Optional] IShellItem psiOver, [In] IShellItemArray psiaData, [MarshalAs(UnmanagedType.Bool)] bool fOutsideSource, uint grfKeyState, ref uint pdwEffect);
+		HRESULT OnDragEnter([In, Optional] IShellItem? psiOver, [In] IShellItemArray psiaData, [MarshalAs(UnmanagedType.Bool)] bool fOutsideSource, uint grfKeyState, ref uint pdwEffect);
 
 		/// <summary>Called on drag over to set drag effect, as specified.</summary>
 		/// <param name="psiOver">
@@ -1446,7 +1442,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontroldrophandler-ondragover HRESULT
 		// OnDragOver( IShellItem *psiOver, IShellItemArray *psiaData, DWORD grfKeyState, DWORD *pdwEffect );
 		[PreserveSig]
-		HRESULT OnDragOver([In, Optional] IShellItem psiOver, [In] IShellItemArray psiaData, uint grfKeyState, ref uint pdwEffect);
+		HRESULT OnDragOver([In, Optional] IShellItem? psiOver, [In] IShellItemArray psiaData, uint grfKeyState, ref uint pdwEffect);
 
 		/// <summary>Called when the item is being dragged within the same level (within the same parent folder) in the tree.</summary>
 		/// <param name="psiOver">
@@ -1473,7 +1469,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontroldrophandler-ondragposition
 		// HRESULT OnDragPosition( IShellItem *psiOver, IShellItemArray *psiaData, int iNewPosition, int iOldPosition );
 		[PreserveSig]
-		HRESULT OnDragPosition([In, Optional] IShellItem psiOver, [In] IShellItemArray psiaData, int iNewPosition, int iOldPosition);
+		HRESULT OnDragPosition([In, Optional] IShellItem? psiOver, [In] IShellItemArray psiaData, int iNewPosition, int iOldPosition);
 
 		/// <summary>Called on drop to set drop effect, as specified.</summary>
 		/// <param name="psiOver">
@@ -1506,7 +1502,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontroldrophandler-ondrop HRESULT
 		// OnDrop( IShellItem *psiOver, IShellItemArray *psiaData, int iPosition, DWORD grfKeyState, DWORD *pdwEffect );
 		[PreserveSig]
-		HRESULT OnDrop([In, Optional] IShellItem psiOver, [In] IShellItemArray psiaData, int iPosition, uint grfKeyState, ref uint pdwEffect);
+		HRESULT OnDrop([In, Optional] IShellItem? psiOver, [In] IShellItemArray psiaData, int iPosition, uint grfKeyState, ref uint pdwEffect);
 
 		/// <summary>Called when the item is being dropped within the same level (within the same parent folder) in the tree.</summary>
 		/// <param name="psiOver">
@@ -1533,7 +1529,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontroldrophandler-ondropposition
 		// HRESULT OnDropPosition( IShellItem *psiOver, IShellItemArray *psiaData, int iNewPosition, int iOldPosition );
 		[PreserveSig]
-		HRESULT OnDropPosition([In, Optional] IShellItem psiOver, [In] IShellItemArray psiaData, int iNewPosition, int iOldPosition);
+		HRESULT OnDropPosition([In, Optional] IShellItem? psiOver, [In] IShellItemArray psiaData, int iNewPosition, int iOldPosition);
 
 		/// <summary>Called on drag leave for a specified item.</summary>
 		/// <param name="psiOver">
@@ -1547,7 +1543,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontroldrophandler-ondragleave HRESULT
 		// OnDragLeave( IShellItem *psiOver );
 		[PreserveSig]
-		HRESULT OnDragLeave([In, Optional] IShellItem psiOver);
+		HRESULT OnDragLeave([In, Optional] IShellItem? psiOver);
 	}
 
 	/// <summary>Exposes methods for handling INameSpaceTreeControl events.</summary>
@@ -1869,7 +1865,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontrolevents-onbeforecontextmenu
 		// HRESULT OnBeforeContextMenu( IShellItem *psi, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT OnBeforeContextMenu([In, Optional] IShellItem psi, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+		HRESULT OnBeforeContextMenu([In, Optional] IShellItem? psi, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Called after a context menu is displayed.</summary>
 		/// <param name="psi">
@@ -1902,7 +1898,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontrolevents-onaftercontextmenu
 		// HRESULT OnAfterContextMenu( IShellItem *psi, IContextMenu *pcmIn, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT OnAfterContextMenu([In, Optional] IShellItem psi, [In] IContextMenu pcmIn, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
+		HRESULT OnAfterContextMenu([In, Optional] IShellItem? psi, [In] IContextMenu pcmIn, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Called before the state icon of the given IShellItem is changed.</summary>
 		/// <param name="psi">

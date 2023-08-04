@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.Collections.Generic;
 
 namespace Vanara.InteropServices;
 
 /// <summary>A memory pool that will automatically release all memory pointers on disposal.</summary>
 /// <typeparam name="TMem">The type of the memory allocator.</typeparam>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class SafeMemoryPool<TMem> : IDisposable where TMem : IMemoryMethods, new()
 {
 	private static readonly TMem mem = new();
@@ -56,7 +53,7 @@ public class SafeMemoryPool<TMem> : IDisposable where TMem : IMemoryMethods, new
 		{
 			while (stack.Count > 0)
 				mem.FreeMem(stack.Pop());
-			disposedValue=true;
+			disposedValue = true;
 		}
 	}
 }

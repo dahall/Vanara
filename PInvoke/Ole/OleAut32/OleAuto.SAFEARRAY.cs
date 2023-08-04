@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -1894,7 +1890,7 @@ public static partial class OleAut32
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a safe array that releases a created SAFEARRAY instance at disposal using SafeArrayDestroy.
 	/// </summary>
-	public class SafeSAFEARRAY : SafeHANDLE, System.Collections.IEnumerable
+	public class SafeSAFEARRAY : SafeHANDLE, IEnumerable
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeSAFEARRAY"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2011,7 +2007,7 @@ public static partial class OleAut32
 			}
 			else if (elemType.IsBlittable())
 			{
-				using SafeCoTaskMemHandle mem = new(Vanara.Extensions.InteropExtensions.SizeOf(elemType));
+				using SafeCoTaskMemHandle mem = new(InteropExtensions.SizeOf(elemType));
 				foreach ((int[] from, int[] to) in BuildIndexList(bounds))
 				{
 					Marshal.StructureToPtr(array.GetValue(from)!, mem.DangerousGetHandle(), false);

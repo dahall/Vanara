@@ -194,7 +194,7 @@ public class WinBaseTests
 	[Test]
 	public void IsTextUnicodeTest()
 	{
-		var aBuf = "a".GetBytes(true, System.Runtime.InteropServices.CharSet.Ansi);
+		var aBuf = "a".GetBytes(true, CharSet.Ansi);
 		var isNotUni = IS_TEXT_UNICODE.IS_TEXT_UNICODE_ASCII16;
 		Assert.That(IsTextUnicode(aBuf, aBuf.Length, ref isNotUni), ResultIs.Successful);
 

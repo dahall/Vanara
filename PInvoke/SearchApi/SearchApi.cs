@@ -1,9 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 
@@ -947,7 +943,7 @@ public static partial class SearchApi
 		// *SearchDecSize, WCHAR **pwcsSearchDesc, IFilter **ppIFilt );
 		[PInvokeData("filtereg.h", MSDNShortId = "920c976e-4dde-4e53-85b7-7547291736a0")]
 		[PreserveSig]
-		HRESULT LoadIFilter([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsPath, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter,
+		HRESULT LoadIFilter([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsPath, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter,
 			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
 
 		/// <summary>
@@ -1360,7 +1356,7 @@ public static partial class SearchApi
 		// LPWSTR *pszName );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010000)]
-		string Name { [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+		string Name { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="pszName">
@@ -1466,7 +1462,7 @@ public static partial class SearchApi
 		// put_ConnectTimeout( DWORD dwConnectTimeout );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010008)]
-		uint ConnectTimeout { [param: In]  set; get; }
+		uint ConnectTimeout { [param: In] set; get; }
 
 		/// <summary>
 		/// Sets the time-out value for data transactions between the indexer and the search filter host. This information is stored in
@@ -1484,7 +1480,7 @@ public static partial class SearchApi
 		// put_DataTimeout( DWORD dwDataTimeout );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x6001000a)]
-		uint DataTimeout { [param: In]  set; get; }
+		uint DataTimeout { [param: In] set; get; }
 
 		/// <summary>Gets the number of items in the catalog.</summary>
 		/// <returns>
@@ -1523,7 +1519,7 @@ public static partial class SearchApi
 		// URLBeingIndexed( LPWSTR *pszUrl );
 		[PInvokeData("searchapi.h")]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string URLBeingIndexed();
+		string? URLBeingIndexed();
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="pszUrl">The URL.</param>
@@ -1649,7 +1645,7 @@ public static partial class SearchApi
 		// HRESULT put_DiacriticSensitivity( BOOL fDiacriticSensitive );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010017)]
-		int DiacriticSensitivity { [param: In]  set; get; }
+		int DiacriticSensitivity { [param: In] set; get; }
 
 		/// <summary>Gets an ISearchCrawlScopeManager interface for this search catalog.</summary>
 		/// <returns>
@@ -1678,7 +1674,7 @@ public static partial class SearchApi
 		// LPWSTR *pszName );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010000)]
-		new string Name { [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+		new string Name { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="pszName">
@@ -1784,7 +1780,7 @@ public static partial class SearchApi
 		// put_ConnectTimeout( DWORD dwConnectTimeout );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010008)]
-		new uint ConnectTimeout { [param: In]  set; get; }
+		new uint ConnectTimeout { [param: In] set; get; }
 
 		/// <summary>
 		/// Sets the time-out value for data transactions between the indexer and the search filter host. This information is stored in
@@ -1802,7 +1798,7 @@ public static partial class SearchApi
 		// put_DataTimeout( DWORD dwDataTimeout );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x6001000a)]
-		new uint DataTimeout { [param: In]  set; get; }
+		new uint DataTimeout { [param: In] set; get; }
 
 		/// <summary>Gets the number of items in the catalog.</summary>
 		/// <returns>
@@ -1841,7 +1837,7 @@ public static partial class SearchApi
 		// URLBeingIndexed( LPWSTR *pszUrl );
 		[PInvokeData("searchapi.h")]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string URLBeingIndexed();
+		new string? URLBeingIndexed();
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="pszUrl">The URL.</param>
@@ -1967,7 +1963,7 @@ public static partial class SearchApi
 		// HRESULT put_DiacriticSensitivity( BOOL fDiacriticSensitive );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010017)]
-		new int DiacriticSensitivity { [param: In]  set; get; }
+		new int DiacriticSensitivity { [param: In] set; get; }
 
 		/// <summary>Gets an ISearchCrawlScopeManager interface for this search catalog.</summary>
 		/// <returns>
@@ -4058,7 +4054,7 @@ public static partial class SearchApi
 		// get_ConnectionString( LPWSTR *pszConnectionString );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010000)]
-		string ConnectionString { [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+		string ConnectionString { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Gets or sets the language code identifier (LCID) of the query.</summary>
 		/// <value>
@@ -4090,7 +4086,7 @@ public static partial class SearchApi
 		// put_QueryContentLocale( LCID lcid );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010001)]
-		uint QueryContentLocale { [param: In]  set; get; }
+		uint QueryContentLocale { [param: In] set; get; }
 
 		/// <summary>
 		/// Gets or sets the language code identifier (LCID) for the locale to use when parsing Advanced Query Syntax (AQS) keywords.
@@ -4104,7 +4100,7 @@ public static partial class SearchApi
 		// put_QueryKeywordLocale( LCID lcid );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010003)]
-		uint QueryKeywordLocale { [param: In]  set; get; }
+		uint QueryKeywordLocale { [param: In] set; get; }
 
 		/// <summary>Gets or sets a value that specifies how query terms are to be expanded.</summary>
 		/// <value>
@@ -4128,7 +4124,7 @@ public static partial class SearchApi
 		// put_QueryTermExpansion( SEARCH_TERM_EXPANSION expandTerms );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010005)]
-		SEARCH_TERM_EXPANSION QueryTermExpansion { [param: In]  set; get; }
+		SEARCH_TERM_EXPANSION QueryTermExpansion { [param: In] set; get; }
 
 		/// <summary>Gets or sets the syntax of the query.</summary>
 		/// <value>
@@ -4151,7 +4147,7 @@ public static partial class SearchApi
 		// put_QuerySyntax( SEARCH_QUERY_SYNTAX querySyntax );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010007)]
-		SEARCH_QUERY_SYNTAX QuerySyntax { [param: In]  set; get; }
+		SEARCH_QUERY_SYNTAX QuerySyntax { [param: In] set; get; }
 
 		/// <summary>Gets or sets the properties to include in the query if search terms do not explicitly specify properties.</summary>
 		/// <value>
@@ -4176,7 +4172,7 @@ public static partial class SearchApi
 		// HRESULT put_QueryContentProperties( LPCWSTR pszContentProperties );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010009)]
-		string QueryContentProperties { [param: In, MarshalAs(UnmanagedType.LPWStr)]  set; [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+		string QueryContentProperties { [param: In, MarshalAs(UnmanagedType.LPWStr)] set; [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Gets or sets the columns (or properties) requested in the select statement.</summary>
 		/// <value>
@@ -4199,7 +4195,7 @@ public static partial class SearchApi
 		// put_QuerySelectColumns( LPCWSTR pszSelectColumns );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x6001000b)]
-		string QuerySelectColumns { [param: In, MarshalAs(UnmanagedType.LPWStr)]  set; [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+		string QuerySelectColumns { [param: In, MarshalAs(UnmanagedType.LPWStr)] set; [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Gets or sets the restrictions appended to a query in WHERE clauses.</summary>
 		/// <value>
@@ -4223,7 +4219,7 @@ public static partial class SearchApi
 		// HRESULT put_QueryWhereRestrictions( LPCWSTR pszRestrictions );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x6001000d)]
-		string QueryWhereRestrictions { [param: In, MarshalAs(UnmanagedType.LPWStr)]  set; [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+		string QueryWhereRestrictions { [param: In, MarshalAs(UnmanagedType.LPWStr)] set; [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Sets the sort order for the query result set.</summary>
 		/// <value>
@@ -4243,7 +4239,7 @@ public static partial class SearchApi
 		// put_QuerySorting( LPCWSTR pszSorting );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x6001000f)]
-		string QuerySorting { [param: In, MarshalAs(UnmanagedType.LPWStr)]  set; [return: MarshalAs(UnmanagedType.LPWStr)]  get; }
+		string QuerySorting { [param: In, MarshalAs(UnmanagedType.LPWStr)] set; [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>
 		/// Generates a Structured Query Language (SQL) query based on a client-supplied query string expressed in either Advanced Query
@@ -4331,7 +4327,7 @@ public static partial class SearchApi
 		// put_QueryMaxResults( LONG cMaxResults );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010013)]
-		int QueryMaxResults { [param: In]  set; get; }
+		int QueryMaxResults { [param: In] set; get; }
 	}
 
 	/// <summary>

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using static Vanara.PInvoke.ShlwApi;
 
@@ -104,7 +103,7 @@ public class FileTypeAssociation : RegBasedSettings
 	/// <summary>
 	/// <para>Unregisters the file association.</para>
 	/// <note type="warning">Removing a file association can break multiple applications since this will remove all ProgId associations.
-	/// Do this with extreme caution and forethought. Consider just removing the ProgId for your application using <see cref="FileTypeAssociation.OpenWithProgIds"/>.</note>
+	/// Do this with extreme caution and forethought. Consider just removing the ProgId for your application using <see cref="OpenWithProgIds"/>.</note>
 	/// </summary>
 	/// <param name="extension">The file extension to unregister. This value must be in the format ".ext".</param>
 	/// <param name="systemWide">

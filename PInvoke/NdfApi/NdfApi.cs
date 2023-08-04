@@ -1,7 +1,4 @@
-global using System;
-global using System.Runtime.InteropServices;
 global using static Vanara.PInvoke.Ws2_32;
-global using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 

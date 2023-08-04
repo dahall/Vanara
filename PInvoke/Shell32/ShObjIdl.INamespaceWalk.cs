@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -116,33 +113,18 @@ public static partial class Shell32
 		/// <para>Type: <c>IUnknown*</c></para>
 		/// <para>The root node from which to begin the walk. This can be represented by one of the following objects.</para>
 		/// <list type="bullet">
-		/// <item>
-		/// <term>IShellFolder</term>
-		/// </item>
-		/// <item>
-		/// <term>IDataObject</term>
-		/// </item>
-		/// <item>
-		/// <term>IParentAndItem</term>
-		/// </item>
-		/// <item>
-		/// <term>IEnumFullIDList</term>
-		/// </item>
-		/// <item>
-		/// <term>IShellItem</term>
-		/// </item>
-		/// <item>
-		/// <term>IShellItemArray</term>
-		/// </item>
-		/// <item>
-		/// <term>IShellView</term>
-		/// </item>
+		/// <item>IShellFolder</item>
+		/// <item>IDataObject</item>
+		/// <item>IParentAndItem</item>
+		/// <item>IEnumFullIDList</item>
+		/// <item>IShellItem</item>
+		/// <item>IShellItemArray</item>
+		/// <item>IShellView</item>
 		/// </list>
-		/// <para>Specifying the desktop's</para>
-		/// <para>IShellFolder</para>
-		/// <para>as the root allows the possibility of walking the entire Windows namespace if</para>
-		/// <para>cDepth</para>
-		/// <para>is sufficiently large.</para>
+		/// <para>
+		/// Specifying the desktop's IShellFolder as the root allows the possibility of walking the entire Windows namespace if cDepth is
+		/// sufficiently large.
+		/// </para>
 		/// </param>
 		/// <param name="dwFlags">
 		/// <para>Type: <c>DWORD</c></para>
@@ -152,22 +134,14 @@ public static partial class Shell32
 		/// <para>NSWF_NONE_IMPLIES_ALL (0x00000001)</para>
 		/// <para>Collect all of the items in the folder if both of these criteria are met:</para>
 		/// <list type="bullet">
-		/// <item>
-		/// <term>punkToWalk is a folder (IShellFolder or IShellView).</term>
-		/// </item>
-		/// <item>
-		/// <term>None of the items in the folder are currently selected.</term>
-		/// </item>
+		/// <item>punkToWalk is a folder (IShellFolder or IShellView).</item>
+		/// <item>None of the items in the folder are currently selected.</item>
 		/// </list>
 		/// <para>NSWF_ONE_IMPLIES_ALL (0x00000002)</para>
 		/// <para>Collect all of the items in the folder if both of these criteria are met:</para>
 		/// <list type="bullet">
-		/// <item>
-		/// <term>punkToWalk is a folder (IShellFolder or IShellView).</term>
-		/// </item>
-		/// <item>
-		/// <term>One of the items in the folder is currently selected.</term>
-		/// </item>
+		/// <item>punkToWalk is a folder (IShellFolder or IShellView).</item>
+		/// <item>One of the items in the folder is currently selected.</item>
 		/// </list>
 		/// <para>NSWF_DONT_TRAVERSE_LINKS (0x00000004)</para>
 		/// <para>Do not follow links (.lnk, .url, and folder shortcuts) in the recursion; instead, return them as regular items.</para>
@@ -188,8 +162,8 @@ public static partial class Shell32
 		/// <para>NSWF_DONT_RESOLVE_LINKS (0x00000400)</para>
 		/// <para>
 		/// Traverse links to return their targets (for .lnk, .url and folder shortcuts) but do not verify that those targets exist
-		/// (Resolve). This is an optimization and does not affect the results except in the case where a missing or moved target could
-		/// be found and returned.
+		/// (Resolve). This is an optimization and does not affect the results except in the case where a missing or moved target could be
+		/// found and returned.
 		/// </para>
 		/// <para>NSWF_ACCUMULATE_FOLDERS (0x00000800)</para>
 		/// <para>NSWF_DONT_SORT (0x00001000)</para>
@@ -217,7 +191,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalk-walk HRESULT Walk( IUnknown
 		// *punkToWalk, DWORD dwFlags, int cDepth, INamespaceWalkCB *pnswcb );
 		[PreserveSig]
-		HRESULT Walk([In, MarshalAs(UnmanagedType.IUnknown)] object punkToWalk, NAMESPACEWALKFLAG dwFlags, int cDepth, [In, Optional] INamespaceWalkCB pnswcb);
+		HRESULT Walk([In, MarshalAs(UnmanagedType.IUnknown)] object punkToWalk, NAMESPACEWALKFLAG dwFlags, int cDepth, [In, Optional] INamespaceWalkCB? pnswcb);
 
 		/// <summary>Gets a list of objects found during a namespace walk initiated by INamespaceWalk::Walk.</summary>
 		/// <param name="pcItems">
@@ -249,7 +223,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalk-getidarrayresult HRESULT
 		// GetIDArrayResult( UINT *pcItems, PIDLIST_ABSOLUTE **prgpidl );
 		[PreserveSig]
-		HRESULT GetIDArrayResult(out uint pcItems, out InteropServices.SafeCoTaskMemHandle prgpidl);
+		HRESULT GetIDArrayResult(out uint pcItems, out SafeCoTaskMemHandle prgpidl);
 	}
 
 	/// <summary>
@@ -355,7 +329,7 @@ public static partial class Shell32
 	/// Extends INamespaceWalkCB with a method that is required in order to complete a namespace walk. This method removes data collected
 	/// during the walk.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.Shell32.INamespaceWalkCB"/>
+	/// <seealso cref="INamespaceWalkCB"/>
 	/// <remarks>This interface also provides the methods of the INamespaceWalkCB interface, from which it inherits.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-inamespacewalkcb2
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "a748083b-a99e-4015-93da-112d2950f623")]
@@ -462,6 +436,33 @@ public static partial class Shell32
 		// WalkComplete( HRESULT hr );
 		[PreserveSig]
 		HRESULT WalkComplete(HRESULT hr);
+	}
+
+	/// <summary>Gets a list of objects found during a namespace walk initiated by INamespaceWalk::Walk.</summary>
+	/// <param name="nsWalk">The ns walk.</param>
+	/// <param name="prgpidl">An array of PIDLs representing the items found during the namespace walk.</param>
+	/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+	/// <remarks>
+	/// <para>To use <c>INamespaceWalk::GetIDArrayResult</c>, <c>NSWF_DONT_ACCUMULATE_RESULT</c> cannot be specified in the call to INamespaceWalk::Walk.</para>
+	/// <para>
+	/// It is the responsibility of the calling application to free this array. Call CoTaskMemFree for each PIDL as well as once for the
+	/// array itself.
+	/// </para>
+	/// </remarks>
+	public static HRESULT GetIDArrayResult(this INamespaceWalk nsWalk, out PIDL[] prgpidl)
+	{
+		HRESULT hr = nsWalk.GetIDArrayResult(out var pcItems, out var ppidl);
+		if (hr.Succeeded)
+		{
+			prgpidl = Array.ConvertAll(ppidl.ToArray<IntPtr>((int)pcItems), p => new PIDL(p, true));
+			ppidl.Dispose();
+			return HRESULT.S_OK;
+		}
+		else
+		{
+			prgpidl = new PIDL[0];
+			return hr;
+		}
 	}
 
 	/// <summary>CLSID_NamespaceWalker</summary>

@@ -24,7 +24,7 @@ public abstract class VistaButtonBase : Button
 	/// </summary>
 	protected VistaButtonBase()
 	{
-		base.FlatStyle = FlatStyle.System;
+		FlatStyle = FlatStyle.System;
 	}
 
 	/*/// <summary>

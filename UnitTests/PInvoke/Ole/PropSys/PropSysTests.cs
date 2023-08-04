@@ -7,7 +7,6 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke.Tests;
 

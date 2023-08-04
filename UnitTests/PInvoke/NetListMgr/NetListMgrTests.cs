@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using Vanara.Extensions;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 using Vanara.PInvoke.NetListMgr;
 using Vanara.InteropServices;
 using System.Runtime.InteropServices;

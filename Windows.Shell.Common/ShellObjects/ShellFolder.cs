@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.Collections;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -239,7 +236,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	}
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
-	/// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+	/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	private IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());

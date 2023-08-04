@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -1393,7 +1389,7 @@ public static partial class Kernel32
 		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
 		/// <param name="size">The size, in bytes, of memory to allocate.</param>
 		/// <returns>A memory handle.</returns>
-		public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapAllocInternal(HeapHandle, HeapFlags.HEAP_ZERO_MEMORY , size));
+		public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapAllocInternal(HeapHandle, HeapFlags.HEAP_ZERO_MEMORY, size));
 
 		/// <summary>Frees the memory associated with a handle.</summary>
 		/// <param name="hMem">A memory handle.</param>
@@ -1409,7 +1405,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Safe handle for memory heaps.</summary>
-	/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+	/// <seealso cref="GenericSafeHandle"/>
 	public class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
@@ -1433,7 +1429,7 @@ public static partial class Kernel32
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 		public SafeHeapBlock(SizeT size) : base(size)
 		{
 		}
@@ -1475,7 +1471,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </param>
-		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 		public SafeHeapBlock(HHEAP hHeap, SizeT size = default, HeapFlags flags = 0) : this(hHeap, IntPtr.Zero, size)
 		{
 			if (size < 0)

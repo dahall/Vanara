@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -863,7 +859,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If dwOperation is GET_TAPE_DRIVE_INFORMATION, lpTapeInformation points to a <c>TAPE_GET_DRIVE_PARAMETERS</c> structure.</para>
 	/// </returns>
-	/// <exception cref="System.ArgumentOutOfRangeException">dwOperation - Type parameter does not match valid operation.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">dwOperation - Type parameter does not match valid operation.</exception>
 	// DWORD GetTapeParameters( _In_ HANDLE hDevice, _In_ DWORD dwOperation, _Out_ LPDWORD lpdwSize, _Out_ LPVOID lpTapeInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362526(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362526")]
 	public static T GetTapeParameters<T>([In] HFILE hDevice) where T : struct

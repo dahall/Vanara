@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,7 +9,7 @@ using Vanara.PInvoke;
 namespace Vanara.Windows.Shell;
 
 /// <summary>Provides access to the functionality of the taskbar button.</summary>
-/// <seealso cref="System.ComponentModel.Component"/>
+/// <seealso cref="Component"/>
 [ProvideProperty("AppID", typeof(Form))]
 [ProvideProperty("TaskbarButtonTooltip", typeof(Form))]
 [ProvideProperty("TaskbarButtonOverlay", typeof(Form))]
@@ -34,7 +33,7 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 
 	/// <summary>Initializes a new instance of the <see cref="TaskbarButton"/> class.</summary>
 	/// <param name="container">The container of this component.</param>
-	/// <exception cref="System.ArgumentNullException">container</exception>
+	/// <exception cref="ArgumentNullException">container</exception>
 	public TaskbarButton(IContainer container) : this()
 	{
 		if (container is null)

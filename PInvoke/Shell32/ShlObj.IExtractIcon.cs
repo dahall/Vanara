@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.User32;
+﻿using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
@@ -193,7 +187,7 @@ public static partial class Shell32
 		{
 			HICON h1 = default;
 			var hr = nIconSize > 16 ? exIcon.Extract(pszFile, nIconIndex, &h1, null, sz) : exIcon.Extract(pszFile, nIconIndex, null, &h1, sz);
-			phicon = h1 == default ? null : new SafeHICON((IntPtr)h1);
+			phicon = h1 == default ? SafeHICON.Null : new SafeHICON((IntPtr)h1);
 			return hr;
 		}
 	}
@@ -221,8 +215,8 @@ public static partial class Shell32
 		{
 			HICON h1 = default, h2 = default;
 			var hr = exIcon.Extract(pszFile, nIconIndex, nIconSizeLarge == 0 ? null : &h1, nIconSizeSmall == 0 ? null : &h2, sz);
-			phiconLarge = h1 == default ? null : new SafeHICON((IntPtr)h1);
-			phiconSmall = h2 == default ? null : new SafeHICON((IntPtr)h2);
+			phiconLarge = h1 == default ? SafeHICON.Null : new SafeHICON((IntPtr)h1);
+			phiconSmall = h2 == default ? SafeHICON.Null : new SafeHICON((IntPtr)h2);
 			return hr;
 		}
 	}
@@ -245,7 +239,7 @@ public static partial class Shell32
 		{
 			HICON h1 = default;
 			var hr = nIconSize > 16 ? exIcon.Extract(pszFile, nIconIndex, &h1, null, sz) : exIcon.Extract(pszFile, nIconIndex, null, &h1, sz);
-			phicon = h1 == default ? null : new SafeHICON((IntPtr)h1);
+			phicon = h1 == default ? SafeHICON.Null : new SafeHICON((IntPtr)h1);
 			return hr;
 		}
 	}
@@ -273,8 +267,8 @@ public static partial class Shell32
 		{
 			HICON h1 = default, h2 = default;
 			var hr = exIcon.Extract(pszFile, nIconIndex, nIconSizeLarge == 0 ? null : &h1, nIconSizeSmall == 0 ? null : &h2, sz);
-			phiconLarge = h1 == default ? null : new SafeHICON((IntPtr)h1);
-			phiconSmall = h2 == default ? null : new SafeHICON((IntPtr)h2);
+			phiconLarge = h1 == default ? SafeHICON.Null : new SafeHICON((IntPtr)h1);
+			phiconSmall = h2 == default ? SafeHICON.Null : new SafeHICON((IntPtr)h2);
 			return hr;
 		}
 	}

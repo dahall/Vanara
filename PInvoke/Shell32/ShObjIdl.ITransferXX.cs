@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using static Vanara.PInvoke.PropSys;
+﻿using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke;
 
@@ -142,7 +139,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransferadvisesink-confirmoverwrite
 		// HRESULT ConfirmOverwrite( IShellItem *psiSource, IShellItem *psiDestParent, LPCWSTR pszName );
 		[PreserveSig]
-		HRESULT ConfirmOverwrite(IShellItem psiSource, IShellItem psiDestParent, [MarshalAs(UnmanagedType.LPWStr)] string pszName);
+		HRESULT ConfirmOverwrite(IShellItem psiSource, IShellItem psiDestParent, [MarshalAs(UnmanagedType.LPWStr)] string? pszName);
 
 		/// <summary>Displays a message to the user confirming that loss of encryption is acceptable for this operation.</summary>
 		/// <param name="psiSource">
@@ -233,7 +230,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransferadvisesink-filefailure HRESULT
 		// FileFailure( IShellItem *psi, LPCWSTR pszItem, HRESULT hrError, LPWSTR pszRename, ULONG cchRename );
 		[PreserveSig]
-		HRESULT FileFailure(IShellItem psi, [MarshalAs(UnmanagedType.LPWStr)] string pszItem, HRESULT hrError, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszRename, uint cchRename);
+		HRESULT FileFailure(IShellItem psi, [MarshalAs(UnmanagedType.LPWStr)] string? pszItem, HRESULT hrError, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pszRename, uint cchRename);
 
 		/// <summary>Called when there is a failure that involves secondary streams and user interaction is needed.</summary>
 		/// <param name="psi">
@@ -335,7 +332,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransferadvisesink-propertyfailure HRESULT
 		// PropertyFailure( IShellItem *psi, const PROPERTYKEY *pkey, HRESULT hrError );
 		[PreserveSig]
-		HRESULT PropertyFailure(IShellItem psi, [In, Optional] IntPtr pkey, HRESULT hrError);
+		unsafe HRESULT PropertyFailure(IShellItem psi, [In, Optional] Ole32.PROPERTYKEY* pkey, HRESULT hrError);
 	}
 
 	/// <summary>
@@ -503,7 +500,7 @@ public static partial class Shell32
 		// **ppvItem, REFIID riidResources, void **ppvResources );
 		[PreserveSig]
 		HRESULT CreateItem([MarshalAs(UnmanagedType.LPWStr)] string pszName, FileFlagsAndAttributes dwAttributes, ulong ullSize, TRANSFER_SOURCE_FLAGS flags, in Guid riidItem,
-			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object ppvItem, in Guid riidResources, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 6)] out object ppvResources);
+			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppvItem, in Guid riidResources, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 6)] out object? ppvResources);
 	}
 
 	/// <summary>
@@ -552,7 +549,8 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-advise HRESULT Advise(
 		// ITransferAdviseSink *psink, DWORD *pdwCookie );
-		[PreserveSig] HRESULT Advise([In] ITransferAdviseSink psink, out uint pdwCookie);
+		[PreserveSig]
+		HRESULT Advise([In] ITransferAdviseSink psink, out uint pdwCookie);
 
 		/// <summary>Terminates an advisory connection.</summary>
 		/// <param name="dwCookie">
@@ -583,7 +581,8 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-unadvise HRESULT Unadvise(
 		// DWORD dwCookie );
-		[PreserveSig] HRESULT Unadvise([In] uint dwCookie);
+		[PreserveSig]
+		HRESULT Unadvise([In] uint dwCookie);
 
 		/// <summary>Sets properties that should be applied to an item.</summary>
 		/// <param name="pproparray">
@@ -596,7 +595,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-setproperties HRESULT
 		// SetProperties( IPropertyChangeArray *pproparray );
-		[PreserveSig] HRESULT SetProperties([In] IPropertyChangeArray pproparray);
+		[PreserveSig]
+		HRESULT SetProperties([In] IPropertyChangeArray pproparray);
 
 		/// <summary>Opens the item for copying. Returns an object that can be enumerated for resources (IShellItemResources).</summary>
 		/// <param name="psi">
@@ -666,7 +666,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-openitem HRESULT OpenItem(
 		// IShellItem *psi, TRANSFER_SOURCE_FLAGS flags, REFIID riid, void **ppv );
-		[PreserveSig] HRESULT OpenItem([In] IShellItem psi, [In] TRANSFER_SOURCE_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+		[PreserveSig]
+		HRESULT OpenItem([In] IShellItem psi, [In] TRANSFER_SOURCE_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
 		/// <summary>Moves the item within the volume/namespace, returning the IShellItem in its new location.</summary>
 		/// <param name="psi">
@@ -740,7 +741,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-moveitem HRESULT MoveItem(
 		// IShellItem *psi, IShellItem *psiParentDst, LPCWSTR pszNameDst, TRANSFER_SOURCE_FLAGS flags, IShellItem **ppsiNew );
-		[PreserveSig] HRESULT MoveItem([In] IShellItem psi, [In] IShellItem psiParentDst, [In, MarshalAs(UnmanagedType.LPWStr)] string pszNameDst, TRANSFER_SOURCE_FLAGS flags, out IShellItem ppsiNew);
+		[PreserveSig]
+		HRESULT MoveItem([In] IShellItem psi, [In] IShellItem psiParentDst, [In, MarshalAs(UnmanagedType.LPWStr)] string pszNameDst, TRANSFER_SOURCE_FLAGS flags, out IShellItem? ppsiNew);
 
 		/// <summary>Recycle the item into the provided recycle location and return the item in its new location.</summary>
 		/// <param name="psiSource">
@@ -799,7 +801,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-recycleitem HRESULT
 		// RecycleItem( IShellItem *psiSource, IShellItem *psiParentDest, TRANSFER_SOURCE_FLAGS flags, IShellItem **ppsiNewDest );
-		[PreserveSig] HRESULT RecycleItem([In] IShellItem psiSource, [In] IShellItem psiParentDest, [In] TRANSFER_SOURCE_FLAGS flags, out IShellItem ppsiNewDest);
+		[PreserveSig]
+		HRESULT RecycleItem([In] IShellItem psiSource, [In] IShellItem psiParentDest, [In] TRANSFER_SOURCE_FLAGS flags, out IShellItem ppsiNewDest);
 
 		/// <summary>Removes the item without moving the item to the Recycle Bin.</summary>
 		/// <param name="psiSource">
@@ -858,7 +861,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-removeitem HRESULT
 		// RemoveItem( IShellItem *psiSource, TRANSFER_SOURCE_FLAGS flags );
-		[PreserveSig] HRESULT RemoveItem([In] IShellItem psiSource, [In] TRANSFER_SOURCE_FLAGS flags);
+		[PreserveSig]
+		HRESULT RemoveItem([In] IShellItem psiSource, [In] TRANSFER_SOURCE_FLAGS flags);
 
 		/// <summary>Changes the name of an item, returning the IShellItem with the new name.</summary>
 		/// <param name="psiSource">
@@ -925,7 +929,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-renameitem HRESULT
 		// RenameItem( IShellItem *psiSource, LPCWSTR pszNewName, TRANSFER_SOURCE_FLAGS flags, IShellItem **ppsiNewDest );
-		[PreserveSig] HRESULT RenameItem([In] IShellItem psiSource, [In, MarshalAs(UnmanagedType.LPWStr)] string pszNewName, [In] TRANSFER_SOURCE_FLAGS flags, out IShellItem ppsiNewDest);
+		[PreserveSig]
+		HRESULT RenameItem([In] IShellItem psiSource, [In, MarshalAs(UnmanagedType.LPWStr)] string pszNewName, [In] TRANSFER_SOURCE_FLAGS flags, out IShellItem ppsiNewDest);
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="psiSource">
@@ -954,7 +959,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-linkitem HRESULT LinkItem(
 		// IShellItem *psiSource, IShellItem *psiParentDest, LPCWSTR pszNewName, TRANSFER_SOURCE_FLAGS flags, IShellItem **ppsiNewDest );
-		[PreserveSig] HRESULT LinkItem([In] IShellItem psiSource, [In] IShellItem psiParentDest, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszNewName, [In] TRANSFER_SOURCE_FLAGS flags, out IShellItem ppsiNewDest);
+		[PreserveSig]
+		HRESULT LinkItem([In] IShellItem psiSource, [In] IShellItem psiParentDest, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszNewName, [In] TRANSFER_SOURCE_FLAGS flags, out IShellItem ppsiNewDest);
 
 		/// <summary>Apply a set of property changes to an item.</summary>
 		/// <param name="psiSource">
@@ -971,7 +977,8 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-applypropertiestoitem
 		// HRESULT ApplyPropertiesToItem( IShellItem *psiSource, IShellItem **ppsiNew );
-		[PreserveSig] HRESULT ApplyPropertiesToItem([In] IShellItem psiSource, out IShellItem ppsiNew);
+		[PreserveSig]
+		HRESULT ApplyPropertiesToItem([In] IShellItem psiSource, out IShellItem ppsiNew);
 
 		/// <summary>Gets the default name for a Shell item.</summary>
 		/// <param name="psiSource">
@@ -993,7 +1000,8 @@ public static partial class Shell32
 		/// <remarks>Gets the default name for a Shell item, if different than the item's parsing name.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-getdefaultdestinationname
 		// HRESULT GetDefaultDestinationName( IShellItem *psiSource, IShellItem *psiParentDest, LPWSTR *ppszDestinationName );
-		[PreserveSig] HRESULT GetDefaultDestinationName([In] IShellItem psiSource, [In] IShellItem psiParentDest, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDestinationName);
+		[PreserveSig]
+		HRESULT GetDefaultDestinationName([In] IShellItem psiSource, [In] IShellItem psiParentDest, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDestinationName);
 
 		/// <summary>Notifies that a folder is the destination of a file operation.</summary>
 		/// <param name="psiChildFolderDest">
@@ -1011,7 +1019,8 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-enterfolder HRESULT
 		// EnterFolder( IShellItem *psiChildFolderDest );
-		[PreserveSig] HRESULT EnterFolder([In] IShellItem psiChildFolderDest);
+		[PreserveSig]
+		HRESULT EnterFolder([In] IShellItem psiChildFolderDest);
 
 		/// <summary>Sends notification that a folder is no longer the destination of a file operation.</summary>
 		/// <param name="psiChildFolderDest">
@@ -1025,6 +1034,7 @@ public static partial class Shell32
 		/// <remarks>This method is called at the end of recursive file operations on a destination folder.</remarks>
 		// https://docs.microsoft.com/zh-cn/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-leavefolder HRESULT
 		// LeaveFolder( IShellItem *psiChildFolderDest );
-		[PreserveSig] HRESULT LeaveFolder([In] IShellItem psiChildFolderDest);
+		[PreserveSig]
+		HRESULT LeaveFolder([In] IShellItem psiChildFolderDest);
 	}
 }

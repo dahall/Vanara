@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -39,7 +36,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-ienumerableview-setenumreadycallback HRESULT
 		// SetEnumReadyCallback( IEnumReadyCallback *percb );
 		[PreserveSig]
-		HRESULT SetEnumReadyCallback([In]  IEnumReadyCallback percb);
+		HRESULT SetEnumReadyCallback([In] IEnumReadyCallback percb);
 
 		/// <summary>Creates an enumerator of ID lists from the contents of the view.</summary>
 		/// <param name="pidlFolder">

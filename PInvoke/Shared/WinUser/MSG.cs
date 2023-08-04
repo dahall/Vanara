@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Contains message information from a thread's message queue.</summary>
 // https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg typedef struct tagMSG { HWND hwnd; UINT message; WPARAM

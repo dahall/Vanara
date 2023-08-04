@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
@@ -167,7 +165,7 @@ public static partial class Shell32
 		/// </param>
 		/// <param name="pfs">A pointer to a FOLDERSETTINGS structure that determines how the folder will be displayed in the view.</param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		void Initialize([In] IntPtr hwndParent, in RECT prc, [Optional] PFOLDERSETTINGS pfs);
+		void Initialize([In] IntPtr hwndParent, in RECT prc, [Optional] PFOLDERSETTINGS? pfs);
 
 		/// <summary>Destroys the browser.</summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -177,7 +175,7 @@ public static partial class Shell32
 		/// <param name="phdwp">A pointer to a DeferWindowPos handle. This parameter can be NULL.</param>
 		/// <param name="rcBrowser">The coordinates that the browser will occupy.</param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		void SetRect([In, Out] ref HDWP phdwp, [In] RECT rcBrowser);
+		unsafe void SetRect([In, Out, Optional] HDWP* phdwp, [In] RECT rcBrowser);
 
 		/// <summary>Sets the name of the property bag.</summary>
 		/// <param name="pszPropertyBag">

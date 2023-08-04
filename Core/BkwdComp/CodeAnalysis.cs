@@ -7,7 +7,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// ISet&lt;Enum&gt; ReadJson(JsonReader reader, Type objectType, ISet&lt;Enum&gt;? existingValue, bool hasExistingValue, JsonSerializer
 /// serializer)</c>. For more information, see Nullable static analysis in the C# guide.
 /// </remarks>
-/// <seealso cref="System.Attribute"/>
+/// <seealso cref="Attribute"/>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
 public sealed class AllowNullAttribute : Attribute
 {
@@ -17,7 +17,7 @@ public sealed class AllowNullAttribute : Attribute
 
 /// <summary>Specifies that null is disallowed as an input even if the corresponding type allows it.</summary>
 /// <remarks>For more information, see Nullable static analysis in the C# guide.</remarks>
-/// <seealso cref="System.Attribute"/>
+/// <seealso cref="Attribute"/>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
 public sealed class DisallowNullAttribute : Attribute
 {
@@ -27,7 +27,7 @@ public sealed class DisallowNullAttribute : Attribute
 
 /// <summary>Specifies that when a method returns ReturnValue, the parameter will not be null even if the corresponding type allows it.</summary>
 /// <remarks>For more information, see Nullable static analysis in the C# guide.</remarks>
-/// <seealso cref="System.Attribute"/>
+/// <seealso cref="Attribute"/>
 [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
 public sealed class NotNullWhenAttribute : Attribute
 {

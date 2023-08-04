@@ -1,6 +1,44 @@
-﻿using System;
-using Microsoft.Win32.SafeHandles;
+﻿using Microsoft.Win32.SafeHandles;
+/* Unmerged change from project 'Vanara.Core (netcoreapp3.1)'
+Before:
 using System.Runtime.InteropServices;
+After:
+using System;
+using System.Runtime.InteropServices;
+*/
+
+/* Unmerged change from project 'Vanara.Core (net7.0)'
+Before:
+using System.Runtime.InteropServices;
+After:
+using System;
+using System.Runtime.InteropServices;
+*/
+
+/* Unmerged change from project 'Vanara.Core (net6.0)'
+Before:
+using System.Runtime.InteropServices;
+After:
+using System;
+using System.Runtime.InteropServices;
+*/
+
+/* Unmerged change from project 'Vanara.Core (net48)'
+Before:
+using System.Runtime.InteropServices;
+After:
+using System;
+using System.Runtime.InteropServices;
+*/
+
+/* Unmerged change from project 'Vanara.Core (net45)'
+Before:
+using System.Runtime.InteropServices;
+After:
+using System;
+using System.Runtime.InteropServices;
+*/
+
 
 namespace Vanara.InteropServices;
 
@@ -24,7 +62,7 @@ public class GenericSafeHandle : SafeHandleZeroOrMinusOneIsInvalid
 	/// <param name="ptr">The pre-existing handle to use.</param>
 	/// <param name="closeMethod">The delegate method for closing the handle.</param>
 	/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; <see langword="false"/> to prevent reliable release (not recommended).</param>
-	/// <exception cref="System.ArgumentNullException">closeMethod</exception>
+	/// <exception cref="ArgumentNullException">closeMethod</exception>
 	public GenericSafeHandle(IntPtr ptr, Func<IntPtr, bool> closeMethod, bool ownsHandle = true) : base(ownsHandle)
 	{
 		SetHandle(ptr);

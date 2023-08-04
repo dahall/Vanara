@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Linq;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Extensions
@@ -39,7 +36,7 @@ namespace Vanara.Extensions
 		/// <exception cref="InvalidOperationException">No information exists for the <see cref="ControlPanelItem"/> value.</exception>
 		public static string[] ValidPages(this ControlPanelItem cp) => GetAttr(cp)?.ValidPages ?? throw new InvalidOperationException();
 
-		private static CPAssociateAttribute GetAttr(ControlPanelItem value) => typeof(ControlPanelItem).GetField(value.ToString())?.GetCustomAttributes<CPAssociateAttribute>().FirstOrDefault();
+		private static CPAssociateAttribute? GetAttr(ControlPanelItem value) => typeof(ControlPanelItem).GetField(value.ToString())?.GetCustomAttributes<CPAssociateAttribute>().FirstOrDefault();
 	}
 }
 
@@ -310,7 +307,7 @@ namespace Vanara.PInvoke
 			/// A pointer to the site for navigating in-frame for Shell folder Control Panel items. This parameter can be NULL.
 			/// </param>
 			[PreserveSig]
-			HRESULT Open([MarshalAs(UnmanagedType.LPWStr), Optional] string? pszName, [MarshalAs(UnmanagedType.LPWStr), Optional] string? page, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punkSite);
+			HRESULT Open([MarshalAs(UnmanagedType.LPWStr), Optional] string? pszName, [MarshalAs(UnmanagedType.LPWStr), Optional] string? page, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? punkSite);
 
 			/// <summary>Gets the path of a specified Control Panel item.</summary>
 			/// <param name="pszName">
@@ -335,7 +332,7 @@ namespace Vanara.PInvoke
 		[AttributeUsage(AttributeTargets.Field, Inherited = false)]
 		internal class CPAssociateAttribute : AssociateAttribute
 		{
-			public CPAssociateAttribute(string guid, string canonicalName, string module, PInvokeClient minClient = PInvokeClient.WindowsVista, string validPages = null) : base(guid)
+			public CPAssociateAttribute(string guid, string canonicalName, string module, PInvokeClient minClient = PInvokeClient.WindowsVista, string? validPages = null) : base(guid)
 			{
 				CanonicalName = canonicalName;
 				ModuleName = module;

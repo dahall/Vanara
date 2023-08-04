@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
@@ -247,7 +244,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// <example>Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Streams\\</example>
 	[Category("Behavior"), Description("The Registry Key where Browser ViewStates get serialized.")]
 	public string ViewStateRegistryKey { get; set; } =
-		$"Software\\{ Application.CompanyName }\\{ Application.ProductName }\\ShellBrowser\\ViewStateStreams";
+		$"Software\\{Application.CompanyName}\\{Application.ProductName}\\ShellBrowser\\ViewStateStreams";
 
 	/// <summary>
 	/// <inheritdoc/><br/><br/>
@@ -301,7 +298,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		{
 			ShellItem currentObject = History.Current;
 
-			PIDL targetObject = PIDLUtil.ILCombine((IntPtr)currentObject.PIDL, pidl);
+			PIDL targetObject = ILCombine((IntPtr)currentObject.PIDL, pidl);
 
 			shellObject = new ShellItem(targetObject);
 		}
@@ -591,7 +588,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	}
 
 	/// <summary>Raises the <see cref="E:HandleDestroyed"/> event. Saves ViewState when ShellBrowser gets closed.</summary>
-	/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+	/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 	protected override void OnHandleDestroyed(EventArgs e)
 	{
 		ViewHandler.GetValidInstance()?.ShellView.SaveViewState();
@@ -599,7 +596,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	}
 
 	/// <summary>Raises the <see cref="E:Resize"/> event. Resize ViewWindow when ShellBrowser gets resized.</summary>
-	/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+	/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 	protected override void OnResize(EventArgs e)
 	{
 		ViewHandler?.MoveWindow(0, 0, ClientRectangle.Width, ClientRectangle.Height, false);

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>The formatting options for DrawText.</summary>
 [PInvokeData("Uxtheme.h", MSDNShortId = "bb773199")]

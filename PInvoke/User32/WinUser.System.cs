@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 using static Vanara.PInvoke.User32.SPCorrespondingTypeAttribute.SetParameterMethod;
 
 namespace Vanara.PInvoke;
@@ -4794,15 +4789,15 @@ public static partial class User32
 			}
 			else // setMethod == Direct
 			{
-				var directValue = (int) Convert.ChangeType(setValue, typeof(int));
+				var directValue = (int)Convert.ChangeType(setValue, typeof(int));
 				ptr = new SafeHGlobalHandle(new IntPtr(directValue), 0, false);
 			}
-			return SystemParametersInfo(uiAction, ptr.Size > sizeof(uint) ? ptr.Size : 0U, (IntPtr) ptr, spif);
+			return SystemParametersInfo(uiAction, ptr.Size > sizeof(uint) ? ptr.Size : 0U, (IntPtr)ptr, spif);
 		}
 		else // setMethod == UiParam
 		{
-			var uiParam = (uint) Convert.ChangeType(setValue, typeof(uint));
-			return SystemParametersInfo(uiAction, uiParam, IntPtr.Zero,	spif);
+			var uiParam = (uint)Convert.ChangeType(setValue, typeof(uint));
+			return SystemParametersInfo(uiAction, uiParam, IntPtr.Zero, spif);
 		}
 	}
 
@@ -5446,5 +5441,5 @@ public static partial class User32
 
 		public static SetParameterMethod SetMethodIs(object value) =>
 			GetAttrForObj(value).OfType<SPCorrespondingTypeAttribute>().FirstOrDefault()?.Type ?? Pointer;
-}
+	}
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
-using System.Runtime.InteropServices.ComTypes;
+
 using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
 namespace Vanara.PInvoke;

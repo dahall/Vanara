@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -43,7 +40,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iitemnamelimits-getvalidcharacters HRESULT
 		// GetValidCharacters( LPWSTR *ppwszValidChars, LPWSTR *ppwszInvalidChars );
-		void GetValidCharacters([MarshalAs(UnmanagedType.LPWStr)] out string ppwszValidChars, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszInvalidChars);
+		void GetValidCharacters([MarshalAs(UnmanagedType.LPWStr)] out string? ppwszValidChars, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszInvalidChars);
 
 		/// <summary>Returns the maximum number of characters allowed for a particular name in the namespace under which it is called.</summary>
 		/// <param name="pszName">

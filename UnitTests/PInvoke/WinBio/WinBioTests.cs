@@ -13,7 +13,7 @@ using TestContext = System.Console;
 namespace Vanara.PInvoke.Tests;
 
 [TestFixture]
-[Apartment(System.Threading.ApartmentState.MTA)]
+[Apartment(ApartmentState.MTA)]
 public class WinBioTests
 {
 	const uint compMsg = 0x8EEF;

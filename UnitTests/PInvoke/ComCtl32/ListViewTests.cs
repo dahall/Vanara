@@ -15,9 +15,9 @@ public class ListViewTests
 	{
 		LVGROUP grp = new() { Header = "Grp1", Alignment = ListViewGroupAlignment.LVGA_HEADER_CENTER, Subtitle = "Sub1" };
 		Assert.AreEqual(grp.mask, ListViewGroupMask.LVGF_HEADER | ListViewGroupMask.LVGF_ALIGN | ListViewGroupMask.LVGF_SUBTITLE);
-		Vanara.Extensions.InteropExtensions.SizeOf(grp).WriteValues();
+		InteropExtensions.SizeOf(grp).WriteValues();
 		LVINSERTGROUPSORTED insert = new() { lvGroup = grp };
 		Assert.DoesNotThrow(() => new SafeCoTaskMemStruct<LVINSERTGROUPSORTED>(insert));
-		Vanara.Extensions.InteropExtensions.SizeOf(insert).WriteValues();
+		InteropExtensions.SizeOf(insert).WriteValues();
 	}
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -79,7 +76,7 @@ public static partial class Shell32
 		/// <param name="punkEnableModless">Reserved. Set to null.</param>
 		/// <param name="dwFlags">Flags that control the operation of the progress dialog box.</param>
 		/// <param name="pvResevered">Reserved. Set to IntPtr.Zero</param>
-		void StartProgressDialog([Optional] HWND hwndParent, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkEnableModless, PROGDLG dwFlags, IntPtr pvResevered = default);
+		void StartProgressDialog([Optional] HWND hwndParent, [MarshalAs(UnmanagedType.IUnknown), Optional] object? punkEnableModless, PROGDLG dwFlags, IntPtr pvResevered = default);
 
 		/// <summary>Stops the progress dialog box and removes it from the screen.</summary>
 		void StopProgressDialog();

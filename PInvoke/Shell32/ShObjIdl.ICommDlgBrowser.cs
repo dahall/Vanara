@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
@@ -159,7 +156,7 @@ public static partial class Shell32
 	*/
 
 	/// <summary>Extends the capabilities of ICommDlgBrowser2, and used by the common file dialog boxes when they host a Shell browser.</summary>
-	/// <seealso cref="Vanara.PInvoke.Shell32.ICommDlgBrowser"/>
+	/// <seealso cref="ICommDlgBrowser"/>
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("c8ad25a1-3294-41ee-8165-71174bd01c57")]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "c9286061-8ac8-452b-9204-193bc6b571cb")]
 	public interface ICommDlgBrowser3 //: ICommDlgBrowser // Don't derive as it seems to cause problems with memory allocations.
@@ -390,6 +387,6 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifolderfiltersite-setfilter HRESULT
 		// SetFilter( IUnknown *punk );
-		void SetFilter([In, MarshalAs(UnmanagedType.IUnknown)] object punk);
+		void SetFilter([In, MarshalAs(UnmanagedType.IUnknown)] object? punk);
 	}
 }

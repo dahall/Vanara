@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell;
@@ -23,7 +21,7 @@ public enum Visibility : byte
 }
 
 /// <summary>A button in the toolbar associated with thumbnails displayed on a taskbar button.</summary>
-/// <seealso cref="System.ComponentModel.INotifyPropertyChanged"/>
+/// <seealso cref="INotifyPropertyChanged"/>
 [DefaultProperty("Description"), DefaultEvent("Click")]
 public partial class ThumbnailToolbarButton : INotifyPropertyChanged
 {

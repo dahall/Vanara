@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.Extensions.Reflection;
-using Vanara.InteropServices;
+﻿using Vanara.Extensions.Reflection;
 
 namespace Vanara.PInvoke;
 
@@ -1539,7 +1534,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>A safe handle for continue handler handles.</summary>
-	/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+	/// <seealso cref="GenericSafeHandle"/>
 	public class SafeContinueHandlerHandle : GenericSafeHandle
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeContinueHandlerHandle"/> class.</summary>
@@ -1551,7 +1546,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>A safe handle for exception handler handles.</summary>
-	/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+	/// <seealso cref="GenericSafeHandle"/>
 	public class SafeExceptionHandlerHandle : GenericSafeHandle
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeExceptionHandlerHandle"/> class.</summary>

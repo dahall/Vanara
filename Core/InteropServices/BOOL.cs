@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.InteropServices;
 
 namespace Vanara;
 
@@ -58,7 +56,7 @@ public struct BOOL : IComparable, IComparable<BOOL>, IComparable<bool>, IConvert
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator bool(BOOL value) => value.Value;
 
-	/// <summary>Performs an explicit conversion from <see cref="BOOL"/> to <see cref="System.IntPtr"/>.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="BOOL"/> to <see cref="IntPtr"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator IntPtr(BOOL value) => (IntPtr)(int)value;

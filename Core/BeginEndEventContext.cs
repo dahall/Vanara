@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>A disposable context for which a delegate is called at entry and exit.</summary>
 /// <example>
@@ -14,7 +12,7 @@ namespace Vanara.PInvoke;
 ///     // Do some work
 /// }
 /// // End function has been called</code></example>
-/// <seealso cref="System.IDisposable" />
+/// <seealso cref="IDisposable" />
 public class BeginEndEventContext : IDisposable
 {
 	private readonly Func<object?, bool>? end;

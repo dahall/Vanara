@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -302,7 +299,7 @@ public static partial class Shell32
 		/// only used in Windows 7 and later. In earlier versions, this parameter should be <c>NULL</c>.
 		/// </para>
 		/// </param>
-		void UpdateLocations([In] IShellItem psiSource, [In] IShellItem psiTarget, [In, Optional] IShellItem psiItem);
+		void UpdateLocations([In] IShellItem psiSource, [In] IShellItem psiTarget, [In, Optional] IShellItem? psiItem);
 
 		/// <summary>
 		/// <para>Resets progress dialog timer to 0.</para>

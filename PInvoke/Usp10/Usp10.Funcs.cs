@@ -3000,9 +3000,9 @@ public static partial class Usp10
 		{
 			if (cString == -1) cString = pString.Length;
 			var cGlyphs = MulAdd(cString, 1.5m, 16);
-			using var psc = InteropServices.PinnedObject.FromNullable(psControl);
-			using var pss = InteropServices.PinnedObject.FromNullable(psState);
-			using var ptd = InteropServices.PinnedObject.FromNullable(pTabdef);
+			using var psc = PinnedObject.FromNullable(psControl);
+			using var pss = PinnedObject.FromNullable(psState);
+			using var ptd = PinnedObject.FromNullable(pTabdef);
 			fixed (char* ps = pString)
 			{
 				ScriptStringAnalyse(hdc, ps, cString, cGlyphs, -1, dwFlags, iReqWidth, (SCRIPT_CONTROL*)(void*)psc,

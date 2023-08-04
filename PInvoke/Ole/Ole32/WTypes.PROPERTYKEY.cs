@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Vanara.PInvoke;
 
@@ -58,7 +55,8 @@ public static partial class Ole32
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public partial struct PROPERTYKEY : IComparable<PROPERTYKEY>, IEquatable<PROPERTYKEY>
 	{
-		private static readonly Lazy<Dictionary<PROPERTYKEY, string>> revIndex = new(() => {
+		private static readonly Lazy<Dictionary<PROPERTYKEY, string>> revIndex = new(() =>
+		{
 			var d = new Dictionary<PROPERTYKEY, string>();
 			AddMembersToIndex(d, typeof(System));
 			return d;

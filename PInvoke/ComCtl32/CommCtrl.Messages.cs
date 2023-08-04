@@ -1,6 +1,4 @@
-﻿using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class ComCtl32
 {

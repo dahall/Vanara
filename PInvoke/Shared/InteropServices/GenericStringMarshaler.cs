@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-
-namespace Vanara.InteropServices;
+﻿namespace Vanara.InteropServices;
 
 /// <summary>Marshals strings that are allocated by native code and must be freed after use.</summary>
 /// <remarks>

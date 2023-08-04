@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -956,10 +954,10 @@ public struct LANGID : IEquatable<LANGID>, IEquatable<ushort>, IConvertible, ICo
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator LANGID(LCID value) => new(value);
 
-	/// <summary>Performs an explicit conversion from <see cref="System.Globalization.CultureInfo"/> to <see cref="LANGID"/>.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="CultureInfo"/> to <see cref="LANGID"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator LANGID(System.Globalization.CultureInfo value) => new((ushort)value.LCID);
+	public static explicit operator LANGID(CultureInfo value) => new((ushort)value.LCID);
 
 	/// <summary>The operating system default language.</summary>
 	public static LANGID LANG_SYSTEM_DEFAULT => new(LANG.LANG_NEUTRAL, SUBLANG.SUBLANG_SYS_DEFAULT);

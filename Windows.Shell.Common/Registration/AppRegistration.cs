@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Vanara.Windows.Shell.Registration;
 
@@ -16,7 +14,7 @@ namespace Vanara.Windows.Shell.Registration;
 ///}
 /// </code>
 /// </example>
-/// <seealso cref="Vanara.Windows.Shell.RegBasedSettings"/>
+/// <seealso cref="RegBasedSettings"/>
 public class AppRegistration : RegBasedSettings
 {
 	internal const string appPathsSubKey = @"Software\Microsoft\Windows\CurrentVersion\App Paths";
@@ -108,7 +106,7 @@ public class AppRegistration : RegBasedSettings
 	/// extension. If necessary, the ShellExecuteEx function adds the extension when searching App Paths subkey.
 	/// </summary>
 	/// <value>The full path of the application.</value>
-	/// <exception cref="System.InvalidOperationException">
+	/// <exception cref="InvalidOperationException">
 	/// The executable name cannot be changed once set. Only it's directory can be changed.
 	/// </exception>
 	public string FullPath
@@ -225,8 +223,8 @@ public class AppRegistration : RegBasedSettings
 	/// to update the registration values.
 	/// </param>
 	/// <returns>A <see cref="AppRegistration"/> instance.</returns>
-	/// <exception cref="System.ArgumentNullException">fullApplicationPath</exception>
-	/// <exception cref="System.InvalidOperationException">Unable to create application key in the 'App Paths' subkey.</exception>
+	/// <exception cref="ArgumentNullException">fullApplicationPath</exception>
+	/// <exception cref="InvalidOperationException">Unable to create application key in the 'App Paths' subkey.</exception>
 	public static AppRegistration Open(string fullApplicationPath, bool systemWide = false, bool readOnly = true)
 	{
 		if (string.IsNullOrEmpty(fullApplicationPath)) throw new ArgumentNullException(nameof(fullApplicationPath));

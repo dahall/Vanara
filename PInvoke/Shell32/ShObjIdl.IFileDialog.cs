@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Security;
-using Vanara.InteropServices;
+﻿using System.Security;
 
 namespace Vanara.PInvoke;
 
@@ -381,7 +378,7 @@ public static partial class Shell32
 	/// Extends the IFileDialog interface by providing methods that allow the caller to name a specific, restricted location that can be
 	/// browsed in the common file dialog as well as to specify alternate text to display as a label on the Cancel button.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.Shell32.IFileDialog"/>
+	/// <seealso cref="IFileDialog"/>
 	[SuppressUnmanagedCodeSecurity]
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("61744fc7-85b5-4791-a9b0-272276309b13")]
 	[PInvokeData("Shobjidl.h", MinClient = PInvokeClient.Windows7)]
@@ -1026,7 +1023,7 @@ public static partial class Shell32
 		/// the name of the destination item is the same as the source.
 		/// </param>
 		[PreserveSig]
-		HRESULT PreMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
+		HRESULT PreMoveItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string? pszNewName);
 
 		/// <summary>Performs caller-implemented actions after the move process for each item is complete.</summary>
 		/// <param name="dwFlags">
@@ -1062,7 +1059,7 @@ public static partial class Shell32
 		/// NULL, the name of the destination item is the same as the source.
 		/// </param>
 		[PreserveSig]
-		HRESULT PreCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName);
+		HRESULT PreCopyItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string? pszNewName);
 
 		/// <summary>Performs caller-implemented actions after the copy process for each item is complete.</summary>
 		/// <param name="dwFlags">
@@ -1109,7 +1106,7 @@ public static partial class Shell32
 		/// value is NULL.
 		/// </param>
 		[PreserveSig]
-		HRESULT PostDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, HRESULT hrDelete, IShellItem psiNewlyCreated);
+		HRESULT PostDeleteItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiItem, HRESULT hrDelete, IShellItem? psiNewlyCreated);
 
 		/// <summary>Performs caller-implemented actions before the process to create a new item begins.</summary>
 		/// <param name="dwFlags">
@@ -1163,7 +1160,7 @@ public static partial class Shell32
 		/// <param name="psiNewItem">Pointer to an IShellItem that represents the new item.</param>
 		[PreserveSig]
 		HRESULT PostNewItem(TRANSFER_SOURCE_FLAGS dwFlags, IShellItem psiDestinationFolder, [MarshalAs(UnmanagedType.LPWStr)] string pszNewName,
-			[MarshalAs(UnmanagedType.LPWStr)] string pszTemplateName, uint dwFileAttributes, HRESULT hrNew, IShellItem psiNewItem);
+			[MarshalAs(UnmanagedType.LPWStr), Optional] string? pszTemplateName, uint dwFileAttributes, HRESULT hrNew, IShellItem psiNewItem);
 
 		/// <summary>Updates the progress.</summary>
 		/// <param name="iWorkTotal">The i work total.</param>
@@ -1342,7 +1339,7 @@ public static partial class Shell32
 		/// TRUE to show default properties for the currently selected filetype in addition to the properties specified by pList. FALSE
 		/// to show only properties specified by pList.
 		/// </param>
-		void SetCollectedProperties(PropSys.IPropertyDescriptionList pList, [MarshalAs(UnmanagedType.Bool)] bool fAppendDefault);
+		void SetCollectedProperties(PropSys.IPropertyDescriptionList? pList, [MarshalAs(UnmanagedType.Bool)] bool fAppendDefault);
 
 		/// <summary>Retrieves the set of property values for a saved item or an item in the process of being saved.</summary>
 		/// <returns>Address of a pointer to an IPropertyStore that receives the property values.</returns>
@@ -1361,7 +1358,7 @@ public static partial class Shell32
 		/// Pointer to an optional IFileOperationProgressSink that the calling application can use if they want to be notified of the
 		/// progress of the property stamping. This value may be NULL.
 		/// </param>
-		void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, HWND hwnd, IFileOperationProgressSink pSink);
+		void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, HWND hwnd, IFileOperationProgressSink? pSink);
 	}
 
 	/// <summary>Exposed methods to handle file sync operations between a local copy and a server copy of a file.</summary>

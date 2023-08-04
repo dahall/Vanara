@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -1759,8 +1756,8 @@ public static partial class Shell32
 		/// message if one was generated. This value can be NULL.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string Redirect(in Guid rfid, [In, Optional] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
-			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszTargetPath, [In] uint cFolders, [In] Guid[] pExclusion);
+		string? Redirect(in Guid rfid, [In, Optional] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
+			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszTargetPath, [In] uint cFolders, [In] Guid[]? pExclusion);
 	}
 
 	/// <summary>Frees the allocated fields in the result from IKnownFolder::GetFolderDefinition.</summary>
@@ -1779,7 +1776,7 @@ public static partial class Shell32
 	public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD)
 	{
 		foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(StrPtrUni)))
-			Marshal.FreeCoTaskMem((IntPtr)(StrPtrUni)fi.GetValue(pKFD));
+			Marshal.FreeCoTaskMem((IntPtr)(StrPtrUni)fi.GetValue(pKFD)!);
 	}
 
 	/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>

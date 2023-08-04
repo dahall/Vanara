@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32.SafeHandles;
-using System;
 using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Vanara.PInvoke;
@@ -764,7 +762,7 @@ public static partial class Kernel32
 		/// </para>
 		/// </param>
 		/// <returns><see langword="true"/> if the current instance receives a signal; otherwise, <see langword="false"/>.</returns>
-		/// <exception cref="System.Threading.AbandonedMutexException">The wait completed because a thread exited without releasing a mutex.</exception>
+		/// <exception cref="AbandonedMutexException">The wait completed because a thread exited without releasing a mutex.</exception>
 		public bool Wait(uint msec = INFINITE) => WaitForSingleObject(ThrowIfDisposed(this), msec) switch
 		{
 			WAIT_STATUS.WAIT_OBJECT_0 => true,

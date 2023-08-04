@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -360,7 +357,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idockingwindow-resizeborderdw HRESULT
 		// ResizeBorderDW( LPCRECT prcBorder, IUnknown *punkToolbarSite, BOOL fReserved );
 		[PreserveSig]
-		new HRESULT ResizeBorderDW([In, Optional] PRECT prcBorder, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punkToolbarSite, [MarshalAs(UnmanagedType.Bool)] bool fReserved = false);
+		new HRESULT ResizeBorderDW([In, Optional] PRECT? prcBorder, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? punkToolbarSite, [MarshalAs(UnmanagedType.Bool)] bool fReserved = false);
 
 		/// <summary>
 		/// <para>Gets state information for a band object.</para>
@@ -661,7 +658,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idockingwindow-resizeborderdw HRESULT
 		// ResizeBorderDW( LPCRECT prcBorder, IUnknown *punkToolbarSite, BOOL fReserved );
 		[PreserveSig]
-		new HRESULT ResizeBorderDW([In, Optional] PRECT prcBorder, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punkToolbarSite, [MarshalAs(UnmanagedType.Bool)] bool fReserved = false);
+		new HRESULT ResizeBorderDW([In, Optional] PRECT? prcBorder, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? punkToolbarSite, [MarshalAs(UnmanagedType.Bool)] bool fReserved = false);
 
 		/// <summary>
 		/// <para>Gets state information for a band object.</para>

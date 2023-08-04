@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>
 /// File attributes are metadata values stored by the file system on disk and are used by the system and are available to developers via

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
@@ -182,7 +179,7 @@ public interface ISimpleMemoryMethods
 }
 
 /// <summary>Implementation of <see cref="IMemoryMethods"/> using just the methods from <see cref="ISimpleMemoryMethods"/>.</summary>
-/// <seealso cref="Vanara.InteropServices.IMemoryMethods"/>
+/// <seealso cref="IMemoryMethods"/>
 public abstract class MemoryMethodsBase : IMemoryMethods
 {
 	/// <summary>Gets a value indicating whether <see cref="AllocMem(int)"/> zeroes memory before returning.</summary>
@@ -261,7 +258,7 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <summary>
 /// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 /// </summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+/// <seealso cref="SafeHandle"/>
 public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IEquatable<SafeAllocatedMemoryHandleBase>
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</summary>
@@ -293,7 +290,7 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator SafeBuffer(SafeAllocatedMemoryHandleBase hMem) => new SafeBufferImpl(hMem);
 
-	/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="System.IntPtr"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="IntPtr"/>.</summary>
 	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator IntPtr(SafeAllocatedMemoryHandleBase hMem) => hMem.handle;
@@ -413,7 +410,7 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 }
 
 /// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+/// <seealso cref="SafeHandle"/>
 public abstract class SafeAllocatedMemoryHandle : SafeAllocatedMemoryHandleBase
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</summary>
@@ -452,7 +449,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	protected SafeMemoryHandle(SizeT size = default) : base(IntPtr.Zero, true)
 	{
 		if (size == 0) return;
@@ -591,7 +588,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 }
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via COM.</summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+/// <seealso cref="SafeHandle"/>
 public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeMemoryHandle where TMem : IMemoryMethods, new()
 {
 	/// <summary>
@@ -602,7 +599,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	protected SafeMemoryHandleExt(SizeT size) : base(size) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>

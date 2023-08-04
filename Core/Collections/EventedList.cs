@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Vanara.Collections;
@@ -798,7 +796,7 @@ public class EventedList<T> : IList<T?>, IList where T : class, INotifyPropertyC
 	/// <summary>Called when [clear].</summary>
 	protected virtual void OnReset()
 	{
-		ForEach(delegate(T? item) { if (item is not null) item.PropertyChanged -= OnItemPropertyChanged; });
+		ForEach(delegate (T? item) { if (item is not null) item.PropertyChanged -= OnItemPropertyChanged; });
 		Reset?.Invoke(this, new(ListChangedType.Reset));
 	}
 
@@ -845,7 +843,7 @@ public class EventedList<T> : IList<T?>, IList where T : class, INotifyPropertyC
 	{
 		if (internalItems.Length < min)
 		{
-			int num = internalItems.Length == 0 ? 4 : internalItems.Length*2;
+			int num = internalItems.Length == 0 ? 4 : internalItems.Length * 2;
 			if (num < min)
 			{
 				num = min;

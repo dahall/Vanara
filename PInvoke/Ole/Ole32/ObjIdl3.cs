@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
 namespace Vanara.PInvoke;
@@ -865,19 +861,19 @@ public static partial class Ole32
 		/// <summary>Initializes a new instance of the <see cref="BIND_OPTS_V"/> class.</summary>
 		public BIND_OPTS_V() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS_V));
 
-		/// <summary>Performs an implicit conversion from <see cref="BIND_OPTS_V"/> to <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="BIND_OPTS_V"/> to <see cref="BIND_OPTS"/>.</summary>
 		/// <param name="bo">The <see cref="BIND_OPTS_V"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator System.Runtime.InteropServices.ComTypes.BIND_OPTS(BIND_OPTS_V bo) =>
+		public static implicit operator BIND_OPTS(BIND_OPTS_V bo) =>
 			new()
 			{ cbStruct = (int)bo.cbStruct, grfFlags = (int)bo.grfFlags, grfMode = (int)bo.grfFlags, dwTickCountDeadline = (int)bo.dwTickCountDeadline };
 
 		/// <summary>
-		/// Performs an implicit conversion from <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/> to <see cref="BIND_OPTS_V"/>.
+		/// Performs an implicit conversion from <see cref="BIND_OPTS"/> to <see cref="BIND_OPTS_V"/>.
 		/// </summary>
-		/// <param name="bo">The <see cref="System.Runtime.InteropServices.ComTypes.BIND_OPTS"/> instance.</param>
+		/// <param name="bo">The <see cref="BIND_OPTS"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BIND_OPTS_V(System.Runtime.InteropServices.ComTypes.BIND_OPTS bo) =>
+		public static implicit operator BIND_OPTS_V(BIND_OPTS bo) =>
 			new() { grfFlags = (BIND_FLAGS)bo.grfFlags, grfMode = (STGM)bo.grfFlags, dwTickCountDeadline = (uint)bo.dwTickCountDeadline };
 	}
 
@@ -986,10 +982,7 @@ public static partial class Ole32
 		/// <summary>Initializes a new instance of the <see cref="IEnumUnknownImpl{T}"/> class using an existing enumeration.</summary>
 		/// <param name="items">The items to enumerate.</param>
 		/// <exception cref="ArgumentNullException">items</exception>
-		public IEnumUnknownImpl(IEnumerable<T> items)
-		{
-			this.items = new List<T>(items ?? throw new ArgumentNullException(nameof(items)));
-		}
+		public IEnumUnknownImpl(IEnumerable<T> items) => this.items = new List<T>(items ?? throw new ArgumentNullException(nameof(items)));
 
 		/// <summary>Gets the number of elements in the collection.</summary>
 		/// <value>The number of elements in the collection.</value>

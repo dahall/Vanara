@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using LSN = System.Int64;
+﻿using LSN = System.Int64;
 
 namespace Vanara.PInvoke;
 

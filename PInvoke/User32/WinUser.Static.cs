@@ -1,7 +1,4 @@
-﻿using System;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class User32
 {

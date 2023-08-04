@@ -1,4 +1,48 @@
-﻿using System;
+﻿
+/* Unmerged change from project 'Vanara.Windows.Shell.Common (net45)'
+Before:
+using System;
+using Microsoft.Win32;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Shell.Common (net48)'
+Before:
+using System;
+using Microsoft.Win32;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Shell.Common (netstandard2.0)'
+Before:
+using System;
+using Microsoft.Win32;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Shell.Common (net6.0)'
+Before:
+using System;
+using Microsoft.Win32;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Shell.Common (net7.0)'
+Before:
+using System;
+using Microsoft.Win32;
+After:
+using Microsoft.Win32;
+using System;
+*/
 using Microsoft.Win32;
 
 namespace Vanara.Windows.Shell;

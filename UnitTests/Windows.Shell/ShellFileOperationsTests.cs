@@ -1,13 +1,10 @@
 using NUnit.Framework;
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
-using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
@@ -18,7 +15,7 @@ public class ShellFileOperationsTests
 {
 	[Test]
 	public void CopyItemTest()
-	{			
+	{
 		ShellFileOperations.Copy(new ShellItem(TestCaseSources.LargeFile), ShellFolder.Desktop);
 		var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
 		Assert.That(File.Exists(dest), Is.True);

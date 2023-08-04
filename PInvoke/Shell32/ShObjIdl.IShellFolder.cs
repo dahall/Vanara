@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using System.Text;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -278,7 +275,7 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-getcategoryinfo
 		[PreserveSig]
-		HRESULT GetCategoryInfo(uint dwCategoryId, out CATEGORY_INFO pci );
+		HRESULT GetCategoryInfo(uint dwCategoryId, out CATEGORY_INFO pci);
 
 		/// <summary>Determines the relative order of two items in their item identifier lists, and hence in the UI.</summary>
 		/// <param name="csfFlags">
@@ -655,7 +652,15 @@ public static partial class Shell32
 		/// illustrates how to find out if a file is compressed.
 		/// </para>
 		/// <para>
-		/// <code>LPITEMIDLIST pidl; ULONG cbEaten; DWORD dwAttribs = SFGAO_COMPRESSED; hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL &amp;pidl, &amp;dwAttribs); if(dwAttribs &amp; SFGAO_COMPRESSED) { // Do something with the compressed file }</code>
+		/// <code>LPITEMIDLIST pidl;
+		/// ULONG cbEaten;
+		/// DWORD dwAttribs = SFGAO_COMPRESSED;
+		/// hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL
+		///    &amp;pidl, &amp;dwAttribs);
+		/// if(dwAttribs &amp; SFGAO_COMPRESSED)
+		/// {
+		///    // Do something with the compressed file
+		/// }</code>
 		/// </para>
 		/// <para>
 		/// Since pdwAttributes is an in/out parameter, it should always be initialized. If you pass in an uninitialized value, some of
@@ -667,7 +672,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-parsedisplayname
 		[PreserveSig]
-		HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+		HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx? pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
 
 		/// <summary>
 		/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
@@ -676,57 +681,50 @@ public static partial class Shell32
 		/// <param name="hwnd">
 		/// <para>Type: <c>HWND</c></para>
 		/// <para>
-		/// If user input is required to perform the enumeration, this window handle should be used by the enumeration object as the
-		/// parent window to take user input. An example would be a dialog box to ask for a password or prompt the user to insert a CD
-		/// or floppy disk. If hwndOwner is set to <c>NULL</c>, the enumerator should not post any messages, and if user input is
-		/// required, it should silently fail.
+		/// If user input is required to perform the enumeration, this window handle should be used by the enumeration object as the parent
+		/// window to take user input. An example would be a dialog box to ask for a password or prompt the user to insert a CD or floppy
+		/// disk. If hwndOwner is set to <c>NULL</c>, the enumerator should not post any messages, and if user input is required, it should
+		/// silently fail.
 		/// </para>
 		/// </param>
 		/// <param name="grfFlags">
 		/// <para>Type: <c>SHCONTF</c></para>
-		/// <para>
-		/// Flags indicating which items to include in the enumeration. For a list of possible values, see the SHCONTF enumerated type.
-		/// </para>
+		/// <para>Flags indicating which items to include in the enumeration. For a list of possible values, see the SHCONTF enumerated type.</para>
 		/// </param>
 		/// <param name="ppenumIDList">
 		/// <para>Type: <c>IEnumIDList**</c></para>
 		/// <para>
-		/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an
-		/// error occurs or no suitable subobjects are found, ppenumIDList is set to <c>NULL</c>.
+		/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an error
+		/// occurs or no suitable subobjects are found, ppenumIDList is set to <c>NULL</c>.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>Returns
-		/// <code>S_OK</code>
-		/// if successful, or an error value otherwise. Some implementations may also return
-		/// <code>S_FALSE</code>
-		/// , indicating that there are no children matching the grfFlags that were passed in. If
-		/// <code>S_FALSE</code>
-		/// is returned, ppenumIDList is set to
-		/// <code>NULL</code>
-		/// .
+		/// <para>
+		/// Returns <c>S_OK</c> if successful, or an error value otherwise. Some implementations may also return <c>S_FALSE</c> , indicating
+		/// that there are no children matching the grfFlags that were passed in. If <c>S_FALSE</c> is returned, ppenumIDList is set to
+		/// <c>NULL</c>.
 		/// </para>
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// If the method returns S_OK, then ppenumIDList receives a pointer to an enumerator. In this case, the calling application
-		/// must free the returned IEnumIDList object by calling its <c>Release</c> method.
+		/// If the method returns S_OK, then ppenumIDList receives a pointer to an enumerator. In this case, the calling application must
+		/// free the returned IEnumIDList object by calling its <c>Release</c> method.
 		/// </para>
 		/// <para>
-		/// If the method returns S_FALSE, then the folder contains no suitable subobjects and the pointer specified in ppenumIDList is
-		/// set to <c>NULL</c>.
+		/// If the method returns S_FALSE, then the folder contains no suitable subobjects and the pointer specified in ppenumIDList is set
+		/// to <c>NULL</c>.
 		/// </para>
 		/// <para>If the method fails, an error value is returned and the pointer specified in ppenumIDList is set to <c>NULL</c>.</para>
 		/// <para>
 		/// If the folder contains no suitable subobjects, then the <c>IShellFolder::EnumObjects</c> method is permitted either to set
-		/// *ppenumIDList to <c>NULL</c> and return S_FALSE, or to set *ppenumIDList to an enumerator that produces no objects and
-		/// return S_OK. Calling applications must be prepared for both success cases.
+		/// *ppenumIDList to <c>NULL</c> and return S_FALSE, or to set *ppenumIDList to an enumerator that produces no objects and return
+		/// S_OK. Calling applications must be prepared for both success cases.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-enumobjects
 		[PreserveSig]
-		HRESULT EnumObjects(HWND hwnd, SHCONTF grfFlags, out IEnumIDList ppenumIDList);
+		HRESULT EnumObjects([Optional] HWND hwnd, SHCONTF grfFlags, out IEnumIDList? ppenumIDList);
 
 		/// <summary>
 		/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional
@@ -789,7 +787,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
 		[PreserveSig]
-		HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+		HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Requests a pointer to an object's storage interface.</summary>
 		/// <param name="pidl">
@@ -832,7 +830,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
 		[PreserveSig]
-		HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+		HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 		/// <param name="lParam">
@@ -955,7 +953,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
 		[PreserveSig]
-		HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppv);
+		HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 		/// <param name="cidl">
@@ -1219,7 +1217,7 @@ public static partial class Shell32
 	/// <summary>
 	/// Extends the capabilities of IShellFolder. Its methods provide a variety of information about the contents of a Shell folder.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.Shell32.IShellFolder"/>
+	/// <seealso cref="IShellFolder"/>
 	[SuppressUnmanagedCodeSecurity]
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("93F2F68C-1D1B-11d3-A30E-00C04F79ABD1")]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb775075")]
@@ -1305,7 +1303,15 @@ public static partial class Shell32
 		/// illustrates how to find out if a file is compressed.
 		/// </para>
 		/// <para>
-		/// <code>LPITEMIDLIST pidl; ULONG cbEaten; DWORD dwAttribs = SFGAO_COMPRESSED; hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL &amp;pidl, &amp;dwAttribs); if(dwAttribs &amp; SFGAO_COMPRESSED) { // Do something with the compressed file }</code>
+		/// <code>LPITEMIDLIST pidl;
+		/// ULONG cbEaten;
+		/// DWORD dwAttribs = SFGAO_COMPRESSED;
+		/// hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL
+		///    &amp;pidl, &amp;dwAttribs);
+		/// if(dwAttribs &amp; SFGAO_COMPRESSED)
+		/// {
+		///    // Do something with the compressed file
+		/// }</code>
 		/// </para>
 		/// <para>
 		/// Since pdwAttributes is an in/out parameter, it should always be initialized. If you pass in an uninitialized value, some of
@@ -1317,7 +1323,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-parsedisplayname
 		[PreserveSig]
-		new HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+		new HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx? pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
 
 		/// <summary>
 		/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
@@ -1326,57 +1332,50 @@ public static partial class Shell32
 		/// <param name="hwnd">
 		/// <para>Type: <c>HWND</c></para>
 		/// <para>
-		/// If user input is required to perform the enumeration, this window handle should be used by the enumeration object as the
-		/// parent window to take user input. An example would be a dialog box to ask for a password or prompt the user to insert a CD
-		/// or floppy disk. If hwndOwner is set to <c>NULL</c>, the enumerator should not post any messages, and if user input is
-		/// required, it should silently fail.
+		/// If user input is required to perform the enumeration, this window handle should be used by the enumeration object as the parent
+		/// window to take user input. An example would be a dialog box to ask for a password or prompt the user to insert a CD or floppy
+		/// disk. If hwndOwner is set to <c>NULL</c>, the enumerator should not post any messages, and if user input is required, it should
+		/// silently fail.
 		/// </para>
 		/// </param>
 		/// <param name="grfFlags">
 		/// <para>Type: <c>SHCONTF</c></para>
-		/// <para>
-		/// Flags indicating which items to include in the enumeration. For a list of possible values, see the SHCONTF enumerated type.
-		/// </para>
+		/// <para>Flags indicating which items to include in the enumeration. For a list of possible values, see the SHCONTF enumerated type.</para>
 		/// </param>
 		/// <param name="ppenumIDList">
 		/// <para>Type: <c>IEnumIDList**</c></para>
 		/// <para>
-		/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an
-		/// error occurs or no suitable subobjects are found, ppenumIDList is set to <c>NULL</c>.
+		/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an error
+		/// occurs or no suitable subobjects are found, ppenumIDList is set to <c>NULL</c>.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>Returns
-		/// <code>S_OK</code>
-		/// if successful, or an error value otherwise. Some implementations may also return
-		/// <code>S_FALSE</code>
-		/// , indicating that there are no children matching the grfFlags that were passed in. If
-		/// <code>S_FALSE</code>
-		/// is returned, ppenumIDList is set to
-		/// <code>NULL</code>
-		/// .
+		/// <para>
+		/// Returns <c>S_OK</c> if successful, or an error value otherwise. Some implementations may also return <c>S_FALSE</c> , indicating
+		/// that there are no children matching the grfFlags that were passed in. If <c>S_FALSE</c> is returned, ppenumIDList is set to
+		/// <c>NULL</c>.
 		/// </para>
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// If the method returns S_OK, then ppenumIDList receives a pointer to an enumerator. In this case, the calling application
-		/// must free the returned IEnumIDList object by calling its <c>Release</c> method.
+		/// If the method returns S_OK, then ppenumIDList receives a pointer to an enumerator. In this case, the calling application must
+		/// free the returned IEnumIDList object by calling its <c>Release</c> method.
 		/// </para>
 		/// <para>
-		/// If the method returns S_FALSE, then the folder contains no suitable subobjects and the pointer specified in ppenumIDList is
-		/// set to <c>NULL</c>.
+		/// If the method returns S_FALSE, then the folder contains no suitable subobjects and the pointer specified in ppenumIDList is set
+		/// to <c>NULL</c>.
 		/// </para>
 		/// <para>If the method fails, an error value is returned and the pointer specified in ppenumIDList is set to <c>NULL</c>.</para>
 		/// <para>
 		/// If the folder contains no suitable subobjects, then the <c>IShellFolder::EnumObjects</c> method is permitted either to set
-		/// *ppenumIDList to <c>NULL</c> and return S_FALSE, or to set *ppenumIDList to an enumerator that produces no objects and
-		/// return S_OK. Calling applications must be prepared for both success cases.
+		/// *ppenumIDList to <c>NULL</c> and return S_FALSE, or to set *ppenumIDList to an enumerator that produces no objects and return
+		/// S_OK. Calling applications must be prepared for both success cases.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-enumobjects
 		[PreserveSig]
-		new HRESULT EnumObjects(HWND hwnd, SHCONTF grfFlags, out IEnumIDList ppenumIDList);
+		new HRESULT EnumObjects([Optional] HWND hwnd, SHCONTF grfFlags, out IEnumIDList? ppenumIDList);
 
 		/// <summary>
 		/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional
@@ -1439,7 +1438,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
 		[PreserveSig]
-		new HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+		new HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Requests a pointer to an object's storage interface.</summary>
 		/// <param name="pidl">
@@ -1482,7 +1481,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
 		[PreserveSig]
-		new HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+		new HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 		/// <param name="lParam">
@@ -2191,10 +2190,10 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToObject<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class
+	public static T? BindToObject<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx? pbc) where T : class
 	{
 		sf.BindToObject(pidl, pbc, typeof(T).GUID, out var o).ThrowIfFailed();
-		return (T)o;
+		return (T?)o;
 	}
 
 	/// <summary>Extension method to simplify using the <see cref="IShellFolder.BindToStorage"/> method.</summary>
@@ -2210,10 +2209,10 @@ public static partial class Shell32
 	/// the use of bind contexts.
 	/// </param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToStorage<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class
+	public static T? BindToStorage<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx? pbc) where T : class
 	{
 		sf.BindToStorage(pidl, pbc, typeof(T).GUID, out var o).ThrowIfFailed();
-		return (T)o;
+		return (T?)o;
 	}
 
 	/// <summary>Extension method to simplify using the <see cref="IShellFolder.CreateViewObject"/> method.</summary>
@@ -2260,10 +2259,10 @@ public static partial class Shell32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	public static T CreateViewObject<T>(this IShellFolder sf, HWND hwndOwner) where T : class
+	public static T? CreateViewObject<T>(this IShellFolder sf, HWND hwndOwner) where T : class
 	{
 		sf.CreateViewObject(hwndOwner, typeof(T).GUID, out var o).ThrowIfFailed();
-		return (T)o;
+		return (T?)o;
 	}
 
 	/// <summary>
@@ -2283,9 +2282,9 @@ public static partial class Shell32
 	/// <returns>An enumeration of the PIDL for the folder content items.</returns>
 	public static IEnumerable<PIDL> EnumObjects(this IShellFolder sf, SHCONTF grfFlags = SHCONTF.SHCONTF_FOLDERS | SHCONTF.SHCONTF_NONFOLDERS, HWND hwnd = default)
 	{
-		sf.EnumObjects(hwnd, grfFlags, out var eo).ThrowIfFailed();
-		using var peo = InteropServices.ComReleaserFactory.Create(eo);
-		return eo.Enumerate().ToArray();
+		sf.EnumObjects(hwnd, grfFlags, out IEnumIDList? eo).ThrowIfFailed();
+		using var peo = ComReleaserFactory.Create(eo!);
+		return peo.Item.Enumerate().ToArray();
 	}
 
 	/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
@@ -2331,7 +2330,7 @@ public static partial class Shell32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getdisplaynameof HRESULT
 	// GetDisplayNameOf( PCUITEMID_CHILD pidl, SHGDNF uFlags, STRRET *pName );
-	public static string GetDisplayNameOf(this IShellFolder sf, SHGDNF uFlags, PIDL pidl) { sf.GetDisplayNameOf(pidl ?? PIDL.Null, uFlags, out var p); return p; }
+	public static string? GetDisplayNameOf(this IShellFolder sf, SHGDNF uFlags, PIDL pidl) { sf.GetDisplayNameOf(pidl ?? PIDL.Null, uFlags, out var p); return p; }
 
 	/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -2375,7 +2374,7 @@ public static partial class Shell32
 	/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
 	/// </param>
 	/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
-	public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr[] apidl, out T ppv, HWND hwndOwner = default) where T : class
+	public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr[] apidl, out T? ppv, HWND hwndOwner = default) where T : class
 	{
 		var hr = sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, apidl, typeof(T).GUID, default, out var o);
 		ppv = hr.Succeeded ? (T)o : default;
@@ -2394,8 +2393,8 @@ public static partial class Shell32
 	/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
 	/// </param>
 	/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
-	public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr pidl, out T ppv, HWND hwndOwner = default) where T : class =>
-		GetUIObjectOf<T>(sf, new[] { pidl }, out ppv, hwndOwner);
+	public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr pidl, out T? ppv, HWND hwndOwner = default) where T : class =>
+		GetUIObjectOf(sf, new[] { pidl }, out ppv, hwndOwner);
 
 	/// <summary>Specifies methods for sorting category data.</summary>
 	/// <summary>

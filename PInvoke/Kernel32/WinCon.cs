@@ -1,11 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -3240,7 +3235,7 @@ public static partial class Kernel32
 		public CHARACTER_ATTRIBUTE wPopupAttributes;
 
 		/// <summary>If this member is TRUE, full-screen mode is supported; otherwise, it is not.</summary>
-		[MarshalAsAttribute(UnmanagedType.Bool)]
+		[MarshalAs(UnmanagedType.Bool)]
 		public bool bFullscreenSupported;
 
 		/// <summary>An array of <c>COLORREF</c> values that describe the console's color settings.</summary>

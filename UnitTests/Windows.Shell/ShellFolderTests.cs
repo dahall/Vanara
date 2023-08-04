@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using System.IO;
 using System.Linq;
 using static Vanara.PInvoke.Shell32;
@@ -131,7 +130,7 @@ public class ShellFolderTests
 		using var i = new ShellItem(testFile);
 		var qi = f.GetChildrenUIObjects<IQueryInfo>(default, i);
 		Assert.That(qi, Is.Not.Null.And.InstanceOf<IQueryInfo>());
-		System.Runtime.InteropServices.Marshal.ReleaseComObject(qi);
+		Marshal.ReleaseComObject(qi);
 		var sv = f.GetViewObject<IShellView>(default);
 		Assert.That(sv, Is.Not.Null.And.InstanceOf<IShellView>());
 		Assert.That(() => f.GetChildrenUIObjects<IShellLibrary>(default, i), Throws.TypeOf<NotImplementedException>());

@@ -1,12 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.IO;
 
 namespace Vanara.InteropServices;
 
 /// <summary>A <see cref="Stream"/> derivative for working with unmanaged memory.</summary>
-/// <seealso cref="System.IO.Stream"/>
+/// <seealso cref="Stream"/>
 [Obsolete("This class may not be available in future releases. Please replace uses with Vanara.InteropServices.NativeMemoryStream.")]
 public class MarshalingStream : Stream
 {
@@ -28,7 +25,7 @@ public class MarshalingStream : Stream
 	/// <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
 	/// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point used to obtain the new position.</param>
 	/// <returns>The new position within the current stream.</returns>
-	/// <exception cref="System.ArgumentException"></exception>
+	/// <exception cref="ArgumentException"></exception>
 	public override long Seek(long offset, SeekOrigin origin)
 	{
 		var startPos = origin == SeekOrigin.Begin ? 0L : (origin == SeekOrigin.Current ? Position : Capacity);
@@ -40,7 +37,7 @@ public class MarshalingStream : Stream
 
 	/// <summary>Sets the length of the current stream.</summary>
 	/// <param name="value">The desired length of the current stream in bytes.</param>
-	/// <exception cref="System.InvalidOperationException"></exception>
+	/// <exception cref="InvalidOperationException"></exception>
 	public override void SetLength(long value) => throw new InvalidOperationException();
 
 	/// <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
@@ -54,9 +51,9 @@ public class MarshalingStream : Stream
 	/// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available,
 	/// or zero (0) if the end of the stream has been reached.
 	/// </returns>
-	/// <exception cref="System.ArgumentNullException">buffer</exception>
-	/// <exception cref="System.ArgumentException"></exception>
-	/// <exception cref="System.ArgumentOutOfRangeException"></exception>
+	/// <exception cref="ArgumentNullException">buffer</exception>
+	/// <exception cref="ArgumentException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public override int Read(byte[] buffer, int offset, int count)
 	{
 		if (buffer == null) throw new ArgumentNullException(nameof(buffer));
@@ -88,9 +85,9 @@ public class MarshalingStream : Stream
 	/// <summary>Pokes the specified buffer at the offset from the starting pointer without changing the <see cref="Position"/>.</summary>
 	/// <param name="buffer">The buffer.</param>
 	/// <param name="offsetFromStart">The offset from start.</param>
-	/// <exception cref="System.ArgumentNullException">buffer</exception>
-	/// <exception cref="System.ArgumentException"></exception>
-	/// <exception cref="System.ArgumentOutOfRangeException"></exception>
+	/// <exception cref="ArgumentNullException">buffer</exception>
+	/// <exception cref="ArgumentException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public void Poke(byte[] buffer, long offsetFromStart)
 	{
 		if (buffer == null) throw new ArgumentNullException(nameof(buffer));
@@ -102,8 +99,8 @@ public class MarshalingStream : Stream
 	/// <summary>Pokes the specified IntPtr value at the offset from the starting pointer without changing the <see cref="Position"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <param name="offsetFromStart">The offset from start.</param>
-	/// <exception cref="System.ArgumentException"></exception>
-	/// <exception cref="System.ArgumentOutOfRangeException"></exception>
+	/// <exception cref="ArgumentException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public void Poke(IntPtr value, long offsetFromStart)
 	{
 		if (offsetFromStart + IntPtr.Size > Capacity) throw new ArgumentException();
@@ -115,9 +112,9 @@ public class MarshalingStream : Stream
 	/// <param name="buffer">An array of bytes. This method copies <paramref name="count"/> bytes from <paramref name="buffer"/> to the current stream.</param>
 	/// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the current stream.</param>
 	/// <param name="count">The number of bytes to be written to the current stream.</param>
-	/// <exception cref="System.ArgumentNullException">buffer</exception>
-	/// <exception cref="System.ArgumentException"></exception>
-	/// <exception cref="System.ArgumentOutOfRangeException"></exception>
+	/// <exception cref="ArgumentNullException">buffer</exception>
+	/// <exception cref="ArgumentException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public override void Write(byte[] buffer, int offset, int count)
 	{
 		if (buffer == null) throw new ArgumentNullException(nameof(buffer));

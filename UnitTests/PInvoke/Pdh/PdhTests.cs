@@ -51,7 +51,7 @@ public class PdhTests
 				// Print counter for 2 seconds.
 				for (var i = 0; i < 20; i++)
 				{
-					System.Threading.Thread.Sleep(100);
+					Thread.Sleep(100);
 					var SampleTime = DateTime.Now;
 					Assert.That(PdhCollectQueryData(Query), ResultIs.Successful);
 					TestContext.Write(SampleTime);

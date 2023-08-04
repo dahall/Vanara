@@ -1,9 +1,7 @@
-using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security;
 
 namespace Vanara.PInvoke;
@@ -35,9 +33,9 @@ namespace Vanara.PInvoke;
 /// </item>
 /// </list>
 /// </summary>
-/// <seealso cref="System.IComparable"/>
-/// <seealso cref="System.IComparable{HRESULT}"/>
-/// <seealso cref="System.IEquatable{HRESULT}"/>
+/// <seealso cref="IComparable"/>
+/// <seealso cref="IComparable{HRESULT}"/>
+/// <seealso cref="IEquatable{HRESULT}"/>
 [StructLayout(LayoutKind.Sequential)]
 [TypeConverter(typeof(HRESULTTypeConverter))]
 [PInvokeData("winerr.h")]
@@ -798,7 +796,7 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 	internal static string FormatMessage(uint id)
 	{
 		var flags = 0x1200U; // FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM
-		var buf = new System.Text.StringBuilder(1024);
+		var buf = new StringBuilder(1024);
 		do
 		{
 			if (0 != FormatMessage(flags, default, id, 0, buf, (uint)buf.Capacity, default))
@@ -814,7 +812,7 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 	}
 
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	private static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, System.Text.StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+	private static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
 
 	private static int? ValueFromObj(object? obj)
 	{

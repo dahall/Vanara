@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.Windows.Shell;
 
 /// <summary>Enumerate and retrieve individual property description details. Wraps the <see cref="IPropertyDescription"/> shell interface</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class PropertyDescription : IDisposable
 {
 	/// <summary>The IPropertyDescription object.</summary>
@@ -186,8 +182,8 @@ public class PropertyDescription : IDisposable
 }
 
 /// <summary>Exposes methods that extract information from a collection of property descriptions presented as a list.</summary>
-/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IReadOnlyList{T}"/>
+/// <seealso cref="IDisposable"/>
 public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisposable
 {
 	/// <summary>The IPropertyDescriptionList instance.</summary>
@@ -197,17 +193,11 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// Initializes a new instance of the <see cref="PropertyDescriptionList"/> class from a string.
 	/// </summary>
 	/// <param name="propList">The property list. See <see cref="IPropertySystem.GetPropertyDescriptionListFromString"/> for the required format.</param>
-	public PropertyDescriptionList(string propList)
-	{
-		PSGetPropertyDescriptionListFromString(propList, typeof(IPropertyDescriptionList).GUID, out iList).ThrowIfFailed();
-	}
+	public PropertyDescriptionList(string propList) => PSGetPropertyDescriptionListFromString(propList, typeof(IPropertyDescriptionList).GUID, out iList).ThrowIfFailed();
 
 	/// <summary>Initializes a new instance of the <see cref="PropertyDescriptionList"/> class.</summary>
 	/// <param name="list">The COM interface pointer.</param>
-	protected internal PropertyDescriptionList(IPropertyDescriptionList list)
-	{
-		iList = list;
-	}
+	protected internal PropertyDescriptionList(IPropertyDescriptionList list) => iList = list;
 
 	/// <inheritdoc />
 	public virtual int Count => (int)(iList?.GetCount() ?? 0);
@@ -292,7 +282,7 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 }
 
 /// <summary>Exposes methods that extract data from enumeration information.</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class PropertyType : IDisposable
 {
 	/// <summary>The IPropertyEnumType instance.</summary>
@@ -302,10 +292,7 @@ public class PropertyType : IDisposable
 
 	/// <summary>Initializes a new instance of the <see cref="PropertyType"/> class.</summary>
 	/// <param name="type">The IPropertyEnumType object.</param>
-	protected internal PropertyType(IPropertyEnumType type)
-	{
-		iType = type;
-	}
+	protected internal PropertyType(IPropertyEnumType type) => iType = type;
 
 	/// <summary>Gets the display text.</summary>
 	/// <value>The display text.</value>
@@ -329,7 +316,7 @@ public class PropertyType : IDisposable
 
 	/// <summary>Gets a minimum value.</summary>
 	/// <value>The minimum value.</value>
-	public object RangeMinValue { get {  try { var t = new PROPVARIANT(); iType.GetRangeMinValue(t); return t.Value; } catch { return null; } } }
+	public object RangeMinValue { get { try { var t = new PROPVARIANT(); iType.GetRangeMinValue(t); return t.Value; } catch { return null; } } }
 
 	/// <summary>Gets a set value.</summary>
 	/// <value>The set value.</value>
@@ -352,8 +339,8 @@ public class PropertyType : IDisposable
 }
 
 /// <summary>Exposes methods that enumerate the possible values for a property.</summary>
-/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IReadOnlyList{T}"/>
+/// <seealso cref="IDisposable"/>
 public class PropertyTypeList : IReadOnlyList<PropertyType>, IDisposable
 {
 	/// <summary>The IPropertyEnumTypeList object.</summary>
@@ -361,10 +348,7 @@ public class PropertyTypeList : IReadOnlyList<PropertyType>, IDisposable
 
 	/// <summary>Initializes a new instance of the <see cref="PropertyTypeList"/> class.</summary>
 	/// <param name="list">The IPropertyEnumTypeList object.</param>
-	protected internal PropertyTypeList(IPropertyEnumTypeList list)
-	{
-		iList = list;
-	}
+	protected internal PropertyTypeList(IPropertyEnumTypeList list) => iList = list;
 
 	/// <summary>Gets the number of elements in the collection.</summary>
 	/// <value>The number of elements in the collection.</value>

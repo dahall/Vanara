@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 
 namespace Vanara;
@@ -33,7 +32,7 @@ public static class FormatterComposer
 }
 
 /// <summary>Binds multiple formatters together.</summary>
-/// <seealso cref="Vanara.Formatter"/>
+/// <seealso cref="Formatter"/>
 internal sealed class CompositeFormatter : Formatter
 {
 	private readonly List<Formatter> _formatters;

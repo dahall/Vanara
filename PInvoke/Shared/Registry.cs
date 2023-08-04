@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 
 namespace Vanara.Extensions

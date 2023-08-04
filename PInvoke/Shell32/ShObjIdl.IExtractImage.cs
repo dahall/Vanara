@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using static Vanara.PInvoke.Gdi32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+﻿using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;
 

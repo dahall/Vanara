@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -143,7 +140,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iattachmentexecute-setsource HRESULT
 		// SetSource( LPCWSTR pszSource );
-		void SetSource([MarshalAs(UnmanagedType.LPWStr)] string pszSource);
+		void SetSource([MarshalAs(UnmanagedType.LPWStr)] string? pszSource);
 
 		/// <summary>Sets the security zone associated with the attachment file based on the referring file.</summary>
 		/// <param name="pszReferrer">

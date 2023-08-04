@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.InteropServices;
+﻿using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -364,7 +358,7 @@ public static partial class Ole32
 		VT_RECORD = 36,
 
 		/// <summary>A FILETIME value.</summary>
-		[CorrespondingType(typeof(System.Runtime.InteropServices.ComTypes.FILETIME))]
+		[CorrespondingType(typeof(FILETIME))]
 		VT_FILETIME = 64,
 
 		/// <summary>Length-prefixed bytes.</summary>

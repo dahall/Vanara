@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -105,7 +101,7 @@ public static partial class Shell32
 		/// </param>
 		/// <returns>A pointer to the interface requested in riid. If this call fails, this value is NULL.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
-		object GetFolders([In] LIBRARYFOLDERFILTER lff, in Guid riid);
+		object? GetFolders([In] LIBRARYFOLDERFILTER lff, in Guid riid);
 
 		/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 		/// <param name="folderToResolve">An IShellItem object that represents the library folder to locate.</param>
@@ -195,7 +191,7 @@ public static partial class Shell32
 		/// <param name="lsf">The LIBRARYSAVEFLAGS value that specifies how to handle a library name collision.</param>
 		/// <returns>The IShellItem object that represents the library description file into which the library was saved.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IShellItem Save([In] IShellItem folderToSaveIn, [In, MarshalAs(UnmanagedType.LPWStr)] string libraryName, [In] LIBRARYSAVEFLAGS lsf);
+		IShellItem Save([In] IShellItem? folderToSaveIn, [In, MarshalAs(UnmanagedType.LPWStr)] string libraryName, [In] LIBRARYSAVEFLAGS lsf);
 
 		/// <summary>Saves the library to a new file in a specified known folder.</summary>
 		/// <param name="kfidToSaveIn">
@@ -223,7 +219,7 @@ public static partial class Shell32
 	/// <param name="sl">The <see cref="IShellLibrary"/> instance.</param>
 	/// <param name="lff">One of the following LIBRARYFOLDERFILTER values that determines the folders to get.</param>
 	/// <returns>A pointer to the interface requested. If this call fails, this value is NULL.</returns>
-	public static T GetFolders<T>(this IShellLibrary sl, [In] LIBRARYFOLDERFILTER lff) where T : class => (T)sl.GetFolders(lff, typeof(T).GUID);
+	public static T? GetFolders<T>(this IShellLibrary sl, [In] LIBRARYFOLDERFILTER lff) where T : class => (T?)sl.GetFolders(lff, typeof(T).GUID);
 
 	/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 	/// <typeparam name="T">The type of the interface to get.</typeparam>
@@ -269,7 +265,8 @@ public static partial class Shell32
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "dd378433")]
-	public static extern HRESULT SHShowManageLibraryUI(IShellItem psiLibrary, HWND hwndOwner, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszTitle, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszInstruction, LIBRARYMANAGEDIALOGOPTIONS lmdOptions);
+	public static extern HRESULT SHShowManageLibraryUI(IShellItem psiLibrary, [Optional] HWND hwndOwner, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszTitle,
+		[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszInstruction, LIBRARYMANAGEDIALOGOPTIONS lmdOptions);
 
 	/// <summary>Class interface for IShellLibrary</summary>
 	[ComImport, Guid("d9b3211d-e57f-4426-aaef-30a806add397"), ClassInterface(ClassInterfaceType.None)]

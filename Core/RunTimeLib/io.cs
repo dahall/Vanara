@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.RunTimeLib;
+﻿namespace Vanara.RunTimeLib;
 
 /// <summary>These constants specify the current attributes of the file or directory specified by the function.</summary>
 [Flags]

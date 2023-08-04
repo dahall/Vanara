@@ -646,7 +646,7 @@ public class Job : IDisposable
 			{
 				i = -1;
 				using var mem = SafeHGlobalHandle.CreateFromStructure<JOBOBJECT_BASIC_PROCESS_ID_LIST>();
-				while (!Kernel32.QueryInformationJobObject(job, JOBOBJECTINFOCLASS.JobObjectBasicProcessIdList, mem.DangerousGetHandle(), mem.Size, out _))
+				while (!QueryInformationJobObject(job, JOBOBJECTINFOCLASS.JobObjectBasicProcessIdList, mem.DangerousGetHandle(), mem.Size, out _))
 				{
 					Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_MORE_DATA);
 					mem.Size *= 2;

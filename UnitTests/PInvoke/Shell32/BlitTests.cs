@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -16,7 +13,7 @@ public class BlitTests
 		bool allGood = true;
 		using (var mem = new SafeHGlobalHandle(4096))
 		{
-			foreach (var asm in Assembly.GetExecutingAssembly().GetReferencedAssemblies().Where(n => n.Name.StartsWith("Vanara")).Select(n => Assembly.Load(n)))
+			foreach (var asm in Assembly.GetExecutingAssembly().GetReferencedAssemblies().Where(n => n.Name is not null && n.Name.StartsWith("Vanara")).Select(n => Assembly.Load(n)))
 			{
 				foreach (var tstr in asm.GetTypes().Where(t => t.IsValueType && !t.IsPrimitive && !t.IsEnum && !t.IsGenericType))
 				{

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace Vanara.Windows.Shell;
 
 /// <summary>The toolbar associated with thumbnails shown when hovering over an application's taskbar button.</summary>
-/// <seealso cref="System.ComponentModel.INotifyPropertyChanged"/>
+/// <seealso cref="INotifyPropertyChanged"/>
 [TypeConverter(typeof(ExpandableObjectConverter))]
 public class ThumbnailToolbar : INotifyPropertyChanged
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Specifies whether collation should be used when printing multiple copies.</summary>
 [PInvokeData("wingdi.h", MSDNShortId = "85741025-9393-42ab-8a6d-27f1ae2c0f1b")]

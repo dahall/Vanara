@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -86,7 +83,7 @@ public static partial class Shell32
 		/// <param name="wallpaper">The full path of the wallpaper image file.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-setwallpaper HRESULT
 		// SetWallpaper( LPCWSTR monitorID, LPCWSTR wallpaper );
-		void SetWallpaper([MarshalAs(UnmanagedType.LPWStr)] string monitorID, [MarshalAs(UnmanagedType.LPWStr)] string wallpaper);
+		void SetWallpaper([MarshalAs(UnmanagedType.LPWStr)] string? monitorID, [MarshalAs(UnmanagedType.LPWStr)] string wallpaper);
 
 		/// <summary>Gets the current desktop wallpaper.</summary>
 		/// <param name="monitorID">
@@ -112,7 +109,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-getwallpaper HRESULT
 		// GetWallpaper( LPCWSTR monitorID, LPWSTR *wallpaper );
 		[PreserveSig]
-		HRESULT GetWallpaper([MarshalAs(UnmanagedType.LPWStr)] string monitorID, [MarshalAs(UnmanagedType.LPWStr)] out string wallpaper);
+		HRESULT GetWallpaper([MarshalAs(UnmanagedType.LPWStr)] string? monitorID, [MarshalAs(UnmanagedType.LPWStr)] out string wallpaper);
 
 		/// <summary>Retrieves the unique ID of one of the system's monitors.</summary>
 		/// <param name="monitorIndex">The number of the monitor. Call GetMonitorDevicePathCount to determine the total number of monitors.</param>
@@ -325,7 +322,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-advanceslideshow HRESULT
 		// AdvanceSlideshow( LPCWSTR monitorID, DESKTOP_SLIDESHOW_DIRECTION direction );
-		void AdvanceSlideshow([MarshalAs(UnmanagedType.LPWStr)] string monitorID, DESKTOP_SLIDESHOW_DIRECTION direction);
+		void AdvanceSlideshow([MarshalAs(UnmanagedType.LPWStr)] string? monitorID, DESKTOP_SLIDESHOW_DIRECTION direction);
 
 		/// <summary>Gets the current status of the slideshow.</summary>
 		/// <returns>

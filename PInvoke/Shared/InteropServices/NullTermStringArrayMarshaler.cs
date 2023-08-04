@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.Linq;
 
 namespace Vanara.InteropServices;
 
 /// <summary>Marshals an array of strings to a concatenated list of strings with an extra NULL terminator.</summary>
-/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
+/// <seealso cref="ICustomMarshaler"/>
 public class NullTermStringArrayMarshaler : ICustomMarshaler
 {
 	private readonly CharSet charSet = CharSet.Unicode;
@@ -42,8 +39,8 @@ public class NullTermStringArrayMarshaler : ICustomMarshaler
 		if (ManagedObj is string[] _sa)
 			sa = _sa;
 		return sa == null
-			?         throw new InvalidOperationException($"{nameof(NullTermStringArrayMarshaler)} can only marshal object types of {typeof(string)} or {typeof(string[])}.")
-			: sa.MarshalToPtr(InteropServices.StringListPackMethod.Concatenated, Marshal.AllocCoTaskMem, out memSize, charSet);
+			? throw new InvalidOperationException($"{nameof(NullTermStringArrayMarshaler)} can only marshal object types of {typeof(string)} or {typeof(string[])}.")
+			: sa.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocCoTaskMem, out memSize, charSet);
 	}
 
 	/// <inheritdoc/>

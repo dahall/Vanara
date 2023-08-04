@@ -6,7 +6,6 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Schannel;
 using static Vanara.PInvoke.Ws2_32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 using INTERNET_PORT = System.UInt16;
 
 namespace Vanara.PInvoke;

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -20,7 +16,7 @@ public static partial class Kernel32
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 		public SafeMoveableHGlobalHandle(SizeT size) : base(size) { }
 
 		/// <summary>

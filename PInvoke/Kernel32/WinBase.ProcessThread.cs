@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -18,7 +15,7 @@ public static partial class Kernel32
 	public delegate void FiberProc(IntPtr lpParameter);
 
 	/// <summary>The thread's execution requirements.</summary>
-		[Flags]
+	[Flags]
 	public enum EXECUTION_STATE : uint
 	{
 		/// <summary>

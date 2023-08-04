@@ -1,12 +1,9 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Vanara.InteropServices;
 
 /// <summary>A safe class that represents an object that is pinned in memory.</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class PinnedObject : IDisposable
 {
 	private readonly int mOffset;

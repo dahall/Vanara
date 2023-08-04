@@ -16,7 +16,7 @@ public class NTDSApiTests
 	[OneTimeSetUp]
 	public void Setup()
 	{
-		dn = System.Environment.UserDomainName;
+		dn = Environment.UserDomainName;
 		DsBind(null, dn, out hDs).ThrowIfFailed();
 	}
 

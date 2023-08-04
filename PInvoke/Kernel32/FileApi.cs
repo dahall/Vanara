@@ -1,15 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 //using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
 using System.Threading;
-using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 
@@ -3942,7 +3937,7 @@ public static partial class Kernel32
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetLogicalDriveStrings")]
 	public static IEnumerable<string> GetLogicalDriveStrings()
 	{
-		using var buf = new SafeCoTaskMemHandle((26 * 4 + 1) * Extensions.StringHelper.GetCharSize());
+		using var buf = new SafeCoTaskMemHandle((26 * 4 + 1) * StringHelper.GetCharSize());
 		if (0 == GetLogicalDriveStrings(buf.Size, buf))
 			Win32Error.ThrowLastError();
 		return buf.ToStringEnum().ToArray();
@@ -7547,7 +7542,7 @@ public static partial class Kernel32
 	/// Represents a self-closing file search handle opened by the FindFirstFile, FindFirstFileEx, FindFirstFileNameW,
 	/// FindFirstFileNameTransactedW, FindFirstFileTransacted, FindFirstStreamTransactedW, or FindFirstStreamW functions.
 	/// </summary>
-	/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+	/// <seealso cref="GenericSafeHandle"/>
 	public class SafeSearchHandle : SafeHANDLE
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeSearchHandle"/> class.</summary>
@@ -7563,7 +7558,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Represents a self-closing volume search handle opened by the FindFirstVolume.</summary>
-	/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+	/// <seealso cref="GenericSafeHandle"/>
 	public class SafeVolumeSearchHandle : SafeHANDLE
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeVolumeSearchHandle"/> class.</summary>

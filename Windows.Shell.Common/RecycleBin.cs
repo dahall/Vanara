@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -105,7 +102,7 @@ public static class RecycleBin
 	private static ShellFileOperations.OperationFlags GetDeleteOpFlags(bool hideUI)
 	{
 		var flags = ShellFileOperations.OperationFlags.NoConfirmMkDir | ShellFileOperations.OperationFlags.AllowUndo;
-		if (Vanara.PInvoke.PInvokeClient.Windows8.IsPlatformSupported())
+		if (PInvokeClient.Windows8.IsPlatformSupported())
 			flags |= ShellFileOperations.OperationFlags.AddUndoRecord | ShellFileOperations.OperationFlags.RecycleOnDelete;
 		if (hideUI)
 			flags |= ShellFileOperations.OperationFlags.Silent | ShellFileOperations.OperationFlags.NoErrorUI | ShellFileOperations.OperationFlags.NoConfirmation;

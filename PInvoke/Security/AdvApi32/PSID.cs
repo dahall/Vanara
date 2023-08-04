@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -157,7 +153,7 @@ public static partial class AdvApi32
 		/// <param name="subAuth0">The first subauthority.</param>
 		/// <param name="subAuthorities1to7">Up to seven other subauthorities.</param>
 		/// <returns>A new <see cref="SafePSID"/> instance.</returns>
-		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// <exception cref="ArgumentOutOfRangeException">
 		/// <paramref name="sidAuthority"/> is null or an invalid length or more than 8 total subauthorities were submitted.
 		/// </exception>
 		public static SafePSID Init(PSID_IDENTIFIER_AUTHORITY sidAuthority, int subAuth0, params int[] subAuthorities1to7)
@@ -292,8 +288,8 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Provides an array of SID pointers whose memory is disposed after use.</summary>
-	/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
-	/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
+	/// <seealso cref="SafeHANDLE"/>
+	/// <seealso cref="IReadOnlyList{T}"/>
 	public class SafePSIDArray : SafeHANDLE, IReadOnlyList<PSID>
 	{
 		private List<SafePSID>? items;
@@ -325,7 +321,7 @@ public static partial class AdvApi32
 		{
 			if (pSIDs is null) throw new ArgumentNullException(nameof(pSIDs));
 			items = pSIDs.Select(p => new SafePSID(p)).ToList();
-			SetHandle(items.Select(p => (IntPtr)p).MarshalToPtr<IntPtr>(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
+			SetHandle(items.Select(p => (IntPtr)p).MarshalToPtr(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>

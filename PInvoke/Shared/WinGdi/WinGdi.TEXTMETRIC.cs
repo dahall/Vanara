@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>
 /// The <c>TEXTMETRIC</c> structure contains basic information about a physical font. All sizes are specified in logical units; that

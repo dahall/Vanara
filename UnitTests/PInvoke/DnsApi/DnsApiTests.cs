@@ -248,7 +248,7 @@ public class DnsApiTests
 	[Test]
 	public void DnsValidateServerStatusTest()
 	{
-		Assert.That(DnsValidateServerStatus(new Ws2_32.SOCKADDR(System.Net.IPAddress.Parse(dnsSvrIp)), null, out var stat), ResultIs.Successful);
+		Assert.That(DnsValidateServerStatus(new Ws2_32.SOCKADDR(IPAddress.Parse(dnsSvrIp)), null, out var stat), ResultIs.Successful);
 		Assert.That(stat, Is.EqualTo(DnsServerStatus.ERROR_SUCCESS));
 	}
 

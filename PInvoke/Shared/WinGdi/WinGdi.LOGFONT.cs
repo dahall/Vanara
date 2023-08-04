@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>
 /// Font families describe the look of a font in a general way. They are intended for specifying fonts when the exact typeface desired is

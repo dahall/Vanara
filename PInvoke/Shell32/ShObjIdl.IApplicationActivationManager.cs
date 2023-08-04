@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -93,7 +90,7 @@ public static partial class Shell32
 		/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationactivationmanager-activateapplication
 		// HRESULT ActivateApplication( LPCWSTR appUserModelId, LPCWSTR arguments, ACTIVATEOPTIONS options, DWORD *processId );
-		void ActivateApplication([MarshalAs(UnmanagedType.LPWStr)] string appUserModelId, [MarshalAs(UnmanagedType.LPWStr)] string arguments, ACTIVATEOPTIONS options, out uint processId);
+		void ActivateApplication([MarshalAs(UnmanagedType.LPWStr)] string appUserModelId, [MarshalAs(UnmanagedType.LPWStr)] string? arguments, ACTIVATEOPTIONS options, out uint processId);
 
 		/// <summary>Activates the specified Windows Store app for the file contract (Windows.File).</summary>
 		/// <param name="appUserModelId">The application user model ID of the Windows Store app.</param>

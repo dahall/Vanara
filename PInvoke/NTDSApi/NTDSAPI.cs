@@ -8,7 +8,6 @@ using System.Security;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 

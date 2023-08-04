@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Kernel32;
+﻿using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
 

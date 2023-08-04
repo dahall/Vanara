@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Interfaces and methods from Url.dll.</summary>
 public static partial class Url
@@ -341,12 +336,12 @@ public static partial class Url
 		/// dwFlags is set to IURL_INVOKECOMMAND_FL_USE_DEFAULT_VERB, this member is ignored.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pcszVerb;
+		public string? pcszVerb;
 
 		/// <summary>Initializes a new instance of the <see cref="URLINVOKECOMMANDINFO"/> struct.</summary>
 		/// <param name="verb">The verb to be invoked by IUniformResourceLocator::InvokeCommand.</param>
 		/// <param name="parentHwnd">Handle to the parent window.</param>
-		public URLINVOKECOMMANDINFO(string verb = null, HWND? parentHwnd = null)
+		public URLINVOKECOMMANDINFO(string? verb = null, HWND? parentHwnd = null)
 		{
 			dwcbSize = size;
 			dwFlags = (verb is null ? 0 : IURL_INVOKECOMMAND_FLAGS.IURL_INVOKECOMMAND_FL_USE_DEFAULT_VERB) | (parentHwnd is null ? 0 : IURL_INVOKECOMMAND_FLAGS.IURL_INVOKECOMMAND_FL_ALLOW_UI);
@@ -355,7 +350,7 @@ public static partial class Url
 		}
 
 		/// <summary>Gets a default instance of this structure with the size field set appropriately.</summary>
-		public static readonly URLINVOKECOMMANDINFO Default = new URLINVOKECOMMANDINFO { dwcbSize = size };
+		public static readonly URLINVOKECOMMANDINFO Default = new() { dwcbSize = size };
 	}
 
 	/// <summary>CoClass for IUniformResourceLocator.</summary>

@@ -3,7 +3,7 @@
 namespace System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-/// Indicates that the specified method requires dynamic access to code that is not referenced statically, for example, through <see cref="System.Reflection"/>.
+/// Indicates that the specified method requires dynamic access to code that is not referenced statically, for example, through <see cref="Reflection"/>.
 /// </summary>
 /// <seealso cref="Attribute"/>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Constructor | AttributeTargets.Method, Inherited = false)]

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.SearchApi;
@@ -11,7 +8,7 @@ using static Vanara.PInvoke.SearchApi;
 namespace Vanara.Windows.Shell;
 
 /// <summary>Provides properties and methods for retrieving information about a search condition.</summary>
-/// <seealso cref="System.ICloneable"/>
+/// <seealso cref="ICloneable"/>
 public class SearchCondition : ICloneable, IDisposable
 {
 	internal ICondition condition;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Valid values for the <see cref="OBJECT_TYPE_LIST.level"/> field.</summary>
 [PInvokeData("winnt.h")]

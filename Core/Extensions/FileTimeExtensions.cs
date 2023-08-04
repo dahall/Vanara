@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices.ComTypes;
-
 namespace Vanara.Extensions;
 
 /// <summary>Extensions for <see cref="FILETIME"/>.</summary>

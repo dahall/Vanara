@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Vanara.Windows.Shell.Registration;
 using static Vanara.PInvoke.Shell32;
 

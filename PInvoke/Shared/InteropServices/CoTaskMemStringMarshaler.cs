@@ -1,9 +1,7 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vanara.InteropServices;
+﻿namespace Vanara.InteropServices;
 
 /// <summary>Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.</summary>
-/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
+/// <seealso cref="ICustomMarshaler"/>
 public class CoTaskMemStringMarshaler : GenericStringMarshalerBase<CoTaskMemoryMethods>
 {
 	private CoTaskMemStringMarshaler(CharSet charSet) : base(charSet) { }

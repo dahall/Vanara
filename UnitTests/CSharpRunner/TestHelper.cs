@@ -1,20 +1,15 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.AdvApi32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -56,13 +51,13 @@ public static class TestHelper
 
 	public static void DumpStructSizeAndOffsets<T>() where T : struct
 	{
-		TestContext.WriteLine($"{typeof(T).Name} : {Marshal.SizeOf<T>()} ({IntPtr.Size*8}b/{(Marshal.SystemDefaultCharSize == 1 ? "A" : "W")})");
+		TestContext.WriteLine($"{typeof(T).Name} : {Marshal.SizeOf<T>()} ({IntPtr.Size * 8}b/{(Marshal.SystemDefaultCharSize == 1 ? "A" : "W")})");
 		foreach (FieldInfo fi in typeof(T).GetOrderedFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
 			TestContext.WriteLine($"  {fi.Name} : {Marshal.OffsetOf<T>(fi.Name)}");
 	}
 
 	public static IList<string> GetNestedStructSizes(this Type type, params string[] filters) =>
-		type.GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).GetStructSizes(false, filters);
+		type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic).GetStructSizes(false, filters);
 
 	public static string GetStringVal(this object value)
 	{
@@ -82,7 +77,7 @@ public static class TestHelper
 			case DateTime:
 			case decimal:
 			case var v when v.GetType().IsPrimitive || v.GetType().IsEnum:
-			Simple:
+Simple:
 				return $"{value.GetType().Name} : [{value}]";
 
 			case string s:
@@ -94,8 +89,8 @@ public static class TestHelper
 			case SafeAllocatedMemoryHandleBase mem:
 				return mem.Dump;
 
-			case System.Security.AccessControl.GenericSecurityDescriptor sd:
-				return sd.GetSddlForm(System.Security.AccessControl.AccessControlSections.All);
+			case GenericSecurityDescriptor sd:
+				return sd.GetSddlForm(AccessControlSections.All);
 
 			default:
 				try { return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value); }
@@ -105,7 +100,7 @@ public static class TestHelper
 
 	public static IList<string> GetStructSizes(this Type[] types, bool fullName = false, params string[] filters)
 	{
-		System.Reflection.TypeAttributes attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
+		TypeAttributes attr = TypeAttributes.SequentialLayout | TypeAttributes.ExplicitLayout;
 		return types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))).
 			OrderBy(t => fullName ? t.FullName : t.Name).Select(t => $"{(fullName ? t.FullName : t.Name)} = {GetTypeSize(t)}").ToList();
 
@@ -117,7 +112,7 @@ public static class TestHelper
 
 	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception> error = null, Action<TEnum, object, object[]> action = null, CorrespondingAction? filter = null) where TEnum : Enum
 	{
-		System.Reflection.MethodInfo mi = lib.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First() ?? throw new ArgumentException("Unable to find method.");
+		MethodInfo mi = lib.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First() ?? throw new ArgumentException("Unable to find method.");
 		foreach (TEnum e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())
 		{
 			Type type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
@@ -126,7 +121,7 @@ public static class TestHelper
 				TestContext.WriteLine($"No corresponding type found for {e}.");
 				continue;
 			}
-			System.Reflection.MethodInfo gmi = mi.MakeGenericMethod(type);
+			MethodInfo gmi = mi.MakeGenericMethod(type);
 			var param = makeParam(e);
 			try
 			{

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using Vanara.PInvoke;
 
 namespace Vanara.Windows.Shell;
@@ -53,10 +52,7 @@ public enum VerbSelectionModel
 /// <summary>Encapsulates a shortcut menu verb in the registry.</summary>
 public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 {
-	internal CommandVerb(RegistryKey key, string name, bool readOnly = true) : base(key, readOnly)
-	{
-		Name = name;
-	}
+	internal CommandVerb(RegistryKey key, string name, bool readOnly = true) : base(key, readOnly) => Name = name;
 
 	/// <summary>Gets or sets an Advanced Query Syntax (AQS) expression that determines whether the verb is displayed or hidden.</summary>
 	/// <value>The AQS expression that controls visibility.</value>

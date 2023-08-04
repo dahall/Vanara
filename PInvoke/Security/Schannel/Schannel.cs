@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using static Vanara.PInvoke.Crypt32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+﻿using static Vanara.PInvoke.Crypt32;
 
 namespace Vanara.PInvoke;
 

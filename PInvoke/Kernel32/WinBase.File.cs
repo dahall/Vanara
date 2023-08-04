@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 
@@ -2293,7 +2287,7 @@ public static partial class Kernel32
 	// HFILE WINAPI OpenFile( _In_ LPCSTR lpFileName, _Out_ LPOFSTRUCT lpReOpenBuff, _In_ UINT uStyle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365430(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365430")]
-	public static extern SafeHFILE OpenFile([In] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, OpenFileAction uStyle);
+	public static extern SafeHFILE OpenFile([In][MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, OpenFileAction uStyle);
 
 	/// <summary>
 	/// <para>

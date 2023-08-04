@@ -1,6 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +17,7 @@ namespace Vanara.Windows.Shell;
 ///}
 /// </code>
 /// </example>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class ProgId : RegBasedSettings
 {
 	private const string OpenWithProgIds = "OpenWithProgIds";

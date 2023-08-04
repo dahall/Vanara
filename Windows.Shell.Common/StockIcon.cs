@@ -1,6 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
-using static Vanara.PInvoke.Gdi32;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
 

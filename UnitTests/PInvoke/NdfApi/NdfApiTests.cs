@@ -7,7 +7,6 @@ using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.NdfApi;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace NdfApi;
 

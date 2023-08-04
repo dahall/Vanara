@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -3168,7 +3164,7 @@ public static partial class ComCtl32
 	/// Contains information for identifying the "hit zone" for a specified part of a tree item. The structure is used with the
 	/// TVM_GETITEMPARTRECT message and the TreeView_GetItemPartRect macro.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb773442")]
 	[StructLayout(LayoutKind.Sequential)]
 	public sealed class TVGETITEMPARTRECTINFO : IDisposable

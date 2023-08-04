@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework.Constraints;
-using System;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -197,7 +196,7 @@ public abstract class OpConstraint : Constraint
 
 public class ValidHandleConstraint : OpConstraint
 {
-	public ValidHandleConstraint(OpConstraint.Op op = OpConstraint.Op.None) : base(op)
+	public ValidHandleConstraint(Op op = Op.None) : base(op)
 	{
 	}
 
@@ -207,7 +206,7 @@ public class ValidHandleConstraint : OpConstraint
 		bool success;
 		switch (actual)
 		{
-			case System.Runtime.InteropServices.SafeHandle h:
+			case SafeHandle h:
 				success = !h.IsInvalid;
 				val = h.DangerousGetHandle();
 				break;
@@ -218,7 +217,7 @@ public class ValidHandleConstraint : OpConstraint
 				success = l != 0 && l != -1;
 				break;
 
-			case System.IntPtr p:
+			case IntPtr p:
 				val = p;
 				l = val.ToInt64();
 				success = l != 0 && l != -1;
@@ -241,7 +240,7 @@ public class ValueConstraint : OpConstraint
 {
 	public object Expected { get; }
 
-	public ValueConstraint(object expected, OpConstraint.Op op = OpConstraint.Op.None) : base(op) => Expected = expected;
+	public ValueConstraint(object expected, Op op = Op.None) : base(op) => Expected = expected;
 
 	public override ConstraintResult ApplyTo<TActual>(TActual actual)
 	{

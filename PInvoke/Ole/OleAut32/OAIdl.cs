@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 using TYPEDESC = System.Runtime.InteropServices.ComTypes.TYPEDESC;
 
 namespace Vanara.PInvoke;

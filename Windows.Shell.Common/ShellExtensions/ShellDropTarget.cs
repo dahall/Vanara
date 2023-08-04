@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using IDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
@@ -141,8 +140,8 @@ public class DragEventArgs : EventArgs
 ///      }
 ///   }
 ///}</code></remarks>
-/// <seealso cref="Vanara.Windows.Shell.ComObject"/>
-/// <seealso cref="Vanara.PInvoke.Ole32.IDropTarget"/>
+/// <seealso cref="ComObject"/>
+/// <seealso cref="IDropTarget"/>
 public abstract class ShellDropTarget : ShellCommand, IDropTarget, IInitializeCommand
 {
 	private IDataObject lastDataObject;

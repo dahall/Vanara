@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vanara.Collections;
@@ -9,7 +8,7 @@ namespace Vanara.Windows.Shell;
 
 /// <summary>A virtual dictionary that is based on values in the Windows Registry.</summary>
 /// <typeparam name="T">Type used to capture multiple values within the registry.</typeparam>
-/// <seealso cref="Vanara.Collections.VirtualReadOnlyDictionary{TKey, TValue}"/>
+/// <seealso cref="VirtualReadOnlyDictionary{TKey, TValue}"/>
 public abstract class RegBasedDictionary<T> : VirtualReadOnlyDictionary<string, T>
 {
 	/// <summary>Read-only flag.</summary>

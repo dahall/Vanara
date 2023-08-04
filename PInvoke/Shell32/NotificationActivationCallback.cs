@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -44,7 +41,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/notificationactivationcallback/nf-notificationactivationcallback-inotificationactivationcallback-activate
 		// HRESULT Activate( LPCWSTR appUserModelId, LPCWSTR invokedArgs, const NOTIFICATION_USER_INPUT_DATA *data, ULONG count );
 		[PreserveSig]
-		HRESULT Activate([MarshalAs(UnmanagedType.LPWStr)] string appUserModelId, [MarshalAs(UnmanagedType.LPWStr)] string invokedArgs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] NOTIFICATION_USER_INPUT_DATA[] data, int count);
+		HRESULT Activate([MarshalAs(UnmanagedType.LPWStr)] string appUserModelId, [MarshalAs(UnmanagedType.LPWStr)] string? invokedArgs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] NOTIFICATION_USER_INPUT_DATA[] data, int count);
 	}
 
 	/// <summary>
@@ -66,9 +63,11 @@ public static partial class Shell32
 	public struct NOTIFICATION_USER_INPUT_DATA
 	{
 		/// <summary>The ID of the user input field in the XML payload.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string Key;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string Key;
 
 		/// <summary>The input value selected by the user for a given input field.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string Value;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string Value;
 	}
 }

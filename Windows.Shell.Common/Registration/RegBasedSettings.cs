@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 
 namespace Vanara.Windows.Shell;
 

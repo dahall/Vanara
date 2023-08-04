@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
@@ -10,7 +7,7 @@ using static Vanara.PInvoke.PropSys;
 namespace Vanara.Windows.Shell;
 
 /// <summary>A property store for a <see cref="ShellItem"/>.</summary>
-/// <seealso cref="Vanara.Windows.Shell.PropertyStore"/>
+/// <seealso cref="PropertyStore"/>
 public sealed class ShellItemPropertyStore : PropertyStore
 {
 	/// <summary>The shell item</summary>

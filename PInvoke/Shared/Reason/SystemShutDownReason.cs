@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Flags used in the ExitWindowsEx, InitiateShutdown and InitiateSystemShutdownEx functions.</summary>
 [PInvokeData("reason.h")]

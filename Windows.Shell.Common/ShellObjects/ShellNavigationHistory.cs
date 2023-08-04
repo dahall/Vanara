@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Vanara.Collections;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell;

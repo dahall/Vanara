@@ -68,7 +68,7 @@ public class SafeCoTaskMemHandleTests
 		Assert.That(h.ToStringEnum(4, CharSet.Unicode), Has.Exactly(4).EqualTo("5").And.Exactly(4).Items);
 
 		h = SafeCoTaskMemHandle.CreateFromStringList(null);
-		Assert.That((int)h.Size, Is.EqualTo(Extensions.StringHelper.GetCharSize()));
+		Assert.That((int)h.Size, Is.EqualTo(StringHelper.GetCharSize()));
 	}
 
 	[Test(Description = "Allocate a structure")]

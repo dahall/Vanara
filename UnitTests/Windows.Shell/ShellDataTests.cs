@@ -1,13 +1,10 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Vanara.Extensions;
 using Vanara.PInvoke.Tests;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;
@@ -38,7 +35,7 @@ public class ShellDataTests
 
 		timer.Stop();
 
-		void ShData_RowChanged(object sender, System.Data.DataRowChangeEventArgs e)
+		void ShData_RowChanged(object sender, DataRowChangeEventArgs e)
 		{
 			if (e.Action == DataRowAction.Add)
 				TestContext.WriteLine($"{timer.ElapsedMilliseconds,5}\t+\t" + GetItems());
@@ -71,7 +68,7 @@ public class ShellDataTests
 
 		timer.Stop();
 
-		void ShData_RowChanged(object sender, System.Data.DataRowChangeEventArgs e)
+		void ShData_RowChanged(object sender, DataRowChangeEventArgs e)
 		{
 			if (e.Action == DataRowAction.Add)
 				TestContext.WriteLine($"{timer.ElapsedMilliseconds,5}\t+\t" + GetItems());
@@ -116,7 +113,7 @@ public class ShellDataTests
 	public void FormatHtmlForClipboardTest(string snippet)
 	{
 		var bytes = FormatHtmlForClipboard(snippet);
-		string str = System.Text.Encoding.UTF8.GetString(bytes);
+		string str = Encoding.UTF8.GetString(bytes);
 		TestContext.WriteLine(str);
 
 		var extr = GetHtmlFromClipboard(bytes);

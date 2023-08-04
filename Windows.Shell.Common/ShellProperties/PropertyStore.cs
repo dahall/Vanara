@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
@@ -12,7 +9,7 @@ namespace Vanara.Windows.Shell;
 
 /// <summary>Encapsulates the IPropertyStore object.</summary>
 /// <seealso cref="IDictionary{PROPERTYKEY, Object}"/>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERTYKEY, object>, IDisposable, INotifyPropertyChanged
 {
 	private bool noICapabilities = false;

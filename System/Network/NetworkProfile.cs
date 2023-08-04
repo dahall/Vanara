@@ -36,7 +36,7 @@ public class NetworkProfile : IDisposable
 		get
 		{
 			inet.GetTimeCreatedAndConnected(out var _, out var _, out var low, out var hi);
-			return FileTimeExtensions.MakeFILETIME(Vanara.PInvoke.Macros.MAKELONG64(low, hi)).ToDateTime();
+			return FileTimeExtensions.MakeFILETIME(PInvoke.Macros.MAKELONG64(low, hi)).ToDateTime();
 		}
 	}
 
@@ -51,7 +51,7 @@ public class NetworkProfile : IDisposable
 		get
 		{
 			inet.GetTimeCreatedAndConnected(out var low, out var hi, out var _, out var _);
-			return FileTimeExtensions.MakeFILETIME(Vanara.PInvoke.Macros.MAKELONG64(low, hi)).ToDateTime();
+			return FileTimeExtensions.MakeFILETIME(PInvoke.Macros.MAKELONG64(low, hi)).ToDateTime();
 		}
 	}
 

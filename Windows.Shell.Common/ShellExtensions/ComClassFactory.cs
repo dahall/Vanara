@@ -1,14 +1,12 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions.Reflection;
+﻿using Vanara.Extensions.Reflection;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.Windows.Shell;
 
 /// <summary>An implementation of <see cref="IClassFactory"/> to be used in conjunction with <see cref="IComObject"/> derivatives.</summary>
-/// <seealso cref="Vanara.PInvoke.Ole32.IClassFactory"/>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IClassFactory"/>
+/// <seealso cref="IDisposable"/>
 [ComVisible(true)]
 public class ComClassFactory : IClassFactory, IDisposable
 {

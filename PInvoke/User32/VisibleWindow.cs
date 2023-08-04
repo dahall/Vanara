@@ -1,12 +1,10 @@
-﻿using System;
-using System.Text;
-using static Vanara.PInvoke.Kernel32;
+﻿using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
 /// <summary>A wrapper for a visible window.</summary>
-/// <seealso cref="Vanara.PInvoke.WindowBase"/>
+/// <seealso cref="WindowBase"/>
 public class VisibleWindow : WindowBase
 {
 	/// <summary>Initializes an uninitialized and uncreated instance of the <see cref="VisibleWindow"/> class.</summary>

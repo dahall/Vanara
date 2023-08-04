@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
@@ -110,35 +108,35 @@ public static partial class Shell32
 	public static class IExplorerPaneVisibilityConstants
 	{
 		/// <summary>Additional fields and options to aid in a search.</summary>
-		public readonly static Guid EP_AdvQueryPane = new Guid("{b4e9db8b-34ba-4c39-b5cc-16a1bd2c411c}");
+		public readonly static Guid EP_AdvQueryPane = new("{b4e9db8b-34ba-4c39-b5cc-16a1bd2c411c}");
 
 		/// <summary>Commands module along the top of the Windows Explorer window.</summary>
-		public readonly static Guid EP_Commands = new Guid("{d9745868-ca5f-4a76-91cd-f5a129fbb076}");
+		public readonly static Guid EP_Commands = new("{d9745868-ca5f-4a76-91cd-f5a129fbb076}");
 
 		/// <summary>Organize menu within the commands module.</summary>
-		public readonly static Guid EP_Commands_Organize = new Guid("{72e81700-e3ec-4660-bf24-3c3b7b648806}");
+		public readonly static Guid EP_Commands_Organize = new("{72e81700-e3ec-4660-bf24-3c3b7b648806}");
 
 		/// <summary>View menu within the commands module.</summary>
-		public readonly static Guid EP_Commands_View = new Guid("{21f7c32d-eeaa-439b-bb51-37b96fd6a943}");
+		public readonly static Guid EP_Commands_View = new("{21f7c32d-eeaa-439b-bb51-37b96fd6a943}");
 
 		/// <summary>Pane showing metadata along the bottom of the Windows Explorer window.</summary>
-		public readonly static Guid EP_DetailsPane = new Guid("{43abf98b-89b8-472d-b9ce-e69b8229f019}");
+		public readonly static Guid EP_DetailsPane = new("{43abf98b-89b8-472d-b9ce-e69b8229f019}");
 
 		/// <summary>The pane on the left side of the Windows Explorer window that hosts the folders tree and Favorites.</summary>
-		public readonly static Guid EP_NavPane = new Guid("{cb316b22-25f7-42b8-8a09-540d23a43c2f}");
+		public readonly static Guid EP_NavPane = new("{cb316b22-25f7-42b8-8a09-540d23a43c2f}");
 
 		/// <summary>Pane on the right of the Windows Explorer window that shows a large reading preview of the file.</summary>
-		public readonly static Guid EP_PreviewPane = new Guid("{893c63d1-45c8-4d17-be19-223be71be365}");
+		public readonly static Guid EP_PreviewPane = new("{893c63d1-45c8-4d17-be19-223be71be365}");
 
 		/// <summary>Quick filter buttons to aid in a search.</summary>
-		public readonly static Guid EP_QueryPane = new Guid("{65bcde4f-4f07-4f27-83a7-1afca4df7ddd}");
+		public readonly static Guid EP_QueryPane = new("{65bcde4f-4f07-4f27-83a7-1afca4df7ddd}");
 
 		/// <summary>
 		/// Introduced in Windows 8: The ribbon, which is the control that replaced menus and toolbars at the top of many Microsoft applications.
 		/// </summary>
-		public readonly static Guid EP_Ribbon = new Guid("{D27524A8-C9F2-4834-A106-DF8889FD4F37}");
+		public readonly static Guid EP_Ribbon = new("{D27524A8-C9F2-4834-A106-DF8889FD4F37}");
 
 		/// <summary>Introduced in Windows 8: A status bar that indicates the progress of some process, such as copying or downloading.</summary>
-		public readonly static Guid EP_StatusBar = new Guid("{65fe56ce-5cfe-4bc4-ad8a-7ae3fe7e8f7c}");
+		public readonly static Guid EP_StatusBar = new("{65fe56ce-5cfe-4bc4-ad8a-7ae3fe7e8f7c}");
 	}
 }

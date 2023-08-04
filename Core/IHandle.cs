@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Signals that a structure or class holds a HANDLE.</summary>
 public interface IHandle

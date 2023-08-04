@@ -293,7 +293,7 @@ public class CfgMgr32Tests
 	{
 		var devInt = CM_Get_Device_Interface_List(GUID_DEVINTERFACE_VOLUME, CM_GET_DEVICE_INTERFACE_LIST.CM_GET_DEVICE_INTERFACE_LIST_PRESENT).First();
 		DEVPROPKEY pkey = DEVPKEY_DeviceInterface_FriendlyName;
-		using var mem = new SafeCoTaskMemString(256, System.Runtime.InteropServices.CharSet.Auto);
+		using var mem = new SafeCoTaskMemString(256, CharSet.Auto);
 		uint sz = mem.Size;
 		Assert.That(CM_Get_Device_Interface_Property(devInt, pkey, out var dpt, mem, ref sz), Is.EqualTo(CONFIGRET.CR_SUCCESS).Or.EqualTo(CONFIGRET.CR_NO_SUCH_VALUE));
 		var orig = mem.ToString();

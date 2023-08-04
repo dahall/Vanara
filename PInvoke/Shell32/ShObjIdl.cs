@@ -1,15 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke;
 
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 public static partial class Shell32
 {
 	/// <summary>The bind interruptible</summary>
@@ -352,7 +350,7 @@ public static partial class Shell32
 	/// <summary>Not used.</summary>
 	public const string STR_TRACK_CLSID = "Track the CLSID";
 
-	private delegate HRESULT IidFunc(in Guid riid, out object ppv);
+	private delegate HRESULT IidFunc(in Guid riid, out object? ppv);
 
 	/// <summary>Values that specify from which category the list of destinations should be retrieved.</summary>
 	[PInvokeData("Shobjidl.h", MSDNShortId = "dd378410")]
@@ -1816,7 +1814,7 @@ public static partial class Shell32
 	// SHAssocEnumHandlers( PCWSTR pszExtra, ASSOC_FILTER afFilter, IEnumAssocHandlers **ppEnumHandler );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "83db466b-e00c-4015-879f-c5c222f45b8c")]
-	public static extern HRESULT SHAssocEnumHandlers([MarshalAs(UnmanagedType.LPWStr)] string pszExtra, ASSOC_FILTER afFilter, out IEnumAssocHandlers ppEnumHandler);
+	public static extern HRESULT SHAssocEnumHandlers([MarshalAs(UnmanagedType.LPWStr)] string? pszExtra, ASSOC_FILTER afFilter, out IEnumAssocHandlers ppEnumHandler);
 
 	/// <summary>
 	/// <para>Gets an enumeration interface that provides access to handlers associated with a given protocol.</para>
@@ -1863,8 +1861,8 @@ public static partial class Shell32
 	/// provides the correct IID based on the interface pointed to by the value in , which eliminates the possibility of a coding error.
 	/// </remarks>
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "8bc3b9ce-5909-46a0-b5f1-35ab808aaa55")]
-	public static TIntf SHAssocEnumHandlersForProtocolByApplication<TIntf>(string protocol) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHAssocEnumHandlersForProtocolByApplication(protocol, g, out o));
+	public static TIntf? SHAssocEnumHandlersForProtocolByApplication<TIntf>(string protocol) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHAssocEnumHandlersForProtocolByApplication(protocol, g, out o));
 
 	/// <summary>
 	/// Creates an IApplicationAssociationRegistration object based on the stock implementation of the interface provided by Windows.
@@ -1966,7 +1964,7 @@ public static partial class Shell32
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762133")]
-	public static extern HRESULT SHCreateItemFromIDList(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+	public static extern HRESULT SHCreateItemFromIDList(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// Creates and initializes a Shell item object from a pointer to an item identifier list (PIDL). The resulting shell item object
@@ -1976,8 +1974,8 @@ public static partial class Shell32
 	/// <param name="pidl">The source PIDL.</param>
 	/// <returns>When this function returns, contains the interface pointer requested.</returns>
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762133")]
-	public static TIntf SHCreateItemFromIDList<TIntf>(PIDL pidl) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemFromIDList(pidl, g, out o));
+	public static TIntf? SHCreateItemFromIDList<TIntf>(PIDL pidl) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHCreateItemFromIDList(pidl, g, out o));
 
 	/// <summary>Creates and initializes a Shell item object from a parsing name.</summary>
 	/// <param name="pszPath">A pointer to a display name.</param>
@@ -2001,9 +1999,9 @@ public static partial class Shell32
 	[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762134")]
 	public static extern HRESULT SHCreateItemFromParsingName(
 		[In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
-		[In, Optional] IBindCtx pbc,
+		[In, Optional] IBindCtx? pbc,
 		in Guid riid,
-		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Creates and initializes a Shell item object from a parsing name.</summary>
 	/// <typeparam name="T">The type of the interface to retrieve, typically IID_IShellItem or IID_IShellItem2.</typeparam>
@@ -2024,8 +2022,8 @@ public static partial class Shell32
 	/// IShellItem or IShellItem2.
 	/// </returns>
 	[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762134")]
-	public static T SHCreateItemFromParsingName<T>(string pszPath, IBindCtx pbc = null) where T : class =>
-		IidGetObj<T>((in Guid g, out object o) => SHCreateItemFromParsingName(pszPath, pbc, g, out o));
+	public static T? SHCreateItemFromParsingName<T>(string pszPath, IBindCtx? pbc = null) where T : class =>
+		IidGetObj<T>((in Guid g, out object? o) => SHCreateItemFromParsingName(pszPath, pbc, g, out o));
 
 	/// <summary>Creates and initializes a Shell item object from a relative parsing name.</summary>
 	/// <param name="psiParent">A pointer to the parent Shell item.</param>
@@ -2041,7 +2039,7 @@ public static partial class Shell32
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762135")]
 	public static extern HRESULT SHCreateItemFromRelativeName([In, MarshalAs(UnmanagedType.Interface)] IShellItem psiParent, [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
-		[In, Optional, MarshalAs(UnmanagedType.Interface)] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
+		[In, Optional, MarshalAs(UnmanagedType.Interface)] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Creates and initializes a Shell item object from a relative parsing name.</summary>
 	/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
@@ -2055,8 +2053,8 @@ public static partial class Shell32
 	/// </returns>
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762135")]
-	public static TIntf SHCreateItemFromRelativeName<TIntf>(IShellItem psiParent, string pszName, IBindCtx pbc = null) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemFromRelativeName(psiParent, pszName, pbc, g, out o));
+	public static TIntf? SHCreateItemFromRelativeName<TIntf>(IShellItem psiParent, string pszName, IBindCtx? pbc = null) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHCreateItemFromRelativeName(psiParent, pszName, pbc, g, out o));
 
 	/// <summary>Creates a Shell item object for a single file that exists inside a known folder.</summary>
 	/// <param name="kfid">A reference to the KNOWNFOLDERID, a GUID that identifies the folder that contains the item.</param>
@@ -2075,7 +2073,7 @@ public static partial class Shell32
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762136")]
 	public static extern HRESULT SHCreateItemInKnownFolder(in Guid kfid, [In] KNOWN_FOLDER_FLAG dwKFFlags,
-		[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszItem, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
+		[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszItem, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Creates a Shell item object for a single file that exists inside a known folder.</summary>
 	/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
@@ -2092,8 +2090,8 @@ public static partial class Shell32
 	/// </returns>
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762136")]
-	public static TIntf SHCreateItemInKnownFolder<TIntf>(KNOWNFOLDERID kfid, KNOWN_FOLDER_FLAG dwKFFlags = 0, string pszItem = null) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemInKnownFolder(kfid.Guid(), dwKFFlags, pszItem, g, out o));
+	public static TIntf? SHCreateItemInKnownFolder<TIntf>(KNOWNFOLDERID kfid, KNOWN_FOLDER_FLAG dwKFFlags = 0, string? pszItem = null) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHCreateItemInKnownFolder(kfid.Guid(), dwKFFlags, pszItem, g, out o));
 
 	/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
 	/// <param name="pidlParent">
@@ -2111,8 +2109,8 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
-	public static extern HRESULT SHCreateItemWithParent([In, Optional] PIDL pidlParent, [In, Optional, MarshalAs(UnmanagedType.Interface)] IShellFolder psfParent,
-		[In] PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppvItem);
+	public static extern HRESULT SHCreateItemWithParent([In, Optional] PIDL pidlParent, [In, Optional, MarshalAs(UnmanagedType.Interface)] IShellFolder? psfParent,
+		[In] PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppvItem);
 
 	/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
 	/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
@@ -2125,8 +2123,8 @@ public static partial class Shell32
 	/// </returns>
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
-	public static TIntf SHCreateItemWithParent<TIntf>([In] PIDL pidlParent, [In] PIDL pidl) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemWithParent(pidlParent, null, pidl, g, out o));
+	public static TIntf? SHCreateItemWithParent<TIntf>([In] PIDL pidlParent, [In] PIDL? pidl) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHCreateItemWithParent(pidlParent, null, pidl ?? PIDL.Null, g, out o));
 
 	/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
 	/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
@@ -2140,8 +2138,8 @@ public static partial class Shell32
 	/// </returns>
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
-	public static TIntf SHCreateItemWithParent<TIntf>([In] IShellFolder psfParent, [In] PIDL pidl) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemWithParent(PIDL.Null, psfParent, pidl, g, out o));
+	public static TIntf? SHCreateItemWithParent<TIntf>([In] IShellFolder psfParent, [In] PIDL? pidl) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHCreateItemWithParent(PIDL.Null, psfParent, pidl ?? PIDL.Null, g, out o));
 
 	/// <summary>Creates a Shell item array object.</summary>
 	/// <param name="pidlParent">
@@ -2179,7 +2177,7 @@ public static partial class Shell32
 	// **ppsiItemArray );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "024ccbc7-97f1-4cb5-8588-9c9b1f747336")]
-	public static extern HRESULT SHCreateShellItemArray([In, Optional] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface), Optional] IShellFolder psf,
+	public static extern HRESULT SHCreateShellItemArray([In, Optional] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface), Optional] IShellFolder? psf,
 		[In, Optional] uint cidl, [In, Optional] IntPtr[]? ppidl, out IShellItemArray ppsiItemArray);
 
 	/// <summary>
@@ -2263,6 +2261,14 @@ public static partial class Shell32
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762146")]
 	public static extern HRESULT SHCreateShellItemArrayFromIDLists(uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] rgpidl, out IShellItemArray ppsiItemArray);
 
+	/// <summary>Creates a Shell item array object from a list of ITEMIDLIST structures.</summary>
+	/// <param name="rgpidl">A list of cidl constant pointers to ITEMIDLIST structures.</param>
+	/// <param name="ppsiItemArray">When this function returns, contains an IShellItemArray interface pointer.</param>
+	[SecurityCritical, SuppressUnmanagedCodeSecurity]
+	[PInvokeData("Shobjidl.h", MSDNShortId = "bb762146")]
+	public static HRESULT SHCreateShellItemArrayFromIDLists(IEnumerable<PIDL> rgpidl, out IShellItemArray ppsiItemArray) =>
+		SHCreateShellItemArrayFromIDLists((uint)rgpidl.Count(), rgpidl.Select(p => (IntPtr)p).ToArray(), out ppsiItemArray);
+
 	/// <summary>
 	/// <para>Creates an array of one element from a single Shell item.</para>
 	/// </summary>
@@ -2326,7 +2332,7 @@ public static partial class Shell32
 	// SHGetItemFromDataObject( IDataObject *pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "1d7b9ffa-9980-4d68-85e4-7bab667be168")]
-	public static extern HRESULT SHGetItemFromDataObject(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+	public static extern HRESULT SHGetItemFromDataObject(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Creates an IShellItem or related object based on an item specified by an IDataObject.</summary>
 	/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
@@ -2344,8 +2350,8 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetitemfromdataobject HRESULT
 	// SHGetItemFromDataObject( IDataObject *pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, REFIID riid, void **ppv );
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "1d7b9ffa-9980-4d68-85e4-7bab667be168")]
-	public static TIntf SHGetItemFromDataObject<TIntf>(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHGetItemFromDataObject(pdtobj, dwFlags, g, out o));
+	public static TIntf? SHGetItemFromDataObject<TIntf>(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetItemFromDataObject(pdtobj, dwFlags, g, out o));
 
 	/// <summary>
 	/// <para>Retrieves an IShellItem for an object.</para>
@@ -2376,7 +2382,7 @@ public static partial class Shell32
 	// SHGetItemFromObject( IUnknown *punk, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "0ef494c0-81c7-4fbd-9c37-78861d8ac63b")]
-	public static extern HRESULT SHGetItemFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppv);
+	public static extern HRESULT SHGetItemFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>Retrieves an IShellItem for an object.</summary>
 	/// <typeparam name="TIntf">The type of the requested interface. This is typically IShellItem or a related interface.</typeparam>
@@ -2392,8 +2398,8 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetitemfromobject SHSTDAPI
 	// SHGetItemFromObject( IUnknown *punk, REFIID riid, void **ppv );
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "0ef494c0-81c7-4fbd-9c37-78861d8ac63b")]
-	public static TIntf SHGetItemFromObject<TIntf>(object punk) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHGetItemFromObject(punk, g, out o));
+	public static TIntf? SHGetItemFromObject<TIntf>(object punk) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetItemFromObject(punk, g, out o));
 
 	/// <summary>
 	/// <para>Retrieves an object that supports IPropertyStore or related interfaces from a pointer to an item identifier list (PIDL).</para>
@@ -2423,7 +2429,7 @@ public static partial class Shell32
 	// SHGetPropertyStoreFromIDList( PCIDLIST_ABSOLUTE pidl, GETPROPERTYSTOREFLAGS flags, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "2a3c3c80-1bfc-4da0-ba6e-ac9e9a5c3e5b")]
-	public static extern HRESULT SHGetPropertyStoreFromIDList(PIDL pidl, GETPROPERTYSTOREFLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+	public static extern HRESULT SHGetPropertyStoreFromIDList(PIDL pidl, GETPROPERTYSTOREFLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// Retrieves an object that supports IPropertyStore or related interfaces from a pointer to an item identifier list (PIDL).
@@ -2443,8 +2449,8 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetpropertystorefromidlist SHSTDAPI
 	// SHGetPropertyStoreFromIDList( PCIDLIST_ABSOLUTE pidl, GETPROPERTYSTOREFLAGS flags, REFIID riid, void **ppv );
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "2a3c3c80-1bfc-4da0-ba6e-ac9e9a5c3e5b")]
-	public static TIntf SHGetPropertyStoreFromIDList<TIntf>(PIDL pidl, GETPROPERTYSTOREFLAGS flags) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHGetPropertyStoreFromIDList(pidl, flags, g, out o));
+	public static TIntf? SHGetPropertyStoreFromIDList<TIntf>(PIDL pidl, GETPROPERTYSTOREFLAGS flags) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetPropertyStoreFromIDList(pidl, flags, g, out o));
 
 	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
 	/// <param name="pszPath">A pointer to a null-terminated Unicode string that specifies the item path.</param>
@@ -2457,7 +2463,7 @@ public static partial class Shell32
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762197")]
-	public static extern HRESULT SHGetPropertyStoreFromParsingName([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath, [In, Optional] IBindCtx pbc,
+	public static extern HRESULT SHGetPropertyStoreFromParsingName([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath, [In, Optional] IBindCtx? pbc,
 		GETPROPERTYSTOREFLAGS flags, in Guid riid, out IPropertyStore propertyStore);
 
 	/// <summary>
@@ -2527,7 +2533,7 @@ public static partial class Shell32
 	// HWND hwnd, IShellItem *psi, DWORD dwFileOpFlags, IFileOperationProgressSink *pfops );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl.h", MSDNShortId = "c3ab80a3-c1f3-4223-9fe3-f7fe48c36460")]
-	public static extern HRESULT SHSetDefaultProperties(HWND hwnd, IShellItem psi, FILEOP_FLAGS dwFileOpFlags, IFileOperationProgressSink pfops);
+	public static extern HRESULT SHSetDefaultProperties([Optional] HWND hwnd, IShellItem psi, FILEOP_FLAGS dwFileOpFlags, [Optional] IFileOperationProgressSink? pfops);
 
 	/// <summary>
 	/// <para>
@@ -2590,6 +2596,18 @@ public static partial class Shell32
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "349974c2-4ab9-4eb2-897d-a5934893ed07")]
 	public static extern PIDL SHSimpleIDListFromPath([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 
+	/// <summary>Separates an ITEMIDLIST into the parent SHITEMID and the children SHITEMIDs</summary>
+	/// <param name="pidl">A pointer to the ITEMIDLIST structure to be evaluated.</param>
+	/// <param name="parent">The parent.</param>
+	/// <param name="child">The children.</param>
+	/// <returns>Returns TRUE if successful, FALSE otherwise.</returns>
+	public static bool SplitPidl(IntPtr pidl, out PIDL parent, out PIDL child)
+	{
+		parent = ILClone(pidl);
+		child = ILClone(ILFindLastID(pidl));
+		return ILRemoveLastID((IntPtr)parent);
+	}
+
 	/// <summary>Clones an ITEMIDLIST structure.</summary>
 	/// <param name="pidl">A pointer to the ITEMIDLIST structure to be cloned.</param>
 	/// <returns>Returns a pointer to a copy of the ITEMIDLIST structure pointed to by pidl.</returns>
@@ -2610,10 +2628,10 @@ public static partial class Shell32
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb776437")]
 	internal static extern IntPtr IntILCombine(IntPtr pidl1, IntPtr pidl2);
 
-	private static T IidGetObj<T>(IidFunc f) where T : class
+	private static T? IidGetObj<T>(IidFunc f) where T : class
 	{
 		f(typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv;
+		return (T?)ppv;
 	}
 
 	/// <summary>Implements CLSID_ApplicationAssociationRegistration to create IApplicationAssociationRegistration.</summary>
@@ -2629,8 +2647,8 @@ public static partial class Shell32
 	/// <summary>Implements CLSID_ApplicationDocumentLists to create IApplicationDocumentLists.</summary>
 	[PInvokeData("shobjidl_core.h")]
 	[ComImport, Guid("86bec222-30f2-47e0-9f25-60d11cd75c28"), ClassInterface(ClassInterfaceType.None)]
-	public class ApplicationDocumentLists { }   
-	
+	public class ApplicationDocumentLists { }
+
 	/// <summary>Class interface for IEnumerableObjectCollection.</summary>
 	[ComImport, Guid("2d3468c1-36a7-43b6-ac24-d3f02fd9607a"), ClassInterface(ClassInterfaceType.None)]
 	public class CEnumerableObjectCollection { }

@@ -39,7 +39,7 @@ public class WerApiTests
 		// Create a log file in the current directory. Make sure we share read access so WER can read the file.
 		using TempFile LogFileHandle = new(FileAccess.GENERIC_WRITE, System.IO.FileShare.Read, System.IO.FileMode.Create);
 		// Print a few lines into the log file.
-		byte[] BytesToPrint = System.Text.Encoding.Unicode.GetBytes("Line 1\nLine 2\n");
+		byte[] BytesToPrint = Encoding.Unicode.GetBytes("Line 1\nLine 2\n");
 
 		Assert.That(WriteFile(LogFileHandle.hFile, BytesToPrint, (uint)BytesToPrint.Length, out uint BytesWritten), ResultIs.Successful);
 

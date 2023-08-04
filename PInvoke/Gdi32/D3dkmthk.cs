@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -182,4 +180,3 @@ public static partial class Gdi32
 	D3DKMTWaitForVerticalBlankEvent2		
 	*/
 }
- 

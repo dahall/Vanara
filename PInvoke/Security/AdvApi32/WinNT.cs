@@ -1,11 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -688,7 +683,7 @@ public static partial class AdvApi32
 
 		/// <summary>A mandatory integrity label SID.</summary>
 		SidTypeLabel,
-		
+
 		/// <summary/>
 		SidTypeLogonSession
 	}
@@ -4506,7 +4501,7 @@ public static partial class AdvApi32
 
 		/// <summary>Initializes a new instance of the <see cref="SID_IDENTIFIER_AUTHORITY"/> struct.</summary>
 		/// <param name="value">The value.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">value</exception>
+		/// <exception cref="ArgumentOutOfRangeException">value</exception>
 		public PSID_IDENTIFIER_AUTHORITY(byte[] value)
 		{
 			if (value == null || value.Length != 6)

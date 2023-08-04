@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -332,4 +330,3 @@ public static partial class Gdi32
 	XLATEOBJ	The XLATEOBJ structure is used to translate color indexes from one palette to another.
 	*/
 }
- 

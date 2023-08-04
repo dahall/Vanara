@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
 
@@ -359,7 +357,7 @@ public static partial class Shell32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-icontextmenu3
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "c08e1b98-2b8b-41f6-93c5-3a5937bd3b2c")]
-	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), GuidAttribute("bcfce0a0-ec17-11d0-8d10-00a0c90f2719")]
+	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("bcfce0a0-ec17-11d0-8d10-00a0c90f2719")]
 	public interface IContextMenu3 : IContextMenu2
 	{
 		/// <summary>Adds commands to a shortcut menu.</summary>
@@ -462,7 +460,7 @@ public static partial class Shell32
 		/// </param>
 		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT CallBack([Optional] IShellFolder psf, [Optional] HWND hwndOwner, [Optional] IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
+		HRESULT CallBack([Optional] IShellFolder? psf, [Optional] HWND hwndOwner, [Optional] IDataObject? pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
 	}
 
 	/*
@@ -720,11 +718,11 @@ public static partial class Shell32
 
 		/// <summary>Optional parameters. This member is always NULL for menu items inserted by a Shell extension.</summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string lpParameters;
+		public string? lpParameters;
 
 		/// <summary>An optional working directory name. This member is always NULL for menu items inserted by a Shell extension.</summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string lpDirectory;
+		public string? lpDirectory;
 
 		/// <summary>A set of SW_ values to pass to the ShowWindow function if the command displays a window or starts an application.</summary>
 		public ShowWindowCommand nShow;
@@ -743,23 +741,23 @@ public static partial class Shell32
 
 		/// <summary>An ASCII title.</summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string lpTitle;
+		public string? lpTitle;
 
 		/// <summary>A Unicode verb, for those commands that can use it.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpVerbW;
+		public string? lpVerbW;
 
 		/// <summary>A Unicode parameters, for those commands that can use it.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpParametersW;
+		public string? lpParametersW;
 
 		/// <summary>A Unicode directory, for those commands that can use it.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpDirectoryW;
+		public string? lpDirectoryW;
 
 		/// <summary>A Unicode title.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpTitleW;
+		public string? lpTitleW;
 
 		/// <summary>
 		/// The point where the command is invoked. If the fMask member does not specify CMIC_MASK_PTINVOKE, this member is ignored. This

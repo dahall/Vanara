@@ -1109,7 +1109,7 @@ namespace Vanara.Windows.Forms;
 
                 using var font = new Font("Segoe UI", 9);
                 using var sf = new StringFormat { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
-                pe.Graphics.DrawString(nameof(Windows.Forms.ExplorerBrowser), font, SystemBrushes.GrayText, Rectangle.Inflate(cr, -3, -3), sf);
+                pe.Graphics.DrawString(nameof(ExplorerBrowser), font, SystemBrushes.GrayText, Rectangle.Inflate(cr, -3, -3), sf);
             }
 
             base.OnPaint(pe);

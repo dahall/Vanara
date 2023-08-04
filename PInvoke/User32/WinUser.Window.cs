@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
+﻿using System.Collections.Generic;
 
 namespace Vanara.PInvoke;
 
@@ -167,7 +163,7 @@ public static partial class User32
 	// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
-	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In] [MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
+	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In][MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
 
 	/// <summary>
 	/// The type of animation. Note that, by default, these flags take effect when showing a window. To take effect when hiding a window,

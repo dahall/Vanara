@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -40,7 +36,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iautocompletedropdown-getdropdownstatus HRESULT
 		// GetDropDownStatus( DWORD *pdwFlags, LPWSTR *ppwszString );
-		void GetDropDownStatus(ref uint pdwFlags, out string ppwszString);
+		unsafe void GetDropDownStatus(uint* pdwFlags, char** ppwszString);
 
 		/// <summary>Forces the autocomplete object to refresh its list of suggestions when the list is visible.</summary>
 		/// <remarks>

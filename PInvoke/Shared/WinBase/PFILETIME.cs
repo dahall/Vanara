@@ -1,8 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
 using static Vanara.Extensions.FileTimeExtensions;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 
@@ -115,17 +112,17 @@ public class PFILETIME : IEquatable<PFILETIME>, IEquatable<FILETIME>, IEquatable
 
 	private ulong ToUInt64 => ft.ToUInt64();
 
-	/// <summary>Performs an implicit conversion from <see cref="PFILETIME"/> to <see cref="System.Nullable{FILETIME}"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="PFILETIME"/> to <see cref="Nullable{FILETIME}"/>.</summary>
 	/// <param name="pft">The <see cref="PFILETIME"/> value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator FILETIME?(PFILETIME? pft) => pft?.ft;
 
-	/// <summary>Performs an implicit conversion from <see cref="System.Nullable{FILETIME}"/> to <see cref="PFILETIME"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="Nullable{FILETIME}"/> to <see cref="PFILETIME"/>.</summary>
 	/// <param name="ft">The <see cref="FILETIME"/> value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator PFILETIME?(FILETIME? ft) => ft.HasValue ? new(ft.Value) : null;
 
-	/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="System.Nullable{PFILETIME}"/>.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="Nullable{PFILETIME}"/>.</summary>
 	/// <param name="p">The pointer to memory that has a 16 byte FILETIME instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	/// <exception cref="ArgumentException">Pointer must be to a FILETIME structure.</exception>
@@ -136,7 +133,7 @@ public class PFILETIME : IEquatable<PFILETIME>, IEquatable<FILETIME>, IEquatable
 		catch { throw new ArgumentException(@"Pointer must be to a FILETIME structure.", nameof(p)); }
 	}
 
-	/// <summary>Performs an explicit conversion from <see cref="FILETIME"/>* to <see cref="System.Nullable{PFILETIME}"/>.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="FILETIME"/>* to <see cref="Nullable{PFILETIME}"/>.</summary>
 	/// <param name="p">The pointer to FILETIME instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	/// <exception cref="ArgumentException">Pointer must be to a FILETIME structure.</exception>

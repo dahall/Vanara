@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in Crypt32.dll.</summary>
 public static partial class Crypt32

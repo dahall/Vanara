@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Vanara.PInvoke;
@@ -34,7 +33,7 @@ public class InitializationFile
 	/// <seealso cref="IDictionary{TKey, TValue}"/>
 	public class InitializationFileSection : IDictionary<string, string>
 	{
-		private static readonly uint AutoChSz = (uint)Extensions.StringHelper.GetCharSize();
+		private static readonly uint AutoChSz = (uint)StringHelper.GetCharSize();
 		private static readonly string UnqVal = Guid.NewGuid().ToString();
 
 		private readonly InitializationFile file;
@@ -67,7 +66,7 @@ public class InitializationFile
 		/// <value>The <see cref="string"/>.</value>
 		/// <param name="key">The key.</param>
 		/// <returns></returns>
-		/// <exception cref="System.ArgumentException">key not found or unable to return key value - key</exception>
+		/// <exception cref="ArgumentException">key not found or unable to return key value - key</exception>
 		public string this[string key]
 		{
 			get => TryGetValue(key, out var value) ? value : throw new ArgumentException("key not found or unable to return key value", nameof(key));
@@ -204,7 +203,7 @@ public class InitializationFile
 		/// <see langword="true"/> if the object that implements <see cref="IDictionary{TKey, TValue}"/> contains an element with the
 		/// specified key; otherwise, <see langword="false"/>.
 		/// </returns>
-		/// <exception cref="System.ArgumentNullException">key</exception>
+		/// <exception cref="ArgumentNullException">key</exception>
 		public bool TryGetValue(string key, out string value)
 		{
 			if (key is null) throw new ArgumentNullException(nameof(key));
@@ -223,7 +222,7 @@ public class InitializationFile
 		}
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
-		/// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+		/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		private KeyValuePair<string, string>[] GetSection() => Array.ConvertAll(GetPrivateProfileSection(Name, file.FullName), Parse);
@@ -259,13 +258,13 @@ public class InitializationFile
 		/// <value>The <see cref="InitializationFileSection"/>.</value>
 		/// <param name="sectionName">Name of the section.</param>
 		/// <returns></returns>
-		/// <exception cref="System.Collections.Generic.KeyNotFoundException"></exception>
+		/// <exception cref="KeyNotFoundException"></exception>
 		public InitializationFileSection this[string sectionName] => new(file, sectionName);
 
 		/// <summary>Adds the specified section name.</summary>
 		/// <param name="sectionName">Name of the section.</param>
 		/// <returns></returns>
-		/// <exception cref="System.ArgumentException">Duplicate name. - sectionName</exception>
+		/// <exception cref="ArgumentException">Duplicate name. - sectionName</exception>
 		public InitializationFileSection Add(string sectionName)
 		{
 			if (Contains(sectionName))

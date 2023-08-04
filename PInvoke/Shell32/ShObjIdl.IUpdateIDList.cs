@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
 
@@ -43,6 +41,6 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iupdateidlist-update HRESULT Update(
 		// IBindCtx *pbc, PCUITEMID_CHILD pidlIn, PITEMID_CHILD *ppidlOut );
 		[PreserveSig]
-		HRESULT Update([In, Optional] IBindCtx pbc, [In] PIDL pidlIn, out PIDL ppidlOut);
+		HRESULT Update([In, Optional] IBindCtx? pbc, [In] PIDL pidlIn, out PIDL ppidlOut);
 	}
 }

@@ -102,31 +102,31 @@ public enum TaskDialogIcon : uint
 	None = 0,
 
 	/// <summary>System warning icon.</summary>
-	Warning = PInvoke.ComCtl32.TaskDialogIcon.TD_WARNING_ICON,
+	Warning = ComCtl32.TaskDialogIcon.TD_WARNING_ICON,
 
 	/// <summary>System Error icon.</summary>
-	Error = PInvoke.ComCtl32.TaskDialogIcon.TD_ERROR_ICON,
+	Error = ComCtl32.TaskDialogIcon.TD_ERROR_ICON,
 
 	/// <summary>System Information icon.</summary>
-	Information = PInvoke.ComCtl32.TaskDialogIcon.TD_INFORMATION_ICON,
+	Information = ComCtl32.TaskDialogIcon.TD_INFORMATION_ICON,
 
 	/// <summary>Shield icon.</summary>
-	Shield = PInvoke.ComCtl32.TaskDialogIcon.TD_SHIELD_ICON,
+	Shield = ComCtl32.TaskDialogIcon.TD_SHIELD_ICON,
 
 	/// <summary>Shield icon on a blue background. Only available on Windows 8 and later.</summary>
-	ShieldBlue = PInvoke.ComCtl32.TaskDialogIcon.TD_SHIELDBLUE_ICON,
+	ShieldBlue = ComCtl32.TaskDialogIcon.TD_SHIELDBLUE_ICON,
 
 	/// <summary>Warning Shield icon on a yellow background. Only available on Windows 8 and later.</summary>
-	SecurityWarning = PInvoke.ComCtl32.TaskDialogIcon.TD_SECURITYWARNING_ICON,
+	SecurityWarning = ComCtl32.TaskDialogIcon.TD_SECURITYWARNING_ICON,
 
 	/// <summary>Error Shield icon on a red background. Only available on Windows 8 and later.</summary>
-	SecurityError = PInvoke.ComCtl32.TaskDialogIcon.TD_SECURITYERROR_ICON,
+	SecurityError = ComCtl32.TaskDialogIcon.TD_SECURITYERROR_ICON,
 
 	/// <summary>Success Shield icon on a green background. Only available on Windows 8 and later.</summary>
-	SecuritySuccess = PInvoke.ComCtl32.TaskDialogIcon.TD_SECURITYSUCCESS_ICON,
+	SecuritySuccess = ComCtl32.TaskDialogIcon.TD_SECURITYSUCCESS_ICON,
 
 	/// <summary>Shield icon on a gray background. Only available on Windows 8 and later.</summary>
-	ShieldGray = PInvoke.ComCtl32.TaskDialogIcon.TD_SHIELDGRAY_ICON
+	ShieldGray = ComCtl32.TaskDialogIcon.TD_SHIELDGRAY_ICON
 }
 
 /// <summary>

@@ -1,19 +1,17 @@
-using System;
 using System.Globalization;
-using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke;
 
 /// <summary>
 /// An LCID is a 4-byte value. The value supplied in an LCID is a standard numeric substitution for the international [RFC5646] string.
 /// </summary>
-/// <seealso cref="System.IComparable{T}"/>
-/// <seealso cref="System.IConvertible"/>
-/// <seealso cref="System.IEquatable{T}"/>
-/// <seealso cref="System.IEquatable{T}"/>
-/// <seealso cref="System.IComparable"/>
-/// <seealso cref="System.IComparable{T}"/>
-/// <seealso cref="System.IEquatable{T}"/>
+/// <seealso cref="IComparable{T}"/>
+/// <seealso cref="IConvertible"/>
+/// <seealso cref="IEquatable{T}"/>
+/// <seealso cref="IEquatable{T}"/>
+/// <seealso cref="IComparable"/>
+/// <seealso cref="IComparable{T}"/>
+/// <seealso cref="IEquatable{T}"/>
 [StructLayout(LayoutKind.Sequential)]
 [PInvokeData("winnls.h")]
 public partial struct LCID : IComparable, IComparable<LCID>, IConvertible, IEquatable<LCID>, IEquatable<uint>

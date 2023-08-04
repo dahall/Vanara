@@ -1,5 +1,4 @@
-﻿using System;
-using static Vanara.PInvoke.Kernel32;
+﻿using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -107,7 +106,7 @@ public class MessageLoop
 	}
 
 	/// <summary>Holds a copy of the MSG instance retrieved by GetMessage.</summary>
-	/// <seealso cref="System.EventArgs"/>
+	/// <seealso cref="EventArgs"/>
 	public class MessageEventArgs : EventArgs
 	{
 		internal MessageEventArgs(MSG msg) => MSG = msg;

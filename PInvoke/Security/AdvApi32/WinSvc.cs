@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -4222,7 +4217,7 @@ public static partial class AdvApi32
 	/// <returns>
 	/// A variable that receives the service status information. The format of this data depends on the value of the dwInfoLevel parameter.
 	/// </returns>
-	/// <exception cref="System.ArgumentException">Type mismatch - T</exception>
+	/// <exception cref="ArgumentException">Type mismatch - T</exception>
 	public static T QueryServiceStatusEx<T>(SC_HANDLE hService, SC_STATUS_TYPE InfoLevel = SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(InfoLevel, typeof(T))) throw new ArgumentException("Type mismatch", nameof(T));

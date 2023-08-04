@@ -13,7 +13,7 @@ public static partial class ComboBoxExtension
 	/// <exception cref="PlatformNotSupportedException">This method is only support on Windows Vista and later.</exception>
 	public static void SetCueBanner(this ComboBox cb, string cueBannerText)
 	{
-		if (System.Environment.OSVersion.Version.Major >= 6)
+		if (Environment.OSVersion.Version.Major >= 6)
 		{
 			if (!cb.IsHandleCreated) return;
 			SendMessage(cb.Handle, (uint)ComboBoxMessage.CB_SETCUEBANNER, IntPtr.Zero, cueBannerText);

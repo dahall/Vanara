@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>
 /// The STGM constants are flags that indicate conditions for creating and deleting the object and access modes for the object. The STGM

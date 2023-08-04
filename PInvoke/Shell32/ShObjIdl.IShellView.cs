@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Ole32;
 
@@ -976,16 +973,23 @@ public static partial class Shell32
 		/// <para>Returns S_OK if successful, or a COM-defined error value otherwise.</para>
 		/// </returns>
 		/// <remarks>
-		/// <para><c>GetControlWindow</c> is used so views can directly manipulate the browser's controls. <c>FCW_TREE</c> should be used only to determine if the tree is present.</para>
+		/// <para>
+		/// <c>GetControlWindow</c> is used so views can directly manipulate the browser's controls. <c>FCW_TREE</c> should be used only to
+		/// determine if the tree is present.
+		/// </para>
 		/// <para>Notes to Calling Applications</para>
-		/// <para><c>GetControlWindow</c> is used to manipulate and test the state of the control windows. Do not send messages directly to these controls; instead, use IShellBrowser::SendControlMsg. Be prepared for this method to return <c>NULL</c>. Later versions of Windows Explorer may not include a toolbar, status bar, or tree window.</para>
+		/// <para>
+		/// <c>GetControlWindow</c> is used to manipulate and test the state of the control windows. Do not send messages directly to these
+		/// controls; instead, use IShellBrowser::SendControlMsg. Be prepared for this method to return <c>NULL</c>. Later versions of
+		/// Windows Explorer may not include a toolbar, status bar, or tree window.
+		/// </para>
 		/// <para>Notes to Implementers</para>
 		/// <para><c>GetControlWindow</c> returns the window handle to these controls if they exist in your implementation.</para>
 		/// <para>See also IShellBrowser</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellbrowser-getcontrolwindow
 		[PreserveSig]
-		HRESULT GetControlWindow(FCW id, out HWND phwnd );
+		HRESULT GetControlWindow(FCW id, out HWND phwnd);
 
 		/// <summary>Sends control messages to either the toolbar or the status bar in a Windows Explorer window.</summary>
 		/// <param name="id">
@@ -1021,7 +1025,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellbrowser-sendcontrolmsg
 		[PreserveSig]
-		HRESULT SendControlMsg(FCW id, uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr pret );
+		HRESULT SendControlMsg(FCW id, uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr pret);
 
 		/// <summary>Retrieves the currently active (displayed) Shell view object.</summary>
 		/// <param name="ppshv">
@@ -1276,7 +1280,7 @@ public static partial class Shell32
 		/// </param>
 		/// <param name="prcView">The dimensions of the new view, in client coordinates.</param>
 		/// <returns>The address of the window handle being created.</returns>
-		HWND CreateViewWindow([In, Optional] IShellView psvPrevious, in FOLDERSETTINGS pfs, [In] IShellBrowser psb, in RECT prcView);
+		HWND CreateViewWindow([In, Optional] IShellView? psvPrevious, in FOLDERSETTINGS pfs, [In] IShellBrowser psb, in RECT prcView);
 
 		/// <summary>Destroys the view window.</summary>
 		void DestroyViewWindow();
@@ -1304,7 +1308,7 @@ public static partial class Shell32
 		/// <param name="riid">The identifier of the COM interface being requested.</param>
 		/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
 		[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)]
-		object GetItemObject([In] SVGIO uItem, in Guid riid);
+		object? GetItemObject([In] SVGIO uItem, in Guid riid);
 	}
 
 	/// <summary>
@@ -1497,7 +1501,7 @@ public static partial class Shell32
 		/// </param>
 		/// <param name="prcView">The dimensions of the new view, in client coordinates.</param>
 		/// <returns>The address of the window handle being created.</returns>
-		new HWND CreateViewWindow(IShellView psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
+		new HWND CreateViewWindow(IShellView? psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
 
 		/// <summary>Destroys the view window.</summary>
 		new void DestroyViewWindow();
@@ -1525,7 +1529,7 @@ public static partial class Shell32
 		/// <param name="riid">The identifier of the COM interface being requested.</param>
 		/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
 		[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)]
-		new object GetItemObject(SVGIO uItem, in Guid riid);
+		new object? GetItemObject(SVGIO uItem, in Guid riid);
 
 		/// <summary>
 		/// Requests the current or default Shell view, together with all other valid view identifiers (VIDs) supported by this
@@ -1738,7 +1742,7 @@ public static partial class Shell32
 		/// </param>
 		/// <param name="prcView">The dimensions of the new view, in client coordinates.</param>
 		/// <returns>The address of the window handle being created.</returns>
-		new HWND CreateViewWindow(IShellView psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
+		new HWND CreateViewWindow(IShellView? psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
 
 		/// <summary>Destroys the view window.</summary>
 		new void DestroyViewWindow();
@@ -1766,7 +1770,7 @@ public static partial class Shell32
 		/// <param name="riid">The identifier of the COM interface being requested.</param>
 		/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
 		[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)]
-		new object GetItemObject(SVGIO uItem, in Guid riid);
+		new object? GetItemObject(SVGIO uItem, in Guid riid);
 
 		/// <summary>
 		/// Requests the current or default Shell view, together with all other valid view identifiers (VIDs) supported by this
@@ -1819,7 +1823,7 @@ public static partial class Shell32
 	/// <param name="sv">The <see cref="IShellView"/> instance.</param>
 	/// <param name="uItem">The constants that refer to an aspect of the view.</param>
 	/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
-	public static T GetItemObject<T>(this IShellView sv, SVGIO uItem) where T : class => (T)sv.GetItemObject(uItem, typeof(T).GUID);
+	public static T? GetItemObject<T>(this IShellView sv, SVGIO uItem) where T : class => (T?)sv.GetItemObject(uItem, typeof(T).GUID);
 
 	/// <summary>Contains folder view information.</summary>
 	[PInvokeData("Shobjidl.h")]
@@ -1872,7 +1876,7 @@ public static partial class Shell32
 		/// <summary>Performs an implicit conversion from <see cref="FOLDERSETTINGS"/> to <see cref="PFOLDERSETTINGS"/>.</summary>
 		/// <param name="r">The <see cref="FOLDERSETTINGS"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PFOLDERSETTINGS(in FOLDERSETTINGS r) => new PFOLDERSETTINGS(r.ViewMode, r.fFlags);
+		public static implicit operator PFOLDERSETTINGS(in FOLDERSETTINGS r) => new(r.ViewMode, r.fFlags);
 	}
 
 	/// <summary>
@@ -1893,7 +1897,7 @@ public static partial class Shell32
 		/// previous view with the same implementation. It can also be used to optimize browsing between like views. This parameter may
 		/// be NULL.
 		/// </summary>
-		public IShellView psvPrev;
+		public IShellView? psvPrev;
 
 		/// <summary>A FOLDERSETTINGS structure with information needed to create the view.</summary>
 		private IntPtr _pfs;
@@ -1926,7 +1930,7 @@ public static partial class Shell32
 		/// Optional. The IShellView interface of the previous view. A Shell view can use this parameter to communicate with a previous
 		/// view with the same implementation. It can also be used to optimize browsing between like views.
 		/// </param>
-		public SV2CVW2_PARAMS(FOLDERVIEWMODE viewMode, FOLDERFLAGS flags, IShellBrowser owner, ref RECT displayArea, IShellView prevView = null)
+		public SV2CVW2_PARAMS(FOLDERVIEWMODE viewMode, FOLDERFLAGS flags, IShellBrowser owner, ref RECT displayArea, IShellView? prevView = null)
 		{
 			cbSize = (uint)Marshal.SizeOf(typeof(SV2CVW2_PARAMS));
 			psvPrev = prevView;

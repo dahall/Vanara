@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -86,7 +84,7 @@ public partial class ShellFileOperations : IDisposable
 	public event EventHandler StartOperations;
 
 	/// <summary>Occurs when a progress update is received.</summary>
-	public event System.ComponentModel.ProgressChangedEventHandler UpdateProgress;
+	public event ProgressChangedEventHandler UpdateProgress;
 
 	/// <summary>
 	/// Gets a value that states whether any file operations initiated by a call to <see cref="PerformOperations"/> were stopped before they
@@ -640,7 +638,7 @@ public partial class ShellFileOperations : IDisposable
 
 		public HRESULT StartOperations() => CallChkErr(() => parent.StartOperations?.Invoke(parent, EventArgs.Empty));
 
-		public HRESULT UpdateProgress(uint iWorkTotal, uint iWorkSoFar) => CallChkErr(() => parent.UpdateProgress?.Invoke(parent, new System.ComponentModel.ProgressChangedEventArgs(iWorkTotal == 0 ? 0 : (int)(iWorkSoFar * 100 / iWorkTotal), null)));
+		public HRESULT UpdateProgress(uint iWorkTotal, uint iWorkSoFar) => CallChkErr(() => parent.UpdateProgress?.Invoke(parent, new ProgressChangedEventArgs(iWorkTotal == 0 ? 0 : (int)(iWorkSoFar * 100 / iWorkTotal), null)));
 
 		private HRESULT CallChkErr(Action action)
 		{

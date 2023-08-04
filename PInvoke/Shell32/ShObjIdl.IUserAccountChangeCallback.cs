@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -38,6 +35,6 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iuseraccountchangecallback-onpicturechange HRESULT
 		// OnPictureChange( LPCWSTR pszUserName );
 		[PreserveSig]
-		HRESULT OnPictureChange([MarshalAs(UnmanagedType.LPWStr)] string pszUserName);
+		HRESULT OnPictureChange([MarshalAs(UnmanagedType.LPWStr)] string? pszUserName);
 	}
 }

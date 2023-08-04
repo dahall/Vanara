@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 [assembly: Guid("DCB00D01-570F-4A9B-8D69-199FDBA5723B")]
 #if !NETSTANDARD2_0

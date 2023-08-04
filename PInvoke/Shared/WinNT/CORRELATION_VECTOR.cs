@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Store the correlation vector that is used to reference events and the generated logs for diagnostic purposes.</summary>
 // https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/ns-ntddk-correlation_vector typedef struct CORRELATION_VECTOR {

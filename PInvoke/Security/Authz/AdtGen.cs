@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Authz
 {
@@ -17,7 +13,7 @@ public static partial class Authz
 		APT_None = 1,
 
 		/// <summary>A string that terminates with NULL.</summary>
-		[CorrespondingType(typeof(string), EncodingType = typeof(System.Text.UnicodeEncoding))]
+		[CorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 		APT_String,
 
 		/// <summary>An unsigned long.</summary>
@@ -56,7 +52,7 @@ public static partial class Authz
 		APT_Guid,
 
 		/// <summary>Time as FILETIME.</summary>
-		[CorrespondingType(typeof(System.Runtime.InteropServices.ComTypes.FILETIME))]
+		[CorrespondingType(typeof(FILETIME))]
 		APT_Time,
 
 		/// <summary>LONGLONG.</summary>

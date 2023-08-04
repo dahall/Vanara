@@ -23,7 +23,7 @@ public partial class WinBaseTests_Profile
 		Assert.That(WritePrivateProfileString(sec, "Key21", "Value1", tmp.FullName), ResultIs.Successful);
 		Assert.That(WritePrivateProfileStruct(sec, "Key22", new RECT(1, 2, 3, 4), tmp.FullName), ResultIs.Successful);
 		Assert.That(WritePrivateProfileStruct(sec, "Key23", 4, tmp.FullName), ResultIs.Successful);
-		TestContext.WriteLine(System.IO.File.ReadAllText(tmp.FullName));
+		TestContext.WriteLine(File.ReadAllText(tmp.FullName));
 
 		Assert.That(GetPrivateProfileInt(sec, "Key1", 0, tmp.FullName), Is.EqualTo(1));
 		Assert.That(GetPrivateProfileInt(sec, "Key23", 0, tmp.FullName), Is.Not.EqualTo(4));
@@ -124,7 +124,7 @@ public partial class WinBaseTests_Profile
 		Assert.That(new FileInfo(tmp.FullName).Length, Is.LessThan(8));
 		DumpFile();
 
-		void DumpFile() => TestContext.WriteLine("=============\r\n" + System.IO.File.ReadAllText(tmp.FullName));
+		void DumpFile() => TestContext.WriteLine("=============\r\n" + File.ReadAllText(tmp.FullName));
 	}
 
 	[Test]

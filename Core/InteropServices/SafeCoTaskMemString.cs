@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Security;
 
 namespace Vanara.InteropServices;
@@ -39,7 +37,8 @@ public class SafeCoTaskMemString : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
 	private SafeCoTaskMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
-		base(ptr, charSet, ownsHandle, allocatedBytes) { }
+		base(ptr, charSet, ownsHandle, allocatedBytes)
+	{ }
 
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>

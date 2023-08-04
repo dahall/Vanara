@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -873,7 +870,7 @@ public static partial class ComCtl32
 	/// Specifies or receives the attributes of a tab item. It is used with the TCM_INSERTITEM, TCM_GETITEM, and TCM_SETITEM messages.
 	/// This structure supersedes the TC_ITEM structure.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760554")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class TCITEM : IDisposable
@@ -954,7 +951,7 @@ public static partial class ComCtl32
 	/// Specifies or receives the attributes of a tab. It is used with the TCM_INSERTITEM, TCM_GETITEM, and TCM_SETITEM messages. This
 	/// structure supersedes the TC_ITEMHEADER structure.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760813")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class TCITEMHEADER : IDisposable

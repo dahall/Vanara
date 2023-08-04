@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
@@ -78,7 +75,7 @@ public sealed class HGlobalMemoryMethods : IMemoryMethods
 }
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+/// <seealso cref="SafeHandle"/>
 public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
@@ -94,7 +91,7 @@ public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	public SafeHGlobalHandle(SizeT size) : base(size) { }
 
 	/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>

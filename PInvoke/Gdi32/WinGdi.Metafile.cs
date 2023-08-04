@@ -1,10 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -1738,7 +1732,7 @@ public static partial class Gdi32
 		private ENHMETARECORD(IntPtr ptr) : base(ptr, 0, false, 8, 0, true)
 		{
 			sz = handle.ToStructure<uint>(0, 4);
-			base.Count = (int)(Size - base.HeaderSize) / 4;
+			base.Count = (int)(Size - HeaderSize) / 4;
 		}
 
 		/// <summary>An array of parameters passed to the GDI function identified by the record.</summary>
@@ -1775,7 +1769,7 @@ public static partial class Gdi32
 		private METARECORD(IntPtr ptr) : base(ptr, 0, false, 6, 0, true)
 		{
 			sz = handle.ToStructure<uint>() * 2U;
-			base.Count = (int)(Size - base.HeaderSize) / 2;
+			base.Count = (int)(Size - HeaderSize) / 2;
 		}
 
 		/// <summary>The function number.</summary>

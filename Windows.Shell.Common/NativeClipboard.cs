@@ -1,9 +1,6 @@
 ﻿#nullable enable
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
@@ -186,7 +183,7 @@ public static class NativeClipboard
 	/// <summary>Registers a new clipboard format. This format can then be used as a valid clipboard format.</summary>
 	/// <param name="format">The name of the new format.</param>
 	/// <returns>The registered clipboard format identifier.</returns>
-	/// <exception cref="System.ArgumentNullException">format</exception>
+	/// <exception cref="ArgumentNullException">format</exception>
 	/// <remarks>
 	/// If a registered format with the specified name already exists, a new format is not registered and the return value identifies the
 	/// existing format. This enables more than one application to copy and paste data using the same registered clipboard format. Note

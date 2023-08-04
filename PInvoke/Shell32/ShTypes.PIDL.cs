@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 public static partial class Shell32
 {
 	/// <summary>Represents a managed pointer to an ITEMIDLIST.</summary>
@@ -37,7 +35,7 @@ public static partial class Shell32
 		/// <param name="stream">The stream interface instance from which the ITEMIDLIST loads.</param>
 		public PIDL(System.Runtime.InteropServices.ComTypes.IStream stream)
 		{
-			ILLoadFromStreamEx(stream, out var p).ThrowIfFailed();
+			ILLoadFromStreamEx(stream, out PIDL p).ThrowIfFailed();
 			SetHandle(p.ReleaseOwnership());
 		}
 
@@ -54,7 +52,7 @@ public static partial class Shell32
 
 		/// <summary>Gets the last SHITEMID in this ITEMIDLIST.</summary>
 		/// <value>The last SHITEMID.</value>
-		public PIDL LastId => new PIDL(ILFindLastID(handle), true);
+		public PIDL LastId => new(ILFindLastID(handle), true);
 
 		/// <summary>Gets an ITEMIDLIST with the last ID removed. If this is the topmost ID, a clone of the current is returned.</summary>
 		public PIDL Parent
@@ -84,7 +82,7 @@ public static partial class Shell32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PIDL"/>.</summary>
 		/// <param name="p">The pointer to a raw ITEMIDLIST.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PIDL(IntPtr p) => new PIDL(p);
+		public static implicit operator PIDL(IntPtr p) => new(p);
 
 		/// <summary>Combines the specified <see cref="PIDL"/> instances to create a new one.</summary>
 		/// <param name="first">The first <see cref="PIDL"/>.</param>
@@ -115,7 +113,7 @@ public static partial class Shell32
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj switch
+		public override bool Equals(object? obj) => obj switch
 		{
 			null => IsEmpty,
 			PIDL pidl => Equals(pidl),
@@ -131,11 +129,11 @@ public static partial class Shell32
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(PIDL other) => ReferenceEquals(this, other) || Equals(other?.handle ?? IntPtr.Zero);
+		public bool Equals(PIDL? other) => ReferenceEquals(this, other) || Equals(other?.handle ?? IntPtr.Zero);
 
 		/// <summary>Gets the ID list as an array of bytes.</summary>
 		/// <returns>An array of bytes representing the ID list.</returns>
-		public byte[] GetBytes() => handle.ToByteArray((int)Size);
+		public byte[] GetBytes() => handle.ToByteArray((int)Size) ?? new byte[0];
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{PIDL}"/> that can be used to iterate through the collection.</returns>
@@ -177,10 +175,10 @@ public static partial class Shell32
 			try
 			{
 				SHGetNameFromIDList(this, displayNameFormat, out var name).ThrowIfFailed();
-				return name;
+				return name!;
 			}
 			catch (Exception ex) { Debug.WriteLine($"Error: PIDL:ToString = {ex}"); }
-			return null;
+			return string.Empty;
 		}
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
@@ -219,7 +217,7 @@ public static partial class Shell32
 				currentPidl = IntPtr.Zero;
 			}
 
-			public PIDL Current => currentPidl == IntPtr.Zero ? null : ILCloneFirst(currentPidl);
+			public PIDL Current => currentPidl == IntPtr.Zero ? PIDL.Null : ILCloneFirst(currentPidl);
 
 			object IEnumerator.Current => Current;
 

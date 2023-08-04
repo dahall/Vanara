@@ -1,9 +1,5 @@
-using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.PropSys;
@@ -16,7 +12,7 @@ public static partial class Shell32
 {
 	/// <summary/>
 	public const int NINF_KEY = 0x1;
-	
+
 	/// <summary>Values used in APPBARDATA.</summary>
 	[PInvokeData("shellapi.h", MSDNShortId = "cf86fe15-4beb-49b7-b73e-2ad61cedc3f8")]
 	public enum ABE
@@ -1467,8 +1463,10 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-assoccreateforclasses SHSTDAPI AssocCreateForClasses(
 	// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
-	public static TIntf AssocCreateForClasses<TIntf>(ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => AssocCreateForClasses(rgClasses, (uint)(rgClasses?.Length ?? 0), g, out o));
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+	public static TIntf? AssocCreateForClasses<TIntf>(ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => AssocCreateForClasses(rgClasses, (uint)rgClasses.Length, g, out o));
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>
 	/// <para>
@@ -1571,7 +1569,7 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw
 	// LPWSTR * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
 	[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
-	public static string[] CommandLineToArgvW(string lpCmdLine = "") =>
+	public static string?[] CommandLineToArgvW(string lpCmdLine = "") =>
 		CommandLineToArgvW(lpCmdLine, out var pNumArgs).ToStringEnum(pNumArgs, CharSet.Unicode).ToArray();
 
 	/// <summary>
@@ -1980,19 +1978,35 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractIconExA")]
 	public static extern uint ExtractIconEx(string lpszFile, int nIconIndex,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconLarge,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconSmall, uint nIcons);
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[]? phiconLarge,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[]? phiconSmall, uint nIcons);
 
-	/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
+	/// <summary>
+	/// The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file,
+	/// DLL, or icon file.
+	/// </summary>
 	/// <param name="lpszFile">
 	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</para>
+	/// <para>
+	/// Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.
+	/// </para>
 	/// </param>
 	/// <param name="nIconIndex">
 	/// <para>Type: <c>int</c></para>
-	/// <para>Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon in the specified file.</para>
-	/// <para>If this value is –1 and phiconLarge and phiconSmall are both <c>NULL</c>, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ico file, the return value is 1.</para>
-	/// <para>If this value is a negative number and either phiconLarge or phiconSmall is not <c>NULL</c>, the function begins by extracting the icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource identifier is 3.</para>
+	/// <para>
+	/// Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon
+	/// in the specified file.
+	/// </para>
+	/// <para>
+	/// If this value is –1 and phiconLarge and phiconSmall are both <c>NULL</c>, the function returns the total number of icons in the
+	/// specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is
+	/// an .ico file, the return value is 1.
+	/// </para>
+	/// <para>
+	/// If this value is a negative number and either phiconLarge or phiconSmall is not <c>NULL</c>, the function begins by extracting the
+	/// icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource
+	/// identifier is 3.
+	/// </para>
 	/// </param>
 	/// <param name="nIcons">
 	/// <para>Type: <c>UINT</c></para>
@@ -2000,29 +2014,42 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="phiconLarge">
 	/// <para>Type: <c>SafeHICON[]</c></para>
-	/// <para>An array of icon handles that receives handles to the large icons extracted from the file. If this parameter is <c>NULL</c>, no large icons were extracted from the file.</para>
+	/// <para>
+	/// An array of icon handles that receives handles to the large icons extracted from the file. If this parameter is <c>NULL</c>, no large
+	/// icons were extracted from the file.
+	/// </para>
 	/// </param>
 	/// <param name="phiconSmall">
 	/// <para>Type: <c>SafeHICON[]</c></para>
-	/// <para>An array of icon handles that receives handles to the small icons extracted from the file. If this parameter is <c>NULL</c>, no small icons were extracted from the file.</para>
+	/// <para>
+	/// An array of icon handles that receives handles to the small icons extracted from the file. If this parameter is <c>NULL</c>, no small
+	/// icons were extracted from the file.
+	/// </para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>UINT</c></para>
-	/// <para>If the nIconIndex parameter is -1, the phiconLarge parameter is <c>NULL</c>, and the phiconSmall parameter is <c>NULL</c>, then the return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully extracted from the file.</para>
+	/// <para>
+	/// If the nIconIndex parameter is -1, the phiconLarge parameter is <c>NULL</c>, and the phiconSmall parameter is <c>NULL</c>, then the
+	/// return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully
+	/// extracted from the file.
+	/// </para>
 	/// </returns>
 	/// <remarks>
-	/// <para>To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and SM_CYSMICON flags.</para>
+	/// <para>
+	/// To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and
+	/// SM_CYSMICON flags.
+	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticonexa
 	// UINT ExtractIconExA( LPCSTR lpszFile, int nIconIndex, HICON *phiconLarge, HICON *phiconSmall, UINT nIcons );
 	[PInvokeData("shellapi.h", MSDNShortId = "1c4d760a-79b5-4646-9cf2-6cd32c5d05ee")]
-	public static uint ExtractIconEx(string lpszFile, int nIconIndex, uint nIcons, out SafeHICON[] phiconLarge, out SafeHICON[] phiconSmall)
+	public static uint ExtractIconEx(string lpszFile, int nIconIndex, uint nIcons, out SafeHICON[]? phiconLarge, out SafeHICON[]? phiconSmall)
 	{
-		HICON[] sm = nIcons > 0 ? new HICON[nIcons] : null, lg = nIcons > 0 ? new HICON[nIcons] : null;
+		HICON[]? sm = nIcons > 0 ? new HICON[nIcons] : null, lg = nIcons > 0 ? new HICON[nIcons] : null;
 		var ret = ExtractIconEx(lpszFile, nIconIndex, lg, sm, nIcons);
 		var conv = nIconIndex != -1 && ret > 0;
-		phiconLarge = conv ? Array.ConvertAll(lg, h => new SafeHICON((IntPtr)h)) : null;
-		phiconSmall = conv ? Array.ConvertAll(sm, h => new SafeHICON((IntPtr)h)) : null;
+		phiconLarge = conv && lg is not null ? Array.ConvertAll(lg, h => new SafeHICON((IntPtr)h)) : null;
+		phiconSmall = conv && sm is not null ? Array.ConvertAll(sm, h => new SafeHICON((IntPtr)h)) : null;
 		return ret;
 	}
 
@@ -2122,19 +2149,17 @@ public static partial class Shell32
 	// lpFile, LPCSTR lpDirectory, LPSTR lpResult );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "969edbd9-164e-457f-ab0a-dc4d069bf16b")]
-	public static extern IntPtr FindExecutable(string lpFile, string lpDirectory, StringBuilder lpResult);
+	public static extern IntPtr FindExecutable(string lpFile, string? lpDirectory, StringBuilder lpResult);
 
-	/// <summary>
-	/// <para>Initializes the network address control window class.</para>
-	/// </summary>
+	/// <summary>Initializes the network address control window class.</summary>
 	/// <returns>
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para><c>TRUE</c> if the initialization succeeded; or <c>FALSE</c> otherwise.</para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// The network address control looks like an edit control and offers the additional functionality of network address verification.
-	/// The control uses a balloon tip to display error messages.
+	/// The network address control looks like an edit control and offers the additional functionality of network address verification. The
+	/// control uses a balloon tip to display error messages.
 	/// </para>
 	/// <para>This function initializes class WC_NETADDRESS. If this function returns <c>TRUE</c>, the control can be created.</para>
 	/// </remarks>
@@ -2883,7 +2908,7 @@ public static partial class Shell32
 	[PInvokeData("shellapi.h", MSDNShortId = "554b941d-7d03-47ae-a23a-2c47c5ca1044")]
 	public static extern HRESULT SHEvaluateSystemCommandTemplate(string pszCmdTemplate,
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszApplication,
-		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCommandLine,
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? ppszCommandLine,
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszParameters);
 
 	/// <summary>
@@ -3303,8 +3328,10 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shgetpropertystoreforwindow SHSTDAPI
 	// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
-	public static TIntf SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object o) => SHGetPropertyStoreForWindow(hwnd, g, out o));
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+	public static TIntf? SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetPropertyStoreForWindow(hwnd, g, out o));
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>
 	/// <para>Retrieves information about system-defined Shell icons.</para>
@@ -3427,7 +3454,8 @@ public static partial class Shell32
 	// cchShellExecuteCommand );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shellapi.h", MSDNShortId = "d2a57fa0-13fe-4e12-89cc-8a6dbdb44f08")]
-	public static extern HRESULT SHGetUnreadMailCountW(HKEY hKeyUser, string pszMailAddress, out uint pdwCount, ref System.Runtime.InteropServices.ComTypes.FILETIME pFileTime, StringBuilder pszShellExecuteCommand, int cchShellExecuteCommand);
+	public static extern HRESULT SHGetUnreadMailCountW([Optional] HKEY hKeyUser, [Optional] string? pszMailAddress, out uint pdwCount,
+		ref FILETIME pFileTime, [Optional] StringBuilder? pszShellExecuteCommand, [Optional] int cchShellExecuteCommand);
 
 	/// <summary>
 	/// <para>Executes a command on a printer object.</para>
@@ -3523,7 +3551,8 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.SHInvokePrinterCommandA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SHInvokePrinterCommand(HWND hwnd, PRINTACTION uAction, string lpBuf1, [Optional] string? lpBuf2, [MarshalAs(UnmanagedType.Bool)] bool fModal);
+	public static extern bool SHInvokePrinterCommand([Optional] HWND hwnd, PRINTACTION uAction, string lpBuf1, [Optional] string? lpBuf2,
+		[MarshalAs(UnmanagedType.Bool)] bool fModal);
 
 	/// <summary>
 	/// <para>
@@ -4260,7 +4289,8 @@ public static partial class Shell32
 		/// </item>
 		/// </list>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpVerb;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpVerb;
 
 		/// <summary>
 		/// The address of a null-terminated string that specifies the name of the file or object on which ShellExecuteEx will perform
@@ -4272,19 +4302,22 @@ public static partial class Shell32
 		/// by its file system path or its PIDL respectively. One of the two values—lpFile or lpIDList—must be set.</note><note>If the
 		/// path is not included with the name, the current directory is assumed.</note>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpFile;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string lpFile;
 
 		/// <summary>
 		/// Optional. The address of a null-terminated string that contains the application parameters. The parameters must be separated
 		/// by spaces. If the lpFile member specifies a document file, lpParameters should be NULL.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpParameters;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpParameters;
 
 		/// <summary>
 		/// Optional. The address of a null-terminated string that specifies the name of the working directory. If this member is NULL,
 		/// the current directory is used as the working directory.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpDirectory;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpDirectory;
 
 		/// <summary>
 		/// Required. Flags that specify how an application is to be shown when it is opened; one of the SW_ values listed for the
@@ -4328,7 +4361,8 @@ public static partial class Shell32
 		/// </list>
 		/// <para>This member is ignored if fMask does not include SEE_MASK_CLASSNAME.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpClass;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpClass;
 
 		/// <summary>
 		/// A handle to the registry key for the file type. The access rights for this registry key should be set to KEY_READ. This
@@ -4366,7 +4400,7 @@ public static partial class Shell32
 		/// <summary>Initializes a new instance of the <see cref="SHELLEXECUTEINFO"/> struct.</summary>
 		/// <param name="fileName">Name of the file.</param>
 		/// <param name="parameters">The parameters.</param>
-		public SHELLEXECUTEINFO(string fileName, string parameters = null) : this()
+		public SHELLEXECUTEINFO(string fileName, string? parameters = null) : this()
 		{
 			cbSize = Marshal.SizeOf(this);
 			lpFile = fileName;
@@ -4433,8 +4467,8 @@ public static partial class Shell32
 		/// double NULL character ("\0\0") to indicate the end of the buffer.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pFrom;
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")]
+		public string[] pFrom;
 
 		/// <summary>
 		/// <note type="note">This string must be double-null terminated.</note>
@@ -4470,8 +4504,8 @@ public static partial class Shell32
 		/// </item>
 		/// </list>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pTo;
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")]
+		public string[]? pTo;
 
 		/// <summary>Flags that control the file operation.</summary>
 		public FILEOP_FLAGS fFlags;

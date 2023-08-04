@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security;
+﻿using System.Security;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.Windows.Forms;
@@ -18,7 +17,7 @@ namespace Vanara.Windows.Forms;
 /// }
 /// </code>
 /// </remarks>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 [SuppressUnmanagedCodeSecurity]
 public class ComCtl32v6Context : IDisposable
 {

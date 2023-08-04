@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Macros;
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -339,7 +335,7 @@ public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<
 	/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 	/// <param name="resName">Name of the resource.</param>
 	/// <param name="charSet">The character set.</param>
-	/// <exception cref="System.ArgumentNullException">resName</exception>
+	/// <exception cref="ArgumentNullException">resName</exception>
 	public SafeResourceId(string resName, CharSet charSet = CharSet.Auto)
 	{
 		if (string.IsNullOrEmpty(resName)) throw new ArgumentNullException(nameof(resName));

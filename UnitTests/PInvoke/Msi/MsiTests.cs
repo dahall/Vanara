@@ -62,7 +62,7 @@ public class MsiTests
 
 		static IEnumerable<string> GetPatches(string pc)
 		{
-			var patch = new StringBuilder(Msi.MAX_GUID_CHARS + 1);
+			var patch = new StringBuilder(MAX_GUID_CHARS + 1);
 			var txf = new StringBuilder(1024);
 			var pkg = new StringBuilder(1024);
 			for (uint i = 0; true; i++)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke;
@@ -35,27 +32,23 @@ public static class KnownFolderIdExt
 	/// <returns>The <see cref="IShellFolder"/> instance.</returns>
 	public static IShellFolder GetIShellFolder(this KNOWNFOLDERID id)
 	{
-		using var desktop = ComReleaserFactory.Create(new ShellDesktop() as IShellFolder);
+		using var desktop = ComReleaserFactory.Create((IShellFolder)new ShellDesktop());
 		using var pidl = id.PIDL();
-		return desktop.Item.BindToObject<IShellFolder>(pidl);
+		return desktop.Item.BindToObject<IShellFolder>(pidl)!;
 	}
 
 	/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 	/// <param name="id">The known folder.</param>
 	/// <returns>The <see cref="IShellItem"/> instance.</returns>
-	public static IShellItem GetIShellItem(this KNOWNFOLDERID id)
-	{
-		SHGetKnownFolderItem(id.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, HTOKEN.NULL, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
-		return (IShellItem)ppv;
-	}
+	public static IShellItem? GetIShellItem(this KNOWNFOLDERID id) => SHGetKnownFolderItem<IShellItem>(id);
 
 	/// <summary>Gets a registry property associated with this known folder.</summary>
 	/// <typeparam name="T">Return type.</typeparam>
 	/// <param name="id">The known folder.</param>
 	/// <param name="valueName">Name of the property (value under registry key).</param>
 	/// <returns>Retrieved value or default(T) if no value exists.</returns>
-	public static T GetRegistryProperty<T>(this KNOWNFOLDERID id, string valueName) =>
-		(T)Microsoft.Win32.Registry.GetValue(RegPath + id.Guid().ToString("B"), valueName, default(T));
+	public static T? GetRegistryProperty<T>(this KNOWNFOLDERID id, string valueName) =>
+		(T?)Microsoft.Win32.Registry.GetValue(RegPath + id.Guid().ToString("B"), valueName, default(T));
 
 	/// <summary>Retrieves the Guid associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 	/// <param name="id">The known folder.</param>
@@ -65,11 +58,11 @@ public static class KnownFolderIdExt
 	/// <summary>Retrieves the <see cref="KNOWNFOLDERID"/> associated with the <see cref="Environment.SpecialFolder"/>.</summary>
 	/// <param name="spFolder">The <see cref="Environment.SpecialFolder"/>.</param>
 	/// <returns>Matching <see cref="KNOWNFOLDERID"/>.</returns>
-	public static KNOWNFOLDERID KnownFolderId(this System.Environment.SpecialFolder spFolder)
+	public static KNOWNFOLDERID KnownFolderId(this Environment.SpecialFolder spFolder)
 	{
 		if (spFolder == Environment.SpecialFolder.Personal) return KNOWNFOLDERID.FOLDERID_Documents;
 		if (spFolder == Environment.SpecialFolder.DesktopDirectory) return KNOWNFOLDERID.FOLDERID_Desktop;
-		foreach (KNOWNFOLDERID val in Enum.GetValues(typeof(KNOWNFOLDERID)))
+		foreach (KNOWNFOLDERID val in Enum.GetValues(typeof(KNOWNFOLDERID)).Cast<KNOWNFOLDERID>())
 			if (val.SpecialFolder() == spFolder) return val;
 		throw new InvalidCastException(@"There is not a Known Folder equivalent to this SpecialFolder.");
 	}
@@ -108,5 +101,5 @@ public static class KnownFolderIdExt
 	/// <param name="id">The known folder.</param>
 	/// <returns>The <see cref="Environment.SpecialFolder"/> if defined, <c>null</c> otherwise.</returns>
 	public static Environment.SpecialFolder? SpecialFolder(this KNOWNFOLDERID id) =>
-		typeof(KNOWNFOLDERID).GetField(id.ToString()).GetCustomAttributes<KnownFolderDetailAttribute>().Select(a => (Environment.SpecialFolder?)a.Equivalent).FirstOrDefault();
+		typeof(KNOWNFOLDERID).GetField(id.ToString())?.GetCustomAttributes<KnownFolderDetailAttribute>().Select(a => (Environment.SpecialFolder?)a.Equivalent).FirstOrDefault();
 }

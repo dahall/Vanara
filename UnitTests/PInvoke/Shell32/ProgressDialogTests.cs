@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using static Vanara.PInvoke.Shell32;
 
@@ -57,8 +55,8 @@ public class ProgressDialogTests
 		idlg.SetOperation(SPACTION.SPACTION_FORMATTING);
 		idlg.SetMode(PDMODE.PDM_RUN);
 		idlg.UpdateProgress(0, 0, 0, 0, 0, 100);
-		var srcd = SHGetKnownFolderItem<IShellItem>(KNOWNFOLDERID.FOLDERID_Documents);
-		var destd = SHGetKnownFolderItem<IShellItem>(KNOWNFOLDERID.FOLDERID_Desktop);
+		var srcd = SHGetKnownFolderItem<IShellItem>(KNOWNFOLDERID.FOLDERID_Documents)!;
+		var destd = SHGetKnownFolderItem<IShellItem>(KNOWNFOLDERID.FOLDERID_Desktop)!;
 		idlg.UpdateLocations(srcd, destd);
 		var rnd = new Random();
 		for (uint i = 0; i < 100; i++)

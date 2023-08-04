@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 
@@ -321,11 +319,11 @@ public static partial class Shell32
 	{
 		/// <summary>Get the constraint name.</summary>
 		[DispId(0x60020000)]
-		string Name { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		string Name { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>Get the constraint value.</summary>
 		[DispId(0x60020001)]
-		object Value { [return: MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Value { [return: MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 	}
 
 	/// <summary>Event interface for ShellFolderView.</summary>
@@ -366,7 +364,7 @@ public static partial class Shell32
 		/// <summary>Contains the title of the folder.</summary>
 		/// <value>Returns a <see cref="string"/> value.</value>
 		[DispId(0)]
-		string Title { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
+		string Title { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
 
 		/// <summary>Contains the folder's Application object.</summary>
 		/// <value>An object reference to the Application object.</value>
@@ -382,11 +380,11 @@ public static partial class Shell32
 		/// is raised.</note>
 		/// </remarks>
 		[DispId(0x60020001)]
-		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		[DispId(0x60020002)]
-		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Contains the parent Folder object.</summary>
 		/// <value>An object reference to the ParentFolder object.</value>
@@ -396,7 +394,7 @@ public static partial class Shell32
 		/// is raised.</note>
 		/// </remarks>
 		[DispId(0x60020003)]
-		Folder ParentFolder { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)] get; }
+		Folder ParentFolder { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)] get; }
 
 		/// <summary>Retrieves a FolderItems object that represents the collection of items in the folder.</summary>
 		/// <returns>An object reference to the FolderItems object.</returns>
@@ -421,7 +419,7 @@ public static partial class Shell32
 		/// <param name="bName">A string that specifies the name of the new folder.</param>
 		/// <param name="vOptions">This value is not currently used.</param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
-		void NewFolder([In, MarshalAs(UnmanagedType.BStr)] string bName, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
+		void NewFolder([In, MarshalAs(UnmanagedType.BStr)] string bName, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOptions);
 
 		/// <summary>Moves an item or items to this folder.</summary>
 		/// <param name="vItem">
@@ -468,7 +466,7 @@ public static partial class Shell32
 		/// <summary>Contains the title of the folder.</summary>
 		/// <value>Returns a <see cref="string"/> value.</value>
 		[DispId(0)]
-		new string Title { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
+		new string Title { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
 
 		/// <summary>Contains the folder's Application object.</summary>
 		/// <value>An object reference to the Application object.</value>
@@ -484,11 +482,11 @@ public static partial class Shell32
 		/// is raised.</note>
 		/// </remarks>
 		[DispId(0x60020001)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		[DispId(0x60020002)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Contains the parent Folder object.</summary>
 		/// <value>An object reference to the ParentFolder object.</value>
@@ -498,7 +496,7 @@ public static partial class Shell32
 		/// is raised.</note>
 		/// </remarks>
 		[DispId(0x60020003)]
-		new Folder ParentFolder { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)] get; }
+		new Folder ParentFolder { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)] get; }
 
 		/// <summary>Retrieves a FolderItems object that represents the collection of items in the folder.</summary>
 		/// <returns>An object reference to the FolderItems object.</returns>
@@ -523,7 +521,7 @@ public static partial class Shell32
 		/// <param name="bName">A string that specifies the name of the new folder.</param>
 		/// <param name="vOptions">This value is not currently used.</param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
-		new void NewFolder([In, MarshalAs(UnmanagedType.BStr)] string bName, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
+		new void NewFolder([In, MarshalAs(UnmanagedType.BStr)] string bName, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOptions);
 
 		/// <summary>Moves an item or items to this folder.</summary>
 		/// <param name="vItem">
@@ -564,7 +562,7 @@ public static partial class Shell32
 		/// <summary>Contains the folder's FolderItem object.</summary>
 		/// <value>The object that evaluates to the folder's FolderItem object.</value>
 		[DispId(0x60030000)]
-		FolderItem Self { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; }
+		FolderItem Self { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; }
 
 		/// <summary>Contains the offline status of the folder.</summary>
 		/// <value>Returns a <see cref="OfflineFolderStatus"/> value.</value>
@@ -593,7 +591,7 @@ public static partial class Shell32
 		/// <summary>Contains the title of the folder.</summary>
 		/// <value>Returns a <see cref="string"/> value.</value>
 		[DispId(0)]
-		new string Title { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
+		new string Title { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
 
 		/// <summary>Contains the folder's Application object.</summary>
 		/// <value>An object reference to the Application object.</value>
@@ -609,11 +607,11 @@ public static partial class Shell32
 		/// is raised.</note>
 		/// </remarks>
 		[DispId(0x60020001)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		[DispId(0x60020002)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Contains the parent Folder object.</summary>
 		/// <value>An object reference to the ParentFolder object.</value>
@@ -623,7 +621,7 @@ public static partial class Shell32
 		/// is raised.</note>
 		/// </remarks>
 		[DispId(0x60020003)]
-		new Folder ParentFolder { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)] get; }
+		new Folder ParentFolder { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)] get; }
 
 		/// <summary>Retrieves a FolderItems object that represents the collection of items in the folder.</summary>
 		/// <returns>An object reference to the FolderItems object.</returns>
@@ -648,7 +646,7 @@ public static partial class Shell32
 		/// <param name="bName">A string that specifies the name of the new folder.</param>
 		/// <param name="vOptions">This value is not currently used.</param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
-		new void NewFolder([In, MarshalAs(UnmanagedType.BStr)] string bName, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
+		new void NewFolder([In, MarshalAs(UnmanagedType.BStr)] string bName, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOptions);
 
 		/// <summary>Moves an item or items to this folder.</summary>
 		/// <param name="vItem">
@@ -689,7 +687,7 @@ public static partial class Shell32
 		/// <summary>Contains the folder's FolderItem object.</summary>
 		/// <value>The object that evaluates to the folder's FolderItem object.</value>
 		[DispId(0x60030000)]
-		new FolderItem Self { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; }
+		new FolderItem Self { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; }
 
 		/// <summary>Contains the offline status of the folder.</summary>
 		/// <value>Returns a <see cref="OfflineFolderStatus"/> value.</value>
@@ -711,7 +709,7 @@ public static partial class Shell32
 
 		/// <summary>Gets or sets a value indicating whether to show web view barricade.</summary>
 		[DispId(2)]
-		bool ShowWebViewBarricade { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(2)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(2)] set; }
+		bool ShowWebViewBarricade { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(2)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(2)] set; }
 	}
 
 	/// <summary>
@@ -733,32 +731,32 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		[DispId(0x60020000)]
-		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>Gets an object that represents the parent of the item.</summary>
 		/// <value>A variable of type IDispatch that receives the parent object.</value>
 		[DispId(0x60020001)]
-		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Gets or sets the item's name.</summary>
 		/// <value>A variable of type BSTR that specifies or receives the item's name.</value>
 		[DispId(0)]
-		string Name { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] set; }
+		string Name { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] set; }
 
 		/// <summary>Contains the item's full path and name.</summary>
 		/// <value>A variable of type BSTR that receives the item's full path and name.</value>
 		[DispId(0x60020004)]
-		string Path { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
+		string Path { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
 
 		/// <summary>Contains the item's ShellLinkObject object, if the item is a shortcut.</summary>
 		/// <value>A variable of type IDispatch that receives the ShellLinkObject object.</value>
 		[DispId(0x60020005)]
-		object GetLink { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)] get; }
+		object GetLink { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)] get; }
 
 		/// <summary>Contains the item's Folder object, if the item is a folder.</summary>
 		/// <value>A variable of type IDispatch that receives the Folder object.</value>
 		[DispId(0x60020006)]
-		object GetFolder { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; }
+		object GetFolder { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; }
 
 		/// <summary>Indicates whether the item is a shortcut.</summary>
 		/// <value>A Boolean that receives <see langword="true"/> if the item is a shortcut or <see langword="false"/> if not.</value>
@@ -788,7 +786,7 @@ public static partial class Shell32
 		/// </summary>
 		/// <value>Date that specifies or receives the date and time that the item was last modified.</value>
 		[DispId(0x6002000b)]
-		DateTime ModifyDate { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] set; }
+		DateTime ModifyDate { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] set; }
 
 		/// <summary>Contains the item's size.</summary>
 		/// <value>An Integer that receives the item's size.</value>
@@ -798,7 +796,7 @@ public static partial class Shell32
 		/// <summary>Contains a string representation of the item's type.</summary>
 		/// <value>A variable of type BSTR that receives the item's type.</value>
 		[DispId(0x6002000e)]
-		string Type { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000e)] get; }
+		string Type { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000e)] get; }
 
 		/// <summary>
 		/// Retrieves the item's FolderItemVerbs object. This object is the collection of verbs that can be executed on the item.
@@ -843,32 +841,32 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>Gets an object that represents the parent of the item.</summary>
 		/// <value>A variable of type IDispatch that receives the parent object.</value>
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Gets or sets the item's name.</summary>
 		/// <value>A variable of type BSTR that specifies or receives the item's name.</value>
 		[DispId(0)]
-		new string Name { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] set; }
+		new string Name { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] set; }
 
 		/// <summary>Contains the item's full path and name.</summary>
 		/// <value>A variable of type BSTR that receives the item's full path and name.</value>
 		[DispId(0x60020004)]
-		new string Path { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
+		new string Path { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
 
 		/// <summary>Contains the item's ShellLinkObject object, if the item is a shortcut.</summary>
 		/// <value>A variable of type IDispatch that receives the ShellLinkObject object.</value>
 		[DispId(0x60020005)]
-		new object GetLink { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)] get; }
+		new object GetLink { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)] get; }
 
 		/// <summary>Contains the item's Folder object, if the item is a folder.</summary>
 		/// <value>A variable of type IDispatch that receives the Folder object.</value>
 		[DispId(0x60020006)]
-		new object GetFolder { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; }
+		new object GetFolder { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; }
 
 		/// <summary>Indicates whether the item is a shortcut.</summary>
 		/// <value>A Boolean that receives <see langword="true"/> if the item is a shortcut or <see langword="false"/> if not.</value>
@@ -898,7 +896,7 @@ public static partial class Shell32
 		/// </summary>
 		/// <value>Date that specifies or receives the date and time that the item was last modified.</value>
 		[DispId(0x6002000b)]
-		new DateTime ModifyDate { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] set; }
+		new DateTime ModifyDate { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000b)] set; }
 
 		/// <summary>Contains the item's size.</summary>
 		/// <value>An Integer that receives the item's size.</value>
@@ -908,7 +906,7 @@ public static partial class Shell32
 		/// <summary>Contains a string representation of the item's type.</summary>
 		/// <value>A variable of type BSTR that receives the item's type.</value>
 		[DispId(0x6002000e)]
-		new string Type { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000e)] get; }
+		new string Type { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000e)] get; }
 
 		/// <summary>
 		/// Retrieves the item's FolderItemVerbs object. This object is the collection of verbs that can be executed on the item.
@@ -974,11 +972,11 @@ public static partial class Shell32
 		/// <summary>Contains the Application object of the folder items collection.</summary>
 		/// <value>An object reference to the Application object.</value>
 		[DispId(0x60020001)]
-		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		[DispId(0x60020002)]
-		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Retrieves the FolderItem object for a specified item in the collection.</summary>
 		/// <param name="index">The zero-based index of the item to retrieve. This value must be less than the value of the Count property.</param>
@@ -1007,11 +1005,11 @@ public static partial class Shell32
 		/// <summary>Contains the Application object of the folder items collection.</summary>
 		/// <value>An object reference to the Application object.</value>
 		[DispId(0x60020001)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		[DispId(0x60020002)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Retrieves the FolderItem object for a specified item in the collection.</summary>
 		/// <param name="index">The zero-based index of the item to retrieve. This value must be less than the value of the Count property.</param>
@@ -1059,11 +1057,11 @@ public static partial class Shell32
 		/// <summary>Contains the Application object of the folder items collection.</summary>
 		/// <value>An object reference to the Application object.</value>
 		[DispId(0x60020001)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		[DispId(0x60020002)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Retrieves the FolderItem object for a specified item in the collection.</summary>
 		/// <param name="index">The zero-based index of the item to retrieve. This value must be less than the value of the Count property.</param>
@@ -1105,7 +1103,7 @@ public static partial class Shell32
 		/// <summary>Gets the list of verbs common to all the folder items.</summary>
 		/// <value>Address of a pointer to the collection of verbs. See FolderItemVerbs.</value>
 		[DispId(0)]
-		FolderItemVerbs Verbs { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
+		FolderItemVerbs Verbs { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
 	}
 
 	/// <summary>
@@ -1120,12 +1118,12 @@ public static partial class Shell32
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/folderitemverb-application
 		[DispId(0x60020000)]
-		object FolderItemVerb_Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		object FolderItemVerb_Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/folderitemverb-parent
 		[DispId(0x60020001)]
-		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>
 		/// <para>Contains the verb's name.</para>
@@ -1133,7 +1131,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/folderitemverb-name
 		[DispId(0)]
-		string Name { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
+		string Name { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0)] get; }
 
 		/// <summary>Executes a verb on the <c>FolderItem</c> associated with the verb.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/folderitemverb-doit
@@ -1161,12 +1159,12 @@ public static partial class Shell32
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/folderitemverbs-application
 		[DispId(0x60020001)]
-		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/folderitemverbs-parent
 		[DispId(0x60020002)]
-		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Retrieves the <c>FolderItemVerb</c> object for a specified item in the collection.</summary>
 		/// <param name="index">
@@ -1214,7 +1212,7 @@ public static partial class Shell32
 		/// new string. For example, set pwszQuickComplete to "http://www.%s.com/". When a user enters "MyURL" into the edit box and
 		/// presses CTRL+ENTER, the text in the edit box is updated to "http://www.MyURL.com/".
 		/// </param>
-		void Init(HWND hwndEdit, IEnumString punkAcl, [MarshalAs(UnmanagedType.LPWStr)] string pwszRegKeyPath, [MarshalAs(UnmanagedType.LPWStr)] string pwszQuickComplete);
+		void Init(HWND hwndEdit, IEnumString punkAcl, [MarshalAs(UnmanagedType.LPWStr)] string? pwszRegKeyPath, [MarshalAs(UnmanagedType.LPWStr)] string? pwszQuickComplete);
 
 		/// <summary>Enables or disables autocompletion.</summary>
 		/// <param name="fEnable">A value that is set to TRUE to enable autocompletion, or FALSE to disable it.</param>
@@ -1248,7 +1246,7 @@ public static partial class Shell32
 		/// new string. For example, set pwszQuickComplete to "http://www.%s.com/". When a user enters "MyURL" into the edit box and
 		/// presses CTRL+ENTER, the text in the edit box is updated to "http://www.MyURL.com/".
 		/// </param>
-		new void Init(HWND hwndEdit, IEnumString punkAcl, [MarshalAs(UnmanagedType.LPWStr)] string pwszRegKeyPath, [MarshalAs(UnmanagedType.LPWStr)] string pwszQuickComplete);
+		new void Init(HWND hwndEdit, IEnumString punkAcl, [MarshalAs(UnmanagedType.LPWStr)] string? pwszRegKeyPath, [MarshalAs(UnmanagedType.LPWStr)] string? pwszQuickComplete);
 
 		/// <summary>Enables or disables autocompletion.</summary>
 		/// <param name="fEnable">A value that is set to TRUE to enable autocompletion, or FALSE to disable it.</param>
@@ -1280,19 +1278,22 @@ public static partial class Shell32
 		/// <param name="pvarScope"/>
 		/// <param name="pvarQueryFile"/>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(2)]
-		void SetSearchParameters([In, MarshalAs(UnmanagedType.BStr)] ref string pbstrSearchID, [In] bool bNavToResults, [In, Optional, MarshalAs(UnmanagedType.Struct)] ref object pvarScope, [In, Optional, MarshalAs(UnmanagedType.Struct)] ref object pvarQueryFile);
+		void SetSearchParameters([In, MarshalAs(UnmanagedType.BStr)] in string pbstrSearchID,
+			[In, MarshalAs(UnmanagedType.VariantBool)] bool bNavToResults,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] in object? pvarScope,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] in object? pvarQueryFile);
 
 		/// <summary>Undocumented.</summary>
 		[DispId(3)]
-		string SearchID { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; }
+		string SearchID { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; }
 
 		/// <summary>Undocumented.</summary>
 		[DispId(4)]
-		object Scope { [return: MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; }
+		object Scope { [return: MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; }
 
 		/// <summary>Undocumented.</summary>
 		[DispId(5)]
-		object QueryFile { [return: MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(5)] get; }
+		object QueryFile { [return: MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(5)] get; }
 	}
 
 	/// <summary>Undocumented.</summary>
@@ -1345,13 +1346,13 @@ public static partial class Shell32
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/bb774352(v=vs.85)
 		[DispId(3)]
-		new string Caption { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] set; }
+		new string Caption { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] set; }
 
 		/// <summary>Sets or retrieves a property's current value.</summary>
 		/// <value>The property value.</value>
 		/// <param name="bstrPropertyName">Name of the property.</param>
 		[DispId(4)]
-		new object this[string bstrPropertyName] { [return: MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; [param: In, MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] set; }
+		new object this[string bstrPropertyName] { [return: MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; [param: In, MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] set; }
 
 		/// <summary>Updates the <c>Back</c>, <c>Next</c>, and <c>Finish</c> buttons in the client's wizard frame.</summary>
 		/// <param name="vfEnableBack">Enables the <c>Back</c> button.</param>
@@ -1417,7 +1418,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-application
 		[DispId(0x60020000)]
-		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>
 		/// <para>Retrieves an object that represents the parent of the current object.</para>
@@ -1426,7 +1427,7 @@ public static partial class Shell32
 		/// <remarks>This property is implemented and accessed through the <c>Shell.Parent</c> property.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-parent
 		[DispId(0x60020001)]
-		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Creates and returns a <c>Folder</c> object for the specified folder.</summary>
 		/// <param name="vDir">
@@ -1455,7 +1456,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-		Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
+		Folder? NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 		/// <summary>
 		/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -1472,7 +1473,7 @@ public static partial class Shell32
 		/// <para>Type: <c>Integer</c></para>
 		/// <para>
 		/// An <c>Integer</c> value that contains the options for the method. This can be zero or a combination of the values listed
-		/// under the <c>ulFlags</c> member of the <c>BROWSEINFO</c> structure.
+		/// under the <c>ulFlags</c> member of the <see cref="BROWSEINFO"/> structure.
 		/// </para>
 		/// </param>
 		/// <param name="RootFolder">
@@ -1497,7 +1498,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-browseforfolder
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] int Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object RootFolder);
+		Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] BrowseInfoFlag Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? RootFolder);
 
 		/// <summary>
 		/// Creates and returns a <c>ShellWindows</c> object. This object represents a collection of all of the open windows that belong
@@ -1817,7 +1818,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-application
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>
 		/// <para>Retrieves an object that represents the parent of the current object.</para>
@@ -1826,7 +1827,7 @@ public static partial class Shell32
 		/// <remarks>This property is implemented and accessed through the <c>Shell.Parent</c> property.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-parent
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Creates and returns a <c>Folder</c> object for the specified folder.</summary>
 		/// <param name="vDir">
@@ -1855,7 +1856,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-		new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
+		new Folder? NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 		/// <summary>
 		/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -1897,7 +1898,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-browseforfolder
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] int Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object RootFolder);
+		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] BrowseInfoFlag Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? RootFolder);
 
 		/// <summary>
 		/// Creates and returns a <c>ShellWindows</c> object. This object represents a collection of all of the open windows that belong
@@ -2311,7 +2312,9 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch2-shellexecute
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030001)]
-		void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vArguments, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOperation, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vShow);
+		void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArguments,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOperation,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vShow);
 
 		/// <summary>Displays the <c>Find Printer</c> dialog box.</summary>
 		/// <param name="Name">
@@ -2602,7 +2605,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-application
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>
 		/// <para>Retrieves an object that represents the parent of the current object.</para>
@@ -2611,7 +2614,7 @@ public static partial class Shell32
 		/// <remarks>This property is implemented and accessed through the <c>Shell.Parent</c> property.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-parent
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Creates and returns a <c>Folder</c> object for the specified folder.</summary>
 		/// <param name="vDir">
@@ -2640,7 +2643,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-		new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
+		new Folder? NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 		/// <summary>
 		/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -2682,7 +2685,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-browseforfolder
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] int Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object RootFolder);
+		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] BrowseInfoFlag Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? RootFolder);
 
 		/// <summary>
 		/// Creates and returns a <c>ShellWindows</c> object. This object represents a collection of all of the open windows that belong
@@ -3096,7 +3099,9 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch2-shellexecute
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030001)]
-		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vArguments, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOperation, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vShow);
+		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArguments,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOperation,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vShow);
 
 		/// <summary>Displays the <c>Find Printer</c> dialog box.</summary>
 		/// <param name="Name">
@@ -3368,7 +3373,7 @@ public static partial class Shell32
 		/// <param name="bstrCategory">A <c>String</c> that contains the name of the category in which to place the file.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shell-addtorecent
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040000)]
-		void AddToRecent([In, MarshalAs(UnmanagedType.Struct)] object varFile, [In, Optional, MarshalAs(UnmanagedType.BStr)] string? bstrCategory);
+		void AddToRecent([In, MarshalAs(UnmanagedType.Struct)] object? varFile, [In, Optional, MarshalAs(UnmanagedType.BStr)] string? bstrCategory);
 	}
 
 	/// <summary>
@@ -3398,7 +3403,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-application
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>
 		/// <para>Retrieves an object that represents the parent of the current object.</para>
@@ -3407,7 +3412,7 @@ public static partial class Shell32
 		/// <remarks>This property is implemented and accessed through the <c>Shell.Parent</c> property.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-parent
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Creates and returns a <c>Folder</c> object for the specified folder.</summary>
 		/// <param name="vDir">
@@ -3436,7 +3441,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-		new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
+		new Folder? NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 		/// <summary>
 		/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -3478,7 +3483,8 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-browseforfolder
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] int Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object RootFolder);
+		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] BrowseInfoFlag Options,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? RootFolder);
 
 		/// <summary>
 		/// Creates and returns a <c>ShellWindows</c> object. This object represents a collection of all of the open windows that belong
@@ -3892,7 +3898,9 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch2-shellexecute
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030001)]
-		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vArguments, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOperation, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vShow);
+		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArguments,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOperation,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vShow);
 
 		/// <summary>Displays the <c>Find Printer</c> dialog box.</summary>
 		/// <param name="Name">
@@ -4164,7 +4172,7 @@ public static partial class Shell32
 		/// <param name="bstrCategory">A <c>String</c> that contains the name of the category in which to place the file.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shell-addtorecent
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040000)]
-		new void AddToRecent([In, MarshalAs(UnmanagedType.Struct)] object varFile, [In, Optional, MarshalAs(UnmanagedType.BStr)] string? bstrCategory);
+		new void AddToRecent([In, MarshalAs(UnmanagedType.Struct)] object? varFile, [In, Optional, MarshalAs(UnmanagedType.BStr)] string? bstrCategory);
 
 		/// <summary>Displays the <c>Windows Security</c> dialog box.</summary>
 		/// <remarks>
@@ -4204,7 +4212,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch4-explorerpolicy
 		[return: MarshalAs(UnmanagedType.Struct)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60050002)]
-		object ExplorerPolicy([In, MarshalAs(UnmanagedType.BStr)] string bstrPolicyName);
+		object? ExplorerPolicy([In, MarshalAs(UnmanagedType.BStr)] string bstrPolicyName);
 
 		/// <summary>Retrieves a global Shell setting.</summary>
 		/// <param name="lSetting">
@@ -4243,7 +4251,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-application
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>
 		/// <para>Retrieves an object that represents the parent of the current object.</para>
@@ -4252,7 +4260,7 @@ public static partial class Shell32
 		/// <remarks>This property is implemented and accessed through the <c>Shell.Parent</c> property.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-parent
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Creates and returns a <c>Folder</c> object for the specified folder.</summary>
 		/// <param name="vDir">
@@ -4281,7 +4289,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-		new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
+		new Folder? NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 		/// <summary>
 		/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -4323,7 +4331,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-browseforfolder
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] int Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object RootFolder);
+		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] BrowseInfoFlag Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? RootFolder);
 
 		/// <summary>
 		/// Creates and returns a <c>ShellWindows</c> object. This object represents a collection of all of the open windows that belong
@@ -4737,7 +4745,9 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch2-shellexecute
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030001)]
-		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vArguments, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOperation, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vShow);
+		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArguments,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOperation,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vShow);
 
 		/// <summary>Displays the <c>Find Printer</c> dialog box.</summary>
 		/// <param name="Name">
@@ -5049,7 +5059,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch4-explorerpolicy
 		[return: MarshalAs(UnmanagedType.Struct)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60050002)]
-		new object ExplorerPolicy([In, MarshalAs(UnmanagedType.BStr)] string bstrPolicyName);
+		new object? ExplorerPolicy([In, MarshalAs(UnmanagedType.BStr)] string bstrPolicyName);
 
 		/// <summary>Retrieves a global Shell setting.</summary>
 		/// <param name="lSetting">
@@ -5093,7 +5103,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-application
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>
 		/// <para>Retrieves an object that represents the parent of the current object.</para>
@@ -5102,7 +5112,7 @@ public static partial class Shell32
 		/// <remarks>This property is implemented and accessed through the <c>Shell.Parent</c> property.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-parent
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>Creates and returns a <c>Folder</c> object for the specified folder.</summary>
 		/// <param name="vDir">
@@ -5131,7 +5141,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-namespace
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
-		new Folder NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
+		new Folder? NameSpace([In, MarshalAs(UnmanagedType.Struct)] object vDir);
 
 		/// <summary>
 		/// Creates a dialog box that enables the user to select a folder and then returns the selected folder's <c>Folder</c> object.
@@ -5173,7 +5183,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch-browseforfolder
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] int Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object RootFolder);
+		new Folder BrowseForFolder([In] int Hwnd, [In, MarshalAs(UnmanagedType.BStr)] string Title, [In] BrowseInfoFlag Options, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? RootFolder);
 
 		/// <summary>
 		/// Creates and returns a <c>ShellWindows</c> object. This object represents a collection of all of the open windows that belong
@@ -5587,7 +5597,9 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch2-shellexecute
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030001)]
-		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vArguments, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOperation, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vShow);
+		new void ShellExecute([In, MarshalAs(UnmanagedType.BStr)] string sFile, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArguments,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vDirectory, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vOperation,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? vShow);
 
 		/// <summary>Displays the <c>Find Printer</c> dialog box.</summary>
 		/// <param name="Name">
@@ -5859,7 +5871,7 @@ public static partial class Shell32
 		/// <param name="bstrCategory">A <c>String</c> that contains the name of the category in which to place the file.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shell-addtorecent
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040000)]
-		new void AddToRecent([In, MarshalAs(UnmanagedType.Struct)] object varFile, [In, Optional, MarshalAs(UnmanagedType.BStr)] string? bstrCategory);
+		new void AddToRecent([In, MarshalAs(UnmanagedType.Struct)] object? varFile, [In, Optional, MarshalAs(UnmanagedType.BStr)] string? bstrCategory);
 
 		/// <summary>Displays the <c>Windows Security</c> dialog box.</summary>
 		/// <remarks>
@@ -5899,7 +5911,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/ishelldispatch4-explorerpolicy
 		[return: MarshalAs(UnmanagedType.Struct)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60050002)]
-		new object ExplorerPolicy([In, MarshalAs(UnmanagedType.BStr)] string bstrPolicyName);
+		new object? ExplorerPolicy([In, MarshalAs(UnmanagedType.BStr)] string bstrPolicyName);
 
 		/// <summary>Retrieves a global Shell setting.</summary>
 		/// <param name="lSetting">
@@ -5944,12 +5956,12 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-application
 		[DispId(0x60020000)]
-		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-parent
 		[DispId(0x60020001)]
-		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>
 		/// <para>Gets a <c>Folder</c> object that represents the view.</para>
@@ -5958,7 +5970,7 @@ public static partial class Shell32
 		/// <remarks><c>Folder</c> can only be called on the local system. It will not work when run on a webpage over HTTP or UNC.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-folder
 		[DispId(0x60020002)]
-		Folder Folder { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		Folder Folder { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Gets a <c>FolderItems</c> object that represents all of the selected items in the view.</summary>
 		/// <returns>
@@ -5982,7 +5994,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-focuseditem
 		[DispId(0x60020004)]
-		FolderItem FocusedItem { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
+		FolderItem FocusedItem { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
 
 		/// <summary>Sets the selection state of an item in the view.</summary>
 		/// <param name="vItem">
@@ -6029,7 +6041,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-popupitemmenu
 		[return: MarshalAs(UnmanagedType.BStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
-		string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vy);
+		string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vy);
 
 		/// <summary>
 		/// <para>[This property is not supported in Windows XP or later.]</para>
@@ -6038,7 +6050,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-script
 		[DispId(0x60020007)]
-		object Script { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)] get; }
+		object Script { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)] get; }
 
 		/// <summary>
 		/// <para>Gets a set of flags that indicate the current options of the view.</para>
@@ -6075,12 +6087,12 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-application
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-parent
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>
 		/// <para>Gets a <c>Folder</c> object that represents the view.</para>
@@ -6089,7 +6101,7 @@ public static partial class Shell32
 		/// <remarks><c>Folder</c> can only be called on the local system. It will not work when run on a webpage over HTTP or UNC.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-folder
 		[DispId(0x60020002)]
-		new Folder Folder { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		new Folder Folder { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Gets a <c>FolderItems</c> object that represents all of the selected items in the view.</summary>
 		/// <returns>
@@ -6113,7 +6125,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-focuseditem
 		[DispId(0x60020004)]
-		new FolderItem FocusedItem { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
+		new FolderItem FocusedItem { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
 
 		/// <summary>Sets the selection state of an item in the view.</summary>
 		/// <param name="vItem">
@@ -6160,7 +6172,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-popupitemmenu
 		[return: MarshalAs(UnmanagedType.BStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
-		new string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vy);
+		new string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vy);
 
 		/// <summary>
 		/// <para>[This property is not supported in Windows XP or later.]</para>
@@ -6169,7 +6181,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-script
 		[DispId(0x60020007)]
-		new object Script { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)] get; }
+		new object Script { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)] get; }
 
 		/// <summary>
 		/// <para>Gets a set of flags that indicate the current options of the view.</para>
@@ -6189,7 +6201,7 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shldisp/nf-shldisp-ishellfolderviewdual2-get_currentviewmode
 		[DispId(0x60030000)]
-		FOLDERVIEWMODE CurrentViewMode { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] set; }
+		FOLDERVIEWMODE CurrentViewMode { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] set; }
 
 		/// <summary>Selects an item relative to the current item.</summary>
 		/// <param name="iRelative">
@@ -6230,12 +6242,12 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-application
 		[DispId(0x60020000)]
-		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
+		new object Application { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-parent
 		[DispId(0x60020001)]
-		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
+		new object Parent { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 
 		/// <summary>
 		/// <para>Gets a <c>Folder</c> object that represents the view.</para>
@@ -6244,7 +6256,7 @@ public static partial class Shell32
 		/// <remarks><c>Folder</c> can only be called on the local system. It will not work when run on a webpage over HTTP or UNC.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-folder
 		[DispId(0x60020002)]
-		new Folder Folder { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
+		new Folder Folder { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; }
 
 		/// <summary>Gets a <c>FolderItems</c> object that represents all of the selected items in the view.</summary>
 		/// <returns>
@@ -6268,7 +6280,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-focuseditem
 		[DispId(0x60020004)]
-		new FolderItem FocusedItem { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
+		new FolderItem FocusedItem { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; }
 
 		/// <summary>Sets the selection state of an item in the view.</summary>
 		/// <param name="vItem">
@@ -6315,7 +6327,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-popupitemmenu
 		[return: MarshalAs(UnmanagedType.BStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
-		new string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vy);
+		new string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vy);
 
 		/// <summary>
 		/// <para>[This property is not supported in Windows XP or later.]</para>
@@ -6324,7 +6336,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-script
 		[DispId(0x60020007)]
-		new object Script { [return: MarshalAs(UnmanagedType.IDispatch)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)] get; }
+		new object Script { [return: MarshalAs(UnmanagedType.IDispatch)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)] get; }
 
 		/// <summary>
 		/// <para>Gets a set of flags that indicate the current options of the view.</para>
@@ -6344,7 +6356,7 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shldisp/nf-shldisp-ishellfolderviewdual2-get_currentviewmode
 		[DispId(0x60030000)]
-		new FOLDERVIEWMODE CurrentViewMode { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] set; }
+		new FOLDERVIEWMODE CurrentViewMode { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] set; }
 
 		/// <summary>Selects an item relative to the current item.</summary>
 		/// <param name="iRelative">
@@ -6362,19 +6374,19 @@ public static partial class Shell32
 		/// <summary>Gets or sets the column name used for grouping the folder view.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shldisp/nf-shldisp-ishellfolderviewdual3-get_groupby
 		[DispId(0x60040000)]
-		string GroupBy { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040000)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040000)] set; }
+		string GroupBy { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040000)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040000)] set; }
 
 		/// <summary>Gets or sets the settings for the current folder.</summary>
 		[DispId(0x60040002)]
-		FOLDERFLAGS FolderFlags { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040002)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040002)] set; }
+		FOLDERFLAGS FolderFlags { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040002)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040002)] set; }
 
 		/// <summary>Gets or sets the names of the columns used to sort the current folder.</summary>
 		[DispId(0x60040004)]
-		string SortColumns { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040004)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040004)] set; }
+		string SortColumns { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040004)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040004)] set; }
 
 		/// <summary>Gets or sets the icon size setting for the current folder.</summary>
 		[DispId(0x60040006)]
-		int IconSize { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040006)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040006)] set; }
+		int IconSize { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040006)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60040006)] set; }
 
 		/// <summary>Sets the filter on the contents of the current view.</summary>
 		/// <param name="bstrFilterText">The string that names the filter view for the current folder.</param>
@@ -6397,7 +6409,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-path
 		[DispId(0x60020000)]
-		string Path { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] set; }
+		string Path { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the description of the link.</para>
@@ -6405,7 +6417,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-description
 		[DispId(0x60020002)]
-		string Description { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] set; }
+		string Description { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the working directory specified in the link.</para>
@@ -6413,7 +6425,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-workingdirectory
 		[DispId(0x60020004)]
-		string WorkingDirectory { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] set; }
+		string WorkingDirectory { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] set; }
 
 		/// <summary>
 		/// <para>Contains a link's arguments.</para>
@@ -6421,7 +6433,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-arguments
 		[DispId(0x60020006)]
-		string Arguments { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] set; }
+		string Arguments { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the keyboard shortcut for the link.</para>
@@ -6429,7 +6441,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-hotkey
 		[DispId(0x60020008)]
-		int Hotkey { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] set; }
+		int Hotkey { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the initial display state (sized, minimized, or maximized) of the link's command.</para>
@@ -6437,7 +6449,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-showcommand
 		[DispId(0x6002000a)]
-		int ShowCommand { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] set; }
+		int ShowCommand { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] set; }
 
 		/// <summary>Looks for the target of a Shell link, even if the target has been moved or renamed.</summary>
 		/// <param name="fFlags">
@@ -6493,7 +6505,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-save
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000f)]
-		void Save([In, Optional, MarshalAs(UnmanagedType.Struct)] object sFile);
+		void Save([In, Optional, MarshalAs(UnmanagedType.Struct)] object? sFile);
 	}
 
 	/// <summary>Extends the <c>ShellLinkObject</c> object and supports one additional property.</summary>
@@ -6508,7 +6520,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-path
 		[DispId(0x60020000)]
-		new string Path { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] set; }
+		new string Path { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the description of the link.</para>
@@ -6516,7 +6528,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-description
 		[DispId(0x60020002)]
-		new string Description { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] set; }
+		new string Description { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the working directory specified in the link.</para>
@@ -6524,7 +6536,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-workingdirectory
 		[DispId(0x60020004)]
-		new string WorkingDirectory { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] set; }
+		new string WorkingDirectory { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)] set; }
 
 		/// <summary>
 		/// <para>Contains a link's arguments.</para>
@@ -6532,7 +6544,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-arguments
 		[DispId(0x60020006)]
-		new string Arguments { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] set; }
+		new string Arguments { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the keyboard shortcut for the link.</para>
@@ -6540,7 +6552,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-hotkey
 		[DispId(0x60020008)]
-		new int Hotkey { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] set; }
+		new int Hotkey { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)] set; }
 
 		/// <summary>
 		/// <para>Gets or sets the initial display state (sized, minimized, or maximized) of the link's command.</para>
@@ -6548,7 +6560,7 @@ public static partial class Shell32
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-showcommand
 		[DispId(0x6002000a)]
-		new int ShowCommand { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] get; [param: In] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] set; }
+		new int ShowCommand { [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] get; [param: In][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000a)] set; }
 
 		/// <summary>Looks for the target of a Shell link, even if the target has been moved or renamed.</summary>
 		/// <param name="fFlags">
@@ -6604,12 +6616,12 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shelllinkobject-save
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x6002000f)]
-		new void Save([In, Optional, MarshalAs(UnmanagedType.Struct)] object sFile);
+		new void Save([In, Optional, MarshalAs(UnmanagedType.Struct)] object? sFile);
 
 		/// <summary>Contains the link object's target.</summary>
 		/// <value>An object expression that evaluates to the target's FolderItem object.</value>
 		[DispId(0x60030000)]
-		FolderItem Target { [return: MarshalAs(UnmanagedType.Interface)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; }
+		FolderItem Target { [return: MarshalAs(UnmanagedType.Interface)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)] get; }
 	}
 
 	/// <summary>Exposes methods that enable HTML pages which are hosted in a wizard extension to communicate with the wizard.</summary>
@@ -6648,13 +6660,13 @@ public static partial class Shell32
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/bb774352(v=vs.85)
 		[DispId(3)]
-		string Caption { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] set; }
+		string Caption { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] set; }
 
 		/// <summary>Sets or retrieves a property's current value.</summary>
 		/// <value>The property value.</value>
 		/// <param name="bstrPropertyName">Name of the property.</param>
 		[DispId(4)]
-		object this[string bstrPropertyName] { [return: MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; [param: In, MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] set; }
+		object this[string bstrPropertyName] { [return: MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; [param: In, MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] set; }
 
 		/// <summary>Updates the <c>Back</c>, <c>Next</c>, and <c>Finish</c> buttons in the client's wizard frame.</summary>
 		/// <param name="vfEnableBack">Enables the <c>Back</c> button.</param>
@@ -6682,7 +6694,7 @@ public static partial class Shell32
 	}
 
 	/// <summary>Undocumented.</summary>
-	/// <seealso cref="Vanara.PInvoke.Shell32.IWebWizardHost"/>
+	/// <seealso cref="IWebWizardHost"/>
 	[PInvokeData("shldisp.h")]
 	[ComImport, Guid("F9C013DC-3C23-4041-8E39-CFB402F7EA59")]
 	public interface IWebWizardHost2 : IWebWizardHost
@@ -6717,13 +6729,13 @@ public static partial class Shell32
 		/// <summary>This property is not implemented.</summary>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/bb774352(v=vs.85)
 		[DispId(3)]
-		new string Caption { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; [param: In, MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] set; }
+		new string Caption { [return: MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] get; [param: In, MarshalAs(UnmanagedType.BStr)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(3)] set; }
 
 		/// <summary>Sets or retrieves a property's current value.</summary>
 		/// <value>The property value.</value>
 		/// <param name="bstrPropertyName">Name of the property.</param>
 		[DispId(4)]
-		new object this[string bstrPropertyName] { [return: MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; [param: In, MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] set; }
+		new object this[string bstrPropertyName] { [return: MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] get; [param: In, MarshalAs(UnmanagedType.Struct)][MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)] set; }
 
 		/// <summary>Updates the <c>Back</c>, <c>Next</c>, and <c>Finish</c> buttons in the client's wizard frame.</summary>
 		/// <param name="vfEnableBack">Enables the <c>Back</c> button.</param>

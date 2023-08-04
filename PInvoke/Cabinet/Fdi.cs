@@ -789,12 +789,12 @@ public static partial class Cabinet
 		{
 			get
 			{
-				return new(Extensions.BitHelper.GetBits(date, 9, 7) + 1980, GetValidBits(date, 5, 4, 1, 12, 1), GetValidBits(date, 0, 5, 1, 31, 1),
+				return new(BitHelper.GetBits(date, 9, 7) + 1980, GetValidBits(date, 5, 4, 1, 12, 1), GetValidBits(date, 0, 5, 1, 31, 1),
 					GetValidBits(time, 11, 5, 0, 23, 0), GetValidBits(time, 5, 6, 0, 59, 0), GetValidBits(time, 0, 5, 0, 29, 0) * 2, DateTimeKind.Local);
 
 				static ushort GetValidBits(ushort bits, byte start, byte len, ushort low, ushort high, ushort def)
 				{
-					var ret = Extensions.BitHelper.GetBits(bits, start, len);
+					var ret = BitHelper.GetBits(bits, start, len);
 					return ret < low || ret > high ? def : ret;
 				}
 			}

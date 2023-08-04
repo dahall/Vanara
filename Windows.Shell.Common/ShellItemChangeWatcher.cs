@@ -1,11 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Shell;
 
@@ -335,7 +332,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 	}
 
 	/// <summary>Provides data for <see cref="ShellItemChangeWatcher"/> events.</summary>
-	/// <seealso cref="System.EventArgs"/>
+	/// <seealso cref="EventArgs"/>
 	public class ShellItemChangeEventArgs : EventArgs
 	{
 		internal ShellItemChangeEventArgs(SHCNE levent, IntPtr pidl1 = default, IntPtr pidl2 = default)
@@ -359,7 +356,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 
 		public WatcherNativeWindow(ShellItemChangeWatcher parent) : base()
 		{
-			MessageId = User32.RegisterWindowMessage($"{parent.GetType()}{DateTime.Now.Ticks}");
+			MessageId = RegisterWindowMessage($"{parent.GetType()}{DateTime.Now.Ticks}");
 			p = parent;
 		}
 

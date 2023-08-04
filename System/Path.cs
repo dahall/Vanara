@@ -168,7 +168,7 @@ public static class PathEx
 	/// to "\FolderC\FolderD", the function will return <see langword="null"/>.
 	/// </para>
 	/// </remarks>
-	public static string GetRelativePath(string fromPath, bool fromIsDir, string toPath, bool toIsDir) => SBAllocCallRet((s, sz) => PathRelativePathTo(s, fromPath, fromIsDir ? PInvoke.FileFlagsAndAttributes.FILE_ATTRIBUTE_EA : 0, toPath, toIsDir ? PInvoke.FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY : 0));
+	public static string GetRelativePath(string fromPath, bool fromIsDir, string toPath, bool toIsDir) => SBAllocCallRet((s, sz) => PathRelativePathTo(s, fromPath, fromIsDir ? FileFlagsAndAttributes.FILE_ATTRIBUTE_EA : 0, toPath, toIsDir ? FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY : 0));
 
 	/// <summary>Creates a root path from a given drive number.</summary>
 	/// <param name="drive">A variable that indicates the desired drive number. It should be between 0 and 25.</param>

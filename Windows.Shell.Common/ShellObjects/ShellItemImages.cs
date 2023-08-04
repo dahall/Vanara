@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Vanara.Extensions;
+﻿using System.Threading.Tasks;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
@@ -87,5 +85,5 @@ public class ShellItemImages
 	/// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
 	/// <returns>The resulting image.</returns>
 	/// <exception cref="PlatformNotSupportedException"></exception>
-	public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run<SafeHBITMAP>(() => GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
+	public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() => GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
 }

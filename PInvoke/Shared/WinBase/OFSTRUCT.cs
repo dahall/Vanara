@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Contains information about a file that the <c>OpenFile</c> function opened or attempted to open.</summary>
 // typedef struct _OFSTRUCT { BYTE cBytes; BYTE fFixedDisk; WORD nErrCode; WORD Reserved1; WORD Reserved2; CHAR

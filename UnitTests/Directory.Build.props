@@ -1,10 +1,14 @@
 <Project>
   <PropertyGroup>
     <TargetFrameworks/>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Configurations>Debug;Release;DebugNoTests</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <LangVersion>latest</LangVersion>
     <Product>Vanara</Product>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\AsmDef.cs" Link="AsmDef.cs" Condition="'$(MSBuildProjectExtension)' == '.csproj'"/>
+  </ItemGroup>
 </Project>

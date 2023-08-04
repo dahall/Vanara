@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
-using System.Runtime.InteropServices;
 #pragma warning disable IDE1006 // Naming Styles
 
 namespace Vanara.PInvoke;
@@ -315,12 +313,12 @@ public class PRECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator Rectangle?(PRECT r) => r?.rect;
 
-	/// <summary>Performs an implicit conversion from <see cref="System.Nullable{Rectangle}"/> to <see cref="PRECT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="Nullable{Rectangle}"/> to <see cref="PRECT"/>.</summary>
 	/// <param name="r">The <see cref="Rectangle"/> to convert.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator PRECT?(Rectangle? r) => r.HasValue ? new PRECT(r.Value) : null;
 
-	/// <summary>Performs an implicit conversion from <see cref="System.Nullable{RECT}"/> to <see cref="PRECT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="Nullable{RECT}"/> to <see cref="PRECT"/>.</summary>
 	/// <param name="r">The <see cref="RECT"/> to convert.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator PRECT?(RECT? r) => r.HasValue ? new PRECT(r.Value) : null;

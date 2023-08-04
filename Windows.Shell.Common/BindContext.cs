@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
 using Vanara.Extensions.Reflection;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
@@ -442,7 +439,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// <c>cbStruct</c> member to the size of the structure.
 	/// </para>
 	/// </remarks>
-	void IBindCtx.GetBindOptions(ref System.Runtime.InteropServices.ComTypes.BIND_OPTS pbindopts) { var bo = new BIND_OPTS_V(); iBindCtx.GetBindOptions(bo).ThrowIfFailed(); pbindopts = bo; }
+	void IBindCtx.GetBindOptions(ref BIND_OPTS pbindopts) { var bo = new BIND_OPTS_V(); iBindCtx.GetBindOptions(bo).ThrowIfFailed(); pbindopts = bo; }
 
 	/// <summary>
 	/// Retrieves an interface pointer to the object associated with the specified key in the bind context's string-keyed table of pointers.
@@ -871,7 +868,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// contains. Callers may not free these pointers until the bind context is released.
 	/// </para>
 	/// </remarks>
-	void IBindCtx.SetBindOptions(ref System.Runtime.InteropServices.ComTypes.BIND_OPTS pbindopts) => iBindCtx.SetBindOptions(pbindopts).ThrowIfFailed();
+	void IBindCtx.SetBindOptions(ref BIND_OPTS pbindopts) => iBindCtx.SetBindOptions(pbindopts).ThrowIfFailed();
 
 	[DllImport(Lib.Ole32, ExactSpelling = true)]
 	private static extern HRESULT CreateBindCtx([Optional] uint reserved, out IBindCtxV ppbc);

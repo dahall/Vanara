@@ -1,7 +1,5 @@
 ﻿// Work in progress, may not ever complete as it is so poorly supported anymore.
 
-using System;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
@@ -2419,7 +2417,7 @@ public static partial class Shell32
 		/// <returns>A reference to the window's IDispatch interface, or NULL if the specified window was not found.</returns>
 		[return: MarshalAs(UnmanagedType.IDispatch)]
 		[DispId(0)]
-		object Item([In, Optional, MarshalAs(UnmanagedType.Struct)] object index);
+		object? Item([In, Optional, MarshalAs(UnmanagedType.Struct)] object? index);
 
 		/// <summary>Retrieves an enumerator for the collection of Shell windows.</summary>
 		/// <returns>When this method returns, contains an interface pointer to an object that implements the IEnumVARIANT interface.</returns>
@@ -2444,7 +2442,8 @@ public static partial class Shell32
 		/// <param name="swClass">A member of ShellWindowTypeConstants that specifies the type of window.</param>
 		/// <returns>The window's cookie.</returns>
 		[DispId(0x60020004)]
-		int RegisterPending([In] int lThreadId, [In, MarshalAs(UnmanagedType.Struct)] in object pvarloc, [In, MarshalAs(UnmanagedType.Struct)] in object pvarlocRoot, [In] ShellWindowTypeConstants swClass);
+		int RegisterPending([In] int lThreadId, [In, MarshalAs(UnmanagedType.Struct)] in object pvarloc,
+			[In, Optional] IntPtr pvarlocRoot, [In] ShellWindowTypeConstants swClass);
 
 		/// <summary>Revokes a Shell window's registration and removes the window from the Shell windows collection.</summary>
 		/// <param name="lCookie">The cookie that identifies the window to un-register.</param>
@@ -2478,7 +2477,8 @@ public static partial class Shell32
 		/// <returns>A reference to the window's IDispatch interface, or NULL if no such window was found.</returns>
 		[return: MarshalAs(UnmanagedType.IDispatch)]
 		[DispId(0x60020008)]
-		object FindWindowSW([In, MarshalAs(UnmanagedType.Struct)] in object pvarloc, [In, MarshalAs(UnmanagedType.Struct)] in object pvarlocRoot, [In] ShellWindowTypeConstants swClass, out int pHWND, [In] ShellWindowFindWindowOptions swfwOptions);
+		object FindWindowSW([In, MarshalAs(UnmanagedType.Struct)] in object pvarloc,
+			[In, Optional] IntPtr pvarlocRoot, [In] ShellWindowTypeConstants swClass, out int pHWND, [In] ShellWindowFindWindowOptions swfwOptions);
 
 		/// <summary>Occurs when a new Shell window is created for a frame.</summary>
 		/// <param name="lCookie">The cookie that identifies the window.</param>

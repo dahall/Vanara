@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.InteropServices;
+﻿namespace Vanara.InteropServices;
 
 /// <summary>General functions to support library calls.</summary>
 public static class LibHelper

@@ -122,7 +122,7 @@ public class BCryptTests
 		Assert.That(cbBlockLen, Is.GreaterThan(0));
 		Assert.That(cbBlockLen, Is.LessThanOrEqualTo(rgbIV.Length));
 
-		var cm = System.Text.Encoding.Unicode.GetBytes(ChainingMode.BCRYPT_CHAIN_MODE_CBC);
+		var cm = Encoding.Unicode.GetBytes(ChainingMode.BCRYPT_CHAIN_MODE_CBC);
 		err = BCryptSetProperty(hAlg, BCrypt.PropertyName.BCRYPT_CHAINING_MODE, cm, (uint)cm.Length);
 		Assert.That((int)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 

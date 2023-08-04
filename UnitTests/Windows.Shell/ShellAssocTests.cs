@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using Vanara.PInvoke.Tests;
-using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;
 
@@ -100,7 +98,7 @@ public class ShellAssocTests
 			progid.CLSID = null;
 			Assert.That(progid.CLSID, Is.Null);
 
-			var i = new IconLocation(Vanara.PInvoke.Tests.TestCaseSources.ResourceFile, -1);
+			var i = new IconLocation(TestCaseSources.ResourceFile, -1);
 			progid.DefaultIcon = i;
 			Assert.That(progid.DefaultIcon.ToString(), Is.EqualTo(i.ToString()));
 			progid.DefaultIcon = null;
@@ -112,7 +110,7 @@ public class ShellAssocTests
 			progid.EditFlags = 0;
 			Assert.That(progid.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_None));
 
-			var fn = new IndirectString(Vanara.PInvoke.Tests.TestCaseSources.ResourceFile, -1);
+			var fn = new IndirectString(TestCaseSources.ResourceFile, -1);
 			progid.FriendlyTypeName = fn;
 			Assert.That(progid.FriendlyTypeName.ToString(), Is.EqualTo(fn.ToString()));
 			progid.FriendlyTypeName = null;

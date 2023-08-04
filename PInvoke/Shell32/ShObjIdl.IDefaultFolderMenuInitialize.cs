@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.ShlwApi;
+﻿using static Vanara.PInvoke.ShlwApi;
 
 namespace Vanara.PInvoke;
 
@@ -101,8 +99,8 @@ public static partial class Shell32
 		// HRESULT Initialize( HWND hwnd, IContextMenuCB *pcmcb, PCIDLIST_ABSOLUTE pidlFolder, IShellFolder *psf, UINT cidl,
 		// PCUITEMID_CHILD_ARRAY apidl, IUnknown *punkAssociation, UINT cKeys, const HKEY *aKeys );
 		[PreserveSig]
-		HRESULT Initialize(HWND hwnd, [In, Optional] IContextMenuCB pcmcb, [In, Optional] PIDL pidlFolder, [In, Optional] IShellFolder psf,
-			uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, [In, Optional] IQueryAssociations punkAssociation,
+		HRESULT Initialize(HWND hwnd, [In, Optional] IContextMenuCB? pcmcb, [In, Optional] PIDL pidlFolder, [In, Optional] IShellFolder? psf,
+			uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, [In, Optional] IQueryAssociations? punkAssociation,
 			uint cKeys, [In, Optional, MarshalAs(UnmanagedType.LPArray)] HKEY[]? aKeys);
 
 		/// <summary>Sets shortcut menu restrictions for the IDefaultFolderMenuInitialize object.</summary>

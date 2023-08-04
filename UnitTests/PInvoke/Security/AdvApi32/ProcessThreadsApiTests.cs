@@ -18,7 +18,7 @@ public class ProcessThreadsApiTests
 			si.ShowWindowCommand = ShowWindowCommand.SW_MAXIMIZE;
 			Assert.That(CreateProcessAsUser(hTok, @"C:\Windows\notepad.exe", bInheritHandles: false, dwCreationFlags: CREATE_PROCESS.NORMAL_PRIORITY_CLASS, lpStartupInfo: si, lpProcessInformation: out SafePROCESS_INFORMATION? pi), ResultIs.Successful);
 			Sleep(500);
-			Kernel32.TerminateProcess(pi.hProcess, 0);
+			TerminateProcess(pi.hProcess, 0);
 		}
 	}
 
@@ -32,7 +32,7 @@ public class ProcessThreadsApiTests
 			si.StartupInfo.ShowWindowCommand = ShowWindowCommand.SW_MAXIMIZE;
 			Assert.That(CreateProcessAsUser(hTok, @"C:\Windows\notepad.exe", bInheritHandles: false, dwCreationFlags: CREATE_PROCESS.NORMAL_PRIORITY_CLASS, lpStartupInfo: si, lpProcessInformation: out SafePROCESS_INFORMATION? pi), ResultIs.Successful);
 			Sleep(500);
-			Kernel32.TerminateProcess(pi.hProcess, 0);
+			TerminateProcess(pi.hProcess, 0);
 		}
 	}
 

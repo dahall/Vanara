@@ -1,9 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Rpc;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 
@@ -4215,7 +4211,7 @@ public static partial class Ole32
 	// LPOLESTR lpsz, int cchMax );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "5f437658-b749-416b-805a-2afdac682660")]
-	public static extern int StringFromGUID2(in Guid rguid, [MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder lpsz, int cchMax);
+	public static extern int StringFromGUID2(in Guid rguid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpsz, int cchMax);
 
 	/// <summary>Converts an interface identifier into a string of printable characters.</summary>
 	/// <param name="rclsid">The interface identifier to be converted.</param>

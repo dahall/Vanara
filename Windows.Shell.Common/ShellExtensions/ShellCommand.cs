@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.Shell32;
@@ -9,8 +8,8 @@ namespace Vanara.Windows.Shell;
 /// <summary>
 /// Wraps the functionality of IInitializeCommand. When deriving, handling the <see cref="InitializeCommand"/> event is optional.
 /// </summary>
-/// <seealso cref="Vanara.Windows.Shell.ComObject"/>
-/// <seealso cref="Vanara.PInvoke.Shell32.IInitializeCommand"/>
+/// <seealso cref="ComObject"/>
+/// <seealso cref="IInitializeCommand"/>
 public abstract class ShellCommand : ComObject, IInitializeCommand
 {
 	/// <summary>Initializes a new instance of the <see cref="ShellCommand"/> class.</summary>

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.RunTimeLib;
+﻿namespace Vanara.RunTimeLib;
 
 /// <summary>These constants are used to indicate file type in the st_mode field of the _stat structure.</summary>
 [Flags]

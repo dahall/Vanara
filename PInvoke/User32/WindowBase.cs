@@ -1,17 +1,11 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
 /// <summary>Interface for a class that holds a window handle.</summary>
-/// <seealso cref="Vanara.PInvoke.IHandle"/>
+/// <seealso cref="IHandle"/>
 public interface IWindowHandle : IHandle
 {
 	/// <summary>Gets the window handle.</summary>

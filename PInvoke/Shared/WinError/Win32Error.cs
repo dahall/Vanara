@@ -1,7 +1,5 @@
-using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Security;
 
 namespace Vanara.PInvoke;
@@ -160,7 +158,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	/// <exception cref="System.NotImplementedException"></exception>
+	/// <exception cref="NotImplementedException"></exception>
 	public bool Equals(uint other) => other == value;
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
@@ -171,7 +169,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	/// <exception cref="System.NotImplementedException"></exception>
+	/// <exception cref="NotImplementedException"></exception>
 	public bool Equals(Win32Error other) => other.value == value;
 
 	/// <summary>
@@ -212,7 +210,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	public override string ToString()
 	{
-		_=StaticFieldValueHash.TryGetFieldName<Win32Error, uint>(value, out var err);
+		_ = StaticFieldValueHash.TryGetFieldName<Win32Error, uint>(value, out var err);
 		var msg = HRESULT.FormatMessage(value);
 		return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", value)) + (msg == null ? "" : ": " + msg);
 	}

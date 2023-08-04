@@ -1,10 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using static Vanara.PInvoke.PropSys;
-using static Vanara.PInvoke.ShlwApi;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -45,6 +39,6 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iobjectprovider-queryobject HRESULT
 		// QueryObject( REFGUID guidObject, REFIID riid, void **ppvOut );
 		[PreserveSig]
-		HRESULT QueryObject(in Guid guidObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvOut);
+		HRESULT QueryObject(in Guid guidObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvOut);
 	}
 }

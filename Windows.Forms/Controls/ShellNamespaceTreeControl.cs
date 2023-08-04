@@ -193,7 +193,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	{
 		RootItems = new ShellNamespaceTreeRootList(this);
 		BackColor = SystemColors.Window;
-		oleUninit = Ole32.OleInitialize().Succeeded;
+		oleUninit = OleInitialize().Succeeded;
 	}
 
 	/// <summary>Called after an item is expanded.</summary>
@@ -768,7 +768,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 
 	HRESULT INameSpaceTreeControlEvents.OnKeyboardInput(uint uMsg, IntPtr wParam, IntPtr lParam)
 	{
-		System.Diagnostics.Debug.WriteLine($"Kbd msg: {(WindowMessage)uMsg}, {(Keys)unchecked((int)(long)wParam)}");
+		Debug.WriteLine($"Kbd msg: {(WindowMessage)uMsg}, {(Keys)unchecked((int)(long)wParam)}");
 		//var args = new KeyEventArgs((Keys)unchecked((int)(long)wParam) | ModifierKeys);
 		var hSel = SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_GETNEXTITEM, ComCtl32.TreeViewActionFlag.TVGN_CARET);
 		if (hSel != default && uMsg == (uint)WindowMessage.WM_KEYUP)
@@ -864,7 +864,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
-		if (oleUninit) Ole32.OleUninitialize();
+		if (oleUninit) OleUninitialize();
 	}
 
 	/// <summary>Raises the <see cref="AfterSelect"/> event.</summary>
@@ -914,7 +914,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
 	protected override void OnKeyDown(KeyEventArgs e)
 	{
-		System.Diagnostics.Debug.WriteLine($"Base KeyDown: {e.KeyCode}");
+		Debug.WriteLine($"Base KeyDown: {e.KeyCode}");
 		base.OnKeyDown(e);
 	}
 
@@ -922,7 +922,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
 	protected override void OnKeyUp(KeyEventArgs e)
 	{
-		System.Diagnostics.Debug.WriteLine($"Base KeyUp: {e.KeyCode}");
+		Debug.WriteLine($"Base KeyUp: {e.KeyCode}");
 		base.OnKeyUp(e);
 	}
 

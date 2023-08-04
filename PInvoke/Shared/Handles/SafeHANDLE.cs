@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
-using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -113,6 +111,6 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <typeparam name="T">A <see cref="SafeHANDLE"/> instance.</typeparam>
 	/// <param name="h">The handle.</param>
 	/// <returns>The handle if not disposed.</returns>
-	/// <exception cref="System.ObjectDisposedException">Thrown if handle is disposed.</exception>
+	/// <exception cref="ObjectDisposedException">Thrown if handle is disposed.</exception>
 	protected static T ThrowIfDisposed<T>(T h) where T : SafeHANDLE => h is null || h.IsInvalid ? throw new ObjectDisposedException(typeof(T).Name) : h;
 }

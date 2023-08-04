@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 #pragma warning disable IDE1006 // Naming Styles
 
 namespace Vanara.PInvoke;

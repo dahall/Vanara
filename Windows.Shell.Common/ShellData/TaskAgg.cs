@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ internal static class TaskAgg
 	public static Task<TResult> FromResult<TResult>(TResult result)
 	{
 #if NET45_OR_GREATER || NETSTANDARD || NETCOREAPP
-		return Task.FromResult<TResult>(result);
+		return Task.FromResult(result);
 #else
 		var completionSource = new TaskCompletionSource<TResult>();
 		completionSource.TrySetResult(result);

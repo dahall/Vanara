@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -4818,7 +4814,7 @@ public static partial class NCrypt
 		public NCryptBuffer(KeyDerivationBufferType bufferType, string buffer)
 		{
 			BufferType = bufferType;
-			pvBuffer = System.Text.Encoding.Unicode.GetBytes(buffer);
+			pvBuffer = Encoding.Unicode.GetBytes(buffer);
 		}
 	}
 
@@ -5093,7 +5089,7 @@ public static partial class NCrypt
 			{
 				((IDisposable)this).Dispose();
 				if (value == null || value.Length == 0) return;
-				_pBuffers = InteropExtensions.MarshalToPtr<_NCryptBuffer>(value.Select(b => new _NCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
+				_pBuffers = InteropExtensions.MarshalToPtr(value.Select(b => new _NCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
 			}
 		}
 
@@ -5128,7 +5124,7 @@ public static partial class NCrypt
 			{
 				cbBuffer = (uint)(b.pvBuffer?.Length ?? 0);
 				BufferType = b.BufferType;
-				pvBuffer = b.pvBuffer?.MarshalToPtr<byte>(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
+				pvBuffer = b.pvBuffer?.MarshalToPtr(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
 			}
 
 			public static implicit operator NCryptBuffer(_NCryptBuffer b) => new() { BufferType = b.BufferType, pvBuffer = b.pvBuffer.ToByteArray((int)b.cbBuffer) ?? new byte[0] };

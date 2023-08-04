@@ -117,7 +117,7 @@ public static partial class ControlExtension
 		if (!ctrl.IsHandleCreated) return null;
 		var cp = ctrl.SendMessage(getLenMsg).ToInt32() + 1;
 		var sb = new System.Text.StringBuilder(cp);
-		Vanara.PInvoke.User32.SendMessage(ctrl.Handle, getTextMsg, ref cp, sb);
+		PInvoke.User32.SendMessage(ctrl.Handle, getTextMsg, ref cp, sb);
 		return sb.ToString();
 	}
 
@@ -167,7 +167,7 @@ public static partial class ControlExtension
 	/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 	public static IntPtr SendMessage(this IWin32Window wnd, uint msg, IntPtr wParam = default, IntPtr lParam = default) =>
 		wnd.Handle != IntPtr.Zero && wnd.Handle.ToInt32() != -1
-			? Vanara.PInvoke.User32.SendMessage(wnd.Handle, msg, wParam, lParam)
+			? PInvoke.User32.SendMessage(wnd.Handle, msg, wParam, lParam)
 			: IntPtr.Zero;
 
 	/// <summary>Sets the windows styles.</summary>

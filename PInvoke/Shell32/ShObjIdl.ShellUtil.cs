@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using System.Text;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
@@ -13,6 +10,7 @@ using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 
 namespace Vanara.PInvoke;
 
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 public static partial class Shell32
 {
 	/// <remarks>Methods in this class will only work on Vista and above.</remarks>
@@ -27,8 +25,8 @@ public static partial class Shell32
 			SHIL_COUNT = Enum.GetValues(typeof(SHIL)).Length;
 			g_rgshil = new Dictionary<SHIL, ushort>(SHIL_COUNT); // new ushort[SHIL_COUNT];
 			int sysCxIco = GetSystemMetrics(SystemMetric.SM_CXICON);
-			g_rgshil[SHIL.SHIL_LARGE] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Icon Size", sysCxIco);
-			g_rgshil[SHIL.SHIL_SMALL] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Small Icon Size", sysCxIco / 2);
+			g_rgshil[SHIL.SHIL_LARGE] = (ushort)(int)(Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Icon Size", sysCxIco) ?? 0);
+			g_rgshil[SHIL.SHIL_SMALL] = (ushort)(int)(Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Small Icon Size", sysCxIco / 2) ?? 0);
 			g_rgshil[SHIL.SHIL_EXTRALARGE] = (ushort)(3 * sysCxIco / 2);
 			g_rgshil[SHIL.SHIL_SYSSMALL] = (ushort)GetSystemMetrics(SystemMetric.SM_CXSMICON);
 			g_rgshil[SHIL.SHIL_JUMBO] = 256;
@@ -44,13 +42,13 @@ public static partial class Shell32
 		/// <param name="bindFlags">Flags that control aspects of moniker binding operations.</param>
 		public static IBindCtx CreateBindCtx(STGM openMode = STGM.STGM_READWRITE, TimeSpan timeout = default, BIND_FLAGS bindFlags = 0)
 		{
-			Ole32.CreateBindCtx(0, out IBindCtx ctx).ThrowIfFailed();
+			Ole32.CreateBindCtx(0, out IBindCtx? ctx).ThrowIfFailed();
 			if (openMode != STGM.STGM_READWRITE || timeout != TimeSpan.Zero || bindFlags != 0)
 			{
 				BIND_OPTS opts = new() { cbStruct = Marshal.SizeOf(typeof(BIND_OPTS)), grfMode = (int)openMode, dwTickCountDeadline = (int)timeout.TotalMilliseconds, grfFlags = (int)bindFlags };
-				ctx.SetBindOptions(ref opts);
+				ctx!.SetBindOptions(ref opts);
 			}
-			return ctx;
+			return ctx!;
 		}
 
 		/// <summary>Gets the KNOWNFOLDERID enum from a KNOWNFOLDERID Guid.</summary>
@@ -82,7 +80,7 @@ public static partial class Shell32
 		/// <param name="knownFolder">The KNOWNFOLDERID Guid.</param>
 		/// <returns>The file system path.</returns>
 		[SecurityCritical]
-		public static string GetPathForKnownFolder(Guid knownFolder)
+		public static string? GetPathForKnownFolder(Guid knownFolder)
 		{
 			if (knownFolder == default)
 			{
@@ -108,7 +106,7 @@ public static partial class Shell32
 		/// <returns>The file system path.</returns>
 		/// <returns>The corresponding IShellItem.</returns>
 		[SecurityCritical]
-		public static IShellItem GetShellItemForPath(string path)
+		public static IShellItem? GetShellItemForPath(string path)
 		{
 			if (string.IsNullOrEmpty(path))
 			{
@@ -127,16 +125,16 @@ public static partial class Shell32
 			//	path = fullPath;
 			//}
 
-			HRESULT hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object unk);
+			HRESULT hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object? unk);
 			if (hr == (HRESULT)(Win32Error)Win32Error.ERROR_FILE_NOT_FOUND)
 			{
-				using InteropServices.ComReleaser<IBindCtx> ibc = InteropServices.ComReleaserFactory.Create(CreateBindCtx());
+				using ComReleaser<IBindCtx> ibc = ComReleaserFactory.Create(CreateBindCtx());
 				IntFileSysBindData bd = new();
 				ibc.Item.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, bd);
 				return SHCreateItemFromParsingName<IShellItem>(path, ibc.Item);
 			}
 			hr.ThrowIfFailed();
-			return (IShellItem)unk;
+			return (IShellItem)unk!;
 		}
 
 		/// <summary>Gets the icon for the item using the specified characteristics.</summary>
@@ -147,28 +145,28 @@ public static partial class Shell32
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadIconFromExtractIcon(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHICON hico)
 		{
-			hico = default;
-			HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractIconW ieiw);
+			hico = SafeHICON.Null;
+			HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractIconW? ieiw);
 			if (hr.Succeeded)
 			{
 				try
 				{
-					return LoadIconFromExtractIcon(ieiw, ref imgSz, out hico);
+					return LoadIconFromExtractIcon(ieiw!, ref imgSz, out hico);
 				}
 				finally
 				{
-					Marshal.ReleaseComObject(ieiw);
+					Marshal.ReleaseComObject(ieiw!);
 				}
 			}
-			else if ((hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractIconA iei)).Succeeded)
+			else if ((hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractIconA? iei)).Succeeded)
 			{
 				try
 				{
-					return LoadIconFromExtractIcon(iei, ref imgSz, out hico);
+					return LoadIconFromExtractIcon(iei!, ref imgSz, out hico);
 				}
 				finally
 				{
-					Marshal.ReleaseComObject(iei);
+					Marshal.ReleaseComObject(iei!);
 				}
 			}
 			return hr;
@@ -177,7 +175,7 @@ public static partial class Shell32
 		/// <summary>Gets the icon for the item using the specified characteristics.</summary>
 		/// <param name="iei">The IExtractIconW from which to retrieve the icon.</param>
 		/// <param name="imgSz">The width, in pixels, of the icon.</param>
-		/// <param name="hico">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+		/// <param name="hico">The resulting icon handle, on success, or <c>SafeHICON.NULL</c> on failure.</param>
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadIconFromExtractIcon(IExtractIconW iei, ref uint imgSz, out SafeHICON hico)
 		{
@@ -196,7 +194,7 @@ public static partial class Shell32
 			}
 			else
 			{
-				hico = null;
+				hico = SafeHICON.Null;
 			}
 
 			return hr;
@@ -205,7 +203,7 @@ public static partial class Shell32
 		/// <summary>Gets the icon for the item using the specified characteristics.</summary>
 		/// <param name="iei">The IExtractIconA from which to retrieve the icon.</param>
 		/// <param name="imgSz">The width, in pixels, of the icon.</param>
-		/// <param name="hico">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+		/// <param name="hico">The resulting icon handle, on success, or <c>SafeHICON.NULL</c> on failure.</param>
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadIconFromExtractIcon(IExtractIconA iei, ref uint imgSz, out SafeHICON hico)
 		{
@@ -224,7 +222,7 @@ public static partial class Shell32
 			}
 			else
 			{
-				hico = null;
+				hico = SafeHICON.Null;
 			}
 
 			return hr;
@@ -233,7 +231,7 @@ public static partial class Shell32
 		/// <summary>Loads an icon from the system image list.</summary>
 		/// <param name="iIdx">A value of type int that contains the index of the image.</param>
 		/// <param name="imgSz">The width, in pixels, of the icon.</param>
-		/// <param name="hico">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+		/// <param name="hico">The resulting icon handle, on success, or <c>SafeHICON.NULL</c> on failure.</param>
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadIconFromSystemImageList(int iIdx, ref uint imgSz, out SafeHICON hico)
 		{
@@ -252,7 +250,7 @@ public static partial class Shell32
 				}
 				catch (COMException e)
 				{
-					hico = null;
+					hico = SafeHICON.Null;
 					return e.ErrorCode;
 				}
 				finally
@@ -262,7 +260,7 @@ public static partial class Shell32
 			}
 			else
 			{
-				hico = default;
+				hico = SafeHICON.Null;
 			}
 
 			return hr;
@@ -272,12 +270,12 @@ public static partial class Shell32
 		/// <param name="psf">The IShellFolder from which to request the IExtractImage instance.</param>
 		/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
 		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
-		/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadImageFromExtractImage(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
 		{
-			HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractImage iei);
-			hbmp = default;
+			HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractImage? iei);
+			hbmp = SafeHBITMAP.Null;
 			if (hr.Succeeded)
 			{
 				try
@@ -285,7 +283,7 @@ public static partial class Shell32
 					StringBuilder szIconFile = new(Kernel32.MAX_PATH);
 					SIZE sz = new((int)imgSz, (int)imgSz);
 					IEIFLAG flags = 0;
-					if ((hr = iei.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded &&
+					if ((hr = iei!.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded &&
 						szIconFile.Length > 0 &&
 						(hr = iei.Extract(out hbmp)).Succeeded)
 					{
@@ -296,7 +294,7 @@ public static partial class Shell32
 				}
 				finally
 				{
-					Marshal.ReleaseComObject(iei);
+					Marshal.ReleaseComObject(iei!);
 				}
 			}
 			return hr;
@@ -305,7 +303,7 @@ public static partial class Shell32
 		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
 		/// <param name="psi">The IShellItem from which to request the IThumbnailProvider instance.</param>
 		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
-		/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadImageFromThumbnailProvider(IShellItem psi, ref uint imgSz, out SafeHBITMAP hbmp)
 		{
@@ -316,7 +314,7 @@ public static partial class Shell32
 			}
 			catch (COMException e)
 			{
-				hbmp = null;
+				hbmp = SafeHBITMAP.Null;
 				return e.ErrorCode;
 			}
 		}
@@ -325,18 +323,18 @@ public static partial class Shell32
 		/// <param name="psf">The IShellFolder from which to request the IThumbnailProvider instance.</param>
 		/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
 		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
-		/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadImageFromThumbnailProvider(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
 		{
-			HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IThumbnailProvider itp);
+			HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IThumbnailProvider? itp);
 			if (hr.Succeeded)
 			{
-				hr = LoadImageFromThumbnailProvider(itp, ref imgSz, out hbmp);
+				hr = LoadImageFromThumbnailProvider(itp!, ref imgSz, out hbmp);
 			}
 			else
 			{
-				hbmp = null;
+				hbmp = SafeHBITMAP.Null;
 			}
 
 			return hr;
@@ -345,7 +343,7 @@ public static partial class Shell32
 		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
 		/// <param name="itp">The itp.</param>
 		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
-		/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadImageFromThumbnailProvider(IThumbnailProvider itp, ref uint imgSz, out SafeHBITMAP hbmp)
 		{
@@ -374,9 +372,9 @@ public static partial class Shell32
 		/// <param name="iUnk">The interface to be queried.</param>
 		/// <param name="riid">The interface identifier (IID) of the requested interface.</param>
 		/// <returns>The returned interface.</returns>
-		public static object QueryInterface(in object iUnk, in Guid riid)
+		public static object? QueryInterface(in object iUnk, in Guid riid)
 		{
-			QueryInterface(iUnk, riid, out object ppv).ThrowIfFailed();
+			QueryInterface(iUnk, riid, out object? ppv).ThrowIfFailed();
 			return ppv;
 		}
 
@@ -384,14 +382,14 @@ public static partial class Shell32
 		/// <typeparam name="T">The interface type for which to query and return.</typeparam>
 		/// <param name="iUnk">The interface to be queried.</param>
 		/// <returns>The returned interface.</returns>
-		public static T QueryInterface<T>(in object iUnk) where T : class => (T)QueryInterface(iUnk, typeof(T).GUID);
+		public static T? QueryInterface<T>(in object iUnk) where T : class => (T?)QueryInterface(iUnk, typeof(T).GUID);
 
 		/// <summary>Requests a specified interface from a COM object.</summary>
 		/// <param name="iUnk">The interface to be queried.</param>
 		/// <param name="riid">The interface identifier (IID) of the requested interface.</param>
 		/// <param name="ppv">When this method returns, contains the returned interface.</param>
 		/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
-		public static HRESULT QueryInterface(in object iUnk, in Guid riid, out object ppv)
+		public static HRESULT QueryInterface(in object iUnk, in Guid riid, out object? ppv)
 		{
 			Guid tmp = riid;
 			HRESULT hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref tmp, out IntPtr ippv);
@@ -469,7 +467,6 @@ public static partial class Shell32
 
 			void IDisposable.Dispose()
 			{
-				psf = null;
 				pChild.Dispose();
 			}
 

@@ -133,7 +133,7 @@ public class MemoryApiTests
 	public void SafeMoveableHGlobalCreateFromBytesTest()
 	{
 		const string txt = @"“0’0©0è0”";
-		using SafeMoveableHGlobalHandle h = new(System.Text.Encoding.Unicode.GetBytes(txt + '\0'));
+		using SafeMoveableHGlobalHandle h = new(Encoding.Unicode.GetBytes(txt + '\0'));
 		Assert.AreEqual(txt, h.ToString(-1));
 	}
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -52,7 +48,7 @@ public static partial class Shell32
 	/// dialog displayed.
 	/// </returns>
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762598")]
-	public delegate int BrowseCallbackProc(HWND hwnd, BrowseForFolderMessages uMsg, IntPtr lParam, IntPtr lpData);
+	public delegate int BrowseCallbackProc(HWND hwnd, BrowseForFolderMessages uMsg, [In, Optional] IntPtr lParam, [In, Optional] IntPtr lpData);
 
 	/// <summary>Enumeration with dialog messages used by the SHBrowseForFolder dialog box.</summary>
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762598")]
@@ -239,7 +235,8 @@ public static partial class Shell32
 		/// Pointer to an application-defined function that the dialog box calls when an event occurs. For more information, see the
 		/// BrowseCallbackProc function. This member can be NULL.
 		/// </summary>
-		[MarshalAs(UnmanagedType.FunctionPtr)] public BrowseCallbackProc lpfn;
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public BrowseCallbackProc lpfn;
 
 		/// <summary>
 		/// An application-defined value that the dialog box passes to the callback function, if one is specified in <see cref="lpfn"/>.
@@ -272,6 +269,6 @@ public static partial class Shell32
 
 		/// <summary>Gets the display name.</summary>
 		/// <value>The display name.</value>
-		public string DisplayName => Marshal.PtrToStringAuto(pszDisplayName);
+		public readonly string? DisplayName => Marshal.PtrToStringAuto(pszDisplayName);
 	}
 }

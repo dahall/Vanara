@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
@@ -20,7 +17,7 @@ namespace Vanara.PInvoke;
 /// cref="RemoveEvent(Guid, Delegate)"/> methods.
 /// </para>
 /// </summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public abstract class SystemEventHandler : IDisposable
 {
 	private static ManualResetEvent? eventWindowReady;
@@ -34,7 +31,7 @@ public abstract class SystemEventHandler : IDisposable
 	/// <param name="forceThread">
 	/// if set to <see langword="true"/> a new thread is created for the message pump regardless of the current apartment state.
 	/// </param>
-	/// <exception cref="System.InvalidOperationException">System events not supported.</exception>
+	/// <exception cref="InvalidOperationException">System events not supported.</exception>
 	protected SystemEventHandler(bool forceThread = false)
 	{
 		if (Thread.GetDomain().GetData(".appDomain") != null)
@@ -173,7 +170,7 @@ public abstract class SystemEventHandler : IDisposable
 
 	/// <summary>
 	/// Allows derived classes to pre-process a message in a threaded message pump so that it is not passed along. Useful for things
-	/// like <see cref="User32.IsDialogMessage"/>.
+	/// like <see cref="IsDialogMessage"/>.
 	/// </summary>
 	/// <param name="msg">The MSG.</param>
 	/// <returns>
@@ -276,7 +273,7 @@ internal static class UserSession
 	{
 		get
 		{
-			if (Environment.OSVersion.Platform == System.PlatformID.Win32NT)
+			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
 			{
 				HWINSTA hwinsta = GetProcessWindowStation();
 				if (!hwinsta.IsNull && processWinStation != hwinsta)

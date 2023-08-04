@@ -24,4 +24,7 @@ DynamicMgmtObject, ManagementExtensions
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System.Management" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Vanara.Core.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
@@ -8,7 +6,7 @@ using static Vanara.PInvoke.PropSys;
 namespace Vanara.Windows.Shell;
 
 /// <summary>An in-memory property store.</summary>
-/// <seealso cref="Vanara.Windows.Shell.PropertyStore"/>
+/// <seealso cref="PropertyStore"/>
 public class MemoryPropertyStore : PropertyStore
 {
 	/// <summary>Initializes a new instance of the <see cref="MemoryPropertyStore"/> class.</summary>
@@ -20,7 +18,7 @@ public class MemoryPropertyStore : PropertyStore
 
 	/// <summary>Initializes a new instance of the <see cref="MemoryPropertyStore"/> class from a stream.</summary>
 	/// <param name="stream">The stream.</param>
-	/// <exception cref="System.ArgumentNullException">stream</exception>
+	/// <exception cref="ArgumentNullException">stream</exception>
 	public MemoryPropertyStore(IStream stream) : this()
 	{
 		if (stream is null) throw new ArgumentNullException(nameof(stream));
@@ -34,7 +32,7 @@ public class MemoryPropertyStore : PropertyStore
 	/// <summary>Clones a property store to a memory property store.</summary>
 	/// <param name="ps">The property store to clone.</param>
 	/// <returns>The cloned memory property store.</returns>
-	/// <exception cref="System.ArgumentNullException">ps</exception>
+	/// <exception cref="ArgumentNullException">ps</exception>
 	public static MemoryPropertyStore ClonePropertyStoreToMemory(IPropertyStore ps)
 	{
 		if (ps is null) throw new ArgumentNullException(nameof(ps));
@@ -50,7 +48,7 @@ public class MemoryPropertyStore : PropertyStore
 
 	/// <summary>Saves the contents of this property store to a stream.</summary>
 	/// <param name="stream">The stream that recieves the contents of this property store.</param>
-	/// <exception cref="System.ArgumentNullException">stream</exception>
+	/// <exception cref="ArgumentNullException">stream</exception>
 	public void SaveToStream(IStream stream)
 	{
 		if (stream is null) throw new ArgumentNullException(nameof(stream));

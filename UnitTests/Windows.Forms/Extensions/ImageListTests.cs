@@ -24,7 +24,7 @@ public class ImageListTests
 	public void ImageListFromHandleTest()
 	{
 		var himl = ImageList_Create(32, 32, ILC.ILC_COLOR32 | ILC.ILC_MASK, 8, 8);
-		himl.Interface.Add(new Gdi32.SafeHBITMAP((Image.FromFile(Vanara.PInvoke.Tests.TestCaseSources.ImageFile, true) as Bitmap).GetHbitmap()), HBITMAP.NULL);
+		himl.Interface.Add(new Gdi32.SafeHBITMAP((Image.FromFile(PInvoke.Tests.TestCaseSources.ImageFile, true) as Bitmap).GetHbitmap()), HBITMAP.NULL);
 		Assert.That(himl.IsNull, Is.False);
 		var il2 = ImageListExtension.ToImageList(himl);
 		Assert.That(il2.HandleCreated, Is.True);
@@ -37,9 +37,9 @@ public class ImageListTests
 	public void AddOverlayAndDrawTest()
 	{
 		var il = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(32, 32) };
-		il.Images.Add(new Icon(Vanara.PInvoke.Tests.TestCaseSources.SmallFile));
+		il.Images.Add(new Icon(PInvoke.Tests.TestCaseSources.SmallFile));
 		Assert.That(il.Images.Count, Is.EqualTo(1));
-		var ovIdx = il.AddOverlay(new Bitmap(Vanara.PInvoke.Tests.TestCaseSources.Image2File), Color.Transparent);
+		var ovIdx = il.AddOverlay(new Bitmap(PInvoke.Tests.TestCaseSources.Image2File), Color.Transparent);
 		Assert.That(il.Images.Count, Is.EqualTo(2));
 		var bmp = new Bitmap(32, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 		using (var g = Graphics.FromImage(bmp))
@@ -52,12 +52,12 @@ public class ImageListTests
 	{
 		var il = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(32, 32) };
 		il.SetBackgroundColor(Color.Transparent);
-		var img1 = Image.FromFile(Vanara.PInvoke.Tests.TestCaseSources.ImageFile, true);
+		var img1 = Image.FromFile(PInvoke.Tests.TestCaseSources.ImageFile, true);
 		il.Images.Add(img1, Color.Transparent);
 		ShowImage(il.Images[0]);
 		var il2 = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(32, 32) };
 		il2.SetBackgroundColor(Color.Transparent);
-		var img2 = Image.FromFile(Vanara.PInvoke.Tests.TestCaseSources.Image2File, true);
+		var img2 = Image.FromFile(PInvoke.Tests.TestCaseSources.Image2File, true);
 		il2.Images.Add(img2, Color.Transparent);
 		ShowImage(il2.Images[0]);
 		var ico = il.MergeImage(0, il2, 0);

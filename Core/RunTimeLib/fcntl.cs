@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.RunTimeLib;
+﻿namespace Vanara.RunTimeLib;
 
 /// <summary>
 /// The integer expression formed from one or more of these constants determines the type of reading or writing operations permitted. It

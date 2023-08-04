@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -773,26 +769,26 @@ public static partial class Gdi32
 		/// of the N-Up page layout or its semantics.
 		/// </para>
 		/// </summary>
-		FEATURESETTING_NUP =        0,
+		FEATURESETTING_NUP = 0,
 
 		/// <summary>
 		/// <para>Retrieves information about PostScript driver output options.</para>
 		/// <para>Set cbOutput to sizeof ( PSFEATURE_OUTPUT ) and lpszOutData to point to a <see cref="PSFEATURE_OUTPUT"/> structure.</para>
 		/// </summary>
-		FEATURESETTING_OUTPUT =        1,
+		FEATURESETTING_OUTPUT = 1,
 
 		/// <summary>
 		/// <para>Retrieves the PostScript language level.</para>
 		/// <para>Set cbOutput to sizeof ( INT ) and lpszOutData to point to an INT variable.</para>
 		/// <para>When the function returns, the lpszOutData variable is set to 1, 2, 3, or higher to indicate the PostScript language level.</para>
 		/// </summary>
-		FEATURESETTING_PSLEVEL =        2,
+		FEATURESETTING_PSLEVEL = 2,
 
 		/// <summary>
 		/// <para>Retrieves the custom paper parameters.</para>
 		/// <para>Set cbOutput to sizeof ( PSFEATURE_CUSTPAPER ) and lpszOutData to point to a <see cref="PSFEATURE_CUSTPAPER"/> structure.</para>
 		/// </summary>
-		FEATURESETTING_CUSTPAPER =        3,
+		FEATURESETTING_CUSTPAPER = 3,
 
 		/// <summary>
 		/// <para>Retrieves the mirrored output setting.</para>
@@ -800,14 +796,14 @@ public static partial class Gdi32
 		/// <para>If mirrored output is selected, the value returned in lpszOutData is TRUE.</para>
 		/// <para>If mirrored output is not selected, the value returned in lpszOutData is FALSE</para>
 		/// </summary>
-		FEATURESETTING_MIRROR =        4,
+		FEATURESETTING_MIRROR = 4,
 
 		/// <summary>
 		/// <para>Retrieves the negative output setting.</para>
 		/// <para>Set cbOutput to sizeof ( BOOL ) and lpszOutData to point to a <see cref="BOOL"/> variable.</para>
 		/// <para>When the function returns, the lpszOutData variable is TRUE if "Negative Output: Yes" is selected; otherwise, it is FALSE.</para>
 		/// </summary>
-		FEATURESETTING_NEGATIVE =        5,
+		FEATURESETTING_NEGATIVE = 5,
 
 		/// <summary>
 		/// <para>Retrieves the output protocol setting.</para>
@@ -815,7 +811,7 @@ public static partial class Gdi32
 		/// <para>When the function returns, the lpszOutData variable is set to one of the following output protocol values:</para>
 		/// <para>PSPROTOCOL_ASCII PSPROTOCOL_BCP PSPROTOCOL_TBCP PSPROTOCOL_BINARY</para>
 		/// </summary>
-		FEATURESETTING_PROTOCOL =        6,
+		FEATURESETTING_PROTOCOL = 6,
 
 		/// <summary>
 		/// Windows XP and later versions of Windows support the private use of this parameter. For private use, you can use the numbers in

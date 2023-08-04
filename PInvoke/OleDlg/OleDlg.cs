@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 

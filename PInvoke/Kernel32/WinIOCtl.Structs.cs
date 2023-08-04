@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -2070,7 +2065,7 @@ public static partial class Kernel32
 				{
 					fixed (ulong* p = &ul1)
 					{
-						return Vanara.Extensions.StringHelper.GetString((IntPtr)p, CharSet.Unicode, nameBytes);
+						return StringHelper.GetString((IntPtr)p, CharSet.Unicode, nameBytes);
 					}
 				}
 			}
@@ -2080,7 +2075,7 @@ public static partial class Kernel32
 				{
 					fixed (ulong* p = &ul1)
 					{
-						Vanara.Extensions.StringHelper.Write(value, (IntPtr)p, out _, true, CharSet.Unicode, nameBytes);
+						StringHelper.Write(value, (IntPtr)p, out _, true, CharSet.Unicode, nameBytes);
 					}
 				}
 			}

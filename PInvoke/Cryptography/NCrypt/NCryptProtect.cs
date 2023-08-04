@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in ncrypt.dll.</summary>
 public static partial class NCrypt
@@ -724,7 +719,7 @@ public static partial class NCrypt
 	// DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "32953AEC-01EE-4ED1-80F3-29963F43004F")]
-	public static extern HRESULT NCryptQueryProtectionDescriptorName(string pwszName, [Optional] StringBuilder?pwszDescriptorString, out SizeT pcDescriptorString, [Optional] ProtectionDescriptorNameFlags dwFlags);
+	public static extern HRESULT NCryptQueryProtectionDescriptorName(string pwszName, [Optional] StringBuilder? pwszDescriptorString, out SizeT pcDescriptorString, [Optional] ProtectionDescriptorNameFlags dwFlags);
 
 	/// <summary>
 	/// <para>

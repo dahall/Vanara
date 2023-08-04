@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.User32;
+﻿using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
@@ -429,7 +426,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Contains information about an item in a ComboBoxEx control.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775746")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public sealed class COMBOBOXEXITEM : IDisposable

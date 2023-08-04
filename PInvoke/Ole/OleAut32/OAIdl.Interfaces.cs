@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using DISPPARAMS = System.Runtime.InteropServices.ComTypes.DISPPARAMS;
 using EXCEPINFO = System.Runtime.InteropServices.ComTypes.EXCEPINFO;
 using FUNCDESC = System.Runtime.InteropServices.ComTypes.FUNCDESC;
 using IDLDESC = System.Runtime.InteropServices.ComTypes.IDLDESC;
+using IMPLTYPEFLAGS = System.Runtime.InteropServices.ComTypes.IMPLTYPEFLAGS;
 using INVOKEKIND = System.Runtime.InteropServices.ComTypes.INVOKEKIND;
 using TYPEDESC = System.Runtime.InteropServices.ComTypes.TYPEDESC;
 using TYPEKIND = System.Runtime.InteropServices.ComTypes.TYPEKIND;
@@ -553,7 +549,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-setimpltypeflags HRESULT
 		// SetImplTypeFlags(// UINT index, INT implTypeFlags);
 		[PreserveSig]
-		HRESULT SetImplTypeFlags(uint index, System.Runtime.InteropServices.ComTypes.IMPLTYPEFLAGS implTypeFlags);
+		HRESULT SetImplTypeFlags(uint index, IMPLTYPEFLAGS implTypeFlags);
 
 		/// <summary>Specifies the data alignment for an item of TYPEKIND=TKIND_RECORD.</summary>
 		/// <param name="cbAlignment">
@@ -1501,7 +1497,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-setimpltypeflags HRESULT
 		// SetImplTypeFlags(// UINT index, INT implTypeFlags);
 		[PreserveSig]
-		new HRESULT SetImplTypeFlags(uint index, System.Runtime.InteropServices.ComTypes.IMPLTYPEFLAGS implTypeFlags);
+		new HRESULT SetImplTypeFlags(uint index, IMPLTYPEFLAGS implTypeFlags);
 
 		/// <summary>Specifies the data alignment for an item of TYPEKIND=TKIND_RECORD.</summary>
 		/// <param name="cbAlignment">
@@ -2500,7 +2496,7 @@ public static partial class OleAut32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo2-setname HRESULT SetName(LPOLESTR szName);
 		[PreserveSig]
-		HRESULT SetName([In, MarshalAs(UnmanagedType.LPWStr)]  string szName);
+		HRESULT SetName([In, MarshalAs(UnmanagedType.LPWStr)] string szName);
 	}
 
 	/// <summary>
@@ -3741,8 +3737,8 @@ public static partial class OleAut32
 	/// Pointer to the location where the result is to be stored, or NULL if the caller expects no result. This argument is ignored if
 	/// DISPATCH_PROPERTYPUT or DISPATCH_PROPERTYPUTREF is specified.
 	/// </returns>
-	/// <exception cref="System.ArgumentNullException">source</exception>
-	/// <exception cref="System.ArgumentException">
+	/// <exception cref="ArgumentNullException">source</exception>
+	/// <exception cref="ArgumentException">
 	/// Unable to cast source to IDispatch - source or At least one argument must be specified for DISPATCH_PROPERTYPUT
 	/// </exception>
 	/// <remarks>

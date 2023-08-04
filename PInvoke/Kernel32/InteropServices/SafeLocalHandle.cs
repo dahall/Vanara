@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
@@ -35,7 +32,7 @@ public sealed class LocalMemoryMethods : MemoryMethodsBase
 }
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+/// <seealso cref="SafeHandle"/>
 public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
@@ -46,7 +43,7 @@ public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	public SafeLocalHandle(SizeT size) : base(size) { }
 
 	/// <summary>

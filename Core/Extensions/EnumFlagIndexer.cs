@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,7 +27,7 @@ namespace Vanara.Extensions;
 ///  fileInfo.Attributes = fileAttr;
 ///}</code>
 /// </example>
-public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagIndexer<TEnum>>, IEnumerable<TEnum> where TEnum : struct, System.Enum
+public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagIndexer<TEnum>>, IEnumerable<TEnum> where TEnum : struct, Enum
 {
 	private TEnum flags;
 

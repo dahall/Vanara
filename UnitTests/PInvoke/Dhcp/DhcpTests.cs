@@ -92,7 +92,7 @@ public class DhcpTests
 
 	internal static DHCP_IP_ADDRESS IPAddrFromStr(string addr)
 	{
-		if (!System.Net.IPAddress.TryParse(addr, out var ip) || ip.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
+		if (!IPAddress.TryParse(addr, out var ip) || ip.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
 			return 0;
 #pragma warning disable CS0618 // Type or member is obsolete
 		return (uint)ip.Address;

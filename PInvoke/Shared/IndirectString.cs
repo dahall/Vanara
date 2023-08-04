@@ -1,11 +1,8 @@
 ﻿#nullable enable
-using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Text;
 using Vanara.PInvoke;
 
 namespace Vanara.Windows.Shell;

@@ -1,7 +1,4 @@
-﻿using System;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -1123,230 +1120,230 @@ public static partial class Kernel32
 		[CorrespondingType(typeof(READ_USN_JOURNAL_DATA_V1), CorrespondingAction.Get)]
 		public static uint FSCTL_READ_USN_JOURNAL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 46, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
 
-		
+
 		/// <summary/>
 		public static uint FSCTL_REARRANGE_FILE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 264, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_RECALL_FILE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 69, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REFS_DEALLOCATE_RANGES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 246, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REMOVE_OVERLAY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 205, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REPAIR_COPIES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 173, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REQUEST_BATCH_OPLOCK => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 2, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REQUEST_FILTER_OPLOCK => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 23, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REQUEST_OPLOCK => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 144, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REQUEST_OPLOCK_LEVEL_1 => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 0, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_REQUEST_OPLOCK_LEVEL_2 => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 1, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_RESET_VOLUME_ALLOCATION_HINTS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 123, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_RKF_INTERNAL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 171, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SCRUB_DATA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 172, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SCRUB_UNDISCOVERABLE_ID => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 254, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SD_GLOBAL_CHANGE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 125, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SECURITY_ID_CHECK => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 45, IOMethod.METHOD_NEITHER, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_BOOTLOADER_ACCESSED => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 19, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
 
 		/// <summary/>
 		[CorrespondingType(typeof(COMPRESSION_FORMAT), CorrespondingAction.Set)]
 		public static uint FSCTL_SET_COMPRESSION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 16, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_DAX_ALLOC_ALIGNMENT_HINT => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 252, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_DEFECT_MANAGEMENT => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 77, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_ENCRYPTION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 53, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_EXTERNAL_BACKING => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 195, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_INTEGRITY_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 160, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_INTEGRITY_INFORMATION_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 224, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_LAYER_ROOT => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 229, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_OBJECT_ID => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 38, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_OBJECT_ID_EXTENDED => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 47, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_PERSISTENT_VOLUME_STATE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 142, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_PURGE_FAILURE_MODE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 156, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_REFS_FILE_STRICTLY_SEQUENTIAL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 249, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_REFS_SMR_VOLUME_GC_PARAMETERS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 248, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_REPAIR => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 102, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_REPARSE_POINT => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 41, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_REPARSE_POINT_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 259, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_SHORT_NAME_BEHAVIOR => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 109, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_SPARSE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 49, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_VOLUME_COMPRESSION_STATE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 80, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_ZERO_DATA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 50, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SET_ZERO_ON_DEALLOCATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 101, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SHRINK_VOLUME => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 108, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SHUFFLE_FILE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 208, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SIS_COPYFILE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 64, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SIS_LINK_FILES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 65, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SPARSE_OVERALLOCATE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 211, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SSDI_STORAGE_REQUEST => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 232, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_START_VIRTUALIZATION_INSTANCE_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 256, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_STORAGE_QOS_CONTROL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 212, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_STREAMS_ASSOCIATE_ID => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 242, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_STREAMS_QUERY_ID => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 243, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_STREAMS_QUERY_PARAMETERS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 241, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SUSPEND_OVERLAY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 225, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SVHDX_ASYNC_TUNNEL_REQUEST => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 217, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SVHDX_SET_INITIATOR_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 194, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_SVHDX_SYNC_TUNNEL_REQUEST => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 193, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_CREATE_MINIVERSION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 95, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_CREATE_SECONDARY_RM => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 90, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_GET_METADATA_INFO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 91, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_GET_TRANSACTED_VERSION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 92, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_LIST_TRANSACTION_LOCKED_FILES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 120, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_LIST_TRANSACTIONS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 121, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_MODIFY_RM => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 81, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_QUERY_RM_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 82, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_READ_BACKUP_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 88, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_READ_BACKUP_INFORMATION2 => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 126, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_ROLLFORWARD_REDO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 84, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_ROLLFORWARD_UNDO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 85, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_SAVEPOINT_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 94, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_SHUTDOWN_RM => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 87, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_START_RM => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 86, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_TRANSACTION_ACTIVE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 99, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_WRITE_BACKUP_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 89, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_TXFS_WRITE_BACKUP_INFORMATION2 => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 128, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_UNLOCK_VOLUME => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 7, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_UNMAP_SPACE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 237, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_UPDATE_OVERLAY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 206, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
 
@@ -1397,67 +1394,67 @@ public static partial class Kernel32
 		[CorrespondingType(typeof(USN_TRACK_MODIFIED_RANGES), CorrespondingAction.Get)]
 		public static uint FSCTL_USN_TRACK_MODIFIED_RANGES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 189, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
-		
+
 		/// <summary/>
 		public static uint FSCTL_VIRTUAL_STORAGE_PASSTHROUGH => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 265, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_VIRTUAL_STORAGE_QUERY_PROPERTY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 226, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_VIRTUAL_STORAGE_SET_BEHAVIOR => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 258, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_WAIT_FOR_REPAIR => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 104, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_WRITE_RAW_ENCRYPTED => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 55, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_WRITE_USN_CLOSE_RECORD => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 59, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint FSCTL_WRITE_USN_REASON => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 180, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_AVIO_ALLOCATE_STREAM => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_AVIO, 1, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_AVIO_FREE_STREAM => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_AVIO, 2, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_AVIO_MODIFY_STREAM => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_AVIO, 3, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_EXCHANGE_MEDIUM => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0008, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_GET_ELEMENT_STATUS => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0005, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_GET_PARAMETERS => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0000, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_GET_PRODUCT_DATA => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0002, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_GET_STATUS => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0001, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_INITIALIZE_ELEMENT_STATUS => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0006, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_MOVE_MEDIUM => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0009, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_QUERY_VOLUME_TAGS => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x000B, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_REINITIALIZE_TRANSPORT => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x000A, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_SET_ACCESS => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0004, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_CHANGER_SET_POSITION => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0007, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
 
@@ -1508,7 +1505,7 @@ public static partial class Kernel32
 
 		/// <summary/>
 		public static uint IOCTL_DISK_CHECK_VERIFY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0200, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_CONTROLLER_NUMBER => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0011, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
@@ -1538,22 +1535,22 @@ public static partial class Kernel32
 		[CorrespondingType(typeof(CREATE_DISK), CorrespondingAction.Get)]
 		public static uint IOCTL_DISK_CREATE_DISK => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0016, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
 
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_DELETE_DRIVE_LAYOUT => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0040, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_EJECT_MEDIA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0202, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_FIND_NEW_DEVICES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0206, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_FORMAT_DRIVE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x00f3, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_FORMAT_TRACKS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0006, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_FORMAT_TRACKS_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x000b, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
 
@@ -1683,32 +1680,32 @@ public static partial class Kernel32
 		public static uint IOCTL_DISK_GET_DRIVE_GEOMETRY_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0028, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 		/// <summary>
-																																																		/// <para>Retrieves information for each entry in the partition tables for a disk.</para>
-																																																		/// <para>
-																																																		/// <c>Note</c><c>IOCTL_DISK_GET_DRIVE_LAYOUT</c> has been superseded by IOCTL_DISK_GET_DRIVE_LAYOUT_EX, which retrieves layout
-																																																		/// information for AT and EFI (Extensible Firmware Interface) partitions.
-																																																		/// </para>
-																																																		/// <para>
-																																																		/// To perform this operation, call the DeviceIoControl function with the following parameters. You must have read access to the
-																																																		/// drive in order to use this control code.
-																																																		/// </para>
-																																																		/// <para>Major Code</para>
-																																																		/// <para>IRP_MJ_DEVICE_CONTROL</para>
-																																																		/// <para>Input Buffer</para>
-																																																		/// <para>Input Buffer Length</para>
-																																																		/// <para>Output Buffer</para>
-																																																		/// <para>Output Buffer Length</para>
-																																																		/// <para>Input / Output Buffer</para>
-																																																		/// <para>Input / Output Buffer Length</para>
-																																																		/// <para>Status Block</para>
-																																																		/// <para>Irp-&gt;IoStatus.Status is set to STATUS_SUCCESS if the request is successful.</para>
-																																																		/// <para>Otherwise, Status to the appropriate error condition as a NTSTATUS code.</para>
-																																																		/// <para>For more information, see NTSTATUS Values.</para>
-																																																		/// </summary>
-																																																		/// <remarks>
-																																																		/// This operation retrieves information for each primary partition as well as each logical drive. To determine whether the entry
-																																																		/// is an extended or unused partition, check the disk partition type.
-																																																		/// </remarks>
+		/// <para>Retrieves information for each entry in the partition tables for a disk.</para>
+		/// <para>
+		/// <c>Note</c><c>IOCTL_DISK_GET_DRIVE_LAYOUT</c> has been superseded by IOCTL_DISK_GET_DRIVE_LAYOUT_EX, which retrieves layout
+		/// information for AT and EFI (Extensible Firmware Interface) partitions.
+		/// </para>
+		/// <para>
+		/// To perform this operation, call the DeviceIoControl function with the following parameters. You must have read access to the
+		/// drive in order to use this control code.
+		/// </para>
+		/// <para>Major Code</para>
+		/// <para>IRP_MJ_DEVICE_CONTROL</para>
+		/// <para>Input Buffer</para>
+		/// <para>Input Buffer Length</para>
+		/// <para>Output Buffer</para>
+		/// <para>Output Buffer Length</para>
+		/// <para>Input / Output Buffer</para>
+		/// <para>Input / Output Buffer Length</para>
+		/// <para>Status Block</para>
+		/// <para>Irp-&gt;IoStatus.Status is set to STATUS_SUCCESS if the request is successful.</para>
+		/// <para>Otherwise, Status to the appropriate error condition as a NTSTATUS code.</para>
+		/// <para>For more information, see NTSTATUS Values.</para>
+		/// </summary>
+		/// <remarks>
+		/// This operation retrieves information for each primary partition as well as each logical drive. To determine whether the entry
+		/// is an extended or unused partition, check the disk partition type.
+		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-ioctl_disk_get_drive_layout
 		[PInvokeData("winioctl.h", MSDNShortId = "6c1bc445-3cd1-4f86-a36b-f74ad8f4d2e5")]
 		[CorrespondingType(typeof(DRIVE_LAYOUT_INFORMATION), CorrespondingAction.Get)]
@@ -1738,10 +1735,10 @@ public static partial class Kernel32
 		[PInvokeData("winioctl.h", MSDNShortId = "21507182-5a33-4e58-b5ed-3724feefa4ed")]
 		[CorrespondingType(typeof(DRIVE_LAYOUT_INFORMATION_EX), CorrespondingAction.Get)]
 		public static uint IOCTL_DISK_GET_DRIVE_LAYOUT_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0014, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_GET_LENGTH_INFO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0017, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_GET_MEDIA_TYPES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0300, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
@@ -1921,22 +1918,22 @@ public static partial class Kernel32
 
 		/// <summary/>
 		public static uint IOCTL_DISK_HISTOGRAM_DATA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x000d, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_HISTOGRAM_RESET => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x000e, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_HISTOGRAM_STRUCTURE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x000c, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_IS_WRITABLE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0009, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_LOAD_MEDIA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0203, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_LOGGING => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x000a, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_MEDIA_REMOVAL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0201, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
 
@@ -1966,31 +1963,31 @@ public static partial class Kernel32
 
 		/// <summary/>
 		public static uint IOCTL_DISK_PERFORMANCE_OFF => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0018, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_REASSIGN_BLOCKS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0007, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_REASSIGN_BLOCKS_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0029, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_RELEASE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0205, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_REQUEST_DATA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0010, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_REQUEST_STRUCTURE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x000f, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_RESERVE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0204, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_RESET_SNAPSHOT_INFO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0084, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_SENSE_DEVICE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x00f8, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_SET_CACHE_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0036, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
 
@@ -2168,223 +2165,223 @@ public static partial class Kernel32
 
 		/// <summary/>
 		public static uint IOCTL_DISK_UPDATE_DRIVE_SIZE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0032, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_UPDATE_PROPERTIES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0050, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_DISK_VERIFY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0005, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_BUS_GET_LOGICAL_DEVICES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCMBUS_FUNCTION(0x00), IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_BUS_GET_PHYSICAL_DEVICES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCMBUS_FUNCTION(0x01), IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_BUS_GET_REGIONS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCMBUS_FUNCTION(0x02), IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_LD_GET_INTERLEAVE_SET => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCM_LOGICAL_DEVICE_FUNCTION(0x00), IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_PD_FIRMWARE_ACTIVATE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCM_PHYSICAL_DEVICE_FUNCTION(0x02), IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_PD_FIRMWARE_DOWNLOAD => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCM_PHYSICAL_DEVICE_FUNCTION(0x01), IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_PD_PASSTHROUGH => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCM_PHYSICAL_DEVICE_FUNCTION(0x03), IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_PD_QUERY_PROPERTY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCM_PHYSICAL_DEVICE_FUNCTION(0x00), IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_PD_REINITIALIZE_MEDIA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCM_PHYSICAL_DEVICE_FUNCTION(0x05), IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SCM_PD_UPDATE_MANAGEMENT_STATUS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_PERSISTENT_MEMORY, SCM_PHYSICAL_DEVICE_FUNCTION(0x04), IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SERENUM_EXPOSE_HARDWARE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_SERENUM, 128, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SERENUM_GET_PORT_NAME => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_SERENUM, 131, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SERENUM_PORT_DESC => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_SERENUM, 130, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SERENUM_REMOVE_HARDWARE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_SERENUM, 129, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_SERIAL_LSRMST_INSERT => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_SERIAL_PORT, 31, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_ALLOCATE_BC_STREAM => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0601, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_ATTRIBUTE_MANAGEMENT => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0727, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_BREAK_RESERVATION => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0405, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_CHECK_PRIORITY_HINT_SUPPORT => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0620, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_CHECK_VERIFY => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0200, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_CHECK_VERIFY2 => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0200, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_DEVICE_POWER_CAP => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0725, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_DEVICE_TELEMETRY_NOTIFY => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0471, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_DEVICE_TELEMETRY_QUERY_CAPS => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0472, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_DIAGNOSTIC => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0728, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_EJECT_MEDIA => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0202, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_EJECTION_CONTROL => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0250, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_ENABLE_IDLE_POWER => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0720, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_EVENT_NOTIFICATION => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0724, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_FAILURE_PREDICTION_CONFIG => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0441, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_FIND_NEW_DEVICES => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0206, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_FIRMWARE_ACTIVATE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0702, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_FIRMWARE_DOWNLOAD => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0701, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_FIRMWARE_GET_INFO => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0700, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_FREE_BC_STREAM => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0602, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_BC_PROPERTIES => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0600, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_COUNTERS => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x442, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_DEVICE_NUMBER => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0420, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_DEVICE_TELEMETRY => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0470, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_DEVICE_TELEMETRY_RAW => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0473, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_HOTPLUG_INFO => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0305, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_IDLE_POWERUP_REASON => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0721, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_LB_PROVISIONING_MAP_RESOURCES => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0502, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_MEDIA_SERIAL_NUMBER => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0304, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_MEDIA_TYPES => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0300, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_MEDIA_TYPES_EX => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0301, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_GET_PHYSICAL_ELEMENT_STATUS => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0729, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_LOAD_MEDIA => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0203, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_LOAD_MEDIA2 => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0203, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0501, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_MCN_CONTROL => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0251, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_MEDIA_REMOVAL => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0201, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_PERSISTENT_RESERVE_IN => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0406, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_PERSISTENT_RESERVE_OUT => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0407, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_POWER_ACTIVE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0722, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_POWER_IDLE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0723, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_PREDICT_FAILURE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0440, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_PROTOCOL_COMMAND => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x04F0, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_QUERY_PROPERTY => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0500, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_READ_CAPACITY => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0450, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_REINITIALIZE_MEDIA => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0590, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_RELEASE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0205, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_REMOVE_ELEMENT_AND_TRUNCATE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0730, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_RESERVE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0204, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_RESET_BUS => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0400, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_RESET_DEVICE => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0401, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_RPMB_COMMAND => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0726, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_SET_HOTPLUG_INFO => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0306, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_SET_TEMPERATURE_THRESHOLD => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0480, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_START_DATA_INTEGRITY_CHECK => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0621, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_STORAGE_STOP_DATA_INTEGRITY_CHECK => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0622, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
 
@@ -2459,22 +2456,22 @@ public static partial class Kernel32
 		[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS")]
 		[CorrespondingType(typeof(VOLUME_DISK_EXTENTS), CorrespondingAction.Get)]
 		public static uint IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS => CTL_CODE(DEVICE_TYPE.IOCTL_VOLUME_BASE, 0, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_VOLUME_IS_CLUSTERED => CTL_CODE(DEVICE_TYPE.IOCTL_VOLUME_BASE, 12, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_VOLUME_OFFLINE => CTL_CODE(DEVICE_TYPE.IOCTL_VOLUME_BASE, 3, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint IOCTL_VOLUME_ONLINE => CTL_CODE(DEVICE_TYPE.IOCTL_VOLUME_BASE, 2, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint SMART_GET_VERSION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0020, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-		
+
 		/// <summary/>
 		public static uint SMART_RCV_DRIVE_DATA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0022, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-		
+
 		/// <summary/>
 		public static uint SMART_SEND_DRIVE_COMMAND => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0021, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
 

@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.ComCtl32;
 
 namespace Vanara.PInvoke;
@@ -156,12 +152,12 @@ public static partial class Shell32
 		/// <summary>Performs an implicit conversion from <see cref="STRRET"/> to <see cref="System.String"/>.</summary>
 		/// <param name="s">The <see cref="STRRET"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator string(in STRRET s) => 
+		public static implicit operator string?(in STRRET s) =>
 			ShlwApi.StrRetToBSTR(new PinnedObject(s), default, out var ret).Succeeded ? ret : null;
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => (string)this ?? "";
+		public override string ToString() => (string?)this ?? "";
 	}
 
 	internal class STRRETMarshaler : ICustomMarshaler
@@ -189,7 +185,7 @@ public static partial class Shell32
 			return sr.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 		}
 
-		public object MarshalNativeToManaged(IntPtr pNativeData) => 
-			pNativeData != IntPtr.Zero && ShlwApi.StrRetToBSTR(pNativeData, default, out var ret).Succeeded ? ret : null;
+		public object MarshalNativeToManaged(IntPtr pNativeData) =>
+			pNativeData != IntPtr.Zero && ShlwApi.StrRetToBSTR(pNativeData, default, out var ret).Succeeded ? ret : string.Empty;
 	}
 }

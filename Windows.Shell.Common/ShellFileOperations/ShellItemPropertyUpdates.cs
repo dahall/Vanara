@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Vanara.Collections;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
@@ -21,10 +18,7 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object>, IDispo
 	private IPropertyChangeArray changes;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemPropertyUpdates"/> class.</summary>
-	public ShellItemPropertyUpdates()
-	{
-		PSCreatePropertyChangeArray(null, null, null, 0, typeof(IPropertyChangeArray).GUID, out changes).ThrowIfFailed();
-	}
+	public ShellItemPropertyUpdates() => PSCreatePropertyChangeArray(null, null, null, 0, typeof(IPropertyChangeArray).GUID, out changes).ThrowIfFailed();
 
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{T}"/>.</summary>
 	public int Count => (int)changes.GetCount();

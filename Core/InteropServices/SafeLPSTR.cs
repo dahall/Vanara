@@ -1,8 +1,6 @@
 ﻿#nullable enable
 
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 using System.Security;
 
 namespace Vanara.InteropServices;
@@ -38,7 +36,8 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
 	private SafeLPSTR(StrPtrAnsi ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
-		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
+		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes)
+	{ }
 
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>
@@ -62,7 +61,7 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Inserts a string into this instance at the specified character position.</summary>
 	/// <param name="index">The position in this instance where insertion begins.</param>
 	/// <param name="value">The string to insert.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <paramref name="index"/> is less than zero or greater than the current length of this instance.
 	/// </exception>
 	public new SafeLPSTR Insert(int index, string? value) { base.Insert(index, value); return this; }
@@ -70,7 +69,7 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Removes the specified range of characters from this instance.</summary>
 	/// <param name="startIndex">The zero-based position in this instance where removal begins.</param>
 	/// <param name="length">The number of characters to remove.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// If <paramref name="startIndex"/> or <paramref name="length"/> is less than zero, or <paramref name="startIndex"/> + <paramref
 	/// name="length"/> is greater than the length of this instance.
 	/// </exception>
@@ -98,7 +97,7 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="newChar">The character that replaces <paramref name="oldChar"/>.</param>
 	/// <param name="startIndex">The position in this instance where the substring begins.</param>
 	/// <param name="count">The length of the substring.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <para><paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of the value of this instance.</para>
 	/// <para>-or-</para>
 	/// <para><paramref name="startIndex"/> or <paramref name="count"/> is less than zero.</para>
@@ -137,7 +136,8 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
 	private SafeLPTSTR(StrPtrAuto ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
-		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
+		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes)
+	{ }
 
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>
@@ -161,7 +161,7 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Inserts a string into this instance at the specified character position.</summary>
 	/// <param name="index">The position in this instance where insertion begins.</param>
 	/// <param name="value">The string to insert.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <paramref name="index"/> is less than zero or greater than the current length of this instance.
 	/// </exception>
 	public new SafeLPTSTR Insert(int index, string? value) { base.Insert(index, value); return this; }
@@ -169,7 +169,7 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Removes the specified range of characters from this instance.</summary>
 	/// <param name="startIndex">The zero-based position in this instance where removal begins.</param>
 	/// <param name="length">The number of characters to remove.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// If <paramref name="startIndex"/> or <paramref name="length"/> is less than zero, or <paramref name="startIndex"/> + <paramref
 	/// name="length"/> is greater than the length of this instance.
 	/// </exception>
@@ -197,7 +197,7 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="newChar">The character that replaces <paramref name="oldChar"/>.</param>
 	/// <param name="startIndex">The position in this instance where the substring begins.</param>
 	/// <param name="count">The length of the substring.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <para><paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of the value of this instance.</para>
 	/// <para>-or-</para>
 	/// <para><paramref name="startIndex"/> or <paramref name="count"/> is less than zero.</para>
@@ -236,7 +236,8 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
 	private SafeLPWSTR(StrPtrUni ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
-		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
+		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes)
+	{ }
 
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>
@@ -260,7 +261,7 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Inserts a string into this instance at the specified character position.</summary>
 	/// <param name="index">The position in this instance where insertion begins.</param>
 	/// <param name="value">The string to insert.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <paramref name="index"/> is less than zero or greater than the current length of this instance.
 	/// </exception>
 	public new SafeLPWSTR Insert(int index, string? value) { base.Insert(index, value); return this; }
@@ -268,7 +269,7 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Removes the specified range of characters from this instance.</summary>
 	/// <param name="startIndex">The zero-based position in this instance where removal begins.</param>
 	/// <param name="length">The number of characters to remove.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// If <paramref name="startIndex"/> or <paramref name="length"/> is less than zero, or <paramref name="startIndex"/> + <paramref
 	/// name="length"/> is greater than the length of this instance.
 	/// </exception>
@@ -296,7 +297,7 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="newChar">The character that replaces <paramref name="oldChar"/>.</param>
 	/// <param name="startIndex">The position in this instance where the substring begins.</param>
 	/// <param name="count">The length of the substring.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <exception cref="ArgumentOutOfRangeException">
 	/// <para><paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of the value of this instance.</para>
 	/// <para>-or-</para>
 	/// <para><paramref name="startIndex"/> or <paramref name="count"/> is less than zero.</para>

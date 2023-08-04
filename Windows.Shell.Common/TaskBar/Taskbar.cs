@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Collections.Generic;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Shell32;
@@ -118,7 +114,7 @@ public static class Taskbar
 		Win32Error.ThrowLastErrorIf(SHAppBarMessage(ABM.ABM_GETTASKBARPOS, ref abd), r => r == IntPtr.Zero);
 		rect = abd.rc;
 		edge = abd.uEdge;
-		hwnd = abd.hWnd == default ? User32.FindWindowEx(default, default, TaskbarWndClass, null) : abd.hWnd;
+		hwnd = abd.hWnd == default ? FindWindowEx(default, default, TaskbarWndClass, null) : abd.hWnd;
 	}
 
 	private static void GetState()

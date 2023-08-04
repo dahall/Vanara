@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
+﻿using System.Diagnostics.CodeAnalysis;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;

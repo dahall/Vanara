@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using System.IO;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.User32;
@@ -35,7 +34,7 @@ public class ShellLinkTests
 		StringAssert.AreEqualIgnoringCase(targetPath, lnk.TargetPath);
 	}
 
-	private static ushort MakeHotKey(VK key, HOTKEYF modifier) => Vanara.PInvoke.Macros.MAKEWORD((byte)key, (byte)modifier);
+	private static ushort MakeHotKey(VK key, HOTKEYF modifier) => PInvoke.Macros.MAKEWORD((byte)key, (byte)modifier);
 	private static PInvoke.ShowWindowCommand WindowStateToSW(System.Windows.Forms.FormWindowState state) => (PInvoke.ShowWindowCommand)state;
 	private static PInvoke.HWND ToHWND(System.Windows.Forms.IWin32Window win) => win?.Handle ?? PInvoke.HWND.NULL;
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke
+﻿namespace Vanara.PInvoke
 {
 	/// <summary>Flags that determine the minimum supported client(s) for a P/Invoke function.</summary>
 	[Flags]
@@ -79,7 +77,7 @@ namespace Vanara.Extensions
 		/// <returns><see langword="true"/> if the running OS is minimally the specified client; otherwise, <see langword="false"/>.</returns>
 		public static bool IsPlatformSupported(this PInvoke.PInvokeClient client)
 		{
-			var osVer = System.Environment.OSVersion.Version;
+			var osVer = Environment.OSVersion.Version;
 
 			switch (client)
 			{

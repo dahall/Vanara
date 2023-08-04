@@ -910,7 +910,7 @@ public static partial class DbgHelp
 	public static IList<(string ModuleName, IntPtr ModuleBase, uint ModuleSize)> EnumerateLoadedModules(HPROCESS hProcess)
 	{
 		var mods = new List<(string, IntPtr, uint)>();
-		if (Vanara.InteropServices.LibHelper.Is64BitProcess)
+		if (LibHelper.Is64BitProcess)
 			EnumerateLoadedModules64(hProcess, Callback64);
 		else
 			EnumerateLoadedModules(hProcess, Callback);

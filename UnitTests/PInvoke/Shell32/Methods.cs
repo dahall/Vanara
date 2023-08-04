@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests;
@@ -17,8 +14,8 @@ public class Shell32Methods
 		var h = CommandLineToArgvW(cmd, out var c);
 		Assert.That(h.IsInvalid, Is.False);
 		Assert.That(c, Is.EqualTo(4));
-		Assert.That(h.ToStringEnum(c, System.Runtime.InteropServices.CharSet.Unicode), Is.Not.Empty);
-		Assert.That(h.ToStringEnum(c, System.Runtime.InteropServices.CharSet.Unicode).First(), Is.EqualTo("-d"));
+		Assert.That(h.ToStringEnum(c, CharSet.Unicode), Is.Not.Empty);
+		Assert.That(h.ToStringEnum(c, CharSet.Unicode).First(), Is.EqualTo("-d"));
 
 		Assert.That(CommandLineToArgvW(cmd).First(), Is.EqualTo("-d"));
 		TestContext.WriteLine(string.Join(" | ", CommandLineToArgvW(cmd)));
@@ -44,7 +41,7 @@ public class Shell32Methods
 		Assert.That(SHGetDesktopFolder(out var sf), ResultIs.Successful);
 		foreach (var sub in sf.EnumObjects())
 		{
-			string name = null;
+			string? name = null;
 			Assert.That(() => name = sf.GetDisplayNameOf(SHGDNF.SHGDN_NORMAL | SHGDNF.SHGDN_INFOLDER, sub), Throws.Nothing);
 			TestContext.WriteLine(name);
 		}
@@ -56,7 +53,7 @@ public class Shell32Methods
 	{
 		// Create temp file and delete it to recycle bin
 		var file = new TempFile();
-		var ishi = SHCreateItemFromParsingName<IShellItem>(file.FullName);
+		var ishi = SHCreateItemFromParsingName<IShellItem>(file.FullName)!;
 		IFileOperation op = new();
 		op.DeleteItem(ishi, default);
 		op.PerformOperations();
@@ -74,12 +71,12 @@ public class Shell32Methods
 
 		// Get IShellFolder for Recycle Bin
 		SHGetKnownFolderIDList(KNOWNFOLDERID.FOLDERID_RecycleBinFolder.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, default, out var pIDL).ThrowIfFailed();
-		using var pBin = ComReleaserFactory.Create(pDesktop.Item.BindToObject<IShellFolder>(pIDL));
+		using var pBin = ComReleaserFactory.Create(pDesktop.Item.BindToObject<IShellFolder>(pIDL)!);
 
 		// Enum all items in bin
 		foreach (var childPidl in pBin.Item.EnumObjects())
 		{
-			using var pItem = ComReleaserFactory.Create(SHCreateItemFromIDList<IShellItem>(childPidl));
+			using var pItem = ComReleaserFactory.Create(SHCreateItemFromIDList<IShellItem>(childPidl)!);
 			// use pItem.Item to access methods of IShellItem
 			TestContext.WriteLine(pItem.Item.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY).ToString());
 		}
@@ -90,7 +87,7 @@ public class Shell32Methods
 	public void IShellMenuTest()
 	{
 		Ole32.CoCreateInstance(typeof(MenuBand).GUID, default, Ole32.CLSCTX.CLSCTX_INPROC_SERVER, typeof(IShellMenu).GUID, out var ppv).ThrowIfFailed();
-		using var ishmenu = ComReleaserFactory.Create(ppv as IShellMenu);
+		using var ishmenu = ComReleaserFactory.Create((IShellMenu)ppv);
 		Assert.IsNotNull(ishmenu.Item);
 	}
 

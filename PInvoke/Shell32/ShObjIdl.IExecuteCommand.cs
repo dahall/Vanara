@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.OleAut32;
+﻿using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke;
 
@@ -185,7 +183,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexecutecommand-setdirectory HRESULT
 		// SetDirectory( LPCWSTR pszDirectory );
 		[PreserveSig]
-		HRESULT SetDirectory([In, MarshalAs(UnmanagedType.LPWStr)] string pszDirectory);
+		HRESULT SetDirectory([In, MarshalAs(UnmanagedType.LPWStr)] string? pszDirectory);
 
 		/// <summary>Invoke the verb on the selected items. Call this method after you have called the other methods of this interface.</summary>
 		/// <returns>

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Security;
+﻿using System.Security;
 
 namespace Vanara.PInvoke;
 
@@ -14,15 +12,15 @@ public static partial class Shell32
 
 	/// <summary>DESTS_E_NO_MATCHING_ASSOC_HANDLER.  Win7 internal error code for Jump Lists.</summary>
 	/// <remarks>There is no Assoc Handler for the given item registered by the specified application.</remarks>
-	public static readonly HRESULT DESTS_E_NO_MATCHING_ASSOC_HANDLER = new HRESULT(0x80040F03);
+	public static readonly HRESULT DESTS_E_NO_MATCHING_ASSOC_HANDLER = new(0x80040F03);
 
 	/// <summary>DESTS_E_NORECDOCS.  Win7 internal error code for Jump Lists.</summary>
 	/// <remarks>The given item is excluded from the recent docs folder by the NoRecDocs bit on its registration.</remarks>
-	public static readonly HRESULT DESTS_E_NORECDOCS = new HRESULT(0x80040F04);
+	public static readonly HRESULT DESTS_E_NORECDOCS = new(0x80040F04);
 
 	/// <summary>DESTS_E_NOTALLCLEARED.  Win7 internal error code for Jump Lists.</summary>
 	/// <remarks>Not all of the items were successfully cleared</remarks>
-	public static readonly HRESULT DESTS_E_NOTALLCLEARED = new HRESULT(0x80040F05);
+	public static readonly HRESULT DESTS_E_NOTALLCLEARED = new(0x80040F05);
 
 	/// <summary>Windows message indicating that the taskbar was created.</summary>
 	public static readonly uint WM_TASKBARCREATED = User32.RegisterWindowMessage("TaskbarCreated");
@@ -447,7 +445,7 @@ public static partial class Shell32
 		/// through ITaskbarList3::RegisterTab. If this value is NULL, the new thumbnail is added to the end of the list.
 		/// </param>
 		/// <remarks>This method must be called for the thumbnail to be shown in the group. Call it after you have called ITaskbarList3::RegisterTab.</remarks>
-		void SetTabOrder(HWND hwndTab, HWND hwndInsertBefore);
+		void SetTabOrder(HWND hwndTab, [Optional] HWND hwndInsertBefore);
 
 		/// <summary>Informs the taskbar that a tab or document window has been made the active window.</summary>
 		/// <param name="hwndTab">
@@ -459,7 +457,7 @@ public static partial class Shell32
 		/// required and cannot be NULL.
 		/// </param>
 		/// <param name="dwReserved">Reserved; set to 0.</param>
-		void SetTabActive(HWND hwndTab, HWND hwndMDI, uint dwReserved);
+		void SetTabActive([Optional] HWND hwndTab, HWND hwndMDI, uint dwReserved = 0);
 
 		/// <summary>
 		/// Adds a thumbnail toolbar with a specified set of buttons to the thumbnail image of a window in a taskbar button flyout.
@@ -549,7 +547,7 @@ public static partial class Shell32
 		/// <param name="pszDescription">
 		/// A pointer to a string that provides an alt text version of the information conveyed by the overlay, for accessibility purposes.
 		/// </param>
-		void SetOverlayIcon(HWND hwnd, HICON hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszDescription);
+		void SetOverlayIcon(HWND hwnd, [Optional] HICON hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszDescription);
 
 		/// <summary>
 		/// Specifies or updates the text of the tooltip that is displayed when the mouse pointer rests on an individual preview
@@ -562,7 +560,7 @@ public static partial class Shell32
 		/// The pointer to the text to be displayed in the tooltip. This value can be NULL, in which case the title of the window
 		/// specified by hwnd is used as the tooltip.
 		/// </param>
-		void SetThumbnailTooltip(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip);
+		void SetThumbnailTooltip(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string? pszTip);
 
 		/// <summary>Selects a portion of a window's client area to display as that window's thumbnail in the taskbar.</summary>
 		/// <param name="hwnd">The handle to a window represented in the taskbar.</param>
@@ -571,7 +569,7 @@ public static partial class Shell32
 		/// of that client area. To clear a clip that is already in place and return to the default display of the thumbnail, set this
 		/// parameter to NULL.
 		/// </param>
-		void SetThumbnailClip(HWND hwnd, PRECT prcClip);
+		void SetThumbnailClip(HWND hwnd, [Optional] PRECT? prcClip);
 	}
 
 	/// <summary>
@@ -673,7 +671,7 @@ public static partial class Shell32
 		/// through ITaskbarList3::RegisterTab. If this value is NULL, the new thumbnail is added to the end of the list.
 		/// </param>
 		/// <remarks>This method must be called for the thumbnail to be shown in the group. Call it after you have called ITaskbarList3::RegisterTab.</remarks>
-		new void SetTabOrder(HWND hwndTab, HWND hwndInsertBefore);
+		new void SetTabOrder(HWND hwndTab, [Optional] HWND hwndInsertBefore);
 
 		/// <summary>Informs the taskbar that a tab or document window has been made the active window.</summary>
 		/// <param name="hwndTab">
@@ -685,7 +683,7 @@ public static partial class Shell32
 		/// required and cannot be NULL.
 		/// </param>
 		/// <param name="dwReserved">Reserved; set to 0.</param>
-		new void SetTabActive(HWND hwndTab, HWND hwndMDI, uint dwReserved);
+		new void SetTabActive([Optional] HWND hwndTab, HWND hwndMDI, uint dwReserved = 0);
 
 		/// <summary>
 		/// Adds a thumbnail toolbar with a specified set of buttons to the thumbnail image of a window in a taskbar button flyout.
@@ -775,7 +773,7 @@ public static partial class Shell32
 		/// <param name="pszDescription">
 		/// A pointer to a string that provides an alt text version of the information conveyed by the overlay, for accessibility purposes.
 		/// </param>
-		new void SetOverlayIcon(HWND hwnd, HICON hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszDescription);
+		new void SetOverlayIcon(HWND hwnd, [Optional] HICON hIcon, [MarshalAs(UnmanagedType.LPWStr)] string? pszDescription);
 
 		/// <summary>
 		/// Specifies or updates the text of the tooltip that is displayed when the mouse pointer rests on an individual preview
@@ -788,7 +786,7 @@ public static partial class Shell32
 		/// The pointer to the text to be displayed in the tooltip. This value can be NULL, in which case the title of the window
 		/// specified by hwnd is used as the tooltip.
 		/// </param>
-		new void SetThumbnailTooltip(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip);
+		new void SetThumbnailTooltip(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string? pszTip);
 
 		/// <summary>Selects a portion of a window's client area to display as that window's thumbnail in the taskbar.</summary>
 		/// <param name="hwnd">The handle to a window represented in the taskbar.</param>
@@ -797,7 +795,7 @@ public static partial class Shell32
 		/// of that client area. To clear a clip that is already in place and return to the default display of the thumbnail, set this
 		/// parameter to NULL.
 		/// </param>
-		new void SetThumbnailClip(HWND hwnd, PRECT prcClip);
+		new void SetThumbnailClip(HWND hwnd, [Optional] PRECT? prcClip);
 
 		/// <summary>
 		/// Allows a tab to specify whether the main application frame window or the tab window should be used as a thumbnail or in the
@@ -884,7 +882,7 @@ public static partial class Shell32
 		public THUMBBUTTONFLAGS dwFlags;
 
 		/// <summary>The default</summary>
-		public static THUMBBUTTON Default = new THUMBBUTTON { dwMask = THUMBBUTTONMASK.THB_FLAGS, dwFlags = THUMBBUTTONFLAGS.THBF_HIDDEN };
+		public static THUMBBUTTON Default = new() { dwMask = THUMBBUTTONMASK.THB_FLAGS, dwFlags = THUMBBUTTONFLAGS.THBF_HIDDEN };
 	}
 
 	/// <summary>Class interface for ICustomDestinationList.</summary>

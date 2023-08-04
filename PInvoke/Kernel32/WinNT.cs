@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.Extensions.BitHelper;
+﻿using static Vanara.Extensions.BitHelper;
 
 namespace Vanara.PInvoke;
 
@@ -459,22 +455,22 @@ public static partial class Kernel32
 	{
 		/// <summary/>
 		public uint ContextFlags;
-		
+
 		/// <summary/>
 		public uint Dr0;
-		
+
 		/// <summary/>
 		public uint Dr1;
-		
+
 		/// <summary/>
 		public uint Dr2;
-		
+
 		/// <summary/>
 		public uint Dr3;
-		
+
 		/// <summary/>
 		public uint Dr6;
-		
+
 		/// <summary/>
 		public uint Dr7;
 
@@ -484,52 +480,167 @@ public static partial class Kernel32
 
 		// Retrieved by CONTEXT_SEGMENTS
 		/// <summary/>
+
+		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net45)'
+		Before:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		After:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		*/
+
+		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net48)'
+		Before:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		After:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		*/
+
+		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net6.0)'
+		Before:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		After:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		*/
+
+		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (netstandard2.0)'
+		Before:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		After:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		*/
+
+		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net7.0)'
+		Before:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		After:
+				public uint SegGs;
+
+				/// <summary/>
+				public uint SegFs;
+
+				/// <summary/>
+				public uint SegEs;
+
+				/// <summary/>
+		*/
 		public uint SegGs;
-		
+
 		/// <summary/>
 		public uint SegFs;
-		
+
 		/// <summary/>
 		public uint SegEs;
-		
+
 		/// <summary/>
 		public uint SegDs;
 
 		// Retrieved by CONTEXT_INTEGER
 		/// <summary/>
 		public uint Edi;
-	
+
 		/// <summary/>
 		public uint Esi;
-		
+
 		/// <summary/>
 		public uint Ebx;
-		
+
 		/// <summary/>
 		public uint Edx;
-		
+
 		/// <summary/>
 		public uint Ecx;
-		
+
 		/// <summary/>
 		public uint Eax;
 
 		// Retrieved by CONTEXT_CONTROL
 		/// <summary/>
 		public uint Ebp;
-		
+
 		/// <summary/>
 		public uint Eip;
-		
+
 		/// <summary/>
 		public uint SegCs;
-		
+
 		/// <summary/>
 		public uint EFlags;
-		
+
 		/// <summary/>
 		public uint Esp;
-		
+
 		/// <summary/>
 		public uint SegSs;
 

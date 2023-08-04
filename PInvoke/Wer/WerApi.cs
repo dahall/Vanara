@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using static Vanara.PInvoke.DbgHelp;
 using static Vanara.PInvoke.Kernel32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 

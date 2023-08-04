@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
 using System.Threading;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
@@ -8,7 +6,7 @@ using static Vanara.PInvoke.Shell32;
 namespace Vanara.Windows.Shell;
 
 /// <summary>The Shell's progress dialog.</summary>
-/// <seealso cref="System.ComponentModel.Component"/>
+/// <seealso cref="Component"/>
 public class ShellFileOperationDialog : Component
 {
 	internal IOperationsProgressDialog iProgressDialog;
@@ -32,10 +30,7 @@ public class ShellFileOperationDialog : Component
 
 	/// <summary>Initializes a new instance of the <see cref="ShellFileOperationDialog"/> class.</summary>
 	/// <param name="container">The container.</param>
-	public ShellFileOperationDialog(IContainer container) : this()
-	{
-		container.Add(this);
-	}
+	public ShellFileOperationDialog(IContainer container) : this() => container.Add(this);
 
 	/// <summary>Provides operation status flags for ShellFileOperationDialog.</summary>
 	public enum DialogStatus

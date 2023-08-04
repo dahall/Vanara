@@ -304,7 +304,7 @@ public class Device : IDisposable
 				var v when v.GetType().IsValueType && v.GetType().IsEnum => SafeCoTaskMemHandle.CreateFromStructure((uint)value),
 				IEnumerable<string> ies => SafeCoTaskMemHandle.CreateFromStringList(ies),
 				byte[] ba => new SafeCoTaskMemHandle(ba),
-				string s => new SafeCoTaskMemString(s, System.Runtime.InteropServices.CharSet.Auto),
+				string s => new SafeCoTaskMemString(s, CharSet.Auto),
 				_ => throw new ArgumentException("Unable to convert object to property type.", nameof(value))
 			};
 			try
@@ -527,7 +527,7 @@ public class DeviceClass : IDisposable
 			if (value is null)
 				return SafeCoTaskMemHandle.Null;
 			if (value is IEnumerable<string> sa && (type.IsFlagSet(DEVPROPTYPE.DEVPROP_TYPEMOD_LIST) && (type.IsFlagSet(DEVPROPTYPE.DEVPROP_TYPE_STRING) || type.IsFlagSet(DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING))))
-				return SafeCoTaskMemHandle.CreateFromStringList(sa, StringListPackMethod.Concatenated, System.Runtime.InteropServices.CharSet.Unicode);
+				return SafeCoTaskMemHandle.CreateFromStringList(sa, StringListPackMethod.Concatenated, CharSet.Unicode);
 			var valType = value.GetType();
 
 			// Validate type of property against supplied type
@@ -662,7 +662,7 @@ public class DeviceClass : IDisposable
 				SPCRP.SPCRP_UPPERFILTERS => value is IEnumerable<string> uf ? SafeCoTaskMemHandle.CreateFromStringList(uf) : null,
 				SPCRP.SPCRP_LOWERFILTERS => value is IEnumerable<string> lf ? SafeCoTaskMemHandle.CreateFromStringList(lf) : null,
 				SPCRP.SPCRP_SECURITY => value is byte[] ba ? new SafeCoTaskMemHandle(ba) : null,
-				SPCRP.SPCRP_SECURITY_SDS => value is string s ? new SafeCoTaskMemString(s, System.Runtime.InteropServices.CharSet.Auto) : null,
+				SPCRP.SPCRP_SECURITY_SDS => value is string s ? new SafeCoTaskMemString(s, CharSet.Auto) : null,
 				SPCRP.SPCRP_DEVTYPE => value is FILE_DEVICE fd ? SafeCoTaskMemHandle.CreateFromStructure(fd) : null,
 				SPCRP.SPCRP_EXCLUSIVE => value is BOOL b ? SafeCoTaskMemHandle.CreateFromStructure(b) : null,
 				SPCRP.SPCRP_CHARACTERISTICS => value is uint u ? SafeCoTaskMemHandle.CreateFromStructure(u) : null,

@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests;

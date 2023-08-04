@@ -58,7 +58,7 @@ public class FileApiTests
 	{
 		string dir = TestCaseSources.TempChildDir;
 		Assert.That(CreateDirectory(dir), Is.True);
-		Assert.That(System.IO.Directory.Exists(dir), Is.True);
+		Assert.That(Directory.Exists(dir), Is.True);
 		Assert.That(RemoveDirectory(dir), Is.True);
 	}
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -1013,7 +1010,7 @@ public static partial class Gdi32
 	// BOOL FloodFill( HDC hdc, int x, int y, COLORREF color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e53bebb5-4e46-4ea4-8d41-c12f4c6645ef")]
-	[return: MarshalAs(UnmanagedType.Bool)] 
+	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool FloodFill(HDC hdc, int x, int y, COLORREF color);
 
 	/// <summary>

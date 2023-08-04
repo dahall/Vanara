@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.AccessControl;
 using System.Security.Permissions;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
@@ -97,7 +94,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// </param>
 	/// <param name="resolveFlags">The resolve flags.</param>
 	/// <param name="timeOut">The time out.</param>
-	/// <exception cref="System.ArgumentNullException">linkFile</exception>
+	/// <exception cref="ArgumentNullException">linkFile</exception>
 	public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, HWND window = default, TimeSpan timeOut = default) : base(linkFile) =>
 		LoadAndResolve(linkFile, (SLR_FLAGS)resolveFlags, window, (ushort)timeOut.TotalMilliseconds);
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
+﻿using System.Collections.Generic;
 using static Vanara.Extensions.BitHelper;
 
 namespace Vanara.PInvoke;

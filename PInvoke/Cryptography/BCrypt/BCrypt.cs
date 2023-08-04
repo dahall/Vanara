@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.NCrypt;
 
 namespace Vanara.PInvoke;
@@ -5694,7 +5690,7 @@ public static partial class BCrypt
 	/// predefined Cryptography Primitive Property Identifiers or a custom property identifier.
 	/// </param>
 	/// <returns>The value of the requested property from <paramref name="pszProperty"/> cast to type <typeparamref name="T"/>.</returns>
-	/// <exception cref="System.InvalidCastException">Requested type and system defined sizes do not match.</exception>
+	/// <exception cref="InvalidCastException">Requested type and system defined sizes do not match.</exception>
 	[PInvokeData("bcrypt.h", MSDNShortId = "5c62ca3a-843e-41a7-9340-41785fbb15f4")]
 	public static T BCryptGetProperty<T>(BCRYPT_HANDLE hObject, string pszProperty)
 	{

@@ -369,7 +369,7 @@ public class WinHTTPTests
 		Assert.That(WinHttpReadData(hRequest, mem, bytes, out var read), ResultIs.Successful);
 		Assert.That(read, Is.LessThanOrEqualTo((uint)mem.Size));
 		TestContext.WriteLine($", Bytes read: {read}");
-		TestContext.WriteLine(mem.ToString(-1, System.Runtime.InteropServices.CharSet.Ansi));
+		TestContext.WriteLine(mem.ToString(-1, CharSet.Ansi));
 	}
 
 	[Test]

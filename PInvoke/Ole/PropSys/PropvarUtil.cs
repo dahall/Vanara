@@ -1,10 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Ole32;
+﻿using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.OleAut32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke;
 

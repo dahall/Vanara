@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class User32
 {
@@ -1449,7 +1445,7 @@ public static partial class User32
 		/// <list>
 		/// <item>
 		/// <term>lParam</term>
-		/// <description>A pointer to an <see cref="User32.NMHDR"/> structure that contains information about the notification code.</description>
+		/// <description>A pointer to an <see cref="NMHDR"/> structure that contains information about the notification code.</description>
 		/// </item>
 		/// </list>
 		/// </summary>

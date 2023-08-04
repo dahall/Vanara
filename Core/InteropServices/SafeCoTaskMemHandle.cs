@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
@@ -78,7 +75,7 @@ public sealed class CoTaskMemoryMethods : IMemoryMethods
 }
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via COM.</summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+/// <seealso cref="SafeHandle"/>
 public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class.</summary>
@@ -89,7 +86,7 @@ public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	public SafeCoTaskMemHandle(SizeT size) : base(size) { }
 
 	/// <summary>

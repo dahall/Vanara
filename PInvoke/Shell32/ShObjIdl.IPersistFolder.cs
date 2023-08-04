@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -336,7 +333,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ipersistfolder3-initializeex HRESULT
 		// InitializeEx( IBindCtx *pbc, PCIDLIST_ABSOLUTE pidlRoot, const PERSIST_FOLDER_TARGET_INFO *ppfti );
-		void InitializeEx([In, Optional] IBindCtx pbc, [In] PIDL pidlRoot, [In, Optional] IntPtr ppfti);
+		void InitializeEx([In, Optional] IBindCtx? pbc, [In] PIDL pidlRoot, [In, Optional] IntPtr ppfti);
 
 		/// <summary>Provides the location and attributes of a folder shortcut's target folder.</summary>
 		/// <returns>
@@ -376,7 +373,7 @@ public static partial class Shell32
 	/// This function is an extended version of IPersistFolder::Initialize. It allows the Shell to initialize folder shortcuts as well as
 	/// normal folders.
 	/// </remarks>
-	public static void InitializeEx(this IPersistFolder3 pf3, [In, Optional] IBindCtx pbc, [In] PIDL pidlRoot, in PERSIST_FOLDER_TARGET_INFO pfti)
+	public static void InitializeEx(this IPersistFolder3 pf3, [In, Optional] IBindCtx? pbc, [In] PIDL pidlRoot, in PERSIST_FOLDER_TARGET_INFO pfti)
 	{
 		using SafeCoTaskMemStruct<PERSIST_FOLDER_TARGET_INFO> ppfti = new(pfti);
 		pf3.InitializeEx(pbc, pidlRoot, ppfti);

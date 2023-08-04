@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -29,7 +28,7 @@ public enum TaskbarItemTabThumbnailOption
 //[TypeConverter(typeof(TaskbarItemTabConverter))]
 //[Serializable]
 /// <summary></summary>
-/// <seealso cref="System.ComponentModel.INotifyPropertyChanged"/>
+/// <seealso cref="INotifyPropertyChanged"/>
 public class TaskbarButtonThumbnail : INotifyPropertyChanged //, ISerializable
 {
 	internal STPFLAG flag = 0;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -13,7 +8,7 @@ public static partial class Kernel32
 
 	private static readonly uint AutoChSz = (uint)StringHelper.GetCharSize();
 
-	private static readonly uint PageSize = (uint)System.Environment.SystemPageSize;
+	private static readonly uint PageSize = (uint)Environment.SystemPageSize;
 
 	/// <summary>Retrieves an integer associated with a key in the specified section of an initialization file.</summary>
 	/// <param name="lpAppName">The name of the section in the initialization file.</param>

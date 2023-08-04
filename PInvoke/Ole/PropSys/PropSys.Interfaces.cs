@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -1919,7 +1916,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplay HRESULT
 		// FormatForDisplay( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, LPWSTR pszText, DWORD cchText );
-		void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, [MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pszText, uint cchText);
+		void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, uint cchText);
 
 		/// <summary>Gets a string representation of a property value to an allocated memory buffer.</summary>
 		/// <param name="key">

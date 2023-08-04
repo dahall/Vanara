@@ -1,10 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Shell32
 {
@@ -1071,9 +1065,9 @@ public static partial class Shell32
 		private IntPtr pCategoryInfo;
 
 		/// <summary>An array of APPCATEGORYINFO structures. This array contains all the categories an application publisher supports.</summary>
-		public APPCATEGORYINFO[] CategoryInfo
+		public APPCATEGORYINFO[]? CategoryInfo
 		{
-			get => pCategoryInfo.ToArray<APPCATEGORYINFO>(cCategory);
+			readonly get => pCategoryInfo.ToArray<APPCATEGORYINFO>(cCategory);
 			set { Free(); pCategoryInfo = value is null ? default : value.MarshalToPtr(Marshal.AllocCoTaskMem, out _); cCategory = value?.Length ?? 0; }
 		}
 
@@ -1081,7 +1075,7 @@ public static partial class Shell32
 		public void Free()
 		{
 			if (pCategoryInfo == default) return;
-			foreach (var i in CategoryInfo)
+			foreach (var i in CategoryInfo!)
 				i.pszDescription.Free();
 			Marshal.FreeCoTaskMem(pCategoryInfo);
 			pCategoryInfo = default;

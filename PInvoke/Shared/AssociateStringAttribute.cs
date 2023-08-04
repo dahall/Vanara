@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Associates a string with an element.</summary>
 /// <seealso cref="Attribute"/>

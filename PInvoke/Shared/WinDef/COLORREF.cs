@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 
 namespace Vanara.PInvoke;
 
@@ -74,7 +72,7 @@ public struct COLORREF : IEquatable<COLORREF>
 	public COLORREF Darken(float percent)
 	{
 		return percent < 0 || percent > 1.0
-			?           throw new ArgumentOutOfRangeException(nameof(percent))
+			? throw new ArgumentOutOfRangeException(nameof(percent))
 			: (new(Conv(R), Conv(G), Conv(B)) { Value = Value });
 		byte Conv(byte c) => (byte)(c - (int)(c * percent));
 	}
@@ -99,7 +97,7 @@ public struct COLORREF : IEquatable<COLORREF>
 	public COLORREF Lighten(float percent)
 	{
 		return percent < 0 || percent > 1.0
-			?           throw new ArgumentOutOfRangeException(nameof(percent))
+			? throw new ArgumentOutOfRangeException(nameof(percent))
 			: (new(Conv(R), Conv(G), Conv(B)) { Value = Value });
 		byte Conv(byte c) => (byte)(c + (int)((255f - c) * percent));
 	}
@@ -118,7 +116,7 @@ public struct COLORREF : IEquatable<COLORREF>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator COLORREF(Color clr) => new(clr);
 
-	/// <summary>Performs an implicit conversion from <see cref="System.ValueTuple{R, G, B}"/> to <see cref="COLORREF"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="ValueTuple{R, G, B}"/> to <see cref="COLORREF"/>.</summary>
 	/// <param name="clr">The tuple containing the R, G, and B values.</param>
 	/// <returns>The resulting <see cref="COLORREF"/> instance from the conversion.</returns>
 	public static implicit operator COLORREF((byte r, byte g, byte b) clr) => new(clr.r, clr.g, clr.b);

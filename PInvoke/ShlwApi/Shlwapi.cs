@@ -1,11 +1,5 @@
-global using System;
-global using System.Runtime.InteropServices;
-global using System.Runtime.InteropServices.ComTypes;
-global using System.Text;
-global using Vanara.InteropServices;
-global using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-
 using Microsoft.Win32.SafeHandles;
+using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using static Vanara.PInvoke.Crypt32;
+﻿using static Vanara.PInvoke.Crypt32;
 
 namespace Vanara.PInvoke;
 

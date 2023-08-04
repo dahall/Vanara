@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Gdi32;
+﻿using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -11,22 +9,22 @@ public static partial class User32
 	public static readonly ResourceId IDI_APPLICATION = Macros.MAKEINTRESOURCE(32512);
 
 	/// <summary>Hand-shaped icon. Same as IDI_ERROR.</summary>
-	public static readonly ResourceId IDI_HAND        = Macros.MAKEINTRESOURCE(32513);
+	public static readonly ResourceId IDI_HAND = Macros.MAKEINTRESOURCE(32513);
 
 	/// <summary>Question mark icon.</summary>
-	public static readonly ResourceId IDI_QUESTION    = Macros.MAKEINTRESOURCE(32514);
+	public static readonly ResourceId IDI_QUESTION = Macros.MAKEINTRESOURCE(32514);
 
 	/// <summary>Exclamation point icon. Same as IDI_WARNING.</summary>
 	public static readonly ResourceId IDI_EXCLAMATION = Macros.MAKEINTRESOURCE(32515);
 
 	/// <summary>Asterisk icon. Same as IDI_INFORMATION.</summary>
-	public static readonly ResourceId IDI_ASTERISK    = Macros.MAKEINTRESOURCE(32516);
+	public static readonly ResourceId IDI_ASTERISK = Macros.MAKEINTRESOURCE(32516);
 
 	/// <summary>Default application icon. Windows 2000: Windows logo icon.</summary>
-	public static readonly ResourceId IDI_WINLOGO     = Macros.MAKEINTRESOURCE(32517);
+	public static readonly ResourceId IDI_WINLOGO = Macros.MAKEINTRESOURCE(32517);
 
 	/// <summary>Security Shield icon.</summary>
-	public static readonly ResourceId IDI_SHIELD      = Macros.MAKEINTRESOURCE(32518);
+	public static readonly ResourceId IDI_SHIELD = Macros.MAKEINTRESOURCE(32518);
 
 	/// <summary>Exclamation point icon.</summary>
 	public static readonly ResourceId IDI_WARNING = IDI_EXCLAMATION;
@@ -1382,6 +1380,10 @@ public static partial class User32
 		private SafeHICON() : base()
 		{
 		}
+
+		/// <summary>Gets an instance equal to HICON = NULL.</summary>
+		/// <value>A null value for <see cref="SafeHICON"/>.</value>
+		public static SafeHICON Null => new(IntPtr.Zero, false);
 
 		/// <summary>Gets the size of this icon in pixels.</summary>
 		public SIZE Size => GetSize(handle);

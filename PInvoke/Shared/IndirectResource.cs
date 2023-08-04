@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System;
 using System.ComponentModel;
 
 namespace Vanara.Windows.Shell;
@@ -27,8 +26,8 @@ public abstract class IndirectResource
 	/// <summary>Initializes a new instance of the <see cref="IndirectResource"/> class.</summary>
 	/// <param name="packageNameOrPriFile">The package name or package resource index file name.</param>
 	/// <param name="packageLocator">The package locator.</param>
-	/// <exception cref="System.ArgumentNullException">packageNameOrPriFile or packageLocator</exception>
-	/// <exception cref="System.ArgumentException">Package locator must start with 'ms-resource://' - packageLocator</exception>
+	/// <exception cref="ArgumentNullException">packageNameOrPriFile or packageLocator</exception>
+	/// <exception cref="ArgumentException">Package locator must start with 'ms-resource://' - packageLocator</exception>
 	public IndirectResource(string packageNameOrPriFile, string packageLocator)
 	{
 		if (packageNameOrPriFile is null) throw new ArgumentNullException(nameof(packageNameOrPriFile));

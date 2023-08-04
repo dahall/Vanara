@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Windows.Forms;
 namespace Vanara.Windows.Shell;
 
 /// <summary>The list of thumbnails to be displayed on the taskbar button.</summary>
-/// <seealso cref="System.Collections.ObjectModel.ObservableCollection{T}"/>
+/// <seealso cref="ObservableCollection{T}"/>
 [Serializable]
 [TypeConverter(typeof(ExpandableObjectConverter))]
 public class TaskbarButtonThumbnails : ObservableCollection<TaskbarButtonThumbnail>

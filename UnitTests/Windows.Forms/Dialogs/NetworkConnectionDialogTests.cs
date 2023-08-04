@@ -32,7 +32,7 @@ public class NetworkConnectionDialogTests
 	{
 		const string drive = "S:";
 
-		Vanara.PInvoke.Mpr.WNetAddConnection2(new PInvoke.Mpr.NETRESOURCE(remoteName, drive), null, null, PInvoke.Mpr.CONNECT.CONNECT_TEMPORARY | PInvoke.Mpr.CONNECT.CONNECT_UPDATE_RECENT);
+		PInvoke.Mpr.WNetAddConnection2(new PInvoke.Mpr.NETRESOURCE(remoteName, drive), null, null, PInvoke.Mpr.CONNECT.CONNECT_TEMPORARY | PInvoke.Mpr.CONNECT.CONNECT_UPDATE_RECENT);
 
 		var ncd = new NetworkDisconnectDialog { LocalDeviceName = drive, RemoteNetworkName = remoteName, ForceDisconnect = false, UpdateProfile = true };
 		Assert.That(ncd.ShowDialog(), Is.EqualTo(DialogResult.OK).Or.EqualTo(DialogResult.Cancel));
@@ -42,7 +42,7 @@ public class NetworkConnectionDialogTests
 		Assert.That(ncd.ForceDisconnect, Is.True);
 		Assert.That(ncd.LocalDeviceName, Is.Null);
 
-		Vanara.PInvoke.Mpr.WNetAddConnection2(new PInvoke.Mpr.NETRESOURCE(remoteName, drive), null, null, PInvoke.Mpr.CONNECT.CONNECT_TEMPORARY | PInvoke.Mpr.CONNECT.CONNECT_UPDATE_RECENT);
+		PInvoke.Mpr.WNetAddConnection2(new PInvoke.Mpr.NETRESOURCE(remoteName, drive), null, null, PInvoke.Mpr.CONNECT.CONNECT_TEMPORARY | PInvoke.Mpr.CONNECT.CONNECT_UPDATE_RECENT);
 
 		Assert.That(() => ncd.UpdateProfile = true, Throws.InvalidOperationException);
 		ncd.LocalDeviceName = drive;

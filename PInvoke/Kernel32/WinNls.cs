@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -38,52 +33,367 @@ public static partial class Kernel32
 	/// locale can be different from the locale for the current user interface language.
 	/// </summary>
 	public const string? LOCALE_NAME_USER_DEFAULT = null;
-	
+
 	/// <summary/>
 	public const ushort SORT_DEFAULT = 0;
-	
+
 	/// <summary/>
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net45)'
+	Before:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net48)'
+	Before:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net6.0)'
+	Before:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (netstandard2.0)'
+	Before:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net7.0)'
+	Before:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
+
+		/// <summary/>
+	*/
 	public const ushort SUBLANG_CUSTOM_DEFAULT = 0x03;
-	
+
 	/// <summary/>
 	public const ushort SUBLANG_CUSTOM_UNSPECIFIED = 0x04;
-	
+
 	/// <summary/>
 	public const ushort SUBLANG_DEFAULT = 0x01;
-	
+
 	/// <summary/>
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net45)'
+	Before:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net48)'
+	Before:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net6.0)'
+	Before:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (netstandard2.0)'
+	Before:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net7.0)'
+	Before:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	After:
+		public const ushort SUBLANG_NEUTRAL = 0;
+
+		/// <summary/>
+		public const ushort SUBLANG_SYS_DEFAULT = 0x02;
+
+		/// <summary/>
+		public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
+
+		/// <summary/>
+		public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
+
+		/// <summary/>
+	*/
 	public const ushort SUBLANG_NEUTRAL = 0;
-	
+
 	/// <summary/>
 	public const ushort SUBLANG_SYS_DEFAULT = 0x02;
-	
+
 	/// <summary/>
 	public const ushort SUBLANG_UI_CUSTOM_DEFAULT = 0x05;
-	
+
 	/// <summary/>
 	public static readonly ushort LANG_SYSTEM_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT);
-	
+
 	/// <summary/>
 	public static readonly ushort LANG_USER_DEFAULT = MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT);
-	
+
 	/// <summary/>
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net45)'
+	Before:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	After:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net48)'
+	Before:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	After:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net6.0)'
+	Before:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	After:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (netstandard2.0)'
+	Before:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	After:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	*/
+
+	/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net7.0)'
+	Before:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	After:
+		public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
+
+		/// <summary/>
+		public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
+
+		/// <summary/>
+	*/
 	public static readonly LCID LOCALE_CUSTOM_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_DEFAULT), SORT_DEFAULT);
-	
+
 	/// <summary/>
 	public static readonly LCID LOCALE_CUSTOM_UI_DEFAULT = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_UI_CUSTOM_DEFAULT), SORT_DEFAULT);
-	
+
 	/// <summary/>
 	public static readonly LCID LOCALE_CUSTOM_UNSPECIFIED = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_CUSTOM_UNSPECIFIED), SORT_DEFAULT);
-	
+
 	/// <summary/>
 	public static readonly LCID LOCALE_INVARIANT = MAKELCID(MAKELANGID(LANG_INVARIANT, SUBLANG_NEUTRAL), SORT_DEFAULT);
-	
+
 	/// <summary/>
 	public static readonly LCID LOCALE_NEUTRAL = MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), SORT_DEFAULT);
-	
+
 	/// <summary/>
 	public static readonly LCID LOCALE_SYSTEM_DEFAULT = MAKELCID(LANG_SYSTEM_DEFAULT, SORT_DEFAULT);
-	
+
 	/// <summary/>
 	public static readonly LCID LOCALE_USER_DEFAULT = MAKELCID(LANG_USER_DEFAULT, SORT_DEFAULT);
 

@@ -1,13 +1,10 @@
 ﻿#pragma warning disable IDE0058 // Expression value is never used
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Security.Permissions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Collections;
 
@@ -31,7 +28,7 @@ public static partial class InteropExtensions
 	/// <param name="prefixBytes">Bytes to skip before starting the span.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <returns>A <see cref="ReadOnlySpan{T}"/> that represents the memory.</returns>
-	/// <exception cref="System.InsufficientMemoryException"></exception>
+	/// <exception cref="InsufficientMemoryException"></exception>
 	public static unsafe ReadOnlySpan<T> AsReadOnlySpan<T>(this IntPtr ptr, int length, int prefixBytes = 0, SizeT allocatedBytes = default)
 	{
 		if (ptr == IntPtr.Zero) return null;
@@ -59,7 +56,7 @@ public static partial class InteropExtensions
 	/// <param name="prefixBytes">Bytes to skip before starting the span.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <returns>A <see cref="Span{T}"/> that represents the memory.</returns>
-	/// <exception cref="System.InsufficientMemoryException"></exception>
+	/// <exception cref="InsufficientMemoryException"></exception>
 	public static unsafe Span<T> AsSpan<T>(this IntPtr ptr, int length, int prefixBytes = 0, SizeT allocatedBytes = default)
 	{
 		if (ptr == IntPtr.Zero) return null;
@@ -79,7 +76,7 @@ public static partial class InteropExtensions
 	/// <param name="prefixBytes">Bytes to skip before starting the span.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <returns>A pointer that represents the memory.</returns>
-	/// <exception cref="System.InsufficientMemoryException"></exception>
+	/// <exception cref="InsufficientMemoryException"></exception>
 	public static unsafe T* AsUnmanagedArrayPointer<T>(this IntPtr ptr, int length, int prefixBytes = 0, SizeT allocatedBytes = default) where T : unmanaged
 	{
 		if (ptr == IntPtr.Zero) return null;
@@ -321,7 +318,7 @@ public static partial class InteropExtensions
 		if (VanaraMarshaler.CanMarshal(typeof(T), out IVanaraMarshaler? marshaler))
 		{
 			using SafeAllocatedMemoryHandle mem = marshaler.MarshalManagedToNative(value);
-			return AllocWrite(bytesAllocated = mem.Size + prefixBytes, (p,c) => Marshal.Copy(mem.GetBytes(), 0, p.Offset(prefixBytes), mem.Size), memAlloc, memLock, memUnlock);
+			return AllocWrite(bytesAllocated = mem.Size + prefixBytes, (p, c) => Marshal.Copy(mem.GetBytes(), 0, p.Offset(prefixBytes), mem.Size), memAlloc, memLock, memUnlock);
 		}
 		else
 		{
@@ -411,7 +408,7 @@ public static partial class InteropExtensions
 		// Get size
 		bytesAllocated = Math.Abs(GetStrListSize(values, packing, charSet)) + prefixBytes;
 
-		return AllocWrite(bytesAllocated, (p,c) => Write(p, values, packing, charSet, prefixBytes, c), memAlloc, memLock, memUnlock);
+		return AllocWrite(bytesAllocated, (p, c) => Write(p, values, packing, charSet, prefixBytes, c), memAlloc, memLock, memUnlock);
 	}
 
 	/// <summary>
@@ -555,8 +552,8 @@ public static partial class InteropExtensions
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <param name="bytesRead">The number of bytes read during the conversion.</param>
 	/// <returns>An array of type <paramref name="type"/> containing the elements of the native array.</returns>
-	/// <exception cref="System.ArgumentNullException">type</exception>
-	/// <exception cref="System.InsufficientMemoryException"></exception>
+	/// <exception cref="ArgumentNullException">type</exception>
+	/// <exception cref="InsufficientMemoryException"></exception>
 	public static Array? ToArray(this IntPtr ptr, Type type, int count, [Optional] int prefixBytes, [Optional] SizeT allocatedBytes, out int bytesRead)
 	{
 		if (type is null) throw new ArgumentNullException(nameof(type));
@@ -1013,8 +1010,8 @@ public static partial class InteropExtensions
 	/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <returns>The number of bytes written. The offset is not included.</returns>
-	/// <exception cref="System.InsufficientMemoryException"></exception>
-	/// <exception cref="System.ArgumentException">Concatenated string arrays cannot contain empty or null strings.</exception>
+	/// <exception cref="InsufficientMemoryException"></exception>
+	/// <exception cref="ArgumentException">Concatenated string arrays cannot contain empty or null strings.</exception>
 	/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
 	/// <exception cref="InsufficientMemoryException"></exception>
 	public static int Write(this IntPtr ptr, IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet = CharSet.Auto, int offset = 0, SizeT allocatedBytes = default)
