@@ -76,6 +76,6 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iopensearchsource-getresults
 		// HRESULT GetResults( HWND hwnd, LPCWSTR pszQuery, DWORD dwStartIndex, DWORD dwCount, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetResults(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszQuery, uint dwStartIndex, uint dwCount, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+		HRESULT GetResults(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszQuery, uint dwStartIndex, uint dwCount, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 	}
 }

@@ -373,7 +373,7 @@ public static partial class SearchApi
 		/// <remarks>Any or all of the three parameters can be <c>NULL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getcomparisoninfo
 		// HRESULT GetComparisonInfo( LPWSTR *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
-		void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
+		void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
 		/// <returns>
@@ -383,7 +383,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluetype
 		// HRESULT GetValueType( LPWSTR *ppszValueTypeName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetValueType();
+		string? GetValueType();
 
 		/// <summary>Retrieves the character-normalized value of the search condition node.</summary>
 		/// <returns>
@@ -436,7 +436,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getinputterms
 		// HRESULT GetInputTerms( IRichChunk **ppPropertyTerm, IRichChunk **ppOperationTerm, IRichChunk **ppValueTerm );
-		void GetInputTerms(out IRichChunk ppPropertyTerm, out IRichChunk ppOperationTerm, out IRichChunk ppValueTerm);
+		void GetInputTerms(out IRichChunk? ppPropertyTerm, out IRichChunk? ppOperationTerm, out IRichChunk? ppValueTerm);
 
 		/// <summary>Creates a deep copy of this ICondition object.</summary>
 		/// <returns>
@@ -710,7 +710,7 @@ public static partial class SearchApi
 		/// <remarks>Any or all of the three parameters can be <c>NULL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getcomparisoninfo
 		// HRESULT GetComparisonInfo( LPWSTR *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
-		new void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
+		new void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
 		/// <returns>
@@ -720,7 +720,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluetype
 		// HRESULT GetValueType( LPWSTR *ppszValueTypeName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetValueType();
+		new string? GetValueType();
 
 		/// <summary>Retrieves the character-normalized value of the search condition node.</summary>
 		/// <returns>
@@ -773,7 +773,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getinputterms
 		// HRESULT GetInputTerms( IRichChunk **ppPropertyTerm, IRichChunk **ppOperationTerm, IRichChunk **ppValueTerm );
-		new void GetInputTerms(out IRichChunk ppPropertyTerm, out IRichChunk ppOperationTerm, out IRichChunk ppValueTerm);
+		new void GetInputTerms(out IRichChunk? ppPropertyTerm, out IRichChunk? ppOperationTerm, out IRichChunk? ppValueTerm);
 
 		/// <summary>Creates a deep copy of this ICondition object.</summary>
 		/// <returns>
@@ -799,7 +799,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition2-getlocale
 		// HRESULT GetLocale( LPWSTR *ppszLocaleName );
 		[PInvokeData("structuredquerycondition.h", MSDNShortId = "")]
-		string GetLocale();
+		string? GetLocale();
 
 		/// <summary>
 		/// Retrieves the property name, operation, and value from a leaf search condition node.
@@ -854,7 +854,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-irichchunk-getdata
 		// HRESULT GetData( ULONG *pFirstPos, ULONG *pLength, LPWSTR *ppsz, PROPVARIANT *pValue );
-		void GetData(out uint pFirstPos, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppsz, [In, Out] PROPVARIANT pValue);
+		void GetData(out uint pFirstPos, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppsz, [In, Out] PROPVARIANT pValue);
 	}
 
 	/// <summary>

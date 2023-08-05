@@ -143,7 +143,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-getshellitem
 		// HRESULT GetShellItem( REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object GetShellItem(in Guid riid);
+		object? GetShellItem(in Guid riid);
 
 		/// <summary>Gets the search folder as an ITEMIDLIST.</summary>
 		/// <returns>
@@ -159,7 +159,7 @@ public static partial class SearchApi
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
 	/// <param name="sfif">An <see cref="ISearchFolderItemFactory"/> instance.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T GetShellItem<T>(this ISearchFolderItemFactory sfif) where T : class => (T)sfif.GetShellItem(typeof(T).GUID);
+	public static T? GetShellItem<T>(this ISearchFolderItemFactory sfif) where T : class => (T?)sfif.GetShellItem(typeof(T).GUID);
 
 	/// <summary>CLSID_SearchFolderItemFactory</summary>
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "a684b373-6de4-4b4a-bbae-85e1c5a7e04a")]

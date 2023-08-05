@@ -964,7 +964,7 @@ public static partial class SearchApi
 		// *SearchDecSize, WCHAR **pwcsSearchDesc, IFilter **ppIFilt );
 		[PInvokeData("filtereg.h", MSDNShortId = "b4eff132-9022-4091-a2a3-1d8e11a35b39")]
 		[Obsolete, PreserveSig]
-		HRESULT LoadIFilterFromStorage([In] IStorage pStg, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, [In, MarshalAs(UnmanagedType.LPWStr)] string pwcsOverride,
+		HRESULT LoadIFilterFromStorage([In] IStorage pStg, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, MarshalAs(UnmanagedType.LPWStr)] string pwcsOverride,
 			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
 
 		/// <summary>
@@ -985,7 +985,7 @@ public static partial class SearchApi
 		// *pFilterClsid, int *SearchDecSize, WCHAR **pwcsSearchDesc, IFilter **ppIFilt );
 		[PInvokeData("filtereg.h", MSDNShortId = "6a577306-d5ff-43c1-ab9f-3a7437661d2a")]
 		[Obsolete, PreserveSig]
-		HRESULT LoadIFilterFromStream([In] IStream pStm, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter,
+		HRESULT LoadIFilterFromStream([In] IStream pStm, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter,
 			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
 	}
 
@@ -2096,7 +2096,7 @@ public static partial class SearchApi
 		// EnumerateRoots( IEnumSearchRoots **ppSearchRoots );
 		[PInvokeData("searchapi.h")]
 		[PreserveSig]
-		HRESULT EnumerateRoots(out IEnumSearchRoots ppSearchRoots);
+		HRESULT EnumerateRoots(out IEnumSearchRoots? ppSearchRoots);
 
 		/// <summary>Adds a hierarchical scope to the search engine.</summary>
 		/// <param name="pszURL">
@@ -2472,7 +2472,7 @@ public static partial class SearchApi
 		// EnumerateRoots( IEnumSearchRoots **ppSearchRoots );
 		[PInvokeData("searchapi.h")]
 		[PreserveSig]
-		new HRESULT EnumerateRoots(out IEnumSearchRoots ppSearchRoots);
+		new HRESULT EnumerateRoots(out IEnumSearchRoots? ppSearchRoots);
 
 		/// <summary>Adds a hierarchical scope to the search engine.</summary>
 		/// <param name="pszURL">
@@ -4172,7 +4172,7 @@ public static partial class SearchApi
 		// HRESULT put_QueryContentProperties( LPCWSTR pszContentProperties );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010009)]
-		string QueryContentProperties { [param: In, MarshalAs(UnmanagedType.LPWStr)] set; [return: MarshalAs(UnmanagedType.LPWStr)] get; }
+		string? QueryContentProperties { [param: In, MarshalAs(UnmanagedType.LPWStr)] set; [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Gets or sets the columns (or properties) requested in the select statement.</summary>
 		/// <value>
@@ -6008,7 +6008,7 @@ public static partial class SearchApi
 		// *SearchDecSize, WCHAR **pwcsSearchDesc, IFilter **ppIFilt );
 		[PInvokeData("filtereg.h", MSDNShortId = "920c976e-4dde-4e53-85b7-7547291736a0")]
 		[PreserveSig]
-		new HRESULT LoadIFilter([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsPath, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter,
+		new HRESULT LoadIFilter([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsPath, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter,
 			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
 
 		/// <summary>
@@ -6029,7 +6029,7 @@ public static partial class SearchApi
 		// *SearchDecSize, WCHAR **pwcsSearchDesc, IFilter **ppIFilt );
 		[PInvokeData("filtereg.h", MSDNShortId = "b4eff132-9022-4091-a2a3-1d8e11a35b39")]
 		[Obsolete, PreserveSig]
-		new HRESULT LoadIFilterFromStorage([In] IStorage pStg, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, [In, MarshalAs(UnmanagedType.LPWStr)] string pwcsOverride,
+		new HRESULT LoadIFilterFromStorage([In] IStorage pStg, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, MarshalAs(UnmanagedType.LPWStr)] string pwcsOverride,
 			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
 
 		/// <summary>
@@ -6050,7 +6050,7 @@ public static partial class SearchApi
 		// *pFilterClsid, int *SearchDecSize, WCHAR **pwcsSearchDesc, IFilter **ppIFilt );
 		[PInvokeData("filtereg.h", MSDNShortId = "6a577306-d5ff-43c1-ab9f-3a7437661d2a")]
 		[Obsolete, PreserveSig]
-		new HRESULT LoadIFilterFromStream([In] IStream pStm, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter,
+		new HRESULT LoadIFilterFromStream([In] IStream pStm, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter,
 			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
 
 		/// <summary>Undocumented.</summary>

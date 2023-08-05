@@ -629,6 +629,15 @@ public static partial class Ole32
 	/// <returns>The enumerated values.</returns>
 	public static IEnumerable<T?> Enumerate<T>(this IEnumUnknown e) where T : class => e.Enumerate().Select(p => p == IntPtr.Zero ? null : (T)Marshal.GetObjectForIUnknown(p));
 
+	/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
+	/// <typeparam name="T">
+	/// The COM interface type to query for from each item in the collection. Note that if this type cannot be retrieved, an exception
+	/// will be thrown.
+	/// </typeparam>
+	/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
+	/// <returns>The enumerated values.</returns>
+	public static IEnumerable<T> EnumerateNonNulls<T>(this IEnumUnknown e) where T : class => e.Enumerate<T>().Where(i => i is not null).Cast<T>();
+
 	/// <summary>Structure returned by IEnumContextProps::Enum</summary>
 	[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
 	// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-next

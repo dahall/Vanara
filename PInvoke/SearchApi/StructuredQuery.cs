@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
@@ -349,7 +350,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makeandor HRESULT
 		// MakeAndOr( CONDITION_TYPE ct, IEnumUnknown *peuSubs, BOOL fSimplify, ICondition **ppcResult );
-		ICondition MakeAndOr([In] CONDITION_TYPE ct, [In] IEnumUnknown peuSubs, [In, MarshalAs(UnmanagedType.Bool)] bool fSimplify);
+		ICondition MakeAndOr([In] CONDITION_TYPE ct, [In] IEnumUnknown? peuSubs, [In, MarshalAs(UnmanagedType.Bool)] bool fSimplify);
 
 		/// <summary>Creates a leaf condition node that represents a comparison of property value and constant value.</summary>
 		/// <param name="pszPropertyName">
@@ -370,13 +371,22 @@ public static partial class SearchApi
 		/// <para>Type: <c>PROPVARIANT const*</c></para>
 		/// <para>The constant value against which the property value should be compared.</para>
 		/// </param>
-		/// <param name="richChunk1">The rich chunk1.</param>
-		/// <param name="richChunk2">The rich chunk2.</param>
-		/// <param name="richChunk3">The rich chunk3.</param>
+		/// <param name="pPropertyNameTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the property. It can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pOperationTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the operation. It can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pValueTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the value. It can be <c>NULL</c>.</para>
+		/// </param>
 		/// <param name="fExpand">
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>
-		/// If <c>TRUE</c> and pszPropertyName identifies a virtual property, the resulting node is not a leaf node; instead, it is a
+		/// If <c>TRUE</c> and <c>pszPropertyName</c> identifies a virtual property, the resulting node is not a leaf node; instead, it is a
 		/// disjunction of leaf condition nodes, each of which corresponds to one expansion of the virtual property.
 		/// </para>
 		/// </param>
@@ -387,15 +397,16 @@ public static partial class SearchApi
 		/// <remarks>
 		/// <para>For more information about leaf node terms (property, value, and operation), see ICondition::GetInputTerms.</para>
 		/// <para>
-		/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name
-		/// (which is one expansion of the property). For more information about metadata, see MetaData.
+		/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name (which is
+		/// one expansion of the property). For more information about metadata, see MetaData.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makeleaf HRESULT
-		// MakeLeaf( LPCWSTR pszPropertyName, CONDITION_OPERATION cop, LPCWSTR pszValueType, const PROPVARIANT *ppropvar, IRichChunk
-		// *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, BOOL fExpand, ICondition **ppcResult );
-		ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string pszValueType,
-			[In] PROPVARIANT ppropvar, [Optional] IRichChunk richChunk1, [Optional] IRichChunk richChunk2, [Optional] IRichChunk richChunk3, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+		// https://learn.microsoft.com/en-us/windows/win32/api/structuredquery/nf-structuredquery-iconditionfactory-makeleaf HRESULT
+		// MakeLeaf( [in] LPCWSTR pszPropertyName, [in] CONDITION_OPERATION cop, [in] LPCWSTR pszValueType, [in] const PROPVARIANT *ppropvar,
+		// [in] IRichChunk *pPropertyNameTerm, [in] IRichChunk *pOperationTerm, [in] IRichChunk *pValueTerm, [in] BOOL fExpand, [out, retval]
+		// ICondition **ppcResult );
+		ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string? pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszValueType,
+			[In] PROPVARIANT ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
 
 		/// <summary>
 		/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative
@@ -450,7 +461,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
 		// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
-		ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, in SYSTEMTIME pstReferenceTime);
+		unsafe ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In, Optional] SYSTEMTIME* pstReferenceTime);
 	}
 
 	/// <summary>
@@ -525,7 +536,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makeandor HRESULT
 		// MakeAndOr( CONDITION_TYPE ct, IEnumUnknown *peuSubs, BOOL fSimplify, ICondition **ppcResult );
-		new ICondition MakeAndOr([In] CONDITION_TYPE ct, [In] IEnumUnknown peuSubs, [In, MarshalAs(UnmanagedType.Bool)] bool fSimplify);
+		new ICondition MakeAndOr([In] CONDITION_TYPE ct, [In] IEnumUnknown? peuSubs, [In, MarshalAs(UnmanagedType.Bool)] bool fSimplify);
 
 		/// <summary>Creates a leaf condition node that represents a comparison of property value and constant value.</summary>
 		/// <param name="pszPropertyName">
@@ -546,13 +557,22 @@ public static partial class SearchApi
 		/// <para>Type: <c>PROPVARIANT const*</c></para>
 		/// <para>The constant value against which the property value should be compared.</para>
 		/// </param>
-		/// <param name="richChunk1">The rich chunk1.</param>
-		/// <param name="richChunk2">The rich chunk2.</param>
-		/// <param name="richChunk3">The rich chunk3.</param>
+		/// <param name="pPropertyNameTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the property. It can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pOperationTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the operation. It can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pValueTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the value. It can be <c>NULL</c>.</para>
+		/// </param>
 		/// <param name="fExpand">
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>
-		/// If <c>TRUE</c> and pszPropertyName identifies a virtual property, the resulting node is not a leaf node; instead, it is a
+		/// If <c>TRUE</c> and <c>pszPropertyName</c> identifies a virtual property, the resulting node is not a leaf node; instead, it is a
 		/// disjunction of leaf condition nodes, each of which corresponds to one expansion of the virtual property.
 		/// </para>
 		/// </param>
@@ -563,15 +583,16 @@ public static partial class SearchApi
 		/// <remarks>
 		/// <para>For more information about leaf node terms (property, value, and operation), see ICondition::GetInputTerms.</para>
 		/// <para>
-		/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name
-		/// (which is one expansion of the property). For more information about metadata, see MetaData.
+		/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name (which is
+		/// one expansion of the property). For more information about metadata, see MetaData.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makeleaf HRESULT
-		// MakeLeaf( LPCWSTR pszPropertyName, CONDITION_OPERATION cop, LPCWSTR pszValueType, const PROPVARIANT *ppropvar, IRichChunk
-		// *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, BOOL fExpand, ICondition **ppcResult );
-		new ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string pszValueType,
-			[In] PROPVARIANT ppropvar, IRichChunk richChunk1, IRichChunk richChunk2, IRichChunk richChunk3, [In, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+		// https://learn.microsoft.com/en-us/windows/win32/api/structuredquery/nf-structuredquery-iconditionfactory-makeleaf HRESULT
+		// MakeLeaf( [in] LPCWSTR pszPropertyName, [in] CONDITION_OPERATION cop, [in] LPCWSTR pszValueType, [in] const PROPVARIANT *ppropvar,
+		// [in] IRichChunk *pPropertyNameTerm, [in] IRichChunk *pOperationTerm, [in] IRichChunk *pValueTerm, [in] BOOL fExpand, [out, retval]
+		// ICondition **ppcResult );
+		new ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string? pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszValueType,
+			[In] PROPVARIANT ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
 
 		/// <summary>
 		/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative
@@ -593,8 +614,8 @@ public static partial class SearchApi
 		/// <param name="pstReferenceTime">
 		/// <para>Type: <c>SYSTEMTIME const*</c></para>
 		/// <para>
-		/// A pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if
-		/// <paramref name="sqro"/> is set to SQRO_DONT_RESOLVE_DATETIME.
+		/// A pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if <paramref
+		/// name="sqro"/> is set to SQRO_DONT_RESOLVE_DATETIME.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -626,7 +647,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
 		// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
-		new ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, in SYSTEMTIME pstReferenceTime);
+		new unsafe ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In, Optional] SYSTEMTIME* pstReferenceTime);
 
 		/// <summary>
 		/// Creates a search condition that is either <c>TRUE</c> or <c>FALSE</c>. The returned object supports ICondition and ICondition2
@@ -648,7 +669,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createtruefalse
 		// HRESULT CreateTrueFalse( BOOL fVal, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)]
-		object CreateTrueFalse([MarshalAs(UnmanagedType.Bool)] bool fVal, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+		object? CreateTrueFalse([MarshalAs(UnmanagedType.Bool)] bool fVal, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>
 		/// Creates a condition node that is a logical negation (NOT) of another condition (a subnode of this node).
@@ -676,7 +697,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createnegation
 		// HRESULT CreateNegation( ICondition *pcSub, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)]
-		object CreateNegation([In] ICondition pcSub, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+		object? CreateNegation([In] ICondition pcSub, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>
 		/// Creates a leaf condition node that is a conjunction (AND) or a disjunction (OR) of a collection of subconditions. The
@@ -703,7 +724,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createcompoundfromobjectarray
 		// HRESULT CreateCompoundFromObjectArray( CONDITION_TYPE ct, IObjectArray *poaSubs, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)]
-		object CreateCompoundFromObjectArray(CONDITION_TYPE ct, [In, Optional] IObjectArray poaSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+		object? CreateCompoundFromObjectArray(CONDITION_TYPE ct, [In, Optional] IObjectArray? poaSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>
 		/// Creates a leaf condition node that is a conjunction (AND) or a disjunction (OR) from an array of condition nodes. The
@@ -729,7 +750,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createcompoundfromarray
 		// HRESULT CreateCompoundFromArray( CONDITION_TYPE ct, ICondition **ppcondSubs, ULONG cSubs, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)]
-		object CreateCompoundFromArray(CONDITION_TYPE ct, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] ICondition[] ppcondSubs, uint cSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+		object? CreateCompoundFromArray(CONDITION_TYPE ct, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] ICondition[] ppcondSubs, uint cSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>
 		/// Creates a leaf condition node for a string value that represents a comparison of property value and constant value. The
@@ -759,7 +780,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createstringleaf
 		// HRESULT CreateStringLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, LPCWSTR pszValue, LPCWSTR pszLocaleName, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)]
-		object CreateStringLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pszValue,
+		object? CreateStringLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pszValue,
 			[MarshalAs(UnmanagedType.LPWStr), Optional] string? pszLocaleName, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>
@@ -785,7 +806,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createintegerleaf
 		// HRESULT CreateIntegerLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, INT32 lValue, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)]
-		object CreateIntegerLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, int lValue, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+		object? CreateIntegerLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, int lValue, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>
 		/// Creates a search condition that is either <c>TRUE</c> or <c>FALSE</c>. The returned object supports ICondition and ICondition2
@@ -808,7 +829,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createbooleanleaf
 		// HRESULT CreateBooleanLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, BOOL fValue, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)]
-		object CreateBooleanLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [MarshalAs(UnmanagedType.Bool)] bool fValue, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+		object? CreateBooleanLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [MarshalAs(UnmanagedType.Bool)] bool fValue, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>Creates a leaf condition node for any value. The returned object supports ICondition and ICondition2.</summary>
 		/// <param name="propkey"><para>Type: <c>REFPROPERTYKEY</c></para>
@@ -858,9 +879,9 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createleaf
 		// HRESULT CreateLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, REFPROPVARIANT propvar, LPCWSTR pszSemanticType, LPCWSTR pszLocaleName, IRichChunk *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 9)]
-		object CreateLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [In] PROPVARIANT propvar, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszSemanticType,
-			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszLocaleName, [In, Optional] IRichChunk pPropertyNameTerm, [In, Optional] IRichChunk pOperationTerm,
-			[In, Optional] IRichChunk pValueTerm, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+		object? CreateLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [In] PROPVARIANT propvar, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszSemanticType,
+			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszLocaleName, [In, Optional] IRichChunk? pPropertyNameTerm, [In, Optional] IRichChunk? pOperationTerm,
+			[In, Optional] IRichChunk? pValueTerm, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 		/// <summary>
 		/// Performs a variety of transformations on a condition tree, and thereby the resolved condition for evaluation. The returned
@@ -894,7 +915,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-resolvecondition
 		// HRESULT ResolveCondition( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)]
-		object ResolveCondition([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, in SYSTEMTIME pstReferenceTime, in Guid riid);
+		unsafe object? ResolveCondition([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In] SYSTEMTIME* pstReferenceTime, in Guid riid);
 	}
 
 	/// <summary>Provides methods for retrieving information about an entity type in the schema.</summary>
@@ -946,7 +967,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-base HRESULT Base( IEntity
 		// **pBaseEntity );
-		HRESULT Base(out IEntity pBaseEntity);
+		HRESULT Base(out IEntity? pBaseEntity);
 
 		/// <summary>Retrieves an enumeration of IRelationship objects, one for each relationship this entity has.</summary>
 		/// <param name="riid">
@@ -960,7 +981,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-relationships HRESULT
 		// Relationships( REFIID riid, void **pRelationships );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object Relationships(in Guid riid);
+		object? Relationships(in Guid riid);
 
 		/// <summary>Retrieves the IRelationship object for this entity as requested by name.</summary>
 		/// <param name="pszRelationName">
@@ -976,7 +997,7 @@ public static partial class SearchApi
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-getrelationship HRESULT
 		// GetRelationship( LPCWSTR pszRelationName, IRelationship **pRelationship );
-		IRelationship GetRelationship([In, MarshalAs(UnmanagedType.LPWStr)] string pszRelationName);
+		IRelationship? GetRelationship([In, MarshalAs(UnmanagedType.LPWStr)] string pszRelationName);
 
 		/// <summary>
 		/// <para>Retrieves an enumeration of IMetaData objects for this entity.</para>
@@ -1021,7 +1042,7 @@ public static partial class SearchApi
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-getnamedentity HRESULT
 		// GetNamedEntity( LPCWSTR pszValue, INamedEntity **ppNamedEntity );
-		INamedEntity GetNamedEntity([In, MarshalAs(UnmanagedType.LPWStr)] string pszValue);
+		INamedEntity? GetNamedEntity([In, MarshalAs(UnmanagedType.LPWStr)] string pszValue);
 
 		/// <summary>Retrieves a default phrase to use for this entity in restatements.</summary>
 		/// <returns>
@@ -1128,7 +1149,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-parse HRESULT Parse(
 		// LPCWSTR pszInputString, IEnumUnknown *pCustomProperties, IQuerySolution **ppSolution );
-		IQuerySolution Parse([In, MarshalAs(UnmanagedType.LPWStr)] string pszInputString, [In, Optional] IEnumUnknown pCustomProperties);
+		IQuerySolution Parse([In, MarshalAs(UnmanagedType.LPWStr)] string pszInputString, [In, Optional] IEnumUnknown? pCustomProperties);
 
 		/// <summary>Sets a single option, such as a specified word-breaker, for parsing an input string.</summary>
 		/// <param name="option">
@@ -1443,13 +1464,22 @@ public static partial class SearchApi
 		/// <para>Type: <c>PROPVARIANT const*</c></para>
 		/// <para>The constant value against which the property value should be compared.</para>
 		/// </param>
-		/// <param name="richChunk1">The rich chunk1.</param>
-		/// <param name="richChunk2">The rich chunk2.</param>
-		/// <param name="richChunk3">The rich chunk3.</param>
+		/// <param name="pPropertyNameTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the property. It can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pOperationTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the operation. It can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pValueTerm">
+		/// <para>Type: <c>IRichChunk*</c></para>
+		/// <para>A pointer to an IRichChunk that identifies the range of the input string that represents the value. It can be <c>NULL</c>.</para>
+		/// </param>
 		/// <param name="fExpand">
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>
-		/// If <c>TRUE</c> and pszPropertyName identifies a virtual property, the resulting node is not a leaf node; instead, it is a
+		/// If <c>TRUE</c> and <c>pszPropertyName</c> identifies a virtual property, the resulting node is not a leaf node; instead, it is a
 		/// disjunction of leaf condition nodes, each of which corresponds to one expansion of the virtual property.
 		/// </para>
 		/// </param>
@@ -1460,15 +1490,16 @@ public static partial class SearchApi
 		/// <remarks>
 		/// <para>For more information about leaf node terms (property, value, and operation), see ICondition::GetInputTerms.</para>
 		/// <para>
-		/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name
-		/// (which is one expansion of the property). For more information about metadata, see MetaData.
+		/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name (which is
+		/// one expansion of the property). For more information about metadata, see MetaData.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makeleaf HRESULT
-		// MakeLeaf( LPCWSTR pszPropertyName, CONDITION_OPERATION cop, LPCWSTR pszValueType, const PROPVARIANT *ppropvar, IRichChunk
-		// *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, BOOL fExpand, ICondition **ppcResult );
-		new ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string pszValueType,
-			[In] PROPVARIANT ppropvar, IRichChunk richChunk1, IRichChunk richChunk2, IRichChunk richChunk3, [In, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+		// https://learn.microsoft.com/en-us/windows/win32/api/structuredquery/nf-structuredquery-iconditionfactory-makeleaf HRESULT
+		// MakeLeaf( [in] LPCWSTR pszPropertyName, [in] CONDITION_OPERATION cop, [in] LPCWSTR pszValueType, [in] const PROPVARIANT *ppropvar,
+		// [in] IRichChunk *pPropertyNameTerm, [in] IRichChunk *pOperationTerm, [in] IRichChunk *pValueTerm, [in] BOOL fExpand, [out, retval]
+		// ICondition **ppcResult );
+		new ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string? pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszValueType,
+			[In] PROPVARIANT ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
 
 		/// <summary>
 		/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative
@@ -1523,7 +1554,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
 		// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
-		new ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, in SYSTEMTIME pstReferenceTime);
+		new unsafe ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In] SYSTEMTIME* pstReferenceTime);
 
 		/// <summary>Retrieves the condition tree and the semantic type of the solution.</summary>
 		/// <param name="ppQueryNode">
@@ -1540,7 +1571,7 @@ public static partial class SearchApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iquerysolution-getquery HRESULT
 		// GetQuery( ICondition **ppQueryNode, IEntity **ppMainType );
-		void GetQuery(out ICondition ppQueryNode, out IEntity ppMainType);
+		void GetQuery(out ICondition? ppQueryNode, out IEntity? ppMainType);
 
 		/// <summary>
 		/// Identifies parts of the input string that the parser did not recognize or did not use when constructing the IQuerySolution
@@ -1565,7 +1596,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iquerysolution-geterrors HRESULT
 		// GetErrors( REFIID riid, void **ppParseErrors );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object GetErrors(in Guid riid);
+		object? GetErrors(in Guid riid);
 
 		/// <summary>
 		/// Reports the query string, how it was tokenized, and what language code identifier (LCID) and word breaker were used to parse it.
@@ -1590,8 +1621,8 @@ public static partial class SearchApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iquerysolution-getlexicaldata HRESULT
 		// GetLexicalData( LPWSTR *ppszInputString, ITokenCollection **ppTokens, LCID *plcid, IUnknown **ppWordBreaker );
-		void GetLexicalData([MarshalAs(UnmanagedType.LPWStr)] out string ppszInputString, [Out] out ITokenCollection ppTokens, [Out] out uint plcid,
-			[Out, MarshalAs(UnmanagedType.IUnknown)] out object ppWordBreaker);
+		void GetLexicalData([MarshalAs(UnmanagedType.LPWStr)] out string? ppszInputString, [Out] out ITokenCollection? ppTokens, [Out] out uint plcid,
+			[Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppWordBreaker);
 	}
 
 	/// <summary>Provides methods for retrieving information about a schema property.</summary>
@@ -1639,7 +1670,7 @@ public static partial class SearchApi
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-destination HRESULT
 		// Destination( IEntity **pDestinationEntity );
-		IEntity Destination();
+		IEntity? Destination();
 
 		/// <summary>Retrieves an enumeration of IMetaData objects for this relationship.</summary>
 		/// <param name="riid">
@@ -1655,7 +1686,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-metadata HRESULT
 		// MetaData( REFIID riid, void **pMetaData );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object MetaData(in Guid riid);
+		object? MetaData(in Guid riid);
 
 		/// <summary>Retrieves the default phrase to use for this relationship in restatements.</summary>
 		/// <returns>
@@ -1697,7 +1728,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ischemalocalizersupport-localize
 		// HRESULT Localize( LPCWSTR pszGlobalString, LPWSTR *ppszLocalString );
 		[PreserveSig]
-		HRESULT Localize([MarshalAs(UnmanagedType.LPWStr)] string pszGlobalString, [MarshalAs(UnmanagedType.LPWStr)] out string ppszLocalString);
+		HRESULT Localize([MarshalAs(UnmanagedType.LPWStr)] string pszGlobalString, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszLocalString);
 	}
 
 	/// <summary>Provides a schema repository that can be browsed.</summary>
@@ -1745,7 +1776,7 @@ public static partial class SearchApi
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ischemaprovider-getentity HRESULT
 		// GetEntity( LPCWSTR pszEntityName, IEntity **pEntity );
-		IEntity GetEntity([In, MarshalAs(UnmanagedType.LPWStr)] string pszEntityName);
+		IEntity GetEntity([In, MarshalAs(UnmanagedType.LPWStr)] string? pszEntityName);
 
 		/// <summary>Retrieves an enumeration of global IMetaData objects for the loaded schema.</summary>
 		/// <param name="riid">
@@ -1762,7 +1793,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ischemaprovider-metadata HRESULT
 		// MetaData( REFIID riid, void **pMetaData );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object MetaData(in Guid riid);
+		object? MetaData(in Guid riid);
 
 		/// <summary>Localizes the currently loaded schema for a specified locale.</summary>
 		/// <param name="lcid">
@@ -1873,7 +1904,7 @@ public static partial class SearchApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-itokencollection-gettoken HRESULT
 		// GetToken( ULONG i, ULONG *pBegin, ULONG *pLength, LPWSTR *ppsz );
-		void GetToken(uint i, out uint pBegin, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppsz);
+		void GetToken(uint i, out uint pBegin, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppsz);
 	}
 
 	/// <summary>
@@ -1923,7 +1954,7 @@ public static partial class SearchApi
 	/// identifying the STRUCTURED_QUERY_PARSE_ERROR enumeration.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<IRichChunk> GetErrors(this IQuerySolution qs) => ((IEnumUnknown)qs.GetErrors(typeof(IEnumUnknown).GUID)).Enumerate<IRichChunk>();
+	public static IEnumerable<IRichChunk> GetErrors(this IQuerySolution qs) => ((IEnumUnknown?)qs.GetErrors(typeof(IEnumUnknown).GUID))?.EnumerateNonNulls<IRichChunk>() ?? Enumerable.Empty<IRichChunk>();
 
 	/// <summary>Retrieves an enumeration of IMetaData objects for this entity.</summary>
 	/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
@@ -1937,7 +1968,7 @@ public static partial class SearchApi
 	/// <returns>
 	/// Receives a pointer to the enumeration of IMetaData objects. There may be multiple pairs with the same key (or the same value).
 	/// </returns>
-	public static T MetaData<T>(this IRelationship r) where T : class => (T)r.MetaData(typeof(T).GUID);
+	public static T? MetaData<T>(this IRelationship r) where T : class => (T?)r.MetaData(typeof(T).GUID);
 
 	/// <summary>Retrieves an enumeration of global IMetaData objects for the loaded schema.</summary>
 	/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
@@ -1946,7 +1977,7 @@ public static partial class SearchApi
 	/// Receives a pointer to an enumeration of the IMetaData objects. The calling application must release it by calling its
 	/// IUnknown::Release method.
 	/// </returns>
-	public static T MetaData<T>(this ISchemaProvider sp) => (T)sp.MetaData(typeof(T).GUID);
+	public static T? MetaData<T>(this ISchemaProvider sp) => (T?)sp.MetaData(typeof(T).GUID);
 
 	/// <summary>Retrieves an enumeration of INamedEntity objects, one for each known named entity of this type.</summary>
 	/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
@@ -1960,7 +1991,7 @@ public static partial class SearchApi
 	/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
 	/// <param name="e">The <see cref="IEntity"/> instance.</param>
 	/// <returns>Receives the address of a pointer to the enumeration of the IRelationship objects.</returns>
-	public static T Relationships<T>(this IEntity e) where T : class => (T)e.Relationships(typeof(T).GUID);
+	public static T? Relationships<T>(this IEntity e) where T : class => (T?)e.Relationships(typeof(T).GUID);
 
 	/// <summary>
 	/// Performs a variety of transformations on a condition tree, and thereby the resolved condition for evaluation. The returned
@@ -1976,10 +2007,36 @@ public static partial class SearchApi
 	/// automatically added to sqro.
 	/// </para></param>
 	/// <returns></returns>
-	public static T ResolveCondition<T>(this IConditionFactory2 f2, ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro = 0) where T : class
+	public static T? ResolveCondition<T>(this IConditionFactory2 f2, ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro = STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_RESOLVE_DATETIME) where T : class
 	{
-		Kernel32.GetLocalTime(out var st);
-		return (T)f2.ResolveCondition(pc, sqro, st, typeof(T).GUID);
+		unsafe
+		{
+			return (T?)f2.ResolveCondition(pc, sqro | STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_RESOLVE_DATETIME, null, typeof(T).GUID);
+		}
+	}
+
+	/// <summary>
+	/// Performs a variety of transformations on a condition tree, and thereby the resolved condition for evaluation. The returned
+	/// object supports ICondition and ICondition2.
+	/// </summary>
+	/// <typeparam name="T">The desired type of the result, either ICondition or ICondition2.</typeparam>
+	/// <param name="f2">The IConditionFactory2 instance.</param>
+	/// <param name="pc"><para>Type: <c>ICondition*</c></para>
+	/// <para>Pointer to an ICondition object to be resolved.</para></param>
+	/// <param name="refTime">The value to use as the reference date and time.</param>
+	/// <param name="sqro"><para>Type: <c>STRUCTURED_QUERY_RESOLVE_OPTION</c></para>
+	/// <para>
+	/// Specifies zero or more of the STRUCTURED_QUERY_RESOLVE_OPTION flags. The SQRO_NULL_VALUE_TYPE_FOR_PLAIN_VALUES flag is
+	/// automatically added to sqro.
+	/// </para></param>
+	/// <returns></returns>
+	public static T? ResolveCondition<T>(this IConditionFactory2 f2, ICondition pc, DateTime refTime, STRUCTURED_QUERY_RESOLVE_OPTION sqro = 0) where T : class
+	{
+		unsafe
+		{
+			SYSTEMTIME st = new(refTime);
+			return (T?)f2.ResolveCondition(pc, sqro, &st, typeof(T).GUID);
+		}
 	}
 
 	/// <summary>Class interface for ICondition</summary>
