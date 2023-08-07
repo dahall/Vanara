@@ -4518,7 +4518,7 @@ public static partial class WinSCard
 		public static bool operator ==(SCARDHANDLE h1, SCARDHANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is SCARDHANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is SCARDHANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
