@@ -108,7 +108,7 @@ namespace Vanara.PInvoke
 		/// The middle three members are reserved for future use.
 		/// </para>
 		/// </summary>
-		[StructLayout(LayoutKind.Explicit)]
+		[StructLayout(LayoutKind.Explicit, Pack = 8)]
 		public sealed class PROPVARIANT : ICloneable, IComparable, IComparable<PROPVARIANT>, IDisposable, IEquatable<PROPVARIANT>
 		{
 			/// <summary>Value type tag.</summary>
