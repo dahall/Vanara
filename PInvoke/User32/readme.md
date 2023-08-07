@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 
 - Includes methods from user32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.User32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.User32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.User32)  
-### Methods - 99% API coverage (564 of 565 functions)  
+### Methods - 99% API coverage (564 of 568 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -95,7 +95,10 @@ Native Method | Header | Managed Method
 [DispatchMessage](https://www.google.com/search?num=5&q=DispatchMessageA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DispatchMessage](https://github.com/dahall/Vanara/search?l=C%23&q=DispatchMessage)  
 [DisplayConfigGetDeviceInfo](https://www.google.com/search?num=5&q=DisplayConfigGetDeviceInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DisplayConfigGetDeviceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=DisplayConfigGetDeviceInfo)  
 [DisplayConfigSetDeviceInfo](https://www.google.com/search?num=5&q=DisplayConfigSetDeviceInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DisplayConfigSetDeviceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=DisplayConfigSetDeviceInfo)  
+[DlgDirList](https://www.google.com/search?num=5&q=DlgDirListA+site%3Alearn.microsoft.com) |  |   
+[DlgDirListComboBox](https://www.google.com/search?num=5&q=DlgDirListComboBoxA+site%3Alearn.microsoft.com) |  |   
 [DlgDirSelectComboBoxEx](https://www.google.com/search?num=5&q=DlgDirSelectComboBoxExA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DlgDirSelectComboBoxEx](https://github.com/dahall/Vanara/search?l=C%23&q=DlgDirSelectComboBoxEx)  
+[DlgDirSelectEx](https://www.google.com/search?num=5&q=DlgDirSelectExA+site%3Alearn.microsoft.com) |  |   
 [DragDetect](https://www.google.com/search?num=5&q=DragDetect+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DragDetect](https://github.com/dahall/Vanara/search?l=C%23&q=DragDetect)  
 [DrawAnimatedRects](https://www.google.com/search?num=5&q=DrawAnimatedRects+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DrawAnimatedRects](https://github.com/dahall/Vanara/search?l=C%23&q=DrawAnimatedRects)  
 [DrawCaption](https://www.google.com/search?num=5&q=DrawCaption+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DrawCaption](https://github.com/dahall/Vanara/search?l=C%23&q=DrawCaption)  
@@ -209,6 +212,7 @@ Native Method | Header | Managed Method
 [GetLastActivePopup](https://www.google.com/search?num=5&q=GetLastActivePopup+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetLastActivePopup](https://github.com/dahall/Vanara/search?l=C%23&q=GetLastActivePopup)  
 [GetLastInputInfo](https://www.google.com/search?num=5&q=GetLastInputInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetLastInputInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetLastInputInfo)  
 [GetLayeredWindowAttributes](https://www.google.com/search?num=5&q=GetLayeredWindowAttributes+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetLayeredWindowAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=GetLayeredWindowAttributes)  
+[GetListBoxInfo](https://www.google.com/search?num=5&q=GetListBoxInfo+site%3Alearn.microsoft.com) |  |   
 [GetMenu](https://www.google.com/search?num=5&q=GetMenu+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetMenu](https://github.com/dahall/Vanara/search?l=C%23&q=GetMenu)  
 [GetMenuBarInfo](https://www.google.com/search?num=5&q=GetMenuBarInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetMenuBarInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetMenuBarInfo)  
 [GetMenuCheckMarkDimensions](https://www.google.com/search?num=5&q=GetMenuCheckMarkDimensions+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetMenuCheckMarkDimensions](https://github.com/dahall/Vanara/search?l=C%23&q=GetMenuCheckMarkDimensions)  
@@ -514,7 +518,6 @@ Native Method | Header | Managed Method
 [SetWindowsHookExW](https://www.google.com/search?num=5&q=SetWindowsHookExW+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowsHookEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowsHookEx)  
 [SetWindowText](https://www.google.com/search?num=5&q=SetWindowTextA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowText](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowText)  
 [SetWinEventHook](https://www.google.com/search?num=5&q=SetWinEventHook+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWinEventHook](https://github.com/dahall/Vanara/search?l=C%23&q=SetWinEventHook)  
-[ShellRegisterHotKey](https://www.google.com/search?num=5&q=ShellRegisterHotKey+site%3Alearn.microsoft.com) |  |   
 [ShowCaret](https://www.google.com/search?num=5&q=ShowCaret+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ShowCaret](https://github.com/dahall/Vanara/search?l=C%23&q=ShowCaret)  
 [ShowCursor](https://www.google.com/search?num=5&q=ShowCursor+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ShowCursor](https://github.com/dahall/Vanara/search?l=C%23&q=ShowCursor)  
 [ShowOwnedPopups](https://www.google.com/search?num=5&q=ShowOwnedPopups+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ShowOwnedPopups](https://github.com/dahall/Vanara/search?l=C%23&q=ShowOwnedPopups)  
