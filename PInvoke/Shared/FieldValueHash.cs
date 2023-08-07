@@ -6,9 +6,9 @@ using System.Reflection;
 namespace Vanara.PInvoke
 {
 	/// <summary>Gets a static field's name from its value and caches the list for faster lookups.</summary>
-	public class StaticFieldValueHash
+	public static class StaticFieldValueHash
 	{
-		private static Dictionary<(Type, Type), IDictionary<int, string>> cache = new Dictionary<(Type, Type), IDictionary<int, string>>();
+		private static readonly Dictionary<(Type, Type), IDictionary<int, string>> cache = new();
 
 		/// <summary>Tries to get the name of a static field from it's value.</summary>
 		/// <typeparam name="TType">The type of the type.</typeparam>
@@ -19,9 +19,12 @@ namespace Vanara.PInvoke
 		public static bool TryGetFieldName<TType, TFieldType>(TFieldType value, out string fieldName)
 		{
 			var tt = (typeof(TType), typeof(TFieldType));
-			if (!cache.TryGetValue(tt, out var hash))
-				cache.Add(tt, hash = typeof(TType).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(TFieldType)).Distinct(FIValueComp<TFieldType>.Default).ToDictionary(fi => fi.GetValue(null).GetHashCode(), fi => fi.Name));
-			return hash.TryGetValue(value.GetHashCode(), out fieldName);
+			lock (cache)
+			{
+				if (!cache.TryGetValue(tt, out var hash))
+					cache.Add(tt, hash = typeof(TType).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(TFieldType)).Distinct(FIValueComp<TFieldType>.Default).ToDictionary(fi => fi.GetValue(null).GetHashCode(), fi => fi.Name));
+				return hash.TryGetValue(value.GetHashCode(), out fieldName);
+			}
 		}
 
 		private class FIValueComp<TFieldType> : IEqualityComparer<FieldInfo>
@@ -30,7 +33,7 @@ namespace Vanara.PInvoke
 
 			int IEqualityComparer<FieldInfo>.GetHashCode(FieldInfo obj) => ((TFieldType)obj.GetValue(null)).GetHashCode();
 
-			public static readonly FIValueComp<TFieldType> Default = new FIValueComp<TFieldType>();
+			public static readonly FIValueComp<TFieldType> Default = new();
 		}
 	}
 }
