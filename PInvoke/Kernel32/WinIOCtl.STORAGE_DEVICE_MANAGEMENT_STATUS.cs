@@ -11,6 +11,7 @@ public static partial class Kernel32
 
 	private const int STORAGE_DEVICE_MAX_OPERATIONAL_STATUS = 16;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	/// <summary>Constants for StorageDeviceManagementStatus</summary>
 	[PInvokeData("winioctl.h")]
 	public enum STORAGE_DISK_HEALTH_STATUS
@@ -63,6 +64,7 @@ public static partial class Kernel32
 		DiskOpReasonWritePersistenceLossImminent,
 		DiskOpReasonMax,
 	}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// The NULL-terminated Unicode string of the adapter serial number for the StorageAdapterSerialNumberProperty as defined in STORAGE_PROPERTY_ID.
@@ -183,6 +185,7 @@ public static partial class Kernel32
 		public STORAGE_DEVICE_LAYOUT_SIGNATURE DriveLayoutSignature;
 	}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	/// <summary>Additional reasons.</summary>
 	[PInvokeData("winioctl.h")]
 	[StructLayout(LayoutKind.Explicit)]
@@ -234,6 +237,7 @@ public static partial class Kernel32
 			public uint AsUlong;
 		}
 	}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	[StructLayout(LayoutKind.Sequential)]
 	private struct STORAGE_DEVICE_UNIQUE_IDENTIFIER
