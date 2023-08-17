@@ -374,7 +374,7 @@ public static partial class Shell32
 
 		/// <summary>Sets the description for a Shell link object. The description can be any application-defined string.</summary>
 		/// <param name="pszName">A pointer to a buffer containing the new description string.</param>
-		void SetDescription([MarshalAs(UnmanagedType.LPWStr)] string pszName);
+		void SetDescription([MarshalAs(UnmanagedType.LPWStr)] string? pszName);
 
 		/// <summary>Gets the name of the working directory for a Shell link object.</summary>
 		/// <param name="pszDir">The address of a buffer that receives the name of the working directory.</param>
@@ -386,7 +386,7 @@ public static partial class Shell32
 
 		/// <summary>Sets the name of the working directory for a Shell link object.</summary>
 		/// <param name="pszDir">The address of a buffer that contains the name of the new working directory.</param>
-		void SetWorkingDirectory([MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+		void SetWorkingDirectory([MarshalAs(UnmanagedType.LPWStr)] string? pszDir);
 
 		/// <summary>Gets the command-line arguments associated with a Shell link object.</summary>
 		/// <param name="pszArgs">A pointer to the buffer that, when this method returns successfully, receives the command-line arguments.</param>
@@ -404,7 +404,7 @@ public static partial class Shell32
 		/// on maximum string length. In the case of an ANSI string, the maximum length of the returned string varies depending on the
 		/// version of Windows—MAX_PATH prior to Windows 2000 and INFOTIPSIZE (defined in Commctrl.h) in Windows 2000 and later.
 		/// </param>
-		void SetArguments([MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
+		void SetArguments([MarshalAs(UnmanagedType.LPWStr)] string? pszArgs);
 
 		/// <summary>Gets the keyboard shortcut (hot key) for a Shell link object.</summary>
 		/// <returns>
@@ -502,7 +502,7 @@ public static partial class Shell32
 		/// <summary>Sets the location (path and index) of the icon for a Shell link object.</summary>
 		/// <param name="pszIconPath">The address of a buffer to contain the path of the file containing the icon.</param>
 		/// <param name="iIcon">The index of the icon.</param>
-		void SetIconLocation([MarshalAs(UnmanagedType.LPWStr)] string pszIconPath, int iIcon);
+		void SetIconLocation([MarshalAs(UnmanagedType.LPWStr)] string? pszIconPath, int iIcon);
 
 		/// <summary>Sets the relative path to the Shell link object.</summary>
 		/// <param name="pszPathRel">
@@ -510,7 +510,7 @@ public static partial class Shell32
 		/// resolution should be performed. It should be a file name, not a folder name.
 		/// </param>
 		/// <param name="dwReserved">Reserved. Set this parameter to zero.</param>
-		void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel, [Optional] uint dwReserved);
+		void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string? pszPathRel, [Optional] uint dwReserved);
 
 		/// <summary>Attempts to find the target of a Shell link, even if it has been moved or renamed.</summary>
 		/// <param name="hwnd">

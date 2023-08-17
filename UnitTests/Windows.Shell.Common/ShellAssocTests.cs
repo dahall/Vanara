@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Vanara.PInvoke.Tests;
+using Vanara.Windows.Shell.Registration;
 
 namespace Vanara.Windows.Shell.Tests;
 
@@ -125,6 +126,15 @@ public class ShellAssocTests
 			var vprint = progid.Verbs.Add("Print", "&Print", "notepad.exe %1");
 			var vend = progid.Verbs.Add("Terminate", "&End", "notepad.exe %1");
 			progid.Verbs.Order = new[] { vend, vprint };
+		}
+	}
+
+	[Test]
+	public void AppRegTest()
+	{
+		foreach (AppRegistration ar in ShellRegistrar.Applications.Values.WhereNotNull())
+		{
+			ar.WriteValues();
 		}
 	}
 }

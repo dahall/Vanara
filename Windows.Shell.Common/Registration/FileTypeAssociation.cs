@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Generic;
+using System.ComponentModel;
 using static Vanara.PInvoke.ShlwApi;
 
 namespace Vanara.Windows.Shell.Registration;
@@ -11,12 +12,13 @@ public class FileTypeAssociation : RegBasedSettings
 	{
 		Extension = ext;
 		var owpi = readOnly ? key.OpenSubKey("OpenWithProgIds", false) : key.CreateSubKey("OpenWithProgIds", RegistryKeyPermissionCheck.ReadWriteSubTree);
-		OpenWithProgIds = new RegBasedKeyCollection(owpi, readOnly);
+		OpenWithProgIds = new RegBasedKeyCollection(owpi!, readOnly);
 	}
 
 	/// <summary>Gets or sets the Content Type value to the file type's MIME content type.</summary>
 	/// <value>The MIME content type.</value>
-	public string ContentType
+	[DefaultValue(null)]
+	public string? ContentType
 	{
 		get => key.GetValue("ContentType")?.ToString();
 		set => UpdateValue("ContentType", value);
@@ -25,12 +27,13 @@ public class FileTypeAssociation : RegBasedSettings
 	/// <summary>Gets or sets the default value of the extension subkey to the ProgID to which it is linked.</summary>
 	/// <value>The default ProgID for this extension.</value>
 	/// <exception cref="InvalidOperationException">The specified ProgId is not registered with the system.</exception>
-	public string DefaultProgId
+	[DefaultValue(null)]
+	public string? DefaultProgId
 	{
 		get => key.GetValue(null)?.ToString();
 		set
 		{
-			if (!Registry.ClassesRoot.HasSubKey(value))
+			if (value is not null && !Registry.ClassesRoot.HasSubKey(value))
 				throw new InvalidOperationException("The specified ProgId is not registered with the system.");
 			var old = DefaultProgId;
 			if (old != null) OpenWithProgIds.Add(old);
@@ -55,12 +58,13 @@ public class FileTypeAssociation : RegBasedSettings
 	/// Gets or sets the PerceivedType to which the file belongs, if any. This value is not used by Windows versions prior to Windows
 	/// Vista. For more information, see "Perceived Types and Application Registration".
 	/// </summary>
+	[DefaultValue(null)]
 	public PERCEIVED? PerceivedType
 	{
 		get
 		{
 			var value = key.GetValue("PerceivedType")?.ToString();
-			return value is null ? null : (PERCEIVED?)(PERCEIVED)Enum.Parse(typeof(PERCEIVED), "PERCEIVED_TYPE_" + value.ToUpper());
+			return value is null ? null : (PERCEIVED)Enum.Parse(typeof(PERCEIVED), "PERCEIVED_TYPE_" + value.ToUpper());
 		}
 		set => UpdateValue("PerceivedType", value?.ToString().Substring(15).ToLower());
 	}
@@ -81,7 +85,8 @@ public class FileTypeAssociation : RegBasedSettings
 	/// <returns>The requested <see cref="FileTypeAssociation"/> instance.</returns>
 	public static FileTypeAssociation Open(string extension, bool systemWide = false, bool readOnly = true)
 	{
-		var key = ShellRegistrar.GetRoot(systemWide, readOnly, extension ?? throw new ArgumentNullException(nameof(extension))) ?? throw new ArgumentException("Unable to load specified extension", nameof(extension));
+		RegistryKey key = ShellRegistrar.GetRoot(systemWide, !readOnly, extension ?? throw new ArgumentNullException(nameof(extension))) ??
+			Registry.ClassesRoot.OpenSubKey(extension, !readOnly) ?? throw new ArgumentException("Unable to load specified extension", nameof(extension));
 		return new FileTypeAssociation(extension, key, readOnly);
 	}
 
@@ -96,7 +101,7 @@ public class FileTypeAssociation : RegBasedSettings
 	{
 		if (extension is null) throw new ArgumentNullException(nameof(extension));
 		if (!extension.StartsWith(".")) throw new ArgumentException("The value must be in the format \".ext\"", nameof(extension));
-		var root = ShellRegistrar.GetRoot(systemWide, true, extension);
+		var root = ShellRegistrar.GetRoot(systemWide, true, extension)!;
 		return new FileTypeAssociation(extension, root, false);
 	}
 
@@ -119,7 +124,7 @@ public class FileTypeAssociation : RegBasedSettings
 	{
 		if (extension is null) throw new ArgumentNullException(nameof(extension));
 		if (!extension.StartsWith(".")) throw new ArgumentException("The value must be in the format \".ext\"", nameof(extension));
-		using (var sk = ShellRegistrar.GetRoot(systemWide, true))
+		using (var sk = ShellRegistrar.GetRoot(systemWide, true)!)
 			try { sk.DeleteSubKeyTree(extension); } catch { sk.DeleteSubKey(extension, false); }
 		ShellRegistrar.NotifyShell();
 	}

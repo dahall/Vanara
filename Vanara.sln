@@ -425,6 +425,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsftEdit", "UnitTests\PInov
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.UIAutomation", "PInvoke\UIAutomation\Vanara.PInvoke.UIAutomation.csproj", "{7729B4B9-4837-49D5-91CC-5BB66E23A376}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows.Shell.Common", "UnitTests\Windows.Shell.Common\Windows.Shell.Common.csproj", "{2727B06D-1E73-4108-AFDE-39C1A6F99806}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -3729,6 +3731,24 @@ Global
 		{7729B4B9-4837-49D5-91CC-5BB66E23A376}.Release|x64.Build.0 = Release|x64
 		{7729B4B9-4837-49D5-91CC-5BB66E23A376}.Release|x86.ActiveCfg = Release|x86
 		{7729B4B9-4837-49D5-91CC-5BB66E23A376}.Release|x86.Build.0 = Release|x86
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Debug|x64.ActiveCfg = Debug|x64
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Debug|x64.Build.0 = Debug|x64
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Debug|x86.ActiveCfg = Debug|x86
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Debug|x86.Build.0 = Debug|x86
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.DebugNoTests|Any CPU.ActiveCfg = DebugNoTests|Any CPU
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.DebugNoTests|Any CPU.Build.0 = DebugNoTests|Any CPU
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.DebugNoTests|x64.ActiveCfg = DebugNoTests|x64
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.DebugNoTests|x64.Build.0 = DebugNoTests|x64
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.DebugNoTests|x86.ActiveCfg = DebugNoTests|x86
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.DebugNoTests|x86.Build.0 = DebugNoTests|x86
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Release|x64.ActiveCfg = Release|x64
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Release|x64.Build.0 = Release|x64
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Release|x86.ActiveCfg = Release|x86
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -3920,6 +3940,7 @@ Global
 		{C62629F4-BA1F-4E21-B253-55864BDA0200} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{BD978D87-063B-461F-9ECB-B67F962F54D6} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{7729B4B9-4837-49D5-91CC-5BB66E23A376} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{2727B06D-1E73-4108-AFDE-39C1A6F99806} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

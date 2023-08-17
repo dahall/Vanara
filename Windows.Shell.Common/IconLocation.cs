@@ -21,12 +21,12 @@ public class IconLocation : IndirectResource
 	/// <summary>Gets the icon referred to by this instance.</summary>
 	/// <value>The icon.</value>
 	[Browsable(false)]
-	public SafeHICON Icon
+	public SafeHICON? Icon
 	{
 		get
 		{
 			if (!IsValid) return null;
-			using var lib = LoadLibraryEx(ModuleFileName, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
+			using var lib = LoadLibraryEx(ModuleFileName!, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 			return new SafeHICON(LoadImage(lib, ResourceId, LoadImageType.IMAGE_ICON, 0, 0, 0));
 			//var hIconEx = new[] { IntPtr.Zero };
 			//if (large)
@@ -40,7 +40,7 @@ public class IconLocation : IndirectResource
 	/// <param name="value">The string representation in the format of either "ModuleFileName,ResourceIndex" or "ModuleFileName,-ResourceID".</param>
 	/// <param name="loc">The resulting <see cref="IconLocation"/> instance on success.</param>
 	/// <returns><c>true</c> if successfully parsed.</returns>
-	public static bool TryParse(string value, out IconLocation loc)
+	public static bool TryParse(string? value, out IconLocation loc)
 	{
 		var parts = value?.Split(',');
 		if (parts != null && parts.Length == 2 && int.TryParse(parts[1], out var i))
@@ -52,35 +52,23 @@ public class IconLocation : IndirectResource
 		return false;
 	}
 
-	/// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
-	/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+	/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
+	/// <returns>A <see cref="string" /> that represents this instance.</returns>
 	public override string ToString() => IsValid ? $"{ModuleFileName},{ResourceId}" : string.Empty;
 }
 
 internal class IconLocationTypeConverter : ExpandableObjectConverter
 {
-	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-	{
-		if (sourceType == typeof(string))
-			return true;
-		return base.CanConvertFrom(context, sourceType);
-	}
+	public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
+		sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
-	public override bool CanConvertTo(ITypeDescriptorContext context, Type destType)
-	{
-		if (destType == typeof(InstanceDescriptor) || destType == typeof(string))
-			return true;
-		return base.CanConvertTo(context, destType);
-	}
+	public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destType) =>
+		destType == typeof(InstanceDescriptor) || destType == typeof(string) || base.CanConvertTo(context, destType);
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-	{
-		if (value is string s)
-			return IconLocation.TryParse(s, out var loc) ? loc : null;
-		return base.ConvertFrom(context, culture, value);
-	}
+	public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
+		value is string s ? IconLocation.TryParse(s, out var loc) ? loc : null : base.ConvertFrom(context, culture, value);
 
-	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo info, object value, Type destType)
+	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? info, object? value, Type destType)
 	{
 		if (destType == typeof(InstanceDescriptor))
 			return new InstanceDescriptor(typeof(IconLocation).GetConstructor(new Type[0]), null, false);

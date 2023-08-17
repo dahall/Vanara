@@ -40,19 +40,17 @@ public static class ShellRegistrar
 	/// If set to <see langword="true"/>, registration is checked in HKLM; otherwise it is registered for the user only in HKCU.
 	/// </param>
 	/// <param name="appId">The AppId to relate to this CLSID. If <see langword="null"/>, the CLSID value will be used.</param>
-	public static bool IsRegisteredAsLocalServer<TComObject>(Assembly assembly = null, bool systemWide = false, Guid? appId = null) where TComObject : ComObject
+	public static bool IsRegisteredAsLocalServer<TComObject>(Assembly? assembly = null, bool systemWide = false, Guid? appId = null) where TComObject : ComObject
 	{
 		var cmdLine = (assembly ?? typeof(TComObject).Assembly).Location;
 		var clsid = GetClsid<TComObject>();
 		var _appId = appId ?? clsid;
 
-		using (var root = GetRoot(systemWide, true))
-		{
-			if (!root.HasSubKey(@"CLSID\" + clsid.ToRegString())) return false;
-			using (var rClsid = root.OpenSubKey(@"CLSID\" + clsid.ToRegString() + @"\LocalServer32"))
-				if (rClsid == null || !string.Equals(rClsid.GetValue("")?.ToString(), cmdLine, StringComparison.OrdinalIgnoreCase)) return false;
-			if (!root.HasSubKey(@"AppID\" + _appId.ToRegString())) return false;
-		}
+		using var root = GetRoot(systemWide, true) ?? Registry.ClassesRoot;
+		if (!root.HasSubKey(@"CLSID\" + clsid.ToRegString())) return false;
+		using (var rClsid = root.OpenSubKey(@"CLSID\" + clsid.ToRegString() + @"\LocalServer32"))
+			if (rClsid == null || !string.Equals(rClsid.GetValue("")?.ToString(), cmdLine, StringComparison.OrdinalIgnoreCase)) return false;
+		if (!root.HasSubKey(@"AppID\" + _appId.ToRegString())) return false;
 		return true;
 	}
 
@@ -71,7 +69,7 @@ public static class ShellRegistrar
 	/// in HKCU.
 	/// </param>
 	/// <param name="appId">The AppId to relate to this CLSID. If <see langword="null"/>, the CLSID value will be used.</param>
-	public static void RegisterLocalServer<TComObject>(string pszFriendlyName, string cmdLineArgs = null, Assembly assembly = null, bool systemWide = false, Guid? appId = null) where TComObject : ComObject
+	public static void RegisterLocalServer<TComObject>(string pszFriendlyName, string? cmdLineArgs = null, Assembly? assembly = null, bool systemWide = false, Guid? appId = null) where TComObject : ComObject
 	{
 		if (assembly == null) assembly = typeof(TComObject).Assembly;
 		var cmdLine = assembly.Location;
@@ -81,7 +79,7 @@ public static class ShellRegistrar
 		var _appId = appId ?? clsid;
 		if (!(cmdLineArgs is null)) qCmdLine += " " + cmdLineArgs;
 
-		using (var root = GetRoot(systemWide, true))
+		using (var root = GetRoot(systemWide, true) ?? Registry.ClassesRoot)
 		using (root.CreateSubKey(@"AppID\" + _appId.ToRegString(), pszFriendlyName))
 		using (var rClsid = root.CreateSubKey(@"CLSID\" + clsid.ToRegString(), pszFriendlyName))
 		using (rClsid.CreateSubKey("TypeLib", typelib.ToRegString()))
@@ -104,14 +102,12 @@ public static class ShellRegistrar
 	public static void UnregisterLocalServer<TComObject>(bool systemWide = false, Guid? appId = null) where TComObject : ComObject
 	{
 		var clsid = GetClsid<TComObject>();
-		using (var root = GetRoot(systemWide, true))
-		{
-			root.DeleteSubKeyTree(@"AppID\" + (appId ?? clsid).ToRegString());
-			root.DeleteSubKeyTree(@"CLSID\" + clsid.ToRegString());
-		}
+		using var root = GetRoot(systemWide, true) ?? Registry.ClassesRoot;
+		root.DeleteSubKeyTree(@"AppID\" + (appId ?? clsid).ToRegString());
+		root.DeleteSubKeyTree(@"CLSID\" + clsid.ToRegString());
 	}
 
-	internal static RegistryKey GetRoot(bool systemWide = true, bool writable = false, string subkey = null)
+	internal static RegistryKey? GetRoot(bool systemWide = true, bool writable = false, string? subkey = null)
 	{
 		if (!writable && subkey is null)
 			return Registry.ClassesRoot;

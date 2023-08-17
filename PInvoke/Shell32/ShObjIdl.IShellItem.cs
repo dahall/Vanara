@@ -487,7 +487,7 @@ public static partial class Shell32
 		/// This parameter receives the result of the comparison. If the two items are the same this parameter equals zero; if they are
 		/// different the parameter is nonzero.
 		/// </returns>
-		int Compare(IShellItem psi, SICHINTF hint);
+		int Compare(IShellItem? psi, SICHINTF hint);
 	}
 
 	/// <summary>
@@ -544,7 +544,7 @@ public static partial class Shell32
 		/// This parameter receives the result of the comparison. If the two items are the same this parameter equals zero; if they are
 		/// different the parameter is nonzero.
 		/// </returns>
-		new int Compare(IShellItem psi, SICHINTF hint);
+		new int Compare(IShellItem? psi, SICHINTF hint);
 
 		/// <summary>Gets a property store object for specified property store flags.</summary>
 		/// <param name="flags">The GETPROPERTYSTOREFLAGS constants that modify the property store object.</param>

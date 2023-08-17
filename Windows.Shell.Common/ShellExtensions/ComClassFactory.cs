@@ -1,4 +1,5 @@
-﻿using Vanara.Extensions.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using Vanara.Extensions.Reflection;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 
@@ -67,11 +68,11 @@ public class ComClassFactory : IClassFactory, IDisposable
 	/// </item>
 	/// </list>
 	/// </returns>
-	HRESULT IClassFactory.CreateInstance(object pUnkOuter, in Guid riid, out object ppv)
+	HRESULT IClassFactory.CreateInstance(object? pUnkOuter, in Guid riid, [MaybeNull] out object ppv)
 	{
 		System.Diagnostics.Debug.WriteLine($"IClassFactory.CreateInstance: riid={riid:B}");
 		ppv = null;
-		if (!(pUnkOuter is null)) return HRESULT.CLASS_E_NOAGGREGATION;
+		if (pUnkOuter is not null) return HRESULT.CLASS_E_NOAGGREGATION;
 		try
 		{
 			ppv = comObj.QueryInterface(riid);

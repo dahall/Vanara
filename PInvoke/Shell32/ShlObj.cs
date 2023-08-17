@@ -6810,7 +6810,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762232")]
 	public static extern HRESULT SHOpenFolderAndSelectItems(PIDL pidlFolder, uint cidl,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [Optional] OFASI dwFlags);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? apidl, [Optional] OFASI dwFlags);
 
 	/// <summary>
 	/// <para>Displays the <c>Open With</c> dialog box.</para>

@@ -22,7 +22,7 @@ public class SearchCondition : ICloneable, IDisposable
 
 	/// <summary>Retrieves the property name, operation, and value from a leaf search condition node.</summary>
 	/// <value>The comparison information.</value>
-	public (string propName, CONDITION_OPERATION op, object propValue) ComparisonInfo
+	public (string? propName, CONDITION_OPERATION op, object? propValue) ComparisonInfo
 	{
 		get
 		{
@@ -39,7 +39,7 @@ public class SearchCondition : ICloneable, IDisposable
 
 	/// <summary>Retrieves the property name, operation, and value from a leaf search condition node.</summary>
 	/// <value>The leaf condition information.</value>
-	public (PROPERTYKEY propKey, CONDITION_OPERATION op, object propValue) LeafConditionInfo
+	public (PROPERTYKEY propKey, CONDITION_OPERATION op, object? propValue) LeafConditionInfo
 	{
 		get
 		{
@@ -60,7 +60,7 @@ public class SearchCondition : ICloneable, IDisposable
 	/// A collection of zero or more SearchCondition objects. Each object is a subcondition of this condition node. If this is a negation
 	/// condition, this parameter receives the single subcondition.
 	/// </value>
-	public IEnumerable<SearchCondition> SubConditions => condition.GetSubConditions<IEnumUnknown>().Enumerate<ICondition>().Select(ic => new SearchCondition(ic));
+	public IEnumerable<SearchCondition> SubConditions => condition.GetSubConditions<IEnumUnknown>().Enumerate<ICondition>().WhereNotNull().Select(ic => new SearchCondition(ic));
 
 	/// <summary>Retrieves the character-normalized value of the search condition node.</summary>
 	/// <value>The normalized value of the condition.</value>
@@ -68,7 +68,7 @@ public class SearchCondition : ICloneable, IDisposable
 
 	/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
 	/// <value>The semantic type of the value.</value>
-	public string ValueType => condition.GetValueType();
+	public string? ValueType => condition.GetValueType();
 
 	/// <summary>Creates a condition node that is a logical conjunction (AND) or disjunction (OR) of a collection of subconditions.</summary>
 	/// <param name="conditionType">
@@ -95,7 +95,7 @@ public class SearchCondition : ICloneable, IDisposable
 	/// <param name="query">An input string to be parsed.</param>
 	/// <param name="cultureInfo">Used to select the localized language for keywords. By default, the current UI culture is used.</param>
 	/// <returns>The new <see cref="SearchCondition"/> node.</returns>
-	public static SearchCondition CreateFromStructuredQuery(string query, CultureInfo cultureInfo = null)
+	public static SearchCondition CreateFromStructuredQuery(string query, CultureInfo? cultureInfo = null)
 	{
 		if (cultureInfo is null) cultureInfo = CultureInfo.CurrentUICulture;
 		using var qm = ComReleaserFactory.Create(new IQueryParserManager());
@@ -103,16 +103,19 @@ public class SearchCondition : ICloneable, IDisposable
 		qm.Item.InitializeOptions(false, true, qp.Item);
 		using var qs = ComReleaserFactory.Create(qp.Item.Parse(query));
 		qs.Item.GetQuery(out var pc, out _);
-		using var rpc = ComReleaserFactory.Create(pc);
+		using var rpc = ComReleaserFactory.Create(pc!);
 		if (Environment.OSVersion.Version >= new Version(6, 1))
 		{
 			using var pcf = ComReleaserFactory.Create((IConditionFactory2)qs.Item);
-			return new SearchCondition(pcf.Item.ResolveCondition<ICondition>(pc));
+			return new SearchCondition(pcf.Item.ResolveCondition<ICondition>(pc!)!);
 		}
 		else
 		{
-			Kernel32.GetLocalTime(out var st);
-			return new SearchCondition(qs.Item.Resolve(pc, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, st));
+			unsafe
+			{
+				Kernel32.GetLocalTime(out var st);
+				return new SearchCondition(qs.Item.Resolve(pc!, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, &st));
+			}
 		}
 	}
 
@@ -124,10 +127,10 @@ public class SearchCondition : ICloneable, IDisposable
 	/// <param name="value">The constant value against which the property value should be compared.</param>
 	/// <param name="operation">A CONDITION_OPERATION enumeration.</param>
 	/// <returns>The new <see cref="SearchCondition"/> node.</returns>
-	public static SearchCondition CreateLeafCondition<T>(string propertyName, T value, CONDITION_OPERATION operation)
+	public static SearchCondition CreateLeafCondition<T>(string? propertyName, T value, CONDITION_OPERATION operation)
 	{
 		using var ifactory = ComReleaserFactory.Create(new IConditionFactory());
-		if (string.IsNullOrEmpty(propertyName) || propertyName.ToUpperInvariant() == "SYSTEM.NULL")
+		if (string.IsNullOrEmpty(propertyName) || propertyName!.ToUpperInvariant() == "SYSTEM.NULL")
 			propertyName = null;
 		var pv = new PROPVARIANT(value);
 		var valType = pv.VarType switch
@@ -165,22 +168,19 @@ public class SearchCondition : ICloneable, IDisposable
 	/// <summary>
 	/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 	/// </summary>
-	public void Dispose()
-	{
-		condition = null;
-	}
+	public void Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>Gets the results of the condition by level.</summary>
 	/// <returns>An enumeration of the leaf nodes with their level and data.</returns>
-	public IEnumerable<(int level, string propName, string semanticType, object propVar)> GetLeveledResults() => GetResults(condition);
+	public IEnumerable<(int level, string? propName, string semanticType, object? propVar)> GetLeveledResults() => GetResults(condition);
 
-	private static IEnumerable<(int level, string propName, string semanticType, object propVar)> GetResults(ICondition pc, int l = 0)
+	private static IEnumerable<(int level, string? propName, string semanticType, object? propVar)> GetResults(ICondition pc, int l = 0)
 	{
 		switch (pc.GetConditionType())
 		{
 			case CONDITION_TYPE.CT_AND_CONDITION:
 			case CONDITION_TYPE.CT_OR_CONDITION:
-				foreach (var pcsub in pc.GetSubConditions<IEnumUnknown>().Enumerate<ICondition>().Where(i => i != null))
+				foreach (var pcsub in pc.GetSubConditions<IEnumUnknown>().Enumerate<ICondition>().WhereNotNull())
 					foreach (var r in GetResults(pcsub, l + 1))
 						yield return r;
 				break;

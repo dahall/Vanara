@@ -23,7 +23,7 @@ public static class ShellSearch
 	/// <param name="searchFolders">The folders in which to perform the search.</param>
 	/// <param name="settings">Optional settings for the output view.</param>
 	/// <returns>A <see cref="ShellItem"/> which contains the search results.</returns>
-	public static ShellItem GetSearchResults(SearchCondition condition, string displayName, IEnumerable<ShellFolder> searchFolders, ShellSearchViewSettings settings = null)
+	public static ShellItem GetSearchResults(SearchCondition condition, string displayName, IEnumerable<ShellFolder> searchFolders, ShellSearchViewSettings? settings = null)
 	{
 		using var cfactory = ComReleaserFactory.Create(new ISearchFolderItemFactory());
 		cfactory.Item.SetPaths(searchFolders);
@@ -36,14 +36,14 @@ public static class ShellSearch
 	/// <param name="searchFolders">The folder paths in which to perform the search.</param>
 	/// <param name="settings">Optional settings for the output view.</param>
 	/// <returns>A <see cref="ShellItem"/> which contains the search results.</returns>
-	public static ShellItem GetSearchResults(SearchCondition condition, string displayName, IEnumerable<string> searchFolders, ShellSearchViewSettings settings = null)
+	public static ShellItem GetSearchResults(SearchCondition condition, string displayName, IEnumerable<string> searchFolders, ShellSearchViewSettings? settings = null)
 	{
 		using var cfactory = ComReleaserFactory.Create(new ISearchFolderItemFactory());
 		cfactory.Item.SetPaths(searchFolders);
 		return GetSearchResults(cfactory.Item, condition, displayName, settings);
 	}
 
-	private static ShellItem GetSearchResults(ISearchFolderItemFactory factory, SearchCondition condition, string displayName, ShellSearchViewSettings settings)
+	private static ShellItem GetSearchResults(ISearchFolderItemFactory factory, SearchCondition condition, string displayName, ShellSearchViewSettings? settings)
 	{
 		factory.SetDisplayName(displayName ?? "");
 		factory.SetCondition(condition?.condition ?? throw new ArgumentNullException(nameof(condition)));
@@ -60,7 +60,7 @@ public static class ShellSearch
 		return factory.GetShellItem();
 	}
 
-	private static ShellItem GetShellItem(this ISearchFolderItemFactory f) => ShellItem.Open(f.GetShellItem<IShellItem>());
+	private static ShellItem GetShellItem(this ISearchFolderItemFactory f) => ShellItem.Open(f.GetShellItem<IShellItem>()!);
 
 	private static void SetPaths(this ISearchFolderItemFactory f, IEnumerable<string> paths) =>
 		SetPaths(f, paths.Select(p => new ShellFolder(p)));
@@ -70,7 +70,7 @@ public static class ShellSearch
 		var pa = paths?.ToArray();
 		if (pa != null && pa.Length > 0)
 		{
-			SHCreateShellItemArrayFromIDLists((uint)pa.Length, Array.ConvertAll(pa, i => (IntPtr)i.PIDL), out var ia).ThrowIfFailed();
+			SHCreateShellItemArrayFromIDLists(Array.ConvertAll(pa, i => i.PIDL), out var ia).ThrowIfFailed();
 			f.SetScope(ia);
 		}
 		else
@@ -94,11 +94,11 @@ public class ShellSearchViewSettings
 	public int? IconSize { get; set; }
 
 	/// <summary>A list of sort column directions.</summary>
-	public SORTCOLUMN[] SortColumns { get; set; }
+	public SORTCOLUMN[]? SortColumns { get; set; }
 
 	/// <summary>A list of stack keys, as specified. If <see langword="null"/>, the folder will not be stacked.</summary>
-	public PROPERTYKEY[] StackKeys { get; set; }
+	public PROPERTYKEY[]? StackKeys { get; set; }
 
 	/// <summary>A list of which columns are all visible. The default is based on <c>FolderTypeID</c>.</summary>
-	public PROPERTYKEY[] VisibleColumns { get; set; }
+	public PROPERTYKEY[]? VisibleColumns { get; set; }
 }

@@ -8,6 +8,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFramework>$(TargetFramework)-windows</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="ShellViewTestForm.cs" />

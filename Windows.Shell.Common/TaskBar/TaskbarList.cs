@@ -30,10 +30,12 @@ public enum TaskbarButtonProgressState
 /// </summary>
 public static class TaskbarList
 {
+#pragma warning disable IDE0052 // Remove unread private members
 	private static readonly TaskbarListStaticFinalizer finalizer = new();
+#pragma warning restore IDE0052 // Remove unread private members
 	private static readonly Version Win7Ver = new(6, 1);
-	private static ITaskbarList2 taskbar2;
-	private static ITaskbarList4 taskbar4;
+	private static readonly ITaskbarList2 taskbar2;
+	private static ITaskbarList4? taskbar4;
 
 	static TaskbarList()
 	{
@@ -53,7 +55,7 @@ public static class TaskbarList
 	/// </summary>
 	/// <param name="hwnd">The window whose thumbnail displays the tooltip. This window must belong to the calling process.</param>
 	/// <returns>The Application User Model ID.</returns>
-	public static string GetWindowAppId(HWND hwnd) => GetWindowProperty(hwnd, PROPERTYKEY.System.AppUserModel.ID);
+	public static string? GetWindowAppId(HWND hwnd) => GetWindowProperty(hwnd, PROPERTYKEY.System.AppUserModel.ID);
 
 	/// <summary>Marks a window as full-screen.</summary>
 	/// <param name="hwnd">The window to be marked.</param>
@@ -278,18 +280,18 @@ public static class TaskbarList
 		taskbar4?.UnregisterTab(hwnd);
 	}
 
-	internal static string GetWindowProperty(HWND hwnd, PROPERTYKEY propkey)
+	internal static string? GetWindowProperty(HWND hwnd, PROPERTYKEY propkey)
 	{
 		// Get the IPropertyStore for the given window handle
 		using ComReleaser<IPropertyStore> pPropStore = ComReleaserFactory.Create(GetWindowPropertyStore(hwnd));
 
 		// Get the value
-		using PROPVARIANT pv = new PROPVARIANT();
+		using PROPVARIANT pv = new();
 		pPropStore.Item.GetValue(propkey, pv);
-		return pv.Value.ToString();
+		return pv.Value?.ToString();
 	}
 
-	internal static IPropertyStore GetWindowPropertyStore(HWND hwnd) => SHGetPropertyStoreForWindow<IPropertyStore>(hwnd);
+	internal static IPropertyStore GetWindowPropertyStore(HWND hwnd) => SHGetPropertyStoreForWindow<IPropertyStore>(hwnd)!;
 
 	internal static void SetWindowProperty(HWND hwnd, PROPERTYKEY propkey, string value)
 	{
@@ -297,7 +299,7 @@ public static class TaskbarList
 		using ComReleaser<IPropertyStore> pPropStore = ComReleaserFactory.Create(GetWindowPropertyStore(hwnd));
 
 		// Set the value
-		using PROPVARIANT pv = new PROPVARIANT(value);
+		using PROPVARIANT pv = new(value);
 		pPropStore.Item.SetValue(propkey, pv);
 	}
 
@@ -313,7 +315,6 @@ public static class TaskbarList
 	{
 		~TaskbarListStaticFinalizer()
 		{
-			taskbar2 = null;
 			taskbar4 = null;
 		}
 	}

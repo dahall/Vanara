@@ -1,4 +1,5 @@
-﻿using Vanara.PInvoke;
+﻿using System.Diagnostics.CodeAnalysis;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.Shell32;
@@ -25,13 +26,14 @@ public abstract class ShellCommand : ComObject, IInitializeCommand
 	}
 
 	/// <summary>Occurs when the shell command is initialized.</summary>
-	public event EventHandler InitializeCommand;
+	public event EventHandler? InitializeCommand;
 
 	/// <summary>Gets the name of the command returned by <c>IInitializeCommand.Initialize</c>.</summary>
 	/// <value>
 	/// The name of the command as found in the registry. This value is <see langword="null"/> until <c>IInitializeCommand.Initialize</c>
 	/// is called by the host.
 	/// </value>
+	[MaybeNull]
 	public string CommandName { get; private set; }
 
 	/// <summary>Gets the properties exposed through <c>IInitializeCommand.Initialize</c>.</summary>
@@ -39,6 +41,7 @@ public abstract class ShellCommand : ComObject, IInitializeCommand
 	/// Gets a <see cref="PropertyBag"/> instance. This value is <see langword="null"/> until <c>IInitializeCommand.Initialize</c> is
 	/// called by the host.
 	/// </value>
+	[MaybeNull]
 	public PropertyBag Properties { get; private set; }
 
 	/// <inheritdoc/>

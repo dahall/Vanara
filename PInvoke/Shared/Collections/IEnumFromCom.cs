@@ -52,13 +52,13 @@ public interface ICOMEnum<TElem>
 public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 {
 	private readonly ComTryGetNext cnext;
-	private readonly Func<TItem?>? make;
+	private readonly Func<TItem>? make;
 
 	/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 	/// <param name="next">The method used to try to get the next item in the enumeration.</param>
 	/// <param name="reset">The method used to reset the enumeration to the first element.</param>
 	/// <param name="makeNew">The method used to create the default value placed in the array for <paramref name="next"/>.</param>
-	public IEnumFromCom(ComTryGetNext next, Action reset, Func<TItem?>? makeNew = null) : base(reset)
+	public IEnumFromCom(ComTryGetNext next, Action reset, Func<TItem>? makeNew = null) : base(reset)
 	{
 		if (next is null || reset is null)
 			throw new ArgumentNullException(nameof(next));
@@ -79,7 +79,7 @@ public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 	/// <paramref name="celt"/> parameter. S_FALSE = The number of items returned is less than the number specified in the <paramref
 	/// name="celt"/> parameter.
 	/// </returns>
-	public delegate HRESULT ComTryGetNext(uint celt, TItem?[] rgelt, out uint celtFetched);
+	public delegate HRESULT ComTryGetNext(uint celt, TItem[] rgelt, out uint celtFetched);
 
 	/// <summary>Initializes a new instance of the <see cref="IEnumFromCom{TItem}"/> class from a COM enumeration interface instance.</summary>
 	/// <param name="enumObj">The COM enumeration interface instance.</param>
@@ -93,7 +93,8 @@ public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 
 	private bool TryGet([NotNullWhen(true)] out TItem? item)
 	{
-		TItem?[] res = new TItem?[] { make is null ? default : make.Invoke() };
+		TItem[] res = new TItem[1];
+		if (make is not null) res[0] = make.Invoke();
 		if (cnext(1, res, out var ret) != HRESULT.S_OK)
 		{
 			item = default;

@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,14 +18,14 @@ namespace Vanara.Configuration;
 public class MRUManager : Component
 {
 	/// <summary>This value should contain the appropriate image for the clear list menu item in derived classes.</summary>
-	protected object clearListMenuItemImage;
+	protected object? clearListMenuItemImage;
 
 	private const string defClearListMenuItemText = "Clear List";
 	private const int defMaxHistoryCount = 10;
 	private MenuPlacement clearListMenuItemPlacement;
 	private string clearListMenuItemText = defClearListMenuItemText;
-	private string[] exts;
-	private IFileListStorage storage;
+	private string[]? exts;
+	private IFileListStorage? storage;
 
 	/// <summary>Initializes a new instance of the <see cref="MRUManager"/> class.</summary>
 	public MRUManager() { }
@@ -40,15 +41,15 @@ public class MRUManager : Component
 
 	/// <summary>Occurs when the clear recent files menu item is clicked.</summary>
 	[Category("Behavior"), Description("Occurs when the clear recent files menu item is clicked.")]
-	public event Action<StringCollection> ClearListMenuItemClick;
+	public event Action<StringCollection>? ClearListMenuItemClick;
 
 	/// <summary>Occurs when [get menu image for file].</summary>
 	[Category("Behavior"), Description("Occurs when a file menu item is about to be drawn and is requesting an image.")]
-	public event Func<string, object> GetMenuImageForFile;
+	public event Func<string, object>? GetMenuImageForFile;
 
 	/// <summary>Occurs when one of the automatically added recent file menu items is clicked.</summary>
 	[Category("Behavior"), Description("Occurs when one of the automatically added recent file menu items is clicked.")]
-	public event Action<string> RecentFileMenuItemClick;
+	public event Action<string>? RecentFileMenuItemClick;
 
 	/// <summary>The placement of a menu item in a list.</summary>
 	public enum MenuPlacement
@@ -97,7 +98,8 @@ public class MRUManager : Component
 		/// </param>
 		/// <param name="clearListMenuItemOnTop">if set to <see langword="true"/>, the clear list menu item precedes the files.</param>
 		/// <param name="menuImageCallback">The menu image callback delegate.</param>
-		void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string clearListMenuItemText = null, Action clearListMenuItemClick = null, object clearListMenuItemImage = null, bool clearListMenuItemOnTop = false, Func<string, object> menuImageCallback = null);
+		void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string? clearListMenuItemText = null, Action? clearListMenuItemClick = null,
+			object? clearListMenuItemImage = null, bool clearListMenuItemOnTop = false, Func<string, object>? menuImageCallback = null);
 	}
 
 	/// <summary>Gets or sets the clear list menu item placement relative to the MRU items.</summary>
@@ -149,7 +151,7 @@ public class MRUManager : Component
 						foreach (var file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Recent), "*.lnk").Where(s => exts.Contains(Path.GetExtension(s.Substring(0, s.Length - 4)).Trim('.').ToLower())))
 						{
 							var sc = script.InvokeMethod<object>("CreateShortcut", file);
-							var targetPath = sc.GetPropertyValue<string>("TargetPath");
+							var targetPath = sc?.GetPropertyValue<string>("TargetPath");
 							if (targetPath != null)
 								recentFiles.Add(targetPath);
 						}
@@ -179,12 +181,12 @@ public class MRUManager : Component
 	/// <summary>Gets or sets the menu builder handler.</summary>
 	/// <value>The menu builder handler.</value>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public IMenuBuilder MenuBuilderHandler { get; set; }
+	public IMenuBuilder? MenuBuilderHandler { get; set; }
 
 	/// <summary>Gets or sets the storage handler.</summary>
 	/// <value>The storage handler.</value>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public IFileListStorage StorageHandler
+	public IFileListStorage? StorageHandler
 	{
 		get => storage;
 		set { storage = value; if (LicenseManager.UsageMode != LicenseUsageMode.Designtime) storage?.Initialize(); }
@@ -244,7 +246,7 @@ public class MRUManager : Component
 			{
 				foreach (var s in StorageHandler.Files)
 					try { File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Recent), Path.GetFileName(s) + ".lnk")); } catch { }
-				StorageHandler.Files = null;
+				StorageHandler.Files = Enumerable.Empty<string>();
 			}
 			MenuBuilderHandler?.ClearRecentFiles();
 		}
@@ -261,16 +263,13 @@ public class MRUManager : Component
 	public class AppSettingsFileListStorage : IFileListStorage
 	{
 		private const string propName = "__MRUList__";
-		private ApplicationSettingsBase settings;
+		private ApplicationSettingsBase? settings;
 
 		/// <summary>Initializes a new instance of the <see cref="AppSettingsFileListStorage"/> class.</summary>
 		/// <param name="settings">
 		/// The settings object to use. If <see langword="null"/>, the component will search all loaded assemblies for an instance.
 		/// </param>
-		public AppSettingsFileListStorage(ApplicationSettingsBase settings = null)
-		{
-			if (settings != null) Settings = settings;
-		}
+		public AppSettingsFileListStorage(ApplicationSettingsBase? settings = null) => Settings = settings;
 
 		/// <summary>Gets or sets the files.</summary>
 		/// <value>The files.</value>
@@ -286,7 +285,7 @@ public class MRUManager : Component
 			}
 		}
 
-		private ApplicationSettingsBase Settings
+		private ApplicationSettingsBase? Settings
 		{
 			get => settings;
 			set { settings = value; AddMRUPropToSettings(); }
@@ -294,8 +293,8 @@ public class MRUManager : Component
 
 		private StringCollection SettingsValue
 		{
-			get => settings != null ? settings[propName] as StringCollection : new StringCollection();
-			set { if (settings != null) settings[propName] = value; }
+			get => settings?[propName] as StringCollection ?? new StringCollection();
+			set { if (settings is null) throw new InvalidOperationException("The Settings property has not been set."); settings[propName] = value; }
 		}
 
 		/// <summary>Adds the recent file.</summary>
@@ -308,7 +307,22 @@ public class MRUManager : Component
 		}
 
 		/// <summary>Initializes this instance.</summary>
-		public void Initialize() => TryLoadAppSettings();
+		public void Initialize()
+		{
+			if (Settings != null) return;
+			var appSettingsType = AppDomain.CurrentDomain.GetAllTypes().FirstOrDefault(t => t.IsSubclassOf(typeof(ApplicationSettingsBase)));
+			if (appSettingsType != null)
+			{
+				var defProp = appSettingsType.GetProperty("Default");
+				if (defProp != null)
+					Settings = (ApplicationSettingsBase?)defProp.GetValue(null, null);
+				else
+					Settings = (ApplicationSettingsBase)SettingsBase.Synchronized((ApplicationSettingsBase?)Activator.CreateInstance(appSettingsType));
+			}
+
+			if (Settings is null)
+				throw new ApplicationException("Assembly hosting MRUManager must already have a settings instance derived from ApplicationSettingsBase.");
+		}
 
 		/// <summary>Removes the recent file.</summary>
 		/// <param name="fileNameWithFullPath">The file name with full path.</param>
@@ -337,22 +351,6 @@ public class MRUManager : Component
 			SettingsValue = new StringCollection();
 			Settings?.Save();
 		}
-
-		private void TryLoadAppSettings()
-		{
-			if (Settings != null) return;
-			var appSettingsType = AppDomain.CurrentDomain.GetAllTypes().FirstOrDefault(t => t.IsSubclassOf(typeof(ApplicationSettingsBase)));
-			if (appSettingsType != null)
-			{
-				var defProp = appSettingsType.GetProperty("Default");
-				if (defProp != null)
-					Settings = (ApplicationSettingsBase)defProp.GetValue(null, null);
-				else
-					Settings = (ApplicationSettingsBase)SettingsBase.Synchronized((ApplicationSettingsBase)Activator.CreateInstance(appSettingsType));
-			}
-			else
-				throw new ApplicationException("Assembly hosting MRUManager must already have a settings instance derived from ApplicationSettingsBase.");
-		}
 	}
 
 	/// <summary></summary>
@@ -368,7 +366,8 @@ public class MRUManager : Component
 
 		/// <summary>Gets or sets the name of the sub key.</summary>
 		/// <value>The name of the sub key.</value>
-		public string SubKeyName { get; set; }
+		[DisallowNull]
+		public string? SubKeyName { get; set; }
 
 		/// <summary>Adds the recent file.</summary>
 		/// <param name="fileNameWithFullPath">The file name with full path.</param>
@@ -402,7 +401,7 @@ public class MRUManager : Component
 				else if (product != null)
 					s = product;
 				else
-					s = Assembly.GetExecutingAssembly().GetName().Name;
+					s = Assembly.GetExecutingAssembly().GetName().Name ?? throw new InvalidOperationException("Unable to fetch valid assembly name.");
 				SubKeyName = $"Software\\{s}\\MRU";
 			}
 		}
@@ -424,9 +423,9 @@ public class MRUManager : Component
 			}
 		}
 
-		private static T GetAssemblyAttribute<T>() => (T)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(T), true).FirstOrDefault();
+		private static T? GetAssemblyAttribute<T>() => (T?)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(T), true).FirstOrDefault();
 
-		private IEnumerable<string> GetFiles(SafeRegKey rK)
+		private static IEnumerable<string> GetFiles(SafeRegKey rK)
 		{
 			for (var i = 0; ; i++)
 			{
@@ -436,9 +435,7 @@ public class MRUManager : Component
 			}
 		}
 
-		private SafeRegKey GetKey() => new(Registry.CurrentUser, SubKeyName, RegistryKeyPermissionCheck.ReadWriteSubTree);
-
-		private void SetFiles(SafeRegKey rK, IEnumerable<string> value)
+		private static void SetFiles(SafeRegKey rK, IEnumerable<string> value)
 		{
 			var i = 0;
 			while (true)
@@ -450,6 +447,8 @@ public class MRUManager : Component
 			foreach (var s in value)
 				rK.Key.SetValue(i++.ToString(), s);
 		}
+
+		private SafeRegKey GetKey() => new(Registry.CurrentUser, SubKeyName ?? throw new InvalidOperationException("Invalid assembly name."), RegistryKeyPermissionCheck.ReadWriteSubTree);
 
 		private class SafeRegKey : IDisposable
 		{

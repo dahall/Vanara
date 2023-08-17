@@ -63,9 +63,9 @@ public class ShellItemImages
 		}
 
 		// If you got a bitmap, resize based on flags
-		if (sz == size.Width || (sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.BiggerSizeOk)))
+		if (sz == size.Width || sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.BiggerSizeOk))
 			return hbmp;
-		if ((sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ResizeToFit)) || (sz < size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ScaleUp)))
+		if (sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ResizeToFit) || sz < size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ScaleUp))
 		{
 			HANDLE hbmpcp = CopyImage(hbmp.DangerousGetHandle(), LoadImageType.IMAGE_BITMAP, size.Width, size.Height, CopyImageOptions.LR_CREATEDIBSECTION);
 			if (hbmpcp.IsNull) Win32Error.ThrowLastError();

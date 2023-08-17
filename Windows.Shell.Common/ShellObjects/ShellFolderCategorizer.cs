@@ -11,10 +11,10 @@ namespace Vanara.Windows.Shell;
 /// <summary>Exposes a list of categorizers registered on an IShellFolder.</summary>
 public class ShellFolderCategorizer : IEnumerable<ShellFolderCategory>
 {
-	internal ShellFolderCategorizer(IShellFolder folder) => ICategoryProvider = folder.CreateViewObject<ICategoryProvider>(default);
+	internal ShellFolderCategorizer(IShellFolder folder) => ICategoryProvider = folder.CreateViewObject<ICategoryProvider>(default)!;
 
 	/// <summary>Gets the default category.</summary>
-	public ShellFolderCategory DefaultCategory
+	public ShellFolderCategory? DefaultCategory
 	{
 		get
 		{
@@ -23,7 +23,7 @@ public class ShellFolderCategorizer : IEnumerable<ShellFolderCategory>
 				return GetCat(guid);
 			if (hr == HRESULT.S_FALSE)
 				return null;
-			throw hr.GetException();
+			throw hr.GetException() ?? new Exception();
 		}
 	}
 
@@ -100,10 +100,13 @@ public class ShellFolderCategory : IEquatable<ShellFolderCategory>
 	/// <returns></returns>
 	public int CompareCategory(CATSORT_FLAGS flags, uint categoryId1, uint categoryId2) => icat.CompareCategory(flags, categoryId1, categoryId2).Code;
 
+	/// <inheritdoc/>
+	public override bool Equals(object? obj) => Equals(obj as ShellFolderCategory);
+
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(ShellFolderCategory other) => id == other.id;
+	public bool Equals(ShellFolderCategory? other) => Equals(id, other?.id);
 
 	/// <summary>Gets a list of categories associated with a list of identifiers.</summary>
 	/// <param name="items">An array of item identifiers.</param>
@@ -123,4 +126,7 @@ public class ShellFolderCategory : IEquatable<ShellFolderCategory>
 		icat.GetCategoryInfo(categoryId, out var info).ThrowIfFailed();
 		return (info.cif, info.wszName);
 	}
+
+	/// <inheritdoc/>
+	public override int GetHashCode() => id.GetHashCode();
 }

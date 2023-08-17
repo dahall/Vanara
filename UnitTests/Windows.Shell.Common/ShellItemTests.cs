@@ -216,7 +216,8 @@ public class ShellItemTests
 			}
 		}
 		//new ImageViewer(handles.Select(h => Image.FromHbitmap(h.DangerousGetHandle())).Prepend(Image.FromFile(TestCaseSources.ImageFile))).ShowDialog();
-		new ImageViewer(handles.Select((h, idx) => ((Image)HToBitmap(h), $"{list[idx].opt} {list[idx].sz}"))).ShowDialog();
+		// TODO: Fix this test
+		//new ImageViewer(handles.Select((h, idx) => ((Image)HToBitmap(h), $"{list[idx].opt} {list[idx].sz}"))).ShowDialog();
 		foreach (SafeHBITMAP h in handles) h.Dispose();
 	}
 
@@ -238,7 +239,7 @@ public class ShellItemTests
 			Assert.That(i.FileSystemPath, Is.EqualTo(testDoc));
 			i.Update();
 		}, Throws.Nothing);
-		Assert.That(() => new ShellItem((string)null), Throws.ArgumentNullException);
+		Assert.That(() => new ShellItem((string?)null), Throws.ArgumentNullException);
 		Assert.That(() => new ShellItem(badTestDoc), Throws.InstanceOf<FileNotFoundException>());
 	}
 
@@ -263,11 +264,12 @@ public class ShellItemTests
 		using var f = new ShellFolder(KNOWNFOLDERID.FOLDERID_ControlPanelFolder);
 		Assert.That(f.ToUri().ToString(), Is.EqualTo("shell:::" + KNOWNFOLDERID.FOLDERID_ControlPanelFolder.Guid().ToString("B")));
 
-		using var d = new ShellItem(Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Documents\debug.log"));
-		Assert.That(d.ToUri().ToString(), Is.EqualTo("shell:::{f42ee2d3-909f-4907-8871-4c22fc0bf756}/debug.log"));
+		var fn = Directory.EnumerateFiles(Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Documents")).First();
+		using var d = new ShellItem(fn);
+		Assert.That(d.ToUri().ToString(), Is.EqualTo(@"file:///" + fn.Replace('\\', '/')));
 
 		using var td = new ShellItem(d.ToUri().ToString());
-		td.FileSystemPath.WriteValues();
+		td.FileSystemPath!.WriteValues();
 	}
 
 	private static Bitmap HToBitmap(in HBITMAP hbmp)

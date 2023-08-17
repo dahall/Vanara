@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
@@ -53,8 +54,8 @@ public enum FolderItemFilter
 public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 {
 	internal IShellFolder iShellFolder;
-	private ShellFolderCategorizer categories;
-	private static ShellFolder desktop;
+	private ShellFolderCategorizer? categories;
+	private static ShellFolder? desktop;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 	/// <param name="path">The file system path of the item.</param>
@@ -70,17 +71,15 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 
 	/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
 	/// <param name="shellItem">A ShellItem instance whose IsFolder property is <c>true</c>.</param>
-	public ShellFolder(ShellItem shellItem) : this(shellItem.iShellItem)
-	{
-	}
+	public ShellFolder(ShellItem shellItem) : this(shellItem.iShellItem) { }
 
 	/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
 	internal ShellFolder(IShellItem iShellItem) : base(iShellItem) => iShellFolder = GetInstance();
 
 	/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
-	protected ShellFolder()
-	{
-	}
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	protected ShellFolder() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/// <summary>Gets a reference to the primary Desktop.</summary>
 	/// <value>The desktop instance.</value>
@@ -96,34 +95,38 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 		{
 			if (string.IsNullOrEmpty(childName)) throw new ArgumentNullException(nameof(childName));
 
-			object ppv;
+			IShellItem? ppv;
 			if (IsMinVista)
-				SHCreateItemFromRelativeName(iShellItem, childName, BindContext, typeof(IShellItem).GUID, out ppv).ThrowIfFailed();
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+				ppv = SHCreateItemFromRelativeName<IShellItem>(iShellItem, childName, BindContext);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			else
 			{
 				SFGAO attr = 0;
-				iShellFolder.ParseDisplayName(IntPtr.Zero, null, childName, out uint _, out var tempPidl, ref attr).ThrowIfFailed();
+				iShellFolder.ParseDisplayName(HWND.NULL, BindContext, childName, out _, out var tempPidl, ref attr).ThrowIfFailed();
 				ppv = new ShellItemImpl(PIDL.Combine(PIDL, tempPidl), false);
 			}
-			return Open((IShellItem)ppv);
+			return Open(ppv ?? throw new ArgumentException("Cannot create IShellItem instance for supplied child name.", nameof(childName)));
 		}
 	}
 
 	/// <summary>Gets a child <see cref="ShellItem"/> reference from a parent and child PIDL.</summary>
 	/// <param name="relativePidl">A valid relative PIDL.</param>
 	/// <returns>A child <see cref="ShellItem"/> reference.</returns>
-	public ShellItem this[PIDL relativePidl]
+	public ShellItem this[PIDL? relativePidl]
 	{
 		get
 		{
-			if (relativePidl == null || relativePidl.IsInvalid) throw new ArgumentNullException(nameof(relativePidl));
+			if (relativePidl is null || relativePidl.IsInvalid) throw new ArgumentNullException(nameof(relativePidl));
 
-			object ppv;
+			IShellItem? ppv;
 			if (IsMinVista)
-				SHCreateItemWithParent(PIDL.Null, iShellFolder, relativePidl, typeof(IShellItem).GUID, out ppv);
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+				ppv = SHCreateItemWithParent<IShellItem>(iShellFolder, relativePidl);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			else
 				ppv = new ShellItemImpl(PIDL.Combine(PIDL, relativePidl), false);
-			return Open((IShellItem)ppv);
+			return Open(ppv ?? throw new ArgumentException("Cannot create IShellItem instance for supplied relative PIDL.", nameof(relativePidl)));
 		}
 	}
 
@@ -151,7 +154,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	/// </para>
 	/// </param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public T BindToObject<T>(PIDL relativePidl, IBindCtx bindCtx = null) where T : class => iShellFolder.BindToObject<T>(relativePidl, bindCtx);
+	public T? BindToObject<T>(PIDL relativePidl, IBindCtx? bindCtx = null) where T : class => iShellFolder.BindToObject<T>(relativePidl, bindCtx);
 
 	/// <summary>Requests a pointer to an object's storage interface.</summary>
 	/// <typeparam name="T">Type of the interface to get, usuall IStream, IStorage, or IPropertySetStorage.</typeparam>
@@ -162,14 +165,14 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	/// may not support the use of bind contexts.
 	/// </param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public T BindToStorage<T>(PIDL relativePidl, IBindCtx bindCtx = null) where T : class => iShellFolder.BindToStorage<T>(relativePidl, bindCtx);
+	public T? BindToStorage<T>(PIDL relativePidl, IBindCtx? bindCtx = null) where T : class => iShellFolder.BindToStorage<T>(relativePidl, bindCtx);
 
 	/// <summary>
 	/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 	/// </summary>
 	public override void Dispose()
 	{
-		iShellFolder = null;
+		GC.SuppressFinalize(this);
 		base.Dispose();
 	}
 
@@ -187,13 +190,13 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	{
 		if (iShellFolder.EnumObjects(parentWindow, (SHCONTF)filter, out var eo).Failed)
 			Debug.WriteLine($"Unable to enum children in folder.");
-		foreach (var p in eo.Enumerate(20))
+		foreach (var p in eo!.Enumerate(20))
 		{
-			ShellItem i = null;
+			ShellItem? i = null;
 			try { i = this[p]; } catch (Exception e) { Debug.WriteLine($"Unable to open folder child: {e.Message}"); }
-			if (i != null) yield return i;
+			if (i is not null) yield return i;
 		}
-		Marshal.ReleaseComObject(eo);
+		Marshal.ReleaseComObject(eo!);
 	}
 
 	/// <summary>Gets an object that can be used to carry out actions on the specified file objects or folders.</summary>
@@ -215,7 +218,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	/// <typeparam name="TInterface">The interface to retrieve, typically IShellView.</typeparam>
 	/// <param name="parentWindow">The owner window.</param>
 	/// <returns>The interface pointer requested.</returns>
-	public TInterface GetViewObject<TInterface>(HWND parentWindow) where TInterface : class =>
+	public TInterface? GetViewObject<TInterface>(HWND parentWindow) where TInterface : class =>
 		iShellFolder.CreateViewObject<TInterface>(parentWindow);
 
 	/// <summary>Determines if the supplied <see cref="ShellItem"/> is an immediate descendant of this folder.</summary>
@@ -236,7 +239,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	}
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
-	/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
+	/// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	private IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());

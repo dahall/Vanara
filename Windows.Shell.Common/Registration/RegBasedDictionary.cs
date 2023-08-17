@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Vanara.Collections;
 using Vanara.Windows.Shell.Registration;
@@ -15,12 +17,12 @@ public abstract class RegBasedDictionary<T> : VirtualReadOnlyDictionary<string, 
 	protected readonly bool readOnly;
 
 	/// <summary>The base registry key for this dictionary.</summary>
-	protected RegistryKey key;
+	protected RegistryKey? key;
 
 	/// <summary>Initializes a new instance of the <see cref="RegBasedDictionary{T}"/> class.</summary>
 	/// <param name="baseKey">The base registry key.</param>
 	/// <param name="readOnly">if set to <see langword="true"/> render this dictionary read-only.</param>
-	protected RegBasedDictionary(RegistryKey baseKey, bool readOnly)
+	protected RegBasedDictionary(RegistryKey? baseKey, bool readOnly)
 	{
 		key = baseKey;
 		this.readOnly = readOnly;
@@ -32,7 +34,7 @@ public abstract class RegBasedDictionary<T> : VirtualReadOnlyDictionary<string, 
 	/// <summary>Determines if a specified key is in the filtered list of keys under the base.</summary>
 	/// <param name="key">The name of the key to check.</param>
 	/// <returns><see langword="true"/> if the key is found; otherwise <see langword="false"/>.</returns>
-	public override bool ContainsKey(string key) => (this.key?.HasSubKey(key) ?? false) && SubKeyFilter(key);
+	public override bool ContainsKey(string? key) => this.key is not null && key is not null && this.key.HasSubKey(key) && SubKeyFilter(key);
 
 	/// <summary>
 	/// Returns a value that indicates if the provided <paramref name="keyName"/> value should be included in the list of available keys.
@@ -48,13 +50,12 @@ internal class AppDictionary : RegBasedDictionary<AppRegistration>
 	{
 	}
 
-	public override bool TryGetValue(string key, out AppRegistration value)
+	public override bool TryGetValue(string key, [MaybeNullWhen(false)] out AppRegistration value)
 	{
 		value = null;
 		if (!ContainsKey(key)) return false;
-		var sk = base.key.OpenSubKey(key, !readOnly);
-		value = sk is null ? null : new AppRegistration(sk, null, readOnly);
-		return !(value is null);
+		value = AppRegistration.Open(key, readOnly);
+		return value is not null;
 	}
 }
 
@@ -64,12 +65,12 @@ internal class FileTypeDictionary : RegBasedDictionary<FileTypeAssociation>
 	{
 	}
 
-	public override bool TryGetValue(string key, out FileTypeAssociation value)
+	public override bool TryGetValue(string key, [MaybeNullWhen(false)] out FileTypeAssociation value)
 	{
 		value = null;
 		if (!ContainsKey(key)) return false;
 		value = FileTypeAssociation.Open(key, false, readOnly);
-		return !(value is null);
+		return value is not null;
 	}
 
 	protected override bool SubKeyFilter(string keyName) => keyName.StartsWith(".");
@@ -91,11 +92,11 @@ internal class ProgIdDictionary : RegBasedDictionary<ProgId>
 	{
 	}
 
-	public override bool TryGetValue(string key, out ProgId value)
+	public override bool TryGetValue(string key, [MaybeNullWhen(false)] out ProgId value)
 	{
 		value = null;
 		if (!ContainsKey(key)) return false;
-		value = ProgId.Open(key, readOnly);
+		value = ProgId.Open(key, readOnly, true, true);
 		return true;
 	}
 
@@ -109,12 +110,12 @@ internal class ShellAssociationDictionary : RegBasedDictionary<ShellAssociation>
 	{
 	}
 
-	public override bool TryGetValue(string key, out ShellAssociation value)
+	public override bool TryGetValue(string key, [MaybeNullWhen(false)] out ShellAssociation value)
 	{
 		value = null;
 		if (!ContainsKey(key)) return false;
 		value = ShellAssociation.FromFileExtension(key);
-		return !(value is null);
+		return value is not null;
 	}
 
 	protected override bool SubKeyFilter(string keyName) => keyName.StartsWith(".");

@@ -46,8 +46,7 @@ public class ShellLibrary : ShellFolder
 	//private const string ext = ".library-ms";
 	internal IShellLibrary lib;
 
-	private ShellLibraryFolders folders;
-	private string name;
+	private ShellLibraryFolders? folders;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
 	/// <param name="knownFolderId">The known folder identifier.</param>
@@ -66,7 +65,7 @@ public class ShellLibrary : ShellFolder
 	public ShellLibrary(string libraryName, KNOWNFOLDERID kf = KNOWNFOLDERID.FOLDERID_Libraries, bool overwrite = false)
 	{
 		lib = new IShellLibrary();
-		name = libraryName;
+		Name = libraryName;
 		lib.SaveInKnownFolder(kf.Guid(), libraryName, overwrite ? LIBRARYSAVEFLAGS.LSF_OVERRIDEEXISTING : LIBRARYSAVEFLAGS.LSF_FAILIFTHERE);
 	}
 
@@ -77,7 +76,7 @@ public class ShellLibrary : ShellFolder
 	public ShellLibrary(string libraryName, ShellFolder parent, bool overwrite = false)
 	{
 		lib = new IShellLibrary();
-		name = libraryName;
+		Name = libraryName;
 		lib.Save(parent.iShellItem, libraryName, overwrite ? LIBRARYSAVEFLAGS.LSF_OVERRIDEEXISTING : LIBRARYSAVEFLAGS.LSF_FAILIFTHERE);
 	}
 
@@ -114,7 +113,7 @@ public class ShellLibrary : ShellFolder
 	}
 
 	/// <summary>Gets the name relative to the parent for the item.</summary>
-	public override string Name { get => name; protected set => name = value; }
+	public override string? Name { get; protected set; }
 
 	/// <summary>Gets or sets a value indicating whether to pin the library to the navigation pane.</summary>
 	/// <value><c>true</c> if pinned to the navigation pane; otherwise, <c>false</c>.</value>
@@ -146,9 +145,8 @@ public class ShellLibrary : ShellFolder
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public override void Dispose()
 	{
-		lib = null;
-
 		base.Dispose();
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Gets the set of child folders that are contained in the library.</summary>
@@ -180,11 +178,12 @@ public class ShellLibrary : ShellFolder
 	/// <param name="allowUnindexableLocations">
 	/// if set to <c>true</c> do not display a warning dialog to the user in collisions that concern network locations that cannot be indexed.
 	/// </param>
-	public void ShowLibraryManagementDialog(HWND parentWindow = default, string title = null, string instruction = null, bool allowUnindexableLocations = false)
-	{
+	public void ShowLibraryManagementDialog(HWND parentWindow = default, string? title = null, string? instruction = null, bool allowUnindexableLocations = false) =>
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHShowManageLibraryUI(iShellItem, parentWindow, title, instruction,
 			allowUnindexableLocations ? LIBRARYMANAGEDIALOGOPTIONS.LMD_ALLOWUNINDEXABLENETWORKLOCATIONS : LIBRARYMANAGEDIALOGOPTIONS.LMD_DEFAULT).ThrowIfFailed();
-	}
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+
 
 	/// <summary>Folders of a <see cref="ShellLibrary"/>.</summary>
 	/// <seealso cref="ShellItemArray"/>
@@ -196,7 +195,7 @@ public class ShellLibrary : ShellFolder
 		/// <summary>Initializes a new instance of the <see cref="ShellLibraryFolders"/> class.</summary>
 		/// <param name="lib">The library.</param>
 		/// <param name="shellItemArray">The shell item array.</param>
-		internal ShellLibraryFolders(IShellLibrary lib, IShellItemArray shellItemArray) : base(shellItemArray) => this.lib = lib;
+		internal ShellLibraryFolders(IShellLibrary lib, IShellItemArray? shellItemArray) : base(shellItemArray) => this.lib = lib;
 
 		/// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</summary>
 		bool ICollection<ShellItem>.IsReadOnly => false;
@@ -206,14 +205,14 @@ public class ShellLibrary : ShellFolder
 		/// <exception cref="ArgumentNullException">location</exception>
 		public void Add(ShellItem location)
 		{
-			if (location == null) throw new ArgumentNullException(nameof(location));
+			if (location is null) throw new ArgumentNullException(nameof(location));
 			lib.AddFolder(location.iShellItem);
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public override void Dispose()
 		{
-			lib = null;
+			GC.SuppressFinalize(this);
 			base.Dispose();
 		}
 
@@ -221,9 +220,9 @@ public class ShellLibrary : ShellFolder
 		/// <param name="location">The location.</param>
 		/// <returns><c>true</c> on success.</returns>
 		/// <exception cref="ArgumentNullException">location</exception>
-		public bool Remove(ShellItem location)
+		public bool Remove(ShellItem? location)
 		{
-			if (location == null) throw new ArgumentNullException(nameof(location));
+			if (location is null) throw new ArgumentNullException(nameof(location));
 			try
 			{
 				lib.RemoveFolder(location.iShellItem);

@@ -5,7 +5,7 @@ namespace Vanara.Windows.Shell;
 /// <summary>Provides a means to open Control Panel items and get their paths.</summary>
 public static class ControlPanel
 {
-	private static SafeCP cp;
+	private static SafeCP? cp;
 
 	/// <summary>Gets a value indicating whether the most recent Control Panel view was Classic view.</summary>
 	/// <value>
@@ -13,7 +13,7 @@ public static class ControlPanel
 	/// </value>
 	public static bool IsClassicView => CP.GetCurrentView() == CPVIEW.CPVIEW_CLASSIC;
 
-	private static SafeCP CP => cp ?? (cp = new SafeCP());
+	private static SafeCP CP => cp ??= new SafeCP();
 
 	/// <summary>Gets the path of a Control Panel item.</summary>
 	/// <param name="item">The Control Panel item.</param>
@@ -42,7 +42,7 @@ public static class ControlPanel
 	/// the item or page was unsupported on this OS.
 	/// </returns>
 	/// <exception cref="ArgumentOutOfRangeException">page</exception>
-	public static bool Open(ControlPanelItem item, string page = null)
+	public static bool Open(ControlPanelItem item, string? page = null)
 	{
 		if (page != null && Array.IndexOf(item.ValidPages(), page) == -1) throw new ArgumentOutOfRangeException(nameof(page));
 		return CP.Open(item.CanonicalName(), page);
@@ -56,7 +56,7 @@ public static class ControlPanel
 	/// the item or page was unsupported on this OS.
 	/// </returns>
 	/// <exception cref="ArgumentOutOfRangeException">page</exception>
-	public static bool Open(string item, string page = null) => CP.Open(item, page);
+	public static bool Open(string item, string? page = null) => CP.Open(item, page);
 
 	private class SafeCP : IDisposable
 	{
@@ -85,12 +85,11 @@ public static class ControlPanel
 			return icp.GetPath(pszName, pszPath, cchPath).Succeeded ? pszPath.ToString() : string.Empty;
 		}
 
-		public bool Open(string pszName = null, string page = null, object punkSite = null) => icp.Open(pszName, page, punkSite).Succeeded;
+		public bool Open(string? pszName = null, string? page = null, object? punkSite = null) => icp.Open(pszName, page, punkSite).Succeeded;
 
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposedValue) return;
-			icp = null;
 			disposedValue = true;
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.ComponentModel;
 using Vanara.PInvoke;
 
 namespace Vanara.Windows.Shell;
@@ -56,7 +57,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets an Advanced Query Syntax (AQS) expression that determines whether the verb is displayed or hidden.</summary>
 	/// <value>The AQS expression that controls visibility.</value>
-	public string AppliesTo
+	public string? AppliesTo
 	{
 		get => key.GetValue("AppliesTo", null)?.ToString();
 		set => UpdateValue("AppliesTo", value);
@@ -66,17 +67,19 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// Gets or sets the SFGAO value of the bit values of the mask to test to determine whether the verb should be enabled or disabled.
 	/// </summary>
 	/// <value>The attribute mask.</value>
+	[DefaultValue((Shell32.SFGAO)0)]
 	public Shell32.SFGAO AttributeMask
 	{
-		get => (Shell32.SFGAO)(int)key.GetValue("AttributeMask", 0);
+		get => (Shell32.SFGAO)(int)key.GetValue("AttributeMask", 0)!;
 		set => UpdateValue("AttributeMask", (int)value, RegistryValueKind.DWord);
 	}
 
 	/// <summary>Gets or sets the SFGAO value of the bits that are tested to determine whether the verb should be enabled or disabled.</summary>
 	/// <value>The attribute value.</value>
+	[DefaultValue((Shell32.SFGAO)0)]
 	public Shell32.SFGAO AttributeValue
 	{
-		get => (Shell32.SFGAO)(int)key.GetValue("AttributeValue", 0);
+		get => (Shell32.SFGAO)(int)key.GetValue("AttributeValue", 0)!;
 		set => UpdateValue("AttributeValue", (int)value, RegistryValueKind.DWord);
 	}
 
@@ -89,7 +92,8 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// argument. You should always use quotation marks with arguments such as "%1" that are expanded to strings by the Shell, because
 	/// you cannot be certain that the string will not contain a space.
 	/// </remarks>
-	public string Command
+	[DefaultValue(null)]
+	public string? Command
 	{
 		get => key.GetSubKeyDefaultValue("command")?.ToString();
 		set => UpdateKeyValue("command", value);
@@ -97,6 +101,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets the optional CLSID of an object that implments <c>IExplorerCommandState</c>.</summary>
 	/// <value>The command state handler.</value>
+	[DefaultValue(null)]
 	public Guid? CommandStateHandler
 	{
 		get => key.GetGuidValue("CommandStateHandler");
@@ -105,7 +110,8 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets an Advanced Query Syntax (AQS) expression that controls which verb is the default.</summary>
 	/// <value>The AQS expression that controls which verb is the default.</value>
-	public string DefaultAppliesTo
+	[DefaultValue(null)]
+	public string? DefaultAppliesTo
 	{
 		get => key.GetValue("DefaultAppliesTo", null)?.ToString();
 		set => UpdateValue("DefaultAppliesTo", value);
@@ -118,6 +124,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// associated with a <see cref="Command"/> value of <c>"C:\Program Files\Internet Explorer\iexplore.exe" %1</c>.
 	/// </summary>
 	/// <value>The explorer command handler CLSID.</value>
+	[DefaultValue(null)]
 	public Guid? DelegateExecute
 	{
 		get
@@ -147,7 +154,8 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// character in the display string allows keyboard selection of the command.
 	/// </summary>
 	/// <value>The display name for the verb.</value>
-	public string DisplayName
+	[DefaultValue(null)]
+	public string? DisplayName
 	{
 		get => key.GetValue("", null)?.ToString();
 		set => UpdateValue("", value);
@@ -155,6 +163,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets the optional CLSID of the object that implements <c>IDropTarget</c>.</summary>
 	/// <value>The drop target handler's CLSID.</value>
+	[DefaultValue(null)]
 	public Guid? DropTarget
 	{
 		get
@@ -183,6 +192,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// also assigned to the <see cref="DelegateExecute"/> value and is generally associated with a <see cref="Command"/> value of "%SYSTEMROOT%\Explorer.exe".
 	/// </summary>
 	/// <value>The explorer command handler CLSID.</value>
+	[DefaultValue(null)]
 	public Guid? ExplorerCommandHandler
 	{
 		get => key.GetGuidValue("ExplorerCommandHandler");
@@ -197,6 +207,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// <see langword="true"/> if command is only displayed only when the user right-clicks an object while also pressing the SHIFT key;
 	/// otherwise, <see langword="false"/>.
 	/// </value>
+	[DefaultValue(false)]
 	public bool Extended
 	{
 		get => key.HasValue("Extended");
@@ -207,7 +218,8 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// Gets or sets an Advanced Query Syntax (AQS) expression that controls whether a User Account Control (UAC) shield is displayed.
 	/// </summary>
 	/// <value>The AQS expression that controls whether a User Account Control (UAC) shield is displayed.</value>
-	public string HasLUAShield
+	[DefaultValue(null)]
+	public string? HasLUAShield
 	{
 		get => key.GetValue("HasLUAShield", null)?.ToString();
 		set => UpdateValue("HasLUAShield", value);
@@ -215,9 +227,10 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets a value that determines on which menu the command is displayed.</summary>
 	/// <value>The implied selection model.</value>
+	[DefaultValue((VerbSelectionModel)0)]
 	public VerbSelectionModel ImpliedSelectionModel
 	{
-		get => (VerbSelectionModel)(int)key.GetValue("ImpliedSelectionModel", 0);
+		get => (VerbSelectionModel)(int)key.GetValue("ImpliedSelectionModel", 0)!;
 		set => UpdateValue("ImpliedSelectionModel", (int)value, RegistryValueKind.DWord);
 	}
 
@@ -225,6 +238,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// Gets or sets a value that tells the system that the verb is not an actual verb, but exists solely for the purpose of backward compatibility.
 	/// </summary>
 	/// <value><see langword="true"/> if disabled; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool LegacyDisable
 	{
 		get => key.HasValue("LegacyDisable");
@@ -233,7 +247,8 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets a localizable value that is displayed as a menu's text.</summary>
 	/// <value>The menu's text.</value>
-	public IndirectString MUIVerb
+	[DefaultValue(null)]
+	public IndirectString? MUIVerb
 	{
 		get => IndirectString.TryParse(key.GetValue("MUIVerb")?.ToString(), out var loc) ? loc : null;
 		set => UpdateValue("MUIVerb", value?.ToString());
@@ -243,11 +258,12 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// Gets or sets a value that determines if a user can select a single item, multiple items, or a selection from an item.
 	/// </summary>
 	/// <value>The multi select model for the menu.</value>
+	[DefaultValue((VerbMultiSelectModel)0)]
 	public VerbMultiSelectModel MultiSelectModel
 	{
 		get
 		{
-			var value = key.GetValue("MultiSelectModel", VerbMultiSelectModel.Unset.ToString()).ToString().Replace('|', ',').Replace(" ", "");
+			string value = key.GetValue("MultiSelectModel", VerbMultiSelectModel.Unset.ToString())!.ToString()!.Replace('|', ',').Replace(" ", "");
 			return (VerbMultiSelectModel)Enum.Parse(typeof(VerbMultiSelectModel), value, true);
 		}
 		set => UpdateValue("MultiSelectModel", value.ToString().Replace(", ", " | "), RegistryValueKind.String, VerbMultiSelectModel.Unset.ToString());
@@ -261,6 +277,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// Gets or sets a value that tells the system that this verb can never be displayed as the default verb for this file type.
 	/// </summary>
 	/// <value><see langword="true"/> if menu can never be set as default; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool NeverDefault
 	{
 		get => key.HasValue("NeverDefault");
@@ -269,6 +286,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets a value that tells the system that this verb can only be displayed when in an Explorer window.</summary>
 	/// <value><see langword="true"/> if menu is only to be displayed when in an Explorer window; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool OnlyInBrowserWindow
 	{
 		get => key.HasValue("OnlyInBrowserWindow");
@@ -280,14 +298,16 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// this attribute then the last one to do so gets priority
 	/// </summary>
 	/// <value>The verb menu placement.</value>
+	[DefaultValue((VerbPosition)0)]
 	public VerbPosition Position
 	{
-		get => (VerbPosition)Enum.Parse(typeof(VerbPosition), key.GetValue("Position", VerbPosition.Undefined.ToString()).ToString());
+		get => (VerbPosition)Enum.Parse(typeof(VerbPosition), key.GetValue("Position", VerbPosition.Undefined.ToString())!.ToString()!);
 		set => UpdateValue("Position", value.ToString(), RegistryValueKind.String, VerbPosition.Undefined.ToString());
 	}
 
 	/// <summary>Gets or sets a value that tells the system that this verb is available for programmatic access only and not displayed.</summary>
 	/// <value><see langword="true"/> if verb is available for programmatic access only and not displayed; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool ProgrammaticAccessOnly
 	{
 		get => key.HasValue("ProgrammaticAccessOnly");
@@ -296,6 +316,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets a value that tells the system to place a separator after this menu item.</summary>
 	/// <value><see langword="true"/> if a separator should be displayed after this menu item; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool SeparatorAfter
 	{
 		get => 1 == key.GetValue("SeparatorAfter", 0) as int?;
@@ -304,6 +325,7 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets a value that tells the system to place a separator before this menu item.</summary>
 	/// <value><see langword="true"/> if a separator should be displayed before this menu item; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool SeparatorBefore
 	{
 		get => 1 == key.GetValue("SeparatorBefore", 0) as int?;
@@ -312,14 +334,16 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 
 	/// <summary>Gets or sets a value that controls if verb visibility can be suppressed through policy settings.</summary>
 	/// <value>A <see cref="Shell32.RESTRICTIONS"/> value.</value>
+	[DefaultValue((Shell32.RESTRICTIONS)0)]
 	public Shell32.RESTRICTIONS SuppressionPolicy
 	{
-		get => (Shell32.RESTRICTIONS)(int)key.GetValue("SuppressionPolicy", 0);
+		get => (Shell32.RESTRICTIONS)(int)key.GetValue("SuppressionPolicy", 0)!;
 		set => UpdateValue("SuppressionPolicy", (int)value, RegistryValueKind.DWord);
 	}
 
 	/// <summary>Gets or sets an optional CLSID for a handler that controls if verb visibility can be suppressed through policy settings.</summary>
 	/// <value>The handler's CLSID value.</value>
+	[DefaultValue(null)]
 	public Guid? SuppressionPolicyEx
 	{
 		get => key.GetGuidValue("SuppressionPolicyEx");
@@ -329,5 +353,5 @@ public class CommandVerb : RegBasedSettings, IEquatable<CommandVerb>
 	/// <summary>Determines if another <see cref="CommandVerb"/> is equal to this instance.</summary>
 	/// <param name="other">The other <see cref="CommandVerb"/>.</param>
 	/// <returns><see langword="true"/> if the items are equal; otherwise <see langword="false"/>.</returns>
-	public bool Equals(CommandVerb other) => Equals((RegBasedSettings)other);
+	public bool Equals(CommandVerb? other) => Equals((RegBasedSettings?)other);
 }

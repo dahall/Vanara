@@ -187,7 +187,7 @@ public class TrayIcon
 	public ToolbarStyle Style { get; }
 
 	/// <summary>Address of a character buffer that contains or receives the button text.</summary>
-	public string Text { get; }
+	public string? Text { get; }
 
 	/// <summary>Width of the button, in pixels.</summary>
 	public ushort Width { get; }

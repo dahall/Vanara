@@ -5,6 +5,7 @@ using Vanara.Extensions.Reflection;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
+using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 
 namespace Vanara.Windows.Shell;
 
@@ -16,7 +17,9 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	private IBindCtxV iBindCtx;
 
 	/// <summary>Initializes a new instance of the <see cref="BindContext"/> class.</summary>
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public BindContext() => CreateBindCtx(0, out iBindCtx).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Initializes a new instance of the <see cref="BindContext"/> class.</summary>
 	/// <param name="openMode">
@@ -28,7 +31,9 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// <param name="bindFlags">Flags that control aspects of moniker binding operations.</param>
 	public BindContext(STGM openMode = STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_NONE, TimeSpan timeout = default, BIND_FLAGS bindFlags = 0)
 	{
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		CreateBindCtx(0, out iBindCtx).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		var opts = new BIND_OPTS_V
 		{
 			dwTickCountDeadline = (uint)timeout.TotalMilliseconds,
@@ -140,7 +145,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public void Dispose() => iBindCtx = null;
+	public void Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>
 	/// Retrieves a pointer to an interface that can be used to enumerate the keys of the bind context's string-keyed table of pointers.
@@ -193,7 +198,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	public object GetObjectParam(string pszKey)
 	{
 		((IBindCtxV)this).GetObjectParam(pszKey, out var ppunk).ThrowIfFailed();
-		return ppunk;
+		return ppunk!;
 	}
 
 	/// <summary>
@@ -472,7 +477,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// moniker class. (See the StringFromCLSID function.)
 	/// </para>
 	/// </remarks>
-	HRESULT IBindCtxV.GetObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [MarshalAs(UnmanagedType.Interface)] out object ppunk) => iBindCtx.GetObjectParam(pszKey, out ppunk);
+	HRESULT IBindCtxV.GetObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [MarshalAs(UnmanagedType.Interface)] out object? ppunk) => iBindCtx.GetObjectParam(pszKey, out ppunk);
 
 	/// <summary>
 	/// Retrieves an interface pointer to the object associated with the specified key in the bind context's string-keyed table of pointers.
@@ -505,7 +510,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// moniker class. (See the StringFromCLSID function.)
 	/// </para>
 	/// </remarks>
-	void IBindCtx.GetObjectParam(string pszKey, out object ppunk) => iBindCtx.GetObjectParam(pszKey, out ppunk);
+	void IBindCtx.GetObjectParam(string pszKey, out object? ppunk) => iBindCtx.GetObjectParam(pszKey, out ppunk);
 
 	/// <summary>
 	/// Retrieves an interface pointer to the running object table (ROT) for the computer on which this bind context is running.
@@ -880,7 +885,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 		return bo;
 	}
 
-	private T GetOptionValue<T>(string fieldName) => GetBindOps().GetFieldValue(fieldName, (T)(default));
+	private T GetOptionValue<T>(string fieldName) => GetBindOps().GetFieldValue<T>(fieldName) ?? throw new ArgumentException("Unrecognized field name.", nameof(fieldName));
 
 	private void SetOptionValue<T>(string fieldName, T value)
 	{
@@ -892,7 +897,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	[ComVisible(true)]
 	private class CDummyUnknown : IPersist
 	{
-		private Guid _clsid;
+		private readonly Guid _clsid;
 
 		public CDummyUnknown(in Guid clsid) => _clsid = clsid;
 

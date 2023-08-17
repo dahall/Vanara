@@ -27,7 +27,7 @@ public class WallpaperTests
 		var clr = WallpaperManager.BackgroundColor;
 		try
 		{
-			var newClr = Color.FromArgb(unchecked((byte)~clr.R), unchecked((byte)~clr.G), unchecked((byte)~clr.B));
+			var newClr = Color.FromArgb(0, unchecked((byte)~clr.R), unchecked((byte)~clr.G), unchecked((byte)~clr.B));
 			Assert.That(() => WallpaperManager.BackgroundColor = newClr, Throws.Nothing);
 			Assert.That(newClr.ToArgb(), Is.EqualTo(WallpaperManager.BackgroundColor.ToArgb()));
 		}

@@ -138,7 +138,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-getmonitordevicepathat
 		// HRESULT GetMonitorDevicePathAt( UINT monitorIndex, LPWSTR *monitorID );
 		[PreserveSig]
-		HRESULT GetMonitorDevicePathAt(uint monitorIndex, [MarshalAs(UnmanagedType.LPWStr)] out string monitorID);
+		HRESULT GetMonitorDevicePathAt(uint monitorIndex, [MarshalAs(UnmanagedType.LPWStr)] out string? monitorID);
 
 		/// <summary>Retrieves the number of monitors that are associated with the system.</summary>
 		/// <returns>A pointer to a value that, when this method returns successfully, receives the number of monitors.</returns>
@@ -182,7 +182,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-getmonitorrect HRESULT
 		// GetMonitorRECT( LPCWSTR monitorID, RECT *displayRect );
 		[PreserveSig]
-		HRESULT GetMonitorRECT([MarshalAs(UnmanagedType.LPWStr)] string monitorID, out RECT displayRect);
+		HRESULT GetMonitorRECT([MarshalAs(UnmanagedType.LPWStr)] string? monitorID, out RECT displayRect);
 
 		/// <summary>
 		/// Sets the color that is visible on the desktop when no image is displayed or when the desktop background has been disabled.

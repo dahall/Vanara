@@ -9,7 +9,7 @@ namespace Vanara.Windows.Shell;
 /// <summary>A static object that represents the system Recycle Bin.</summary>
 public static class RecycleBin
 {
-	private static ShellFolder recycleBin;
+	private static ShellFolder? recycleBin;
 
 	/// <summary>Gets the count of the items in the Recycle Bin. Depending on the number of items, this can take some time.</summary>
 	/// <value>The number of items.</value>
@@ -51,7 +51,7 @@ public static class RecycleBin
 	/// <returns>
 	/// The <see cref="ShellItem"/> matching the item specified in <paramref name="itemPath"/> or <see langword="null"/> if not found.
 	/// </returns>
-	public static ShellItem GetItemFromOriginalPath(string itemPath) => GetItems().FirstOrDefault(i => string.Equals(i.Name, itemPath, StringComparison.OrdinalIgnoreCase));
+	public static ShellItem? GetItemFromOriginalPath(string itemPath) => GetItems().FirstOrDefault(i => string.Equals(i.Name, itemPath, StringComparison.OrdinalIgnoreCase));
 
 	/// <summary>Gets all the <see cref="ShellItem"/> references at the top level of the Recycle Bin.</summary>
 	/// <returns>A sequence of <see cref="ShellItem"/> objects at the top level of the Recycle Bin.</returns>
@@ -79,7 +79,8 @@ public static class RecycleBin
 			foreach (var item in deletedItems)
 			{
 				if (item.Parent != ShellFolderInstance) throw new InvalidOperationException("Unable to restore a ShellItem that is not in the Recycle Bin.");
-				using var sf = new ShellFolder(Path.GetDirectoryName(item.Name));
+				// Manually create a ShellFolder instance to the original location.
+				using var sf = new ShellFolder(Path.GetDirectoryName(item.Name)!);
 				sop.QueueMoveOperation(item, sf, Path.GetFileName(item.Name));
 			}
 			sop.PerformOperations();
@@ -92,7 +93,7 @@ public static class RecycleBin
 			try { SHUpdateRecycleBinIcon(); } catch { }
 		}
 
-		void OnPost(object sender, ShellFileOperations.ShellFileOpEventArgs e) => hr = e.Result;
+		void OnPost(object? sender, ShellFileOperations.ShellFileOpEventArgs e) => hr = e.Result;
 	}
 
 	/// <summary>Restores all items in the Recycle Bin to their original location.</summary>

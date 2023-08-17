@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.Windows.Shell</AssemblyName>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
@@ -11,6 +9,6 @@
     <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
     <ProjectReference Include="..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
-    <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj" />
+    <ProjectReference Include="..\..\Windows.Shell.Common\Vanara.Windows.Shell.Common.csproj" />
   </ItemGroup>
 </Project>

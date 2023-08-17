@@ -15,11 +15,12 @@ public static class CSharpRunner
 {
 	private static IEnumerable<string> StdRefs => new[] { typeof(object).Assembly.Location, typeof(Enumerable).Assembly.Location };
 
-	public static object Run(string snippet, IEnumerable<string> references, string typeName, string methodName, params object[] args) =>
+	public static object? Run(string snippet, IEnumerable<string> references, string typeName, string methodName, params object[] args) =>
 		Invoke(CompileLib(Parse(snippet), references), typeName, methodName, args);
 
-	public static object Run(MethodInfo methodInfo, params object[] args) =>
-		Invoke(CompileLib(Decompile(methodInfo.DeclaringType), methodInfo.DeclaringType.GetReferencedAssemblyNames()), methodInfo.DeclaringType.FullName, methodInfo.Name, args);
+	public static object? Run(MethodInfo methodInfo, params object[] args) => methodInfo.DeclaringType is not null ?
+		Invoke(CompileLib(Decompile(methodInfo.DeclaringType), methodInfo.DeclaringType.GetReferencedAssemblyNames()), methodInfo.DeclaringType.FullName!, methodInfo.Name, args) :
+		throw new ArgumentNullException(nameof(methodInfo), "The DeclaringType of methodInfo is null");
 
 	public static Process RunProcess<T>(string? args = null) where T : class => RunProcess(typeof(T), args);
 
@@ -27,31 +28,29 @@ public static class CSharpRunner
 	{
 		if (mainType.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) is null)
 			throw new ArgumentException("Supplied type must include a static Main method.");
-		var exe = Path.Combine(Path.GetDirectoryName(mainType.Assembly.Location), "tmp" + Guid.NewGuid().ToString("N") + ".exe");
+		var exe = Path.Combine(Path.GetDirectoryName(mainType.Assembly.Location)!, "tmp" + Guid.NewGuid().ToString("N") + ".exe");
 		CompileExe(exe, Decompile(mainType), mainType.GetReferencedAssemblyNames(), mainType.FullName);
-		return CreateProcess(exe, args, Path.GetDirectoryName(mainType.Assembly.Location));
+		return CreateProcess(exe, args, Path.GetDirectoryName(mainType.Assembly.Location)!);
 	}
 
-	public static Process RunProcess(string snippet, string workingDir, IEnumerable<string> references = null, string? typeName = null, string? args = null)
+	public static Process RunProcess(string snippet, string workingDir, IEnumerable<string> references, string? typeName = null, string? args = null)
 	{
 		var exe = Path.Combine(workingDir, "tmp" + Guid.NewGuid().ToString("N") + ".exe");
 		CompileExe(exe, Parse(snippet), references, typeName);
 		return CreateProcess(exe, args, workingDir);
 	}
 
-	private static void CompileExe(string outputExePath, SyntaxTree syntaxTree, IEnumerable<string> references = null, string? mainTypeName = null)
+	private static void CompileExe(string outputExePath, SyntaxTree syntaxTree, IEnumerable<string> references, string? mainTypeName = null)
 	{
 		var mrefs = (references ?? StdRefs).Select(a => MetadataReference.CreateFromFile(a));
 		var opts = new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true, mainTypeName: mainTypeName);
 		var compilation = CSharpCompilation.Create(Path.GetRandomFileName(), new[] { syntaxTree }, mrefs, opts);
 		var result = compilation.Emit(outputExePath);
 		if (!result.Success)
-		{
 			throw new InvalidOperationException(string.Join("\n", result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error).Select(d => $"{d.Id}: {d.GetMessage()}")));
-		}
 	}
 
-	private static Assembly CompileLib(SyntaxTree syntaxTree, IEnumerable<string> references = null)
+	private static Assembly CompileLib(SyntaxTree syntaxTree, IEnumerable<string> references)
 	{
 		var mrefs = (references ?? StdRefs).Select(a => MetadataReference.CreateFromFile(a));
 		var compilation = CSharpCompilation.Create(Path.GetRandomFileName(), new[] { syntaxTree }, mrefs, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
@@ -69,9 +68,9 @@ public static class CSharpRunner
 		}
 	}
 
-	private static Process CreateProcess(string exe, string args, string workingDir)
+	private static Process CreateProcess(string exe, string? args, string workingDir)
 	{
-		var p = new Process { StartInfo = new ProcessStartInfo(exe, args) { WorkingDirectory = workingDir } };
+		var p = new Process { StartInfo = args is null ? new ProcessStartInfo(exe) : new ProcessStartInfo(exe, args) { WorkingDirectory = workingDir } };
 		p.Exited += (s, e) => File.Delete(exe);
 		p.Start();
 		return p;
@@ -80,15 +79,15 @@ public static class CSharpRunner
 	private static SyntaxTree Decompile(Type type)
 	{
 		var decompiler = new CSharpDecompiler(type.Assembly.Location, new DecompilerSettings());
-		var typeInfo = decompiler.TypeSystem.MainModule.Compilation.FindType(type).GetDefinition();
+		var typeInfo = decompiler.TypeSystem.MainModule.Compilation.FindType(type).GetDefinition() ?? throw new ArgumentException("Type does not have a definition.", nameof(type));
 		return Parse(decompiler.DecompileTypeAsString(typeInfo.FullTypeName));
 	}
 
 	private static IEnumerable<string> GetReferencedAssemblyNames(this Type type) => type.Assembly.GetReferencedAssemblies().Select(n => Assembly.Load(n).Location);
 
-	private static object Invoke(Assembly assembly, string typeName, string methodName, object[] args)
+	private static object? Invoke(Assembly assembly, string typeName, string methodName, object[] args)
 	{
-		var type = assembly.GetType(typeName);
+		var type = assembly.GetType(typeName) ?? throw new ArgumentException("Type cannot be found.", nameof(typeName));
 		var obj = Activator.CreateInstance(type);
 		return type.InvokeMember(methodName, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args);
 	}

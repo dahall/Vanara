@@ -222,7 +222,7 @@ public static partial class ShlwApi
 		/// </summary>
 		ASSOCSTR_DELEGATEEXECUTE,
 
-		/// <summary>Introduced in Windows 8.</summary>
+		/// <summary>A string value of the URI protocol schemes. For example, http:https:ftp:file: or * indicating all.</summary>
 		ASSOCSTR_SUPPORTED_URI_PROTOCOLS,
 
 		/// <summary>

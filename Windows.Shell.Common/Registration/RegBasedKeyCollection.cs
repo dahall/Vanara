@@ -10,12 +10,12 @@ namespace Vanara.Windows.Shell.Registration;
 internal class RegBasedKeyCollection : ICollection<string>, IDisposable
 {
 	/// <summary>The base key from which to perform all queries.</summary>
-	protected internal RegistryKey key;
+	protected internal RegistryKey? key;
 
 	/// <summary>Initializes a new instance of the <see cref="RegBasedSettings"/> class.</summary>
 	/// <param name="key">The key to use as the base key for queries.</param>
 	/// <param name="readOnly">if set to <c>true</c> the supplied <paramref name="key"/> was opened read-only.</param>
-	protected internal RegBasedKeyCollection(RegistryKey key, bool readOnly)
+	protected internal RegBasedKeyCollection(RegistryKey? key, bool readOnly)
 	{
 		if (key is null && !readOnly) throw new ArgumentNullException(nameof(key));
 		this.key = key;
@@ -31,10 +31,10 @@ internal class RegBasedKeyCollection : ICollection<string>, IDisposable
 
 	/// <summary>Adds the specified item.</summary>
 	/// <param name="item">The item.</param>
-	public void Add(string item) { EnsureWritable(); key.SetValue(item, string.Empty, RegistryValueKind.String); }
+	public void Add(string item) { EnsureWritable(); key!.SetValue(item, string.Empty, RegistryValueKind.String); }
 
 	/// <summary>Clears this instance.</summary>
-	public void Clear() { EnsureWritable(); key.DeleteAllSubItems(); }
+	public void Clear() { EnsureWritable(); key!.DeleteAllSubItems(); }
 
 	/// <summary>Determines whether this instance contains the object.</summary>
 	/// <param name="item">The item.</param>
@@ -56,7 +56,7 @@ internal class RegBasedKeyCollection : ICollection<string>, IDisposable
 	/// <summary>Removes the specified item.</summary>
 	/// <param name="item">The item.</param>
 	/// <returns></returns>
-	public bool Remove(string item) { EnsureWritable(); try { key.DeleteValue(item, true); return true; } catch { return false; } }
+	public bool Remove(string item) { EnsureWritable(); try { key!.DeleteValue(item, true); return true; } catch { return false; } }
 
 	/// <summary>Gets the enumerator.</summary>
 	/// <returns></returns>

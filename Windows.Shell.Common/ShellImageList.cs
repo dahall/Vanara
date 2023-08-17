@@ -46,7 +46,7 @@ public static class ShellImageList
 	/// SHFILEINFO, int, SHGFI)"/> method and can only retrieve small or large icons.
 	/// </param>
 	/// <returns>A <see cref="SafeHICON"/> instance if found; otherwise <see langword="null"/>.</returns>
-	public static SafeHICON GetFileIcon(string fileNameOrExtension, ShellIconType iconType = ShellIconType.Large)
+	public static SafeHICON? GetFileIcon(string fileNameOrExtension, ShellIconType iconType = ShellIconType.Large)
 	{
 		var shfi = new SHFILEINFO();
 		var ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON | (SHGFI)iconType);
@@ -59,7 +59,7 @@ public static class ShellImageList
 	/// <param name="fileNameOrExtension">The file name or extension.</param>
 	/// <param name="iconSize">Size of the icon.</param>
 	/// <returns>A <see cref="SafeHICON"/> instance if found; otherwise <see langword="null"/>.</returns>
-	public static SafeHICON GetSystemIcon(string fileNameOrExtension, ShellImageSize iconSize = ShellImageSize.Large)
+	public static SafeHICON? GetSystemIcon(string fileNameOrExtension, ShellImageSize iconSize = ShellImageSize.Large)
 	{
 		var shfi = new SHFILEINFO();
 		if (hSystemImageList.IsNull)
@@ -82,7 +82,9 @@ public static class ShellImageList
 	/// <returns>An <see cref="SafeHICON"/> instance if found; otherwise <see langword="null"/>.</returns>
 	public static SafeHICON GetSystemIconHandle(int index, ShellImageSize iconSize = ShellImageSize.Large)
 	{
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return ((IImageList)il).GetIcon(index, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
 	}
 

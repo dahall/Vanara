@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Vanara.PInvoke;
@@ -36,7 +37,7 @@ public enum WallpaperFit
 public static class WallpaperManager
 {
 	[ThreadStatic]
-	private static ComReleaser<IDesktopWallpaper> pWallpaper;
+	private static ComReleaser<IDesktopWallpaper>? pWallpaper;
 
 	/// <summary>
 	/// Sets the color that is visible on the desktop when no image is displayed or when the desktop background has been disabled. This
@@ -111,7 +112,7 @@ public static class WallpaperManager
 	{
 		if (!Directory.Exists(folderPath)) throw new DirectoryNotFoundException();
 		Enabled = true;
-		Slideshow.Images = (IReadOnlyList<ShellItem>)new List<ShellItem>() { new ShellItem(folderPath) };
+		Slideshow.Images = new List<ShellItem>() { new ShellItem(folderPath) };
 		WallpaperFit = fit;
 		if (interval.HasValue) Slideshow.Interval = interval.Value;
 		if (shuffle.HasValue) Slideshow.Shuffle = shuffle.Value;
@@ -138,18 +139,21 @@ public static class WallpaperManager
 		/// <value>The display rectangle.</value>
 		public RECT DisplayRectangle => Wallpaper.GetMonitorRECT(Id, out var r) == HRESULT.S_OK ? r : RECT.Empty;
 
-		/// <summary>Gets the identifier of the monitor.</summary>
+		/// <summary>
+		/// <para>The ID of the monitor.</para>
+		/// <para>This value can be set to <see langword="null"/> to indicate all monitors.</para>
+		/// </summary>
 		/// <value>The monitor identifier.</value>
-		public string Id { get; internal set; }
+		public string? Id { get; internal set; }
 
 		/// <summary>
-		/// The path to the wallpaper image file. Note that this image could be currently displayed on all of the system's monitors, not
-		/// just this monitor.
+		/// The path to the wallpaper image file. Note that this image could be currently displayed on all of the system's monitors, not just
+		/// this monitor. Set this value to an empty string to clear the wallpaper.
 		/// </summary>
-		/// <value>The image path.</value>
+		/// <value>The image path or an empty string if one is not defined.</value>
 		public string ImagePath
 		{
-			get => Wallpaper.GetWallpaper(Id, out var img).Succeeded ? img : null;
+			get => Wallpaper.GetWallpaper(Id, out var img).Succeeded ? img : string.Empty;
 			set => Wallpaper.SetWallpaper(Id, value ?? string.Empty);
 		}
 
@@ -161,7 +165,8 @@ public static class WallpaperManager
 	public class WallpaperSlideshow
 	{
 		/// <summary>Gets or sets the images that are being displayed in the desktop wallpaper slideshow.</summary>
-		public IReadOnlyList<ShellItem> Images
+		[NotNull]
+		public IReadOnlyList<ShellItem>? Images
 		{
 			get
 			{
@@ -172,13 +177,13 @@ public static class WallpaperManager
 				}
 				catch
 				{
-					return (IReadOnlyList<ShellItem>)new List<ShellItem>();
+					return new List<ShellItem>();
 				}
 			}
 
 			set
 			{
-				var shArray = value as ShellItemArray ?? (value is null || value.Count == 0 ? new ShellItemArray() : new ShellItemArray(value));
+				ShellItemArray shArray = value as ShellItemArray ?? (value is null || value.Count == 0 ? new ShellItemArray() : new ShellItemArray(value));
 				switch (shArray.Count)
 				{
 					case 0:
@@ -195,7 +200,7 @@ public static class WallpaperManager
 							throw new ArgumentException("In a list with more than one item, all items must be image paths in the same container.", nameof(Images));
 						break;
 				}
-				Wallpaper.SetSlideshow(shArray.IShellItemArray);
+				Wallpaper.SetSlideshow(shArray.IShellItemArray!);
 			}
 		}
 
@@ -234,9 +239,9 @@ public static class WallpaperManager
 	{
 		public int Count => (int)Wallpaper.GetMonitorDevicePathCount();
 
-		public WallpaperMonitor this[string id] => new() { Id = id };
+		public WallpaperMonitor this[string? id] => new() { Id = id };
 
-		public WallpaperMonitor this[int index] => this[Wallpaper.GetMonitorDevicePathAt((uint)index, out var id).Succeeded ? id : throw new ArgumentOutOfRangeException(nameof(index))];
+		public WallpaperMonitor this[int index] => this[Wallpaper.GetMonitorDevicePathAt((uint)index, out string? id).Succeeded ? id : throw new ArgumentOutOfRangeException(nameof(index))];
 
 		public IEnumerator<WallpaperMonitor> GetEnumerator()
 		{

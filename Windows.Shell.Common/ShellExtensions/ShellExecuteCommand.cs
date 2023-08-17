@@ -1,4 +1,5 @@
-﻿using Vanara.PInvoke;
+﻿using System.Diagnostics.CodeAnalysis;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
@@ -90,11 +91,11 @@ public abstract class ShellExecuteCommand : ShellCommand, IExecuteCommand, IObje
 
 	/// <summary>Gets a new working directory. This value is <see langword="null"/> if the current working directory is to be used.</summary>
 	/// <value>Returns a <see cref="string"/> value.</value>
-	public string NewWorkingDirectory { get; private set; }
+	public string? NewWorkingDirectory { get; private set; }
 
 	/// <summary>Gets the parameter values for the verb.</summary>
 	/// <value>Returns a <see cref="string"/> value.</value>
-	public string Parameters { get; private set; }
+	public string? Parameters { get; private set; }
 
 	/// <summary>
 	/// Gets the screen coordinates at which the user right-clicked to invoke the shortcut menu from which a command was chosen.
@@ -106,7 +107,7 @@ public abstract class ShellExecuteCommand : ShellCommand, IExecuteCommand, IObje
 
 	/// <summary>Gets or sets the selected shell items.</summary>
 	/// <value>The selected shell items.</value>
-	public ShellItemArray SelectedItems { get; private set; }
+	public ShellItemArray? SelectedItems { get; private set; }
 
 	/// <summary>Gets a value indicating whether any UI associated with the selected Shell item should be displayed.</summary>
 	/// <value><see langword="true"/> if display of any associated UI is blocked; otherwise, <see langword="false"/>.</value>
@@ -128,7 +129,7 @@ public abstract class ShellExecuteCommand : ShellCommand, IExecuteCommand, IObje
 	}
 
 	/// <inheritdoc/>
-	HRESULT IObjectWithSelection.GetSelection(in Guid riid, out object ppv)
+	HRESULT IObjectWithSelection.GetSelection(in Guid riid, [MaybeNull] out object ppv)
 	{
 		if (SelectedItems is null)
 		{
@@ -140,7 +141,7 @@ public abstract class ShellExecuteCommand : ShellCommand, IExecuteCommand, IObje
 	}
 
 	/// <inheritdoc/>
-	HRESULT IExecuteCommand.SetDirectory(string pszDirectory)
+	HRESULT IExecuteCommand.SetDirectory(string? pszDirectory)
 	{
 		NewWorkingDirectory = pszDirectory;
 		return HRESULT.S_OK;

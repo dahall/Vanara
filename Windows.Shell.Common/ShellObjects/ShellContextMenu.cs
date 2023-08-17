@@ -1,4 +1,5 @@
 ﻿// Credit due to Gong-Shell from which this was largely taken.
+using System.Diagnostics.CodeAnalysis;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
@@ -28,8 +29,8 @@ namespace Vanara.Windows.Shell;
 public class ShellContextMenu : IDisposable
 {
 	internal const int m_CmdFirst = 0x8000;
-	private readonly IContextMenu2 m_ComInterface2;
-	private readonly IContextMenu3 m_ComInterface3;
+	private readonly IContextMenu2? m_ComInterface2;
+	private readonly IContextMenu3? m_ComInterface3;
 	private readonly BasicMessageWindow m_MessageWindow;
 	private bool disposedValue;
 
@@ -45,7 +46,7 @@ public class ShellContextMenu : IDisposable
 		if (items.Length == 1 && items[0].IsFolder)
 		{
 			var isf = items[0] is ShellFolder sf ? sf.IShellFolder : items[0].IShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
-			ComInterface = isf.CreateViewObject<IContextMenu>(HWND.NULL);
+			ComInterface = isf.CreateViewObject<IContextMenu>(HWND.NULL)!;
 		}
 		else
 		{
@@ -53,7 +54,7 @@ public class ShellContextMenu : IDisposable
 				throw new Exception("If the desktop folder is specified, it must be the only item.");
 
 			var pidls = new IntPtr[items.Length];
-			ShellFolder parent = null;
+			ShellFolder? parent = null;
 
 			for (var n = 0; n < items.Length; ++n)
 			{
@@ -64,7 +65,7 @@ public class ShellContextMenu : IDisposable
 				pidls[n] = (IntPtr)items[n].PIDL.LastId;
 			}
 
-			ComInterface = parent.IShellFolder.GetUIObjectOf<IContextMenu>(HWND.NULL, pidls);
+			ComInterface = parent!.IShellFolder.GetUIObjectOf<IContextMenu>(HWND.NULL, pidls);
 		}
 		m_ComInterface2 = ComInterface as IContextMenu2;
 		m_ComInterface3 = ComInterface as IContextMenu3;
@@ -92,17 +93,17 @@ public class ShellContextMenu : IDisposable
 	/// <summary>Gets the help text for a specified command.</summary>
 	/// <param name="command">The menu command identifier offset.</param>
 	/// <returns>The help text value if available; otherwise <see langword="null"/>.</returns>
-	public string GetHelpTextForCommand(int command) => GetCommandString(command, GCS.GCS_HELPTEXTW);
+	public string? GetHelpTextForCommand(int command) => GetCommandString(command, GCS.GCS_HELPTEXTW);
 
 	/// <summary>Gets the icon location for a specified command.</summary>
 	/// <param name="command">The menu command identifier offset.</param>
 	/// <returns>The icon location if available; otherwise <see langword="null"/>.</returns>
-	public string GetVerbIconLocationForCommand(int command) => GetCommandString(command, GCS.GCS_VERBICONW);
+	public string? GetVerbIconLocationForCommand(int command) => GetCommandString(command, GCS.GCS_VERBICONW);
 
 	/// <summary>Gets the verb for a specified command.</summary>
 	/// <param name="command">The menu command identifier offset.</param>
 	/// <returns>The verb if available; otherwise <see langword="null"/>.</returns>
-	public string GetVerbForCommand(int command) => GetCommandString(command, GCS.GCS_VERBW);
+	public string? GetVerbForCommand(int command) => GetCommandString(command, GCS.GCS_VERBW);
 
 	/// <summary>Gets the information of all the menu items supported by the underlying interface.</summary>
 	/// <value>The menu item information.</value>
@@ -118,7 +119,7 @@ public class ShellContextMenu : IDisposable
 		lReturn = default;
 		try
 		{
-			if ((msg == (uint)WindowMessage.WM_COMMAND) && ((int)wParam >= m_CmdFirst))
+			if (msg == (uint)WindowMessage.WM_COMMAND && (int)wParam >= m_CmdFirst)
 			{
 				InvokeCommand((int)wParam - m_CmdFirst);
 				return true;
@@ -191,7 +192,7 @@ public class ShellContextMenu : IDisposable
 	/// <param name="parameters">Optional parameters.</param>
 	public void InvokeCommand(ResourceId verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default,
 		POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
-		bool logUsage = false, bool noZoneChecks = false, string parameters = null)
+		bool logUsage = false, bool noZoneChecks = false, string? parameters = null)
 	{
 		var invoke = new CMINVOKECOMMANDINFOEX
 		{
@@ -293,15 +294,14 @@ public class ShellContextMenu : IDisposable
 			}
 
 			m_MessageWindow?.Dispose();
-			ComInterface = null;
 			disposedValue = true;
 		}
 	}
 
-	private string GetCommandString(int command, GCS stringType)
+	private string? GetCommandString(int command, GCS stringType)
 	{
-		using var mStr = new SafeCoTaskMemString(4096);
-		return ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, (uint)mStr.Capacity).Succeeded ? mStr : null;
+		using SafeCoTaskMemString mStr = new(4096);
+		return ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, (uint)mStr.Capacity).Succeeded ? (string?)mStr : null;
 	}
 
 #if WINFORMS && HASMENU
@@ -372,7 +372,7 @@ public class ShellContextMenu : IDisposable
 	/// <summary>Provides information about a single menu entry discovered in a native menu.</summary>
 	public class MenuItemInfo
 	{
-		internal MenuItemInfo(HMENU hMenu, uint idx, ShellContextMenu scm)
+		internal MenuItemInfo(HMENU hMenu, uint idx, ShellContextMenu? scm)
 		{
 			using var strmem = new SafeHGlobalHandle(512);
 			var mii = new MENUITEMINFO
@@ -385,7 +385,7 @@ public class ShellContextMenu : IDisposable
 			};
 			Win32Error.ThrowLastErrorIfFalse(GetMenuItemInfo(hMenu, idx, true, ref mii));
 			Id = unchecked((int)(mii.wID - m_CmdFirst));
-			Text = mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR) ? "-" : mii.fType.IsFlagSet(MenuItemType.MFT_STRING) ? strmem.ToString(-1, CharSet.Auto) : "";
+			Text = mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR) ? "-" : mii.fType.IsFlagSet(MenuItemType.MFT_STRING) ? strmem.ToString(-1, CharSet.Auto) ?? "" : "";
 			Type = mii.fType;
 			State = mii.fState;
 			BitmapHandle = mii.hbmpItem;
@@ -450,7 +450,7 @@ public class ShellContextMenu : IDisposable
 		public HBITMAP BitmapHandle { get; }
 
 		/// <summary>Gets the help text (tool tip) associated with the menu.</summary>
-		public string HelpText { get; internal set; }
+		public string? HelpText { get; internal set; }
 
 		/// <summary>An application-defined value that identifies the menu item.</summary>
 		public int Id { get; }
@@ -474,17 +474,17 @@ public class ShellContextMenu : IDisposable
 		public MenuItemType Type { get; }
 
 		/// <summary>Gets the verb associated with the menu.</summary>
-		public string Verb { get; internal set; }
+		public string? Verb { get; internal set; }
 
 		/// <summary>Gets the icon location associated with the menu's image.</summary>
-		public string VerbIconLocation { get; internal set; }
+		public string? VerbIconLocation { get; internal set; }
 
 		/// <summary>Recursively gets the information for all menu item entries supplied by the provided native menu.</summary>
 		/// <param name="hMenu">The handle to the created native menu.</param>
 		/// <returns>An array of <see cref="MenuItemInfo"/> instances with information about the entries in <paramref name="hMenu"/>.</returns>
 		public static MenuItemInfo[] GetMenuItems(HMENU hMenu) => GetMenuItems(hMenu, null);
 
-		internal static MenuItemInfo[] GetMenuItems(HMENU hMenu, ShellContextMenu scm)
+		internal static MenuItemInfo[] GetMenuItems(HMENU hMenu, ShellContextMenu? scm)
 		{
 			if (hMenu.IsNull)
 				return new MenuItemInfo[0];

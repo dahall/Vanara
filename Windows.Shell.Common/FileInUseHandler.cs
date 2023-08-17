@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
@@ -69,8 +70,9 @@ public enum FileUsageType
 public class FileInUseHandler : IFileIsInUse, IDisposable
 {
 	private bool disposedValue;
-	private string appName, filePath;
-	private IMoniker moniker;
+	private string appName;
+	private string filePath;
+	private IMoniker? moniker;
 	private uint regId;
 
 	/// <summary>Initializes a new instance of the <see cref="FileInUseHandler"/> class.</summary>
@@ -92,14 +94,14 @@ public class FileInUseHandler : IFileIsInUse, IDisposable
 	}
 
 	/// <summary>Occurs after permission has been given to close the file and the file must now be closed.</summary>
-	public event EventHandler CloseFile;
+	public event EventHandler? CloseFile;
 
 	/// <summary>
 	/// Occurs when another application is requesting that the file be closed. If this event is not registered or if in response to this
 	/// event, you set the <see cref="CancelEventArgs.Cancel"/> property to <see langword="true"/>, then the requesting application will
 	/// be informed that it cannot take control.
 	/// </summary>
-	public event CancelEventHandler CloseRequested;
+	public event CancelEventHandler? CloseRequested;
 
 	/// <summary>
 	/// Gets or sets the top-level window of the application that is using the file that should be activated when requested. If this
@@ -121,13 +123,15 @@ public class FileInUseHandler : IFileIsInUse, IDisposable
 	/// </summary>
 	/// <value>The full path to the file that is in use by this application. This value cannot be <see langword="null"/>.</value>
 	/// <exception cref="ArgumentNullException">FilePath</exception>
+	[MemberNotNull(nameof(filePath))]
 	public string FilePath
 	{
-		get => filePath;
+		get => filePath ?? throw new InvalidOperationException();
 		set
 		{
+			if (!System.IO.File.Exists(filePath)) throw new System.IO.FileNotFoundException(null, filePath);
 			RevokeFromROT();
-			filePath = value ?? throw new ArgumentNullException(nameof(FilePath));
+			filePath = value;
 			RegisterInROT();
 		}
 	}
@@ -210,7 +214,7 @@ public class FileInUseHandler : IFileIsInUse, IDisposable
 		}
 	}
 
-	private string DefAppName
+	private static string DefAppName
 	{
 		get
 		{
@@ -226,12 +230,13 @@ public class FileInUseHandler : IFileIsInUse, IDisposable
 		}
 	}
 
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	private void RegisterInROT()
 	{
 		GetRunningObjectTable(0, out var rot).ThrowIfFailed();
 		using var prot = ComReleaserFactory.Create(rot);
 		CreateFileMoniker(FilePath, out moniker).ThrowIfFailed();
-		regId = rot.Register(ROTFLAGS.ROTFLAGS_REGISTRATIONKEEPSALIVE | ROTFLAGS.ROTFLAGS_ALLOWANYCLIENT, (object)(IFileIsInUse)this, moniker);
+		regId = rot.Register(ROTFLAGS.ROTFLAGS_REGISTRATIONKEEPSALIVE | ROTFLAGS.ROTFLAGS_ALLOWANYCLIENT, this, moniker!);
 	}
 
 	private void RevokeFromROT()
@@ -243,4 +248,5 @@ public class FileInUseHandler : IFileIsInUse, IDisposable
 		regId = 0;
 		moniker = null;
 	}
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 }

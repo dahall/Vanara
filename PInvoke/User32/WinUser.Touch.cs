@@ -4,7 +4,7 @@ public static partial class User32
 {
 	/// <summary>Gesture configurations used by <see cref="GESTURECONFIG"/>.</summary>
 	[Flags]
-	public enum GC
+	public enum Gesture
 	{
 		/// <summary>Indicates all of the gestures.</summary>
 		GC_ALLGESTURES = 0x00000001,
@@ -1151,10 +1151,10 @@ public static partial class User32
 		public GID dwID;
 
 		/// <summary>The messages to enable.</summary>
-		public GC dwWant;
+		public Gesture dwWant;
 
 		/// <summary>The messages to disable.</summary>
-		public GC dwBlock;
+		public Gesture dwBlock;
 
 		/// <summary>Initializes a new instance of the <see cref="GESTURECONFIG"/> struct.</summary>
 		/// <param name="id">The identifier for the type of configuration that will have messages enabled or disabled.</param>

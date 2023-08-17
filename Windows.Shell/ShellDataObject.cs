@@ -219,7 +219,7 @@ public class ShellDataObject : DataObject
 					iStorage2.Commit(0);
 
 					// get the STATSTG of the ILockBytes to determine how many bytes were written to it
-					iLockBytes.Stat(out STATSTG iLockBytesStat, STATFLAG.STATFLAG_NONAME);
+					iLockBytes.Stat(out System.Runtime.InteropServices.ComTypes.STATSTG iLockBytesStat, STATFLAG.STATFLAG_NONAME);
 
 					// read the data from the ILockBytes (unmanaged byte array) into a managed byte array
 					using var iLockBytesContent = new SafeHGlobalHandle(iLockBytesStat.cbSize);

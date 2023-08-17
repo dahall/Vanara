@@ -59,7 +59,7 @@ public static class TestHelper
 	public static IList<string> GetNestedStructSizes(this Type type, params string[] filters) =>
 		type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic).GetStructSizes(false, filters);
 
-	public static string GetStringVal(this object value)
+	public static string GetStringVal(this object value, bool showDefVals = true)
 	{
 		switch (value)
 		{
@@ -93,7 +93,11 @@ Simple:
 				return sd.GetSddlForm(AccessControlSections.All);
 
 			default:
-				try { return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value); }
+				try
+				{
+					jsonSet.Value.DefaultValueHandling = showDefVals ? DefaultValueHandling.Include : DefaultValueHandling.Ignore;
+					return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value);
+				}
 				catch (Exception e) { return e.ToString(); }
 		}
 	}
@@ -101,21 +105,21 @@ Simple:
 	public static IList<string> GetStructSizes(this Type[] types, bool fullName = false, params string[] filters)
 	{
 		TypeAttributes attr = TypeAttributes.SequentialLayout | TypeAttributes.ExplicitLayout;
-		return types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))).
+		return types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && (filters.Length == 0 || filters.Any(s => t.Name.Contains(s)))).
 			OrderBy(t => fullName ? t.FullName : t.Name).Select(t => $"{(fullName ? t.FullName : t.Name)} = {GetTypeSize(t)}").ToList();
 
 		static long GetTypeSize(Type t) { try { return (long)InteropExtensions.SizeOf(t); } catch { return -1; } }
 	}
 
-	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object, object[]> action = null, Action<Exception> error = null) where TEnum : Enum =>
-				RunForEach(lib, name, makeParam, (e, ex) => error?.Invoke(ex), action);
+	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object?, object[]>? action = null, Action<Exception?>? error = null) where TEnum : Enum =>
+		RunForEach(lib, name, makeParam, (e, ex) => error?.Invoke(ex), action);
 
-	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception> error = null, Action<TEnum, object, object[]> action = null, CorrespondingAction? filter = null) where TEnum : Enum
+	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception?>? error = null, Action<TEnum, object?, object[]>? action = null, CorrespondingAction? filter = null) where TEnum : Enum
 	{
 		MethodInfo mi = lib.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First() ?? throw new ArgumentException("Unable to find method.");
 		foreach (TEnum e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())
 		{
-			Type type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
+			Type? type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
 			if (type is null)
 			{
 				TestContext.WriteLine($"No corresponding type found for {e}.");
@@ -143,7 +147,7 @@ Simple:
 		evt.Set();
 	}
 
-	public static void WriteValues(this object value) => TestContext.WriteLine(GetStringVal(value));
+	public static void WriteValues(this object value, bool showDefVals = true) => TestContext.WriteLine(GetStringVal(value, showDefVals));
 
 	private class GenJsonConverter<TIn, TOut> : JsonConverter<TOut>
 	{
@@ -156,10 +160,13 @@ Simple:
 			wtr = w;
 		}
 
-		public override TOut ReadJson(JsonReader reader, Type objectType, TOut existingValue, bool hasExistingValue, JsonSerializer serializer) =>
-			reader.Value is TIn t ? rdr(t) : default(TOut);
+		public override TOut? ReadJson(JsonReader reader, Type objectType, TOut? existingValue, bool hasExistingValue, JsonSerializer serializer) =>
+			reader.Value is TIn t ? rdr(t) : default;
 
-		public override void WriteJson(JsonWriter writer, TOut value, JsonSerializer serializer) =>
-			writer.WriteValue(wtr(value));
+		public override void WriteJson(JsonWriter writer, TOut? value, JsonSerializer serializer)
+		{
+			if (value is not null)
+				writer.WriteValue(wtr(value));
+		}
 	}
 }

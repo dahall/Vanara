@@ -237,7 +237,7 @@ public sealed class TemporaryDirectory : IDisposable
 	/// Returns a <see cref="DirectoryInfo"/> instance to an existing directory, possibly with read-only and/or hidden
 	/// attributes set.
 	/// </summary>
-	private DirectoryInfo CreateDirectoryCore(string folderFullPath, bool randomizedDates = false, bool readOnly = false, bool hidden = false)
+	private DirectoryInfo CreateDirectoryCore(string? folderFullPath, bool randomizedDates = false, bool readOnly = false, bool hidden = false)
 	{
 		DirectoryInfo dirInfo = System.IO.Directory.CreateDirectory(!string.IsNullOrWhiteSpace(folderFullPath) ? folderFullPath : RandomDirectoryFullPath);
 
@@ -251,7 +251,7 @@ public sealed class TemporaryDirectory : IDisposable
 	/// <summary>
 	/// Returns a <see cref="FileInfo"/> instance to an existing file, possibly with read-only and/or hidden attributes set.
 	/// </summary>
-	private FileInfo CreateFileCore(string fileFullPath, bool randomizedDates = false, bool readOnly = false, bool hidden = false, int fileSize = 0)
+	private FileInfo CreateFileCore(string? fileFullPath, bool randomizedDates = false, bool readOnly = false, bool hidden = false, int fileSize = 0)
 	{
 		var fileInfo = new FileInfo(!string.IsNullOrWhiteSpace(fileFullPath) ? fileFullPath : RandomTxtFileFullPath);
 
@@ -274,7 +274,7 @@ public sealed class TemporaryDirectory : IDisposable
 	/// Creates an, optional recursive, directory structure of <param name="level"/> levels deep, populated with subdirectories and files
 	/// of random size and possibly with read-only and/or hidden attributes set.
 	/// </summary>
-	private DirectoryInfo CreateTreeCore(string rootFullPath, int level = 1, bool recurse = false, bool randomizedDates = false, bool readOnly = false, bool hidden = false)
+	private DirectoryInfo CreateTreeCore(string? rootFullPath, int level = 1, bool recurse = false, bool randomizedDates = false, bool readOnly = false, bool hidden = false)
 	{
 		DirectoryInfo dirInfo = CreateDirectoryCore(rootFullPath, randomizedDates, readOnly, hidden);
 

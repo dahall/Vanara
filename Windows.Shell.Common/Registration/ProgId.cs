@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Vanara.Windows.Shell.Registration;
@@ -20,6 +21,7 @@ namespace Vanara.Windows.Shell;
 /// <seealso cref="IDisposable"/>
 public class ProgId : RegBasedSettings
 {
+	private const string ClickToRun = @"SOFTWARE\Microsoft\Office\ClickToRun\REGISTRY\MACHINE\Software\Classes";
 	private const string OpenWithProgIds = "OpenWithProgIds";
 
 	internal ProgId(string progId, RegistryKey pkey, bool readOnly) : base(pkey, readOnly)
@@ -33,6 +35,7 @@ public class ProgId : RegBasedSettings
 	/// Gets a value indicating whether to signal that Windows should ignore this ProgID when determining a default handler for a public
 	/// file type. Regardless of whether this value is set, the ProgID continues to appear in the OpenWith shortcut menu and dialog.
 	/// </summary>
+	[DefaultValue(false)]
 	public bool AllowSilentDefaultTakeOver
 	{
 		get => key.HasSubKey("AllowSilentDefaultTakeOver");
@@ -40,6 +43,7 @@ public class ProgId : RegBasedSettings
 	}
 
 	/// <summary>Overrides one of the folder options that hides the extension of known file types.</summary>
+	[DefaultValue(false)]
 	public bool AlwaysShowExt
 	{
 		get => key.HasValue("AlwaysShowExt");
@@ -51,28 +55,32 @@ public class ProgId : RegBasedSettings
 	/// and uses either the system's automatically generated Recent or Frequent Jump Lists or provides a custom Jump List. If an
 	/// application uses an explicit AppUserModelID and does not set this value, items will not appear in that application's Jump Lists.
 	/// </summary>
-	public string AppUserModelID
+	[DefaultValue(null)]
+	public string? AppUserModelID
 	{
 		get => key.GetValue("AppUserModelID")?.ToString();
 		set => UpdateValue("AppUserModelID", value);
 	}
 
 	/// <summary>Gets or sets the CLSID of the COM server associated with this ProgId.</summary>
+	[DefaultValue(null)]
 	public Guid? CLSID
 	{
-		get { var s = key.GetSubKeyDefaultValue("CLSID")?.ToString(); return s == null ? (Guid?)null : new Guid(s); }
+		get { var s = key.GetSubKeyDefaultValue("CLSID")?.ToString(); return s == null ? null : new Guid(s); }
 		set => UpdateKeyValue("CLSID", value?.ToRegString());
 	}
 
 	/// <summary>Gets or sets the versioned ProgId for this instance.</summary>
-	public string CurVer
+	[DefaultValue(null)]
+	public string? CurVer
 	{
 		get => key.GetSubKeyDefaultValue("CurVer")?.ToString();
 		set => UpdateKeyValue("CurVer", value);
 	}
 
 	/// <summary>Gets the default icon to display for file types associated with this ProgID.</summary>
-	public IconLocation DefaultIcon
+	[DefaultValue(null)]
+	public IconLocation? DefaultIcon
 	{
 		get => IconLocation.TryParse(key.GetSubKeyDefaultValue("DefaultIcon")?.ToString(), out var loc) ? loc : null;
 		set => UpdateKeyValue("DefaultIcon", value?.ToString());
@@ -82,6 +90,7 @@ public class ProgId : RegBasedSettings
 	/// Gets flags that control some aspects of the Shell's handling of the file types linked to this ProgID. EditFlags may also limit
 	/// how much the user can modify certain aspects of these file types using a file's property sheet.
 	/// </summary>
+	[DefaultValue((FILETYPEATTRIBUTEFLAGS)0)]
 	public FILETYPEATTRIBUTEFLAGS EditFlags
 	{
 		get
@@ -95,7 +104,8 @@ public class ProgId : RegBasedSettings
 	}
 
 	/// <summary>Gets or sets the list of properties to show in the listview on extended tiles.</summary>
-	public PropertyDescriptionList ExtendedTileInfo
+	[DefaultValue(null)]
+	public PropertyDescriptionList? ExtendedTileInfo
 	{
 		get => GetPDL(key, "ExtendedTileInfo");
 		set => UpdateValue("ExtendedTileInfo", value?.ToString());
@@ -108,21 +118,24 @@ public class ProgId : RegBasedSettings
 	/// Gets a friendly name for that ProgID, suitable to display to the user. The use of this entry to hold the friendly name is
 	/// deprecated by the FriendlyTypeName entry on systems running Windows 2000 or later. However, it may be set for backward compatibility.
 	/// </summary>
-	public string FriendlyName
+	[DefaultValue(null)]
+	public string? FriendlyName
 	{
 		get => key.GetValue(null)?.ToString();
 		set => UpdateValue(null, value ?? "");
 	}
 
 	/// <summary>Gets the friendly name for the ProgID, suitable to display to the user.</summary>
-	public IndirectString FriendlyTypeName
+	[DefaultValue(null)]
+	public IndirectString? FriendlyTypeName
 	{
 		get => IndirectString.TryParse(key.GetValue("FriendlyTypeName")?.ToString(), out var loc) ? loc : null;
 		set => UpdateValue("FriendlyTypeName", value?.ToString());
 	}
 
 	/// <summary>Gets or sets the list of all the properties to show in the details page.</summary>
-	public PropertyDescriptionList FullDetails
+	[DefaultValue(null)]
+	public PropertyDescriptionList? FullDetails
 	{
 		get => GetPDL(key, "FullDetails");
 		set => UpdateValue("FullDetails", value?.ToString());
@@ -134,16 +147,16 @@ public class ProgId : RegBasedSettings
 	/// <summary>
 	/// Gets the brief help message that the Shell displays for this ProgID. This may be a string, a IndirectString, or a PropertyDescriptionList.
 	/// </summary>
-	public object InfoTip
+	[DefaultValue(null)]
+	public object? InfoTip
 	{
-		get
-		{
-			var val = key.GetValue("InfoTip")?.ToString();
-			if (val == null) return null;
-			if (val.StartsWith("@")) return IndirectString.TryParse(val, out var loc) ? loc : null;
-			if (val.StartsWith("prop:")) return new PropertyDescriptionList(val);
-			return val;
-		}
+		get => key.GetValue("InfoTip")?.ToString() switch
+			{
+				null => null,
+				string s when s.StartsWith("@") => IndirectString.TryParse(s, out var loc) ? loc : null,
+				string s when s.StartsWith("prop:") => new PropertyDescriptionList(s),
+				string s => s
+			};
 		set => UpdateValue("InfoTip", value?.ToString());
 	}
 
@@ -152,6 +165,7 @@ public class ProgId : RegBasedSettings
 	/// been registered as a shortcut file type, the system automatically adds the system-defined link overlay icon (a small arrow) to
 	/// the file's icon.
 	/// </summary>
+	[DefaultValue(false)]
 	public bool IsShortcut
 	{
 		get => key.HasValue("IsShortcut");
@@ -159,6 +173,7 @@ public class ProgId : RegBasedSettings
 	}
 
 	/// <summary>Gets or sets a value indicating that the extension is never to be shown regardless of folder options.</summary>
+	[DefaultValue(false)]
 	public bool NeverShowExt
 	{
 		get => key.HasValue("NeverShowExt");
@@ -169,28 +184,32 @@ public class ProgId : RegBasedSettings
 	/// Specifies that the associated ProgId should not be opened by users. The value is presented as a warning to users. Use <see
 	/// cref="string.Empty"/> to use the system prompt.
 	/// </summary>
-	public string NoOpen
+	[DefaultValue(null)]
+	public string? NoOpen
 	{
 		get => key.GetValue("NoOpen")?.ToString();
 		set => UpdateValue("NoOpen", value);
 	}
 
 	/// <summary>Gets or sets the list of properties to display in the preview pane.</summary>
-	public PropertyDescriptionList PreviewDetails
+	[DefaultValue(null)]
+	public PropertyDescriptionList? PreviewDetails
 	{
 		get => GetPDL(key, "PreviewDetails");
 		set => UpdateValue("PreviewDetails", value?.ToString());
 	}
 
 	/// <summary>Gets or sets the one or two properties to display in the preview pane title section.</summary>
-	public PropertyDescriptionList PreviewTitle
+	[DefaultValue(null)]
+	public PropertyDescriptionList? PreviewTitle
 	{
 		get => GetPDL(key, "PreviewTitle");
 		set => UpdateValue("PreviewTitle", value?.ToString());
 	}
 
 	/// <summary>Gets or sets the list of properties to show in the listview on tiles.</summary>
-	public PropertyDescriptionList TileInfo
+	[DefaultValue(null)]
+	public PropertyDescriptionList? TileInfo
 	{
 		get => GetPDL(key, "TileInfo");
 		set => UpdateValue("TileInfo", value?.ToString());
@@ -214,17 +233,25 @@ public class ProgId : RegBasedSettings
 	/// <returns>The requested <see cref="ProgId"/> instance.</returns>
 	public static ProgId Open(string progId, bool readOnly = true, bool autoLoadVersioned = true, bool systemWide = false)
 	{
-		var key = ShellRegistrar.GetRoot(systemWide, !readOnly, progId ?? throw new ArgumentNullException(nameof(progId)));
+		var key = (systemWide ? null : ShellRegistrar.GetRoot(systemWide, !readOnly, progId ?? throw new ArgumentNullException(nameof(progId)))) ??
+			Registry.ClassesRoot.OpenSubKey(progId, !readOnly);
 		if (autoLoadVersioned)
 		{
 			var cv = key?.GetSubKeyDefaultValue("CurVer")?.ToString();
 			if (cv != null && cv != progId)
 			{
-				key.Close();
-				key = ShellRegistrar.GetRoot(systemWide, !readOnly, cv);
+				var cvkey = ((systemWide ? null : ShellRegistrar.GetRoot(systemWide, !readOnly, cv)) ?? Registry.ClassesRoot.OpenSubKey(cv, !readOnly) ??
+					Registry.LocalMachine.OpenSubKey(Path.Combine(ClickToRun, cv), !readOnly)); // ?? throw new ArgumentException($"Unable to load ProgId version = '{cv}'", nameof(progId));
+				if (cvkey is null)
+					System.Diagnostics.Debug.WriteLine($"Unable to load ProgId version = '{cv}'");
+				else
+				{
+					key?.Close();
+					key = cvkey;
+				}
 			}
 		}
-		if (key is null) throw new ArgumentException("Unable to load specified ProgId", nameof(progId));
+		if (key is null) throw new ArgumentException($"Unable to load ProgId = '{progId}'", nameof(progId));
 		return new ProgId(progId, key, readOnly);
 	}
 
@@ -246,7 +273,7 @@ public class ProgId : RegBasedSettings
 		if (progId == null) throw new ArgumentNullException(nameof(progId));
 		if (progId.Length > 39 || !System.Text.RegularExpressions.Regex.IsMatch(progId, @"^[a-zA-Z][\w\.]+$", System.Text.RegularExpressions.RegexOptions.Singleline))
 			throw new ArgumentException("A ProgID may not have more then 39 characters, must start with a letter, and may only contain letters, numbers and periods.");
-		using var root = ShellRegistrar.GetRoot(systemWide, true);
+		using var root = ShellRegistrar.GetRoot(systemWide, true) ?? Registry.ClassesRoot;
 		return new ProgId(progId, root.CreateSubKey(progId, friendlyName), false);
 	}
 
@@ -259,7 +286,7 @@ public class ProgId : RegBasedSettings
 	public static void Unregister(string progId, bool withFileExt = true, bool systemWide = false)
 	{
 		if (progId is null) return;
-		using var reg = ShellRegistrar.GetRoot(systemWide, true);
+		using var reg = ShellRegistrar.GetRoot(systemWide, true) ?? Registry.ClassesRoot;
 
 		if (withFileExt)
 		{
@@ -287,7 +314,7 @@ public class ProgId : RegBasedSettings
 
 	internal static IEnumerable<string> GetAssociatedFileExtensions(string progId, bool systemWide = false)
 	{
-		using var root = ShellRegistrar.GetRoot(systemWide, false);
+		using var root = ShellRegistrar.GetRoot(systemWide, false) ?? Registry.ClassesRoot;
 		foreach (var ext in root.GetSubKeyNames().Where(ext => ext.StartsWith(".")))
 		{
 			var hasValue = false;
@@ -298,10 +325,10 @@ public class ProgId : RegBasedSettings
 		}
 	}
 
-	private static PropertyDescriptionList GetPDL(RegistryKey key, string valueName)
+	private static PropertyDescriptionList? GetPDL(RegistryKey key, string valueName)
 	{
 		var pdl = key.GetValue(valueName)?.ToString();
-		return pdl == null ? null : new PropertyDescriptionList(pdl);
+		return pdl is null ? null : new PropertyDescriptionList(pdl);
 	}
 }
 
@@ -342,7 +369,7 @@ class FileTypeCollection : ICollection<string>
 	/// <summary>Determines whether this instance contains the object.</summary>
 	/// <param name="item">The item.</param>
 	/// <returns><see langword="true"/> if [contains] [the specified item]; otherwise, <see langword="false"/>.</returns>
-	public bool Contains(string item) => ShellRegistrar.GetRoot(IsSystemWide, false, Path.Combine(item, "OpenWithProgIds")).HasValue(progId);
+	public bool Contains(string item) => (ShellRegistrar.GetRoot(IsSystemWide, false, Path.Combine(item, "OpenWithProgIds")) ?? Registry.ClassesRoot.OpenSubKey(Path.Combine(item, "OpenWithProgIds"), false))?.HasValue(progId) ?? false;
 
 	/// <summary>Copies to.</summary>
 	/// <param name="array">The array.</param>
@@ -359,10 +386,10 @@ class FileTypeCollection : ICollection<string>
 	public bool Remove(string item)
 	{
 		EnsureWritable();
-		using var openWithKey = ShellRegistrar.GetRoot(IsSystemWide, true, Path.Combine(item, "OpenWithProgIds"));
+		using var openWithKey = ShellRegistrar.GetRoot(IsSystemWide, true, Path.Combine(item, "OpenWithProgIds")) ?? Registry.ClassesRoot.OpenSubKey(Path.Combine(item, "OpenWithProgIds"), false);
 		try
 		{
-			openWithKey.DeleteValue(progId, true);
+			openWithKey?.DeleteValue(progId, true);
 			return true;
 		}
 		catch { return false; }

@@ -23,7 +23,7 @@ public class DragEventArgs : EventArgs
 	/// <param name="y">The y-coordinate of the mouse cursor in pixels.</param>
 	/// <param name="allowedEffect">One of the DROPEFFECT values.</param>
 	/// <param name="lastEffect">One of the DROPEFFECT values.</param>
-	public DragEventArgs(IDataObject data, MouseButtonState keyState, int x, int y, DROPEFFECT allowedEffect, DROPEFFECT lastEffect)
+	public DragEventArgs(IDataObject? data, MouseButtonState keyState, int x, int y, DROPEFFECT allowedEffect, DROPEFFECT lastEffect)
 	{
 		Data = data;
 		KeyState = keyState;
@@ -37,7 +37,7 @@ public class DragEventArgs : EventArgs
 	public DROPEFFECT AllowedEffect { get; }
 
 	/// <summary>Gets the IDataObject that contains the data associated with this event.</summary>
-	public IDataObject Data { get; }
+	public IDataObject? Data { get; }
 
 	/// <summary>Gets or sets the target drop effect in a drag-and-drop operation.</summary>
 	public DROPEFFECT Effect { get; set; }
@@ -144,7 +144,7 @@ public class DragEventArgs : EventArgs
 /// <seealso cref="IDropTarget"/>
 public abstract class ShellDropTarget : ShellCommand, IDropTarget, IInitializeCommand
 {
-	private IDataObject lastDataObject;
+	private IDataObject? lastDataObject;
 	private DROPEFFECT lastEffect = DROPEFFECT.DROPEFFECT_NONE;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellDropTarget"/> class.</summary>
@@ -156,19 +156,19 @@ public abstract class ShellDropTarget : ShellCommand, IDropTarget, IInitializeCo
 	protected ShellDropTarget(CLSCTX classContext, REGCLS classUse) : base(classContext, classUse) { }
 
 	/// <summary>Occurs when a drag-and-drop operation is started. All calls from this event must be non-blocking.</summary>
-	public event EventHandler<DragEventArgs> DragDrop;
+	public event EventHandler<DragEventArgs>? DragDrop;
 
 	/// <summary>Occurs to request whether a drop can be accepted, and, if so, the effect of the drop.</summary>
-	public event EventHandler<DragEventArgs> DragEnter;
+	public event EventHandler<DragEventArgs>? DragEnter;
 
 	/// <summary>Occurs when the object is told to remove target feedback and releases the data object.</summary>
-	public event EventHandler DragLeave;
+	public event EventHandler? DragLeave;
 
 	/// <summary>
 	/// Occurs so target can provide feedback to the user and communicate the drop's effect to the DoDragDrop function so it can
 	/// communicate the effect of the drop back to the source.
 	/// </summary>
-	public event EventHandler<DragEventArgs> DragOver;
+	public event EventHandler<DragEventArgs>? DragOver;
 
 	/// <inheritdoc/>
 	HRESULT IDropTarget.DragEnter(IDataObject pDataObj, MouseButtonState grfKeyState, POINT pt, ref DROPEFFECT pdwEffect)
@@ -210,7 +210,7 @@ public abstract class ShellDropTarget : ShellCommand, IDropTarget, IInitializeCo
 		return HRESULT.S_OK;
 	}
 
-	private DragEventArgs CreateDragEventArgs(IDataObject pDataObj, MouseButtonState grfKeyState, POINT pt, DROPEFFECT pdwEffect)
+	private DragEventArgs CreateDragEventArgs(IDataObject? pDataObj, MouseButtonState grfKeyState, POINT pt, DROPEFFECT pdwEffect)
 	{
 		var data = pDataObj ?? lastDataObject;
 		var drgevent = new DragEventArgs(data, grfKeyState, pt.X, pt.Y, pdwEffect, lastEffect);

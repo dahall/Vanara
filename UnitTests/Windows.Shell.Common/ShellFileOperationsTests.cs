@@ -25,7 +25,7 @@ public class ShellFileOperationsTests
 	[Test]
 	public void CopyItemsTest()
 	{
-		var l = Directory.EnumerateFiles(KNOWNFOLDERID.FOLDERID_Downloads.FullPath(), "h*.zip").Select(s => new ShellItem(s)).ToList();
+		var l = Directory.EnumerateFiles(KNOWNFOLDERID.FOLDERID_Downloads.FullPath(), "d*.zip").Select(s => new ShellItem(s)).ToList();
 		ShellFileOperations.Copy(l, ShellFolder.Desktop);
 		foreach (var i in l)
 		{
@@ -182,7 +182,7 @@ public class ShellFileOperationsTests
 		Assert.That(new ShellItem(fp).Properties[PROPERTYKEY.System.Author], Is.EquivalentTo(authors));
 		File.Delete(fp);
 
-		static void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
+		static void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
 		{
 			Debug.WriteLine(args);
 			Assert.That(args.Result.Succeeded, Is.True);
@@ -192,14 +192,16 @@ public class ShellFileOperationsTests
 	[Test]
 	public void OpDialogTest()
 	{
-		var dlg = new ShellFileOperationDialog();
-		dlg.AllowUndo = true;
-		dlg.CurrentItem = new ShellItem(TestCaseSources.LargeFile);
-		dlg.Destination = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop);
-		dlg.Mode = ShellFileOperationDialog.OperationMode.Indeterminate;
-		dlg.Operation = ShellFileOperationDialog.OperationType.CopyMoving;
-		dlg.ShowPauseButton = true;
-		dlg.Source = new ShellFolder(Path.GetDirectoryName(TestCaseSources.LargeFile));
+		var dlg = new ShellFileOperationDialog
+		{
+			Source = new ShellFolder(Path.GetDirectoryName(TestCaseSources.LargeFile)),
+			Destination = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop),
+			AllowUndo = true,
+			CurrentItem = new ShellItem(TestCaseSources.LargeFile),
+			Mode = ShellFileOperationDialog.OperationMode.Indeterminate,
+			Operation = ShellFileOperationDialog.OperationType.CopyMoving,
+			ShowPauseButton = true
+		};
 		dlg.Start();
 		dlg.ProgressDialogSizeMaxValue = new FileInfo(TestCaseSources.LargeFile).Length;
 		dlg.ProgressDialogItemsMaxValue = 1;

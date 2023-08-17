@@ -154,7 +154,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 	private readonly WatcherNativeWindow hPump;
 	private bool enabled;
 	private bool initializing;
-	private ShellItem item;
+	private ShellItem? item;
 	private ChangeFilters notifyFilter = ChangeFilters.AllEvents;
 	private bool recursive;
 	private uint ulRegister;
@@ -173,7 +173,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 
 	/// <summary>Occurs when a shell folder or item is changed.</summary>
 	[Category("Behavior"), Description("Occurs when a shell folder or item is changed.")]
-	public event EventHandler<ShellItemChangeEventArgs> Changed;
+	public event EventHandler<ShellItemChangeEventArgs>? Changed;
 
 	/// <summary>Gets or sets a value indicating whether the component is enabled.</summary>
 	/// <value><see langword="true"/> if the component is enabled; otherwise, <see langword="false"/>. The default is <see langword="false"/>.</value>
@@ -213,7 +213,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), DefaultValue(null), Category("Data"), Description("The shell item to watch.")]
 	public ShellItem Item
 	{
-		get => item;
+		get => item ?? throw new InvalidOperationException("Expecting Item to be set before retrieval.");
 		set
 		{
 			if (value is null) throw new ArgumentNullException(nameof(Item));
@@ -242,8 +242,8 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 	[DefaultValue(null), Category("Data"), Description("The shell item to watch."), Editor("System.Windows.Forms.Design.FileNameEditor, System.Design", "System.Drawing.Design.UITypeEditor, System.Drawing")]
 	public string Path
 	{
-		get => item is null ? null : (item.IsFileSystem ? item.FileSystemPath : item.GetDisplayName(ShellItemDisplayString.DesktopAbsoluteParsing));
-		set => Item = value is null ? null : new ShellItem(value);
+		get => Item.IsFileSystem ? Item.FileSystemPath! : Item.GetDisplayName(ShellItemDisplayString.DesktopAbsoluteParsing)!;
+		set => Item = new ShellItem(value);
 	}
 
 	private bool IsSuspended => initializing || DesignMode;
@@ -277,7 +277,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 	public void EndInit()
 	{
 		initializing = false;
-		if (!(item is null) && enabled)
+		if (item is not null && enabled)
 			StartWatching();
 	}
 
@@ -315,7 +315,9 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 		enabled = true;
 		if (IsSuspended) return;
 
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHGetIDListFromObject(Item.IShellItem, out PIDL pidlWatch).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = pidlWatch.DangerousGetHandle(), fRecursive = IncludeChildren } };
 		ulRegister = SHChangeNotifyRegister(hPump.MessageWindowHandle, sources, (SHCNE)NotifyFilter, hPump.MessageId, entries.Length, entries);
 		if (ulRegister == 0) throw new InvalidOperationException("Unable to register shell notifications.");

@@ -11,7 +11,7 @@ namespace Vanara.Windows;
 public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvider, ISupportInitialize where TExtend : Component
 {
 	/// <summary>A dictionary that holds a property bag for each extended type.</summary>
-	protected readonly Dictionary<TExtend, Dictionary<string, object>> propHash = new();
+	protected readonly Dictionary<TExtend, Dictionary<string, object?>> propHash = new();
 
 	/// <summary>Initializes a new instance of the <see cref="ExtenderProviderBase{TExtend}"/> class.</summary>
 	protected ExtenderProviderBase() { }
@@ -31,11 +31,11 @@ public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvid
 	}
 
 	/// <summary>Occurs when a new extender is being added.</summary>
-	protected event EventHandler<AddExtenderEventArgs> AddingExtender;
+	protected event EventHandler<AddExtenderEventArgs>? AddingExtender;
 
 	/// <summary>Sets the site.</summary>
 	/// <value>The site.</value>
-	public override ISite Site
+	public override ISite? Site
 	{
 		set
 		{
@@ -71,11 +71,11 @@ public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvid
 	/// <param name="defaultValue">The default value.</param>
 	/// <param name="propName">Name of the field.</param>
 	/// <returns></returns>
-	protected virtual T GetPropertyValue<T>(TExtend form, T defaultValue = default, [CallerMemberName] string propName = "")
+	protected virtual T? GetPropertyValue<T>(TExtend form, T? defaultValue = default, [CallerMemberName] string propName = "")
 	{
 		if (propName.StartsWith("Get"))
 			propName = propName.Remove(0, 3);
-		return propHash.TryGetValue(form, out var props) && props.TryGetValue(propName, out var prop) ? (T)prop : defaultValue;
+		return propHash.TryGetValue(form, out var props) && props.TryGetValue(propName, out var prop) ? (T?)prop : defaultValue;
 	}
 
 	/// <summary>Calls the <see cref="AddingExtender"/> event.</summary>
@@ -92,7 +92,7 @@ public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvid
 	/// <param name="form">The form.</param>
 	/// <param name="value">The value.</param>
 	/// <param name="propName">Name of the field.</param>
-	protected virtual bool SetPropertyValue<T>(TExtend form, T value, [CallerMemberName] string propName = "")
+	protected virtual bool SetPropertyValue<T>(TExtend form, T? value, [CallerMemberName] string propName = "")
 	{
 		if (!propHash.ContainsKey(form))
 			OnAddingExtender(form);
@@ -110,7 +110,7 @@ public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvid
 		internal AddExtenderEventArgs(TExtend parent)
 		{
 			Extender = parent;
-			ExtenderProperties = new Dictionary<string, object>();
+			ExtenderProperties = new Dictionary<string, object?>();
 		}
 
 		/// <summary>Gets the extender being added.</summary>
@@ -119,6 +119,6 @@ public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvid
 
 		/// <summary>Gets or sets the property bag to be associated with this extender.</summary>
 		/// <value>The extender property bag.</value>
-		public Dictionary<string, object> ExtenderProperties { get; set; }
+		public Dictionary<string, object?> ExtenderProperties { get; set; }
 	}
 }

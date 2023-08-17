@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,10 +20,10 @@ public class ShellDataTable : DataTable
 	private const string extSlow = "Slow";
 	private const string extState = "ColState";
 	private readonly FolderItemFilter itemFilter;
-	private readonly ShellFolder parent;
-	private DataColumn[] colsToGet;
-	private List<DataColumn> defCols;
-	private IEnumerable<PIDL> items;
+	private readonly ShellFolder? parent;
+	private DataColumn[]? colsToGet;
+	private List<DataColumn> defCols = new();
+	private IEnumerable<PIDL>? items;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellDataTable"/> class with a list of shell items.</summary>
 	/// <param name="items">The items for which to collect information.</param>
@@ -42,46 +43,46 @@ public class ShellDataTable : DataTable
 	}
 
 	/// <summary>Occurs when all rows have been added in a call to populate the table with their fast properties.</summary>
-	public event EventHandler AllFastRowsAdded;
+	public event EventHandler? AllFastRowsAdded;
 
 	/// <summary>Occurs when all rows have been added in a call to populate the table with all (fast and slow) properties.</summary>
-	public event EventHandler TableLoaded;
+	public event EventHandler? TableLoaded;
 
 	/// <summary>Gets the columns that should be on by default in Details view.</summary>
 	/// <value>The default columns.</value>
-	public IReadOnlyList<DataColumn> DefaultColumns => (IReadOnlyList<DataColumn>)defCols;
+	public IReadOnlyList<DataColumn> DefaultColumns => defCols;
 
 	/// <summary>Gets a column's visual alignment.</summary>
 	/// <param name="column">The column to check.</param>
 	/// <returns>The suggested alignment of the column when displayed.</returns>
-	public ComCtl32.ListViewColumnFormat GetColumnAlignment(DataColumn column) => (ComCtl32.ListViewColumnFormat)column.ExtendedProperties[extAlign];
+	public static ComCtl32.ListViewColumnFormat GetColumnAlignment(DataColumn column) => (ComCtl32.ListViewColumnFormat)column.ExtendedProperties[extAlign]!;
 
 	/// <summary>Gets the column property key.</summary>
 	/// <param name="column">The column to check.</param>
 	/// <returns>The property key associated with the column.</returns>
-	public PROPERTYKEY GetColumnPropertyKey(DataColumn column) => (PROPERTYKEY)column.ExtendedProperties[extPropKey];
+	public static PROPERTYKEY GetColumnPropertyKey(DataColumn column) => (PROPERTYKEY)column.ExtendedProperties[extPropKey]!;
 
 	/// <summary>Gets the state of the column.</summary>
 	/// <param name="column">The column to check.</param>
 	/// <returns>A value describing how the column values should be treated.</returns>
-	public SHCOLSTATE GetColumnState(DataColumn column) => (SHCOLSTATE)column.ExtendedProperties[extState];
+	public static SHCOLSTATE GetColumnState(DataColumn column) => (SHCOLSTATE)column.ExtendedProperties[extState]!;
 
 	/// <summary>Gets the PIDL for the row.</summary>
 	/// <param name="row">The row to check.</param>
 	/// <returns>The PIDL from the row.</returns>
-	public PIDL GetPIDL(DataRow row) => row[colId] is null || row[colId] == DBNull.Value ? PIDL.Null : new PIDL((byte[])row[colId]);
+	public static PIDL GetPIDL(DataRow row) => row[colId] is null || row[colId] == DBNull.Value ? PIDL.Null : new PIDL((byte[])row[colId]);
 
 	/// <summary>Determines whether the specified column takes longer to retrieve.</summary>
 	/// <param name="column">The column to check.</param>
 	/// <returns><see langword="true"/> if the column takes longer to retrieve; otherwise, <see langword="false"/>.</returns>
-	public bool IsColumnSlow(DataColumn column) => (bool)column.ExtendedProperties[extSlow];
+	public static bool IsColumnSlow(DataColumn column) => (bool)column.ExtendedProperties[extSlow]!;
 
 	/// <summary>Populates the table with all the requested shell items.</summary>
 	/// <param name="columns">The names of the columns to populate.</param>
 	/// <param name="cancellationToken">The cancellation token.</param>
 	public async Task PopulateTableAsync(IEnumerable<string> columns, CancellationToken cancellationToken)
 	{
-		var columnsToGet = columns.Where(n => n != colId).Select(n => Columns[n]).ToArray();
+		DataColumn[] columnsToGet = columns.Where(n => n != colId).Select(n => Columns[n]).WhereNotNull().ToArray();
 		await PopulateTableAsync(columnsToGet, cancellationToken);
 	}
 
@@ -97,19 +98,20 @@ public class ShellDataTable : DataTable
 	/// <summary>Populates the table with all the requested shell items.</summary>
 	/// <param name="columns">The columns to populate.</param>
 	/// <param name="cancellationToken">The cancellation token.</param>
+	[MemberNotNull(nameof(colsToGet))]
 	public async Task PopulateTableAsync(IEnumerable<DataColumn> columns, CancellationToken cancellationToken)
 	{
 		var columnsToGet = columns.ToArray();
 		if (columnsToGet.Except(Columns.Cast<DataColumn>()).Any())
-			throw new ArgumentException("Columns specified that are not in table.", nameof(columnsToGet));
+			throw new ArgumentException("Columns specified that are not in table.", nameof(columns));
 		colsToGet = columnsToGet;
 
-		if (!(parent is null))
+		if (parent is not null)
 		{
 			items = parent.IShellFolder.EnumObjects((SHCONTF)itemFilter);
 		}
 
-		if (items is null && !(parent is null))
+		if (items is null && parent is not null)
 		{
 			items = parent.IShellFolder.EnumObjects((SHCONTF)itemFilter);
 		}
@@ -118,10 +120,10 @@ public class ShellDataTable : DataTable
 			Rows.Clear();
 
 		var f2 = parent?.IShellFolder as IShellFolder2;
-		if (!(items is null))
+		if (items is not null)
 		{
 			var slowFetchItems = new List<Task>();
-			var cInfo = columnsToGet.ToLookup(c => IsColumnSlow(c), c => ((PROPERTYKEY)c.ExtendedProperties[extPropKey], c));
+			var cInfo = columnsToGet.ToLookup(c => IsColumnSlow(c), c => ((PROPERTYKEY)c.ExtendedProperties[extPropKey]!, c));
 			var fastCols = cInfo[false].ToList();
 			var slowCols = cInfo[true].ToList();
 			foreach (var i in items)
@@ -145,9 +147,9 @@ public class ShellDataTable : DataTable
 		TableLoaded?.Invoke(this, EventArgs.Empty);
 		return;
 
-		object GetProp(in PROPERTYKEY pk, PIDL i)
+		object? GetProp(in PROPERTYKEY pk, PIDL i)
 		{
-			object o = null;
+			object? o = null;
 			try
 			{
 				if (f2 is null)
@@ -187,7 +189,7 @@ public class ShellDataTable : DataTable
 	/// <summary>Refreshes the data table. If columns have not been previously provided, the default columns are used.</summary>
 	/// <param name="cancellationToken">The cancellation token.</param>
 	public async Task RefreshAsync(CancellationToken cancellationToken) =>
-		await PopulateTableAsync((IEnumerable<DataColumn>)colsToGet ?? DefaultColumns, cancellationToken);
+		await PopulateTableAsync((IEnumerable<DataColumn>?)colsToGet ?? DefaultColumns, cancellationToken);
 
 	private void BuildColumns(ShellFolder folder)
 	{
@@ -210,13 +212,13 @@ public class ShellDataTable : DataTable
 			}
 		}
 		Columns.Add(SetExtProp(new DataColumn(colId, typeof(byte[]))));
-		defCols = new List<DataColumn>(Columns.Cast<DataColumn>().Where(c => GetColumnState(c).IsFlagSet(SHCOLSTATE.SHCOLSTATE_ONBYDEFAULT)));
+		defCols.AddRange(Columns.Cast<DataColumn>().Where(c => GetColumnState(c).IsFlagSet(SHCOLSTATE.SHCOLSTATE_ONBYDEFAULT)));
 		EndInit();
 
-		static Type GetPropType(PropertyDescription pd)
+		static Type? GetPropType(PropertyDescription? pd)
 		{
 			var t = pd?.PropertyType;
-			if (t.Equals(typeof(FILETIME)))
+			if (Equals(t, typeof(FILETIME)))
 				t = typeof(DateTime);
 			return t;
 		}

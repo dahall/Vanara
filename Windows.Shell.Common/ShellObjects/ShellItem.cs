@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
@@ -336,13 +338,13 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	internal static readonly bool IsMinVista = Environment.OSVersion.Version.Major >= 6;
 	internal static readonly PROPERTYKEY pkItemType = PROPERTYKEY.System.ItemType;
 	internal IShellItem iShellItem;
-	internal IShellItem2 iShellItem2;
-	private ShellItemImages images;
-	private ShellContextMenu menu;
-	private PropertyDescriptionList propDescList;
-	private ShellItemPropertyStore props;
-	private IQueryInfo qi;
-	private static Lazy<Dictionary<Type, BHID>> bhidLookup = new(() =>
+	internal IShellItem2? iShellItem2;
+	private ShellItemImages? images;
+	private ShellContextMenu? menu;
+	private PropertyDescriptionList? propDescList;
+	private ShellItemPropertyStore? props;
+	private IQueryInfo? qi;
+	private static readonly Lazy<Dictionary<Type, BHID>> bhidLookup = new(() =>
 		new Dictionary<Type, BHID>
 		{
 			{ typeof(IIdentityName), BHID.BHID_SFObject },
@@ -399,21 +401,13 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <param name="idList">The ID list.</param>
 	public ShellItem(PIDL idList)
 	{
-		if (idList == null || idList.IsInvalid) throw new ArgumentNullException(nameof(idList));
-		if (IsMinVista)
-		{
-			SHCreateItemFromIDList(idList, typeof(IShellItem).GUID, out var obj).ThrowIfFailed();
-			Init((IShellItem)obj);
-		}
-		else
-		{
-			Init(new ShellItemImpl(idList, false));
-		}
+		if (idList is null || idList.IsInvalid) throw new ArgumentNullException(nameof(idList));
+		Init(IsMinVista ? SHCreateItemFromIDList<IShellItem>(idList) : new ShellItemImpl(idList, false));
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 	/// <param name="si">An existing IShellItem instance.</param>
-	protected internal ShellItem(IShellItem si) => Init(si);
+	protected internal ShellItem(IShellItem? si) => Init(si);
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 	/// <param name="knownFolder">A known folder reference.</param>
@@ -421,8 +415,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		if (IsMin7)
 		{
-			SHGetKnownFolderItem(knownFolder.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, HTOKEN.NULL, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
-			Init((IShellItem)ppv);
+			Init(SHGetKnownFolderItem<IShellItem>(knownFolder));
 		}
 		else
 		{
@@ -434,13 +427,15 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	protected ShellItem() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/// <summary>Occurs when a property value changes.</summary>
-	public event PropertyChangedEventHandler PropertyChanged
+	public event PropertyChangedEventHandler? PropertyChanged
 	{
-		add { ((INotifyPropertyChanged)Properties).PropertyChanged += value; }
-		remove { ((INotifyPropertyChanged)Properties).PropertyChanged -= value; }
+		add => Properties.PropertyChanged += value;
+		remove => Properties.PropertyChanged -= value;
 	}
 
 	/// <summary>Gets the associations defined in the registry for this shell item.</summary>
@@ -460,11 +455,11 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	public IDataObject DataObject => GetHandler<IDataObject>(BHID.BHID_SFUIObject);
 
 	/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
-	public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;
+	public ShellFileInfo? FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;
 
 	/// <summary>Gets the file system path if this item is part of the file system.</summary>
 	/// <value>The file system path.</value>
-	public string FileSystemPath => GetDisplayName(SIGDN.SIGDN_FILESYSPATH);
+	public string? FileSystemPath => GetDisplayName(SIGDN.SIGDN_FILESYSPATH);
 
 	/// <summary>Gets an object that provides access to all the images available for this shell item.</summary>
 	public ShellItemImages Images => images ??= new ShellItemImages(this);
@@ -485,7 +480,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	public virtual bool IsLink => (iShellItem?.GetAttributes(SFGAO.SFGAO_LINK) ?? 0) != 0;
 
 	/// <summary>Gets the name relative to the parent for the item.</summary>
-	public virtual string Name
+	public virtual string? Name
 	{
 		get => GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY);
 		protected set { }
@@ -493,7 +488,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Gets the parent for the current item.</summary>
 	/// <value>The parent item. If this is the desktop, this property will return <c>null</c>.</value>
-	public ShellFolder Parent
+	public ShellFolder? Parent
 	{
 		get
 		{
@@ -504,7 +499,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Gets a string that can be used to parse an absolute value from the Desktop.</summary>
 	/// <value>A parsable name for the item.</value>
-	public string ParsingName => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING);
+	public string? ParsingName => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING);
 
 	/// <summary>Gets the item's ID list.</summary>
 	/// <value>The ID list for the item.</value>
@@ -512,8 +507,9 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		get
 		{
-			if (iShellItem is null) return null;
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			SHGetIDListFromObject(iShellItem, out var pidl).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			return pidl;
 		}
 	}
@@ -540,7 +536,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Gets the of verbs defined for this item.</summary>
 	/// <value>The list of verbs.</value>
-	public IEnumerable<string> Verbs => ContextMenu.GetItems(CMF.CMF_EXTENDEDVERBS).Select(i => i.Verb).Where(v => v is not null);
+	public IEnumerable<string> Verbs => ContextMenu.GetItems(CMF.CMF_EXTENDEDVERBS).Select(i => i.Verb).WhereNotNull();
 
 	/// <summary>Gets the system bind context.</summary>
 	/// <value>The bind context.</value>
@@ -549,14 +545,14 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <summary>Creates the most specialized derivative of ShellItem from a path.</summary>
 	/// <param name="path">The file system path of the item.</param>
 	/// <returns>A ShellItem derivative for the supplied path.</returns>
-	public static ShellItem Open(string path) => Open(ShellUtil.GetShellItemForPath(path));
+	public static ShellItem Open(string path) => Open(ShellUtil.GetShellItemForPath(path) ?? throw new FileNotFoundException(null, path));
 
 	/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
 	/// <param name="iItem">The IShellItem object.</param>
 	/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
 	public static ShellItem Open(IShellItem iItem)
 	{
-		string itemType = null;
+		string? itemType = null;
 		try { itemType = (iItem as IShellItem2)?.GetString(pkItemType)?.ToString().ToLowerInvariant(); } catch { }
 
 		// Try to get specialized folder type from property
@@ -581,28 +577,28 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <param name="iFolder">The IShellFolder for the parent.</param>
 	/// <param name="pidl">The relative ID List for a child item within <paramref name="iFolder"/>.</param>
 	/// <returns>A ShellItem derivative for the supplied parented PIDL.</returns>
-	public static ShellItem Open(IShellFolder iFolder, PIDL pidl) => Open(SHCreateItemWithParent<IShellItem>(iFolder, pidl));
+	public static ShellItem Open(IShellFolder iFolder, PIDL pidl) => Open(SHCreateItemWithParent<IShellItem>(iFolder, pidl) ?? throw new FileNotFoundException());
 
 	/// <summary>Creates the most specialized derivative of ShellItem from a PIDL.</summary>
 	/// <param name="idList">The ID list.</param>
 	/// <returns>A ShellItem derivative for the supplied PIDL.</returns>
 	public static ShellItem Open(PIDL idList)
 	{
-		if (idList == null || idList.IsInvalid) throw new ArgumentNullException(nameof(idList));
-		return IsMinVista ? Open(SHCreateItemFromIDList<IShellItem>(idList)) : Open(new ShellItemImpl(idList, false));
+		if (idList is null || idList.IsInvalid) throw new ArgumentNullException(nameof(idList));
+		return IsMinVista ? Open(SHCreateItemFromIDList<IShellItem>(idList) ?? throw new FileNotFoundException()) : Open(new ShellItemImpl(idList, false));
 	}
 
 	/// <summary>Implements the operator !=.</summary>
 	/// <param name="left">The left operand.</param>
 	/// <param name="right">The right operand.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(ShellItem left, ShellItem right) => !(left == right);
+	public static bool operator !=(ShellItem? left, ShellItem? right) => !(left == right);
 
 	/// <summary>Implements the operator ==.</summary>
 	/// <param name="left">The left operand.</param>
 	/// <param name="right">The right operand.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator ==(ShellItem left, ShellItem right) => Equals(left?.iShellItem, right?.iShellItem);
+	public static bool operator ==(ShellItem? left, ShellItem? right) => Equals(left?.iShellItem, right?.iShellItem);
 
 	/// <summary>
 	/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
@@ -614,7 +610,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals
 	/// zero; if they are different the parameter is nonzero.
 	/// </returns>
-	public int CompareTo(ShellItem other, ShellItemComparison hint = ShellItemComparison.SecondaryFileSystemPath) => iShellItem.Compare(other?.iShellItem, (SICHINTF)hint);
+	public int CompareTo(ShellItem? other, ShellItemComparison hint = ShellItemComparison.SecondaryFileSystemPath) => iShellItem.Compare(other?.iShellItem, (SICHINTF)hint);
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public virtual void Dispose()
@@ -625,28 +621,28 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		propDescList = null;
 		qi = null;
 		iShellItem2 = null;
-		iShellItem = null;
+		System.GC.SuppressFinalize(this);
 	}
 
-	/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-	/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object obj) => Equals(iShellItem, obj as IShellItem);
+	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public override bool Equals(object? obj) => Equals(iShellItem, obj as IShellItem);
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(IShellItem other) => Equals(iShellItem, other);
+	public bool Equals(IShellItem? other) => Equals(iShellItem, other);
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(ShellItem other) => Equals(iShellItem, other?.iShellItem);
+	public bool Equals(ShellItem? other) => Equals(iShellItem, other?.iShellItem);
 
 	/// <summary>Gets a formatted display name for this item.</summary>
 	/// <param name="option">The formatting options.</param>
 	/// <returns>A string with the formatted display name if successful; otherwise <c>null</c>.</returns>
-	public string GetDisplayName(ShellItemDisplayString option) => GetDisplayName((SIGDN)option);
+	public string? GetDisplayName(ShellItemDisplayString option) => GetDisplayName((SIGDN)option);
 
 	/// <summary>Gets a handler interface.</summary>
 	/// <typeparam name="TInterface">The interface of the handler to return.</typeparam>
@@ -680,7 +676,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING).GetHashCode();
+	public override int GetHashCode() => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING)?.GetHashCode() ?? 0;
 
 	/// <summary>
 	/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current
@@ -706,7 +702,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			try { return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(keyType, typeof(IPropertyDescriptionList).GUID)); }
 			catch { }
 		}
-		return new PropertyDescriptionList((IPropertyDescriptionList)null);
+		return new PropertyDescriptionList((IPropertyDescriptionList?)null);
 	}
 
 	/// <summary>Gets the stream of the file contents.</summary>
@@ -742,15 +738,15 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// If <see langword="true"/>, the system is prevented from displaying user interface elements (for example, error messages) while
 	/// carrying out the command.
 	/// </param>
-	public void InvokeVerb(string verb, string args = null, bool hideUI = false)
+	public void InvokeVerb(string verb, string? args = null, bool hideUI = false)
 	{
 		using var pVerb = new SafeResourceId(verb);
 		ContextMenu.InvokeCommand(pVerb, parent: hideUI ? HWND.NULL : GetDesktopWindow(), parameters: args);
 	}
 
-	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public override string ToString() => Name;
+	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+	/// <returns>A <see cref="string"/> that represents this instance.</returns>
+	public override string ToString() => Name ?? "";
 
 	/// <summary>Returns a URI representation of the <see cref="ShellItem"/>.</summary>
 	public Uri ToUri()
@@ -758,78 +754,23 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		try
 		{
 			using var pkfmgr = ComReleaserFactory.Create(new IKnownFolderManager());
-			using var pkf = ComReleaserFactory.Create(IsFileSystem ? pkfmgr.Item.FindFolderFromPath(FileSystemPath, FFFP_MODE.FFFP_NEARESTPARENTMATCH) : pkfmgr.Item.FindFolderFromIDList(PIDL));
+			using var pkf = ComReleaserFactory.Create(IsFileSystem ? pkfmgr.Item.FindFolderFromPath(FileSystemPath!, FFFP_MODE.FFFP_NEARESTPARENTMATCH) : pkfmgr.Item.FindFolderFromIDList(PIDL));
 
 			var path = new StringBuilder($"shell:::{pkf.Item.GetId():B}");
 
 			using var kfPidl = pkf.Item.GetIDList(0);
 			var dirs = new Stack<string>();
-			for (var item = this; item.PIDL != kfPidl; item = item.Parent)
-				dirs.Push(item.GetDisplayName(ShellItemDisplayString.ParentRelativeParsing));
+			for (ShellItem? item = this; !Equals(item?.PIDL, kfPidl); item = item.Parent)
+				dirs.Push(item!.GetDisplayName(ShellItemDisplayString.ParentRelativeParsing)!);
 
 			while (dirs.Count > 0)
 				path.Append('/' + dirs.Pop());
 
 			return new Uri(path.ToString());
 		}
-
-		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net45)'
-		Before:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		After:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		*/
-
-		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net48)'
-		Before:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		After:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		*/
-
-		/* Unmerged change from project 'Vanara.Windows.Shell.Common (netstandard2.0)'
-		Before:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		After:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		*/
-
-		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net6.0)'
-		Before:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		After:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		*/
-
-		/* Unmerged change from project 'Vanara.Windows.Shell.Common (net7.0)'
-		Before:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		After:
-				catch { }
-
-				return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
-		*/
 		catch { }
 
-		return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		return IsFileSystem ? new Uri(FileSystemPath!) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
 	}
 
 	/// <summary>Ensures that all cached information for this item is updated.</summary>
@@ -837,7 +778,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		props?.Commit();
 		ThrowIfNoShellItem2();
-		iShellItem2.Update(BindContext);
+		iShellItem2!.Update(BindContext);
 	}
 
 	/// <summary>Open a new Windows Explorer window with this item selected if item or this item if folder.</summary>
@@ -846,7 +787,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		if (IsFolder)
 			SHOpenFolderAndSelectItems(PIDL, 0, null, OFASI.OFASI_NONE);
 		else
-			SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
+			SHOpenFolderAndSelectItems(Parent!.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
 	}
 
 	/// <summary>
@@ -858,7 +799,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals
 	/// zero; if they are different the parameter is nonzero.
 	/// </returns>
-	int IComparable<ShellItem>.CompareTo(ShellItem other) => CompareTo(other);
+	int IComparable<ShellItem>.CompareTo(ShellItem? other) => CompareTo(other);
 
 	/// <summary>Gets the BHID for the supplied <typeparamref name="TInterface"/>.</summary>
 	/// <typeparam name="TInterface">The type of the interface to lookup.</typeparam>
@@ -891,7 +832,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	protected virtual IEnumerable<ShellItem> EnumerateChildren()
 	{
 		if (!IsMinVista) yield break;
-		IEnumShellItems ie = null;
+		IEnumShellItems? ie = null;
 		try
 		{
 			ie = GetHandler<IEnumShellItems>(BHID.BHID_EnumItems);
@@ -902,9 +843,9 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			var a = new IShellItem[1];
 			while (ie.Next(1, a, out var f).Succeeded && f == 1)
 			{
-				ShellItem i = null;
+				ShellItem? i = null;
 				try { i = Open(a[0]); } catch (Exception e) { Debug.WriteLine($"Unable to open child: {e.Message}"); }
-				if (i != null) yield return i;
+				if (i is not null) yield return i;
 			}
 			Marshal.ReleaseComObject(ie);
 		}
@@ -913,7 +854,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <summary>Gets the display name.</summary>
 	/// <param name="dn">The display name option.</param>
 	/// <returns>The display name.</returns>
-	protected virtual string GetDisplayName(SIGDN dn)
+	protected virtual string? GetDisplayName(SIGDN dn)
 	{
 		try { return iShellItem?.GetDisplayName(dn); } catch { }
 		return null;
@@ -921,13 +862,14 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Initializes this instance with the specified IShellItem.</summary>
 	/// <param name="si">The IShellItem object.</param>
-	protected void Init(IShellItem si)
+	[MemberNotNull(nameof(iShellItem))]
+	protected void Init(IShellItem? si)
 	{
 		iShellItem = si ?? throw new ArgumentNullException(nameof(si));
 		iShellItem2 = si as IShellItem2;
 	}
 
-	internal static bool Equals(IShellItem left, IShellItem right)
+	internal static bool Equals(IShellItem? left, IShellItem? right)
 	{
 		if (ReferenceEquals(left, right)) return true;
 		if (left is null || right is null) return false;
@@ -957,7 +899,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
 		/// <exception cref="InvalidCastException"></exception>
 		[return: MarshalAs(UnmanagedType.Interface)]
-		public object BindToHandler(IBindCtx pbc, in Guid bhid, in Guid riid)
+		public object BindToHandler(IBindCtx? pbc, in Guid bhid, in Guid riid)
 		{
 			if (riid == typeof(IShellFolder).GUID)
 				return Marshal.GetIUnknownForObject(GetIShellFolder());
@@ -974,8 +916,9 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		/// This parameter receives the result of the comparison. If the two items are the same this parameter equals zero; if they are
 		/// different the parameter is nonzero.
 		/// </returns>
-		public int Compare(IShellItem psi, SICHINTF hint)
+		public int Compare(IShellItem? psi, SICHINTF hint)
 		{
+			if (psi is null) return 1;
 			var other = (ShellItemImpl)psi;
 			var p1 = InternalGetParent();
 			var p2 = other.InternalGetParent();
@@ -985,7 +928,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public void Dispose() => PIDL = null;
+		public void Dispose() => System.GC.SuppressFinalize(this);
 
 		/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
 		/// <param name="sfgaoMask">
@@ -1021,7 +964,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			}
 
 			var parentFolder = InternalGetParent().GetIShellFolder();
-			return parentFolder.GetDisplayNameOf((SHGDNF)((int)sigdnName & 0xffff), PIDL.LastId);
+			return parentFolder.GetDisplayNameOf((SHGDNF)((int)sigdnName & 0xffff), PIDL.LastId) ?? throw new InvalidOperationException();
 		}
 
 		/// <summary>Gets the parent of an IShellItem object.</summary>
@@ -1039,7 +982,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			SHGetFolderLocation(IntPtr.Zero, 0, HTOKEN.NULL, 0, out var dtPidl);
 			if (ShellFolder.Desktop.PIDL.Equals(dtPidl))
 				return ShellFolder.Desktop.iShellFolder;
-			return ShellFolder.Desktop.iShellFolder.BindToObject<IShellFolder>(PIDL);
+			return ShellFolder.Desktop.iShellFolder.BindToObject<IShellFolder>(PIDL)!;
 		}
 
 		private ShellItemImpl InternalGetParent()
@@ -1052,16 +995,16 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 internal class ShellItemTypeConverter : TypeConverter
 {
-	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+	public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
 		sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
-	public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+	public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType) =>
 		destinationType == typeof(InstanceDescriptor) || base.CanConvertTo(context, destinationType);
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
+	public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
 		value is string s ? s.Length == 0 ? ShellFolder.Desktop : ShellItem.Open(s) : base.ConvertFrom(context, culture, value);
 
-	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
 	{
 		if (value is ShellItem item)
 		{

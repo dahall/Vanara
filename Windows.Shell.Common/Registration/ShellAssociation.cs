@@ -1,6 +1,9 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
@@ -15,11 +18,11 @@ public class ShellAssociation
 	/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class.</summary>
 	/// <param name="pQA">The IQueryAssociations instance to use.</param>
 	/// <param name="ext">The optional file extension. This should be in the ".ext" format.</param>
-	internal ShellAssociation(IQueryAssociations pQA, string ext) : this(ext) => qassoc = pQA;
-
-	/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class.</summary>
-	/// <param name="ext">The file extension. This should be in the ".ext" format.</param>
-	private ShellAssociation(string ext) => Extension = ext;
+	internal ShellAssociation(IQueryAssociations pQA, string? ext)
+	{
+		qassoc = pQA;
+		Extension = ext;
+	}
 
 	/// <summary>Gets all the file associations defined for the system.</summary>
 	/// <value>Returns a <see cref="IReadOnlyDictionary{TKey, TValue}"/> value.</value>
@@ -28,39 +31,47 @@ public class ShellAssociation
 	/// <summary>
 	/// The icon reference of the app associated with the file type or URI scheme. This is configured by users in their default program settings.
 	/// </summary>
-	public string AppIconReference => GetString(ASSOCSTR.ASSOCSTR_APPICONREFERENCE);
+	[DefaultValue(null)]
+	public string? AppIconReference => GetString(ASSOCSTR.ASSOCSTR_APPICONREFERENCE);
 
 	/// <summary>
 	/// The AppUserModelID of the app associated with the file type or URI scheme. This is configured by users in their default program settings.
 	/// </summary>
-	public string AppId => GetString(ASSOCSTR.ASSOCSTR_APPID);
+	[DefaultValue(null)]
+	public string? AppId => GetString(ASSOCSTR.ASSOCSTR_APPID);
 
 	/// <summary>
 	/// The publisher of the app associated with the file type or URI scheme. This is configured by users in their default program settings.
 	/// </summary>
-	public string AppPublisher => GetString(ASSOCSTR.ASSOCSTR_APPPUBLISHER);
+	[DefaultValue(null)]
+	public string? AppPublisher => GetString(ASSOCSTR.ASSOCSTR_APPPUBLISHER);
 
 	/// <summary>
 	/// Introduced in Internet Explorer 6. Describes a general type of MIME file association, such as image and bmp, so that
 	/// applications can make general assumptions about a specific file type.
 	/// </summary>
-	public string ContentType => GetString(ASSOCSTR.ASSOCSTR_CONTENTTYPE);
+	[DefaultValue(null)]
+	public string? ContentType => GetString(ASSOCSTR.ASSOCSTR_CONTENTTYPE);
 
 	/// <summary>
 	/// Introduced in Internet Explorer 6. Returns the path to the icon resources to use by default for this association. Positive
 	/// numbers indicate an index into the dll's resource table, while negative numbers indicate a resource ID. An example of the syntax
 	/// for the resource is "c:\myfolder\myfile.dll,-1".
 	/// </summary>
-	public IconLocation DefaultIcon => IconLocation.TryParse(GetString(ASSOCSTR.ASSOCSTR_DEFAULTICON), out var loc) ? loc : null;
+	[DefaultValue(null)]
+	public IconLocation? DefaultIcon => IconLocation.TryParse(GetString(ASSOCSTR.ASSOCSTR_DEFAULTICON), out var loc) ? loc : null;
 
 	/// <summary>The extension string.</summary>
-	public string Extension { get; }
+	[DefaultValue(null)]
+	public string? Extension { get; }
 
 	/// <summary>The friendly name of an executable file.</summary>
-	public string FriendlyAppName => GetString(ASSOCSTR.ASSOCSTR_FRIENDLYAPPNAME);
+	[DefaultValue(null)]
+	public string? FriendlyAppName => GetString(ASSOCSTR.ASSOCSTR_FRIENDLYAPPNAME);
 
 	/// <summary>The friendly name of a document type.</summary>
-	public string FriendlyDocName => GetString(ASSOCSTR.ASSOCSTR_FRIENDLYDOCNAME);
+	[DefaultValue(null)]
+	public string? FriendlyDocName => GetString(ASSOCSTR.ASSOCSTR_FRIENDLYDOCNAME);
 
 	/// <summary>Gets a list of file name extension handlers.</summary>
 	/// <value>The handlers for this association.</value>
@@ -68,25 +79,28 @@ public class ShellAssociation
 	{
 		get
 		{
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			if (SHAssocEnumHandlers(Extension, ASSOC_FILTER.ASSOC_FILTER_NONE, out var ieah).Failed)
-				return (IReadOnlyList<ShellAssociationHandler>)new List<ShellAssociationHandler>();
+				return new List<ShellAssociationHandler>();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			using var pieah = ComReleaserFactory.Create(ieah);
 			var e = new Collections.IEnumFromCom<IAssocHandler>(ieah.Next, () => { });
-			return (IReadOnlyList<ShellAssociationHandler>)e.Select(i => new ShellAssociationHandler(i)).ToList();
+			return e.Select(i => new ShellAssociationHandler(i)).ToList();
 		}
 	}
 
 	/// <summary>
 	/// Corresponds to the InfoTip registry value. Returns an info tip for an item, or list of properties in the form of an
 	/// IPropertyDescriptionList from which to create an info tip, such as when hovering the cursor over a file name. The list of
-	/// properties can be parsed with PSGetPropertyDescriptionListFromString.
+	/// properties can be parsed with <see cref="PropSys.PSGetPropertyDescriptionListFromString"/>.
 	/// </summary>
-	public string InfoTip => GetString(ASSOCSTR.ASSOCSTR_INFOTIP);
+	[DefaultValue(null)]
+	public string? InfoTip => GetString(ASSOCSTR.ASSOCSTR_INFOTIP);
 
 	/// <summary>
 	/// The ProgID provided by the app associated with the file type or URI scheme. This if configured by users in their default program settings.
 	/// </summary>
-	public ProgId ProgId => ProgId.Open(GetString(ASSOCSTR.ASSOCSTR_PROGID), true, true, true);
+	public ProgId ProgId => ProgId.Open(GetString(ASSOCSTR.ASSOCSTR_PROGID)!, true, true, true);
 
 	/// <summary>
 	/// Introduced in Internet Explorer 6. Corresponds to the QuickTip registry value. Same as ASSOCSTR_INFOTIP, except that it always
@@ -95,7 +109,8 @@ public class ShellAssociation
 	/// offline or slow networks. Some of the properties returned from ASSOCSTR_INFOTIP might not be appropriate for slow property
 	/// retrieval scenarios. The list of properties can be parsed with PSGetPropertyDescriptionListFromString.
 	/// </summary>
-	public string QuickTip => GetString(ASSOCSTR.ASSOCSTR_QUICKTIP);
+	[DefaultValue(null)]
+	public string? QuickTip => GetString(ASSOCSTR.ASSOCSTR_QUICKTIP);
 
 	/// <summary>
 	/// Introduced in Internet Explorer 6. For an object that has a Shell extension associated with it, you can use this to retrieve the
@@ -103,10 +118,12 @@ public class ShellAssociation
 	/// parameter of IQueryAssociations::GetString. For example, if you want to retrieve a handler that implements the IExtractImage
 	/// interface, you would specify "{BB2E617C-0920-11d1-9A0B-00C04FC2D6C1}", which is the IID of IExtractImage.
 	/// </summary>
-	public IndirectString ShellExtension => IndirectString.TryParse(GetString(ASSOCSTR.ASSOCSTR_SHELLEXTENSION), out var s) ? s : null;
+	[DefaultValue(null)]
+	public IndirectString? ShellExtension => IndirectString.TryParse(GetString(ASSOCSTR.ASSOCSTR_SHELLEXTENSION), out var s) ? s : null;
 
-	/// <summary>Introduced in Windows 8.</summary>
-	public Guid? SupportedUriProtocols { get { try { return new Guid(GetString(ASSOCSTR.ASSOCSTR_SUPPORTED_URI_PROTOCOLS)); } catch { return null; } } }
+	/// <summary>A string value of the URI protocol schemes. For example, <c>http:https:ftp:file:</c> or <c>*</c> indicating all.</summary>
+	[DefaultValue(null)]
+	public string? SupportedUriProtocols => GetString(ASSOCSTR.ASSOCSTR_SUPPORTED_URI_PROTOCOLS);
 
 	/// <summary>
 	/// Introduced in Internet Explorer 6. Corresponds to the TileInfo registry value. Contains a list of properties to be displayed for
@@ -114,11 +131,12 @@ public class ShellAssociation
 	/// ASSOCSTR_QUICKTIP, it also returns a list of property names in the form of an IPropertyDescriptionList. The list of properties
 	/// can be parsed with PSGetPropertyDescriptionListFromString.
 	/// </summary>
-	public string TileInfo => GetString(ASSOCSTR.ASSOCSTR_TILEINFO);
+	[DefaultValue(null)]
+	public string? TileInfo => GetString(ASSOCSTR.ASSOCSTR_TILEINFO);
 
 	/// <summary>Gets the command verbs for this file association.</summary>
 	/// <value>Returns a <see cref="IReadOnlyDictionary{TKey, TValue}"/> value.</value>
-	public IReadOnlyDictionary<string, CommandVerb> Verbs => null; //throw new NotImplementedException(); // TODO
+	private IReadOnlyDictionary<string, CommandVerb> Verbs => throw new NotImplementedException(); // TODO
 
 	/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class based on the supplied executable name.</summary>
 	/// <param name="appExeName">The full path of the application executable.</param>
@@ -154,8 +172,9 @@ public class ShellAssociation
 	/// parameter to <see langword="null"/> if it is not used.
 	/// </param>
 	/// <returns>A value that, when this method returns successfully, receives the requested data value.</returns>
-	public SafeCoTaskMemHandle GetData(ASSOCDATA data, string extra = null)
+	public SafeCoTaskMemHandle? GetData(ASSOCDATA data, string? extra = null)
 	{
+		if (qassoc is null) return null;
 		try
 		{
 			const ASSOCF flags = 0;
@@ -179,7 +198,7 @@ public class ShellAssociation
 	/// parameter to <see langword="null"/> if it is not used.
 	/// </param>
 	/// <returns>A handle to the resulting registry key.</returns>
-	public SafeRegistryHandle GetKey(ASSOCKEY key, string extra = null)
+	public SafeRegistryHandle GetKey(ASSOCKEY key, string? extra = null)
 	{
 		const ASSOCF flags = 0;
 		qassoc.GetKey(flags, key, extra, out var hkey);
@@ -195,7 +214,7 @@ public class ShellAssociation
 	/// <returns>
 	/// A string used to return the requested string. If there are no results for this value, <see langword="null"/> is returned.
 	/// </returns>
-	public string GetString(ASSOCSTR astr, string extra = null)
+	public string? GetString(ASSOCSTR astr, string? extra = null)
 	{
 		try
 		{
@@ -212,6 +231,7 @@ public class ShellAssociation
 		}
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static ShellAssociation CreateAndInit(ASSOCF flags, string assoc)
 	{
 		// if (Environment.OSVersion.Version.Major >= 6)
@@ -219,16 +239,9 @@ public class ShellAssociation
 		//AssocCreateForClasses(elements, (uint)elements.Length, typeof(IQueryAssociations).GUID, out var iq).ThrowIfFailed();
 		//ret.qassoc = (IQueryAssociations)iq;
 
-		var ret = new ShellAssociation(assoc) { qassoc = AssocCreate() };
-		try
-		{
-			ret.qassoc.Init(flags, assoc);
-			return ret;
-		}
-		catch
-		{
-			return null;
-		}
+		var ret = new ShellAssociation(AssocCreate(), assoc);
+		ret.qassoc.Init(flags, assoc);
+		return ret;
 	}
 
 	/// <summary>Represents a handler (executable) for a <see cref="ShellAssociation"/>.</summary>
@@ -243,7 +256,7 @@ public class ShellAssociation
 		/// An <see cref="IconLocation"/> instance that contains the path and the index of the icon within the resource file for the
 		/// application's icon.
 		/// </value>
-		public IconLocation IconLocation => ComInterface.GetIconLocation(out var p, out var i).Succeeded ? new IconLocation(p, i) : null;
+		public IconLocation? IconLocation => ComInterface.GetIconLocation(out var p, out var i).Succeeded ? new IconLocation(p, i) : null;
 
 		/// <summary>Indicates whether the application is registered as a recommended handler for the queried file type.</summary>
 		/// <value><see langword="true"/> if this instance is recommended; otherwise, <see langword="false"/>.</value>
@@ -265,20 +278,20 @@ public class ShellAssociation
 
 		/// <summary>Retrieves the full path and file name of the executable file associated with the file type.</summary>
 		/// <value>A string that contains the full path of the file, including the file name.</value>
-		public string Name => ComInterface.GetName(out var n).Succeeded ? n : null;
+		public string? Name => ComInterface.GetName(out var n).Succeeded ? n : null;
 
 		/// <summary>Retrieves the display name of an application.</summary>
 		/// <value>A string that contains the display name of the application.</value>
-		public string UIName => ComInterface.GetUIName(out var n).Succeeded ? n : null;
+		public string? UIName => ComInterface.GetUIName(out var n).Succeeded ? n : null;
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public override bool Equals(IAssocHandler other) => Name.Equals(other.GetName(out var n).Succeeded ? n : null);
+		public override bool Equals(IAssocHandler? other) => string.Equals(Name, other is not null && other.GetName(out var n).Succeeded ? n : null);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => Name.GetHashCode();
+		public override int GetHashCode() => Name?.GetHashCode() ?? 0;
 
 		/// <summary>Directly invokes the associated handler.</summary>
 		/// <param name="items">A sequence of selected items on which to invoke the handler.</param>
@@ -328,12 +341,12 @@ public class ShellAssociation
 
 		private static System.Runtime.InteropServices.ComTypes.IDataObject CreateDataObj(IEnumerable<ShellItem> items)
 		{
-			if ((items?.Count() ?? 0) == 0)
+			if (items is null || !items.Any())
 				throw new ArgumentNullException(nameof(items));
 
 			if (items is not ShellItemArray litems)
 				litems = new ShellItemArray(items);
-			return litems.ToDataObject();
+			return litems.ToDataObject()!;
 		}
 	}
 }

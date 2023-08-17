@@ -53,7 +53,7 @@ public class TempFile : IDisposable
 	/// FileFlagsAndAttributes)"/> constructor.
 	/// </summary>
 	/// <value>The file handle.</value>
-	public SafeHFILE hFile { get; }
+	public SafeHFILE? hFile { get; }
 
 	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
 	/// <returns></returns>

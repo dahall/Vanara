@@ -24,7 +24,7 @@ public class GenericComTester<TInt> where TInt : class
 
 public class GenericTester<T> where T : class, IDisposable
 {
-	public virtual T Instance { get; protected set; }
+	public virtual T? Instance { get; protected set; }
 
 	[OneTimeSetUp]
 	public virtual void Setup() => Instance = InitInstance();

@@ -10,16 +10,16 @@ namespace Vanara.Windows.Shell;
 /// <summary>Encapsulates the IPropertyStore object.</summary>
 /// <seealso cref="IDictionary{PROPERTYKEY, Object}"/>
 /// <seealso cref="IDisposable"/>
-public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERTYKEY, object>, IDisposable, INotifyPropertyChanged
+public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERTYKEY, object?>, IDisposable, INotifyPropertyChanged
 {
 	private bool noICapabilities = false;
-	private IPropertyStoreCapabilities pCapabilities;
+	private IPropertyStoreCapabilities? pCapabilities;
 
 	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
 	protected PropertyStore() { }
 
 	/// <summary>Occurs when a property value changes.</summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Gets or sets a value indicating whether this property store has uncommitted changes.</summary>
 	/// <value><c>true</c> if this instance is dirty; otherwise, <c>false</c>.</value>
@@ -32,13 +32,13 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	public new ICollection<PROPERTYKEY> Keys => base.Keys.ToList();
 
 	/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
-	public new ICollection<object> Values => base.Values.ToList();
+	public new ICollection<object?> Values => base.Values.ToList();
 
 	/// <summary>Gets or sets the value of the property with the specified known key.</summary>
 	/// <value>The value.</value>
 	/// <param name="knownKey">The known key of the property (e.g. "System.Title"}.</param>
 	/// <returns>The value of the property.</returns>
-	public new object this[string knownKey]
+	public new object? this[string knownKey]
 	{
 		get => base[knownKey];
 		set => this[GetPropertyKeyFromName(knownKey)] = value;
@@ -48,7 +48,7 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	/// <value>The value.</value>
 	/// <param name="key">The PROPERTYKEY of the property.</param>
 	/// <returns>The value of the property.</returns>
-	public new object this[PROPERTYKEY key]
+	public new object? this[PROPERTYKEY key]
 	{
 		get => base[key];
 		set => Add(key, value);
@@ -57,18 +57,15 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	/// <summary>Adds a property with the provided key and value to the property store.</summary>
 	/// <param name="key">The PROPERTYKEY for the new property.</param>
 	/// <param name="value">The value of the new property.</param>
-	public virtual void Add(PROPERTYKEY key, object value)
+	public virtual void Add(PROPERTYKEY key, object? value) => Run(ps =>
 	{
-		Run(ps =>
-		{
-			if (ps is null)
-				throw new InvalidOperationException("Property store does not exist.");
-			if (IsReadOnly)
-				throw new InvalidOperationException("Property store is read-only.");
-			ps.SetValue(key, value, false);
-			OnPropertyChanged(key.ToString());
-		});
-	}
+		if (ps is null)
+			throw new InvalidOperationException("Property store does not exist.");
+		if (IsReadOnly)
+			throw new InvalidOperationException("Property store is read-only.");
+		ps.SetValue(key, value, false);
+		OnPropertyChanged(key.ToString());
+	});
 
 	/// <summary>Commits all changes to the property store.</summary>
 	public void Commit()
@@ -83,6 +80,7 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	{
 		Commit();
 		base.Dispose();
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Queries whether the property handler allows a specific property to be edited in the UI by the user.</summary>
@@ -101,7 +99,7 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 		// Check for an IPropertyStoreCapabilities if possible
 		if (pCapabilities is null && !noICapabilities)
 		{
-			try { pCapabilities = (IPropertyStoreCapabilities)iPropertyStore; } catch { }
+			try { pCapabilities = iPropertyStore as IPropertyStoreCapabilities; } catch { }
 			if (pCapabilities is null)
 				noICapabilities = true;
 		}
@@ -121,23 +119,23 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 			}
 		}
 		else
-			return pCapabilities.IsPropertyWritable(key) == HRESULT.S_OK;
+			return pCapabilities!.IsPropertyWritable(key) == HRESULT.S_OK;
 	}
 
 	/// <summary>Adds an item to the <see cref="ICollection{T}"/>.</summary>
 	/// <param name="item">The object to add to the <see cref="ICollection{T}"/>.</param>
-	void ICollection<KeyValuePair<PROPERTYKEY, object>>.Add(KeyValuePair<PROPERTYKEY, object> item) => Add(item.Key, item.Value);
+	void ICollection<KeyValuePair<PROPERTYKEY, object?>>.Add(KeyValuePair<PROPERTYKEY, object?> item) => Add(item.Key, item.Value);
 
 	/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
 	/// <exception cref="InvalidOperationException"></exception>
-	void ICollection<KeyValuePair<PROPERTYKEY, object>>.Clear() => throw new InvalidOperationException();
+	void ICollection<KeyValuePair<PROPERTYKEY, object?>>.Clear() => throw new InvalidOperationException();
 
 	/// <summary>Determines whether the <see cref="ICollection{T}"/> contains a specific value.</summary>
 	/// <param name="item">The object to locate in the <see cref="ICollection{T}"/>.</param>
 	/// <returns>
 	/// <see langword="true"/> if <paramref name="item"/> is found in the <see cref="ICollection{T}"/>; otherwise, <see langword="false"/>.
 	/// </returns>
-	bool ICollection<KeyValuePair<PROPERTYKEY, object>>.Contains(KeyValuePair<PROPERTYKEY, object> item) => Run(ps => TryGetValue(ps, item.Key, out object o) && Equals(o, item.Value));
+	bool ICollection<KeyValuePair<PROPERTYKEY, object?>>.Contains(KeyValuePair<PROPERTYKEY, object?> item) => Run(ps => TryGetValue(ps, item.Key, out object? o) && Equals(o, item.Value));
 
 	/// <summary>Removes the element with the specified key from the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
 	/// <param name="key">The key of the element to remove.</param>
@@ -146,7 +144,7 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	/// langword="false"/> if <paramref name="key"/> was not found in the original <see cref="IDictionary{PROPERTYKEY, Object}"/>.
 	/// </returns>
 	/// <exception cref="InvalidOperationException"></exception>
-	bool IDictionary<PROPERTYKEY, object>.Remove(PROPERTYKEY key) => throw new InvalidOperationException();
+	bool IDictionary<PROPERTYKEY, object?>.Remove(PROPERTYKEY key) => throw new InvalidOperationException();
 
 	/// <summary>Removes the first occurrence of a specific object from the <see cref="ICollection{T}"/>.</summary>
 	/// <param name="item">The object to remove from the <see cref="ICollection{T}"/>.</param>
@@ -156,7 +154,7 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	/// original <see cref="ICollection{T}"/>.
 	/// </returns>
 	/// <exception cref="InvalidOperationException"></exception>
-	bool ICollection<KeyValuePair<PROPERTYKEY, object>>.Remove(KeyValuePair<PROPERTYKEY, object> item) => throw new InvalidOperationException();
+	bool ICollection<KeyValuePair<PROPERTYKEY, object?>>.Remove(KeyValuePair<PROPERTYKEY, object?> item) => throw new InvalidOperationException();
 
 	/// <summary>Called when a property has changed.</summary>
 	protected virtual void OnPropertyChanged(string propertyName)

@@ -196,7 +196,7 @@ public static partial class Shell32
 
 		/// <summary>Specifies a dialog box used to display the progress of the operation.</summary>
 		/// <param name="popd">Pointer to an IOperationsProgressDialog object that represents the dialog box.</param>
-		void SetProgressDialog(IOperationsProgressDialog popd);
+		void SetProgressDialog(IOperationsProgressDialog? popd);
 
 		/// <summary>Declares a set of properties and values to be set on an item or items.</summary>
 		/// <param name="pproparray">

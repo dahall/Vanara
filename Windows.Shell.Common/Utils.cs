@@ -14,26 +14,19 @@ public static class Utils
 	/// <param name="ptr">The pointer to the clipboard formatted HTML.</param>
 	/// <returns>The string representing the HTML.</returns>
 	/// <exception cref="InvalidOperationException">HTML format header cannot be processed.</exception>
-	public static string GetHtml(IntPtr ptr)
+	public static string? GetHtml(IntPtr ptr)
 	{
 		if (ptr == IntPtr.Zero)
-		{
 			return null;
-		}
 
 		int byteCount = GlobalSize(ptr);
 
 		// If not an HGLOBAL pointer, find length of data by looking for a '\0' byte.
 		if (byteCount == 0)
-		{
 			unsafe
 			{
-				for (byte* bp = (byte*)ptr.ToPointer(); byteCount < 4 * 1024 * 1024 && *bp != 0; byteCount++, bp++)
-				{
-					;
-				}
+				for (byte* bp = (byte*)ptr.ToPointer(); byteCount < 4 * 1024 * 1024 && *bp != 0; byteCount++, bp++) ;
 			}
-		}
 
 		return GetHtmlFromClipboard(new SafeMoveableHGlobalHandle(ptr, false).GetBytes());
 	}
@@ -50,10 +43,7 @@ public static class Utils
 	{
 		StringCollection sc = new();
 		if (e != null)
-		{
 			sc.AddRange(e.ToArray());
-		}
-
 		return sc;
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Vanara.PInvoke;
@@ -17,7 +18,7 @@ public interface IJumpListItem : INotifyPropertyChanged
 {
 	/// <summary>Gets the category to which the item belongs.</summary>
 	/// <value>The category name.</value>
-	string Category { get; }
+	string? Category { get; }
 
 	/// <summary>Creates a shell object based on this item.</summary>
 	/// <returns>An instance of either <see cref="IShellItem"/> or <see cref="IShellLinkW"/>.</returns>
@@ -75,7 +76,9 @@ public class JumpList : ObservableCollection<IJumpListItem>
 	public static void AddToRecentDocs(IShellItem iShellItem)
 	{
 		if (iShellItem is null) throw new ArgumentNullException(nameof(iShellItem));
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHAddToRecentDocs(SHARD.SHARD_SHELLITEM, iShellItem);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>
@@ -86,7 +89,9 @@ public class JumpList : ObservableCollection<IJumpListItem>
 	public static void AddToRecentDocs(IShellLinkW iShellLink)
 	{
 		if (iShellLink is null) throw new ArgumentNullException(nameof(iShellLink));
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHAddToRecentDocs(SHARD.SHARD_LINK, iShellLink);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>
@@ -104,11 +109,11 @@ public class JumpList : ObservableCollection<IJumpListItem>
 	}
 
 	/// <summary>Clears the system usage data for recent documents.</summary>
-	public static void ClearRecentDocs() => SHAddToRecentDocs(0, (string)null);
+	public static void ClearRecentDocs() => SHAddToRecentDocs(0);
 
 	/// <summary>Deletes a custom Jump List for a specified application.</summary>
 	/// <param name="appId">The AppUserModelID of the process whose taskbar button representation displays the custom Jump List.</param>
-	public static void DeleteList(string appId = null)
+	public static void DeleteList(string? appId = null)
 	{
 		using var icdl = ComReleaserFactory.Create(new ICustomDestinationList());
 		icdl.Item.DeleteList(appId);
@@ -116,7 +121,7 @@ public class JumpList : ObservableCollection<IJumpListItem>
 
 	/// <summary>Applies the the current settings for the jumplist to the taskbar button.</summary>
 	/// <param name="appId">The application identifier.</param>
-	public void ApplySettings(string appId = null)
+	public void ApplySettings(string? appId = null)
 	{
 		using var icdl = ComReleaserFactory.Create(new ICustomDestinationList());
 		if (!string.IsNullOrEmpty(appId))
@@ -170,9 +175,9 @@ public class JumpList : ObservableCollection<IJumpListItem>
 		}
 	}
 
-	private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+	private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 	{
-		if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems.OfType<JumpListDestination>().Any(d => string.IsNullOrEmpty(d.Category)))
+		if (e.Action == NotifyCollectionChangedAction.Add && (e.NewItems is null || e.NewItems.OfType<JumpListDestination>().Any(d => string.IsNullOrEmpty(d.Category))))
 			throw new InvalidOperationException("A JumpListDestination cannot have a null category.");
 	}
 }
@@ -183,10 +188,11 @@ public class JumpListDestination : JumpListItem, IJumpListItem
 	private string path;
 
 	/// <summary>Initializes a new instance of the <see cref="JumpListDestination"/> class.</summary>
-	public JumpListDestination(string category, string path)
+	public JumpListDestination(string? category, string path)
 	{
+		if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
 		Category = category;
-		Path = path;
+		this.path = path;
 	}
 
 	/// <summary>The shell item to reference or execute.</summary>
@@ -197,10 +203,12 @@ public class JumpListDestination : JumpListItem, IJumpListItem
 		get => path;
 		set
 		{
-			if (value is null) throw new ArgumentNullException(nameof(ShellItem));
-			if (path == value) return;
-			path = value;
-			OnPropertyChanged();
+			if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(Path));
+			if (!string.Equals(path, value))
+			{
+				path = value;
+				OnPropertyChanged();
+			}
 		}
 	}
 
@@ -210,28 +218,30 @@ public class JumpListDestination : JumpListItem, IJumpListItem
 
 	/// <summary>Creates a shell object based on this item.</summary>
 	/// <returns>An interface.</returns>
-	object IJumpListItem.GetShellObject() => ShellUtil.GetShellItemForPath(System.IO.Path.GetFullPath(Path));
+	object IJumpListItem.GetShellObject() => ShellUtil.GetShellItemForPath(System.IO.Path.GetFullPath(Path))!;
 }
 
 /// <summary>An item in a Jump List.</summary>
 [TypeConverter(typeof(GenericExpandableObjectConverter<JumpListItem>))]
 public abstract class JumpListItem : INotifyPropertyChanged
 {
-	private string category;
+	private string? category;
 
 	/// <summary>Occurs when a property value changes.</summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Gets or sets the category to which the item belongs.</summary>
 	/// <value>The category name.</value>
-	public string Category
+	public string? Category
 	{
 		get => category;
 		set
 		{
-			if (category == value) return;
-			category = value;
-			OnPropertyChanged();
+			if (category != value)
+			{
+				category = value;
+				OnPropertyChanged();
+			}
 		}
 	}
 
@@ -246,7 +256,7 @@ public class JumpListSeparator : JumpListItem, IJumpListItem
 {
 	/// <summary>Initializes a new instance of the <see cref="JumpListSeparator"/> class and optionally assigns it to a category.</summary>
 	/// <param name="category">The category name. If this value is <see langword="null"/>, this separator will be inserted into the task list.</param>
-	public JumpListSeparator(string category = null) => Category = category;
+	public JumpListSeparator(string? category = null) => Category = category;
 
 	/// <summary>Creates a shell object based on this item.</summary>
 	/// <returns>An instance of either <see cref="IShellItem"/> or <see cref="IShellLinkW"/>.</returns>
@@ -263,14 +273,15 @@ public class JumpListSeparator : JumpListItem, IJumpListItem
 /// <seealso cref="JumpListItem"/>
 public class JumpListTask : JumpListItem, IJumpListItem
 {
-	private int iconResIdx;
-	private string title, description, path, args, dir, iconPath, appUserModelID;
+	private int iconResIdx = -1;
+	private string path;
+	private string? title, description, args, dir, iconPath, appUserModelID;
 
 	/// <summary>Initializes a new instance of the <see cref="JumpListTask"/> class.</summary>
-	public JumpListTask(string title, string applicationPath)
+	public JumpListTask(string? title, string applicationPath)
 	{
-		Title = title;
-		ApplicationPath = applicationPath;
+		this.title = title;
+		path = applicationPath;
 	}
 
 	/// <summary>Gets or sets the application path.</summary>
@@ -307,13 +318,13 @@ public class JumpListTask : JumpListItem, IJumpListItem
 	/// </para>
 	/// </remarks>
 	[DefaultValue(null)]
-	public string AppUserModelID
+	public string? AppUserModelID
 	{
 		get => appUserModelID;
 		set
 		{
 			if (appUserModelID == value) return;
-			if (value != null && value.Length > 128 || value.Contains(" "))
+			if (value is not null && (value.Length > 128 || value.Contains(' ')))
 				throw new ArgumentException("Invalid format.");
 			appUserModelID = value;
 			OnPropertyChanged();
@@ -323,7 +334,7 @@ public class JumpListTask : JumpListItem, IJumpListItem
 	/// <summary>Gets or sets the arguments.</summary>
 	/// <value>The arguments.</value>
 	[DefaultValue(null)]
-	public string Arguments
+	public string? Arguments
 	{
 		get => args;
 		set
@@ -337,7 +348,7 @@ public class JumpListTask : JumpListItem, IJumpListItem
 	/// <summary>Gets or sets the description.</summary>
 	/// <value>The description.</value>
 	[DefaultValue(null)]
-	public string Description
+	public string? Description
 	{
 		get => description;
 		set
@@ -350,7 +361,7 @@ public class JumpListTask : JumpListItem, IJumpListItem
 
 	/// <summary>Gets or sets the index of the icon resource.</summary>
 	/// <value>The index of the icon resource.</value>
-	[DefaultValue(0)]
+	[DefaultValue(-1)]
 	public int IconResourceIndex
 	{
 		get => iconResIdx;
@@ -367,7 +378,7 @@ public class JumpListTask : JumpListItem, IJumpListItem
 	/// <exception cref="ArgumentException">Length of path may not exceed 260 characters. - IconResourcePath</exception>
 	[DefaultValue(null)]
 	[Editor("System.Windows.Forms.Design.FileNameEditor, System.Design", "System.Drawing.Design.UITypeEditor, System.Drawing")]
-	public string IconResourcePath
+	public string? IconResourcePath
 	{
 		get => iconPath;
 		set
@@ -384,7 +395,7 @@ public class JumpListTask : JumpListItem, IJumpListItem
 	/// <value>The title.</value>
 	/// <exception cref="ArgumentNullException">Title</exception>
 	[DefaultValue(null)]
-	public string Title
+	public string? Title
 	{
 		get => title;
 		set
@@ -400,7 +411,7 @@ public class JumpListTask : JumpListItem, IJumpListItem
 	/// <value>The working directory.</value>
 	[DefaultValue(null)]
 	[Editor("System.Windows.Forms.Design.FolderNameEditor, System.Design", "System.Drawing.Design.UITypeEditor, System.Drawing")]
-	public string WorkingDirectory
+	public string? WorkingDirectory
 	{
 		get => dir;
 		set
@@ -448,14 +459,10 @@ public class JumpListTask : JumpListItem, IJumpListItem
 
 internal class GenericExpandableObjectConverter<T> : ExpandableObjectConverter
 {
-	public override bool CanConvertTo(ITypeDescriptorContext context, Type destType)
-	{
-		if (destType == typeof(InstanceDescriptor) || destType == typeof(string))
-			return true;
-		return base.CanConvertTo(context, destType);
-	}
+	public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destType) =>
+		destType == typeof(InstanceDescriptor) || destType == typeof(string) || base.CanConvertTo(context, destType);
 
-	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo info, object value, Type destType)
+	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? info, object? value, Type destType)
 	{
 		if (destType == typeof(InstanceDescriptor))
 			return new InstanceDescriptor(typeof(T).GetConstructor(new Type[0]), null, false);

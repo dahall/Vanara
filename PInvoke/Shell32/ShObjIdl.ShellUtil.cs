@@ -103,10 +103,14 @@ public static partial class Shell32
 		public static string GetPathFromShellItem(IShellItem item) => item.GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEEDITING);
 
 		/// <summary>Gets the shell item for a file system path.</summary>
-		/// <returns>The file system path.</returns>
+		/// <param name="path">The file system path.</param>
+		/// <param name="forceIfNotExist">
+		/// If set to <see langword="true"/>, forces the creation of an <see cref="IShellItem"/> instance bound to data only, if the file
+		/// doesn't exist in the file system.
+		/// </param>
 		/// <returns>The corresponding IShellItem.</returns>
 		[SecurityCritical]
-		public static IShellItem? GetShellItemForPath(string path)
+		public static IShellItem? GetShellItemForPath(string path, bool forceIfNotExist = false)
 		{
 			if (string.IsNullOrEmpty(path))
 			{
@@ -126,9 +130,9 @@ public static partial class Shell32
 			//}
 
 			HRESULT hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object? unk);
-			if (hr == (HRESULT)(Win32Error)Win32Error.ERROR_FILE_NOT_FOUND)
+			if (hr == (HRESULT)(Win32Error)Win32Error.ERROR_FILE_NOT_FOUND && forceIfNotExist)
 			{
-				using ComReleaser<IBindCtx> ibc = ComReleaserFactory.Create(CreateBindCtx());
+				using var ibc = ComReleaserFactory.Create(CreateBindCtx());
 				IntFileSysBindData bd = new();
 				ibc.Item.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, bd);
 				return SHCreateItemFromParsingName<IShellItem>(path, ibc.Item);

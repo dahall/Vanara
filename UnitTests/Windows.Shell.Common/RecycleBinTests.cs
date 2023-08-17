@@ -30,7 +30,7 @@ public class RecycleBinTests
 			TestContext.WriteLine($"cnt={RecycleBin.Count}; sz={RecycleBin.Size}");
 			Assert.That(RecycleBin.Count, Is.EqualTo(startCount + paths.Count));
 			// Restore files
-			RecycleBin.Restore(paths.Select(p => RecycleBin.GetItemFromOriginalPath(p)));
+			RecycleBin.Restore(paths.Select(RecycleBin.GetItemFromOriginalPath).WhereNotNull());
 			Assert.That(RecycleBin.Count, Is.EqualTo(startCount));
 		}
 		finally

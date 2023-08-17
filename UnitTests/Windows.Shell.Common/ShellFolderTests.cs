@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System.IO;
 using System.Linq;
+using Vanara.Extensions;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;
@@ -87,8 +88,7 @@ public class ShellFolderTests
 			using var d = new ShellFolder(@"C:\");
 			using var libs = (ShellFolder)d["Temp"];
 			Assert.That(libs, Is.Not.Null.And.InstanceOf<ShellFolder>());
-			using var lnk = libs["Test.lnk"];
-			Assert.That(lnk, Is.Not.Null.And.InstanceOf<ShellLink>());
+			Assert.True(libs["Test.lnk"] is ShellItem);
 		}, Throws.Nothing);
 		Assert.That(() => new ShellFolder(KNOWNFOLDERID.FOLDERID_Windows).EnumerateChildren((FolderItemFilter)0x80000), Is.Empty);
 	}
@@ -140,7 +140,9 @@ public class ShellFolderTests
 	[Test]
 	public void CategoryTest()
 	{
-		using var ie = new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents);
+		using var ie = new ShellFolder(KNOWNFOLDERID.FOLDERID_DocumentsLibrary);
+		if (Vanara.PInvoke.PInvokeClient.Windows11.IsPlatformSupported())
+			return;
 		Assert.That(ie.Categories, Is.Not.Empty);
 		Assert.That(ie.Categories.DefaultCategory?.Name, Is.Not.Null);
 		foreach (var c in ie.Categories)

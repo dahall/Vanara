@@ -24,17 +24,20 @@ public abstract class RegBasedSettings : IDisposable, IEquatable<RegBasedSetting
 	/// <summary>Gets or sets a value indicating whether these settings are read-only.</summary>
 	public bool ReadOnly { get; }
 
+	/// <summary>Gets the absolute (qualified) name of the key.</summary>
+	public string RegPath => key.Name;
+
 	/// <inheritdoc/>
-	public bool Equals(RegBasedSettings other) => ((IComparable<RegBasedSettings>)this).CompareTo(other) == 0;
+	public int CompareTo(RegBasedSettings? other) => string.Compare(key.Name, other?.key.Name, StringComparison.InvariantCulture);
+
+	/// <inheritdoc/>
+	public bool Equals(RegBasedSettings? other) => CompareTo(other) == 0;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => key?.Name.GetHashCode() ?? 0;
 
 	/// <inheritdoc/>
 	public override string ToString() => key?.ToString() ?? "";
-
-	/// <inheritdoc/>
-	int IComparable<RegBasedSettings>.CompareTo(RegBasedSettings other) => string.Compare(key.Name, other?.key.Name, StringComparison.InvariantCulture);
 
 	/// <inheritdoc/>
 	public virtual void Dispose()
@@ -74,7 +77,7 @@ public abstract class RegBasedSettings : IDisposable, IEquatable<RegBasedSetting
 	/// <param name="name">The name of the subkey.</param>
 	/// <param name="value">The value of the default value.</param>
 	/// <param name="deleteIfValue">The value that, if equal to <paramref name="value"/>, causes the removal of the subkey.</param>
-	protected internal void UpdateKeyValue(string name, string value, string deleteIfValue = null)
+	protected internal void UpdateKeyValue(string name, string? value, string? deleteIfValue = null)
 	{
 		EnsureWritable();
 		if (Equals(value, deleteIfValue))
@@ -89,15 +92,17 @@ public abstract class RegBasedSettings : IDisposable, IEquatable<RegBasedSetting
 	/// <param name="value">The value of the value.</param>
 	/// <param name="valueKind">Kind of the value.</param>
 	/// <param name="deleteIfValue">The value that, if equal to <paramref name="value"/>, causes the removal of the value.</param>
-	protected internal void UpdateValue<T>(string name, T value, RegistryValueKind valueKind = RegistryValueKind.Unknown, T deleteIfValue = default)
+	protected internal void UpdateValue<T>(string? name, T? value, RegistryValueKind valueKind = RegistryValueKind.Unknown, T? deleteIfValue = default)
 	{
 		EnsureWritable();
-		if (Equals(value, deleteIfValue))
+		if (name is not null && Equals(value, deleteIfValue))
 			key.DeleteValue(name, false);
-		else
+		else if (value is not null)
 		{
 			var o = value is Guid g ? (object)g.ToRegString() : value;
 			key.SetValue(name, value, valueKind == RegistryValueKind.Unknown && o is string ? RegistryValueKind.ExpandString : valueKind);
 		}
+		else
+			throw new ArgumentNullException(nameof(value));
 	}
 }

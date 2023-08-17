@@ -12,15 +12,15 @@ public class PropertyBag
 	/// <param name="ppb">The property bag.</param>
 	public PropertyBag(IPropertyBag ppb) => ibag = ppb;
 
-	/// <summary>Gets or sets the <see cref="System.Object"/> with the specified property name.</summary>
-	/// <value>The <see cref="System.Object"/>.</value>
+	/// <summary>Gets or sets the <see cref="object"/> with the specified property name.</summary>
+	/// <value>The <see cref="object"/>.</value>
 	/// <param name="propertyName">Name of the property.</param>
 	/// <returns>The property value.</returns>
 	public object this[string propertyName]
 	{
 		get
 		{
-			object o = null;
+			object o = new();
 			ibag.Read(propertyName, ref o, null);
 			return o;
 		}

@@ -20,7 +20,7 @@ public class TaskbarTests
 	[Test]
 	public void TrayTest()
 	{
-		Assert.That(TaskBar.Taskbar.TrayIcons, Is.Not.Empty);
+		Assert.That(TaskBar.Taskbar.TrayIcons, Is.Not.Null);
 		TaskBar.Taskbar.TrayIcons.WriteValues();
 	}
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
@@ -10,12 +11,12 @@ namespace Vanara.Windows.Shell;
 /// <summary>Encapsulates the IPropertyStore object.</summary>
 /// <seealso cref="IDictionary{PROPERTYKEY, Object}"/>
 /// <seealso cref="IDisposable"/>
-public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, object>, IDisposable
+public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, object?>, IDisposable
 {
 	/// <summary>The IPropertyStore instance.</summary>
-	protected IPropertyStore iPropertyStore;
+	protected IPropertyStore? iPropertyStore;
 
-	private PropertyDescriptionDictionary descriptions;
+	private PropertyDescriptionDictionary? descriptions;
 
 	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
 	protected ReadOnlyPropertyStore() { }
@@ -31,22 +32,22 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	public virtual bool IsReadOnly => true;
 
 	/// <summary>Gets an <see cref="IEnumerable{T}"/> containing the keys of the <see cref="IReadOnlyDictionary{PROPERTYKEY, Object}"/>.</summary>
-	public IEnumerable<PROPERTYKEY> Keys => Run(ps => GetKeyEnum(ps).ToList());
+	public IEnumerable<PROPERTYKEY> Keys => Run(ps => GetKeyEnum(ps).ToList())!;
 
 	/// <summary>Gets an <see cref="IEnumerable{T}"/> containing the values in the <see cref="IReadOnlyDictionary{PROPERTYKEY, Object}"/>.</summary>
-	public IEnumerable<object> Values => Run(ps => GetKeyEnum(ps).Select(k => TryGetValue(ps, k, out object v) ? v : null).ToList());
+	public IEnumerable<object?> Values => Run(ps => GetKeyEnum(ps).Select(k => TryGetValue(ps, k, out object? v) ? v : null).ToList())!;
 
 	/// <summary>Gets or sets the value of the property with the specified known key.</summary>
 	/// <value>The value.</value>
 	/// <param name="knownKey">The known key of the property (e.g. "System.Title"}.</param>
 	/// <returns>The value of the property.</returns>
-	public virtual object this[string knownKey] => this[GetPropertyKeyFromName(knownKey)];
+	public virtual object? this[string knownKey] => this[GetPropertyKeyFromName(knownKey)];
 
 	/// <summary>Gets or sets the value of the property with the specified PROPERTYKEY.</summary>
 	/// <value>The value.</value>
 	/// <param name="key">The PROPERTYKEY of the property.</param>
 	/// <returns>The value of the property.</returns>
-	public virtual object this[PROPERTYKEY key] => TryGetValue(key, out var r) ? r : null;
+	public virtual object? this[PROPERTYKEY key] => TryGetValue(key, out var r) ? r : null;
 
 	/// <summary>Gets the property key for a canonical property name.</summary>
 	/// <param name="name">A property name.</param>
@@ -76,9 +77,9 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 	/// <exception cref="ArgumentOutOfRangeException">arrayIndex - The number of items exceeds the length of the supplied array.</exception>
 	/// <exception cref="ArgumentNullException">array</exception>
-	public void CopyTo(KeyValuePair<PROPERTYKEY, object>[] array, int arrayIndex)
+	public void CopyTo(KeyValuePair<PROPERTYKEY, object?>[] array, int arrayIndex)
 	{
-		if (array.Length < (arrayIndex + Count))
+		if (array.Length < arrayIndex + Count)
 			throw new ArgumentOutOfRangeException(nameof(arrayIndex), "The number of items exceeds the length of the supplied array.");
 		if (array is null)
 			throw new ArgumentNullException(nameof(array));
@@ -95,6 +96,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 			Marshal.FinalReleaseComObject(iPropertyStore);
 			iPropertyStore = null;
 		}
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Gets the property.</summary>
@@ -102,19 +104,19 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <param name="key">The key.</param>
 	/// <returns>The cast value of the property.</returns>
 	/// <exception cref="ArgumentOutOfRangeException">key</exception>
-	public TVal GetProperty<TVal>(PROPERTYKEY key) => TryGetValue<TVal>(key, out var ret) ? ret : throw new ArgumentOutOfRangeException(nameof(key));
+	public TVal GetProperty<TVal>(PROPERTYKEY key) => TryGetValue<TVal>(key, out var ret) ? ret! : throw new ArgumentOutOfRangeException(nameof(key));
 
 	/// <summary>Gets the property description related to a property key.</summary>
 	/// <param name="key">The key.</param>
 	/// <returns>The related property description, if one exists; otherwise <see langword="null"/>.</returns>
-	public PropertyDescription GetPropertyDescription(PROPERTYKEY key) => PropertyDescription.Create(key);
+	public static PropertyDescription GetPropertyDescription(PROPERTYKEY key) => PropertyDescription.Create(key) ?? throw new ArgumentOutOfRangeException(nameof(key));
 
 	/// <summary>Gets the string value of the property.</summary>
 	/// <param name="key">The key.</param>
 	/// <param name="flags">The formatting flags.</param>
 	/// <returns>The string value of the property.</returns>
 	/// <exception cref="ArgumentOutOfRangeException">key</exception>
-	public string GetPropertyString(PROPERTYKEY key, PROPDESC_FORMAT_FLAGS flags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT)
+	public string? GetPropertyString(PROPERTYKEY key, PROPDESC_FORMAT_FLAGS flags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT)
 	{
 		using var pv = GetPropVariant(key);
 		return PropertyDescription.Create(key)?.FormatForDisplay(pv, flags);
@@ -124,15 +126,12 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <param name="key">The key.</param>
 	/// <returns>The PROPVARIANT value.</returns>
 	/// <exception cref="ArgumentOutOfRangeException">key</exception>
-	public PROPVARIANT GetPropVariant(PROPERTYKEY key)
+	public PROPVARIANT GetPropVariant(PROPERTYKEY key) => Run(ps =>
 	{
-		return Run(ps =>
-		{
-			var pv = new PROPVARIANT();
-			ps.GetValue(key, pv);
-			return pv;
-		});
-	}
+		var pv = new PROPVARIANT();
+		ps.GetValue(key, pv);
+		return pv;
+	})!;
 
 	/// <summary>Gets the value associated with the specified key.</summary>
 	/// <param name="key">The key whose value to get.</param>
@@ -144,7 +143,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <see langword="true"/> if the object that implements <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the
 	/// specified key; otherwise, <see langword="false"/>.
 	/// </returns>
-	public bool TryGetValue(PROPERTYKEY key, out object value) => TryGetValue<object>(key, out value);
+	public bool TryGetValue(PROPERTYKEY key, [NotNullWhen(true)] out object? value) => TryGetValue<object>(key, out value);
 
 	/// <summary>Gets the value associated with the specified key.</summary>
 	/// <typeparam name="TVal">The type of the returned value.</typeparam>
@@ -157,7 +156,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <see langword="true"/> if the object that implements <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the
 	/// specified key; otherwise, <see langword="false"/>.
 	/// </returns>
-	public virtual bool TryGetValue<TVal>(PROPERTYKEY key, out TVal value)
+	public virtual bool TryGetValue<TVal>(PROPERTYKEY key, out TVal? value)
 	{
 		var result = Run(ps =>
 		{
@@ -170,7 +169,8 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
-	IEnumerator<KeyValuePair<PROPERTYKEY, object>> IEnumerable<KeyValuePair<PROPERTYKEY, object>>.GetEnumerator() => (Run(ps => GetKeyEnum(ps).Select(k => new KeyValuePair<PROPERTYKEY, object>(k, TryGetValue(ps, k, out object pv) ? pv : null))) ?? new KeyValuePair<PROPERTYKEY, object>[0]).GetEnumerator();
+	IEnumerator<KeyValuePair<PROPERTYKEY, object?>> IEnumerable<KeyValuePair<PROPERTYKEY, object?>>.GetEnumerator() =>
+		(Run(ps => GetKeyEnum(ps).Select(k => new KeyValuePair<PROPERTYKEY, object?>(k, TryGetValue(ps, k, out object? pv) ? pv : null))) ?? new KeyValuePair<PROPERTYKEY, object?>[0]).GetEnumerator();
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
@@ -183,7 +183,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// When this method returns, the value associated with the specified key, if the key is found; otherwise, <c>default(T)</c>.
 	/// </param>
 	/// <returns><see langword="true"/> if the property store contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
-	protected static bool TryGetValue<T>(IPropertyStore ps, PROPERTYKEY key, out T value)
+	protected static bool TryGetValue<T>(IPropertyStore ps, PROPERTYKEY key, [NotNullWhen(true)] out T? value)
 	{
 		var ret = ps.GetValue(key);
 		value = ret is null ? default : (T)ret;
@@ -191,7 +191,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	}
 
 	/// <summary>The IPropertyStore instance. This can be null.</summary>
-	protected virtual IPropertyStore GetIPropertyStore() => iPropertyStore;
+	protected virtual IPropertyStore? GetIPropertyStore() => iPropertyStore;
 
 	/// <summary>Gets an enumeration of the keys in the property store.</summary>
 	/// <returns>Keys in the property store.</returns>
@@ -215,7 +215,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <typeparam name="T">The return type of the action and method.</typeparam>
 	/// <param name="action">The action to run.</param>
 	/// <returns>The return value from <paramref name="action"/>.</returns>
-	protected T Run<T>(Func<IPropertyStore, T> action)
+	protected T? Run<T>(Func<IPropertyStore, T> action)
 	{
 		iPropertyStore ??= GetIPropertyStore();
 		return iPropertyStore is null ? default : action.Invoke(iPropertyStore);
@@ -223,24 +223,29 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 
 	private class PropertyDescriptionDictionary : IReadOnlyDictionary<PROPERTYKEY, PropertyDescription>
 	{
-		private ReadOnlyPropertyStore store;
+		private readonly ReadOnlyPropertyStore store;
 
 		public PropertyDescriptionDictionary(ReadOnlyPropertyStore ps) => store = ps;
 
-		public IEnumerable<PropertyDescription> Values => store.Keys.Select(k => store.GetPropertyDescription(k)).ToList();
+		public IEnumerable<PropertyDescription> Values => store.Keys.Select(GetPropertyDescription).ToList();
 
 		public int Count => store.Count;
 
 		public IEnumerable<PROPERTYKEY> Keys => store.Keys;
 
-		public PropertyDescription this[PROPERTYKEY key] => store.GetPropertyDescription(key);
+		public PropertyDescription this[PROPERTYKEY key] => GetPropertyDescription(key);
 
 		public bool ContainsKey(PROPERTYKEY key) => store.ContainsKey(key);
 
 		public IEnumerator<KeyValuePair<PROPERTYKEY, PropertyDescription>> GetEnumerator() =>
-			store.Keys.Select(k => new KeyValuePair<PROPERTYKEY, PropertyDescription>(k, store.GetPropertyDescription(k))).ToList().GetEnumerator();
+			store.Keys.Select(k => new KeyValuePair<PROPERTYKEY, PropertyDescription>(k, GetPropertyDescription(k))).ToList().GetEnumerator();
 
+#if NET40_OR_GREATER || NETSTANDARD2_0_OR_GREATER && !NET5_0_OR_GREATER
+#nullable disable
 		public bool TryGetValue(PROPERTYKEY key, out PropertyDescription value)
+#else
+		public bool TryGetValue(PROPERTYKEY key, [MaybeNullWhen(false)] out PropertyDescription value)
+#endif
 		{
 			if (store.ContainsKey(key))
 			{

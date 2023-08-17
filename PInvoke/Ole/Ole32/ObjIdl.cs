@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
@@ -631,7 +632,7 @@ public static partial class Ole32
 		// IEnumString **ppenum );
 		[PInvokeData("objidl.h", MSDNShortId = "9e799ce4-e9b3-4b31-98a0-2167a0c19848")]
 		[PreserveSig]
-		HRESULT EnumObjectParam(out IEnumString? ppenum);
+		HRESULT EnumObjectParam([NotNull] out IEnumString? ppenum);
 
 		/// <summary>
 		/// Removes the specified key and its associated pointer from the bind context's string-keyed table of objects. The key must

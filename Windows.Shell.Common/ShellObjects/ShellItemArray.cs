@@ -8,14 +8,14 @@ namespace Vanara.Windows.Shell;
 /// <summary>A folder or container of <see cref="ShellItem"/> instances.</summary>
 public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 {
-	private IShellItemArray array;
+	private IShellItemArray? array;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
 	public ShellItemArray() { }
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem" /> class.</summary>
 	/// <param name="shellItems">The shell items.</param>
-	public ShellItemArray(IShellItemArray shellItems) => array = shellItems;
+	public ShellItemArray(IShellItemArray? shellItems) => array = shellItems;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
 	/// <param name="shellItems">The shell items to add to this array.</param>
@@ -35,7 +35,9 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	public ShellItemArray(IShellFolder parent, IEnumerable<PIDL>? pidls)
 	{
 		var pa = pidls?.Cast<IntPtr>().ToArray();
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHCreateShellItemArray(PIDL.Null, parent, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
@@ -44,23 +46,27 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	public ShellItemArray(PIDL pidlParent, IEnumerable<PIDL>? pidls)
 	{
 		var pa = pidls?.Cast<IntPtr>().ToArray();
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHCreateShellItemArray(pidlParent, null, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
 	/// <param name="pidls">The IDList items to add to this array.</param>
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	private ShellItemArray(IntPtr[] pidls) => SHCreateShellItemArrayFromIDLists((uint)pidls.Length, pidls, out array).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
 	public int Count => (int)(array?.GetCount() ?? 0);
 
 	/// <summary>Gets the <see cref="IEnumShellItems"/> instance behind this class.</summary>
 	/// <value>The <see cref="IEnumShellItems"/> instance.</value>
-	public IEnumShellItems IEnumShellItems => array?.EnumItems();
+	public IEnumShellItems? IEnumShellItems => array?.EnumItems();
 
 	/// <summary>Gets the <see cref="IShellItemArray"/> instance behind this class.</summary>
 	/// <value>The <see cref="IShellItemArray"/> instance.</value>
-	public IShellItemArray IShellItemArray => array;
+	public IShellItemArray? IShellItemArray => array;
 
 	/// <summary>Gets the <see cref="ShellItem"/> at the specified index.</summary>
 	/// <value>The <see cref="ShellItem"/>.</value>
@@ -71,7 +77,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	/// <summary>Creates a shell item array from a data object.</summary>
 	/// <param name="dataObject">The data object.</param>
 	/// <returns>On success, a new <see cref="ShellItemArray"/>; otherwise <see langword="null"/>.</returns>
-	public static ShellItemArray FromDataObject(System.Runtime.InteropServices.ComTypes.IDataObject dataObject)
+	public static ShellItemArray? FromDataObject(System.Runtime.InteropServices.ComTypes.IDataObject dataObject)
 	{
 		var ppv = SHCreateShellItemArrayFromDataObject(dataObject);
 		return ppv is null ? null : new ShellItemArray(ppv);
@@ -80,7 +86,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	/// <summary>Determines whether the <see cref="ICollection{ShellItem}"/> contains a specific value.</summary>
 	/// <param name="item">The object to locate in the <see cref="ICollection{ShellItem}"/>.</param>
 	/// <returns>true if <paramref name="item"/> is found in the <see cref="ICollection{ShellItem}"/>; otherwise, false.</returns>
-	public bool Contains(ShellItem item) => item != null && GetItems().Any(item.Equals);
+	public bool Contains(ShellItem? item) => item is not null && GetItems().Any(item.Equals);
 
 	/// <summary>
 	/// Copies the elements of the <see cref="ICollection{ShellItem}"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="Array"/> index.
@@ -97,10 +103,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose()
-	{
-		array = null;
-	}
+	public virtual void Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="IEnumerator{ShellItem}"/> that can be used to iterate through the collection.</returns>
@@ -108,10 +111,10 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 
 	/// <summary>Creates an <see cref="System.Runtime.InteropServices.ComTypes.IDataObject"/> from the contents of the array.</summary>
 	/// <returns>An <see cref="System.Runtime.InteropServices.ComTypes.IDataObject"/> from the contents of the array.</returns>
-	public System.Runtime.InteropServices.ComTypes.IDataObject ToDataObject()
+	public System.Runtime.InteropServices.ComTypes.IDataObject? ToDataObject()
 	{
 		var ctx = ShellUtil.CreateBindCtx();
-		return array.BindToHandler<System.Runtime.InteropServices.ComTypes.IDataObject>(ctx, BHID.BHID_DataObject);
+		return array?.BindToHandler<System.Runtime.InteropServices.ComTypes.IDataObject>(ctx, BHID.BHID_DataObject);
 	}
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>

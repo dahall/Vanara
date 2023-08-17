@@ -15,16 +15,16 @@ namespace Vanara.PInvoke;
 public class MessageLoop
 {
 	private readonly uint curThreadId;
-	private Action<object> appCallback;
+	private Action<object?>? appCallback;
 	private uint callbackMsg;
-	private object callbackObj;
+	private object? callbackObj;
 	private nuint timeoutTimerId;   // timer id used to exit the app if the app is not called back within a certain time
 
 	/// <summary>Initializes a new instance of the <see cref="MessageLoop"/> class.</summary>
 	public MessageLoop() => curThreadId = GetCurrentThreadId();
 
 	/// <summary>Occurs when a new message is available.</summary>
-	public event EventHandler<MessageEventArgs> ProcessMessage;
+	public event EventHandler<MessageEventArgs>? ProcessMessage;
 
 	/// <summary>Gets a value indicating whether this <see cref="MessageLoop"/> is running.</summary>
 	/// <value><see langword="true"/> if running; otherwise, <see langword="false"/>.</value>
@@ -48,7 +48,7 @@ public class MessageLoop
 	/// <param name="tag">An optional argument that will be passed to the callback.</param>
 	/// <exception cref="InvalidOperationException">Another callback is currently queued.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="callback"/> cannot be <see langword="null"/>.</exception>
-	public virtual void QueueCallback(Action<object> callback, object tag = null)
+	public virtual void QueueCallback(Action<object?> callback, object? tag = null)
 	{
 		if (appCallback != null) throw new InvalidOperationException("Another callback is currently queued.");
 		appCallback = callback ?? throw new ArgumentNullException(nameof(callback));

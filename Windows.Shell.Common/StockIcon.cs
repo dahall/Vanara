@@ -10,7 +10,7 @@ public class StockIcon : IDisposable
 	private SHGSI curFlags;
 	private SHSTOCKICONID curId;
 	private HICON hIcon;
-	private IconLocation location;
+	private IconLocation? location;
 	private int systemImageIndex;
 
 	static StockIcon() => FileIconInit(false);
@@ -47,7 +47,7 @@ public class StockIcon : IDisposable
 
 	/// <summary>Gets the icon location, composed of a resource path and the icon's index.</summary>
 	/// <value>The icon location.</value>
-	public IconLocation Location { get { Refresh(); return location; } }
+	public IconLocation? Location { get { Refresh(); return location; } }
 
 	/// <summary>Gets or sets a value indicating whether the icon appears selected.</summary>
 	/// <value>A <see cref="bool"/> value.</value>

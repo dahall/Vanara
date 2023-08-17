@@ -18,27 +18,24 @@ public abstract class ComObjWrapper<TObj, TComType> : IDisposable, IEquatable<TC
 	protected ComObjWrapper(TComType baseInterface) => iObj = baseInterface ?? throw new ArgumentNullException(nameof(baseInterface));
 
 	/// <summary>Occurs when a property value changes.</summary>
-	public virtual event PropertyChangedEventHandler PropertyChanged;
+	public virtual event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Gets the COM interface supporting this type.</summary>
 	/// <value>The COM interface.</value>
 	public virtual TComType ComInterface => iObj;
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose()
-	{
-		iObj = null;
-	}
+	public virtual void Dispose() { }
 
-	/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-	/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-	/// <returns><see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is TObj view ? Equals(view) : obj is TComType com && Equals(com));
+	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
+	public override bool Equals(object? obj) => ReferenceEquals(this, obj) || (obj is TObj view ? Equals(view) : obj is TComType com && Equals(com));
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public abstract bool Equals(TComType other);
+	public abstract bool Equals(TComType? other);
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>

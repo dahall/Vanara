@@ -61,13 +61,15 @@ public static class NativeClipboard
 			HRESULT hr = HRESULT.S_OK;
 			for (int i = 1; i <= n; i++)
 			{
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				hr = OleGetClipboard(out var idata);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				if (hr.Succeeded)
 					return idata;
 				if (i < n)
 					System.Threading.Thread.Sleep(stdRetryDelay);
 			}
-			throw hr.GetException();
+			throw hr.GetException()!;
 		}
 	}
 
@@ -102,7 +104,7 @@ public static class NativeClipboard
 
 	/// <summary>Puts a list of shell items onto the clipboard.</summary>
 	/// <param name="shellItems">The sequence of shell items. The PIDL of each shell item must be absolute.</param>
-	public static IComDataObject CreateDataObjectFromShellItems(params ShellItem[] shellItems) => shellItems.Length == 0 ? CreateEmptyDataObject() : new ShellItemArray(shellItems).ToDataObject();
+	public static IComDataObject CreateDataObjectFromShellItems(params ShellItem[] shellItems) => shellItems.Length == 0 ? CreateEmptyDataObject() : new ShellItemArray(shellItems).ToDataObject()!;
 
 	/// <summary>Puts a list of shell items onto the clipboard.</summary>
 	/// <param name="parent">The parent folder instance.</param>
@@ -167,7 +169,9 @@ public static class NativeClipboard
 	/// The IDataObject interface on the data object containing clipboard data of interest, which the caller previously placed on the clipboard.
 	/// </param>
 	/// <returns><see langword="true"/> on success; otherwise, <see langword="false"/>.</returns>
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static bool IsCurrentDataObject(IComDataObject dataObject) => OleIsCurrentClipboard(dataObject) == HRESULT.S_OK;
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 	/// <param name="id">A standard or registered clipboard format.</param>
@@ -219,7 +223,7 @@ public static class NativeClipboard
 			if (i < n)
 				System.Threading.Thread.Sleep(stdRetryDelay);
 		}
-		throw hr.GetException();
+		throw hr.GetException()!;
 	}
 
 	private static bool TryMultThenThrowIfFailed(Func<IComDataObject?, HRESULT> func, IComDataObject? o, int n = stdRetryCnt)
@@ -233,7 +237,7 @@ public static class NativeClipboard
 			if (i < n)
 				System.Threading.Thread.Sleep(stdRetryDelay);
 		}
-		throw hr.GetException();
+		throw hr.GetException()!;
 	}
 	private class ListenerWindow : SystemEventHandler
 	{

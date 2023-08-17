@@ -19,7 +19,7 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	/// <summary>Initializes a new instance of the <see cref="ShellItemPropertyStore"/> class.</summary>
 	/// <param name="item">The ShellItem instance.</param>
 	/// <param name="propChangedHandler">The optional property changed handler.</param>
-	internal ShellItemPropertyStore(ShellItem item, PropertyChangedEventHandler propChangedHandler = null)
+	internal ShellItemPropertyStore(ShellItem item, PropertyChangedEventHandler? propChangedHandler = null)
 	{
 		//item.ThrowIfNoShellItem2();
 		shellItem = item;
@@ -33,7 +33,7 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	/// </summary>
 	/// <value>The creator object.</value>
 	[DefaultValue(null)]
-	public ICreateObject Creator { get; set; }
+	public ICreateObject? Creator { get; set; }
 
 	/// <summary>Gets or sets a value indicating whether to include slow properties.</summary>
 	/// <value><c>true</c> if including slow properties; otherwise, <c>false</c>.</value>
@@ -74,7 +74,7 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	/// </summary>
 	/// <value>The list of properties used to filter.</value>
 	[DefaultValue(null)]
-	public PROPERTYKEY[] PropertyFilter { get; set; }
+	public PROPERTYKEY[]? PropertyFilter { get; set; }
 
 	/// <summary>Gets or sets a value indicating whether properties can be read and written.</summary>
 	/// <value><c>true</c> if properties are read/write; otherwise, <c>false</c>.</value>
@@ -121,8 +121,8 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public override void Dispose()
 	{
-		shellItem = null;
 		base.Dispose();
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Gets the CLSID of a supplied property key.</summary>
@@ -131,7 +131,7 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	public Guid GetCLSID(PROPERTYKEY propertyKey) => shellItem?.iShellItem2?.GetCLSID(propertyKey) ?? Guid.Empty;
 
 	/// <summary>The IPropertyStore instance. This can be null.</summary>
-	protected override IPropertyStore GetIPropertyStore()
+	protected override IPropertyStore? GetIPropertyStore()
 	{
 		if (shellItem is ShellLink lnk)
 			return (IPropertyStore)lnk.link;

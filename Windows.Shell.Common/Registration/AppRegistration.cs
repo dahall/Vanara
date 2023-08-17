@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 
 namespace Vanara.Windows.Shell.Registration;
@@ -20,13 +21,14 @@ public class AppRegistration : RegBasedSettings
 	internal const string appPathsSubKey = @"Software\Microsoft\Windows\CurrentVersion\App Paths";
 	internal const string appsSubKey = "Applications";
 
-	private readonly AppSubKey appKey;
+	// This is the subkey at [HKCU|HKLM]\Software\Microsoft\Windows\CurrentVersion\App Paths\{appname}.exe
+	private readonly PathSubKey? pathKey;
 
-	internal AppRegistration(RegistryKey key, RegistryKey appKey, bool readOnly) : base(key, readOnly)
+	internal AppRegistration(RegistryKey appKey, RegistryKey? pathKey, bool readOnly) : base(appKey, readOnly)
 	{
-		this.appKey = new AppSubKey(appKey, readOnly);
-		SupportedTypes = new RegBasedKeyCollection(appKey.OpenSubKey("SupportedTypes", !readOnly), readOnly);
-		Verbs = new CommandVerbDictionary(this.appKey, ReadOnly);
+		this.pathKey = pathKey is null ? null : new PathSubKey(pathKey, readOnly);
+		SupportedTypes = new RegBasedKeyCollection(appKey.OpenSubKey("SupportedTypes", !readOnly)!, readOnly);
+		Verbs = new CommandVerbDictionary(this, ReadOnly);
 	}
 
 	/// <summary>
@@ -47,10 +49,11 @@ public class AppRegistration : RegBasedSettings
 	/// </para>
 	/// </summary>
 	/// <value><see langword="true"/> if the application accepts a URL on the command-line; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool AcceptsUrls
 	{
-		get => (uint)key.GetValue("UseUrl", 0) != 0;
-		set => UpdateValue("UseUrl", value ? 1U : 0U, RegistryValueKind.DWord);
+		get => (uint)(pathKey?.key.GetValue("UseUrl", 0) ?? 0) != 0;
+		set => PathKey.UpdateValue("UseUrl", value ? 1U : 0U, RegistryValueKind.DWord);
 	}
 
 	/// <summary>
@@ -58,10 +61,11 @@ public class AppRegistration : RegBasedSettings
 	/// icon stored in the .exe file.
 	/// </summary>
 	/// <value>The default icon.</value>
-	public IconLocation DefaultIcon
+	[DefaultValue(null)]
+	public IconLocation? DefaultIcon
 	{
-		get => IconLocation.TryParse(appKey.key.GetSubKeyDefaultValue("DefaultIcon")?.ToString(), out var loc) ? loc : null;
-		set => appKey.UpdateKeyValue("DefaultIcon", value?.ToString());
+		get => IconLocation.TryParse(key.GetSubKeyDefaultValue("DefaultIcon")?.ToString() ?? "", out var loc) ? loc : null;
+		set => UpdateKeyValue("DefaultIcon", value?.ToString());
 	}
 
 	/// <summary>
@@ -70,10 +74,11 @@ public class AppRegistration : RegBasedSettings
 	/// the change notifications, however.
 	/// </summary>
 	/// <value><see langword="true"/> if [dont use desktop change router]; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool DontUseDesktopChangeRouter
 	{
-		get => (uint)key.GetValue("DontUseDesktopChangeRouter", 0) != 0;
-		set => UpdateValue("DontUseDesktopChangeRouter", value ? 1U : 0U, RegistryValueKind.DWord);
+		get => (uint)(pathKey?.key.GetValue("DontUseDesktopChangeRouter", 0U) ?? 0U) != 0U;
+		set => PathKey.UpdateValue("DontUseDesktopChangeRouter", value ? 1U : 0U, RegistryValueKind.DWord);
 	}
 
 	/// <summary>
@@ -82,10 +87,11 @@ public class AppRegistration : RegBasedSettings
 	/// files into a command-line parameter and passes it to ShellExecuteEx through lpParameters.
 	/// </summary>
 	/// <value>The drop target's CLSID.</value>
+	[DefaultValue(null)]
 	public Guid? DropTarget
 	{
-		get => key.GetGuidValue("DropTarget");
-		set => UpdateValue("DropTarget", value.HasValue ? value.Value.ToString("B") : null);
+		get => pathKey?.key.GetGuidValue("DropTarget");
+		set => PathKey.UpdateValue("DropTarget", value.HasValue ? value.Value.ToString("B") : null);
 	}
 
 	/// <summary>
@@ -95,10 +101,11 @@ public class AppRegistration : RegBasedSettings
 	/// should use ASSOCSTR_FRIENDLYAPPNAME to retrieve this information to obtain the proper behavior.
 	/// </summary>
 	/// <value>The friendly name of the application.</value>
-	public IndirectString FriendlyAppName
+	[DefaultValue(null)]
+	public IndirectString? FriendlyAppName
 	{
-		get => IndirectString.TryParse(appKey.key.GetValue("FriendlyAppName")?.ToString(), out var loc) ? loc : null;
-		set => appKey.UpdateValue("FriendlyAppName", value?.ToString());
+		get => IndirectString.TryParse(key.GetValue("FriendlyAppName")?.ToString(), out var loc) ? loc : null;
+		set => UpdateValue("FriendlyAppName", value?.ToString());
 	}
 
 	/// <summary>
@@ -111,10 +118,10 @@ public class AppRegistration : RegBasedSettings
 	/// </exception>
 	public string FullPath
 	{
-		get => key.GetValue(null)?.ToString();
+		get => pathKey?.key.GetValue(null)?.ToString() ?? "";
 		set
 		{
-			if (!string.Equals(Path.GetFileName(key.Name), Path.GetFileName(value), StringComparison.CurrentCultureIgnoreCase))
+			if (!string.Equals(Path.GetFileName(PathKey.key.Name), Path.GetFileName(value), StringComparison.CurrentCultureIgnoreCase))
 				throw new InvalidOperationException("The executable name cannot be changed once set. Only it's directory can be changed.");
 			UpdateValue(null, value);
 			UpdateValue("Path", Path.GetDirectoryName(value));
@@ -128,10 +135,11 @@ public class AppRegistration : RegBasedSettings
 	/// that shortcut). Such shortcuts are candidates for inclusion in the MFU list.
 	/// </summary>
 	/// <value><see langword="true"/> if this process is a host process; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool IsHostApp
 	{
-		get => appKey.key.HasValue("IsHostApp");
-		set => appKey.UpdateValue("IsHostApp", value ? string.Empty : null, RegistryValueKind.String);
+		get => key.HasValue("IsHostApp");
+		set => UpdateValue("IsHostApp", value ? string.Empty : null, RegistryValueKind.String);
 	}
 
 	/// <summary>
@@ -142,10 +150,11 @@ public class AppRegistration : RegBasedSettings
 	/// Application from the Open with Dialog Box.
 	/// </summary>
 	/// <value><see langword="true"/> if no application is specified for opening this file type; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool NoOpenWith
 	{
-		get => appKey.key.HasValue("NoOpenWith");
-		set => appKey.UpdateValue("NoOpenWith", value ? string.Empty : null, RegistryValueKind.String);
+		get => key.HasValue("NoOpenWith");
+		set => UpdateValue("NoOpenWith", value ? string.Empty : null, RegistryValueKind.String);
 	}
 
 	/// <summary>
@@ -157,10 +166,11 @@ public class AppRegistration : RegBasedSettings
 	/// <see langword="true"/> if this app should be excluded from the Start menu and from pinning or inclusion in the MFU list;
 	/// otherwise, <see langword="false"/>.
 	/// </value>
+	[DefaultValue(false)]
 	public bool NoStartPage
 	{
-		get => appKey.key.HasValue("NoStartPage");
-		set => appKey.UpdateValue("NoStartPage", value ? string.Empty : null, RegistryValueKind.String);
+		get => key.HasValue("NoStartPage");
+		set => UpdateValue("NoStartPage", value ? string.Empty : null, RegistryValueKind.String);
 	}
 
 	/// <summary>
@@ -169,10 +179,11 @@ public class AppRegistration : RegBasedSettings
 	/// added to the string. This protocol is implicitly supported when SupportedProtocols is defined.
 	/// </summary>
 	/// <value>The supported protocols.</value>
-	public string SupportedProtocols
+	[DefaultValue(null)]
+	public string? SupportedProtocols
 	{
-		get => key.GetValue("SupportedProtocols")?.ToString();
-		set => UpdateValue("SupportedProtocols", value);
+		get => pathKey?.key.GetValue("SupportedProtocols")?.ToString();
+		set => PathKey.UpdateValue("SupportedProtocols", value);
 	}
 
 	/// <summary>
@@ -187,10 +198,11 @@ public class AppRegistration : RegBasedSettings
 	/// TaskbarGroupIcon entry causes the system to use the icon from the .exe for the application instead.
 	/// </summary>
 	/// <value>The taskbar icon override.</value>
-	public IconLocation TaskbarGroupIcon
+	[DefaultValue(null)]
+	public IconLocation? TaskbarGroupIcon
 	{
-		get => IconLocation.TryParse(appKey.key.GetValue("TaskbarGroupIcon", null)?.ToString(), out var loc) ? loc : null;
-		set => appKey.UpdateValue("DefaultIcon", value?.ToString());
+		get => IconLocation.TryParse(key.GetValue("TaskbarGroupIcon", null)?.ToString(), out var loc) ? loc : null;
+		set => UpdateValue("TaskbarGroupIcon", value?.ToString());
 	}
 
 	/// <summary>
@@ -198,10 +210,11 @@ public class AppRegistration : RegBasedSettings
 	/// shortcut for this application, and instead of the icon of the window that was first encountered.
 	/// </summary>
 	/// <value><see langword="true"/> if the taskbar should use the default icon of this executable; otherwise, <see langword="false"/>.</value>
+	[DefaultValue(false)]
 	public bool UseExecutableForTaskbarGroupIcon
 	{
-		get => appKey.key.HasValue("UseExecutableForTaskbarGroupIcon");
-		set => appKey.UpdateValue("UseExecutableForTaskbarGroupIcon", value ? string.Empty : null, RegistryValueKind.String);
+		get => key.HasValue("UseExecutableForTaskbarGroupIcon");
+		set => UpdateValue("UseExecutableForTaskbarGroupIcon", value ? string.Empty : null, RegistryValueKind.String);
 	}
 
 	/// <summary>
@@ -211,6 +224,27 @@ public class AppRegistration : RegBasedSettings
 	/// </summary>
 	/// <value>The command verbs associated with the app.</value>
 	public CommandVerbDictionary Verbs { get; }
+
+	private PathSubKey PathKey => pathKey ?? throw new InvalidOperationException("No App Path is defined.");
+
+	/// <summary>Opens the application registration information for the specified application.</summary>
+	/// <param name="appFileName">The file name (no directory) of the application executable for which to get settings.</param>
+	/// <param name="readOnly">
+	/// If <see langword="true"/>, provides read-only access to the registration; If <see langword="false"/>, the properties can be set
+	/// to update the registration values.
+	/// </param>
+	/// <returns>A <see cref="AppRegistration"/> instance.</returns>
+	/// <exception cref="ArgumentNullException">fullApplicationPath</exception>
+	/// <exception cref="InvalidOperationException">Unable to create application key in the 'App Paths' subkey.</exception>
+	public static AppRegistration Open(string appFileName, bool readOnly)
+	{
+		if (string.IsNullOrEmpty(appFileName)) throw new ArgumentNullException(nameof(appFileName));
+		var fn = appFileName.ToLower();
+		var skName = Path.Combine(appPathsSubKey, fn);
+		// Handle registrations in user or machine "App Paths"
+		bool systemWide = Registry.LocalMachine.HasSubKey(skName) || !Registry.CurrentUser.HasSubKey(skName);
+		return Open(fn, systemWide, readOnly);
+	}
 
 	/// <summary>Opens the application registration information for the specified application.</summary>
 	/// <param name="fullApplicationPath">The full path of the application executable for which to get settings.</param>
@@ -225,15 +259,11 @@ public class AppRegistration : RegBasedSettings
 	/// <returns>A <see cref="AppRegistration"/> instance.</returns>
 	/// <exception cref="ArgumentNullException">fullApplicationPath</exception>
 	/// <exception cref="InvalidOperationException">Unable to create application key in the 'App Paths' subkey.</exception>
-	public static AppRegistration Open(string fullApplicationPath, bool systemWide = false, bool readOnly = true)
+	public static AppRegistration OpenPath(string fullApplicationPath, bool systemWide, bool readOnly)
 	{
 		if (string.IsNullOrEmpty(fullApplicationPath)) throw new ArgumentNullException(nameof(fullApplicationPath));
 		var fn = Path.GetFileName(fullApplicationPath).ToLower();
-
-		// Handle registrations in user or machine "App Paths"
-		var sk = (systemWide ? Registry.LocalMachine : Registry.CurrentUser).OpenSubKey(Path.Combine(appPathsSubKey, fn), !readOnly) ?? throw new InvalidOperationException("Unable to create application key in the 'App Paths' subkey.");
-		var ska = ShellRegistrar.GetRoot(systemWide, !readOnly, Path.Combine(appsSubKey, fn)) ?? throw new InvalidOperationException("Unable to create application key in the 'Applications' subkey.");
-		return new AppRegistration(sk, ska, readOnly);
+		return Open(fn, systemWide, readOnly);
 	}
 
 	/// <summary>Registers the application on Windows 7 or later.</summary>
@@ -248,6 +278,8 @@ public class AppRegistration : RegBasedSettings
 		if (string.IsNullOrEmpty(fullApplicationPath)) throw new ArgumentNullException(nameof(fullApplicationPath));
 		fullApplicationPath = Path.GetFullPath(fullApplicationPath);
 		var fn = Path.GetFileName(fullApplicationPath).ToLower();
+		if (fn is null || fn.IndexOf('.') == -1)
+			throw new ArgumentException("The application path must include a fully qualified application name and extension.", nameof(fullApplicationPath));
 
 		// Handle registrations in user or machine "App Paths"
 		var sk = (systemWide ? Registry.LocalMachine : Registry.CurrentUser).CreateSubKey(Path.Combine(appPathsSubKey, fn)) ?? throw new InvalidOperationException("Unable to create application key in the 'App Paths' subkey.");
@@ -259,11 +291,13 @@ public class AppRegistration : RegBasedSettings
 		if (rl > 0 && rl <= l) shortPath = sb.ToString();
 		sk.SetValue(null, shortPath);
 		// Add Path value
-		sk.SetValue("Path", Path.GetDirectoryName(fullApplicationPath));
+		var dir = Path.GetDirectoryName(fullApplicationPath);
+		if (dir != null)
+			sk.SetValue("Path", dir);
 
 		// Handle registrations in HKCR\Applications
 		var ska = ShellRegistrar.GetRoot(systemWide, true, Path.Combine(appsSubKey, fn)) ?? throw new InvalidOperationException("Unable to create application key in the HKCR\\Applications subkey.");
-		return new AppRegistration(sk, ska, false);
+		return new AppRegistration(ska, sk, false);
 	}
 
 	/// <summary>Unregisters the application on Windows 7 or later.</summary>
@@ -287,13 +321,35 @@ public class AppRegistration : RegBasedSettings
 	/// <inheritdoc/>
 	public override void Dispose()
 	{
-		appKey?.Dispose();
+		pathKey?.Dispose();
 		base.Dispose();
 	}
 
-	private class AppSubKey : RegBasedSettings
+	/// <summary>Opens the application registration information for the specified application.</summary>
+	/// <param name="systemWide">
+	/// If <see langword="true"/>, register the application system-wide. If <see langword="false"/>, register the application for the
+	/// current user only.
+	/// </param>
+	/// <param name="appFileName">The file name (no directory) of the application executable for which to get settings.</param>
+	/// <param name="readOnly">
+	/// If <see langword="true"/>, provides read-only access to the registration; If <see langword="false"/>, the properties can be set
+	/// to update the registration values.
+	/// </param>
+	/// <returns>A <see cref="AppRegistration"/> instance.</returns>
+	/// <exception cref="ArgumentNullException">fullApplicationPath</exception>
+	/// <exception cref="InvalidOperationException">Unable to create application key in the 'App Paths' subkey.</exception>
+	internal static AppRegistration Open(string appFileName, bool systemWide, bool readOnly)
 	{
-		public AppSubKey(RegistryKey key, bool readOnly) : base(key, readOnly)
+		// Handle registrations in user or machine "App Paths"
+		var appPath = Path.Combine(appsSubKey, appFileName.ToLower());
+		var ska = (readOnly ? Registry.ClassesRoot.OpenSubKey(appPath) : ShellRegistrar.GetRoot(systemWide, true, appPath)) ?? throw new InvalidOperationException("Unable to open application key in the 'Applications' subkey.");
+		var sk = (systemWide ? Registry.LocalMachine : Registry.CurrentUser).OpenSubKey(Path.Combine(appPathsSubKey, appFileName), !readOnly);
+		return new AppRegistration(ska, sk, readOnly);
+	}
+
+	private class PathSubKey : RegBasedSettings
+	{
+		public PathSubKey(RegistryKey key, bool readOnly) : base(key, readOnly)
 		{
 		}
 	}

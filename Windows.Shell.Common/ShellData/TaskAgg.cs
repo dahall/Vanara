@@ -8,7 +8,7 @@ namespace Vanara.Windows.Shell;
 internal static class TaskAgg
 {
 #if !(NET46_OR_GREATER || NETSTANDARD1_2_OR_GREATER || NETCOREAPP)
-	private static Task _completedTask;
+	private static Task? _completedTask;
 #endif
 	public static Task CompletedTask
 	{
@@ -23,29 +23,19 @@ internal static class TaskAgg
 		}
 	}
 
-	public static Task<TResult> FromResult<TResult>(TResult result)
-	{
+	public static Task<TResult> FromResult<TResult>(TResult result) =>
 #if NET45_OR_GREATER || NETSTANDARD || NETCOREAPP
-		return Task.FromResult(result);
+		Task.FromResult(result);
 #else
 		var completionSource = new TaskCompletionSource<TResult>();
 		completionSource.TrySetResult(result);
 		return completionSource.Task;
 #endif
-	}
 
-	public static Task Run(Action action, CancellationToken cancellationToken)
-	{
-		return Task.Run(action, cancellationToken);
-	}
 
-	public static Task<T> Run<T>(Func<T> action, CancellationToken cancellationToken)
-	{
-		return Task.Run(action, cancellationToken);
-	}
+	public static Task Run(Action action, CancellationToken cancellationToken) => Task.Run(action, cancellationToken);
 
-	public static Task WhenAll(IEnumerable<Task> tasks)
-	{
-		return Task.WhenAll(tasks);
-	}
+	public static Task<T> Run<T>(Func<T> action, CancellationToken cancellationToken) => Task.Run(action, cancellationToken);
+
+	public static Task WhenAll(IEnumerable<Task> tasks) => Task.WhenAll(tasks);
 }

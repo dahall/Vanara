@@ -120,7 +120,7 @@ public static partial class SearchApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-setscope HRESULT
 		// SetScope( IShellItemArray *psiaScope );
-		void SetScope([In] IShellItemArray psiaScope);
+		void SetScope([In] IShellItemArray? psiaScope);
 
 		/// <summary>
 		/// Sets the ICondition of the search. When this method is not called, the resulting search will have no filters applied.

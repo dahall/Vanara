@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Vanara.Windows.Shell;
@@ -11,15 +12,15 @@ public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 	private const string rootKeyName = "shell";
 	private readonly RegBasedSettings parent;
 
-	internal CommandVerbDictionary(RegBasedSettings parent, bool readOnly) : base(parent.key.OpenSubKey(rootKeyName, !readOnly), readOnly) => this.parent = parent;
+	internal CommandVerbDictionary(RegBasedSettings parent, bool readOnly) : base(parent.key?.OpenSubKey(rootKeyName, !readOnly), readOnly) => this.parent = parent;
 
 	/// <summary>Gets or sets the default verb.</summary>
 	/// <value>The default verb.</value>
 	[DefaultValue(null)]
-	public string DefaultVerb
+	public string? DefaultVerb
 	{
-		get => key.GetValue(null)?.ToString();
-		set { if (ContainsKey(value)) key.SetValue(null, value); else throw new KeyNotFoundException("The command verb specified is not defined."); }
+		get => key?.GetValue(null)?.ToString();
+		set { if (ContainsKey(value)) key?.SetValue(null, value!); else throw new KeyNotFoundException("The command verb specified is not defined."); }
 	}
 
 	/// <summary>Get the filtered list of keys under the base.</summary>
@@ -33,7 +34,7 @@ public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 	{
 		get
 		{
-			var order = key.GetValue("", null)?.ToString();
+			var order = key?.GetValue("", null)?.ToString();
 			var vals = Values.ToList();
 			if (order != null)
 			{
@@ -54,15 +55,15 @@ public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 			switch (value?.Count ?? 0)
 			{
 				case 0:
-					key.DeleteValue("", false);
+					key?.DeleteValue("", false);
 					break;
 
 				case 1:
-					key.SetValue("", value.First().Name);
+					key?.SetValue("", value!.First().Name);
 					break;
 
 				default:
-					key.SetValue("", string.Join(",", value.Select(c => c.Name).ToArray()));
+					key?.SetValue("", string.Join(",", value!.Select(c => c.Name).ToArray()));
 					break;
 			}
 		}
@@ -76,20 +77,20 @@ public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 	/// <param name="command">The command to execute.</param>
 	/// <param name="setAsDefault">if set to <see langword="true"/> set this verb as default.</param>
 	/// <returns>A <see cref="CommandVerb"/> instance which has been added to the registry.</returns>
-	public CommandVerb Add(string verb, string displayName = null, string command = null, bool setAsDefault = false)
+	public CommandVerb Add(string verb, string? displayName = null, string? command = null, bool setAsDefault = false)
 	{
 		if (key == null && !readOnly)
-			key = parent.key.CreateSubKey(rootKeyName);
-		var vkey = key.CreateSubKey(verb) ?? throw new InvalidOperationException("Unable to create required key in registry.");
+			key = parent.key?.CreateSubKey(rootKeyName);
+		var vkey = key?.CreateSubKey(verb) ?? throw new InvalidOperationException("Unable to create required key in registry.");
 		var v = new CommandVerb(vkey, verb, false) { DisplayName = displayName, Command = command };
-		if (setAsDefault) key.SetValue(null, verb);
+		if (setAsDefault) key?.SetValue(null, verb);
 		return v;
 	}
 
 	/// <summary>Determines if a specified key is in the filtered list of keys under the base.</summary>
 	/// <param name="verb">The name of the key to check.</param>
 	/// <returns><see langword="true" /> if the key is found; otherwise <see langword="false" />.</returns>
-	public override bool ContainsKey(string verb) => key?.HasSubKey(verb) ?? false;
+	public override bool ContainsKey(string? verb) => verb is null ? false : key?.HasSubKey(verb) ?? false;
 
 	/// <summary>Removes the specified key from this dictionary and the registry.</summary>
 	/// <param name="verb">The name of the command verb to remove.</param>
@@ -98,7 +99,7 @@ public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 	{
 		try
 		{
-			key.DeleteSubKeyTree(verb);
+			key?.DeleteSubKeyTree(verb);
 			return true;
 		}
 		catch
@@ -111,11 +112,11 @@ public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 	/// <param name="verb">The verb name.</param>
 	/// <param name="value">On success, the corresponding <see cref="CommandVerb"/> instance; <see langword="null"/> on failure.</param>
 	/// <returns>A value indicating if <paramref name="verb"/> was found.</returns>
-	public override bool TryGetValue(string verb, out CommandVerb value)
+	public override bool TryGetValue(string verb, [NotNullWhen(true)] out CommandVerb? value)
 	{
 		value = null;
 		if (!ContainsKey(verb)) return false;
-		value = new CommandVerb(key.OpenSubKey(verb, !readOnly), verb, readOnly);
+		value = new CommandVerb(key?.OpenSubKey(verb, !readOnly)!, verb, readOnly);
 		return true;
 	}
 }

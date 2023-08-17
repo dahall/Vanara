@@ -28,7 +28,7 @@ public class MyConstraintExpression
 
 public class FailureConstraint : Constraint
 {
-	public FailureConstraint(object expected = null)
+	public FailureConstraint(object? expected = null)
 	{
 		switch (expected)
 		{
@@ -52,7 +52,7 @@ public class FailureConstraint : Constraint
 		}
 	}
 
-	public object Expected { get; }
+	public object? Expected { get; }
 
 	public override ConstraintResult ApplyTo<TActual>(TActual actual)
 	{

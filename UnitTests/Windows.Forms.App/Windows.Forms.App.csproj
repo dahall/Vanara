@@ -4,6 +4,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Windows.Forms.App</AssemblyTitle>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <TargetFramework>$(TargetFramework)-windows</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />

@@ -6,7 +6,7 @@ namespace Vanara.PInvoke;
 public static partial class Ole32
 {
 	/// <summary>If COLE_DEFAULT_PRINCIPAL is specified, DCOM will pick a principal name using its security blanket negotiation algorithm.</summary>
-	public const string COLE_DEFAULT_PRINCIPAL = null;
+	public const string? COLE_DEFAULT_PRINCIPAL = null;
 
 	/// <summary>Specifies options for the RoGetAgileReference function.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/ne-combaseapi-agilereferenceoptions typedef enum

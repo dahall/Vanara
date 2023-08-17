@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.AccessControl;
 using System.Security.Permissions;
@@ -105,13 +107,13 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <param name="arguments">The arguments for the target's execution.</param>
 	/// <param name="workingDirectory">The working directory for the execution of the target.</param>
 	/// <param name="description">The description of the link.</param>
-	public ShellLink(string targetFilename, string arguments, string workingDirectory = null, string description = null) : this()
+	public ShellLink(string targetFilename, string? arguments, string? workingDirectory = null, string? description = null) : this()
 	{
 		TargetPath = targetFilename;
-		Description = description;
-		WorkingDirectory = workingDirectory;
-		Arguments = arguments;
-		// TODO: Determine if IShellItem is required. => Init(null);
+		Description = description ?? "";
+		WorkingDirectory = workingDirectory ?? "";
+		Arguments = arguments ?? "";
+		Init(ShellUtil.GetShellItemForPath(targetFilename, true));
 	}
 
 	internal ShellLink(IShellItem iItem) => LoadAndResolve(iItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH), SLR_FLAGS.SLR_NO_UI);
@@ -119,6 +121,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	private ShellLink() => link = new IShellLinkW();
 
 	/// <summary>Gets/sets any command line arguments associated with the link</summary>
+	[DefaultValue("")]
 	public string Arguments
 	{
 		get => GetStringValue(link.GetArguments, MAX_PATH);
@@ -127,6 +130,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 
 	/// <summary>Gets the current option settings.</summary>
 	/// <value>One or more of the SHELL_LINK_DATA_FLAGS that indicate the current option settings.</value>
+	[DefaultValue((SHELL_LINK_DATA_FLAGS)0)]
 	public SHELL_LINK_DATA_FLAGS DataFlags
 	{
 		get => ((IShellLinkDataList)link).GetFlags();
@@ -134,6 +138,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	}
 
 	/// <summary>Gets/sets the description of the link</summary>
+	[DefaultValue("")]
 	public string Description
 	{
 		get => GetStringValue(link.GetDescription, ComCtl32.INFOTIPSIZE);
@@ -169,6 +174,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// </item>
 	/// </list>
 	/// </value>
+	[DefaultValue(0)]
 	public ushort HotKey
 	{
 		get => link.GetHotKey();
@@ -176,7 +182,8 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	}
 
 	/// <summary>Gets the index of this icon within the icon path's resources.</summary>
-	public IconLocation IconLocation
+	[DefaultValue(null)]
+	public IconLocation? IconLocation
 	{
 		get
 		{
@@ -185,7 +192,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 			catch { return null; }
 		}
 
-		set { link.SetIconLocation(value.ModuleFileName, value.ResourceId); Save(); }
+		set { link.SetIconLocation(value?.ModuleFileName, value?.ResourceId ?? 0); Save(); }
 	}
 
 	/// <summary>Get or sets the list of item identifiers for a Shell link.</summary>
@@ -197,9 +204,11 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 
 	/// <summary>Gets a value indicating whether this instance is link.</summary>
 	/// <value><c>true</c> if this instance is link; otherwise, <c>false</c>.</value>
+	[DefaultValue(true)]
 	public override bool IsLink => true;
 
 	/// <summary>Gets/sets the relative path to the link's target</summary>
+	[DefaultValue("")]
 	public string RelativeTargetPath
 	{
 		get => GetPath(SLGP.SLGP_RELATIVEPRIORITY);
@@ -208,6 +217,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 
 	/// <summary>Gets or sets a value indicating whether the target is run with Administrator rights.</summary>
 	/// <value><c>true</c> if run as Administrator; otherwise, <c>false</c>.</value>
+	[DefaultValue(false)]
 	public bool RunAsAdministrator
 	{
 		get => DataFlags.IsFlagSet(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER);
@@ -220,6 +230,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	}
 
 	/// <summary>Gets/sets the short (8.3 format) path to the link's target</summary>
+	[DefaultValue("")]
 	public string ShortTargetPath => GetPath(SLGP.SLGP_SHORTPATH);
 
 	/// <summary>Gets or sets the show command for a Shell link object.</summary>
@@ -233,11 +244,12 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <summary>Gets or sets the target with a <see cref="ShellItem"/> instance.</summary>
 	public ShellItem Target
 	{
-		get => TargetPath is null ? null : new ShellItem(TargetPath);
+		get => new(link.GetIDList());
 		set { link.SetIDList(value.PIDL); Save(); }
 	}
 
 	/// <summary>Gets/sets the fully qualified path to the link's target</summary>
+	[DefaultValue("")]
 	public string TargetPath
 	{
 		get => GetPath(SLGP.SLGP_RAWPATH);
@@ -245,13 +257,15 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	}
 
 	/// <summary>Gets/sets the display name of the link through the PKEY_Title property.</summary>
-	public string Title
+	[DefaultValue(null)]
+	public string? Title
 	{
-		get => (string)Properties[PROPERTYKEY.System.Title];
+		get => (string?)Properties[PROPERTYKEY.System.Title];
 		set { Properties[PROPERTYKEY.System.Title] = value; Properties.Commit(); Save(); }
 	}
 
 	/// <summary>Gets/sets the Working Directory for the Link</summary>
+	[DefaultValue("")]
 	public string WorkingDirectory
 	{
 		get => GetStringValue(link.GetWorkingDirectory, MAX_PATH);
@@ -265,7 +279,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <param name="workingDirectory">The working directory for the execution of the target.</param>
 	/// <param name="arguments">The arguments for the target's execution.</param>
 	/// <returns>An instance of a <see cref="ShellLink"/> representing the values supplied.</returns>
-	public static ShellLink Create(string linkFilename, string targetFilename, string description = null, string workingDirectory = null, string arguments = null)
+	public static ShellLink Create(string linkFilename, string targetFilename, string? description = null, string? workingDirectory = null, string? arguments = null)
 	{
 		if (File.Exists(linkFilename)) throw new InvalidOperationException("File already exists.");
 		var lnk = new ShellLink(targetFilename, arguments, workingDirectory, description);
@@ -280,16 +294,16 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <param name="workingDirectory">The working directory for the execution of the target.</param>
 	/// <param name="arguments">The arguments for the target's execution.</param>
 	/// <returns>An instance of a <see cref="ShellLink"/> representing the values supplied.</returns>
-	public static ShellLink Create(string linkFilename, ShellItem target, string description = null, string workingDirectory = null, string arguments = null)
+	public static ShellLink Create(string linkFilename, ShellItem target, string? description = null, string? workingDirectory = null, string? arguments = null)
 	{
 		if (File.Exists(linkFilename)) throw new InvalidOperationException("File already exists.");
 		var lnk = new ShellLink
 		{
 			link = new IShellLinkW(),
 			Target = target,
-			Description = description,
-			WorkingDirectory = workingDirectory,
-			Arguments = arguments
+			Description = description ?? "",
+			WorkingDirectory = workingDirectory ?? "",
+			Arguments = arguments ?? ""
 		};
 		lnk.SaveAs(linkFilename);
 		lnk.Init(SHCreateItemFromParsingName<IShellItem>(Path.GetFullPath(linkFilename)));
@@ -305,22 +319,21 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// </returns>
 	public ShellLink CopyTo(string destShellLink, bool overwrite = false)
 	{
-		File.Copy(FileSystemPath, destShellLink, overwrite);
+		File.Copy(FileSystemPath!, destShellLink, overwrite);
 		return new ShellLink(destShellLink);
 	}
 
 	/// <summary>Dispose the object, releasing the COM ShellLink object</summary>
 	public override void Dispose()
 	{
-		link = null;
-		//Release(link);
 		base.Dispose();
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public override bool Equals(object obj) => obj switch
+	public override bool Equals(object? obj) => obj switch
 	{
 		ShellLink sl => Equals(sl),
 		IShellLinkW isl => Equals(isl),
@@ -336,7 +349,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// </param>
 	/// <returns>A FileSecurity object that encapsulates the access control rules for the current file.</returns>
 	public FileSecurity GetAccessControl(AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner) =>
-		new(FileSystemPath, includeSections);
+		new(FileSystemPath!, includeSections);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -345,10 +358,10 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <summary>Gets the icon for this link file.</summary>
 	/// <param name="large">if set to <c>true</c> retrieve the large icon; other retrieve the small icon.</param>
 	/// <returns>The icon.</returns>
-	public SafeHICON GetIcon(bool large)
+	public SafeHICON? GetIcon(bool large)
 	{
 		var loc = IconLocation;
-		if (loc.IsValid) return loc.Icon;
+		if (loc is not null && loc.IsValid) return loc.Icon;
 
 		// If there are no details set for the icon, then we must use the shell to get the icon for the target
 		var sfi = new ShellFileInfo(TargetPath);
@@ -361,10 +374,10 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <param name="fileSecurity">
 	/// A FileSecurity object that describes an access control list (ACL) entry to apply to the current file.
 	/// </param>
-	public void SetAccessControl(FileSecurity fileSecurity) => new FileInfo(FileSystemPath).SetAccessControl(fileSecurity);
+	public void SetAccessControl(FileSecurity fileSecurity) => new FileInfo(FileSystemPath!).SetAccessControl(fileSecurity);
 
-	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	// Path and title should be case insensitive. Shell treats arguments as case sensitive because apps can handle those differently.
 	public override string ToString() =>
 		$"{Title?.ToUpperInvariant() ?? ""} {TargetPath.ToUpperInvariant()} {Arguments}";
@@ -373,6 +386,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 
 	private void InitBaseFromPath(string linkFilename) => Init(SHCreateItemFromParsingName<IShellItem>(Path.GetFullPath(linkFilename)));
 
+	[MemberNotNull(nameof(link))]
 	private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, HWND hWin = default, ushort timeOut = 0)
 	{
 		var fullPath = Path.GetFullPath(linkFile ?? throw new ArgumentNullException(nameof(linkFile)));
@@ -400,7 +414,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 
 	/// <summary>Saves the shortcut to the specified file.</summary>
 	/// <param name="linkFile">The shortcut file (.lnk).</param>
-	public void SaveAs(string linkFile)
+	public void SaveAs(string? linkFile)
 	{
 		using (var pIPF = ComReleaserFactory.Create((IPersistFile)link))
 			pIPF.Item.Save(linkFile, true);
@@ -412,7 +426,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <param name="left">The left shell link to evaluate.</param>
 	/// <param name="right">The right shell link to evaluate.</param>
 	/// <returns><see langword="true"/> if the two links are equal; otherwise <see langword="false"/>.</returns>
-	internal static bool Equals(IShellLinkW left, IShellLinkW right)
+	internal static bool Equals(IShellLinkW? left, IShellLinkW? right)
 	{
 		if (ReferenceEquals(left, right)) return true;
 		if (left is null || right is null) return false;
@@ -434,10 +448,10 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	/// <summary>Determines whether the specified <see cref="IShellLinkW"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="IShellLinkW"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="IShellLinkW"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(IShellLinkW other) => Equals(link, other);
+	public bool Equals(IShellLinkW? other) => Equals(link, other);
 
 	/// <summary>Determines whether the specified <see cref="ShellLink"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="ShellLink"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="ShellLink"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(ShellLink other) => Equals(link, other?.link);
+	public bool Equals(ShellLink? other) => Equals(link, other?.link);
 }

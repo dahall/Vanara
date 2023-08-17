@@ -17,7 +17,7 @@ public interface IComObject
 	/// The interface pointer requested in <paramref name="riid"/>. If the object does not support the interface specified in
 	/// <paramref name="riid"/>, the implementation must return <see langword="null"/>.
 	/// </returns>
-	object QueryInterface(in Guid riid);
+	object? QueryInterface(in Guid riid);
 
 	/// <summary>Quits the message loop by sending PostQuitMessage.</summary>
 	/// <param name="exitCode">The exit code.</param>
@@ -63,7 +63,7 @@ public abstract class ComObject : IComObject, IDisposable, IObjectWithSite
 
 	/// <summary>Gets or sets the site exposed by <see cref="IObjectWithSite"/>.</summary>
 	/// <value>The site object.</value>
-	public virtual object Site { get; set; }
+	public virtual object? Site { get; set; }
 
 	/// <summary>
 	/// Cancels the timeout specified in the <see cref="Run"/> method. This should be called when the application knows that it wants to
@@ -80,7 +80,7 @@ public abstract class ComObject : IComObject, IDisposable, IObjectWithSite
 	/// The interface pointer requested in <paramref name="riid"/>. If the object does not support the interface specified in
 	/// <paramref name="riid"/>, the implementation must return <see langword="null"/>.
 	/// </returns>
-	public virtual object QueryInterface(in Guid riid) => ShellUtil.QueryInterface(this, riid);
+	public virtual object? QueryInterface(in Guid riid) => ShellUtil.QueryInterface(this, riid);
 
 	/// <summary>
 	/// Queues a non-blocking callback. This is useful in situations where a method cannot block an implemented method but further
@@ -88,7 +88,7 @@ public abstract class ComObject : IComObject, IDisposable, IObjectWithSite
 	/// </summary>
 	/// <param name="callback">The callback method.</param>
 	/// <param name="tag">An optional object that will be passed to the callback.</param>
-	public void QueueNonBlockingCallback(Action<object> callback, [Optional] object tag) => msgLoop.QueueCallback(callback, tag);
+	public void QueueNonBlockingCallback(Action<object?> callback, [Optional] object tag) => msgLoop.QueueCallback(callback, tag);
 
 	/// <summary>Quits the message loop by sending PostQuitMessage.</summary>
 	/// <param name="exitCode">The exit code.</param>
@@ -115,14 +115,14 @@ public abstract class ComObject : IComObject, IDisposable, IObjectWithSite
 	void IDisposable.Dispose() => Dispose(true);
 
 	/// <inheritdoc/>
-	HRESULT IObjectWithSite.GetSite(in Guid riid, out object ppvSite)
+	HRESULT IObjectWithSite.GetSite(in Guid riid, out object? ppvSite)
 	{
 		ppvSite = null;
 		return Site is null ? HRESULT.E_FAIL : ShellUtil.QueryInterface(Site, riid, out ppvSite);
 	}
 
 	/// <inheritdoc/>
-	HRESULT IObjectWithSite.SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite)
+	HRESULT IObjectWithSite.SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkSite)
 	{
 		Site = pUnkSite;
 		return HRESULT.S_OK;

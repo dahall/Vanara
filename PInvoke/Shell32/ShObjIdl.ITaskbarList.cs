@@ -171,7 +171,7 @@ public static partial class Shell32
 		/// <param name="pszAppID">
 		/// A pointer to the AppUserModelID of the process or application whose taskbar representation receives the Jump List.
 		/// </param>
-		void SetAppID([MarshalAs(UnmanagedType.LPWStr)] string pszAppID);
+		void SetAppID([MarshalAs(UnmanagedType.LPWStr)] string? pszAppID);
 
 		/// <summary>Initiates a building session for a custom Jump List.</summary>
 		/// <param name="pcMaxSlots">

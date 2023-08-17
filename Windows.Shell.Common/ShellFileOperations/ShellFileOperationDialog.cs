@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
@@ -9,16 +10,16 @@ namespace Vanara.Windows.Shell;
 /// <seealso cref="Component"/>
 public class ShellFileOperationDialog : Component
 {
-	internal IOperationsProgressDialog iProgressDialog;
+	internal IOperationsProgressDialog? iProgressDialog;
 
-	private ShellItem currentItem;
+	private ShellItem? currentItem;
 	private long currentItems;
 	private long currentProgress;
 	private long currentSize;
-	private ShellItem destItem;
+	[MaybeNull]
+	private ShellItem destItem, sourceItem;
 	private OperationMode mode;
 	private OperationType operation;
-	private ShellItem sourceItem;
 	private long totalItems = 100;
 	private long totalProgress = 100;
 	private long totalSize = 100;
@@ -131,10 +132,11 @@ public class ShellFileOperationDialog : Component
 	/// A ShellItem that represents the item currently being operated on by the operation engine. This property is only used in Windows
 	/// 7 and later. In earlier versions, this property should be <see langword="null"/>
 	/// </summary>
-	public ShellItem CurrentItem { get => currentItem; set { currentItem = value; UpdateLocations(); } }
+	public ShellItem? CurrentItem { get => currentItem; set { currentItem = value; UpdateLocations(); } }
 
 	/// <summary>A ShellItem that represents the target Shell item.</summary>
-	public ShellItem Destination { get => destItem; set { destItem = value ?? throw new ArgumentNullException(nameof(Source)); UpdateLocations(); } }
+	[MaybeNull]
+	public ShellItem Destination { get => destItem; set { destItem = value ?? throw new ArgumentNullException(nameof(Destination)); if (Source is not null) UpdateLocations(); } }
 
 	/// <summary>Gets the elapsed time.</summary>
 	/// <value>The elapsed time, accurate to milliseconds.</value>
@@ -144,7 +146,7 @@ public class ShellFileOperationDialog : Component
 		{
 			ulong t = 0;
 			if (CanProcess)
-				try { iProgressDialog.GetMilliseconds(out t, out _); } catch { }
+				try { iProgressDialog!.GetMilliseconds(out t, out _); } catch { }
 			return TimeSpan.FromMilliseconds(t);
 		}
 	}
@@ -171,7 +173,7 @@ public class ShellFileOperationDialog : Component
 			if (mode == value) return;
 			mode = value;
 			if (CanProcess)
-				iProgressDialog.SetMode((PDMODE)mode);
+				iProgressDialog!.SetMode((PDMODE)mode);
 		}
 	}
 
@@ -185,7 +187,7 @@ public class ShellFileOperationDialog : Component
 			if (operation == value) return;
 			operation = value;
 			if (CanProcess)
-				iProgressDialog.SetOperation((SPACTION)operation);
+				iProgressDialog!.SetOperation((SPACTION)operation);
 		}
 	}
 
@@ -245,7 +247,7 @@ public class ShellFileOperationDialog : Component
 		{
 			ulong t = 0;
 			if (CanProcess)
-				try { iProgressDialog.GetMilliseconds(out _, out t); } catch { }
+				try { iProgressDialog!.GetMilliseconds(out _, out t); } catch { }
 			return TimeSpan.FromMilliseconds(t);
 		}
 	}
@@ -255,11 +257,12 @@ public class ShellFileOperationDialog : Component
 	public bool ShowPauseButton { get; set; }
 
 	/// <summary>A ShellItem that represents the source Shell item.</summary>
-	public ShellItem Source { get => sourceItem; set { sourceItem = value ?? throw new ArgumentNullException(nameof(Source)); UpdateLocations(); } }
+	[MaybeNull]
+	public ShellItem Source { get => sourceItem; set { sourceItem = value ?? throw new ArgumentNullException(nameof(Source)); if (Destination is not null) UpdateLocations(); } }
 
 	/// <summary>Gets operation status for progress dialog.</summary>
 	/// <value>The operation status. See <see cref="DialogStatus"/>.</value>
-	public DialogStatus Status => (DialogStatus)(CanProcess ? iProgressDialog.GetOperationStatus() : 0);
+	public DialogStatus Status => (DialogStatus)(CanProcess ? iProgressDialog!.GetOperationStatus() : 0);
 
 	private bool CanProcess => iProgressDialog != null;
 
@@ -270,13 +273,13 @@ public class ShellFileOperationDialog : Component
 						(HideLocations ? OPPROGDLGF.OPPROGDLG_DONTDISPLAYLOCATIONS : 0);
 
 	/// <summary>Pauses progress dialog timer.</summary>
-	public void PauseTimer() { if (CanProcess) iProgressDialog.PauseTimer(); }
+	public void PauseTimer() { if (CanProcess) iProgressDialog!.PauseTimer(); }
 
 	/// <summary>Resets progress dialog timer to 0.</summary>
-	public void ResetTimer() { if (CanProcess) iProgressDialog.ResetTimer(); }
+	public void ResetTimer() { if (CanProcess) iProgressDialog!.ResetTimer(); }
 
 	/// <summary>Resumes progress dialog timer.</summary>
-	public void ResumeTimer() { if (CanProcess) iProgressDialog.ResumeTimer(); }
+	public void ResumeTimer() { if (CanProcess) iProgressDialog!.ResumeTimer(); }
 
 	/// <summary>Starts the specified progress dialog.</summary>
 	/// <param name="owner">
@@ -298,7 +301,7 @@ public class ShellFileOperationDialog : Component
 		if (!CanProcess)
 			return;
 
-		iProgressDialog.StopProgressDialog();
+		iProgressDialog!.StopProgressDialog();
 		Thread.Sleep(500);
 		iProgressDialog = null;
 	}
@@ -315,13 +318,15 @@ public class ShellFileOperationDialog : Component
 
 	private void UpdateLocations()
 	{
+		if (sourceItem is null) throw new ArgumentNullException(nameof(Source), "Source must be set.");
+		if (destItem is null) throw new ArgumentNullException(nameof(Destination), "Destination must be set.");
 		if (CanProcess)
-			iProgressDialog.UpdateLocations(sourceItem.IShellItem, destItem.IShellItem, currentItem?.IShellItem);
+			iProgressDialog!.UpdateLocations(sourceItem.IShellItem, destItem.IShellItem, currentItem?.IShellItem);
 	}
 
 	private void UpdateProgress()
 	{
 		if (CanProcess)
-			iProgressDialog.UpdateProgress((ulong)currentProgress, (ulong)totalProgress, (ulong)currentSize, (ulong)totalSize, (ulong)currentItems, (ulong)totalItems);
+			iProgressDialog!.UpdateProgress((ulong)currentProgress, (ulong)totalProgress, (ulong)currentSize, (ulong)totalSize, (ulong)currentItems, (ulong)totalItems);
 	}
 }
