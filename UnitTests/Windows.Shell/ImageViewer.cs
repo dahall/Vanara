@@ -7,11 +7,11 @@ namespace Vanara.Windows.Shell.Tests;
 
 public partial class ImageViewer : Form
 {
-	public ImageViewer(IEnumerable<Image> items = null) : this(items.Select(i => (i, "")))
+	public ImageViewer(IEnumerable<Image>? items = null) : this(items?.Select(i => (i, "")))
 	{
 	}
 
-	public ImageViewer(IEnumerable<(Image, string)> items = null)
+	public ImageViewer(IEnumerable<(Image, string)>? items = null)
 	{
 		InitializeComponent();
 		BackColor = Color.Gray;

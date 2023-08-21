@@ -22,8 +22,8 @@ public class ShellDataTests
 
 		// Get list of default and slow columns to fetch
 		var cols = new List<DataColumn>();
-		cols.AddRange(shData.Columns.Cast<DataColumn>().Where(c => ((SHCOLSTATE)c.ExtendedProperties["ColState"]).IsFlagSet(SHCOLSTATE.SHCOLSTATE_ONBYDEFAULT)));
-		cols.AddRange(shData.Columns.Cast<DataColumn>().Where(c => (bool)c.ExtendedProperties["Slow"] && c.ColumnName.StartsWith("System.Document.")));
+		cols.AddRange(shData.Columns.Cast<DataColumn>().Where(c => ((SHCOLSTATE)c.ExtendedProperties["ColState"]!).IsFlagSet(SHCOLSTATE.SHCOLSTATE_ONBYDEFAULT)));
+		cols.AddRange(shData.Columns.Cast<DataColumn>().Where(c => (bool)c.ExtendedProperties["Slow"]! && c.ColumnName.StartsWith("System.Document.")));
 		TestContext.WriteLine(string.Join("\t", cols));
 
 		// Populate table
@@ -145,11 +145,11 @@ public class ShellDataTests
 		Assert.That(obj.TargetClsid, Is.EqualTo(cl));
 	}
 
-	private static string GetColVal(object o) => o switch
+	private static string GetColVal(object? o) => o switch
 	{
 		null => string.Empty,
 		DBNull _ => string.Empty,
 		string[] a => string.Join(",", a),
-		_ => o.ToString()
+		_ => o.ToString() ?? string.Empty,
 	};
 }
