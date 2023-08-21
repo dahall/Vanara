@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices.ComTypes;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
 
@@ -133,6 +134,7 @@ public static partial class Ole32
 	// CreateILockBytesOnHGlobal( HGLOBAL hGlobal, BOOL fDeleteOnRelease, LPLOCKBYTES *pplkbyt );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "e7963be7-ccd8-49fb-85bb-e22fbbb6dc5c")]
+	[DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ILockBytes))]
 	public static extern HRESULT CreateILockBytesOnHGlobal([Optional] IntPtr hGlobal, [MarshalAs(UnmanagedType.Bool)] bool fDeleteOnRelease, out ILockBytes pplkbyt);
 
 	/// <summary>
@@ -552,6 +554,8 @@ public static partial class Ole32
 	// StgCreateDocfileOnILockBytes( ILockBytes *plkbyt, DWORD grfMode, DWORD reserved, IStorage **ppstgOpen );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("coml2api.h", MSDNShortId = "8af5098d-db04-4273-8f5f-6d1a1d9541de")]
+	[DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(IStorage))]
+	[DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ILockBytes))]
 	public static extern HRESULT StgCreateDocfileOnILockBytes([In] ILockBytes plkbyt, STGM grfMode, [Optional] uint reserved, out IStorage ppstgOpen);
 
 	/// <summary>

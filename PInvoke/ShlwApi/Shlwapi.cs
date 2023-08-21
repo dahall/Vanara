@@ -3824,12 +3824,58 @@ public static partial class ShlwApi
 	[PInvokeData("shlwapi.h", MSDNShortId = "7e62cde0-2b9f-44d3-afb8-5df71f98453a")]
 	public static extern int SHMessageBoxCheck([Optional] HWND hwnd, string pszText, [Optional] string? pszCaption, uint uType, int iDefault, string pszRegVal);
 
-	/// <summary></summary>
-	/// <returns></returns>
-	// IStream *SHOpenRegStream2( HKEY hkey, LPCTSTR pszSubkey, LPCTSTR pszValue, DWORD grfMode ); https://msdn.microsoft.com/en-us/library/bb759879(v=vs.85).aspx
+	/// <summary>
+	/// Opens a registry value and supplies a stream that can be used to read from or write to the value. This function supersedes SHOpenRegStream.
+	/// </summary>
+	/// <param name="hkey">
+	/// <para>Type: <c>HKEY</c></para>
+	/// <para>Required. The subtree, such as HKEY_LOCAL_MACHINE, that contains the value.</para>
+	/// </param>
+	/// <param name="pszSubkey">
+	/// <para>Type: <c>LPCTSTR</c></para>
+	/// <para>Optional. Pointer to a null-terminated string that specifies the subkey that contains the value. This value can be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="pszValue">
+	/// <para>Type: <c>LPCTSTR</c></para>
+	/// <para>Pointer to a null-terminated string that specifies the value to be accessed. This value can be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="grfMode">
+	/// <para>Type: <c>DWORD</c></para>
+	/// <para>The type of access for the stream. This can be one of the following values:</para>
+	/// <para>STGM_READ</para>
+	/// <para>Open the stream for reading.</para>
+	/// <para>STGM_WRITE</para>
+	/// <para>Open the stream for writing.</para>
+	/// <para>STGM_READWRITE</para>
+	/// <para>Open the stream for reading and writing.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>IStream*</c></para>
+	/// <para>
+	/// Returns an IStream interface pointer if successful; otherwise, <c>NULL</c>. A <c>NULL</c> value can be caused by several situations,
+	/// including an invalid <c>hkey</c> or <c>pszSubkey</c>, a subkey named by <c>pszSubkey</c> that does not exist, a caller without
+	/// sufficient permissions to access the subkey, or an inability to open the stream.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The calling application is responsible for calling the Release method of the returned object when that IStream object is no longer needed.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The shlwapi.h header defines SHOpenRegStream2 as an alias which automatically selects the ANSI or Unicode version of this function
+	/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-shopenregstream2w
+	// IStream * SHOpenRegStream2W( [in] HKEY hkey, [in, optional] LPCWSTR pszSubkey, [in, optional] LPCWSTR pszValue, [in] DWORD grfMode );
+	[PInvokeData("shlwapi.h", MSDNShortId = "NF:shlwapi.SHOpenRegStream2W")]
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
-	[PInvokeData("shlwapi.h", MSDNShortId = "bb759879")]
-	public static extern IStream SHOpenRegStream2(HKEY hkey, string pszSubkey, string pszValue, STGM grfMode);
+	public static extern IStream? SHOpenRegStream2(HKEY hkey, string? pszSubkey, string? pszValue, STGM grfMode);
 
 	/// <summary>
 	/// <para>Retrieves information about a specified registry key.</para>

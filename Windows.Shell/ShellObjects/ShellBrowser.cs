@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -92,18 +93,6 @@ public enum ShellBrowserViewMode
 	Tile = FOLDERVIEWMODE.FVM_TILE
 }
 
-/// <summary>Extension methods for <see cref="ShellBrowserViewHandler"/>.</summary>
-public static class ShellBrowserViewHandlerExtension
-{
-	/// <summary>
-	/// Returns the reference to the given <see cref="ShellBrowserViewHandler"/> if it is not null <b>and</b> valid, null otherwise
-	/// </summary>
-	/// <param name="shellBrowserViewHandler">A (possible) <see cref="ShellBrowserViewHandler"/> reference.</param>
-	/// <returns></returns>
-	public static ShellBrowserViewHandler GetValidInstance(this ShellBrowserViewHandler shellBrowserViewHandler) =>
-		((!(shellBrowserViewHandler is null)) && shellBrowserViewHandler.IsValid) ? shellBrowserViewHandler : null;
-}
-
 /// <summary>
 /// Encapsulates a <see cref="IShellBrowser"/>-Implementation within an <see cref="UserControl"/>. <br/><br/> Implements the following
 /// Interfaces: <br/>
@@ -149,6 +138,7 @@ public static class ShellBrowserViewHandlerExtension
 [Guid("B8B0F852-9527-4CA8-AB1D-648AE95B618E")]
 public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IServiceProvider
 {
+	private const string defEmptyFolderText = "This folder is empty.";
 	internal const int defaultThumbnailSize = 32;
 	private const string processCmdKeyClassNameEdit = "Edit";
 	private const int processCmdKeyClassNameMaxLength = 31;
@@ -158,14 +148,13 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// <summary>Required designer variable.</summary>
 	private IContainer components;
 
-	private string emptyFolderText = "This folder is empty.";
+	private string emptyFolderText = defEmptyFolderText;
 	private FOLDERSETTINGS folderSettings = new(FOLDERVIEWMODE.FVM_AUTO, FOLDERFLAGS.FWF_NOHEADERINALLVIEWS | FOLDERFLAGS.FWF_NOWEBVIEW | FOLDERFLAGS.FWF_USESEARCHFOLDER);
-	private IStream viewStateStream;
-	private string viewStateStreamIdentifier;
+	private IStream? viewStateStream;
+	private string? viewStateStreamIdentifier;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellBrowser"/> class.</summary>
-	public ShellBrowser()
-		: base()
+	public ShellBrowser() : base()
 	{
 		InitializeComponent();
 
@@ -176,18 +165,18 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 
 	/// <summary>Fires when the Items collection changes.</summary>
 	[Category("Action"), Description("Items changed.")]
-	public event EventHandler ItemsChanged;
+	public event EventHandler? ItemsChanged;
 
 	/// <summary>Fires when ShellBrowser has navigated to a new folder.</summary>
 	[Category("Action"), Description("ShellBowser has navigated to a new folder.")]
-	public event EventHandler<ShellBrowserNavigatedEventArgs> Navigated;
+	public event EventHandler<ShellBrowserNavigatedEventArgs>? Navigated;
 
 	/// <summary>Fires when the SelectedItems collection changes.</summary>
 	[Category("Behavior"), Description("Selection changed.")]
-	public event EventHandler SelectionChanged;
+	public event EventHandler? SelectionChanged;
 
 	/// <summary>The default text that is displayed when an empty folder is shown</summary>
-	[Category("Appearance"), DefaultValue("This folder is empty."), Description("The default text that is displayed when an empty folder is shown.")]
+	[Category("Appearance"), DefaultValue(defEmptyFolderText), Description("The default text that is displayed when an empty folder is shown.")]
 	public string EmptyFolderText
 	{
 		get => emptyFolderText;
@@ -195,8 +184,8 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		{
 			emptyFolderText = value;
 
-			if (ViewHandler.IsValid)
-				ViewHandler.Text = value;
+			if (IsHandlerValid)
+				ViewHandler!.Text = value;
 		}
 	}
 
@@ -216,11 +205,11 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	[Category("Appearance"), DefaultValue(defaultThumbnailSize), Description("The size of the thumbnails in pixels.")]
 	public int ThumbnailSize
 	{
-		get => ViewHandler.IsValid ? ViewHandler.ThumbnailSize : defaultThumbnailSize;
+		get => IsHandlerValid ? ViewHandler!.ThumbnailSize : defaultThumbnailSize;
 		set
 		{
-			if (ViewHandler.IsValid)
-				ViewHandler.ThumbnailSize = value;
+			if (IsHandlerValid)
+				ViewHandler!.ThumbnailSize = value;
 		}
 	}
 
@@ -235,8 +224,8 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 			// TODO: Set ThumbnailSize accordingly?
 			folderSettings.ViewMode = (FOLDERVIEWMODE)value;
 
-			if (ViewHandler.IsValid)
-				ViewHandler.ViewMode = folderSettings.ViewMode;
+			if (IsHandlerValid)
+				ViewHandler!.ViewMode = folderSettings.ViewMode;
 		}
 	}
 
@@ -259,7 +248,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	protected override Size DefaultSize => new(200, 150);
 
 	/// <summary>The <see cref="ShellBrowserViewHandler"/> that is currently in use.</summary>
-	protected ShellBrowserViewHandler ViewHandler { get; private set; }
+	protected ShellBrowserViewHandler? ViewHandler { get; private set; }
 
 	/// <summary></summary>
 	/// <param name="pidl"></param>
@@ -267,7 +256,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// <returns>HRESULT.STG_E_PATHNOTFOUND if path n found</returns>
 	public HRESULT BrowseObject(IntPtr pidl, SBSP wFlags)
 	{
-		ShellItem shellObject = null;
+		ShellItem? shellObject = null;
 
 		// The given PIDL equals Desktop, so ignore the other flags
 		if (ShellFolder.Desktop.PIDL.Equals(pidl))
@@ -296,20 +285,20 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		// SBSP_RELATIVE stands for a pidl relative to the current folder
 		else if (wFlags.HasFlag(SBSP.SBSP_RELATIVE))
 		{
-			ShellItem currentObject = History.Current;
+			ShellItem? currentObject = History.Current;
+			if (currentObject is null)
+				return HRESULT.STG_E_PATHNOTFOUND;
 
-			PIDL targetObject = ILCombine((IntPtr)currentObject.PIDL, pidl);
-
-			shellObject = new ShellItem(targetObject);
+			shellObject = new ShellItem(ILCombine((IntPtr)currentObject.PIDL, pidl));
 		}
 
 		// SBSP_PARENT stands for the parent folder (and ignores the pidl)
 		else if (wFlags.HasFlag(SBSP.SBSP_PARENT))
 		{
-			ShellItem currentObject = History.Current;
-			ShellFolder parentObject = currentObject.Parent;
+			ShellItem? currentObject = History.Current;
+			ShellFolder? parentObject = currentObject?.Parent;
 
-			if ((parentObject is not null) && parentObject.PIDL.IsParentOf(currentObject.PIDL))
+			if ((parentObject is not null) && parentObject.PIDL.IsParentOf(currentObject!.PIDL))
 				shellObject = parentObject;
 			else
 				return HRESULT.STG_E_PATHNOTFOUND;
@@ -323,34 +312,29 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		}
 
 		if (InvokeRequired)
-			BeginInvoke((Action)(() => BrowseShellItemInternal(shellObject)));
+			BeginInvoke(() => BrowseShellItemInternal(shellObject!));
 		else
-			BrowseShellItemInternal(shellObject);
+			BrowseShellItemInternal(shellObject!);
 
 		return HRESULT.S_OK;
-
-		#region BrowseShellItemInternal
 
 		void BrowseShellItemInternal(ShellItem shellItem)
 		{
 			// Save ViewState of current folder
-			ViewHandler.GetValidInstance()?.ShellView.SaveViewState();
+			GetValidHandler()?.ShellView?.SaveViewState();
 
 			if (viewStateStream is not null)
 				Marshal.ReleaseComObject(viewStateStream);
 
 			viewStateStreamIdentifier = shellItem.ParsingName;
 
-			var viewHandler = new ShellBrowserViewHandler(this,
-				new ShellFolder(shellItem),
-				ref folderSettings,
-				ref emptyFolderText);
+			var viewHandler = new ShellBrowserViewHandler(this, new ShellFolder(shellItem), folderSettings, emptyFolderText);
 
 			// Clone the PIDL, to have our own object copy on the heap!
 			if (!wFlags.HasFlag(SBSP.SBSP_WRITENOHISTORY))
 				History.Add(new ShellItem(new PIDL(viewHandler.ShellFolder.PIDL)));
 
-			ShellBrowserViewHandler oldViewHandler = ViewHandler;
+			ShellBrowserViewHandler? oldViewHandler = ViewHandler;
 			ViewHandler = viewHandler;
 			oldViewHandler?.UIDeactivate();
 			viewHandler.UIActivate();
@@ -359,8 +343,6 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 			OnNavigated(viewHandler.ShellFolder);
 			OnSelectionChanged();
 		}
-
-		#endregion BrowseShellItemInternal
 	}
 
 	/// <inheritdoc/>
@@ -377,13 +359,14 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	}
 
 	/// <inheritdoc/>
-	public HRESULT GetViewStateStream(STGM grfMode, out IStream stream)
+	public HRESULT GetViewStateStream(STGM grfMode, [MaybeNull] out IStream stream)
 	{
 		if (viewStateStream is not null)
 			Marshal.ReleaseComObject(viewStateStream);
 
-		stream = viewStateStream = ShlwApi.SHOpenRegStream2(hkey: HKEY.HKEY_CURRENT_USER, pszSubkey: ViewStateRegistryKey, pszValue: viewStateStreamIdentifier,
-			grfMode: grfMode);
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+		stream = viewStateStream = ShlwApi.SHOpenRegStream2(HKEY.HKEY_CURRENT_USER, ViewStateRegistryKey, viewStateStreamIdentifier, grfMode);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 		return stream is null ? HRESULT.E_FAIL : HRESULT.S_OK;
 	}
@@ -431,7 +414,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
 	public bool NavigateToHistoryIndex(int historyIndex)
 	{
-		using ShellItem shellFolder = History.Seek(historyIndex, SeekOrigin.Current);
+		using ShellItem? shellFolder = History.Seek(historyIndex, SeekOrigin.Current);
 		return shellFolder is not null && BrowseObject((IntPtr)shellFolder.PIDL, SBSP.SBSP_ABSOLUTE | SBSP.SBSP_WRITENOHISTORY).Succeeded;
 	}
 
@@ -439,13 +422,12 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	public HRESULT OnViewWindowActive(IShellView ppshv) => HRESULT.E_NOTIMPL;
 
 	/// <inheritdoc/>
-	public HRESULT QueryActiveShellView(out IShellView shellView)
+	public HRESULT QueryActiveShellView([MaybeNull] out IShellView shellView)
 	{
-		if (ViewHandler.GetValidInstance() is not null)
+		if (IsHandlerValid)
 		{
-			Marshal.AddRef(Marshal.GetIUnknownForObject(ViewHandler.ShellView));
+			Marshal.AddRef(Marshal.GetIUnknownForObject(ViewHandler!.ShellView!));
 			shellView = ViewHandler.ShellView;
-
 			return HRESULT.S_OK;
 		}
 
@@ -459,8 +441,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// <summary>Selects all items in the current view.</summary>
 	public void SelectAll()
 	{
-		ShellBrowserViewHandler viewHandler = ViewHandler.GetValidInstance();
-
+		ShellBrowserViewHandler? viewHandler = GetValidHandler();
 		if (viewHandler is not null)
 		{
 			// NOTE: The for-loop is rather slow, so send (Ctrl+A)-KeyDown-Message instead and let the ShellView do the work for (var i
@@ -470,7 +451,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 
 			var msg = new Message()
 			{
-				HWnd = (IntPtr)ViewHandler.ViewWindow,
+				HWnd = (IntPtr)viewHandler.ViewWindow,
 				Msg = (int)User32.WindowMessage.WM_KEYDOWN,
 			};
 
@@ -492,19 +473,13 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	public HRESULT SetStatusTextSB(string pszStatusText) => HRESULT.E_NOTIMPL;
 
 	/// <inheritdoc/>
-	public HRESULT SetToolbarItems(ComCtl32.TBBUTTON[] lpButtons, uint nButtons, FCT uFlags) => HRESULT.E_NOTIMPL;
+	public HRESULT SetToolbarItems(ComCtl32.TBBUTTON[]? lpButtons, uint nButtons, FCT uFlags) => HRESULT.E_NOTIMPL;
 
 	/// <inheritdoc/>
 	public HRESULT TranslateAcceleratorSB(ref MSG pmsg, ushort wID) => HRESULT.E_NOTIMPL;
 
 	/// <summary>Unselects all items in the current view.</summary>
-	public void UnselectAll()
-	{
-		ShellBrowserViewHandler viewHandler = ViewHandler.GetValidInstance();
-
-		if (viewHandler is not null)
-			viewHandler.FolderView2.SelectItem(-1, SVSIF.SVSI_DESELECTOTHERS);
-	}
+	public void UnselectAll() => GetValidHandler()?.FolderView2?.SelectItem(-1, SVSIF.SVSI_DESELECTOTHERS);
 
 	/// <summary>
 	/// <see cref="Shell32.IServiceProvider"/>-Interface Implementation for <see cref="ShellBrowser"/>. <br/><br/> Responds to the
@@ -532,12 +507,10 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		// IShellFolderViewCB: Guid("2047E320-F2A9-11CE-AE65-08002B2E1262")
 		if (riid.Equals(typeof(IShellFolderViewCB).GUID))
 		{
-			ShellBrowserViewHandler shvwHandler = ViewHandler.GetValidInstance();
-
-			if (!(shvwHandler is null))
+			ShellBrowserViewHandler? shvwHandler = GetValidHandler();
+			if (shvwHandler is not null)
 			{
 				ppvObject = Marshal.GetComInterfaceForObject(shvwHandler, typeof(IShellFolderViewCB));
-
 				return HRESULT.S_OK;
 			}
 		}
@@ -548,13 +521,11 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 
 	/// <summary>Gets the items in the ShellBrowser as an IShellItemArray</summary>
 	/// <returns>An <see cref="IShellItemArray"/> instance or <see langword="null"/> if not available.</returns>
-	internal IShellItemArray GetItemsArray(SVGIO opt)
+	internal IShellItemArray? GetItemsArray(SVGIO opt)
 	{
 		try
 		{
-			ShellBrowserViewHandler viewHandler = ViewHandler.GetValidInstance();
-
-			return viewHandler is not null ? viewHandler.FolderView2.Items<IShellItemArray>(opt) : null;
+			return GetValidHandler()?.FolderView2?.Items<IShellItemArray>(opt) ?? null;
 		}
 		catch { return null; }
 	}
@@ -591,7 +562,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 	protected override void OnHandleDestroyed(EventArgs e)
 	{
-		ViewHandler.GetValidInstance()?.ShellView.SaveViewState();
+		GetValidHandler()?.ShellView?.SaveViewState();
 		base.OnHandleDestroyed(e);
 	}
 
@@ -613,7 +584,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		// its parent window is our ViewWindow, the ShellView is currently showing an Edit-field to let the User edit an item's name.
 		// Thus, we have to pass all Key Strokes directly to the ShellView.
 
-		if (ViewHandler.GetValidInstance() is not null)
+		if (IsHandlerValid)
 		{
 			// Note: I tried using the LVM_GETEDITCONTROL message for finding the edit control without luck
 			if (User32.GetClassName(msg.HWnd,
@@ -630,11 +601,9 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 						// Try to get SysListView32's parent 'SHELLDLL_DefView' handle
 						HWND hShellDllDefViewWindow = User32.GetParent(hSysListView32);
 
-						if (!hShellDllDefViewWindow.IsNull && (hShellDllDefViewWindow == ViewHandler.ViewWindow))
+						if (!hShellDllDefViewWindow.IsNull && (hShellDllDefViewWindow == ViewHandler!.ViewWindow))
 						{
-							ViewHandler.ShellView.TranslateAccelerator(
-								new MSG(msg.HWnd, (uint)msg.Msg, msg.WParam, msg.LParam));
-
+							ViewHandler.ShellView!.TranslateAccelerator(new MSG(msg.HWnd, (uint)msg.Msg, msg.WParam, msg.LParam));
 							return true;
 						}
 					}
@@ -675,10 +644,9 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		}
 
 		// Let the ShellView process all other keystrokes
-		if (ViewHandler.GetValidInstance() is not null)
+		if (IsHandlerValid)
 		{
-			ViewHandler.ShellView.TranslateAccelerator(new MSG(msg.HWnd, (uint)msg.Msg, msg.WParam, msg.LParam));
-
+			ViewHandler!.ShellView!.TranslateAccelerator(new MSG(msg.HWnd, (uint)msg.Msg, msg.WParam, msg.LParam));
 			return true;
 		}
 
@@ -686,11 +654,16 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	}
 
 	/// <summary>Required method for Designer support - do not modify the contents of this method with the code editor.</summary>
+	[MemberNotNull(nameof(components))]
 	private void InitializeComponent()
 	{
 		components = new Container();
 		AutoScaleMode = AutoScaleMode.Font;
 	}
+
+	private ShellBrowserViewHandler? GetValidHandler() => IsHandlerValid ? ViewHandler : null;
+
+	private bool IsHandlerValid => ViewHandler is not null && IsHandlerValid;
 
 	/// <summary>Represents a collection of <see cref="ShellItem"/> attached to an <see cref="ShellBrowser"/>.</summary>
 	private class ShellItemCollection : IReadOnlyList<ShellItem>
@@ -706,23 +679,15 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 
 		/// <summary>Gets the number of elements in the collection.</summary>
 		/// <value>Returns a <see cref="int"/> value.</value>
-		public int Count
-		{
-			get
-			{
-				ShellBrowserViewHandler viewHandler = shellBrowser.ViewHandler.GetValidInstance();
+		public int Count => shellBrowser.GetValidHandler()?.FolderView2!.ItemCount(option) ?? 0;
 
-				return viewHandler is not null ? viewHandler.FolderView2.ItemCount(option) : 0;
-			}
-		}
-
-		private IShellItemArray Array => shellBrowser.GetItemsArray(option);
+		private IShellItemArray? Array => shellBrowser.GetItemsArray(option);
 
 		private IEnumerable<IShellItem> Items
 		{
 			get
 			{
-				IShellItemArray array = Array;
+				IShellItemArray? array = Array;
 
 				if (array is null)
 					yield break;
@@ -745,20 +710,19 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		{
 			get
 			{
-				IShellItemArray array = Array;
+				IShellItemArray? array = Array;
 				try
 				{
-					return array is null ? null : ShellItem.Open(array.GetItemAt((uint)index));
+					if (array is not null)
+						return ShellItem.Open(array.GetItemAt((uint)index));
 				}
-				catch
-				{
-					return null;
-				}
+				catch { }
 				finally
 				{
 					if (array is not null)
 						Marshal.ReleaseComObject(array);
 				}
+				throw new ArgumentOutOfRangeException(nameof(index));
 			}
 		}
 
@@ -805,7 +769,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 	/// </summary>
 	internal static readonly HRESULT HRESULT_CANCELLED = new(0x800704C7);
 
-	private string text;
+	private string? text;
 	private int thumbnailSize = ShellBrowser.defaultThumbnailSize;
 
 	/// <summary>Create an instance of <see cref="ShellBrowserViewHandler"/> to handle Callback messages for the given ShellFolder.</summary>
@@ -813,7 +777,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 	/// <param name="shellFolder">The ShellFolder for the view.</param>
 	/// <param name="folderSettings">The folder settings for the view.</param>
 	/// <param name="emptyFolderText">Text to display if the folder is empty.</param>
-	public ShellBrowserViewHandler(ShellBrowser owner, ShellFolder shellFolder, ref FOLDERSETTINGS folderSettings, ref string emptyFolderText)
+	public ShellBrowserViewHandler(ShellBrowser owner, ShellFolder shellFolder, FOLDERSETTINGS folderSettings, string emptyFolderText)
 	{
 		Owner = owner ?? throw new ArgumentNullException(nameof(owner));
 		ShellFolder = shellFolder ?? throw new ArgumentNullException(nameof(shellFolder));
@@ -821,7 +785,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 		// Create ShellView and FolderView2 objects, then its ViewWindow
 		try
 		{
-			var sfvCreate = new SFV_CREATE()
+			SFV_CREATE sfvCreate = new()
 			{
 				cbSize = (uint)Marshal.SizeOf(typeof(SFV_CREATE)),
 				pshf = shellFolder.IShellFolder,
@@ -829,13 +793,13 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 				psfvcb = this,
 			};
 
-			SHCreateShellFolderView(sfvCreate, out IShellView shellView).ThrowIfFailed();
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+			SHCreateShellFolderView(sfvCreate, out IShellView? shellView).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
-			ShellView = shellView ??
-				throw new InvalidComObjectException(nameof(ShellView));
+			ShellView = shellView ?? throw new InvalidComObjectException(nameof(ShellView));
 
-			FolderView2 = (IFolderView2)ShellView ??
-				throw new InvalidComObjectException(nameof(FolderView2));
+			FolderView2 = ShellView as IFolderView2 ?? throw new InvalidComObjectException(nameof(FolderView2));
 
 			// Try to create ViewWindow and take special care of Exception {"The operation was canceled by the user. (Exception from
 			// HRESULT: 0x800704C7)"} cause this happens when there's no disk in a drive.
@@ -863,7 +827,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 	}
 
 	/// <summary>The <see cref="IFolderView2"/>.</summary>
-	public IFolderView2 FolderView2 { get; private set; }
+	public IFolderView2? FolderView2 { get; private set; }
 
 	/// <summary>Indicates that no error occured while creating this instance, i.e. the View is fully functional.</summary>
 	public bool IsValid { get; private set; }
@@ -878,10 +842,10 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 	public ShellFolder ShellFolder { get; private set; }
 
 	/// <summary>The <see cref="IShellView"/>.</summary>
-	public IShellView ShellView { get; private set; }
+	public IShellView? ShellView { get; private set; }
 
 	/// <summary>The default text to be used when there are no items in the view.</summary>
-	public string Text
+	public string? Text
 	{
 		get => text;
 		set
@@ -889,7 +853,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 			text = value;
 
 			if (IsValid)
-				FolderView2.SetText(FVTEXTTYPE.FVST_EMPTYTEXT, value);
+				FolderView2!.SetText(FVTEXTTYPE.FVST_EMPTYTEXT, value);
 		}
 	}
 
@@ -899,7 +863,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 		get
 		{
 			if (IsValid)
-				FolderView2.GetViewModeAndIconSize(out _, out thumbnailSize);
+				FolderView2!.GetViewModeAndIconSize(out _, out thumbnailSize);
 
 			return thumbnailSize;
 		}
@@ -907,14 +871,14 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 		{
 			if (IsValid)
 			{
-				FolderView2.GetViewModeAndIconSize(out FOLDERVIEWMODE fvm, out _);
-				FolderView2.SetViewModeAndIconSize(fvm, thumbnailSize = value);
+				FolderView2!.GetViewModeAndIconSize(out FOLDERVIEWMODE fvm, out _);
+				FolderView2!.SetViewModeAndIconSize(fvm, thumbnailSize = value);
 			}
 		}
 	}
 
 	/// <summary>The <see cref="COMException"/> that occured, if creation of the instance failed.</summary>
-	public COMException ValidationError { get; private set; }
+	public COMException? ValidationError { get; private set; }
 
 	/// <summary>The viewing mode of the ShellBrowser.</summary>
 	public FOLDERVIEWMODE ViewMode
@@ -923,7 +887,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 		{
 			if (IsValid)
 			{
-				return FolderView2.GetCurrentViewMode();
+				return FolderView2!.GetCurrentViewMode();
 				// TODO: Check ThumbNailSize for new ViewModes with larger sized icons
 			}
 
@@ -932,7 +896,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 		set
 		{
 			if (IsValid)
-				FolderView2.SetCurrentViewMode(value);
+				FolderView2!.SetCurrentViewMode(value);
 		}
 	}
 
@@ -948,7 +912,7 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 
 		// Destroy ShellView's ViewWindow
 		ViewWindow = HWND.NULL;
-		ShellView.DestroyViewWindow();
+		ShellView?.DestroyViewWindow();
 
 		FolderView2 = null;
 		ShellView = null;

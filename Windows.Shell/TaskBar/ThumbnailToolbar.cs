@@ -8,7 +8,7 @@ namespace Vanara.Windows.Shell;
 [TypeConverter(typeof(ExpandableObjectConverter))]
 public class ThumbnailToolbar : INotifyPropertyChanged
 {
-	private ImageList _imageList;
+	private ImageList? _imageList;
 
 	/// <summary>Initializes a new instance of the <see cref="ThumbnailToolbar"/> class.</summary>
 	public ThumbnailToolbar()
@@ -18,7 +18,7 @@ public class ThumbnailToolbar : INotifyPropertyChanged
 	}
 
 	/// <summary>Occurs when a property has changed.</summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Gets the buttons.</summary>
 	/// <value>The buttons.</value>
@@ -27,7 +27,7 @@ public class ThumbnailToolbar : INotifyPropertyChanged
 
 	/// <summary>Gets or sets the image list for use by the toolbar buttons.</summary>
 	/// <value>The image list.</value>
-	public ImageList ImageList
+	public ImageList? ImageList
 	{
 		get => _imageList;
 		set

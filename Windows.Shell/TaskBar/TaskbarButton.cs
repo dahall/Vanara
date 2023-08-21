@@ -45,16 +45,16 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 	/// Occurs when the system reports a taskbar button has been created. The first parameter will contain the HWND of the window for
 	/// which the button was created.
 	/// </summary>
-	public static event Action<HWND> TaskbarButtonCreated;
+	public static event Action<HWND>? TaskbarButtonCreated;
 
 	/// <summary>
 	/// Occurs when the system reports a thumbnail button has been clicked. The first parameter contains the HWND of the window shown by
 	/// the thumbnail and the second contains the Command ID of the button that was clicked.
 	/// </summary>
-	public static event Action<HWND, int> ThumbnailButtonClick;
+	public static event Action<HWND, int>? ThumbnailButtonClick;
 
 	/// <summary>Occurs when a property has changed.</summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Gets a value indicating whether the taskbar button has been created.</summary>
 	/// <value><see langword="true"/> if the taskbar button was created; otherwise, <see langword="false"/>.</value>
@@ -74,7 +74,7 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 	/// <returns>The application identifier.</returns>
 	[Category(category), DisplayName("AppID"), DefaultValue(null)]
 	[Description("Gets or sets the application identifier.")]
-	public string GetAppID(Form form) => GetPropertyValue<string>(form);
+	public string? GetAppID(Form form) => GetPropertyValue<string>(form);
 
 	/// <summary>Gets the jumplist to display on this taskbar button.</summary>
 	/// <param name="form">The form.</param>
@@ -97,7 +97,7 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 	/// <returns>The overlay icon.</returns>
 	[Category(category), DisplayName("TaskbarButtonOverlay"), DefaultValue(null), Localizable(true)]
 	[Description("Gets or sets the overlay icon to dispaly on a taskbar button.")]
-	public Icon GetTaskbarButtonOverlay(Form form) => GetPropertyValue<Icon>(form);
+	public Icon? GetTaskbarButtonOverlay(Form form) => GetPropertyValue<Icon>(form);
 
 	/// <summary>
 	/// Gets the overlay tooltip to dispaly on a taskbar button to indicate application status or a notification to the user.
@@ -106,7 +106,7 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 	/// <returns>The overlay tooltip.</returns>
 	[Category(category), DisplayName("TaskbarButtonOverlayTooltip"), DefaultValue(null), Localizable(true)]
 	[Description("Gets or sets the overlay tooltip to dispaly on a taskbar button.")]
-	public string GetTaskbarButtonOverlayTooltip(Form form) => GetPropertyValue<string>(form);
+	public string? GetTaskbarButtonOverlayTooltip(Form form) => GetPropertyValue<string>(form);
 
 	/// <summary>Gets the state of the progress indicator displayed on a taskbar button.</summary>
 	/// <param name="form">
@@ -148,7 +148,7 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 	/// <returns>The description</returns>
 	[Category(category), DisplayName("TaskbarButtonTooltip"), DefaultValue(null), Localizable(true)]
 	[Description("Gets or sets the description displayed on the tooltip of the taskbar button.")]
-	public string GetTaskbarButtonTooltip(Form form) => GetPropertyValue<string>(form);
+	public string? GetTaskbarButtonTooltip(Form form) => GetPropertyValue<string>(form);
 
 	/// <summary>Sets the application identifier.</summary>
 	/// <param name="form">The form.</param>
@@ -220,34 +220,34 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 	/// <param name="propName">Name of the changed property.</param>
 	protected virtual void OnProperyChanged(Form form, string propName) => PropertyChanged?.Invoke(form, new PropertyChangedEventArgs(propName));
 
-	private void ApplySetting(Form form, object value, [CallerMemberName] string propName = "")
+	private void ApplySetting(Form form, object? value, [CallerMemberName] string propName = "")
 	{
 		if (propName.StartsWith("Set"))
 			propName = propName.Remove(0, 3);
 		switch (propName)
 		{
 			case "AppID":
-				TaskbarList.SetWindowAppId(form.Handle, (string)value);
+				TaskbarList.SetWindowAppId(form.Handle, (string?)value);
 				break;
 
 			case "TaskbarButtonTooltip":
-				TaskbarList.SetThumbnailTooltip(form.Handle, (string)value);
+				TaskbarList.SetThumbnailTooltip(form.Handle, (string?)value);
 				break;
 
 			case "TaskbarButtonOverlay":
-				TaskbarList.SetOverlayIcon(form.Handle, ((Icon)value).Handle, GetTaskbarButtonOverlayTooltip(form));
+				TaskbarList.SetOverlayIcon(form.Handle, ((Icon?)value)?.Handle ?? HICON.NULL, GetTaskbarButtonOverlayTooltip(form));
 				break;
 
 			case "TaskbarButtonOverlayTooltip":
-				TaskbarList.SetOverlayIcon(form.Handle, GetTaskbarButtonOverlay(form)?.Handle ?? default, (string)value);
+				TaskbarList.SetOverlayIcon(form.Handle, GetTaskbarButtonOverlay(form)?.Handle ?? default, (string?)value);
 				break;
 
 			case "TaskbarButtonProgressState":
-				TaskbarList.SetProgressState(form.Handle, (TaskbarButtonProgressState)value);
+				TaskbarList.SetProgressState(form.Handle, (TaskbarButtonProgressState)(value ?? 0));
 				break;
 
 			case "TaskbarButtonProgressValue":
-				TaskbarList.SetProgressValue(form.Handle, (ulong)(100000 * (float)value), 100000);
+				TaskbarList.SetProgressValue(form.Handle, (ulong)(100000 * (float)(value ?? 0f)), 100000);
 				break;
 
 			case "TaskbarButtonThumbnails":
@@ -301,10 +301,10 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 		public bool PreFilterMessage(ref Message m)
 		{
 			if (m.Msg == Shell32.WM_TASKBARBUTTONCREATED)
-				TaskbarButtonCreated(m.HWnd);
+				TaskbarButtonCreated?.Invoke(m.HWnd);
 			else if (m.Msg == (int)User32.WindowMessage.WM_COMMAND && Macros.HIWORD(m.WParam) == Shell32.THBN_CLICKED)
 			{
-				ThumbnailButtonClick(m.HWnd, Macros.LOWORD(m.WParam));
+				ThumbnailButtonClick?.Invoke(m.HWnd, Macros.LOWORD(m.WParam));
 				return true;
 			}
 			return false;

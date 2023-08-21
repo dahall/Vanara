@@ -55,7 +55,7 @@ public class TaskbarButtonThumbnails : ObservableCollection<TaskbarButtonThumbna
 			TaskbarList.SetTabActive(parent.Handle, thumbnail?.ChildWindow.Handle ?? throw new ArgumentNullException(nameof(thumbnail), "The TaskbarItemTab.ChildWindow property must be set in order to be activated."));
 	}
 
-	private void LocalCollectionChanged(object _, NotifyCollectionChangedEventArgs e)
+	private void LocalCollectionChanged(object? _, NotifyCollectionChangedEventArgs e)
 	{
 		// If new thumbnails are added, they have to be registered
 		if (e.NewItems != null)
@@ -77,7 +77,7 @@ public class TaskbarButtonThumbnails : ObservableCollection<TaskbarButtonThumbna
 			}
 		}
 
-		void ThmbChanged(object s, PropertyChangedEventArgs e) => RefreshThumbnail(s as TaskbarButtonThumbnail);
+		void ThmbChanged(object? s, PropertyChangedEventArgs e) => RefreshThumbnail((TaskbarButtonThumbnail)(s ?? throw new InvalidCastException("Invalid object type sent to thumbnail event handler.")));
 	}
 
 	private void RefreshThumbnail(TaskbarButtonThumbnail thumbnail)

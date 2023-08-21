@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -51,6 +52,7 @@ public enum FolderItemFilter
 }
 
 /// <summary>A folder or container of <see cref="T:Vanara.Windows.Shell.ShellItem" /> instances.</summary>
+[TypeConverter(typeof(ShellItemTypeConverter))]
 public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 {
 	internal IShellFolder iShellFolder;

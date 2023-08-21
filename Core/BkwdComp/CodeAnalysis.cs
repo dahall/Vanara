@@ -1,6 +1,7 @@
 ﻿namespace System.Diagnostics.CodeAnalysis;
 
-#if NET40_OR_GREATER || NETSTANDARD && !NET5_0_OR_GREATER
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#if !NET5_0_OR_GREATER && !NETCOREAPP3_1_OR_GREATER
 /// <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
 /// <remarks>
 /// To override a method that has a parameter annotated with this attribute, use the <c>?</c> operator. For example: <c>override
@@ -79,7 +80,200 @@ public sealed class NotNullWhenAttribute : Attribute
 }
 #endif
 
-#if NET40_OR_GREATER || NETSTANDARD || NETCOREAPP3_1_OR_GREATER && !NET5_0_OR_GREATER
+#if !NET5_0_OR_GREATER
+/// <summary>
+/// Specifies the types of members that are dynamically accessed. This enumeration has a System.FlagsAttribute attribute that allows a
+/// bitwise combination of its member values.
+/// </summary>
+[Flags]
+public enum DynamicallyAccessedMemberTypes
+{
+	//
+	// Summary:
+	//     Specifies all members.
+	All = -1,
+	//
+	// Summary:
+	//     Specifies no members.
+	None = 0,
+	//
+	// Summary:
+	//     Specifies the default, parameterless public constructor.
+	PublicParameterlessConstructor = 1,
+	//
+	// Summary:
+	//     Specifies all public constructors.
+	PublicConstructors = 3,
+	//
+	// Summary:
+	//     Specifies all non-public constructors.
+	NonPublicConstructors = 4,
+	//
+	// Summary:
+	//     Specifies all public methods.
+	PublicMethods = 8,
+	//
+	// Summary:
+	//     Specifies all non-public methods.
+	NonPublicMethods = 16,
+	//
+	// Summary:
+	//     Specifies all public fields.
+	PublicFields = 32,
+	//
+	// Summary:
+	//     Specifies all non-public fields.
+	NonPublicFields = 64,
+	//
+	// Summary:
+	//     Specifies all public nested types.
+	PublicNestedTypes = 128,
+	//
+	// Summary:
+	//     Specifies all non-public nested types.
+	NonPublicNestedTypes = 256,
+	//
+	// Summary:
+	//     Specifies all public properties.
+	PublicProperties = 512,
+	//
+	// Summary:
+	//     Specifies all non-public properties.
+	NonPublicProperties = 1024,
+	//
+	// Summary:
+	//     Specifies all public events.
+	PublicEvents = 2048,
+	//
+	// Summary:
+	//     Specifies all non-public events.
+	NonPublicEvents = 4096,
+	//
+	// Summary:
+	//     Specifies all interfaces implemented by the type.
+	Interfaces = 8192
+}
+
+/// <summary>
+/// States a dependency that one member has on another.
+/// </summary>
+/// <remarks>
+/// This can be used to inform tooling of a dependency that is otherwise not evident purely from
+/// metadata and IL, for example a member relied on via reflection.
+/// </remarks>
+[AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Field | AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+public sealed class DynamicDependencyAttribute : Attribute
+{
+	/// <summary>
+	/// Initializes a new instance of the <see cref="DynamicDependencyAttribute"/> class
+	/// with the specified signature of a member on the same type as the consumer.
+	/// </summary>
+	/// <param name="memberSignature">The signature of the member depended on.</param>
+	public DynamicDependencyAttribute(string memberSignature) => MemberSignature = memberSignature;
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="DynamicDependencyAttribute"/> class
+	/// with the specified signature of a member on a <see cref="System.Type"/>.
+	/// </summary>
+	/// <param name="memberSignature">The signature of the member depended on.</param>
+	/// <param name="type">The <see cref="System.Type"/> containing <paramref name="memberSignature"/>.</param>
+	public DynamicDependencyAttribute(string memberSignature, Type type)
+	{
+		MemberSignature = memberSignature;
+		Type = type;
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="DynamicDependencyAttribute"/> class
+	/// with the specified signature of a member on a type in an assembly.
+	/// </summary>
+	/// <param name="memberSignature">The signature of the member depended on.</param>
+	/// <param name="typeName">The full name of the type containing the specified member.</param>
+	/// <param name="assemblyName">The assembly name of the type containing the specified member.</param>
+	public DynamicDependencyAttribute(string memberSignature, string typeName, string assemblyName)
+	{
+		MemberSignature = memberSignature;
+		TypeName = typeName;
+		AssemblyName = assemblyName;
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="DynamicDependencyAttribute"/> class
+	/// with the specified types of members on a <see cref="System.Type"/>.
+	/// </summary>
+	/// <param name="memberTypes">The types of members depended on.</param>
+	/// <param name="type">The <see cref="System.Type"/> containing the specified members.</param>
+	public DynamicDependencyAttribute(DynamicallyAccessedMemberTypes memberTypes, Type type)
+	{
+		MemberTypes = memberTypes;
+		Type = type;
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="DynamicDependencyAttribute"/> class
+	/// with the specified types of members on a type in an assembly.
+	/// </summary>
+	/// <param name="memberTypes">The types of members depended on.</param>
+	/// <param name="typeName">The full name of the type containing the specified members.</param>
+	/// <param name="assemblyName">The assembly name of the type containing the specified members.</param>
+	public DynamicDependencyAttribute(DynamicallyAccessedMemberTypes memberTypes, string typeName, string assemblyName)
+	{
+		MemberTypes = memberTypes;
+		TypeName = typeName;
+		AssemblyName = assemblyName;
+	}
+
+	/// <summary>
+	/// Gets the assembly name of the specified type.
+	/// </summary>
+	/// <remarks>
+	/// <see cref="AssemblyName"/> is only valid when <see cref="TypeName"/> is specified.
+	/// </remarks>
+	public string? AssemblyName { get; }
+
+	/// <summary>
+	/// Gets or sets the condition in which the dependency is applicable, e.g. "DEBUG".
+	/// </summary>
+	public string? Condition { get; set; }
+
+	/// <summary>
+	/// Gets the signature of the member depended on.
+	/// </summary>
+	/// <remarks>
+	/// Either <see cref="MemberSignature"/> must be a valid string or <see cref="MemberTypes"/>
+	/// must not equal <see cref="DynamicallyAccessedMemberTypes.None"/>, but not both.
+	/// </remarks>
+	public string? MemberSignature { get; }
+
+	/// <summary>
+	/// Gets the <see cref="DynamicallyAccessedMemberTypes"/> which specifies the type
+	/// of members depended on.
+	/// </summary>
+	/// <remarks>
+	/// Either <see cref="MemberSignature"/> must be a valid string or <see cref="MemberTypes"/>
+	/// must not equal <see cref="DynamicallyAccessedMemberTypes.None"/>, but not both.
+	/// </remarks>
+	public DynamicallyAccessedMemberTypes MemberTypes { get; }
+
+	/// <summary>
+	/// Gets the <see cref="System.Type"/> containing the specified member.
+	/// </summary>
+	/// <remarks>
+	/// If neither <see cref="Type"/> nor <see cref="TypeName"/> are specified,
+	/// the type of the consumer is assumed.
+	/// </remarks>
+	public Type? Type { get; }
+
+	/// <summary>
+	/// Gets the full name of the type containing the specified member.
+	/// </summary>
+	/// <remarks>
+	/// If neither <see cref="Type"/> nor <see cref="TypeName"/> are specified,
+	/// the type of the consumer is assumed.
+	/// </remarks>
+	public string? TypeName { get; }
+}
+
 /// <summary>
 /// Specifies that the method or property will ensure that the listed field and property members have values that aren't <see langword="null"/>.
 /// </summary>

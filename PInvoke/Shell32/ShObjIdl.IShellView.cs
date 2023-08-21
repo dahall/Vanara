@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices.ComTypes;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Ole32;
 
@@ -949,7 +950,7 @@ public static partial class Shell32
 		/// <param name="grfMode">Read/write access of the IStream interface.</param>
 		/// <param name="ppStrm">The address that receives the IStream interface pointer.</param>
 		[PreserveSig]
-		HRESULT GetViewStateStream(STGM grfMode, [MarshalAs(UnmanagedType.Interface)] out IStream ppStrm);
+		HRESULT GetViewStateStream(STGM grfMode, [MarshalAs(UnmanagedType.Interface), MaybeNull] out IStream ppStrm);
 
 		/// <summary>Gets the window handle to a browser control.</summary>
 		/// <param name="id">
@@ -1042,7 +1043,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellbrowser-queryactiveshellview
 		[PreserveSig]
-		HRESULT QueryActiveShellView(out IShellView ppshv);
+		HRESULT QueryActiveShellView([MaybeNull] out IShellView ppshv);
 
 		/// <summary>Called by the Shell view when the view window or one of its child windows gets the focus or becomes active.</summary>
 		/// <param name="ppshv">Address of the view object's IShellView pointer.</param>

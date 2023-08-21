@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-
+using System.Linq;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell;
@@ -54,10 +54,10 @@ public class ThumbnailToolbarButtonCollection : ObservableCollection<ThumbnailTo
 	/// <summary>Called when the collection has changed.</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="e">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+	protected virtual void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 	{
 		if (e?.NewItems != null)
-			foreach (ThumbnailToolbarButton tbi in e.NewItems)
+			foreach (ThumbnailToolbarButton tbi in e.NewItems.Cast<ThumbnailToolbarButton>())
 				tbi.Parent = Parent;
 	}
 }

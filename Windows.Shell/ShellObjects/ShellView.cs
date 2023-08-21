@@ -49,7 +49,7 @@ public class NavigatingEventArgs : CancelEventArgs
 public class NavigationFailedEventArgs : EventArgs
 {
 	/// <summary>The location the browser would have navigated to.</summary>
-	public ShellItem FailedLocation { get; set; }
+	public ShellItem? FailedLocation { get; set; }
 }
 
 /// <summary>Encapsulates IShellView for display as a control.</summary>
@@ -62,9 +62,9 @@ public class NavigationFailedEventArgs : EventArgs
 internal class ShellView : Control, INotifyPropertyChanged
 {
 	internal HWND shellViewWindow;
-	private ShellFolder currentFolder;
-	private IShellBrowser iBrowser;
-	private IShellView iShellView;
+	private ShellFolder? currentFolder;
+	private IShellBrowser? iBrowser;
+	private IShellView? iShellView;
 
 	/// <summary>Creates a new <see cref="ShellView"/> from a shell folder and assigns it to a window.</summary>
 	/// <param name="folder">The shell folder.</param>
@@ -80,56 +80,56 @@ internal class ShellView : Control, INotifyPropertyChanged
 
 	/// <summary>Fires when determining if an item should be shown in the view.</summary>
 	[Category("Action"), Description("Filter items in the view.")]
-	public event EventHandler<FilterShellItemEventArgs> FilterItem;
+	public event EventHandler<FilterShellItemEventArgs>? FilterItem;
 
 	/// <summary>Fires when the Items collection changes.</summary>
 	[Category("Action"), Description("Items changed.")]
-	public event EventHandler ItemsChanged;
+	public event EventHandler? ItemsChanged;
 
 	/// <summary>Fires when the ExplorerBorwser view has finished enumerating files.</summary>
 	[Category("Behavior"), Description("View is done enumerating files.")]
-	public event EventHandler ItemsEnumerated;
+	public event EventHandler? ItemsEnumerated;
 
 	/// <summary>
 	/// Fires when a navigation has been 'completed': no Navigating listener has canceled, and the ExplorerBorwser has created a new
 	/// view. The view will be populated with new items asynchronously, and ItemsChanged will be fired to reflect this some time later.
 	/// </summary>
 	[Category("Action"), Description("Navigation complete.")]
-	public event EventHandler<NavigatedEventArgs> Navigated;
+	public event EventHandler<NavigatedEventArgs>? Navigated;
 
 	/// <summary>Fires when a navigation has been initiated, but is not yet complete.</summary>
 	[Category("Action"), Description("Navigation initiated, but not complete.")]
-	public event EventHandler<NavigatingEventArgs> Navigating;
+	public event EventHandler<NavigatingEventArgs>? Navigating;
 
 	/// <summary>
 	/// Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.
 	/// </summary>
 	[Category("Action"), Description("Navigation failed.")]
-	public event EventHandler<NavigationFailedEventArgs> NavigationFailed;
+	public event EventHandler<NavigationFailedEventArgs>? NavigationFailed;
 
 	/// <summary>Occurs when a property value changes.</summary>
 	[Category("Behavior"), Description("Property changed.")]
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Fires when the item selected in the view has changed (i.e., a rename ). This is not the same as SelectionChanged.</summary>
 	[Category("Action"), Description("Selected item has changed.")]
-	public event EventHandler SelectedItemModified;
+	public event EventHandler? SelectedItemModified;
 
 	/// <summary>Fires when the SelectedItems collection changes.</summary>
 	[Category("Behavior"), Description("Selection changed.")]
-	public event EventHandler SelectionChanged;
+	public event EventHandler? SelectionChanged;
 
 	/// <summary>Gets or sets the <see cref="ShellFolder"/> currently being browsed by the <see cref="ShellView"/>.</summary>
-	[Category("Data"), DefaultValue(null), Description("The folder currently being browsed.")]
+	[Category("Data"), DefaultValue(typeof(ShellFolder), ""), Description("The folder currently being browsed.")]
 	public ShellFolder CurrentFolder
 	{
-		get => currentFolder ??= IShellView is null ? ShellFolder.Desktop : new ShellFolder(GetFolderForView(IShellView));
+		get => currentFolder ??= IShellView is null ? ShellFolder.Desktop : new ShellFolder(GetFolderForView(IShellView)!);
 		set => Navigate(value);
 	}
 
 	/// <summary>A set of flags that indicate the options for the folder.</summary>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public FOLDERFLAGS Flags => IShellView.GetCurrentInfo().fFlags;
+	public FOLDERFLAGS Flags => IShellView?.GetCurrentInfo().fFlags ?? 0;
 
 	/// <summary>Contains the navigation history of the ExplorerBrowser</summary>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -137,7 +137,7 @@ internal class ShellView : Control, INotifyPropertyChanged
 
 	/// <summary>Gets the underlying <see cref="IShellView"/> instance.</summary>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public IShellView IShellView
+	public IShellView? IShellView
 	{
 		get => iShellView;
 		private set
@@ -160,6 +160,7 @@ internal class ShellView : Control, INotifyPropertyChanged
 		get => GetItems(IShellView, SVGIO.SVGIO_SELECTION);
 		set
 		{
+			if (IShellView is null) return;
 			// Deselect all
 			IShellView.SelectItem(default, SVSIF.SVSI_DESELECTOTHERS);
 			if (value is null || value.Length == 0) return;
@@ -176,7 +177,7 @@ internal class ShellView : Control, INotifyPropertyChanged
 
 	/// <summary>Folder view mode.</summary>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public FOLDERVIEWMODE ViewMode => IShellView.GetCurrentInfo().ViewMode;
+	public FOLDERVIEWMODE ViewMode => IShellView?.GetCurrentInfo().ViewMode ?? 0;
 
 	/// <summary>
 	/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
@@ -194,19 +195,19 @@ internal class ShellView : Control, INotifyPropertyChanged
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(ShellView left, ShellView right) => !(left == right);
+	public static bool operator !=(ShellView? left, ShellView? right) => !(left == right);
 
 	/// <summary>Implements the operator ==.</summary>
 	/// <param name="left">The left.</param>
 	/// <param name="right">The right.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator ==(ShellView left, ShellView right) => EqualityComparer<ShellView>.Default.Equals(left, right);
+	public static bool operator ==(ShellView? left, ShellView? right) => EqualityComparer<ShellView?>.Default.Equals(left, right);
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 	/// <exception cref="NotImplementedException"></exception>
-	public bool Equals(IShellView other)
+	public bool Equals(IShellView? other)
 	{
 		HWND w1 = HWND.NULL, w2 = HWND.NULL;
 		other?.GetWindow(out w1);
@@ -217,7 +218,7 @@ internal class ShellView : Control, INotifyPropertyChanged
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is ShellView sv && Equals(sv.IShellView)) || (obj is IShellView isv && Equals(isv));
+	public override bool Equals(object? obj) => ReferenceEquals(this, obj) || (obj is ShellView sv && Equals(sv.IShellView)) || (obj is IShellView isv && Equals(isv));
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -231,7 +232,7 @@ internal class ShellView : Control, INotifyPropertyChanged
 	{
 		if (!OnNavigating(folder)) return;
 
-		ShellFolder previous = currentFolder;
+		ShellFolder? previous = currentFolder;
 		currentFolder = folder;
 
 		try
@@ -252,22 +253,22 @@ internal class ShellView : Control, INotifyPropertyChanged
 	/// <summary>
 	/// Navigates to the last item in the navigation history list. This does not change the set of locations in the navigation log.
 	/// </summary>
-	public bool NavigateBack() { if (History.CanSeekBackward) { Navigate(new ShellFolder(History.SeekBackward())); return true; } return false; }
+	public bool NavigateBack() { if (History.CanSeekBackward) { Navigate(new ShellFolder(History.SeekBackward()!)); return true; } return false; }
 
 	/// <summary>
 	/// Navigates to the next item in the navigation history list. This does not change the set of locations in the navigation log.
 	/// </summary>
 	/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
-	public bool NavigateForward() { if (History.CanSeekForward) { Navigate(new ShellFolder(History.SeekForward())); return true; } return false; }
+	public bool NavigateForward() { if (History.CanSeekForward) { Navigate(new ShellFolder(History.SeekForward()!)); return true; } return false; }
 
 	/// <summary>Navigates to the parent of the currently displayed folder.</summary>
-	public void NavigateParent() { if (CurrentFolder != ShellFolder.Desktop) Navigate(CurrentFolder.Parent); }
+	public void NavigateParent() { if (CurrentFolder is not null && CurrentFolder != ShellFolder.Desktop) Navigate(CurrentFolder.Parent!); }
 
 	/// <summary>Refreshes the view's contents in response to user input.</summary>
-	public override void Refresh() => IShellView.Refresh();
+	public override void Refresh() => IShellView?.Refresh();
 
 	/// <summary>Saves the Shell's view settings so the current state can be restored during a subsequent browsing session.</summary>
-	public void SaveState() => IShellView.SaveViewState();
+	public void SaveState() => IShellView?.SaveViewState();
 
 	/// <summary>Called to determine if an item should be shown in the view. Calls the <see cref="FilterItem"/> event if defined.</summary>
 	/// <param name="pidl">The PIDL of the child item.</param>
@@ -333,7 +334,7 @@ internal class ShellView : Control, INotifyPropertyChanged
 				shellViewWindow = HWND.NULL;
 			}
 			iBrowser = null;
-			History = null;
+			History.Clear();
 			IShellView = null;
 		}
 		base.Dispose(disposing);
@@ -365,7 +366,7 @@ internal class ShellView : Control, INotifyPropertyChanged
 
 		// Windows 9x sends the CWM_GETISHELLBROWSER message and expects the IShellBrowser for the window to be returned or an Access
 		// Violation occurs. This is pseudo-documented in knowledge base article Q157247.
-		if (m.Msg == CWM_GETISHELLBROWSER)
+		if (m.Msg == CWM_GETISHELLBROWSER && iBrowser is not null)
 		{
 			m.Result = Marshal.GetComInterfaceForObject(iBrowser, typeof(IShellBrowser));
 		}
@@ -376,22 +377,23 @@ internal class ShellView : Control, INotifyPropertyChanged
 	}
 
 	private static IShellView CreateViewObject(ShellFolder folder, HWND owner) =>
-		folder?.IShellFolder.CreateViewObject<IShellView>(owner);
+		folder.IShellFolder.CreateViewObject<IShellView>(owner)!;
 
-	private static ShellFolder GetFolderForView(IShellView iView) => GetItems(iView, SVGIO.SVGIO_ALLVIEW).FirstOrDefault()?.Parent;
+	private static ShellFolder? GetFolderForView(IShellView? iView) => GetItems(iView, SVGIO.SVGIO_ALLVIEW).FirstOrDefault()?.Parent;
 
-	private static IShellItemArray GetItemArray(IShellView iView, SVGIO uItem) => ((IFolderView)iView).Items<IShellItemArray>(uItem);
+	private static IShellItemArray GetItemArray(IShellView iView, SVGIO uItem) => ((IFolderView)iView).Items<IShellItemArray>(uItem)!;
 
-	private static ShellItem[] GetItems(IShellView iView, SVGIO uItem)
+	private static ShellItem[] GetItems(IShellView? iView, SVGIO uItem)
 	{
-		using ComReleaser<IDataObject> ido = ComReleaserFactory.Create(iView.GetItemObject<IDataObject>(uItem));
+		if (iView is null) return new ShellItem[0];
+		using ComReleaser<IDataObject> ido = ComReleaserFactory.Create(iView.GetItemObject<IDataObject>(uItem)!);
 		var shdo = new ShellDataObject(ido.Item);
-		return shdo.GetShellIdList().ToArray();
+		return shdo.GetShellIdList()?.ToArray() ?? new ShellItem[0];
 	}
 
 	private void CreateShellView()
 	{
-		IShellView prev = IShellView;
+		IShellView? prev = IShellView;
 		IShellView = CreateViewObject(CurrentFolder, Handle);
 		try
 		{

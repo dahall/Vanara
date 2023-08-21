@@ -589,7 +589,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-settext HRESULT SetText(
 		// FVTEXTTYPE iType, LPCWSTR pwszText );
-		void SetText([In] FVTEXTTYPE iType, [In, MarshalAs(UnmanagedType.LPWStr)] string pwszText);
+		void SetText([In] FVTEXTTYPE iType, [In, MarshalAs(UnmanagedType.LPWStr)] string? pwszText);
 
 		/// <summary>Sets and applies specified folder flags.</summary>
 		/// <param name="dwMask">

@@ -57,7 +57,7 @@ internal class WindowMessageHook<THost> : HostedMessageWindow<THost> where THost
 	public WindowMessageHook(Control parent, THost host) : base(host)
 	{
 		if (parent is null) throw new ArgumentNullException(nameof(parent));
-		parent.HandleCreated += (s, e) => AssignHandle(((Control)s).Handle);
+		parent.HandleCreated += (s, e) => AssignHandle(((Control?)s)?.Handle ?? IntPtr.Zero);
 		parent.HandleDestroyed += (s, e) => ReleaseHandle();
 	}
 

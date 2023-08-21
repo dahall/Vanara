@@ -114,7 +114,7 @@ public static class TaskbarList
 	/// A string that provides an alt text version of the information conveyed by the overlay, for accessibility purposes.
 	/// </param>
 	/// <exception cref="ArgumentNullException">parent</exception>
-	public static void SetOverlayIcon(HWND hwnd, HICON icon, string description)
+	public static void SetOverlayIcon(HWND hwnd, HICON icon, string? description)
 	{
 		Validate7OrLater();
 		taskbar4?.SetOverlayIcon(hwnd, icon, description);
@@ -213,7 +213,7 @@ public static class TaskbarList
 	/// <param name="tip">
 	/// The text to be displayed in the tooltip. This value can be NULL, in which case the title of the window is used as the tooltip.
 	/// </param>
-	public static void SetThumbnailTooltip(HWND hwnd, string tip)
+	public static void SetThumbnailTooltip(HWND hwnd, string? tip)
 	{
 		Validate7OrLater();
 		taskbar4?.SetThumbnailTooltip(hwnd, tip);
@@ -224,7 +224,7 @@ public static class TaskbarList
 	/// </summary>
 	/// <param name="hwnd">The window whose thumbnail displays the tooltip. This window must belong to the calling process.</param>
 	/// <param name="appId">The Application User Model ID.</param>
-	public static void SetWindowAppId(HWND hwnd, string appId) => SetWindowProperty(hwnd, PROPERTYKEY.System.AppUserModel.ID, appId);
+	public static void SetWindowAppId(HWND hwnd, string? appId) => SetWindowProperty(hwnd, PROPERTYKEY.System.AppUserModel.ID, appId);
 
 	/// <summary>Adds a thumbnail toolbar with a specified set of buttons to the thumbnail image of a window in a taskbar button flyout.</summary>
 	/// <param name="hwnd">
@@ -293,7 +293,7 @@ public static class TaskbarList
 
 	internal static IPropertyStore GetWindowPropertyStore(HWND hwnd) => SHGetPropertyStoreForWindow<IPropertyStore>(hwnd)!;
 
-	internal static void SetWindowProperty(HWND hwnd, PROPERTYKEY propkey, string value)
+	internal static void SetWindowProperty(HWND hwnd, PROPERTYKEY propkey, string? value)
 	{
 		// Get the IPropertyStore for the given window handle
 		using ComReleaser<IPropertyStore> pPropStore = ComReleaserFactory.Create(GetWindowPropertyStore(hwnd));

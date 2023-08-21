@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Runtime.CompilerServices;
@@ -27,7 +28,8 @@ public partial class ThumbnailToolbarButton : INotifyPropertyChanged
 {
 	internal THUMBBUTTON btn;
 	internal ImageIndexer indexer = new();
-	private Icon icon;
+	private Icon? icon;
+	[MaybeNull]
 	private ThumbnailToolbar parent;
 	private Visibility visibility;
 
@@ -38,10 +40,10 @@ public partial class ThumbnailToolbarButton : INotifyPropertyChanged
 
 	/// <summary>Occurs when the button is clicked.</summary>
 	[Category("Behavior")]
-	public event EventHandler Click;
+	public event EventHandler? Click;
 
 	/// <summary>Occurs when a property has changed.</summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Gets or sets the description displayed as a tooltip for the button.</summary>
 	/// <value>The description text.</value>
@@ -74,7 +76,7 @@ public partial class ThumbnailToolbarButton : INotifyPropertyChanged
 	/// <value>The button icon.</value>
 	[Description("ButtonImageDescr"), Localizable(true), Category("Appearance")]
 	[DefaultValue(null)]
-	public Icon Icon
+	public Icon? Icon
 	{
 		get => icon;
 		set
@@ -125,7 +127,7 @@ public partial class ThumbnailToolbarButton : INotifyPropertyChanged
 	[Description("ButtonImageIndexDescr"), Category("Appearance")]
 	public string ImageKey
 	{
-		get => indexer.Key;
+		get => indexer.Key ?? "";
 		set
 		{
 			if (indexer.Key != value)
@@ -171,7 +173,7 @@ public partial class ThumbnailToolbarButton : INotifyPropertyChanged
 
 	internal ThumbnailToolbar Parent
 	{
-		get => parent;
+		get => parent ?? throw new ArgumentNullException(nameof(Parent), "This property must be set before retrieval.");
 		set
 		{
 			parent = value;

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -32,6 +33,7 @@ public enum TaskbarItemTabThumbnailOption
 public class TaskbarButtonThumbnail : INotifyPropertyChanged //, ISerializable
 {
 	internal STPFLAG flag = 0;
+	[MaybeNull]
 	private Control tabWin;
 
 	/// <summary>Initializes a new instance of the <see cref="TaskbarButtonThumbnail"/> class.</summary>
@@ -56,14 +58,15 @@ public class TaskbarButtonThumbnail : INotifyPropertyChanged //, ISerializable
 	}*/
 
 	/// <summary>Occurs when a property has changed.</summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>Gets or sets the child window whose image will be displayed in this thumbnail.</summary>
 	/// <value>The child window.</value>
 	[DefaultValue(null), Category("Appearance")]
+	[MemberNotNull(nameof(tabWin))]
 	public Control ChildWindow
 	{
-		get => tabWin;
+		get => tabWin ?? throw new ArgumentNullException(nameof(ChildWindow), "Child window not specified for tab.");
 		set
 		{
 			if (ReferenceEquals(tabWin, value ?? throw new ArgumentNullException(nameof(ChildWindow), "Child window must be specified for tab.")))

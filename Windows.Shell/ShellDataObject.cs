@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -167,7 +168,7 @@ public class ShellDataObject : DataObject
 				for (var fileIndex = 0; fileIndex < cnt; fileIndex++)
 				{
 					// get the data at the file index and store in array
-					fileContents[fileIndex] = GetData(format, fileIndex) as Stream;
+					fileContents[fileIndex] = (Stream)(GetData(format, fileIndex) ?? throw new InvalidOperationException("Invalid stream or index"));
 				}
 
 				// return array of MemoryStreams containing file contents
@@ -184,7 +185,7 @@ public class ShellDataObject : DataObject
 				return base.GetText(TextDataFormat.Text);
 
 			case ShellClipboardFormat.CFSTR_SHELLIDLIST:
-				return GetShellIdList();
+				return GetShellIdList() ?? new ShellItemArray();
 		}
 		return base.GetData(format, autoConvert);
 	}
@@ -195,7 +196,9 @@ public class ShellDataObject : DataObject
 	/// </param>
 	/// <param name="index">The index of the data to retrieve.</param>
 	/// <returns>An object containing the raw data for the specified data format at the specified index.</returns>
-	public object GetData(string format, int index)
+	[DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ILockBytes))]
+	[DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(IStorage))]
+	public object? GetData(string format, int index)
 	{
 		var data = ((IComDataObject)this).GetData(GetFormatId(format), DVASPECT.DVASPECT_CONTENT, index);
 
@@ -206,6 +209,7 @@ public class ShellDataObject : DataObject
 				// to handle a IStorage it needs to be written into a second unmanaged memory mapped storage and then the data can be
 				// read from memory into a managed byte and returned as a MemoryStream
 
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				// create a ILockBytes (unmanaged byte array) and then create a IStorage using the byte array as a backing store
 				CreateILockBytesOnHGlobal(IntPtr.Zero, true, out ILockBytes iLockBytes).ThrowIfFailed();
 				using (ComReleaser<ILockBytes> pLockBytes = ComReleaserFactory.Create(iLockBytes))
@@ -228,6 +232,7 @@ public class ShellDataObject : DataObject
 					// wrapped the managed byte array into a memory stream and return it
 					return new MemoryStream(iLockBytesContent.GetBytes(0, iLockBytesContent.Size));
 				}
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 			case IStream pStream:
 				// Wrap in ComStream and return
@@ -246,20 +251,23 @@ public class ShellDataObject : DataObject
 	/// <returns>A list of strings containing a new name for each file.</returns>
 	public string[] GetFileNameMap()
 	{
+		string[]? ret = null;
 		if (GetDataPresent(ShellClipboardFormat.CFSTR_FILENAMEMAPW))
-			return ((IComDataObject)this).GetData(GetFormatId(ShellClipboardFormat.CFSTR_FILENAMEMAPW)) as string[];
+			ret = ((IComDataObject)this).GetData(GetFormatId(ShellClipboardFormat.CFSTR_FILENAMEMAPW)) as string[];
 		else if (GetDataPresent(ShellClipboardFormat.CFSTR_FILENAMEMAPA))
-			return ((IComDataObject)this).GetData(GetFormatId(ShellClipboardFormat.CFSTR_FILENAMEMAPA)) as string[];
-		return new string[0];
+			ret = ((IComDataObject)this).GetData(GetFormatId(ShellClipboardFormat.CFSTR_FILENAMEMAPA)) as string[];
+		return ret ?? new string[0];
 	}
 
 	/// <summary>Gets a <see cref="ShellItemArray"/> from the data object. Returns <see langword="null"/> if data is not present.</summary>
 	/// <returns>An array of shell items or <see langword="null"/> if data is not present.</returns>
-	public ShellItemArray GetShellIdList()
+	public ShellItemArray? GetShellIdList()
 	{
 		if (!ContainsShellIdList())
 			return null;
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHCreateShellItemArrayFromDataObject(this, typeof(IShellItemArray).GUID, out var isha).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return new ShellItemArray(isha);
 	}
 

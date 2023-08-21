@@ -48,7 +48,7 @@ internal class JumpListItemCollectionEditor : System.ComponentModel.Design.Colle
 		return base.CreateInstance(itemType);
 	}
 
-	protected override string GetDisplayText(object value) => value is JumpListSeparator ? "-----------" : value.ToString();
+	protected override string GetDisplayText(object value) => value is JumpListSeparator ? "-----------" : value.ToString() ?? "";
 
 	/*protected override string HelpTopic => base.HelpTopic;
 

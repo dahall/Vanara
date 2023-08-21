@@ -12,7 +12,7 @@ public partial class ThumbnailToolbarButton
 
 		public virtual int ActualIndex => useIntegerIndex ? Index : (ImageList is null ? -1 : ImageList.Images.IndexOfKey(Key));
 
-		public virtual ImageList ImageList { get; set; }
+		public virtual ImageList? ImageList { get; set; }
 
 		public virtual int Index
 		{
@@ -25,7 +25,7 @@ public partial class ThumbnailToolbarButton
 			}
 		}
 
-		public virtual string Key
+		public virtual string? Key
 		{
 			get => key;
 			set
