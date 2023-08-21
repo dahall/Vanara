@@ -29,7 +29,7 @@ public class ShellFileOperationsTests
 		ShellFileOperations.Copy(l, ShellFolder.Desktop);
 		foreach (var i in l)
 		{
-			var fn = Path.Combine(ShellFolder.Desktop.FileSystemPath, i.Name);
+			var fn = Path.Combine(ShellFolder.Desktop.FileSystemPath!, i.Name!);
 			Assert.That(File.Exists(fn), Is.True);
 			File.Delete(fn);
 		}
@@ -54,7 +54,7 @@ public class ShellFileOperationsTests
 		var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
 		File.Delete(dest);
 
-		void Op_UpdateProgress(object sender, System.ComponentModel.ProgressChangedEventArgs args)
+		void Op_UpdateProgress(object? sender, System.ComponentModel.ProgressChangedEventArgs args)
 		{
 			Debug.WriteLine($"{args.UserState}: {args.ProgressPercentage}%");
 			progressShown = true;
@@ -74,8 +74,8 @@ public class ShellFileOperationsTests
 		Assert.NotNull(item);
 
 		// Restore item
-		using var dest = new ShellFolder(Path.GetDirectoryName(tmp.FullName));
-		Assert.That(() => ShellFileOperations.Move(item, dest, null, ShellFileOperations.OperationFlags.NoConfirmation), Throws.Nothing);
+		using var dest = new ShellFolder(Path.GetDirectoryName(tmp.FullName)!);
+		Assert.That(() => ShellFileOperations.Move(item!, dest, null, ShellFileOperations.OperationFlags.NoConfirmation), Throws.Nothing);
 		Assert.IsTrue(File.Exists(tmp.FullName));
 	}
 
@@ -104,8 +104,8 @@ public class ShellFileOperationsTests
 		Operation.PostMoveItem -= Operation_PostMoveItem;
 		Operation.UpdateProgress -= Operation_UpdateProgress;
 
-		static void Operation_PostMoveItem(object sender, ShellFileOperations.ShellFileOpEventArgs e) => Debug.WriteLine($"Post move ({e.DestItem?.Name})...");
-		static void Operation_UpdateProgress(object sender, System.ComponentModel.ProgressChangedEventArgs e) => Debug.WriteLine($"Progress: {e.ProgressPercentage}% of {e.UserState}");
+		static void Operation_PostMoveItem(object? sender, ShellFileOperations.ShellFileOpEventArgs e) => Debug.WriteLine($"Post move ({e.DestItem?.Name})...");
+		static void Operation_UpdateProgress(object? sender, System.ComponentModel.ProgressChangedEventArgs e) => Debug.WriteLine($"Progress: {e.ProgressPercentage}% of {e.UserState}");
 	}
 
 	[Test]
@@ -133,7 +133,7 @@ public class ShellFileOperationsTests
 			op.PerformOperations();
 		}
 
-		static void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
+		static void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
 		{
 			Debug.WriteLine(args);
 			Assert.That(args.Result.Succeeded, Is.True);
@@ -153,12 +153,12 @@ public class ShellFileOperationsTests
 		}
 		foreach (var file in files)
 		{
-			var fn = Path.Combine(ShellFolder.Desktop.FileSystemPath, file);
+			var fn = Path.Combine(ShellFolder.Desktop.FileSystemPath!, file);
 			Assert.That(File.Exists(fn), Is.True);
 			File.Delete(fn);
 		}
 
-		static void HandleEvent(object sender, ShellFileOperations.ShellFileOpEventArgs args)
+		static void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
 		{
 			Debug.WriteLine(args);
 			Assert.That(args.Result.Succeeded, Is.True);
@@ -169,7 +169,7 @@ public class ShellFileOperationsTests
 	public void SetPropsTest2()
 	{
 		const string fn = "test.docx";
-		var fp = Path.Combine(ShellFolder.Desktop.FileSystemPath, fn);
+		var fp = Path.Combine(ShellFolder.Desktop.FileSystemPath!, fn);
 		var authors = new[] { "David" };
 		using (var p = new ShellItemPropertyUpdates { { PROPERTYKEY.System.Author, authors } })
 		using (var op = new ShellFileOperations())
@@ -194,7 +194,7 @@ public class ShellFileOperationsTests
 	{
 		var dlg = new ShellFileOperationDialog
 		{
-			Source = new ShellFolder(Path.GetDirectoryName(TestCaseSources.LargeFile)),
+			Source = new ShellFolder(Path.GetDirectoryName(TestCaseSources.LargeFile)!),
 			Destination = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop),
 			AllowUndo = true,
 			CurrentItem = new ShellItem(TestCaseSources.LargeFile),

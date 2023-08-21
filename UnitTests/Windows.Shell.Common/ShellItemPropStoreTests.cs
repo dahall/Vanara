@@ -55,14 +55,14 @@ public class ShellItemPropStoreTests
 			{
 				TestContext.Write($"({c}) {key} = ");
 				var val = i.Properties[key];
-				if (!(val is string) && val is IEnumerable ie)
+				if (val is not string && val is IEnumerable ie)
 					TestContext.WriteLine(string.Join(",", ie.Cast<object>().Select(o => o?.ToString())));
 				else
 					TestContext.WriteLine(val);
 				using var d = i.Properties.Descriptions[key];
 				if (d != null)
 				{
-					TestContext.WriteLine($"   {d.FormatForDisplay(val)}");
+					TestContext.WriteLine($"   {d.FormatForDisplay(val ?? "")}");
 					TestContext.WriteLine($"   DispN:{d.DisplayName}; DispT:{d.DisplayType}");
 				}
 			}

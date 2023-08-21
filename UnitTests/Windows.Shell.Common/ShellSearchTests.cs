@@ -10,7 +10,7 @@ public class ShellSearchTests
 	{
 		using var c = SearchCondition.CreateFromStructuredQuery("customer *.pptx");
 		GetResults(c);
-		using var shf = ShellSearch.GetSearchResults(c, "Test", new[] { ShellFolder.Desktop }) as ShellFolder;
+		using var shf = (ShellFolder)ShellSearch.GetSearchResults(c, "Test", new[] { ShellFolder.Desktop });
 		var i = 50;
 		foreach (var item in shf)
 			if (--i > 0)

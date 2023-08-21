@@ -77,7 +77,7 @@ public static class ShellRegistrar
 		var typelib = Marshal.GetTypeLibGuidForAssembly(assembly);
 		var clsid = GetClsid<TComObject>();
 		var _appId = appId ?? clsid;
-		if (!(cmdLineArgs is null)) qCmdLine += " " + cmdLineArgs;
+		if (cmdLineArgs is not null) qCmdLine += " " + cmdLineArgs;
 
 		using (var root = GetRoot(systemWide, true) ?? Registry.ClassesRoot)
 		using (root.CreateSubKey(@"AppID\" + _appId.ToRegString(), pszFriendlyName))

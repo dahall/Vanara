@@ -6,17 +6,18 @@ using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 [TestFixture, SingleThreaded]
 public class ShellFolderTests
 {
 	private static readonly string testFile = ShellItemTests.testDoc;
-	private static readonly string testFld = Path.GetDirectoryName(testFile);
+	private static readonly string testFld = Path.GetDirectoryName(testFile)!;
 
 	[Test]
 	public void ShellFolderTest1()
 	{
 		Assert.That(() => { Assert.That(new ShellFolder(testFld).FileSystemPath, Is.EqualTo(testFld)); }, Throws.Nothing);
-		Assert.That(() => new ShellFolder((string)null), Throws.Exception);
+		Assert.That(() => new ShellFolder((string?)null), Throws.Exception);
 		Assert.That(() => new ShellFolder(@"C:\Tamp"), Throws.Exception);
 		Assert.That(() => new ShellFolder(testFile), Throws.Nothing);
 	}
@@ -39,7 +40,7 @@ public class ShellFolderTests
 	{
 		using var pidl = new PIDL(testFld);
 		Assert.That(() => { Assert.That(new ShellFolder(pidl).FileSystemPath, Is.EqualTo(testFld)); }, Throws.Nothing);
-		Assert.That(() => new ShellFolder((PIDL)null), Throws.Exception);
+		Assert.That(() => new ShellFolder((PIDL?)null), Throws.Exception);
 		Assert.That(() => new ShellFolder(new PIDL(@"C:\Tamp")), Throws.Exception);
 		Assert.That(() => new ShellFolder(new PIDL(testFile)), Throws.Nothing);
 	}
@@ -48,7 +49,7 @@ public class ShellFolderTests
 	public void ShellFolderTest4()
 	{
 		Assert.That(() => { Assert.That(new ShellFolder(new ShellItem(testFld)).FileSystemPath, Is.EqualTo(testFld)); }, Throws.Nothing);
-		Assert.That(() => new ShellFolder((ShellItem)null), Throws.Exception);
+		Assert.That(() => new ShellFolder((ShellItem?)null), Throws.Exception);
 		Assert.That(() => new ShellFolder(new ShellItem(testFile)), Throws.Nothing);
 	}
 
@@ -60,7 +61,7 @@ public class ShellFolderTests
 			using var i = new ShellFolder(testFld);
 			Assert.That(i[Path.GetFileName(testFile)], Is.EqualTo(si));
 			Assert.That(() => i[testFile], Throws.Exception);
-			Assert.That(() => i[(string)null], Throws.Exception);
+			Assert.That(() => i[(string?)null], Throws.Exception);
 			Assert.That(() => i[""], Throws.Exception);
 			Assert.That(() => i["bad.bad"], Throws.Exception);
 
@@ -69,7 +70,7 @@ public class ShellFolderTests
 				Assert.That(i[pidl.LastId], Is.EqualTo(si));
 				Assert.That(i[pidl], Is.EqualTo(si));
 			}
-			Assert.That(() => i[(PIDL)null], Throws.Exception);
+			Assert.That(() => i[(PIDL?)null], Throws.Exception);
 		}
 		using (var i = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop))
 			Assert.That(i, Is.EqualTo(ShellFolder.Desktop));

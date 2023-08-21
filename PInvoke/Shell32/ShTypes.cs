@@ -179,7 +179,7 @@ public static partial class Shell32
 
 		public IntPtr MarshalManagedToNative(object ManagedObj)
 		{
-			if (!(ManagedObj is string s)) throw new InvalidCastException();
+			if (ManagedObj is not string s) throw new InvalidCastException();
 			var sr = new STRRET { uType = STRRET_TYPE.STRRET_WSTR };
 			sr.pOleStr.Assign(s);
 			return sr.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);

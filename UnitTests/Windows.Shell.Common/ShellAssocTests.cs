@@ -32,10 +32,10 @@ public class ShellAssocTests
 	[Test]
 	public void ReadProgIDTest()
 	{
-		using (var pi = ProgId.Open("Word.Document.12", systemWide: true))
+		using (var pi = ProgId.Open("Word.Document.12", systemWide: true)!)
 		{
 			Assert.That(pi.ReadOnly, Is.True);
-			Assert.That(pi.DefaultIcon.ToString(), Is.EqualTo(@"C:\Program Files (x86)\Microsoft Office\Root\VFS\Windows\Installer\{90160000-000F-0000-0000-0000000FF1CE}\wordicon.exe,13"));
+			Assert.That(pi.DefaultIcon?.ToString(), Is.EqualTo(@"C:\Program Files (x86)\Microsoft Office\Root\VFS\Windows\Installer\{90160000-000F-0000-0000-0000000FF1CE}\wordicon.exe,13"));
 			Assert.That(pi.AllowSilentDefaultTakeOver, Is.False);
 			Assert.That(pi.AppUserModelID, Is.Null);
 			Assert.That(pi.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_None));
@@ -52,9 +52,9 @@ public class ShellAssocTests
 		using (var pi = ProgId.Open("CABFolder", systemWide: true))
 		{
 			Assert.That(pi.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_SafeForElevation));
-			Assert.That(pi.FriendlyTypeName.ToString(), Is.EqualTo(@"@C:\WINDOWS\system32\cabview.dll,-20"));
-			Assert.That(pi.FriendlyTypeName.Value, Has.Length.GreaterThan(0));
-			Assert.That(pi.InfoTip.ToString(), Is.EqualTo(@"@C:\WINDOWS\system32\cabview.dll,-21"));
+			Assert.That(pi.FriendlyTypeName?.ToString(), Is.EqualTo(@"@C:\WINDOWS\system32\cabview.dll,-20"));
+			Assert.That(pi.FriendlyTypeName?.Value, Has.Length.GreaterThan(0));
+			Assert.That(pi.InfoTip?.ToString(), Is.EqualTo(@"@C:\WINDOWS\system32\cabview.dll,-21"));
 			Assert.That((pi.InfoTip as IndirectString)?.Value, Has.Length.GreaterThan(0));
 		}
 		using (var pi = ProgId.Open("cdafile", systemWide: true))
@@ -79,7 +79,7 @@ public class ShellAssocTests
 		using (var reg = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(sProgId))
 		{
 			Assert.That(reg, Is.Not.Null);
-			Assert.That(reg.GetValue(null).ToString(), Is.EqualTo(progid.FriendlyName));
+			Assert.That(reg!.GetValue(null)?.ToString(), Is.EqualTo(progid.FriendlyName));
 			Assert.That(progid.ID, Is.EqualTo(sProgId));
 			Assert.That(progid.ReadOnly, Is.False);
 

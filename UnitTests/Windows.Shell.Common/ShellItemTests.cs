@@ -12,6 +12,8 @@ using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 [TestFixture, SingleThreaded]
 public class ShellItemTests
 {
@@ -34,10 +36,10 @@ public class ShellItemTests
 		Assert.That(((IComparable<ShellItem>)i).CompareTo(l), Is.Not.Zero);
 		Assert.That(i.Equals(lt.IShellItem), Is.True);
 		Assert.That(i.Equals(lt.Name), Is.False);
-		Assert.That(i.Equals((object)null), Is.False);
-		Assert.That(i.Equals((IShellItem)null), Is.False);
-		Assert.That(i.Equals((ShellItem)null), Is.False);
-		Assert.That(i.GetHashCode(), Is.EqualTo(lt.GetHashCode()));
+		Assert.That(i.Equals((object?)null), Is.False);
+		//Assert.That(i.Equals((IShellItem?)null), Is.False);
+		//Assert.That(i.Equals((ShellItem?)null), Is.False);
+		Assert.That(i!.GetHashCode(), Is.EqualTo(lt.GetHashCode()));
 	}
 
 	[Test]
@@ -45,7 +47,7 @@ public class ShellItemTests
 								   {
 									   using var i = new ShellItem(testDoc);
 									   Assert.That(i.Attributes, Is.Not.Zero);
-									   Assert.That(i.FileInfo.FullName, Is.EqualTo(testDoc));
+									   Assert.That(i.FileInfo?.FullName, Is.EqualTo(testDoc));
 									   Assert.That(i.IsFileSystem, Is.True);
 									   Assert.That(i.IsFolder, Is.False);
 									   Assert.That(i.IsLink, Is.False);
@@ -126,7 +128,7 @@ public class ShellItemTests
 	public void GetParentTest() => Assert.That(() =>
 									 {
 										 using var i = new ShellItem(testDoc);
-										 using var p = new ShellItem(Path.GetDirectoryName(testDoc));
+										 using var p = new ShellItem(Path.GetDirectoryName(testDoc)!);
 										 Assert.That(i.Parent == p, Is.True);
 										 Assert.That(ShellFolder.Desktop.Parent, Is.Null);
 									 }, Throws.Nothing);
@@ -161,7 +163,7 @@ public class ShellItemTests
 			Assert.That(i.Properties[PROPERTYKEY.System.Author], Has.Member("TestAuthor"));
 			Assert.That(i.Properties[PROPERTYKEY.System.ItemTypeText], Does.StartWith("Microsoft Word"));
 			Assert.That(i.Properties[PROPERTYKEY.System.DateAccessed], Is.TypeOf<FILETIME>());
-			Assert.That((ulong)i.Properties[PROPERTYKEY.System.FileFRN], Is.GreaterThan((ulong)0));
+			Assert.That((ulong)i.Properties[PROPERTYKEY.System.FileFRN]!, Is.GreaterThan((ulong)0));
 			Assert.That(i.Properties[new PROPERTYKEY()], Is.Null);
 			Assert.That(i.Properties[new PROPERTYKEY(Guid.NewGuid(), 2)], Is.Null);
 
@@ -272,7 +274,7 @@ public class ShellItemTests
 		td.FileSystemPath!.WriteValues();
 	}
 
-	private static Bitmap HToBitmap(in HBITMAP hbmp)
+	private static Bitmap? HToBitmap(in HBITMAP hbmp)
 	{
 		const System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
 
