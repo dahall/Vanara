@@ -64,10 +64,7 @@ public class IEnumeratorFromNext<TIEnum, TItem> : IEnumerator<TItem> where TIEnu
 	object IEnumerator.Current => Current!;
 
 	/// <summary>Disposes of the Enumerator object.</summary>
-	public virtual void Dispose()
-	{
-		current = default;
-	}
+	public virtual void Dispose() => current = default;
 
 	/// <summary>Moves the enumerator index to the next object in the collection.</summary>
 	/// <returns></returns>

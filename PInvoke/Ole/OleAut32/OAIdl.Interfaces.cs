@@ -3646,7 +3646,7 @@ public static partial class OleAut32
 	{
 		if (source is null)
 			throw new ArgumentNullException(nameof(source));
-		if (names is null || names.Any(s => string.IsNullOrEmpty(s)))
+		if (names is null || names.Any(string.IsNullOrEmpty))
 			throw new ArgumentNullException(nameof(names));
 		var ids = new int[names.Length];
 		source.GetIDsOfNames(Guid.Empty, names, (uint)names.Length, LCID.LOCALE_SYSTEM_DEFAULT, ids);

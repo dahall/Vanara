@@ -1,4 +1,3 @@
-using System;
 using static Vanara.PInvoke.BITS;
 
 namespace Vanara.IO;
@@ -324,7 +323,7 @@ public enum BackgroundCopyJobState
 	/// <summary>
 	/// Specifies that a recoverable error occurred. BITS will retry jobs in the transient error state based on the retry interval you
 	/// specify (see <see cref="BackgroundCopyJob.MinimumRetryDelay"/>). The state of the job changes to <see
-	/// cref="BackgroundCopyJobState.Error"/> if the job fails to make progress (see <see cref="BackgroundCopyJob.NoProgressTimeout"/>).
+	/// cref="Error"/> if the job fails to make progress (see <see cref="BackgroundCopyJob.NoProgressTimeout"/>).
 	/// BITS does not retry the job if a network disconnect or disk lock error occurred (for example, chkdsk is running) or the
 	/// MaxInternetBandwidth Group Policy is zero.
 	/// </summary>

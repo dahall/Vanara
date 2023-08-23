@@ -1,10 +1,6 @@
-using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
-using Vanara.Extensions;
 using static Vanara.PInvoke.BITS;
 
 namespace Vanara.IO;
@@ -123,11 +119,11 @@ public class BackgroundCopyJob : IDisposable
 	internal static readonly Version CopyCallback2 = new(3, 0);
 	internal static readonly Version CopyCallback3 = new(10, 1);
 
-	private EventHandler<BackgroundCopyJobEventArgs> complEvent, errEvent, modEvent;
-	private EventHandler<BackgroundCopyFileRangesTransferredEventArgs> fRangTranEvent;
-	private EventHandler<BackgroundCopyFileTransferredEventArgs> fTranEvent;
+	private EventHandler<BackgroundCopyJobEventArgs>? complEvent, errEvent, modEvent;
+	private EventHandler<BackgroundCopyFileRangesTransferredEventArgs>? fRangTranEvent;
+	private EventHandler<BackgroundCopyFileTransferredEventArgs>? fTranEvent;
 	private IBackgroundCopyJob m_ijob;
-	private Notifier m_notifier = null;
+	private Notifier? m_notifier = null;
 	private BG_NOTIFY progNotify = 0;
 
 	internal BackgroundCopyJob(IBackgroundCopyJob ijob)
@@ -140,28 +136,28 @@ public class BackgroundCopyJob : IDisposable
 	}
 
 	/// <summary>Occurs when all of the files in the job have been transferred.</summary>
-	public event EventHandler<BackgroundCopyJobEventArgs> Completed
+	public event EventHandler<BackgroundCopyJobEventArgs>? Completed
 	{
 		add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED, ref complEvent, value);
 		remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED, ref complEvent, value);
 	}
 
 	/// <summary>Fires when an error occurs.</summary>
-	public event EventHandler<BackgroundCopyJobEventArgs> Error
+	public event EventHandler<BackgroundCopyJobEventArgs>? Error
 	{
 		add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_ERROR, ref errEvent, value);
 		remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_ERROR, ref errEvent, value);
 	}
 
 	/// <summary>Occurs when file ranges have been transferred.</summary>
-	public event EventHandler<BackgroundCopyFileRangesTransferredEventArgs> FileRangesTransferred
+	public event EventHandler<BackgroundCopyFileRangesTransferredEventArgs>? FileRangesTransferred
 	{
 		add => AddEvent(BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED, ref fRangTranEvent, value);
 		remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED, ref fRangTranEvent, value);
 	}
 
 	/// <summary>Occurs when a file has been transferred.</summary>
-	public event EventHandler<BackgroundCopyFileTransferredEventArgs> FileTransferred
+	public event EventHandler<BackgroundCopyFileTransferredEventArgs>? FileTransferred
 	{
 		add => AddEvent(BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED, ref fTranEvent, value);
 		remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED, ref fTranEvent, value);
@@ -171,7 +167,7 @@ public class BackgroundCopyJob : IDisposable
 	/// Occurs when the job has been modified. For example, a property value changed, the state of the job changed, or progress is made
 	/// transferring the files.
 	/// </summary>
-	public event EventHandler<BackgroundCopyJobEventArgs> Modified
+	public event EventHandler<BackgroundCopyJobEventArgs>? Modified
 	{
 		add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION, ref modEvent, value);
 		remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION, ref modEvent, value);
@@ -196,7 +192,7 @@ public class BackgroundCopyJob : IDisposable
 	public bool AutoCompleteOnSuccess { get; set; }
 
 	/// <summary>Retrieves the client certificate from the job.</summary>
-	public X509Certificate2 Certificate
+	public X509Certificate2? Certificate
 	{
 		get
 		{
@@ -228,7 +224,7 @@ public class BackgroundCopyJob : IDisposable
 		get
 		{
 			var hdr = new System.Net.WebHeaderCollection();
-			var str = RunAction(() => IHttpOp.GetCustomHeaders(), null);
+			var str = RunAction(IHttpOp.GetCustomHeaders, null);
 			if (str is not null)
 			{
 				foreach (var s in str.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries))
@@ -243,7 +239,7 @@ public class BackgroundCopyJob : IDisposable
 	[DefaultValue("")]
 	public string Description
 	{
-		get => RunAction(() => m_ijob.GetDescription(), string.Empty);
+		get => RunAction(m_ijob.GetDescription, string.Empty)!;
 		set => RunAction(() => m_ijob.SetDescription(value));
 	}
 
@@ -253,13 +249,13 @@ public class BackgroundCopyJob : IDisposable
 	public bool DisableNotifications
 	{
 		get => NotifyFlags.IsFlagSet(BG_NOTIFY.BG_NOTIFY_DISABLE);
-		set => NotifyFlags = NotifyFlags.SetFlags(BG_NOTIFY.BG_NOTIFY_DISABLE, value);
+		// set => NotifyFlags = NotifyFlags.SetFlags(BG_NOTIFY.BG_NOTIFY_DISABLE, value); // Not supported
 	}
 
 	/// <summary>Gets or sets the display name of the job.</summary>
 	public string DisplayName
 	{
-		get => RunAction(() => m_ijob.GetDisplayName(), string.Empty);
+		get => RunAction(m_ijob.GetDisplayName, string.Empty)!;
 		set => RunAction(() => m_ijob.SetDisplayName(value));
 	}
 
@@ -343,25 +339,25 @@ public class BackgroundCopyJob : IDisposable
 	[DefaultValue("GET")]
 	public string HttpMethod
 	{
-		get => RunAction(() => IHttpOp2.GetHttpMethod());
+		get => RunAction(IHttpOp2.GetHttpMethod)!;
 		set => RunAction(() => IHttpOp2.SetHttpMethod(value));
 	}
 
 	/// <summary>Gets the job identifier.</summary>
-	public Guid ID => RunAction(() => m_ijob.GetId(), Guid.Empty);
+	public Guid ID => RunAction(m_ijob.GetId, Guid.Empty);
 
 	/// <summary>Gets the type of job, such as download.</summary>
 	public BackgroundCopyJobType JobType => RunAction(() => (BackgroundCopyJobType)m_ijob.GetType(), BackgroundCopyJobType.Download);
 
 	/// <summary>Gets the last exception that occurred in the job.</summary>
-	public BackgroundCopyException LastError
+	public BackgroundCopyException? LastError
 	{
 		get
 		{
 			var state = State;
 			if (state is not BackgroundCopyJobState.Error and not BackgroundCopyJobState.TransientError)
 				return null;
-			var err = RunAction(() => m_ijob.GetError());
+			var err = RunAction(m_ijob.GetError);
 			return err is null ? null : new BackgroundCopyException(err);
 		}
 	}
@@ -474,7 +470,7 @@ public class BackgroundCopyJob : IDisposable
 		}
 		set
 		{
-			string p = value, a = string.Empty;
+			string? p = value, a = string.Empty;
 			if (string.IsNullOrEmpty(value))
 				p = a = null;
 			else
@@ -515,19 +511,19 @@ public class BackgroundCopyJob : IDisposable
 	}
 
 	/// <summary>Retrieve the identity of the job's owner.</summary>
-	public System.Security.Principal.SecurityIdentifier Owner => RunAction(() => new System.Security.Principal.SecurityIdentifier((string)m_ijob.GetOwner()));
+	public System.Security.Principal.SecurityIdentifier Owner => RunAction<System.Security.Principal.SecurityIdentifier>(() => new(m_ijob.GetOwner()))!;
 
 	/// <summary>Gets the integrity level of the token of the owner that created or took ownership of the job.</summary>
 	/// <value>Integrity level of the token of the owner that created or took ownership of the job.</value>
 	[DefaultValue(8192)]
-	public uint OwnerIntegrityLevel => RunAction(() => IJob4.GetOwnerIntegrityLevel());
+	public uint OwnerIntegrityLevel => RunAction(IJob4.GetOwnerIntegrityLevel);
 
 	/// <summary>
 	/// Gets a value that determines if the token of the owner was elevated at the time they created or took ownership of the job.
 	/// </summary>
 	/// <value>Is TRUE if the token of the owner was elevated at the time they created or took ownership of the job; otherwise, FALSE.</value>
 	[DefaultValue(false)]
-	public bool OwnerIsElevated => RunAction(() => IJob4.GetOwnerElevationState());
+	public bool OwnerIsElevated => RunAction(IJob4.GetOwnerElevationState);
 
 	/// <summary>
 	/// Gets or sets flags that determine if the files of the job can be cached and served to peers and if BITS can download content for
@@ -564,13 +560,13 @@ public class BackgroundCopyJob : IDisposable
 	/// The WebProxy.Credentials property value contains a value. Use the SetCredentials method instead.
 	/// </exception>
 	[DefaultValue(null)]
-	public System.Net.WebProxy Proxy
+	public System.Net.WebProxy? Proxy
 	{
 		get => RunAction(() =>
 		{
 			m_ijob.GetProxySettings(out var pUse, out var pList, out var byList);
 			if (pUse == BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE)
-				return new System.Net.WebProxy(pList.ToString()?.Split(' ').FirstOrDefault(), true, byList.ToString()?.Split(' '));
+				return new System.Net.WebProxy(pList?.ToString()?.Split(' ').FirstOrDefault(), true, byList?.ToString()?.Split(' '));
 			else if (pUse == BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY)
 				return new System.Net.WebProxy();
 			return null;
@@ -579,11 +575,11 @@ public class BackgroundCopyJob : IDisposable
 		{
 			if (value is null)
 				m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_PRECONFIG, null, null);
-			else if (string.IsNullOrEmpty(value.Address.AbsoluteUri))
+			else if (string.IsNullOrEmpty(value.Address?.AbsoluteUri))
 				m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY, null, null);
 			else
-				m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address.AbsoluteUri, string.Join(" ", value.BypassList));
-			if (value.Credentials is not null)
+				m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address?.AbsoluteUri, string.Join(" ", value.BypassList));
+			if (value?.Credentials is not null)
 				throw new ArgumentException("The set Proxy property does not support proxy credentials. Please use the SetCredentials method.");
 		});
 	}
@@ -593,13 +589,13 @@ public class BackgroundCopyJob : IDisposable
 	{
 		IJob2.GetReplyData(out var pdata, out var cRet);
 		return (cRet > 0) ? pdata.ToArray<byte>((int)cRet) : new byte[0];
-	}, new byte[0]);
+	}, new byte[0])!;
 
 	/// <summary>Gets or sets the name of the file that contains the reply data from the server application.</summary>
 	[DefaultValue(null)]
-	public string ReplyFileName
+	public string? ReplyFileName
 	{
-		get => RunAction(() => IJob2.GetReplyFileName(), string.Empty);
+		get => RunAction(IJob2.GetReplyFileName);
 		set => RunAction(() => IJob2.SetReplyFileName(value));
 	}
 
@@ -665,7 +661,7 @@ public class BackgroundCopyJob : IDisposable
 
 	private BG_NOTIFY NotifyFlags
 	{
-		get => RunAction(() => m_ijob.GetNotifyFlags(), (BG_NOTIFY)0);
+		get => RunAction(m_ijob.GetNotifyFlags, (BG_NOTIFY)0);
 		set => RunAction(() =>
 		{
 			var st = State;
@@ -674,13 +670,13 @@ public class BackgroundCopyJob : IDisposable
 		});
 	}
 
-	private BG_JOB_TIMES Times => RunAction(() => m_ijob.GetTimes(), new BG_JOB_TIMES());
+	private BG_JOB_TIMES Times => RunAction(m_ijob.GetTimes, new BG_JOB_TIMES());
 
 	/// <summary>
 	/// Use the Cancel method to delete the job from the transfer queue and to remove related temporary files from the client (downloads)
 	/// and server (uploads). You can cancel a job at any time; however, the job cannot be recovered after it is canceled.
 	/// </summary>
-	public void Cancel() => RunAction(() => m_ijob.Cancel());
+	public void Cancel() => RunAction(m_ijob.Cancel);
 
 	/// <summary>
 	/// Use the RemoveCredentials method to remove credentials from use. The credentials must match an existing target and scheme pair
@@ -695,7 +691,7 @@ public class BackgroundCopyJob : IDisposable
 	}
 
 	/// <summary>Use the Complete method to end the job and save the transferred files on the client.</summary>
-	public void Complete() => RunAction(() => m_ijob.Complete());
+	public void Complete() => RunAction(m_ijob.Complete);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -713,7 +709,7 @@ public class BackgroundCopyJob : IDisposable
 	/// <param name="notifyFlags">
 	/// Flags that specify when to execute the program. This value is <c>0</c> if <see cref="SetNotifyCommandLine"/> has not been called.
 	/// </param>
-	public void GetNotifyCommandLine(out string exeFullPath, out string parameters, out BackgroundCopyJobNotify notifyFlags)
+	public void GetNotifyCommandLine(out string? exeFullPath, out string? parameters, out BackgroundCopyJobNotify notifyFlags)
 	{
 		(exeFullPath, parameters, progNotify) = RunAction(() =>
 		{
@@ -734,7 +730,7 @@ public class BackgroundCopyJob : IDisposable
 	/// readable by other programs running on the same computer. The BITS process, of course, can still read these headers, and send
 	/// them over the HTTP connection. Once the headers are set to write-only, that cannot be unset.
 	/// </remarks>
-	public void MakeCustomHeadersWriteOnly() => RunAction(() => IHttpOp3.MakeCustomHeadersWriteOnly());
+	public void MakeCustomHeadersWriteOnly() => RunAction(IHttpOp3.MakeCustomHeadersWriteOnly);
 
 	/// <summary>
 	/// Use the ReplaceRemotePrefix method to replace the beginning text of all remote names in the download job with the given string.
@@ -746,7 +742,7 @@ public class BackgroundCopyJob : IDisposable
 	public void ReplaceRemotePrefix(string oldPrefix, string newPrefix) => RunAction(() => IJob3.ReplaceRemotePrefix(oldPrefix, newPrefix));
 
 	/// <summary>Use the Resume method to activate a new job or restart a job that has been suspended.</summary>
-	public void Resume() => RunAction(() => m_ijob.Resume());
+	public void Resume() => RunAction(m_ijob.Resume);
 
 	/// <summary>Specifies the identifier of the client certificate to use for client authentication in an HTTPS (SSL) request.</summary>
 	/// <param name="store">The certificate store.</param>
@@ -764,7 +760,7 @@ public class BackgroundCopyJob : IDisposable
 			default:
 				break;
 		}
-		IHttpOp.SetClientCertificateByID(loc, store.Name, cert.GetCertHash());
+		IHttpOp.SetClientCertificateByID(loc, store.Name!, cert.GetCertHash());
 	}
 
 	/// <summary>
@@ -852,7 +848,7 @@ public class BackgroundCopyJob : IDisposable
 	/// </para>
 	/// <para>Note that calling the <see cref="TakeOwnership"/> method removes command line notification from the job.</para>
 	/// </remarks>
-	public void SetNotifyCommandLine(string exeFullPath, string parameters, BackgroundCopyJobNotify notifyFlags = BackgroundCopyJobNotify.Transferred | BackgroundCopyJobNotify.Error)
+	public void SetNotifyCommandLine(string? exeFullPath, string? parameters = null, BackgroundCopyJobNotify notifyFlags = BackgroundCopyJobNotify.Transferred | BackgroundCopyJobNotify.Error)
 	{
 		exeFullPath = exeFullPath?.Trim('"', ' ');
 		progNotify = string.IsNullOrEmpty(exeFullPath) ? 0 : (BG_NOTIFY)notifyFlags;
@@ -907,13 +903,13 @@ public class BackgroundCopyJob : IDisposable
 	/// Use the Suspend method to suspend a job. New jobs, jobs that are in error, and jobs that have finished transferring files are
 	/// automatically suspended.
 	/// </summary>
-	public void Suspend() => RunAction(() => m_ijob.Suspend());
+	public void Suspend() => RunAction(m_ijob.Suspend);
 
 	/// <summary>
 	/// Use the TakeOwnership method to change ownership of the job to the current user. To take ownership of the job, the user must have
 	/// administrator privileges on the client.
 	/// </summary>
-	public void TakeOwnership() => RunAction(() => m_ijob.TakeOwnership());
+	public void TakeOwnership() => RunAction(m_ijob.TakeOwnership);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -928,9 +924,8 @@ public class BackgroundCopyJob : IDisposable
 				m_ijob.SetNotifyInterface(null);
 		}
 		catch { }
-		Files = null;
-		m_ijob = null;
 		m_notifier = null;
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Called when the job has completed.</summary>
@@ -957,7 +952,7 @@ public class BackgroundCopyJob : IDisposable
 	/// <summary>Called when the job has been modified.</summary>
 	protected virtual void OnModified() => modEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
 
-	private void AddEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
+	private void AddEvent<T>(BG_NOTIFY flag, ref EventHandler<T>? eventHandler, EventHandler<T>? value)
 	{
 		try
 		{
@@ -1005,7 +1000,7 @@ public class BackgroundCopyJob : IDisposable
 			throw new BackgroundCopyException(cex);
 	}
 
-	private void RemoveEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
+	private void RemoveEvent<T>(BG_NOTIFY flag, ref EventHandler<T>? eventHandler, EventHandler<T>? value)
 	{
 		eventHandler -= value;
 		if (eventHandler is null && !progNotify.IsFlagSet(flag))
@@ -1018,7 +1013,7 @@ public class BackgroundCopyJob : IDisposable
 		catch (COMException cex) { HandleCOMException(cex); }
 	}
 
-	private T RunAction<T>(Func<T> action, T def = default)
+	private T? RunAction<T>(Func<T> action, T? def = default)
 	{
 		try { return action(); }
 		catch (COMException cex) { HandleCOMException(cex); }
@@ -1063,7 +1058,7 @@ public class BackgroundCopyJob : IDisposable
 
 		public Notifier(BackgroundCopyJob job) => parent = job;
 
-		private Notifier() { }
+		private Notifier() => throw new NotImplementedException();
 
 		public void FileRangesTransferred(IBackgroundCopyJob job, IBackgroundCopyFile file, uint rangeCount, BG_FILE_RANGE[] ranges) => parent.OnFileRangesTransferred(file, ranges);
 

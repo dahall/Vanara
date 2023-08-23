@@ -638,7 +638,7 @@ public static partial class InteropExtensions
 	/// <typeparam name="T">Type of the structure.</typeparam>
 	/// <param name="ptr">The <see cref="IntPtr"/> that points to allocated memory holding a structure or <see cref="IntPtr.Zero"/>.</param>
 	/// <returns>The converted structure or <c>null</c>.</returns>
-	public static T? ToNullableStructure<T>(this IntPtr ptr) where T : struct => ptr != IntPtr.Zero ? ptr.ToStructure<T>() : (T?)null;
+	public static T? ToNullableStructure<T>(this IntPtr ptr) where T : struct => ptr != IntPtr.Zero ? ptr.ToStructure<T>() : null;
 
 	/// <summary>Converts an <see cref="IntPtr"/> to a structure. If pointer has no value, <c>null</c> is returned.</summary>
 	/// <typeparam name="T">Type of the structure.</typeparam>
@@ -648,7 +648,7 @@ public static partial class InteropExtensions
 	public static T? ToNullableStructure<T>(this IntPtr ptr, out int bytesRead) where T : struct
 	{
 		bytesRead = 0;
-		return ptr != IntPtr.Zero ? ptr.ToStructure<T>(bytesRead: out bytesRead) : (T?)null;
+		return ptr != IntPtr.Zero ? ptr.ToStructure<T>(bytesRead: out bytesRead) : null;
 	}
 
 	/// <summary>Converts a pointer to an unmanaged Unicode string to a <see cref="SecureString"/>.</summary>

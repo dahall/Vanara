@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.BITS;
 
@@ -16,9 +15,7 @@ public class BackgroundCopyFileCollection : ICollection<BackgroundCopyFileInfo>,
 
 	internal BackgroundCopyFileCollection(IBackgroundCopyJob ijob) => m_ijob = ijob;
 
-	internal BackgroundCopyFileCollection()
-	{
-	}
+	internal BackgroundCopyFileCollection() => throw new NotImplementedException();
 
 	/// <summary>Gets the number of files in the current job.</summary>
 	public int Count
@@ -193,14 +190,15 @@ public class BackgroundCopyFileCollection : ICollection<BackgroundCopyFileInfo>,
 
 
 	/// <summary>
-	/// Returns an object that implements the <see cref="IEnumerator"/> interface and that can iterate through the
-	/// <see cref="BackgroundCopyFileInfo"/> objects within the <see cref="BackgroundCopyFileCollection"/> collection.
+	/// Returns an object that implements the <see cref="IEnumerator"/> interface and that can iterate through the <see
+	/// cref="BackgroundCopyFileInfo"/> objects within the <see cref="BackgroundCopyFileCollection"/> collection.
 	/// </summary>
 	/// <returns>
-	/// Returns an object that implements the <see cref="IEnumerator"/> interface and that can iterate through the
-	/// <see cref="BackgroundCopyFileInfo"/> objects within the <see cref="BackgroundCopyFileCollection"/> collection.
+	/// Returns an object that implements the <see cref="IEnumerator"/> interface and that can iterate through the <see
+	/// cref="BackgroundCopyFileInfo"/> objects within the <see cref="BackgroundCopyFileCollection"/> collection.
 	/// </returns>
-	public IEnumerator<BackgroundCopyFileInfo> GetEnumerator() => new Enumerator(m_ijob.EnumFiles());
+	public IEnumerator<BackgroundCopyFileInfo> GetEnumerator() =>
+		m_ijob.EnumFiles().GetCollection<IEnumBackgroundCopyFiles, IBackgroundCopyFile, BackgroundCopyFileInfo>(i => new(i)).GetEnumerator();
 
 	/// <summary>Adds an item to the <see cref="ICollection{T}"/>.</summary>
 	/// <param name="item">The object to add to the <see cref="ICollection{T}"/>.</param>
@@ -247,7 +245,7 @@ public class BackgroundCopyFileCollection : ICollection<BackgroundCopyFileInfo>,
 	}
 
 	/// <summary>Disposes of the BackgroundCopyFileSet object.</summary>
-	void IDisposable.Dispose() => m_ijob = null;
+	void IDisposable.Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
@@ -274,23 +272,5 @@ public class BackgroundCopyFileCollection : ICollection<BackgroundCopyFileInfo>,
 		}
 		else
 			throw new BackgroundCopyException(cex);
-	}
-
-	/// <summary>
-	/// An implementation the <see cref="IEnumerator"/> interface that can iterate through the <see cref="BackgroundCopyFileInfo"/>
-	/// objects within the <see cref="BackgroundCopyFileCollection"/> collection.
-	/// </summary>
-	private sealed class Enumerator : Vanara.Collections.IEnumeratorFromNext<IEnumBackgroundCopyFiles, BackgroundCopyFileInfo>
-	{
-		internal Enumerator(IEnumBackgroundCopyFiles enumfiles) : base(enumfiles, TryGetNext, e => e.Reset())
-		{
-		}
-
-		private static bool TryGetNext(IEnumBackgroundCopyFiles e, out BackgroundCopyFileInfo i)
-		{
-			var ifi = e.Next(1)?.FirstOrDefault();
-			i = ifi is not null ? new BackgroundCopyFileInfo(ifi) : null;
-			return i is not null;
-		}
 	}
 }

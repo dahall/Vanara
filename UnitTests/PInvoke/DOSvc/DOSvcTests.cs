@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
 using System.Threading;
-using System.Xml.Linq;
 using static Vanara.PInvoke.DOSvc;
 using static Vanara.PInvoke.Ole32;
 

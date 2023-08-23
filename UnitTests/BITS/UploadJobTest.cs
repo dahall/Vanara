@@ -24,7 +24,7 @@ internal partial class BackgroundCopyTests
 		AutoResetEvent autoReset;
 
 		// Local method because of local vars.
-		void OnUploadCompleted(object s, BackgroundCopyJobEventArgs e) => UploadCompleted(e, autoReset, allFilesToUpload.Length, allFilesTotalSize);
+		void OnUploadCompleted(object? s, BackgroundCopyJobEventArgs e) => UploadCompleted(e, autoReset, allFilesToUpload.Length, allFilesTotalSize);
 
 		// Create an upload job.
 		using var uploadJob = BackgroundCopyManager.Jobs.Add($"{nameof(remoteRoot)} upload", jobType: BackgroundCopyJobType.Upload);
@@ -58,9 +58,9 @@ internal partial class BackgroundCopyTests
 
 		// Better performance when event methods are defined seperately, preferably static.
 
-		static void OnUploadError(object s, BackgroundCopyJobEventArgs e) => throw e.Job.LastError;
+		static void OnUploadError(object? s, BackgroundCopyJobEventArgs e) => throw e.Job.LastError!;
 
-		static void OnUploadFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
+		static void OnUploadFileTransferred(object? s, BackgroundCopyFileTransferredEventArgs e)
 		{
 			var fileInfo = e.FileInfo;
 

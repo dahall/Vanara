@@ -7,15 +7,16 @@ internal partial class BackgroundCopyTests
 	[Test]
 	public void JobCollTest()
 	{
-		BackgroundCopyJob newJob = null;
+		BackgroundCopyJob? newJob = null;
 		var guid = Guid.Empty;
 		Assert.That(() => { guid = (newJob = BackgroundCopyManager.Jobs.Add(GetCurrentMethodName())).ID; }, Throws.Nothing);
+		Assert.That(newJob, Is.Not.Null);
 		try
 		{
 			Assert.That(BackgroundCopyManager.Jobs.Count, Is.GreaterThanOrEqualTo(1));
 			Assert.That(BackgroundCopyManager.Jobs.Contains(guid), Is.True);
 
-			BackgroundCopyJob job = null;
+			BackgroundCopyJob? job = null;
 			Assert.That(() => job = BackgroundCopyManager.Jobs[guid], Throws.Nothing);
 			Assert.That(job, Is.Not.Null);
 
@@ -26,7 +27,7 @@ internal partial class BackgroundCopyTests
 		}
 		finally
 		{
-			Assert.That(() => BackgroundCopyManager.Jobs.Remove(newJob), Throws.Nothing);
+			Assert.That(() => BackgroundCopyManager.Jobs.Remove(newJob!), Throws.Nothing);
 		}
 		Assert.That(BackgroundCopyManager.Jobs.Contains(guid), Is.False);
 	}

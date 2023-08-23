@@ -1,9 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.BITS;
 
@@ -16,6 +14,7 @@ namespace Vanara.IO;
 public static partial class BackgroundCopyManager
 {
 	private static readonly ComReleaser<IBackgroundCopyManager> ciMgr = ComReleaserFactory.Create(new IBackgroundCopyManager());
+	[MaybeNull]
 	private static Version ver;
 
 	/// <summary>Gets the list of currently queued jobs for all users.</summary>
@@ -85,7 +84,7 @@ public static partial class BackgroundCopyManager
 	/// BackgroundCopyManager.CopyAsync(src, dest, cts.Token, prog);
 	/// </code>
 	/// </example>
-	public static async Task CopyAsync(string sourceFileName, string destFileName, [Optional] CancellationToken cancellationToken, [Optional] IProgress<Tuple<BackgroundCopyJobState, byte>> progress)
+	public static async Task CopyAsync(string sourceFileName, string destFileName, [Optional] CancellationToken cancellationToken, [Optional] IProgress<Tuple<BackgroundCopyJobState, byte>>? progress)
 	{
 #if NET40
 		await TaskEx.Run(() => CopyTemplate(destFileName, cancellationToken, (s, p) => progress?.Report(new Tuple<BackgroundCopyJobState, byte>(s,p)), f => f.Add(sourceFileName, destFileName)), cancellationToken);
@@ -104,14 +103,13 @@ public static partial class BackgroundCopyManager
 		}
 		catch (COMException cex)
 		{
-			HandleCOMException(cex);
+			throw new BackgroundCopyException(cex);
 		}
-		return null;
 	}
 
 	internal static IEnumBackgroundCopyJobs EnumJobs(BG_JOB_ENUM type = BG_JOB_ENUM.BG_JOB_ENUM_ALL_USERS) => IMgr.EnumJobs(type);
 
-	internal static string GetErrorMessage(HRESULT hResult)
+	internal static string? GetErrorMessage(HRESULT hResult)
 	{
 		try
 		{
@@ -123,7 +121,7 @@ public static partial class BackgroundCopyManager
 		}
 	}
 
-	internal static IBackgroundCopyJob GetJob(Guid jobId)
+	internal static IBackgroundCopyJob? GetJob(Guid jobId)
 	{
 		try
 		{
@@ -137,8 +135,6 @@ public static partial class BackgroundCopyManager
 		return null;
 	}
 
-	internal static void HandleCOMException(COMException cex) => throw new BackgroundCopyException(cex);
-
 	/// <summary>Checks if the current user has administrator rights.</summary>
 	internal static bool IsCurrentUserAdministrator()
 	{
@@ -146,15 +142,15 @@ public static partial class BackgroundCopyManager
 		return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
 	}
 
-	private static void CopyTemplate(string destFileName, CancellationToken ct, Action<BackgroundCopyJobState, byte> report, Action<BackgroundCopyFileCollection> add)
+	private static void CopyTemplate(string destFileName, CancellationToken ct, Action<BackgroundCopyJobState, byte>? report, Action<BackgroundCopyFileCollection> add)
 	{
-		BackgroundCopyJobType type = (Uri.TryCreate(destFileName, UriKind.Absolute, out Uri uri) && !uri.IsFile) ? BackgroundCopyJobType.Upload : BackgroundCopyJobType.Download;
+		BackgroundCopyJobType type = (Uri.TryCreate(destFileName, UriKind.Absolute, out Uri? uri) && !uri.IsFile) ? BackgroundCopyJobType.Upload : BackgroundCopyJobType.Download;
 
 		using BackgroundCopyJob mainJob = Jobs.Add("Temp" + Guid.NewGuid().ToString(), string.Empty, type);
 
 		using var manualReset = new ManualResetEventSlim(false);
 
-		BackgroundCopyException err = null;
+		BackgroundCopyException? err = null;
 
 		// Set event handlers for job, these are weak references.
 		mainJob.Completed += OnCompleted;
@@ -190,7 +186,7 @@ public static partial class BackgroundCopyManager
 
 		// Better performance when event methods are defined seperately, preferably static.
 
-		void OnCompleted(object s, BackgroundCopyJobEventArgs e)
+		void OnCompleted(object? s, BackgroundCopyJobEventArgs e)
 		{
 			if (s is BackgroundCopyJob job)
 			{
@@ -202,7 +198,7 @@ public static partial class BackgroundCopyManager
 			}
 		}
 
-		void OnError(object s, BackgroundCopyJobEventArgs e)
+		void OnError(object? s, BackgroundCopyJobEventArgs e)
 		{
 			if (s is BackgroundCopyJob job)
 			{
@@ -214,13 +210,13 @@ public static partial class BackgroundCopyManager
 			}
 		}
 
-		void OnFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
+		void OnFileTransferred(object? s, BackgroundCopyFileTransferredEventArgs e)
 		{
 			if (s is BackgroundCopyJob job)
 				ReportProgress(job, job.State);
 		}
 
-		void OnFileRangesTransferred(object s, BackgroundCopyFileRangesTransferredEventArgs e)
+		void OnFileRangesTransferred(object? s, BackgroundCopyFileRangesTransferredEventArgs e)
 		{
 			if (s is BackgroundCopyJob job)
 				ReportProgress(job, job.State);

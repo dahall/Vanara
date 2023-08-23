@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.BITS;
 
 namespace Vanara.IO;
@@ -52,7 +50,7 @@ public class BackgroundCopyJobCollection : ICollection<BackgroundCopyJob>
 	/// <summary>Gets the first <see cref="BackgroundCopyJob"/> object with the specified display name.</summary>
 	/// <param name="displayName">The display name of the job.</param>
 	/// <returns>The referenced <see cref="BackgroundCopyJob"/> object if found, <see langword="null"/> if not.</returns>
-	public BackgroundCopyJob this[string displayName]
+	public BackgroundCopyJob? this[string displayName]
 	{
 		get
 		{
@@ -81,9 +79,8 @@ public class BackgroundCopyJobCollection : ICollection<BackgroundCopyJob>
 		}
 		catch (COMException cex)
 		{
-			BackgroundCopyManager.HandleCOMException(cex);
+			throw new BackgroundCopyException(cex);
 		}
-		return null;
 	}
 
 	/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
@@ -164,8 +161,8 @@ public class BackgroundCopyJobCollection : ICollection<BackgroundCopyJob>
 	/// </summary>
 	private sealed class Enumerator : IEnumerator<BackgroundCopyJob>
 	{
-		private IBackgroundCopyJob icurrentjob;
-		private IEnumBackgroundCopyJobs ienum;
+		private IBackgroundCopyJob? icurrentjob;
+		private readonly IEnumBackgroundCopyJobs ienum;
 
 		internal Enumerator(IEnumBackgroundCopyJobs enumjobs)
 		{
@@ -186,8 +183,8 @@ public class BackgroundCopyJobCollection : ICollection<BackgroundCopyJob>
 		/// <summary>Disposes of the Enumerator object.</summary>
 		public void Dispose()
 		{
-			ienum = null;
 			icurrentjob = null;
+			GC.SuppressFinalize(this);
 		}
 
 		/// <summary>Moves the enumerator index to the next object in the collection.</summary>

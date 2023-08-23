@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
 using static Vanara.PInvoke.BITS;
 
 namespace Vanara.IO;
@@ -10,17 +8,11 @@ public class BackgroundCopyFileInfo
 {
 	internal BG_FILE_INFO fi;
 
-	private readonly IBackgroundCopyFile iFile;
+	private readonly IBackgroundCopyFile? iFile;
 
-	internal BackgroundCopyFileInfo(IBackgroundCopyFile ibgfile)
-	{
-		iFile = ibgfile;
-	}
+	internal BackgroundCopyFileInfo(IBackgroundCopyFile ibgfile) => iFile = ibgfile;
 
-	internal BackgroundCopyFileInfo(BG_FILE_INFO bgfi)
-	{
-		fi = bgfi;
-	}
+	internal BackgroundCopyFileInfo(BG_FILE_INFO bgfi) => fi = bgfi;
 
 	/// <summary>Retrieves the ranges that you want to download from the remote file.</summary>
 	/// <value>The file copy ranges.</value>
@@ -146,10 +138,7 @@ public class BackgroundCopyFileInfo
 	/// An array of file ranges to be downloaded. Requested ranges are allowed to overlap previously downloaded (or pending) ranges. Ranges are automatically
 	/// split into non-overlapping ranges.
 	/// </param>
-	public void RequestFileRanges(BackgroundCopyFileRange[] ranges)
-	{
-		IFile6.RequestFileRanges((uint)ranges.Length, Array.ConvertAll(ranges, r => r.fr));
-	}
+	public void RequestFileRanges(BackgroundCopyFileRange[] ranges) => IFile6.RequestFileRanges((uint)ranges.Length, Array.ConvertAll(ranges, r => r.fr));
 
 	/// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
 	/// <returns>A <see cref="System.String" /> that represents this instance.</returns>

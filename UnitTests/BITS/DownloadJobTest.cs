@@ -29,7 +29,7 @@ internal partial class BackgroundCopyTests
 		AutoResetEvent autoReset;
 
 		// Local method because of local vars.
-		void OnDownloadCompleted(object s, BackgroundCopyJobEventArgs e) => DownloadCompleted(e, autoReset, allFilesToDownload.Length, allFilesTotalSize);
+		void OnDownloadCompleted(object? s, BackgroundCopyJobEventArgs e) => DownloadCompleted(e, autoReset, allFilesToDownload.Length, allFilesTotalSize);
 
 		// Create a download job.
 		using var downloadJob = BackgroundCopyManager.Jobs.Add($"{nameof(remoteRoot)} download");
@@ -84,9 +84,9 @@ internal partial class BackgroundCopyTests
 			autoResetEvent.Set();
 		}
 
-		static void OnDownloadError(object s, BackgroundCopyJobEventArgs e) => throw e.Job.LastError;
+		static void OnDownloadError(object? s, BackgroundCopyJobEventArgs e) => throw e.Job.LastError ?? new Exception();
 
-		static void OnDownloadFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
+		static void OnDownloadFileTransferred(object? s, BackgroundCopyFileTransferredEventArgs e)
 		{
 			var fileInfo = e.FileInfo;
 

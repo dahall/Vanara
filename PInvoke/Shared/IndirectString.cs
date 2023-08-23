@@ -77,12 +77,9 @@ internal class IndirectStringTypeConverter : ExpandableObjectConverter
 	public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
 		value is string s ? IndirectString.TryParse(s, out var loc) ? loc : null : base.ConvertFrom(context, culture, value);
 
-	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? info, object? value, Type destType)
-	{
-		return destType == typeof(string) && value is IndirectString s
+	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? info, object? value, Type destType) => destType == typeof(string) && value is IndirectString s
 			? s.RawValue
 			: destType == typeof(InstanceDescriptor)
 			? new InstanceDescriptor(typeof(IndirectString).GetConstructor(new Type[0]), null, false)
 			: base.ConvertTo(context, info, value, destType);
-	}
 }

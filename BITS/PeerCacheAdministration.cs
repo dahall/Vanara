@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Vanara.Collections;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.BITS;
 
@@ -56,19 +53,15 @@ public class CachePeers : IReadOnlyCollection<CachePeer>
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private IEnumerable<CachePeer> EnumPeers()
-	{
-		IEnumBitsPeers ienum = iCacheAdmin.EnumPeers();
-		return ienum is null ? Enumerable.Empty<CachePeer>() : IEnumFromCom<IBitsPeer>.Create(ienum).Select(i => new CachePeer(i));
-	}
+	private IEnumerable<CachePeer> EnumPeers() => iCacheAdmin.EnumPeers().Enumerate().Select(i => new CachePeer(i));
 }
 
 /// <summary>Use <c>PeerCacheAdministration</c> to manage the pool of peers from which you can download content.</summary>
 public class PeerCacheAdministration
 {
 	internal readonly ComReleaser<IBitsPeerCacheAdministration> ciCacheAdmin;
-	private CachePeers peers;
-	private PeerCacheRecords recs;
+	private CachePeers? peers;
+	private PeerCacheRecords? recs;
 
 	internal PeerCacheAdministration(IBackgroundCopyManager mgr) => ciCacheAdmin = ComReleaserFactory.Create((IBitsPeerCacheAdministration)mgr);
 
@@ -146,11 +139,8 @@ public class PeerCacheRecords : IReadOnlyCollection<PeerCacheRecord>
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private IEnumerable<PeerCacheRecord> EnumRecords()
-	{
-		IEnumBitsPeerCacheRecords ienum = iCacheAdmin.EnumRecords();
-		return ienum is null ? Enumerable.Empty<PeerCacheRecord>() : IEnumFromCom<IBitsPeerCacheRecord>.Create(ienum).Select(i => new PeerCacheRecord(i));
-	}
+	private IEnumerable<PeerCacheRecord> EnumRecords() =>
+		iCacheAdmin.EnumRecords()?.Enumerate().Select(i => new PeerCacheRecord(i)) ?? Enumerable.Empty<PeerCacheRecord>();
 }
 
 /// <summary>Provides information about a file in the BITS peer cache.</summary>

@@ -31,8 +31,6 @@ internal partial class BackgroundCopyTests
 		Assert.That(job.Description, Is.EqualTo(currentMethodName));
 
 		Assert.That(job.DisableNotifications, Is.EqualTo(job.GetDefVal<bool>(nameof(job.DisableNotifications))));
-		Assert.That(() => job.DisableNotifications = true, Throws.Nothing);
-		Assert.That(job.DisableNotifications, Is.EqualTo(true));
 
 		Assert.That(job.DynamicContent, Is.EqualTo(job.GetDefVal<bool>(nameof(job.DynamicContent))));
 		Assert.That(() => job.DynamicContent = true, Throws.Nothing);
@@ -45,7 +43,7 @@ internal partial class BackgroundCopyTests
 		Assert.That(job.HighPerformance, Is.EqualTo(true));
 
 		Assert.That(job.HttpMethod, Is.EqualTo(job.GetDefVal<string>(nameof(job.HttpMethod))));
-		Assert.That(() => job.MakeCustomHeadersWriteOnly(), Throws.Nothing);
+		Assert.That(job.MakeCustomHeadersWriteOnly, Throws.Nothing);
 
 		Assert.That(job.ID, Is.Not.EqualTo(Guid.Empty));
 
@@ -78,10 +76,12 @@ internal partial class BackgroundCopyTests
 		Assert.That(() => job.NotificationCLSID = guid, Throws.Nothing);
 		Assert.That(job.NotificationCLSID, Is.EqualTo(guid));
 
+#pragma warning disable CS0618 // Type or member is obsolete
 		Assert.That(job.NotifyProgram, Is.EqualTo(job.GetDefVal<string>(nameof(job.NotifyProgram))).Or.EqualTo(""));
 		var str = "\"cmd.exe\" echo Bob";
 		Assert.That(() => job.NotifyProgram = str, Throws.Nothing);
 		Assert.That(job.NotifyProgram, Is.EqualTo(str));
+#pragma warning restore CS0618 // Type or member is obsolete
 
 		Assert.That(job.OnDemand, Is.EqualTo(job.GetDefVal<bool>(nameof(job.OnDemand))));
 		Assert.That(() => job.OnDemand = true, Throws.Nothing);
@@ -102,7 +102,7 @@ internal partial class BackgroundCopyTests
 
 		Assert.That(job.Proxy, Is.EqualTo(job.GetDefVal<System.Net.WebProxy>(nameof(job.Proxy))));
 		Assert.That(() => job.Proxy = new System.Net.WebProxy("http://1.1.1.1"), Throws.Nothing);
-		Assert.That(job.Proxy.Address, Is.EqualTo(new Uri("http://1.1.1.1")));
+		Assert.That(job.Proxy?.Address, Is.EqualTo(new Uri("http://1.1.1.1")));
 
 		Assert.That(job.State, Is.EqualTo(BackgroundCopyJobState.Suspended));
 

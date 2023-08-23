@@ -21,6 +21,6 @@ internal partial class BackgroundCopyTests
 
 		Assert.That(job.Files.First().LocalFilePath, Is.EqualTo(dstFile));
 
-		Assert.That(() => job.Cancel(), Throws.Nothing);
+		Assert.That(job.Cancel, Throws.Nothing);
 	}
 }

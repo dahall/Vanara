@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using static Vanara.PInvoke.BITS;
@@ -7,7 +6,7 @@ using static Vanara.PInvoke.BITS;
 namespace Vanara.IO;
 
 /// <summary>Represents a single BITS job credential.</summary>
-/// <seealso cref="System.IComparable{T}"/>
+/// <seealso cref="IComparable{T}"/>
 public class BackgroundCopyJobCredential : IComparable<BackgroundCopyJobCredential>
 {
 	/// <summary>Initializes a new instance of the <see cref="BackgroundCopyJobCredential"/> class.</summary>
@@ -41,7 +40,7 @@ public class BackgroundCopyJobCredential : IComparable<BackgroundCopyJobCredenti
 
 	internal uint Key => BackgroundCopyJobCredentials.MakeKey(Scheme, Target);
 
-	int IComparable<BackgroundCopyJobCredential>.CompareTo(BackgroundCopyJobCredential other) => Comparer<uint>.Default.Compare(Key, other.Key);
+	int IComparable<BackgroundCopyJobCredential>.CompareTo(BackgroundCopyJobCredential? other) => Comparer<uint>.Default.Compare(Key, other?.Key ?? 0);
 
 	internal BG_AUTH_CREDENTIALS GetNative()
 	{
@@ -53,17 +52,14 @@ public class BackgroundCopyJobCredential : IComparable<BackgroundCopyJobCredenti
 }
 
 /// <summary>The list of credentials for a job.</summary>
-/// <seealso cref="System.IDisposable"/>
-/// <seealso cref="System.Collections.Generic.ICollection{T}"/>
+/// <seealso cref="IDisposable"/>
+/// <seealso cref="ICollection{T}"/>
 public class BackgroundCopyJobCredentials : IDisposable, ICollection<BackgroundCopyJobCredential>
 {
-	private Dictionary<uint, BackgroundCopyJobCredential> dict;
+	private Dictionary<uint, BackgroundCopyJobCredential>? dict;
 	private IBackgroundCopyJob2 ijob2;
 
-	internal BackgroundCopyJobCredentials(IBackgroundCopyJob2 job)
-	{
-		ijob2 = job;
-	}
+	internal BackgroundCopyJobCredentials(IBackgroundCopyJob2 job) => ijob2 = job;
 
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{T}"/>.</summary>
 	public int Count => dict?.Count ?? 0;
@@ -94,10 +90,8 @@ public class BackgroundCopyJobCredentials : IDisposable, ICollection<BackgroundC
 	/// <param name="target">The credential target.</param>
 	/// <param name="username">The username.</param>
 	/// <param name="password">The password.</param>
-	public void Add(BackgroundCopyJobCredentialScheme scheme, BackgroundCopyJobCredentialTarget target, string username, string password)
-	{
+	public void Add(BackgroundCopyJobCredentialScheme scheme, BackgroundCopyJobCredentialTarget target, string username, string password) =>
 		Add(new BackgroundCopyJobCredential(scheme, target, username, password));
-	}
 
 	/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
 	public void Clear()
@@ -158,10 +152,7 @@ public class BackgroundCopyJobCredentials : IDisposable, ICollection<BackgroundC
 	public bool Remove(BackgroundCopyJobCredential item) => Remove(item.Scheme, item.Target);
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	void IDisposable.Dispose()
-	{
-		ijob2 = null;
-	}
+	void IDisposable.Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>

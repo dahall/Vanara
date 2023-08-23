@@ -9197,22 +9197,22 @@ public partial struct HRESULT
 	public const int PEER_E_CONTACT_NOT_FOUND = unchecked((int)0x80636001);
 
 	/// <summary>The graph data was created.</summary>
-	public const int PEER_S_GRAPH_DATA_CREATED = unchecked((int)0x00630001);
+	public const int PEER_S_GRAPH_DATA_CREATED = unchecked(0x00630001);
 
 	/// <summary>There is not more event data.</summary>
-	public const int PEER_S_NO_EVENT_DATA = unchecked((int)0x00630002);
+	public const int PEER_S_NO_EVENT_DATA = unchecked(0x00630002);
 
 	/// <summary>The graph is already connect.</summary>
-	public const int PEER_S_ALREADY_CONNECTED = unchecked((int)0x00632000);
+	public const int PEER_S_ALREADY_CONNECTED = unchecked(0x00632000);
 
 	/// <summary>The subscription already exists.</summary>
-	public const int PEER_S_SUBSCRIPTION_EXISTS = unchecked((int)0x00636000);
+	public const int PEER_S_SUBSCRIPTION_EXISTS = unchecked(0x00636000);
 
 	/// <summary>No connectivity.</summary>
-	public const int PEER_S_NO_CONNECTIVITY = unchecked((int)0x00630005);
+	public const int PEER_S_NO_CONNECTIVITY = unchecked(0x00630005);
 
 	/// <summary>Already a member.</summary>
-	public const int PEER_S_ALREADY_A_MEMBER = unchecked((int)0x00630006);
+	public const int PEER_S_ALREADY_A_MEMBER = unchecked(0x00630006);
 
 	/// <summary>The peername could not be converted to a DNS pnrp name.</summary>
 	public const int PEER_E_CANNOT_CONVERT_PEER_NAME = unchecked((int)0x80634001);
@@ -9510,19 +9510,19 @@ public partial struct HRESULT
 	public const int E_IMAPI_RECORDER_REQUIRED = unchecked((int)0xC0AA0003);
 
 	/// <summary>The requested write speed was not supported by the drive and the speed was adjusted.</summary>
-	public const int S_IMAPI_SPEEDADJUSTED = unchecked((int)0x00AA0004);
+	public const int S_IMAPI_SPEEDADJUSTED = unchecked(0x00AA0004);
 
 	/// <summary>The requested rotation type was not supported by the drive and the rotation type was adjusted.</summary>
-	public const int S_IMAPI_ROTATIONADJUSTED = unchecked((int)0x00AA0005);
+	public const int S_IMAPI_ROTATIONADJUSTED = unchecked(0x00AA0005);
 
 	/// <summary>The requested write speed and rotation type were not supported by the drive and they were both adjusted.</summary>
-	public const int S_IMAPI_BOTHADJUSTED = unchecked((int)0x00AA0006);
+	public const int S_IMAPI_BOTHADJUSTED = unchecked(0x00AA0006);
 
 	/// <summary>The disc did not pass burn verification and may contain corrupt data or be unusable. </summary>
 	public const int E_IMAPI_BURN_VERIFICATION_FAILED = unchecked((int)0xC0AA0007);
 
 	/// <summary>The device accepted the command, but returned sense data, indicating an error.</summary>
-	public const int S_IMAPI_COMMAND_HAS_SENSE_DATA = unchecked((int)0x00AA0200);
+	public const int S_IMAPI_COMMAND_HAS_SENSE_DATA = unchecked(0x00AA0200);
 
 	/// <summary>The device reported that the requested mode page (and type) is not present.</summary>
 	public const int E_IMAPI_RECORDER_NO_SUCH_MODE_PAGE = unchecked((int)0xC0AA0201);
@@ -9588,7 +9588,7 @@ public partial struct HRESULT
 	public const int E_IMAPI_UNEXPECTED_RESPONSE_FROM_DEVICE = unchecked((int)0xC0AA0301);
 
 	/// <summary>There is no write operation currently in progress.</summary>
-	public const int S_IMAPI_WRITE_NOT_IN_PROGRESS = unchecked((int)0x00AA0302);
+	public const int S_IMAPI_WRITE_NOT_IN_PROGRESS = unchecked(0x00AA0302);
 
 	/// <summary>There is currently a write operation in progress.</summary>
 	public const int E_IMAPI_DF2DATA_WRITE_IN_PROGRESS = unchecked((int)0xC0AA0400);
@@ -9765,7 +9765,7 @@ public partial struct HRESULT
 	public const int E_IMAPI_RAW_IMAGE_TRACK_INDEX_NOT_FOUND = unchecked((int)0x80AA0A07);
 
 	/// <summary>The specified LBA offset is already in the list of track indexes.</summary>
-	public const int S_IMAPI_RAW_IMAGE_TRACK_INDEX_ALREADY_EXISTS = unchecked((int)0x00AA0A08);
+	public const int S_IMAPI_RAW_IMAGE_TRACK_INDEX_ALREADY_EXISTS = unchecked(0x00AA0A08);
 
 	/// <summary>Index 1 (LBA offset zero) may not be cleared.</summary>
 	public const int E_IMAPI_RAW_IMAGE_TRACK_INDEX_OFFSET_ZERO_CANNOT_BE_CLEARED = unchecked((int)0x80AA0A09);

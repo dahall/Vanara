@@ -1,6 +1,7 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+using System.Collections;
+using System.Collections.Generic;
+using Vanara.Extensions.Reflection;
+using static Vanara.PInvoke.BITS;
 
 namespace Vanara.PInvoke;
 
@@ -773,7 +774,7 @@ public static class BITS
 	}
 
 	/// <summary>Clients implement the IBackgroundCopyCallback2 interface to receive notification that a file has completed downloading.</summary>
-	/// <seealso cref="Vanara.PInvoke.BITS.IBackgroundCopyCallback"/>
+	/// <seealso cref="IBackgroundCopyCallback"/>
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/aa362870(v=vs.85).aspx
 	[PInvokeData("Bits.h", MSDNShortId = "aa362870")]
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("659CDEAC-489E-11D9-A9CD-000D56965251")]
@@ -827,7 +828,7 @@ public static class BITS
 	/// <summary>
 	/// Clients implement the IBackgroundCopyCallback3 interface to receive notification that ranges of a file have completed downloading.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.BITS.IBackgroundCopyCallback2"/>
+	/// <seealso cref="IBackgroundCopyCallback2"/>
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/mt492760(v=vs.85).aspx
 	[PInvokeData("Bits.h", MSDNShortId = "mt492760")]
 	[ComImport, Guid("98C97BD2-E32B-4AD8-A528-95FD8B16BD42"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -922,7 +923,7 @@ public static class BITS
 		/// the error. The ppFile parameter is set to NULL if the error is not associated with the local or remote file. When done,
 		/// release ppFile.
 		/// </returns>
-		IBackgroundCopyFile GetFile();
+		IBackgroundCopyFile? GetFile();
 
 		/// <summary>Retrieves the error text associated with the error.</summary>
 		/// <param name="LanguageId">
@@ -963,7 +964,7 @@ public static class BITS
 		/// protocol. Call the CoTaskMemFree function to free ppProtocol when done.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetProtocol();
+		string? GetProtocol();
 	}
 
 	/// <summary>
@@ -1604,7 +1605,7 @@ public static class BITS
 		/// <param name="pNotifyInterface">
 		/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 		/// </param>
-		void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
+		void SetNotifyInterface(IBackgroundCopyCallback? pNotifyInterface);
 
 		/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 		/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -1679,7 +1680,7 @@ public static class BITS
 		/// </para>
 		/// <para>The length of the proxy list is limited to 4,000 characters, not including the null terminator.</para>
 		/// </param>
-		void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyBypassList);
+		void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyBypassList);
 
 		/// <summary>Retrieves the proxy information that the job uses to transfer the files.</summary>
 		/// <param name="pProxyUsage">
@@ -1695,7 +1696,8 @@ public static class BITS
 		/// the proxy. The list is space-delimited. For details on the format of the string, see the Listing the Proxy Bypass section of
 		/// Enabling Internet Functionality. Call the CoTaskMemFree function to free ppProxyBypassList when done.
 		/// </param>
-		void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyList, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyBypassList);
+		void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyList,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyBypassList);
 
 		/// <summary>Changes ownership of the job to the current user.</summary>
 		void TakeOwnership();
@@ -1874,7 +1876,7 @@ public static class BITS
 		/// <param name="pNotifyInterface">
 		/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 		/// </param>
-		new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
+		new void SetNotifyInterface(IBackgroundCopyCallback? pNotifyInterface);
 
 		/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 		/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -1949,7 +1951,7 @@ public static class BITS
 		/// </para>
 		/// <para>The length of the proxy list is limited to 4,000 characters, not including the null terminator.</para>
 		/// </param>
-		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyBypassList);
+		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyBypassList);
 
 		/// <summary>Retrieves the proxy information that the job uses to transfer the files.</summary>
 		/// <param name="pProxyUsage">
@@ -1965,7 +1967,8 @@ public static class BITS
 		/// the proxy. The list is space-delimited. For details on the format of the string, see the Listing the Proxy Bypass section of
 		/// Enabling Internet Functionality. Call the CoTaskMemFree function to free ppProxyBypassList when done.
 		/// </param>
-		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyList, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyBypassList);
+		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyList,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyBypassList);
 
 		/// <summary>Changes ownership of the job to the current user.</summary>
 		new void TakeOwnership();
@@ -1988,7 +1991,7 @@ public static class BITS
 		/// pProgram (use quotes if the path uses long file names). The pParameters parameter is limited to 4,000 characters, not
 		/// including the null terminator. This parameter can be NULL.
 		/// </param>
-		void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string Program, [In, MarshalAs(UnmanagedType.LPWStr)] string Parameters);
+		void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string? Program, [In, MarshalAs(UnmanagedType.LPWStr)] string? Parameters);
 
 		/// <summary>Retrieves the program to execute when the job enters the error or transferred state.</summary>
 		/// <param name="pProgram">
@@ -2030,7 +2033,7 @@ public static class BITS
 		/// BITS does not support NTFS streams. Instead of using network drives, which are session specific, use UNC paths (for example,
 		/// \\server\share\path\file). Do not include the \\? prefix in the path.
 		/// </param>
-		void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string ReplyFileName);
+		void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string? ReplyFileName);
 
 		/// <summary>
 		/// Retrieves the name of the file that contains the reply data from the server application. Call this method only if the job
@@ -2041,7 +2044,7 @@ public static class BITS
 		/// when done.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetReplyFileName();
+		string? GetReplyFileName();
 
 		/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 		/// <param name="Credentials">
@@ -2234,7 +2237,7 @@ public static class BITS
 		/// <param name="pNotifyInterface">
 		/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 		/// </param>
-		new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
+		new void SetNotifyInterface(IBackgroundCopyCallback? pNotifyInterface);
 
 		/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 		/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -2309,7 +2312,7 @@ public static class BITS
 		/// </para>
 		/// <para>The length of the proxy list is limited to 4,000 characters, not including the null terminator.</para>
 		/// </param>
-		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyBypassList);
+		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyBypassList);
 
 		/// <summary>Retrieves the proxy information that the job uses to transfer the files.</summary>
 		/// <param name="pProxyUsage">
@@ -2325,7 +2328,8 @@ public static class BITS
 		/// the proxy. The list is space-delimited. For details on the format of the string, see the Listing the Proxy Bypass section of
 		/// Enabling Internet Functionality. Call the CoTaskMemFree function to free ppProxyBypassList when done.
 		/// </param>
-		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyList, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyBypassList);
+		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyList,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyBypassList);
 
 		/// <summary>Changes ownership of the job to the current user.</summary>
 		new void TakeOwnership();
@@ -2348,7 +2352,7 @@ public static class BITS
 		/// pProgram (use quotes if the path uses long file names). The pParameters parameter is limited to 4,000 characters, not
 		/// including the null terminator. This parameter can be NULL.
 		/// </param>
-		new void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string Program, [In, MarshalAs(UnmanagedType.LPWStr)] string Parameters);
+		new void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string? Program, [In, MarshalAs(UnmanagedType.LPWStr)] string? Parameters);
 
 		/// <summary>Retrieves the program to execute when the job enters the error or transferred state.</summary>
 		/// <param name="pProgram">
@@ -2359,7 +2363,8 @@ public static class BITS
 		/// Null-terminated string that contains the arguments of the program in pProgram. Call the CoTaskMemFree function to free
 		/// pParameters when done.
 		/// </param>
-		new void GetNotifyCmdLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProgram, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pParameters);
+		new void GetNotifyCmdLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProgram,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pParameters);
 
 		/// <summary>Retrieves progress information related to the transfer of the reply data from an upload-reply job.</summary>
 		/// <returns>
@@ -2390,7 +2395,7 @@ public static class BITS
 		/// BITS does not support NTFS streams. Instead of using network drives, which are session specific, use UNC paths (for example,
 		/// \\server\share\path\file). Do not include the \\? prefix in the path.
 		/// </param>
-		new void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string ReplyFileName);
+		new void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string? ReplyFileName);
 
 		/// <summary>
 		/// Retrieves the name of the file that contains the reply data from the server application. Call this method only if the job
@@ -2401,7 +2406,7 @@ public static class BITS
 		/// when done.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetReplyFileName();
+		new string? GetReplyFileName();
 
 		/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 		/// <param name="Credentials">
@@ -2626,7 +2631,7 @@ public static class BITS
 		/// <param name="pNotifyInterface">
 		/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 		/// </param>
-		new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
+		new void SetNotifyInterface(IBackgroundCopyCallback? pNotifyInterface);
 
 		/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 		/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -2701,7 +2706,7 @@ public static class BITS
 		/// </para>
 		/// <para>The length of the proxy list is limited to 4,000 characters, not including the null terminator.</para>
 		/// </param>
-		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyBypassList);
+		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyBypassList);
 
 		/// <summary>Retrieves the proxy information that the job uses to transfer the files.</summary>
 		/// <param name="pProxyUsage">
@@ -2717,7 +2722,8 @@ public static class BITS
 		/// the proxy. The list is space-delimited. For details on the format of the string, see the Listing the Proxy Bypass section of
 		/// Enabling Internet Functionality. Call the CoTaskMemFree function to free ppProxyBypassList when done.
 		/// </param>
-		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyList, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyBypassList);
+		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyList,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyBypassList);
 
 		/// <summary>Changes ownership of the job to the current user.</summary>
 		new void TakeOwnership();
@@ -2740,7 +2746,7 @@ public static class BITS
 		/// pProgram (use quotes if the path uses long file names). The pParameters parameter is limited to 4,000 characters, not
 		/// including the null terminator. This parameter can be NULL.
 		/// </param>
-		new void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string Program, [In, MarshalAs(UnmanagedType.LPWStr)] string Parameters);
+		new void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string? Program, [In, MarshalAs(UnmanagedType.LPWStr)] string? Parameters);
 
 		/// <summary>Retrieves the program to execute when the job enters the error or transferred state.</summary>
 		/// <param name="pProgram">
@@ -2751,7 +2757,8 @@ public static class BITS
 		/// Null-terminated string that contains the arguments of the program in pProgram. Call the CoTaskMemFree function to free
 		/// pParameters when done.
 		/// </param>
-		new void GetNotifyCmdLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProgram, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pParameters);
+		new void GetNotifyCmdLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProgram,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pParameters);
 
 		/// <summary>Retrieves progress information related to the transfer of the reply data from an upload-reply job.</summary>
 		/// <returns>
@@ -2782,7 +2789,7 @@ public static class BITS
 		/// BITS does not support NTFS streams. Instead of using network drives, which are session specific, use UNC paths (for example,
 		/// \\server\share\path\file). Do not include the \\? prefix in the path.
 		/// </param>
-		new void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string ReplyFileName);
+		new void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string? ReplyFileName);
 
 		/// <summary>
 		/// Retrieves the name of the file that contains the reply data from the server application. Call this method only if the job
@@ -2793,7 +2800,7 @@ public static class BITS
 		/// when done.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetReplyFileName();
+		new string? GetReplyFileName();
 
 		/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 		/// <param name="Credentials">
@@ -3124,7 +3131,7 @@ public static class BITS
 		/// <param name="pNotifyInterface">
 		/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 		/// </param>
-		new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
+		new void SetNotifyInterface(IBackgroundCopyCallback? pNotifyInterface);
 
 		/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 		/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -3199,7 +3206,7 @@ public static class BITS
 		/// </para>
 		/// <para>The length of the proxy list is limited to 4,000 characters, not including the null terminator.</para>
 		/// </param>
-		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyBypassList);
+		new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string? ProxyBypassList);
 
 		/// <summary>Retrieves the proxy information that the job uses to transfer the files.</summary>
 		/// <param name="pProxyUsage">
@@ -3215,7 +3222,8 @@ public static class BITS
 		/// the proxy. The list is space-delimited. For details on the format of the string, see the Listing the Proxy Bypass section of
 		/// Enabling Internet Functionality. Call the CoTaskMemFree function to free ppProxyBypassList when done.
 		/// </param>
-		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyList, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyBypassList);
+		new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyList,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProxyBypassList);
 
 		/// <summary>Changes ownership of the job to the current user.</summary>
 		new void TakeOwnership();
@@ -3238,7 +3246,7 @@ public static class BITS
 		/// pProgram (use quotes if the path uses long file names). The pParameters parameter is limited to 4,000 characters, not
 		/// including the null terminator. This parameter can be NULL.
 		/// </param>
-		new void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string Program, [In, MarshalAs(UnmanagedType.LPWStr)] string Parameters);
+		new void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string? Program, [In, MarshalAs(UnmanagedType.LPWStr)] string? Parameters);
 
 		/// <summary>Retrieves the program to execute when the job enters the error or transferred state.</summary>
 		/// <param name="pProgram">
@@ -3249,7 +3257,8 @@ public static class BITS
 		/// Null-terminated string that contains the arguments of the program in pProgram. Call the CoTaskMemFree function to free
 		/// pParameters when done.
 		/// </param>
-		new void GetNotifyCmdLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProgram, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pParameters);
+		new void GetNotifyCmdLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pProgram,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string? pParameters);
 
 		/// <summary>Retrieves progress information related to the transfer of the reply data from an upload-reply job.</summary>
 		/// <returns>
@@ -3280,7 +3289,7 @@ public static class BITS
 		/// BITS does not support NTFS streams. Instead of using network drives, which are session specific, use UNC paths (for example,
 		/// \\server\share\path\file). Do not include the \\? prefix in the path.
 		/// </param>
-		new void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string ReplyFileName);
+		new void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string? ReplyFileName);
 
 		/// <summary>
 		/// Retrieves the name of the file that contains the reply data from the server application. Call this method only if the job
@@ -3291,7 +3300,7 @@ public static class BITS
 		/// when done.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetReplyFileName();
+		new string? GetReplyFileName();
 
 		/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 		/// <param name="Credentials">
@@ -3588,7 +3597,7 @@ public static class BITS
 		/// carriage return and line feed (CR/LF) character. The string is limited to 16,384 characters, including the null terminator.
 		/// <para>To remove the custom headers from the job, set the RequestHeaders parameter to NULL.</para>
 		/// </param>
-		void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string RequestHeaders);
+		void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string? RequestHeaders);
 
 		/// <summary>
 		/// Retrieves the custom headers set by an earlier call to IBackgroundCopyJobHttpOptions::SetCustomHeaders (that is, headers
@@ -3599,7 +3608,7 @@ public static class BITS
 		/// character. To free the string when finished, call the CoTaskMemFree function.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetCustomHeaders();
+		string? GetCustomHeaders();
 
 		/// <summary>
 		/// Sets flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors are
@@ -3739,7 +3748,7 @@ public static class BITS
 		/// carriage return and line feed (CR/LF) character. The string is limited to 16,384 characters, including the null terminator.
 		/// <para>To remove the custom headers from the job, set the RequestHeaders parameter to NULL.</para>
 		/// </param>
-		new void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string RequestHeaders);
+		new void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string? RequestHeaders);
 
 		/// <summary>
 		/// Retrieves the custom headers set by an earlier call to IBackgroundCopyJobHttpOptions::SetCustomHeaders (that is, headers
@@ -3750,7 +3759,7 @@ public static class BITS
 		/// character. To free the string when finished, call the CoTaskMemFree function.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetCustomHeaders();
+		new string? GetCustomHeaders();
 
 		/// <summary>
 		/// Sets flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors are
@@ -3933,7 +3942,7 @@ public static class BITS
 		/// carriage return and line feed (CR/LF) character. The string is limited to 16,384 characters, including the null terminator.
 		/// <para>To remove the custom headers from the job, set the RequestHeaders parameter to NULL.</para>
 		/// </param>
-		new void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string RequestHeaders);
+		new void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string? RequestHeaders);
 
 		/// <summary>
 		/// Retrieves the custom headers set by an earlier call to IBackgroundCopyJobHttpOptions::SetCustomHeaders (that is, headers
@@ -3944,7 +3953,7 @@ public static class BITS
 		/// character. To free the string when finished, call the CoTaskMemFree function.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetCustomHeaders();
+		new string? GetCustomHeaders();
 
 		/// <summary>
 		/// Sets flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors are
@@ -4136,6 +4145,155 @@ public static class BITS
 	}
 
 	/// <summary>
+	/// Server certificates are sent when an HTTPS connection is opened. Use this method to implement a callback to be called to
+	/// validate those server certificates. This interface extends IUnknown.
+	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nn-bits10_3-ibackgroundcopyservercertificatevalidationcallback
+	[PInvokeData("bits10_3.h", MSDNShortId = "NN:bits10_3.IBackgroundCopyServerCertificateValidationCallback")]
+	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("4CEC0D02-DEF7-4158-813A-C32A46945FF7")]
+	public interface IBackgroundCopyServerCertificateValidationCallback
+	{
+		/// <summary>
+		/// A callback method that you implement that will be called so that you can validate the server certificates sent when an HTTPS
+		/// connection is opened.
+		/// </summary>
+		/// <param name="job">
+		/// <para>Type: <c>IBackgroundCopyJob*</c></para>
+		/// <para>The job.</para>
+		/// </param>
+		/// <param name="file">
+		/// <para>Type: <c>IBackgroundCopyFile*</c></para>
+		/// <para>The file being transferred.</para>
+		/// </param>
+		/// <param name="certLength">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The length in bytes of the certificate data.</para>
+		/// </param>
+		/// <param name="certData">
+		/// <para>Type: <c>const BYTE []</c></para>
+		/// <para>An array of bytes containing the certificate data. The number of bytes must match certLength.</para>
+		/// </param>
+		/// <param name="certEncodingType">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The certificate encoding type.</para>
+		/// </param>
+		/// <param name="certStoreLength">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The length in bytes of the certificate store data.</para>
+		/// </param>
+		/// <param name="certStoreData">
+		/// <para>Type: <c>const BYTE []</c></para>
+		/// <para>An array of bytes containing the certificate store data. The number of bytes must match certStoreLength.</para>
+		/// </param>
+		/// <returns>
+		/// Return <c>S_OK</c> to indicate that the certificate is acceptable. Otherwise, return any <c>HRESULT</c> error code to
+		/// indicate that the certificate is not acceptable.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Certificate validation is performed in two phases. The first phase is the operating system (OS) phase where the OS performs
+		/// a standard set of validation checks on the certificate. After that, if the OS phase passes the certificate, your callback
+		/// will be called to perform additional validation.
+		/// </para>
+		/// <para>
+		/// Implement this validation method when you want to perform your own checks on the server certificate. Your own checks are in
+		/// addition to the normal OS certificate validation checks.
+		/// </para>
+		/// <para>
+		/// If your validation method declines the certificate, the job will transition to <c>BG_JOB_STATE_TRANSIENT_ERROR</c> with a
+		/// job error context of <c>BG_ERROR_CONTEXT_SERVER_CERTIFICATE_CALLBACK</c> and the error <c>HRESULT</c> from your callback. If
+		/// your callback couldn't be called (for example, because BITS needed to validate a server certificate after your program
+		/// exited), then the job error code will be <c>BG_E_SERVER_CERT_VALIDATION_INTERFACE_REQUIRED</c>. When your application is
+		/// next run, it can fix this error by setting the validation callback again and resuming the job.
+		/// </para>
+		/// <para>
+		/// BITS calls this callback method only if you implement the IBackgroundCopyServerCertificateValidationCallback interface and
+		/// pass it into IBackgroundCopyJobHttpOptions3::SetServerCertificateValidationInterface.
+		/// </para>
+		/// <para>
+		/// The validation interface becomes invalid when your application terminates; BITS does not maintain a record of the validation
+		/// interface. As a result, your application's initialization process should call SetServerCertificateValidationInterface on
+		/// those existing jobs for which you want to receive certificate validation requests.
+		/// </para>
+		/// <para>
+		/// If more than one application calls <c>SetServerCertificateValidationInterface</c> to set the notification interface for the
+		/// job, the last application to call it is the one that will receive notifications. The other applications will not receive notifications.
+		/// </para>
+		/// <para>
+		/// Here are the general steps to validate a certificate. Be aware that these steps are just an example. The actual validation
+		/// is under your control. Also, steps 5-7 are largely the same as what the OS does during the OS validation step.
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// Call CertCreateCertificateContext with certEncodingType, certData, and certLength to retrieve a CERT_CONTEXT.
+		/// </item>
+		/// <item>
+		/// Declare and initialize a CRYPT_DATA_BLOB structure (defined in wincrypt.h) with the serialized memory blob passed via certStoreLength and certStoreData.
+		/// <code language="cpp"><![CDATA[DATA_BLOB storeData{};
+		/// storeData.cbData = certStoreLength;
+		/// storeData.pbData = const_cast<PBYTE>(certStoreData);]]></code>
+		/// </item>
+		/// <item>
+		/// Obtain a handle to the certificate chain by calling CertOpenStore with <c>CERT_STORE_PROV_SERIALIZED</c>, 0, nullptr, flags,
+		/// and a pointer to the <c>CRYPT_DATA_BLOB</c> from step 2.
+		/// </item>
+		/// <item>
+		/// Obtain a pointer to a certificate chain context by calling CertGetCertificateChain with nullptr, certContext, nullptr, the handle from step 3, chain parameters, flags, and nullptr.
+		/// </item>
+		/// <item>
+		/// Create the certificate validation policy.
+		/// <code language="cpp"><![CDATA[CERT_CHAIN_POLICY_PARA policyParams{};
+		/// policyParams.cbSize = sizeof(policyParams);
+		/// policyParams.dwFlags =
+		///     CERT_CHAIN_POLICY_IGNORE_NOT_TIME_VALID_FLAG |
+		///     CERT_CHAIN_POLICY_IGNORE_WRONG_USAGE_FLAG |
+		///     CERT_CHAIN_POLICY_IGNORE_INVALID_NAME_FLAG |
+		///     CERT_CHAIN_POLICY_ALLOW_UNKNOWN_CA_FLAG;]]></code>
+		/// </item>
+		/// <item>
+		/// Call CertVerifyCertificateChainPolicy with policy type, chain context, policy parameters, and policy status.
+		/// </item>
+		/// <item>
+		/// Convert the Win32 error (policyStatus.dwError) to an HRESULT and return that.
+		/// </item>
+		/// </list>
+		/// <para>
+		/// A description of the BITS validation caching behaviors follows. BITS maintains a per-job cache of certificates that have
+		/// passed custom validation. This is to avoid redundant and potentially expensive re-validation over the lifetime of the job.
+		/// The cache consists of &lt;server endpoint, cert hash&gt; tuples, where endpoint is defined as server name:port. If a job has
+		/// already allowed a specific certificate from a specific endpoint, then the callback will not be called again.
+		/// </para>
+		/// <para>
+		/// Of course, the certificate will have to pass through the OS validation logic on every connection attempt (you can customize
+		/// the OS validation logic with a call to IBackgroundCopyJobHttpOptions::SetSecurityFlags), which addresses time-sensitive
+		/// corner cases such as when the certificate was valid very recently (in terms of seconds), but it has expired now.
+		/// </para>
+		/// <para>
+		/// BITS does not cache certificates that are deemed invalid by the app-provided validation callback. It's important that you're
+		/// aware of all unsuccessful connection attempts, so that you can detect malicious deployments at the app level. For example, a
+		/// one-off bad certificate is much less concerning than thousands of bad certificates from the same server.
+		/// </para>
+		/// <para>
+		/// A job's certificate cache is cleared on every call to <c>SetServerCertificateValidationInterface</c>, since it indicates
+		/// that the app's server certificate validation logic has changed.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nf-bits10_3-ibackgroundcopyservercertificatevalidationcallback-validateservercertificate
+		// HRESULT ValidateServerCertificate( IBackgroundCopyJob *job, IBackgroundCopyFile *file, DWORD certLength, const BYTE []
+		// certData, DWORD certEncodingType, DWORD certStoreLength, const BYTE [] certStoreData );
+		[PreserveSig]
+		HRESULT ValidateServerCertificate(IBackgroundCopyJob job, IBackgroundCopyFile file, uint certLength,
+			[In, MarshalAs(UnmanagedType.LPArray)] byte[] certData, uint certEncodingType, uint certStoreLength,
+			[In, MarshalAs(UnmanagedType.LPArray)] byte[] certStoreData);
+	}
+
+	/// <summary>An enumeration of BITS interfaces.</summary>
+	/// <typeparam name="TItem">The type enumerated.</typeparam>
+	public interface IBitsEnum<TItem> where TItem : class
+	{
+	}
+
+	/// <summary>
 	/// <para>Use <c>IBitsPeer</c> to get information about a peer in the neighborhood.</para>
 	/// <para>To get this interface, call the <c>IEnumBitsPeers::Next</c> method.</para>
 	/// </summary>
@@ -4307,150 +4465,6 @@ public static class BITS
 		/// </param>
 		void GetFileRanges(out uint pRangeCount, out SafeCoTaskMemHandle ppRanges);
 	}
-
-	/// <summary>
-	/// Server certificates are sent when an HTTPS connection is opened. Use this method to implement a callback to be called to
-	/// validate those server certificates. This interface extends IUnknown.
-	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nn-bits10_3-ibackgroundcopyservercertificatevalidationcallback
-	[PInvokeData("bits10_3.h", MSDNShortId = "NN:bits10_3.IBackgroundCopyServerCertificateValidationCallback")]
-	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("4CEC0D02-DEF7-4158-813A-C32A46945FF7")]
-	public interface IBackgroundCopyServerCertificateValidationCallback
-	{
-		/// <summary>
-		/// A callback method that you implement that will be called so that you can validate the server certificates sent when an HTTPS
-		/// connection is opened.
-		/// </summary>
-		/// <param name="job">
-		/// <para>Type: <c>IBackgroundCopyJob*</c></para>
-		/// <para>The job.</para>
-		/// </param>
-		/// <param name="file">
-		/// <para>Type: <c>IBackgroundCopyFile*</c></para>
-		/// <para>The file being transferred.</para>
-		/// </param>
-		/// <param name="certLength">
-		/// <para>Type: <c>DWORD</c></para>
-		/// <para>The length in bytes of the certificate data.</para>
-		/// </param>
-		/// <param name="certData">
-		/// <para>Type: <c>const BYTE []</c></para>
-		/// <para>An array of bytes containing the certificate data. The number of bytes must match certLength.</para>
-		/// </param>
-		/// <param name="certEncodingType">
-		/// <para>Type: <c>DWORD</c></para>
-		/// <para>The certificate encoding type.</para>
-		/// </param>
-		/// <param name="certStoreLength">
-		/// <para>Type: <c>DWORD</c></para>
-		/// <para>The length in bytes of the certificate store data.</para>
-		/// </param>
-		/// <param name="certStoreData">
-		/// <para>Type: <c>const BYTE []</c></para>
-		/// <para>An array of bytes containing the certificate store data. The number of bytes must match certStoreLength.</para>
-		/// </param>
-		/// <returns>
-		/// Return <c>S_OK</c> to indicate that the certificate is acceptable. Otherwise, return any <c>HRESULT</c> error code to
-		/// indicate that the certificate is not acceptable.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// Certificate validation is performed in two phases. The first phase is the operating system (OS) phase where the OS performs
-		/// a standard set of validation checks on the certificate. After that, if the OS phase passes the certificate, your callback
-		/// will be called to perform additional validation.
-		/// </para>
-		/// <para>
-		/// Implement this validation method when you want to perform your own checks on the server certificate. Your own checks are in
-		/// addition to the normal OS certificate validation checks.
-		/// </para>
-		/// <para>
-		/// If your validation method declines the certificate, the job will transition to <c>BG_JOB_STATE_TRANSIENT_ERROR</c> with a
-		/// job error context of <c>BG_ERROR_CONTEXT_SERVER_CERTIFICATE_CALLBACK</c> and the error <c>HRESULT</c> from your callback. If
-		/// your callback couldn't be called (for example, because BITS needed to validate a server certificate after your program
-		/// exited), then the job error code will be <c>BG_E_SERVER_CERT_VALIDATION_INTERFACE_REQUIRED</c>. When your application is
-		/// next run, it can fix this error by setting the validation callback again and resuming the job.
-		/// </para>
-		/// <para>
-		/// BITS calls this callback method only if you implement the IBackgroundCopyServerCertificateValidationCallback interface and
-		/// pass it into IBackgroundCopyJobHttpOptions3::SetServerCertificateValidationInterface.
-		/// </para>
-		/// <para>
-		/// The validation interface becomes invalid when your application terminates; BITS does not maintain a record of the validation
-		/// interface. As a result, your application's initialization process should call SetServerCertificateValidationInterface on
-		/// those existing jobs for which you want to receive certificate validation requests.
-		/// </para>
-		/// <para>
-		/// If more than one application calls <c>SetServerCertificateValidationInterface</c> to set the notification interface for the
-		/// job, the last application to call it is the one that will receive notifications. The other applications will not receive notifications.
-		/// </para>
-		/// <para>
-		/// Here are the general steps to validate a certificate. Be aware that these steps are just an example. The actual validation
-		/// is under your control. Also, steps 5-7 are largely the same as what the OS does during the OS validation step.
-		/// </para>
-		/// <list type="number">
-		/// <item>
-		/// Call CertCreateCertificateContext with certEncodingType, certData, and certLength to retrieve a CERT_CONTEXT.
-		/// </item>
-		/// <item>
-		/// Declare and initialize a CRYPT_DATA_BLOB structure (defined in wincrypt.h) with the serialized memory blob passed via certStoreLength and certStoreData.
-		/// <code language="cpp"><![CDATA[DATA_BLOB storeData{};
-		/// storeData.cbData = certStoreLength;
-		/// storeData.pbData = const_cast<PBYTE>(certStoreData);]]></code>
-		/// </item>
-		/// <item>
-		/// Obtain a handle to the certificate chain by calling CertOpenStore with <c>CERT_STORE_PROV_SERIALIZED</c>, 0, nullptr, flags,
-		/// and a pointer to the <c>CRYPT_DATA_BLOB</c> from step 2.
-		/// </item>
-		/// <item>
-		/// Obtain a pointer to a certificate chain context by calling CertGetCertificateChain with nullptr, certContext, nullptr, the handle from step 3, chain parameters, flags, and nullptr.
-		/// </item>
-		/// <item>
-		/// Create the certificate validation policy.
-		/// <code language="cpp"><![CDATA[CERT_CHAIN_POLICY_PARA policyParams{};
-		/// policyParams.cbSize = sizeof(policyParams);
-		/// policyParams.dwFlags =
-		///     CERT_CHAIN_POLICY_IGNORE_NOT_TIME_VALID_FLAG |
-		///     CERT_CHAIN_POLICY_IGNORE_WRONG_USAGE_FLAG |
-		///     CERT_CHAIN_POLICY_IGNORE_INVALID_NAME_FLAG |
-		///     CERT_CHAIN_POLICY_ALLOW_UNKNOWN_CA_FLAG;]]></code>
-		/// </item>
-		/// <item>
-		/// Call CertVerifyCertificateChainPolicy with policy type, chain context, policy parameters, and policy status.
-		/// </item>
-		/// <item>
-		/// Convert the Win32 error (policyStatus.dwError) to an HRESULT and return that.
-		/// </item>
-		/// </list>
-		/// <para>
-		/// A description of the BITS validation caching behaviors follows. BITS maintains a per-job cache of certificates that have
-		/// passed custom validation. This is to avoid redundant and potentially expensive re-validation over the lifetime of the job.
-		/// The cache consists of &lt;server endpoint, cert hash&gt; tuples, where endpoint is defined as server name:port. If a job has
-		/// already allowed a specific certificate from a specific endpoint, then the callback will not be called again.
-		/// </para>
-		/// <para>
-		/// Of course, the certificate will have to pass through the OS validation logic on every connection attempt (you can customize
-		/// the OS validation logic with a call to IBackgroundCopyJobHttpOptions::SetSecurityFlags), which addresses time-sensitive
-		/// corner cases such as when the certificate was valid very recently (in terms of seconds), but it has expired now.
-		/// </para>
-		/// <para>
-		/// BITS does not cache certificates that are deemed invalid by the app-provided validation callback. It's important that you're
-		/// aware of all unsuccessful connection attempts, so that you can detect malicious deployments at the app level. For example, a
-		/// one-off bad certificate is much less concerning than thousands of bad certificates from the same server.
-		/// </para>
-		/// <para>
-		/// A job's certificate cache is cleared on every call to <c>SetServerCertificateValidationInterface</c>, since it indicates
-		/// that the app's server certificate validation logic has changed.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nf-bits10_3-ibackgroundcopyservercertificatevalidationcallback-validateservercertificate
-		// HRESULT ValidateServerCertificate( IBackgroundCopyJob *job, IBackgroundCopyFile *file, DWORD certLength, const BYTE []
-		// certData, DWORD certEncodingType, DWORD certStoreLength, const BYTE [] certStoreData );
-		[PreserveSig]
-		HRESULT ValidateServerCertificate(IBackgroundCopyJob job, IBackgroundCopyFile file, uint certLength,
-			[In, MarshalAs(UnmanagedType.LPArray)] byte[] certData, uint certEncodingType, uint certStoreLength,
-			[In, MarshalAs(UnmanagedType.LPArray)] byte[] certStoreData);
-	}
-
 	/// <summary>
 	/// <para>
 	/// Use <c>IBitsTokenOptions</c> to associate and manage a pair of security tokens for a Background Intelligent Transfer Service
@@ -4511,7 +4525,7 @@ public static class BITS
 		/// retrieved, this parameter is set to NULL.
 		/// </returns>
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetHelperTokenSid();
+		string? GetHelperTokenSid();
 	}
 
 	/// <summary>
@@ -4521,7 +4535,7 @@ public static class BITS
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363097(v=vs.85).aspx
 	[PInvokeData("Bits.h", MSDNShortId = "aa363097")]
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("CA51E165-C365-424C-8D41-24AAA4FF3C40")]
-	public interface IEnumBackgroundCopyFiles
+	public interface IEnumBackgroundCopyFiles : IBitsEnum<IBackgroundCopyFile>
 	{
 		/// <summary>
 		/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements
@@ -4533,14 +4547,16 @@ public static class BITS
 		/// Number of elements returned in rgelt. You can set pceltFetched to NULL if celt is one. Otherwise, initialize the value of
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
-		void Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyFile[] rgelt, [In, Out] ref uint pceltFetched);
+		[PreserveSig]
+		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyFile[] rgelt, [In, Out] ref uint pceltFetched);
 
 		/// <summary>
 		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence
 		/// than the requested number of elements to skip, it skips past the last element in the sequence.
 		/// </summary>
 		/// <param name="celt">Number of elements to skip.</param>
-		void Skip([In] uint celt);
+		[PreserveSig]
+		HRESULT Skip([In] uint celt);
 
 		/// <summary>Resets the enumeration sequence to the beginning.</summary>
 		void Reset();
@@ -4569,26 +4585,66 @@ public static class BITS
 	/// </summary>
 	[PInvokeData("Bits.h", MSDNShortId = "aa363109")]
 	[ComImport, Guid("1AF4F612-3B71-466F-8F58-7B6F73AC57AD"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IEnumBackgroundCopyJobs
+	public interface IEnumBackgroundCopyJobs : IBitsEnum<IBackgroundCopyJob>
 	{
 		/// <summary>
-		/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements
-		/// left in the sequence, it retrieves the remaining elements.
+		/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements left
+		/// in the sequence, it retrieves the remaining elements.
 		/// </summary>
 		/// <param name="celt">Number of elements requested.</param>
-		/// <param name="rgelt">Array of IBackgroundCopyJob objects. You must release each object in rgelt when done.</param>
+		/// <param name="rgelt">Array of IBackgroundCopyJob objects. You must release each object in <c>rgelt</c> when done.</param>
 		/// <param name="pceltFetched">
-		/// Number of elements returned in rgelt. You can set pceltFetched to NULL if celt is one. Otherwise, initialize the value of
-		/// pceltFetched to 0 before calling this method.
+		/// Number of elements returned in <c>rgelt</c>. You can set <c>pceltFetched</c> to <c>NULL</c> if <c>celt</c> is one. Otherwise,
+		/// initialize the value of <c>pceltFetched</c> to 0 before calling this method.
 		/// </param>
-		void Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyJob[] rgelt, [In, Out] ref uint pceltFetched);
+		/// <returns>
+		/// <para>This method returns the following <c>HRESULT</c> values, as well as others.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c><c>S_OK</c></c></description>
+		/// <description>Successfully returned the number of requested elements.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>S_FALSE</c></description>
+		/// <description>Returned less than the number of requested elements.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/bits/nf-bits-ienumbackgroundcopyjobs-next
+		// HRESULT Next( [in] ULONG celt, [out] IBackgroundCopyJob **rgelt, [out] ULONG *pceltFetched );
+		[PreserveSig]
+		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyJob[] rgelt, [In, Out] ref uint pceltFetched);
 
 		/// <summary>
-		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence
-		/// than the requested number of elements to skip, it skips past the last element in the sequence.
+		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence than
+		/// the requested number of elements to skip, it skips past the last element in the sequence.
 		/// </summary>
 		/// <param name="celt">Number of elements to skip.</param>
-		void Skip([In] uint celt);
+		/// <returns>
+		/// <para>This method returns the following <c>HRESULT</c> values, as well as others.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c><c>S_OK</c></c></description>
+		/// <description>Successfully skipped the number of requested elements.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>S_FALSE</c></description>
+		/// <description>Skipped less than the number of requested elements.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/bits/nf-bits-ienumbackgroundcopyjobs-skip
+		// HRESULT Skip( [in] ULONG celt );
+		[PreserveSig]
+		HRESULT Skip([In] uint celt);
 
 		/// <summary>Resets the enumeration sequence to the beginning.</summary>
 		void Reset();
@@ -4618,7 +4674,7 @@ public static class BITS
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/aa964302(v=vs.85).aspx
 	[PInvokeData("Bits3_0.h", MSDNShortId = "aa964302")]
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("659CDEA4-489E-11D9-A9CD-000D56965251")]
-	public interface IEnumBitsPeerCacheRecords : Vanara.Collections.ICOMEnum<IBitsPeerCacheRecord>
+	public interface IEnumBitsPeerCacheRecords : IBitsEnum<IBitsPeerCacheRecord>
 	{
 		/// <summary>
 		/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements
@@ -4630,14 +4686,16 @@ public static class BITS
 		/// Number of elements returned in rgelt. You can set pceltFetched to NULL if celt is one. Otherwise, initialize the value of
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
-		void Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeerCacheRecord[] rgelt, [In, Out] ref uint pceltFetched);
+		[PreserveSig]
+		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeerCacheRecord[] rgelt, [In, Out] ref uint pceltFetched);
 
 		/// <summary>
 		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence
 		/// than the requested number of elements to skip, it skips past the last element in the sequence.
 		/// </summary>
 		/// <param name="celt">Number of elements to skip.</param>
-		void Skip([In] uint celt);
+		[PreserveSig]
+		HRESULT Skip([In] uint celt);
 
 		/// <summary>Resets the enumeration sequence to the beginning.</summary>
 		void Reset();
@@ -4667,7 +4725,7 @@ public static class BITS
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/aa964308(v=vs.85).aspx
 	[PInvokeData("Bits3_0.h", MSDNShortId = "aa964308")]
 	[ComImport, Guid("659CDEA5-489E-11D9-A9CD-000D56965251"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IEnumBitsPeers : Vanara.Collections.ICOMEnum<IBitsPeer>
+	public interface IEnumBitsPeers : IBitsEnum<IBitsPeer>
 	{
 		/// <summary>
 		/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements
@@ -4679,14 +4737,16 @@ public static class BITS
 		/// Number of elements returned in rgelt. You can set pceltFetched to NULL if celt is one. Otherwise, initialize the value of
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
-		void Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeer[] rgelt, [In, Out] ref uint pceltFetched);
+		[PreserveSig]
+		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeer[] rgelt, [In, Out] ref uint pceltFetched);
 
 		/// <summary>
 		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence
 		/// than the requested number of elements to skip, it skips past the last element in the sequence.
 		/// </summary>
 		/// <param name="celt">Number of elements to skip.</param>
-		void Skip([In] uint celt);
+		[PreserveSig]
+		HRESULT Skip([In] uint celt);
 
 		/// <summary>Resets the enumeration sequence to the beginning.</summary>
 		void Reset();
@@ -4699,6 +4759,42 @@ public static class BITS
 		/// <returns>Number of jobs in the enumeration.</returns>
 		uint GetCount();
 	}
+
+	/// <summary>Retrieves a collection on the enumeration sequence.</summary>
+	/// <param name="obj">The object on which to call Next.</param>
+	/// <returns>Sequence of IBackgroundCopyJob objects.</returns>
+	public static IReadOnlyCollection<IBackgroundCopyJob> Enumerate(this IEnumBackgroundCopyJobs obj) => obj.GetCollection<IEnumBackgroundCopyJobs, IBackgroundCopyJob>();
+
+	/// <summary>Retrieves a collection on the enumeration sequence.</summary>
+	/// <param name="obj">The object on which to call Next.</param>
+	/// <returns>Sequence of IBitsPeerCacheRecord objects.</returns>
+	public static IReadOnlyCollection<IBitsPeerCacheRecord> Enumerate(this IEnumBitsPeerCacheRecords obj) => obj.GetCollection<IEnumBitsPeerCacheRecords, IBitsPeerCacheRecord>();
+
+	/// <summary>Retrieves a collection on the enumeration sequence.</summary>
+	/// <param name="obj">The object on which to call Next.</param>
+	/// <returns>Sequence of IBitsPeer objects.</returns>
+	public static IReadOnlyCollection<IBitsPeer> Enumerate(this IEnumBitsPeers obj) => obj.GetCollection<IEnumBitsPeers, IBitsPeer>();
+
+	/// <summary>Retrieves a collection on the enumeration sequence.</summary>
+	/// <param name="obj">The object on which to call Next.</param>
+	/// <returns>Sequence of IBackgroundCopyJob objects.</returns>
+	public static IReadOnlyCollection<IBackgroundCopyFile> Enumerate(this IEnumBackgroundCopyFiles obj) => obj.GetCollection<IEnumBackgroundCopyFiles, IBackgroundCopyFile>();
+
+	/// <summary>Creates a new <see cref="BitsEnumerator{T, TIn, TOut}"/> instance from a BITS enumerating interface.</summary>
+	/// <typeparam name="T">The type of the BITS enumerating interface.</typeparam>
+	/// <typeparam name="TIn">The type of the item.</typeparam>
+	/// <typeparam name="TOut">The type of the output.</typeparam>
+	/// <param name="input">The BITS enumerating interface instance.</param>
+	/// <param name="conv">The conversion method.</param>
+	/// <returns>A class supporting <see cref="IEnumerable{T}"/> over <paramref name="input"/>.</returns>
+	public static IReadOnlyCollection<TOut> GetCollection<T, TIn, TOut>(this T input, Func<TIn, TOut> conv) where T : IBitsEnum<TIn> where TIn : class where TOut : class => input is not null ? new BitsEnumerator<T, TIn, TOut>(input, conv) : new TOut[0];
+
+	/// <summary>Creates a new <see cref="BitsEnumerator{T, TIn, TOut}"/> instance from a BITS enumerating interface.</summary>
+	/// <typeparam name="T">The type of the BITS enumerating interface.</typeparam>
+	/// <typeparam name="TIn">The type of the item.</typeparam>
+	/// <param name="input">The BITS enumerating interface instance.</param>
+	/// <returns>A class supporting <see cref="IEnumerable{T}"/> over <paramref name="input"/>.</returns>
+	public static IReadOnlyCollection<TIn> GetCollection<T, TIn>(this T input) where T : IBitsEnum<TIn> where TIn : class => GetCollection<T, TIn, TIn>(input, i => i);
 
 	/// <summary>Retrieves the ranges that you want to download from the remote file.</summary>
 	/// <param name="obj">The <c>IBackgroundCopyFile2</c> object against which to execute this method.</param>
@@ -4743,15 +4839,7 @@ public static class BITS
 	/// <param name="obj">The object on which to call Next.</param>
 	/// <param name="celt">Number of elements requested.</param>
 	/// <returns>Array of IBackgroundCopyJob objects.</returns>
-	public static IBackgroundCopyJob[] Next(this IEnumBackgroundCopyJobs obj, uint celt)
-	{
-		if (obj == null) throw new ArgumentNullException(nameof(obj));
-		uint f = 0;
-		var ptr = new IBackgroundCopyJob[celt];
-		obj.Next(celt, ptr, ref f);
-		Array.Resize(ref ptr, (int)f);
-		return ptr;
-	}
+	public static IBackgroundCopyJob[] Next(this IEnumBackgroundCopyJobs obj, uint celt) => Next<IBackgroundCopyJob, IEnumBackgroundCopyJobs>(obj, celt);
 
 	/// <summary>
 	/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements left
@@ -4760,15 +4848,7 @@ public static class BITS
 	/// <param name="obj">The object on which to call Next.</param>
 	/// <param name="celt">Number of elements requested.</param>
 	/// <returns>Array of IBitsPeerCacheRecord objects.</returns>
-	public static IBitsPeerCacheRecord[] Next(this IEnumBitsPeerCacheRecords obj, uint celt)
-	{
-		if (obj == null) throw new ArgumentNullException(nameof(obj));
-		uint f = 0;
-		var ptr = new IBitsPeerCacheRecord[celt];
-		obj.Next(celt, ptr, ref f);
-		Array.Resize(ref ptr, (int)f);
-		return ptr;
-	}
+	public static IBitsPeerCacheRecord[] Next(this IEnumBitsPeerCacheRecords obj, uint celt) => Next<IBitsPeerCacheRecord, IEnumBitsPeerCacheRecords>(obj, celt);
 
 	/// <summary>
 	/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements left
@@ -4777,15 +4857,7 @@ public static class BITS
 	/// <param name="obj">The object on which to call Next.</param>
 	/// <param name="celt">Number of elements requested.</param>
 	/// <returns>Array of IBitsPeer objects.</returns>
-	public static IBitsPeer[] Next(this IEnumBitsPeers obj, uint celt)
-	{
-		if (obj == null) throw new ArgumentNullException(nameof(obj));
-		uint f = 0;
-		var ptr = new IBitsPeer[celt];
-		obj.Next(celt, ptr, ref f);
-		Array.Resize(ref ptr, (int)f);
-		return ptr;
-	}
+	public static IBitsPeer[] Next(this IEnumBitsPeers obj, uint celt) => Next<IBitsPeer, IEnumBitsPeers>(obj, celt);
 
 	/// <summary>
 	/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements left
@@ -4794,13 +4866,15 @@ public static class BITS
 	/// <param name="obj">The object on which to call Next.</param>
 	/// <param name="celt">Number of elements requested.</param>
 	/// <returns>Array of IBackgroundCopyJob objects.</returns>
-	public static IBackgroundCopyFile[] Next(this IEnumBackgroundCopyFiles obj, uint celt)
+	public static IBackgroundCopyFile[] Next(this IEnumBackgroundCopyFiles obj, uint celt) => Next<IBackgroundCopyFile, IEnumBackgroundCopyFiles>(obj, celt);
+
+	private static T[] Next<T, TI>(IBitsEnum<T> obj, uint celt) where T : class
 	{
 		if (obj == null) throw new ArgumentNullException(nameof(obj));
-		uint f = 0;
-		var ptr = new IBackgroundCopyFile[celt];
-		obj.Next(celt, ptr, ref f);
-		Array.Resize(ref ptr, (int)f);
+		var ptr = new T[celt];
+		object[] args = new object[] { celt, ptr, 0U };
+		typeof(TI).GetMethod("Next")!.Invoke(obj, args);
+		Array.Resize(ref ptr, (int)(uint)args[2]);
 		return ptr;
 	}
 
@@ -4862,7 +4936,7 @@ public static class BITS
 				/// </para>
 				/// <para>If <c>NULL</c>, default credentials for this session context are used.</para>
 				/// </summary>
-				public string UserName;
+				public string? UserName;
 
 				/// <summary>
 				/// <para>
@@ -4875,7 +4949,7 @@ public static class BITS
 				/// Live ID SDK.
 				/// </para>
 				/// </summary>
-				public string Password;
+				public string? Password;
 			}
 		}
 	}
@@ -5110,7 +5184,72 @@ public static class BITS
 
 	/// <summary>Class supporting CLSID_BackgroundCopyManager.</summary>
 	[ComImport, ClassInterface(ClassInterfaceType.None), Guid("4991D34B-80A1-4291-83B6-3328366B9097")]
-	public class BackgroundCopyManager
+	public class BackgroundCopyManager { }
+
+	/// <summary>Wraps a BITS enumeration interface and provides a <see cref="IEnumerable{T}"/> implementation for it.</summary>
+	/// <typeparam name="T">The type of the COM enum interface.</typeparam>
+	/// <typeparam name="TIn">The type of the item.</typeparam>
+	/// <typeparam name="TOut">The type of the output.</typeparam>
+	public class BitsEnumerator<T, TIn, TOut> : IReadOnlyCollection<TOut> where T : IBitsEnum<TIn> where TIn : class where TOut : class
 	{
+		private readonly T ienum;
+		private readonly Func<TIn, TOut> converter;
+
+		internal BitsEnumerator(T ienum, Func<TIn, TOut> conv)
+		{
+			this.ienum = ienum;
+			converter = conv;
+			Reset(ienum);
+		}
+
+		/// <inheritdoc/>
+		public int Count => unchecked((int)typeof(T).GetMethod("GetCount")!.Invoke(ienum, null)!);
+
+		/// <inheritdoc/>
+		public IEnumerator<TOut> GetEnumerator() => new Enumerator(typeof(T).GetMethod("Clone")!.Invoke(ienum, null)!, converter);
+
+		/// <inheritdoc/>
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		private static void Reset(object ienum) => typeof(T).GetMethod("Reset")!.Invoke(ienum, null);
+
+		private class Enumerator : IEnumerator<TOut>
+		{
+			private readonly object ienum;
+			private readonly Func<TIn, TOut> converter;
+			private TOut? current;
+
+			public Enumerator(object ienum, Func<TIn, TOut> conv)
+			{
+				this.ienum = ienum;
+				converter = conv;
+			}
+
+			public TOut Current => current ?? throw new InvalidOperationException();
+
+			[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+			object IEnumerator.Current => Current!;
+
+			void IDisposable.Dispose() => GC.SuppressFinalize(this);
+
+			bool IEnumerator.MoveNext()
+			{
+				TIn[] rgelt = new TIn[1];
+				object[] args = new object[] { 1U, rgelt, 0U };
+				if ((HRESULT)typeof(T).GetMethod("Next")!.Invoke(ienum, args)! == HRESULT.S_OK)
+				{
+					current = converter(rgelt[0]);
+					return true;
+				}
+				current = default;
+				return true;
+			}
+
+			void IEnumerator.Reset()
+			{
+				Reset(ienum);
+				current = default;
+			}
+		}
 	}
 }
