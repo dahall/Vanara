@@ -163,7 +163,6 @@ public class BackgroundCopyFileCollection : ICollection<BackgroundCopyFileInfo>,
 		}
 	}
 
-
 	/// <summary>Add a list of files to download from a URL.</summary>
 	/// <param name="remoteUrlRoot">
 	/// Contains the name of the directory on the server (for example, http://[server]/[path]/). The format of the name must conform to
@@ -187,7 +186,6 @@ public class BackgroundCopyFileCollection : ICollection<BackgroundCopyFileInfo>,
 
 		AddRange(new Uri(remoteUrlRoot), new DirectoryInfo(localDirectory), files);
 	}
-
 
 	/// <summary>
 	/// Returns an object that implements the <see cref="IEnumerator"/> interface and that can iterate through the <see

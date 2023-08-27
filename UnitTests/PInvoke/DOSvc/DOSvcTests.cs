@@ -1,65 +1,52 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System.IO;
 using System.Threading;
 using static Vanara.PInvoke.DOSvc;
-using static Vanara.PInvoke.Ole32;
+using Vanara.Utilities;
 
 namespace Vanara.PInvoke.Tests;
+
 [TestFixture]
 public class DOSvcTests
 {
-	[OneTimeSetUp]
-	public void _Setup()
-	{
-	}
-
-	[OneTimeTearDown]
-	public void _TearDown()
-	{
-	}
-
 	[Test]
-	public void Test()
+	public async void Test()
 	{
 		const string name = "Test download";
 		string id = Guid.NewGuid().ToString("N");
 
-		using var tempRoot = new TemporaryDirectory();
-		var uri = "https://github.com/EWSoftware/SHFB/releases/download/2022.8.14.1/SHFBInstaller_2022.8.14.1.zip";
-		var dest = tempRoot.RandomTxtFileFullPath;
+		using TemporaryDirectory tempRoot = new();
+		string uri = "https://github.com/EWSoftware/SHFB/releases/download/2023.7.8.0/SHFBInstaller_2023.7.8.0.zip";
+		string dest = tempRoot.RandomTxtFileFullPath;
 
-		IDOManager mgr = new();
-		var dnld = mgr.CreateDownload();
-		CoSetProxyBlanket(dnld, dwImpLevel: Rpc.RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_IMPERSONATE, dwCapabilities: EOLE_AUTHENTICATION_CAPABILITIES.EOAC_STATIC_CLOAKING).ThrowIfFailed();
+		Progress<DO_DOWNLOAD_STATUS> progress = new();
+		progress.ProgressChanged += (s, e) => TestContext.WriteLine(e.State);
+		CancellationTokenSource cancel = new();
+		await Downloader.DownloadAsync(uri, dest, progress, cancel.Token, true, name, id);
+		Assert.That(File.Exists(dest), Is.True);
 
-		dnld.SetProperty(DODownloadProperty.DODownloadProperty_Uri, uri);
-		dnld.SetProperty(DODownloadProperty.DODownloadProperty_ForegroundPriority, true);
-		dnld.SetProperty(DODownloadProperty.DODownloadProperty_LocalPath, dest);
-		dnld.SetProperty(DODownloadProperty.DODownloadProperty_DisplayName, name);
-		dnld.SetProperty(DODownloadProperty.DODownloadProperty_ContentId, id);
+		//IDOManager mgr = new();
+		//IDODownload dnld = mgr.CreateDownload();
+		//CoSetProxyBlanket(dnld, dwImpLevel: Rpc.RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_IMPERSONATE/*, dwCapabilities: EOLE_AUTHENTICATION_CAPABILITIES.EOAC_STATIC_CLOAKING*/).ThrowIfFailed();
 
-		AutoResetEvent done = new(false);
-		var callback = new Callback();
-		callback.StatusChange += (s) => { if (s.State == DODownloadState.DODownloadState_Finalized) done.Set(); else if (s.Error.Failed) throw s.Error.GetException(); };
-		object wrp = new UnknownWrapper(callback);
-		dnld.SetProperty(DODownloadProperty.DODownloadProperty_CallbackInterface, wrp);
+		//Assert.That(() => dnld.SetProperty(DODownloadProperty.DODownloadProperty_Uri, uri), Throws.Nothing);
+		//Assert.That((string)dnld.GetProperty(DODownloadProperty.DODownloadProperty_Uri), Is.EqualTo(uri));
+		//Assert.That(() => dnld.SetProperty(DODownloadProperty.DODownloadProperty_ForegroundPriority, true), Throws.Nothing);
+		//Assert.That((bool)dnld.GetProperty(DODownloadProperty.DODownloadProperty_ForegroundPriority), Is.True);
+		//Assert.That(() => dnld.SetProperty(DODownloadProperty.DODownloadProperty_LocalPath, dest), Throws.Nothing);
+		//Assert.That((string)dnld.GetProperty(DODownloadProperty.DODownloadProperty_LocalPath), Is.EqualTo(dest));
+		//Assert.That(() => dnld.SetProperty(DODownloadProperty.DODownloadProperty_DisplayName, name), Throws.Nothing);
+		//Assert.That((string)dnld.GetProperty(DODownloadProperty.DODownloadProperty_DisplayName), Is.EqualTo(name));
 
-		dnld.Start();
-		done.WaitOne();
-		dnld.Finalize();
-	}
-}
+		//AutoResetEvent done = new(false);
+		//Callback callback = new();
+		//callback.StatusChange += (s) => { if (s.State == DODownloadState.DODownloadState_Finalized) done.Set(); else if (s.Error.Failed) throw s.Error.GetException()!; };
+		//object wrp = new UnknownWrapper(callback);
+		//Assert.That(() => dnld.SetProperty(DODownloadProperty.DODownloadProperty_CallbackInterface, wrp), Throws.Nothing);
 
-[ComVisible(true), Guid("90AFD61C-C21C-4627-8A9A-E3268BC89051")]
-public class Callback : IDODownloadStatusCallback
-{
-	public event Action<DO_DOWNLOAD_STATUS> StatusChange;
-
-	public Callback() { }
-
-	HRESULT IDODownloadStatusCallback.OnStatusChange(IDODownload download, in DO_DOWNLOAD_STATUS status)
-	{
-		StatusChange?.Invoke(status);
-		return HRESULT.S_OK;
+		//dnld.Start();
+		//done.WaitOne();
+		//dnld.Finalize();
 	}
 }

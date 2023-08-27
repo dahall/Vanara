@@ -1,7 +1,8 @@
-global using System;
-global using System.Runtime.InteropServices;
-global using Vanara.InteropServices;
+using System.Collections.Generic;
+using System.Linq;
+using Vanara.Extensions.Reflection;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke;
 
@@ -238,13 +239,14 @@ public static partial class DOSvc
 		/// <para>IDODownloadStatusCallback</para>
 		/// <para>interface used for download callbacks. VARIANT type is VT_UNKNOWN.</para>
 		/// </summary>
-		[CorrespondingType(typeof(object), CorrespondingAction.GetSet)]
+		[CorrespondingType(typeof(IDODownloadStatusCallback), CorrespondingAction.GetSet)]
 		DODownloadProperty_CallbackInterface,
 
 		/// <summary>
 		/// Optional. Use this property to set or get the pointer to IStream interface used for stream download type. VARIANT type is VT_UNKNOWN.
 		/// </summary>
-		[CorrespondingType(typeof(object), CorrespondingAction.GetSet)]
+		[CorrespondingType(typeof(System.Runtime.InteropServices.ComTypes.IStream), CorrespondingAction.GetSet)]
+		[CorrespondingType(typeof(IStreamV), CorrespondingAction.GetSet)]
 		DODownloadProperty_StreamInterface,
 
 		/// <summary>
@@ -456,8 +458,8 @@ public static partial class DOSvc
 	{
 		/// <summary>Starts or resumes a download, passing optional ranges as a pointer to <c>DO_DOWNLOAD_RANGES_INFO</c> structure.</summary>
 		/// <param name="ranges">
-		/// Optional. A pointer to a <c>DO_DOWNLOAD_RANGES_INFO</c> structure (to download only specific ranges of the file). Pass to
-		/// download the entire file.
+		/// Optional. A pointer to a <c>DO_DOWNLOAD_RANGES_INFO</c> structure (to download only specific ranges of the file). Pass
+		/// <c>IntPtr.Zero</c> to download the entire file.
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/deliveryoptimization/nf-deliveryoptimization-idodownload-start HRESULT Start(
 		// const DO_DOWNLOAD_RANGES_INFO *ranges );
@@ -497,7 +499,7 @@ public static partial class DOSvc
 		/// <param name="propVal">The property value to set, stored in a <c>VARIANT</c>.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/deliveryoptimization/nf-deliveryoptimization-idodownload-setproperty HRESULT
 		// SetProperty( DODownloadProperty propId, const VARIANT *propVal );
-		void SetProperty([In] DODownloadProperty propId, [MarshalAs(UnmanagedType.Struct)] object propVal);
+		void SetProperty([In] DODownloadProperty propId, /*[MarshalAs(UnmanagedType.Struct)] object*/ in OleAut32.VARIANT propVal);
 	}
 
 	/// <summary>The <c>IDODownloadStatusCallback</c> interface is used to receive notifications about a download.</summary>
@@ -564,11 +566,11 @@ public static partial class DOSvc
 	}
 
 	/// <summary>Retrieves an interface pointer to an enumerator object that is used to enumerate existing downloads.</summary>
-	/// <param name="i">The <see cref="IDOManager"/> instance.</param>
+	/// <param name="mgr">The <see cref="IDOManager"/> instance.</param>
 	/// <param name="category">
 	/// <para>
-	/// Optional. The property name to be used as a category to enumerate. Passing <see langword="null"/> will retrieve all existing
-	/// downloads. The following properties are supported as a category.
+	/// The property name to be used as a category to enumerate. Passing <see langword="null"/> will retrieve all existing downloads. The
+	/// following properties are supported as a category.
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
@@ -593,16 +595,51 @@ public static partial class DOSvc
 	/// the value of category. The downloads included in the enumeration interface are the ones that were previously created by the same
 	/// caller to this function.
 	/// </returns>
-	public static IEnumUnknown EnumDownloads(this IDOManager i, DO_DOWNLOAD_ENUM_CATEGORY category) =>
-		i.EnumDownloads((SafeCoTaskMemStruct<DO_DOWNLOAD_ENUM_CATEGORY>)category);
+	public static IEnumerable<IDODownload> EnumDownloads(this IDOManager mgr, DODownloadProperty? category = null)
+	{
+		var ienum = category.HasValue ? mgr.EnumDownloads(SafeCoTaskMemHandle.CreateFromStructure(new DO_DOWNLOAD_ENUM_CATEGORY() { Property = category.Value })) : mgr.EnumDownloads();
+		return ienum.Enumerate<IDODownload>().WhereNotNull();
+	}
 
-	/// <summary>Starts or resumes a download, passing optional ranges as a pointer to <c>DO_DOWNLOAD_RANGES_INFO</c> structure.</summary>
+	/// <summary>
+	/// Sets a download property. The method accepts a pointer to a <c>VARIANT</c> that contains a specific property to apply to the download.
+	/// </summary>
+	/// <param name="download">The <see cref="IDODownload"/> instance.</param>
+	/// <param name="propId">The required property ID to set (of type <c>DODownloadProperty</c>).</param>
+	/// <param name="propVal">The property value to set, stored in a <c>VARIANT</c>.</param>
+	public static void SetProperty(this IDODownload download, [In] DODownloadProperty propId, [In] object propVal)
+	{
+		switch (propId)
+		{
+			case DODownloadProperty.DODownloadProperty_CallbackInterface:
+			case DODownloadProperty.DODownloadProperty_StreamInterface:
+				var intf = CorrespondingTypeAttribute.GetCorrespondingTypes(propId, CorrespondingAction.Get).Where(propVal.GetType().InheritsFrom).FirstOrDefault() ??
+					throw new ArgumentException($"Property {propId} requires a valid corresponding COM interface pointer.", nameof(propVal));
+				var ptr = Marshal.GetComInterfaceForObject(propVal, intf);
+				VARIANT v = new() { vt = VARTYPE.VT_UNKNOWN, byref = ptr };
+				download.SetProperty(propId, v);
+				break;
+			default:
+				download.SetProperty(propId, new VARIANT(propVal));
+				break;
+		}
+	}
+
+	/// <summary>Starts or resumes a download, passing ranges as a <c>DO_DOWNLOAD_RANGES_INFO</c> structure.</summary>
 	/// <param name="i">The <see cref="IDODownload"/> instance.</param>
-	/// <param name="ranges">
-	/// Optional. A pointer to a <c>DO_DOWNLOAD_RANGES_INFO</c> structure (to download only specific ranges of the file). Pass to download
-	/// the entire file.
-	/// </param>
+	/// <param name="ranges">A <c>DO_DOWNLOAD_RANGES_INFO</c> structure (to download only specific ranges of the file).</param>
 	public static void Start(this IDODownload i, in DO_DOWNLOAD_RANGES_INFO ranges) => i.Start((SafeCoTaskMemStruct<DO_DOWNLOAD_RANGES_INFO>)ranges);
+
+	/// <summary>Starts or resumes a download, passing ranges as a <c>DO_DOWNLOAD_RANGES_INFO</c> structure.</summary>
+	/// <param name="i">The <see cref="IDODownload"/> instance.</param>
+	/// <param name="ranges">A <c>DO_DOWNLOAD_RANGES_INFO</c> structure (to download only specific ranges of the file).</param>
+	public static void Start(this IDODownload i, params DO_DOWNLOAD_RANGE[]? ranges)
+	{
+		if (ranges is null || ranges.Length == 0)
+			i.Start(IntPtr.Zero);
+		else
+			i.Start(new DO_DOWNLOAD_RANGES_INFO() { RangeCount = (uint)ranges.Length, Ranges = ranges });
+	}
 
 	/// <summary>
 	/// The <c>DO_DOWNLOAD_ENUM_CATEGORY</c> structure is used by <c>IDOManager::EnumDownloads</c> to filter the downloads enumeration by the
@@ -663,7 +700,7 @@ public static partial class DOSvc
 
 	/// <summary>
 	/// The <c>DO_DOWNLOAD_RANGES_INFO</c> structure identifies an array of ranges of bytes to download from a file. It is typically passed
-	/// as an optional argument to the <c>IDODownload::Start</c> function.
+	/// as an optional argument to the <see cref="IDODownload.Start"/> function.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/deliveryoptimization/ns-deliveryoptimization-do_download_ranges_info typedef struct
 	// _DO_DOWNLOAD_RANGES_INFO { UINT RangeCount; DO_DOWNLOAD_RANGE Ranges[1]; } DO_DOWNLOAD_RANGES_INFO;
