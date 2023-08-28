@@ -1,19 +1,13 @@
-using Microsoft.Win32.SafeHandles;
 using NUnit.Framework;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Threading;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.DnsApi;
 
 namespace Vanara.PInvoke.Tests;
 
+[TestFixture]
 public class DnsApiTests
 {
 	private const string dnsSvr = "c1dns.cableone.net";
@@ -24,14 +18,14 @@ public class DnsApiTests
 	{
 		Assert.That(DnsAcquireContextHandle(true, default, out var ctx), ResultIs.Successful);
 		Assert.That(ctx, ResultIs.ValidHandle);
-		Assert.That(() => ctx.Dispose(), Throws.Nothing);
+		Assert.That(ctx.Dispose, Throws.Nothing);
 	}
 
 	[Test]
 	public void DnsExtractRecordsFromMessageTest()
 	{
 		using var mem = new SafeHGlobalHandle(64);
-		Assert.That(DnsExtractRecordsFromMessage(mem, (ushort)(uint)mem.Size, out var results), ResultIs.Successful);
+		Assert.That(DnsExtractRecordsFromMessage(mem, (ushort)(uint)mem.Size, out SafeDnsRecordList? results), ResultIs.Value((Win32Error)Win32Error.DNS_ERROR_BAD_PACKET));
 	}
 
 	[Test]
@@ -40,7 +34,7 @@ public class DnsApiTests
 		Assert.That(DnsGetCacheDataTable(out var table), ResultIs.Successful);
 		foreach (var d in table)
 			TestContext.WriteLine($"{d.pszName} => {d.wType}");
-		Assert.That(() => table.Dispose(), Throws.Nothing);
+		Assert.That(table.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -60,7 +54,7 @@ public class DnsApiTests
 	{
 		Assert.That(DnsQuery(dnsSvr, DNS_TYPE.DNS_TYPE_ALL, 0, default, out var results), ResultIs.Successful);
 		Assert.That(results, ResultIs.ValidHandle);
-		Assert.That(DnsModifyRecordsInSet(results, results, DNS_UPDATE.DNS_UPDATE_SECURITY_USE_DEFAULT), ResultIs.Value(Win32Error.ERROR_TIMEOUT));
+		Assert.That(DnsModifyRecordsInSet(results, results, DNS_UPDATE.DNS_UPDATE_SECURITY_USE_DEFAULT), ResultIs.Value((Win32Error)Win32Error.DNS_ERROR_RCODE_BADKEY));
 	}
 
 	[Test]
@@ -79,7 +73,7 @@ public class DnsApiTests
 		Assert.That(sz, Is.GreaterThan(0U));
 		using var mem = new SafeCoTaskMemHandle(sz);
 		Assert.That(DnsQueryConfig(ctype, 0, null, default, mem, ref sz), ResultIs.Successful);
-		mem.DangerousGetHandle().Convert(sz, type, CharSet.Unicode).WriteValues();
+		mem.DangerousGetHandle().Convert(sz, type, CharSet.Unicode)?.WriteValues();
 	}
 
 	[Test]
@@ -276,7 +270,7 @@ public class DnsApiTests
 		foreach (DNS_CACHE_ENTRY dnsCacheEntry in dnsCacheDataTable)
 		{
 			DnsQuery(
-				dnsCacheEntry.pszName,
+				dnsCacheEntry.pszName!,
 				dnsCacheEntry.wType,
 				DNS_QUERY_OPTIONS.DNS_QUERY_NO_WIRE_QUERY | DNS_QUERY_OPTIONS.DNS_QUERY_LOCAL,
 				IntPtr.Zero,
@@ -305,10 +299,10 @@ public class DnsApiTests
 			switch (dnsRecord.wType)
 			{
 				case DNS_TYPE.DNS_TYPE_A:
-					yield return new IPAddress(((DNS_A_DATA)dnsRecord.Data).IpAddress.S_un_b);
+					yield return new IPAddress(((DNS_A_DATA)dnsRecord.Data!).IpAddress.S_un_b);
 					break;
 				case DNS_TYPE.DNS_TYPE_AAAA:
-					yield return new IPAddress(((DNS_AAAA_DATA)dnsRecord.Data).Ip6Address.bytes);
+					yield return new IPAddress(((DNS_AAAA_DATA)dnsRecord.Data!).Ip6Address.bytes);
 					break;
 			}
 		}
@@ -325,7 +319,7 @@ public class DnsApiTests
 			ret.Add(new DNS_RECORD
 			{
 				pNext = dnsRecordPtr->pNext,
-				pName = Marshal.PtrToStringUni(dnsRecordPtr->pName),
+				pName = Marshal.PtrToStringUni(dnsRecordPtr->pName)!,
 				wType = dnsRecordPtr->wType,
 				wDataLength = dnsRecordPtr->wDataLength,
 				Flags = dnsRecordPtr->Flags,

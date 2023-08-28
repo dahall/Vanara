@@ -186,7 +186,7 @@ public static partial class DnsApi
 	[PInvokeData("windns.h", MSDNShortId = "32baa672-2106-4c4a-972a-f7f79996b613")]
 	public static extern void DnsFree(IntPtr pData, DNS_FREE_TYPE FreeType);
 
-	/// <summary>Frees an array of custom servers that was returned from DnsGetApplicationSettings.</summary>
+	/// <summary>Frees an array of custom servers that was returned from <see cref="DnsGetApplicationSettings(out uint, out IntPtr, out DNS_APPLICATION_SETTINGS)"/>.</summary>
 	/// <param name="pcServers">
 	/// <para>Type: _Inout_ <c>DWORD*</c></para>
 	/// <para>
@@ -264,7 +264,7 @@ public static partial class DnsApi
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsgetapplicationsettings
 	// DWORD DnsGetApplicationSettings( DWORD *pcServers, DNS_CUSTOM_SERVER **ppDefaultServers, DNS_APPLICATION_SETTINGS *pSettings );
 	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsGetApplicationSettings", MinClient = PInvokeClient.Windows11)]
-	public static Win32Error DnsGetApplicationSettings(out DNS_CUSTOM_SERVER[] ppDefaultServers, out DNS_APPLICATION_SETTINGS pSettings)
+	public static Win32Error DnsGetApplicationSettings(out DNS_CUSTOM_SERVER[]? ppDefaultServers, out DNS_APPLICATION_SETTINGS pSettings)
 	{
 		var err = DnsGetApplicationSettings(out var c, out var p, out pSettings);
 		if (err.Failed) { ppDefaultServers = null; return err; }
@@ -1171,9 +1171,9 @@ public static partial class DnsApi
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h")]
 	public static extern SafePDNS_SERVICE_INSTANCE DnsServiceConstructInstance([MarshalAs(UnmanagedType.LPWStr)] string pServiceName,
-		[MarshalAs(UnmanagedType.LPWStr)] string pHostName, in IP4_ADDRESS pIp4, in IP6_ADDRESS pIp6, ushort wPort, ushort wPriority,
-		ushort wWeight, uint dwPropertiesCount, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] keys,
-		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] values);
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pHostName, in IP4_ADDRESS pIp4, in IP6_ADDRESS pIp6, ushort wPort, [Optional] ushort wPriority,
+		[Optional] ushort wWeight, [Optional] uint dwPropertiesCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? keys,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? values);
 
 	/// <summary>Used to build a DNS_SERVICE_INSTANCE structure from data that describes it.</summary>
 	/// <param name="pServiceName">A string that represents the name of the service.</param>
@@ -1197,9 +1197,9 @@ public static partial class DnsApi
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h")]
 	public static extern SafePDNS_SERVICE_INSTANCE DnsServiceConstructInstance([MarshalAs(UnmanagedType.LPWStr)] string pServiceName,
-		[MarshalAs(UnmanagedType.LPWStr)] string pHostName, [In, Optional] IntPtr pIp4, [In, Optional] IntPtr pIp6, ushort wPort, ushort wPriority,
-		ushort wWeight, uint dwPropertiesCount, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] keys,
-		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] values);
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pHostName, [In, Optional] IntPtr pIp4, [In, Optional] IntPtr pIp6, ushort wPort, [Optional] ushort wPriority,
+		[Optional] ushort wWeight, [Optional] uint dwPropertiesCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? keys,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? values);
 
 	/// <summary>Used to copy a DNS_SERVICE_INSTANCE structure.</summary>
 	/// <param name="pOrig">A pointer to the DNS_SERVICE_INSTANCE structure that is to be copied.</param>
@@ -1357,7 +1357,7 @@ public static partial class DnsApi
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings", MinClient = PInvokeClient.Windows11)]
 	public static extern Win32Error DnsSetApplicationSettings(uint cServers,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[] pServers, in DNS_APPLICATION_SETTINGS pSettings);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[]? pServers, in DNS_APPLICATION_SETTINGS pSettings);
 
 	/// <summary>
 	/// Configures per-application DNS settings. This includes the ability to set per-application DNS servers either as fallback to the
@@ -1388,7 +1388,7 @@ public static partial class DnsApi
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings", MinClient = PInvokeClient.Windows11)]
 	public static extern Win32Error DnsSetApplicationSettings(uint cServers,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[] pServers, [In, Optional] IntPtr pSettings);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[]? pServers, [In, Optional] IntPtr pSettings);
 
 	/// <summary>Used to register a discoverable service on this device.</summary>
 	/// <param name="pQueryRequest">A pointer to an MDNS_QUERY_REQUEST structure that contains information about the query to be performed.</param>
@@ -1598,7 +1598,7 @@ public static partial class DnsApi
 		public static bool operator ==(HDNSCONTEXT h1, HDNSCONTEXT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDNSCONTEXT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDNSCONTEXT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

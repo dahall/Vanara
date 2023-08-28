@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using static Vanara.PInvoke.Ws2_32;
@@ -992,7 +993,7 @@ public static partial class DnsApi
 		/// <param name="addrs">The list of socket addresses.</param>
 		public DNS_ADDR_ARRAY(params SOCKADDR[] addrs) : this()
 		{
-			MaxCount = AddrCount = (uint)(addrs?.Length ?? 0);
+			MaxCount = AddrCount = (uint)addrs.Length;
 			Family = AddrCount == 0 ? ADDRESS_FAMILY.AF_INET6 : addrs[0].sa_family;
 			AddrArray = Array.ConvertAll(addrs, a => new DNS_ADDR() { MaxSa = a.GetBytes() });
 		}
@@ -1145,7 +1146,8 @@ public static partial class DnsApi
 		/// If dwServerType is set to <c>DNS_CUSTOM_SERVER_TYPE_DOH</c>, then this field must point to a valid <c>NULL</c>-terminated string.
 		/// </para>
 		/// </summary>
-		public string pwszTemplate;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pwszTemplate;
 
 		/// <summary>
 		/// <para>Type: <c>CHAR[DNS_ADDR_MAX_SOCKADDR_LENGTH]</c></para>
@@ -1305,7 +1307,7 @@ public static partial class DnsApi
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool RecursionDesired { get => BitHelper.GetBit(flags, 0); set => BitHelper.SetBit(ref flags, 0, value); }
+		public bool RecursionDesired { readonly get => BitHelper.GetBit(flags, 0); set => BitHelper.SetBit(ref flags, 0, value); }
 
 		/// <summary>
 		/// <para>A value that specifies whether the DNS message has been truncated.</para>
@@ -1324,7 +1326,7 @@ public static partial class DnsApi
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool Truncation { get => BitHelper.GetBit(flags, 1); set => BitHelper.SetBit(ref flags, 1, value); }
+		public bool Truncation { readonly get => BitHelper.GetBit(flags, 1); set => BitHelper.SetBit(ref flags, 1, value); }
 
 		/// <summary>
 		/// <para>
@@ -1346,13 +1348,13 @@ public static partial class DnsApi
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool Authoritative { get => BitHelper.GetBit(flags, 2); set => BitHelper.SetBit(ref flags, 2, value); }
+		public bool Authoritative { readonly get => BitHelper.GetBit(flags, 2); set => BitHelper.SetBit(ref flags, 2, value); }
 
 		/// <summary>
 		/// A value that specifies the operation code to be taken on the DNS message as defined in section 4.1.1 of RFC 1035 as the
 		/// <c>OPCODE</c> field.
 		/// </summary>
-		public ushort Opcode { get => BitHelper.GetBits(flags, 3, 4); set => BitHelper.SetBits(ref flags, 3, 4, value); }
+		public ushort Opcode { readonly get => BitHelper.GetBits(flags, 3, 4); set => BitHelper.SetBits(ref flags, 3, 4, value); }
 
 		/// <summary>
 		/// <para>A value that specifies whether the DNS message is a query or a response message.</para>
@@ -1371,10 +1373,10 @@ public static partial class DnsApi
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool IsResponse { get => BitHelper.GetBit(flags, 7); set => BitHelper.SetBit(ref flags, 7, value); }
+		public bool IsResponse { readonly get => BitHelper.GetBit(flags, 7); set => BitHelper.SetBit(ref flags, 7, value); }
 
 		/// <summary>The DNS Response Code of the message.</summary>
-		public ushort ResponseCode { get => BitHelper.GetBits(flags, 8, 4); set => BitHelper.SetBits(ref flags, 8, 4, value); }
+		public ushort ResponseCode { readonly get => BitHelper.GetBits(flags, 8, 4); set => BitHelper.SetBits(ref flags, 8, 4, value); }
 
 		/// <summary>
 		/// <para>Windows 7 or later: A value that specifies whether checking is supported by the DNS resolver.</para>
@@ -1393,7 +1395,7 @@ public static partial class DnsApi
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool CheckingDisabled { get => BitHelper.GetBit(flags, 12); set => BitHelper.SetBit(ref flags, 12, value); }
+		public bool CheckingDisabled { readonly get => BitHelper.GetBit(flags, 12); set => BitHelper.SetBit(ref flags, 12, value); }
 
 		/// <summary>
 		/// <para>
@@ -1414,10 +1416,10 @@ public static partial class DnsApi
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool AuthenticatedData { get => BitHelper.GetBit(flags, 13); set => BitHelper.SetBit(ref flags, 13, value); }
+		public bool AuthenticatedData { readonly get => BitHelper.GetBit(flags, 13); set => BitHelper.SetBit(ref flags, 13, value); }
 
 		/// <summary>Reserved. Do not use.</summary>
-		public bool Reserved { get => BitHelper.GetBit(flags, 14); set => BitHelper.SetBit(ref flags, 14, value); }
+		public bool Reserved { readonly get => BitHelper.GetBit(flags, 14); set => BitHelper.SetBit(ref flags, 14, value); }
 
 		/// <summary>
 		/// <para>A value that specifies whether recursive name query is supported by the DNS name server.</para>
@@ -1436,7 +1438,7 @@ public static partial class DnsApi
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool RecursionAvailable { get => BitHelper.GetBit(flags, 15); set => BitHelper.SetBit(ref flags, 15, value); }
+		public bool RecursionAvailable { readonly get => BitHelper.GetBit(flags, 15); set => BitHelper.SetBit(ref flags, 15, value); }
 
 		/// <summary>The number of queries contained in the question section of the DNS message.</summary>
 		public ushort QuestionCount;
@@ -1874,7 +1876,7 @@ public static partial class DnsApi
 		public IntPtr proxyName;
 
 		/// <inheritdoc/>
-		public override string ToString() => $"{proxyInformationType}{(proxyInformationType == DNS_PROXY_INFORMATION_TYPE.DNS_PROXY_INFORMATION_PROXY_NAME ? $" {StringHelper.GetString(proxyName, CharSet.Unicode)}" : "")}";
+		public override readonly string ToString() => $"{proxyInformationType}{(proxyInformationType == DNS_PROXY_INFORMATION_TYPE.DNS_PROXY_INFORMATION_PROXY_NAME ? $" {StringHelper.GetString(proxyName, CharSet.Unicode)}" : "")}";
 	}
 
 	/// <summary>The <c>DNS_PTR_DATA</c> structure represents a DNS pointer (PTR) record as specified in section 3.3.12 of RFC 1035.</summary>
@@ -1924,7 +1926,7 @@ public static partial class DnsApi
 		/// <para><c>Note</c> If <c>QueryName</c> is NULL, the query is for the local machine name.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string QueryName;
+		public string? QueryName;
 
 		/// <summary>
 		/// A value that represents the Resource Record (RR) DNS Record Type that is queried. <c>QueryType</c> determines the format of
@@ -1940,7 +1942,7 @@ public static partial class DnsApi
 		/// A value that contains a bitmap of DNS Query Options to use in the DNS query. Options can be combined and all options
 		/// override <c>DNS_QUERY_STANDARD</c>
 		/// </summary>
-		public DNS_QUERY_OPTIONS QueryOptions { get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
+		public DNS_QUERY_OPTIONS QueryOptions { readonly get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
 
 		/// <summary>Query options padding.</summary>
 		public uint QueryOptionsHigh;
@@ -1962,7 +1964,7 @@ public static partial class DnsApi
 		/// <para><c>Note</c> If NULL, DnsQueryEx is called synchronously.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public DNS_QUERY_COMPLETION_ROUTINE pQueryCompletionCallback;
+		public DNS_QUERY_COMPLETION_ROUTINE? pQueryCompletionCallback;
 
 		/// <summary>A pointer to a user context.</summary>
 		public IntPtr pQueryContext;
@@ -1971,7 +1973,7 @@ public static partial class DnsApi
 		/// <param name="type">The Resource Record (RR) DNS Record Type that is queried.</param>
 		/// <param name="queryName">The DNS name to query.</param>
 		/// <param name="options">The DNS Query Options to use in the DNS query.</param>
-		public DNS_QUERY_REQUEST(DNS_TYPE type, string queryName = null, DNS_QUERY_OPTIONS options = 0) : this()
+		public DNS_QUERY_REQUEST(DNS_TYPE type, string? queryName = null, DNS_QUERY_OPTIONS options = 0) : this()
 		{
 			Version = DNS_QUERY_REQUEST_VERSION1;
 			QueryName = queryName;
@@ -2011,7 +2013,7 @@ public static partial class DnsApi
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string QueryName;
+		public string? QueryName;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
@@ -2030,7 +2032,7 @@ public static partial class DnsApi
 		/// A value that contains a bitmap of DNS Query Options to use in the DNS query. Options can be combined and all options
 		/// override <c>DNS_QUERY_STANDARD</c>
 		/// </summary>
-		public DNS_QUERY_OPTIONS QueryOptions { get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
+		public DNS_QUERY_OPTIONS QueryOptions { readonly get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
 
 		/// <summary>
 		/// <para>Type: <c>PDNS_ADDR_ARRAY</c></para>
@@ -2058,7 +2060,7 @@ public static partial class DnsApi
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public DNS_QUERY_COMPLETION_ROUTINE pQueryCompletionCallback;
+		public DNS_QUERY_COMPLETION_ROUTINE? pQueryCompletionCallback;
 
 		/// <summary>
 		/// <para>Type: <c>PVOID</c></para>
@@ -2103,7 +2105,7 @@ public static partial class DnsApi
 		/// <param name="type">The Resource Record (RR) DNS Record Type that is queried.</param>
 		/// <param name="queryName">The DNS name to query.</param>
 		/// <param name="options">The DNS Query Options to use in the DNS query.</param>
-		public DNS_QUERY_REQUEST3(DNS_TYPE type, string queryName = null, DNS_QUERY_OPTIONS options = 0) : this()
+		public DNS_QUERY_REQUEST3(DNS_TYPE type, string? queryName = null, DNS_QUERY_OPTIONS options = 0) : this()
 		{
 			Version = DNS_QUERY_REQUEST_VERSION1;
 			QueryName = queryName;
@@ -2234,12 +2236,12 @@ public static partial class DnsApi
 
 		/// <summary>Gets the data value based on the value of <see cref="wType"/>.</summary>
 		/// <returns>The value of <see cref="Data"/>.</returns>
-		public object Data
+		public object? Data
 		{
 			get
 			{
 				if (wType == 0 || wDataLength == 0) return null;
-				Type type = CorrespondingTypeAttribute.GetCorrespondingTypes(wType, CorrespondingAction.GetSet).FirstOrDefault();
+				Type? type = CorrespondingTypeAttribute.GetCorrespondingTypes(wType, CorrespondingAction.GetSet).FirstOrDefault();
 				IntPtr ptr = DataPtr;
 				return type is null ? ptr : ptr.Convert(wDataLength, type, CharSet.Unicode);
 			}
@@ -2250,7 +2252,7 @@ public static partial class DnsApi
 
 		/// <summary>Gets the pointer to the 'Data' union.</summary>
 		/// <value>The 'Data' union pointer.</value>
-		public IntPtr DataPtr
+		public readonly IntPtr DataPtr
 		{
 			get
 			{
@@ -2549,16 +2551,16 @@ public static partial class DnsApi
 		public uint DW;
 
 		/// <summary>A DNS_SECTION value that specifies the section of interest returned from the DnsQuery function call.</summary>
-		public uint Section { get => BitHelper.GetBits(DW, 0, 2); set => BitHelper.SetBits(ref DW, 0, 2, value); }
+		public uint Section { readonly get => BitHelper.GetBits(DW, 0, 2); set => BitHelper.SetBits(ref DW, 0, 2, value); }
 
 		/// <summary>Reserved. Do not use.</summary>
-		public bool Delete { get => BitHelper.GetBit(DW, 2); set => BitHelper.SetBit(ref DW, 2, value); }
+		public bool Delete { readonly get => BitHelper.GetBit(DW, 2); set => BitHelper.SetBit(ref DW, 2, value); }
 
 		/// <summary>A DNS_CHARSET value that specifies the character set used in the associated function call.</summary>
-		public uint CharSet { get => BitHelper.GetBits(DW, 3, 2); set => BitHelper.SetBits(ref DW, 3, 2, value); }
+		public uint CharSet { readonly get => BitHelper.GetBits(DW, 3, 2); set => BitHelper.SetBits(ref DW, 3, 2, value); }
 
 		/// <summary>Reserved. Do not use.</summary>
-		public uint Unused { get => BitHelper.GetBits(DW, 5, 3); set => BitHelper.SetBits(ref DW, 5, 3, value); }
+		public uint Unused { readonly get => BitHelper.GetBits(DW, 5, 3); set => BitHelper.SetBits(ref DW, 5, 3, value); }
 	}
 
 	/// <summary>The <c>DNS_RRSET</c> structure contains information about a DNS Resource Record (RR) set.</summary>
@@ -2662,19 +2664,19 @@ public static partial class DnsApi
 
 		/// <summary>A string that represents the name of the host of the service.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszHostName;
+		public string? pszHostName;
 
 		/// <summary>A pointer to an <c>IP4_ADDRESS</c> structure that represents the service-associated IPv4 address.</summary>
 		public IntPtr ip4Address;
 
 		/// <summary>The service-associated IPv4 address, if defined.</summary>
-		public IPEndPoint IPv4EndPoint => ip4Address == IntPtr.Zero ? null : new(new IPAddress(ip4Address.ToByteArray(4)), wPort);
+		public readonly IPEndPoint? IPv4EndPoint => ip4Address == IntPtr.Zero ? null : new(new IPAddress(ip4Address.ToByteArray(4)!), wPort);
 
 		/// <summary>A pointer to an IP6_ADDRESS structure that represents the service-associated IPv6 address.</summary>
 		public IntPtr ip6Address;
 
 		/// <summary>The service-associated IPv6 address, if defined.</summary>
-		public IPEndPoint IPv6EndPoint => ip6Address == IntPtr.Zero ? null : new(new IPAddress(ip6Address.ToByteArray(16)), wPort);
+		public readonly IPEndPoint? IPv6EndPoint => ip6Address == IntPtr.Zero ? null : new(new IPAddress(ip6Address.ToByteArray(16)!), wPort);
 
 		/// <summary>A value that represents the port on which the service is running.</summary>
 		public ushort wPort;
@@ -2699,9 +2701,9 @@ public static partial class DnsApi
 
 		/// <summary>Gets the properties exposed by this structure.</summary>
 		/// <value>The DNS service properties.</value>
-		public IReadOnlyDictionary<string, string> Properties => dwPropertyCount == 0 ?
-			new Dictionary<string, string>(0) :
-			keys.ToStringEnum((int)dwPropertyCount, CharSet.Unicode).
+		public readonly IReadOnlyDictionary<string, string?> Properties => dwPropertyCount == 0 ?
+			new Dictionary<string, string?>(0) :
+			keys.ToStringEnum((int)dwPropertyCount, CharSet.Unicode)!.WhereNotNull().
 				Zip(values.ToStringEnum((int)dwPropertyCount, CharSet.Unicode), (k, v) => new { k, v }).
 				ToDictionary(x => x.k, x => x.v);
 	}
@@ -2771,7 +2773,7 @@ public static partial class DnsApi
 		/// "&lt;ServiceName&gt;._&lt;ServiceType&gt;._&lt;TransportProtocol&gt;.local". For example, "MyMusicServer._http._tcp.local".
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string QueryName;
+		public string? QueryName;
 
 		/// <summary>A pointer to a function (of type DNS_SERVICE_RESOLVE_COMPLETE) that represents the callback to be invoked asynchronously.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
@@ -3407,7 +3409,7 @@ public static partial class DnsApi
 		/// <param name="addrs">The list of IPv4 address.</param>
 		public IP4_ARRAY(params IP4_ADDRESS[] addrs)
 		{
-			AddrCount = (uint)(addrs?.Length ?? 0);
+			AddrCount = (uint)addrs.Length;
 			AddrArray = addrs;
 		}
 	}
@@ -3462,7 +3464,7 @@ public static partial class DnsApi
 		private ulong _QueryOptions;
 
 		/// <summary>A value representing the query options. <c>DNS_QUERY_STANDARD</c> is the only supported value.</summary>
-		public DNS_QUERY_OPTIONS QueryOptions { get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
+		public DNS_QUERY_OPTIONS QueryOptions { readonly get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
 
 		/// <summary>
 		/// A value that contains the interface index over which the service is to be advertised. If is 0, then all interfaces will be considered.
@@ -3492,11 +3494,11 @@ public static partial class DnsApi
 	public class SafePDNS_SERVICE_INSTANCE : SafeHANDLE
 	{
 		private uint _dwInterfaceIndex;
-		private IPEndPoint _ip4Address;
-		private IPEndPoint _ip6Address;
-		private string _pszHostName;
-		private string _pszInstanceName;
-		private IReadOnlyDictionary<string, string> _props;
+		private IPEndPoint? _ip4Address;
+		private IPEndPoint? _ip6Address;
+		private string? _pszHostName;
+		private string _pszInstanceName = "";
+		private IReadOnlyDictionary<string, string?>? _props;
 		private ushort _wPort;
 		private ushort _wPriority;
 		private ushort _wWeight;
@@ -3512,23 +3514,23 @@ public static partial class DnsApi
 		public uint dwInterfaceIndex => PopulateFetch(ref _dwInterfaceIndex);
 
 		/// <summary>A pointer to an <c>IP4_ADDRESS</c> structure that represents the service-associated IPv4 address.</summary>
-		public IPEndPoint ip4Address => PopulateFetch(ref _ip4Address);
+		public IPEndPoint? ip4Address => PopulateFetch(ref _ip4Address);
 
 		/// <summary>A pointer to an IP6_ADDRESS structure that represents the service-associated IPv6 address.</summary>
-		public IPEndPoint ip6Address => PopulateFetch(ref _ip6Address);
+		public IPEndPoint? ip6Address => PopulateFetch(ref _ip6Address);
 
 		/// <summary/>
-		public IReadOnlyDictionary<string, string> properties => PopulateFetch(ref _props);
+		public IReadOnlyDictionary<string, string?> properties => PopulateFetch(ref _props) ?? new Dictionary<string, string?>(0);
 
 		/// <summary>A string that represents the name of the host of the service.</summary>
-		public string pszHostName => PopulateFetch(ref _pszHostName);
+		public string? pszHostName => PopulateFetch(ref _pszHostName);
 
 		/// <summary>
 		/// A string that represents the service name. This is a fully qualified domain name that begins with a service name, and ends
 		/// with ".local". It takes the generalized form "&lt;ServiceName&gt;._&lt;ServiceType&gt;._&lt;TransportProtocol&gt;.local".
 		/// For example, "MyMusicServer._http._tcp.local".
 		/// </summary>
-		public string pszInstanceName => PopulateFetch(ref _pszInstanceName);
+		public string pszInstanceName => PopulateFetch(ref _pszInstanceName!)!;
 
 		/// <summary>A value that represents the port on which the service is running.</summary>
 		public ushort wPort => PopulateFetch(ref _wPort);
@@ -3547,7 +3549,8 @@ public static partial class DnsApi
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() { DnsServiceFreeInstance(handle); return true; }
 
-		private T PopulateFetch<T>(ref T value)
+		// [MemberNotNull(nameof(_ip4Address), nameof(_ip6Address), nameof(_pszHostName), nameof(_pszInstanceName), nameof(_props))]
+		private T? PopulateFetch<T>(ref T? value)
 		{
 			if (!populated && !IsInvalid && !IsClosed)
 			{
@@ -3575,9 +3578,9 @@ public static partial class DnsApi
 
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_MESSAGE_BUFFER));
 
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject) => SafeCoTaskMemHandle.Null;
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => SafeCoTaskMemHandle.Null;
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			using PDNS_MESSAGE_BUFFER s = new(pNativeData, allocatedBytes);
@@ -3615,10 +3618,10 @@ public static partial class DnsApi
 
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_NSEC3_DATA));
 
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject) =>
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) =>
 			managedObject is null ? SafeCoTaskMemHandle.Null : new SafeDNS_NSEC3_DATA((DNS_NSEC3_DATA)managedObject);
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			using SafeDNS_NSEC3_DATA s = new(pNativeData, allocatedBytes);

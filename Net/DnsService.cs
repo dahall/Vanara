@@ -47,7 +47,7 @@ public class DnsService : IDisposable
 	}
 
 	/// <summary>A string that represents the name of the host of the service.</summary>
-	public string HostName => pSvcInst.pszHostName;
+	public string? HostName => pSvcInst.pszHostName;
 
 	/// <summary>
 	/// A string that represents the service name. This is a fully qualified domain name that begins with a service name, and ends with
@@ -75,7 +75,7 @@ public class DnsService : IDisposable
 	public ushort Priority => pSvcInst.wPriority;
 
 	/// <summary>The DNS service properties.</summary>
-	public IReadOnlyDictionary<string, string> Properties => pSvcInst.properties;
+	public IReadOnlyDictionary<string, string?> Properties => pSvcInst.properties;
 
 	/// <summary>A value that represents the service weight.</summary>
 	public ushort Weight => pSvcInst.wWeight;
@@ -107,7 +107,7 @@ public class DnsService : IDisposable
 			if (WaitHandle.WaitAny(new[] { cancellationToken.WaitHandle, evt }) == 0)
 				DnsServiceResolveCancel(c);
 		}, cancellationToken);
-		return result != IntPtr.Zero ? new DnsService(result) : throw err.GetException();
+		return result != IntPtr.Zero ? new DnsService(result) : throw err.GetException()!;
 
 		void ResolveCallback(Win32Error Status, IntPtr pQueryContext, IntPtr pInstance)
 		{
@@ -130,7 +130,7 @@ public class DnsService : IDisposable
 
 		registering = true;
 		DnsServiceDeRegister(req, IntPtr.Zero);
-		await Task.Run(() => evt.WaitOne());
+		await Task.Run(evt.WaitOne);
 		registering = false;
 		req = default;
 		err.ThrowIfFailed();
