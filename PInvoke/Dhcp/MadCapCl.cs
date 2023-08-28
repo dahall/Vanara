@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from Dhcpcsvc.dll for Multicast Address Dynamic Client Allocation Protocol (MADCAP).</summary>
@@ -182,6 +179,57 @@ public static partial class MADCAP
 	[PInvokeData("madcapcl.h", MSDNShortId = "NF:madcapcl.McastEnumerateScopes")]
 	public static extern Win32Error McastEnumerateScopes(System.Net.Sockets.AddressFamily AddrFamily, [MarshalAs(UnmanagedType.Bool)] bool ReQuery,
 		[In, Optional] IntPtr pScopeList, ref uint pScopeLen, out uint pScopeCount);
+
+	/// <summary>The <c>McastEnumerateScopes</c> function enumerates multicast scopes available on the network.</summary>
+	/// <param name="AddrFamily">
+	/// Specifies the address family to be used in enumeration, in the form of an IPNG_ADDRESS structure. Use AF_INET for IPv4 addresses
+	/// and AF_INET6 for IPv6 addresses.
+	/// </param>
+	/// <param name="ReQuery">
+	/// Enables a caller to query a list again. Set this parameter to <c>TRUE</c> if the list is to be queried more than once.
+	/// Otherwise, set it to <c>FALSE</c>.
+	/// </param>
+	/// <param name="pScopeList">
+	/// <para>
+	/// An array of scope list information, in the form of MCAST_SCOPE_ENTRY structures. The return value of
+	/// pScopeList depends on its input value, and on the value of the buffer to which it points:
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>
+	/// If the buffer pointed to by pScopeList is too small to hold the scope list, the <c>McastEnumerateScopes</c> function returns
+	/// ERROR_MORE_DATA, and stores the required buffer size, in bytes, in pScopeLen.
+	/// </para>
+	/// <para>
+	/// If the McastApiStartup function has not been called (it must be called before any other MADCAP client functions may be called),
+	/// the <c>McastEnumerateScopes</c> function returns ERROR_NOT_READY.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// The <c>McastEnumerateScopes</c> function queries multicast scopes for each network interface, and the interface on which the
+	/// scope is retrieved is returned as part of the pScopeList parameter. Therefore, on multihomed computers it is possible that some
+	/// scopes will get listed multiple times, once for each interface.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/madcapcl/nf-madcapcl-mcastenumeratescopes DWORD McastEnumerateScopes(
+	// IP_ADDR_FAMILY AddrFamily, BOOL ReQuery, PMCAST_SCOPE_ENTRY pScopeList, PDWORD pScopeLen, PDWORD pScopeCount );
+	[PInvokeData("madcapcl.h", MSDNShortId = "NF:madcapcl.McastEnumerateScopes")]
+	public static Win32Error McastEnumerateScopes(System.Net.Sockets.AddressFamily AddrFamily, [MarshalAs(UnmanagedType.Bool)] bool ReQuery,
+		out MCAST_SCOPE_ENTRY[] pScopeList)
+	{
+		pScopeList = new MCAST_SCOPE_ENTRY[0];
+		uint sz = 0;
+		var err = McastEnumerateScopes(AddrFamily, ReQuery, IntPtr.Zero, ref sz, out _);
+		if (err != Win32Error.ERROR_MORE_DATA && err != Win32Error.ERROR_SUCCESS)
+			return err;
+		if (sz < Marshal.SizeOf(typeof(MCAST_SCOPE_ENTRY)))
+			return Win32Error.ERROR_INSUFFICIENT_BUFFER;
+		using var mem = new SafeCoTaskMemHandle(sz);
+		err = McastEnumerateScopes(AddrFamily, ReQuery, mem, ref sz, out var cnt);
+		if (err == Win32Error.ERROR_SUCCESS)
+			pScopeList = mem.ToArray<MCAST_SCOPE_ENTRY>((int)cnt);
+		return err;
+	}
 
 	/// <summary>
 	/// The <c>McastGenUID</c> function generates a unique identifier, subsequently used by clients to request and renew addresses.

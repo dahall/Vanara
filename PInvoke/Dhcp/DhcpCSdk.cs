@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from Dhcpcsvc6.dll and Dhcpcsvc.dll.</summary>
@@ -501,7 +498,7 @@ public static partial class Dhcp
 	// Flags, LPVOID Reserved, LPWSTR AdapterName, LPWSTR RequestIdStr );
 	[DllImport(Lib_Dhcp, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpcsdk.h", MSDNShortId = "NF:dhcpcsdk.DhcpUndoRequestParams")]
-	public static extern Win32Error DhcpUndoRequestParams([Optional] uint Flags, [In, Optional] IntPtr Reserved, [MarshalAs(UnmanagedType.LPWStr)] string AdapterName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? RequestIdStr);
+	public static extern Win32Error DhcpUndoRequestParams([Optional] uint Flags, [In, Optional] IntPtr Reserved, [MarshalAs(UnmanagedType.LPWStr)] string? AdapterName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? RequestIdStr);
 
 	/// <summary>Represents an 8-byte IP v4 address.</summary>
 	[PInvokeData("dhcpsapi.h")]
@@ -521,28 +518,26 @@ public static partial class Dhcp
 		public DHCP_IP_ADDRESS(System.Net.IPAddress ipaddr)
 		{
 			if (ipaddr is null) value = 0;
-			if (ipaddr.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
+			if (ipaddr?.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
 				throw new InvalidCastException();
-#pragma warning disable CS0618 // Type or member is obsolete
 			value = (uint)ipaddr.Address;
-#pragma warning restore CS0618 // Type or member is obsolete
 		}
 
 		/// <summary>Performs an explicit conversion from <see cref="DHCP_IP_ADDRESS"/> to <see cref="System.Net.IPAddress"/>.</summary>
 		/// <param name="addr">The DWORD based address.</param>
 		/// <returns>The resulting <see cref="System.Net.IPAddress"/> instance from the conversion.</returns>
 		public static explicit operator System.Net.IPAddress(DHCP_IP_ADDRESS addr) =>
-			new System.Net.IPAddress(BitConverter.GetBytes(addr.value));
+			new(BitConverter.GetBytes(addr.value));
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Net.IPAddress"/> to <see cref="DHCP_IP_ADDRESS"/>.</summary>
 		/// <param name="addr">The <see cref="System.Net.IPAddress"/> value.</param>
 		/// <returns>The resulting <see cref="DHCP_IP_ADDRESS"/> instance from the conversion.</returns>
-		public static implicit operator DHCP_IP_ADDRESS(System.Net.IPAddress addr) => new DHCP_IP_ADDRESS(addr);
+		public static implicit operator DHCP_IP_ADDRESS(System.Net.IPAddress addr) => new(addr);
 
 		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="DHCP_IP_ADDRESS"/>.</summary>
 		/// <param name="addr">The address as four bytes.</param>
 		/// <returns>The resulting <see cref="DHCP_IP_ADDRESS"/> instance from the conversion.</returns>
-		public static implicit operator DHCP_IP_ADDRESS(uint addr) => new DHCP_IP_ADDRESS(addr);
+		public static implicit operator DHCP_IP_ADDRESS(uint addr) => new(addr);
 
 		/// <summary>Converts this address to standard notation.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -613,10 +608,10 @@ public static partial class Dhcp
 		/// <param name="array">The resulting native array.</param>
 		/// <param name="ids">The list of ids.</param>
 		/// <returns>The resulting instance.</returns>
-		public static DHCPCAPI_PARAMS_ARRAY Make(out InteropServices.SafeNativeArray<DHCPAPI_PARAMS> array, params DHCP_OPTION_ID[] ids)
+		public static DHCPCAPI_PARAMS_ARRAY Make(out SafeNativeArray<DHCPAPI_PARAMS>? array, params DHCP_OPTION_ID[] ids)
 		{
 			array = ids.Length == 0 ? null : new(Array.ConvertAll(ids, i => new DHCPAPI_PARAMS { OptionId = i }));
-			return new() { nParams = (uint)ids.Length, Params = ids.Length == 0 ? default : array };
+			return new() { nParams = (uint)ids.Length, Params = array?.DangerousGetHandle() ?? default };
 		}
 	}
 }

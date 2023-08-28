@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from Dhcpcsvc6.dll and Dhcpcsvc.dll.</summary>
