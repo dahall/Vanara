@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-
 namespace Vanara.PInvoke;
 
 public static partial class NetApi32

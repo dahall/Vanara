@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ws2_32;
 using DNS_STATUS = Vanara.PInvoke.Win32Error;
 using IP4_ADDRESS = Vanara.PInvoke.Ws2_32.IN_ADDR;

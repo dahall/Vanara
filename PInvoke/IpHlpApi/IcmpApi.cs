@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Ws2_32;
+﻿using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.PInvoke;
 

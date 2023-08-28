@@ -1,11 +1,7 @@
 ﻿#nullable enable
 
-using System;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.Net.DrtUtil;
 using static Vanara.PInvoke.Crypt32;

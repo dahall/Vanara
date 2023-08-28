@@ -3,9 +3,6 @@ global using RIO_BUFFERID = System.IntPtr;
 global using RIO_CQ = System.IntPtr;
 global using RIO_RQ = System.IntPtr;
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 public static partial class Ws2_32

@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using System.ComponentModel;
 using System.Linq;
 using static Vanara.Extensions.EnumExtensions;

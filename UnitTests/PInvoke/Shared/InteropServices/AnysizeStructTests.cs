@@ -1,15 +1,4 @@
 ﻿using NUnit.Framework;
-using Vanara.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using Vanara.PInvoke;
-using System.ComponentModel;
-using System.Runtime.Serialization;
-using static Vanara.PInvoke.FunctionHelper;
 
 namespace Vanara.InteropServices.Tests;
 

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 
 [assembly: Guid("DCB00D01-570F-4A9B-8D69-199FDBA5723B")]
 #if !NETSTANDARD2_0

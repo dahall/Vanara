@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using static Vanara.PInvoke.Macros;
 
 namespace Vanara.PInvoke.Tests;

@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using System.Drawing;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke.Tests;
 

@@ -1,5 +1,3 @@
-using System;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Schannel;
 using static Vanara.PInvoke.Ws2_32;
 

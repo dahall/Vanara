@@ -1,11 +1,3 @@
-using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Schannel;
-using static Vanara.PInvoke.Ws2_32;
 using INTERNET_PORT = System.UInt16;
 
 namespace Vanara.PInvoke;

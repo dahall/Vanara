@@ -1,10 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 
 namespace Vanara.InteropServices.Tests;
 

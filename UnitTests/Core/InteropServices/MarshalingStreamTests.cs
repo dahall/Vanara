@@ -1,11 +1,10 @@
 ﻿#pragma warning disable CS0618
 using NUnit.Framework;
-using System;
 using System.IO;
 
 namespace Vanara.InteropServices.Tests;
 
-    [TestFixture()]
+[TestFixture()]
     public class MarshalingStreamTests
     {
         [Test()]

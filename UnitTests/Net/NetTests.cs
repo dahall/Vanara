@@ -1,17 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Vanara.InteropServices;
 using Vanara.Net;
 using static Vanara.PInvoke.Dhcp;
-using static Vanara.PInvoke.FirewallApi;
 
 namespace Vanara.PInvoke.Tests;
 

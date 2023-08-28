@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 //using static Vanara.PInvoke.MSTask;
 //using Vanara.PInvoke.NetListMgr;
 //using static Vanara.PInvoke.Ole32;
 //using static Vanara.PInvoke.PropSys;
 //using static Vanara.PInvoke.Shell32;
-using Vanara.Extensions;
-using Vanara.PInvoke;
-using System.Runtime.InteropServices;
-using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
-using System.Linq;
-using Vanara.InteropServices;
 
 namespace Vanara.Collections.Tests;
 

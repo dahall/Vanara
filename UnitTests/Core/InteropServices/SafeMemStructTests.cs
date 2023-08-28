@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Buffers;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices.Tests;

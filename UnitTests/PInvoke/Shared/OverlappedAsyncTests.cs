@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.OverlappedAsync;
 
 namespace Vanara.PInvoke.Tests;
