@@ -124,7 +124,8 @@ public static partial class Mpr
 	/// </param>
 	/// <param name="recurseContainers">if set to <see langword="true"/> [recurse containers].</param>
 	/// <returns>The enumeration results. The results are returned as a list of <c>NETRESOURCE</c> structures.</returns>
-	public static IEnumerable<NETRESOURCE> WNetEnumResources([Optional] NETRESOURCE root, NETRESOURCEScope dwScope = NETRESOURCEScope.RESOURCE_GLOBALNET, NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_ANY, NETRESOURCEUsage dwUsage = 0, bool recurseContainers = false)
+	public static IEnumerable<NETRESOURCE> WNetEnumResources([Optional] NETRESOURCE? root, NETRESOURCEScope dwScope = NETRESOURCEScope.RESOURCE_GLOBALNET,
+		NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_ANY, NETRESOURCEUsage dwUsage = 0, bool recurseContainers = false)
 	{
 		var err = WNetOpenEnum(dwScope, dwType, dwUsage, root, out var h);
 		if (err == Win32Error.ERROR_NOT_CONTAINER || err == Win32Error.ERROR_NO_NETWORK)

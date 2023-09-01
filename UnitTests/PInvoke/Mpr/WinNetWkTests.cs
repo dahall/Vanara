@@ -1,11 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Mpr;
 
 namespace Vanara.PInvoke.Tests;
@@ -114,7 +107,7 @@ public class WinNetWkTests
 
 		ptr.Size = (int)sz;
 		WNetGetResourceInformation(lnr, (IntPtr)ptr, ref sz, out var sys).ThrowIfFailed();
-		var rnr = ptr.ToStructure<NETRESOURCE>();
+		var rnr = ptr.ToStructure<NETRESOURCE>()!;
 		Assert.That((int)rnr.dwUsage, Is.Not.Zero);
 		Assert.That(rnr.lpRemoteName, Is.EqualTo(remSh));
 		Assert.That(sys, Is.Not.EqualTo(IntPtr.Zero));
@@ -130,7 +123,7 @@ public class WinNetWkTests
 
 		ptr.Size = (int)sz;
 		WNetGetResourceParent(lnr, (IntPtr)ptr, ref sz).ThrowIfFailed();
-		var nrp = ptr.ToStructure<NETRESOURCE>();
+		var nrp = ptr.ToStructure<NETRESOURCE>()!;
 		Assert.That((int)nrp.dwUsage, Is.Not.Zero);
 		Assert.That(nrp.lpRemoteName, Is.EqualTo(remSh));
 	}

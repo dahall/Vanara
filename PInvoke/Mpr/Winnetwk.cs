@@ -172,9 +172,11 @@ public static partial class Mpr
 	public enum INFO_LEVEL
 	{
 		/// <summary>The function stores a UNIVERSAL_NAME_INFO structure in the buffer.</summary>
+		[CorrespondingType(typeof(UNIVERSAL_NAME_INFO))]
 		UNIVERSAL_NAME_INFO_LEVEL = 0x00000001,
 
 		/// <summary>The function stores a REMOTE_NAME_INFO structure in the buffer.</summary>
+		[CorrespondingType(typeof(REMOTE_NAME_INFO))]
 		REMOTE_NAME_INFO_LEVEL = 0x00000002
 	}
 
@@ -1644,7 +1646,7 @@ public static partial class Mpr
 	// DWORD WNetGetConnection( _In_ LPCTSTR lpLocalName, _Out_ LPTSTR lpRemoteName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385453(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385453")]
-	public static extern Win32Error WNetGetConnection(string lpLocalName, StringBuilder lpRemoteName, ref uint lpnLength);
+	public static extern Win32Error WNetGetConnection(string lpLocalName, StringBuilder? lpRemoteName, ref uint lpnLength);
 
 	/// <summary>
 	/// The <c>WNetGetLastError</c> function retrieves the most recent extended error code set by a WNet function. The network provider
@@ -1753,7 +1755,7 @@ public static partial class Mpr
 	// DWORD WNetGetProviderName( _In_ DWORD dwNetType, _Out_ LPTSTR lpProviderName, _Inout_ LPDWORD lpBufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385464(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385464")]
-	public static extern Win32Error WNetGetProviderName(WNNC_NET dwNetType, StringBuilder lpProviderName, ref uint lpBufferSize);
+	public static extern Win32Error WNetGetProviderName(WNNC_NET dwNetType, StringBuilder? lpProviderName, ref uint lpBufferSize);
 
 	/// <summary>
 	/// When provided with a remote path to a network resource, the <c>WNetGetResourceInformation</c> function identifies the network
@@ -1841,7 +1843,7 @@ public static partial class Mpr
 	// LPTSTR *lplpSystem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385469(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385469")]
-	public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out IntPtr lplpSystem);
+	public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out StrPtrAuto lplpSystem);
 
 	/// <summary>
 	/// <para>
@@ -2100,7 +2102,7 @@ public static partial class Mpr
 	// DWORD WNetGetUser( _In_ LPCTSTR lpName, _Out_ LPTSTR lpUserName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385476(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385476")]
-	public static extern Win32Error WNetGetUser([Optional] string? lpName, StringBuilder lpUserName, ref uint lpnLength);
+	public static extern Win32Error WNetGetUser([Optional] string? lpName, StringBuilder? lpUserName, ref uint lpnLength);
 
 	/// <summary>
 	/// The <c>WNetOpenEnum</c> function starts an enumeration of network resources or existing connections. You can continue the
@@ -2259,7 +2261,7 @@ public static partial class Mpr
 	// lphEnum); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385478(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385478")]
-	public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, [Optional] NETRESOURCE lpNetResource, out SafeWNetEnumHandle lphEnum);
+	public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, [Optional] NETRESOURCE? lpNetResource, out SafeWNetEnumHandle lphEnum);
 
 	/// <summary>
 	/// <para>Sets extended error information. Network providers should call this function instead of SetLastError.</para>
@@ -2305,7 +2307,7 @@ public static partial class Mpr
 	/// <summary>Extension method for WNet function results that handles provider errors (ERROR_EXTENDED_ERROR).</summary>
 	/// <param name="err">The error produced by a WNet function.</param>
 	/// <param name="message">The message.</param>
-	public static void WNetThrowIfFailed(this Win32Error err, string message = null)
+	public static void WNetThrowIfFailed(this Win32Error err, string? message = null)
 	{
 		if (err == Win32Error.ERROR_EXTENDED_ERROR)
 		{
@@ -2589,7 +2591,8 @@ public static partial class Mpr
 	// _In_ DWORD dwFlags, _Out_ LPTSTR lpAccessName, _Inout_ LPDWORD lpBufferSize, _Out_ LPDWORD lpResult); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385482(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385482")]
-	public static extern Win32Error WNetUseConnection([Optional] HWND hwndOwner, NETRESOURCE lpNetResource, [Optional] string? lpPassword, [Optional] string? lpUserID, [Optional] CONNECT dwFlags, [Optional] StringBuilder lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
+	public static extern Win32Error WNetUseConnection([Optional] HWND hwndOwner, NETRESOURCE lpNetResource, [Optional] string? lpPassword,
+		[Optional] string? lpUserID, [Optional] CONNECT dwFlags, [Optional] StringBuilder? lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
 
 	/// <summary>
 	/// The <c>CONNECTDLGSTRUCT</c> structure is used by the <c>WNetConnectionDialog1</c> function to establish browsing dialog box parameters.
@@ -2725,7 +2728,7 @@ public static partial class Mpr
 		/// resource redirected from <c>lpLocalName</c> is disconnected.
 		/// </para>
 		/// </summary>
-		public string lpRemoteName;
+		public string? lpRemoteName;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -3137,7 +3140,7 @@ public static partial class Mpr
 	[Serializable]
 	public class NetworkProviderException : Exception
 	{
-		private NetworkProviderException() { }
+		private NetworkProviderException() { Description = Provider = string.Empty; }
 
 		/// <summary>Initializes a new instance of the <see cref="NetworkProviderException"/> class.</summary>
 		/// <param name="info">
@@ -3149,12 +3152,12 @@ public static partial class Mpr
 		/// </param>
 		protected NetworkProviderException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
-			Description = info.GetString("Description");
-			Provider = info.GetString("Provider");
+			Description = info.GetString("Description") ?? string.Empty;
+			Provider = info.GetString("Provider") ?? string.Empty;
 			ProviderErrorCode = info.GetUInt32("ProviderErrorCode");
 		}
 
-		internal NetworkProviderException(uint provErr, string message, string description, string provider) :
+		internal NetworkProviderException(uint provErr, string? message, string description, string provider) :
 			base(message, new Win32Exception(unchecked((int)Win32Error.ERROR_EXTENDED_ERROR)))
 		{
 			ProviderErrorCode = provErr;
@@ -3164,14 +3167,17 @@ public static partial class Mpr
 
 		/// <summary>Gets the provider's description of the error.</summary>
 		/// <value>The description.</value>
+		[DefaultValue("")]
 		public string Description { get; }
 
 		/// <summary>Gets the network provider's name.</summary>
 		/// <value>The provider.</value>
+		[DefaultValue("")]
 		public string Provider { get; }
 
 		/// <summary>Gets the error code reported by the provider.</summary>
 		/// <value>The provider error code.</value>
+		[DefaultValue(0)]
 		public uint ProviderErrorCode { get; }
 
 		/// <summary>
