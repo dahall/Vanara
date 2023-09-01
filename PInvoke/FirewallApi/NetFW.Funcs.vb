@@ -1,6 +1,4 @@
-﻿Imports System
-Imports System.Collections
-Imports System.Runtime.InteropServices
+﻿Imports System.Runtime.InteropServices
 Imports System.Runtime.InteropServices.CustomMarshalers
 
 Partial Public Module FirewallApi
@@ -10,27 +8,27 @@ Partial Public Module FirewallApi
     ''' <summary>
     ''' The <c>PAC_CHANGES_CALLBACK_FN</c> function is used to add custom behavior to the app container change notification process.
     ''' </summary>
-    ''' <param name="context">TOptional context pointer.</param>
+    ''' <param name="context">Optional context pointer.</param>
     ''' <param name="pChange"/>
     ''' <remarks>Call NetworkIsolationRegisterForAppContainerChanges to register this callback function.</remarks>
     <UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet:=CharSet.Unicode)>
     <PInvokeData("netfw.h", MSDNShortId:="NC:netfw.PAC_CHANGES_CALLBACK_FN")>
-    Public Delegate Sub PAC_CHANGES_CALLBACK_FN(<[In], Out, [Optional]> ByVal context As IntPtr, <[In]> ByRef pChange As INET_FIREWALL_AC_CHANGE)
+    Public Delegate Sub PAC_CHANGES_CALLBACK_FN(<[In], Out, [Optional]> ByVal context As System.IntPtr, <[In]> ByRef pChange As INET_FIREWALL_AC_CHANGE)
 
     ''' <summary>Callback used by <see cref="NetworkIsolationGetEnterpriseIdAsync"/>.</summary>
-    ''' <param name="context">TOptional context pointer.</param>
+    ''' <param name="context">Optional context pointer.</param>
     ''' <param name="wszEnterpriseId">The WSZ enterprise identifier.</param>
     ''' <param name="dwErr">The dw error.</param>
     <UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet:=CharSet.Unicode)>
     <PInvokeData("netfw.h", MSDNShortId:="NC:netfw.PAC_CHANGES_CALLBACK_FN")>
-    Public Delegate Sub PNETISO_EDP_ID_CALLBACK_FN(<[In], Out, [Optional]> ByVal context As IntPtr, <[In], [Optional], MarshalAs(UnmanagedType.LPWStr)> ByVal wszEnterpriseId As String, ByVal dwErr As Win32Error)
+    Public Delegate Sub PNETISO_EDP_ID_CALLBACK_FN(<[In], Out, [Optional]> ByVal context As System.IntPtr, <[In], [Optional], MarshalAs(UnmanagedType.LPWStr)> ByVal wszEnterpriseId As String, ByVal dwErr As Win32Error)
 
     ''' <summary>
     ''' The <c>INET_FIREWALL_AC_CREATION_TYPE</c> enumeration specifies the type of app container creation events for which notifications
     ''' will be delivered.
     ''' </summary>
     <PInvokeData("netfw.h", MSDNShortId:="NE:netfw._INET_FIREWALL_AC_CREATION_TYPE")>
-    <Flags>
+    <System.Flags>
     Public Enum INET_FIREWALL_AC_CREATION_TYPE
 
         ''' <summary>This value is reserved for system use.</summary>
@@ -73,7 +71,7 @@ Partial Public Module FirewallApi
     ''' By default, binaries are not returned. <c>NETISO_FLAG_FORCE_COMPUTE_BINARIES</c> must be set in order for these to be returned.
     ''' </remarks>
     <PInvokeData("netfw.h", MSDNShortId:="NE:netfw.NETISO_FLAG")>
-    <Flags>
+    <System.Flags>
     Public Enum NETISO_FLAG
 
         ''' <summary>
@@ -142,7 +140,7 @@ Partial Public Module FirewallApi
     ''' <remarks>If no app containers are installed on the system, ERROR_SUCCESS will still be returned (and ppPublicAppCs will be empty).</remarks>
     <DllImport(Lib_Firewallapi, SetLastError:=False, ExactSpelling:=True)>
     <PInvokeData("netfw.h", MSDNShortId:="NF:netfw.NetworkIsolationEnumAppContainers")>
-    Public Function NetworkIsolationEnumAppContainers(ByVal Flags As NETISO_FLAG, <Out> ByRef pdwNumPublicAppCs As UInteger, <Out> ByRef ppPublicAppCs As IntPtr) As Win32Error
+    Public Function NetworkIsolationEnumAppContainers(ByVal Flags As NETISO_FLAG, <Out> ByRef pdwNumPublicAppCs As UInteger, <Out> ByRef ppPublicAppCs As System.IntPtr) As Win32Error
     End Function
 
     ''' <summary>The <c>NetworkIsolationEnumerateAppContainerRules</c> function enumerates all of the rules related to app containers.</summary>
@@ -156,7 +154,7 @@ Partial Public Module FirewallApi
     ''' </returns>
     <DllImport(Lib_Firewallapi, SetLastError:=False, ExactSpelling:=True)>
     <PInvokeData("netfw.h", MSDNShortId:="NF:netfw.NetworkIsolationEnumerateAppContainerRules")>
-    Public Function NetworkIsolationEnumerateAppContainerRules(<Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef:=GetType(EnumeratorToEnumVariantMarshaler), MarshalCookie:="")> ByRef newEnum As IEnumerable) As HRESULT
+    Public Function NetworkIsolationEnumerateAppContainerRules(<Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef:=GetType(EnumeratorToEnumVariantMarshaler), MarshalCookie:="")> ByRef newEnum As System.Collections.IEnumerable) As HRESULT
     End Function
 
     ''' <summary>
@@ -209,7 +207,7 @@ Partial Public Module FirewallApi
     <DllImport(Lib_Firewallapi, SetLastError:=False, ExactSpelling:=True)>
     <PInvokeData("netfw.h", MSDNShortId:="NF:netfw.NetworkIsolationGetEnterpriseIdAsync")>
     Public Function NetworkIsolationGetEnterpriseIdAsync(<MarshalAs(UnmanagedType.LPWStr)> ByVal wszServerName As String, ByVal dwFlags As NETISO_GEID,
-        <[In], [Optional]> ByVal context As IntPtr, ByVal callback As PNETISO_EDP_ID_CALLBACK_FN, <Out> ByRef hOperation As HANDLE) As Win32Error
+        <[In], [Optional]> ByVal context As System.IntPtr, ByVal callback As PNETISO_EDP_ID_CALLBACK_FN, <Out> ByRef hOperation As HANDLE) As Win32Error
     End Function
 
     ''' <summary>
@@ -245,7 +243,7 @@ Partial Public Module FirewallApi
     ''' </remarks>
     <DllImport(Lib_Firewallapi, SetLastError:=False, ExactSpelling:=True)>
     <PInvokeData("netfw.h", MSDNShortId:="NF:netfw.NetworkIsolationSetAppContainerConfig")>
-    Public Function NetworkIsolationSetAppContainerConfig(ByVal dwNumPublicAppCs As UInteger, <[In]> ByVal appContainerSids As IntPtr) As Win32Error
+    Public Function NetworkIsolationSetAppContainerConfig(ByVal dwNumPublicAppCs As UInteger, <[In]> ByVal appContainerSids As System.IntPtr) As Win32Error
     End Function
 
     ''' <summary>
@@ -315,7 +313,7 @@ Partial Public Module FirewallApi
         Public count As UInteger
 
         ''' <summary>Paths to the applications running in the app container.</summary>
-        Public binaries As IntPtr
+        Public binaries As System.IntPtr
 
     End Structure
 

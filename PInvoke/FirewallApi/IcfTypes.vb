@@ -1,6 +1,4 @@
-﻿Imports System
-
-Partial Public Module FirewallApi
+﻿Partial Public Module FirewallApi
 
     ''' <summary>The <c>NET_FW_ACTION</c> enumerated type specifies the action for a rule or default setting.</summary>
     <PInvokeData("icftypes.h", MSDNShortId:="NE:icftypes.NET_FW_ACTION_")>
@@ -199,7 +197,7 @@ Partial Public Module FirewallApi
 
     ''' <summary>The <c>NET_FW_PROFILE_TYPE2</c> enumerated type specifies the type of profile.</summary>
     <PInvokeData("icftypes.h", MSDNShortId:="NE:icftypes.NET_FW_PROFILE_TYPE2_")>
-    <Flags>
+    <System.Flags>
     Public Enum NET_FW_PROFILE_TYPE2
 
         ''' <summary/>
