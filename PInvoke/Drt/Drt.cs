@@ -745,31 +745,31 @@ public static partial class Drt
 	public static extern HRESULT DrtCreateIpv6UdpTransport(DRT_SCOPE scope, uint dwScopeId, uint dwLocalityThreshold, ref ushort pwPort, out SafeHDRT_TRANSPORT phTransport);
 
 	/// <summary>
-	/// The <c>DrtCreateNullSecurityProvider</c> function creates a null security provider. This security provider does not require
-	/// nodes to authenticate keys.
+	/// The <c>DrtCreateNullSecurityProvider</c> function creates a null security provider. This security provider does not require nodes to
+	/// authenticate keys.
 	/// </summary>
 	/// <param name="ppSecurityProvider">Pointer to the DRT_SETTINGS structure.</param>
 	/// <returns>
 	/// <para>This function returns S_OK on success. Other possible values include:</para>
 	/// <list type="table">
 	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
+	/// <description>Return code</description>
+	/// <description>Description</description>
 	/// </listheader>
 	/// <item>
-	/// <term>E_OUTOFMEMORY</term>
-	/// <term>The system cannot allocate memory for the provider.</term>
+	/// <description><c>E_OUTOFMEMORY</c></description>
+	/// <description>The system cannot allocate memory for the provider.</description>
 	/// </item>
 	/// <item>
-	/// <term>DRT_E_INVALID_ARG</term>
-	/// <term>ppDrtSecurityProvider is NULL.</term>
+	/// <description><c>DRT_E_INVALID_ARG</c></description>
+	/// <description><c>ppDrtSecurityProvider</c> is <c>NULL</c>.</description>
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatenullsecurityprovider HRESULT
-	// DrtCreateNullSecurityProvider( DRT_SECURITY_PROVIDER **ppSecurityProvider );
-	[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
+	// https://learn.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatenullsecurityprovider
+	// HRESULT DrtCreateNullSecurityProvider( [out] DRT_SECURITY_PROVIDER **ppSecurityProvider );
 	[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateNullSecurityProvider")]
+	[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT DrtCreateNullSecurityProvider(out IntPtr ppSecurityProvider);
 
 	/// <summary>
@@ -1510,7 +1510,7 @@ public static partial class Drt
 	// const DRT_SEARCH_INFO *pInfo, ULONG timeout, HANDLE hEvent, const PVOID pvContext, HDRT_SEARCH_CONTEXT *hSearchContext );
 	[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtStartSearch")]
-	public static extern HRESULT DrtStartSearch(HDRT hDrt, in DRT_DATA pKey, in DRT_SEARCH_INFO pInfo, uint timeout, HANDLE hEvent,
+	public static extern HRESULT DrtStartSearch(HDRT hDrt, in DRT_DATA pKey, in DRT_SEARCH_INFO pInfo, uint timeout, HEVENT hEvent,
 		[In, Optional] IntPtr pvContext, out HDRT_SEARCH_CONTEXT hSearchContext);
 
 	/// <summary>The <c>DrtStartSearch</c> function searches the DRT for a key using criteria specified in the DRT_SEARCH_INFO structure.</summary>
@@ -1579,7 +1579,7 @@ public static partial class Drt
 	// const DRT_SEARCH_INFO *pInfo, ULONG timeout, HANDLE hEvent, const PVOID pvContext, HDRT_SEARCH_CONTEXT *hSearchContext );
 	[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtStartSearch")]
-	public static extern HRESULT DrtStartSearch(HDRT hDrt, in DRT_DATA pKey, [In, Optional] IntPtr pInfo, uint timeout, HANDLE hEvent,
+	public static extern HRESULT DrtStartSearch(HDRT hDrt, in DRT_DATA pKey, [In, Optional] IntPtr pInfo, uint timeout, HEVENT hEvent,
 		[In, Optional] IntPtr pvContext, out HDRT_SEARCH_CONTEXT hSearchContext);
 
 	/// <summary>The <c>DrtUnregisterKey</c> function deregisters a key from the DRT.</summary>
@@ -1781,7 +1781,7 @@ public static partial class Drt
 		public static bool operator ==(DRT_BOOTSTRAP_RESOLVE_CONTEXT h1, DRT_BOOTSTRAP_RESOLVE_CONTEXT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is DRT_BOOTSTRAP_RESOLVE_CONTEXT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is DRT_BOOTSTRAP_RESOLVE_CONTEXT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1806,7 +1806,7 @@ public static partial class Drt
 		/// <summary>Performs an implicit conversion from <see cref="DRT_DATA"/> to <see cref="System.Byte"/>[].</summary>
 		/// <param name="d">The <see cref="DRT_DATA"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator byte[](DRT_DATA d) => d.pb == IntPtr.Zero ? null : d.GetArray();
+		public static implicit operator byte[]?(DRT_DATA d) => d.pb == IntPtr.Zero ? null : d.GetArray();
 	}
 
 	/// <summary>
@@ -1928,7 +1928,7 @@ public static partial class Drt
 					public IntPtr pAddresses;
 
 					/// <summary>Gets the array of SOCKADDR_STORAGE addresses returned by the bootstrap provider.</summary>
-					public SOCKADDR_STORAGE[] Addresses => pAddresses.ToArray<SOCKADDR_STORAGE>((int)cntAddress);
+					public SOCKADDR_STORAGE[] Addresses => pAddresses.ToArray<SOCKADDR_STORAGE>((int)cntAddress) ?? new SOCKADDR_STORAGE[0];
 				}
 			}
 		}
@@ -2233,7 +2233,7 @@ public static partial class Drt
 		public static bool operator ==(HDRT h1, HDRT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDRT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDRT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2281,7 +2281,7 @@ public static partial class Drt
 		public static bool operator ==(HDRT_REGISTRATION_CONTEXT h1, HDRT_REGISTRATION_CONTEXT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDRT_REGISTRATION_CONTEXT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDRT_REGISTRATION_CONTEXT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2329,7 +2329,7 @@ public static partial class Drt
 		public static bool operator ==(HDRT_SEARCH_CONTEXT h1, HDRT_SEARCH_CONTEXT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDRT_SEARCH_CONTEXT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDRT_SEARCH_CONTEXT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2377,7 +2377,7 @@ public static partial class Drt
 		public static bool operator ==(HDRT_TRANSPORT h1, HDRT_TRANSPORT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDRT_TRANSPORT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDRT_TRANSPORT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
