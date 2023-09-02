@@ -19,7 +19,7 @@ public class NetApi32Tests
 		foreach (var (dnsHostName, sockets) in DsGetDcEnum(dci.DomainName))
 		{
 			TestContext.WriteLine($"{dnsHostName} = {string.Join(",", sockets)}");
-			foreach (var(address, site, subnet) in DsAddressToSiteNamesEx(dnsHostName, sockets))
+			foreach (var(address, site, subnet) in DsAddressToSiteNamesEx(dnsHostName!, sockets))
 				TestContext.WriteLine($"  Site={site}; Subnet={subnet}");
 			TestContext.WriteLine($"   SiteCov={string.Join(",", DsGetDcSiteCoverage(dnsHostName))}");
 		}
@@ -61,7 +61,7 @@ public class NetApi32Tests
 	public void NetGetAadJoinInformationTest()
 	{
 		Assert.That(NetGetAadJoinInformation(null, out var joinInfo), ResultIs.Successful);
-		joinInfo.WriteValues();
+		joinInfo!.WriteValues();
 	}
 
 	[Test]
@@ -158,7 +158,8 @@ public class NetApi32Tests
 		Assert.That(info.lgrpi1_name, Is.EqualTo(val));
 
 		using var identity = WindowsIdentity.GetCurrent();
-		var sidmem = new SafeHGlobalHandle(identity.User.GetBytes());
+		Assert.NotNull(identity.User);
+		var sidmem = new SafeHGlobalHandle(identity.User!.GetBytes());
 
 		NetLocalGroupAddMembers(null, val, new[] { new LOCALGROUP_MEMBERS_INFO_0 { lgrmi0_sid = (IntPtr)sidmem } });
 		var m = NetLocalGroupGetMembers<LOCALGROUP_MEMBERS_INFO_3>(null, val);
