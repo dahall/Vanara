@@ -106,7 +106,7 @@ public partial class IpHlpApiTests
 		Assert.That(GetBestRoute(target, 0, out MIB_IPFORWARDROW fwdRow), Is.Zero);
 		var mibrow = new MIB_IPNETROW(target, fwdRow.dwForwardIfIndex, SendARP(target), MIB_IPNET_TYPE.MIB_IPNET_TYPE_DYNAMIC);
 
-		MIB_IPNETTABLE t1 = null;
+		MIB_IPNETTABLE? t1 = null;
 		Assert.That(() => t1 = GetIpNetTable(true), Throws.Nothing);
 		if (t1 != null && HasVal(t1, mibrow))
 			Assert.That(DeleteIpNetEntry(mibrow), Is.Zero);
@@ -197,8 +197,9 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetBestInterfaceExTest()
 	{
-		System.Net.IPAddress gw = primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault();
-		var sa = new SOCKADDR(gw.GetAddressBytes(), 0, gw.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 0 : (uint)gw.ScopeId);
+		System.Net.IPAddress? gw = primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault();
+		Assert.NotNull(gw);
+		var sa = new SOCKADDR(gw!.GetAddressBytes(), 0, gw.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 0 : (uint)gw.ScopeId);
 		Assert.That(GetBestInterfaceEx(sa, out var idx), Is.Zero);
 		Assert.That(idx, Is.EqualTo(primaryAdapter.IfIndex));
 	}
@@ -207,7 +208,7 @@ public partial class IpHlpApiTests
 	public void GetBestInterfaceTest()
 	{
 #pragma warning disable CS0618 // Type or member is obsolete
-		var gw = (uint)primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault().Address;
+		var gw = (uint)(primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault()?.Address ?? 0L);
 #pragma warning restore CS0618 // Type or member is obsolete
 		Assert.That(gw, Is.Not.Zero);
 		Assert.That(GetBestInterface(gw, out var idx), Is.Zero);
@@ -464,7 +465,7 @@ public partial class IpHlpApiTests
 		{
 			if (type == TCP_ESTATS_TYPE.TcpConnectionEstatsSynOpts) continue;
 			Assert.That(GetPerTcp6ConnectionEStats(row, type, out var srw, out _, out _), ResultIs.Successful);
-			TestContext.Write(GetStats(srw));
+			TestContext.Write(GetStats(srw!));
 		}
 		ToggleAllEstats(row, false);
 	}
@@ -480,7 +481,7 @@ public partial class IpHlpApiTests
 		{
 			if (type == TCP_ESTATS_TYPE.TcpConnectionEstatsSynOpts) continue;
 			Assert.That(GetPerTcpConnectionEStats(row, type, out var srw, out _, out _), ResultIs.Successful);
-			TestContext.Write(GetStats(srw));
+			TestContext.Write(GetStats(srw!));
 		}
 		ToggleAllEstats(row, false);
 	}
@@ -565,7 +566,8 @@ public partial class IpHlpApiTests
 	public void SendARPTest() => Assert.That(() =>
 	{
 		var gw = primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert().GetAddressBytes()).FirstOrDefault();
-		var mac = SendARP(new IN_ADDR(gw));
+		Assert.NotNull(gw);
+		var mac = SendARP(new IN_ADDR(gw!));
 		Assert.That(mac.Length, Is.EqualTo(6));
 		Assert.That(mac, Has.Some.Not.EqualTo(0));
 	}, Throws.Nothing);
@@ -662,7 +664,7 @@ bail:
 			case TCP_ESTATS_TYPE.TcpConnectionEstatsFineRtt:
 				return SafeHGlobalHandle.CreateFromStructure(new TCP_ESTATS_FINE_RTT_RW_v0 { EnableCollection = enable });
 			default:
-				return null;
+				return SafeHGlobalHandle.Null;
 		}
 	}
 
@@ -707,11 +709,12 @@ bail:
 		{
 			if (type == TCP_ESTATS_TYPE.TcpConnectionEstatsSynOpts) continue;
 			Assert.That(GetPerTcp6ConnectionEStats(serverConnectRow, type, out var srw, out _, out _), Is.Zero);
-			Console.Write(GetStats(srw));
+			Console.Write(GetStats(srw!));
 			Assert.That(GetPerTcp6ConnectionEStats(clientConnectRow, type, out var crw, out _, out _), Is.Zero);
-			Console.Write(GetStats(crw));
+			Console.Write(GetStats(crw!));
 		}
 	}
+
 	private MIB_TCP6ROW GetTcp6Row(ushort localPort, ushort remotePort, MIB_TCP_STATE state) =>
 		GetTcp6Table(true).First(r => r.dwLocalPort == localPort && r.dwRemotePort == remotePort && r.dwState == state);
 

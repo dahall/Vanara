@@ -150,10 +150,7 @@ public partial class IpHlpApiTests
 			return false;
 		}
 
-		static bool CompareArrays(byte* left, byte[] right)
-		{
-			return !right.Where((t, i) => left[i] != t).Any();
-		}
+		static bool CompareArrays(byte* left, byte[] right) => !right.Where((t, i) => left[i] != t).Any();
 	}
 
 	[Test]
@@ -195,10 +192,7 @@ public partial class IpHlpApiTests
 			return false;
 		}
 
-		static unsafe bool CompareArrays(byte* left, byte[] right)
-		{
-			return !right.Where((t, i) => left[i] != t).Any();
-		}
+		static unsafe bool CompareArrays(byte* left, byte[] right) => !right.Where((t, i) => left[i] != t).Any();
 	}
 
 	[Test]
@@ -226,9 +220,9 @@ public partial class IpHlpApiTests
 	{
 		var dest = primaryAdapter.MulticastAddresses.Select(ma => ma.Address.GetSOCKADDR().Ipv6).ToArray();
 		TestContext.WriteLine(string.Join("\r\n", dest));
-		SOCKADDR_IN6_PAIR_NATIVE[] result = null;
+		SOCKADDR_IN6_PAIR_NATIVE[]? result = null;
 		Assert.That(() => result = CreateSortedAddressPairs(dest), Throws.Nothing);
-		TestContext.WriteLine("\r\n" + string.Join("\r\n", result));
+		TestContext.WriteLine("\r\n" + string.Join("\r\n", result!));
 		Assert.That(result, Has.Length.GreaterThan(0));
 	}
 
@@ -284,7 +278,7 @@ public partial class IpHlpApiTests
 	{
 		Assert.That(GetIfStackTable(out var table), ResultIs.Successful);
 		Assert.That(table.NumEntries, Is.GreaterThan(0));
-		Assert.That(table.Table.Length, Is.EqualTo(table.NumEntries));
+		Assert.That(table.Table!.Length, Is.EqualTo(table.NumEntries));
 	}
 
 	[Test]
@@ -330,7 +324,7 @@ public partial class IpHlpApiTests
 		Assert.That(table.NumEntries, Is.GreaterThan(0));
 		Assert.That(() => table.Table, Throws.Nothing);
 
-		var goodRow = table.Table[0];
+		var goodRow = table.Table![0];
 		var row = new MIB_IPFORWARD_ROW2 { DestinationPrefix = goodRow.DestinationPrefix, NextHop = goodRow.NextHop, InterfaceLuid = goodRow.InterfaceLuid };
 		Assert.That(GetIpForwardEntry2(ref row), ResultIs.Successful);
 		Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
@@ -343,7 +337,7 @@ public partial class IpHlpApiTests
 		Assert.That(table.NumEntries, Is.GreaterThan(0));
 		Assert.That(() => table.Table, Throws.Nothing);
 
-		var goodRow = table.Table[0];
+		var goodRow = table.Table![0];
 		var row = new MIB_IPINTERFACE_ROW { Family = goodRow.Family, InterfaceLuid = goodRow.InterfaceLuid };
 		Assert.That(GetIpInterfaceEntry(ref row), ResultIs.Successful);
 		Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
@@ -364,7 +358,7 @@ public partial class IpHlpApiTests
 		Assert.That(table.NumEntries, Is.GreaterThan(0));
 		Assert.That(() => table.Table, Throws.Nothing);
 
-		var goodRow = table.Table[0];
+		var goodRow = table.Table![0];
 		var row = new MIB_IPPATH_ROW { Destination = goodRow.Destination, InterfaceLuid = goodRow.InterfaceLuid };
 		Assert.That(GetIpPathEntry(ref row), ResultIs.Successful);
 		Assert.That((int)row.Source.si_family, Is.Not.Zero);
@@ -377,7 +371,7 @@ public partial class IpHlpApiTests
 		Assert.That(table.NumEntries, Is.GreaterThan(0));
 		Assert.That(() => table.Table, Throws.Nothing);
 
-		var goodRow = table.Table[0];
+		var goodRow = table.Table![0];
 		var row = new MIB_MULTICASTIPADDRESS_ROW { Address = goodRow.Address, InterfaceLuid = goodRow.InterfaceLuid };
 		Assert.That(GetMulticastIpAddressEntry(ref row), ResultIs.Successful);
 		Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
@@ -407,7 +401,7 @@ public partial class IpHlpApiTests
 		Assert.That(table.NumEntries, Is.GreaterThan(0));
 		Assert.That(() => table.Table, Throws.Nothing);
 
-		var goodRow = table.Table[0];
+		var goodRow = table.Table![0];
 		var row = new MIB_IPNET_ROW2 { Address = goodRow.Address, InterfaceLuid = goodRow.InterfaceLuid };
 		Assert.That(GetIpNetEntry2(ref row), ResultIs.Successful);
 		Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
@@ -419,7 +413,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetTeredoPortTest()
 	{
-		Assert.That((uint)GetTeredoPort(out var port), Is.Zero.Or.EqualTo(Win32Error.ERROR_NOT_READY));
+		Assert.That((uint)GetTeredoPort(out _), Is.Zero.Or.EqualTo(Win32Error.ERROR_NOT_READY));
 	}
 
 	[Test]
@@ -429,7 +423,7 @@ public partial class IpHlpApiTests
 		Assert.That(table.NumEntries, Is.GreaterThan(0));
 		Assert.That(() => table.Table, Throws.Nothing);
 
-		var goodRow = table.Table[0];
+		var goodRow = table.Table![0];
 		var row = new MIB_UNICASTIPADDRESS_ROW { Address = goodRow.Address, InterfaceLuid = goodRow.InterfaceLuid };
 		Assert.That(GetUnicastIpAddressEntry(ref row), ResultIs.Successful);
 		Assert.That(row.CreationTimeStamp, Is.Not.Zero.And.EqualTo(goodRow.CreationTimeStamp));
