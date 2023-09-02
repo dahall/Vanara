@@ -1,10 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Vanara.Extensions;
 using Vanara.PInvoke.NetListMgr;
-using Vanara.InteropServices;
-using System.Runtime.InteropServices;
 
 //using NETWORKLIST;
 
@@ -13,8 +10,8 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class NetListMgrTests
 {
-	private static INetworkListManager mgr;
-	private static INetworkCostManager coster;
+	private static INetworkListManager? mgr;
+	private static INetworkCostManager? coster;
 
 	[OneTimeSetUp]
 	public static void OneTimeSetup()
@@ -26,19 +23,19 @@ public class NetListMgrTests
 	[Test]
 	public void GetNetworksTest()
 	{
-		var ns = mgr.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED);
+		var ns = mgr!.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED);
 		Assert.That(ns, Is.Not.Null);
 		var n = ns.Cast<INetwork>().FirstOrDefault();
 		Assert.That(n, Is.Not.Null);
-		Assert.That(mgr.IsConnected, Is.True);
-		Assert.That(mgr.IsConnectedToInternet, Is.True);
-		Assert.That((int)mgr.GetConnectivity(), Is.GreaterThan(0));
+		Assert.That(mgr!.IsConnected, Is.True);
+		Assert.That(mgr!.IsConnectedToInternet, Is.True);
+		Assert.That((int)mgr!.GetConnectivity(), Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetNetworksTest1()
 	{
-		using var ns = ComReleaserFactory.Create(mgr.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED));
+		using var ns = ComReleaserFactory.Create(mgr!.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED));
 		Assert.That(ns.Item, Is.Not.Null);
 		var connections = new INetwork[5];
 		ns.Item.Next((uint)connections.Length, connections, out uint fetched);
@@ -50,7 +47,7 @@ public class NetListMgrTests
 	[Test]
 	public void GetNetworkConnectionsTest()
 	{
-		var ns = mgr.GetNetworkConnections();
+		var ns = mgr!.GetNetworkConnections();
 		Assert.That(ns, Is.Not.Null);
 		var n = ns.Cast<INetworkConnection>().FirstOrDefault();
 		Assert.That(n, Is.Not.Null);
@@ -59,7 +56,7 @@ public class NetListMgrTests
 	[Test]
 	public void GetNetworkConnectionsTest1()
 	{
-		var ns = ComReleaserFactory.Create(mgr.GetNetworkConnections());
+		var ns = ComReleaserFactory.Create(mgr!.GetNetworkConnections());
 		Assert.That(ns.Item, Is.Not.Null);
 		var connections = new INetworkConnection[5];
 		ns.Item.Next((uint)connections.Length, connections, out uint fetched);
@@ -71,12 +68,12 @@ public class NetListMgrTests
 	[Test]
 	public void GetNetworkTest()
 	{
-		var ns = mgr.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED);
+		var ns = mgr!.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_CONNECTED);
 		Assert.That(ns, Is.Not.Null);
 		var n = ns.Cast<INetwork>().FirstOrDefault();
 		Assert.That(n, Is.Not.Null);
-		var g = n.GetNetworkId();
-		var n1 = mgr.GetNetwork(g);
+		var g = n!.GetNetworkId();
+		var n1 = mgr!.GetNetwork(g);
 		Assert.That(n.GetName() == n1.GetName());
 		Assert.That(n.GetName(), Is.Not.Null);
 		var nm = n.GetName();
@@ -106,12 +103,12 @@ public class NetListMgrTests
 	[Test]
 	public void GetNetworkConnectionTest()
 	{
-		var ns = mgr.GetNetworkConnections();
+		var ns = mgr!.GetNetworkConnections();
 		Assert.That(ns, Is.Not.Null);
 		var n = ns.Cast<INetworkConnection>().FirstOrDefault();
 		Assert.That(n, Is.Not.Null);
-		var g = n.GetConnectionId();
-		var n1 = mgr.GetNetworkConnection(g);
+		var g = n!.GetConnectionId();
+		var n1 = mgr!.GetNetworkConnection(g);
 		Assert.That(n.GetConnectionId() == n1.GetConnectionId());
 		Assert.That(n.GetAdapterId() == n1.GetAdapterId());
 		Assert.That(n.GetNetwork(), Is.Not.Null);
@@ -132,11 +129,11 @@ public class NetListMgrTests
 	public void GetCostTest()
 	{
 		NLM_CONNECTION_COST ret = 0;
-		Assert.That(() => coster.GetCost(out ret), Throws.Nothing);
+		Assert.That(() => coster!.GetCost(out ret), Throws.Nothing);
 		TestContext.WriteLine($"Cost:{ret}");
 		Assert.That((int)ret, Is.GreaterThan(0));
 		var status = new NLM_DATAPLAN_STATUS();
-		Assert.That(() => coster.GetDataPlanStatus(out status), Throws.Nothing);
+		Assert.That(() => coster!.GetDataPlanStatus(out status), Throws.Nothing);
 		Assert.That(status.InterfaceGuid, Is.Not.EqualTo(Guid.Empty));
 		TestContext.WriteLine($"Guid:{status.InterfaceGuid}; Limit:{status.DataLimitInMegabytes:X}; Xfer:{status.MaxTransferSizeInMegabytes:X}");
 	}

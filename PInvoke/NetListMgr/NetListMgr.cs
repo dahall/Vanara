@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using Vanara.Collections;
 
 [assembly: Guid("DCB00D01-570F-4A9B-8D69-199FDBA5723B")]
 #if !NETSTANDARD2_0
@@ -174,7 +175,7 @@ public enum NLM_NETWORK_PROPERTY_CHANGE
 /// <seealso cref="System.Collections.IEnumerable"/>
 [ComImport, TypeLibType(TypeLibTypeFlags.FDispatchable | TypeLibTypeFlags.FDual), Guid("DCB00006-570F-4A9B-8D69-199FDBA5723B")]
 [PInvokeData("Netlistmgr.h", MSDNShortId = "aa370706")]
-public interface IEnumNetworkConnections : IEnumerable
+public interface IEnumNetworkConnections : IEnumerable, ICOMEnum<INetworkConnection>
 {
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
@@ -213,7 +214,7 @@ public interface IEnumNetworkConnections : IEnumerable
 /// <seealso cref="System.Collections.IEnumerable"/>
 [ComImport, TypeLibType(TypeLibTypeFlags.FDispatchable | TypeLibTypeFlags.FDual), Guid("DCB00003-570F-4A9B-8D69-199FDBA5723B")]
 [PInvokeData("Netlistmgr.h", MSDNShortId = "aa370735")]
-public interface IEnumNetworks : IEnumerable
+public interface IEnumNetworks : IEnumerable, ICOMEnum<INetwork>
 {
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
@@ -463,7 +464,7 @@ public interface INetworkCostManager
 	/// An <see cref="NLM_SOCKADDR"/> structure containing the destination IPv4/IPv6 address. If NULL, this method will instead return the cost associated with the
 	/// preferred connection used for machine Internet connectivity.
 	/// </param>
-	void GetCost(out NLM_CONNECTION_COST pCost, [In, Optional] NLM_SOCKADDR pDestIPAddr);
+	void GetCost(out NLM_CONNECTION_COST pCost, [In, Optional] NLM_SOCKADDR? pDestIPAddr);
 
 	/// <summary>
 	/// The GetDataPlanStatus retrieves the data plan status for either a machine-wide internet connection , or the first-hop of routing to a specific
@@ -478,7 +479,7 @@ public interface INetworkCostManager
 	/// An <see cref="NLM_SOCKADDR"/> structure containing the destination IPv4/IPv6 or tunnel address. If NULL, this method returns the cost associated with the
 	/// preferred connection used for machine Internet connectivity.
 	/// </param>
-	void GetDataPlanStatus(out NLM_DATAPLAN_STATUS pDataPlanStatus, [In, Optional] NLM_SOCKADDR pDestIPAddr);
+	void GetDataPlanStatus(out NLM_DATAPLAN_STATUS pDataPlanStatus, [In, Optional] NLM_SOCKADDR? pDestIPAddr);
 
 	/// <summary>
 	/// The <c>SetDestinationAddresses</c> method registers specified destination IPv4/IPv6 addresses to receive cost or data plan
@@ -575,7 +576,7 @@ public interface INetworkCostManagerEvents
 	/// change is a machine-wide Internet connectivity change.
 	/// </param>
 	[PreserveSig]
-	HRESULT CostChanged([In] NLM_CONNECTION_COST newCost, [In, Optional] NLM_SOCKADDR pDestAddr);
+	HRESULT CostChanged([In] NLM_CONNECTION_COST newCost, [In, Optional] NLM_SOCKADDR? pDestAddr);
 
 	/// <summary>
 	/// The DataPlanStatusChanged method is called to indicate a change to the status of a data plan associated with either a connection used for
@@ -586,7 +587,7 @@ public interface INetworkCostManagerEvents
 	/// change is a machine-wide Internet connectivity change.
 	/// </param>
 	[PreserveSig]
-	HRESULT DataPlanStatusChanged([In, Optional] NLM_SOCKADDR pDestAddr);
+	HRESULT DataPlanStatusChanged([In, Optional] NLM_SOCKADDR? pDestAddr);
 }
 
 /// <summary>
@@ -841,7 +842,7 @@ public sealed class NLM_SOCKADDR
 	/// <summary>Creates a <see cref="NLM_SOCKADDR"/> from an <see cref="IPAddress"/> instance.</summary>
 	/// <param name="address">The IP address to encapsulate.</param>
 	/// <returns>A <see cref="NLM_SOCKADDR"/> instance with its data field set to either the IPv4 or IPv6 address supplied by <paramref name="address"/>.</returns>
-	public static NLM_SOCKADDR FromIPAddress(IPAddress address)
+	public static NLM_SOCKADDR? FromIPAddress(IPAddress? address)
 	{
 		const ushort AF_INET = 2;
 		const ushort AF_INET6 = 23;
