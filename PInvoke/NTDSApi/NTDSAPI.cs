@@ -1697,7 +1697,7 @@ public static partial class NTDSApi
 	// USHORT *pInstancePorts, DWORD *pcSpn, LPSTR **prpszSpn );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntdsapi.h", MSDNShortId = "cbd53850-9b05-4f74-ab07-30dcad583fc5")]
-	public static extern Win32Error DsGetSpn(DS_SPN_NAME_TYPE ServiceType, string ServiceClass, string ServiceName, ushort InstancePort, ushort cInstanceNames,
+	public static extern Win32Error DsGetSpn(DS_SPN_NAME_TYPE ServiceType, string ServiceClass, [Optional] string? ServiceName, ushort InstancePort, ushort cInstanceNames,
 		[Optional] string[]? pInstanceNames, [Optional] ushort[]? pInstancePorts, ref uint pcSpn, out SpnArrayHandle prpszSpn);
 
 	/// <summary>

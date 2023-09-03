@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices;
 using System.Linq;
-using System.Text;
 using static Vanara.PInvoke.NTDSApi;
 
 namespace Vanara.PInvoke.Tests;
@@ -13,8 +12,7 @@ public class NTDSApiTests
 	public SafeDsHandle hDs;
 	public string dn;
 
-	[OneTimeSetUp]
-	public void Setup()
+	public NTDSApiTests()
 	{
 		dn = Environment.UserDomainName;
 		DsBind(null, dn, out hDs).ThrowIfFailed();
@@ -89,20 +87,20 @@ public class NTDSApiTests
 	[Test]
 	public void DsGetDCInfoTest()
 	{
-		DS_DOMAIN_CONTROLLER_INFO_1[] s1 = null;
+		DS_DOMAIN_CONTROLLER_INFO_1[]? s1 = null;
 		Assert.That(() => s1 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_1>(hDs, dn), Throws.Nothing);
 		Assert.That(s1, Is.Not.Null.And.Property("Length").GreaterThan(0));
-		Assert.That(s1[0].fDsEnabled);
+		Assert.That(s1![0].fDsEnabled);
 
-		DS_DOMAIN_CONTROLLER_INFO_2[] s2 = null;
+		DS_DOMAIN_CONTROLLER_INFO_2[]? s2 = null;
 		Assert.That(() => s2 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_2>(hDs, dn), Throws.Nothing);
 		Assert.That(s2, Is.Not.Null.And.Property("Length").GreaterThan(0));
-		Assert.That(s2[0].fDsEnabled);
+		Assert.That(s2![0].fDsEnabled);
 
-		DS_DOMAIN_CONTROLLER_INFO_3[] s3 = null;
+		DS_DOMAIN_CONTROLLER_INFO_3[]? s3 = null;
 		Assert.That(() => s3 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_3>(hDs, dn), Throws.Nothing);
 		Assert.That(s3, Is.Not.Null.And.Property("Length").GreaterThan(0));
-		Assert.That(s3[0].fDsEnabled);
+		Assert.That(s3![0].fDsEnabled);
 		foreach (var i3 in s3)
 			TestContext.WriteLine($"{(i3.fIsPdc?"PDC":"DC")}{(i3.fIsGc?",GC":"")}{(i3.fIsRodc?",RO":"")}:\t{i3.NetbiosName}\t{i3.DnsHostName}\t{i3.SiteName}\t{i3.SiteObjectName}\t{i3.ComputerObjectName}\t{i3.ServerObjectName}\t{i3.NtdsDsaObjectName}\t{(i3.fDsEnabled?"Enabled":"Disabled")}");
 	}
