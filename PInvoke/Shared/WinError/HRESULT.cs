@@ -837,7 +837,7 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 internal class HRESULTTypeConverter : TypeConverter
 {
 	public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
-		sourceType is IErrorProvider || sourceType.IsPrimitive && sourceType != typeof(char) || base.CanConvertFrom(context, sourceType);
+		typeof(IErrorProvider).IsAssignableFrom(sourceType) || sourceType.IsPrimitive && sourceType != typeof(char) || base.CanConvertFrom(context, sourceType);
 
 	public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType) =>
 		destinationType == typeof(string) || destinationType is not null && destinationType.IsPrimitive && destinationType != typeof(char) || base.CanConvertTo(context, destinationType);

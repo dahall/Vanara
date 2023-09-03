@@ -60,7 +60,7 @@ public abstract class GenericStringMarshalerBase<TMem> : ICustomMarshaler where 
 	/// <param name="value">The string value.</param>
 	/// <param name="defaultValue">The default value if <paramref name="value"/> is not a valid CharSet.</param>
 	/// <returns>A CharSet value.</returns>
-	protected static CharSet CharSetFromString(string value, CharSet defaultValue = CharSet.Unicode)
+	protected static CharSet CharSetFromString(string? value, CharSet defaultValue = CharSet.Unicode)
 	{
 		if (!string.IsNullOrEmpty(value))
 			try { return (CharSet)Enum.Parse(typeof(CharSet), value, true); } catch { }

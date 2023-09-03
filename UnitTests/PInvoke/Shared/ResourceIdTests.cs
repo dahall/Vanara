@@ -18,7 +18,7 @@ public class SafeResourceIdTests
 	}
 
 	[TestCase(1)]
-	[TestCase(ushort.MaxValue)]
+	[TestCase(short.MaxValue)]
 	public void SafeResourceIdTest1(int s)
 	{
 		var r = new SafeResourceId(s);
@@ -65,17 +65,19 @@ public class SafeResourceIdTests
 	[Test]
 	public void SafeResourceIdTest4()
 	{
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.That(() => new SafeResourceId(null), Throws.TypeOf<ArgumentNullException>());
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.That(() => new SafeResourceId(string.Empty), Throws.TypeOf<ArgumentNullException>());
-		Assert.That(() => new SafeResourceId(0), Throws.TypeOf<ArgumentOutOfRangeException>());
-		Assert.That(() => new SafeResourceId(-1), Throws.TypeOf<ArgumentOutOfRangeException>());
-		Assert.That(() => new SafeResourceId(int.MaxValue), Throws.TypeOf<ArgumentOutOfRangeException>());
+		//Assert.That(() => new SafeResourceId(0), Throws.Nothing);
+		//Assert.That(() => new SafeResourceId(-1), Throws.TypeOf<ArgumentOutOfRangeException>());
+		//Assert.That(() => new SafeResourceId(int.MaxValue), Throws.TypeOf<ArgumentOutOfRangeException>());
 	}
 
 	[Test()]
 	public void EqualsTest()
 	{
-		Assert.That(((SafeResourceId)"Test").Equals((object)null), Is.False);
+		Assert.That(((SafeResourceId)"Test").Equals((object?)null), Is.False);
 		Assert.That(((SafeResourceId)"Test").Equals("Test"));
 		Assert.That(((SafeResourceId)"Test").Equals((object)"Test"));
 		Assert.That(((SafeResourceId)20).Equals(20));

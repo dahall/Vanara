@@ -35,7 +35,7 @@ public class RECTTests
 		Assert.That(r, Is.EqualTo(r2));
 		Assert.That(new RECT(0,0,0,0).IsEmpty);
 		Assert.That(new RECT(1, 0, 1, 0).IsEmpty, Is.False);
-		Assert.That(new RECT().GetHashCode(), Is.Zero);
+		Assert.That(new RECT().GetHashCode(), Is.EqualTo(Rectangle.Empty.GetHashCode()));
 		Assert.That(r.GetHashCode(), Is.Not.Zero);
 	}
 
@@ -78,7 +78,7 @@ public class RECTTests
 	public void EqualsTest1()
 	{
 		var r1 = new RECT(1, 1, 4, 4);
-		Assert.That(!r1.Equals((object)null));
+		Assert.That(!r1.Equals((object?)null));
 		Assert.That(r1.Equals(r1));
 		Assert.That(r1.Equals(new RECT(1, 1, 4, 4)));
 		Assert.That(r1.Equals((object)new RECT(1, 1, 4, 4)));
@@ -108,8 +108,9 @@ public class RECTTests
 		Assert.That(() => conv.ConvertFrom("1,1,1,1,1,1"), Throws.TypeOf<NotSupportedException>());
 		Assert.That(!conv.CanConvertFrom(typeof(int)));
 		Assert.That(() => conv.ConvertFrom(1), Throws.TypeOf<NotSupportedException>());
-		Assert.That(() => conv.ConvertFrom("S"), Throws.TypeOf<Exception>());
+		Assert.That(() => conv.ConvertFrom("S"), Throws.TypeOf<NotSupportedException>());
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.That(() => conv.ConvertTo(pr, null), Throws.ArgumentNullException);
 		Assert.That(conv.CanConvertTo(typeof(string)));
 		Assert.That(conv.ConvertTo(pr, typeof(string)), Is.TypeOf<string>().And.EqualTo("1, 1, 1, 1"));
@@ -119,7 +120,7 @@ public class RECTTests
 		Assert.That(conv.ConvertTo(pr, typeof(InstanceDescriptor)), Is.TypeOf<InstanceDescriptor>());
 
 		Assert.That(conv.GetCreateInstanceSupported(null));
-		var r = (RECT)conv.CreateInstance(null, new Dictionary<string, int> {{"left", 4}, {"bottom", 4}});
+		var r = (RECT)conv.CreateInstance(null, new Dictionary<string, int> {{"left", 4}, {"bottom", 4}})!;
 		Assert.That(r, Is.EqualTo(new RECT(4, 0, 0, 4)));
 		Assert.That(() => conv.CreateInstance(null, null), Throws.Exception);
 		Assert.That(() => conv.CreateInstance(null, new Dictionary<string, object> { { "left", 4.2 }, { "bottom", 4 } }), Throws.Exception);
@@ -127,5 +128,6 @@ public class RECTTests
 		Assert.That(conv.GetPropertiesSupported(null));
 		var p = conv.GetProperties(null, pr);
 		Assert.That(p, Has.Count.GreaterThanOrEqualTo(4));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 	}
 }

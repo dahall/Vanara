@@ -91,7 +91,7 @@ public class AnysizeStructTests
 			Assert.That((long)mem.Size, Is.GreaterThanOrEqualTo(strOffset + (str.Length + 1) * StringHelper.GetCharSize(CharSet.Unicode)));
 			Assert.That(StringHelper.GetString(((IntPtr)mem).Offset(strOffset), CharSet.Unicode), Is.EqualTo(str));
 
-			var tsout = (TestStrStructU)m.MarshalNativeToManaged(mem, mem.Size);
+			var tsout = (TestStrStructU)m.MarshalNativeToManaged(mem, mem.Size)!;
 			Assert.That(tsout.iVal, Is.EqualTo(ts.iVal));
 			Assert.That(tsout.array, Is.EquivalentTo(str));
 		}
@@ -103,7 +103,7 @@ public class AnysizeStructTests
 			Assert.That((long)mem.Size, Is.GreaterThanOrEqualTo(strOffset + ts.iVal));
 			Assert.That(StringHelper.GetString(((IntPtr)mem).Offset(strOffset), CharSet.Unicode), Is.EqualTo(newStr));
 
-			var tsout = (TestStrStructU)m.MarshalNativeToManaged(mem, mem.Size);
+			var tsout = (TestStrStructU)m.MarshalNativeToManaged(mem, mem.Size)!;
 			Assert.That(tsout.iVal, Is.EqualTo(ts.iVal));
 			Assert.That(tsout.array, Is.EquivalentTo(newStr));
 		}
@@ -121,7 +121,7 @@ public class AnysizeStructTests
 			Assert.That((long)mem.Size, Is.GreaterThanOrEqualTo(strOffset + (str.Length + 1)));
 			Assert.That(StringHelper.GetString(((IntPtr)mem).Offset(strOffset), CharSet.Ansi), Is.EqualTo(str));
 
-			var tsout = (TestStrStructA)m.MarshalNativeToManaged(mem, mem.Size);
+			var tsout = (TestStrStructA)m.MarshalNativeToManaged(mem, mem.Size)!;
 			Assert.That(tsout.iVal, Is.EqualTo(ts.iVal));
 			Assert.That(tsout.array, Is.EquivalentTo(str));
 		}
@@ -133,7 +133,7 @@ public class AnysizeStructTests
 			Assert.That((long)mem.Size, Is.GreaterThanOrEqualTo(strOffset + ts.iVal));
 			Assert.That(StringHelper.GetString(((IntPtr)mem).Offset(strOffset), CharSet.Ansi), Is.EqualTo(newStr));
 
-			var tsout = (TestStrStructA)m.MarshalNativeToManaged(mem, mem.Size);
+			var tsout = (TestStrStructA)m.MarshalNativeToManaged(mem, mem.Size)!;
 			Assert.That(tsout.iVal, Is.EqualTo(ts.iVal));
 			Assert.That(tsout.array, Is.EquivalentTo(newStr));
 		}
@@ -153,7 +153,7 @@ public class AnysizeStructTests
 		Assert.That((long)mem.Size, Is.GreaterThanOrEqualTo(strOffset + (str.Length + 1) * StringHelper.GetCharSize(CharSet.Unicode)));
 		Assert.That(StringHelper.GetString(((IntPtr)mem).Offset(strOffset), CharSet.Unicode), Is.EqualTo(str));
 
-		var tsout = (TestStrStructU)m.MarshalNativeToManaged(mem, mem.Size);
+		var tsout = (TestStrStructU)m.MarshalNativeToManaged(mem, mem.Size)!;
 		Assert.That(tsout.iVal, Is.EqualTo(ts.iVal));
 		Assert.That(tsout.array, Is.EquivalentTo(str));
 	}

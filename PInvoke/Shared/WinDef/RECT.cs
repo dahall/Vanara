@@ -327,7 +327,7 @@ public class PRECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
 	/// <param name="r1">The first <see cref="PRECT"/> structure.</param>
 	/// <param name="r2">The second <see cref="PRECT"/> structure.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator ==(PRECT r1, PRECT r2)
+	public static bool operator ==(PRECT? r1, PRECT? r2)
 	{
 		if (ReferenceEquals(r1, r2))
 			return true;
@@ -338,7 +338,7 @@ public class PRECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
 	/// <param name="r1">The first <see cref="PRECT"/> structure.</param>
 	/// <param name="r2">The second <see cref="PRECT"/> structure.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(PRECT r1, PRECT r2) => !(r1 == r2);
+	public static bool operator !=(PRECT? r1, PRECT? r2) => !(r1 == r2);
 
 	/// <summary>Determines whether the specified <see cref="PRECT"/>, is equal to this instance.</summary>
 	/// <param name="r">The <see cref="PRECT"/> to compare with this instance.</param>
@@ -466,10 +466,10 @@ internal class RECTConverter : TypeConverter
 		if (propertyValues is null)
 			throw new ArgumentNullException(nameof(propertyValues));
 
-		var left = propertyValues["left"];
-		var top = propertyValues["top"];
-		var right = propertyValues["right"];
-		var bottom = propertyValues["bottom"];
+		var left = propertyValues["left"] ?? 0;
+		var top = propertyValues["top"] ?? 0;
+		var right = propertyValues["right"] ?? 0;
+		var bottom = propertyValues["bottom"] ?? 0;
 
 		return left is int l && top is int t && right is int r && bottom is int b ? new RECT(l, t, r, b) :
 			throw new ArgumentException(@"Invalid property value.");

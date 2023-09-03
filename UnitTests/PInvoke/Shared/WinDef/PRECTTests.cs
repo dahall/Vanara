@@ -6,6 +6,8 @@ using System.Drawing;
 
 namespace Vanara.PInvoke.Tests;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 [TestFixture()]
 public class PRECTTests
 {
@@ -28,20 +30,20 @@ public class PRECTTests
 	{
 		var dr = new Rectangle(1, 2, 2, 2);
 		PRECT r = dr;
-		Assert.That(r.left == 1);
+		Assert.That(r!.left == 1);
 		Assert.That(r.top == 2);
 		Assert.That(r.right == 3);
 		Assert.That(r.bottom == 4);
 		PRECT r2 = new RECT(1,2,3,4);
 		Assert.That(r, Is.EqualTo(r2));
-		Assert.That((Rectangle)r, Is.EqualTo(dr));
+		Assert.That((Rectangle?)r, Is.EqualTo(dr));
 		PRECT r3 = (Rectangle?)null;
-		Assert.That(r3 == null);
+		Assert.IsNull(r3);
 		r3 = (Rectangle?) dr;
-		Assert.That(r3 != null);
+		Assert.NotNull(r3);
 		Assert.That(new PRECT(0, 0, 0, 0).IsEmpty);
 		Assert.That(new PRECT(1, 0, 1, 0).IsEmpty, Is.False);
-		Assert.That(new PRECT().GetHashCode(), Is.Zero);
+		Assert.That(new PRECT().GetHashCode(), Is.EqualTo(Rectangle.Empty.GetHashCode()));
 		Assert.That(r.GetHashCode(), Is.Not.Zero);
 	}
 
@@ -85,8 +87,8 @@ public class PRECTTests
 #pragma warning disable CS1718 // Comparison made to same variable
 		Assert.That(r1 == r1);
 #pragma warning restore CS1718 // Comparison made to same variable
-		Assert.That(r1 != (PRECT)null);
-		Assert.That((PRECT)null != r1);
+		Assert.That(r1 != (PRECT?)null);
+		Assert.That((PRECT?)null != r1);
 		Assert.That(r1 == r2);
 		Assert.That(r1 == r3, Is.False);
 		Assert.That(r1 != r3);
@@ -98,7 +100,7 @@ public class PRECTTests
 	{
 		var r1 = new PRECT(1, 1, 4, 4);
 		Assert.That(!r1.Equals((object)null));
-		Assert.That(r1.Equals(r1));
+		Assert.That(r1!.Equals(r1));
 		Assert.That(r1.Equals(new PRECT(1, 1, 4, 4)));
 		Assert.That(r1.Equals((object)new PRECT(1, 1, 4, 4)));
 		Assert.That(!r1.Equals(new PRECT(1, 2, 4, 4)));
@@ -127,11 +129,11 @@ public class PRECTTests
 		Assert.That(() => conv.ConvertFrom("1,1,1,1,1,1"), Throws.TypeOf<NotSupportedException>());
 		Assert.That(!conv.CanConvertFrom(typeof(int)));
 		Assert.That(() => conv.ConvertFrom(1), Throws.TypeOf<NotSupportedException>());
-		Assert.That(() => conv.ConvertFrom("S"), Throws.TypeOf<Exception>());
+		Assert.That(() => conv.ConvertFrom("S"), Throws.TypeOf<NotSupportedException>());
 
 		Assert.That(() => conv.ConvertTo(pr, null), Throws.ArgumentNullException);
 		Assert.That(conv.CanConvertTo(typeof(string)));
-		Assert.That(conv.ConvertTo(pr, typeof(string)), Is.TypeOf<string>().And.EqualTo("1, 1, 1, 1"));
+		Assert.That(conv.ConvertTo(pr, typeof(string)), Is.TypeOf<string>().And.EqualTo("{left=1,top=1,right=1,bottom=1}"));
 		Assert.That(!conv.CanConvertTo(typeof(char)));
 		Assert.That(() => conv.ConvertTo(pr, typeof(char)), Throws.TypeOf<NotSupportedException>());
 		Assert.That(() => conv.ConvertTo(pr, typeof(DateTime)), Throws.TypeOf<NotSupportedException>());

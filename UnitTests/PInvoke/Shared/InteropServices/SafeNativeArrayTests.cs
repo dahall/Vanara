@@ -11,7 +11,7 @@ public class SafeNativeArrayTests
 	{
 		var a1 = new SafeNativeArray<RECT>(20);
 		Assert.That(a1.Count, Is.EqualTo(20));
-		Assert.That(a1[5], Is.EqualTo(new RECT()));
+		Assert.That(a1[5], Is.EqualTo(RECT.Empty));
 		a1.Add(new RECT(1, 1, 1, 1));
 		Assert.That(a1.Count, Is.EqualTo(21));
 		Assert.That(a1[20], Is.EqualTo(new RECT(1,1,1,1)));

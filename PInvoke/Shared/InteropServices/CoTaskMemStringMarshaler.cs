@@ -9,5 +9,5 @@ public class CoTaskMemStringMarshaler : GenericStringMarshalerBase<CoTaskMemoryM
 	/// <summary>Gets the instance.</summary>
 	/// <param name="cookie">The cookie.</param>
 	/// <returns>A new instance of this class.</returns>
-	public static ICustomMarshaler GetInstance(string cookie) => new CoTaskMemStringMarshaler(CharSetFromString(cookie, CharSet.Unicode));
+	public static ICustomMarshaler GetInstance(string? cookie) => new CoTaskMemStringMarshaler(CharSetFromString(cookie, CharSet.Unicode));
 }

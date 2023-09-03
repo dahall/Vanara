@@ -344,9 +344,11 @@ public class ComEnumeratorUnitTest
 	[Test]
 	public void ComEnumeratorTest10()
 	{
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.That(() => new IEnumFromIndexer<uint>(null, i => i, 0), Throws.ArgumentNullException);
 		Assert.That(() => new IEnumFromIndexer<uint>(() => 1, null, 0), Throws.ArgumentNullException);
 		Assert.That(() => new IEnumFromNext<uint>(null, () => { }), Throws.ArgumentNullException);
 		Assert.That(() => new IEnumFromNext<uint>((out uint value) => { value = 1; return true; }, null), Throws.ArgumentNullException);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 	}
 }
