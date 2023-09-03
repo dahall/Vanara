@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Vanara.InteropServices.Tests;
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 [TestFixture()]
 public class NativeMemoryStreamTests
 {
@@ -76,7 +77,7 @@ public class NativeMemoryStreamTests
 		Assert.That(() => ms.Read<int>(), Throws.InstanceOf<ObjectDisposedException>());
 		Assert.That(() => ms.Read(typeof(int)), Throws.InstanceOf<ObjectDisposedException>());
 		Assert.That(() => ms.Read(new byte[3], 0, 3), Throws.InstanceOf<ObjectDisposedException>());
-		Assert.That(() => ms.ReadByte(), Throws.InstanceOf<ObjectDisposedException>());
+		Assert.That(ms.ReadByte, Throws.InstanceOf<ObjectDisposedException>());
 		Assert.That(() => ms.ReadArray(typeof(byte), 1, false), Throws.InstanceOf<ObjectDisposedException>());
 		Assert.That(() => ms.ReadReference<int>(), Throws.InstanceOf<ObjectDisposedException>());
 		Assert.That(() => ms.ReadReference<string>(), Throws.InstanceOf<ObjectDisposedException>());
@@ -201,7 +202,7 @@ public class NativeMemoryStreamTests
 			Assert.That(() => ms.Read<int>(), Throws.InstanceOf<NotSupportedException>());
 			Assert.That(() => ms.Read(typeof(int)), Throws.InstanceOf<NotSupportedException>());
 			Assert.That(() => ms.Read(new byte[3], 0, 3), Throws.InstanceOf<NotSupportedException>());
-			Assert.That(() => ms.ReadByte(), Throws.InstanceOf<NotSupportedException>());
+			Assert.That(ms.ReadByte, Throws.InstanceOf<NotSupportedException>());
 			Assert.That(() => ms.ReadArray(typeof(byte), 1, false), Throws.InstanceOf<NotSupportedException>());
 			Assert.That(() => ms.ReadReference<int>(), Throws.InstanceOf<NotSupportedException>());
 			Assert.That(() => ms.ReadReference<string>(), Throws.InstanceOf<NotSupportedException>());
@@ -219,14 +220,14 @@ public class NativeMemoryStreamTests
 		Assert.That(() => ms.WriteReference(testStr), Throws.Nothing);
 		Assert.That(ms.Length, Is.EqualTo(24 + IntPtr.Size * 2));
 		Assert.That(ms.Position, Is.EqualTo(IntPtr.Size * 2));
-		Assert.That(() => ms.WriteReference((string)null), Throws.Nothing);
+		Assert.That(() => ms.WriteReference((string?)null), Throws.Nothing);
 		Assert.That(ms.Length, Is.EqualTo(24 + IntPtr.Size * 3));
 		Assert.That(ms.Position, Is.EqualTo(IntPtr.Size * 3));
 		var ptrs = ms.Pointer.ToArray<IntPtr>(3);
 		Assert.That(ptrs, Is.EquivalentTo(new[] { IntPtr.Zero, IntPtr.Zero, IntPtr.Zero }));
 		ms.Flush();
 		Assert.That(ms.Capacity, Is.EqualTo((ms.Length / 20 + 1) * 20));
-		ptrs = ms.Pointer.ToArray<IntPtr>(3);
+		ptrs = ms.Pointer.ToArray<IntPtr>(3)!;
 		Assert.That(ptrs, Is.Not.EquivalentTo(new[] { IntPtr.Zero, IntPtr.Zero, IntPtr.Zero }));
 		Assert.That(StringHelper.GetString(ptrs[0], ms.CharSet), Is.EqualTo(""));
 		Assert.That(StringHelper.GetString(ptrs[1], ms.CharSet), Is.EqualTo(testStr));
@@ -313,7 +314,7 @@ public class NativeMemoryStreamTests
 	public void StringEnumTest()
 	{
 		var abc = new[] { "A", "B", "C" };
-		var a_c = new[] { "A", null, "C" };
+		string?[] a_c = new[] { "A", null, "C" };
 		using var ms = new NativeMemoryStream(128, 128);
 		Assert.That(() => ms.Write(null, StringListPackMethod.Concatenated), Throws.Nothing);
 
@@ -423,7 +424,7 @@ public class NativeMemoryStreamTests
 		Assert.That(() => ms.ReadArray(null, 0, false), Throws.ArgumentNullException);
 		Assert.That(() => ms.ReadArray(typeof(int), -1, false), Throws.InstanceOf<ArgumentOutOfRangeException>());
 		Assert.That(() => ms.ReadArray(typeof(int), 0, false), Throws.Nothing);
-		Assert.That(ms.ReadArray(typeof(int), 0, false).Length, Is.Zero);
+		Assert.That(ms.ReadArray(typeof(int), 0, false)!.Length, Is.Zero);
 		Assert.That(() => ms.ReadArray(typeof(Guid), 100, false), Throws.InstanceOf<ArgumentOutOfRangeException>());
 
 		Assert.That(ms.ReadArray(typeof(long), arr.Length, false), Is.EquivalentTo(arr));

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 using System.Security;
 using Vanara.PInvoke;
 
@@ -65,7 +66,7 @@ public class SafeCoTaskMemHandleTests
 		Assert.That((int)h.Size, Is.EqualTo(IntPtr.Size + r.Length * (4 + IntPtr.Size)));
 		Assert.That(h.ToStringEnum(4, CharSet.Unicode), Has.Exactly(4).EqualTo("5").And.Exactly(4).Items);
 
-		h = SafeCoTaskMemHandle.CreateFromStringList(null);
+		h = SafeCoTaskMemHandle.CreateFromStringList(Enumerable.Empty<string>());
 		Assert.That((int)h.Size, Is.EqualTo(StringHelper.GetCharSize()));
 	}
 

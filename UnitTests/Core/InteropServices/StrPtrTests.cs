@@ -13,7 +13,7 @@ public class StrPtrTests
 		Assert.That(p0.IsNull);
 		var p1 = new StrPtrAuto("Test");
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo("Test"));
+		Assert.That((string?) p1, Is.EqualTo("Test"));
 		p1.Free();
 	}
 
@@ -22,10 +22,10 @@ public class StrPtrTests
 	{
 		var p1 = new StrPtrAuto(256);
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo(""));
+		Assert.That((string?) p1, Is.EqualTo(""));
 		var bytes = Marshal.SystemDefaultCharSize == 1 ? Encoding.ASCII.GetBytes("Test\0") : Encoding.Unicode.GetBytes("Test\0");
 		Marshal.Copy(bytes, 0, (IntPtr)p1, bytes.Length);
-		Assert.That((string) p1, Is.EqualTo("Test"));
+		Assert.That((string?) p1, Is.EqualTo("Test"));
 		p1.Free();
 	}
 
@@ -36,15 +36,15 @@ public class StrPtrTests
 		Assert.That(p0.IsNull);
 		p0.Assign("Test", out var cc);
 		Assert.That(!p0.IsNull);
-		Assert.That((string)p0, Is.EqualTo("Test"));
+		Assert.That((string?)p0, Is.EqualTo("Test"));
 		Assert.That(cc, Is.EqualTo(5));
 		p0.Free();
 		var p1 = new StrPtrAuto("Test");
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo("Test"));
+		Assert.That((string?) p1, Is.EqualTo("Test"));
 		p1.Assign("Test2");
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo("Test2"));
+		Assert.That((string?) p1, Is.EqualTo("Test2"));
 		p1.Free();
 	}
 
@@ -56,7 +56,7 @@ public class StrPtrTests
 		p0.AssignConstant(1);
 		Assert.That(!p0.IsNull);
 		Assert.That((IntPtr)p0, Is.EqualTo(new IntPtr(1)));
-		Assert.That(() => p0.Free(), Throws.Nothing);
+		Assert.That(p0.Free, Throws.Nothing);
 	}
 
 	[Test()]
@@ -78,7 +78,7 @@ public class StrPtrTests
 		Assert.That(p0.IsNull);
 		var p1 = new StrPtrUni("Test");
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo("Test"));
+		Assert.That((string?) p1, Is.EqualTo("Test"));
 		p1.Free();
 	}
 
@@ -87,10 +87,10 @@ public class StrPtrTests
 	{
 		var p1 = new StrPtrUni(256);
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo(""));
+		Assert.That((string?) p1, Is.EqualTo(""));
 		var bytes = Marshal.SystemDefaultCharSize == 1 ? Encoding.ASCII.GetBytes("Test\0") : Encoding.Unicode.GetBytes("Test\0");
 		Marshal.Copy(bytes, 0, (IntPtr)p1, bytes.Length);
-		Assert.That((string) p1, Is.EqualTo("Test"));
+		Assert.That((string?) p1, Is.EqualTo("Test"));
 		p1.Free();
 	}
 
@@ -101,15 +101,15 @@ public class StrPtrTests
 		Assert.That(p0.IsNull);
 		p0.Assign("Test", out var cc);
 		Assert.That(!p0.IsNull);
-		Assert.That((string)p0, Is.EqualTo("Test"));
+		Assert.That((string?)p0, Is.EqualTo("Test"));
 		Assert.That(cc, Is.EqualTo(5));
 		p0.Free();
 		var p1 = new StrPtrUni("Test");
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo("Test"));
+		Assert.That((string?) p1, Is.EqualTo("Test"));
 		p1.Assign("Test2");
 		Assert.That(!p1.IsNull);
-		Assert.That((string) p1, Is.EqualTo("Test2"));
+		Assert.That((string?) p1, Is.EqualTo("Test2"));
 		p1.Free();
 	}
 
@@ -121,7 +121,7 @@ public class StrPtrTests
 		p0.AssignConstant(1);
 		Assert.That(!p0.IsNull);
 		Assert.That((IntPtr)p0, Is.EqualTo(new IntPtr(1)));
-		Assert.That(() => p0.Free(), Throws.Nothing);
+		Assert.That(p0.Free, Throws.Nothing);
 	}
 
 	[Test()]

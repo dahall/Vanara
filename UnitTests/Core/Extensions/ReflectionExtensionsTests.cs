@@ -13,7 +13,7 @@ public class ReflectionExtensionsTests
 {
 	public class X
 	{
-		public string Str { get; set; }
+		public string? Str { get; set; }
 	}
 
 	[Test]
@@ -36,7 +36,7 @@ public class ReflectionExtensionsTests
 		Assert.That(dt.GetPropertyValue("Ticks", 0L), Is.EqualTo(dt.Ticks));
 		Assert.That(dt.GetPropertyValue<long>("Ticks"), Is.EqualTo(dt.Ticks));
 		// Has private value
-		Assert.That(dt.GetPropertyValue<long>("InternalTicks"), Is.EqualTo(dt.Ticks));
+		Assert.That(dt.GetPropertyValue<ulong>("UTicks"), Is.EqualTo(dt.Ticks));
 		// Bad propname
 		Assert.That(() => dt.GetPropertyValue<long?>("Tacks"), Throws.Exception);
 		Assert.That(() => dt.GetPropertyValue<long?>("Tacks", null), Is.Null);
@@ -182,17 +182,19 @@ public class ReflectionExtensionsTests
 		Assert.That(dt.InvokeMethod<long>(new object[] { 2017, 1, 1 }, "ToBinary"), Is.Not.EqualTo(0));
 		Assert.That(dt.InvokeMethod<DateTime>(new object[] { 2017, 1, 1 }, "AddHours", (double)1), Is.EqualTo(new DateTime(2017, 1, 1) + TimeSpan.FromHours(1)));
 	}
+
 	[Test()]
 	public void InvokeNotOverrideTest()
 	{
 		var t = new TestDerived();
 		var mi = typeof(TestBase).GetMethod("GetValue", Type.EmptyTypes);
-		Assert.That(mi.InvokeNotOverride(t), Is.EqualTo(0));
-		Assert.That(() => mi.InvokeNotOverride(t, 2), Throws.Exception);
+		Assert.NotNull(mi);
+		Assert.That(mi!.InvokeNotOverride(t), Is.EqualTo(0));
+		Assert.That(() => mi!.InvokeNotOverride(t, 2), Throws.Exception);
 		mi = typeof(TestBase).GetMethod("GetValue", new[] { typeof(int), typeof(int) });
-		Assert.That(mi.InvokeNotOverride(t, 1, 2), Is.EqualTo(0));
+		Assert.That(mi!.InvokeNotOverride(t, 1, 2), Is.EqualTo(0));
 		mi = typeof(TestBase).GetMethod("GetValue", new[] { typeof(int), typeof(int) });
-		Assert.That(() => mi.InvokeNotOverride(t, 'c', 2), Throws.Exception);
+		Assert.That(() => mi!.InvokeNotOverride(t, 'c', 2), Throws.Exception);
 	}
 
 	[Test()]

@@ -21,7 +21,9 @@ public class GenericSafeHandleTests
 	[Test]
 	public void GenericSafeHandleCloseMethodNull()
 	{
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.Throws<ArgumentNullException>(() => new GenericSafeHandle((IntPtr)1, null));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 	}
 
 	[Test]

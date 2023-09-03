@@ -49,7 +49,7 @@ public class InteropExtensionsTests
 		Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 5 * intSz), 10);
 		Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 7 * intSz), 12);
 		var ro = ((IntPtr)h).ToArray<RECT>(2, intSz);
-		Assert.AreEqual(ro.Length, 2);
+		Assert.AreEqual(ro!.Length, 2);
 		Assert.AreEqual(ro[0].left, 0);
 		Assert.AreEqual(ro[1].right, 12);
 	}
@@ -97,7 +97,7 @@ public class InteropExtensionsTests
 			var chSz = 2;
 			Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + intSz));
 			var ro = h.ToByteArray(a - intSz, intSz);
-			var chars = Encoding.Unicode.GetChars(ro);
+			var chars = Encoding.Unicode.GetChars(ro!);
 			Assert.That(chars.Length, Is.EqualTo((a - intSz) / chSz));
 			Assert.That(chars[0], Is.EqualTo('s'));
 			Assert.That(chars[4], Is.EqualTo('\0'));
@@ -110,7 +110,7 @@ public class InteropExtensionsTests
 			chSz = 1;
 			Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + intSz));
 			ro = h.ToByteArray(a - intSz, intSz);
-			chars = Encoding.ASCII.GetChars(ro);
+			chars = Encoding.ASCII.GetChars(ro!);
 			Assert.That(chars.Length, Is.EqualTo((a - intSz) / chSz));
 			Assert.That(chars[0], Is.EqualTo('s'));
 			Assert.That(chars[4], Is.EqualTo('\0'));
@@ -123,7 +123,7 @@ public class InteropExtensionsTests
 			Assert.That(a, Is.EqualTo(intSz + 2));
 
 			Assert.That(() => new[] { "" }.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, intSz), Throws.ArgumentException);
-			Assert.That(() => new string[] { null }.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, intSz), Throws.ArgumentException);
+			Assert.That(() => new string?[] { null }.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, intSz), Throws.ArgumentException);
 		}
 		finally
 		{
@@ -185,7 +185,7 @@ public class InteropExtensionsTests
 		var rs = new[] { 10, 11, 12, 13, 14 };
 		var h = SafeHGlobalHandle.CreateFromList(rs, rs.Length, intSz);
 		var ro = ((IntPtr)h).ToArray<int>(4, intSz);
-		Assert.That(ro.Length, Is.EqualTo(4));
+		Assert.That(ro!.Length, Is.EqualTo(4));
 		Assert.That(ro[2], Is.EqualTo(rs[2]));
 
 		Assert.That(((IntPtr)h).ToArray<int>(0, intSz), Is.Empty);
@@ -288,7 +288,7 @@ public class InteropExtensionsTests
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 		}
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(null, StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(Enumerable.Empty<string>(), StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
@@ -304,21 +304,21 @@ public class InteropExtensionsTests
 	public void ToStringEnumPackTest()
 	{
 		var rs = new[] { "str1", "str2", null, "", "str3" };
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Packed, CharSet.Ansi, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs!, StringListPackMethod.Packed, CharSet.Ansi, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
 			var se = ptr.ToStringEnum(rs.Length, CharSet.Ansi, intSz);
 			Assert.That(se, Is.EquivalentTo(rs));
 		}
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Packed, CharSet.Unicode, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs!, StringListPackMethod.Packed, CharSet.Unicode, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
 			var se = ptr.ToStringEnum(rs.Length, CharSet.Unicode, intSz);
 			Assert.That(se, Is.EquivalentTo(rs));
 		}
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(null, StringListPackMethod.Packed, CharSet.Unicode, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(Enumerable.Empty<string>(), StringListPackMethod.Packed, CharSet.Unicode, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
@@ -330,14 +330,14 @@ public class InteropExtensionsTests
 
 	[TestCase("Some string value")]
 	[TestCase("")]
-	[TestCase((string)null)]
-	public void ToInsecureStringTest(string sval)
+	[TestCase((string?)null)]
+	public void ToInsecureStringTest(string? sval)
 	{
-		var ss = sval.ToSecureString();
+		var ss = sval?.ToSecureString();
 		if (sval != null)
 		{
 			Assert.That(ss, Is.Not.Null);
-			Assert.That(ss.Length, Is.EqualTo(sval.Length));
+			Assert.That(ss!.Length, Is.EqualTo(sval.Length));
 			var s = ss.ToInsecureString();
 			Assert.That(s, Is.EqualTo(sval));
 		}
@@ -351,20 +351,20 @@ public class InteropExtensionsTests
 	public void ToInsecureStringTest()
 	{
 		Assert.That(IntPtr.Zero.ToSecureString(4), Is.Null);
-		Assert.That(((System.Security.SecureString)null).ToInsecureString(), Is.Null);
+		Assert.That(((System.Security.SecureString?)null)?.ToInsecureString(), Is.Null);
 	}
 
 	[TestCase("Some string value")]
 	[TestCase("")]
-	[TestCase((string)null)]
-	public void ToSecureStringTest(string sval)
+	[TestCase((string?)null)]
+	public void ToSecureStringTest(string? sval)
 	{
 		var ms = new SafeCoTaskMemString(sval);
 		var ss = ms.DangerousGetHandle().ToSecureString();
 		if (sval != null)
 		{
 			Assert.That(ss, Is.Not.Null);
-			Assert.That(ss.Length, Is.EqualTo(sval.Length));
+			Assert.That(ss!.Length, Is.EqualTo(sval.Length));
 			var s = ss.ToInsecureString();
 			Assert.That(s, Is.EqualTo(sval));
 
@@ -372,7 +372,7 @@ public class InteropExtensionsTests
 			{
 				ss = ms.DangerousGetHandle().ToSecureString(1);
 				Assert.That(ss, Is.Not.Null);
-				Assert.That(ss.Length, Is.EqualTo(1));
+				Assert.That(ss!.Length, Is.EqualTo(1));
 				s = ss.ToInsecureString();
 				Assert.That(s, Is.EqualTo(sval.Substring(0, 1)));
 			}
@@ -404,7 +404,7 @@ public class InteropExtensionsTests
 		var h = mem.DangerousGetHandle();
 
 		// null
-		Assert.That(h.Write((object)null), Is.EqualTo(0));
+		Assert.That(h.Write((object?)null), Is.EqualTo(0));
 
 		// bytes
 		Assert.That(h.Write((object)new byte[] { 1, 2, 4, 5 }), Is.EqualTo(4));

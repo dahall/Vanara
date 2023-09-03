@@ -391,12 +391,13 @@ public class NativeMemoryStream : Stream
 	/// <summary>Writes the specified array into the stream.</summary>
 	/// <param name="items">The items.</param>
 	/// <param name="method">The packing method for the strings.</param>
-	public void Write(IEnumerable<string> items, StringListPackMethod method = StringListPackMethod.Concatenated)
+	public void Write(IEnumerable<string?> items, StringListPackMethod method = StringListPackMethod.Concatenated)
 	{
 		if (access == FileAccess.Read) throw new NotSupportedException();
 		if (items == null) return;
 		if (method == StringListPackMethod.Concatenated)
 		{
+			if (items.Any(s => s == null)) throw new ArgumentException("Cannot use Concatenated method with null strings.");
 			items.MarshalToPtr(method, i => { EnsureCapacity(Position + i); return PositionPtr; }, out var sz, CharSet);
 			position += sz;
 			length += sz;

@@ -18,14 +18,14 @@ public class SafeMemStructTests
 	{
 		var immutVal = new FILETIME { dwHighDateTime = 0x2000000, dwLowDateTime = 0x33333333 };
 		var s = new SafeCoTaskStruct<FILETIME>(immutVal);
-		var bytes = s.DangerousGetHandle().ToByteArray(8);
+		var bytes = s.DangerousGetHandle().ToByteArray(8)!;
 		Assert.That(BitConverter.ToUInt32(bytes, 4), Is.EqualTo(immutVal.dwHighDateTime));
 
 		ref FILETIME r = ref s.AsRef();
 		Assert.That(r.dwHighDateTime, Is.EqualTo(immutVal.dwHighDateTime));
 		r.dwHighDateTime = 0;
 
-		bytes = s.DangerousGetHandle().ToByteArray(8);
+		bytes = s.DangerousGetHandle().ToByteArray(8)!;
 		Assert.That(BitConverter.ToUInt32(bytes, 4), Is.Zero);
 
 		var newhVal = 0x22222222U;
@@ -38,12 +38,12 @@ public class SafeMemStructTests
 	{
 		var immutVal = new FILETIME { dwHighDateTime = 0x2000000, dwLowDateTime = 0x33333333 };
 		var s = new SafeCoTaskStruct<FILETIME>(immutVal);
-		var bytes = s.DangerousGetHandle().ToByteArray(8);
+		var bytes = s.DangerousGetHandle().ToByteArray(8)!;
 		Assert.That(BitConverter.ToUInt32(bytes, 4), Is.EqualTo(immutVal.dwHighDateTime));
 
 		var sp = s.AsSpan();
 		sp.Fill(default);
-		bytes = s.DangerousGetHandle().ToByteArray(8);
+		bytes = s.DangerousGetHandle().ToByteArray(8)!;
 		Assert.That(BitConverter.ToUInt32(bytes, 4), Is.Zero);
 
 		var bsp = MemoryMarshal.AsBytes(sp);

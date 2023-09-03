@@ -10,22 +10,22 @@ public class SafeCoTaskMemStringTests
 	public void SafeCoTaskMemStringTest()
 	{
 		const int sz = 100;
-		var cs = new string('x', sz);
+		string cs = new string('x', sz);
 
-		var s = new SafeCoTaskMemString(cs);
+		SafeCoTaskMemString s = new SafeCoTaskMemString(cs);
 		Assert.That(s.Capacity, Is.EqualTo(sz + 1));
 		Assert.That((int)s.Size, Is.EqualTo(2 * (sz + 1)));
-		Assert.That((string)s, Is.EqualTo(cs));
+		Assert.That((string?)s, Is.EqualTo(cs));
 		Assert.That((IntPtr)s, Is.Not.EqualTo(IntPtr.Zero));
 
 		s = new SafeCoTaskMemString(cs, CharSet.Ansi);
 		Assert.That(s.Capacity, Is.EqualTo(sz + 1));
 		Assert.That((int)s.Size, Is.EqualTo(sz + 1));
-		Assert.That((string)s, Is.EqualTo(cs));
+		Assert.That((string?)s, Is.EqualTo(cs));
 
-		s = new SafeCoTaskMemString((string)null);
+		s = new SafeCoTaskMemString((string?)null);
 		Assert.That(s.Capacity, Is.EqualTo(0));
-		Assert.That((string)s, Is.Null);
+		Assert.That((string?)s, Is.Null);
 		Assert.That((IntPtr)s, Is.EqualTo(IntPtr.Zero));
 	}
 
@@ -35,11 +35,11 @@ public class SafeCoTaskMemStringTests
 		const int sz = 100;
 		var s = new SafeCoTaskMemString(sz);
 		Assert.That(s.Capacity, Is.EqualTo(sz));
-		Assert.That((string)s, Is.EqualTo(string.Empty));
+		Assert.That((string?)s, Is.EqualTo(string.Empty));
 
 		s = new SafeCoTaskMemString(sz, CharSet.Ansi);
 		Assert.That(s.Capacity, Is.EqualTo(sz));
-		Assert.That((string)s, Is.EqualTo(string.Empty));
+		Assert.That((string?)s, Is.EqualTo(string.Empty));
 	}
 
 	[Test()]
@@ -51,11 +51,13 @@ public class SafeCoTaskMemStringTests
 
 		var s = new SafeCoTaskMemString(ss);
 		Assert.That(s.Capacity, Is.EqualTo(sz));
-		Assert.That((string)s, Is.EqualTo(new string('x', sz)));
+		Assert.That((string?)s, Is.EqualTo(new string('x', sz)));
 
 		ss = null;
+#pragma warning disable CS8604 // Possible null reference argument.
 		s = new SafeCoTaskMemString(ss, CharSet.Ansi);
-		Assert.That((string)s, Is.Null);
+#pragma warning restore CS8604 // Possible null reference argument.
+		Assert.That((string?)s, Is.Null);
 		Assert.That(s.Capacity, Is.Zero);
 	}
 

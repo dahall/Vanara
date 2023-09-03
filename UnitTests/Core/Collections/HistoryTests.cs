@@ -63,11 +63,11 @@ public class HistoryTests
 		Assert.That(history.CanSeekBackward, Is.False);
 		Assert.That(() => history.Current, Throws.Exception);
 
-		void GetPropVal(object sender, PropertyChangedEventArgs e)
+		void GetPropVal(object? sender, PropertyChangedEventArgs e)
 		{
-			var pi = history.GetType().GetProperty(e.PropertyName);
-			object obj = null;
-			try { obj = pi.GetValue(history); } catch (Exception ex) { obj = ex.GetType().Name; }
+			var pi = history.GetType().GetProperty(e.PropertyName!);
+			object? obj = null;
+			try { obj = pi!.GetValue(history); } catch (Exception ex) { obj = ex.GetType().Name; }
 			TestContext.WriteLine($"{e.PropertyName}={obj}");
 		}
 	}

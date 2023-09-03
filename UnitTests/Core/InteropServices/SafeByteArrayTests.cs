@@ -19,7 +19,7 @@ public class SafeByteArrayTests
 		Assert.That(a[4] == 4);
 		Assert.That(a.IsReadOnly, Is.False);
 
-		byte[] nullBytes = null;
+		byte[]? nullBytes = null;
 		a = new SafeByteArray(nullBytes);
 		Assert.That(a.Count == 0);
 	}
@@ -44,7 +44,9 @@ public class SafeByteArrayTests
 		Assert.That(a.Count == bytes.Length);
 		Assert.That(a[4] == 4);
 
+#pragma warning disable CS8604 // Possible null reference argument.
 		Assert.That(() => new SafeByteArray(t), Throws.ArgumentNullException);
+#pragma warning restore CS8604 // Possible null reference argument.
 		a.Dispose();
 		Assert.That(() => new SafeByteArray(a), Throws.ArgumentException);
 
@@ -72,11 +74,12 @@ public class SafeByteArrayTests
 		Assert.That(() => l.RemoveAt(0), Throws.TypeOf<NotSupportedException>());
 		//Assert.That(l.Count, Is.EqualTo(16));
 
-		var gl = l as IList<byte>;
+		var gl = (IList<byte>)l;
 		Assert.That(() => gl.Insert(0, 100), Throws.TypeOf<NotSupportedException>());
 		Assert.That(() => gl.RemoveAt(0), Throws.TypeOf<NotSupportedException>());
 	}
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 	[Test]
 	public void ICollectionPropTest()
 	{
@@ -113,6 +116,7 @@ public class SafeByteArrayTests
 		Assert.That(c.CompareTo(sb3, Comparer<byte>.Default), Is.LessThan(0));
 		Assert.That(c.CompareTo(new List<byte>(bytes), Comparer<byte>.Default), Is.EqualTo(0));
 	}
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
 	[Test]
 	public void IStructuralEquatablePropTest()
@@ -122,8 +126,10 @@ public class SafeByteArrayTests
 		var iec = EqualityComparer<byte>.Default;
 		Assert.That(e.Equals(sb, iec), Is.True);
 		var h1 = e.GetHashCode(iec);
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.That(() => e.GetHashCode(null), Throws.ArgumentNullException);
 		Assert.That(() => e.Equals(null, null), Throws.ArgumentNullException);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.That(e.Equals(null, iec), Is.False);
 		Assert.That(() => e.Equals(1, iec), Throws.TypeOf<ArgumentOutOfRangeException>());
 		var sb2 = new SafeByteArray(3);
@@ -159,7 +165,7 @@ public class SafeByteArrayTests
 		var a = t.Clone() as SafeByteArray;
 		t = null;
 		Assert.That(a?.Count == bytes.Length);
-		Assert.That(a[4] == 4);
+		Assert.That(a![4] == 4);
 	}
 
 	[Test()]
@@ -184,7 +190,9 @@ public class SafeByteArrayTests
 		var b3 = new byte[8];
 		Assert.That(() => t.CopyTo(b3, 0), Throws.TypeOf<ArgumentOutOfRangeException>());
 		Assert.That(() => ((ICollection)t).CopyTo(new byte[4,4], 0), Throws.TypeOf<ArgumentOutOfRangeException>());
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.That(() => t.CopyTo(null, 0), Throws.ArgumentNullException);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 	}
 
 	[Test()]

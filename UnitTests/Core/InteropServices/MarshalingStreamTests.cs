@@ -52,12 +52,14 @@ namespace Vanara.InteropServices.Tests;
             Assert.That(ms.Position, Is.EqualTo(sizeof(int)));
             ms.Seek(0, SeekOrigin.Begin);
             byte[] ba = new byte[] { 0x2 };
-            Assert.That(() => ms.Poke(null, 0), Throws.ArgumentNullException);
-            Assert.That(() => ms.Poke(ba, 1000), Throws.ArgumentException);
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+		Assert.That(() => ms.Poke(null, 0), Throws.ArgumentNullException);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+		Assert.That(() => ms.Poke(ba, 1000), Throws.ArgumentException);
             Assert.That(() => ms.Poke(ba, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
             ms.Poke(ba, 1);
             Assert.That(ms.Read<int>(), Is.EqualTo(0x00000102));
-            Assert.That(() => ms.Read<ulong>(), Throws.TypeOf<InsufficientMemoryException>());
+            Assert.That(ms.Read<ulong>, Throws.TypeOf<InsufficientMemoryException>());
         }
 
         [Test()]
@@ -77,8 +79,10 @@ namespace Vanara.InteropServices.Tests;
             byte[] buf = new byte[24];
             ms.Read(buf, 0, buf.Length);
             Assert.That(buf, Is.EquivalentTo(new byte[] { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3 }));
-            Assert.That(() => ms.Read(null, 0, 0), Throws.ArgumentNullException);
-            Assert.That(() => ms.Read(buf, 0, 30), Throws.ArgumentException);
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+		Assert.That(() => ms.Read(null, 0, 0), Throws.ArgumentNullException);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+		Assert.That(() => ms.Read(buf, 0, 30), Throws.ArgumentException);
             Assert.That(() => ms.Read(buf, -1, 0), Throws.TypeOf<ArgumentOutOfRangeException>());
             ms.Position = m.Size - 10;
             Assert.That(() => ms.Read(buf, 0, buf.Length), Throws.Nothing);
@@ -101,15 +105,17 @@ namespace Vanara.InteropServices.Tests;
             using (SafeHGlobalHandle m = new(10))
             using (MarshalingStream ms = new(m, m.Size))
             {
-                Assert.That(() => ms.Write(null, 0, 0), Throws.ArgumentNullException);
-                byte[] bytes = new byte[] { 0, 0, 0, 0, 0, 0, 0, 3 };
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+				Assert.That(() => ms.Write(null, 0, 0), Throws.ArgumentNullException);
+				byte[] bytes = new byte[] { 0, 0, 0, 0, 0, 0, 0, 3 };
                 Assert.That(() => ms.Write(bytes, 1, 8), Throws.ArgumentException);
                 Assert.That(() => ms.Write(bytes, -1, 8), Throws.TypeOf<ArgumentOutOfRangeException>());
                 Assert.That(() => ms.Write(bytes, 1, -8), Throws.TypeOf<ArgumentOutOfRangeException>());
                 Assert.That(() => ms.Write(new byte[22]), Throws.TypeOf<InsufficientMemoryException>());
-                ms.Write((SafeHGlobalHandle)null);
+                ms.Write((SafeHGlobalHandle?)null);
                 Assert.That(ms.Position, Is.Zero);
-                ms.Write((string[])null);
+                ms.Write((string[]?)null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
                 Assert.That(ms.Position, Is.Zero);
                 Assert.That(() => ms.Write(0L), Throws.Nothing);
             }

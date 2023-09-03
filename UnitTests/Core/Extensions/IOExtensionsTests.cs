@@ -15,7 +15,7 @@ public class IOExtensionsTests
 		bw.Write(257);
 		bw.Write(new RECT(1, 1, 1, 1));
 		bw.Write(new PRECT(1, 1, 1, 1));
-		bw.Write<string>(null);
+		bw.Write<string?>(null);
 		Assert.That(() => bw.Write(DateTime.Today), Throws.ArgumentException);
 		var buf = ms.ToArray();
 		Assert.That(buf.Length == Marshal.SizeOf(typeof(int)) + Marshal.SizeOf(typeof(RECT)) + Marshal.SizeOf(typeof(PRECT)));

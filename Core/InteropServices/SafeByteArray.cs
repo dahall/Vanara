@@ -13,7 +13,7 @@ public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>,
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeByteArray"/> class from a copy of a managed byte array.</summary>
 	/// <param name="array">The array of bytes to copy.</param>
-	public SafeByteArray(byte[] array) : base(array?.Length ?? 0)
+	public SafeByteArray(byte[]? array) : base(array?.Length ?? 0)
 	{
 		if (array != null)
 			Marshal.Copy(array, 0, handle, array.Length);

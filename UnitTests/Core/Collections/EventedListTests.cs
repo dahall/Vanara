@@ -45,9 +45,9 @@ public class EventedListTests
 		l.Sort();
 		var x = l[27];
 		Assert.That(l.BinarySearch(x), Is.EqualTo(27));
-		Assert.That(l.BinarySearch(x, new CEClass()), Is.EqualTo(27));
-		Assert.That(l.BinarySearch(10, 40, x, new CEClass()), Is.EqualTo(27));
-		Assert.That(l.BinarySearch(50, 40, x, new CEClass()), Is.Negative);
+		Assert.That(l.BinarySearch(x, Comparer<EClass?>.Default), Is.EqualTo(27));
+		Assert.That(l.BinarySearch(10, 40, x, Comparer<EClass?>.Default), Is.EqualTo(27));
+		Assert.That(l.BinarySearch(50, 40, x, Comparer<EClass?>.Default), Is.Negative);
 	}
 
 	[Test()]
@@ -74,7 +74,7 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.ConvertAll(e => new EClass(e.Prop - 1)).Count, Is.EqualTo(2));
+		Assert.That(l.ConvertAll(e => new EClass(e!.Prop - 1)).Count, Is.EqualTo(2));
 	}
 
 	[Test()]
@@ -124,8 +124,8 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.Exists(e => e.Prop == 1));
-		Assert.That(!l.Exists(e => e.Prop == 7));
+		Assert.That(l.Exists(e => e!.Prop == 1));
+		Assert.That(!l.Exists(e => e!.Prop == 7));
 	}
 
 	[Test()]
@@ -133,8 +133,8 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.FindAll(e => e.Prop >= 1), Is.EquivalentTo(l));
-		Assert.That(l.FindAll(e => e.Prop < 1), Is.Empty);
+		Assert.That(l.FindAll(e => e!.Prop >= 1), Is.EquivalentTo(l));
+		Assert.That(l.FindAll(e => e!.Prop < 1), Is.Empty);
 	}
 
 	[Test()]
@@ -142,9 +142,9 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.FindIndex(e => e.Prop == 2), Is.EqualTo(1));
-		Assert.That(l.FindIndex(e => e.Prop == 7), Is.EqualTo(-1));
-		Assert.That(l.FindIndex(1, 1, e => e.Prop == 2), Is.EqualTo(1));
+		Assert.That(l.FindIndex(e => e!.Prop == 2), Is.EqualTo(1));
+		Assert.That(l.FindIndex(e => e!.Prop == 7), Is.EqualTo(-1));
+		Assert.That(l.FindIndex(1, 1, e => e!.Prop == 2), Is.EqualTo(1));
 	}
 
 	[Test()]
@@ -152,9 +152,9 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.FindLastIndex(e => e.Prop == 1), Is.EqualTo(0));
-		Assert.That(l.FindLastIndex(e => e.Prop == 7), Is.EqualTo(-1));
-		Assert.That(l.FindLastIndex(1, 1, e => e.Prop == 2), Is.EqualTo(1));
+		Assert.That(l.FindLastIndex(e => e!.Prop == 1), Is.EqualTo(0));
+		Assert.That(l.FindLastIndex(e => e!.Prop == 7), Is.EqualTo(-1));
+		Assert.That(l.FindLastIndex(1, 1, e => e!.Prop == 2), Is.EqualTo(1));
 	}
 
 	[Test()]
@@ -162,8 +162,8 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.FindLast(e => e.Prop == 1), Is.EqualTo(a[0]));
-		Assert.That(l.FindLast(e => e.Prop == 7), Is.Null);
+		Assert.That(l.FindLast(e => e!.Prop == 1), Is.EqualTo(a[0]));
+		Assert.That(l.FindLast(e => e!.Prop == 7), Is.Null);
 	}
 
 	[Test()]
@@ -171,8 +171,8 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.Find(e => e.Prop == 1), Is.EqualTo(a[0]));
-		Assert.That(l.Find(e => e.Prop == 7), Is.Null);
+		Assert.That(l.Find(e => e!.Prop == 1), Is.EqualTo(a[0]));
+		Assert.That(l.Find(e => e!.Prop == 7), Is.Null);
 	}
 
 	[Test()]
@@ -181,7 +181,7 @@ public class EventedListTests
 		var i = 0;
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
-		l.ForEach(e => i += e.Prop);
+		l.ForEach(e => i += e!.Prop);
 		Assert.That(i, Is.EqualTo(3));
 	}
 
@@ -200,7 +200,7 @@ public class EventedListTests
 		var l = new EventedList<EClass>(a);
 		var r = l.GetRange(1, 2);
 		Assert.That(r.Count, Is.EqualTo(2));
-		Assert.That(r[0].Prop, Is.EqualTo(2));
+		Assert.That(r[0]!.Prop, Is.EqualTo(2));
 	}
 
 	[Test()]
@@ -219,8 +219,8 @@ public class EventedListTests
 		var l = new EventedList<EClass>(a);
 		l.InsertRange(1, a);
 		Assert.That(l.Count, Is.EqualTo(4));
-		Assert.That(l[1].Prop, Is.EqualTo(1));
-		Assert.That(l[2].Prop, Is.EqualTo(2));
+		Assert.That(l[1]!.Prop, Is.EqualTo(1));
+		Assert.That(l[2]!.Prop, Is.EqualTo(2));
 	}
 
 	[Test()]
@@ -229,7 +229,7 @@ public class EventedListTests
 		var a = new[] { new EClass(1), new EClass(2) };
 		var l = new EventedList<EClass>(a);
 		l.Insert(1, new EClass(3));
-		Assert.That(l[1].Prop, Is.EqualTo(3));
+		Assert.That(l[1]!.Prop, Is.EqualTo(3));
 	}
 
 	[Test()]
@@ -247,9 +247,9 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2), new EClass(3) };
 		var l = new EventedList<EClass>(a);
-		l.RemoveAll(e => e.Prop < 3);
+		l.RemoveAll(e => e!.Prop < 3);
 		Assert.That(l.Count, Is.EqualTo(1));
-		Assert.That(l[0].Prop, Is.EqualTo(3));
+		Assert.That(l[0]!.Prop, Is.EqualTo(3));
 	}
 
 	[Test()]
@@ -268,7 +268,7 @@ public class EventedListTests
 		var l = new EventedList<EClass>(a);
 		l.RemoveRange(0, 2);
 		Assert.That(l.Count, Is.EqualTo(1));
-		Assert.That(l[0].Prop, Is.EqualTo(3));
+		Assert.That(l[0]!.Prop, Is.EqualTo(3));
 	}
 
 	[Test()]
@@ -286,8 +286,8 @@ public class EventedListTests
 		var a = new[] { new EClass(1), new EClass(2), new EClass(3) };
 		var l = new EventedList<EClass>(a);
 		l.Reverse();
-		Assert.That(l[0].Prop, Is.EqualTo(3));
-		Assert.That(l[2].Prop, Is.EqualTo(1));
+		Assert.That(l[0]!.Prop, Is.EqualTo(3));
+		Assert.That(l[2]!.Prop, Is.EqualTo(1));
 	}
 
 	[Test()]
@@ -296,8 +296,8 @@ public class EventedListTests
 		var a = new[] { new EClass(1), new EClass(2), new EClass(3) };
 		var l = new EventedList<EClass>(a);
 		l.Reverse(1, 2);
-		Assert.That(l[0].Prop, Is.EqualTo(1));
-		Assert.That(l[2].Prop, Is.EqualTo(2));
+		Assert.That(l[0]!.Prop, Is.EqualTo(1));
+		Assert.That(l[2]!.Prop, Is.EqualTo(2));
 	}
 
 	[Test()]
@@ -306,8 +306,8 @@ public class EventedListTests
 		var a = new[] { new EClass(3), new EClass(1), new EClass(0) };
 		var l = new EventedList<EClass>(a);
 		l.Sort();
-		Assert.That(l[0].Prop, Is.EqualTo(0));
-		Assert.That(l[2].Prop, Is.EqualTo(3));
+		Assert.That(l[0]!.Prop, Is.EqualTo(0));
+		Assert.That(l[2]!.Prop, Is.EqualTo(3));
 	}
 
 	[Test()]
@@ -315,9 +315,9 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(3), new EClass(1), new EClass(0) };
 		var l = new EventedList<EClass>(a);
-		l.Sort(1, 2, new CEClass());
-		Assert.That(l[0].Prop, Is.EqualTo(3));
-		Assert.That(l[2].Prop, Is.EqualTo(1));
+		l.Sort(1, 2, Comparer<EClass?>.Default);
+		Assert.That(l[0]!.Prop, Is.EqualTo(3));
+		Assert.That(l[2]!.Prop, Is.EqualTo(1));
 	}
 
 	[Test()]
@@ -344,25 +344,17 @@ public class EventedListTests
 	{
 		var a = new[] { new EClass(1), new EClass(2), new EClass(3) };
 		var l = new EventedList<EClass>(a);
-		Assert.That(l.TrueForAll(e => e.Prop > 1), Is.False);
-		Assert.That(l.TrueForAll(e => e.Prop > 0), Is.True);
-	}
-
-	private class CEClass : Comparer<EClass>
-	{
-		public override int Compare(EClass x, EClass y) => x.CompareTo(y);
+		Assert.That(l.TrueForAll(e => e!.Prop > 1), Is.False);
+		Assert.That(l.TrueForAll(e => e!.Prop > 0), Is.True);
 	}
 
 	private class EClass : INotifyPropertyChanged, IComparable<EClass>
 	{
 		private int p;
 
-		public EClass(int prop = 0)
-		{
-			p = prop;
-		}
+		public EClass(int prop = 0) => p = prop;
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		public int Prop
 		{
@@ -374,16 +366,9 @@ public class EventedListTests
 			}
 		}
 
-		public int CompareTo(EClass other)
-		{
-			if (ReferenceEquals(this, other)) return 0;
-			if (ReferenceEquals(null, other)) return 1;
-			return p.CompareTo(other.p);
-		}
+		public int CompareTo(EClass? other) => ReferenceEquals(this, other) ? 0 : other is null ? 1 : p.CompareTo(other.p);
 
-		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
+		protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => 
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
 	}
 }

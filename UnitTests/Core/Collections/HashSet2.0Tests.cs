@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Vanara.Collections.Generic.Tests;
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 [TestFixture()]
 public class HashSetTests
 {
