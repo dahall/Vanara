@@ -1699,7 +1699,7 @@ public static partial class Ws2_32
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_address typedef struct _SOCKET_ADDRESS { LPSOCKADDR
 	// lpSockaddr; INT iSockaddrLength; } SOCKET_ADDRESS, *PSOCKET_ADDRESS, *LPSOCKET_ADDRESS;
 	[PInvokeData("ws2def.h", MSDNShortId = "37fbcb96-a859-4eca-8928-8051f95407b9")]
-	[StructLayout(LayoutKind.Sequential, Pack = 8)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct SOCKET_ADDRESS
 	{
 		/// <summary>A pointer to a socket address represented as a SOCKADDR structure.</summary>
@@ -1712,7 +1712,7 @@ public static partial class Ws2_32
 
 		/// <summary>Gets the <see cref="SOCKADDR_INET"/> from this instance.</summary>
 		/// <returns>The <see cref="SOCKADDR_INET"/> value pointed to by this instance.</returns>
-		public readonly SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>(iSockaddrLength);
+		public readonly SOCKADDR_INET GetSOCKADDR() => iSockaddrLength == 16 ? lpSockaddr.ToStructure<SOCKADDR_IN>(iSockaddrLength) : lpSockaddr.ToStructure<SOCKADDR_INET>(iSockaddrLength);
 
 		/// <summary>Performs an implicit conversion from <see cref="SOCKET_ADDRESS"/> to <see cref="SOCKADDR"/>.</summary>
 		/// <param name="address">The address.</param>
