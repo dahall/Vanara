@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Vanara.Net;
 using static Vanara.PInvoke.Dhcp;
+using static Vanara.PInvoke.FirewallApi;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -62,7 +62,7 @@ public class NetTests
 		{
 			client.ChangeEventIds = new[] { DHCP_OPTION_ID.OPTION_DEFAULT_TTL, DHCP_OPTION_ID.OPTION_LEASE_TIME, DHCP_OPTION_ID.OPTION_MESSAGE };
 			Thread.Sleep(1000);
-			client.ChangeEventIds = null;
+			client.ChangeEventIds = new DHCP_OPTION_ID[0];
 			Thread.Sleep(1000);
 		}
 		finally
@@ -76,7 +76,7 @@ public class NetTests
 	{
 		using Firewall fw = new();
 		if (TestHelper.IsElevated)
-			fw.AddApp(Process.GetCurrentProcess().ProcessName, Process.GetCurrentProcess().MainModule.FileName);
+			fw.AddApp(Process.GetCurrentProcess().ProcessName, Process.GetCurrentProcess().MainModule!.FileName!);
 		try
 		{
 			using DistributedRoutingTable drt = new(null, new(null, 0));
@@ -88,7 +88,7 @@ public class NetTests
 		}
 		finally
 		{
-			try { fw.RemoveApp(Process.GetCurrentProcess().MainModule.FileName); } catch { }
+			try { fw.RemoveApp(Process.GetCurrentProcess()!.MainModule!.FileName!); } catch { }
 		}
 	}
 

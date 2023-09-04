@@ -769,7 +769,7 @@ public static partial class Drt
 	// https://learn.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatenullsecurityprovider
 	// HRESULT DrtCreateNullSecurityProvider( [out] DRT_SECURITY_PROVIDER **ppSecurityProvider );
 	[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateNullSecurityProvider")]
-	[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT DrtCreateNullSecurityProvider(out IntPtr ppSecurityProvider);
 
 	/// <summary>

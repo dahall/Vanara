@@ -31,7 +31,7 @@ public class DhcpClient : IDisposable
 	/// Occurs when the value related to a <see cref="DHCP_OPTION_ID"/> has changed.
 	/// <para>Use the <see cref="ChangeEventIds"/> to set the list of identifiers that are watched.</para>
 	/// </summary>
-	public event Action<DHCP_OPTION_ID> ParamChanged;
+	public event Action<DHCP_OPTION_ID>? ParamChanged;
 
 	/// <summary>
 	/// Specifies whether or not the client may assume that all subnets of the IP network to which the client is connected use the same MTU
@@ -59,7 +59,7 @@ public class DhcpClient : IDisposable
 	/// Identifies a bootstrap file. If supported by the client, it should have the same effect as the filename declaration. BOOTP clients
 	/// are unlikely to support this option. Some DHCP clients will support it, and others actually require it.
 	/// </summary>
-	public string BootfileName => GetParam<string>(DHCP_OPTION_ID.OPTION_BOOTFILE_NAME);
+	public string? BootfileName => GetParam<string>(DHCP_OPTION_ID.OPTION_BOOTFILE_NAME);
 
 	/// <summary>This option specifies the length in 512-octet blocks of the default boot image for the client.</summary>
 	public ushort BootFileSize => GetParam<ushort>(DHCP_OPTION_ID.OPTION_BOOT_FILE_SIZE);
@@ -81,8 +81,8 @@ public class DhcpClient : IDisposable
 		{
 			ClearListeners();
 			updateList.Set();
-			if (value is null || value.Length == 0) return;
-			string adapter = Adapter;
+			string? adapter = Adapter;
+			if (value is null || value.Length == 0 || adapter is null) return;
 			foreach (DHCP_OPTION_ID id in value)
 			{
 				if (DhcpRegisterParamChange(DHCPCAPI_REGISTER_HANDLE_EVENT, default, adapter, default, DHCPCAPI_PARAMS_ARRAY.Make(out _, id), out HEVENT hEvt).Succeeded)
@@ -97,20 +97,20 @@ public class DhcpClient : IDisposable
 	/// <summary>
 	/// Class identifier (ID) that should be used if DHCP INFORM messages are being transmitted onto the network. This value is optional.
 	/// </summary>
-	public byte[] ClassId { get; set; }
+	public byte[]? ClassId { get; set; }
 
 	/// <summary>
 	/// This option is used by some DHCP clients as a way for users to specify identifying information to the client. This can be used in a
 	/// similar way to the vendor-class-identifier option, but the value of the option is specified by the user, not the vendor. Most recent
 	/// DHCP clients have a way in the user interface to specify the value for this identifier, usually as a text string.
 	/// </summary>
-	public string ClientClassInfo => GetParam<string>(DHCP_OPTION_ID.OPTION_CLIENT_CLASS_INFO);
+	public string? ClientClassInfo => GetParam<string>(DHCP_OPTION_ID.OPTION_CLIENT_CLASS_INFO);
 
 	/// <summary>
 	/// This option can be used to specify a DHCP client identifier in a host declaration, so that dhcpd can find the host record by matching
 	/// against the client identifier.
 	/// </summary>
-	public string ClientId => GetParam<string>(DHCP_OPTION_ID.OPTION_CLIENT_ID);
+	public string? ClientId => GetParam<string>(DHCP_OPTION_ID.OPTION_CLIENT_ID);
 
 	/// <summary>
 	/// The cookie server option specifies a list of RFC 865 cookie servers available to the client. Servers should be listed in order of preference.
@@ -121,7 +121,7 @@ public class DhcpClient : IDisposable
 	public byte DefaultTTL => GetParam<byte>(DHCP_OPTION_ID.OPTION_DEFAULT_TTL);
 
 	/// <summary>This option specifies the domain name that client should use when resolving hostnames via the Domain Name System.</summary>
-	public string DomainName => GetParam<string>(DHCP_OPTION_ID.OPTION_DOMAIN_NAME);
+	public string? DomainName => GetParam<string>(DHCP_OPTION_ID.OPTION_DOMAIN_NAME);
 
 	/// <summary>
 	/// The domain-name-servers option specifies a list of Domain Name System (STD 13, RFC 1035) name servers available to the client.
@@ -140,14 +140,14 @@ public class DhcpClient : IDisposable
 	/// This option specifies the name of a file containing additional options to be interpreted according to the DHCP option format as
 	/// specified in RFC2132.
 	/// </summary>
-	public string ExtensionsPath => GetParam<string>(DHCP_OPTION_ID.OPTION_EXTENSIONS_PATH);
+	public string? ExtensionsPath => GetParam<string>(DHCP_OPTION_ID.OPTION_EXTENSIONS_PATH);
 
 	/// <summary>
 	/// This option specifies the name of the client. The name may or may not be qualified with the local domain name (it is preferable to
 	/// use the domain-name option to specify the domain name). See RFC 1035 for character set restrictions. This option is only honored by
 	/// dhclient-script(8) if the hostname for the client machine is not set.
 	/// </summary>
-	public string HostName => GetParam<string>(DHCP_OPTION_ID.OPTION_HOST_NAME);
+	public string? HostName => GetParam<string>(DHCP_OPTION_ID.OPTION_HOST_NAME);
 
 	/// <summary>
 	/// The ien116-name-servers option specifies a list of IEN 116 name servers available to the client. Servers should be listed in order of preference.
@@ -155,7 +155,7 @@ public class DhcpClient : IDisposable
 	public IPAddress[] IEN116NameServers => ToIP(GetParam<uint[]>(DHCP_OPTION_ID.OPTION_IEN116_NAME_SERVERS));
 
 	/// <summary>The Internet Explorer proxy.</summary>
-	public string IEProxy => GetParam<string>(DHCP_OPTION_ID.OPTION_MSFT_IE_PROXY);
+	public string? IEProxy => GetParam<string>(DHCP_OPTION_ID.OPTION_MSFT_IE_PROXY);
 
 	/// <summary>
 	/// The impress-server option specifies a list of Imagen Impress servers available to the client. Servers should be listed in order of preference.
@@ -197,13 +197,13 @@ public class DhcpClient : IDisposable
 	/// This option specifies the path-name of a file to which the client’s core image should be dumped in the event the client crashes. The
 	/// path is formatted as a character string consisting of characters from the NVT ASCII character set.
 	/// </summary>
-	public string MeritDumpFile => GetParam<string>(DHCP_OPTION_ID.OPTION_MERIT_DUMP_FILE);
+	public string? MeritDumpFile => GetParam<string>(DHCP_OPTION_ID.OPTION_MERIT_DUMP_FILE);
 
 	/// <summary>
 	/// This option is used by a DHCP server to provide an error message to a DHCP client in a DHCPNAK message in the event of a failure. A
 	/// client may use this option in a DHCPDECLINE message to indicate why the client declined the offered parameters.
 	/// </summary>
-	public string Message => GetParam<string>(DHCP_OPTION_ID.OPTION_MESSAGE);
+	public string? Message => GetParam<string>(DHCP_OPTION_ID.OPTION_MESSAGE);
 
 	/// <summary>
 	/// This option, when sent by the client, specifies the maximum size of any response that the server sends to the client. When specified
@@ -239,7 +239,7 @@ public class DhcpClient : IDisposable
 	/// The NetBIOS scope option specifies the NetBIOS over TCP/IP scope parameter for the client as specified in RFC 1001/1002. See RFC1001,
 	/// RFC1002, and RFC1035 for character-set restrictions.
 	/// </summary>
-	public string NetBIOSScopeOption => GetParam<string>(DHCP_OPTION_ID.OPTION_NETBIOS_SCOPE_OPTION);
+	public string? NetBIOSScopeOption => GetParam<string>(DHCP_OPTION_ID.OPTION_NETBIOS_SCOPE_OPTION);
 
 	/// <summary>
 	/// The netinfo-server-address option has not been described in any RFC, but has been allocated (and is claimed to be in use) by Apple
@@ -252,7 +252,7 @@ public class DhcpClient : IDisposable
 	/// This option specifies the name of the client’s NIS (Sun Network Information Services) domain. The domain is formatted as a character
 	/// string consisting of characters from the NVT ASCII character set.
 	/// </summary>
-	public string NetworkInfoServiceDomain => GetParam<string>(DHCP_OPTION_ID.OPTION_NETWORK_INFO_SERVICE_DOM);
+	public string? NetworkInfoServiceDomain => GetParam<string>(DHCP_OPTION_ID.OPTION_NETWORK_INFO_SERVICE_DOM);
 
 	/// <summary>
 	/// The NNTP server option specifies a list of NNTP servers available to the client. Servers should be listed in order of preference.
@@ -276,7 +276,7 @@ public class DhcpClient : IDisposable
 	/// specified options. This can be used to force a client to take options that it hasn’t requested, and it can also be used to tailor the
 	/// response of the DHCP server for clients that may need a more limited set of options than those the server would normally return.
 	/// </summary>
-	public byte[] ParameterRequestList => GetParam<byte[]>(DHCP_OPTION_ID.OPTION_PARAMETER_REQUEST_LIST);
+	public byte[] ParameterRequestList => GetParam<byte[]>(DHCP_OPTION_ID.OPTION_PARAMETER_REQUEST_LIST) ?? new byte[0];
 
 	/// <summary>
 	/// This option specifies the timeout (in seconds) to use when aging Path MTU values discovered by the mechanism defined in RFC 1191.
@@ -287,7 +287,7 @@ public class DhcpClient : IDisposable
 	/// This option specifies a table of MTU sizes to use when performing Path MTU Discovery as defined in RFC 1191. The table is formatted
 	/// as a list of 16-bit unsigned integers, ordered from smallest to largest. The minimum MTU value cannot be smaller than 68.
 	/// </summary>
-	public ushort[] PathMTUPlateauTable => GetParam<ushort[]>(DHCP_OPTION_ID.OPTION_PMTU_PLATEAU_TABLE);
+	public ushort[] PathMTUPlateauTable => GetParam<ushort[]>(DHCP_OPTION_ID.OPTION_PMTU_PLATEAU_TABLE) ?? new ushort[0];
 
 	/// <summary>
 	/// This option specifies whether or not the client should perform subnet mask discovery using ICMP. A value of false indicates that the
@@ -344,7 +344,7 @@ public class DhcpClient : IDisposable
 	/// This option specifies the path-name that contains the client’s root disk. The path is formatted as a character string consisting of
 	/// characters from the NVT ASCII character set.
 	/// </summary>
-	public string RootDisk => GetParam<string>(DHCP_OPTION_ID.OPTION_ROOT_DISK);
+	public string? RootDisk => GetParam<string>(DHCP_OPTION_ID.OPTION_ROOT_DISK);
 
 	/// <summary>
 	/// The routers option specifies a list of IP addresses for routers on the client’s subnet. Routers should be listed in order of preference.
@@ -358,7 +358,7 @@ public class DhcpClient : IDisposable
 	/// GUID of the adapter on which requested data is being made. Must be under 256 characters. If this value is <see langword="null"/>, the
 	/// first adapter with an address supplied via DHCP will be used.
 	/// </summary>
-	public string SelectedAdapterId { get; set; }
+	public string? SelectedAdapterId { get; set; }
 
 	/// <summary>
 	/// <para>
@@ -405,7 +405,7 @@ public class DhcpClient : IDisposable
 	/// This option is used to identify a TFTP server and, if supported by the client, should have the same effect as the server-name
 	/// declaration. BOOTP clients are unlikely to support this option. Some DHCP clients will support it, and others actually require it.
 	/// </summary>
-	public string TFTPServerName => GetParam<string>(DHCP_OPTION_ID.OPTION_TFTP_SERVER_NAME);
+	public string? TFTPServerName => GetParam<string>(DHCP_OPTION_ID.OPTION_TFTP_SERVER_NAME);
 
 	/// <summary>The time-offset option specifies the offset of the client’s subnet in seconds from Coordinated Universal Time (UTC).</summary>
 	public DateTimeOffset TimeOffset => new(0, TimeSpan.FromSeconds(GetParam<uint>(DHCP_OPTION_ID.OPTION_TIME_OFFSET)));
@@ -442,7 +442,7 @@ public class DhcpClient : IDisposable
 	/// vendor-encapsulated-options option. Please see the VENDOR ENCAPSULATED OPTIONS section later in this manual page for further information.
 	/// </para>
 	/// </summary>
-	public string VendorSpecInfo => GetParam<string>(DHCP_OPTION_ID.OPTION_VENDOR_SPEC_INFO);
+	public string? VendorSpecInfo => GetParam<string>(DHCP_OPTION_ID.OPTION_VENDOR_SPEC_INFO);
 
 	/// <summary>
 	/// This option specifies a list of systems that are running the X Window System Display Manager and are available to the client.
@@ -455,17 +455,18 @@ public class DhcpClient : IDisposable
 	/// </summary>
 	public IPAddress[] XwindowFontServer => ToIP(GetParam<uint[]>(DHCP_OPTION_ID.OPTION_XWINDOW_FONT_SERVER));
 
-	internal static NetworkInterface CurrentAdapter => NetworkInterface.GetAllNetworkInterfaces().
+	internal static NetworkInterface? CurrentAdapter => NetworkInterface.GetAllNetworkInterfaces().
 			Where(i => i.NetworkInterfaceType == NetworkInterfaceType.Ethernet && i.OperationalStatus == OperationalStatus.Up &&
 				i.Supports(NetworkInterfaceComponent.IPv4) && (i.GetIPProperties()?.GetIPv4Properties().IsDhcpEnabled ?? false)).
 			FirstOrDefault();
 
-	internal string Adapter => SelectedAdapterId ?? CurrentAdapter?.Id;
+	internal string? Adapter => SelectedAdapterId ?? CurrentAdapter?.Id;
 
 	/// <summary>Gets the original subnet mask.</summary>
 	/// <returns>The retrieved subnet mask.</returns>
 	public IPAddress GetOriginalSubnetMask()
 	{
+		if (Adapter is null) return IPAddress.None;
 		DhcpGetOriginalSubnetMask(Adapter, out DHCP_IP_ADDRESS mask);
 		return new(mask.value);
 	}
@@ -494,16 +495,17 @@ public class DhcpClient : IDisposable
 		paramChgEvents.Clear();
 	}
 
-	private T GetParam<T>(DHCP_OPTION_ID optionId)
+	private T? GetParam<T>(DHCP_OPTION_ID optionId)
 	{
-		using SafeCoTaskMemHandle pClassIdData = new(ClassId);
+		string? adapter = Adapter ?? throw new InvalidOperationException("No adapter selected.");
+
+		using SafeCoTaskMemHandle pClassIdData = ClassId is null ? SafeCoTaskMemHandle.Null : new(ClassId);
 		using SafeCoTaskMemStruct<DHCPCAPI_CLASSID> pClass = (DHCPCAPI_CLASSID?)(ClassId is null ? null : new DHCPCAPI_CLASSID() { nBytesData = (uint)ClassId.Length, Data = pClassIdData });
 
 		DHCPCAPI_PARAMS_ARRAY sendParams = new();
-		DHCPCAPI_PARAMS_ARRAY reqParams = DHCPCAPI_PARAMS_ARRAY.Make(out SafeNativeArray<DHCPAPI_PARAMS> pparam, optionId);
+		DHCPCAPI_PARAMS_ARRAY reqParams = DHCPCAPI_PARAMS_ARRAY.Make(out SafeNativeArray<DHCPAPI_PARAMS>? pparam, optionId);
 
 		uint sz = 0;
-		string adapter = Adapter;
 		DhcpRequestParams(DHCPCAPI_REQUEST.DHCPCAPI_REQUEST_SYNCHRONOUS, default, adapter, pClass, sendParams, reqParams, IntPtr.Zero, ref sz, null).ThrowUnless(Win32Error.ERROR_MORE_DATA);
 
 		using SafeCoTaskMemHandle buffer = new(sz);
@@ -512,12 +514,12 @@ public class DhcpClient : IDisposable
 		if (sz == 0)
 			return default;
 
-		DHCPAPI_PARAMS p = pparam[0];
+		DHCPAPI_PARAMS p = pparam?[0] ?? default;
 		if (typeof(T).IsArray)
 		{
-			Type elemType = typeof(T).GetElementType();
+			Type elemType = typeof(T).GetElementType()!;
 			System.Diagnostics.Debug.WriteLine($"Array: type={elemType.Name}, elemSz={InteropExtensions.SizeOf(elemType)}, memSz={sz}");
-			return (T)(object)p.Data.ToArray(elemType, sz / InteropExtensions.SizeOf(elemType), 0, sz);
+			return (T)(object)p.Data.ToArray(elemType, sz / InteropExtensions.SizeOf(elemType), 0, sz)!;
 		}
 		else
 		{
@@ -528,7 +530,7 @@ public class DhcpClient : IDisposable
 
 	private static uint ThreadProc(IntPtr hgc)
 	{
-		var c = (DhcpClient)GCHandle.FromIntPtr(hgc).Target;
+		var c = (DhcpClient)GCHandle.FromIntPtr(hgc).Target!;
 		HEVENT[] hevts;
 		RebuildList();
 		do
@@ -553,7 +555,7 @@ public class DhcpClient : IDisposable
 		void RebuildList() => hevts = c.paramChgEvents.Keys.Concat(new HEVENT[] { c.closing, c.updateList }).ToArray();
 	}
 
-	private IPAddress[] ToIP(uint[] ips) => ips is null ? new IPAddress[0] : Array.ConvertAll(ips, i => new IPAddress(i));
+	private IPAddress[] ToIP(uint[]? ips) => ips is null ? new IPAddress[0] : Array.ConvertAll(ips, i => new IPAddress(i));
 
 	internal class DhcpInit
 	{

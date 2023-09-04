@@ -65,14 +65,14 @@ public class CustomDnsBootstapper : DrtCustomBootstrapProvider
 			}
 		}
 
-		if (!CallbackComplete.IsInvalid && (m_hCallbackComplete != CallbackComplete))
+		if (!CallbackComplete.IsInvalid && !Equals(CallbackComplete, m_hCallbackComplete))
 		{
 			// This thread was not the first to call EndResolve, so its event is not in use, release it (m_hCallbackComplete is released in
 			// the destructor)
 			CallbackComplete.Dispose();
 		}
 
-		if (fWaitForCallback && m_hCallbackComplete != null)
+		if (fWaitForCallback && m_hCallbackComplete is not null)
 		{
 			WaitForSingleObject(m_hCallbackComplete, INFINITE);
 		}
@@ -173,7 +173,7 @@ public class CustomDnsBootstapper : DrtCustomBootstrapProvider
 
 			lock (m_lock)
 			{
-				if (m_hCallbackComplete != null && !m_hCallbackComplete.IsInvalid)
+				if (m_hCallbackComplete is not null && !m_hCallbackComplete.IsInvalid)
 				{
 					// Notify EndResolve that callbacks have completed
 					m_hCallbackComplete.Set();
@@ -287,21 +287,21 @@ public class DistributedRoutingTable : IDisposable
 	{
 		var Drt = (DistributedRoutingTable?)GCHandle.FromIntPtr(Param).Target;
 
-		HRESULT hr = DrtGetEventDataSize(Drt?.hDrt, out var ulDrtEventDataLen);
+		HRESULT hr = DrtGetEventDataSize(Drt?.hDrt ?? HDRT.NULL, out var ulDrtEventDataLen);
 		if (hr.Failed)
 		{
 			if (hr != HRESULT.DRT_E_NO_MORE)
-				throw hr.GetException();
+				throw hr.GetException()!;
 			goto Cleanup;
 		}
 
 		using (SafeCoTaskMemStruct<DRT_EVENT_DATA> pEventData = new(ulDrtEventDataLen))
 		{
-			hr = DrtGetEventData(Drt?.hDrt, ulDrtEventDataLen, pEventData);
+			hr = DrtGetEventData(Drt?.hDrt ?? HDRT.NULL, ulDrtEventDataLen, pEventData);
 			if (hr.Failed)
 			{
 				if (hr != HRESULT.DRT_E_NO_MORE)
-					throw hr.GetException();
+					throw hr.GetException()!;
 				goto Cleanup;
 			}
 
@@ -374,7 +374,7 @@ public class DrtBootstrapProvider : IDisposable
 		get
 		{
 			Win32Error.ThrowLastErrorIfFalse(GetComputerNameEx(COMPUTER_NAME_FORMAT.ComputerNameDnsFullyQualified, out string? name));
-			return name;
+			return name!;
 		}
 	}
 
@@ -585,8 +585,8 @@ public class DrtLeafSetKeyChangeEventArgs : DrtEventArgs
 	internal DrtLeafSetKeyChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
 	{
 		Type = data.union.leafsetKeyChange.change;
-		LocalKey = (byte[])data.union.leafsetKeyChange.localKey;
-		RemoteKey = (byte[])data.union.leafsetKeyChange.remoteKey;
+		LocalKey = (byte[])data.union.leafsetKeyChange.localKey!;
+		RemoteKey = (byte[])data.union.leafsetKeyChange.remoteKey!;
 	}
 
 	/// <summary>Specifies the local key associated with the leaf set that has changed.</summary>
@@ -606,7 +606,7 @@ public class DrtRegistrationStateChangeEventArgs : DrtEventArgs
 	internal DrtRegistrationStateChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
 	{
 		State = data.union.registrationStateChange.state;
-		LocalKey = (byte[])data.union.registrationStateChange.localKey;
+		LocalKey = (byte[])data.union.registrationStateChange.localKey!;
 	}
 
 	/// <summary>Specifies the local key associated with the registration that has changed.</summary>
@@ -1014,7 +1014,7 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 	}
 
 	private HRESULT InternalDecryptData(IntPtr pvContext, in DRT_DATA pKeyToken, IntPtr pvKeyContext, uint dwBuffers, DRT_DATA[] pData) =>
-		DecryptData((byte[])pKeyToken, pvKeyContext, Array.ConvertAll(pData, p => (byte[])p));
+		DecryptData((byte[])pKeyToken!, pvKeyContext, Array.ConvertAll(pData, p => (byte[])p!)!);
 
 	private void InternalDetach(IntPtr pvContext)
 	{
@@ -1024,7 +1024,7 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 
 	private HRESULT InternalEncryptData(IntPtr pvContext, in DRT_DATA pRemoteCredential, uint dwBuffers, DRT_DATA[] pDataBuffers, DRT_DATA[] pEncryptedBuffers, out DRT_DATA pKeyToken)
 	{
-		var hr = EncryptData((byte[])pRemoteCredential, Array.ConvertAll(pDataBuffers, p => (byte[])p), Array.ConvertAll(pEncryptedBuffers, p => (byte[])p), out byte[]? pkt);
+		var hr = EncryptData((byte[])pRemoteCredential!, Array.ConvertAll(pDataBuffers, p => (byte[])p!)!, Array.ConvertAll(pEncryptedBuffers, p => (byte[])p!), out byte[]? pkt);
 		pKeyToken = ToData(pkt);
 		return hr;
 	}
@@ -1044,8 +1044,8 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 		uint dwFlags, in DRT_DATA pKey, DRT_DATA* pPayload, IntPtr pAddressList, in DRT_DATA pNonce, out DRT_DATA pSecuredAddressPayload,
 		DRT_DATA* pClassifier, DRT_DATA* pSecuredPayload, DRT_DATA* pCertChain)
 	{
-		HRESULT hr = SecureAndPackPayload(pvContext, bProtocolMajor, bProtocolMinor, dwFlags, (byte[])pKey, pPayload is null ? null : (byte[])(*pPayload),
-			ToEndPoints(pAddressList.ToNullableStructure<SOCKET_ADDRESS_LIST>()), (byte[])pNonce, out byte[]? sap, out byte[]? cl, out byte[]? sp, out byte[]? cc);
+		HRESULT hr = SecureAndPackPayload(pvContext, bProtocolMajor, bProtocolMinor, dwFlags, (byte[])pKey!, pPayload is null ? null : (byte[])(*pPayload)!,
+			ToEndPoints(pAddressList.ToNullableStructure<SOCKET_ADDRESS_LIST>()), (byte[])pNonce!, out byte[]? sap, out byte[]? cl, out byte[]? sp, out byte[]? cc);
 		pSecuredAddressPayload = ToData(sap);
 		if (cl is not null)
 			*pClassifier = ToData(cl);
@@ -1058,22 +1058,22 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 
 	private HRESULT InternalSignData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, out DRT_DATA pKeyIdentifier, out DRT_DATA pSignature)
 	{
-		HRESULT hr = SignData(Array.ConvertAll(pDataBuffers, b => (byte[])b), out byte[]? id, out byte[]? sig);
+		HRESULT hr = SignData(Array.ConvertAll(pDataBuffers, b => (byte[])b!)!, out byte[]? id, out byte[]? sig);
 		pKeyIdentifier = ToData(id);
 		pSignature = ToData(sig);
 		return hr;
 	}
 
 	private HRESULT InternalUnregisterKey(IntPtr pvContext, in DRT_DATA pKey, IntPtr pvKeyContext) =>
-		UnregisterKey((byte[])pKey);
+		UnregisterKey((byte[])pKey!);
 
 	private unsafe HRESULT InternalValidateAndUnpackPayload(IntPtr pvContext, in DRT_DATA pSecuredAddressPayload, DRT_DATA* pCertChain,
 		DRT_DATA* pClassifier, DRT_DATA* pNonce, DRT_DATA* pSecuredPayload, byte* pbProtocolMajor, byte* pbProtocolMinor,
 		out DRT_DATA pKey, DRT_DATA* pPayload, CERT_PUBLIC_KEY_INFO** ppPublicKey, void** ppAddressList, out uint pdwFlags)
 	{
-		HRESULT hr = ValidateAndUnpackPayload(pSecuredAddressPayload, pCertChain is null ? null : (byte[])(*pCertChain),
-			pClassifier is null ? null : (byte[])(*pClassifier), pNonce is null ? null : (byte[])(*pNonce),
-			pSecuredPayload is null ? null : (byte[])(*pSecuredPayload), out byte maj, out byte min, out byte[]? k,
+		HRESULT hr = ValidateAndUnpackPayload(pSecuredAddressPayload!, pCertChain is null ? null : (byte[])(*pCertChain)!,
+			pClassifier is null ? null : (byte[])(*pClassifier)!, pNonce is null ? null : (byte[])(*pNonce)!,
+			pSecuredPayload is null ? null : (byte[])(*pSecuredPayload)!, out byte maj, out byte min, out byte[]? k,
 			out byte[]? pl, out SafeCoTaskMemStruct<CERT_PUBLIC_KEY_INFO>? pk, out IPEndPoint[]? al, out pdwFlags);
 		*pbProtocolMajor = maj;
 		*pbProtocolMinor = min;
@@ -1086,10 +1086,10 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 	}
 
 	private HRESULT InternalValidateRemoteCredential(IntPtr pvContext, in DRT_DATA pRemoteCredential) =>
-		ValidateRemoteCredential((byte[])pRemoteCredential);
+		ValidateRemoteCredential((byte[])pRemoteCredential!);
 
 	private HRESULT InternalVerifyData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, in DRT_DATA pRemoteCredentials, in DRT_DATA pKeyIdentifier, in DRT_DATA pSignature) =>
-		VerifyData(Array.ConvertAll(pDataBuffers, b => (byte[])b), (byte[])pRemoteCredentials, (byte[])pKeyIdentifier, (byte[])pSignature);
+		VerifyData(Array.ConvertAll(pDataBuffers, b => (byte[])b!), (byte[])pRemoteCredentials!, (byte[])pKeyIdentifier!, (byte[])pSignature!);
 }
 
 /*
