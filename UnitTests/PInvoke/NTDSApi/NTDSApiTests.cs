@@ -9,27 +9,28 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public class NTDSApiTests
 {
-	public SafeDsHandle hDs;
-	public string dn;
+	public SafeDsHandle? hDs;
+	public string? dn;
 
-	public NTDSApiTests()
+	[OneTimeSetUp]
+	public void _Setup()
 	{
 		dn = Environment.UserDomainName;
-		DsBind(null, dn, out hDs).ThrowIfFailed();
+		DsBind(null, dn!, out hDs).ThrowIfFailed();
 	}
 
 	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 	public void DsBindTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 	{
-		Assert.That(DsBind(dcn, dn, out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
+		Assert.That(DsBind(dcn, dn!, out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
 		Assert.That(DsBind(dcn, null, out var dsb1).Succeeded && !dsb1.IsInvalid, Is.EqualTo(validUser));
-		Assert.That(DsBind(null, dn, out var dsb2).Succeeded && !dsb2.IsInvalid, Is.EqualTo(validUser));
+		Assert.That(DsBind(null, dn!, out var dsb2).Succeeded && !dsb2.IsInvalid, Is.EqualTo(validUser));
 	}
 
 	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 	public void DsBindByInstanceTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 	{
-		Assert.That(DsBindByInstance(DnsDomainName: dn, AuthIdentity: SafeAuthIdentityHandle.LocalThreadIdentity, phDS: out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
+		Assert.That(DsBindByInstance(DnsDomainName: dn!, AuthIdentity: SafeAuthIdentityHandle.LocalThreadIdentity, phDS: out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
 	}
 
 	[Test]
@@ -43,8 +44,8 @@ public class NTDSApiTests
 	{
 		void Meth()
 		{
-			DsMakePasswordCredentials(un, dn, pwd, out var cred).ThrowIfFailed();
-			DsBindWithCred(dcn, dn, cred, out var hds).ThrowIfFailed();
+			DsMakePasswordCredentials(un, dn!, pwd, out var cred).ThrowIfFailed();
+			DsBindWithCred(dcn, dn!, cred, out var hDs).ThrowIfFailed();
 		}
 		if (!validUser || !validCred)
 			Assert.That(Meth, Throws.Exception);
@@ -55,7 +56,7 @@ public class NTDSApiTests
 	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
 	public void DsCrackNamesTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string un, string pwd, string notes)
 	{
-		var res = DsCrackNames(hDs, new[] {un}, DS_NAME_FORMAT.DS_NT4_ACCOUNT_NAME);
+		var res = DsCrackNames(hDs!, new[] {un}, DS_NAME_FORMAT.DS_NT4_ACCOUNT_NAME);
 		Assert.That(res, Has.Exactly(1).Items);
 		for (var i = 0; i < res.Length; i++)
 			TestContext.WriteLine($"{i}) {res[i]}");
@@ -88,17 +89,17 @@ public class NTDSApiTests
 	public void DsGetDCInfoTest()
 	{
 		DS_DOMAIN_CONTROLLER_INFO_1[]? s1 = null;
-		Assert.That(() => s1 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_1>(hDs, dn), Throws.Nothing);
+		Assert.That(() => s1 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_1>(hDs!, dn!), Throws.Nothing);
 		Assert.That(s1, Is.Not.Null.And.Property("Length").GreaterThan(0));
 		Assert.That(s1![0].fDsEnabled);
 
 		DS_DOMAIN_CONTROLLER_INFO_2[]? s2 = null;
-		Assert.That(() => s2 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_2>(hDs, dn), Throws.Nothing);
+		Assert.That(() => s2 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_2>(hDs!, dn!), Throws.Nothing);
 		Assert.That(s2, Is.Not.Null.And.Property("Length").GreaterThan(0));
 		Assert.That(s2![0].fDsEnabled);
 
 		DS_DOMAIN_CONTROLLER_INFO_3[]? s3 = null;
-		Assert.That(() => s3 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_3>(hDs, dn), Throws.Nothing);
+		Assert.That(() => s3 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_3>(hDs!, dn!), Throws.Nothing);
 		Assert.That(s3, Is.Not.Null.And.Property("Length").GreaterThan(0));
 		Assert.That(s3![0].fDsEnabled);
 		foreach (var i3 in s3)
@@ -125,7 +126,7 @@ public class NTDSApiTests
 
 	private string TestNameResult(NRDel f, string prefix)
 	{
-		var err = f(hDs, out var hnr);
+		var err = f(hDs!, out var hnr);
 		Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
 		var nrs = hnr.ToArray();
 		Assert.That(nrs.Length, Is.Not.Zero);
@@ -141,7 +142,7 @@ public class NTDSApiTests
 	{
 		var ret = DsGetRdnW("dc=corp,dc=fabrikam,dc=com", out var dn, out var key, out var val);
 		ret.ThrowIfFailed();
-		Assert.That(dn, Is.EqualTo(",dc=fabrikam,dc=com"));
+		Assert.That(dn!, Is.EqualTo(",dc=fabrikam,dc=com"));
 		Assert.That(key, Is.EqualTo("dc"));
 		Assert.That(val, Is.EqualTo("corp"));
 	}
@@ -150,7 +151,7 @@ public class NTDSApiTests
 	public void DsMapSchemaGuidsTest()
 	{
 		var guid = new Guid("2BEC133B-AE2B-4C32-A3F5-036149C4E671");
-		var err = DsMapSchemaGuids(hDs, 1, new[] { guid }, out var map);
+		var err = DsMapSchemaGuids(hDs!, 1, new[] { guid }, out var map);
 		Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
 		var items = map.GetItems(1);
 		var item = items[0];
@@ -166,7 +167,7 @@ public class NTDSApiTests
 		Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
 		var site = hSiteName.ToString();
 		var sites = GetAllSiteNames();
-		err = DsQuerySitesByCost(hDs, site, sites, (uint)sites.Length, 0, out var hnr);
+		err = DsQuerySitesByCost(hDs!, site, sites, (uint)sites.Length, 0, out var hnr);
 		Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
 		var nrs = hnr.GetItems(sites.Length);
 		Assert.That(nrs.Length, Is.EqualTo(sites.Length));
@@ -183,6 +184,6 @@ public class NTDSApiTests
 		var sitesContainer = new DirectoryEntry("LDAP://CN=Sites," + configNC.Properties["distinguishedName"][0]);
 		var siteFinder = new DirectorySearcher(sitesContainer, "(objectClass=site)") { PageSize = 100 };
 		using var results = siteFinder.FindAll();
-		return results.Cast<SearchResult>().Select(r => r.Properties["name"][0].ToString()).ToArray();
+		return results.Cast<SearchResult>().Select(r => r.Properties["name"][0].ToString()).WhereNotNull().ToArray();
 	}
 }

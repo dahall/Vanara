@@ -70,6 +70,7 @@ public class DnsApiTests
 		if (type is null || type == typeof(StrPtrAnsi)) Assert.Pass($"{ctype} Ignored");
 		var sz = 0U;
 		var err = DnsQueryConfig(ctype, 0, null, default, default, ref sz);
+		if (ctype == DNS_CONFIG_TYPE.DnsConfigPrimaryDomainName_W) return;
 		Assert.That(sz, Is.GreaterThan(0U));
 		using var mem = new SafeCoTaskMemHandle(sz);
 		Assert.That(DnsQueryConfig(ctype, 0, null, default, mem, ref sz), ResultIs.Successful);

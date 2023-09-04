@@ -1024,29 +1024,85 @@ public static partial class NTDSApi
 		string DstDomain, string DstPrincipal);
 
 	/// <summary>
-	/// The DsBind function binds to a domain controller.DsBind uses the default process credentials to bind to the domain controller. To
-	/// specify alternate credentials, use the DsBindWithCred function.
+	/// The <c>DsBind</c> function binds to a domain controller. <c>DsBind</c> uses the default process credentials to bind to the domain
+	/// controller. To specify alternate credentials, use the DsBindWithCred function.
 	/// </summary>
-	/// <param name="DomainControllerName">Pointer to a null-terminated string that contains the name of the domain controller to bind to. This name can be the name of the
+	/// <param name="DomainControllerName">
+	/// <para>
+	/// Pointer to a null-terminated string that contains the name of the domain controller to bind to. This name can be the name of the
 	/// domain controller or the fully qualified DNS name of the domain controller. Either name type can, optionally, be preceded by two
 	/// backslash characters. All of the following examples represent correctly formatted domain controller names:
-	/// <list type="bullet"><item><definition>"FAB-DC-01"</definition></item><item><definition>"\\FAB-DC-01"</definition></item><item><definition>"FAB-DC-01.fabrikam.com"</definition></item><item><definition>"\\FAB-DC-01.fabrikam.com"</definition></item></list><para>This parameter can be NULL. For more information, see Remarks.</para></param>
-	/// <param name="DnsDomainName">Pointer to a null-terminated string that contains the fully qualified DNS name of the domain to bind to. This parameter can be
-	/// NULL. For more information, see Remarks.</param>
-	/// <param name="phDS">Address of a HANDLE value that receives the binding handle. To close this handle, pass it to the DsUnBind function.</param>
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>"FAB-DC-01"</description>
+	/// </item>
+	/// <item>
+	/// <description>"\\FAB-DC-01"</description>
+	/// </item>
+	/// <item>
+	/// <description>"FAB-DC-01.fabrikam.com"</description>
+	/// </item>
+	/// <item>
+	/// <description>"\\FAB-DC-01.fabrikam.com"</description>
+	/// </item>
+	/// </list>
+	/// <para>This parameter can be <c>NULL</c>. For more information, see Remarks.</para>
+	/// </param>
+	/// <param name="DnsDomainName">
+	/// Pointer to a null-terminated string that contains the fully qualified DNS name of the domain to bind to. This parameter can be
+	/// <c>NULL</c>. For more information, see Remarks.
+	/// </param>
+	/// <param name="phDS">
+	/// Address of a <c>HANDLE</c> value that receives the binding handle. To close this handle, pass it to the DsUnBind function.
+	/// </param>
 	/// <returns>
-	/// Returns ERROR_SUCCESS if successful or a Windows or RPC error code otherwise.
+	/// Returns <c>ERROR_SUCCESS</c> if successful or a Windows or RPC error code otherwise. The following are the most common error codes.
 	/// </returns>
 	/// <remarks>
-	/// The behavior of the DsBind function is determined by the contents of the DomainControllerName and DnsDomainName parameters. The
-	/// following list describes the behavior of this function based on the contents of these parameters.
-	/// <list type="table"><listheader><description>DomainControllerName</description><description>DnsDomainName</description><description>Description</description></listheader><item><description><c>NULL</c></description><description><c>NULL</c></description><description>DsBind will attempt to bind to a global catalog server in the forest of the local computer.</description></item><item><description>(value)</description><description><c>NULL</c></description><description>DsBind will attempt to bind to the domain controller specified by the DomainControllerName parameter.</description></item><item><description><c>NULL</c></description><description>(value)</description><description>DsBind will attempt to bind to any domain controller in the domain specified by DnsDomainName parameter.</description></item><item><description>(value)</description><description>(value)</description><description>
-	/// The DomainControllerName parameter takes precedence. DsBind will attempt to bind to the domain controller specified by the
-	/// DomainControllerName parameter.
-	/// </description></item></list>
+	/// <para>
+	/// The behavior of the <c>DsBind</c> function is determined by the contents of the <c>DomainControllerName</c> and <c>DnsDomainName</c>
+	/// parameters. The following list describes the behavior of this function based on the contents of these parameters.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description><c>DomainControllerName</c></description>
+	/// <description><c>DnsDomainName</c></description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>NULL</c></description>
+	/// <description><c>NULL</c></description>
+	/// <description><c>DsBind</c> will attempt to bind to a global catalog server in the forest of the local computer.</description>
+	/// </item>
+	/// <item>
+	/// <description>(value)</description>
+	/// <description><c>NULL</c></description>
+	/// <description><c>DsBind</c> will attempt to bind to the domain controller specified by the <c>DomainControllerName</c> parameter.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>NULL</c></description>
+	/// <description>(value)</description>
+	/// <description><c>DsBind</c> will attempt to bind to any domain controller in the domain specified by <c>DnsDomainName</c> parameter.</description>
+	/// </item>
+	/// <item>
+	/// <description>(value)</description>
+	/// <description>(value)</description>
+	/// <description>
+	/// The <c>DomainControllerName</c> parameter takes precedence. <c>DsBind</c> will attempt to bind to the domain controller specified by
+	/// the <c>DomainControllerName</c> parameter.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <note type="note">The ntdsapi.h header defines DsBind as an alias which automatically selects the ANSI or Unicode version of this
+	/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.</note>
 	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/ntdsapi/nf-ntdsapi-dsbinda
+	// NTDSAPI DWORD DsBindA( [in, optional] LPCSTR DomainControllerName, [in, optional] LPCSTR DnsDomainName, [out] HANDLE *phDS );
+	[PInvokeData("ntdsapi.h", MSDNShortId = "NF:ntdsapi.DsBindA")]
 	[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto, SetLastError = true)]
-	[PInvokeData("NTDSApi.h", MSDNShortId = "ms675931")]
 	public static extern Win32Error DsBind([Optional] string? DomainControllerName, [Optional] string? DnsDomainName, out SafeDsHandle phDS);
 
 	/// <summary>
