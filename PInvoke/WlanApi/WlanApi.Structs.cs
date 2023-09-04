@@ -133,7 +133,7 @@ public static partial class WlanApi
 		public string ucSSID;
 
 		/// <inheritdoc/>
-		public override string ToString() => ucSSID?.Substring(0, (int)uSSIDLength);
+		public override string ToString() => ucSSID?.Substring(0, (int)uSSIDLength) ?? "";
 	}
 
 	/// <summary>The <c>EAP_METHOD_TYPE</c> structure contains type, identification, and author information about an EAP method.</summary>
@@ -803,7 +803,7 @@ public static partial class WlanApi
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string strProfile;
+		public string? strProfile;
 
 		/// <summary>
 		/// Pointer to a DOT11_SSID structure that specifies the SSID of the network to connect to. This parameter is optional. When set
@@ -1920,7 +1920,7 @@ public static partial class WlanApi
 	public class DOT11_NETWORK_LIST
 	{
 		/// <summary>Initializes a new instance of the <see cref="DOT11_NETWORK_LIST"/> class.</summary>
-		public DOT11_NETWORK_LIST() { }
+		public DOT11_NETWORK_LIST() => Network = new DOT11_NETWORK[1];
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DOT11_NETWORK_LIST"/> class setting the <see cref="Network"/> and <see
@@ -1977,7 +1977,7 @@ public static partial class WlanApi
 
 		/// <summary>An array of WLAN_AVAILABLE_NETWORK structures containing interface information.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public WLAN_AVAILABLE_NETWORK[] Network;
+		public WLAN_AVAILABLE_NETWORK[] Network = new WLAN_AVAILABLE_NETWORK[1];
 	}
 
 	/// <summary>The <c>WLAN_BSS_LIST</c> structure contains a list of basic service set (BSS) entries.</summary>
@@ -2018,7 +2018,7 @@ public static partial class WlanApi
 
 		/// <summary>An array of WLAN_BSS_ENTRY structures that contains information about a BSS.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public WLAN_BSS_ENTRY[] wlanBssEntries;
+		public WLAN_BSS_ENTRY[] wlanBssEntries = new WLAN_BSS_ENTRY[1];
 	}
 
 	/// <summary>Contains an array of device service GUIDs.</summary>
@@ -2053,7 +2053,7 @@ public static partial class WlanApi
 		/// <para>A pointer to an array containing <c>GUID</c> s; each corresponds to a WLAN device service that the driver supports.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public Guid[] DeviceService;
+		public Guid[] DeviceService = new Guid[1];
 	}
 
 	/// <summary>The <c>WLAN_HOSTED_NETWORK_STATUS</c> structure contains information about the status of the wireless Hosted Network.</summary>
@@ -2128,7 +2128,7 @@ public static partial class WlanApi
 		/// <para>This value is correct only if <c>HostedNetworkState</c> is <c>wlan_hosted_network_active</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public WLAN_HOSTED_NETWORK_PEER_STATE[] PeerList;
+		public WLAN_HOSTED_NETWORK_PEER_STATE[] PeerList = new WLAN_HOSTED_NETWORK_PEER_STATE[1];
 	}
 
 	/// <summary>The <c>WLAN_INTERFACE_CAPABILITY</c> structure contains information about the capabilities of an interface.</summary>
@@ -2157,7 +2157,7 @@ public static partial class WlanApi
 
 		/// <summary>An array of DOT11_PHY_TYPE values that specify the supported PHY types. WLAN_MAX_PHY_INDEX is set to 64.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = WLAN_MAX_PHY_INDEX)]
-		public DOT11_PHY_TYPE[] dot11PhyTypes;
+		public DOT11_PHY_TYPE[] dot11PhyTypes = new DOT11_PHY_TYPE[1];
 	}
 
 	/// <summary>The <c>WLAN_INTERFACE_INFO_LIST</c> structure contains an array of NIC interface information.</summary>
@@ -2186,7 +2186,7 @@ public static partial class WlanApi
 
 		/// <summary>An array of WLAN_INTERFACE_INFO structures containing interface information.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public WLAN_INTERFACE_INFO[] InterfaceInfo;
+		public WLAN_INTERFACE_INFO[] InterfaceInfo = new WLAN_INTERFACE_INFO[1];
 	}
 
 	/// <summary>The <c>WLAN_PROFILE_INFO_LIST</c> structure contains a list of wireless profile information.</summary>
@@ -2220,6 +2220,6 @@ public static partial class WlanApi
 		/// the <c>dwNumberOfItems</c> member.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public WLAN_PROFILE_INFO[] ProfileInfo;
+		public WLAN_PROFILE_INFO[] ProfileInfo = new WLAN_PROFILE_INFO[1];
 	}
 }

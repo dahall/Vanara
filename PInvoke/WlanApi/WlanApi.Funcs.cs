@@ -180,7 +180,7 @@ public static partial class WlanApi
 	// https://docs.microsoft.com/en-us/windows/win32/api/wlanapi/nc-wlanapi-wlan_notification_callback WLAN_NOTIFICATION_CALLBACK
 	// WlanNotificationCallback; void WlanNotificationCallback( PWLAN_NOTIFICATION_DATA Arg1, PVOID Arg2 ) {...}
 	[PInvokeData("wlanapi.h", MSDNShortId = "df721e77-3285-442b-aabd-2dccae85fda5")]
-	public delegate void WLAN_NOTIFICATION_CALLBACK(ref WLAN_NOTIFICATION_DATA Arg1, IntPtr Arg2);
+	public delegate void WLAN_NOTIFICATION_CALLBACK(ref WLAN_NOTIFICATION_DATA Arg1, [Optional] IntPtr Arg2);
 
 	/// <summary>
 	/// The <c>WFDCancelOpenSession</c> function indicates that the application wants to cancel a pending WFDStartOpenSession function
@@ -437,7 +437,8 @@ public static partial class WlanApi
 	// hClientHandle, PDOT11_MAC_ADDRESS pLegacyMacAddress, HANDLE *phSessionHandle, GUID *pGuidSessionInterface );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "D7BE8108-EF18-49FC-8B14-CED45B6C682B")]
-	public static extern Win32Error WFDOpenLegacySession(HWFDSERVICE hClientHandle, in DOT11_MAC_ADDRESS pLegacyMacAddress, out SafeHWFDSESSION phSessionHandle, out Guid pGuidSessionInterface);
+	public static extern Win32Error WFDOpenLegacySession(HWFDSERVICE hClientHandle, in DOT11_MAC_ADDRESS pLegacyMacAddress,
+		out SafeHWFDSESSION phSessionHandle, out Guid pGuidSessionInterface);
 
 	/// <summary>
 	/// The <c>WFDStartOpenSession</c> function starts an on-demand connection to a specific Wi-Fi Direct device, which has been
@@ -787,7 +788,8 @@ public static partial class WlanApi
 	// hClientHandle, const GUID *pInterfaceGuid, LPCWSTR strProfileName, PVOID pReserved );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "2d1152ad-8106-4b8f-9856-9e6e36daa063")]
-	public static extern Win32Error WlanDeleteProfile(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName, IntPtr pReserved = default);
+	public static extern Win32Error WlanDeleteProfile(HWLANSESSION hClientHandle, in Guid pInterfaceGuid,
+		[MarshalAs(UnmanagedType.LPWStr)] string strProfileName, IntPtr pReserved = default);
 
 	/// <summary>
 	/// Allows an original equipment manufacturer (OEM) or independent hardware vendor (IHV) component to communicate with a device
@@ -1066,7 +1068,7 @@ public static partial class WlanApi
 	// *ppPsdIEDataList );
 	[PInvokeData("wlanapi.h", MSDNShortId = "7fb6707f-c229-4386-9058-e290693a20ce")]
 	public static Win32Error WlanExtractPsdIEDataList(HWLANSESSION hClientHandle, uint dwIeDataSize, [In] IntPtr pRawIeData,
-		[MarshalAs(UnmanagedType.LPWStr)] string strFormat, out byte[][] ppPsdIEDataList)
+		[MarshalAs(UnmanagedType.LPWStr)] string strFormat, out byte[][]? ppPsdIEDataList)
 	{
 		var ret = WlanExtractPsdIEDataList(hClientHandle, dwIeDataSize, pRawIeData, strFormat, default, out var mem);
 		if (ret.Succeeded)
@@ -1074,7 +1076,7 @@ public static partial class WlanApi
 			var l = mem.DangerousGetHandle().ToStructure<WLAN_RAW_DATA_LIST>();
 			ppPsdIEDataList = new byte[(int)l.dwNumberOfItems][];
 			for (int i = 0; i < l.dwNumberOfItems; i++)
-				ppPsdIEDataList[i] = mem.DangerousGetHandle().Offset((8 * (i + 1)) + l.DataList[i].dwDataOffset).ToByteArray((int)l.DataList[i].dwDataSize);
+				ppPsdIEDataList[i] = mem.DangerousGetHandle().Offset((8 * (i + 1)) + l.DataList[i].dwDataOffset).ToByteArray((int)l.DataList[i].dwDataSize)!;
 			mem?.Dispose();
 		}
 		else
@@ -1815,8 +1817,9 @@ public static partial class WlanApi
 	// *pdwGrantedAccess );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "6486e961-402f-45c8-a806-ab91a4f0f156")]
-	public static extern Win32Error WlanGetProfile(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName, [Optional] IntPtr pReserved,
-		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WlanMarshaler<string>))] out string pstrProfileXml, ref WLAN_PROFILE_FLAGS pdwFlags, out WLAN_ACCCESS pdwGrantedAccess);
+	public static extern Win32Error WlanGetProfile(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName,
+		[Optional] IntPtr pReserved, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WlanMarshaler<string>))] out string pstrProfileXml,
+		ref WLAN_PROFILE_FLAGS pdwFlags, out WLAN_ACCCESS pdwGrantedAccess);
 
 	/// <summary>The <c>WlanGetProfileCustomUserData</c> function gets the custom user data associated with a wireless profile.</summary>
 	/// <param name="hClientHandle">The client's session handle, obtained by a previous call to the WlanOpenHandle function.</param>
@@ -2677,7 +2680,8 @@ public static partial class WlanApi
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "5989977a-7a2f-43b8-a958-058db01fd24f")]
 	public static extern Win32Error WlanHostedNetworkQuerySecondaryKey(HWLANSESSION hClientHandle, out uint pdwKeyLength, out SafeHWLANMEM ppucKeyData,
-		[MarshalAs(UnmanagedType.Bool)] out bool pbIsPassPhrase, [MarshalAs(UnmanagedType.Bool)] out bool pbPersistent, out WLAN_HOSTED_NETWORK_REASON pFailReason, IntPtr pvReserved = default);
+		[MarshalAs(UnmanagedType.Bool)] out bool pbIsPassPhrase, [MarshalAs(UnmanagedType.Bool)] out bool pbPersistent, out WLAN_HOSTED_NETWORK_REASON pFailReason,
+		IntPtr pvReserved = default);
 
 	/// <summary>The <c>WlanHostedNetworkQueryStatus</c> function queries the current status of the wireless Hosted Network.</summary>
 	/// <param name="hClientHandle">The client's session handle, returned by a previous call to the WlanOpenHandle function.</param>
@@ -2997,7 +3001,8 @@ public static partial class WlanApi
 	// PWLAN_HOSTED_NETWORK_REASON pFailReason, PVOID pvReserved );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "88139383-f5d5-4e42-b41e-ea754a89356d")]
-	public static extern Win32Error WlanHostedNetworkSetProperty(HWLANSESSION hClientHandle, WLAN_HOSTED_NETWORK_OPCODE OpCode, uint dwDataSize, [In] IntPtr pvData, out WLAN_HOSTED_NETWORK_REASON pFailReason, IntPtr pvReserved = default);
+	public static extern Win32Error WlanHostedNetworkSetProperty(HWLANSESSION hClientHandle, WLAN_HOSTED_NETWORK_OPCODE OpCode, uint dwDataSize,
+		[In] IntPtr pvData, out WLAN_HOSTED_NETWORK_REASON pFailReason, IntPtr pvReserved = default);
 
 	/// <summary>
 	/// The <c>WlanHostedNetworkSetSecondaryKey</c> function configures the secondary security key that will be used by the wireless
@@ -3150,8 +3155,9 @@ public static partial class WlanApi
 	// bPersistent, PWLAN_HOSTED_NETWORK_REASON pFailReason, PVOID pvReserved );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "385148fd-b5cd-4221-be25-077f484e93e9")]
-	public static extern Win32Error WlanHostedNetworkSetSecondaryKey(HWLANSESSION hClientHandle, uint dwKeyLength, [In] IntPtr pucKeyData, [MarshalAs(UnmanagedType.Bool)] bool bIsPassPhrase,
-		[MarshalAs(UnmanagedType.Bool)] bool bPersistent, out WLAN_HOSTED_NETWORK_REASON pFailReason, IntPtr pvReserved = default);
+	public static extern Win32Error WlanHostedNetworkSetSecondaryKey(HWLANSESSION hClientHandle, uint dwKeyLength, [In] IntPtr pucKeyData,
+		[MarshalAs(UnmanagedType.Bool)] bool bIsPassPhrase, [MarshalAs(UnmanagedType.Bool)] bool bPersistent, out WLAN_HOSTED_NETWORK_REASON pFailReason,
+		IntPtr pvReserved = default);
 
 	/// <summary>The <c>WlanHostedNetworkStartUsing</c> function starts the wireless Hosted Network.</summary>
 	/// <param name="hClientHandle">The client's session handle, returned by a previous call to the WlanOpenHandle function.</param>
@@ -3395,7 +3401,8 @@ public static partial class WlanApi
 	// https://docs.microsoft.com/en-us/windows/win32/api/wlanapi/nf-wlanapi-wlanopenhandle DWORD WlanOpenHandle( DWORD dwClientVersion,
 	// PVOID pReserved, PDWORD pdwNegotiatedVersion, PHANDLE phClientHandle );
 	[PInvokeData("wlanapi.h", MSDNShortId = "27bfa0c1-4443-47a4-a374-326f553fa3bb")]
-	public static SafeHWLANSESSION WlanOpenHandle(uint dwClientVersion = 2) => WlanOpenHandle(dwClientVersion, default, out _, out var h).Succeeded ? h : new SafeHWLANSESSION(default);
+	public static SafeHWLANSESSION WlanOpenHandle(uint dwClientVersion = 2) =>
+		WlanOpenHandle(dwClientVersion, default, out _, out var h).Succeeded ? h : new SafeHWLANSESSION(default);
 
 	/// <summary>The <c>WlanOpenHandle</c> function opens a connection to the server.</summary>
 	/// <param name="dwClientVersion">
@@ -3748,7 +3755,8 @@ public static partial class WlanApi
 	// dwReasonCode, DWORD dwBufferSize, PWCHAR pStringBuffer, PVOID pReserved );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "2a02e2d2-91d0-4b54-ad02-a76442edcff8")]
-	public static extern Win32Error WlanReasonCodeToString(WLAN_REASON_CODE dwReasonCode, uint dwBufferSize, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuffer, IntPtr pReserved = default);
+	public static extern Win32Error WlanReasonCodeToString(WLAN_REASON_CODE dwReasonCode, uint dwBufferSize, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuffer,
+		IntPtr pReserved = default);
 
 	/// <summary>
 	/// Allows user mode clients with admin privileges, or User-Mode Driver Framework (UMDF) drivers, to register for unsolicited
@@ -3814,7 +3822,7 @@ public static partial class WlanApi
 	// WlanRegisterDeviceServiceNotification( HANDLE hClientHandle, const PWLAN_DEVICE_SERVICE_GUID_LIST pDevSvcGuidList );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h")]
-	public static extern Win32Error WlanRegisterDeviceServiceNotification(HWLANSESSION hClientHandle, [Optional] WLAN_DEVICE_SERVICE_GUID_LIST pDevSvcGuidList);
+	public static extern Win32Error WlanRegisterDeviceServiceNotification(HWLANSESSION hClientHandle, [In, Optional] WLAN_DEVICE_SERVICE_GUID_LIST? pDevSvcGuidList);
 
 	/// <summary>The <c>WlanRegisterNotification</c> function is used to register and unregister notifications on all wireless interfaces.</summary>
 	/// <param name="hClientHandle">The client's session handle, obtained by a previous call to the WlanOpenHandle function.</param>
@@ -3977,8 +3985,9 @@ public static partial class WlanApi
 	// pCallbackContext, PVOID pReserved, PDWORD pdwPrevNotifSource );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "e24810da-ed3b-41c4-b7b1-290b01e26cd5")]
-	public static extern Win32Error WlanRegisterNotification(HWLANSESSION hClientHandle, WLAN_NOTIFICATION_SOURCE dwNotifSource, [MarshalAs(UnmanagedType.Bool)] bool bIgnoreDuplicate,
-		WLAN_NOTIFICATION_CALLBACK funcCallback, [In, Optional] IntPtr pCallbackContext, [In, Optional] IntPtr pReserved, out uint pdwPrevNotifSource);
+	public static extern Win32Error WlanRegisterNotification(HWLANSESSION hClientHandle, WLAN_NOTIFICATION_SOURCE dwNotifSource,
+		[MarshalAs(UnmanagedType.Bool)] bool bIgnoreDuplicate, WLAN_NOTIFICATION_CALLBACK? funcCallback, [In, Optional] IntPtr pCallbackContext,
+		[In, Optional] IntPtr pReserved, out uint pdwPrevNotifSource);
 
 	/// <summary>
 	/// The <c>WlanRegisterVirtualStationNotification</c> function is used to register and unregister notifications on a virtual station.
@@ -4595,7 +4604,8 @@ public static partial class WlanApi
 	// pReserved );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "4f2514be-f05e-4be6-8c74-ef7a9ffe1c53")]
-	public static extern Win32Error WlanSetAutoConfigParameter(HWLANSESSION hClientHandle, WLAN_AUTOCONF_OPCODE OpCode, uint dwDataSize, [In] IntPtr pData, IntPtr pReserved = default);
+	public static extern Win32Error WlanSetAutoConfigParameter(HWLANSESSION hClientHandle, WLAN_AUTOCONF_OPCODE OpCode, uint dwDataSize,
+		[In] IntPtr pData, IntPtr pReserved = default);
 
 	/// <summary>The <c>WlanSetFilterList</c> function sets the permit/deny list.</summary>
 	/// <param name="hClientHandle">The client's session handle, obtained by a previous call to the WlanOpenHandle function.</param>
@@ -4683,7 +4693,8 @@ public static partial class WlanApi
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "697682c9-cb26-42d6-86b5-d7adebcedc68")]
 	public static extern Win32Error WlanSetFilterList(HWLANSESSION hClientHandle, WLAN_FILTER_LIST_TYPE wlanFilterListType,
-		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<DOT11_NETWORK_LIST>))] DOT11_NETWORK_LIST pNetworkList, IntPtr pReserved = default);
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<DOT11_NETWORK_LIST>))] DOT11_NETWORK_LIST? pNetworkList,
+		IntPtr pReserved = default);
 
 	/// <summary>The <c>WlanSetInterface</c> function sets user-configurable parameters for a specified interface.</summary>
 	/// <param name="hClientHandle">The client's session handle, obtained by a previous call to the WlanOpenHandle function.</param>
@@ -4789,7 +4800,8 @@ public static partial class WlanApi
 	// hClientHandle, const GUID *pInterfaceGuid, WLAN_INTF_OPCODE OpCode, DWORD dwDataSize, const PVOID pData, PVOID pReserved );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "114a2a71-babd-4cd7-860a-fea523bcc865")]
-	public static extern Win32Error WlanSetInterface(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, WLAN_INTF_OPCODE OpCode, uint dwDataSize, [In] IntPtr pData, IntPtr pReserved = default);
+	public static extern Win32Error WlanSetInterface(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, WLAN_INTF_OPCODE OpCode, uint dwDataSize,
+		[In] IntPtr pData, IntPtr pReserved = default);
 
 	/// <summary>The <c>WlanSetProfile</c> function sets the content of a specific profile.</summary>
 	/// <param name="hClientHandle">The client's session handle, obtained by a previous call to the WlanOpenHandle function.</param>
@@ -4984,8 +4996,9 @@ public static partial class WlanApi
 	// pReserved, DWORD *pdwReasonCode );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "3f8dca2e-6fe5-4c7d-a135-a33c61ba3dd5")]
-	public static extern Win32Error WlanSetProfile(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, WLAN_PROFILE_FLAGS dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string strProfileXml,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? strAllUserProfileSecurity, [MarshalAs(UnmanagedType.Bool)] bool bOverwrite, [Optional] IntPtr pReserved, out WLAN_REASON_CODE pdwReasonCode);
+	public static extern Win32Error WlanSetProfile(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, WLAN_PROFILE_FLAGS dwFlags,
+		[MarshalAs(UnmanagedType.LPWStr)] string strProfileXml, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? strAllUserProfileSecurity,
+		[MarshalAs(UnmanagedType.Bool)] bool bOverwrite, [Optional] IntPtr pReserved, out WLAN_REASON_CODE pdwReasonCode);
 
 	/// <summary>The <c>WlanSetProfileCustomUserData</c> function sets the custom user data associated with a profile.</summary>
 	/// <param name="hClientHandle">The client's session handle, obtained by a previous call to the WlanOpenHandle function.</param>
@@ -5167,7 +5180,7 @@ public static partial class WlanApi
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "2bef0f2f-165d-446a-afa8-735658048152")]
 	public static extern Win32Error WlanSetProfileEapUserData(HWLANSESSION hClientHandle, in Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName,
-		EAP_METHOD_TYPE eapType, WLAN_SET_EAPHOST dwFlags, uint dwEapUserDataSize, [In] IntPtr pbEapUserData, IntPtr pReserved = default);
+		EAP_METHOD_TYPE eapType, WLAN_SET_EAPHOST dwFlags, uint dwEapUserDataSize, [In, Optional] IntPtr pbEapUserData, IntPtr pReserved = default);
 
 	/// <summary>
 	/// The <c>WlanSetProfileEapXmlUserData</c> function sets the Extensible Authentication Protocol (EAP) user credentials as specified
@@ -5652,7 +5665,8 @@ public static partial class WlanApi
 	// HANDLE hClientHandle, WLAN_SECURABLE_OBJECT SecurableObject, LPCWSTR strModifiedSDDL );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "6038e4bc-7f07-4148-ac34-e290c8c40e99")]
-	public static extern Win32Error WlanSetSecuritySettings(HWLANSESSION hClientHandle, WLAN_SECURABLE_OBJECT SecurableObject, [MarshalAs(UnmanagedType.LPWStr)] string strModifiedSDDL);
+	public static extern Win32Error WlanSetSecuritySettings(HWLANSESSION hClientHandle, WLAN_SECURABLE_OBJECT SecurableObject,
+		[MarshalAs(UnmanagedType.LPWStr)] string strModifiedSDDL);
 
 	/// <summary>
 	/// Displays the wireless profile user interface (UI). This UI is used to view and edit advanced settings of a wireless network profile.
@@ -5747,7 +5761,7 @@ public static partial class WlanApi
 		public static bool operator ==(HWFDSERVICE h1, HWFDSERVICE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWFDSERVICE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HWFDSERVICE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -5795,7 +5809,7 @@ public static partial class WlanApi
 		public static bool operator ==(HWFDSESSION h1, HWFDSESSION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWFDSESSION h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HWFDSESSION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -5843,7 +5857,7 @@ public static partial class WlanApi
 		public static bool operator ==(HWLANSESSION h1, HWLANSESSION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWLANSESSION h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HWLANSESSION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -6005,6 +6019,7 @@ public static partial class WlanApi
 
 		IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => throw new NotImplementedException();
 
-		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => typeof(T) == typeof(string) ? StringHelper.GetString(pNativeData, CharSet.Unicode) : (object)pNativeData.ToStructure<T>();
+		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => typeof(T) == typeof(string) ? StringHelper.GetString(pNativeData, CharSet.Unicode)! :
+			(object)pNativeData.ToStructure<T>()!;
 	}
 }

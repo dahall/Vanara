@@ -1,11 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
-using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.WlanApi;
 
-namespace WlanApi;
+namespace Vanara.PInvoke.Tests;
 
 [TestFixture]
 public class AdhocTests
@@ -23,7 +19,7 @@ public class AdhocTests
 
 		var networks = AdHocManager.GetIEnumDot11AdHocNetworks();
 
-		IDot11AdHocNetwork myNet = null;
+		IDot11AdHocNetwork? myNet = null;
 		foreach (var network in new Vanara.Collections.IEnumFromCom<IDot11AdHocNetwork>(networks.Next, networks.Reset))
 		{
 			var ssid = network.GetSSID();

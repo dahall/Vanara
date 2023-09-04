@@ -1,25 +1,21 @@
 using NUnit.Framework;
-using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using Vanara;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
-using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.WlanApi;
 
-namespace WlanApi;
+namespace Vanara.PInvoke.Tests;
 
-public class Tests
+[TestFixture]
+public class WlanApiTests
 {
-	private SafeHWLANSESSION hWlan = null;
+	private SafeHWLANSESSION hWlan = new(IntPtr.Zero, false);
 	private Guid? intf;
 	private bool? conn;
-	private string profName;
+	private string? profName;
 
 	Guid PrimaryInterface
 	{
+		[MemberNotNull(nameof(intf))]
 		get
 		{
 			if (!intf.HasValue)
@@ -27,8 +23,10 @@ public class Tests
 				WlanEnumInterfaces(hWlan, default, out var list).ThrowIfFailed();
 				if (list.dwNumberOfItems < 1)
 					throw new InvalidOperationException("No WLAN interfaces.");
-				intf = list.InterfaceInfo[0].InterfaceGuid;
-				conn = list.InterfaceInfo[0].isState == WLAN_INTERFACE_STATE.wlan_interface_state_connected;
+				var i = list.InterfaceInfo.FirstOrDefault(i => i.isState == WLAN_INTERFACE_STATE.wlan_interface_state_connected);
+				if (i.InterfaceGuid == default) i = list.InterfaceInfo[0];
+				intf = i.InterfaceGuid;
+				conn = i.isState == WLAN_INTERFACE_STATE.wlan_interface_state_connected;
 			}
 			return intf.Value;
 		}
@@ -36,6 +34,7 @@ public class Tests
 
 	string ProfileName
 	{
+		[MemberNotNull(nameof(profName))]
 		get
 		{
 			if (profName is null)
@@ -51,11 +50,13 @@ public class Tests
 
 	bool WlanConnected
 	{
+		[MemberNotNull(nameof(conn))]
 		get
 		{
 			if (!conn.HasValue)
 			{
-				var g = PrimaryInterface;
+				_ = PrimaryInterface;
+				conn ??= false;
 			}
 			return conn.Value;
 		}
@@ -72,7 +73,7 @@ public class Tests
 	{
 		SafeHWLANMEM mem;
 		Assert.That(mem = WlanAllocateMemory(256), ResultIs.ValidHandle);
-		Assert.That(() => mem.Dispose(), Throws.Nothing);
+		Assert.That(mem.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -137,7 +138,7 @@ public class Tests
 	public void WlanGetNetworkBssListTest()
 	{
 		Assert.That(WlanGetNetworkBssList(hWlan, PrimaryInterface, IntPtr.Zero, DOT11_BSS_TYPE.dot11_BSS_type_any, true, default, out var mem), ResultIs.Successful);
-		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>();
+		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>()!;
 		TestContext.WriteLine($"Size: {list.dwTotalSize}");
 		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
 		Assert.That(list.wlanBssEntries.Length, Is.EqualTo(list.dwNumberOfItems));
@@ -203,7 +204,7 @@ public class Tests
 		Assert.That(err, ResultIs.Successful);
 		TestContext.WriteLine($"{e} = {type}");
 		var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).First();
-		data.DangerousGetHandle().Convert(sz, t).WriteValues();
+		data.DangerousGetHandle().Convert(sz, t)!.WriteValues();
 	}
 
 	[Test]
@@ -237,7 +238,10 @@ public class Tests
 	[Test]
 	public void WlanHostedNetworkSetSecondaryKeyTest()
 	{
-		using var mem = new SafeHGlobalHandle(128);
+		const string ssid = "NZ@McD";
+		WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS s = new() { dwMaxNumberOfPeers = 20, hostedNetworkSSID = new() { ucSSID = ssid, uSSIDLength = (uint)StringHelper.GetByteCount(ssid) } };
+		Assert.That(WlanHostedNetworkSetProperty(hWlan, WLAN_HOSTED_NETWORK_OPCODE.wlan_hosted_network_opcode_connection_settings, (uint)Marshal.SizeOf<WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS>(), SafeHGlobalHandle.CreateFromStructure(s), out _), ResultIs.Successful);
+		using var mem = new SafeCoTaskMemHandle(new byte[] { 0x1E, 0xD7, 0xD2, 0x39, 0X0E, 0x76, 0x67, 0xA4, 0xAE, 0xE1, 0xF4, 0xAB, 0x3B, 0x16, 0x45, 0x02, 0x8D, 0x04, 0x10, 0xEE, 0x80, 0x53, 0xCF, 0xDB, 0x71, 0x2D, 0x7C, 0x30, 0x00, 0x46, 0xDD, 0xF6 });
 		Assert.That(WlanHostedNetworkSetSecondaryKey(hWlan, mem.Size, mem, false, false, out _), ResultIs.Successful);
 	}
 
@@ -255,7 +259,7 @@ public class Tests
 		Assert.That(WlanOpenHandle(WLAN_API_VERSION, default, out var ver, out var h), ResultIs.Successful);
 		Assert.That(ver, Is.EqualTo(WLAN_API_VERSION));
 		Assert.That(h, ResultIs.ValidHandle);
-		Assert.That(() => h.Dispose(), Throws.Nothing);
+		Assert.That(h.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -265,7 +269,7 @@ public class Tests
 		if (t is null) return;
 		Assert.That(WlanQueryAutoConfigParameter(hWlan, e, default, out var sz, out var data, out var type), ResultIs.Successful);
 		TestContext.WriteLine($"{e} = {type}");
-		data.DangerousGetHandle().Convert(sz, t).WriteValues();
+		data.DangerousGetHandle().Convert(sz, t)!.WriteValues();
 	}
 
 	[Test]
@@ -275,7 +279,7 @@ public class Tests
 		if (t is null) return;
 		if (WlanQueryInterface(hWlan, PrimaryInterface, e, default, out var sz, out var data, out var type).Failed) return;
 		TestContext.WriteLine($"{e} = {type}");
-		data.DangerousGetHandle().Convert(sz, t).WriteValues();
+		data.DangerousGetHandle().Convert(sz, t)!.WriteValues();
 	}
 
 	[Test]
@@ -310,7 +314,7 @@ public class Tests
 	[Test]
 	public void WlanSaveTemporaryProfileTest()
 	{
-		Assert.That(WlanSaveTemporaryProfile(hWlan, PrimaryInterface, ProfileName, null, WLAN_PROFILE_FLAGS.WLAN_PROFILE_CONNECTION_MODE_SET_BY_CLIENT, false), ResultIs.Successful);
+		Assert.That(WlanSaveTemporaryProfile(hWlan, PrimaryInterface, ProfileName, null, 0, true), ResultIs.Successful);
 	}
 
 	[Test]
@@ -324,7 +328,7 @@ public class Tests
 	{
 		var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Set).FirstOrDefault();
 		if (t is null) return;
-		Assert.That(WlanQueryAutoConfigParameter(hWlan, e, default, out var sz, out var data, out var type), ResultIs.Successful);
+		Assert.That(WlanQueryAutoConfigParameter(hWlan, e, default, out var sz, out var data, out _), ResultIs.Successful);
 		Assert.That(WlanSetAutoConfigParameter(hWlan, e, sz, data), ResultIs.Successful);
 	}
 
@@ -364,7 +368,7 @@ public class Tests
 	public void WlanSetProfileTest()
 	{
 		WLAN_PROFILE_FLAGS flags = 0;
-		Assert.That(WlanGetProfile(hWlan, PrimaryInterface, ProfileName, default, out var xml, ref flags, out var access), ResultIs.Successful);
+		Assert.That(WlanGetProfile(hWlan, PrimaryInterface, ProfileName, default, out var xml, ref flags, out _), ResultIs.Successful);
 		Assert.That(WlanSetProfile(hWlan, PrimaryInterface, flags, xml, null, true, default, out var reason), ResultIs.Successful);
 		var sb = new StringBuilder(255);
 		Assert.That(WlanReasonCodeToString(reason, (uint)sb.Capacity, sb), ResultIs.Successful);
@@ -424,6 +428,6 @@ public class Tests
 	[Test]
 	public void WlanUIEditProfileTest()
 	{
-		Assert.That(WlanUIEditProfile(1, ProfileName, PrimaryInterface, HWND.NULL, WL_DISPLAY_PAGES.WLConnectionPage, default, out var reason), ResultIs.Successful);
+		Assert.That(WlanUIEditProfile(1, ProfileName, PrimaryInterface, HWND.NULL, WL_DISPLAY_PAGES.WLConnectionPage, default, out _), ResultIs.Successful);
 	}
 }

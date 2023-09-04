@@ -334,7 +334,7 @@ public static partial class WlanApi
 		// LPCWSTR Name, LPCWSTR Password, LONG GeographicalId, IDot11AdHocInterface *pInterface, IDot11AdHocSecuritySettings
 		// *pSecurity, GUID *pContextGuid, IDot11AdHocNetwork **pIAdHoc );
 		IDot11AdHocNetwork CreateNetwork([MarshalAs(UnmanagedType.LPWStr)] string Name, [MarshalAs(UnmanagedType.LPWStr)] string Password,
-			int GeographicalId, [In, Optional] IDot11AdHocInterface pInterface, IDot11AdHocSecuritySettings pSecurity, [In, Optional] GuidPtr pContextGuid);
+			int GeographicalId, [In, Optional] IDot11AdHocInterface? pInterface, IDot11AdHocSecuritySettings pSecurity, [In, Optional] GuidPtr pContextGuid);
 
 		/// <summary>
 		/// Initializes a created network and optionally commits the network's profile to the profile store. The network must be created
@@ -562,7 +562,7 @@ public static partial class WlanApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocnetwork-getprofilename HRESULT GetProfileName(
 		// LPWSTR *ppszwProfileName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetProfileName();
+		string? GetProfileName();
 
 		/// <summary>Deletes any profile associated with the network.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocnetwork-deleteprofile HRESULT DeleteProfile();
@@ -685,7 +685,8 @@ public static partial class WlanApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocnetwork-connect HRESULT Connect( LPCWSTR
 		// Passphrase, LONG GeographicalId, BOOLEAN fSaveProfile, BOOLEAN fMakeSavedProfileUserSpecific );
-		void Connect([MarshalAs(UnmanagedType.LPWStr)] string Passphrase, int GeographicalId, [MarshalAs(UnmanagedType.U1)] bool fSaveProfile, [MarshalAs(UnmanagedType.U1)] bool fMakeSavedProfileUserSpecific);
+		void Connect([MarshalAs(UnmanagedType.LPWStr)] string Passphrase, int GeographicalId, [MarshalAs(UnmanagedType.U1)] bool fSaveProfile,
+			[MarshalAs(UnmanagedType.U1)] bool fMakeSavedProfileUserSpecific);
 
 		/// <summary>Disconnects from an ad hoc network.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocnetwork-disconnect HRESULT Disconnect();
