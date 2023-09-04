@@ -6161,7 +6161,7 @@ public static partial class IpHlpApi
 		private MIB_IF_ROW2(bool ingored) : this()
 		{
 			Alias = Description = string.Empty;
-			PhysicalAddress = PermanentPhysicalAddress = new byte[0];
+			PhysicalAddress = PermanentPhysicalAddress = new byte[IF_MAX_PHYS_ADDRESS_LENGTH];
 		}
 	}
 
@@ -6949,14 +6949,14 @@ public static partial class IpHlpApi
 		private MIB_IPNET_ROW2(SOCKADDR_IN ipV4, byte[]? macAddr) : this()
 		{
 			Address.Ipv4 = ipV4;
-			PhysicalAddress = new byte[0];
+			PhysicalAddress = new byte[IF_MAX_PHYS_ADDRESS_LENGTH];
 			SetMac(macAddr);
 		}
 
 		private MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, byte[]? macAddr) : this()
 		{
 			Address.Ipv6 = ipV6;
-			PhysicalAddress = new byte[0];
+			PhysicalAddress = new byte[IF_MAX_PHYS_ADDRESS_LENGTH];
 			SetMac(macAddr);
 		}
 

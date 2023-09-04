@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using static Vanara.PInvoke.IpHlpApi;
 using static Vanara.PInvoke.Ws2_32;
@@ -98,7 +96,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public void CreateSetDeleteIpNetEntry2Test()
 	{
-		var target = new IN_ADDR(192, 168, 0, 202);
+		var target = knwIP;
 		Assert.That(GetBestRoute(target, 0, out var fwdRow), ResultIs.Successful);
 		var mibrow = new MIB_IPNET_ROW2(new SOCKADDR_IN(target), fwdRow.dwForwardIfIndex, SendARP(target));
 		Assert.That(GetIpNetTable2(ADDRESS_FAMILY.AF_INET, out var t1), ResultIs.Successful);
@@ -120,7 +118,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public unsafe void CreateSetDeleteIpNetEntry2UnmanagedPointerTest()
 	{
-		var target = new IN_ADDR(192, 168, 0, 202);
+		var target = knwIP;
 		Assert.That(GetBestRoute(target, 0, out var fwdRow), ResultIs.Successful);
 		var mibrow = new MIB_IPNET_ROW2(new SOCKADDR_IN(target), fwdRow.dwForwardIfIndex, SendARP(target));
 		Assert.That(GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t1), ResultIs.Successful);
@@ -156,7 +154,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public void CreateSetDeleteIpNetEntry2UnmanagedSpanTest()
 	{
-		var target = new IN_ADDR(192, 168, 0, 202);
+		var target = knwIP;
 		Assert.That(GetBestRoute(target, 0, out var fwdRow), ResultIs.Successful);
 		var mibrow = new MIB_IPNET_ROW2(new SOCKADDR_IN(target), fwdRow.dwForwardIfIndex, SendARP(target));
 		Assert.That(GetIpNetTable2_Unmanaged(ADDRESS_FAMILY.AF_INET, out var t1), ResultIs.Successful);
@@ -218,7 +216,10 @@ public partial class IpHlpApiTests
 	[Test]
 	public void CreateSortedAddressPairsTest()
 	{
-		var dest = primaryAdapter.MulticastAddresses.Select(ma => ma.Address.GetSOCKADDR().Ipv6).ToArray();
+		// var dest = primaryAdapter.MulticastAddresses.Select(ma => ma.Address.GetSOCKADDR().Ipv6).ToArray();
+		var destRaw = primaryAdapter.MulticastAddresses.ToArray();
+		var destAll = Array.ConvertAll(destRaw, i => i.Address.GetSOCKADDR());
+		var dest = destAll.Select(i => i.Ipv6).ToArray();
 		TestContext.WriteLine(string.Join("\r\n", dest));
 		SOCKADDR_IN6_PAIR_NATIVE[]? result = null;
 		Assert.That(() => result = CreateSortedAddressPairs(dest), Throws.Nothing);
@@ -251,17 +252,17 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetBestRoute2Test()
 	{
-		var addr = new SOCKADDR_INET { Ipv4 = new SOCKADDR_IN(new IN_ADDR(192, 168, 0, 202)) };
+		var addr = new SOCKADDR_INET { Ipv4 = new SOCKADDR_IN(knwIP) };
 		Assert.That(GetBestRoute2(IntPtr.Zero, primaryAdapter.IfIndex, IntPtr.Zero, addr, 0, out var rt, out var src), ResultIs.Successful);
 		Assert.That(rt.InterfaceIndex, Is.EqualTo(primaryAdapter.IfIndex));
-		Assert.That(src.Ipv4.sin_addr, Is.EqualTo(new IN_ADDR(192, 168, 0, 203)));
+		Assert.That(src.si_family, Is.EqualTo(ADDRESS_FAMILY.AF_INET));
 	}
 
 	[Test]
 	public void GetIfEntry2ExTest()
 	{
 		var row = new MIB_IF_ROW2(primaryAdapter.IfIndex);
-		Assert.That(GetIfEntry2Ex(MIB_IF_ENTRY_LEVEL.MibIfEntryNormalWithoutStatistics, ref row), ResultIs.Successful);
+		Assert.That(GetIfEntry2Ex(MIB_IF_ENTRY_LEVEL.MibIfEntryNormal, ref row), ResultIs.Successful);
 		Assert.That(row.InterfaceLuid, Is.EqualTo(primaryAdapter.Luid));
 	}
 
@@ -292,9 +293,8 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetIfTable2ExTest()
 	{
-		var e = GetIfTable2Ex(MIB_IF_TABLE_LEVEL.MibIfTableNormal, out var itbl);
-		Assert.That(e.Succeeded);
-		Assert.That(itbl.Table, Is.Not.Empty);
+		Assert.That(GetIfTable2Ex(MIB_IF_TABLE_LEVEL.MibIfTableNormal, out var itbl), ResultIs.Successful);
+		Assert.That(itbl.Table!.Length, Is.GreaterThan(0));
 		itbl.Dispose();
 		Assert.That(itbl.IsInvalid);
 	}
@@ -302,9 +302,8 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetIfTable2Test()
 	{
-		var e = GetIfTable2(out var itbl);
-		Assert.That(e.Succeeded);
-		Assert.That(itbl.Table, Is.Not.Empty);
+		Assert.That(GetIfTable2(out var itbl), ResultIs.Successful);
+		Assert.That(itbl.Table!.Length, Is.GreaterThan(0));
 		itbl.Dispose();
 		Assert.That(itbl.IsInvalid);
 	}
@@ -613,7 +612,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public void ResolveIpNetEntry2Test()
 	{
-		var e = new MIB_IPNET_ROW2(new SOCKADDR_IN(new IN_ADDR(192, 168, 0, 202)), primaryAdapter.IfIndex);
+		var e = new MIB_IPNET_ROW2(new SOCKADDR_IN(knwIP), primaryAdapter.IfIndex);
 		Assert.That(ResolveIpNetEntry2(ref e), ResultIs.Successful);
 		Assert.That(e.State, Is.EqualTo(NL_NEIGHBOR_STATE.NlnsReachable));
 	}

@@ -1,11 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.IpHlpApi;
 using static Vanara.PInvoke.Ws2_32;
 
@@ -28,8 +23,13 @@ public partial class IpHlpApiTests
 	private static SOCKADDR_IN localv4;
 	private static SOCKADDR_IN6 localv6;
 	private static IP_ADAPTER_ADDRESSES primaryAdapter;
+	private static IN_ADDR unkIP = new(192, 168, 0, 251);
+	private static IN_ADDR knwIP = new(192, 168, 0, 187);
 	private static SOCKADDR_IN LocalAddrV4 => localv4.sin_family == 0 ? (localv4 = primaryAdapter.UnicastAddresses.Select(r => r.Address.GetSOCKADDR()).First(a => a.si_family == ADDRESS_FAMILY.AF_INET).Ipv4) : localv4;
 	private static SOCKADDR_IN6 LocalAddrV6 => localv6.sin6_family == 0 ? (localv6 = primaryAdapter.UnicastAddresses.Select(r => r.Address.GetSOCKADDR()).First(a => a.si_family == ADDRESS_FAMILY.AF_INET6).Ipv6) : localv6;
+
+	[OneTimeSetUp]
+	public void _Setup() => primaryAdapter = GetAdaptersAddresses(GetAdaptersAddressesFlags.GAA_FLAG_INCLUDE_GATEWAYS).First(r => r.OperStatus == IF_OPER_STATUS.IfOperStatusUp && r.TunnelType == TUNNEL_TYPE.TUNNEL_TYPE_NONE && r.FirstGatewayAddress != IntPtr.Zero);
 
 	[Test]
 	public void _StructSizeTest()
@@ -43,10 +43,9 @@ public partial class IpHlpApiTests
 	[Test]
 	public void AddDeleteIPAddressTest()
 	{
-		var newIp = new IN_ADDR(192, 168, 0, 252);
 		var mask = new IN_ADDR(255, 255, 255, 0);
-		Assert.That(AddIPAddress(newIp, mask, primaryAdapter.IfIndex, out var ctx, out _), Is.Zero);
-		Assert.That(DeleteIPAddress(ctx), Is.Zero);
+		Assert.That(AddIPAddress(unkIP, mask, primaryAdapter.IfIndex, out var ctx, out _), ResultIs.Successful);
+		Assert.That(DeleteIPAddress(ctx), ResultIs.Successful);
 	}
 
 	[Test]
@@ -54,10 +53,16 @@ public partial class IpHlpApiTests
 	{
 		const ushort start = 5000;
 		const ushort num = 20;
-		Assert.That(CreatePersistentTcpPortReservation(start, num, out var tok), Is.Zero);
-		Assert.That(LookupPersistentTcpPortReservation(start, num, out var tok2), Is.Zero);
-		Assert.That(tok, Is.EqualTo(tok2));
-		Assert.That(DeletePersistentTcpPortReservation(start, num), Is.Zero);
+		Assert.That(CreatePersistentTcpPortReservation(start, num, out var tok), ResultIs.Successful);
+		try
+		{
+			Assert.That(LookupPersistentTcpPortReservation(start, num, out var tok2), ResultIs.Successful);
+			Assert.That(tok, Is.EqualTo(tok2));
+		}
+		finally
+		{
+			Assert.That(DeletePersistentTcpPortReservation(start, num), ResultIs.Successful);
+		}
 	}
 
 	[Test]
@@ -65,10 +70,16 @@ public partial class IpHlpApiTests
 	{
 		const ushort start = 5000;
 		const ushort num = 20;
-		Assert.That(CreatePersistentUdpPortReservation(start, num, out var tok), Is.Zero);
-		Assert.That(LookupPersistentUdpPortReservation(start, num, out var tok2), Is.Zero);
-		Assert.That(tok, Is.EqualTo(tok2));
-		Assert.That(DeletePersistentUdpPortReservation(start, num), Is.Zero);
+		Assert.That(CreatePersistentUdpPortReservation(start, num, out var tok), ResultIs.Successful);
+		try
+		{
+			Assert.That(LookupPersistentUdpPortReservation(start, num, out var tok2), ResultIs.Successful);
+			Assert.That(tok, Is.EqualTo(tok2));
+		}
+		finally
+		{
+			Assert.That(DeletePersistentUdpPortReservation(start, num), ResultIs.Successful);
+		}
 	}
 
 	// [Test] TODO - Figure out which parameters work
@@ -76,8 +87,8 @@ public partial class IpHlpApiTests
 	{
 		IN_ADDR target = primaryAdapter.MulticastAddresses.First().Address.GetSOCKADDR().Ipv4.sin_addr; // new IN_ADDR(192, 168, 0, 202);
 		uint a = target.S_addr, m = 0x00FFFFFF, i = primaryAdapter.IfIndex;
-		Assert.That(CreateProxyArpEntry(a, m, i), Is.Zero);
-		Assert.That(DeleteProxyArpEntry(a, m, i), Is.Zero);
+		Assert.That(CreateProxyArpEntry(a, m, i), ResultIs.Successful);
+		Assert.That(DeleteProxyArpEntry(a, m, i), ResultIs.Successful);
 	}
 
 	[Test]
@@ -102,22 +113,22 @@ public partial class IpHlpApiTests
 	[Test]
 	public void CreateSetDeleteIpNetEntryTest()
 	{
-		var target = new IN_ADDR(192, 168, 0, 202);
-		Assert.That(GetBestRoute(target, 0, out MIB_IPFORWARDROW fwdRow), Is.Zero);
+		var target = knwIP;
+		Assert.That(GetBestRoute(target, 0, out MIB_IPFORWARDROW fwdRow), ResultIs.Successful);
 		var mibrow = new MIB_IPNETROW(target, fwdRow.dwForwardIfIndex, SendARP(target), MIB_IPNET_TYPE.MIB_IPNET_TYPE_DYNAMIC);
 
 		MIB_IPNETTABLE? t1 = null;
 		Assert.That(() => t1 = GetIpNetTable(true), Throws.Nothing);
 		if (t1 != null && HasVal(t1, mibrow))
-			Assert.That(DeleteIpNetEntry(mibrow), Is.Zero);
+			Assert.That(DeleteIpNetEntry(mibrow), ResultIs.Successful);
 
-		Assert.That(CreateIpNetEntry(mibrow), Is.Zero);
+		Assert.That(CreateIpNetEntry(mibrow), ResultIs.Successful);
 		MIB_IPNETTABLE t = GetIpNetTable(true);
 		Assert.That(HasVal(t, mibrow), Is.True);
 
-		Assert.That(SetIpNetEntry(mibrow), Is.Zero);
+		Assert.That(SetIpNetEntry(mibrow), ResultIs.Successful);
 
-		Assert.That(DeleteIpNetEntry(mibrow), Is.Zero);
+		Assert.That(DeleteIpNetEntry(mibrow), ResultIs.Successful);
 		MIB_IPNETTABLE t3 = GetIpNetTable(true);
 		Assert.That(HasVal(t3, mibrow), Is.False);
 
@@ -131,8 +142,8 @@ public partial class IpHlpApiTests
 		var pOverLapped = new System.Threading.NativeOverlapped { EventHandle = hEvent.SafeWaitHandle.DangerousGetHandle() };
 		unsafe
 		{
-			Assert.That(DisableMediaSense(out _, &pOverLapped), Is.Zero.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
-			Assert.That(RestoreMediaSense(&pOverLapped, out _), Is.Zero.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
+			Assert.That(DisableMediaSense(out _, &pOverLapped), ResultIs.Successful.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
+			Assert.That(RestoreMediaSense(&pOverLapped, out _), ResultIs.Successful.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
 		}
 	}
 
@@ -143,8 +154,8 @@ public partial class IpHlpApiTests
 		var pOverLapped = new System.Threading.NativeOverlapped { EventHandle = hEvent.SafeWaitHandle.DangerousGetHandle() };
 		unsafe
 		{
-			Assert.That(EnableRouter(out _, &pOverLapped), Is.Zero.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
-			Assert.That(UnenableRouter(&pOverLapped, out _), Is.Zero.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
+			Assert.That(EnableRouter(out _, &pOverLapped), ResultIs.Successful.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
+			Assert.That(UnenableRouter(&pOverLapped, out _), ResultIs.Successful.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
 		}
 	}
 
@@ -152,7 +163,7 @@ public partial class IpHlpApiTests
 	public void GetAdapterIndexTest()
 	{
 		const string prefix = "\\DEVICE\\TCPIP_";
-		Assert.That(GetAdapterIndex(prefix + primaryAdapter.AdapterName, out var idx), Is.Zero);
+		Assert.That(GetAdapterIndex(prefix + primaryAdapter.AdapterName, out var idx), ResultIs.Successful);
 		Assert.That(idx, Is.EqualTo(primaryAdapter.IfIndex));
 		Assert.That(GetAdapterIndex(primaryAdapter.AdapterName, out _), Is.EqualTo(Win32Error.ERROR_FILE_NOT_FOUND));
 		Assert.That(GetAdapterIndex("__Bogus**__", out _), Is.EqualTo(Win32Error.ERROR_INVALID_PARAMETER));
@@ -189,7 +200,7 @@ public partial class IpHlpApiTests
 		uint len = 15000;
 		var mem = new SafeCoTaskMemHandle((int)len);
 #pragma warning disable CS0618 // Type or member is obsolete
-		Assert.That(GetAdaptersInfo((IntPtr)mem, ref len), Is.Zero);
+		Assert.That(GetAdaptersInfo((IntPtr)mem, ref len), ResultIs.Successful);
 		Assert.That(((IntPtr)mem).LinkedListToIEnum<IP_ADAPTER_INFO>(i => i.Next), Is.Not.Empty);
 #pragma warning restore CS0618 // Type or member is obsolete
 	}
@@ -200,7 +211,7 @@ public partial class IpHlpApiTests
 		System.Net.IPAddress? gw = primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault();
 		Assert.NotNull(gw);
 		var sa = new SOCKADDR(gw!.GetAddressBytes(), 0, gw.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 0 : (uint)gw.ScopeId);
-		Assert.That(GetBestInterfaceEx(sa, out var idx), Is.Zero);
+		Assert.That(GetBestInterfaceEx(sa, out var idx), ResultIs.Successful);
 		Assert.That(idx, Is.EqualTo(primaryAdapter.IfIndex));
 	}
 
@@ -211,7 +222,7 @@ public partial class IpHlpApiTests
 		var gw = (uint)(primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault()?.Address ?? 0L);
 #pragma warning restore CS0618 // Type or member is obsolete
 		Assert.That(gw, Is.Not.Zero);
-		Assert.That(GetBestInterface(gw, out var idx), Is.Zero);
+		Assert.That(GetBestInterface(gw, out var idx), ResultIs.Successful);
 		Assert.That(idx, Is.EqualTo(primaryAdapter.IfIndex));
 	}
 
@@ -285,9 +296,9 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetIcmpStatisticsTest()
 	{
-		Assert.That(GetIcmpStatistics(out MIB_ICMP stat), Is.Zero);
+		Assert.That(GetIcmpStatistics(out MIB_ICMP stat), ResultIs.Successful);
 		Assert.That(stat.stats.icmpInStats.dwMsgs, Is.Not.Zero);
-		Assert.That(GetIcmpStatisticsEx(out MIB_ICMP_EX statx, ADDRESS_FAMILY.AF_INET), Is.Zero);
+		Assert.That(GetIcmpStatisticsEx(out MIB_ICMP_EX statx, ADDRESS_FAMILY.AF_INET), ResultIs.Successful);
 		Assert.That(statx.icmpInStats.dwMsgs, Is.Not.Zero);
 	}
 
@@ -299,9 +310,9 @@ public partial class IpHlpApiTests
 		foreach (MIB_IFROW r in t)
 		{
 			var r2 = new MIB_IFROW(r.dwIndex);
-			Assert.That(GetIfEntry(ref r2), Is.Zero);
+			Assert.That(GetIfEntry(ref r2), ResultIs.Successful);
 			Assert.That(r.wszName, Is.EqualTo(r2.wszName));
-			Assert.That(SetIfEntry(r2), Is.Zero);
+			Assert.That(SetIfEntry(r2), ResultIs.Successful);
 		}
 	}, Throws.Nothing);
 
@@ -326,24 +337,24 @@ public partial class IpHlpApiTests
 	{
 		var sz = 1024U;
 		var sb = new StringBuilder((int)sz);
-		Assert.That(GetIpErrorString(Win32Error.ERROR_CAN_NOT_COMPLETE, sb, ref sz), Is.Zero);
+		Assert.That(GetIpErrorString(Win32Error.ERROR_CAN_NOT_COMPLETE, sb, ref sz), ResultIs.Successful);
 		Assert.That(sb.Length, Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetSetIpStatisticsTest()
 	{
-		Assert.That(GetIpStatistics(out MIB_IPSTATS stat), Is.Zero);
+		Assert.That(GetIpStatistics(out MIB_IPSTATS stat), ResultIs.Successful);
 		Assert.That(stat.dwNumIf, Is.Not.Zero);
 
 		var sstat = new MIB_IPSTATS { Forwarding = MIB_IPSTATS_FORWARDING.MIB_USE_CURRENT_FORWARDING, dwDefaultTTL = stat.dwDefaultTTL + 1 };
-		Assert.That(SetIpStatisticsEx(sstat, ADDRESS_FAMILY.AF_INET), Is.Zero);
+		Assert.That(SetIpStatisticsEx(sstat, ADDRESS_FAMILY.AF_INET), ResultIs.Successful);
 
-		Assert.That(GetIpStatisticsEx(out MIB_IPSTATS statx, ADDRESS_FAMILY.AF_INET), Is.Zero);
+		Assert.That(GetIpStatisticsEx(out MIB_IPSTATS statx, ADDRESS_FAMILY.AF_INET), ResultIs.Successful);
 		Assert.That(statx.dwDefaultTTL, Is.EqualTo(stat.dwDefaultTTL + 1));
 
 		sstat.dwDefaultTTL = stat.dwDefaultTTL;
-		Assert.That(SetIpStatistics(sstat), Is.Zero);
+		Assert.That(SetIpStatistics(sstat), ResultIs.Successful);
 	}
 
 	[Test]
@@ -356,7 +367,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetNumberOfInterfacesTest()
 	{
-		Assert.That(GetNumberOfInterfaces(out var num), Is.Zero);
+		Assert.That(GetNumberOfInterfaces(out var num), ResultIs.Successful);
 		Assert.That(num, Is.GreaterThan(0));
 	}
 
@@ -489,7 +500,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetRTTAndHopCountTest()
 	{
-		var target = new IN_ADDR(192, 168, 0, 202);
+		var target = knwIP;
 		Assert.That(GetRTTAndHopCount(target, out var hops, uint.MaxValue, out var rtt), Is.True);
 		TestContext.WriteLine($"{target}: hops={hops} rtt={rtt}");
 		Assert.That(hops, Is.GreaterThan(0));
@@ -499,42 +510,42 @@ public partial class IpHlpApiTests
 	[Test]
 	public void GetTcpStatisticsTest()
 	{
-		Assert.That(GetTcpStatistics(out MIB_TCPSTATS stats), Is.Zero);
+		Assert.That(GetTcpStatistics(out MIB_TCPSTATS stats), ResultIs.Successful);
 		Assert.That(stats.dwNumConns, Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetTcpStatisticsExTest()
 	{
-		Assert.That(GetTcpStatisticsEx(out MIB_TCPSTATS stats, ADDRESS_FAMILY.AF_INET), Is.Zero);
+		Assert.That(GetTcpStatisticsEx(out MIB_TCPSTATS stats, ADDRESS_FAMILY.AF_INET), ResultIs.Successful);
 		Assert.That(stats.dwNumConns, Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetTcpStatisticsEx2Test()
 	{
-		Assert.That(GetTcpStatisticsEx2(out MIB_TCPSTATS2 stats, ADDRESS_FAMILY.AF_INET), Is.Zero);
+		Assert.That(GetTcpStatisticsEx2(out MIB_TCPSTATS2 stats, ADDRESS_FAMILY.AF_INET), ResultIs.Successful);
 		Assert.That(stats.dwNumConns, Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetUdpStatisticsTest()
 	{
-		Assert.That(GetUdpStatistics(out MIB_UDPSTATS stats), Is.Zero);
+		Assert.That(GetUdpStatistics(out MIB_UDPSTATS stats), ResultIs.Successful);
 		Assert.That(stats.dwNumAddrs, Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetUdpStatisticsExTest()
 	{
-		Assert.That(GetUdpStatisticsEx(out MIB_UDPSTATS stats, ADDRESS_FAMILY.AF_INET), Is.Zero);
+		Assert.That(GetUdpStatisticsEx(out MIB_UDPSTATS stats, ADDRESS_FAMILY.AF_INET), ResultIs.Successful);
 		Assert.That(stats.dwNumAddrs, Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetUdpStatisticsEx2Test()
 	{
-		Assert.That(GetUdpStatisticsEx2(out MIB_UDPSTATS2 stats, ADDRESS_FAMILY.AF_INET), Is.Zero);
+		Assert.That(GetUdpStatisticsEx2(out MIB_UDPSTATS2 stats, ADDRESS_FAMILY.AF_INET), ResultIs.Successful);
 		Assert.That(stats.dwNumAddrs, Is.GreaterThan(0));
 	}
 
@@ -549,8 +560,8 @@ public partial class IpHlpApiTests
 	public void IpReleaseRenewAddressTest()
 	{
 		IP_ADAPTER_INDEX_MAP i = GetInterfaceInfo().First();
-		Assert.That(IpReleaseAddress(ref i), Is.Zero);
-		Assert.That(IpRenewAddress(ref i), Is.Zero);
+		Assert.That(IpReleaseAddress(ref i), ResultIs.Successful);
+		Assert.That(IpRenewAddress(ref i), ResultIs.Successful);
 		var x = new IP_ADAPTER_INDEX_MAP() { Name = "Bogus" };
 		Assert.That(IpReleaseAddress(ref x), Is.EqualTo(Win32Error.ERROR_INVALID_PARAMETER));
 		Assert.That(IpRenewAddress(ref x), Is.EqualTo(Win32Error.ERROR_INVALID_PARAMETER));
@@ -571,9 +582,6 @@ public partial class IpHlpApiTests
 		Assert.That(mac.Length, Is.EqualTo(6));
 		Assert.That(mac, Has.Some.Not.EqualTo(0));
 	}, Throws.Nothing);
-
-	[SetUp]
-	public void Setup() => primaryAdapter = GetAdaptersAddresses(GetAdaptersAddressesFlags.GAA_FLAG_INCLUDE_GATEWAYS).FirstOrDefault(r => r.OperStatus == IF_OPER_STATUS.IfOperStatusUp && r.TunnelType == TUNNEL_TYPE.TUNNEL_TYPE_NONE && r.FirstGatewayAddress != IntPtr.Zero);
 
 	private static WSRESULT CreateTcpConnection(bool v6, out SafeSOCKET serviceSocket, out SafeSOCKET clientSocket, out SOCKET acceptSocket, out ushort serverPort, out ushort clientPort)
 	{
@@ -708,9 +716,9 @@ bail:
 		foreach (TCP_ESTATS_TYPE type in Enum.GetValues(typeof(TCP_ESTATS_TYPE)))
 		{
 			if (type == TCP_ESTATS_TYPE.TcpConnectionEstatsSynOpts) continue;
-			Assert.That(GetPerTcp6ConnectionEStats(serverConnectRow, type, out var srw, out _, out _), Is.Zero);
+			Assert.That(GetPerTcp6ConnectionEStats(serverConnectRow, type, out var srw, out _, out _), ResultIs.Successful);
 			Console.Write(GetStats(srw!));
-			Assert.That(GetPerTcp6ConnectionEStats(clientConnectRow, type, out var crw, out _, out _), Is.Zero);
+			Assert.That(GetPerTcp6ConnectionEStats(clientConnectRow, type, out var crw, out _, out _), ResultIs.Successful);
 			Console.Write(GetStats(crw!));
 		}
 	}
