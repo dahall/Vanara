@@ -242,7 +242,7 @@ public static partial class WinHTTP
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NC:winhttp.WINHTTP_STATUS_CALLBACK")]
 	public delegate void WINHTTP_STATUS_CALLBACK([In] HINTERNET hInternet, [In] IntPtr dwContext, WINHTTP_CALLBACK_STATUS dwInternetStatus,
-		[In] IntPtr lpvStatusInformation, uint dwStatusInformationLength);
+		[In, Optional] IntPtr lpvStatusInformation, uint dwStatusInformationLength);
 
 	/// <summary>The <c>WinHttpAddRequestHeaders</c> function adds one or more HTTP request headers to the HTTP request handle.</summary>
 	/// <param name="hRequest">A HINTERNET handle returned by a call to the WinHttpOpenRequest function.</param>
@@ -904,7 +904,7 @@ public static partial class WinHTTP
 	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpCrackUrl")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WinHttpCrackUrl([MarshalAs(UnmanagedType.LPWStr)] string pwszUrl, uint dwUrlLength, ICU dwFlags, ref WINHTTP_URL_COMPONENTS lpUrlComponents);
+	public static extern bool WinHttpCrackUrl([MarshalAs(UnmanagedType.LPWStr)] string pwszUrl, [Optional] uint dwUrlLength, ICU dwFlags, ref WINHTTP_URL_COMPONENTS lpUrlComponents);
 
 	/// <summary>The <c>WinHttpCreateProxyResolver</c> function creates a handle for use by WinHttpGetProxyForUrlEx.</summary>
 	/// <param name="hSession">
@@ -1014,7 +1014,7 @@ public static partial class WinHTTP
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpCreateUrl")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool WinHttpCreateUrl(in WINHTTP_URL_COMPONENTS_IN lpUrlComponents, ICU dwFlags,
-		[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszUrl, ref uint pdwUrlLength);
+		[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pwszUrl, ref uint pdwUrlLength);
 
 	/// <summary>
 	/// The <c>WinHttpDetectAutoProxyConfigUrl</c> function finds the URL for the Proxy Auto-Configuration (PAC) file. This function
@@ -1950,7 +1950,7 @@ public static partial class WinHTTP
 	// PWINHTTP_QUERY_CONNECTION_GROUP_RESULT *ppResult );
 	[DllImport(Lib_Winhttp, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpQueryConnectionGroup")]
-	public static extern Win32Error WinHttpQueryConnectionGroup(HINTERNET hInternet, [In, Optional] IntPtr pGuidConnection,
+	public static extern Win32Error WinHttpQueryConnectionGroup(HINTERNET hInternet, [In, Optional] GuidPtr pGuidConnection,
 		[Optional] WINHTTP_QUERY_CONNECTION_GROUP_FLAG ullFlags, ref IntPtr ppResult);
 
 	/// <summary>The <c>WinHttpQueryDataAvailable</c> function returns the amount of data, in bytes, available to be read with WinHttpReadData.</summary>
@@ -2370,7 +2370,7 @@ public static partial class WinHTTP
 			sz = Math.Max(InteropExtensions.SizeOf<T>(), sz);
 		using var buffer = new SafeHGlobalHandle(sz);
 		Win32Error.ThrowLastErrorIfFalse(WinHttpQueryHeaders(hRequest, infoLevel, name, buffer, ref sz, ref index));
-		return buffer.ToType<T>();
+		return buffer.ToType<T>()!;
 	}
 
 	/// <summary>Also see WinHttpQueryHeadersEx, which offers a way to retrieve parsed header name and value strings.</summary>
@@ -2427,7 +2427,7 @@ public static partial class WinHTTP
 			sz = Math.Max(InteropExtensions.SizeOf<T>(), sz);
 		using var buffer = new SafeHGlobalHandle(sz);
 		Win32Error.ThrowLastErrorIfFalse(WinHttpQueryHeaders(hRequest, infoLevel, name, buffer, ref sz));
-		return buffer.ToType<T>();
+		return buffer.ToType<T>()!;
 	}
 
 	private const WINHTTP_QUERY queryMods = WINHTTP_QUERY.WINHTTP_QUERY_FLAG_NUMBER | WINHTTP_QUERY.WINHTTP_QUERY_FLAG_NUMBER64 | WINHTTP_QUERY.WINHTTP_QUERY_FLAG_SYSTEMTIME;

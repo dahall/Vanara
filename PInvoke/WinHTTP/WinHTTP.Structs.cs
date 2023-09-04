@@ -47,7 +47,7 @@ public static partial class WinHTTP
 		public static bool operator ==(HINTERNET h1, HINTERNET h2) => h1.handle == h2.handle;
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is IHandle h && handle == h.DangerousGetHandle() || obj is IntPtr p && handle == p;
+		public override bool Equals(object? obj) => obj is IHandle h && handle == h.DangerousGetHandle() || obj is IntPtr p && handle == p;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -706,7 +706,7 @@ public static partial class WinHTTP
 		public static bool operator ==(WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h1, WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -861,7 +861,7 @@ public static partial class WinHTTP
 		public IntPtr pEntries;
 
 		/// <summary>An array of WINHTTP_PROXY_RESULT_ENTRY structures.</summary>
-		public WINHTTP_PROXY_RESULT_ENTRY[] Entries => pEntries.ToArray<WINHTTP_PROXY_RESULT_ENTRY>((int)cEntries);
+		public WINHTTP_PROXY_RESULT_ENTRY[] Entries => pEntries.ToArray<WINHTTP_PROXY_RESULT_ENTRY>((int)cEntries) ?? new WINHTTP_PROXY_RESULT_ENTRY[0];
 	}
 
 	/// <summary>The <c>WINHTTP_PROXY_RESULT_ENTRY</c> structure contains a result entry from a call to WinHttpGetProxyResult.</summary>
@@ -1005,7 +1005,7 @@ public static partial class WinHTTP
 		/// <para>Type: <c>PCWSTR*</c></para>
 		/// <para>An array of strings containing each site in the proxy bypass list. (for example, L"contoso.com").</para>
 		/// </summary>
-		public string[] rgpcwszProxyBypasses => _rgpcwszProxyBypasses.ToStringEnum(cProxyBypasses, CharSet.Unicode).ToArray();
+		public string?[] rgpcwszProxyBypasses => _rgpcwszProxyBypasses.ToStringEnum(cProxyBypasses, CharSet.Unicode).ToArray() ?? new string?[0];
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -1063,7 +1063,7 @@ public static partial class WinHTTP
 		/// <para>Type: <c>PCWSTR*</c></para>
 		/// <para>An array of strings containing each site in the proxy bypass list. (for example, L"contoso.com").</para>
 		/// </summary>
-		public string[] rgpcwszProxyBypasses;
+		public string?[] rgpcwszProxyBypasses;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -1367,7 +1367,7 @@ public static partial class WinHTTP
 
 		/// <summary>Pointer to a string value that contains the scheme name.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpszScheme;
+		public string? lpszScheme;
 
 		/// <summary>Length of the scheme name, in characters.</summary>
 		public uint dwSchemeLength;
@@ -1393,7 +1393,7 @@ public static partial class WinHTTP
 
 		/// <summary>Pointer to a string value that contains the host name.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpszHostName;
+		public string? lpszHostName;
 
 		/// <summary>Length of the host name, in characters.</summary>
 		public uint dwHostNameLength;
@@ -1403,35 +1403,35 @@ public static partial class WinHTTP
 
 		/// <summary>Pointer to a string that contains the user name.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpszUserName;
+		public string? lpszUserName;
 
 		/// <summary>Length of the user name, in characters.</summary>
 		public uint dwUserNameLength;
 
 		/// <summary>Pointer to a string that contains the password.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpszPassword;
+		public string? lpszPassword;
 
 		/// <summary>Length of the password, in characters.</summary>
 		public uint dwPasswordLength;
 
 		/// <summary>Pointer to a string that contains the URL path.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpszUrlPath;
+		public string? lpszUrlPath;
 
 		/// <summary>Length of the URL path, in characters.</summary>
 		public uint dwUrlPathLength;
 
 		/// <summary>Pointer to a string value that contains the extra information, for example, ?something or #something.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string lpszExtraInfo;
+		public string? lpszExtraInfo;
 
 		/// <summary>Unsigned long integer value that contains the length of the extra information, in characters.</summary>
 		public uint dwExtraInfoLength;
 
 		/// <summary>Initializes a new instance of the <see cref="WINHTTP_URL_COMPONENTS"/> struct.</summary>
-		public WINHTTP_URL_COMPONENTS_IN(string scheme = null, INTERNET_SCHEME iScheme = INTERNET_SCHEME.INTERNET_SCHEME_HTTPS, string host = null,
-			ushort port = 0, string user = null, string pwd = null, string urlPath = null, string extra = null)
+		public WINHTTP_URL_COMPONENTS_IN(string? scheme = null, INTERNET_SCHEME iScheme = INTERNET_SCHEME.INTERNET_SCHEME_HTTPS, string? host = null,
+			ushort port = 0, string? user = null, string? pwd = null, string? urlPath = null, string? extra = null)
 		{
 			dwStructSize = (uint)Marshal.SizeOf(typeof(WINHTTP_URL_COMPONENTS));
 			lpszScheme = scheme;
@@ -1453,7 +1453,7 @@ public static partial class WinHTTP
 			return new(S(c.lpszScheme, c.dwSchemeLength), c.nScheme, S(c.lpszHostName, c.dwHostNameLength), c.nPort, S(c.lpszUserName, c.dwUserNameLength),
 				S(c.lpszPassword, c.dwPasswordLength), S(c.lpszUrlPath, c.dwUrlPathLength), S(c.lpszExtraInfo, c.dwExtraInfoLength));
 
-			static string S(StrPtrUni p, uint l) => StringHelper.GetString((IntPtr)p, (int)l, CharSet.Unicode);
+			static string? S(StrPtrUni p, uint l) => StringHelper.GetString((IntPtr)p, (int)l, CharSet.Unicode);
 		}
 	}
 

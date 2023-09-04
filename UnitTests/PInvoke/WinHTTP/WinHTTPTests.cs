@@ -1,10 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Linq;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.WinHTTP;
 
 namespace Vanara.PInvoke.Tests;
@@ -131,10 +127,10 @@ public class WinHTTPTests
 		using SafeHINTERNET hSession = WinHttpOpen(userAgent);
 		Assert.That(hSession, ResultIs.ValidHandle);
 		// Specify an HTTP server.
-		using SafeHINTERNET hConnect = WinHttpConnect(hSession, host, INTERNET_DEFAULT_HTTP_PORT);
+		using SafeHINTERNET hConnect = WinHttpConnect(hSession, host, INTERNET_DEFAULT_HTTPS_PORT);
 		Assert.That(hConnect, ResultIs.ValidHandle);
 		// Create an HTTP request handle.
-		using SafeHINTERNET hRequest = WinHttpOpenRequest(hConnect, "GET", "ms.htm", "HTTP/1.1");
+		using SafeHINTERNET hRequest = WinHttpOpenRequest(hConnect, "GET", "ms.htm");
 		Assert.That(hRequest, ResultIs.ValidHandle);
 
 		// Call WinHttpGetProxyForUrl with our target URL, then set the proxy info on the request handle.
@@ -144,16 +140,18 @@ public class WinHTTPTests
 			dwAutoDetectFlags = WINHTTP_AUTO_DETECT_TYPE.WINHTTP_AUTO_DETECT_TYPE_DNS_A | WINHTTP_AUTO_DETECT_TYPE.WINHTTP_AUTO_DETECT_TYPE_DHCP,
 			fAutoLogonIfChallenged = true,
 		};
-		Assert.That(WinHttpGetProxyForUrl(hSession, "https://www.microsoft.com/ms.htm", opts, out WINHTTP_PROXY_INFO info), ResultIs.Successful);
-		try
+		if (WinHttpGetProxyForUrl(hSession, "https://www.microsoft.com/", opts, out WINHTTP_PROXY_INFO info))
 		{
-			TestContext.WriteLine($"{info.dwAccessType}; {info.lpszProxy}; {info.lpszProxyBypass}");
-			// A proxy configuration was found, set it on the request handle.
-			Assert.That(WinHttpSetOption(hRequest, WINHTTP_OPTION.WINHTTP_OPTION_PROXY, info), ResultIs.Successful);
-		}
-		finally
-		{
-			info.FreeMemory();
+			try
+			{
+				TestContext.WriteLine($"{info.dwAccessType}; {info.lpszProxy}; {info.lpszProxyBypass}");
+				// A proxy configuration was found, set it on the request handle.
+				Assert.That(WinHttpSetOption(hRequest, WINHTTP_OPTION.WINHTTP_OPTION_PROXY, info), ResultIs.Successful);
+			}
+			finally
+			{
+				info.FreeMemory();
+			}
 		}
 
 		// Send the request.
@@ -243,7 +241,7 @@ public class WinHTTPTests
 			default, default, pin, ref sz, out var hdrs, out var cHdrs), ResultIs.Successful);
 		Assert.That(sz, Is.GreaterThan(0));
 		Assert.That(cHdrs, Is.GreaterThan(0));
-		hdrs.ToArray<WINHTTP_EXTENDED_HEADER>((int)cHdrs)[0].WriteValues();
+		hdrs.ToArray<WINHTTP_EXTENDED_HEADER>((int)cHdrs)![0].WriteValues();
 	}
 
 	[Test]

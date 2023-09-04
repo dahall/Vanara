@@ -76,7 +76,7 @@ public static partial class WinHTTP
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpGetProxySettingsEx")]
 	[DllImport(Lib_Winhttp, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error WinHttpGetProxySettingsEx(HINTERNET hResolver, WINHTTP_PROXY_SETTINGS_TYPE ProxySettingsType,
-		in WINHTTP_PROXY_SETTINGS_PARAM pProxySettingsParam, IntPtr pContext);
+		in WINHTTP_PROXY_SETTINGS_PARAM pProxySettingsParam, [In, Optional] IntPtr pContext);
 
 	/// <summary>Retrieves extended proxy settings.</summary>
 	/// <param name="hResolver">
@@ -116,7 +116,7 @@ public static partial class WinHTTP
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpGetProxySettingsEx")]
 	[DllImport(Lib_Winhttp, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error WinHttpGetProxySettingsEx(HINTERNET hResolver, WINHTTP_PROXY_SETTINGS_TYPE ProxySettingsType,
-		[In, Optional] IntPtr pProxySettingsParam, IntPtr pContext);
+		[In, Optional] IntPtr pProxySettingsParam, [In, Optional] IntPtr pContext);
 
 	/// <summary>Retrieves the results of a call to WinHttpGetProxySettingsEx.</summary>
 	/// <param name="hResolver">
@@ -273,7 +273,7 @@ public static partial class WinHTTP
 		Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		using SafeHGlobalHandle buffer = new(sz);
 		Win32Error.ThrowLastErrorIfFalse(WinHttpQueryOption(hInternet, dwOption, buffer, ref sz));
-		return (T)buffer.DangerousGetHandle().Convert(sz, rType, CharSet.Unicode);
+		return (T)buffer.DangerousGetHandle().Convert(sz, rType, CharSet.Unicode)!;
 	}
 
 	/// <summary>Also see WinHttpReadDataEx.</summary>
@@ -572,6 +572,155 @@ public static partial class WinHTTP
 	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpReadData")]
 	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool WinHttpReadData(HINTERNET hRequest, [Out] IntPtr lpBuffer, uint dwNumberOfBytesToRead, [Optional] IntPtr lpdwNumberOfBytesRead);
+
+	/// <summary>Also see WinHttpReadDataEx.</summary>
+	/// <param name="hRequest">
+	/// Valid HINTERNET handle returned from a previous call to WinHttpOpenRequest. WinHttpReceiveResponse or WinHttpQueryDataAvailable must
+	/// have been called for this handle and must have completed before <c>WinHttpReadData</c> is called. Although calling
+	/// <c>WinHttpReadData</c> immediately after completion of <c>WinHttpReceiveResponse</c> avoids the expense of a buffer copy, doing so
+	/// requires that the application use a fixed-length buffer for reading.
+	/// </param>
+	/// <param name="lpBuffer">
+	/// Pointer to a buffer that receives the data read. Make sure that this buffer remains valid until <c>WinHttpReadData</c> has completed.
+	/// </param>
+	/// <param name="dwNumberOfBytesToRead">Unsigned long integer value that contains the number of bytes to read.</param>
+	/// <param name="lpdwNumberOfBytesRead">
+	/// Pointer to an unsigned long integer variable that receives the number of bytes read. <c>WinHttpReadData</c> sets this value to zero
+	/// before doing any work or error checking. When using WinHTTP asynchronously, always set this parameter to <c>NULL</c> and retrieve the
+	/// information in the callback function; not doing so can cause a memory fault.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. For extended error information, call GetLastError. The following table
+	/// identifies the error codes that are returned.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Error Code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_CONNECTION_ERROR</c></term>
+	/// <term>
+	/// The connection with the server has been reset or terminated, or an incompatible SSL protocol was encountered. For example, WinHTTP
+	/// 5.1 does not support SSL2 unless the client specifically enables it.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INCORRECT_HANDLE_STATE</c></term>
+	/// <term>The requested operation cannot be carried out because the handle supplied is not in the correct state.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INCORRECT_HANDLE_TYPE</c></term>
+	/// <term>The type of handle supplied is incorrect for this operation.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INTERNAL_ERROR</c></term>
+	/// <term>An internal error has occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_OPERATION_CANCELLED</c></term>
+	/// <term>The operation was canceled, usually because the handle on which the request was operating was closed before the operation completed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_RESPONSE_DRAIN_OVERFLOW</c></term>
+	/// <term>Returned when an incoming response exceeds an internal WinHTTP size limit.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_TIMEOUT</c></term>
+	/// <term>The request has timed out.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_ENOUGH_MEMORY</c></term>
+	/// <term>Not enough memory was available to complete the requested operation. (Windows error code)</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Starting in Windows Vista and Windows Server 2008, WinHttp enables applications to perform chunked transfer encoding on data sent to
+	/// the server. When the Transfer-Encoding header is present on the WinHttp response, <c>WinHttpReadData</c> strips the chunking
+	/// information before giving the data to the application.
+	/// </para>
+	/// <para>
+	/// Even when WinHTTP is used in asynchronous mode (that is, when <c>WINHTTP_FLAG_ASYNC</c> has been set in WinHttpOpen), this function
+	/// can operate either synchronously or asynchronously. If this function returns <c>FALSE</c>, this function failed and you can call
+	/// GetLastError to get extended error information. If this function returns <c>TRUE</c>, use the WINHTTP_CALLBACK_STATUS_READ_COMPLETE
+	/// completion to determine whether this function was successful and the value of the parameters. The
+	/// WINHTTP_CALLBACK_STATUS_REQUEST_ERROR completion indicates that the operation completed asynchronously, but failed.
+	/// </para>
+	/// <para>
+	/// <c>Warning</c> When WinHTTP is used in asynchronous mode, always set the <c>lpdwNumberOfBytesRead</c> parameter to <c>NULL</c> and
+	/// retrieve the bytes read in the callback function; otherwise, a memory fault can occur.
+	/// </para>
+	/// <para>
+	/// When the read buffer is very small, <c>WinHttpReadData</c> might complete synchronously. If the WINHTTP_CALLBACK_STATUS_READ_COMPLETE
+	/// completion triggers another call to <c>WinHttpReadData</c>, the situation can result in a stack overflow. In general, it is best to
+	/// use a read buffer that is comparable in size, or larger than the internal read buffer used by WinHTTP, which is 8 KB.
+	/// </para>
+	/// <para>
+	/// If you are using <c>WinHttpReadData</c> synchronously, and the return value is <c>TRUE</c> and the number of bytes read is zero, the
+	/// transfer has been completed and there are no more bytes to read on the handle. This is analogous to reaching end-of-file in a local
+	/// file. If you are using the function asynchronously, the WINHTTP_CALLBACK_STATUS_READ_COMPLETE callback is called with the
+	/// <c>dwStatusInformationLength</c> parameter set to zero when the end of a response is found.
+	/// </para>
+	/// <para>
+	/// <c>WinHttpReadData</c> tries to fill the buffer pointed to by <c>lpBuffer</c> until there is no more data available from the
+	/// response. If sufficient data has not arrived from the server, the buffer is not filled.
+	/// </para>
+	/// <para>
+	/// For HINTERNET handles created by the WinHttpOpenRequest function and sent by WinHttpSendRequest, a call to WinHttpReceiveResponse
+	/// must be made on the handle before <c>WinHttpReadData</c> can be used.
+	/// </para>
+	/// <para>Single byte characters retrieved with <c>WinHttpReadData</c> are not converted to multi-byte characters.</para>
+	/// <para>
+	/// When the read buffer is very small, <c>WinHttpReadData</c> may complete synchronously, and if the
+	/// <c>WINHTTP_CALLBACK_STATUS_READ_COMPLETE</c> completion then triggers another call to <c>WinHttpReadData</c>, a stack overflow can
+	/// result. It is best to use a read buffer that is 8 Kilobytes or larger in size.
+	/// </para>
+	/// <para>
+	/// If sufficient data has not arrived from the server, <c>WinHttpReadData</c> does not entirely fill the buffer pointed to by
+	/// <c>lpBuffer</c>. The buffer must be large enough at least to hold the HTTP headers on the first read, and when reading HTML encoded
+	/// directory entries, it must be large enough to hold at least one complete entry.
+	/// </para>
+	/// <para>
+	/// If a status callback function has been installed by using WinHttpSetStatusCallback, then those of the following notifications that
+	/// have been set in the <c>dwNotificationFlags</c> parameter of <c>WinHttpSetStatusCallback</c> indicate progress in checking for
+	/// available data:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_RECEIVING_RESPONSE</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_RESPONSE_RECEIVED</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_CONNECTION_CLOSED</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_READ_COMPLETE</term>
+	/// </item>
+	/// </list>
+	/// <para><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHttp start page.</para>
+	/// <para>Examples</para>
+	/// <para>
+	/// The following example shows how to use secure transaction semantics to download a resource from an Secure Hypertext Transfer Protocol
+	/// (HTTPS) server. The sample code initializes the WinHTTP application programming interface (API), selects a target HTTPS server, then
+	/// opens and sends a request for this secure resource. WinHttpQueryDataAvailable is used with the request handle to determine how much
+	/// data is available for download, then <c>WinHttpReadData</c> is used to read that data. This process repeats until the entire document
+	/// has been retrieved and displayed.
+	/// </para>
+	/// <para>
+	/// <code> DWORD dwSize = 0; DWORD dwDownloaded = 0; LPSTR pszOutBuffer; BOOL bResults = FALSE; HINTERNET hSession = NULL, hConnect = NULL, hRequest = NULL; // Use WinHttpOpen to obtain a session handle. hSession = WinHttpOpen( L"WinHTTP Example/1.0", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0); // Specify an HTTP server. if (hSession) hConnect = WinHttpConnect( hSession, L"www.microsoft.com", INTERNET_DEFAULT_HTTPS_PORT, 0); // Create an HTTP request handle. if (hConnect) hRequest = WinHttpOpenRequest( hConnect, L"GET", NULL, NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE); // Send a request. if (hRequest) bResults = WinHttpSendRequest( hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0); // End the request. if (bResults) bResults = WinHttpReceiveResponse( hRequest, NULL); // Keep checking for data until there is nothing left. if (bResults) { do { // Check for available data. dwSize = 0; if (!WinHttpQueryDataAvailable( hRequest, &amp;dwSize)) { printf( "Error %u in WinHttpQueryDataAvailable.\n", GetLastError()); break; } // No more available data. if (!dwSize) break; // Allocate space for the buffer. pszOutBuffer = new char[dwSize+1]; if (!pszOutBuffer) { printf("Out of memory\n"); break; } // Read the Data. ZeroMemory(pszOutBuffer, dwSize+1); if (!WinHttpReadData( hRequest, (LPVOID)pszOutBuffer, dwSize, &amp;dwDownloaded)) { printf( "Error %u in WinHttpReadData.\n", GetLastError()); } else { printf("%s", pszOutBuffer); } // Free the memory allocated to the buffer. delete [] pszOutBuffer; // This condition should never be reached since WinHttpQueryDataAvailable // reported that there are bits to read. if (!dwDownloaded) break; } while (dwSize &gt; 0); } else { // Report any errors. printf( "Error %d has occurred.\n", GetLastError() ); } // Close any open handles. if (hRequest) WinHttpCloseHandle(hRequest); if (hConnect) WinHttpCloseHandle(hConnect); if (hSession) WinHttpCloseHandle(hSession);</code>
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/nf-winhttp-winhttpreaddata BOOL WinHttpReadData( [in] HINTERNET hRequest,
+	// [out] LPVOID lpBuffer, [in] DWORD dwNumberOfBytesToRead, [out] LPDWORD lpdwNumberOfBytesRead );
+	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpReadData")]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool WinHttpReadData(HINTERNET hRequest, [Out] byte[] lpBuffer, int dwNumberOfBytesToRead, out int lpdwNumberOfBytesRead);
 
 	/// <summary>Reads data from a handle opened by the WinHttpOpenRequest function.</summary>
@@ -674,6 +823,107 @@ public static partial class WinHTTP
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpReadDataEx")]
 	public static extern Win32Error WinHttpReadDataEx(HINTERNET hRequest, [Out] IntPtr lpBuffer, uint dwNumberOfBytesToRead,
 		out uint lpdwNumberOfBytesRead, [Optional] WINHTTP_READ_DATA_EX_FLAG ullFlags, [Optional] uint cbProperty, [Optional] IntPtr pvProperty);
+
+	/// <summary>Reads data from a handle opened by the WinHttpOpenRequest function.</summary>
+	/// <param name="hRequest">
+	/// <para>Type: IN <c>HINTERNET</c></para>
+	/// <para>An <c>HINTERNET</c> handle returned from a previous call to WinHttpOpenRequest.</para>
+	/// <para>
+	/// WinHttpReceiveResponse or WinHttpQueryDataAvailable must have been called for this handle and must have completed before
+	/// <c>WinHttpReadDataEx</c> is called. Although calling <c>WinHttpReadDataEx</c> immediately after completion of
+	/// <c>WinHttpReceiveResponse</c> avoids the expense of a buffer copy, doing so requires that your application use a fixed-length buffer
+	/// for reading.
+	/// </para>
+	/// </param>
+	/// <param name="lpBuffer">
+	/// <para>Type: _Out_writes_bytes_to_(dwNumberOfBytesToRead, *lpdwNumberOfBytesRead) __out_data_source(NETWORK) <c>LPVOID</c></para>
+	/// <para>
+	/// Pointer to a buffer that receives the data read. Make sure that this buffer remains valid until <c>WinHttpReadDataEx</c> has completed.
+	/// </para>
+	/// </param>
+	/// <param name="dwNumberOfBytesToRead">
+	/// <para>Type: IN <c>DWORD</c></para>
+	/// <para>Unsigned long integer value that contains the number of bytes to read.</para>
+	/// </param>
+	/// <param name="lpdwNumberOfBytesRead">
+	/// <para>Type: OUT <c>LPDWORD</c></para>
+	/// <para>
+	/// Pointer to an unsigned long integer variable that receives the number of bytes read. <c>WinHttpReadDataEx</c> sets this value to zero
+	/// before doing any work or error checking. When using WinHTTP asynchronously, always set this parameter to <c>NULL</c> and retrieve the
+	/// information in the callback function; not doing so can cause a memory fault.
+	/// </para>
+	/// </param>
+	/// <param name="ullFlags">
+	/// <para>Type: IN <c>ULONGLONG</c></para>
+	/// <para>
+	/// If you pass <c>WINHTTP_READ_DATA_EX_FLAG_FILL_BUFFER</c>, then WinHttp won't complete the call to <c>WinHttpReadDataEx</c> until the
+	/// provided data buffer has been filled, or the response is complete. Passing this flag makes the behavior of this API equivalent to
+	/// that of WinHttpReadData.
+	/// </para>
+	/// </param>
+	/// <param name="cbProperty">
+	/// <para>Type: IN <c>DWORD</c></para>
+	/// <para>Reserved. Pass 0.</para>
+	/// </param>
+	/// <param name="pvProperty">
+	/// <para>Type: _In_reads_bytes_opt_(cbProperty) <c>PVOID</c></para>
+	/// <para>Reserved. Pass NULL.</para>
+	/// </param>
+	/// <returns>
+	/// <para>A status code indicating the result of the operation. Among the error codes returned are the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Error Code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_CONNECTION_ERROR</c></term>
+	/// <term>
+	/// The connection with the server has been reset or terminated, or an incompatible SSL protocol was encountered. For example, WinHTTP
+	/// 5.1 does not support SSL2 unless the client specifically enables it.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INCORRECT_HANDLE_STATE</c></term>
+	/// <term>The requested operation cannot be carried out because the handle supplied is not in the correct state.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INCORRECT_HANDLE_TYPE</c></term>
+	/// <term>The type of handle supplied is incorrect for this operation.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INTERNAL_ERROR</c></term>
+	/// <term>An internal error has occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_OPERATION_CANCELLED</c></term>
+	/// <term>The operation was canceled, usually because the handle on which the request was operating was closed before the operation completed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_RESPONSE_DRAIN_OVERFLOW</c></term>
+	/// <term>Returned when an incoming response exceeds an internal WinHTTP size limit.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_TIMEOUT</c></term>
+	/// <term>The request has timed out.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_ENOUGH_MEMORY</c></term>
+	/// <term>Not enough memory was available to complete the requested operation. (Windows error code)</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// By default, <c>WinHttpReadDataEx</c> returns after any amount of data has been written to the buffer that you provide (the function
+	/// won't always completely fill the buffer that you provide).
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/nf-winhttp-winhttpreaddataex WINHTTPAPI DWORD WinHttpReadDataEx( HINTERNET
+	// hRequest, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead, ULONGLONG ullFlags, DWORD cbProperty, PVOID
+	// pvProperty );
+	[DllImport(Lib_Winhttp, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpReadDataEx")]
+	public static extern Win32Error WinHttpReadDataEx(HINTERNET hRequest, [Out] IntPtr lpBuffer, uint dwNumberOfBytesToRead,
+		[In, Optional] IntPtr lpdwNumberOfBytesRead, [Optional] WINHTTP_READ_DATA_EX_FLAG ullFlags, [Optional] uint cbProperty, [Optional] IntPtr pvProperty);
 
 	/// <summary>Reads data from a handle opened by the WinHttpOpenRequest function.</summary>
 	/// <param name="hRequest">
@@ -1880,7 +2130,7 @@ public static partial class WinHTTP
 	// [in] DWORD_PTR dwReserved );
 	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpSetStatusCallback")]
-	public static extern IntPtr WinHttpSetStatusCallback(HINTERNET hInternet, WINHTTP_STATUS_CALLBACK lpfnInternetCallback,
+	public static extern IntPtr WinHttpSetStatusCallback(HINTERNET hInternet, [Optional] WINHTTP_STATUS_CALLBACK? lpfnInternetCallback,
 		WINHTTP_CALLBACK_FLAG dwNotificationFlags, IntPtr dwReserved = default);
 
 	/// <summary>The <c>WinHttpSetTimeouts</c> function sets time-outs involved with HTTP transactions.</summary>
@@ -2503,6 +2753,138 @@ public static partial class WinHTTP
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpWriteData")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool WinHttpWriteData(HINTERNET hRequest, [In] IntPtr lpBuffer, uint dwNumberOfBytesToWrite, out uint lpdwNumberOfBytesWritten);
+
+	/// <summary>The <c>WinHttpWriteData</c> function writes request data to an HTTP server.</summary>
+	/// <param name="hRequest">
+	/// Valid HINTERNET handle returned by WinHttpOpenRequest. Wait until WinHttpSendRequest has completed before calling this function.
+	/// </param>
+	/// <param name="lpBuffer">
+	/// Pointer to a buffer that contains the data to be sent to the server. Be sure that this buffer remains valid until after
+	/// <c>WinHttpWriteData</c> completes.
+	/// </param>
+	/// <param name="dwNumberOfBytesToWrite">Unsigned long integer value that contains the number of bytes to be written to the file.</param>
+	/// <param name="lpdwNumberOfBytesWritten">
+	/// Pointer to an unsigned long integer variable that receives the number of bytes written to the buffer. The <c>WinHttpWriteData</c>
+	/// function sets this value to zero before doing any work or error checking. When using WinHTTP asynchronously, this parameter must be
+	/// set to <c>NULL</c> and retrieve the information in the callback function. Not doing so can cause a memory fault.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. For extended error information, call GetLastError. Among the error
+	/// codes returned are:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Error Code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_CONNECTION_ERROR</c></term>
+	/// <term>
+	/// The connection with the server has been reset or terminated, or an incompatible SSL protocol was encountered. For example, WinHTTP
+	/// version 5.1 does not support SSL2 unless the client specifically enables it.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INCORRECT_HANDLE_STATE</c></term>
+	/// <term>The requested operation cannot be carried out because the handle supplied is not in the correct state.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INCORRECT_HANDLE_TYPE</c></term>
+	/// <term>The type of handle supplied is incorrect for this operation.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_INTERNAL_ERROR</c></term>
+	/// <term>An internal error has occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_OPERATION_CANCELLED</c></term>
+	/// <term>The operation was canceled, usually because the handle on which the request was operating was closed before the operation completed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WINHTTP_TIMEOUT</c></term>
+	/// <term>The request has timed out.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_ENOUGH_MEMORY</c></term>
+	/// <term>Not enough memory was available to complete the requested operation. (Windows error code)</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Even when WinHTTP is used in asynchronous mode (that is, when <c>WINHTTP_FLAG_ASYNC</c> has been set in WinHttpOpen), this function
+	/// can operate either synchronously or asynchronously. If this function returns <c>FALSE</c>, you can call GetLastError to get extended
+	/// error information. If this function returns <c>TRUE</c>, use the WINHTTP_CALLBACK_STATUS_WRITE_COMPLETE completion to determine
+	/// whether this function was successful and the value of the parameters. The WINHTTP_CALLBACK_STATUS_REQUEST_ERROR completion indicates
+	/// that the operation completed asynchronously, but failed.
+	/// </para>
+	/// <para>
+	/// <c>Warning</c> When using WinHTTP asynchronously, always set the <c>lpdwNumberOfBytesWritten</c> parameter to <c>NULL</c> and
+	/// retrieve the bytes written in the callback function; otherwise, a memory fault can occur.
+	/// </para>
+	/// <para>
+	/// When the application is sending data, it can call WinHttpReceiveResponse to end the data transfer. If WinHttpCloseHandle is called,
+	/// then the data transfer is aborted.
+	/// </para>
+	/// <para>
+	/// If a status callback function has been installed with WinHttpSetStatusCallback, then those of the following notifications that have
+	/// been set in the <c>dwNotificationFlags</c> parameter of <c>WinHttpSetStatusCallback</c> indicate progress in sending data to the server:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_RECEIVING_RESPONSE</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_RESPONSE_RECEIVED</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_DATA_WRITTEN</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_SENDING_REQUEST</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_REQUEST_SENT</term>
+	/// </item>
+	/// <item>
+	/// <term>WINHTTP_CALLBACK_STATUS_WRITE_COMPLETE</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Two issues can arise when attempting to POST (or PUT) data to proxies or servers that challenge using NTLM or Negotiate
+	/// authentication. First, these proxies or servers may send 401/407 challenges and close the connection before all the data can be
+	/// POST'ed, in which case not only does <c>WinHttpWriteData</c> fail, but also WinHTTP cannot handle the authentication challenges. NTLM
+	/// and Negotiate require that all authentication handshakes be exchanged on the same socket connection, so authentication fails if the
+	/// connection is broken prematurely.
+	/// </para>
+	/// <para>
+	/// Secondly, NTLM and Negotiate may require multiple handshakes to complete authentication, which requires data to be re-POST'ed for
+	/// each authentication legs. This can be very inefficient for large data uploads.
+	/// </para>
+	/// <para>
+	/// To work around these two issues, one solution is to send an idempotent warm-up request such as HEAD to the authenticating v-dir
+	/// first, handle the authentication challenges associated with this request, and only then POST data. As long as the same socket is
+	/// re-used to handle the POST'ing, no further authentication challenges should be encountered and all data can be uploaded at once.
+	/// Since an authenticated socket can only be reused for subsequent requests within the same session, the POST should go out in the same
+	/// socket as long as the socket is not pooled with concurrent requests competing for it.
+	/// </para>
+	/// <para><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHTTP start page.</para>
+	/// <para>Examples</para>
+	/// <para>
+	/// This example shows code that writes data to an HTTP server. The server name supplied in the example, www.wingtiptoys.com, is
+	/// fictitious and must be replaced with the name of a server for which you have write access.
+	/// </para>
+	/// <para>
+	/// <code> PCSTR pszData = "WinHttpWriteData Example"; DWORD dwBytesWritten = 0; BOOL bResults = FALSE; HINTERNET hSession = NULL, hConnect = NULL, hRequest = NULL; // Use WinHttpOpen to obtain a session handle. hSession = WinHttpOpen( L"A WinHTTP Example Program/1.0", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0); // Specify an HTTP server. if (hSession) hConnect = WinHttpConnect( hSession, L"www.wingtiptoys.com", INTERNET_DEFAULT_HTTP_PORT, 0); // Create an HTTP Request handle. if (hConnect) hRequest = WinHttpOpenRequest( hConnect, L"PUT", L"/writetst.txt", NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, 0); // Send a Request. if (hRequest) bResults = WinHttpSendRequest( hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, (DWORD)strlen(pszData), 0); // Write data to the server. if (bResults) bResults = WinHttpWriteData( hRequest, pszData, (DWORD)strlen(pszData), &amp;dwBytesWritten); // End the request. if (bResults) bResults = WinHttpReceiveResponse( hRequest, NULL); // Report any errors. if (!bResults) printf("Error %d has occurred.\n",GetLastError()); // Close any open handles. if (hRequest) WinHttpCloseHandle(hRequest); if (hConnect) WinHttpCloseHandle(hConnect); if (hSession) WinHttpCloseHandle(hSession);</code>
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/nf-winhttp-winhttpwritedata BOOL WinHttpWriteData( [in] HINTERNET hRequest,
+	// [in] LPCVOID lpBuffer, [in] DWORD dwNumberOfBytesToWrite, [out] LPDWORD lpdwNumberOfBytesWritten );
+	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpWriteData")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool WinHttpWriteData(HINTERNET hRequest, [In] IntPtr lpBuffer, uint dwNumberOfBytesToWrite, [In, Optional] IntPtr lpdwNumberOfBytesWritten);
 
 	/// <summary>The <c>WinHttpWriteData</c> function writes request data to an HTTP server.</summary>
 	/// <param name="hRequest">
