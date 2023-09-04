@@ -23,7 +23,7 @@ public class TempFile : IDisposable
 	/// <param name="contents">
 	/// The text inserted into the file. If this value is <see langword="null"/>, the file is not created on disk.
 	/// </param>
-	public TempFile(string contents = tmpstr)
+	public TempFile(string? contents = tmpstr)
 	{
 		FullName = Path.GetTempFileName();
 		if (contents is null)

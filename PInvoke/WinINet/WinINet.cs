@@ -3056,7 +3056,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "4bd21b30-cac5-482b-9826-b5a4ffeeebe9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CommitUrlCacheEntry(string lpszUrlName, string lpszLocalFileName, [Optional] FILETIME ExpireTime, [Optional] FILETIME LastModifiedTime, [Optional] CACHE_ENTRY_TYPE CacheEntryType, [Optional] string? lpHeaderInfo, [Optional] uint cchHeaderInfo, [Optional] string? lpszFileExtension, [Optional] string? lpszOriginalUrl);
+	public static extern bool CommitUrlCacheEntry(string lpszUrlName, string lpszLocalFileName, [Optional] FILETIME ExpireTime, [Optional] FILETIME LastModifiedTime,
+		[Optional] CACHE_ENTRY_TYPE CacheEntryType, [Optional] string? lpHeaderInfo, [Optional] uint cchHeaderInfo, [Optional] string? lpszFileExtension, [Optional] string? lpszOriginalUrl);
 
 	/// <summary>
 	/// The <c>CreateMD5SSOHash</c> function obtains the default Microsoft Passport password for a specified account or realm, creates
@@ -3101,7 +3102,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wininet.h", MSDNShortId = "9aba22d7-a1a9-4b90-bfc6-78df8a8d0ce5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateMD5SSOHash([MarshalAs(UnmanagedType.LPWStr)] string pszChallengeInfo, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszRealm, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszTarget, byte[] pbHexHash);
+	public static extern bool CreateMD5SSOHash([MarshalAs(UnmanagedType.LPWStr)] string pszChallengeInfo, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszRealm,
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszTarget, byte[] pbHexHash);
 
 	/// <summary>
 	/// <para>
@@ -3125,7 +3127,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winineti.h", MSDNShortId = "19b518cc-2f02-49c3-bedc-f5d633cc635d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateUrlCacheContainer(string Name, string lpCachePrefix, string lpszCachePath, [Optional] uint KBCacheLimit, INTERNET_CACHE_CONTAINER dwContainerType, uint dwOptions = 0, IntPtr pvBuffer = default, IntPtr cbBuffer = default);
+	public static extern bool CreateUrlCacheContainer(string Name, string lpCachePrefix, string lpszCachePath, [Optional] uint KBCacheLimit,
+		INTERNET_CACHE_CONTAINER dwContainerType, uint dwOptions = 0, IntPtr pvBuffer = default, IntPtr cbBuffer = default);
 
 	/// <summary>Creates a local file name for saving the cache entry based on the specified URL and the file name extension.</summary>
 	/// <param name="lpszUrlName">
@@ -3362,7 +3365,7 @@ public static partial class WinINet
 	// LPCSTR lpszUrlSearchPattern, LPINTERNET_CACHE_ENTRY_INFOA lpFirstCacheEntryInfo, LPDWORD lpcbCacheEntryInfo );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "e8407284-846b-4080-b75b-4805330e0f95")]
-	public static extern HFINDCACHE FindFirstUrlCacheEntry(string lpszUrlSearchPattern, IntPtr lpFirstCacheEntryInfo, ref uint lpcbCacheEntryInfo);
+	public static extern HFINDCACHE FindFirstUrlCacheEntry(string? lpszUrlSearchPattern, IntPtr lpFirstCacheEntryInfo, ref uint lpcbCacheEntryInfo);
 
 	/// <summary>Initiates the enumeration of the cache groups in the Internet cache.</summary>
 	/// <param name="dwFlags">This parameter is reserved and must be 0.</param>
@@ -3409,7 +3412,8 @@ public static partial class WinINet
 	// dwFlags, DWORD dwFilter, LPVOID lpSearchCondition, DWORD dwSearchCondition, GROUPID *lpGroupId, LPVOID lpReserved );
 	[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wininet.h", MSDNShortId = "a333cbc6-a880-4b1c-be0d-abb083909638")]
-	public static extern HFINDCACHE FindFirstUrlCacheGroup([Optional] uint dwFlags, [Optional] CACHEGROUP_SEARCH dwFilter, [Optional] IntPtr lpSearchCondition, [Optional] uint dwSearchCondition, out long lpGroupId, [Optional] IntPtr lpReserved);
+	public static extern HFINDCACHE FindFirstUrlCacheGroup([Optional] uint dwFlags, [Optional] CACHEGROUP_SEARCH dwFilter,
+		[Optional] IntPtr lpSearchCondition, [Optional] uint dwSearchCondition, out long lpGroupId, [Optional] IntPtr lpReserved);
 
 	/// <summary>Retrieves the next entry in the Internet cache.</summary>
 	/// <param name="hEnumHandle">Handle to the enumeration obtained from a previous call to FindFirstUrlCacheEntry.</param>
@@ -3494,7 +3498,7 @@ public static partial class WinINet
 	/// An enumeration of <see cref="INTERNET_CACHE_ENTRY_INFO_MGD"/> structures which parallel the values in the native <see
 	/// cref="INTERNET_CACHE_ENTRY_INFO"/> structure.
 	/// </returns>
-	public static IEnumerable<INTERNET_CACHE_ENTRY_INFO_MGD> FindUrlCacheEntries(string lpszUrlSearchPattern = null)
+	public static IEnumerable<INTERNET_CACHE_ENTRY_INFO_MGD> FindUrlCacheEntries(string? lpszUrlSearchPattern = null)
 	{
 		using var mem = new SafeHGlobalHandle(1024);
 		uint sz = mem.Size;
@@ -3603,7 +3607,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "cd12f52c-80d6-4aee-96c8-cb3cafcf0a6a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FtpCommand(HINTERNET hConnect, [MarshalAs(UnmanagedType.Bool)] bool fExpectResponse, FTP_TRANSER_TYPE dwFlags, string lpszCommand, [Optional] IntPtr dwContext, out SafeHINTERNET phFtpCommand);
+	public static extern bool FtpCommand(HINTERNET hConnect, [MarshalAs(UnmanagedType.Bool)] bool fExpectResponse, FTP_TRANSER_TYPE dwFlags,
+		string lpszCommand, [Optional] IntPtr dwContext, out SafeHINTERNET phFtpCommand);
 
 	/// <summary>Creates a new directory on the FTP server.</summary>
 	/// <param name="hConnect">Handle returned by a previous call to InternetConnect using <c>INTERNET_SERVICE_FTP</c>.</param>
@@ -3728,7 +3733,8 @@ public static partial class WinINet
 	// hConnect, LPCSTR lpszSearchFile, LPWIN32_FIND_DATAA lpFindFileData, DWORD dwFlags, DWORD_PTR dwContext );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "4f331f99-c52c-4744-a9a7-eeb09803862d")]
-	public static extern SafeHINTERNET FtpFindFirstFile(HINTERNET hConnect, [Optional] string? lpszSearchFile, out WIN32_FIND_DATA lpFindFileData, INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
+	public static extern SafeHINTERNET FtpFindFirstFile(HINTERNET hConnect, [Optional] string? lpszSearchFile, out WIN32_FIND_DATA lpFindFileData,
+		INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
 
 	/// <summary>Retrieves the current directory for the specified FTP session.</summary>
 	/// <param name="hConnect">Handle to an FTP session.</param>
@@ -3876,8 +3882,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "2de83924-dc48-42bc-8f08-b94e9eb88b6f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FtpGetFile(HINTERNET hConnect, string lpszRemoteFile, string lpszNewFile, [MarshalAs(UnmanagedType.Bool)] bool fFailIfExists, FileFlagsAndAttributes dwFlagsAndAttributes,
-		INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
+	public static extern bool FtpGetFile(HINTERNET hConnect, string lpszRemoteFile, string lpszNewFile, [MarshalAs(UnmanagedType.Bool)] bool fFailIfExists,
+		FileFlagsAndAttributes dwFlagsAndAttributes, INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
 
 	/// <summary>Retrieves the file size of the requested FTP resource.</summary>
 	/// <param name="hFile">Handle returned from a call to FtpOpenFile.</param>
@@ -4416,7 +4422,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "3842dae9-9474-492a-83fa-29d7927dc92d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUrlCacheEntryInfoEx(string lpszUrl, IntPtr lpCacheEntryInfo, ref uint lpcbCacheEntryInfo, [Optional] IntPtr lpszRedirectUrl, [Optional] IntPtr lpcbRedirectUrl, [Optional] IntPtr lpReserved, [Optional] uint dwFlags);
+	public static extern bool GetUrlCacheEntryInfoEx(string lpszUrl, IntPtr lpCacheEntryInfo, ref uint lpcbCacheEntryInfo,
+		[Optional] IntPtr lpszRedirectUrl, [Optional] IntPtr lpcbRedirectUrl, [Optional] IntPtr lpReserved, [Optional] uint dwFlags);
 
 	/// <summary>
 	/// <para>[The <c>GopherCreateLocator</c> function is available for use in the operating systems specified in the Requirements section.]</para>
@@ -4474,7 +4481,7 @@ public static partial class WinINet
 	[PInvokeData("wininet.h", MSDNShortId = "972a4ff9-efda-4784-9ac8-c76e679e8032")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GopherCreateLocator(string lpszHost, INTERNET_PORT nServerPort, [Optional] string? lpszDisplayString, [Optional] string? lpszSelectorString,
-		GOPHER_TYPE dwGopherType, [Optional] StringBuilder lpszLocator, ref uint lpdwBufferLength);
+		GOPHER_TYPE dwGopherType, [Optional] StringBuilder? lpszLocator, ref uint lpdwBufferLength);
 
 	/// <summary>
 	/// <para>[The <c>GopherFindFirstFile</c> function is available for use in the operating systems specified in the Requirements section.]</para>
@@ -4570,7 +4577,8 @@ public static partial class WinINet
 	// hConnect, LPCSTR lpszLocator, LPCSTR lpszSearchString, LPGOPHER_FIND_DATAA lpFindData, DWORD dwFlags, DWORD_PTR dwContext );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "801dc601-9d1d-4f7d-acf0-b36ea2314d70")]
-	public static extern SafeHINTERNET GopherFindFirstFile(HINTERNET hConnect, [Optional] string? lpszLocator, [Optional] string? lpszSearchString, out GOPHER_FIND_DATA lpFindData, INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
+	public static extern SafeHINTERNET GopherFindFirstFile(HINTERNET hConnect, [Optional] string? lpszLocator, [Optional] string? lpszSearchString,
+		out GOPHER_FIND_DATA lpFindData, INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
 
 	/// <summary>
 	/// <para>[The <c>GopherGetAttribute</c> function is available for use in the operating systems specified in the Requirements section.]</para>
@@ -4621,7 +4629,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "c9e95532-8c65-45fb-acd0-a1f09cee2ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GopherGetAttribute(HINTERNET hConnect, string lpszLocator, [Optional] string? lpszAttributeName, IntPtr lpBuffer, uint dwBufferLength, out uint lpdwCharactersReturned, [Optional] GopherAttributeEnumerator lpfnEnumerator, [Optional] IntPtr dwContext);
+	public static extern bool GopherGetAttribute(HINTERNET hConnect, string lpszLocator, [Optional] string? lpszAttributeName, IntPtr lpBuffer,
+		uint dwBufferLength, out uint lpdwCharactersReturned, [Optional] GopherAttributeEnumerator? lpfnEnumerator, [Optional] IntPtr dwContext);
 
 	/// <summary>
 	/// <para>
@@ -5047,9 +5056,9 @@ public static partial class WinINet
 	// DWORD_PTR dwContext );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "caaff8e8-7db9-4d6d-8ba2-d8d19475173a")]
-	public static extern SafeHINTERNET HttpOpenRequest(HINTERNET hConnect, string lpszVerb = null, string lpszObjectName = "/",
-		string lpszVersion = null, string lpszReferrer = null,
-		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringPtrArrayMarshaler), MarshalCookie = "Auto")] string[] lplpszAcceptTypes = null,
+	public static extern SafeHINTERNET HttpOpenRequest(HINTERNET hConnect, string? lpszVerb = null, string lpszObjectName = "/",
+		string? lpszVersion = null, string? lpszReferrer = null,
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringPtrArrayMarshaler), MarshalCookie = "Auto")] string[]? lplpszAcceptTypes = null,
 		INTERNET_FLAG dwFlags = 0, IntPtr dwContext = default);
 
 	/// <summary>Retrieves header information associated with an HTTP request.</summary>
@@ -5256,7 +5265,7 @@ public static partial class WinINet
 	public static T HttpQueryInfo<T>(HINTERNET hRequest, HTTP_QUERY dwInfoLevel, ref uint lpdwIndex)
 	{
 		using ISafeMemoryHandle hMem = HttpQueryInfo(hRequest, dwInfoLevel, ref lpdwIndex);
-		return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
+		return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1)! : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>()!);
 	}
 
 	/// <summary>Retrieves header information associated with an HTTP request.</summary>
@@ -5273,7 +5282,7 @@ public static partial class WinINet
 	public static T HttpQueryInfo<T>(HINTERNET hRequest, HTTP_QUERY dwInfoLevel)
 	{
 		using ISafeMemoryHandle hMem = HttpQueryInfo(hRequest, dwInfoLevel);
-		return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
+		return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1)! : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>()!);
 	}
 
 	/// <summary>
@@ -5344,7 +5353,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "f53d9ff7-43b1-452f-a6cb-754d0229ab9a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HttpSendRequest(HINTERNET hRequest, [MarshalAs(UnmanagedType.LPTStr), Optional] string? lpszHeaders, [Optional] uint dwHeadersLength, [Optional] IntPtr lpOptional, [Optional] uint dwOptionalLength);
+	public static extern bool HttpSendRequest(HINTERNET hRequest, [MarshalAs(UnmanagedType.LPTStr), Optional] string? lpszHeaders,
+		[Optional] uint dwHeadersLength, [Optional] IntPtr lpOptional, [Optional] uint dwOptionalLength);
 
 	/// <summary>
 	/// <para>Sends the specified request to the HTTP server.</para>
@@ -5380,7 +5390,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "3362fcd2-e8df-4886-9525-bf60589b2c1f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HttpSendRequestEx(HINTERNET hRequest, in INTERNET_BUFFERS lpBuffersIn, [Optional] IntPtr lpBuffersOut, [Optional] uint dwFlags, [Optional] IntPtr dwContext);
+	public static extern bool HttpSendRequestEx(HINTERNET hRequest, in INTERNET_BUFFERS lpBuffersIn, [Optional] IntPtr lpBuffersOut,
+		[Optional] uint dwFlags, [Optional] IntPtr dwContext);
 
 	/// <summary>
 	/// <para>Sends the specified request to the HTTP server.</para>
@@ -5416,7 +5427,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "3362fcd2-e8df-4886-9525-bf60589b2c1f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HttpSendRequestEx(HINTERNET hRequest, [Optional] IntPtr lpBuffersIn, [Optional] IntPtr lpBuffersOut, [Optional] uint dwFlags, [Optional] IntPtr dwContext);
+	public static extern bool HttpSendRequestEx(HINTERNET hRequest, [Optional] IntPtr lpBuffersIn, [Optional] IntPtr lpBuffersOut,
+		[Optional] uint dwFlags, [Optional] IntPtr dwContext);
 
 	/// <summary>Attempts to make a connection to the Internet.</summary>
 	/// <param name="dwReserved">This parameter is reserved and must be 0.</param>
@@ -5973,7 +5985,8 @@ public static partial class WinINet
 	// dwFlags, DWORD_PTR dwContext );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "42b5d733-dccd-4c9d-8820-e358e033077c")]
-	public static extern SafeHINTERNET InternetConnect(HINTERNET hInternet, string lpszServerName, [Optional] INTERNET_PORT nServerPort, [Optional] string? lpszUserName, [Optional] string? lpszPassword, InternetService dwService, [Optional] InternetApiFlags dwFlags, [Optional] IntPtr dwContext);
+	public static extern SafeHINTERNET InternetConnect(HINTERNET hInternet, string lpszServerName, [Optional] INTERNET_PORT nServerPort,
+		[Optional] string? lpszUserName, [Optional] string? lpszPassword, InternetService dwService, [Optional] InternetApiFlags dwFlags, [Optional] IntPtr dwContext);
 
 	/// <summary>Cracks a URL into its component parts.</summary>
 	/// <param name="lpszUrl">Pointer to a string that contains the canonical URL to be cracked.</param>
@@ -6475,7 +6488,7 @@ public static partial class WinINet
 	// HINTERNET hRequest, DWORD dwError, DWORD dwFlags, LPVOID *lppvData );
 	[DllImport(Lib.WinInet, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wininet.h", MSDNShortId = "09384ba9-e5cc-48fd-a52c-15df223f87dc")]
-	public static extern Win32Error InternetErrorDlg(HWND hWnd, HINTERNET hRequest, Win32Error dwError, FLAGS_ERROR_UI dwFlags, in IntPtr lppvData);
+	public static extern Win32Error InternetErrorDlg([Optional] HWND hWnd, HINTERNET hRequest, Win32Error dwError, FLAGS_ERROR_UI dwFlags, in IntPtr lppvData);
 
 	/// <summary>
 	/// <para>Continues a file search started as a result of a previous call to FtpFindFirstFile.</para>
@@ -6855,7 +6868,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "5006f009-e217-4fdc-9e4e-800ff5fcbf03")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InternetGetCookieEx(string lpszUrl, [Optional] string? lpszCookieName, StringBuilder lpszCookieData, ref uint lpdwSize, [Optional] INTERNET_COOKIE dwFlags, IntPtr lpReserved = default);
+	public static extern bool InternetGetCookieEx(string lpszUrl, [Optional] string? lpszCookieName, StringBuilder lpszCookieData,
+		ref uint lpdwSize, [Optional] INTERNET_COOKIE dwFlags, IntPtr lpReserved = default);
 
 	/// <summary>Retrieves the last error description or server response on the thread calling this function.</summary>
 	/// <param name="lpdwError">Pointer to a variable that receives an error message pertaining to the operation that failed.</param>
@@ -7161,7 +7175,8 @@ public static partial class WinINet
 	// dwAccessType, LPCSTR lpszProxy, LPCSTR lpszProxyBypass, DWORD dwFlags );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "9ec087c9-d484-4763-a527-2ea5c1a0cf28")]
-	public static extern SafeHINTERNET InternetOpen([Optional] string? lpszAgent, [Optional] InternetOpenType dwAccessType, [Optional] string? lpszProxy, [Optional] string? lpszProxyBypass, [Optional] InternetApiFlags dwFlags);
+	public static extern SafeHINTERNET InternetOpen([Optional] string? lpszAgent, [Optional] InternetOpenType dwAccessType,
+		[Optional] string? lpszProxy, [Optional] string? lpszProxyBypass, [Optional] InternetApiFlags dwFlags);
 
 	/// <summary>Opens a resource specified by a complete FTP or HTTP URL.</summary>
 	/// <param name="hInternet">
@@ -7337,7 +7352,8 @@ public static partial class WinINet
 	// hInternet, LPCSTR lpszUrl, LPCSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "73f969c3-3fa7-43f5-88c5-ba78e59a8d1c")]
-	public static extern SafeHINTERNET InternetOpenUrl(HINTERNET hInternet, string lpszUrl, string lpszHeaders, uint dwHeadersLength, INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
+	public static extern SafeHINTERNET InternetOpenUrl(HINTERNET hInternet, string lpszUrl, string? lpszHeaders, uint dwHeadersLength,
+		INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
 
 	/// <summary>Queries the server to determine the amount of data available.</summary>
 	/// <param name="hFile">Handle returned by the InternetOpenUrl, FtpOpenFile, GopherOpenFile, or HttpOpenRequest function.</param>
@@ -7437,7 +7453,7 @@ public static partial class WinINet
 	{
 		if (!CorrespondingTypeAttribute.CanGet(option, typeof(T))) throw new ArgumentException($"{option} cannot be used to get values of type {typeof(T)}.");
 		using var hMem = InternetQueryOption(hInternet, option);
-		return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
+		return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1)! : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>()!);
 	}
 
 	/// <summary>Reads data from a handle opened by the InternetOpenUrl, FtpOpenFile, or HttpOpenRequest function.</summary>
@@ -7707,7 +7723,8 @@ public static partial class WinINet
 	// lpszUrl, LPCSTR lpszCookieName, LPCSTR lpszCookieData, DWORD dwFlags, DWORD_PTR dwReserved );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "5044761f-152d-4606-87d2-c56a11db18c4")]
-	public static extern InternetCookieState InternetSetCookieEx(string lpszUrl, [Optional] string? lpszCookieName, string lpszCookieData, INTERNET_COOKIE dwFlags, IntPtr dwReserved = default);
+	public static extern InternetCookieState InternetSetCookieEx(string lpszUrl, [Optional] string? lpszCookieName, string lpszCookieData,
+		INTERNET_COOKIE dwFlags, IntPtr dwReserved = default);
 
 	/// <summary>
 	/// <para>Not supported.</para>
@@ -7728,6 +7745,108 @@ public static partial class WinINet
 	[Obsolete]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool InternetSetDialState(string lpszConnectoid, uint dwState, uint dwReserved);
+
+	/// <summary>
+	/// Sets a file position for InternetReadFile. This is a synchronous call; however, subsequent calls to InternetReadFile might block
+	/// or return pending if the data is not available from the cache and the server does not support random access.
+	/// </summary>
+	/// <param name="hFile">
+	/// Handle returned from a previous call to InternetOpenUrl (on an HTTP or HTTPS URL) or HttpOpenRequest (using the GET or HEAD HTTP
+	/// verb and passed to HttpSendRequest or HttpSendRequestEx). This handle must not have been created with the
+	/// INTERNET_FLAG_DONT_CACHE or INTERNET_FLAG_NO_CACHE_WRITE value set.
+	/// </param>
+	/// <param name="lDistanceToMove">
+	/// The low order 32-bits of a signed 64-bit number of bytes to move the file pointer. <c>Internet Explorer 7 and
+	/// earlier:</c><c>InternetSetFilePointer</c> used to move the pointer only within the bounds of a LONG. When calling this older
+	/// version of the function, lpDistanceToMoveHigh is reserved and should be set to <c>0</c>. A positive value moves the pointer
+	/// forward in the file; a negative value moves it backward.
+	/// </param>
+	/// <param name="lpDistanceToMoveHigh">
+	/// A pointer to the high order 32-bits of the signed 64-bit distance to move. If you do not need the high order 32-bits, this
+	/// pointer must be set to <c>NULL</c>. When not <c>NULL</c>, this parameter also receives the high order DWORD of the new value of
+	/// the file pointer. A positive value moves the pointer forward in the file; a negative value moves it backward. <c>Internet
+	/// Explorer 7 and earlier:</c><c>InternetSetFilePointer</c> used to move the pointer only within the bounds of a LONG. When calling
+	/// this older version of the function, lpDistanceToMoveHigh is reserved and should be set to <c>0</c>.
+	/// </param>
+	/// <param name="dwMoveMethod">
+	/// <para>Starting point for the file pointer move. This parameter can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>FILE_BEGIN</term>
+	/// <term>
+	/// Starting point is zero or the beginning of the file. If FILE_BEGIN is specified, lDistanceToMove is interpreted as an unsigned
+	/// location for the new file pointer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_CURRENT</term>
+	/// <term>Current value of the file pointer is the starting point.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_END</term>
+	/// <term>Current end-of-file position is the starting point. This method fails if the content length is unknown.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwContext">This parameter is reserved and must be 0.</param>
+	/// <returns>
+	/// <para>
+	/// I the function succeeds, it returns the current file position. A return value of <c>INVALID_SET_FILE_POINTER</c> indicates a
+	/// potential failure and needs to be followed by be a call to GetLastError.
+	/// </para>
+	/// <para>
+	/// Since <c>INVALID_SET_FILE_POINTER</c> is a valid value for the low-order DWORD of the new file pointer, the caller must check
+	/// both the return value of the function and the error code returned by GetLastError to determine whether or not an error has
+	/// occurred. If an error has occurred, the return value of InternetSetFilePointer is <c>INVALID_SET_FILE_POINTER</c> and
+	/// <c>GetLastError</c> returns a value other than <c>NO_ERROR</c>.
+	/// </para>
+	/// <para>
+	/// If the function succeeds and lpDistanceToMoveHigh is <c>NULL</c>, the return value is the low-order <c>DWORD</c> of the new file pointer.
+	/// </para>
+	/// <para>
+	/// If the function succeeds and lpDistanceToMoveHigh is not <c>NULL</c>, the return value is the lower-order <c>DWORD</c> of the
+	/// new file pointer and lpDistanceToMoveHigh contains the high order <c>DWORD</c> of the new file pointer.
+	/// </para>
+	/// <para>
+	/// If a new file pointer is a negative value, the function fails, the file pointer is not moved, and the code returned by
+	/// GetLastError is <c>ERROR_NEGATIVE_SEEK</c>.
+	/// </para>
+	/// <para>
+	/// If lpDistanceToMoveHigh is <c>NULL</c> and the new file position does not fit in a 32-bit value the function fails and returns <c>INVALID_SET_FILE_POINTER</c>.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>This function cannot be used once the end of the file has been reached by InternetReadFile.</para>
+	/// <para>
+	/// For HINTERNET handles created by HttpOpenRequest and sent by HttpSendRequestEx, a call to HttpEndRequest must be made on the
+	/// handle before <c>InternetSetFilePointer</c> is used.
+	/// </para>
+	/// <para><c>InternetSetFilePointer</c> cannot be used reliably if the content length is unknown.</para>
+	/// <para>
+	/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
+	/// destructors of global objects.
+	/// </para>
+	/// <para>
+	/// <c>InternetSetFilePointer</c> has changed over time. In Internet Explorer 7 and earlier, it used to move the pointer only within
+	/// the bounds of a LONG. When calling this older version of the function, lDistanceToMove contains the entire value. A positive
+	/// value moves the pointer forward in the file; a negative value moves it backward. lpDistanceToMoveHigh is reserved and is set to
+	/// <c>0</c>. In current versions, lpDistanceToMoveHigh is a significant value and where any negative value would be indicated.
+	/// </para>
+	/// <para>
+	/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+	/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetsetfilepointer void InternetSetFilePointer(
+	// HINTERNET hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod, DWORD_PTR dwContext );
+	[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("wininet.h", MSDNShortId = "0fdd85cb-f6a9-4a08-b72b-10d2075efb59")]
+	public static extern uint InternetSetFilePointer(HINTERNET hFile, int lDistanceToMove, [In, Optional] IntPtr lpDistanceToMoveHigh,
+		SeekOrigin dwMoveMethod, [Optional] IntPtr dwContext);
 
 	/// <summary>
 	/// Sets a file position for InternetReadFile. This is a synchronous call; however, subsequent calls to InternetReadFile might block
@@ -7880,7 +7999,7 @@ public static partial class WinINet
 	{
 		if (!CorrespondingTypeAttribute.CanSet(option, typeof(T))) throw new ArgumentException($"{option} cannot be used to set values of type {typeof(T)}.");
 		using SafeAllocatedMemoryHandle hMem = typeof(T) == typeof(string) ? new SafeCoTaskMemString(value?.ToString(), CharSet.Auto) : (typeof(T) == typeof(bool) ? SafeCoTaskMemHandle.CreateFromStructure(Convert.ToUInt32(value)) : SafeCoTaskMemHandle.CreateFromStructure(value));
-		return InternetSetOption(hInternet, option, hMem, typeof(T) == typeof(string) ? value?.ToString().Length + 1 ?? 0 : (int)hMem.Size);
+		return InternetSetOption(hInternet, option, hMem, typeof(T) == typeof(string) ? value?.ToString()?.Length + 1 ?? 0 : (int)hMem.Size);
 	}
 
 	/// <summary>
@@ -7986,7 +8105,7 @@ public static partial class WinINet
 	// HINTERNET hInternet, INTERNET_STATUS_CALLBACK lpfnInternetCallback );
 	[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wininet.h", MSDNShortId = "fe15627b-c77b-45c0-8ff6-02faa8512b57")]
-	public static extern IntPtr InternetSetStatusCallback(HINTERNET hInternet, InternetStatusCallback lpfnInternetCallback);
+	public static extern IntPtr InternetSetStatusCallback(HINTERNET hInternet, InternetStatusCallback? lpfnInternetCallback);
 
 	/// <summary>Formats a date and time according to the HTTP version 1.0 specification.</summary>
 	/// <param name="pst">Pointer to a SYSTEMTIME structure that contains the date and time to format.</param>
@@ -8428,7 +8547,8 @@ public static partial class WinINet
 	// fRandomRead, DWORD dwReserved );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "0414efb0-d91b-46f0-9fee-0b69ef823029")]
-	public static extern SafeHCACHEENTRYSTREAM RetrieveUrlCacheEntryStream(string lpszUrlName, IntPtr lpCacheEntryInfo, ref uint lpcbCacheEntryInfo, [MarshalAs(UnmanagedType.Bool)] bool fRandomRead, uint dwReserved = 0);
+	public static extern SafeHCACHEENTRYSTREAM RetrieveUrlCacheEntryStream(string lpszUrlName, IntPtr lpCacheEntryInfo, ref uint lpcbCacheEntryInfo,
+		[MarshalAs(UnmanagedType.Bool)] bool fRandomRead, uint dwReserved = 0);
 
 	/// <summary>Adds entries to or removes entries from a cache group.</summary>
 	/// <param name="lpszUrlName">Pointer to a <c>null</c>-terminated string value that specifies the URL of the cached resource.</param>
@@ -8470,7 +8590,8 @@ public static partial class WinINet
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "b39a96ac-c5b5-4b02-88e2-298a037be25f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetUrlCacheEntryGroup(string lpszUrlName, INTERNET_CACHE_GROUP dwFlags, long GroupId, IntPtr pbGroupAttributes = default, uint cbGroupAttributes = 0, IntPtr lpReserved = default);
+	public static extern bool SetUrlCacheEntryGroup(string lpszUrlName, INTERNET_CACHE_GROUP dwFlags, long GroupId, IntPtr pbGroupAttributes = default,
+		uint cbGroupAttributes = 0, IntPtr lpReserved = default);
 
 	/// <summary>Sets the specified members of the INTERNET_CACHE_ENTRY_INFO structure.</summary>
 	/// <param name="lpszUrlName">
@@ -9087,7 +9208,7 @@ public static partial class WinINet
 		public static bool operator ==(HCACHEENTRYSTREAM h1, HCACHEENTRYSTREAM h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCACHEENTRYSTREAM h &&handle == h.handle;
+		public override bool Equals(object? obj) => obj is HCACHEENTRYSTREAM h &&handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -9135,7 +9256,7 @@ public static partial class WinINet
 		public static bool operator ==(HFINDCACHE h1, HFINDCACHE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFINDCACHE h &&handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFINDCACHE h &&handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -9183,7 +9304,7 @@ public static partial class WinINet
 		public static bool operator ==(HINTERNET h1, HINTERNET h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HINTERNET h &&handle == h.handle;
+		public override bool Equals(object? obj) => obj is HINTERNET h &&handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -9308,7 +9429,8 @@ public static partial class WinINet
 		public IntPtr Next;
 
 		/// <summary>Pointer to a string value that contains the headers. This member can be <c>NULL</c>.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpcszHeader;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpcszHeader;
 
 		/// <summary>Size of the headers, in <c>TCHARs</c>, if <c>lpcszHeader</c> is not <c>NULL</c>.</summary>
 		public uint dwHeadersLength;
@@ -9362,7 +9484,8 @@ public static partial class WinINet
 		public uint dwReserved4;
 
 		/// <summary>Reserved.</summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool fPerUser;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool fPerUser;
 
 		/// <summary>Reserved.</summary>
 		public uint dwSyncMode;
@@ -9585,24 +9708,24 @@ public static partial class WinINet
 		/// <summary>
 		/// Pointer to a buffer that contains the header information. The buffer occupies the memory at the end of this structure.
 		/// </summary>
-		public string lpHeaderInfo;
+		public string? lpHeaderInfo;
 
 		/// <summary>
 		/// Pointer to a string that contains the file name extension used to retrieve the data as a file. The string occupies the
 		/// memory area at the end of this structure.
 		/// </summary>
-		public string lpszFileExtension;
+		public string? lpszFileExtension;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the local file name. The string occupies the memory area at the end of
 		/// this structure.
 		/// </summary>
-		public string lpszLocalFileName;
+		public string? lpszLocalFileName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the URL name. The string occupies the memory area at the end of this structure.
 		/// </summary>
-		public string lpszSourceUrlName;
+		public string? lpszSourceUrlName;
 
 		/// <summary>Initializes a new instance of the <see cref="INTERNET_CACHE_ENTRY_INFO_MGD"/> struct from an unmanaged structure.</summary>
 		/// <param name="i">The <see cref="INTERNET_CACHE_ENTRY_INFO"/> instance.</param>
@@ -10059,7 +10182,8 @@ public static partial class WinINet
 		/// <param name="port">The port.</param>
 		/// <param name="userName">Name of the user.</param>
 		/// <param name="password">The password.</param>
-		public URL_COMPONENTS_MGD(string scheme, string host, string path = null, string extra = null, INTERNET_PORT port = INTERNET_PORT.INTERNET_INVALID_PORT_NUMBER, string userName = null, string password = null) : this()
+		public URL_COMPONENTS_MGD(string scheme, string host, string? path = null, string? extra = null, INTERNET_PORT port = INTERNET_PORT.INTERNET_INVALID_PORT_NUMBER,
+			string? userName = null, string? password = null) : this()
 		{
 			lpszScheme = scheme ?? "";
 			lpszHostName = host ?? "";
@@ -10071,22 +10195,22 @@ public static partial class WinINet
 		}
 
 		/// <summary>Pointer to a string that contains the extra information (for example, ?something or #something).</summary>
-		public string lpszExtraInfo { get => extra; set { extra.Set(value); uc.dwExtraInfoLength = (uint)(value?.Length ?? 0); } }
+		public string? lpszExtraInfo { get => extra; set { extra.Set(value); uc.dwExtraInfoLength = (uint)(value?.Length ?? 0); } }
 
 		/// <summary>Pointer to a string that contains the host name.</summary>
-		public string lpszHostName { get => host; set { host.Set(value); uc.dwHostNameLength = (uint)(value?.Length ?? 0); } }
+		public string? lpszHostName { get => host; set { host.Set(value); uc.dwHostNameLength = (uint)(value?.Length ?? 0); } }
 
 		/// <summary>Pointer to a string that contains the password.</summary>
-		public string lpszPassword { get => pwd; set { pwd.Set(value); uc.dwPasswordLength = (uint)(value?.Length ?? 0); } }
+		public string? lpszPassword { get => pwd; set { pwd.Set(value); uc.dwPasswordLength = (uint)(value?.Length ?? 0); } }
 
 		/// <summary>Pointer to a string that contains the scheme name.</summary>
-		public string lpszScheme { get => scheme; set { scheme.Set(value); uc.dwSchemeLength = (uint)(value?.Length ?? 0); } }
+		public string? lpszScheme { get => scheme; set { scheme.Set(value); uc.dwSchemeLength = (uint)(value?.Length ?? 0); } }
 
 		/// <summary>Pointer to a string that contains the URL path.</summary>
-		public string lpszUrlPath { get => url; set { url.Set(value); uc.dwUrlPathLength = (uint)(value?.Length ?? 0); } }
+		public string? lpszUrlPath { get => url; set { url.Set(value); uc.dwUrlPathLength = (uint)(value?.Length ?? 0); } }
 
 		/// <summary>Pointer to a string value that contains the user name.</summary>
-		public string lpszUserName { get => user; set { user.Set(value); uc.dwUserNameLength = (uint)(value?.Length ?? 0); } }
+		public string? lpszUserName { get => user; set { user.Set(value); uc.dwUserNameLength = (uint)(value?.Length ?? 0); } }
 
 		/// <summary>Converted port number.</summary>
 		public INTERNET_PORT nPort { get => uc.nPort; set => uc.nPort = value; }

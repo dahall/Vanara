@@ -482,7 +482,7 @@ public class WinInetTests
 		URLZONE zone = URLZONE.URLZONE_INTERNET;
 		PrivacyType priv = PrivacyType.PRIVACY_TYPE_FIRST_PARTY;
 		PrivacyTemplate iTmpl = 0;
-		string pref = null;
+		string? pref = null;
 
 		var sb = new StringBuilder(1024);
 		foreach (URLZONE e in Enum.GetValues(typeof(URLZONE)).Cast<URLZONE>())
