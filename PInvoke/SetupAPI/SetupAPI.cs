@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the SetupAPI.dll</summary>
@@ -2277,7 +2272,7 @@ public static partial class SetupAPI
 		public HDEVINFO(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDEVINFO"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDEVINFO NULL => new HDEVINFO(IntPtr.Zero);
+		public static HDEVINFO NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2290,7 +2285,7 @@ public static partial class SetupAPI
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDEVINFO"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDEVINFO(IntPtr h) => new HDEVINFO(h);
+		public static implicit operator HDEVINFO(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2305,7 +2300,7 @@ public static partial class SetupAPI
 		public static bool operator ==(HDEVINFO h1, HDEVINFO h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDEVINFO h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDEVINFO h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2325,7 +2320,7 @@ public static partial class SetupAPI
 		public HDSKSPC(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDSKSPC"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDSKSPC NULL => new HDSKSPC(IntPtr.Zero);
+		public static HDSKSPC NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2338,7 +2333,7 @@ public static partial class SetupAPI
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDSKSPC"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDSKSPC(IntPtr h) => new HDSKSPC(h);
+		public static implicit operator HDSKSPC(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2353,7 +2348,7 @@ public static partial class SetupAPI
 		public static bool operator ==(HDSKSPC h1, HDSKSPC h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDSKSPC h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDSKSPC h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2373,7 +2368,7 @@ public static partial class SetupAPI
 		public HINF(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HINF"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HINF NULL => new HINF(IntPtr.Zero);
+		public static HINF NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2386,7 +2381,7 @@ public static partial class SetupAPI
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HINF"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HINF(IntPtr h) => new HINF(h);
+		public static implicit operator HINF(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2401,7 +2396,7 @@ public static partial class SetupAPI
 		public static bool operator ==(HINF h1, HINF h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HINF h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HINF h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2421,7 +2416,7 @@ public static partial class SetupAPI
 		public HSPFILEQ(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HSPFILEQ"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HSPFILEQ NULL => new HSPFILEQ(IntPtr.Zero);
+		public static HSPFILEQ NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2434,7 +2429,7 @@ public static partial class SetupAPI
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSPFILEQ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSPFILEQ(IntPtr h) => new HSPFILEQ(h);
+		public static implicit operator HSPFILEQ(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2449,7 +2444,7 @@ public static partial class SetupAPI
 		public static bool operator ==(HSPFILEQ h1, HSPFILEQ h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HSPFILEQ h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HSPFILEQ h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2502,7 +2497,7 @@ public static partial class SetupAPI
 
 		/// <summary>Optional tag file that can be used to identify the source media.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string Tagfile;
+		public string? Tagfile;
 
 		/// <summary>Human-readable description of the source media.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -2898,7 +2893,7 @@ public static partial class SetupAPI
 		public char DevicePath;
 
 		/// <summary>A default value for this structure with the <see cref="cbSize"/> value set appropriately.</summary>
-		public static readonly SP_DEVICE_INTERFACE_DETAIL_DATA Default = new SP_DEVICE_INTERFACE_DETAIL_DATA { cbSize = IntPtr.Size == 4 ? 4U + (uint)Marshal.SystemDefaultCharSize : 8U };
+		public static readonly SP_DEVICE_INTERFACE_DETAIL_DATA Default = new() { cbSize = IntPtr.Size == 4 ? 4U + (uint)Marshal.SystemDefaultCharSize : 8U };
 	}
 
 	/// <summary>An SP_DEVINFO_DATA structure defines a device instance that is a member of a device information set.</summary>
@@ -3663,11 +3658,11 @@ public static partial class SetupAPI
 
 		/// <summary>Optional pointer to the root of the source for this copy, such as A:.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string SourceRootPath;
+		public string? SourceRootPath;
 
 		/// <summary>Optional pointer to the path relative to <c>SourceRootPath</c> where the file can be found.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string SourcePath;
+		public string? SourcePath;
 
 		/// <summary>File name part of the file to be copied.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -3675,14 +3670,14 @@ public static partial class SetupAPI
 
 		/// <summary>Optional pointer to a description of the source media to be used during disk prompts.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string SourceDescription;
+		public string? SourceDescription;
 
 		/// <summary>
 		/// Optional pointer to a tag file whose presence at <c>SourceRootPath</c> indicates the presence of the source media. If not
 		/// specified, the file itself will be used as the tag file if required.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string SourceTagfile;
+		public string? SourceTagfile;
 
 		/// <summary>Directory where the file is to be copied.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -3692,7 +3687,7 @@ public static partial class SetupAPI
 		/// Optional pointer to the name of the target file. If not specified, the target file will have the same name as the source file.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string TargetFilename;
+		public string? TargetFilename;
 
 		/// <summary>
 		/// <para>Flags that control the behavior of the file copy operation. These flags may be a combination of the following values.</para>
@@ -3801,7 +3796,7 @@ public static partial class SetupAPI
 
 		/// <summary>An optional Security Descriptor String specifying the ACL to apply to the file.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string SecurityDescriptor;
+		public string? SecurityDescriptor;
 	}
 
 	/// <summary>
@@ -4264,14 +4259,14 @@ public static partial class SetupAPI
 		/// troubleshooting information. The path must be fully qualified if the file is not in default system help directory (%SystemRoot%\help).
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
-		public string ChmFile;
+		public string? ChmFile;
 
 		/// <summary>
 		/// Optionally specifies a string buffer that contains the path of a topic in the <c>ChmFile</c>. This parameter identifies the
 		/// page of the <c>ChmFile</c> that Windows should display first.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
-		public string HtmlTroubleShooter;
+		public string? HtmlTroubleShooter;
 	}
 
 	/// <summary>An SP_UNREMOVEDEVICE_PARAMS structure corresponds to a DIF_UNREMOVE installation request.</summary>
@@ -4305,7 +4300,7 @@ public static partial class SetupAPI
 	public class SafeSP_DEVICE_INTERFACE_DETAIL_DATA : SafeMemoryHandle<CoTaskMemoryMethods>
 	{
 		/// <summary>Get an instance that represents the <see langword="null"/> value.</summary>
-		public static readonly SafeSP_DEVICE_INTERFACE_DETAIL_DATA Null = new SafeSP_DEVICE_INTERFACE_DETAIL_DATA();
+		public static readonly SafeSP_DEVICE_INTERFACE_DETAIL_DATA Null = new();
 
 		/// <summary>Initializes a new instance of the <see cref="SafeSP_DEVICE_INTERFACE_DETAIL_DATA"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -4321,6 +4316,6 @@ public static partial class SetupAPI
 		/// <summary>
 		/// A NULL-terminated string that contains the device interface path. This path can be passed to Win32 functions such as CreateFile.
 		/// </summary>
-		public string DevicePath => StringHelper.GetString(handle.Offset(4), CharSet.Auto, Size - 4);
+		public string DevicePath => StringHelper.GetString(handle.Offset(4), CharSet.Auto, Size - 4)!;
 	}
 }

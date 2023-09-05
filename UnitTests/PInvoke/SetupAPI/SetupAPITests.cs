@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Linq;
 using static Vanara.PInvoke.SetupAPI;
 
@@ -9,7 +8,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class SetupAPITests
 {
-	private SafeHDEVINFO hDevInfo;
+	private SafeHDEVINFO? hDevInfo;
 
 	[OneTimeSetUp]
 	public void _Setup() => hDevInfo = SetupDiGetClassDevs(Flags: DIGCF.DIGCF_PRESENT|DIGCF.DIGCF_ALLCLASSES);
@@ -30,7 +29,7 @@ public class SetupAPITests
 	[Test]
 	public void SetupDiEnumDeviceInfoTest()
 	{
-		var ie = SetupDiEnumDeviceInfo(hDevInfo).ToList();
+		var ie = SetupDiEnumDeviceInfo(hDevInfo!).ToList();
 		Assert.That(ie, Is.Not.Empty);
 
 		foreach (SP_DEVINFO_DATA i in ie)
@@ -61,14 +60,14 @@ public class SetupAPITests
 	[Test]
 	public void SetupDiGetDevicePropertyKeysTest()
 	{
-		foreach (var did in SetupDiEnumDeviceInfo(hDevInfo))
+		foreach (var did in SetupDiEnumDeviceInfo(hDevInfo!))
 		{
-			Assert.That(SetupDiGetDevicePropertyKeys(hDevInfo, did, null, 0, out var cnt), ResultIs.FailureCode(Win32Error.ERROR_INSUFFICIENT_BUFFER));
+			Assert.That(SetupDiGetDevicePropertyKeys(hDevInfo!, did, null, 0, out var cnt), ResultIs.FailureCode(Win32Error.ERROR_INSUFFICIENT_BUFFER));
 			var arr = new DEVPROPKEY[cnt];
-			Assert.That(SetupDiGetDevicePropertyKeys(hDevInfo, did, arr, (uint)arr.Length, out _), ResultIs.Successful);
+			Assert.That(SetupDiGetDevicePropertyKeys(hDevInfo!, did, arr, (uint)arr.Length, out _), ResultIs.Successful);
 			foreach (var key in arr)
 			{
-				Assert.That(SetupDiGetDeviceProperty(hDevInfo, did, key, out var value), ResultIs.Successful);
+				Assert.That(SetupDiGetDeviceProperty(hDevInfo!, did, key, out var value), ResultIs.Successful);
 				//var obj = value.GetType().IsArray ? string.Join(", ", ((IEnumerable)value).Cast<object>()) :
 				//	(value is System.Runtime.InteropServices.ComTypes.FILETIME ft ? (object)ft.ToDateTime() : value)
 				//TestContext.WriteLine($"{key.fmtid},{key.pid} = {obj}");

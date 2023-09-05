@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the SetupAPI.dll</summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -660,15 +656,16 @@ public static partial class SetupAPI
 	/// <param name="pType">Type of the value to extract.</param>
 	/// <param name="mem">The memory handle holding the value.</param>
 	/// <returns>An object of the specified type.</returns>
-	public static object GetObject(this DEVPROPTYPE pType, ISafeMemoryHandle mem) => GetObject(pType, mem.DangerousGetHandle(), mem.Size);
+	public static object? GetObject(this DEVPROPTYPE pType, ISafeMemoryHandle mem) => GetObject(pType, mem.DangerousGetHandle(), mem.Size);
 
 	/// <summary>Extracts a value from memory of the type specified.</summary>
 	/// <param name="pType">Type of the value to extract.</param>
 	/// <param name="mem">The pointer to the memory holding the value.</param>
 	/// <param name="memSize">Size of the allocated memory.</param>
 	/// <returns>An object of the specified type.</returns>
-	public static object GetObject(this DEVPROPTYPE pType, IntPtr mem, SizeT memSize)
+	public static object? GetObject(this DEVPROPTYPE pType, IntPtr mem, SizeT memSize)
 	{
+		if (mem == IntPtr.Zero || memSize == 0) return null;
 		switch (pType)
 		{
 			case DEVPROPTYPE.DEVPROP_TYPE_EMPTY:
@@ -707,10 +704,10 @@ public static partial class SetupAPI
 				return mem.ToStructure<BOOLEAN>(memSize).Value;
 
 			case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR:
-				return new System.Security.AccessControl.RawSecurityDescriptor(mem.ToByteArray(memSize, 0, memSize), 0);
+				return new System.Security.AccessControl.RawSecurityDescriptor(mem.ToByteArray(memSize, 0, memSize)!, 0);
 
 			case DEVPROPTYPE.DEVPROP_TYPE_STRING_INDIRECT:
-				return Environment.ExpandEnvironmentVariables(StringHelper.GetString(mem, CharSet.Auto, memSize));
+				return Environment.ExpandEnvironmentVariables(StringHelper.GetString(mem, CharSet.Auto, memSize)!);
 
 			default:
 				if (pType.IsFlagSet(DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY))
@@ -823,7 +820,7 @@ public static partial class SetupAPI
 		/// <returns>
 		/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
 		/// </returns>
-		public override bool Equals(object obj) => obj is DEVPROPKEY pk && Equals(pk);
+		public override bool Equals(object? obj) => obj is DEVPROPKEY pk && Equals(pk);
 
 		/// <summary>Determines whether the specified <see cref="DEVPROPKEY"/>, is equal to this instance.</summary>
 		/// <param name="pk">The property key.</param>
@@ -838,7 +835,7 @@ public static partial class SetupAPI
 
 		/// <summary>Performs a lookup of this <see cref="DEVPROPKEY"/> against defined values in this assembly to find a name.</summary>
 		/// <returns>The name, if found, otherwise <see langword="null"/>.</returns>
-		public string LookupName() => Lookup()?.Name;
+		public string? LookupName() => Lookup()?.Name;
 
 		/// <inheritdoc/>
 		public override string ToString() => LookupName() ?? $"{fmtid}:{pid}";
@@ -857,11 +854,11 @@ public static partial class SetupAPI
 			return true;
 		}
 
-		private System.Reflection.FieldInfo Lookup()
+		private System.Reflection.FieldInfo? Lookup()
 		{
-			var dpkType = GetType();
+			Type dpkType = this.GetType();
 			var lthis = this;
-			return dpkType.DeclaringType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).
+			return dpkType.DeclaringType?.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).
 				Where(fi => fi.FieldType == dpkType && lthis.Equals(fi.GetValue(null))).FirstOrDefault();
 		}
 	}

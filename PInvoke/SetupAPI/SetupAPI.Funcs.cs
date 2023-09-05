@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the SetupAPI.dll</summary>
@@ -125,7 +120,7 @@ public static partial class SetupAPI
 	// Window, HINSTANCE ModuleHandle, PCSTR CommandLine, INT ShowCommand );
 	[DllImport(Lib_SetupAPI, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.InstallHinfSectionA")]
-	public static extern void InstallHinfSection(HWND Window, HINSTANCE ModuleHandle, [MarshalAs(UnmanagedType.LPTStr)] string CommandLine,
+	public static extern void InstallHinfSection([Optional] HWND Window, [Optional] HINSTANCE ModuleHandle, [MarshalAs(UnmanagedType.LPTStr)] string CommandLine,
 		ShowWindowCommand ShowCommand);
 
 	/// <summary>
@@ -391,7 +386,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupBackupErrorA")]
 	public static extern uint SetupBackupError(HWND hwndParent, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DialogTitle,
-		[MarshalAs(UnmanagedType.LPTStr)] string SourceFile, [MarshalAs(UnmanagedType.LPTStr)] string TargetFile, Win32Error Win32ErrorCode, IDF Style);
+		[MarshalAs(UnmanagedType.LPTStr)] string SourceFile, [MarshalAs(UnmanagedType.LPTStr)] string? TargetFile, Win32Error Win32ErrorCode, IDF Style);
 
 	/// <summary>
 	/// <para>
@@ -513,7 +508,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupCommitFileQueueA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupCommitFileQueue([Optional] HWND Owner, HSPFILEQ QueueHandle, PSP_FILE_CALLBACK MsgHandler, IntPtr Context);
+	public static extern bool SetupCommitFileQueue([Optional] HWND Owner, HSPFILEQ QueueHandle, PSP_FILE_CALLBACK? MsgHandler, IntPtr Context);
 
 	/// <summary>
 	/// <para>
@@ -670,7 +665,7 @@ public static partial class SetupAPI
 	public static extern uint SetupCopyError(HWND hwndParent, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DialogTitle,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? DiskName, [MarshalAs(UnmanagedType.LPTStr)] string PathToSource,
 		[MarshalAs(UnmanagedType.LPTStr)] string SourceFile, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? TargetPathFile,
-		Win32Error Win32ErrorCode, IDF Style, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder PathBuffer, uint PathBufferSize, out uint PathRequiredSize);
+		Win32Error Win32ErrorCode, IDF Style, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? PathBuffer, uint PathBufferSize, out uint PathRequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -820,7 +815,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupCopyOEMInf([MarshalAs(UnmanagedType.LPTStr)] string SourceInfFileName,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? OEMSourceMediaLocation, uint OEMSourceMediaType, CopyStyle CopyStyle,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder DestinationInfFileName, uint DestinationInfFileNameSize, out uint RequiredSize,
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? DestinationInfFileName, uint DestinationInfFileNameSize, out uint RequiredSize,
 		[MarshalAs(UnmanagedType.LPTStr)] out StrPtrAuto DestinationInfFileNameComponent);
 
 	/// <summary>
@@ -1221,7 +1216,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupEnumInfSectionsA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupEnumInfSections(HINF InfHandle, uint Index, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buffer, uint Size, out uint SizeNeeded);
+	public static extern bool SetupEnumInfSections(HINF InfHandle, uint Index, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? Buffer, uint Size, out uint SizeNeeded);
 
 	/// <summary>
 	/// <para>
@@ -1542,7 +1537,18 @@ public static partial class SetupAPI
 	/// </para>
 	/// <para>The following is an example of how to obtain the <c>MyFree</c> function from the SetupAPI.dll:</para>
 	/// <para>
-	/// <code>typedef VOID (WINAPI* MYFREEFUNC)(LPVOID lpBuff); MYFREEFUNC MyFree; HMODULE hDll=NULL; hDll = GetModuleHandle("SETUPAPI.DLL"); MyFree = (MYFREEFUNC)GetProcAddress(hDll, "MyFree"); ... other code here to prepare file queue ... PTSTR lpActualSourceFileName; SetupGetFileCompressionInfo(...,&amp;lpActualSourceFileName,...,...,...); ... MyFree(lpActualSourceFileName);</code>
+	/// <code>typedef VOID (WINAPI* MYFREEFUNC)(LPVOID lpBuff);
+	/// MYFREEFUNC MyFree;
+	/// HMODULE hDll=NULL;
+	/// hDll = GetModuleHandle("SETUPAPI.DLL");
+	/// MyFree = (MYFREEFUNC)GetProcAddress(hDll, "MyFree");
+	/// ...
+	/// other code here to prepare file queue
+	/// ...
+	/// PTSTR lpActualSourceFileName;
+	/// SetupGetFileCompressionInfo(...,&amp;lpActualSourceFileName,...,...,...);
+	/// ...
+	/// MyFree(lpActualSourceFileName);</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetfilecompressioninfoa WINSETUPAPI DWORD
@@ -1835,7 +1841,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetInfDriverStoreLocation([MarshalAs(UnmanagedType.LPTStr)] string FileName,
 		[In, Optional] IntPtr AlternatePlatformInfo, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? LocaleName,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -1904,7 +1910,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfFileListA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetInfFileList([Optional, MarshalAs(UnmanagedType.LPTStr)] string? DirectoryPath, INF_STYLE InfStyle,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -2134,7 +2140,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfPublishedNameA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetInfPublishedName([MarshalAs(UnmanagedType.LPTStr)] string DriverStoreLocation,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -2325,7 +2331,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineTextA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetLineText(in INFCONTEXT Context, [In, Optional] HINF InfHandle, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? Section,
-		[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+		[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer,
 		uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
@@ -2409,7 +2415,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineTextA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetLineText([In, Optional] IntPtr Context, [In] HINF InfHandle, [In, MarshalAs(UnmanagedType.LPTStr)] string Section,
-		[In, MarshalAs(UnmanagedType.LPTStr)] string Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+		[In, MarshalAs(UnmanagedType.LPTStr)] string Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer,
 		uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
@@ -2475,7 +2481,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetMultiSzFieldA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupGetMultiSzField(in INFCONTEXT Context, uint FieldIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+	public static extern bool SetupGetMultiSzField(in INFCONTEXT Context, uint FieldIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer,
 		uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
@@ -2572,7 +2578,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileLocationA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetSourceFileLocation(HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? FileName,
-		out uint SourceId, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		out uint SourceId, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -2642,7 +2648,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileLocationA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetSourceFileLocation(HINF InfHandle, [In, Optional] IntPtr InfContext, [MarshalAs(UnmanagedType.LPTStr)] string FileName,
-		out uint SourceId, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		out uint SourceId, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -2826,7 +2832,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceInfoA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetSourceInfo(HINF InfHandle, uint SourceId, SRCINFO InfoDesired,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -2889,7 +2895,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetStringFieldA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupGetStringField(in INFCONTEXT Context, uint FieldIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+	public static extern bool SetupGetStringField(in INFCONTEXT Context, uint FieldIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer,
 		uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
@@ -2955,7 +2961,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetTargetPathA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupGetTargetPath(HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? Section,
-		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -3331,7 +3337,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupInstallFile([In, Optional] HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceFile,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourcePathRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DestinationName,
-		SP_COPY CopyStyle, [Optional] PSP_FILE_CALLBACK CopyMsgHandler, [In, Optional] IntPtr Context);
+		SP_COPY CopyStyle, [Optional] PSP_FILE_CALLBACK? CopyMsgHandler, [In, Optional] IntPtr Context);
 
 	/// <summary>
 	/// <para>
@@ -3493,5 +3499,5 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupInstallFile([In, Optional] HINF InfHandle, [In, Optional] IntPtr InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceFile,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourcePathRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DestinationName,
-		SP_COPY CopyStyle, [Optional] PSP_FILE_CALLBACK CopyMsgHandler, [In, Optional] IntPtr Context);
+		SP_COPY CopyStyle, [Optional] PSP_FILE_CALLBACK? CopyMsgHandler, [In, Optional] IntPtr Context);
 }

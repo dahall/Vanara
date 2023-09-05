@@ -1,11 +1,7 @@
 using Microsoft.Win32.SafeHandles;
-using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -397,7 +393,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassPropertyKeys")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetClassPropertyKeys(in Guid ClassGuid,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[] PropertyKeyArray, uint PropertyKeyCount,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray, uint PropertyKeyCount,
 		out uint RequiredPropertyKeyCount, DICLASSPROP Flags);
 
 	/// <summary>
@@ -532,7 +528,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassPropertyKeysExW")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetClassPropertyKeysEx(in Guid ClassGuid,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[] PropertyKeyArray, uint PropertyKeyCount,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray, uint PropertyKeyCount,
 		out uint RequiredPropertyKeyCount, DICLASSPROP Flags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? MachineName,
 		[In, Optional] IntPtr Reserved);
 
@@ -1065,7 +1061,7 @@ public static partial class SetupAPI
 	// PSP_DEVICE_INTERFACE_DETAIL_DATA_A DeviceInterfaceDetailData, DWORD DeviceInterfaceDetailDataSize, PDWORD RequiredSize,
 	// PSP_DEVINFO_DATA DeviceInfoData );
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDeviceInterfaceDetailA")]
-	public static bool SetupDiGetDeviceInterfaceDetail(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData, out string DeviceInterfacePath, out SP_DEVINFO_DATA DeviceInfoData)
+	public static bool SetupDiGetDeviceInterfaceDetail(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData, out string? DeviceInterfacePath, out SP_DEVINFO_DATA DeviceInfoData)
 	{
 		SetupDiGetDeviceInterfaceDetail(DeviceInfoSet, DeviceInterfaceData, default, 0, out var sz);
 		Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
@@ -1188,6 +1184,41 @@ public static partial class SetupAPI
 	public static extern bool SetupDiGetDeviceInterfaceProperty(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
 		in DEVPROPKEY PropertyKey, out DEVPROPTYPE PropertyType, [Out, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize,
 		out uint RequiredSize, [In, Optional] uint Flags);
+
+	/// <summary>The <c>SetupDiGetDeviceInterfaceProperty</c> function retrieves a device property that is set for a device interface.</summary>
+	/// <param name="DeviceInfoSet">
+	/// A handle to a device information set that contains a device interface for which to retrieve a device interface property.
+	/// </param>
+	/// <param name="DeviceInterfaceData">
+	/// A pointer to an SP_DEVICE_INTERFACE_DATA structure that represents the device interface for which to retrieve a device interface property.
+	/// </param>
+	/// <param name="PropertyKey">
+	/// A pointer to a DEVPROPKEY structure that represents the device interface property key of the device interface property to retrieve.
+	/// </param>
+	/// <returns>The requested device interface property.</returns>
+	/// <remarks>
+	/// <para><c>SetupDiGetDeviceInterfaceProperty</c> is part of the unified device property model.</para>
+	/// <para>
+	/// A caller of <c>SetupDiGetDeviceInterfaceProperty</c> must be a member of the Administrators group to set a device interface property.
+	/// </para>
+	/// <para>To obtain the device property keys that represent the device properties that are set for a device interface, call SetupDiGetDeviceInterfacePropertyKeys.</para>
+	/// <para>To set a device interface property, call SetupDiSetDeviceInterfaceProperty.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetdeviceinterfacepropertyw WINSETUPAPI BOOL
+	// SetupDiGetDeviceInterfacePropertyW( HDEVINFO DeviceInfoSet, PSP_DEVICE_INTERFACE_DATA DeviceInterfaceData, const DEVPROPKEY
+	// *PropertyKey, DEVPROPTYPE *PropertyType, PBYTE PropertyBuffer, DWORD PropertyBufferSize, PDWORD RequiredSize, DWORD Flags );
+	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDeviceInterfacePropertyW")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static object? SetupDiGetDeviceInterfaceProperty(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
+		in DEVPROPKEY PropertyKey)
+	{
+		if (!SetupDiGetDeviceInterfaceProperty(DeviceInfoSet, DeviceInterfaceData, PropertyKey, out _, default, 0, out var sz))
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+		using var mem = new SafeHGlobalHandle(sz);
+		if (!SetupDiGetDeviceInterfaceProperty(DeviceInfoSet, DeviceInterfaceData, PropertyKey, out var propType, mem, mem.Size, out _))
+			Win32Error.ThrowLastError();
+		return SetupDiPropertyToManagedObject(mem, propType);
+	}
 
 	/// <summary>
 	/// The <c>SetupDiGetDeviceInterfacePropertyKeys</c> function retrieves an array of device property keys that represent the device
@@ -1470,7 +1501,7 @@ public static partial class SetupAPI
 	/// <para>To set a device instance property, call SetupDiSetDeviceProperty.</para>
 	/// </remarks>
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDevicePropertyW")]
-	public static bool SetupDiGetDeviceProperty(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, in DEVPROPKEY PropertyKey, out object Value)
+	public static bool SetupDiGetDeviceProperty(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, in DEVPROPKEY PropertyKey, [NotNullWhen(true)] out object? Value)
 	{
 		Value = null;
 		if (!SetupDiGetDeviceProperty(DeviceInfoSet, DeviceInfoData, PropertyKey, out _, default, 0, out var sz) && Win32Error.GetLastError() != Win32Error.ERROR_INSUFFICIENT_BUFFER)
@@ -1478,7 +1509,7 @@ public static partial class SetupAPI
 		using var mem = new SafeCoTaskMemHandle(sz);
 		if (SetupDiGetDeviceProperty(DeviceInfoSet, DeviceInfoData, PropertyKey, out var propType, mem, mem.Size, out _))
 		{
-			Value = SetupDiPropertyToManagedObject(mem, propType);
+			Value = SetupDiPropertyToManagedObject(mem, propType)!;
 			return true;
 		}
 		return false;
@@ -1822,7 +1853,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDriverInfoDetailA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetDriverInfoDetail(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, in SP_DRVINFO_DATA_V2 DriverInfoData,
-		ref SP_DRVINFO_DETAIL_DATA DriverInfoDetailData, uint DriverInfoDetailDataSize, out uint RequiredSize);
+		IntPtr DriverInfoDetailData, uint DriverInfoDetailDataSize, out uint RequiredSize);
 
 	/// <summary>
 	/// The <c>SetupDiGetDriverInfoDetail</c> function retrieves driver information detail for a device information set or a particular
@@ -1875,7 +1906,57 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDriverInfoDetailA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetDriverInfoDetail(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, in SP_DRVINFO_DATA_V2 DriverInfoData,
-		ref SP_DRVINFO_DETAIL_DATA DriverInfoDetailData, uint DriverInfoDetailDataSize, out uint RequiredSize);
+		IntPtr DriverInfoDetailData, uint DriverInfoDetailDataSize, out uint RequiredSize);
+
+	/// <summary>
+	/// The <c>SetupDiGetDriverInfoDetail</c> function retrieves driver information detail for a device information set or a particular
+	/// device information element in the device information set.
+	/// </summary>
+	/// <param name="DeviceInfoSet">
+	/// A handle to a device information set that contains a driver information element for which to retrieve driver information.
+	/// </param>
+	/// <param name="DeviceInfoData">
+	/// A pointer to an SP_DEVINFO_DATA structure that specifies a device information element that represents the device for which to
+	/// retrieve driver information. This parameter is optional and can be <c>NULL</c>. If this parameter is specified,
+	/// <c>SetupDiGetDriverInfoDetail</c> retrieves information about a driver in a driver list for the specified device. If this parameter
+	/// is <c>NULL</c>, <c>SetupDiGetDriverInfoDetail</c> retrieves information about a driver that is a member of the global class driver
+	/// list for DeviceInfoSet.
+	/// </param>
+	/// <param name="DriverInfoData">
+	/// A pointer to an SP_DRVINFO_DATA structure that specifies the driver information element that represents the driver for which to
+	/// retrieve details. If DeviceInfoData is specified, the driver must be a member of the driver list for the device that is specified by
+	/// DeviceInfoData. Otherwise, the driver must be a member of the global class driver list for DeviceInfoSet.
+	/// </param>
+	/// <param name="DriverInfoDetailData">An SP_DRVINFO_DETAIL_DATA structure that receives detailed information about the specified driver.</param>
+	/// <returns>
+	/// The function returns <c>TRUE</c> if it is successful. Otherwise, it returns <c>FALSE</c> and the logged error can be retrieved by
+	/// making a call to GetLastError.
+	/// </returns>
+	/// <remarks>
+	/// If the specified driver information member and the caller-supplied buffer are both valid, this function is guaranteed to fill in all
+	/// static fields in the SP_DRVINFO_DETAIL_DATA structure and as many IDs as possible in the variable-length buffer at the end while
+	/// still maintaining REG_MULTI_SZ format. In this case, the function returns <c>FALSE</c> and a call to GetLastError returns
+	/// ERROR_INSUFFICIENT_BUFFER. If specified, RequiredSize contains the total number of bytes required for the structure with all IDs.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetdriverinfodetaila WINSETUPAPI BOOL
+	// SetupDiGetDriverInfoDetailA( HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, PSP_DRVINFO_DATA_A DriverInfoData,
+	// PSP_DRVINFO_DETAIL_DATA_A DriverInfoDetailData, DWORD DriverInfoDetailDataSize, PDWORD RequiredSize );
+	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDriverInfoDetailA")]
+	public static bool SetupDiGetDriverInfoDetail(HDEVINFO DeviceInfoSet, [In, Optional] SP_DEVINFO_DATA? DeviceInfoData, in SP_DRVINFO_DATA_V2 DriverInfoData,
+		[NotNullWhen(true)] out SP_DRVINFO_DETAIL_DATA? DriverInfoDetailData)
+	{
+		DriverInfoDetailData = null;
+		using SafeCoTaskMemStruct<SP_DEVINFO_DATA> mem = DeviceInfoData;
+		if (!SetupDiGetDriverInfoDetail(DeviceInfoSet, mem, DriverInfoData, IntPtr.Zero, 0, out var sz) && Win32Error.GetLastError() != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			return false;
+		using var mem2 = new SafeCoTaskMemStruct<SP_DRVINFO_DETAIL_DATA>((int)sz);
+		if (SetupDiGetDriverInfoDetail(DeviceInfoSet, mem, DriverInfoData, mem2, sz, out _))
+		{
+			DriverInfoDetailData = mem2.Value;
+			return true;
+		}
+		return false;
+	}
 
 	/// <summary>
 	/// The <c>SetupDiGetDriverInstallParams</c> function retrieves driver installation parameters for a device information set or a
@@ -3099,9 +3180,9 @@ public static partial class SetupAPI
 	/// <param name="propType">The type of the property.</param>
 	/// <param name="convType">The type to which to convert the result if ambiguous.</param>
 	/// <returns>A managed object with the value from the memory.</returns>
-	public static object SetupDiPropertyToManagedObject(ISafeMemoryHandle mem, DEVPROPTYPE propType, Type convType = null)
+	public static object? SetupDiPropertyToManagedObject(ISafeMemoryHandle mem, DEVPROPTYPE propType, Type? convType = null)
 	{
-		object Value = null;
+		object? Value = null;
 		switch (propType)
 		{
 			case DEVPROPTYPE.DEVPROP_TYPE_EMPTY:
@@ -3293,7 +3374,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiRegisterDeviceInfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiRegisterDeviceInfo(HDEVINFO DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, SPRDI Flags,
-		[In, Optional] PSP_DETSIG_CMPPROC CompareProc, [In, Optional] IntPtr CompareContext, ref SP_DEVINFO_DATA DupDeviceInfoData);
+		[In, Optional] PSP_DETSIG_CMPPROC? CompareProc, [In, Optional] IntPtr CompareContext, ref SP_DEVINFO_DATA DupDeviceInfoData);
 
 	/// <summary>The <c>SetupDiRegisterDeviceInfo</c> function is the default handler for the DIF_REGISTERDEVICE request.</summary>
 	/// <param name="DeviceInfoSet">
@@ -3407,7 +3488,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiRegisterDeviceInfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiRegisterDeviceInfo(HDEVINFO DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, SPRDI Flags,
-		[In, Optional] PSP_DETSIG_CMPPROC CompareProc, [In, Optional] IntPtr CompareContext, [In, Optional] IntPtr DupDeviceInfoData);
+		[In, Optional] PSP_DETSIG_CMPPROC? CompareProc, [In, Optional] IntPtr CompareContext, [In, Optional] IntPtr DupDeviceInfoData);
 
 	/// <summary>The <c>SetupDiRemoveDevice</c> function is the default handler for the DIF_REMOVE installation request.</summary>
 	/// <param name="DeviceInfoSet">

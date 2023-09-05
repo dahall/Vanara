@@ -1,5 +1,3 @@
-using System;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the SetupAPI.dll</summary>

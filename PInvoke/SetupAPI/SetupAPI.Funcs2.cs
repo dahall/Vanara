@@ -1,8 +1,4 @@
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
 
 namespace Vanara.PInvoke;
 
@@ -392,7 +388,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupInstallFileEx([In, Optional] HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceFile,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourcePathRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DestinationName, SP_COPY CopyStyle,
-		[Optional] PSP_FILE_CALLBACK CopyMsgHandler, [In, Optional] IntPtr Context, [MarshalAs(UnmanagedType.Bool)] out bool FileWasInUse);
+		[Optional] PSP_FILE_CALLBACK? CopyMsgHandler, [In, Optional] IntPtr Context, [MarshalAs(UnmanagedType.Bool)] out bool FileWasInUse);
 
 	/// <summary>
 	/// <para>
@@ -575,7 +571,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupInstallFileEx([In, Optional] HINF InfHandle, [In, Optional] IntPtr InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceFile,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourcePathRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DestinationName, SP_COPY CopyStyle,
-		[Optional] PSP_FILE_CALLBACK CopyMsgHandler, [In, Optional] IntPtr Context, [MarshalAs(UnmanagedType.Bool)] out bool FileWasInUse);
+		[Optional] PSP_FILE_CALLBACK? CopyMsgHandler, [In, Optional] IntPtr Context, [MarshalAs(UnmanagedType.Bool)] out bool FileWasInUse);
 
 	/// <summary>
 	/// <para>
@@ -716,7 +712,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInstallFilesFromInfSectionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupInstallFilesFromInfSection(HINF InfHandle, [In, Optional] HINF LayoutInfHandle, HSPFILEQ FileQueue,
-		[MarshalAs(UnmanagedType.LPTStr)] string SectionName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceRootPath, SP_COPY CopyFlags);
+		[MarshalAs(UnmanagedType.LPTStr)] string SectionName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceRootPath, [Optional] SP_COPY CopyFlags);
 
 	/// <summary>
 	/// <para>
@@ -920,8 +916,8 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInstallFromInfSectionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupInstallFromInfSection([In, Optional] HWND Owner, HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string SectionName,
-		SPINST Flags, [In, Optional] HKEY RelativeKeyRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceRootPath, SP_COPY CopyFlags,
-		[In, Optional] PSP_FILE_CALLBACK MsgHandler, [In, Optional] IntPtr Context, [In, Optional] HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData);
+		SPINST Flags, [In, Optional] HKEY RelativeKeyRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceRootPath, [Optional] SP_COPY CopyFlags,
+		[In, Optional] PSP_FILE_CALLBACK? MsgHandler, [In, Optional] IntPtr Context, [In, Optional] HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData);
 
 	/// <summary>
 	/// <para>
@@ -1125,8 +1121,8 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInstallFromInfSectionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupInstallFromInfSection([In, Optional] HWND Owner, HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string SectionName,
-		SPINST Flags, [In, Optional] HKEY RelativeKeyRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceRootPath, SP_COPY CopyFlags,
-		[In, Optional] PSP_FILE_CALLBACK MsgHandler, [In, Optional] IntPtr Context, [In, Optional] HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData);
+		SPINST Flags, [In, Optional] HKEY RelativeKeyRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SourceRootPath, [Optional] SP_COPY CopyFlags,
+		[In, Optional] PSP_FILE_CALLBACK? MsgHandler, [In, Optional] IntPtr Context, [In, Optional] HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData);
 
 	/// <summary>
 	/// <para>
@@ -1630,7 +1626,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupLogFileA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupLogFile(HSPFILELOG FileLogHandle, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? LogSectionName,
-		[MarshalAs(UnmanagedType.LPTStr)] string SourceFilename, [MarshalAs(UnmanagedType.LPTStr)] string TargetFilename, uint Checksum,
+		[MarshalAs(UnmanagedType.LPTStr)] string SourceFilename, [MarshalAs(UnmanagedType.LPTStr)] string TargetFilename, [Optional] uint Checksum,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? DiskTagfile, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DiskDescription,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? OtherInfo, SPLOGFILE Flags);
 
@@ -1914,7 +1910,7 @@ public static partial class SetupAPI
 	public static extern uint SetupPromptForDisk(HWND hwndParent, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DialogTitle,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? DiskName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? PathToSource,
 		[MarshalAs(UnmanagedType.LPTStr)] string FileSought, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? TagFile, IDF DiskPromptStyle,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder PathBuffer, uint PathBufferSize, out uint PathRequiredSize);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? PathBuffer, uint PathBufferSize, out uint PathRequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -1999,7 +1995,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryDrivesInDiskSpaceListA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupQueryDrivesInDiskSpaceList(HDSKSPC DiskSpace, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+	public static extern bool SetupQueryDrivesInDiskSpaceList(HDSKSPC DiskSpace, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer,
 		uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
@@ -2098,7 +2094,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryFileLogA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupQueryFileLog(HSPFILELOG FileLogHandle, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? LogSectionName,
-		[MarshalAs(UnmanagedType.LPTStr)] string TargetFilename, SetupFileLogInfo DesiredInfo, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder DataOut,
+		[MarshalAs(UnmanagedType.LPTStr)] string TargetFilename, SetupFileLogInfo DesiredInfo, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? DataOut,
 		uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
@@ -2158,7 +2154,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryInfFileInformationA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupQueryInfFileInformation(in SP_INF_INFORMATION InfInformation, uint InfIndex,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
 	/// <para>
@@ -2347,7 +2343,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryInfVersionInformationA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupQueryInfVersionInformation(in SP_INF_INFORMATION InfInformation, uint InfIndex,
-		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? ReturnBuffer,
 		uint ReturnBufferSize, out uint RequiredSize);
 
 	/// <summary>
@@ -2444,7 +2440,7 @@ public static partial class SetupAPI
 			return false;
 		try
 		{
-			List = list.ToStringEnum((int)count).ToArray();
+			List = list.ToStringEnum((int)count).WhereNotNull().ToArray();
 			return true;
 		}
 		finally
@@ -3627,7 +3623,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupScanFileQueueA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupScanFileQueue(HSPFILEQ FileQueue, SPQ_SCAN Flags, [In, Optional] HWND Window,
-		[In, Optional] PSP_FILE_CALLBACK CallbackRoutine, [In, Optional] IntPtr CallbackContext, out uint Result);
+		[In, Optional] PSP_FILE_CALLBACK? CallbackRoutine, [In, Optional] IntPtr CallbackContext, out uint Result);
 
 	/// <summary>
 	/// <para>
@@ -4498,7 +4494,7 @@ public static partial class SetupAPI
 		public HSPFILELOG(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HSPFILELOG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HSPFILELOG NULL => new HSPFILELOG(IntPtr.Zero);
+		public static HSPFILELOG NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -4511,7 +4507,7 @@ public static partial class SetupAPI
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSPFILELOG"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSPFILELOG(IntPtr h) => new HSPFILELOG(h);
+		public static implicit operator HSPFILELOG(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -4526,7 +4522,7 @@ public static partial class SetupAPI
 		public static bool operator ==(HSPFILELOG h1, HSPFILELOG h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HSPFILELOG h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HSPFILELOG h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -1,9 +1,5 @@
 using Microsoft.Win32.SafeHandles;
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -371,7 +367,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiBuildDriverInfoList")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupDiBuildDriverInfoList(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, SPDIT DriverType);
+	public static extern bool SetupDiBuildDriverInfoList(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, SPDIT DriverType = SPDIT.SPDIT_CLASSDRIVER);
 
 	/// <summary>
 	/// The <c>SetupDiCallClassInstaller</c> function calls the appropriate class installer, and any registered co-installers, with the
@@ -722,7 +718,7 @@ public static partial class SetupAPI
 	/// <remarks>Call <c>SetupDiClassNameFromGuidEx</c> to retrieve the name for a class on a remote computer.</remarks>
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiClassNameFromGuidA")]
 	public static bool SetupDiClassNameFromGuid(Guid ClassGuid, out string ClassName) =>
-		FunctionHelper.CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => SetupDiClassNameFromGuid(ClassGuid, sb, sz, out sz), out ClassName);
+		FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => SetupDiClassNameFromGuid(ClassGuid, sb!, sz, out sz), out ClassName!);
 
 	/// <summary>
 	/// The <c>SetupDiClassNameFromGuidEx</c> function retrieves the class name associated with a class GUID. The class can be installed
@@ -1531,7 +1527,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiDestroyDriverInfoList")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupDiDestroyDriverInfoList(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, SPDIT DriverType);
+	public static extern bool SetupDiDestroyDriverInfoList(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, SPDIT DriverType = SPDIT.SPDIT_CLASSDRIVER);
 
 	/// <summary>The <c>SetupDiDrawMiniIcon</c> function draws the specified mini-icon at the location requested.</summary>
 	/// <param name="hdc">The handle to the device context in which the mini-icon will be drawn.</param>
@@ -1827,7 +1823,7 @@ public static partial class SetupAPI
 	public static IEnumerable<SP_DEVICE_INTERFACE_DATA> SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, Guid InterfaceClassGuid,
 		SP_DEVINFO_DATA? DeviceInfoData = null)
 	{
-		using var dvidata = DeviceInfoData.HasValue ? new SafeCoTaskMemStruct<SP_DEVINFO_DATA>(DeviceInfoData.Value) : SafeCoTaskMemStruct<SP_DEVINFO_DATA>.Null;
+		using SafeCoTaskMemStruct<SP_DEVINFO_DATA> dvidata = DeviceInfoData;
 		var data = new SP_DEVICE_INTERFACE_DATA { cbSize = (uint)Marshal.SizeOf(typeof(SP_DEVICE_INTERFACE_DATA)) };
 		for (uint i = 0; true; i++)
 		{
@@ -1997,7 +1993,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualModelsSectionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetActualModelsSection(in INFCONTEXT Context, [In, Optional] IntPtr AlternatePlatformInfo,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder InfSectionWithExt, uint InfSectionWithExtSize,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? InfSectionWithExt, uint InfSectionWithExtSize,
 		out uint RequiredSize, IntPtr Reserved = default);
 
 	/// <summary>
@@ -2085,7 +2081,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualSectionToInstallA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetActualSectionToInstall(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string InfSectionName,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder InfSectionWithExt, uint InfSectionWithExtSize,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? InfSectionWithExt, [Optional] uint InfSectionWithExtSize,
 		out uint RequiredSize, out StrPtrAuto Extension);
 
 	/// <summary>
@@ -2190,7 +2186,112 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualSectionToInstallExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetActualSectionToInstallEx(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string InfSectionName,
-		[In, Optional] IntPtr AlternatePlatformInfo, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder InfSectionWithExt,
+		[In, Optional] IntPtr AlternatePlatformInfo, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? InfSectionWithExt,
+		uint InfSectionWithExtSize, out uint RequiredSize, out StrPtrAuto Extension, IntPtr Reserved = default);
+
+	/// <summary>
+	/// The <c>SetupDiGetActualSectionToInstallEx</c> function retrieves the name of the INF DDInstall section that installs a device
+	/// for a specified operating system and processor architecture.
+	/// </summary>
+	/// <param name="InfHandle">A handle to the INF file that contains the DDInstall section.</param>
+	/// <param name="InfSectionName">
+	/// A pointer to the DDInstall section name (as specified in an INF Models section). The maximum length of the section name, in
+	/// characters, is 254.
+	/// </param>
+	/// <param name="AlternatePlatformInfo">
+	/// <para>
+	/// A pointer, if non- <c>NULL</c>, to an SP_ALTPLATFORM_INFO structure. This structure is used to specify an operating system and
+	/// processor architecture that is different from that on the local computer. To return the DDInstall section name for the local
+	/// computer, set this parameter to <c>NULL</c>. Otherwise, provide an SP_ALTPLATFORM structure and set its members as follows:
+	/// </para>
+	/// <para>cbSize</para>
+	/// <para>Set to the size, in bytes, of an SP_ALTPLATFORM_INFO structure.</para>
+	/// <para>Platform</para>
+	/// <para>Set to VER_PLATFORM_WIN32_NT for Windows XP and later versions of Windows.</para>
+	/// <para>MajorVersion</para>
+	/// <para>Not used.</para>
+	/// <para>MinorVersion</para>
+	/// <para>Not Used.</para>
+	/// <para>ProcessorArchitecture</para>
+	/// <para>Set one of the following processor architecture constants.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Processor Architecture Constant</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PROCESSOR_ARCHITECTURE_INTEL</term>
+	/// <term>The alternative platform is an x86-based processor architecture.</term>
+	/// </item>
+	/// <item>
+	/// <term>PROCESSOR_ARCHITECTURE_IA64</term>
+	/// <term>The alternative platform is an Itanium-based processor architecture.</term>
+	/// </item>
+	/// <item>
+	/// <term>PROCESSOR_ARCHITECTURE_AMD64</term>
+	/// <term>The alternative platform is an x64-based processor architecture.</term>
+	/// </item>
+	/// </list>
+	/// <para>Reserved</para>
+	/// <para>Set to zero.</para>
+	/// </param>
+	/// <param name="InfSectionWithExt">
+	/// A pointer to a character buffer to receive the DDInstall section name, its platform extension, and a NULL terminator. This is
+	/// the decorated section name that should be used for installation. If this parameter is <c>NULL</c>, the function returns
+	/// <c>TRUE</c> and sets RequiredSize to the size, in characters, that is required to return the DDInstall section name, its
+	/// platform extension, and a terminating NULL character.
+	/// </param>
+	/// <param name="InfSectionWithExtSize">
+	/// The size, in characters, of the buffer that is pointed to by the InfSectionWithExt parameter. The maximum length of a
+	/// NULL-terminated INF section name, in characters, is MAX_INF_SECTION_NAME_LENGTH.
+	/// </param>
+	/// <param name="RequiredSize">
+	/// A pointer to the variable that receives the size, in characters, that is required to return the DDInstall section name, the
+	/// platform extension, and a terminating NULL character.
+	/// </param>
+	/// <param name="Extension">
+	/// A pointer to a variable that receives a pointer to the '.' character that marks the start of the extension in the
+	/// InfSectionWithExt buffer. If the InfSectionWithExt buffer is not supplied or is too small, this parameter is not set. Set this
+	/// parameter to <c>NULL</c> if a pointer to the extension is not required.
+	/// </param>
+	/// <param name="Reserved">Reserved for internal use only. Must be set to <c>NULL</c>.</param>
+	/// <returns>
+	/// If the function is successful, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>. To get extended error information,
+	/// call GetLastError.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// <c>SetupDiGetActualSectionToInstallEx</c> is an extended form of SetupDiGetActualSectionToInstall. These functions support the
+	/// extensions to DDInstall section names that are used to specify OS-specific and architecture-specific installation actions for a
+	/// device. For information about these extensions, see Creating INF Files for Multiple Platforms and Operating Systems.
+	/// </para>
+	/// <para>
+	/// If you do not supply alternative platform information with a call to <c>SetupDiGetActualSectionToInstallEx</c>, the function
+	/// performs the same operation as <c>SetupDiGetActualSectionToInstall</c>. The latter function searches for the specified install
+	/// section name using the platform information for the local computer.
+	/// </para>
+	/// <para>
+	/// If you supply alternative platform information with a call to <c>SetupDiGetActualSectionToInstallEx</c>, the function does the following:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// If you specify a platform of VER_PLATFORM_WIN32_NT, the function first searches in the specified INF file for a decorated
+	/// install section name that matches the name, operating system, and processor architecture that you specify. If, for example, you
+	/// specify an install section name of <c>InstallSec</c>, the function searches for one of the following decorated names, depending
+	/// on the specified processor architecture:
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetactualsectiontoinstallexa WINSETUPAPI BOOL
+	// SetupDiGetActualSectionToInstallExA( HINF InfHandle, PCSTR InfSectionName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, PSTR
+	// InfSectionWithExt, DWORD InfSectionWithExtSize, PDWORD RequiredSize, PSTR *Extension, PVOID Reserved );
+	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualSectionToInstallExA")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool SetupDiGetActualSectionToInstallEx(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string InfSectionName,
+		in SP_ALTPLATFORM_INFO AlternatePlatformInfo, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? InfSectionWithExt,
 		uint InfSectionWithExtSize, out uint RequiredSize, out StrPtrAuto Extension, IntPtr Reserved = default);
 
 	/// <summary>The <c>SetupDiGetClassBitmapIndex</c> function retrieves the index of the mini-icon supplied for the specified class.</summary>
@@ -2418,63 +2519,164 @@ public static partial class SetupAPI
 		[In] IntPtr PropertySheetHeader, uint PropertySheetHeaderPageListSize, out uint RequiredSize, DIGCDP_FLAG PropertySheetType);
 
 	/// <summary>
+	/// The <c>SetupDiGetClassDevPropertySheets</c> function retrieves handles to the property sheets of a device information element or
+	/// of the device setup class of a device information set.
+	/// </summary>
+	/// <param name="DeviceInfoSet">
+	/// A handle to the device information set for which to return property sheet handles. If DeviceInfoData does not specify a device
+	/// information element in the device information set, the device information set must have an associated device setup class.
+	/// </param>
+	/// <param name="DeviceInfoData">
+	/// <para>A pointer to an SP_DEVINFO_DATA structure that specifies a device information element in DeviceInfoSet.</para>
+	/// <para>
+	/// This parameter is optional and can be <c>NULL</c>. If this parameter is specified, <c>SetupDiGetClassDevPropertySheets</c>
+	/// retrieves the property sheets handles that are associated with the specified device. If this parameter is <c>NULL</c>,
+	/// <c>SetupDiGetClassDevPropertySheets</c> retrieves the property sheets handles that are associated with the device setup class
+	/// specified in DeviceInfoSet.
+	/// </para>
+	/// </param>
+	/// <param name="PropertySheetHeader">
+	/// <para>
+	/// A pointer to a PROPERTYSHEETHEADER structure. See the <c>Remarks</c> section for information about the caller-supplied array of
+	/// property sheet handles that is associated with this structure.
+	/// </para>
+	/// <para>For more documentation on this structure and property sheets in general, see the Microsoft Windows SDK.</para>
+	/// </param>
+	/// <param name="PropertySheetHeaderPageListSize">
+	/// The maximum number of handles that the caller-supplied array of property sheet handles can hold.
+	/// </param>
+	/// <param name="RequiredSize">
+	/// A pointer to a variable of type DWORD that receives the number of property sheets that are associated with the specified device
+	/// information element or the device setup class of the specified device information set. The pointer is optional and can be <c>NULL</c>.
+	/// </param>
+	/// <param name="PropertySheetType">
+	/// <para>A flag that indicates one of the following types of property sheets.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Property sheet type</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>DIGCDP_FLAG_ADVANCED</term>
+	/// <term>Advanced property sheets.</term>
+	/// </item>
+	/// <item>
+	/// <term>DIGCDP_FLAG_BASIC</term>
+	/// <term>
+	/// Basic property sheets. Supported only in Microsoft Windows 95 and Windows 98. Do not use in Windows 2000 and later versions of Windows.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>DIGCDP_FLAG_REMOTE_ADVANCED</term>
+	/// <term>Advanced property sheets on a remote computer.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// The function returns <c>TRUE</c> if successful. Otherwise, the function returns <c>FALSE</c>. Call GetLastError to obtain the
+	/// error code.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// A PROPERTYSHEETHEADER structure contains two members that are associated with a caller-supplied array that the function uses to
+	/// return the handles of property sheets. The <c>phpages</c> member is a pointer to a caller-supplied array of property sheet
+	/// handles, and the input value of the <c>nPages</c> member specifies the number of handles that are already contained in the
+	/// handle array. The function adds property sheet handles to the handle array beginning with the array element whose array index is
+	/// the input value of <c>nPages</c>. The function adds handles to the array in consecutive order until either the array is full or
+	/// the handles of all the requested property sheet pages have been added to the array. The maximum number of property sheet handles
+	/// that the function can return is equal to (PropertySheetHeaderPageListSize - (input value of <c>nPages</c>)).
+	/// </para>
+	/// <para>If the handle array is large enough to hold the handles of all the requested property sheet pages, the function:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>Adds the handles to the handle array.</term>
+	/// </item>
+	/// <item>
+	/// <term>Sets <c>nPages</c> to the total number of handles in the array.</term>
+	/// </item>
+	/// <item>
+	/// <term>Sets RequiredSize to the number of handles that it returns.</term>
+	/// </item>
+	/// <item>
+	/// <term>Returns <c>TRUE</c>.</term>
+	/// </item>
+	/// </list>
+	/// <para>If the handle array is not large enough to hold the handles of all the specified property sheet pages, the function:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>Adds as many handles as the array can hold.</term>
+	/// </item>
+	/// <item>
+	/// <term>Sets <c>nPages</c> to PropertySheetHeaderPageListSize.</term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Sets RequiredSize to the total number of requested property sheet pages. The number of handles that are not returned by the
+	/// function is equal to (RequiredSize - PropertySheetHeaderPageListSize - (input value of <c>nPages</c>)).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>Sets the error code to ERROR_INSUFFICIENT_BUFFER.</term>
+	/// </item>
+	/// <item>
+	/// <term>Returns <c>FALSE</c>.</term>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetclassdevpropertysheetsa WINSETUPAPI BOOL
+	// SetupDiGetClassDevPropertySheetsA( HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, LPPROPSHEETHEADERA
+	// PropertySheetHeader, DWORD PropertySheetHeaderPageListSize, PDWORD RequiredSize, DWORD PropertySheetType );
+	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassDevPropertySheetsA")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool SetupDiGetClassDevPropertySheets(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData,
+		[In] IntPtr PropertySheetHeader, uint PropertySheetHeaderPageListSize, out uint RequiredSize, DIGCDP_FLAG PropertySheetType);
+
+	/// <summary>
 	/// The <c>SetupDiGetClassDevs</c> function returns a handle to a device information set that contains requested device information
 	/// elements for a local computer.
 	/// </summary>
 	/// <param name="ClassGuid">
-	/// A pointer to the GUID for a device setup class or a device interface class. This pointer is optional and can be <c>NULL</c>. For
-	/// more information about how to set ClassGuid, see the following <c>Remarks</c> section.
+	/// A pointer to the GUID for a device setup class or a device interface class. This pointer is optional and can be <c>NULL</c>. For more
+	/// information about how to set ClassGuid, see the following <c>Remarks</c> section.
 	/// </param>
 	/// <param name="Enumerator">
-	/// <para>A pointer to a NULL-terminated string that specifies:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>
-	/// An identifier (ID) of a Plug and Play (PnP) enumerator. This ID can either be the value's globally unique identifier (GUID) or
-	/// symbolic name. For example, "PCI" can be used to specify the PCI PnP value. Other examples of symbolic names for PnP values
-	/// include "USB," "PCMCIA," and "SCSI".
-	/// </term>
+	///   <para>A pointer to a NULL-terminated string that specifies:</para>
+	///   <list type="bullet">
+	///     <item>
+	/// An identifier (ID) of a Plug and Play (PnP) enumerator. This ID can either be the value's globally unique
+	/// identifier (GUID) or symbolic name. For example, "PCI" can be used to specify the PCI PnP value. Other examples of symbolic names for
+	/// PnP values include "USB," "PCMCIA," and "SCSI".
 	/// </item>
-	/// <item>
-	/// <term>A PnP device instance ID. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter.</term>
-	/// </item>
-	/// </list>
-	/// <para>This pointer is optional and can be</para>
-	/// <para>NULL</para>
-	/// <para>. If an</para>
-	/// <para>enumeration</para>
-	/// <para>value is not used to select devices, set</para>
-	/// <para>Enumerator</para>
-	/// <para>to</para>
-	/// <para>NULL</para>
-	/// <para>For more information about how to set the Enumerator value, see the following <c>Remarks</c> section.</para>
+	///     <item>A PnP device instance ID. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter.</item>
+	///   </list>
+	///   <para>
+	/// This pointer is optional and can be NULL. If an enumeration value is not used to select devices, set Enumerator to NULL. For more
+	/// information about how to set the Enumerator value, see the following <c>Remarks</c> section.
+	/// </para>
 	/// </param>
 	/// <param name="hwndParent">
-	/// A handle to the top-level window to be used for a user interface that is associated with installing a device instance in the
-	/// device information set. This handle is optional and can be <c>NULL</c>.
+	/// A handle to the top-level window to be used for a user interface that is associated with installing a device instance in the device
+	/// information set. This handle is optional and can be <c>NULL</c>.
 	/// </param>
 	/// <param name="Flags">
-	/// <para>
+	///   <para>
 	/// A variable of type DWORD that specifies control options that filter the device information elements that are added to the device
 	/// information set. This parameter can be a bitwise OR of zero or more of the following flags. For more information about combining
 	/// these flags, see the following <c>Remarks</c> section.
 	/// </para>
-	/// <para>DIGCF_ALLCLASSES</para>
-	/// <para>Return a list of installed devices for all device setup classes or all device interface classes.</para>
-	/// <para>DIGCF_DEVICEINTERFACE</para>
-	/// <para>
-	/// Return devices that support device interfaces for the specified device interface classes. This flag must be set in the Flags
-	/// parameter if the Enumerator parameter specifies a device instance ID.
-	/// </para>
-	/// <para>DIGCF_DEFAULT</para>
-	/// <para>
-	/// Return only the device that is associated with the system default device interface, if one is set, for the specified device
-	/// interface classes.
-	/// </para>
-	/// <para>DIGCF_PRESENT</para>
-	/// <para>Return only devices that are currently present in a system.</para>
-	/// <para>DIGCF_PROFILE</para>
-	/// <para>Return only devices that are a part of the current hardware profile.</para>
+	///   <list type="bullet">
+	///     <item>DIGCF_ALLCLASSES</item>
+	///     <item>Return a list of installed devices for all device setup classes or all device interface classes.</item>
+	///     <item>DIGCF_DEVICEINTERFACE</item>
+	///     <item>Return devices that support device interfaces for the specified device interface classes. This flag must be set in the Flags parameter if the Enumerator parameter specifies a device instance ID. </item>
+	///     <item>DIGCF_DEFAULT</item>
+	///     <item>Return only the device that is associated with the system default device interface, if one is set, for the specified device interface classes. </item>
+	///     <item>DIGCF_PRESENT</item>
+	///     <item>Return only devices that are currently present in a system.</item>
+	///     <item>DIGCF_PROFILE</item>
+	///     <item>Return only devices that are a part of the current hardware profile.</item>
+	///   </list>
 	/// </param>
 	/// <returns>
 	/// If the operation succeeds, <c>SetupDiGetClassDevs</c> returns a handle to a device information set that contains all installed
@@ -2482,137 +2684,172 @@ public static partial class SetupAPI
 	/// error information, call GetLastError.
 	/// </returns>
 	/// <remarks>
-	/// <para>
+	///   <para>
 	/// The caller of <c>SetupDiGetClassDevs</c> must delete the returned device information set when it is no longer needed by calling SetupDiDestroyDeviceInfoList.
 	/// </para>
-	/// <para>Call SetupDiGetClassDevsEx to retrieve the devices for a class on a remote computer.</para>
-	/// <para>Device Setup Class Control Options</para>
-	/// <para>
-	/// Use the following filtering options to control whether <c>SetupDiGetClassDevs</c> returns devices for all device setup classes
-	/// or only for a specified device setup class:
+	///   <para>Call SetupDiGetClassDevsEx to retrieve the devices for a class on a remote computer.</para>
+	///   <para>Device Setup Class Control Options</para>
+	///   <para>
+	/// Use the following filtering options to control whether <c>SetupDiGetClassDevs</c> returns devices for all device setup classes or
+	/// only for a specified device setup class:
 	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>To return devices for all device setup classes, set the DIGCF_ALLCLASSES flag, and set the ClassGuid parameter to <c>NULL</c>.</term>
+	///   <list type="bullet">
+	///     <item>To return devices for all device setup classes, set the DIGCF_ALLCLASSES flag, and set the ClassGuid parameter to <c>NULL</c>.</item>
+	///     <item>
+	/// To return devices only for a specific device setup class, do not set DIGCF_ALLCLASSES, and use ClassGuid to supply the GUID of the
+	/// device setup class.
 	/// </item>
-	/// <item>
-	/// <term>
-	/// To return devices only for a specific device setup class, do not set DIGCF_ALLCLASSES, and use ClassGuid to supply the GUID of
-	/// the device setup class.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>
+	///   </list>
+	///   <para>
 	/// In addition, you can use the following filtering options in combination with one another to further restrict which devices are returned:
 	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</term>
-	/// </item>
-	/// <item>
-	/// <term>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</term>
-	/// </item>
-	/// <item>
-	/// <term>
+	///   <list type="bullet">
+	///     <item>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</item>
+	///     <item>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</item>
+	///     <item>
 	/// To return devices only for a specific PnP enumerator, use the Enumerator parameter to supply the GUID or symbolic name of the
 	/// enumerator. If Enumerator is <c>NULL</c>, <c>SetupDiGetClassDevs</c> returns devices for all PnP enumerators.
-	/// </term>
 	/// </item>
-	/// </list>
-	/// <para>Device Interface Class Control Options</para>
-	/// <para>
-	/// Use the following filtering options to control whether <c>SetupDiGetClassDevs</c> returns devices that support any device
-	/// interface class or only devices that support a specified device interface class:
+	///   </list>
+	///   <para>Device Interface Class Control Options</para>
+	///   <para>
+	/// Use the following filtering options to control whether <c>SetupDiGetClassDevs</c> returns devices that support any device interface
+	/// class or only devices that support a specified device interface class:
 	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>
-	/// To return devices that support a device interface of any class, set the DIGCF_DEVICEINTERFACE flag, set the DIGCF_ALLCLASSES
-	/// flag, and set ClassGuid to <c>NULL</c>. The function adds to the device information set a device information element that
-	/// represents such a device and then adds to the device information element a device interface list that contains all the device
+	///   <list type="bullet">
+	///     <item>
+	/// To return devices that support a device interface of any class, set the DIGCF_DEVICEINTERFACE flag, set the
+	/// DIGCF_ALLCLASSES flag, and set ClassGuid to <c>NULL</c>. The function adds to the device information set a device information element
+	/// that represents such a device and then adds to the device information element a device interface list that contains all the device
 	/// interfaces that the device supports.
-	/// </term>
 	/// </item>
-	/// <item>
-	/// <term>
-	/// To return only devices that support a device interface of a specified class, set the DIGCF_DEVICEINTERFACE flag and use the
-	/// ClassGuid parameter to supply the class GUID of the device interface class. The function adds to the device information set a
-	/// device information element that represents such a device and then adds a device interface of the specified class to the device
-	/// interface list for that device information element.
-	/// </term>
+	///     <item>
+	/// To return only devices that support a device interface of a specified class, set the DIGCF_DEVICEINTERFACE flag and use the ClassGuid
+	/// parameter to supply the class GUID of the device interface class. The function adds to the device information set a device
+	/// information element that represents such a device and then adds a device interface of the specified class to the device interface
+	/// list for that device information element.
 	/// </item>
-	/// </list>
-	/// <para>
+	///   </list>
+	///   <para>
 	/// In addition, you can use the following filtering options to control whether <c>SetupDiGetClassDevs</c> returns only devices that
 	/// support the system default interface for device interface classes:
 	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>
-	/// To return only the device that supports the system default interface, if one is set, for a specified device interface class, set
-	/// the DIGCF_DEVICEINTERFACE flag, set the DIGCF_DEFAULT flag, and use ClassGuid to supply the class GUID of the device interface
-	/// class. The function adds to the device information set a device information element that represents such a device and then adds
-	/// the system default interface to the device interface list for that device information element.
-	/// </term>
+	///   <list type="bullet">
+	///     <item>
+	/// To return only the device that supports the system default interface, if one is set, for a specified device
+	/// interface class, set the DIGCF_DEVICEINTERFACE flag, set the DIGCF_DEFAULT flag, and use ClassGuid to supply the class GUID of the
+	/// device interface class. The function adds to the device information set a device information element that represents such a device
+	/// and then adds the system default interface to the device interface list for that device information element.
 	/// </item>
-	/// <item>
-	/// <term>
-	/// To return a device that supports a system default interface for an unspecified device interface class, set the
-	/// DIGCF_DEVICEINTERFACE flag, set the DIGCF_ALLCLASSES flag, set the DIGCF_DEFAULT flag, and set ClassGuid to <c>NULL</c>. The
-	/// function adds to the device information set a device information element that represents such a device and then adds the system
-	/// default interface to the device interface list for that device information element.
-	/// </term>
+	///     <item>
+	/// To return a device that supports a system default interface for an unspecified device interface class, set the DIGCF_DEVICEINTERFACE
+	/// flag, set the DIGCF_ALLCLASSES flag, set the DIGCF_DEFAULT flag, and set ClassGuid to <c>NULL</c>. The function adds to the device
+	/// information set a device information element that represents such a device and then adds the system default interface to the device
+	/// interface list for that device information element.
 	/// </item>
-	/// </list>
-	/// <para>You can also use the following options in combination with the other options to further restrict which devices are returned:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</term>
+	///   </list>
+	///   <para>You can also use the following options in combination with the other options to further restrict which devices are returned:</para>
+	///   <list type="bullet">
+	///     <item>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</item>
+	///     <item>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</item>
+	///     <item>
+	/// To return only a specific device, set the DIGCF_DEVICEINTERFACE flag and use the Enumerator parameter to supply the device instance
+	/// ID of the device. To include all possible devices, set Enumerator to <c>NULL</c>.
 	/// </item>
-	/// <item>
-	/// <term>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// To return only a specific device, set the DIGCF_DEVICEINTERFACE flag and use the Enumerator parameter to supply the device
-	/// instance ID of the device. To include all possible devices, set Enumerator to <c>NULL</c>.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>Examples</para>
-	/// <para>The following are some examples of how to use the <c>SetupDiGetClassDevs</c> function.</para>
-	/// <para><c>Example 1:</c> Build a list of all devices in the system, including devices that are not currently present.</para>
-	/// <para>
-	/// <code>Handle = SetupDiGetClassDevs(NULL, NULL, NULL, DIGCF_ALLCLASSES);</code>
+	///   </list>
+	///   <para>Examples</para>
+	///   <para>The following are some examples of how to use the <c>SetupDiGetClassDevs</c> function.</para>
+	///   <para>
+	///     <c>Example 1:</c> Build a list of all devices in the system, including devices that are not currently present.</para>
+	///   <para>
+	///     <span id="cbc_1" codelanguage="CSharp" x-lang="CSharp"></span>
+	///     <div class="highlight-title">
+	///       <span tabindex="0" class="highlight-copycode"></span>C#</div>
+	///     <div class="code">
+	///       <pre xml:space="preserve">Handle = SetupDiGetClassDevs(NULL, NULL, NULL, DIGCF_ALLCLASSES);</pre>
+	///     </div>
+	///   </para>
+	///   <para>
+	///     <c>Example 2:</c> Build a list of all devices that are present in the system.</para>
+	///   <para>
+	///     <span id="cbc_2" codelanguage="CSharp" x-lang="CSharp"></span>
+	///     <div class="highlight-title">
+	///       <span tabindex="0" class="highlight-copycode"></span>C#</div>
+	///     <div class="code">
+	///       <pre xml:space="preserve">Handle = SetupDiGetClassDevs(NULL, NULL, NULL, DIGCF_ALLCLASSES | DIGCF_PRESENT);</pre>
+	///     </div>
+	///   </para>
+	///   <para>
+	///     <c>Example 3:</c> Build a list of all devices that are present in the system that are from the network adapter device setup class.
 	/// </para>
-	/// <para><c>Example 2:</c> Build a list of all devices that are present in the system.</para>
-	/// <para>
-	/// <code>Handle = SetupDiGetClassDevs(NULL, NULL, NULL, DIGCF_ALLCLASSES | DIGCF_PRESENT);</code>
+	///   <para>
+	///     <span id="cbc_3" codelanguage="CSharp" x-lang="CSharp"></span>
+	///     <div class="highlight-title">
+	///       <span tabindex="0" class="highlight-copycode"></span>C#</div>
+	///     <div class="code">
+	///       <pre xml:space="preserve">Handle = SetupDiGetClassDevs(&amp;GUID_DEVCLASS_NET, NULL, NULL, DIGCF_PRESENT);</pre>
+	///     </div>
+	///   </para>
+	///   <para>
+	///     <c>Example 4:</c> Build a list of all devices that are present in the system that have enabled an interface from the storage volume
+	/// device interface class.
 	/// </para>
-	/// <para>
-	/// <c>Example 3:</c> Build a list of all devices that are present in the system that are from the network adapter device setup class.
-	/// </para>
-	/// <para>
-	/// <code>Handle = SetupDiGetClassDevs(&amp;GUID_DEVCLASS_NET, NULL, NULL, DIGCF_PRESENT);</code>
-	/// </para>
-	/// <para>
-	/// <c>Example 4:</c> Build a list of all devices that are present in the system that have enabled an interface from the storage
-	/// volume device interface class.
-	/// </para>
-	/// <para>
-	/// <code>Handle = SetupDiGetClassDevs(&amp;GUID_DEVINTERFACE_VOLUME, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);</code>
-	/// </para>
-	/// <para>
-	/// <c>Example 5:</c> Build a list of all devices that are present in the system but do not belong to any known device setup class
+	///   <para>
+	///     <span id="cbc_4" codelanguage="CSharp" x-lang="CSharp"></span>
+	///     <div class="highlight-title">
+	///       <span tabindex="0" class="highlight-copycode"></span>C#</div>
+	///     <div class="code">
+	///       <pre xml:space="preserve">Handle = SetupDiGetClassDevs(&amp;GUID_DEVINTERFACE_VOLUME, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);</pre>
+	///     </div>
+	///   </para>
+	///   <para>
+	///     <c>Example 5:</c> Build a list of all devices that are present in the system but do not belong to any known device setup class
 	/// (Windows Vista and later versions of Windows).
 	/// </para>
-	/// <para>
-	/// <c>Note</c> You cannot set the ClassGuid parameter to GUID_DEVCLASS_UNKNOWN to detect devices with an unknown setup class.
-	/// Instead, you must follow this example.
-	/// </para>
-	/// <para>
-	/// <code>DeviceInfoSet = SetupDiGetClassDevs( NULL, NULL, NULL, DIGCF_ALLCLASSES | DIGCF_PRESENT); ZeroMemory(&amp;DeviceInfoData, sizeof(SP_DEVINFO_DATA)); DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA); DeviceIndex = 0; while (SetupDiEnumDeviceInfo( DeviceInfoSet, DeviceIndex, &amp;DeviceInfoData)) { DeviceIndex++; if (!SetupDiGetDeviceProperty( DeviceInfoSet, &amp;DeviceInfoData, &amp;DEVPKEY_Device_Class, &amp;PropType, (PBYTE)&amp;DevGuid, sizeof(GUID), &amp;Size, 0) || PropType != DEVPROP_TYPE_GUID) { Error = GetLastError(); if (Error == ERROR_NOT_FOUND) { \\ \\ This device has an unknown device setup class. \\ } } } if (DeviceInfoSet) { SetupDiDestroyDeviceInfoList(DeviceInfoSet); }</code>
-	/// </para>
+	///   <para>
+	///     <note type="note">You cannot set the ClassGuid parameter to GUID_DEVCLASS_UNKNOWN to detect devices with an unknown setup class. Instead,
+	/// you must follow this example.</note>
+	///   </para>
+	///   <para>
+	///     <span id="cbc_5" codelanguage="CSharp" x-lang="CSharp"></span>
+	///     <div class="highlight-title">
+	///       <span tabindex="0" class="highlight-copycode"></span>C#</div>
+	///     <div class="code">
+	///       <pre xml:space="preserve">DeviceInfoSet = SetupDiGetClassDevs(
+	///                                  NULL,
+	///                                  NULL,
+	///                                  NULL,
+	///                                  DIGCF_ALLCLASSES | DIGCF_PRESENT);
+	/// ZeroMemory(&amp;DeviceInfoData, <span class="highlight-keyword">sizeof</span>(SP_DEVINFO_DATA));
+	/// DeviceInfoData.cbSize = <span class="highlight-keyword">sizeof</span>(SP_DEVINFO_DATA);
+	/// DeviceIndex = <span class="highlight-number">0</span>;
+	/// <span class="highlight-keyword">while</span> (SetupDiEnumDeviceInfo(
+	///                           DeviceInfoSet,
+	///                           DeviceIndex,
+	///                           &amp;DeviceInfoData)) {
+	///  DeviceIndex++;
+	///  <span class="highlight-keyword">if</span> (!SetupDiGetDeviceProperty(
+	///                                DeviceInfoSet,
+	///                                &amp;DeviceInfoData,
+	///                                &amp;DEVPKEY_Device_Class,
+	///                                &amp;PropType,
+	///                                (PBYTE)&amp;DevGuid,
+	///                                <span class="highlight-keyword">sizeof</span>(GUID),
+	///                                &amp;Size,
+	///                                <span class="highlight-number">0</span>) || PropType != DEVPROP_TYPE_GUID) {
+	///      Error = GetLastError();
+	///      <span class="highlight-keyword">if</span> (Error == ERROR_NOT_FOUND) {
+	///          \\
+	///          \\ This device has an unknown device setup <span class="highlight-keyword">class</span>.
+	///          \\
+	///          }
+	///      }
+	///  }
+	/// <span class="highlight-keyword">if</span> (DeviceInfoSet) {
+	///  SetupDiDestroyDeviceInfoList(DeviceInfoSet);
+	///  }</pre>
+	///     </div>
+	///   </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetclassdevsw WINSETUPAPI HDEVINFO
 	// SetupDiGetClassDevsW( const GUID *ClassGuid, PCWSTR Enumerator, HWND hwndParent, DWORD Flags );
@@ -3345,6 +3582,49 @@ public static partial class SetupAPI
 	public static extern bool SetupDiGetClassInstallParams(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData,
 		[In, Optional] IntPtr ClassInstallParams, uint ClassInstallParamsSize, out uint RequiredSize);
 
+	/// <summary>
+	/// The <c>SetupDiGetClassInstallParams</c> function retrieves class installation parameters for a device information set or a
+	/// particular device information element.
+	/// </summary>
+	/// <param name="DeviceInfoSet">A handle to a device information set that contains the class install parameters to retrieve.</param>
+	/// <param name="DeviceInfoData">
+	/// A pointer to an SP_DEVINFO_DATA structure that specified a device information element in DeviceInfoSet. This parameter is
+	/// optional and can be <c>NULL</c>. If this parameter is specified, <c>SetupDiGetClassInstallParams</c> retrieves the class
+	/// installation parameters for the specified device. If this parameter is <c>NULL</c>, <c>SetupDiGetClassInstallParams</c>
+	/// retrieves the class install parameters for the global class driver list that is associated with DeviceInfoSet.
+	/// </param>
+	/// <param name="ClassInstallParams">
+	/// A pointer to a buffer that contains an SP_CLASSINSTALL_HEADER structure. This structure must have its <c>cbSize</c> member set
+	/// to <c>sizeof(</c> SP_CLASSINSTALL_HEADER <c>)</c> on input or the buffer is considered to be invalid. On output, the
+	/// <c>InstallFunction</c> member is filled with the device installation function code for the class installation parameters being
+	/// retrieved. If the buffer is large enough, it also receives the class installation parameters structure specific to the function
+	/// code. If ClassInstallParams is not specified, ClassInstallParamsSize must be 0.
+	/// </param>
+	/// <param name="ClassInstallParamsSize">
+	/// The size, in bytes, of the ClassInstallParams buffer. If the buffer is supplied, it must be at least as large as <c>sizeof(</c>
+	/// SP_CLASSINSTALL_HEADER <c>)</c>. If the buffer is not supplied, ClassInstallParamsSize must be 0.
+	/// </param>
+	/// <param name="RequiredSize">
+	/// A pointer to a variable of type DWORD that receives the number of bytes required to store the class install parameters. This
+	/// parameter is optional and can be <c>NULL</c>.
+	/// </param>
+	/// <returns>
+	/// The function returns <c>TRUE</c> if it is successful. Otherwise, it returns <c>FALSE</c> and the logged error can be retrieved
+	/// with a call to GetLastError.
+	/// </returns>
+	/// <remarks>
+	/// The class install parameters are specific to a particular device installation function code that is stored in the
+	/// <c>ClassInstallHeader</c> field located at the beginning of the ClassInstallParams buffer.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetclassinstallparamsa WINSETUPAPI BOOL
+	// SetupDiGetClassInstallParamsA( HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, PSP_CLASSINSTALL_HEADER
+	// ClassInstallParams, DWORD ClassInstallParamsSize, PDWORD RequiredSize );
+	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassInstallParamsA")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool SetupDiGetClassInstallParams(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData,
+		[In, Optional] IntPtr ClassInstallParams, uint ClassInstallParamsSize, out uint RequiredSize);
+
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDEVINFO"/> that is disposed using <see cref="SetupDiDestroyDeviceInfoList"/>.</summary>
 	public class SafeHDEVINFO : SafeHANDLE
 	{
@@ -3370,7 +3650,7 @@ public static partial class SetupAPI
 		/// A string that contains the name of the remote computer. If the device information set is for the local computer, this member
 		/// is <see langword="null"/>.
 		/// </summary>
-		public string MachineName => detail.Value.RemoteMachineName == "" ? null : detail.Value.RemoteMachineName;
+		public string? MachineName => detail.Value.RemoteMachineName == "" ? null : detail.Value.RemoteMachineName;
 
 		/// <summary>
 		/// The setup class GUID that is associated with the device information set or <see langword="null"/> if there is no associated
@@ -3416,7 +3696,7 @@ public static partial class SetupAPI
 		/// To get extended error information, call GetLastError.
 		/// </returns>
 		/// <remarks>See <see cref="SetupDiGetClassDevsEx(in Guid, string, HWND, DIGCF, HDEVINFO, string, IntPtr)"/> for more detail.</remarks>
-		public static SafeHDEVINFO Create(Guid? classGuid, DIGCF flags = DIGCF.DIGCF_PRESENT, string pnpFilter = null, string machineName = null)
+		public static SafeHDEVINFO Create(Guid? classGuid, DIGCF flags = DIGCF.DIGCF_PRESENT, string? pnpFilter = null, string? machineName = null)
 		{
 			if (classGuid.HasValue)
 				return Win32Error.ThrowLastErrorIfInvalid(SetupDiGetClassDevsEx(classGuid.Value, pnpFilter, default, flags, default, machineName));
@@ -3445,7 +3725,7 @@ public static partial class SetupAPI
 		/// The <c>SetupDi</c> Xxx routines that do not provide this support, such as SetupDiCallClassInstaller, have a statement to
 		/// that effect in their reference page.
 		/// </remarks>
-		public static SafeHDEVINFO CreateEmpty(Guid? classGuid = null, string machineName = null)
+		public static SafeHDEVINFO CreateEmpty(Guid? classGuid = null, string? machineName = null)
 		{
 			if (classGuid.HasValue)
 				return Win32Error.ThrowLastErrorIfInvalid(SetupDiCreateDeviceInfoListEx(classGuid.Value, default, machineName));
@@ -3490,7 +3770,7 @@ public static partial class SetupAPI
 		/// To get extended error information, call GetLastError.
 		/// </returns>
 		/// <remarks>See <see cref="SetupDiGetClassDevsEx(in Guid, string, HWND, DIGCF, HDEVINFO, string, IntPtr)"/> for more detail.</remarks>
-		public void Adjust(Guid? classGuid, DIGCF flags = DIGCF.DIGCF_ALLCLASSES, string pnpFilter = null)
+		public void Adjust(Guid? classGuid, DIGCF flags = DIGCF.DIGCF_ALLCLASSES, string? pnpFilter = null)
 		{
 			SafeHDEVINFO hNew;
 			if (classGuid.HasValue)
