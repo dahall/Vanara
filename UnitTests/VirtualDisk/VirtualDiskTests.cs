@@ -1,11 +1,9 @@
 ﻿using NUnit.Framework;
-using System;
 using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks;
-using Vanara.InteropServices;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.VirtDisk;
@@ -178,7 +176,7 @@ public class VirtualDiskTests
 	[Test]
 	public async Task CreateFromSourceAsyncTest()
 	{
-		VirtualDisk vd = null;
+		VirtualDisk? vd = null;
 		try
 		{
 			var rpt = new Reporter();
@@ -300,11 +298,11 @@ public class VirtualDiskTests
 		try
 		{
 			using VirtualDisk vhd = await MakeSet();
-			VirtualDiskSetInformation si = default;
+			VirtualDiskSetInformation? si = default;
 			Assert.That(() => si = vhd.GetVHDSetInformation(), Throws.Nothing);
 			Assert.That(si?.Path, Is.Not.Null);
 			vhd.Close();
-			foreach (FileInfo a in si.AllPaths.Select(s => new FileInfo(Path.Combine(Path.GetDirectoryName(newfn), s))).OrderByDescending(f => f.CreationTime))
+			foreach (FileInfo a in si!.AllPaths!.Select(s => new FileInfo(Path.Combine(Path.GetDirectoryName(newfn)!, s))).OrderByDescending(f => f.CreationTime))
 				//await VirtualDisk.MergeAsync(a.FullName, newfn);
 				File.Delete(a.FullName);
 		}
@@ -411,8 +409,8 @@ public class VirtualDiskTests
 		Assert.That(vhd.Attached, Is.True);
 		Assert.That(beforeDrives, Is.Not.EqualTo(GetLogicalDrives()));
 		TestContext.WriteLine(vhd.PhysicalPath);
-		TestContext.WriteLine(string.Join(";", vhd.VolumeGuidPaths));
-		TestContext.WriteLine(string.Join(";", vhd.VolumeMountPoints));
+		if (vhd.VolumeGuidPaths is not null) TestContext.WriteLine(string.Join(";", vhd.VolumeGuidPaths));
+		if (vhd.VolumeMountPoints is not null) TestContext.WriteLine(string.Join(";", vhd.VolumeMountPoints));
 		Assert.That(vhd.PhysicalPath, Is.Not.Null); // must be attached
 		vhd.Detach();
 		Assert.That(vhd.Attached, Is.False);
@@ -572,7 +570,7 @@ public class VirtualDiskTests
 
 	private class Reporter : IProgress<int>
 	{
-		public event EventHandler<int> NewVal;
+		public event EventHandler<int>? NewVal;
 
 		public int lastVal { get; private set; }
 

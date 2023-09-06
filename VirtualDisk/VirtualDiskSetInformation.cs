@@ -12,17 +12,17 @@ public class VirtualDiskSetInformation
 	/// disk. All files listed after the root virtual hard disk are unmanaged by this VHD Set file. This field may be empty if this
 	/// information was not specifically requested.
 	/// </summary>
-	public string[] AllPaths { get; internal set; }
+	public string[]? AllPaths { get; internal set; }
 
 	/// <summary>The path of the VHD Set file.</summary>
-	public string Path { get; internal set; }
+	public string? Path { get; internal set; }
 
 	/// <summary>A list of GUIDs representing all of the snapshots contained by this VHD Set file.</summary>
 	[IgnoreDataMember]
-	public Guid[] SnapshotIdList => Array.ConvertAll(Ids, s => Guid.Parse(s));
+	public Guid[] SnapshotIdList => Ids is null ? new Guid[0] : Array.ConvertAll(Ids, s => Guid.Parse(s));
 
 	[DataMember(Name = "SnapshotIdList")]
-	internal string[] Ids { get; set; }
+	internal string[]? Ids { get; set; }
 
-	internal static VirtualDiskSetInformation Parse(string embeddedInstance) => ManagementExtensions.Parse<VirtualDiskSetInformation>(embeddedInstance);
+	internal static VirtualDiskSetInformation Parse(string? embeddedInstance) => ManagementExtensions.Parse<VirtualDiskSetInformation>(embeddedInstance);
 }

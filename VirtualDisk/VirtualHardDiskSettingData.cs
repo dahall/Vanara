@@ -38,11 +38,11 @@ public class VirtualDiskSettingData
 	public ulong MaxInternalSize { get; set; }
 
 	/// <summary>Gets the parent of the disk. If the disk does not have a parent this property is null.</summary>
-	public string ParentPath { get; set; }
+	public string? ParentPath { get; set; }
 
 	/// <summary>Gets the path of the disk.</summary>
 	[DataMember(Name = "Path", IsRequired = true)]
-	public string Path { get; set; }
+	public string? Path { get; set; }
 
 	/// <summary>Gets the physical sector size of the virtual hard disk</summary>
 	public uint PhysicalSectorSize { get; set; }

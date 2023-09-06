@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 using System.Management;
@@ -15,7 +15,7 @@ public class DynamicMgmtObject : DynamicObject, IDisposable
 
 	/// <summary>Initializes a new instance of the <see cref="DynamicMgmtObject"/> class.</summary>
 	/// <param name="obj">The object.</param>
-	public DynamicMgmtObject(ManagementObject obj) => this.obj = obj ?? throw new ArgumentNullException();
+	public DynamicMgmtObject(ManagementObject obj) => this.obj = obj ?? throw new ArgumentNullException(nameof(obj));
 
 	/// <summary>Initializes a new instance of the <see cref="DynamicMgmtObject"/> class.</summary>
 	/// <param name="scope">The scope.</param>
@@ -25,8 +25,7 @@ public class DynamicMgmtObject : DynamicObject, IDisposable
 		if (!scope.IsConnected)
 			scope.Connect();
 
-		obj = scope.GetWMIService(service);
-		if (obj is null) throw new ArgumentNullException();
+		obj = scope.GetWMIService(service) ?? throw new ArgumentException("Unable to get WMI service", nameof(service));
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="DynamicMgmtObject"/> class.</summary>
@@ -45,7 +44,7 @@ public class DynamicMgmtObject : DynamicObject, IDisposable
 	public override IEnumerable<string> GetDynamicMemberNames() => obj.Properties.Cast<PropertyData>().Select(d => d.Name);
 
 	/// <inheritdoc/>
-	public override bool TryConvert(ConvertBinder binder, out object result)
+	public override bool TryConvert(ConvertBinder binder, [NotNullWhen(true)] out object? result)
 	{
 		if (binder.Type == typeof(ManagementObject))
 		{
@@ -56,7 +55,7 @@ public class DynamicMgmtObject : DynamicObject, IDisposable
 	}
 
 	/// <inheritdoc/>
-	public override bool TryGetMember(GetMemberBinder binder, out object result)
+	public override bool TryGetMember(GetMemberBinder binder, [NotNullWhen(true)] out object? result)
 	{
 		try { result = obj.GetPropertyValue(binder.Name); return true; }
 		catch (ManagementException)
@@ -73,11 +72,11 @@ public class DynamicMgmtObject : DynamicObject, IDisposable
 	}
 
 	/// <inheritdoc/>
-	public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+	public override bool TryInvokeMember(InvokeMemberBinder binder, object?[]? args, [NotNullWhen(true)] out object? result)
 	{
-		if (args.Length == 1)
+		if (args?.Length == 1)
 		{
-			ManagementBaseObject input = null;
+			ManagementBaseObject? input = null;
 			if (args[0] is ManagementBaseObject mbo)
 			{
 				input = mbo;
@@ -96,14 +95,14 @@ public class DynamicMgmtObject : DynamicObject, IDisposable
 			}
 			if (input is not null)
 			{
-				result = (DynamicMgmtObject)obj.InvokeMethod(binder.Name, input, null);
+				result = obj.InvokeMethod(binder.Name, input, new());
 				return true;
 			}
 		}
 
 		try
 		{
-			result = obj.InvokeMethod(binder.Name, args);
+			result = obj.InvokeMethod(binder.Name, args!);
 			return true;
 		}
 		catch (ManagementException) { }
@@ -111,21 +110,21 @@ public class DynamicMgmtObject : DynamicObject, IDisposable
 	}
 
 	/// <inheritdoc/>
-	public override bool TrySetMember(SetMemberBinder binder, object value)
+	public override bool TrySetMember(SetMemberBinder binder, object? value)
 	{
-		try { obj.SetPropertyValue(binder.Name, value); return true; }
+		try { obj.SetPropertyValue(binder.Name, value!); return true; }
 		catch (ManagementException)
 		{
 			switch (binder.Name)
 			{
 				case "Path":
 				case "ManagementPath":
-					obj.Path = value as ManagementPath;
+					obj.Path = value as ManagementPath ?? throw new ArgumentNullException(nameof(value));
 					return true;
 
 				case "Scope":
 				case "ManagementScope":
-					obj.Scope = value as ManagementScope;
+					obj.Scope = value as ManagementScope ?? throw new ArgumentNullException(nameof(value));
 					return true;
 
 				default:

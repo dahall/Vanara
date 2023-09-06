@@ -1,15 +1,11 @@
-global using System;
 global using System.Threading;
 global using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
@@ -24,11 +20,11 @@ public partial class VirtualDisk : IDisposable, IHandle
 {
 	private static readonly bool IsPreWin8 = !PInvokeClient.Windows8.IsPlatformSupported();
 	private readonly OPEN_VIRTUAL_DISK_VERSION ver;
-	private VirtualDiskMetadata metadata;
+	private VirtualDiskMetadata? metadata;
 
 	private VirtualDisk(SafeVIRTUAL_DISK_HANDLE handle, OPEN_VIRTUAL_DISK_VERSION version, string imgPath)
 	{
-		if (handle == null || handle.IsInvalid)
+		if (handle is null || handle.IsInvalid)
 		{
 			throw new ArgumentNullException(nameof(handle));
 		}
@@ -144,7 +140,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	public bool NewerChanges => GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE, 4);
 
 	/// <summary>The path of the parent backing store, if it can be resolved.</summary>
-	public string ParentBackingStore => IsChild ? GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4) : null;
+	public string? ParentBackingStore => IsChild ? GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4) : null;
 
 	/// <summary>Unique identifier of the parent disk backing store. If unattached, <see langword="null"/> is returned.</summary>
 	public Guid? ParentIdentifier => IsChild ? GetInformation<Guid>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_IDENTIFIER) : null;
@@ -153,7 +149,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// If this is a child, contains the path of the parent backing store. If is a parent disk, contains all of the parent paths present in
 	/// the search list. If unattached, <see langword="null"/> is returned.
 	/// </summary>
-	public string[] ParentPaths
+	public string[]? ParentPaths
 	{
 		get
 		{
@@ -177,7 +173,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// Retrieves the path to the physical device object that contains a virtual hard disk (VHD) or CD or DVD image file (ISO). If
 	/// unattached, <see langword="null"/> is returned.
 	/// </summary>
-	public string PhysicalPath
+	public string? PhysicalPath
 	{
 		get
 		{
@@ -255,11 +251,11 @@ public partial class VirtualDisk : IDisposable, IHandle
 	public ulong VirtualSize => GetInformation<ulong>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SIZE);
 
 	/// <summary>Gets the volume GUID paths for an attached virtual disk.</summary>
-	public string[] VolumeGuidPaths
+	public string[]? VolumeGuidPaths
 	{
 		get
 		{
-			if (!Attached)
+			if (!Attached || PhysicalPath is null)
 				return null;
 
 			var diskNo = GetDiskNumberFromDevicePath(PhysicalPath);
@@ -268,7 +264,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	}
 
 	/// <summary>Gets the volume mount points for an attached virtual disk.</summary>
-	public string[] VolumeMountPoints
+	public string[]? VolumeMountPoints
 	{
 		get
 		{
@@ -318,7 +314,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
 	/// </param>
 	/// <returns>If successful, returns a valid <see cref="VirtualDisk"/> instance for the newly created virtual disk.</returns>
-	public static VirtualDisk Create(string path, ulong size, bool dynamic = true, FileSecurity access = null) => Create(path, size, dynamic, 0, 0, access);
+	public static VirtualDisk Create(string path, ulong size, bool dynamic = true, FileSecurity? access = null) => Create(path, size, dynamic, 0, 0, access);
 
 	/// <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
 	/// <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
@@ -343,7 +339,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
 	/// </param>
 	/// <returns>If successful, returns a valid <see cref="VirtualDisk"/> instance for the newly created virtual disk.</returns>
-	public static VirtualDisk Create(string path, ulong size, bool dynamic, uint blockSize = 0, uint logicalSectorSize = 0, FileSecurity access = null)
+	public static VirtualDisk Create(string path, ulong size, bool dynamic, uint blockSize = 0, uint logicalSectorSize = 0, FileSecurity? access = null)
 	{
 		if (string.IsNullOrEmpty(path))
 		{
@@ -380,7 +376,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 		VIRTUAL_DISK_ACCESS_MASK mask = VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE,
 		VIRTUAL_STORAGE_TYPE storageType = default,
 		PSECURITY_DESCRIPTOR securityDescriptor = default,
-		CancellationToken cancellationToken = default, IProgress<int> progress = default)
+		CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		if (string.IsNullOrEmpty(path))
 		{
@@ -411,7 +407,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// Recycle Bin is corrupted.Do you want to empty the Recycle Bin for this drive?
 	/// </param>
 	/// <returns></returns>
-	public static VirtualDisk CreateDifferencing(string path, string parentPath, FileSecurity access = null)
+	public static VirtualDisk CreateDifferencing(string path, string parentPath, FileSecurity? access = null)
 	{
 		//if (access == null) access = GetFileSecurity();
 		if (string.IsNullOrEmpty(path))
@@ -471,7 +467,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// progress reporting.
 	/// </param>
 	/// <returns>If successful, returns a valid <see cref="VirtualDisk"/> instance for the newly created virtual disk.</returns>
-	public static async Task<VirtualDisk> CreateFromSourceAsync(string path, string sourcePath, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public static async Task<VirtualDisk> CreateFromSourceAsync(string path, string sourcePath, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		if (string.IsNullOrEmpty(path))
 		{
@@ -571,7 +567,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// <param name="flags">A valid combination of values of the OPEN_VIRTUAL_DISK_FLAG enumeration.</param>
 	/// <param name="param">A valid OPEN_VIRTUAL_DISK_PARAMETERS structure.</param>
 	/// <param name="mask">A valid VIRTUAL_DISK_ACCESS_MASK value.</param>
-	public static VirtualDisk Open(string path, OPEN_VIRTUAL_DISK_FLAG flags = OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NONE, OPEN_VIRTUAL_DISK_PARAMETERS param = null, VIRTUAL_DISK_ACCESS_MASK mask = VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE)
+	public static VirtualDisk Open(string path, OPEN_VIRTUAL_DISK_FLAG flags = OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NONE, OPEN_VIRTUAL_DISK_PARAMETERS? param = null, VIRTUAL_DISK_ACCESS_MASK mask = VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE)
 	{
 		if (string.IsNullOrEmpty(path))
 		{
@@ -695,7 +691,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user accesses
 	/// the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
 	/// </param>
-	public void Attach(bool readOnly = false, bool autoDetach = true, bool noDriveLetter = false, FileSecurity access = null) =>
+	public void Attach(bool readOnly = false, bool autoDetach = true, bool noDriveLetter = false, FileSecurity? access = null) =>
 		Attach(noDriveLetter ? null : new[] { "*" }, readOnly, autoDetach, access);
 
 	/// <summary>
@@ -719,7 +715,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user accesses
 	/// the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
 	/// </param>
-	public void Attach(string[] mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity access = null)
+	public void Attach(string[]? mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity? access = null)
 	{
 		if (mountPoints is not null && mountPoints.Length == 0)
 			throw new ArgumentException("Mount points list cannot be empty.", nameof(mountPoints));
@@ -742,7 +738,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 		if (mountPoints is null || mountPoints[0] is "*")
 			return;
 
-		var vgp = VolumeGuidPaths;
+		var vgp = VolumeGuidPaths ?? new string[0];
 		if (mountPoints.Length > vgp.Length)
 		{
 			Detach();
@@ -776,7 +772,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// progress reporting.
 	/// </param>
 	public async Task AttachAsync(ATTACH_VIRTUAL_DISK_FLAG flags, ATTACH_VIRTUAL_DISK_PARAMETERS? param = null, PSECURITY_DESCRIPTOR securityDescriptor = default,
-		CancellationToken cancellationToken = default, IProgress<int> progress = default)
+		CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		if (!securityDescriptor.IsNull && !securityDescriptor.IsValidSecurityDescriptor())
 			throw new ArgumentException("Invalid security descriptor.");
@@ -809,8 +805,8 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public async Task AttachAsync(bool readOnly = false, bool autoDetach = true, bool noDriveLetter = false, FileSecurity access = null,
-		CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
+	public async Task AttachAsync(bool readOnly = false, bool autoDetach = true, bool noDriveLetter = false, FileSecurity? access = null,
+		CancellationToken cancellationToken = default, IProgress<int>? progress = default) =>
 		await AttachAsync(noDriveLetter ? null : new[] { "*" }, readOnly, autoDetach, access, cancellationToken, progress);
 
 	/// <summary>
@@ -841,8 +837,8 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public async Task AttachAsync(string[] mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity access = null,
-		CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public async Task AttachAsync(string[]? mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity? access = null,
+		CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		if (mountPoints is not null && mountPoints.Length == 0)
 			throw new ArgumentException("Mount points list cannot be empty.", nameof(mountPoints));
@@ -865,7 +861,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 		if (mountPoints is null || mountPoints[0] is "*")
 			return;
 
-		var vgp = VolumeGuidPaths;
+		var vgp = VolumeGuidPaths ?? new string[0];
 		if (mountPoints.Length > vgp.Length)
 		{
 			Detach();
@@ -893,7 +889,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// progress reporting.
 	/// </param>
 	/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-	public async Task<bool> CompactAsync(CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
+	public async Task<bool> CompactAsync(CancellationToken cancellationToken = default, IProgress<int>? progress = default) =>
 		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
 			CompactVirtualDisk(Handle, COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NONE, COMPACT_VIRTUAL_DISK_PARAMETERS.Default, vhdOverlap), cancellationToken, progress);
 
@@ -955,7 +951,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// progress reporting.
 	/// </param>
 	/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-	public async Task<bool> ExpandAsync(ulong newSize, CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
+	public async Task<bool> ExpandAsync(ulong newSize, CancellationToken cancellationToken = default, IProgress<int>? progress = default) =>
 		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
 			{
 				if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
@@ -999,7 +995,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public async Task MergeAsync(uint sourceDepth, uint targetDepth, CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
+	public async Task MergeAsync(uint sourceDepth, uint targetDepth, CancellationToken cancellationToken = default, IProgress<int>? progress = default) =>
 		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
 		{
 			MERGE_VIRTUAL_DISK_PARAMETERS param = new(sourceDepth, targetDepth);
@@ -1027,7 +1023,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// progress reporting.
 	/// </param>
 	/// <exception cref="NotSupportedException">@"Mirroring is only available to virtual disks opened under version 2 or higher.</exception>
-	public async Task MirrorAsync(string destPath, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public async Task MirrorAsync(string destPath, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
 			throw new NotSupportedException(@"Mirroring is only available to virtual disks opened under version 2 or higher.");
@@ -1118,7 +1114,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// progress reporting.
 	/// </param>
 	/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-	public async Task<bool> ResizeAsync(ulong newSize, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public async Task<bool> ResizeAsync(ulong newSize, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
 		{
@@ -1196,7 +1192,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 		ResizeVirtualDisk(Handle, flags, param, IntPtr.Zero).ThrowIfFailed();
 	}
 
-	private static SafePSECURITY_DESCRIPTOR FileSecToSd(FileSecurity sec) => sec == null
+	private static SafePSECURITY_DESCRIPTOR FileSecToSd(FileSecurity? sec) => sec == null
 				? SafePSECURITY_DESCRIPTOR.Null
 				: ConvertStringSecurityDescriptorToSecurityDescriptor(sec.GetSecurityDescriptorSddlForm(AccessControlSections.All));
 
@@ -1207,7 +1203,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 			? output.DeviceNumber : null;
 	}
 
-	private static bool GetProgress(VIRTUAL_DISK_HANDLE hVhd, in NativeOverlapped vhdOverlap, CancellationToken cancellationToken, IProgress<int> progress)
+	private static bool GetProgress(VIRTUAL_DISK_HANDLE hVhd, in NativeOverlapped vhdOverlap, CancellationToken cancellationToken, IProgress<int>? progress)
 	{
 		progress?.Report(0);
 		while (true)
@@ -1227,14 +1223,14 @@ public partial class VirtualDisk : IDisposable, IHandle
 					break;
 
 				default:
-					throw new Win32Error(prog.OperationStatus).GetException();
+					throw new Win32Error(prog.OperationStatus).GetException() ?? new Exception();
 			}
 
 			Task.Delay(100, cancellationToken);
 		}
 	}
 
-	private static string GetVolumeGuidFromDiskNumber(uint diskNo) => GetVolumeGuidsFromDiskNumber(diskNo).FirstOrDefault();
+	private static string? GetVolumeGuidFromDiskNumber(uint diskNo) => GetVolumeGuidsFromDiskNumber(diskNo).FirstOrDefault();
 
 	private static IEnumerable<string> GetVolumeGuidsFromDiskNumber(uint diskNo) => EnumVolumes().Where(v =>
 	{
@@ -1251,7 +1247,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	{
 		bool ret = GetVolumePathNamesForVolumeName(volumeName, IntPtr.Zero, 0, out var sz);
 		var err = Win32Error.GetLastError();
-		if (!ret && err != Win32Error.ERROR_MORE_DATA) throw err.GetException();
+		if (!ret && err != Win32Error.ERROR_MORE_DATA) throw err.GetException()!;
 		if (ret) return new string[0];
 		using var mem = new SafeCoTaskMemHandle(sz * StringHelper.GetCharSize());
 		Win32Error.ThrowLastErrorIfFalse(GetVolumePathNamesForVolumeName(volumeName, mem, sz, out _));
@@ -1260,7 +1256,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 
 	private static SafeHFILE OpenDrive(string fn) => CreateFile(fn, 0, FileShare.ReadWrite, default, FileMode.Open, 0);
 
-	private static async Task<bool> RunAsync(VIRTUAL_DISK_HANDLE hVhd, RunAsyncMethod method, CancellationToken cancellationToken, IProgress<int> progress) =>
+	private static async Task<bool> RunAsync(VIRTUAL_DISK_HANDLE hVhd, RunAsyncMethod method, CancellationToken cancellationToken, IProgress<int>? progress) =>
 		await Task.Run(() =>
 		{
 			NativeOverlapped vhdOverlap = new();
@@ -1283,7 +1279,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 			return (T)(object)mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, (int)offset).ToArray();
 		}
 
-		return mem.DangerousGetHandle().Offset(offset).Convert<T>((uint)(mem.Size - offset), CharSet.Unicode);
+		return mem.DangerousGetHandle().Offset(offset).Convert<T>((uint)(mem.Size - offset), CharSet.Unicode)!;
 	}
 
 	private SafeCoTaskMemStruct<GET_VIRTUAL_DISK_INFO> GetInformation(GET_VIRTUAL_DISK_INFO_VERSION info)

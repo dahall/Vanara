@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Management;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -38,18 +36,18 @@ public static class ManagementExtensions
 	/// <param name="method">The method.</param>
 	/// <param name="values">The values.</param>
 	/// <returns>The resulting <see cref="ManagementBaseObject"/>.</returns>
-	public static async Task<ManagementBaseObject> CallJobMethodAsync(this ManagementScope scope, CancellationToken cancellationToken, IProgress<int> progress, string service, string method, params (string, object)[] values) =>
+	public static async Task<ManagementBaseObject> CallJobMethodAsync(this ManagementScope scope, CancellationToken cancellationToken, IProgress<int>? progress, string service, string method, params (string, object)[] values) =>
 		await Task.Factory.StartNew(() =>
 		{
 			if (!scope.IsConnected)
 				scope.Connect();
 
-			using ManagementObject imgMgmtSvc = scope.GetWMIService(service);
+			using ManagementObject imgMgmtSvc = scope.GetWMIService(service) ?? throw new ArgumentException("Unable to find service.", nameof(service));
 			using ManagementBaseObject inParams = imgMgmtSvc.GetMethodParameters(method);
 			foreach ((string, object) kv in values)
 				inParams[kv.Item1] = kv.Item2;
 
-			ManagementBaseObject outputParameters = imgMgmtSvc.InvokeMethod(method, inParams, null);
+			ManagementBaseObject outputParameters = imgMgmtSvc.InvokeMethod(method, inParams, new());
 
 			const int sleepDur = 500;
 
@@ -78,9 +76,10 @@ public static class ManagementExtensions
 					case JobState.Killed:
 						throw new ThreadInterruptedException();
 					case JobState.Exception:
-						ManagementBaseObject errOut = job.InvokeMethod("GetError", null, null);
+						ManagementBaseObject errOut = job.InvokeMethod("GetError", null!, new());
 						var xml = new XmlDocument();
 						xml.LoadXml(errOut.GetProp<string>("Error"));
+						if (xml.DocumentElement is null) throw new InvalidOperationException("Error XML is invalid.");
 						var errMsg = xml.DocumentElement.SelectSingleNode(@"//PROPERTY[@NAME='Message']/VALUE")?.InnerText;
 						var ex = new InvalidOperationException(errMsg);
 #if DEBUG
@@ -110,7 +109,7 @@ public static class ManagementExtensions
 	public static string GetInstanceText<T>(T instance, string serverName = ".")
 	{
 		DataContractAttribute attr = typeof(T).GetCustomAttributes<DataContractAttribute>(false).FirstOrDefault() ?? throw new InvalidOperationException("Generic type does not have a DataContract attribute.");
-		var path = new ManagementPath() { Server = serverName, NamespacePath = attr.Namespace, ClassName = attr.Name };
+		var path = new ManagementPath() { Server = serverName, NamespacePath = attr.Namespace!, ClassName = attr.Name! };
 
 		using var settingsClass = new ManagementClass(path);
 		using ManagementObject settingsInstance = settingsClass.CreateInstance();
@@ -121,7 +120,7 @@ public static class ManagementExtensions
 				continue;
 			DataMemberAttribute mattr = pi.GetCustomAttributes<DataMemberAttribute>(false).FirstOrDefault() ?? new DataMemberAttribute() { Name = pi.Name };
 			var val = pi.PropertyType.IsEnum ? Convert.ChangeType(pi.GetValue(instance), pi.PropertyType.GetEnumUnderlyingType()) : pi.GetValue(instance);
-			settingsInstance.SetPropertyValue(mattr.Name, val);
+			settingsInstance.SetPropertyValue(mattr.Name!, val!);
 		}
 
 		return settingsInstance.GetText(TextFormat.WmiDtd20);
@@ -161,7 +160,7 @@ public static class ManagementExtensions
 	/// <param name="scope">The scope.</param>
 	/// <param name="path">The service path.</param>
 	/// <returns>The service object.</returns>
-	public static ManagementObject GetWMIService(this ManagementScope scope, string path)
+	public static ManagementObject? GetWMIService(this ManagementScope scope, string path)
 	{
 		using ManagementClass imageManagementServiceClass = new(path) { Scope = scope };
 		return imageManagementServiceClass.GetInstances().Cast<ManagementObject>().FirstOrDefault();
@@ -175,14 +174,15 @@ public static class ManagementExtensions
 	/// <returns>An instance of <typeparamref name="T"/> with the data contained in the embedded instance.</returns>
 	/// <exception cref="FormatException">If there was a problem parsing the embedded instance.</exception>
 	/// <exception cref="ArgumentNullException">If either param is null.</exception>
-	public static T Parse<T>(string embeddedInstance) where T : class, new()
+	public static T Parse<T>(string? embeddedInstance) where T : class, new()
 	{
+		if (embeddedInstance is null) throw new FormatException();
 		var doc = new XmlDocument();
 		doc.LoadXml(embeddedInstance);
 
-		XmlNodeList nodelist = doc.SelectNodes(@"/INSTANCE/@CLASSNAME");
+		XmlNodeList nodelist = doc.SelectNodes(@"/INSTANCE/@CLASSNAME") ?? throw new FormatException();
 		var className = typeof(T).GetCustomAttributes<DataContractAttribute>(false).FirstOrDefault()?.Name ?? typeof(T).Name;
-		if (nodelist.Count != 1 || nodelist[0].Value != className)
+		if (nodelist.Count != 1 || nodelist[0]?.Value != className)
 		{
 			throw new FormatException();
 		}
@@ -198,10 +198,10 @@ public static class ManagementExtensions
 			{
 				if (doc.SelectSingleNode($@"//PROPERTY.ARRAY[@NAME = '{attr.Name}']") is not null)
 				{
-					var array = doc.SelectNodes($@"//PROPERTY.ARRAY[@NAME = '{attr.Name}']/VALUE.ARRAY/VALUE").Cast<XmlNode>().Select(n => n.InnerText).ToArray();
-					var ret = Array.CreateInstance(pi.PropertyType.GetElementType(), array.Length);
+					var array = doc.SelectNodes($@"//PROPERTY.ARRAY[@NAME = '{attr.Name}']/VALUE.ARRAY/VALUE")?.Cast<XmlNode>().Select(n => n.InnerText).ToArray() ?? new string[0];
+					var ret = Array.CreateInstance(pi.PropertyType.GetElementType()!, array.Length);
 					for (int i = 0; i < array.Length; i++)
-						ret.SetValue(GetVal(pi.PropertyType.GetElementType(), array[i]), i);
+						ret.SetValue(GetVal(pi.PropertyType.GetElementType()!, array[i]), i);
 					pi.SetValue(output, ret);
 				}
 				else if (attr.IsRequired)
@@ -209,24 +209,26 @@ public static class ManagementExtensions
 			}
 			else
 			{
-				nodelist = doc.SelectNodes($@"//PROPERTY[@NAME = '{attr.Name}']/VALUE/child::text()");
+				nodelist = doc.SelectNodes($@"//PROPERTY[@NAME = '{attr.Name}']/VALUE/child::text()") ?? throw new FormatException();
 				if (attr.IsRequired && nodelist.Count != 1)
 					throw new FormatException();
 				if (nodelist.Count == 0)
 					continue;
-				pi.SetValue(output, GetVal(pi.PropertyType, nodelist[0].Value));
+				pi.SetValue(output, GetVal(pi.PropertyType, nodelist[0]?.Value));
 			}
 		}
 		return output;
 
-		static object GetVal(Type type, string value)
+		static object? GetVal(Type type, string? value)
 		{
+			if (value is null)
+				return null;
 			if (type == typeof(string))
 				return value;
-			else if (type.IsEnum)
+			if (type.IsEnum)
 			{
 				TypeConverter cv = TypeDescriptor.GetConverter(type.GetEnumUnderlyingType());
-				var val = cv.ConvertFromInvariantString(value);
+				var val = (value is not null ? cv.ConvertFromInvariantString(value) : null) ?? throw new FormatException();
 				if (!Enum.IsDefined(type, val))
 					throw new FormatException();
 				return Enum.ToObject(type, val);
@@ -242,7 +244,7 @@ public static class ManagementExtensions
 	/// <summary>Converts a string in CIM_DATETIME format to a <see cref="DateTime"/>.</summary>
 	/// <param name="cimdate">The CIM_DATETIME string in 'yyyymmddHHMMSS.mmmmmmsUUU' format.</param>
 	/// <returns>A <see cref="DateTime"/> value in GMT equivalent to <paramref name="cimdate"/> or <see langword="null"/> if unable to process.</returns>
-	public static DateTime? CimToDateTime(string cimdate)
+	public static DateTime? CimToDateTime(string? cimdate)
 	{
 		if (cimdate is null || !(cimdate.Length is 14 or 21 or 25))
 			return null;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Threading;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -1300,7 +1295,7 @@ public static partial class VirtDisk
 	[PInvokeData("VirtDisk.h")]
 	[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 	public static extern Win32Error EnumerateVirtualDiskMetadata([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref uint NumberOfItems,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] Items);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[]? Items);
 
 	/// <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
 	/// <param name="VirtualDiskHandle">
@@ -1538,7 +1533,7 @@ public static partial class VirtDisk
 	[DllImport(Lib.VirtDisk, ExactSpelling = true, ThrowOnUnmappableChar = true)]
 	public static extern Win32Error OpenVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, [MarshalAs(UnmanagedType.LPWStr)] string Path,
 		VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, OPEN_VIRTUAL_DISK_FLAG Flags,
-		[In, Optional] OPEN_VIRTUAL_DISK_PARAMETERS Parameters, out SafeVIRTUAL_DISK_HANDLE Handle);
+		[In, Optional] OPEN_VIRTUAL_DISK_PARAMETERS? Parameters, out SafeVIRTUAL_DISK_HANDLE Handle);
 
 	/// <summary>
 	/// Retrieves information about changes to the specified areas of a virtual hard disk (VHD) that are tracked by resilient change
@@ -1805,7 +1800,7 @@ public static partial class VirtDisk
 		/// </param>
 		public CREATE_VIRTUAL_DISK_PARAMETERS(ulong maxSize, uint version = 1, uint blockSize = 0, uint logicalSectorSize = 0) : this()
 		{
-			if (version < 1 || version > 3) throw new ArgumentOutOfRangeException(nameof(version));
+			if (version is < 1 or > 3) throw new ArgumentOutOfRangeException(nameof(version));
 			Version = (CREATE_VIRTUAL_DISK_VERSION)version;
 			Version1.MaximumSize = maxSize;
 			Version1.BlockSizeInBytes = blockSize;
@@ -2631,11 +2626,11 @@ public static partial class VirtDisk
 					{
 						if (Version == STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_1)
 						{
-							return NumberEntries == 0 ? new STORAGE_DEPENDENCY_INFO_TYPE_1[0] : ((IntPtr)first).ToArray<STORAGE_DEPENDENCY_INFO_TYPE_1>(NumberEntries);
+							return NumberEntries == 0 ? new STORAGE_DEPENDENCY_INFO_TYPE_1[0] : ((IntPtr)first).ToArray<STORAGE_DEPENDENCY_INFO_TYPE_1>(NumberEntries)!;
 						}
 						else if (Version == STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_2)
 						{
-							return NumberEntries == 0 ? new STORAGE_DEPENDENCY_INFO_TYPE_2[0] : ((IntPtr)first).ToArray<STORAGE_DEPENDENCY_INFO_TYPE_2>(NumberEntries);
+							return NumberEntries == 0 ? new STORAGE_DEPENDENCY_INFO_TYPE_2[0] : ((IntPtr)first).ToArray<STORAGE_DEPENDENCY_INFO_TYPE_2>(NumberEntries)!;
 						}
 					}
 					throw new NotSupportedException();
@@ -2769,7 +2764,7 @@ public static partial class VirtDisk
 		public static bool operator ==(VIRTUAL_DISK_HANDLE h1, VIRTUAL_DISK_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is VIRTUAL_DISK_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is VIRTUAL_DISK_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

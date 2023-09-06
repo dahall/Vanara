@@ -17,7 +17,7 @@ public class VirtualDiskSnapshotInformation
 	/// </para>
 	/// </param>
 	/// <param name="resilientChangeTrackingId">The optional resilient change tracking ID associated with this snapshot.</param>
-	public VirtualDiskSnapshotInformation(string vhdsFilePath, Guid snapshotId, string resilientChangeTrackingId = null)
+	public VirtualDiskSnapshotInformation(string vhdsFilePath, Guid snapshotId, string? resilientChangeTrackingId = null)
 	{
 		FilePath = vhdsFilePath;
 		SnapshotId = snapshotId;
@@ -36,16 +36,16 @@ public class VirtualDiskSnapshotInformation
 	}
 
 	/// <summary>The path of the VHD Set file.</summary>
-	public string FilePath { get; set; }
+	public string? FilePath { get; set; }
 
 	/// <summary>
 	/// A list of file paths representing all of the files on which this snapshot depends. This field will be empty unless specifically
 	/// requested. The first entry is the file's immediate parent, with the last entry being the root.
 	/// </summary>
-	public string[] ParentPathsList { get; internal set; }
+	public string[]? ParentPathsList { get; internal set; }
 
 	/// <summary>Gets or sets the resilient change tracking ID, if any, associated with this snapshot.</summary>
-	public string ResilientChangeTrackingId { get; set; }
+	public string? ResilientChangeTrackingId { get; set; }
 
 	/// <summary>A GUID that uniquely identifies this snapshot within the VHD Set file.</summary>
 	[IgnoreDataMember]
@@ -56,15 +56,15 @@ public class VirtualDiskSnapshotInformation
 	}
 
 	/// <summary>The path of the file represented by this snapshot. This field may be empty if there is no file associated with this snapshot.</summary>
-	public string SnapshotPath { get; set; }
+	public string? SnapshotPath { get; set; }
 
 	[DataMember(Name = "CreationTime")]
-	internal string CreationTimeString { get; set; }
+	internal string? CreationTimeString { get; set; }
 
 	[DataMember(Name = "SnapshotId")]
-	internal string Id { get; set; }
+	internal string? Id { get; set; }
 
-	internal static VirtualDiskSnapshotInformation Parse(string embeddedInstance) => ManagementExtensions.Parse<VirtualDiskSnapshotInformation>(embeddedInstance);
+	internal static VirtualDiskSnapshotInformation Parse(string? embeddedInstance) => ManagementExtensions.Parse<VirtualDiskSnapshotInformation>(embeddedInstance);
 
 	/// <summary>Gets the embedded instance string usable by WMI</summary>
 	/// <returns>Embedded instance string usable by WMI.</returns>

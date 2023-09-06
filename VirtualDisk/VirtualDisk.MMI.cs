@@ -4,7 +4,7 @@ namespace Vanara.IO;
 
 public partial class VirtualDisk
 {
-	private static readonly System.Management.ManagementScope scope = new(@"root\virtualization\v2", null);
+	private static readonly System.Management.ManagementScope scope = new(@"root\virtualization\v2");
 
 	/// <summary>Compaction options for <see cref="CompactAsync(CompactionMode, CancellationToken, IProgress{int})"/>.</summary>
 	public enum CompactionMode : ushort
@@ -40,9 +40,9 @@ public partial class VirtualDisk
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public static async Task ConvertAsync(string path, DeviceType targetType, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public static async Task ConvertAsync(string path, DeviceType targetType, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
-		var dest = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), $"{System.IO.Path.GetFileNameWithoutExtension(path)}.{targetType.ToString().ToLower()}");
+		var dest = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path) ?? throw new ArgumentException("A full path to a virtual disk is required.", nameof(path)), $"{System.IO.Path.GetFileNameWithoutExtension(path)}.{targetType.ToString().ToLower()}");
 		if (string.Equals(path, dest, StringComparison.InvariantCultureIgnoreCase))
 			return;
 		VirtualDisk vhd = Open(path, true, true);
@@ -67,7 +67,7 @@ public partial class VirtualDisk
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public static async Task ConvertAsync(string sourcePath, VirtualDiskSettingData destinationSettings, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public static async Task ConvertAsync(string sourcePath, VirtualDiskSettingData destinationSettings, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		try
 		{
@@ -90,7 +90,7 @@ public partial class VirtualDisk
 	/// progress reporting.
 	/// </param>
 	/// <exception cref="System.InvalidOperationException">Failed to create virtual disk set file.</exception>
-	public static async Task ConvertToVHDSetAsync(string path, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public static async Task ConvertToVHDSetAsync(string path, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		try
 		{
@@ -120,7 +120,7 @@ public partial class VirtualDisk
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public static async Task MergeAsync(string sourcePath, string destPath, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public static async Task MergeAsync(string sourcePath, string destPath, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		try
 		{
@@ -143,7 +143,7 @@ public partial class VirtualDisk
 	/// progress reporting.
 	/// </param>
 	/// <exception cref="System.InvalidOperationException">Failed to create virtual disk set file.</exception>
-	public static async Task OptimizeVHDSetAsync(string path, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public static async Task OptimizeVHDSetAsync(string path, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		try
 		{
@@ -168,7 +168,7 @@ public partial class VirtualDisk
 	/// progress reporting.
 	/// </param>
 	/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-	public static async Task<bool> ValidateAsync(string path, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public static async Task<bool> ValidateAsync(string path, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		try
 		{
@@ -207,7 +207,7 @@ public partial class VirtualDisk
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public async Task CompactAsync(CompactionMode mode, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	public async Task CompactAsync(CompactionMode mode, CancellationToken cancellationToken = default, IProgress<int>? progress = default)
 	{
 		try
 		{
