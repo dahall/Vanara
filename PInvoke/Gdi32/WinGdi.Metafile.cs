@@ -880,7 +880,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "bef5f43e-219a-4f8a-986d-290e29e17c4e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumEnhMetaFile([Optional] HDC hdc, HENHMETAFILE hmf, EnhMetaFileProc proc, [Optional] IntPtr param, [In, Optional] PRECT lpRect);
+	public static extern bool EnumEnhMetaFile([Optional] HDC hdc, HENHMETAFILE hmf, EnhMetaFileProc proc, [Optional] IntPtr param, [In, Optional] PRECT? lpRect);
 
 	/// <summary>
 	/// <para>

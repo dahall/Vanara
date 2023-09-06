@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
@@ -94,7 +92,7 @@ public class BitmapTests
 		hbmp = CreateDIBitmap(hdc, bmi.bmiHeader, CBM.CBM_INIT, default, bmi, DIBColorMode.DIB_PAL_COLORS);
 		Assert.That(hbmp, ResultIs.ValidHandle);
 
-		hbmp = CreateDIBitmap(hdc, bmi.bmiHeader, CBM.CBM_INIT, default, default, DIBColorMode.DIB_PAL_COLORS);
+		hbmp = CreateDIBitmap(hdc, bmi.bmiHeader, CBM.CBM_INIT, default, SafeBITMAPINFO.Null, DIBColorMode.DIB_PAL_COLORS);
 		Assert.That(hbmp, ResultIs.ValidHandle);
 
 		//hbmp = CreateDIBitmap(hdc, bmi.bmiHeader, 0, (IntPtr)0xc0000000, bmi, DIBColorMode.DIB_PAL_COLORS);

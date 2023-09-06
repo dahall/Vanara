@@ -592,7 +592,7 @@ public static partial class Gdi32
 	// BITMAPINFOHEADER *pbmih, DWORD flInit, const VOID *pjBits, const BITMAPINFO *pbmi, UINT iUsage );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e9a5b525-a6b6-4309-9e53-69d274b85783")]
-	public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, in BITMAPINFOHEADER pbmih, CBM flInit, [In, Optional] byte[]? pjBits, in BITMAPINFO pbmi, DIBColorMode iUsage);
+	public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, in BITMAPINFOHEADER pbmih, CBM flInit, [In, Optional] byte[]? pjBits, [In, Optional] SafeBITMAPINFO pbmi, DIBColorMode iUsage);
 
 	/// <summary>
 	/// The <c>CreateDIBitmap</c> function creates a compatible bitmap (DDB) from a DIB and, optionally, sets the bitmap bits.
