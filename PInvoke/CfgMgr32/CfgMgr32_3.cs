@@ -1,8 +1,4 @@
 using Microsoft.Win32.SafeHandles;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.SetupAPI;
 
@@ -1261,8 +1257,8 @@ public static partial class CfgMgr32
 	// LPGUID ClassGuid, LPCWSTR pszClassName, REGSAM samDesired, REGDISPOSITION Disposition, PHKEY phkClass, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Open_Class_KeyW")]
-	public static extern CONFIGRET CM_Open_Class_Key(in Guid ClassGuid, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? pszClassName, REGSAM samDesired, REGDISPOSITION Disposition,
-		out SafeRegistryHandle phkClass, CM_OPEN_CLASS_KEY ulFlags);
+	public static extern CONFIGRET CM_Open_Class_Key(in Guid ClassGuid, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? pszClassName,
+		REGSAM samDesired, REGDISPOSITION Disposition, out SafeRegistryHandle phkClass, CM_OPEN_CLASS_KEY ulFlags);
 
 	/// <summary>
 	/// The <c>CM_Open_Class_Key</c> function opens the device setup class registry key, the device interface class registry key, or a
@@ -1297,9 +1293,8 @@ public static partial class CfgMgr32
 	// LPGUID ClassGuid, LPCWSTR pszClassName, REGSAM samDesired, REGDISPOSITION Disposition, PHKEY phkClass, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Open_Class_KeyW")]
-	public static extern CONFIGRET CM_Open_Class_Key([In, Optional] InteropServices.GuidPtr ClassGuid,
-		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? pszClassName, REGSAM samDesired, REGDISPOSITION Disposition,
-		out SafeRegistryHandle phkClass, CM_OPEN_CLASS_KEY ulFlags);
+	public static extern CONFIGRET CM_Open_Class_Key([In, Optional] GuidPtr ClassGuid, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? pszClassName,
+		REGSAM samDesired, REGDISPOSITION Disposition, out SafeRegistryHandle phkClass, CM_OPEN_CLASS_KEY ulFlags);
 
 	/// <summary>
 	/// The <c>CM_Open_Device_Interface_Key</c> function opens the registry subkey that is used by applications and drivers to store
@@ -1486,7 +1481,7 @@ public static partial class CfgMgr32
 	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTreeW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, out PNP_VETO_TYPE pVetoType, [Optional] StringBuilder pszVetoName, uint ulNameLength, CM_REMOVE ulFlags);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, out PNP_VETO_TYPE pVetoType, [Optional] StringBuilder? pszVetoName, uint ulNameLength, CM_REMOVE ulFlags);
 
 	/// <summary>
 	/// The <c>CM_Query_And_Remove_SubTree</c> function checks whether a device instance and its children can be removed and, if so, it
@@ -1543,7 +1538,7 @@ public static partial class CfgMgr32
 	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTreeW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, [In, Optional] IntPtr pVetoType, [Optional] StringBuilder pszVetoName, uint ulNameLength, CM_REMOVE ulFlags);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, [In, Optional] IntPtr pVetoType, [Optional] StringBuilder? pszVetoName, uint ulNameLength, CM_REMOVE ulFlags);
 
 	/// <summary>
 	/// <para>
@@ -1616,7 +1611,8 @@ public static partial class CfgMgr32
 	// ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTree_ExW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, out PNP_VETO_TYPE pVetoType, [Optional] StringBuilder pszVetoName, uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, out PNP_VETO_TYPE pVetoType, [Optional] StringBuilder? pszVetoName,
+		uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// <para>
@@ -1689,7 +1685,8 @@ public static partial class CfgMgr32
 	// ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTree_ExW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, [In, Optional] IntPtr pVetoType, [Optional] StringBuilder pszVetoName, uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, [In, Optional] IntPtr pVetoType, [Optional] StringBuilder? pszVetoName,
+		uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// The <c>CM_Query_Resource_Conflict_List</c> function identifies device instances having resource requirements that conflict with
@@ -2036,7 +2033,7 @@ public static partial class CfgMgr32
 	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_EjectW")]
-	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, out PNP_VETO_TYPE pVetoType, [Out] StringBuilder pszVetoName, uint ulNameLength, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, out PNP_VETO_TYPE pVetoType, [Out] StringBuilder? pszVetoName, uint ulNameLength, uint ulFlags = 0);
 
 	/// <summary>
 	/// The <c>CM_Request_Device_Eject</c> function prepares a local device instance for safe removal, if the device is removable. If
@@ -2090,7 +2087,7 @@ public static partial class CfgMgr32
 	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_EjectW")]
-	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, [In, Optional] IntPtr pVetoType, [Out] StringBuilder pszVetoName, uint ulNameLength, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, [In, Optional] IntPtr pVetoType, [Out] StringBuilder? pszVetoName, uint ulNameLength, uint ulFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -2163,7 +2160,8 @@ public static partial class CfgMgr32
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_Eject_ExW")]
-	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, out PNP_VETO_TYPE pVetoType, [Out] StringBuilder pszVetoName, uint ulNameLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, out PNP_VETO_TYPE pVetoType, [Out] StringBuilder? pszVetoName,
+		uint ulNameLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// <para>
@@ -2236,7 +2234,8 @@ public static partial class CfgMgr32
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_Eject_ExW")]
-	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, [In, Optional] IntPtr pVetoType, [Out] StringBuilder pszVetoName, uint ulNameLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, [In, Optional] IntPtr pVetoType, [Out] StringBuilder? pszVetoName,
+		uint ulNameLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// The <c>CM_Request_Eject_PC</c> function requests that a portable PC, which is inserted in a local docking station, be ejected.
@@ -2359,7 +2358,8 @@ public static partial class CfgMgr32
 	// ULONG PropertyBufferSize, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Set_Class_PropertyW")]
-	public static extern CONFIGRET CM_Set_Class_Property(in Guid ClassGUID, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType, [In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Set_Class_Property(in Guid ClassGUID, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType,
+		[In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, uint ulFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -2408,8 +2408,8 @@ public static partial class CfgMgr32
 	// PropertyBuffer, ULONG PropertyBufferSize, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Set_Class_Property_ExW")]
-	public static extern CONFIGRET CM_Set_Class_Property_Ex(in Guid ClassGUID, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType, [In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize,
-		CM_CLASS_PROPERTY ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Set_Class_Property_Ex(in Guid ClassGUID, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType,
+		[In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, CM_CLASS_PROPERTY ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Set_Class_Registry_Property</c> function sets or deletes a property of a device setup class.</summary>
 	/// <param name="ClassGuid">A pointer to the GUID that represents the device setup class for which to set a property.</param>
@@ -2444,7 +2444,8 @@ public static partial class CfgMgr32
 	// hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Set_Class_Registry_PropertyW")]
-	public static extern CONFIGRET CM_Set_Class_Registry_Property(in Guid ClassGuid, CM_CRP ulProperty, [In, Optional] IntPtr Buffer, uint ulLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Set_Class_Registry_Property(in Guid ClassGuid, CM_CRP ulProperty, [In, Optional] IntPtr Buffer,
+		uint ulLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Set_Device_Interface_Property</c> function sets a device property of a device interface.</summary>
 	/// <param name="pszDeviceInterface">
@@ -2474,8 +2475,8 @@ public static partial class CfgMgr32
 	// PBYTE PropertyBuffer, ULONG PropertyBufferSize, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Set_Device_Interface_PropertyW")]
-	public static extern CONFIGRET CM_Set_Device_Interface_Property(string pszDeviceInterface, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType, [In, Optional] IntPtr PropertyBuffer,
-		uint PropertyBufferSize, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Set_Device_Interface_Property(string pszDeviceInterface, in DEVPROPKEY PropertyKey,
+		DEVPROPTYPE PropertyType, [In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, uint ulFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -2518,8 +2519,8 @@ public static partial class CfgMgr32
 	// PBYTE PropertyBuffer, ULONG PropertyBufferSize, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Set_Device_Interface_Property_ExW")]
-	public static extern CONFIGRET CM_Set_Device_Interface_Property_Ex(string pszDeviceInterface, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType, [In, Optional] IntPtr PropertyBuffer,
-		uint PropertyBufferSize, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Set_Device_Interface_Property_Ex(string pszDeviceInterface, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType,
+		[In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Set_DevNode_Problem</c> function sets a problem code for a device that is installed in a local machine.</summary>
 	/// <param name="dnDevInst">Caller-supplied device instance handle that is bound to the local machine.</param>
@@ -2647,7 +2648,8 @@ public static partial class CfgMgr32
 	// ULONG PropertyBufferSize, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Set_DevNode_PropertyW")]
-	public static extern CONFIGRET CM_Set_DevNode_Property(uint dnDevInst, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType, [In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Set_DevNode_Property(uint dnDevInst, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType,
+		[In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, uint ulFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -2687,8 +2689,8 @@ public static partial class CfgMgr32
 	// PropertyBuffer, ULONG PropertyBufferSize, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Set_DevNode_Property_ExW")]
-	public static extern CONFIGRET CM_Set_DevNode_Property_Ex(uint dnDevInst, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType, [In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize,
-		[In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Set_DevNode_Property_Ex(uint dnDevInst, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType,
+		[In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Set_DevNode_Registry_Property</c> function sets a specified device property in the registry.</summary>
 	/// <param name="dnDevInst">A caller-supplied device instance handle that is bound to the local machine.</param>
@@ -2929,7 +2931,7 @@ public static partial class CfgMgr32
 	/// <param name="cr">The <see cref="CONFIGRET"/> value to check.</param>
 	/// <param name="message">The message.</param>
 	/// <returns>An exception instance or <see langword="null"/> if value indicated success.</returns>
-	public static Exception GetException(this CONFIGRET cr, string message = null)
+	public static Exception? GetException(this CONFIGRET cr, string? message = null)
 	{
 		if (cr == CONFIGRET.CR_SUCCESS) return null;
 		var err = cr.ToError(Win32Error.RPC_S_UNKNOWN_IF);
@@ -2945,7 +2947,7 @@ public static partial class CfgMgr32
 	/// <summary>Throws an exception if <see cref="CONFIGRET"/> value is not <see cref="CONFIGRET.CR_SUCCESS"/>.</summary>
 	/// <param name="cr">The <see cref="CONFIGRET"/> value to check.</param>
 	/// <param name="message">The message.</param>
-	public static void ThrowIfFailed(this CONFIGRET cr, string message = null) { if (cr != CONFIGRET.CR_SUCCESS) throw cr.GetException(message); }
+	public static void ThrowIfFailed(this CONFIGRET cr, string? message = null) { if (cr != CONFIGRET.CR_SUCCESS) throw cr.GetException(message)!; }
 
 	/// <summary>Converts a specified <c>CONFIGRET</c> code to its equivalent system error code.</summary>
 	/// <param name="cr">The <c>CONFIGRET</c> code to be converted.</param>

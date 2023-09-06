@@ -10,9 +10,9 @@ public class SafeCoTaskMemStringTests
 	public void SafeCoTaskMemStringTest()
 	{
 		const int sz = 100;
-		string cs = new string('x', sz);
+		string cs = new('x', sz);
 
-		SafeCoTaskMemString s = new SafeCoTaskMemString(cs);
+		SafeCoTaskMemString s = new(cs);
 		Assert.That(s.Capacity, Is.EqualTo(sz + 1));
 		Assert.That((int)s.Size, Is.EqualTo(2 * (sz + 1)));
 		Assert.That((string?)s, Is.EqualTo(cs));

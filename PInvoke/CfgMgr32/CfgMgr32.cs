@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke;
@@ -1168,7 +1163,7 @@ public static partial class CfgMgr32
 	// PCWSTR UNCServerName, PHMACHINE phMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Connect_MachineW")]
-	public static extern CONFIGRET CM_Connect_Machine(string UNCServerName, out SafeHMACHINE phMachine);
+	public static extern CONFIGRET CM_Connect_Machine(string? UNCServerName, out SafeHMACHINE phMachine);
 
 	/// <summary>The <c>CM_Delete_Class_Key</c> function removes the specified installed device class from the system.</summary>
 	/// <param name="ClassGuid">Pointer to the GUID of the device class to remove.</param>
@@ -1402,7 +1397,7 @@ public static partial class CfgMgr32
 			cr = CM_Enumerate_Classes(++i, out guid, ulFlags);
 		}
 		if (cr != CONFIGRET.CR_NO_SUCH_VALUE && cr != CONFIGRET.CR_SUCCESS && cr != CONFIGRET.CR_INVALID_DATA)
-			throw cr.GetException();
+			throw cr.GetException()!;
 	}
 
 	/// <summary>
@@ -1510,7 +1505,7 @@ public static partial class CfgMgr32
 			sbCap = sb.Capacity;
 		}
 		if (cr != CONFIGRET.CR_NO_SUCH_VALUE && cr != CONFIGRET.CR_SUCCESS)
-			throw cr.GetException();
+			throw cr.GetException()!;
 	}
 
 	/// <summary>
@@ -2667,7 +2662,7 @@ public static partial class CfgMgr32
 	/// <para>For more information about device instance IDs, see Device Identification Strings.</para>
 	/// </remarks>
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_ListA")]
-	public static IEnumerable<string> CM_Get_Device_ID_List(CM_GETIDLIST ulFlags = 0, string pszFilter = null)
+	public static IEnumerable<string> CM_Get_Device_ID_List(CM_GETIDLIST ulFlags = 0, string? pszFilter = null)
 	{
 		while (true)
 		{
@@ -2787,7 +2782,7 @@ public static partial class CfgMgr32
 		public static bool operator ==(CONFLICT_LIST h1, CONFLICT_LIST h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is CONFLICT_LIST h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is CONFLICT_LIST h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2835,7 +2830,7 @@ public static partial class CfgMgr32
 		public static bool operator ==(HCMNOTIFICATION h1, HCMNOTIFICATION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCMNOTIFICATION h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HCMNOTIFICATION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2884,7 +2879,7 @@ public static partial class CfgMgr32
 		public static bool operator ==(HMACHINE h1, HMACHINE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMACHINE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMACHINE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2933,7 +2928,7 @@ public static partial class CfgMgr32
 		public static bool operator ==(LOG_CONF h1, LOG_CONF h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is LOG_CONF h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is LOG_CONF h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2982,7 +2977,7 @@ public static partial class CfgMgr32
 		public static bool operator ==(RES_DES h1, RES_DES h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is RES_DES h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is RES_DES h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

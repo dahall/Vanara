@@ -1,11 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke;
@@ -732,7 +726,7 @@ public static partial class CfgMgr32
 	/// function retrieves all interfaces that belong to the specified class.
 	/// </param>
 	/// <returns>An array of strings, each representing the symbolic link name of an interface instance.</returns>
-	public static string[] CM_Get_Device_Interface_List(in Guid InterfaceClassGuid, CM_GET_DEVICE_INTERFACE_LIST ulFlags, string pDeviceID = null)
+	public static string[] CM_Get_Device_Interface_List(in Guid InterfaceClassGuid, CM_GET_DEVICE_INTERFACE_LIST ulFlags, string? pDeviceID = null)
 	{
 		while (true)
 		{
@@ -801,7 +795,8 @@ public static partial class CfgMgr32
 	// CM_Get_Device_Interface_List_SizeW( PULONG pulLen, LPGUID InterfaceClassGuid, DEVINSTID_W pDeviceID, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_List_SizeW")]
-	public static extern CONFIGRET CM_Get_Device_Interface_List_Size(out uint pulLen, in Guid InterfaceClassGuid, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? pDeviceID, CM_GET_DEVICE_INTERFACE_LIST ulFlags);
+	public static extern CONFIGRET CM_Get_Device_Interface_List_Size(out uint pulLen, in Guid InterfaceClassGuid,
+		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? pDeviceID, CM_GET_DEVICE_INTERFACE_LIST ulFlags);
 
 	/// <summary>The <c>CM_Get_Device_Interface_Property</c> function retrieves a device property that is set for a device interface.</summary>
 	/// <param name="pszDeviceInterface">
@@ -834,8 +829,8 @@ public static partial class CfgMgr32
 	// PropertyBuffer, PULONG PropertyBufferSize, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_PropertyW")]
-	public static extern CONFIGRET CM_Get_Device_Interface_Property([MarshalAs(UnmanagedType.LPTStr)] string pszDeviceInterface, in DEVPROPKEY PropertyKey, out DEVPROPTYPE PropertyType,
-		[Out, Optional] IntPtr PropertyBuffer, ref uint PropertyBufferSize, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Get_Device_Interface_Property([MarshalAs(UnmanagedType.LPTStr)] string pszDeviceInterface, in DEVPROPKEY PropertyKey,
+		out DEVPROPTYPE PropertyType, [Out, Optional] IntPtr PropertyBuffer, ref uint PropertyBufferSize, uint ulFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -911,7 +906,7 @@ public static partial class CfgMgr32
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_Property_KeysW")]
 	public static extern CONFIGRET CM_Get_Device_Interface_Property_Keys([MarshalAs(UnmanagedType.LPTStr)] string pszDeviceInterface,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[] PropertyKeyArray, ref uint PropertyKeyCount, uint ulFlags = 0);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray, ref uint PropertyKeyCount, uint ulFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -953,7 +948,7 @@ public static partial class CfgMgr32
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_Property_Keys_ExW")]
 	public static extern CONFIGRET CM_Get_Device_Interface_Property_Keys_Ex([MarshalAs(UnmanagedType.LPTStr)] string pszDeviceInterface,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[] PropertyKeyArray, ref uint PropertyKeyCount, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray, ref uint PropertyKeyCount, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Get_DevNode_Property</c> function retrieves a device instance property.</summary>
 	/// <param name="dnDevInst">Device instance handle that is bound to the local machine.</param>
@@ -1054,7 +1049,7 @@ public static partial class CfgMgr32
 	// CM_Get_DevNode_Property_Keys( DEVINST dnDevInst, DEVPROPKEY *PropertyKeyArray, PULONG PropertyKeyCount, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_DevNode_Property_Keys")]
-	public static extern CONFIGRET CM_Get_DevNode_Property_Keys(uint dnDevInst, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[] PropertyKeyArray,
+	public static extern CONFIGRET CM_Get_DevNode_Property_Keys(uint dnDevInst, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray,
 		ref uint PropertyKeyCount, uint ulFlags = 0);
 
 	/// <summary>
@@ -1093,7 +1088,7 @@ public static partial class CfgMgr32
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_DevNode_Property_Keys_Ex")]
-	public static extern CONFIGRET CM_Get_DevNode_Property_Keys_Ex(uint dnDevInst, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[] PropertyKeyArray,
+	public static extern CONFIGRET CM_Get_DevNode_Property_Keys_Ex(uint dnDevInst, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray,
 		ref uint PropertyKeyCount, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Get_DevNode_Registry_Property</c> function retrieves a specified device property from the registry.</summary>
@@ -1129,7 +1124,8 @@ public static partial class CfgMgr32
 	// ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_DevNode_Registry_PropertyW")]
-	public static extern CONFIGRET CM_Get_DevNode_Registry_Property(uint dnDevInst, CM_DRP ulProperty, out REG_VALUE_TYPE pulRegDataType, [Out, Optional] IntPtr Buffer, ref uint pulLength, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Get_DevNode_Registry_Property(uint dnDevInst, CM_DRP ulProperty, out REG_VALUE_TYPE pulRegDataType,
+		[Out, Optional] IntPtr Buffer, ref uint pulLength, uint ulFlags = 0);
 
 	/// <summary>
 	/// The <c>CM_Get_DevNode_Status</c> function obtains the status of a device instance from its device node (devnode) in the local
@@ -1194,7 +1190,8 @@ public static partial class CfgMgr32
 	// CM_Get_DevNode_Status_Ex( PULONG pulStatus, PULONG pulProblemNumber, DEVINST dnDevInst, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_DevNode_Status_Ex")]
-	public static extern CONFIGRET CM_Get_DevNode_Status_Ex(out DN pulStatus, out CM_PROB pulProblemNumber, uint dnDevInst, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Get_DevNode_Status_Ex(out DN pulStatus, out CM_PROB pulProblemNumber, uint dnDevInst, [In, Optional] uint ulFlags,
+		[In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// The <c>CM_Get_First_Log_Conf</c> function obtains the first logical configuration, of a specified configuration type, associated

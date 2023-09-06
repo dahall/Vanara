@@ -1,12 +1,3 @@
-using Microsoft.Win32.SafeHandles;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.AdvApi32;
-using static Vanara.PInvoke.SetupAPI;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the CfgMgr32.dll</summary>
@@ -366,6 +357,7 @@ public static partial class CfgMgr32
 		{
 			CD_ulSize = (uint)Marshal.SizeOf(typeof(CONFLICT_DETAILS));
 			CD_ulMask = mask;
+			CD_szDescription = "";
 		}
 
 		/// <summary>Size, in bytes, of the CONFLICT_DETAILS structure.</summary>

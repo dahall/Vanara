@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.SetupAPI;
+﻿using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke;
 
@@ -492,7 +488,7 @@ public static partial class CfgMgr32
 		public static bool operator ==(HSWDEVICE h1, HSWDEVICE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HSWDEVICE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HSWDEVICE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -674,6 +670,6 @@ public static partial class CfgMgr32
 
 		IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => throw new NotImplementedException();
 
-		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => StringHelper.GetString(pNativeData, CharSet.Unicode);
+		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => StringHelper.GetString(pNativeData, CharSet.Unicode) ?? "";
 	}
 }

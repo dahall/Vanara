@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.CfgMgr32;
 using static Vanara.PInvoke.SetupAPI;
 
@@ -16,11 +12,11 @@ namespace Vanara.PInvoke.Tests;
 public class CfgMgr32Tests
 {
 	private static readonly Guid devguid = GUID_DEVCLASS_DISKDRIVE;
+	private static readonly Lazy<uint> root = new(() => LocateNode());
 	private static readonly Lazy<uint> leaf = new(() => GetFirstLeaf(root.Value));
 	private static readonly Lazy<uint> node = new(() => LocateNode(@"SWD\PRINTENUM\WSD-F442E38C-F139-42D3-BCCC-A3653929E4B7")); //@"USB\ROOT_HUB30\4&3490C39&0&0"));
-	private static readonly Lazy<uint> root = new(() => LocateNode());
 
-	private ElevPriv priv;
+	private ElevPriv? priv;
 
 	public static uint LeafId => leaf.Value;
 	public static uint NodeId => node.Value;
@@ -37,7 +33,7 @@ public class CfgMgr32Tests
 		foreach (System.Reflection.FieldInfo fi in typeof(SetupAPI).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public).
 			Where(fi => fi.FieldType == typeof(Guid) && fi.Name.StartsWith("GUID_DEVINTERFACE_")))
 		{
-			CONFIGRET ret = CM_Get_Device_Interface_List_Size(out var len, (Guid)fi.GetValue(null), default, CM_GET_DEVICE_INTERFACE_LIST.CM_GET_DEVICE_INTERFACE_LIST_PRESENT);
+			CONFIGRET ret = CM_Get_Device_Interface_List_Size(out var len, (Guid)fi.GetValue(null)!, default, CM_GET_DEVICE_INTERFACE_LIST.CM_GET_DEVICE_INTERFACE_LIST_PRESENT);
 			if (ret == CONFIGRET.CR_SUCCESS && len > 2)
 				TestContext.WriteLine($"{fi.Name}={len}");
 		}
@@ -55,7 +51,7 @@ public class CfgMgr32Tests
 		finally
 		{
 			Assert.That(CM_Free_Log_Conf(hConf), Is.EqualTo(CONFIGRET.CR_SUCCESS));
-			Assert.That(() => hConf.Dispose(), Throws.Nothing);
+			Assert.That(hConf.Dispose, Throws.Nothing);
 		}
 	}
 
@@ -67,7 +63,7 @@ public class CfgMgr32Tests
 		{
 			MEM_RESOURCE memRes = MakeResource();
 
-			SafeRES_DES hRD = null;
+			SafeRES_DES? hRD = null;
 			Assert.That(() => hRD = CM_Add_Res_Des(BootLC1, memRes), Throws.Nothing);
 			try
 			{
@@ -78,7 +74,7 @@ public class CfgMgr32Tests
 				Assert.That(list[0].pResourceID, Is.EqualTo(RESOURCEID.ResType_Mem));
 				MEM_RESOURCE retMemRes = default;
 				Assert.That(() => retMemRes = CM_Get_Res_Des_Data<MEM_RESOURCE>(list[0].prdResDes), Throws.Nothing);
-				Assert.That(retMemRes.MEM_Data.Length, Is.EqualTo(memRes.MEM_Data.Length));
+				Assert.That(retMemRes.MEM_Data!.Length, Is.EqualTo(memRes.MEM_Data.Length));
 
 				memRes.MEM_Data[0].MR_Min = 0xDA00;
 				memRes.MEM_Data[0].MR_Max = 0xDE00;
@@ -86,7 +82,7 @@ public class CfgMgr32Tests
 			}
 			finally
 			{
-				CM_Free_Res_Des(IntPtr.Zero, hRD);
+				CM_Free_Res_Des(IntPtr.Zero, hRD!);
 				hRD?.Dispose();
 			}
 		}
@@ -110,7 +106,7 @@ public class CfgMgr32Tests
 	public void CM_Connect_MachineTest()
 	{
 		Assert.That(CM_Connect_Machine(null, out SafeHMACHINE hMach), Is.EqualTo(CONFIGRET.CR_SUCCESS));
-		Assert.That(() => hMach.Dispose(), Throws.Nothing);
+		Assert.That(hMach.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -123,19 +119,19 @@ public class CfgMgr32Tests
 	[Test]
 	public void CM_Enumerate_ClassesTest()
 	{
-		IEnumerable<Guid> classes = null;
+		IEnumerable<Guid>? classes = null;
 		Assert.That(() => classes = CM_Enumerate_Classes(CM_ENUMERATE_CLASSES.CM_ENUMERATE_CLASSES_INSTALLER), Throws.Nothing);
 		Assert.That(classes, Is.Not.Empty);
-		TestContext.Write(string.Join("\n", classes));
+		TestContext.Write(string.Join("\n", classes!));
 	}
 
 	[Test]
 	public void CM_Enumerate_EnumeratorsTest()
 	{
-		string[] enums = null;
+		string[]? enums = null;
 		Assert.That(() => enums = CM_Enumerate_Enumerators().ToArray(), Throws.Nothing);
 		Assert.That(enums, Is.Not.Empty);
-		TestContext.Write(string.Join("\n", enums));
+		TestContext.Write(string.Join("\n", enums!));
 	}
 
 	[Test]
@@ -216,7 +212,7 @@ public class CfgMgr32Tests
 		{
 			Assert.That(CM_Get_Class_Registry_Property(cls, prop, out REG_VALUE_TYPE dpType, mem, ref sz), Is.EqualTo(CONFIGRET.CR_SUCCESS));
 			TestContext.WriteLine($"{cls}: Type={dpType}, Size={sz}");
-			TestContext.Write(val = (uint)dpType.GetValue(mem, mem.Size));
+			TestContext.Write(val = (uint)dpType.GetValue(mem, mem.Size)!);
 		}
 
 		using (var mem = SafeCoTaskMemHandle.CreateFromStructure(val > 0 ? 0U : 256))
@@ -418,15 +414,15 @@ public class CfgMgr32Tests
 	[Test]
 	public void CM_Get_Resource_Conflict_DetailsTest()
 	{
-		SafeCONFLICT_LIST hcl = null;
+		SafeCONFLICT_LIST? hcl = null;
 		MEM_RESOURCE memRes = MakeResource();
 		Assert.That(() => hcl = CM_Query_Resource_Conflict_List(NodeId, memRes), Throws.Nothing);
 		try
 		{
-			Assert.That(CM_Get_Resource_Conflict_Count(hcl, out var count), Is.EqualTo(CONFIGRET.CR_SUCCESS));
+			Assert.That(CM_Get_Resource_Conflict_Count(hcl!, out var count), Is.EqualTo(CONFIGRET.CR_SUCCESS));
 			Assert.That(count, Is.GreaterThan(0));
 			CONFLICT_DETAILS det = new(CM_CDMASK.CM_CDMASK_DESCRIPTION | CM_CDMASK.CM_CDMASK_DEVINST | CM_CDMASK.CM_CDMASK_FLAGS | CM_CDMASK.CM_CDMASK_RESDES);
-			Assert.That(CM_Get_Resource_Conflict_Details(hcl, 0, ref det), ResultIs.Successful);
+			Assert.That(CM_Get_Resource_Conflict_Details(hcl!, 0, ref det), ResultIs.Successful);
 			Assert.That(det.CD_dnDevInst, Is.Not.Zero);
 			Assert.That(det.CD_szDescription, Is.Not.Null);
 			det.WriteValues();
@@ -526,7 +522,7 @@ public class CfgMgr32Tests
 		while ((ret = CM_Get_Sibling(out di, di)) == CONFIGRET.CR_SUCCESS)
 			yield return di;
 		if (ret != CONFIGRET.CR_NO_SUCH_DEVNODE)
-			throw ret.GetException();
+			throw ret.GetException()!;
 	}
 
 	private static uint GetFirstLeaf(uint dnDevInst)
@@ -534,10 +530,10 @@ public class CfgMgr32Tests
 		CONFIGRET ret;
 		var di = dnDevInst;
 		while ((ret = CM_Get_Child(out di, di)) == CONFIGRET.CR_SUCCESS) ;
-		return ret == CONFIGRET.CR_NO_SUCH_DEVNODE ? di : throw ret.GetException();
+		return ret == CONFIGRET.CR_NO_SUCH_DEVNODE ? di : throw ret.GetException()!;
 	}
 
-	private static uint LocateNode(string devId = null)
+	private static uint LocateNode(string? devId = null)
 	{
 		CM_Locate_DevNode(out var di, devId, CM_LOCATE_DEVNODE.CM_LOCATE_DEVNODE_NORMAL).ThrowIfFailed();
 		return di;
