@@ -407,7 +407,7 @@ public struct LOGFONT
 	public short lfWeight
 	{
 		get => (short)_lfWeight;
-		set => _lfWeight = value >= 0 && value <= 1000 ? value : throw new ArgumentOutOfRangeException(nameof(lfWeight), @"Font weight must be a value in the range 0 through 1000.");
+		set => _lfWeight = value is >= 0 and <= 1000 ? value : throw new ArgumentOutOfRangeException(nameof(lfWeight), @"Font weight must be a value in the range 0 through 1000.");
 	}
 
 	/// <summary>Gets or sets the font pitch.</summary>

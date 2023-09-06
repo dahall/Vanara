@@ -6829,7 +6829,7 @@ public static partial class AdvApi32
 		public static TRACEHANDLE NULL => new(0);
 
 		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
-		public bool IsInvalid => handle == 0 || handle == 0x00000000FFFFFFFF;
+		public bool IsInvalid => handle is 0 or 0x00000000FFFFFFFF;
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == 0;
@@ -7025,7 +7025,7 @@ public static partial class AdvApi32
 
 		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
 		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
-		public bool IsInvalid => handle == 0 || handle == 0x00000000FFFFFFFF;
+		public bool IsInvalid => handle is 0 or 0x00000000FFFFFFFF;
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeTRACEHANDLE"/> to <see cref="TRACEHANDLE"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>

@@ -18,7 +18,7 @@ public struct CY : IEquatable<CY>, IComparable<CY>, IEquatable<decimal>, ICompar
 	/// <param name="value">The value.</param>
 	public CY(long value)
 	{
-		if (value > (long.MaxValue / 10000) || value < (long.MinValue / 10000))
+		if (value is > (long.MaxValue / 10000) or < (long.MinValue / 10000))
 			throw new ArgumentOutOfRangeException();
 		int64 = value * 10000;
 	}

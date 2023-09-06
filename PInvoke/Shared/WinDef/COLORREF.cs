@@ -71,7 +71,7 @@ public struct COLORREF : IEquatable<COLORREF>
 	/// </returns>
 	public COLORREF Darken(float percent)
 	{
-		return percent < 0 || percent > 1.0
+		return percent is < 0 or > (float)1.0
 			? throw new ArgumentOutOfRangeException(nameof(percent))
 			: (new(Conv(R), Conv(G), Conv(B)) { Value = Value });
 		byte Conv(byte c) => (byte)(c - (int)(c * percent));
@@ -96,7 +96,7 @@ public struct COLORREF : IEquatable<COLORREF>
 	/// </returns>
 	public COLORREF Lighten(float percent)
 	{
-		return percent < 0 || percent > 1.0
+		return percent is < 0 or > (float)1.0
 			? throw new ArgumentOutOfRangeException(nameof(percent))
 			: (new(Conv(R), Conv(G), Conv(B)) { Value = Value });
 		byte Conv(byte c) => (byte)(c + (int)((255f - c) * percent));
