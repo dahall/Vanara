@@ -1,9 +1,3 @@
-#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WinMm.dll</summary>
@@ -2124,7 +2118,7 @@ public static partial class WinMm
 		public static bool operator ==(HWAVEIN h1, HWAVEIN h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWAVEIN h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HWAVEIN h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2172,7 +2166,7 @@ public static partial class WinMm
 		public static bool operator ==(HWAVEOUT h1, HWAVEOUT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWAVEOUT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HWAVEOUT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

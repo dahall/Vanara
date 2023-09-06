@@ -1,9 +1,3 @@
-#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WinMm.dll</summary>

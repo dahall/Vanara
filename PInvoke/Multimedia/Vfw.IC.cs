@@ -1,10 +1,6 @@
-﻿#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using System.Runtime.CompilerServices;
 using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
 
@@ -875,7 +871,7 @@ public static partial class Msvfw32
 	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.DrawDibDraw")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawDibDraw([In] HDRAWDIB hdd, [In] HDC hdc, int xDst, int yDst, int dxDst, int dyDst, [In, Optional] IntPtr lpbi, [In, Optional] IntPtr lpBits, int xSrc, int ySrc, int dxSrc, int dySrc, DDF wFlags);
+	public static extern bool DrawDibDraw([In] HDRAWDIB hdd, [In] HDC hdc, int xDst, int yDst, [Optional] int dxDst, [Optional] int dyDst, [In, Optional] IntPtr lpbi, [In, Optional] IntPtr lpBits, [Optional] int xSrc, [Optional] int ySrc, [Optional] int dxSrc, [Optional] int dySrc, DDF wFlags);
 
 	/// <summary>
 	/// The <c>DrawDibEnd</c> function clears the flags and other settings of a DrawDib DC that are set by the DrawDibBegin or
@@ -980,6 +976,51 @@ public static partial class Msvfw32
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.DrawDibProfileDisplay")]
 	public static extern IntPtr DrawDibProfileDisplay(in BITMAPINFOHEADER lpbi);
 
+	/// <summary>The <c>DrawDibProfileDisplay</c> function determines settings for the display system when using DrawDib functions.</summary>
+	/// <param name="lpbi">
+	/// Pointer to a BITMAPINFOHEADER structure that contains bitmap information. You can also specify <c>NULL</c> to verify that the
+	/// profile information is current. If the profile information is not current, DrawDib will rerun the profile tests to obtain a
+	/// current set of information. When you call <c>DrawDibProfileDisplay</c> with this parameter set to <c>NULL</c>, the return value
+	/// is meaningless.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns a value that indicates the fastest drawing and stretching capabilities of the display system. This value can be zero if
+	/// the bitmap format is not supported or one or more of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PD_CAN_DRAW_DIB</term>
+	/// <term>DrawDib can draw images using this format. Stretching might or might not also be supported.</term>
+	/// </item>
+	/// <item>
+	/// <term>PD_CAN_STRETCHDIB</term>
+	/// <term>DrawDib can stretch and draw images using this format.</term>
+	/// </item>
+	/// <item>
+	/// <term>PD_STRETCHDIB_1_1_OK</term>
+	/// <term>StretchDIBits draws unstretched images using this format faster than an alternative method.</term>
+	/// </item>
+	/// <item>
+	/// <term>PD_STRETCHDIB_1_2_OK</term>
+	/// <term>StretchDIBits draws stretched images (in a 1:2 ratio) using this format faster than an alternative method.</term>
+	/// </item>
+	/// <item>
+	/// <term>PD_STRETCHDIB_1_N_OK</term>
+	/// <term>StretchDIBits draws stretched images (in a 1:N ratio) using this format faster than an alternative method.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-drawdibprofiledisplay LRESULT VFWAPI DrawDibProfileDisplay(
+	// LPBITMAPINFOHEADER lpbi );
+	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.DrawDibProfileDisplay")]
+	public static extern IntPtr DrawDibProfileDisplay([In, Optional] IntPtr lpbi);
+
 	/// <summary>The <c>DrawDibRealize</c> function realizes the palette of the DrawDib DC for use with the specified DC.</summary>
 	/// <param name="hdd">Handle to a DrawDib DC.</param>
 	/// <param name="hdc">Handle to the DC containing the palette.</param>
@@ -1060,7 +1101,7 @@ public static partial class Msvfw32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-drawdibupdate void DrawDibUpdate( hdd, hdc, x, y );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.DrawDibUpdate")]
-	public static bool DrawDibUpdate([In] HDRAWDIB hdd, [In] HDC hdc, int x, int y) => DrawDibDraw(hdd, hdc, x, y, 0, 0, default, default, 0, 0, 0, 0, DDF.DDF_UPDATE);
+	public static bool DrawDibUpdate([In] HDRAWDIB hdd, [In] HDC hdc, int x, int y) => DrawDibDraw(hdd, hdc, x, y, wFlags: DDF.DDF_UPDATE);
 
 	/// <summary>
 	/// The <c>GetOpenFileNamePreview</c> function selects a file by using the Open dialog box. The dialog box also allows the user to
@@ -1774,13 +1815,14 @@ public static partial class Msvfw32
 	// lpbiDst, LPVOID lpDst, int xDst, int yDst, int dxDst, int dyDst );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressExQuery")]
 	public static ICERR ICDecompressExQuery([In] HIC hic, in BITMAPINFOHEADER lpbiSrc, int xSrc, int ySrc,
-		int dxSrc, int dySrc, in BITMAPINFOHEADER lpbiDst, [Out] IntPtr lpDst, int xDst, int yDst, int dxDst, int dyDst)
+		int dxSrc, int dySrc, [In] BITMAPINFOHEADER? lpbiDst, [Out] IntPtr lpDst, int xDst, int yDst, int dxDst, int dyDst)
 	{
 		unsafe
 		{
-			fixed (void* pIn = &lpbiSrc, pOut = &lpbiDst)
+			var biDst = lpbiDst.GetValueOrDefault();
+			fixed (void* pIn = &lpbiSrc)
 			{
-				ICDECOMPRESSEX ic = new ICDECOMPRESSEX
+				ICDECOMPRESSEX ic = new()
 				{
 					dwFlags = 0,
 					lpbiSrc = (IntPtr)pIn,
@@ -1789,7 +1831,7 @@ public static partial class Msvfw32
 					ySrc = ySrc,
 					dxSrc = dxSrc,
 					dySrc = dySrc,
-					lpbiDst = (IntPtr)pOut,
+					lpbiDst = lpbiDst.HasValue ? (IntPtr)(void*)&biDst: IntPtr.Zero,
 					lpDst = lpDst,
 					xDst = xDst,
 					yDst = yDst,
@@ -1966,7 +2008,7 @@ public static partial class Msvfw32
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompresssetpalette void ICDecompressSetPalette( hic,
 	// lpbiPalette );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressSetPalette")]
-	public static ICERR ICDecompressSetPalette([In] HIC hic, [In, Optional] SafeBITMAPINFO lpbiPalette) =>
+	public static ICERR ICDecompressSetPalette([In] HIC hic, [In, Optional] SafeBITMAPINFO? lpbiPalette) =>
 		(ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_SET_PALETTE, lpbiPalette).ToInt32();
 
 	/// <summary>The <c>ICDraw</c> function decompresses an image for drawing.</summary>
@@ -2207,7 +2249,7 @@ public static partial class Msvfw32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdrawquery void ICDrawQuery( hic, lpbiInput );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDrawQuery")]
-	public static ICERR ICDrawQuery([In] HIC hic, [In, Optional] SafeBITMAPINFO lpbiInput) =>
+	public static ICERR ICDrawQuery([In] HIC hic, [In, Optional] SafeBITMAPINFO? lpbiInput) =>
 		(ICERR)ICSendMessage(hic, ICM_Message.ICM_DRAW_QUERY, lpbiInput).ToInt32();
 
 	/// <summary>
@@ -2478,7 +2520,7 @@ public static partial class Msvfw32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icgetstate void ICGetState( hic, pv, cb );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICGetState")]
-	public static ICERR ICGetState([In] HIC hic, IntPtr pv, uint cb) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_GETSTATE, pv, new IntPtr((int)cb)).ToInt32();
+	public static ICERR ICGetState([In] HIC hic, [Optional] IntPtr pv, uint cb) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_GETSTATE, pv, new IntPtr((int)cb)).ToInt32();
 
 	/// <summary>
 	/// The <c>ICGetStateSize</c> macro queries a video compression driver to determine the amount of memory required to retrieve the
@@ -2533,7 +2575,7 @@ public static partial class Msvfw32
 	// uiFlags, LPBITMAPINFO lpbiIn, LPVOID lpBits, LPBITMAPINFO lpbiOut, LONG lQuality, LONG *plSize );
 	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICImageCompress")]
-	public static extern SafeHGlobalHandle ICImageCompress([In] HIC hic, [Optional] uint uiFlags, in BITMAPINFO lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut, int lQuality, ref int plSize);
+	public static extern SafeMoveableHGlobalHandle ICImageCompress([In] HIC hic, [Optional] uint uiFlags, in BITMAPINFO lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut, int lQuality, ref int plSize);
 
 	/// <summary>
 	/// The <c>ICImageCompress</c> function compresses an image to a given size. This function does not require initialization functions.
@@ -2564,7 +2606,7 @@ public static partial class Msvfw32
 	// uiFlags, LPBITMAPINFO lpbiIn, LPVOID lpBits, LPBITMAPINFO lpbiOut, LONG lQuality, LONG *plSize );
 	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICImageCompress")]
-	public static extern SafeHGlobalHandle ICImageCompress([In] HIC hic, [Optional] uint uiFlags, [In] IntPtr lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut, int lQuality, ref int plSize);
+	public static extern SafeMoveableHGlobalHandle ICImageCompress([In] HIC hic, [Optional] uint uiFlags, [In] IntPtr lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut, int lQuality, ref int plSize);
 
 	/// <summary>The <c>ICImageDecompress</c> function decompresses an image without using initialization functions.</summary>
 	/// <param name="hic">
@@ -2587,7 +2629,7 @@ public static partial class Msvfw32
 	// uiFlags, LPBITMAPINFO lpbiIn, LPVOID lpBits, LPBITMAPINFO lpbiOut );
 	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICImageDecompress")]
-	public static extern SafeHGlobalHandle ICImageDecompress([In] HIC hic, [Optional] uint uiFlags, in BITMAPINFO lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut);
+	public static extern SafeMoveableHGlobalHandle ICImageDecompress([In] HIC hic, [Optional] uint uiFlags, in BITMAPINFO lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut);
 
 	/// <summary>The <c>ICImageDecompress</c> function decompresses an image without using initialization functions.</summary>
 	/// <param name="hic">
@@ -2610,7 +2652,7 @@ public static partial class Msvfw32
 	// uiFlags, LPBITMAPINFO lpbiIn, LPVOID lpBits, LPBITMAPINFO lpbiOut );
 	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICImageDecompress")]
-	public static extern SafeHGlobalHandle ICImageDecompress([In] HIC hic, [Optional] uint uiFlags, [In] IntPtr lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut);
+	public static extern SafeMoveableHGlobalHandle ICImageDecompress([In] HIC hic, [Optional] uint uiFlags, [In] IntPtr lpbiIn, [In] IntPtr lpBits, [In, Optional] IntPtr lpbiOut);
 
 	/// <summary>
 	/// The <c>ICInfo</c> function retrieves information about specific installed compressors or enumerates the installed compressors.
@@ -3219,7 +3261,7 @@ public static partial class Msvfw32
 	/// <param name="lpbiOutput">Additional message-specific information.</param>
 	/// <returns>Returns a message-specific result.</returns>
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICSendMessage")]
-	internal static IntPtr ICSendMessage(HIC hic, ICM_Message msg, [In] SafeBITMAPINFO lpbiInput, [In, Optional] SafeBITMAPINFO lpbiOutput) =>
+	internal static IntPtr ICSendMessage(HIC hic, ICM_Message msg, [In] SafeBITMAPINFO? lpbiInput, [In, Optional] SafeBITMAPINFO? lpbiOutput) =>
 		ICSendMessage(hic, msg, lpbiInput ?? SafeBITMAPINFO.Null, lpbiOutput ?? SafeBITMAPINFO.Null);
 
 	/// <summary>
@@ -3418,7 +3460,7 @@ public static partial class Msvfw32
 		public static bool operator ==(HDRAWDIB h1, HDRAWDIB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDRAWDIB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDRAWDIB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -3466,7 +3508,7 @@ public static partial class Msvfw32
 		public static bool operator ==(HIC h1, HIC h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIC h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HIC h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -1,8 +1,4 @@
 #pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
 using static Vanara.PInvoke.WinMm;
 
 namespace Vanara.PInvoke;
@@ -1233,7 +1229,7 @@ public static partial class Vfw32
 	/// </summary>
 	/// <param name="hwnd">Handle to a capture window.</param>
 	/// <param name="fpProc">
-	/// Pointer to the callback function, of type capControlCallback . Specify <c>NULL</c> for this parameter to disable a previously
+	/// Pointer to the callback function, of type capControlCallback. Specify <c>NULL</c> for this parameter to disable a previously
 	/// installed callback function.
 	/// </param>
 	/// <returns>None</returns>
@@ -1248,7 +1244,7 @@ public static partial class Vfw32
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetcallbackoncapcontrol void capSetCallbackOnCapControl( hwnd,
 	// fpProc );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetCallbackOnCapControl")]
-	public static bool capSetCallbackOnCapControl(HWND hwnd, [Optional] capControlCallback fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_CAPCONTROL, 0, fpProc);
+	public static bool capSetCallbackOnCapControl(HWND hwnd, [Optional] capControlCallback? fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_CAPCONTROL, 0, fpProc);
 
 	/// <summary>
 	/// The <c>capSetCallbackOnError</c> macro sets an error callback function in the client application. AVICap calls this procedure
@@ -1284,7 +1280,7 @@ public static partial class Vfw32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetcallbackonerror void capSetCallbackOnError( hwnd, fpProc );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetCallbackOnError")]
-	public static bool capSetCallbackOnError(HWND hwnd, [Optional] capErrorCallback fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_ERROR, 0, fpProc);
+	public static bool capSetCallbackOnError(HWND hwnd, [Optional] capErrorCallback? fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_ERROR, 0, fpProc);
 
 	/// <summary>
 	/// The <c>capSetCallbackOnFrame</c> macro sets a preview callback function in the application. AVICap calls this procedure when the
@@ -1302,7 +1298,7 @@ public static partial class Vfw32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetcallbackonframe void capSetCallbackOnFrame( hwnd, fpProc );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetCallbackOnFrame")]
-	public static bool capSetCallbackOnFrame(HWND hwnd, capVideoStreamCallback fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_FRAME, 0, fpProc);
+	public static bool capSetCallbackOnFrame(HWND hwnd, capVideoStreamCallback? fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_FRAME, 0, fpProc);
 
 	/// <summary>
 	/// The <c>capSetCallbackOnStatus</c> macro sets a status callback function in the application. AVICap calls this procedure whenever
@@ -1333,7 +1329,7 @@ public static partial class Vfw32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetcallbackonstatus void capSetCallbackOnStatus( hwnd, fpProc );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetCallbackOnStatus")]
-	public static bool capSetCallbackOnStatus(HWND hwnd, [Optional] capStatusCallback fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_STATUS, 0, fpProc);
+	public static bool capSetCallbackOnStatus(HWND hwnd, [Optional] capStatusCallback? fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_STATUS, 0, fpProc);
 
 	/// <summary>
 	/// The <c>capSetCallbackOnVideoStream</c> macro sets a callback function in the application. AVICap calls this procedure during
@@ -1358,7 +1354,7 @@ public static partial class Vfw32
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetcallbackonvideostream void capSetCallbackOnVideoStream( hwnd,
 	// fpProc );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetCallbackOnVideoStream")]
-	public static bool capSetCallbackOnVideoStream(HWND hwnd, [Optional] capVideoStreamCallback fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_VIDEOSTREAM, 0, fpProc);
+	public static bool capSetCallbackOnVideoStream(HWND hwnd, [Optional] capVideoStreamCallback? fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_VIDEOSTREAM, 0, fpProc);
 
 	/// <summary>
 	/// The <c>capSetCallbackOnWaveStream</c> macro sets a callback function in the application. AVICap calls this procedure during
@@ -1384,7 +1380,7 @@ public static partial class Vfw32
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetcallbackonwavestream void capSetCallbackOnWaveStream( hwnd,
 	// fpProc );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetCallbackOnWaveStream")]
-	public static bool capSetCallbackOnWaveStream(HWND hwnd, [Optional] capWaveStreamCallback fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_WAVESTREAM, 0, fpProc);
+	public static bool capSetCallbackOnWaveStream(HWND hwnd, [Optional] capWaveStreamCallback? fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_WAVESTREAM, 0, fpProc);
 
 	/// <summary>
 	/// The <c>capSetCallbackOnYield</c> macro sets a callback function in the application. AVICap calls this procedure when the capture
@@ -1418,7 +1414,7 @@ public static partial class Vfw32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetcallbackonyield void capSetCallbackOnYield( hwnd, fpProc );
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetCallbackOnYield")]
-	public static bool capSetCallbackOnYield(HWND hwnd, [Optional] capYieldCallback fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_YIELD, 0, fpProc);
+	public static bool capSetCallbackOnYield(HWND hwnd, [Optional] capYieldCallback? fpProc) => AVICapSM(hwnd, capMessage.WM_CAP_SET_CALLBACK_YIELD, 0, fpProc);
 
 	/// <summary>
 	/// The <c>capSetMCIDeviceName</c> macro specifies the name of the MCI video device to be used to capture data. You can use this
@@ -1475,11 +1471,11 @@ public static partial class Vfw32
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetVideoFormat")]
 	public static bool capSetVideoFormat(HWND hwnd, [In] Gdi32.SafeBITMAPINFO s) => AVICapSM(hwnd, capMessage.WM_CAP_SET_VIDEOFORMAT, (IntPtr)(int)s.Size, s.DangerousGetHandle());
 
-	private static bool AVICapSM(HWND hwnd, capMessage msg, int v, Delegate d) => User32.SendMessage(hwnd, unchecked((uint)msg), (IntPtr)v, Marshal.GetFunctionPointerForDelegate(d)) != IntPtr.Zero;
+	private static bool AVICapSM(HWND hwnd, capMessage msg, int v, Delegate? d) => User32.SendMessage(hwnd, unchecked((uint)msg), (IntPtr)v, d is null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(d)) != IntPtr.Zero;
 
 	private static bool AVICapSM(HWND hwnd, capMessage msg, [Optional] IntPtr wparam, [Optional] IntPtr lparam) => User32.SendMessage(hwnd, unchecked((uint)msg), wparam, lparam) != IntPtr.Zero;
 
-	private static bool AVICapSM(HWND hwnd, capMessage msg, StringBuilder lparam) => User32.SendMessage(hwnd, unchecked((uint)msg), (IntPtr)(lparam?.Capacity ?? 0), lparam) != IntPtr.Zero;
+	private static bool AVICapSM(HWND hwnd, capMessage msg, StringBuilder lparam) => User32.SendMessage(hwnd, unchecked((uint)msg), (IntPtr)lparam.Capacity, lparam) != IntPtr.Zero;
 
 	private static int AVICapSM<TLP>(HWND hwnd, capMessage msg, int size, in TLP lparam) where TLP : struct
 	{

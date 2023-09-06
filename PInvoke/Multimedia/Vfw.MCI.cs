@@ -1,8 +1,3 @@
-#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -1643,7 +1638,7 @@ public static partial class Vfw32
 
 	private static int MCIWndSM<TEnum>(HWND hwnd, TEnum msg, [Optional] IntPtr wparam, [Optional] IntPtr lparam) where TEnum : struct, IConvertible => SendMessage(hwnd, msg, wparam, lparam).ToInt32();
 
-	private static int MCIWndSM<TEnum>(HWND hwnd, TEnum msg, StringBuilder lparam) where TEnum : struct, IConvertible => SendMessage(hwnd, msg, (IntPtr)(lparam?.Capacity ?? 0), lparam).ToInt32();
+	private static int MCIWndSM<TEnum>(HWND hwnd, TEnum msg, StringBuilder lparam) where TEnum : struct, IConvertible => SendMessage(hwnd, msg, (IntPtr)lparam.Capacity, lparam).ToInt32();
 
 	private static int MCIWndSM<TEnum, TLP>(HWND hwnd, TEnum msg, out TLP lparam, int size = -1) where TEnum : struct, IConvertible where TLP : struct
 	{

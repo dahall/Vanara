@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
-using System.Threading;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.AviFil32;
 using static Vanara.PInvoke.WinMm;
-using Vanara.InteropServices;
 using System.Drawing;
 using System.Drawing.Imaging;
 

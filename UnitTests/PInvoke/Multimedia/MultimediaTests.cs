@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Msvfw32;
 

@@ -1,8 +1,3 @@
-#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.WinMm;
 
 namespace Vanara.PInvoke;
@@ -3760,7 +3755,7 @@ public static partial class MsAcm32
 		/// title (that is, "Filter Selection").
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszTitle;
+		public string? pszTitle;
 
 		/// <summary>
 		/// Buffer containing a null-terminated string describing the filter tag of the filter selection when the ACMFILTERTAGDETAILS
@@ -3843,7 +3838,7 @@ public static partial class MsAcm32
 		/// otherwise, this member should be <c>NULL</c> on input.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string pszTemplateName;
+		public string? pszTemplateName;
 
 		/// <summary>
 		/// Application-defined data that the ACM passes to the hook function identified by the <c>pfnHook</c> member. The system passes
@@ -4161,7 +4156,7 @@ public static partial class MsAcm32
 		/// title (that is, "Sound Selection").
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszTitle;
+		public string? pszTitle;
 
 		/// <summary>
 		/// Buffer containing a null-terminated string describing the format tag of the format selection when the ACMFORMATTAGDETAILS
@@ -4289,7 +4284,7 @@ public static partial class MsAcm32
 		/// otherwise, this member should be <c>NULL</c> on input.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszTemplateName;
+		public string? pszTemplateName;
 
 		/// <summary>
 		/// Application-defined data that the ACM passes to the hook function identified by the <c>pfnHook</c> member. The system passes
@@ -4662,7 +4657,7 @@ public static partial class MsAcm32
 		public static bool operator ==(HACMDRIVER h1, HACMDRIVER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HACMDRIVER h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HACMDRIVER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -4710,7 +4705,7 @@ public static partial class MsAcm32
 		public static bool operator ==(HACMDRIVERID h1, HACMDRIVERID h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HACMDRIVERID h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HACMDRIVERID h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -4758,7 +4753,7 @@ public static partial class MsAcm32
 		public static bool operator ==(HACMOBJ h1, HACMOBJ h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HACMOBJ h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HACMOBJ h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -4806,7 +4801,7 @@ public static partial class MsAcm32
 		public static bool operator ==(HACMSTREAM h1, HACMSTREAM h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HACMSTREAM h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HACMSTREAM h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

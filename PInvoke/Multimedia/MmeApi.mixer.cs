@@ -1,8 +1,4 @@
 #pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WinMm.dll</summary>
@@ -1637,7 +1633,7 @@ public static partial class WinMm
 		public static bool operator ==(HMIXER h1, HMIXER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMIXER h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMIXER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1685,7 +1681,7 @@ public static partial class WinMm
 		public static bool operator ==(HMIXEROBJ h1, HMIXEROBJ h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMIXEROBJ h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMIXEROBJ h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

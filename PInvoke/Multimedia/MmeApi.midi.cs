@@ -1,9 +1,3 @@
-#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WinMm.dll</summary>
@@ -2299,7 +2293,7 @@ public static partial class WinMm
 		public static bool operator ==(HMIDI h1, HMIDI h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMIDI h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMIDI h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2347,7 +2341,7 @@ public static partial class WinMm
 		public static bool operator ==(HMIDIIN h1, HMIDIIN h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMIDIIN h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMIDIIN h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2395,7 +2389,7 @@ public static partial class WinMm
 		public static bool operator ==(HMIDIOUT h1, HMIDIOUT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMIDIOUT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMIDIOUT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2443,7 +2437,7 @@ public static partial class WinMm
 		public static bool operator ==(HMIDISTRM h1, HMIDISTRM h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMIDISTRM h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMIDISTRM h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

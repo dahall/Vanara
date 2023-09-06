@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 public static partial class WinMm
@@ -970,6 +965,113 @@ public static partial class WinMm
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioDescend")]
 	public static extern MMRESULT mmioDescend(HMMIO hmmio, ref MMCKINFO pmmcki, in MMCKINFO pmmckiParent, MMIODESC fuDescend);
 
+	/// <summary>
+	/// The <c>mmioDescend</c> function descends into a chunk of a RIFF file that was opened by using the mmioOpen function. It can also
+	/// search for a given chunk.
+	/// </summary>
+	/// <param name="hmmio">File handle of an open RIFF file.</param>
+	/// <param name="pmmcki">Pointer to a buffer that receives an MMCKINFO structure.</param>
+	/// <param name="pmmckiParent">
+	/// Pointer to an optional application-defined MMCKINFO structure identifying the parent of the chunk being searched for. If this
+	/// parameter is not <c>NULL</c>, <c>mmioDescend</c> assumes the <c>MMCKINFO</c> structure it refers to was filled when
+	/// <c>mmioDescend</c> was called to descend into the parent chunk, and <c>mmioDescend</c> searches for a chunk within the parent
+	/// chunk. Set this parameter to <c>NULL</c> if no parent chunk is being specified.
+	/// </param>
+	/// <param name="fuDescend">
+	/// <para>
+	/// Search flags. If no flags are specified, <c>mmioDescend</c> descends into the chunk beginning at the current file position. The
+	/// following values are defined.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>MMIO_FINDCHUNK</term>
+	/// <term>Searches for a chunk with the specified chunk identifier.</term>
+	/// </item>
+	/// <item>
+	/// <term>MMIO_FINDLIST</term>
+	/// <term>Searches for a chunk with the chunk identifier "LIST" and with the specified form type.</term>
+	/// </item>
+	/// <item>
+	/// <term>MMIO_FINDRIFF</term>
+	/// <term>Searches for a chunk with the chunk identifier "RIFF" and with the specified form type.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>Returns MMSYSERR_NOERROR if successful or an error otherwise. Possible error values include the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>MMIOERR_CHUNKNOTFOUND</term>
+	/// <term>The end of the file (or the end of the parent chunk, if given) was reached before the desired chunk was found.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// A "RIFF" chunk consists of a four-byte chunk identifier (type <c>FOURCC</c>), followed by a four-byte chunk size (type
+	/// <c>DWORD</c>), followed by the data portion of the chunk, followed by a null pad byte if the size of the data portion is odd. If
+	/// the chunk identifier is "RIFF" or "LIST", the first four bytes of the data portion of the chunk are a form type or list type
+	/// (type <c>FOURCC</c>).
+	/// </para>
+	/// <para>
+	/// If you use <c>mmioDescend</c> to search for a chunk, make sure the file position is at the beginning of a chunk before calling
+	/// the function. The search begins at the current file position and continues to the end of the file. If a parent chunk is
+	/// specified, the file position should be somewhere within the parent chunk before calling <c>mmioDescend</c>. In this case, the
+	/// search begins at the current file position and continues to the end of the parent chunk.
+	/// </para>
+	/// <para>
+	/// If <c>mmioDescend</c> is unsuccessful in searching for a chunk, the current file position is undefined. If <c>mmioDescend</c> is
+	/// successful, the current file position is changed. If the chunk is a "RIFF" or "LIST" chunk, the new file position will be just
+	/// after the form type or list type (12 bytes from the beginning of the chunk). For other chunks, the new file position will be the
+	/// start of the data portion of the chunk (8 bytes from the beginning of the chunk).
+	/// </para>
+	/// <para>The <c>mmioDescend</c> function fills the MMCKINFO structure pointed to by the lpck parameter with the following information:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// The <c>ckid</c> member is the chunk. If the MMIO_FINDCHUNK, MMIO_FINDRIFF, or MMIO_FINDLIST flag is specified for <c>wFlags</c>,
+	/// the MMCKINFO structure is also used to pass parameters to <c>mmioDescend</c>. In this case, the <c>ckid</c> member specifies the
+	/// four-character code of the chunk identifier, form type, or list type to search for.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// The <c>cksize</c> member is the size, in bytes, of the data portion of the chunk. The size includes the form type or list type
+	/// (if any), but does not include the 8-byte chunk header or the pad byte at the end of the data (if any).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// The <c>fccType</c> member is the form type if <c>ckid</c> is "RIFF", or the list type if <c>ckid</c> is "LIST". Otherwise, it is <c>NULL</c>.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// The <c>dwDataOffset</c> member is the file offset of the beginning of the data portion of the chunk. If the chunk is a "RIFF"
+	/// chunk or a "LIST" chunk, this member is the offset of the form type or list type.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// The <c>dwFlags</c> member contains other information about the chunk. Currently, this information is not used and is set to zero.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmiodescend MMRESULT mmioDescend( HMMIO hmmio, LPMMCKINFO
+	// pmmcki, const MMCKINFO *pmmckiParent, UINT fuDescend );
+	[DllImport(Lib_Winmm, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioDescend")]
+	public static extern MMRESULT mmioDescend(HMMIO hmmio, ref MMCKINFO pmmcki, [In, Optional] IntPtr pmmckiParent, MMIODESC fuDescend);
+
 	/// <summary>The <c>mmioFlush</c> function writes the I/O buffer of a file to disk if the buffer has been written to.</summary>
 	/// <param name="hmmio">File handle of a file opened by using the mmioOpen function.</param>
 	/// <param name="fuFlush">
@@ -1108,7 +1210,7 @@ public static partial class WinMm
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioInstallIOProc")]
 	[return: MarshalAs(UnmanagedType.FunctionPtr)]
-	public static extern MMIOPROC mmioInstallIOProc(uint fccIOProc, [In, Optional] MMIOPROC pIOProc, MMIOINST dwFlags);
+	public static extern MMIOPROC mmioInstallIOProc(uint fccIOProc, [In, Optional] MMIOPROC? pIOProc, MMIOINST dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1364,7 +1466,7 @@ public static partial class WinMm
 	// pmmioinfo, DWORD fdwOpen );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioOpen")]
-	public static extern HMMIO mmioOpen([In, Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszFileName, ref MMIOINFO pmmioinfo, MMIO fdwOpen);
+	public static extern HMMIO mmioOpen([In, Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? pszFileName, ref MMIOINFO pmmioinfo, MMIO fdwOpen);
 
 	/// <summary>
 	/// <para>
@@ -1620,7 +1722,7 @@ public static partial class WinMm
 	// pmmioinfo, DWORD fdwOpen );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioOpen")]
-	public static extern HMMIO mmioOpen([In, Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszFileName, [In, Optional] IntPtr pmmioinfo, MMIO fdwOpen);
+	public static extern HMMIO mmioOpen([In, Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? pszFileName, [In, Optional] IntPtr pmmioinfo, MMIO fdwOpen);
 
 	/// <summary>The <c>mmioRead</c> function reads a specified number of bytes from a file opened by using the mmioOpen function.</summary>
 	/// <param name="hmmio">File handle of the file to be read.</param>
@@ -1772,7 +1874,7 @@ public static partial class WinMm
 	// pchBuffer, LONG cchBuffer, UINT fuBuffer );
 	[DllImport(Lib_Winmm, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioSetBuffer")]
-	public static extern MMRESULT mmioSetBuffer(HMMIO hmmio, [Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pchBuffer, int cchBuffer, uint fuBuffer = 0);
+	public static extern MMRESULT mmioSetBuffer(HMMIO hmmio, [Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder? pchBuffer, int cchBuffer, uint fuBuffer = 0);
 
 	/// <summary>
 	/// The <c>mmioSetInfo</c> function updates the information retrieved by the mmioGetInfo function about a file opened by using the
@@ -1969,7 +2071,7 @@ public static partial class WinMm
 		public static bool operator ==(HDRVR h1, HDRVR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDRVR h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HDRVR h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2017,7 +2119,7 @@ public static partial class WinMm
 		public static bool operator ==(HMMIO h1, HMMIO h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMMIO h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HMMIO h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -1,10 +1,5 @@
-﻿#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
+﻿#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+#pragma warning disable IDE1006 // Naming Styles
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the AviFil32.dll</summary>
@@ -1485,7 +1480,7 @@ public static partial class AviFil32
 	[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVIStreamGetFrameOpen")]
 	[return: MarshalAs(UnmanagedType.Interface)]
-	public static extern IGetFrame AVIStreamGetFrameOpen(IAVIStream pavi, in Gdi32.BITMAPINFOHEADER lpbiWanted);
+	public static extern IGetFrame? AVIStreamGetFrameOpen(IAVIStream pavi, in Gdi32.BITMAPINFOHEADER lpbiWanted);
 
 	/// <summary>The <c>AVIStreamGetFrameOpen</c> function prepares to decompress video frames from the specified video stream.</summary>
 	/// <param name="pavi">Pointer to the video stream used as the video source.</param>
@@ -1505,7 +1500,7 @@ public static partial class AviFil32
 	[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVIStreamGetFrameOpen")]
 	[return: MarshalAs(UnmanagedType.Interface)]
-	public static extern IGetFrame AVIStreamGetFrameOpen(IAVIStream pavi, [In, Optional] IntPtr lpbiWanted);
+	public static extern IGetFrame? AVIStreamGetFrameOpen(IAVIStream pavi, [In, Optional] IntPtr lpbiWanted);
 
 	/// <summary>The <c>AVIStreamInfo</c> function obtains stream header information.</summary>
 	/// <param name="pavi">Handle to an open stream.</param>
@@ -1979,7 +1974,7 @@ public static partial class AviFil32
 	// LONG lPos, LPVOID lpFormat, LONG *lpcbFormat );
 	[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVIStreamReadFormat")]
-	public static extern HRESULT AVIStreamReadFormat(IAVIStream pavi, int lPos, IntPtr lpFormat, ref int lpcbFormat);
+	public static extern HRESULT AVIStreamReadFormat(IAVIStream pavi, int lPos, [In, Optional] IntPtr lpFormat, ref int lpcbFormat);
 
 	/// <summary>
 	/// <para>
@@ -2187,7 +2182,7 @@ public static partial class AviFil32
 	// *ppsEditable, PAVISTREAM psSource );
 	[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.CreateEditableStream")]
-	public static extern HRESULT CreateEditableStream(out IAVIStream ppsEditable, [In] IAVIStream psSource);
+	public static extern HRESULT CreateEditableStream(out IAVIStream ppsEditable, [In] IAVIStream? psSource);
 
 	/// <summary>The <c>EditStreamClone</c> function creates a duplicate editable stream.</summary>
 	/// <param name="pavi">Handle to an editable stream that will be copied.</param>

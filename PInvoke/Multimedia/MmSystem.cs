@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WinMm.dll</summary>
@@ -369,5 +366,5 @@ public static partial class WinMm
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Mmsystem.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool sndPlaySound([In, Optional] string? lpszSound, uint fuSound);
+	public static extern bool sndPlaySound([In, Optional] string? lpszSound, SND fuSound);
 }

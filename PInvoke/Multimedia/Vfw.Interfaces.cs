@@ -1,9 +1,3 @@
-#pragma warning disable IDE1006 // Naming Styles
-
-using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.AviFil32;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the AviFil32.dll</summary>
@@ -458,6 +452,6 @@ public static partial class AviFil32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-igetframe-setformat HRESULT SetFormat( LPBITMAPINFOHEADER lpbi,
 		// LPVOID lpBits, int x, int y, int dx, int dy );
-		void SetFormat(in Gdi32.BITMAPINFOHEADER lpbi, [In, Optional] IntPtr lpBits, [In] int x, [In] int y, [In] int dx, [In] int dy);
+		void SetFormat([In, Optional] IntPtr lpbi, [In, Optional] IntPtr lpBits, [In] int x, [In] int y, [In] int dx, [In] int dy);
 	}
 }
