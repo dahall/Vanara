@@ -2048,7 +2048,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h1, PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h && handle == h.handle;
+			public override bool Equals(object? obj) => obj is PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();

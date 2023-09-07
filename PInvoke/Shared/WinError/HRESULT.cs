@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 
 namespace Vanara.PInvoke
 {
@@ -800,7 +801,7 @@ namespace Vanara.PInvoke
 		/// <summary>Formats the message.</summary>
 		/// <param name="id">The error.</param>
 		/// <returns>The string.</returns>
-		internal static string FormatMessage(uint id, string? lib = null)
+		internal static string FormatMessage(uint id, string lib = null)
 		{
 			var flags = lib is null ? 0x1200U /*FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM*/ : 0xA00U /*FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE*/;
 			HINSTANCE hInst = lib is null ? default : LoadLibraryEx(lib, default, 0x1002 /*LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_AS_DATAFILE*/);
