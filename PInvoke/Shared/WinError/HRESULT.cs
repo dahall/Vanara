@@ -745,16 +745,16 @@ namespace Vanara.PInvoke
 			// Check for defined HRESULT value
 			if (!StaticFieldValueHash.TryGetFieldName<HRESULT, int>(_value, out var err) && Facility == FacilityCode.FACILITY_WIN32)
 			{
-				foreach (var info2 in typeof(Win32Error).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(uint)))
+				foreach (FieldInfo info2 in typeof(Win32Error).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(uint)))
 				{
-					if ((HRESULT)(Win32Error)(uint)info2.GetValue(null) == this)
+					if ((HRESULT)(Win32Error)(uint)info2.GetValue(null)! == this)
 					{
 						err = $"HRESULT_FROM_WIN32({info2.Name})";
 						break;
 					}
 				}
 			}
-			var msg = FormatMessage(unchecked((uint)_value));
+			var msg = FormatMessage(unchecked((uint)_value), StaticFieldValueHash.GetFieldLib<HRESULT, int>(_value));
 			return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 		}
 
@@ -800,26 +800,42 @@ namespace Vanara.PInvoke
 		/// <summary>Formats the message.</summary>
 		/// <param name="id">The error.</param>
 		/// <returns>The string.</returns>
-		internal static string FormatMessage(uint id)
+		internal static string FormatMessage(uint id, string? lib = null)
 		{
-			var flags = 0x1200U; // FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM
-			var buf = new System.Text.StringBuilder(1024);
-			do
+			var flags = lib is null ? 0x1200U /*FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM*/ : 0xA00U /*FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE*/;
+			HINSTANCE hInst = lib is null ? default : LoadLibraryEx(lib, default, 0x1002 /*LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_AS_DATAFILE*/);
+			var buf = new StringBuilder(1024);
+			try
 			{
-				if (0 != FormatMessage(flags, default, id, 0, buf, (uint)buf.Capacity, default))
-					return buf.ToString();
-				var lastError = Win32Error.GetLastError();
-				if (lastError == Win32Error.ERROR_MR_MID_NOT_FOUND || lastError == Win32Error.ERROR_MUI_FILE_NOT_FOUND)
-					break;
-				if (lastError != Win32Error.ERROR_INSUFFICIENT_BUFFER)
-					lastError.ThrowIfFailed();
-				buf.Capacity *= 2;
-			} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
+				do
+				{
+					if (0 != FormatMessage(flags, hInst, id, 0, buf, (uint)buf.Capacity, default))
+						return buf.ToString();
+					var lastError = Win32Error.GetLastError();
+					if (lastError == Win32Error.ERROR_MR_MID_NOT_FOUND || lastError == Win32Error.ERROR_MUI_FILE_NOT_FOUND || lastError == Win32Error.ERROR_RESOURCE_TYPE_NOT_FOUND)
+						break;
+					if (lastError != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+						lastError.ThrowIfFailed();
+					buf.Capacity *= 2;
+				} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
+			}
+			finally
+			{
+				if (hInst != default)
+					FreeLibrary(hInst);
+			}
 			return string.Empty;
-		}
 
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		private static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, System.Text.StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+			[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+			static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+
+			[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			static extern bool FreeLibrary([In] HINSTANCE hLibModule);
+
+			[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+			static extern HINSTANCE LoadLibraryEx([MarshalAs(UnmanagedType.LPTStr)] string lpLibFileName, HANDLE hFile, uint dwFlags);
+		}
 
 		private static int? ValueFromObj(object obj)
 		{
@@ -845,7 +861,7 @@ namespace Vanara.PInvoke
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
-			if (sourceType is IErrorProvider || sourceType.IsPrimitive && sourceType != typeof(char))
+			if (typeof(IErrorProvider).IsAssignableFrom(sourceType) || sourceType.IsPrimitive && sourceType != typeof(char))
 				return true;
 			return base.CanConvertFrom(context, sourceType);
 		}
