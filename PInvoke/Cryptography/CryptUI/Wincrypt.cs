@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -25,6 +26,17 @@ namespace Vanara.PInvoke
 		[PInvokeData("cryptuiapi.h", MSDNShortId = "ced0f35c-7e22-4d19-8352-0bfa37ff1a4b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool PFNCFILTERPROC(PCCERT_CONTEXT pCertContext, [MarshalAs(UnmanagedType.Bool)] ref bool pfInitialSelectedCert, IntPtr pvCallbackData);
+
+		/// <summary>Specifies the type of entity that contains the certificates.</summary>
+		[PInvokeData("cryptuiapi.h", MSDNShortId = "0316ed0b-d4e5-4102-9ab0-637e96c7d9f5")]
+		public enum CRYPTUI_WIZ_DIGITAL_SIGN_PVK : uint
+		{
+			/// <summary>The entity is a PVK file.</summary>
+			CRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE = 1,
+
+			/// <summary>The entity is a PVK provider.</summary>
+			CRYPTUI_WIZ_DIGITAL_SIGN_PVK_PROV = 2
+		}
 
 		/// <summary>Flags that can be combined to exclude columns of the display.</summary>
 		[PInvokeData("cryptuiapi.h", MSDNShortId = "5774af1c-f2d4-4b1e-a20b-dfb57bf9aa37")]
@@ -1240,7 +1252,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A pointer to a <c>GUID</c> that contains the GUID that identifies the Session Initiation Protocol (SIP) functions to load.
 			/// </summary>
-			public IntPtr pGuidSubject;
+			public GuidPtr pGuidSubject;
 
 			/// <summary>The size, in bytes, of the BLOB pointed to by the <c>pbBlob</c> member.</summary>
 			public uint cbBlob;
@@ -1249,7 +1261,20 @@ namespace Vanara.PInvoke
 			public IntPtr pbBlob;
 
 			/// <summary>A pointer to a null-terminated Unicode string that contains the display name of the BLOB to sign.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pwszDisplayName;
+			[MarshalAs(UnmanagedType.LPWStr)] public string? pwszDisplayName;
+
+			/// <summary>Initializes a new instance of the <see cref="CRYPTUI_WIZ_DIGITAL_SIGN_BLOB_INFO"/> struct.</summary>
+			/// <param name="h">The handle of allocated memory with blob data.</param>
+			/// <param name="name">The display name of the blob.</param>
+			/// <param name="subject">The Session Initiation Protocol (SIP) functions GUID.</param>
+			public CRYPTUI_WIZ_DIGITAL_SIGN_BLOB_INFO(ISafeMemoryHandle h, string? name = null, GuidPtr subject = default)
+			{
+				dwSize = (uint)Marshal.SizeOf(typeof(CRYPTUI_WIZ_DIGITAL_SIGN_BLOB_INFO));
+				cbBlob = (uint)h.Size;
+				pbBlob = h.DangerousGetHandle();
+				pwszDisplayName = name;
+				pGuidSubject = subject;
+			}
 		}
 
 		/// <summary>
@@ -1295,7 +1320,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint dwPvkChoice;
+			public CRYPTUI_WIZ_DIGITAL_SIGN_PVK dwPvkChoice;
 
 			/// <summary>
 			/// A pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE_INFO structure that contains the PVK file that contains the certificates.
@@ -1333,6 +1358,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>A pointer to the signed BLOB.</summary>
 			public IntPtr pbBlob;
+
+			/// <summary>Creates and instance of <see cref="CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> from a memory handle.</summary>
+			/// <param name="h">The memory handle.</param>
+			/// <returns>A filled instance of <see cref="CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/>.</returns>
+			public static CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT FromMemHandle(ISafeMemoryHandle h) =>
+				new() { dwSize = (uint)Marshal.SizeOf(typeof(CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT)), cbBlob = (uint)h.Size, pbBlob = h.DangerousGetHandle() };
 		}
 
 		/// <summary>
