@@ -747,7 +747,7 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 				}
 			}
 		}
-		var msg = FormatMessage(unchecked((uint)_value));
+		var msg = FormatMessage(unchecked((uint)_value), StaticFieldValueHash.GetFieldLib<HRESULT, int>(_value));
 		return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 	}
 
@@ -792,27 +792,44 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 
 	/// <summary>Formats the message.</summary>
 	/// <param name="id">The error.</param>
+	/// <param name="lib">The optional library.</param>
 	/// <returns>The string.</returns>
-	internal static string FormatMessage(uint id)
+	internal static string FormatMessage(uint id, string? lib = null)
 	{
-		var flags = 0x1200U; // FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM
+		var flags = lib is null ? 0x1200U /*FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM*/ : 0xA00U /*FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE*/;
+		HINSTANCE hInst = lib is null ? default : LoadLibraryEx(lib, default, 0x1002 /*LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_AS_DATAFILE*/);
 		var buf = new StringBuilder(1024);
-		do
+		try
 		{
-			if (0 != FormatMessage(flags, default, id, 0, buf, (uint)buf.Capacity, default))
-				return buf.ToString();
-			var lastError = Win32Error.GetLastError();
-			if (lastError == Win32Error.ERROR_MR_MID_NOT_FOUND || lastError == Win32Error.ERROR_MUI_FILE_NOT_FOUND)
-				break;
-			if (lastError != Win32Error.ERROR_INSUFFICIENT_BUFFER)
-				lastError.ThrowIfFailed();
-			buf.Capacity *= 2;
-		} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
+			do
+			{
+				if (0 != FormatMessage(flags, hInst, id, 0, buf, (uint)buf.Capacity, default))
+					return buf.ToString();
+				var lastError = Win32Error.GetLastError();
+				if (lastError == Win32Error.ERROR_MR_MID_NOT_FOUND || lastError == Win32Error.ERROR_MUI_FILE_NOT_FOUND || lastError == Win32Error.ERROR_RESOURCE_TYPE_NOT_FOUND)
+					break;
+				if (lastError != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+					lastError.ThrowIfFailed();
+				buf.Capacity *= 2;
+			} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
+		}
+		finally
+		{
+			if (hInst != default)
+				FreeLibrary(hInst);
+		}
 		return string.Empty;
-	}
 
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	private static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		static extern int FormatMessage(uint dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, StringBuilder lpBuffer, uint nSize, IntPtr Arguments);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool FreeLibrary([In] HINSTANCE hLibModule);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		static extern HINSTANCE LoadLibraryEx([MarshalAs(UnmanagedType.LPTStr)] string lpLibFileName, HANDLE hFile, uint dwFlags);
+	}
 
 	private static int? ValueFromObj(object? obj)
 	{
