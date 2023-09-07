@@ -1233,7 +1233,7 @@ public static partial class Gdi32
 
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="bmpInfo">The <see cref="BITMAPINFO"/> value.</param>
-		public SafeBITMAPINFO(in BITMAPINFO bmpInfo) : this(bmpInfo.bmiHeader, bmpInfo.bmiColors.Length * RGBQUADSZ) => bmiColors = bmpInfo.bmiColors;
+		public SafeBITMAPINFO(in BITMAPINFO bmpInfo) : this(bmpInfo.bmiHeader, (bmpInfo.bmiColors?.Length ?? 0) * RGBQUADSZ) => bmiColors = bmpInfo.bmiColors ?? new RGBQUAD[1];
 
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="hdr">The <see cref="BITMAPINFOHEADER"/> to initialize.</param>
