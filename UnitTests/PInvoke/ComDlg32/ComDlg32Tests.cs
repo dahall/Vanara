@@ -48,7 +48,7 @@ public class ComDlg32Tests
 			Flags = OFN.OFN_PATHMUSTEXIST | OFN.OFN_FILEMUSTEXIST
 		};
 		Assert.That(GetOpenFileName(ref ofn), Is.True);
-		Assert.That(ofn.lpstrFilter.Length, Is.GreaterThan(0));
+		Assert.That(ofn.lpstrFilter?.Length ?? 0, Is.GreaterThan(0));
 	}
 
 	[Test]

@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the ComDlg32.dll</summary>
@@ -1163,11 +1159,11 @@ public static partial class ComDlg32
 	public static extern HWND FindText(ref FINDREPLACE Arg1);
 
 	/// <summary>Retrieves the name of the specified file.</summary>
-	/// <param name="arg1">
+	/// <param name="lpszPath">
 	/// <para>Type: <c>LPCTSTR</c></para>
 	/// <para>The name and location of a file.</para>
 	/// </param>
-	/// <param name="Buf">
+	/// <param name="lpszTitle">
 	/// <para>Type: <c>LPTSTR</c></para>
 	/// <para>The buffer that receives the name of the file.</para>
 	/// </param>
@@ -1207,7 +1203,7 @@ public static partial class ComDlg32
 	// cchSize );
 	[DllImport(Lib_ComDlg32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("commdlg.h", MSDNShortId = "NF:commdlg.GetFileTitleA")]
-	public static extern short GetFileTitle([MarshalAs(UnmanagedType.LPTStr)] string arg1, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buf, ushort cchSize);
+	public static extern short GetFileTitle([MarshalAs(UnmanagedType.LPTStr)] string lpszPath, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpszTitle, ushort cchSize);
 
 	/// <summary>
 	/// <para>

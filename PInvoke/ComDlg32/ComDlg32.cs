@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
@@ -1787,7 +1782,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public LPFRHOOKPROC lpfnHook;
+		public LPFRHOOKPROC? lpfnHook;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
@@ -1798,7 +1793,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpTemplateName;
+		public string? lpTemplateName;
 	}
 
 	/// <summary>
@@ -1961,7 +1956,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpstrFilter;
+		public string? lpstrFilter;
 
 		/// <summary>
 		/// <para>Type: <c>LPTSTR</c></para>
@@ -2409,7 +2404,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public LPOFNHOOKPROC lpfnHook;
+		public LPOFNHOOKPROC? lpfnHook;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
@@ -2423,7 +2418,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpTemplateName;
+		public string? lpTemplateName;
 
 		/// <summary>
 		/// <para>Type: <c>void*</c></para>
@@ -2717,7 +2712,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public LPPAGEPAINTHOOK lpfnPagePaintHook;
+		public LPPAGEPAINTHOOK? lpfnPagePaintHook;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
@@ -2729,7 +2724,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpPageSetupTemplateName;
+		public string? lpPageSetupTemplateName;
 
 		/// <summary>
 		/// <para>Type: <c>HGLOBAL</c></para>
@@ -3122,7 +3117,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public LPPRINTHOOKPROC lpfnPrintHook;
+		public LPPRINTHOOKPROC? lpfnPrintHook;
 
 		/// <summary>
 		/// <para>Type: <c>LPSETUPHOOKPROC</c></para>
@@ -3132,7 +3127,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public LPSETUPHOOKPROC lpfnSetupHook;
+		public LPSETUPHOOKPROC? lpfnSetupHook;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
@@ -3143,7 +3138,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpPrintTemplateName;
+		public string? lpPrintTemplateName;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
@@ -3154,7 +3149,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpSetupTemplateName;
+		public string? lpSetupTemplateName;
 
 		/// <summary>
 		/// <para>Type: <c>HGLOBAL</c></para>
@@ -3559,7 +3554,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpPrintTemplateName;
+		public string? lpPrintTemplateName;
 
 		/// <summary>
 		/// <para>Type: <c>LPUNKNOWN</c></para>
@@ -3576,7 +3571,7 @@ public static partial class ComDlg32
 		/// <para>If you do not want to retrieve any of the callback information, set <c>lpCallback</c> to <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.IUnknown)]
-		public object lpCallback;
+		public object? lpCallback;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
