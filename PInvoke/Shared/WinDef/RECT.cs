@@ -470,10 +470,10 @@ namespace Vanara.PInvoke
 			if (propertyValues is null)
 				throw new ArgumentNullException(nameof(propertyValues));
 
-			var left = propertyValues["left"];
-			var top = propertyValues["top"];
-			var right = propertyValues["right"];
-			var bottom = propertyValues["bottom"];
+			var left = propertyValues["left"] ?? 0;
+			var top = propertyValues["top"] ?? 0;
+			var right = propertyValues["right"] ?? 0;
+			var bottom = propertyValues["bottom"] ?? 0;
 
 			return left is int l && top is int t && right is int r && bottom is int b ? new RECT(l, t, r, b) :
 				throw new ArgumentException(@"Invalid property value.");
