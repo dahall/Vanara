@@ -1293,7 +1293,7 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_MULTICAST_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
 		// _IP_ADAPTER_MULTICAST_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_MULTICAST_ADDRESS_XP, *PIP_ADAPTER_MULTICAST_ADDRESS_XP;
 		[PInvokeData("iptypes.h", MSDNShortId = "b85a6e0a-df2c-4608-b07a-191b34440a43")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct IP_ADAPTER_MULTICAST_ADDRESS : ILinkedListElement<IP_ADAPTER_MULTICAST_ADDRESS>
 		{
 			private long Alignment;

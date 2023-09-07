@@ -6167,11 +6167,17 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
 			/// <param name="interfaceIndex">Index of the interface.</param>
-			public MIB_IF_ROW2(uint interfaceIndex) : this() => InterfaceIndex = interfaceIndex;
+			public MIB_IF_ROW2(uint interfaceIndex) : this(false) => InterfaceIndex = interfaceIndex;
 
 			/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
 			/// <param name="interfaceLuid">The interface luid.</param>
-			public MIB_IF_ROW2(NET_LUID interfaceLuid) : this() => InterfaceLuid = interfaceLuid;
+			public MIB_IF_ROW2(NET_LUID interfaceLuid) : this(false) => InterfaceLuid = interfaceLuid;
+
+			private MIB_IF_ROW2(bool _) : this()
+			{
+				Alias = Description = string.Empty;
+				PhysicalAddress = PermanentPhysicalAddress = new byte[IF_MAX_PHYS_ADDRESS_LENGTH];
+			}
 		}
 
 		/// <summary>The MIB_IFSTACK_ROW structure represents the relationship between two network interfaces.</summary>
@@ -6958,12 +6964,14 @@ namespace Vanara.PInvoke
 			private MIB_IPNET_ROW2(SOCKADDR_IN ipV4, byte[] macAddr) : this()
 			{
 				Address.Ipv4 = ipV4;
+				PhysicalAddress = new byte[IF_MAX_PHYS_ADDRESS_LENGTH];
 				SetMac(macAddr);
 			}
 
 			private MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, byte[] macAddr) : this()
 			{
 				Address.Ipv6 = ipV6;
+				PhysicalAddress = new byte[IF_MAX_PHYS_ADDRESS_LENGTH];
 				SetMac(macAddr);
 			}
 
