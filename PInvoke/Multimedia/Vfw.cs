@@ -5,6 +5,8 @@ namespace Vanara.PInvoke;
 /// <summary>Items from the AviFil32.dll</summary>
 public static partial class AviFil32
 {
+	static AviFil32() => StaticFieldValueHash.AddFields<HRESULT, int, AVIERR>(Lib_Avifil32);
+
 	/// <summary></summary>
 	public static readonly uint ckidAVIMAINHDR = MAKEFOURCC('a', 'v', 'i', 'h');
 
@@ -64,6 +66,68 @@ public static partial class AviFil32
 
 	/// <summary></summary>
 	public static readonly uint streamtypeVIDEO = MAKEFOURCC('v', 'i', 'd', 's');
+
+	/// <summary>Errors for AVI functions</summary>
+	[PInvokeData("vfw.h")]
+	public enum AVIERR
+	{
+		/// <summary>Compression is not supported for this type of data. This error might be returned if you try to compress data that is not audio or video.</summary>
+		AVIERR_UNSUPPORTED = unchecked((int)0x80044000 + 101),
+
+		/// <summary>The file couldn't be read, indicating a corrupt file or an unrecognized format.</summary>
+		AVIERR_BADFORMAT = unchecked((int)0x80044000 + 102),
+
+		/// <summary>There is not enough memory to complete the operation.</summary>
+		AVIERR_MEMORY = unchecked((int)0x80044000 + 103),
+
+		/// <summary></summary>
+		AVIERR_INTERNAL = unchecked((int)0x80044000 + 104),
+
+		/// <summary></summary>
+		AVIERR_BADFLAGS = unchecked((int)0x80044000 + 105),
+
+		/// <summary></summary>
+		AVIERR_BADPARAM = unchecked((int)0x80044000 + 106),
+
+		/// <summary></summary>
+		AVIERR_BADSIZE = unchecked((int)0x80044000 + 107),
+
+		/// <summary></summary>
+		AVIERR_BADHANDLE = unchecked((int)0x80044000 + 108),
+
+		/// <summary>A disk error occurred while reading the file.</summary>
+		AVIERR_FILEREAD = unchecked((int)0x80044000 + 109),
+
+		/// <summary></summary>
+		AVIERR_FILEWRITE = unchecked((int)0x80044000 + 110),
+
+		/// <summary>A disk error occurred while opening the file.</summary>
+		AVIERR_FILEOPEN = unchecked((int)0x80044000 + 111),
+
+		/// <summary></summary>
+		AVIERR_COMPRESSOR       = unchecked((int)0x80044000 + 112),
+
+		/// <summary>A suitable compressor cannot be found.</summary>
+		AVIERR_NOCOMPRESSOR = unchecked((int)0x80044000 + 113),
+
+		/// <summary>The file was opened without write access.</summary>
+		AVIERR_READONLY = unchecked((int)0x80044000 + 114),
+
+		/// <summary>The file does not contain a stream corresponding to the values of fccType and lParam.</summary>
+		AVIERR_NODATA = unchecked((int)0x80044000 + 115),
+
+		/// <summary>The buffer size cbBuffer was smaller than a single sample of data.</summary>
+		AVIERR_BUFFERTOOSMALL = unchecked((int)0x80044000 + 116),
+
+		/// <summary></summary>
+		AVIERR_CANTCOMPRESS = unchecked((int)0x80044000 + 117),
+
+		/// <summary>The user wishes to abort the operation.</summary>
+		AVIERR_USERABORT = unchecked((int)0x80044000 + 198),
+
+		/// <summary></summary>
+		AVIERR_ERROR = unchecked((int)0x80044000 + 199),
+	}
 
 	/// <summary>Flags for <c>VIDEOHDR</c></summary>
 	[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.videohdr_tag")]

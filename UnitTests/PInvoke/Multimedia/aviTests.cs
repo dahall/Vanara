@@ -24,6 +24,14 @@ public class aviTests
 	}
 
 	[Test]
+	public void TestErr()
+	{
+		Assert.NotNull(((HRESULT)(int)AVIERR.AVIERR_NODATA).ToString());
+		foreach (AVIERR err in Enum.GetValues(typeof(AVIERR)))
+			TestContext.WriteLine($"{err} = {(HRESULT)(int)err}");
+	}
+
+	[Test]
 	public void AVISaveOptionsTest()
 	{
 		Assert.That(AVIFileOpen(out var iFile, TestCaseSources.TempDirWhack + "test.avi", Kernel32.OpenFileAction.OF_CREATE | Kernel32.OpenFileAction.OF_WRITE), ResultIs.Successful);
