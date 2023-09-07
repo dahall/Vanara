@@ -14,7 +14,7 @@ namespace Vanara.InteropServices
 	public sealed class HGlobalMemoryMethods : IMemoryMethods
 	{
 		/// <inheritdoc/>
-		bool ISimpleMemoryMethods.AllocZeroes => true;
+		bool ISimpleMemoryMethods.AllocZeroes => false;
 
 		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
