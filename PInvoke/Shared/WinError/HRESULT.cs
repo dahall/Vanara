@@ -800,6 +800,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Formats the message.</summary>
 		/// <param name="id">The error.</param>
+		/// <param name="lib">The optional library.</param>
 		/// <returns>The string.</returns>
 		internal static string FormatMessage(uint id, string lib = null)
 		{
