@@ -516,7 +516,7 @@ public static partial class Gdi32
 		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_LVDS,
 
 		/// <summary>Indicates a Japanese D connector.</summary>
-		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_D_JPN,
+		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_D_JPN = 8,
 
 		/// <summary>Indicates an SDI connector.</summary>
 		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_SDI,
@@ -527,7 +527,9 @@ public static partial class Gdi32
 		/// <summary>Indicates an embedded display port that connects internally to a display device.</summary>
 		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED,
 
-		/// <summary>Indicates an external Unified Display Interface (UDI), which is a UDI that connects externally to a display device.</summary>
+		/// <summary>
+		/// Indicates an external Unified Display Interface (UDI), which is a UDI that connects externally to a display device.
+		/// </summary>
 		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_UDI_EXTERNAL,
 
 		/// <summary>Indicates an embedded UDI that connects internally to a display device.</summary>
@@ -546,9 +548,16 @@ public static partial class Gdi32
 		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INDIRECT_VIRTUAL,
 
 		/// <summary>
-		/// Indicates that the video output device connects internally to a display device (for example, the internal connection in a laptop computer).
+		/// Indicates that the video output device connects internally to a display device (for example, the internal connection in a
+		/// laptop computer).
 		/// </summary>
 		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL = 0x80000000,
+
+		/// <summary>
+		/// Forces this enumeration to compile to 32 bits in size. Without this value, some compilers would allow this enumeration to
+		/// compile to a size other than 32 bits. You should not use this value.
+		/// </summary>
+		DISPLAYCONFIG_OUTPUT_TECHNOLOGY_FORCE_UINT32 = 0xFFFFFFFF
 	}
 
 	/// <summary>The DISPLAYCONFIG_2DREGION structure represents a point or an offset in a two-dimensional space.</summary>
