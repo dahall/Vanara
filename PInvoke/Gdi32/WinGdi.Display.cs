@@ -392,54 +392,54 @@ namespace Vanara.PInvoke
 			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_HD15 = 0,
 
 			/// <summary>Indicates an S-video connector.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_SVIDEO,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_SVIDEO = 1,
 
 			/// <summary>Indicates a composite video connector group.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_COMPOSITE_VIDEO,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_COMPOSITE_VIDEO = 2,
 
 			/// <summary>Indicates a component video connector group.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_COMPONENT_VIDEO,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_COMPONENT_VIDEO = 3,
 
 			/// <summary>Indicates a Digital Video Interface (DVI) connector.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DVI,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DVI = 4,
 
 			/// <summary>Indicates a High-Definition Multimedia Interface (HDMI) connector.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_HDMI,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_HDMI = 5,
 
 			/// <summary>Indicates a Low Voltage Differential Swing (LVDS) connector.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_LVDS,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_LVDS = 6,
 
 			/// <summary>Indicates a Japanese D connector.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_D_JPN,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_D_JPN = 8,
 
 			/// <summary>Indicates an SDI connector.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_SDI,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_SDI = 9,
 
 			/// <summary>Indicates an external display port, which is a display port that connects externally to a display device.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EXTERNAL,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EXTERNAL = 10,
 
 			/// <summary>Indicates an embedded display port that connects internally to a display device.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED = 11,
 
 			/// <summary>
 			/// Indicates an external Unified Display Interface (UDI), which is a UDI that connects externally to a display device.
 			/// </summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_UDI_EXTERNAL,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_UDI_EXTERNAL = 12,
 
 			/// <summary>Indicates an embedded UDI that connects internally to a display device.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_UDI_EMBEDDED,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_UDI_EMBEDDED = 13,
 
 			/// <summary>Indicates a dongle cable that supports standard definition television (SDTV).</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_SDTVDONGLE,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_SDTVDONGLE = 14,
 
 			/// <summary>Indicates that the VidPN target is a Miracast wireless display device. Supported starting in Windows 8.1.</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_MIRACAST,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_MIRACAST = 15,
 
 			/// <summary>The displayconfig output technology indirect wired</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INDIRECT_WIRED,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INDIRECT_WIRED = 16,
 
 			/// <summary>The displayconfig output technology indirect virtual</summary>
-			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INDIRECT_VIRTUAL,
+			DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INDIRECT_VIRTUAL = 17,
 
 			/// <summary>
 			/// Indicates that the video output device connects internally to a display device (for example, the internal connection in a
