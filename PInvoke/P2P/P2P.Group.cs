@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.AdvApi32;
-using static Vanara.PInvoke.Crypt32;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the P2P.dll</summary>
@@ -745,7 +737,7 @@ public static partial class P2P
 	// PeerGroupDelete( PCWSTR pwzIdentity, PCWSTR pwzGroupPeerName );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupDelete")]
-	public static extern HRESULT PeerGroupDelete([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, [MarshalAs(UnmanagedType.LPWStr)] string pwzGroupPeerName);
+	public static extern HRESULT PeerGroupDelete([MarshalAs(UnmanagedType.LPWStr)] string? pwzIdentity, [MarshalAs(UnmanagedType.LPWStr)] string pwzGroupPeerName);
 
 	/// <summary>
 	/// The <c>PeerGroupDeleteRecord</c> function deletes a record from a peer group. The creator, as well as any other member in an
@@ -1034,14 +1026,59 @@ public static partial class P2P
 	/// Pointer to a <c>GUID</c> value that uniquely identifies a specific record type. If this parameter is <c>NULL</c>, all records
 	/// are returned.
 	/// </param>
+	/// <param name="phPeerEnum">
+	/// Pointer to the enumeration that contains the returned list of records. This handle is passed to PeerGetNextItem to retrieve the
+	/// items, with each item represented as a pointer to a PEER_RECORD structure. When finished, PeerEndEnumeration is called to return
+	/// the memory used by the enumeration. This parameter is required.
+	/// </param>
+	/// <returns>
+	/// <para>Returns <c>S_OK</c> if the operation succeeds. Otherwise, the function returns one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One of the parameters is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>There is not enough memory to perform the specified operation.</term>
+	/// </item>
+	/// <item>
+	/// <term>PEER_E_INVALID_GROUP</term>
+	/// <term>The handle to the peer group is invalid.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Cryptography-specific errors can be returned from the Microsoft RSA Base Provider. These errors are prefixed with CRYPT_* and
+	/// defined in Winerror.h.
+	/// </para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupenumrecords NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+	// PeerGroupEnumRecords( HGROUP hGroup, const GUID *pRecordType, HPEERENUM *phPeerEnum );
+	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumRecords")]
+	public static extern HRESULT PeerGroupEnumRecords(HGROUP hGroup, [In, Optional] IntPtr pRecordType, out SafeHPEERENUM phPeerEnum);
+
+	/// <summary>The <c>PeerGroupEnumRecords</c> function creates an enumeration of peer group records.</summary>
+	/// <param name="hGroup">
+	/// Handle to the peer group whose records are enumerated. This handle is returned by the PeerGroupCreate, PeerGroupOpen, or
+	/// PeerGroupJoin function. This parameter is required.
+	/// </param>
+	/// <param name="pRecordType">
+	/// Pointer to a <c>GUID</c> value that uniquely identifies a specific record type. If this parameter is <c>NULL</c>, all records
+	/// are returned.
+	/// </param>
 	/// <returns>
 	/// The enumeration that contains the returned list of records, with each item represented as a pointer to a PEER_RECORD structure.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupenumrecords NOT_BUILD_WINDOWS_DEPRECATE HRESULT
 	// PeerGroupEnumRecords( HGROUP hGroup, const GUID *pRecordType, HPEERENUM *phPeerEnum );
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumRecords")]
-	public static SafePeerList<PEER_RECORD> PeerGroupEnumRecords(HGROUP hGroup, in Guid pRecordType) =>
-		PeerEnum<PEER_RECORD, Guid>(pRecordType, g => { PeerGroupEnumRecords(hGroup, g, out var h).ThrowIfFailed(); return h; });
+	public static SafePeerList<PEER_RECORD> PeerGroupEnumRecords(HGROUP hGroup, [Optional] Guid? pRecordType) =>
+		PeerEnum<PEER_RECORD, Guid?>(pRecordType, g => { PeerGroupEnumRecords(hGroup, (SafeCoTaskMemStruct<Guid>)pRecordType, out var h).ThrowIfFailed(); return h; });
 
 	/// <summary>
 	/// The <c>PeerGroupExportConfig</c> function exports the group configuration for a peer as an XML string that contains the
@@ -1548,7 +1585,7 @@ public static partial class P2P
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupIssueCredentials")]
 	public static extern HRESULT PeerGroupIssueCredentials(HGROUP hGroup, [MarshalAs(UnmanagedType.LPWStr)] string pwzSubjectIdentity,
-		in PEER_CREDENTIAL_INFO pCredentialInfo, PEER_GROUP_ISSUE_CREDENTIAL_FLAGS dwFlags,
+		in PEER_CREDENTIAL_INFO pCredentialInfo, [Optional] PEER_GROUP_ISSUE_CREDENTIAL_FLAGS dwFlags,
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzInvitation);
 
 	/// <summary>
@@ -1650,7 +1687,7 @@ public static partial class P2P
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupIssueCredentials")]
 	public static extern HRESULT PeerGroupIssueCredentials(HGROUP hGroup, [MarshalAs(UnmanagedType.LPWStr)] string pwzSubjectIdentity,
-		[In, Optional] IntPtr pCredentialInfo, PEER_GROUP_ISSUE_CREDENTIAL_FLAGS dwFlags, [In, Optional] IntPtr ppwzInvitation);
+		[In, Optional] IntPtr pCredentialInfo, [Optional] PEER_GROUP_ISSUE_CREDENTIAL_FLAGS dwFlags, [In, Optional] IntPtr ppwzInvitation);
 
 	/// <summary>
 	/// The <c>PeerGroupJoin</c> function prepares a peer with an invitation to join an existing peer group prior to calling
@@ -1732,7 +1769,7 @@ public static partial class P2P
 	// PCWSTR pwzIdentity, PCWSTR pwzInvitation, PCWSTR pwzCloud, HGROUP *phGroup );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupJoin")]
-	public static extern HRESULT PeerGroupJoin([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, [MarshalAs(UnmanagedType.LPWStr)] string pwzInvitation,
+	public static extern HRESULT PeerGroupJoin([MarshalAs(UnmanagedType.LPWStr)] string? pwzIdentity, [MarshalAs(UnmanagedType.LPWStr)] string pwzInvitation,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwzCloud, out HGROUP phGroup);
 
 	/// <summary>
@@ -1988,7 +2025,7 @@ public static partial class P2P
 	// PeerGroupPasswordJoin( PCWSTR pwzIdentity, PCWSTR pwzInvitation, PCWSTR pwzPassword, PCWSTR pwzCloud, HGROUP *phGroup );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupPasswordJoin")]
-	public static extern HRESULT PeerGroupPasswordJoin([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, [MarshalAs(UnmanagedType.LPWStr)] string pwzInvitation,
+	public static extern HRESULT PeerGroupPasswordJoin([MarshalAs(UnmanagedType.LPWStr)] string? pwzIdentity, [MarshalAs(UnmanagedType.LPWStr)] string pwzInvitation,
 		[MarshalAs(UnmanagedType.LPWStr)] string pwzPassword, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwzCloud, out HGROUP phGroup);
 
 	/// <summary>
@@ -2580,7 +2617,7 @@ public static partial class P2P
 		public HGROUP(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HGROUP"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HGROUP NULL => new HGROUP(IntPtr.Zero);
+		public static HGROUP NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2593,7 +2630,7 @@ public static partial class P2P
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HGROUP"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGROUP(IntPtr h) => new HGROUP(h);
+		public static implicit operator HGROUP(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2608,7 +2645,7 @@ public static partial class P2P
 		public static bool operator ==(HGROUP h1, HGROUP h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HGROUP h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HGROUP h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

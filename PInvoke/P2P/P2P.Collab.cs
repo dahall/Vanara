@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the P2P.dll</summary>
@@ -139,7 +135,8 @@ public static partial class P2P
 	// hEvent, HANDLE *phInvitation );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabAsyncInviteContact")]
-	public static extern HRESULT PeerCollabAsyncInviteContact(in PEER_CONTACT pcContact, in PEER_ENDPOINT pcEndpoint, in PEER_INVITATION pcInvitation, [In, Optional] HANDLE hEvent, out SafePeerCollabHandle phInvitation);
+	public static extern HRESULT PeerCollabAsyncInviteContact(in PEER_CONTACT pcContact, in PEER_ENDPOINT pcEndpoint, in PEER_INVITATION pcInvitation,
+		[In, Optional] HANDLE hEvent, out SafePeerCollabHandle phInvitation);
 
 	/// <summary>
 	/// The <c>PeerCollabAsyncInviteContact</c> function sends an invitation to a trusted peer contact to join the sender's peer
@@ -229,7 +226,8 @@ public static partial class P2P
 	// hEvent, HANDLE *phInvitation );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabAsyncInviteContact")]
-	public static extern HRESULT PeerCollabAsyncInviteContact([In, Optional] IntPtr pcContact, in PEER_ENDPOINT pcEndpoint, in PEER_INVITATION pcInvitation, [In, Optional] HANDLE hEvent, out SafePeerCollabHandle phInvitation);
+	public static extern HRESULT PeerCollabAsyncInviteContact([In, Optional] IntPtr pcContact, in PEER_ENDPOINT pcEndpoint, [In, Optional] IntPtr pcInvitation,
+		[In, Optional] HANDLE hEvent, out SafePeerCollabHandle phInvitation);
 
 	/// <summary>
 	/// The <c>PeerCollabAsyncInviteEndpoint</c> function sends an invitation to a specified peer endpoint to join the sender's peer
@@ -305,6 +303,81 @@ public static partial class P2P
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabAsyncInviteEndpoint")]
 	public static extern HRESULT PeerCollabAsyncInviteEndpoint(in PEER_ENDPOINT pcEndpoint, in PEER_INVITATION pcInvitation, [In, Optional] HANDLE hEvent, out SafePeerCollabHandle phInvitation);
+
+	/// <summary>
+	/// The <c>PeerCollabAsyncInviteEndpoint</c> function sends an invitation to a specified peer endpoint to join the sender's peer
+	/// collaboration activity. The availability of the response to the invitation is updated through an asynchronous event.
+	/// </summary>
+	/// <param name="pcEndpoint">
+	/// <para>
+	/// Pointer to a PEER_ENDPOINT structure that contains information about the invited peer. This peer is sent an invitation when this
+	/// API is called.
+	/// </para>
+	/// <para>This parameter must not be set to <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="pcInvitation">
+	/// Pointer to a PEER_INVITATION structure that contains the invitation request to send to the endpoint specified in pcEndpoint.
+	/// E_INVALIDARG is returned if this parameter is set to <c>NULL</c>.
+	/// </param>
+	/// <param name="hEvent">
+	/// <para>
+	/// Handle to the event for this invitation, created by a previous call to CreateEvent. The event is signaled when the status of the
+	/// asynchronous invitation is updated. To obtain the response data, call PeerCollabGetInvitationResponse.
+	/// </para>
+	/// <para>If the event is not provided, the caller must poll for the result by calling PeerCollabGetInvitationResponse.</para>
+	/// </param>
+	/// <param name="phInvitation">
+	/// A pointer to a handle to the sent invitation. If this parameter is <c>NULL</c>, the framework will cleanup the response
+	/// information after the invitation response is received. If this parameter is not <c>NULL</c>, the handle must be closed by
+	/// calling PeerCollabCloseHandle.
+	/// </param>
+	/// <returns>
+	/// <para>Returns S_OK if the function succeeds. Otherwise, the function returns one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>There is not enough memory to support this operation.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One of the arguments is invalid.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This API sends an invitation to the endpoint specified as input. It does not guarantee that the recipient of the invite is the
+	/// specific contact that the user intended to send the invite to. To ensure that the invitation is sent to the correct contact use PeerCollabAsyncInviteContact.
+	/// </para>
+	/// <para>
+	/// A toast will appear for the recipient of the invitation. This toast will be converted to a dialog box in which the user can
+	/// accept or decline the invitation. When the invitation is successfully accepted, the collaborative application is launched on the
+	/// recipient's machine.
+	/// </para>
+	/// <para>
+	/// To successfully receive the invitation, the application must be registered on the recipient's machine using
+	/// PeerCollabRegisterApplication. It is also possible for the sender of the invite to have failure codes returned because the
+	/// recipient has turned off application invites.
+	/// </para>
+	/// <para>
+	/// The PeerCollabGetInvitiationResponse function will return PEER_E_CONNECTION_FAILED if the endpoint to which the invitation is
+	/// being sent is not accepting invitations.
+	/// </para>
+	/// <para>
+	/// If the recipient is accepting invitations only from trusted contacts, then the sender of the invite must be added to the contact
+	/// store of the recipient machine. The sender must be added to the contact store before the invitation attempt. To add a contact to
+	/// the contact store, call PeerCollabAddContact.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabasyncinviteendpoint NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+	// PeerCollabAsyncInviteEndpoint( PCPEER_ENDPOINT pcEndpoint, PCPEER_INVITATION pcInvitation, HANDLE hEvent, HANDLE *phInvitation );
+	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabAsyncInviteEndpoint")]
+	public static extern HRESULT PeerCollabAsyncInviteEndpoint(in PEER_ENDPOINT pcEndpoint, in PEER_INVITATION pcInvitation, [In, Optional] HANDLE hEvent, [In, Optional] IntPtr phInvitation);
 
 	/// <summary>The <c>PeerCollabCancelInvitation</c> function cancels an invitation previously sent by the caller to a contact.</summary>
 	/// <param name="hInvitation">Handle to a previously sent invitation.</param>
@@ -1226,7 +1299,7 @@ public static partial class P2P
 	// PeerCollabExportContact( PCWSTR pwzPeerName, PWSTR *ppwzContactData );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabExportContact")]
-	public static extern HRESULT PeerCollabExportContact([MarshalAs(UnmanagedType.LPWStr)] string pwzPeerName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzContactData);
+	public static extern HRESULT PeerCollabExportContact([MarshalAs(UnmanagedType.LPWStr)] string? pwzPeerName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzContactData);
 
 	/// <summary>
 	/// The <c>PeerCollabGetAppLaunchInfo</c> function obtains the peer application launch information, including the contact name, the
@@ -1356,7 +1429,7 @@ public static partial class P2P
 	// PeerCollabGetContact( PCWSTR pwzPeerName, PPEER_CONTACT *ppContact );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetContact")]
-	public static extern HRESULT PeerCollabGetContact([MarshalAs(UnmanagedType.LPWStr)] string pwzPeerName,
+	public static extern HRESULT PeerCollabGetContact([MarshalAs(UnmanagedType.LPWStr)] string? pwzPeerName,
 		//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_CONTACT>))] out PEER_CONTACT ppContact);
 		out SafePeerData ppContact);
 
@@ -1812,6 +1885,57 @@ public static partial class P2P
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabQueryContactData")]
 	public static extern HRESULT PeerCollabQueryContactData(in PEER_ENDPOINT pcEndpoint,
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzContactData);
+
+	/// <summary>The <c>PeerCollabQueryContactData</c> function retrieves the contact information for the supplied peer endpoint.</summary>
+	/// <param name="pcEndpoint">
+	/// <para>Pointer to a PEER_ENDPOINT structure that contains the peer endpoint about which to obtain contact information.</para>
+	/// <para>If this parameter is set to <c>NULL</c>, the contact information for the current peer endpoint is obtained.</para>
+	/// </param>
+	/// <param name="ppwzContactData">
+	/// Pointer to a zero-terminated Unicode string buffer that contains the contact data for the endpoint supplied in pcEndpoint. Call
+	/// PeerFreeData to free the data.
+	/// </param>
+	/// <returns>
+	/// <para>Returns S_OK if the function succeeds. Otherwise, the function returns one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>There is not enough memory to support this operation.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One of the arguments is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>PEER_E_NOT_FOUND</term>
+	/// <term>The requested contact data does not exist. Try calling PeerCollabRefreshEndpointData before making another attempt.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>To retrieve contact data for an endpoint successfully, one of the following must occur:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>The endpoint must have been previously obtained by calling PeerCollabEnumEndpoints.</term>
+	/// </item>
+	/// <item>
+	/// <term>The local peer must have subscribed to the endpoint by calling PeerCollabSubscribeEndpointData.</term>
+	/// </item>
+	/// <item>
+	/// <term>The endpoint data must be refreshed by calling PeerCollabRefreshEndpointData successfully.</term>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabquerycontactdata NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+	// PeerCollabQueryContactData( PCPEER_ENDPOINT pcEndpoint, PWSTR *ppwzContactData );
+	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabQueryContactData")]
+	public static extern HRESULT PeerCollabQueryContactData([In, Optional] IntPtr pcEndpoint,
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzContactData);
 
 	/// <summary>The <c>PeerCollabRefreshEndpointData</c> function updates the calling peer node with new endpoint data.</summary>
@@ -2522,7 +2646,7 @@ public static partial class P2P
 		public HPEEREVENT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPEEREVENT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPEEREVENT NULL => new HPEEREVENT(IntPtr.Zero);
+		public static HPEEREVENT NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2535,7 +2659,7 @@ public static partial class P2P
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPEEREVENT"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPEEREVENT(IntPtr h) => new HPEEREVENT(h);
+		public static implicit operator HPEEREVENT(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2550,7 +2674,7 @@ public static partial class P2P
 		public static bool operator ==(HPEEREVENT h1, HPEEREVENT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPEEREVENT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HPEEREVENT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

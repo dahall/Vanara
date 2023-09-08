@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 
 namespace Vanara.PInvoke;
 
@@ -866,7 +863,7 @@ public static partial class P2P
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	internal static extern HRESULT PeerGetNextItem([In] HPEERENUM hPeerEnum, ref uint pCount, out IntPtr pppvItems);
 
-	private static SafePeerList<T> PeerEnum<T, TIn>(TIn p1, Func<TIn, SafeHPEERENUM> setup) where T : struct where TIn : struct =>
+	private static SafePeerList<T> PeerEnum<T, TIn>(TIn p1, Func<TIn, SafeHPEERENUM> setup) where T : struct =>
 		PeerEnum<T>(() => setup(p1));
 
 	private static SafePeerList<T> PeerEnum<T>(Func<SafeHPEERENUM> setup) where T : struct
@@ -886,7 +883,7 @@ public static partial class P2P
 		public HPEERENUM(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPEERENUM"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPEERENUM NULL => new HPEERENUM(IntPtr.Zero);
+		public static HPEERENUM NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -899,7 +896,7 @@ public static partial class P2P
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPEERENUM"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPEERENUM(IntPtr h) => new HPEERENUM(h);
+		public static implicit operator HPEERENUM(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -914,7 +911,7 @@ public static partial class P2P
 		public static bool operator ==(HPEERENUM h1, HPEERENUM h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPEERENUM h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HPEERENUM h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -934,7 +931,7 @@ public static partial class P2P
 		public HREGISTRATION(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HREGISTRATION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HREGISTRATION NULL => new HREGISTRATION(IntPtr.Zero);
+		public static HREGISTRATION NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -947,7 +944,7 @@ public static partial class P2P
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HREGISTRATION"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HREGISTRATION(IntPtr h) => new HREGISTRATION(h);
+		public static implicit operator HREGISTRATION(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -962,7 +959,7 @@ public static partial class P2P
 		public static bool operator ==(HREGISTRATION h1, HREGISTRATION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HREGISTRATION h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HREGISTRATION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -982,7 +979,7 @@ public static partial class P2P
 		public HRESOLUTION(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HRESOLUTION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HRESOLUTION NULL => new HRESOLUTION(IntPtr.Zero);
+		public static HRESOLUTION NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -995,7 +992,7 @@ public static partial class P2P
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRESOLUTION"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRESOLUTION(IntPtr h) => new HRESOLUTION(h);
+		public static implicit operator HRESOLUTION(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1010,7 +1007,7 @@ public static partial class P2P
 		public static bool operator ==(HRESOLUTION h1, HRESOLUTION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HRESOLUTION h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HRESOLUTION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1096,7 +1093,7 @@ public static partial class P2P
 		/// <summary>Gets the items exposed by this list.</summary>
 		/// <value>The items.</value>
 		/// <exception cref="InvalidOperationException">Object has been disposed</exception>
-		public IList<T> Items => IsInvalid ? (new T[0]) : Array.ConvertAll(DangerousGetHandle().ToArray<IntPtr>((int)count), p => p.ToStructure<T>());
+		public IList<T> Items => IsInvalid ? (new T[0]) : Array.ConvertAll(DangerousGetHandle().ToArray<IntPtr>((int)count)!, p => p.ToStructure<T>());
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
@@ -1134,7 +1131,7 @@ public static partial class P2P
 		/// <summary>Converts the unmanaged data to managed data.</summary>
 		/// <param name="pNativeData">A pointer to the unmanaged data to be wrapped.</param>
 		/// <returns>Returns the managed view of the COM data.</returns>
-		public object MarshalNativeToManaged(IntPtr pNativeData) => Marshal.PtrToStringUni(pNativeData);
+		public object MarshalNativeToManaged(IntPtr pNativeData) => Marshal.PtrToStringUni(pNativeData) ?? "";
 	}
 
 	/*internal class PeerStructMarshaler<T> : ICustomMarshaler where T : struct

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Crypt32;
 
@@ -246,7 +241,7 @@ public static partial class P2P
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerIdentityCreate")]
 	public static extern HRESULT PeerIdentityCreate([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwzClassifier,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwzFriendlyName, [In, Optional] HCRYPTPROV hCryptProv,
-		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzIdentity);
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string? ppwzIdentity);
 
 	/// <summary>
 	/// The <c>PeerIdentityDelete</c> function permanently deletes a peer identity. This includes removing all certificates, private

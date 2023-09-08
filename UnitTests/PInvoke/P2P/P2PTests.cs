@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.P2P;
 
 namespace Vanara.PInvoke.Tests;
@@ -26,8 +24,9 @@ public class P2PTests
 	[Test]
 	public void PeerCollabEnumApplicationsTest()
 	{
-		var e = PeerCollabEnumApplications();
-		Assert.NotNull(e);
+		SafePeerList<PEER_APPLICATION>? e = null;
+		Assert.DoesNotThrow(() => e = PeerCollabEnumApplications());
+		Assert.That(e, Is.Not.Null.And.Not.Empty);
 		e.WriteValues();
 	}
 

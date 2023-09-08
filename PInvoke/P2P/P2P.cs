@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.PInvoke;
@@ -12,13 +9,13 @@ public static partial class P2P
 	private const string Lib_P2PGraph = "p2pgraph.dll";
 
 	/// <summary/>
-	public static readonly Guid PEER_GROUP_ROLE_ADMIN = new Guid(0x04387127, 0xaa56, 0x450a, 0x8c, 0xe5, 0x4f, 0x56, 0x5c, 0x67, 0x90, 0xf4);
+	public static readonly Guid PEER_GROUP_ROLE_ADMIN = new(0x04387127, 0xaa56, 0x450a, 0x8c, 0xe5, 0x4f, 0x56, 0x5c, 0x67, 0x90, 0xf4);
 	/// <summary/>
-	public static readonly Guid PEER_GROUP_ROLE_MEMBER = new Guid(0xf12dc4c7, 0x0857, 0x4ca0, 0x93, 0xfc, 0xb1, 0xbb, 0x19, 0xa3, 0xd8, 0xc2);
+	public static readonly Guid PEER_GROUP_ROLE_MEMBER = new(0xf12dc4c7, 0x0857, 0x4ca0, 0x93, 0xfc, 0xb1, 0xbb, 0x19, 0xa3, 0xd8, 0xc2);
 	/// <summary/>
-	public static readonly Guid PEER_GROUP_ROLE_INVITING_MEMBER = new Guid(0x4370fd89, 0xdc18, 0x4cfb, 0x8d, 0xbf, 0x98, 0x53, 0xa8, 0xa9, 0xf9, 0x05);
+	public static readonly Guid PEER_GROUP_ROLE_INVITING_MEMBER = new(0x4370fd89, 0xdc18, 0x4cfb, 0x8d, 0xbf, 0x98, 0x53, 0xa8, 0xa9, 0xf9, 0x05);
 	/// <summary/>
-	public static readonly Guid PEER_COLLAB_OBJECTID_USER_PICTURE = new Guid(0xdd15f41f, 0xfc4e, 0x4922, 0xb0, 0x35, 0x4c, 0x06, 0xa7, 0x54, 0xd0, 0x1d);
+	public static readonly Guid PEER_COLLAB_OBJECTID_USER_PICTURE = new(0xdd15f41f, 0xfc4e, 0x4922, 0xb0, 0x35, 0x4c, 0x06, 0xa7, 0x54, 0xd0, 0x1d);
 
 
 	/// <summary>The <c>PEER_APPLICATION_REGISTRATION_TYPE</c> enumeration defines the set of peer application registration flags.</summary>
@@ -574,7 +571,7 @@ public static partial class P2P
 		public HGRAPH(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HGRAPH"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HGRAPH NULL => new HGRAPH(IntPtr.Zero);
+		public static HGRAPH NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -587,7 +584,7 @@ public static partial class P2P
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HGRAPH"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGRAPH(IntPtr h) => new HGRAPH(h);
+		public static implicit operator HGRAPH(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -602,7 +599,7 @@ public static partial class P2P
 		public static bool operator ==(HGRAPH h1, HGRAPH h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HGRAPH h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HGRAPH h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -689,7 +686,7 @@ public static partial class P2P
 		/// is limited to 255 unicode characters.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzDescription;
+		public string? pwzDescription;
 	}
 
 	/// <summary>
@@ -1726,14 +1723,14 @@ public static partial class P2P
 		/// <c>NULL</c>. The maximum length of this string is 256 characters, including the null terminator.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzFriendlyName;
+		public string? pwzFriendlyName;
 
 		/// <summary>
 		/// Specifies the comment used to describe a peer graph. This member is optional and can be <c>NULL</c>. The default value is
 		/// <c>NULL</c>. The maximum length of this string is 512 characters, including the null terminator.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzComment;
+		public string? pwzComment;
 
 		/// <summary>
 		/// Specifies the number of seconds before a presence record expires. The default value is 300 seconds (5 minutes). Do not set
@@ -1905,14 +1902,14 @@ public static partial class P2P
 		/// "global", if this member is <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzCloud;
+		public string? pwzCloud;
 
 		/// <summary>
 		/// Specifies the classifier used to identify the authority of a peer group peer name for registration or resolution within a
 		/// PNRP cloud. The maximum size of this field is 149 Unicode characters. This member can be <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzClassifier;
+		public string? pwzClassifier;
 
 		/// <summary>
 		/// Specifies the name of a peer group that is registered with the PNRP service. The maximum size of this field is 137 Unicode characters.
@@ -1925,7 +1922,7 @@ public static partial class P2P
 		/// this structure member is <c>NULL</c>, the implementation uses the identity obtained from PeerIdentityGetDefault.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzCreatorPeerName;
+		public string? pwzCreatorPeerName;
 
 		/// <summary>Specifies the friendly (display) name of a peer group. The maximum size of this field is 255 characters.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -2164,7 +2161,7 @@ public static partial class P2P
 
 		/// <summary>Reserved. This member must be set to <c>NULL</c>, and is set exclusively by the Peer Collaboration infrastructure.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzMessage;
+		public string? pwzMessage;
 
 		/// <summary>
 		/// Any extended information that is part of the response. This can include an error code corresponding to the failure on the
@@ -2298,7 +2295,7 @@ public static partial class P2P
 		/// that is specific to the application. This parameter is optional; the default value is <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzAttributes;
+		public string? pwzAttributes;
 	}
 
 	/// <summary>
@@ -2449,7 +2446,7 @@ public static partial class P2P
 		/// PEER_PNRP_ALL_LINK_CLOUDS to register in all link local clouds.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzCloudName;
+		public string? pwzCloudName;
 
 		/// <summary>Pointer to a Unicode string that contains the name of the peer identity requesting registration.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -2563,7 +2560,7 @@ public static partial class P2P
 		/// PeerGraphUpdateRecord. An application cannot set this member.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzCreatorId;
+		public string? pwzCreatorId;
 
 		/// <summary>Specifies the unique ID of the last person who changes a record. An application cannot set this member.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -2702,7 +2699,7 @@ public static partial class P2P
 		/// <c>NULL</c>. If <c>pfnSecureRecord</c> is <c>NULL</c>, this member must also be <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PFNPEER_VALIDATE_RECORD pfnValidateRecord;
+		public PFNPEER_VALIDATE_RECORD? pfnValidateRecord;
 
 		/// <summary>
 		/// Pointer to a callback function that is called when a record must be secured. This member is optional and can be <c>NULL</c>.
@@ -2716,11 +2713,11 @@ public static partial class P2P
 		/// member is optional and can be <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PFNPEER_FREE_SECURITY_DATA pfnFreeSecurityData;
+		public PFNPEER_FREE_SECURITY_DATA? pfnFreeSecurityData;
 
 		/// <summary/>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PFNPEER_ON_PASSWORD_AUTH_FAILED pfnAuthFailed;
+		public PFNPEER_ON_PASSWORD_AUTH_FAILED? pfnAuthFailed;
 	}
 
 	/// <summary>The <c>PEER_VERSION_DATA</c> structure contains the version information about the Peer Graphing and Grouping APIs.</summary>
