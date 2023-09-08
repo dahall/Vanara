@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.Extensions.Reflection;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Kernel32;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Platform invokable enumerated types, constants and functions from ntdll.h</summary>
 public static partial class NtDll
@@ -900,7 +889,7 @@ public static partial class NtDll
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wdm.h", MSDNShortId = "5ffd8262-10b3-4c40-bd3e-050271338508")]
 	public static extern NTStatus NtCreateEnlistment(out SafeEnlistmentHandle EnlistmentHandle, ACCESS_MASK DesiredAccess, [In] SafeResourceManagerHandle ResourceManagerHandle,
-		[In] SafeTransactionHandle TransactionHandle, in OBJECT_ATTRIBUTES ObjectAttributes, [Optional] uint CreateOptions, NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
+		[In] SafeTransactionHandle TransactionHandle, in OBJECT_ATTRIBUTES ObjectAttributes, [Optional] uint CreateOptions, [In, Optional] NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
 
 	/// <summary>
 	/// <para>The <c>ZwCreateEnlistment</c> routine creates a new enlistment object for a transaction.</para>
@@ -1103,7 +1092,7 @@ public static partial class NtDll
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wdm.h", MSDNShortId = "5ffd8262-10b3-4c40-bd3e-050271338508")]
 	public static extern NTStatus NtCreateEnlistment(out SafeEnlistmentHandle EnlistmentHandle, ACCESS_MASK DesiredAccess, [In] SafeResourceManagerHandle ResourceManagerHandle,
-		[In] SafeTransactionHandle TransactionHandle, [In, Optional] IntPtr ObjectAttributes, [Optional] uint CreateOptions, NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
+		[In] SafeTransactionHandle TransactionHandle, [In, Optional] IntPtr ObjectAttributes, [Optional] uint CreateOptions, [In, Optional] NOTIFICATION_MASK NotificationMask, [In, Optional] IntPtr EnlistmentKey);
 
 	/// <summary>
 	/// <para>The <c>ZwCreateResourceManager</c> routine creates a resource manager object.</para>
@@ -1476,7 +1465,7 @@ public static partial class NtDll
 	// RmGuid, POBJECT_ATTRIBUTES ObjectAttributes, ULONG CreateOptions, PUNICODE_STRING Description );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wdm.h", MSDNShortId = "4812eeb4-134f-4ecb-870b-dbab04c1137b")]
-	public static extern NTStatus NtCreateResourceManager(out SafeResourceManagerHandle ResourceManagerHandle, ACCESS_MASK DesiredAccess, SafeTransactionManagerHandle TmHandle, in Guid RmGuid,
+	public static extern NTStatus NtCreateResourceManager(out SafeResourceManagerHandle ResourceManagerHandle, ACCESS_MASK DesiredAccess, SafeTransactionManagerHandle TmHandle, [In, Optional] IntPtr RmGuid,
 		[In, Optional] IntPtr ObjectAttributes, [Optional] uint CreateOptions, [In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UnicodeStringMarshaler))] string? Description);
 
 	/// <summary>

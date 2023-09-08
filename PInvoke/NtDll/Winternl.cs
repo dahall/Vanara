@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -548,7 +545,7 @@ public static partial class NtDll
 		NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out _).ThrowIfFailed();
 		return mem;
 
-		bool TypeIsWow() => typeof(T).Name.EndsWith("WOW64");
+		static bool TypeIsWow() => typeof(T).Name.EndsWith("WOW64");
 	}
 
 	/// <summary>A call to <c>NtQueryInformationProcess</c> for the supplied process requires WOW64 structs.</summary>

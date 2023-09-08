@@ -1,10 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using System;
-using System.Diagnostics;
-using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.NtDll;
 
 namespace Vanara.PInvoke.Tests;
@@ -36,27 +30,27 @@ public partial class WinternlTests
 			TestContext.WriteLine($"Img: {upp.ImagePathName.ToString(hProc)}; CmdLine: {upp.CommandLine.ToString(hProc)}");
 		}
 
-		NtQueryResult<IntPtr> pdp = null;
+		NtQueryResult<IntPtr>? pdp = null;
 		Assert.That(() => pdp = NtQueryInformationProcess<IntPtr>(hProc, PROCESSINFOCLASS.ProcessDebugPort), Throws.Nothing);
 		Assert.That(pdp, ResultIs.ValidHandle);
-		TestContext.WriteLine($"DbgPort: {pdp.Value.ToInt64()}");
+		TestContext.WriteLine($"DbgPort: {pdp?.Value.ToInt64()}");
 
-		NtQueryResult<BOOL> pwi = null;
+		NtQueryResult<BOOL>? pwi = null;
 		Assert.That(() => pwi = NtQueryInformationProcess<BOOL>(hProc, PROCESSINFOCLASS.ProcessWow64Information), Throws.Nothing);
 		Assert.That(pwi, ResultIs.ValidHandle);
-		Assert.That(pwi.Value.Value, Is.True);
+		Assert.That(pwi?.Value.Value, Is.True);
 
-		NtQueryResult<UNICODE_STRING> pfn = null;
+		NtQueryResult<UNICODE_STRING>? pfn = null;
 		Assert.That(() => pfn = NtQueryInformationProcess<UNICODE_STRING>(hProc, PROCESSINFOCLASS.ProcessImageFileName), Throws.Nothing);
 		Assert.That(pfn, ResultIs.ValidHandle);
-		TestContext.WriteLine($"Fn: {pfn.Value.ToString(hProc)}");
+		TestContext.WriteLine($"Fn: {pfn?.Value.ToString(hProc)}");
 
-		NtQueryResult<BOOL> pbt = null;
+		NtQueryResult<BOOL>? pbt = null;
 		Assert.That(() => pbt = NtQueryInformationProcess<BOOL>(hProc, PROCESSINFOCLASS.ProcessBreakOnTermination), Throws.Nothing);
 		Assert.That(pbt, ResultIs.ValidHandle);
-		Assert.That(pbt.Value.Value, Is.False);
+		Assert.That(pbt?.Value.Value, Is.False);
 
-		NtQueryResult<SUBSYSTEM_INFORMATION_TYPE> psi = null;
+		NtQueryResult<SUBSYSTEM_INFORMATION_TYPE>? psi = null;
 		// This is documented, but fails on Win10
 		Assert.That(() => psi = NtQueryInformationProcess<SUBSYSTEM_INFORMATION_TYPE>(hProc, PROCESSINFOCLASS.ProcessSubsystemInformation), Throws.ArgumentException);
 		//Assert.That(psi, ResultIs.ValidHandle);
@@ -64,9 +58,9 @@ public partial class WinternlTests
 		//TestContext.WriteLine($"SubSys: {psi.Value}");
 
 		// Try undocumented fetch
-		NtQueryResult<uint> ppb = null;
+		NtQueryResult<uint>? ppb = null;
 		Assert.That(() => ppb = NtQueryInformationProcess<uint>(hProc, PROCESSINFOCLASS.ProcessPriorityBoost), Throws.Nothing);
-		TestContext.WriteLine($"Priority boost: {ppb.Value}");
+		TestContext.WriteLine($"Priority boost: {ppb?.Value}");
 	}
 
 	[Test]

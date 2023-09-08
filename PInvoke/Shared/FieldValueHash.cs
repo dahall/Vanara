@@ -34,7 +34,7 @@ public class StaticFieldValueHash
 	/// <typeparam name="TEnum">The type of the enum to added.</typeparam>
 	/// <param name="lib">The optional library name.</param>
 	public static void AddFields<TType, TFieldType, TEnum>(string? lib = null) where TFieldType : struct, IComparable =>
-		AddFields<TType, TFieldType>(Enum.GetValues(typeof(TEnum)).Cast<TFieldType>().Select(v => (v, Enum.GetName(typeof(TEnum), v))), lib);
+		AddFields<TType, TFieldType>(Enum.GetValues(typeof(TEnum)).Cast<TFieldType>().Select(v => (v, Enum.GetName(typeof(TEnum), v)!)), lib);
 
 	/// <summary>Tries to get the name of a value's library.</summary>
 	/// <typeparam name="TType">The type of the type.</typeparam>

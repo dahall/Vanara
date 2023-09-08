@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Kernel32;
+﻿using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
 
@@ -92,7 +88,7 @@ public static partial class NtDll
 		public string ToString(HPROCESS hProc)
 		{
 			using var mem = new SafeCoTaskMemString(MaximumLength);
-			return ReadProcessMemory(hProc, Buffer, mem, mem.Size, out _) ? mem : string.Empty;
+			return ReadProcessMemory(hProc, Buffer, mem, mem.Size, out _) ? (string)mem! : string.Empty;
 		}
 	}
 
@@ -129,7 +125,7 @@ public static partial class NtDll
 		public string ToString(HPROCESS hProc)
 		{
 			using var mem = new SafeCoTaskMemString(MaximumLength);
-			return NtWow64ReadVirtualMemory64(hProc, Buffer, ((IntPtr)mem).ToInt32(), mem.Size, out _).Succeeded ? mem : string.Empty;
+			return NtWow64ReadVirtualMemory64(hProc, Buffer, ((IntPtr)mem).ToInt32(), mem.Size, out _).Succeeded ? (string)mem! : string.Empty;
 		}
 	}
 
@@ -144,13 +140,13 @@ public static partial class NtDll
 
 		/// <summary>Initializes a new instance of the <see cref="SafeUNICODE_STRING"/> class with a string value.</summary>
 		/// <param name="value">The string value.</param>
-		public SafeUNICODE_STRING(string value) : base(IntPtr.Zero, true)
+		public SafeUNICODE_STRING(string? value) : base(IntPtr.Zero, true)
 		{
 			var structLen = GetStructSize(GetCurrentProcess());
 			if (string.IsNullOrEmpty(value))
 				SetHandle(Marshal.AllocCoTaskMem(size = structLen));
 			else
-				SetHandle(InitMemForString(value, structLen, out size));
+				SetHandle(InitMemForString(value!, structLen, out size));
 		}
 
 		internal SafeUNICODE_STRING(IntPtr ptr, bool own) : base(ptr, own)
@@ -173,19 +169,19 @@ public static partial class NtDll
 		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="SafeUNICODE_STRING"/>.</summary>
 		/// <param name="value">The string value.</param>
 		/// <returns>The resulting <see cref="SafeUNICODE_STRING"/> instance from the conversion.</returns>
-		public static implicit operator SafeUNICODE_STRING(string value) => new(value);
+		public static implicit operator SafeUNICODE_STRING(string? value) => new(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeUNICODE_STRING"/> to <see cref="string"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The resulting <see cref="string"/> instance from the conversion.</returns>
-		public static implicit operator string(SafeUNICODE_STRING value) => value?.ToString(default);
+		public static implicit operator string?(SafeUNICODE_STRING value) => value?.ToString(default);
 
 		/// <summary>Extracts the string value from this structure by reading process specific memory.</summary>
 		/// <param name="hProc">The process handle of the process from which to read the memory.</param>
 		/// <returns>A <see cref="string"/> that has the value.</returns>
 		public string ToString(HPROCESS hProc)
 		{
-			if (IsInvalid) return null;
+			if (IsInvalid) return string.Empty;
 			var maxlen = unchecked((ushort)Marshal.ReadInt16(handle, 2));
 			hProc = hProc == default ? GetCurrentProcess() : hProc;
 			var bufOffset = GetBufferOffset(hProc);
@@ -194,8 +190,8 @@ public static partial class NtDll
 				return StringHelper.GetString(bufPtr, CharSet.Unicode, MaximumLength) ?? string.Empty;
 			using var mem = new SafeCoTaskMemString(maxlen);
 			if (hProc.IsWow64())
-				return NtWow64ReadVirtualMemory64(hProc, bufPtr.ToInt64(), ((IntPtr)mem).ToInt32(), mem.Size, out _).Succeeded ? mem : string.Empty;
-			return ReadProcessMemory(hProc, bufPtr, mem, mem.Size, out _) ? mem : string.Empty;
+				return NtWow64ReadVirtualMemory64(hProc, bufPtr.ToInt64(), ((IntPtr)mem).ToInt32(), mem.Size, out _).Succeeded ? (string)mem! : string.Empty;
+			return ReadProcessMemory(hProc, bufPtr, mem, mem.Size, out _) ? (string)mem! : string.Empty;
 		}
 
 		/// <summary>Extracts the string value from this structure by reading process specific memory.</summary>

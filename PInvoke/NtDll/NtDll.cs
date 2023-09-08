@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
 using Vanara.Extensions.Reflection;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -1571,19 +1566,19 @@ public static partial class NtDll
 	/// <exception cref="InvalidCastException">
 	/// The requested SystemInformationClass does not match the return type requested. or Reported size of object does not match query.
 	/// </exception>
-	public static T NtQuerySystemInformation<T>(SYSTEM_INFORMATION_CLASS SystemInformationClass)
+	public static T? NtQuerySystemInformation<T>(SYSTEM_INFORMATION_CLASS SystemInformationClass)
 	{
 		var tType = typeof(T);
 		if (CorrespondingTypeAttribute.GetCorrespondingTypes(SystemInformationClass).Any() && !CorrespondingTypeAttribute.CanGet(SystemInformationClass, tType))
 			throw new InvalidCastException("The requested SystemInformationClass does not match the return type requested.");
 		var status = NtQuerySystemInformation(SystemInformationClass, SafeHGlobalHandle.Null, 0, out var len);
-		if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH && status != NTStatus.STATUS_BUFFER_OVERFLOW && status != NTStatus.STATUS_BUFFER_TOO_SMALL)
-			throw status.GetException();
+		if ((int)status is not NTStatus.STATUS_INFO_LENGTH_MISMATCH and not NTStatus.STATUS_BUFFER_OVERFLOW and not NTStatus.STATUS_BUFFER_TOO_SMALL)
+			throw status.GetException()!;
 		var mem = new SafeHGlobalHandle(SystemInformationClass == SYSTEM_INFORMATION_CLASS.SystemProcessInformation ? (int)len * 2 : (int)len);
 		NtQuerySystemInformation(SystemInformationClass, mem, (uint)mem.Size, out len).ThrowIfFailed();
 		if (tType.IsArray)
 		{
-			var aType = tType.GetElementType();
+			var aType = tType.GetElementType()!;
 			if (aType == typeof(SYSTEM_PROCESS_INFORMATION) && SystemInformationClass == SYSTEM_INFORMATION_CLASS.SystemProcessInformation)
 			{
 				var retList = new List<SYSTEM_PROCESS_INFORMATION>();
@@ -1599,7 +1594,7 @@ public static partial class NtDll
 			}
 			var cnt = Math.DivRem(len, Marshal.SizeOf(aType), out var res);
 			if (res != 0) throw new InvalidCastException("Reported size of object does not match query.");
-			return (T)mem.InvokeGenericMethod("ToArray", new[] { aType }, new[] { typeof(int), typeof(int) }, new object[] { (int)cnt, 0 });
+			return (T?)mem.InvokeGenericMethod("ToArray", new[] { aType }, new[] { typeof(int), typeof(int) }, new object[] { (int)cnt, 0 });
 		}
 		return mem.ToStructure<T>();
 	}
@@ -1615,10 +1610,10 @@ public static partial class NtDll
 	public static IList<Tuple<SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION[]>> NtQuerySystemInformation_Process()
 	{
 		var status = NtQuerySystemInformation(SYSTEM_INFORMATION_CLASS.SystemProcessInformation, SafeHGlobalHandle.Null, 0, out var len);
-		if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH && status != NTStatus.STATUS_BUFFER_OVERFLOW && status != NTStatus.STATUS_BUFFER_TOO_SMALL)
-			throw status.GetException();
+		if ((int)status is not NTStatus.STATUS_INFO_LENGTH_MISMATCH and not NTStatus.STATUS_BUFFER_OVERFLOW and not NTStatus.STATUS_BUFFER_TOO_SMALL)
+			throw status.GetException()!;
 		var mem = new SafeHGlobalHandle((int)len * 2);
-		NtQuerySystemInformation(SYSTEM_INFORMATION_CLASS.SystemProcessInformation, mem, (uint)mem.Size, out len).ThrowIfFailed();
+		NtQuerySystemInformation(SYSTEM_INFORMATION_CLASS.SystemProcessInformation, mem, (uint)mem.Size, out _).ThrowIfFailed();
 		var retList = new List<Tuple<SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION[]>>();
 		var pi = new SYSTEM_PROCESS_INFORMATION();
 		var ptr = mem.DangerousGetHandle();
@@ -1626,7 +1621,7 @@ public static partial class NtDll
 		do
 		{
 			pi = ptr.ToStructure<SYSTEM_PROCESS_INFORMATION>();
-			retList.Add(new Tuple<SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION[]>(pi, ptr.Offset(pSz).ToArray<SYSTEM_THREAD_INFORMATION>((int)pi.NumberOfThreads)));
+			retList.Add(new Tuple<SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION[]>(pi, ptr.Offset(pSz).ToArray<SYSTEM_THREAD_INFORMATION>((int)pi.NumberOfThreads)!));
 			ptr = ptr.Offset(pi.NextEntryOffset);
 		} while (pi.NextEntryOffset > 0);
 		return retList;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.IO;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -869,7 +867,7 @@ public static partial class NtDll
 	// POBJECT_ATTRIBUTES ObjectAttributes, PIO_STATUS_BLOCK IoStatusBlock, PLARGE_INTEGER AllocationSize, uint FileAttributes, uint
 	// ShareAccess, uint CreateDisposition, uint CreateOptions, IntPtr EaBuffer, uint EaLength);
 	public static extern NTStatus NtCreateFile(out SafeHFILE FileHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes, out IO_STATUS_BLOCK IoStatusBlock,
-		in long AllocationSize, FileFlagsAndAttributes FileAttributes, FileShare ShareAccess, NtFileMode CreateDisposition, NtFileCreateOptions CreateOptions, [In, Optional] IntPtr EaBuffer, uint EaLength);
+		in long AllocationSize, FileFlagsAndAttributes FileAttributes, FileShare ShareAccess, NtFileMode CreateDisposition, NtFileCreateOptions CreateOptions, IntPtr EaBuffer = default, uint EaLength = 0);
 
 	/// <summary>
 	/// <para>The <c>NtCreateFile</c> routine creates a new file or opens an existing file.</para>
@@ -1349,7 +1347,7 @@ public static partial class NtDll
 	// ShareAccess, uint CreateDisposition, uint CreateOptions, IntPtr EaBuffer, uint EaLength);
 	public static extern NTStatus NtCreateFile(out SafeHFILE FileHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes, out IO_STATUS_BLOCK IoStatusBlock,
 		[In, Optional] IntPtr AllocationSize, FileFlagsAndAttributes FileAttributes, FileShare ShareAccess, NtFileMode CreateDisposition, NtFileCreateOptions CreateOptions,
-		[In, Optional] IntPtr EaBuffer, uint EaLength);
+		IntPtr EaBuffer = default, uint EaLength = 0);
 
 	/// <summary>
 	/// <para>The <c>NtCreateSection</c> routine creates a section object.</para>
@@ -1848,7 +1846,7 @@ public static partial class NtDll
 	// Flags, PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
-	public static extern IntPtr RtlCreateHeap(HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
+	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
 		[In, Optional] SizeT CommitSize, [In, Optional] IntPtr Lock, [In, Optional] IntPtr Parameters);
 
 	/// <summary>
@@ -2001,7 +1999,7 @@ public static partial class NtDll
 	// Flags, PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
-	public static extern IntPtr RtlCreateHeap(HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
+	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
 		[In, Optional] SizeT CommitSize, [In, Optional] IntPtr Lock, in RTL_HEAP_PARAMETERS Parameters);
 
 	/// <summary>
@@ -2110,7 +2108,7 @@ public static partial class NtDll
 		/// <para>If HeapBase is NULL, CommitRoutine must also be NULL.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PRTL_HEAP_COMMIT_ROUTINE CommitRoutine;
+		public PRTL_HEAP_COMMIT_ROUTINE? CommitRoutine;
 
 		/// <summary>Reserved for system use. Drivers must set this parameter to zero.</summary>
 		private SizeT Reserved1;

@@ -1,11 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.NtDll;
 
 namespace Vanara.PInvoke.Tests;
@@ -23,11 +17,11 @@ public partial class NtDllTests
 		var qi = NtQuerySystemInformation<SYSTEM_REGISTRY_QUOTA_INFORMATION>(SYSTEM_INFORMATION_CLASS.SystemRegistryQuotaInformation);
 		Assert.That(qi.RegistryQuotaUsed, Is.Not.Zero);
 		var ppi = NtQuerySystemInformation<SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION[]>(SYSTEM_INFORMATION_CLASS.SystemProcessorPerformanceInformation);
-		Assert.That(ppi.Length, Is.EqualTo(bi.NumberOfProcessors));
+		Assert.That(ppi?.Length, Is.EqualTo(bi.NumberOfProcessors));
 
 		var arr = NtQuerySystemInformation<SYSTEM_PROCESS_INFORMATION[]>(SYSTEM_INFORMATION_CLASS.SystemProcessInformation);
 		var pti = NtQuerySystemInformation_Process();
-		Assert.That(arr.Length, Is.EqualTo(pti.Count));
+		Assert.That(arr?.Length, Is.EqualTo(pti.Count));
 
 		TestContext.WriteLine($"{bi.NumberOfProcessors} Cores; {pti.Count} Processes; {pti.Sum(t => t.Item2.Length)} Threads");
 	}
@@ -36,11 +30,11 @@ public partial class NtDllTests
 	public void SafeUNICODE_STRING_Test()
 	{
 		const string testStr = "Testing. 1. 2. 3.";
-		SafeUNICODE_STRING sstr = null;
+		SafeUNICODE_STRING? sstr = null;
 		try
 		{
 			Assert.That(() => sstr = testStr, Throws.Nothing);
-			Assert.That((string)sstr, Is.EqualTo(testStr));
+			Assert.That((string?)sstr!, Is.EqualTo(testStr));
 		}
 		finally
 		{
