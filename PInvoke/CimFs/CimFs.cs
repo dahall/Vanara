@@ -1,9 +1,3 @@
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the CimFs.dll</summary>
