@@ -3519,7 +3519,7 @@ public static partial class HttpApi
 		public override int GetHashCode() => (MajorVersion, MinorVersion).GetHashCode();
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTTP_VERSION v && Equals(v);
+		public override bool Equals(object? obj) => obj is HTTP_VERSION v && Equals(v);
 
 		/// <inheritdoc/>
 		public override string ToString() => $"{MajorVersion}.{MinorVersion}";
@@ -3626,7 +3626,7 @@ public static partial class HttpApi
 		public override int GetHashCode() => (HttpApiMajorVersion, HttpApiMinorVersion).GetHashCode();
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTTPAPI_VERSION v && Equals(v);
+		public override bool Equals(object? obj) => obj is HTTPAPI_VERSION v && Equals(v);
 
 		/// <inheritdoc/>
 		public override string ToString() => $"{HttpApiMajorVersion}.{HttpApiMinorVersion}";

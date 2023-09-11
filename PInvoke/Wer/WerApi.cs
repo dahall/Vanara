@@ -960,7 +960,7 @@ public static partial class Wer
 		public static bool operator ==(HREPORT h1, HREPORT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HREPORT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HREPORT h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1008,7 +1008,7 @@ public static partial class Wer
 		public static bool operator ==(HREPORTSTORE h1, HREPORTSTORE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HREPORTSTORE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HREPORTSTORE h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

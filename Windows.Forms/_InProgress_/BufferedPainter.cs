@@ -372,7 +372,7 @@ namespace Vanara.Drawing
 		/// <summary>Determines if two instances are equal.</summary>
 		/// <param name="obj">The object to compare.</param>
 		/// <returns></returns>
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			var other = obj as BufferedPaintTransition<TState>;
 			return other != null ? ((IEquatable<BufferedPaintTransition<TState>>)this).Equals(other) : base.Equals(obj);
@@ -420,7 +420,7 @@ namespace Vanara.Drawing
 		/// <summary>Determines if two instances are equal.</summary>
 		/// <param name="obj">The object to compare.</param>
 		/// <returns></returns>
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			var other = obj as VisualStateTrigger<TState>;
 			return other != null ? ((IEquatable<VisualStateTrigger<TState>>)this).Equals(other) : base.Equals(obj);

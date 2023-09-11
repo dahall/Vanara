@@ -1231,7 +1231,7 @@ public static partial class NdfApi
 		public static bool operator ==(NDFHANDLE h1, NDFHANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is NDFHANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is NDFHANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

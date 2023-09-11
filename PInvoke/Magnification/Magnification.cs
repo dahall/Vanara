@@ -879,7 +879,7 @@ public static partial class Magnification
 		/// <returns>
 		/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
 		/// </returns>
-		public override bool Equals(object obj) => obj is MAGCOLOREFFECT m && Equals(m);
+		public override bool Equals(object? obj) => obj is MAGCOLOREFFECT m && Equals(m);
 
 		/// <summary>Determines whether the specified <see cref="MAGCOLOREFFECT"/>, is equal to this instance.</summary>
 		/// <param name="effect">The <see cref="MAGCOLOREFFECT"/> to compare with this instance.</param>
@@ -1142,7 +1142,7 @@ public static partial class Magnification
 		/// <returns>
 		/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
 		/// </returns>
-		public override bool Equals(object obj) => obj is MAGTRANSFORM m && Equals(m);
+		public override bool Equals(object? obj) => obj is MAGTRANSFORM m && Equals(m);
 
 		/// <summary>Determines whether the specified <see cref="MAGTRANSFORM"/>, is equal to this instance.</summary>
 		/// <param name="effect">The <see cref="MAGTRANSFORM"/> to compare with this instance.</param>

@@ -850,7 +850,7 @@ public class PowerScheme : IEquatable<Guid>, IEquatable<PowerScheme>
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public override bool Equals(object obj) => obj is Guid g ? Equals(g) : obj is PowerScheme s && Equals(s);
+	public override bool Equals(object? obj) => obj is Guid g ? Equals(g) : obj is PowerScheme s && Equals(s);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>

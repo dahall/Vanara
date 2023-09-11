@@ -804,7 +804,7 @@ public static partial class Lz32
 		public static bool operator ==(HLZFILE h1, HLZFILE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HLZFILE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HLZFILE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

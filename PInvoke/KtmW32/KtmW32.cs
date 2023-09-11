@@ -1502,7 +1502,7 @@ public static partial class KtmW32
 		public static bool operator ==(HENLISTMENT h1, HENLISTMENT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HENLISTMENT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HENLISTMENT h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1550,7 +1550,7 @@ public static partial class KtmW32
 		public static bool operator ==(HRESMGR h1, HRESMGR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HRESMGR h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HRESMGR h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1598,7 +1598,7 @@ public static partial class KtmW32
 		public static bool operator ==(HTRXNMGR h1, HTRXNMGR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTRXNMGR h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HTRXNMGR h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

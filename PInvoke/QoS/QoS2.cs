@@ -2697,7 +2697,7 @@ public static partial class Qwave
 		public static bool operator ==(HQOS h1, HQOS h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HQOS h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HQOS h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -637,7 +637,7 @@ public static partial class ClfsW32
 		public int CompareTo(CLS_LSN other) => LsnLess(this, other) ? -1 : (LsnEqual(this, other) ? 0 : 1);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is CLS_LSN lSN && Equals(lSN);
+		public override bool Equals(object? obj) => obj is CLS_LSN lSN && Equals(lSN);
 
 		/// <inheritdoc/>
 		public bool Equals(CLS_LSN other) => LsnEqual(this, other);

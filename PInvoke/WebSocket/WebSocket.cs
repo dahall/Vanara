@@ -1193,7 +1193,7 @@ public static partial class WebSocket
 		public static bool operator ==(WEB_SOCKET_HANDLE h1, WEB_SOCKET_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is WEB_SOCKET_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is WEB_SOCKET_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

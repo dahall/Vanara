@@ -2431,7 +2431,7 @@ public static partial class WTSApi32
 		public static bool operator ==(HVIRTUALCHANNEL h1, HVIRTUALCHANNEL h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HVIRTUALCHANNEL h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HVIRTUALCHANNEL h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2485,7 +2485,7 @@ public static partial class WTSApi32
 		public static bool operator ==(HWTSSERVER h1, HWTSSERVER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWTSSERVER h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HWTSSERVER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

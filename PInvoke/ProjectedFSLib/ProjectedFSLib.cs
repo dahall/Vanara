@@ -2045,7 +2045,7 @@ public static partial class ProjectedFSLib
 		public static bool operator ==(PRJ_DIR_ENTRY_BUFFER_HANDLE h1, PRJ_DIR_ENTRY_BUFFER_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PRJ_DIR_ENTRY_BUFFER_HANDLE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PRJ_DIR_ENTRY_BUFFER_HANDLE h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2157,7 +2157,7 @@ public static partial class ProjectedFSLib
 		public static bool operator ==(PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h1, PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

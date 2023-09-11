@@ -5719,7 +5719,7 @@ public static partial class HttpApi
 		public static bool operator ==(HREQQUEUE h1, HREQQUEUE h2) => h1.handle == h2.handle;
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
+		public override bool Equals(object? obj) => (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -5772,7 +5772,7 @@ public static partial class HttpApi
 		public static bool operator ==(HREQQUEUEv1 h1, HREQQUEUEv1 h2) => h1.handle == h2.handle;
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
+		public override bool Equals(object? obj) => (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -966,7 +966,7 @@ public static partial class WinSpool
 		public static bool operator ==(HPRINTER h1, HPRINTER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPRINTER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPRINTER h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1014,7 +1014,7 @@ public static partial class WinSpool
 		public static bool operator ==(HPRINTERCHANGENOTIFICATION h1, HPRINTERCHANGENOTIFICATION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPRINTERCHANGENOTIFICATION h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPRINTERCHANGENOTIFICATION h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1062,7 +1062,7 @@ public static partial class WinSpool
 		public static bool operator ==(HSPOOLFILE h1, HSPOOLFILE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HSPOOLFILE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HSPOOLFILE h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

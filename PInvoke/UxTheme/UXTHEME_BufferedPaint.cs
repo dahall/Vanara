@@ -454,7 +454,7 @@ public static partial class UxTheme
 		public static bool operator ==(HANIMATIONBUFFER h1, HANIMATIONBUFFER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HANIMATIONBUFFER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HANIMATIONBUFFER h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -502,7 +502,7 @@ public static partial class UxTheme
 		public static bool operator ==(HPAINTBUFFER h1, HPAINTBUFFER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPAINTBUFFER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPAINTBUFFER h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

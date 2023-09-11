@@ -1597,7 +1597,7 @@ public static partial class Traffic
 		public static bool operator ==(HCLIENT h1, HCLIENT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCLIENT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HCLIENT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1650,7 +1650,7 @@ public static partial class Traffic
 		public static bool operator ==(HFILTER h1, HFILTER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFILTER h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFILTER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1703,7 +1703,7 @@ public static partial class Traffic
 		public static bool operator ==(HFLOW h1, HFLOW h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFLOW h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFLOW h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1756,7 +1756,7 @@ public static partial class Traffic
 		public static bool operator ==(HFLOWENUM h1, HFLOWENUM h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFLOWENUM h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFLOWENUM h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1809,7 +1809,7 @@ public static partial class Traffic
 		public static bool operator ==(HIFC h1, HIFC h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIFC h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HIFC h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

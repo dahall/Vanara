@@ -831,7 +831,7 @@ public static partial class Msi
 		public static bool operator ==(MSIHANDLE h1, MSIHANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is MSIHANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is MSIHANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

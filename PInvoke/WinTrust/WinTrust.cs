@@ -2042,7 +2042,7 @@ public static partial class WinTrust
 		public static bool operator ==(HCATADMIN h1, HCATADMIN h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCATADMIN h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HCATADMIN h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2090,7 +2090,7 @@ public static partial class WinTrust
 		public static bool operator ==(HCRYPTMSG h1, HCRYPTMSG h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCRYPTMSG h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HCRYPTMSG h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

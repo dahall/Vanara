@@ -1779,7 +1779,7 @@ public static partial class PeerDist
 		public static bool operator ==(PEERDIST_CONTENT_HANDLE h1, PEERDIST_CONTENT_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PEERDIST_CONTENT_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is PEERDIST_CONTENT_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1841,7 +1841,7 @@ public static partial class PeerDist
 		public static bool operator ==(PEERDIST_CONTENTINFO_HANDLE h1, PEERDIST_CONTENTINFO_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PEERDIST_CONTENTINFO_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is PEERDIST_CONTENTINFO_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1889,7 +1889,7 @@ public static partial class PeerDist
 		public static bool operator ==(PEERDIST_INSTANCE_HANDLE h1, PEERDIST_INSTANCE_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PEERDIST_INSTANCE_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is PEERDIST_INSTANCE_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2065,7 +2065,7 @@ public static partial class PeerDist
 		public static bool operator ==(PEERDIST_STREAM_HANDLE h1, PEERDIST_STREAM_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PEERDIST_STREAM_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is PEERDIST_STREAM_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

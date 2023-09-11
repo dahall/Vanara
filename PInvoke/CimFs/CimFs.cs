@@ -405,7 +405,7 @@ public static partial class CimFs
 		public static bool operator ==(CIMFS_IMAGE_HANDLE h1, CIMFS_IMAGE_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is CIMFS_IMAGE_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is CIMFS_IMAGE_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -453,7 +453,7 @@ public static partial class CimFs
 		public static bool operator ==(CIMFS_STREAM_HANDLE h1, CIMFS_STREAM_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is CIMFS_STREAM_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is CIMFS_STREAM_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

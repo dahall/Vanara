@@ -544,7 +544,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPCALLOUTCHANGE h1, HFWPCALLOUTCHANGE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPCALLOUTCHANGE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPCALLOUTCHANGE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -597,7 +597,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPCONNEVENT h1, HFWPCONNEVENT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPCONNEVENT h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPCONNEVENT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -650,7 +650,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPENG h1, HFWPENG h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPENG h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPENG h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -703,7 +703,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMDYNKEYSUB h1, HFWPMDYNKEYSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMDYNKEYSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMDYNKEYSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -756,7 +756,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMFILTERSUB h1, HFWPMFILTERSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMFILTERSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMFILTERSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -809,7 +809,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMNETEVTSUB h1, HFWPMNETEVTSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMNETEVTSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMNETEVTSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -862,7 +862,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMPROVCTXSUB h1, HFWPMPROVCTXSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMPROVCTXSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMPROVCTXSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -915,7 +915,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMPROVSUB h1, HFWPMPROVSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMPROVSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMPROVSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -968,7 +968,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMSUBLAYERSUB h1, HFWPMSUBLAYERSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMSUBLAYERSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMSUBLAYERSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1021,7 +1021,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMSWITCHEVTSUB h1, HFWPMSWITCHEVTSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMSWITCHEVTSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMSWITCHEVTSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1074,7 +1074,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HFWPMSYSPORTSUB h1, HFWPMSYSPORTSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMSYSPORTSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFWPMSYSPORTSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1127,7 +1127,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HIPSECKEYMGRREG h1, HIPSECKEYMGRREG h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIPSECKEYMGRREG h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HIPSECKEYMGRREG h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1180,7 +1180,7 @@ public static partial class FwpUClnt
 		public static bool operator ==(HIPSECSACTXSUB h1, HIPSECSACTXSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIPSECSACTXSUB h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HIPSECSACTXSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

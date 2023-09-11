@@ -1229,7 +1229,7 @@ public static partial class DwmApi
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj is MARGINS m2
+		public override bool Equals(object? obj) => obj is MARGINS m2
 			? cxLeftWidth == m2.cxLeftWidth && cxRightWidth == m2.cxRightWidth && cyTopHeight == m2.cyTopHeight &&
 			  cyBottomHeight == m2.cyBottomHeight
 			: base.Equals(obj);

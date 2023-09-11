@@ -1180,7 +1180,7 @@ public static partial class CldApi
 		public static bool operator ==(HCFFILE h1, HCFFILE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCFFILE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HCFFILE h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

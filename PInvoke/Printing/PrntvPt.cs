@@ -698,7 +698,7 @@ public static partial class PrntvPt
 		public static bool operator ==(HPTPROVIDER h1, HPTPROVIDER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPTPROVIDER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPTPROVIDER h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

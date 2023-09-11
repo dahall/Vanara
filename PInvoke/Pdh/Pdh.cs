@@ -4944,7 +4944,7 @@ public static partial class Pdh
 		public static bool operator ==(PDH_HCOUNTER h1, PDH_HCOUNTER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PDH_HCOUNTER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PDH_HCOUNTER h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -4993,7 +4993,7 @@ public static partial class Pdh
 		public static bool operator ==(PDH_HLOG h1, PDH_HLOG h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PDH_HLOG h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PDH_HLOG h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -5042,7 +5042,7 @@ public static partial class Pdh
 		public static bool operator ==(PDH_HQUERY h1, PDH_HQUERY h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PDH_HQUERY h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PDH_HQUERY h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

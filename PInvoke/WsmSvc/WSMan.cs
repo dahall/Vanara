@@ -2270,7 +2270,7 @@ public static partial class WsmSvc
 		public static bool operator ==(WSMAN_API_HANDLE h1, WSMAN_API_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is WSMAN_API_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is WSMAN_API_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2411,7 +2411,7 @@ public static partial class WsmSvc
 		public static bool operator ==(WSMAN_COMMAND_HANDLE h1, WSMAN_COMMAND_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is WSMAN_COMMAND_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is WSMAN_COMMAND_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2644,7 +2644,7 @@ public static partial class WsmSvc
 		public static bool operator ==(WSMAN_OPERATION_HANDLE h1, WSMAN_OPERATION_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is WSMAN_OPERATION_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is WSMAN_OPERATION_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2998,7 +2998,7 @@ public static partial class WsmSvc
 		public static bool operator ==(WSMAN_SESSION_HANDLE h1, WSMAN_SESSION_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is WSMAN_SESSION_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is WSMAN_SESSION_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -3081,7 +3081,7 @@ public static partial class WsmSvc
 		public static bool operator ==(WSMAN_SHELL_HANDLE h1, WSMAN_SHELL_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is WSMAN_SHELL_HANDLE h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is WSMAN_SHELL_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
