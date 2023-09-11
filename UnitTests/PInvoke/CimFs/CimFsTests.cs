@@ -43,10 +43,10 @@ public class CimFsTests
 				SecurityDescriptorBuffer = sd,
 				SecurityDescriptorSize = sd.Size
 			};
-			Assert.That(CimCreateFile(hImg, "dir\\file.txt", fmd, out var hStrm), ResultIs.Successful);
+			Assert.That(CimCreateFile(hImg, "file.txt", fmd, out var hStrm), ResultIs.Successful);
 			var fbuf = File.ReadAllBytes(TestCaseSources.SmallFile);
 			Assert.That(CimWriteStream(hStrm, fbuf, (uint)fbuf.Length), ResultIs.Successful);
-			Assert.That(() => hStrm.Dispose(), Throws.Nothing);
+			Assert.That(hStrm.Dispose, Throws.Nothing);
 
 			Assert.That(CimCommitImage(hImg), ResultIs.Successful);
 
@@ -56,7 +56,7 @@ public class CimFsTests
 		}
 		finally
 		{
-			Assert.That(() => hImg.Dispose(), Throws.Nothing);
+			Assert.That(hImg.Dispose, Throws.Nothing);
 			File.Delete(cimpath);
 		}
 	}
