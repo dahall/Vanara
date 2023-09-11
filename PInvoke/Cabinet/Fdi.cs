@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -395,7 +393,7 @@ public static partial class Cabinet
 	[PInvokeData("fdi.h", MSDNShortId = "6ec2b10b-f70a-4a22-beff-df6b6a4c4cfd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool FDICopy([In] HFDI hfdi, string pszCabinet, string pszCabPath, [Optional] int flags, [In] PFNFDINOTIFY pfnfdin,
-		[In, Optional] PFNFDIDECRYPT pfnfdid, [In, Optional] IntPtr pvUser);
+		[In, Optional] PFNFDIDECRYPT? pfnfdid, [In, Optional] IntPtr pvUser);
 
 	/// <summary>The <c>FDICreate</c> function creates an FDI context.</summary>
 	/// <param name="pfnalloc">
@@ -840,7 +838,7 @@ public static partial class Cabinet
 		public static bool operator ==(HFDI h1, HFDI h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFDI h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFDI h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

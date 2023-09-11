@@ -1,7 +1,4 @@
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Vanara.PInvoke;
 
@@ -586,15 +583,11 @@ public static partial class Cabinet
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = CB_MAX_DISK_NAME)]
 		public string szDisk;
 
-		/// <summary>
-		/// <para>The name of the cabinet.</para>
-		/// </summary>
+		/// <summary>The name of the cabinet.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = CB_MAX_CABINET_NAME)]
 		public string szCab;
 
-		/// <summary>
-		/// <para>The full path that indicates where to create the cabinet.</para>
-		/// </summary>
+		/// <summary>The full path that indicates where to create the cabinet.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = CB_MAX_CAB_PATH)]
 		public string szCabPath;
 
@@ -613,7 +606,7 @@ public static partial class Cabinet
 			fFailOnIncompressible = false;
 			szDisk = string.Empty;
 			szCab = Path.GetFileName(cabFullPath);
-			szCabPath = Path.GetDirectoryName(cabFullPath);
+			szCabPath = Path.GetDirectoryName(cabFullPath) ?? throw new DirectoryNotFoundException();
 			if (szCabPath[szCabPath.Length - 1] != Path.DirectorySeparatorChar)
 				szCabPath += Path.DirectorySeparatorChar;
 		}
@@ -658,7 +651,7 @@ public static partial class Cabinet
 		public static bool operator ==(HFCI h1, HFCI h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFCI h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HFCI h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the cabinet.dll</summary>
@@ -550,10 +547,10 @@ public static partial class Cabinet
 	public struct COMPRESS_ALLOCATION_ROUTINES
 	{
 		/// <summary>Callback that allocates memory.</summary>
-		public PFN_COMPRESS_ALLOCATE Allocate;
+		public PFN_COMPRESS_ALLOCATE? Allocate;
 
 		/// <summary>Callback that deallocates memory.</summary>
-		public PFN_COMPRESS_FREE Free;
+		public PFN_COMPRESS_FREE? Free;
 
 		/// <summary>A pointer to context information for the allocation or deallocation routine defined by the user.</summary>
 		public IntPtr UserContext;
@@ -598,7 +595,7 @@ public static partial class Cabinet
 		public static bool operator ==(COMPRESSOR_HANDLE h1, COMPRESSOR_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is COMPRESSOR_HANDLE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is COMPRESSOR_HANDLE h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -646,7 +643,7 @@ public static partial class Cabinet
 		public static bool operator ==(DECOMPRESSOR_HANDLE h1, DECOMPRESSOR_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is DECOMPRESSOR_HANDLE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is DECOMPRESSOR_HANDLE h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

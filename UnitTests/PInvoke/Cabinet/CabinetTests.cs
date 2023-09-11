@@ -1,11 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
 using Vanara.RunTimeLib;
 using static Vanara.PInvoke.Cabinet;
 using static Vanara.PInvoke.Kernel32;
@@ -18,7 +14,7 @@ public class FDITests
 	private const string cabfn = "test.cab";
 	private static readonly string cabdir = TestCaseSources.TempDirWhack;
 	private ERF fderf = new();
-	private SafeHFDI hfdi;
+	private SafeHFDI? hfdi;
 
 	[OneTimeSetUp]
 	public void _Setup()
@@ -58,7 +54,7 @@ public class FDITests
 	public void FDICopyTest()
 	{
 		List<string> files = new();
-		Assert.That(FDICopy(hfdi, cabfn, cabdir, 0, Notify), Is.True);
+		Assert.That(FDICopy(hfdi!, cabfn, cabdir, 0, Notify), Is.True);
 		Assert.That(files.Count, Is.GreaterThan(0));
 		files.WriteValues();
 
