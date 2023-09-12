@@ -413,6 +413,11 @@ public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator ResourceId(SafeResourceId h) => h.handle;
 
+	/// <summary>Performs an implicit conversion from <see cref="ResourceId"/> to <see cref="SafeResourceId"/>.</summary>
+	/// <param name="h">The <see cref="ResourceId"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator SafeResourceId(ResourceId h) => new(h.DangerousGetHandle());
+
 	/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="SafeResourceId"/>.</summary>
 	/// <param name="resName">Name of the resource.</param>
 	/// <returns>The result of the conversion.</returns>

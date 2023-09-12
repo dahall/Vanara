@@ -57,7 +57,7 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648033")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool EnumResLangProc([In] HINSTANCE hModule, [In] ResourceId lpszType, [In] ResourceId lpszName, ushort wIDLanguage, [In] IntPtr lParam);
+	public delegate bool EnumResLangProc([In] HINSTANCE hModule, [In] ResourceId lpszType, [In] ResourceId lpszName, LANGID wIDLanguage, [In] IntPtr lParam);
 
 	/// <summary>
 	/// An application-defined callback function used with the <c>EnumResourceNames</c> and <c>EnumResourceNamesEx</c> functions. It
@@ -540,21 +540,21 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool EnumResourceLanguagesEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName,
-		EnumResLangProc lpEnumFunc, [In, Optional] IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
+		EnumResLangProc lpEnumFunc, [In, Optional] IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, LANGID LangId);
 
 	/// <summary>Enumerates language-specific resources, of the specified type and name, associated with a specified binary module.</summary>
 	/// <param name="hModule">
 	/// <para>
 	/// The handle to a module to search. Typically this is a language-neutral Portable Executable (LN file), and if flag
-	/// <c>RESOURCE_ENUM_MUI</c> is set, then appropriate .mui files are included in the search. Alternately, this can be a handle to an
-	/// .mui file or other LN file. If this is a specific .mui file, only that file is searched for resources.
+	/// <c>RESOURCE_ENUM_MUI</c> is set, then appropriate .mui files are included in the search. Alternately, this can be a handle to an .mui
+	/// file or other LN file. If this is a specific .mui file, only that file is searched for resources.
 	/// </para>
 	/// <para>If this parameter is <c>NULL</c>, it is equivalent to passing in a handle to the module used to create the current process.</para>
 	/// </param>
 	/// <param name="type">
 	/// The type of the resource for which the language is being enumerated. Alternately, rather than a pointer, this parameter can be
-	/// <c>MAKEINTRESOURCE</c>(ID), where ID is an integer value representing a predefined resource type. For a list of predefined
-	/// resource types, see Resource Types. For more information, see the Remarks section below.
+	/// <c>MAKEINTRESOURCE</c>(ID), where ID is an integer value representing a predefined resource type. For a list of predefined resource
+	/// types, see Resource Types. For more information, see the Remarks section below.
 	/// </param>
 	/// <param name="name">
 	/// The name of the resource for which the language is being enumerated. Alternately, rather than a pointer, this parameter can be
@@ -565,18 +565,116 @@ public static partial class Kernel32
 	/// <c>RESOURCE_ENUM_MUI</c> flags are assumed to be specified.
 	/// </param>
 	/// <param name="langFilter">
-	/// The localization language used to filter the search in the .mui file. This parameter is used only when the
-	/// <c>RESOURCE_ENUM_MUI</c> flag is set in dwFlags. If zero is specified, then all .mui files are included in the search. If a
-	/// nonzero LangId is specified, then the only .mui file searched will be the one matching the specified LangId.
+	/// The localization language used to filter the search in the .mui file. This parameter is used only when the <c>RESOURCE_ENUM_MUI</c>
+	/// flag is set in dwFlags. If zero is specified, then all .mui files are included in the search. If a nonzero LangId is specified, then
+	/// the only .mui file searched will be the one matching the specified LangId.
+	/// </param>
+	/// <param name="throwOnError">
+	/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
 	/// </param>
 	/// <returns>A list of the language identifiers (see Language Identifiers) for which a resource was found.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
-	public static IList<ushort> EnumResourceLanguagesEx(HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+	public static IReadOnlyList<LANGID> EnumResourceLanguagesEx(HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 	{
-		var list = new List<ushort>();
-		if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter))
+		List<LANGID> list = new();
+		if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
 			Win32Error.ThrowLastError();
 		return list;
+	}
+
+	/// <summary>Enumerates the values in a file's message table resources.</summary>
+	/// <param name="libPath">The library path.</param>
+	/// <param name="flags">
+	/// <para>
+	/// The type of file to search. The following values are supported. Note that if dwFlags is zero, then the <c>RESOURCE_ENUM_LN</c> and
+	/// <c>RESOURCE_ENUM_MUI</c> flags are assumed to be specified.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>RESOURCE_ENUM_MUI0 <br/> x0002</term>
+	/// <term>
+	/// Search for resources in .mui files associated with the LN file specified by hModule and with the current language preferences,
+	/// following the usual Resource Loader strategy (see User Interface Language Management). Alternately, if LangId is nonzero, then only
+	/// the specified .mui file will be searched. Typically this flag should be used only if hModule references an LN file. If hModule
+	/// references an .mui file, then that file is actually covered by the RESOURCE_ENUM_LN flag, despite the name of the flag.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCE_ENUM_LN <br/> 0x0001</term>
+	/// <term>Searches the file specified by hModule, regardless of whether the file is an LN file, another type of LN file, or an .mui file.</term>
+	/// </item>
+	/// <item>
+	/// <term>RESOURCE_ENUM_VALIDATE <br/> 0x0008</term>
+	/// <term>
+	/// Performs extra validation on the resource section and its reference in the PE header while doing the enumeration to ensure that
+	/// resources are properly formatted. The validation sets a maximum limit of 260 characters for each name that is enumerated.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="langId">
+	/// <para>
+	/// The localization language used to filter the search in the MUI module. This parameter is used only when the <c>RESOURCE_ENUM_MUI</c>
+	/// flag is set in <paramref name="flags"/>. If zero is specified, then all .mui files that match current language preferences are
+	/// included in the search, following the usual Resource Loader strategy (see User Interface Language Management). If a nonzero LangId is
+	/// specified, then the only .mui file searched will be the one matching the specified LangId.
+	/// </para>
+	/// </param>
+	/// <param name="throwOnError">
+	/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
+	/// </param>
+	/// <returns>A list of languages, blocks, identifiers, an associated text for each of the entries in the message table.</returns>
+	public static IEnumerable<(LANGID langId, uint block, uint id, string? text)> EnumResourceMessages(string libPath, RESOURCE_ENUM_FLAGS flags = 0, LANGID langId = default, bool throwOnError = false)
+	{
+		using var hModule = LoadLibraryEx(libPath, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
+		if (hModule.IsInvalid) yield break;
+		foreach (ResourceId n in EnumResourceNamesEx(hModule, ResourceType.RT_MESSAGETABLE, flags, langId, throwOnError))
+		{
+			foreach (LANGID id in EnumResourceLanguagesEx(hModule, ResourceType.RT_MESSAGETABLE, n, flags, langId, throwOnError))
+			{
+				var hres = FindResourceEx(hModule, ResourceType.RT_MESSAGETABLE, n, id);
+				if (hres.IsNull) continue;
+				foreach (var r in hres.EnumResourceMessages(hModule))
+					yield return (id, r.block, r.id, r.text);
+			}
+		}
+	}
+
+	/// <summary>Enumerates the values in a file's message table resources.</summary>
+	/// <param name="hRsrc">The resource handle returned by <see cref="FindResourceEx"/>.</param>
+	/// <param name="hMod">The module handle of the file containing the resources.</param>
+	/// <returns>A list of blocks, identifiers, an associated text for each of the entries in the message table.</returns>
+	public static IReadOnlyList<(uint block, uint id, string? text)> EnumResourceMessages(this HRSRC hRsrc, HINSTANCE hMod)
+	{
+		List<(uint block, uint id, string? text)> ret = new();
+		unsafe
+		{
+			var hRes = LoadResource(hMod, hRsrc);
+			if (!hRes.IsNull)
+			{
+				IntPtr lpb = LockResource(hRes);
+				if (lpb != IntPtr.Zero)
+				{
+					MESSAGE_RESOURCE_DATA pmrd = lpb.ToStructure<MESSAGE_RESOURCE_DATA>();
+					for (uint dwBlock = 0; dwBlock < pmrd.NumberOfBlocks; dwBlock++)
+					{
+						MESSAGE_RESOURCE_ENTRY* pmre = (MESSAGE_RESOURCE_ENTRY*)lpb.Offset(pmrd.Blocks[dwBlock].OffsetToEntries);
+						for (uint ulStart = pmrd.Blocks[dwBlock].LowId; ulStart <= pmrd.Blocks[dwBlock].HighId; ulStart++)
+						{
+							ret.Add((dwBlock, ulStart, MESSAGE_RESOURCE_ENTRY.GetText(pmre)));
+							pmre = (MESSAGE_RESOURCE_ENTRY*)((byte*)pmre + pmre->Length);
+						}
+					}
+				}
+			}
+		}
+		return ret;
 	}
 
 	/// <summary>
@@ -665,11 +763,13 @@ public static partial class Kernel32
 	/// a nonzero LangId is specified, then the only .mui file searched will be the one matching the specified LangId.
 	/// </para>
 	/// </param>
-	/// ///
+	/// <param name="throwOnError">
+	/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
+	/// </param>
 	/// <returns>A list of strings for each of the resources matching <paramref name="type"/>.</returns>
 	[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
-	public static IList<ResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0) =>
-		EnumResWrapper(p => EnumResourceNamesEx(hModule, type, p, default, flags, langFilter));
+	public static IReadOnlyList<ResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false) =>
+		EnumResWrapper(p => EnumResourceNamesEx(hModule, type, p, default, flags, langFilter), throwOnError);
 
 	/// <summary>
 	/// Enumerates resources of a specified type that are associated with a specified binary module. The search can include both an LN
@@ -757,7 +857,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceNamesExW")]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648038")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, [In, Optional] IntPtr lParam, [Optional] RESOURCE_ENUM_FLAGS dwFlags, [Optional] ushort LangId);
+	public static extern bool EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, [In, Optional] IntPtr lParam, [Optional] RESOURCE_ENUM_FLAGS dwFlags, [Optional] LANGID LangId);
 
 	/// <summary>
 	/// <para>
@@ -885,7 +985,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648040")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumResourceTypesEx(HINSTANCE hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam, [In, Optional] RESOURCE_ENUM_FLAGS dwFlags, [In, Optional] ushort LangId);
+	public static extern bool EnumResourceTypesEx(HINSTANCE hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam, [In, Optional] RESOURCE_ENUM_FLAGS dwFlags, [In, Optional] LANGID LangId);
 
 	/// <summary>
 	/// <para>
@@ -949,11 +1049,14 @@ public static partial class Kernel32
 	/// only .mui file searched will be the one matching the specified LangId.
 	/// </para>
 	/// </param>
+	/// <param name="throwOnError">
+	/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
+	/// </param>
 	/// <returns>List of resource identifiers.</returns>
-	public static IList<ResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+	public static IReadOnlyList<ResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 	{
 		var list = new List<ResourceId>();
-		if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter))
+		if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
 			Win32Error.ThrowLastError();
 		return list;
 	}
@@ -1039,7 +1142,7 @@ public static partial class Kernel32
 	// HRSRC WINAPI FindResourceEx( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpType, _In_ LPCTSTR lpName, _In_ WORD wLanguage); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648043(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "FindResourceExW")]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648043")]
-	public static extern HRSRC FindResourceEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, ushort wLanguage = 0);
+	public static extern HRSRC FindResourceEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, LANGID wLanguage = default);
 
 	/// <summary>Locates a Unicode string (wide characters) in another Unicode string for a non-linguistic comparison.</summary>
 	/// <param name="dwFindStringOrdinalFlags">
@@ -1950,10 +2053,11 @@ Label_000B:
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648048")]
 	public static extern uint SizeofResource(HINSTANCE hModule, HRSRC hResInfo);
 
-	private static IList<ResourceId> EnumResWrapper(Func<EnumResNameProc, bool> f)
+	private static IReadOnlyList<ResourceId> EnumResWrapper(Func<EnumResNameProc, bool> f, bool throwOnError)
 	{
 		var list = new List<ResourceId>();
-		Win32Error.ThrowLastErrorIfFalse(f((m, t, name, l) => { list.Add(name); return true; }));
+		if (!f((m, t, name, l) => { list.Add(name); return true; }) && throwOnError)
+			Win32Error.ThrowLastError();
 		return list;
 	}
 
