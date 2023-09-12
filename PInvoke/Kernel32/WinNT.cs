@@ -880,6 +880,96 @@ namespace Vanara.PInvoke
 			public static readonly PERFORMANCE_DATA Default = new PERFORMANCE_DATA { Size = (ushort)Marshal.SizeOf(typeof(PERFORMANCE_DATA)), Version = PERFORMANCE_DATA_VERSION };
 		}
 
+		/// <summary>
+		/// Contains information about message strings with identifiers in the range indicated by the <c>LowId</c> and <c>HighId</c> members.
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-message_resource_block typedef struct _MESSAGE_RESOURCE_BLOCK {
+		// DWORD LowId; DWORD HighId; DWORD OffsetToEntries; } MESSAGE_RESOURCE_BLOCK, *PMESSAGE_RESOURCE_BLOCK;
+		[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._MESSAGE_RESOURCE_BLOCK")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MESSAGE_RESOURCE_BLOCK
+		{
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The lowest message identifier contained within this structure.</para>
+			/// </summary>
+			public uint LowId;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The highest message identifier contained within this structure.</para>
+			/// </summary>
+			public uint HighId;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The offset, in bytes, from the beginning of the MESSAGE_RESOURCE_DATA structure to the MESSAGE_RESOURCE_ENTRY structures in this
+			/// <c>MESSAGE_RESOURCE_BLOCK</c>. The <c>MESSAGE_RESOURCE_ENTRY</c> structures contain the message strings.
+			/// </para>
+			/// </summary>
+			public uint OffsetToEntries;
+		}
+
+		/// <summary>Contains information about formatted text for display as an error message or in a message box in a message table resource.</summary>
+		/// <remarks>
+		/// A <c>MESSAGE_RESOURCE_DATA</c> structure can contain one or more MESSAGE_RESOURCE_BLOCK structures, which can each contain one or
+		/// more MESSAGE_RESOURCE_ENTRY structures.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-message_resource_data typedef struct _MESSAGE_RESOURCE_DATA { DWORD
+		// NumberOfBlocks; MESSAGE_RESOURCE_BLOCK Blocks[1]; } MESSAGE_RESOURCE_DATA, *PMESSAGE_RESOURCE_DATA;
+		[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._MESSAGE_RESOURCE_DATA")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<MESSAGE_RESOURCE_DATA>), nameof(NumberOfBlocks))]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MESSAGE_RESOURCE_DATA
+		{
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of MESSAGE_RESOURCE_BLOCK structures.</para>
+			/// </summary>
+			public uint NumberOfBlocks;
+
+			/// <summary>
+			/// <para>Type: <c>MESSAGE_RESOURCE_BLOCK[1]</c></para>
+			/// <para>An array of structures. The array is the size indicated by the <c>NumberOfBlocks</c> member.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public MESSAGE_RESOURCE_BLOCK[] Blocks;
+		}
+
+		/// <summary>Contains the error message or message box display text for a message table resource.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-message_resource_entry typedef struct _MESSAGE_RESOURCE_ENTRY {
+		// WORD Length; WORD Flags; BYTE Text[1]; } MESSAGE_RESOURCE_ENTRY, *PMESSAGE_RESOURCE_ENTRY;
+		[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._MESSAGE_RESOURCE_ENTRY")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MESSAGE_RESOURCE_ENTRY
+		{
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>The length, in bytes, of the <c>MESSAGE_RESOURCE_ENTRY</c> structure.</para>
+			/// </summary>
+			public ushort Length;
+
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>
+			/// Indicates that the string is encoded in Unicode, if equal to the value 0x0001. Indicates that the string is encoded in ANSI, if
+			/// equal to the value 0x0000.
+			/// </para>
+			/// </summary>
+			public ushort Flags;
+
+			/// <summary>
+			/// <para>Type: <c>BYTE[1]</c></para>
+			/// <para>Pointer to an array that contains the error message or message box display text.</para>
+			/// </summary>
+			public byte Text;
+
+			public static unsafe string GetText([In] MESSAGE_RESOURCE_ENTRY* mre) => mre->Flags == 0x0001 ? Marshal.PtrToStringUni(((IntPtr)(void*)mre).Offset(TextOffset.Value))! : Marshal.PtrToStringAnsi(((IntPtr)(void*)mre).Offset(TextOffset.Value))!;
+
+			private static Lazy<long> TextOffset => new(() => Marshal.OffsetOf(typeof(MESSAGE_RESOURCE_ENTRY), nameof(Text)).ToInt64());
+		}       
+		
 		/// <summary>The <c>SECURITY_CAPABILITIES</c> structure defines the security capabilities of the app container.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_security_capabilities typedef struct _SECURITY_CAPABILITIES {
 		// #if ... PISID AppContainerSid; #if ... PSID_AND_ATTRIBUTES Capabilities; #else PSID AppContainerSid; #endif #else

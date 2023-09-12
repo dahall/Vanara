@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using Vanara.Extensions;
 
 namespace Vanara.PInvoke
 {
@@ -60,7 +61,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648033")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumResLangProc([In] HINSTANCE hModule, [In] ResourceId lpszType, [In] ResourceId lpszName, ushort wIDLanguage, [In] IntPtr lParam);
+		public delegate bool EnumResLangProc([In] HINSTANCE hModule, [In] ResourceId lpszType, [In] ResourceId lpszName, LANGID wIDLanguage, [In] IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumResourceNames</c> and <c>EnumResourceNamesEx</c> functions. It
@@ -443,7 +444,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceLanguagesW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648035")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceLanguages([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, EnumResLangProc lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumResourceLanguages([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, EnumResLangProc lpEnumFunc, [In, Optional] IntPtr lParam);
 
 		/// <summary>
 		/// Enumerates language-specific resources, of the specified type and name, associated with a specified binary module. Extends
@@ -542,21 +543,22 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceLanguagesExW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceLanguagesEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, EnumResLangProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
+		public static extern bool EnumResourceLanguagesEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName,
+			EnumResLangProc lpEnumFunc, [In, Optional] IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, LANGID LangId);
 
 		/// <summary>Enumerates language-specific resources, of the specified type and name, associated with a specified binary module.</summary>
 		/// <param name="hModule">
 		/// <para>
 		/// The handle to a module to search. Typically this is a language-neutral Portable Executable (LN file), and if flag
-		/// <c>RESOURCE_ENUM_MUI</c> is set, then appropriate .mui files are included in the search. Alternately, this can be a handle to an
-		/// .mui file or other LN file. If this is a specific .mui file, only that file is searched for resources.
+		/// <c>RESOURCE_ENUM_MUI</c> is set, then appropriate .mui files are included in the search. Alternately, this can be a handle to an .mui
+		/// file or other LN file. If this is a specific .mui file, only that file is searched for resources.
 		/// </para>
 		/// <para>If this parameter is <c>NULL</c>, it is equivalent to passing in a handle to the module used to create the current process.</para>
 		/// </param>
 		/// <param name="type">
 		/// The type of the resource for which the language is being enumerated. Alternately, rather than a pointer, this parameter can be
-		/// <c>MAKEINTRESOURCE</c>(ID), where ID is an integer value representing a predefined resource type. For a list of predefined
-		/// resource types, see Resource Types. For more information, see the Remarks section below.
+		/// <c>MAKEINTRESOURCE</c>(ID), where ID is an integer value representing a predefined resource type. For a list of predefined resource
+		/// types, see Resource Types. For more information, see the Remarks section below.
 		/// </param>
 		/// <param name="name">
 		/// The name of the resource for which the language is being enumerated. Alternately, rather than a pointer, this parameter can be
@@ -567,18 +569,116 @@ namespace Vanara.PInvoke
 		/// <c>RESOURCE_ENUM_MUI</c> flags are assumed to be specified.
 		/// </param>
 		/// <param name="langFilter">
-		/// The localization language used to filter the search in the .mui file. This parameter is used only when the
-		/// <c>RESOURCE_ENUM_MUI</c> flag is set in dwFlags. If zero is specified, then all .mui files are included in the search. If a
-		/// nonzero LangId is specified, then the only .mui file searched will be the one matching the specified LangId.
+		/// The localization language used to filter the search in the .mui file. This parameter is used only when the <c>RESOURCE_ENUM_MUI</c>
+		/// flag is set in dwFlags. If zero is specified, then all .mui files are included in the search. If a nonzero LangId is specified, then
+		/// the only .mui file searched will be the one matching the specified LangId.
+		/// </param>
+		/// <param name="throwOnError">
+		/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
 		/// </param>
 		/// <returns>A list of the language identifiers (see Language Identifiers) for which a resource was found.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
-		public static IList<ushort> EnumResourceLanguagesEx(HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+		public static IReadOnlyList<LANGID> EnumResourceLanguagesEx(HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 		{
-			var list = new List<ushort>();
-			if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter))
+			List<LANGID> list = new();
+			if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
 				Win32Error.ThrowLastError();
 			return list;
+		}
+
+		/// <summary>Enumerates the values in a file's message table resources.</summary>
+		/// <param name="libPath">The library path.</param>
+		/// <param name="flags">
+		/// <para>
+		/// The type of file to search. The following values are supported. Note that if dwFlags is zero, then the <c>RESOURCE_ENUM_LN</c> and
+		/// <c>RESOURCE_ENUM_MUI</c> flags are assumed to be specified.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>RESOURCE_ENUM_MUI0 <br/> x0002</term>
+		/// <term>
+		/// Search for resources in .mui files associated with the LN file specified by hModule and with the current language preferences,
+		/// following the usual Resource Loader strategy (see User Interface Language Management). Alternately, if LangId is nonzero, then only
+		/// the specified .mui file will be searched. Typically this flag should be used only if hModule references an LN file. If hModule
+		/// references an .mui file, then that file is actually covered by the RESOURCE_ENUM_LN flag, despite the name of the flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>RESOURCE_ENUM_LN <br/> 0x0001</term>
+		/// <term>Searches the file specified by hModule, regardless of whether the file is an LN file, another type of LN file, or an .mui file.</term>
+		/// </item>
+		/// <item>
+		/// <term>RESOURCE_ENUM_VALIDATE <br/> 0x0008</term>
+		/// <term>
+		/// Performs extra validation on the resource section and its reference in the PE header while doing the enumeration to ensure that
+		/// resources are properly formatted. The validation sets a maximum limit of 260 characters for each name that is enumerated.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="langId">
+		/// <para>
+		/// The localization language used to filter the search in the MUI module. This parameter is used only when the <c>RESOURCE_ENUM_MUI</c>
+		/// flag is set in <paramref name="flags"/>. If zero is specified, then all .mui files that match current language preferences are
+		/// included in the search, following the usual Resource Loader strategy (see User Interface Language Management). If a nonzero LangId is
+		/// specified, then the only .mui file searched will be the one matching the specified LangId.
+		/// </para>
+		/// </param>
+		/// <param name="throwOnError">
+		/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
+		/// </param>
+		/// <returns>A list of languages, blocks, identifiers, an associated text for each of the entries in the message table.</returns>
+		public static IEnumerable<(LANGID langId, uint block, uint id, string text)> EnumResourceMessages(string libPath, RESOURCE_ENUM_FLAGS flags = 0, LANGID langId = default, bool throwOnError = false)
+		{
+			using var hModule = LoadLibraryEx(libPath, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
+			if (hModule.IsInvalid) yield break;
+			foreach (ResourceId n in EnumResourceNamesEx(hModule, ResourceType.RT_MESSAGETABLE, flags, langId, throwOnError))
+			{
+				foreach (LANGID id in EnumResourceLanguagesEx(hModule, ResourceType.RT_MESSAGETABLE, n, flags, langId, throwOnError))
+				{
+					var hres = FindResourceEx(hModule, ResourceType.RT_MESSAGETABLE, n, id);
+					if (hres.IsNull) continue;
+					foreach (var r in hres.EnumResourceMessages(hModule))
+						yield return (id, r.block, r.id, r.text);
+				}
+			}
+		}
+
+		/// <summary>Enumerates the values in a file's message table resources.</summary>
+		/// <param name="hRsrc">The resource handle returned by <see cref="FindResourceEx"/>.</param>
+		/// <param name="hMod">The module handle of the file containing the resources.</param>
+		/// <returns>A list of blocks, identifiers, an associated text for each of the entries in the message table.</returns>
+		public static IReadOnlyList<(uint block, uint id, string text)> EnumResourceMessages(this HRSRC hRsrc, HINSTANCE hMod)
+		{
+			List<(uint block, uint id, string text)> ret = new();
+			unsafe
+			{
+				var hRes = LoadResource(hMod, hRsrc);
+				if (!hRes.IsNull)
+				{
+					IntPtr lpb = LockResource(hRes);
+					if (lpb != IntPtr.Zero)
+					{
+						MESSAGE_RESOURCE_DATA pmrd = lpb.ToStructure<MESSAGE_RESOURCE_DATA>();
+						for (uint dwBlock = 0; dwBlock < pmrd.NumberOfBlocks; dwBlock++)
+						{
+							MESSAGE_RESOURCE_ENTRY* pmre = (MESSAGE_RESOURCE_ENTRY*)lpb.Offset(pmrd.Blocks[dwBlock].OffsetToEntries);
+							for (uint ulStart = pmrd.Blocks[dwBlock].LowId; ulStart <= pmrd.Blocks[dwBlock].HighId; ulStart++)
+							{
+								ret.Add((dwBlock, ulStart, MESSAGE_RESOURCE_ENTRY.GetText(pmre)));
+								pmre = (MESSAGE_RESOURCE_ENTRY*)((byte*)pmre + pmre->Length);
+							}
+						}
+					}
+				}
+			}
+			return ret;
 		}
 
 		/// <summary>
@@ -606,7 +706,7 @@ namespace Vanara.PInvoke
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceNames(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumResourceNames(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, [In, Optional] IntPtr lParam);
 
 		/// <summary>
 		/// Enumerates resources of a specified type within a binary module. For Windows Vista and later, this is typically a
@@ -667,16 +767,13 @@ namespace Vanara.PInvoke
 		/// a nonzero LangId is specified, then the only .mui file searched will be the one matching the specified LangId.
 		/// </para>
 		/// </param>
-		/// ///
+		/// <param name="throwOnError">
+		/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
+		/// </param>
 		/// <returns>A list of strings for each of the resources matching <paramref name="type"/>.</returns>
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
-		public static IList<ResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
-		{
-			var list = new List<ResourceId>();
-			if (!EnumResourceNamesEx(hModule, type, (m, t, name, l) => { list.Add(name); return true; }, IntPtr.Zero, flags, langFilter))
-				Win32Error.ThrowLastError();
-			return list;
-		}
+		public static IReadOnlyList<ResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false) =>
+			EnumResWrapper(p => EnumResourceNamesEx(hModule, type, p, default, flags, langFilter), throwOnError);
 
 		/// <summary>
 		/// Enumerates resources of a specified type that are associated with a specified binary module. The search can include both an LN
@@ -764,7 +861,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceNamesExW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648038")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
+		public static extern bool EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, [In, Optional] IntPtr lParam, [Optional] RESOURCE_ENUM_FLAGS dwFlags, [Optional] LANGID LangId);
 
 		/// <summary>
 		/// <para>
@@ -804,7 +901,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceTypesW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648039")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceTypes([In] HINSTANCE hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumResourceTypes([In] HINSTANCE hModule, EnumResTypeProc lpEnumFunc, [In, Optional] IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -892,7 +989,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648040")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceTypesEx(HINSTANCE hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
+		public static extern bool EnumResourceTypesEx(HINSTANCE hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam, [In, Optional] RESOURCE_ENUM_FLAGS dwFlags, [In, Optional] LANGID LangId);
 
 		/// <summary>
 		/// <para>
@@ -956,11 +1053,14 @@ namespace Vanara.PInvoke
 		/// only .mui file searched will be the one matching the specified LangId.
 		/// </para>
 		/// </param>
+		/// <param name="throwOnError">
+		/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
+		/// </param>
 		/// <returns>List of resource identifiers.</returns>
-		public static IList<ResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+		public static IReadOnlyList<ResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 		{
 			var list = new List<ResourceId>();
-			if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter))
+			if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
 				Win32Error.ThrowLastError();
 			return list;
 		}
@@ -1046,7 +1146,7 @@ namespace Vanara.PInvoke
 		// HRSRC WINAPI FindResourceEx( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpType, _In_ LPCTSTR lpName, _In_ WORD wLanguage); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648043(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "FindResourceExW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648043")]
-		public static extern HRSRC FindResourceEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, ushort wLanguage);
+		public static extern HRSRC FindResourceEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, LANGID wLanguage = default);
 
 		/// <summary>Locates a Unicode string (wide characters) in another Unicode string for a non-linguistic comparison.</summary>
 		/// <param name="dwFindStringOrdinalFlags">
@@ -1250,7 +1350,7 @@ namespace Vanara.PInvoke
 		public static string GetModuleFileName(HINSTANCE hModule)
 		{
 			var buffer = new StringBuilder(MAX_PATH);
-		Label_000B:
+Label_000B:
 			var num1 = GetModuleFileName(hModule, buffer, (uint)buffer.Capacity);
 			if (num1 == 0)
 				throw new Win32Exception();
@@ -1384,6 +1484,30 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683212")]
 		public static extern IntPtr GetProcAddress(HINSTANCE hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+
+		/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
+		/// <param name="hModule">
+		/// <para>
+		/// A handle to the DLL module that contains the function or variable. The <c>LoadLibrary</c>, <c>LoadLibraryEx</c>,
+		/// <c>LoadPackagedLibrary</c>, or <c>GetModuleHandle</c> function returns this handle.
+		/// </para>
+		/// <para>
+		/// The <c>GetProcAddress</c> function does not retrieve addresses from modules that were loaded using the
+		/// <c>LOAD_LIBRARY_AS_DATAFILE</c> flag. For more information, see <c>LoadLibraryEx</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpProcName">
+		/// The function or variable name, or the function's ordinal value. If this parameter is an ordinal value, it must be in the
+		/// low-order word; the high-order word must be zero.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the address of the exported function or variable.</para>
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// FARPROC WINAPI GetProcAddress( _In_ HMODULE hModule, _In_ LPCSTR lpProcName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "ms683212")]
+		public static extern IntPtr GetProcAddress(HINSTANCE hModule, IntPtr lpProcName);
 
 		/// <summary>
 		/// <para>
@@ -1588,7 +1712,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
 		[SuppressUnmanagedCodeSecurity]
-		public static extern SafeHINSTANCE LoadLibraryEx(string lpFileName, [Optional] IntPtr hFile, LoadLibraryExFlags dwFlags);
+		public static extern SafeHINSTANCE LoadLibraryEx(string lpFileName, IntPtr hFile, [Optional] LoadLibraryExFlags dwFlags);
 
 		/// <summary>
 		/// Loads the specified module into the address space of the calling process. The specified module may cause other modules to be loaded.
@@ -1933,18 +2057,26 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648048")]
 		public static extern uint SizeofResource(HINSTANCE hModule, HRSRC hResInfo);
 
+		private static IReadOnlyList<ResourceId> EnumResWrapper(Func<EnumResNameProc, bool> f, bool throwOnError)
+		{
+			var list = new List<ResourceId>();
+			if (!f((m, t, name, l) => { list.Add(name); return true; }) && throwOnError)
+				Win32Error.ThrowLastError();
+			return list;
+		}
+
 		/// <summary>Provides a handle to a resource.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HRSRC : IHandle
+		public readonly struct HRSRC : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HRSRC"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HRSRC(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HRSRC"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HRSRC NULL => new HRSRC(IntPtr.Zero);
+			public static HRSRC NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -1957,7 +2089,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRSRC"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HRSRC(IntPtr h) => new HRSRC(h);
+			public static implicit operator HRSRC(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -1972,7 +2104,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HRSRC h1, HRSRC h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HRSRC h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HRSRC h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -1983,16 +2115,16 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a handle to resource data.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HRSRCDATA : IHandle
+		public readonly struct HRSRCDATA : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HRSRCDATA"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HRSRCDATA(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HRSRCDATA"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HRSRCDATA NULL => new HRSRCDATA(IntPtr.Zero);
+			public static HRSRCDATA NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2005,7 +2137,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRSRCDATA"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HRSRCDATA(IntPtr h) => new HRSRCDATA(h);
+			public static implicit operator HRSRCDATA(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2020,7 +2152,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HRSRCDATA h1, HRSRCDATA h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HRSRCDATA h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HRSRCDATA h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
