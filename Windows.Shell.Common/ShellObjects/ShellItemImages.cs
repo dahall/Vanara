@@ -27,7 +27,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
 		/// <returns>The resulting image.</returns>
 		/// <exception cref="PlatformNotSupportedException"></exception>
-		public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() =>
+		public SafeHBITMAP GetImage(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
 		{
 			SafeHBITMAP hbmp = SafeHBITMAP.Null;
 			HRESULT hr = HRESULT.E_FAIL;
@@ -60,14 +60,14 @@ namespace Vanara.Windows.Shell
 				}
 				else
 				{
-					throw hr.GetException();
+					throw hr.GetException()!;
 				}
 			}
 
 			// If you got a bitmap, resize based on flags
-			if (sz == size.Width || (sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.BiggerSizeOk)))
+			if (sz == size.Width || sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.BiggerSizeOk))
 				return hbmp;
-			if ((sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ResizeToFit)) || (sz < size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ScaleUp)))
+			if (sz > size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ResizeToFit) || sz < size.Width && flags.IsFlagSet(ShellItemGetImageOptions.ScaleUp))
 			{
 				HANDLE hbmpcp = CopyImage(hbmp.DangerousGetHandle(), LoadImageType.IMAGE_BITMAP, size.Width, size.Height, CopyImageOptions.LR_CREATEDIBSECTION);
 				if (hbmpcp.IsNull) Win32Error.ThrowLastError();
@@ -76,6 +76,18 @@ namespace Vanara.Windows.Shell
 			}
 
 			return hbmp;
-		}, System.Threading.CancellationToken.None);
+		}
+
+		/// <summary>
+		/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current
+		/// item, it retrieves the icon of the item. The thumbnail or icon is extracted if it is not currently cached.
+		/// </summary>
+		/// <param name="size">A structure that specifies the size of the image to be received.</param>
+		/// <param name="flags">One or more of the option flags.</param>
+		/// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
+		/// <returns>The resulting image.</returns>
+		/// <exception cref="PlatformNotSupportedException"></exception>
+		public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() =>
+			GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
 	}
 }
