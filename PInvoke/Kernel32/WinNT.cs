@@ -965,7 +965,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public byte Text;
 
-			public static unsafe string GetText([In] MESSAGE_RESOURCE_ENTRY* mre) => mre->Flags == 0x0001 ? Marshal.PtrToStringUni(((IntPtr)(void*)mre).Offset(TextOffset.Value))! : Marshal.PtrToStringAnsi(((IntPtr)(void*)mre).Offset(TextOffset.Value))!;
+			internal static unsafe string GetText([In] MESSAGE_RESOURCE_ENTRY* mre) => mre->Flags == 0x0001 ? Marshal.PtrToStringUni(((IntPtr)(void*)mre).Offset(TextOffset.Value))! : Marshal.PtrToStringAnsi(((IntPtr)(void*)mre).Offset(TextOffset.Value))!;
 
 			private static Lazy<long> TextOffset => new(() => Marshal.OffsetOf(typeof(MESSAGE_RESOURCE_ENTRY), nameof(Text)).ToInt64());
 		}       
