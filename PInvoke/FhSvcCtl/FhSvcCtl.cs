@@ -1,12 +1,11 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the FhSvcCtl.dll for File History.</summary>
 public static partial class FhSvcCtl
 {
 	private const string Lib_FhSvcCtl = "fhsvcctl.dll";
+
+	static FhSvcCtl() => StaticFieldValueHash.AddFields<HRESULT, int, FHERR>();
 
 	/// <summary>Specifies whether File History backups are enabled.</summary>
 	/// <remarks>
@@ -329,6 +328,84 @@ public static partial class FhSvcCtl
 		/// </para>
 		/// </summary>
 		FH_TARGET_DRIVE_TYPE,
+	}
+
+	/// <summary>The definitions of the error codes returned by File History APIs and components.</summary>
+	[PInvokeData("fherrors.h")]
+	public enum FHERR : int
+	{
+		// Error codes for the Configuration Manager. (0x0300 - 0x03ff)
+
+		/// <summary>The Config File is corrupted and hence invalid</summary>
+		FHCFG_E_CORRUPT_CONFIG_FILE = unchecked((int)(0x80040000 + 0x0300)),
+
+		/// <summary>The Config File not found</summary>
+		FHCFG_E_CONFIG_FILE_NOT_FOUND = unchecked((int)(0x80040000 + 0x0301)),
+
+		/// <summary>The Config File already exists</summary>
+		FHCFG_E_CONFIG_ALREADY_EXISTS = unchecked((int)(0x80040000 + 0x0302)),
+
+		/// <summary>A valid configuration has not been loaded</summary>
+		FHCFG_E_NO_VALID_CONFIGURATION_LOADED = unchecked((int)(0x80040000 + 0x0303)),
+
+		/// <summary>Target is not connected</summary>
+		FHCFG_E_TARGET_NOT_CONNECTED = unchecked((int)(0x80040000 + 0x0304)),
+
+		/// <summary>Configuration has been loaded previously</summary>
+		FHCFG_E_CONFIGURATION_PREVIOUSLY_LOADED = unchecked((int)(0x80040000 + 0x0305)),
+
+		/// <summary>Default target verification failed</summary>
+		FHCFG_E_TARGET_VERIFICATION_FAILED = unchecked((int)(0x80040000 + 0x0306)),
+
+		/// <summary>Target is not configured</summary>
+		FHCFG_E_TARGET_NOT_CONFIGURED = unchecked((int)(0x80040000 + 0x0307)),
+
+		/// <summary>Target doesn't have enough free space</summary>
+		FHCFG_E_TARGET_NOT_ENOUGH_FREE_SPACE = unchecked((int)(0x80040000 + 0x0308)),
+
+		/// <summary>Target cannot be used for File History</summary>
+		FHCFG_E_TARGET_CANNOT_BE_USED = unchecked((int)(0x80040000 + 0x0309)),
+
+		/// <summary>Rehydration can't be performed in the current configuration state</summary>
+		FHCFG_E_INVALID_REHYDRATION_STATE = unchecked((int)(0x80040000 + 0x30A)),
+
+		/// <summary>Changing target recommendation is not allowed</summary>
+		FHCFG_E_RECOMMENDATION_CHANGE_NOT_ALLOWED = unchecked((int)(0x80040000 + 0x0310)),
+
+		/// <summary>The target was rehydrated on another PC.</summary>
+		FHCFG_E_TARGET_REHYDRATED_ELSEWHERE = unchecked((int)(0x80040000 + 0X0311)),
+
+		/// <summary>The legacy backup target was not supported by FileHistory</summary>
+		FHCFG_E_LEGACY_TARGET_UNSUPPORTED = unchecked((int)(0x80040000 + 0X0312)),
+
+		/// <summary>The validation result of the legacy backup target was not supported</summary>
+		FHCFG_E_LEGACY_TARGET_VALIDATION_UNSUPPORTED = unchecked((int)(0x80040000 + 0X0313)),
+
+		/// <summary>The legacy backup user was fully excluded from backups</summary>
+		FHCFG_E_LEGACY_BACKUP_USER_EXCLUDED = unchecked((int)(0x80040000 + 0X0314)),
+
+		/// <summary>The legacy backup was not found</summary>
+		FHCFG_E_LEGACY_BACKUP_NOT_FOUND = unchecked((int)(0x80040000 + 0X0315)),
+
+		// Error codes for the File History Service. (0x0600 - 0x06ff)
+
+		/// <summary>Backups are blocked for the given configuration</summary>
+		FHSVC_E_BACKUP_BLOCKED = unchecked((int)(0x80040000 + 0x0600)),
+
+		/// <summary>File History is not configured for the user</summary>
+		FHSVC_E_NOT_CONFIGURED = unchecked((int)(0x80040000 + 0x0601)),
+
+		/// <summary>The specified configuration is disabled by the user</summary>
+		FHSVC_E_CONFIG_DISABLED = unchecked((int)(0x80040000 + 0x0602)),
+
+		/// <summary>The specified configuration is disabled via Group Policy</summary>
+		FHSVC_E_CONFIG_DISABLED_GP = unchecked((int)(0x80040000 + 0x0603)),
+
+		/// <summary>There is a fatal error with the specified configuration, backup cannot be even started</summary>
+		FHSVC_E_FATAL_CONFIG_ERROR = unchecked((int)(0x80040000 + 0x0604)),
+
+		/// <summary>The specified configuration is undergoing rehydration</summary>
+		FHSVC_E_CONFIG_REHYDRATING = unchecked((int)(0x80040000 + 0x0605)),
 	}
 
 	/// <summary>
