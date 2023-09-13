@@ -1,12 +1,12 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
+using dSPACE.Runtime.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.NdfApi;
+using dSPACE.Runtime.InteropServices.ComTypes;
 
 namespace NdfApi;
 
@@ -25,7 +25,7 @@ public class NdfApiTests
 		Assert.That(NdfCreateConnectivityIncident(out SafeNDFHANDLE hNDF), ResultIs.Successful);
 		Assert.That(hNDF, ResultIs.ValidHandle);
 		Assert.That(NdfExecuteDiagnosis(hNDF), ResultIs.Successful);
-		Assert.That(() => hNDF.Dispose(), Throws.Nothing);
+		Assert.That(hNDF.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -34,7 +34,7 @@ public class NdfApiTests
 		Assert.That(NdfCreateDNSIncident("microsoft.com", 0, out SafeNDFHANDLE hNDF), ResultIs.Successful);
 		Assert.That(hNDF, ResultIs.ValidHandle);
 		Assert.That(NdfExecuteDiagnosis(hNDF), ResultIs.Successful);
-		Assert.That(() => hNDF.Dispose(), Throws.Nothing);
+		Assert.That(hNDF.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -43,7 +43,7 @@ public class NdfApiTests
 		Assert.That(NdfCreateNetConnectionIncident(out SafeNDFHANDLE hNDF), ResultIs.Successful);
 		Assert.That(hNDF, ResultIs.ValidHandle);
 		Assert.That(NdfExecuteDiagnosis(hNDF), ResultIs.Successful);
-		Assert.That(() => hNDF.Dispose(), Throws.Nothing);
+		Assert.That(hNDF.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -52,7 +52,7 @@ public class NdfApiTests
 		Assert.That(NdfCreateWebIncident("https://www.microsoft.com", out SafeNDFHANDLE hNDF), ResultIs.Successful);
 		Assert.That(hNDF, ResultIs.ValidHandle);
 		Assert.That(NdfExecuteDiagnosis(hNDF), ResultIs.Successful);
-		Assert.That(() => hNDF.Dispose(), Throws.Nothing);
+		Assert.That(hNDF.Dispose, Throws.Nothing);
 	}
 }
 
@@ -61,7 +61,7 @@ public class NdfApiTests
 public class SimpleFileHelperClass : INetDiagHelper
 {
 	public static readonly Guid ID_LowHealthRepair = new("A9DF3AF6-6729-40E1-85CC-494F258E21A2");
-	private string m_pwszTestFile;
+	private string? m_pwszTestFile;
 	private static int cookie;
 	private const string coRegKey = @"CurrentControlSet\Control\NetDiagFx\VanaraTest";
 	private const string regKey = $@"{coRegKey}\HostDLLs\{nameof(SimpleFileHelperClass)}\HelperClasses\{nameof(SimpleFileHelperClass)}";
@@ -91,7 +91,7 @@ public class SimpleFileHelperClass : INetDiagHelper
 
 	HRESULT INetDiagHelper.Cleanup() => HRESULT.E_NOTIMPL;
 
-	HRESULT INetDiagHelper.GetAttributes(out uint pcelt, out HELPER_ATTRIBUTE[] pprgAttributes)
+	HRESULT INetDiagHelper.GetAttributes(out uint pcelt, out HELPER_ATTRIBUTE[]? pprgAttributes)
 	{
 		pcelt = default; pprgAttributes = default; return HRESULT.E_NOTIMPL;
 	}
@@ -106,17 +106,17 @@ public class SimpleFileHelperClass : INetDiagHelper
 		ppInfo = default; return HRESULT.E_NOTIMPL;
 	}
 
-	HRESULT INetDiagHelper.GetDownStreamHypotheses(out uint pcelt, out HYPOTHESIS[] pprgHypotheses)
+	HRESULT INetDiagHelper.GetDownStreamHypotheses(out uint pcelt, out HYPOTHESIS[]? pprgHypotheses)
 	{
 		pcelt = default; pprgHypotheses = default; return HRESULT.E_NOTIMPL;
 	}
 
-	HRESULT INetDiagHelper.GetHigherHypotheses(out uint pcelt, out HYPOTHESIS[] pprgHypotheses)
+	HRESULT INetDiagHelper.GetHigherHypotheses(out uint pcelt, out HYPOTHESIS[]? pprgHypotheses)
 	{
 		pcelt = default; pprgHypotheses = default; return HRESULT.E_NOTIMPL;
 	}
 
-	HRESULT INetDiagHelper.GetKeyAttributes(out uint pcelt, out HELPER_ATTRIBUTE[] pprgAttributes)
+	HRESULT INetDiagHelper.GetKeyAttributes(out uint pcelt, out HELPER_ATTRIBUTE[]? pprgAttributes)
 	{
 		pcelt = default; pprgAttributes = default; return HRESULT.E_NOTIMPL;
 	}
@@ -126,12 +126,12 @@ public class SimpleFileHelperClass : INetDiagHelper
 		pLifeTime = default; return HRESULT.E_NOTIMPL;
 	}
 
-	HRESULT INetDiagHelper.GetLowerHypotheses(out uint pcelt, out HYPOTHESIS[] pprgHypotheses)
+	HRESULT INetDiagHelper.GetLowerHypotheses(out uint pcelt, out HYPOTHESIS[]? pprgHypotheses)
 	{
 		pcelt = default; pprgHypotheses = default; return HRESULT.E_NOTIMPL;
 	}
 
-	HRESULT INetDiagHelper.GetRepairInfo(PROBLEM_TYPE problem, out uint pcelt, out RepairInfo[] ppInfo)
+	HRESULT INetDiagHelper.GetRepairInfo(PROBLEM_TYPE problem, out uint pcelt, out RepairInfo[]? ppInfo)
 	{
 		RepairInfo pRepair = default;
 
@@ -155,12 +155,12 @@ public class SimpleFileHelperClass : INetDiagHelper
 		return HRESULT.S_OK;
 	}
 
-	HRESULT INetDiagHelper.GetUpStreamHypotheses(out uint pcelt, out HYPOTHESIS[] pprgHypotheses)
+	HRESULT INetDiagHelper.GetUpStreamHypotheses(out uint pcelt, out HYPOTHESIS[]? pprgHypotheses)
 	{
 		pcelt = default; pprgHypotheses = default; return HRESULT.E_NOTIMPL;
 	}
 
-	HRESULT INetDiagHelper.HighUtilization(string pwszInstanceDescription, out string ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus)
+	HRESULT INetDiagHelper.HighUtilization(string? pwszInstanceDescription, out string? ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus)
 	{ ppwszDescription = default; pDeferredTime = default; pStatus = default; return HRESULT.E_NOTIMPL; }
 
 	HRESULT INetDiagHelper.Initialize(uint celt, HELPER_ATTRIBUTE[] rgAttributes)
@@ -186,11 +186,11 @@ public class SimpleFileHelperClass : INetDiagHelper
 		}
 	}
 
-	HRESULT INetDiagHelper.LowHealth(string pwszInstanceDescription, out string ppwszDescription,
+	HRESULT INetDiagHelper.LowHealth(string? pwszInstanceDescription, out string? ppwszDescription,
 		out long pDeferredTime, out DIAGNOSIS_STATUS pStatus)
 	{
 		// does the file already exist?
-		using SafeHFILE hFile = CreateFile(m_pwszTestFile,
+		using SafeHFILE hFile = CreateFile(m_pwszTestFile!,
 			FileAccess.GENERIC_READ,
 			0,
 			default,
@@ -219,7 +219,7 @@ public class SimpleFileHelperClass : INetDiagHelper
 		//verify expected repair was requested
 		if (ID_LowHealthRepair == pInfo.guid)
 		{
-			using SafeHFILE hFile = CreateFile(m_pwszTestFile,
+			using SafeHFILE hFile = CreateFile(m_pwszTestFile!,
 									FileAccess.GENERIC_WRITE,
 									0,
 									default,

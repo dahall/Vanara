@@ -148,7 +148,7 @@ public static partial class NdfApi
 		/// <summary/>
 		[PreserveSig]
 		HRESULT ResolveAttributes([In] uint celt, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HELPER_ATTRIBUTE[] rgKeyAttributes,
-			out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out HELPER_ATTRIBUTE[] prgMatchValues);
+			out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out HELPER_ATTRIBUTE[]? prgMatchValues);
 	}
 
 	/// <summary>
@@ -281,7 +281,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-getkeyattributes HRESULT GetKeyAttributes(
 		// [out] ULONG *pcelt, [out] HELPER_ATTRIBUTE **pprgAttributes );
 		[PreserveSig]
-		HRESULT GetKeyAttributes(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HELPER_ATTRIBUTE[] pprgAttributes);
+		HRESULT GetKeyAttributes(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HELPER_ATTRIBUTE[]? pprgAttributes);
 
 		/// <summary>
 		/// The <c>LowHealth</c> method enables the Helper Class Extension to check whether the component being diagnosed is healthy.
@@ -348,7 +348,7 @@ public static partial class NdfApi
 		// pwszInstanceDescription, [out] LPWSTR *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
 		[PreserveSig]
 		HRESULT LowHealth([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszInstanceDescription,
-			[MarshalAs(UnmanagedType.LPWStr)] out string ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
+			[MarshalAs(UnmanagedType.LPWStr)] out string? ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
 
 		/// <summary>
 		/// The <c>HighUtilization</c> method enables the Helper Class Extension to check whether the corresponding component is highly utilized.
@@ -404,7 +404,7 @@ public static partial class NdfApi
 		// [in] LPCWSTR pwszInstanceDescription, [out] LPWSTR *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
 		[PreserveSig]
 		HRESULT HighUtilization([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszInstanceDescription,
-			[MarshalAs(UnmanagedType.LPWStr)] out string ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
+			[MarshalAs(UnmanagedType.LPWStr)] out string? ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
 
 		/// <summary>
 		/// The <c>GetLowerHypotheses</c> method asks the Helper Class Extension to generate hypotheses for possible causes of low health in
@@ -449,7 +449,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-getlowerhypotheses HRESULT
 		// GetLowerHypotheses( [out] ULONG *pcelt, [out] HYPOTHESIS **pprgHypotheses );
 		[PreserveSig]
-		HRESULT GetLowerHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[] pprgHypotheses);
+		HRESULT GetLowerHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[]? pprgHypotheses);
 
 		/// <summary>
 		/// The <c>GetDownStreamHypotheses</c> method asks the Helper Class Extension to generate hypotheses for possible causes of low
@@ -494,7 +494,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-getdownstreamhypotheses HRESULT
 		// GetDownStreamHypotheses( [out] ULONG *pcelt, [out] HYPOTHESIS **pprgHypotheses );
 		[PreserveSig]
-		HRESULT GetDownStreamHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[] pprgHypotheses);
+		HRESULT GetDownStreamHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[]? pprgHypotheses);
 
 		/// <summary>
 		/// The <c>GetHigherHypotheses</c> method asks the Helper Class Extension to generate hypotheses for possible causes of high
@@ -539,7 +539,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-gethigherhypotheses HRESULT
 		// GetHigherHypotheses( [out] ULONG *pcelt, [out] HYPOTHESIS **pprgHypotheses );
 		[PreserveSig]
-		HRESULT GetHigherHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[] pprgHypotheses);
+		HRESULT GetHigherHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[]? pprgHypotheses);
 
 		/// <summary>
 		/// The <c>GetUpStreamHypotheses</c> method asks the Helper Class Extension to generate hypotheses for possible causes of high
@@ -584,7 +584,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-getupstreamhypotheses HRESULT
 		// GetUpStreamHypotheses( [out] ULONG *pcelt, [out] HYPOTHESIS **pprgHypotheses );
 		[PreserveSig]
-		HRESULT GetUpStreamHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[] pprgHypotheses);
+		HRESULT GetUpStreamHypotheses(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HYPOTHESIS[]? pprgHypotheses);
 
 		/// <summary>The <c>Repair</c> method performs a repair specified by the input parameter.</summary>
 		/// <param name="pInfo">A pointer to a RepairInfo structure.</param>
@@ -731,7 +731,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-getrepairinfo HRESULT GetRepairInfo( [in]
 		// PROBLEM_TYPE problem, [out] ULONG *pcelt, [out] RepairInfo **ppInfo );
 		[PreserveSig]
-		HRESULT GetRepairInfo([In] PROBLEM_TYPE problem, out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out RepairInfo[] ppInfo);
+		HRESULT GetRepairInfo([In] PROBLEM_TYPE problem, out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out RepairInfo[]? ppInfo);
 
 		/// <summary>The <c>GetLifeTime</c> method retrieves the lifetime of the Helper Class Extension instance.</summary>
 		/// <param name="pLifeTime">A pointer to a LIFE_TIME structure.</param>
@@ -951,7 +951,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-getattributes HRESULT GetAttributes( [out]
 		// ULONG *pcelt, [out] HELPER_ATTRIBUTE **pprgAttributes );
 		[PreserveSig]
-		HRESULT GetAttributes(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HELPER_ATTRIBUTE[] pprgAttributes);
+		HRESULT GetAttributes(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HELPER_ATTRIBUTE[]? pprgAttributes);
 
 		/// <summary>The <c>Cancel</c> method cancels an ongoing diagnosis or repair.</summary>
 		/// <returns>
@@ -1128,7 +1128,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelperinfo-getattributeinfo HRESULT
 		// GetAttributeInfo( [out] ULONG *pcelt, [out] HelperAttributeInfo **pprgAttributeInfos );
 		[PreserveSig]
-		HRESULT GetAttributeInfo(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HelperAttributeInfo[] pprgAttributeInfos);
+		HRESULT GetAttributeInfo(out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out HelperAttributeInfo[]? pprgAttributeInfos);
 	}
 
 	/// <summary>

@@ -849,7 +849,7 @@ public static partial class NdfApi
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateWebIncidentEx")]
 	public static extern HRESULT NdfCreateWebIncidentEx([MarshalAs(UnmanagedType.LPWStr)] string url, [MarshalAs(UnmanagedType.Bool)] bool useWinHTTP,
-		[MarshalAs(UnmanagedType.LPWStr)] string moduleName, out SafeNDFHANDLE handle);
+		[MarshalAs(UnmanagedType.LPWStr)] string? moduleName, out SafeNDFHANDLE handle);
 
 	/// <summary>The <c>NdfCreateWinSockIncident</c> function provides access to the Winsock Helper Class provided by Microsoft.</summary>
 	/// <param name="sock">

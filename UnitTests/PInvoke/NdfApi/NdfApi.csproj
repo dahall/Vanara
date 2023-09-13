@@ -2,8 +2,11 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.NdfApi</AssemblyName>
     <RegisterForComInterop>false</RegisterForComInterop>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <EnableComHosting>true</EnableComHosting>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\NdfApi\Vanara.PInvoke.NdfApi.csproj" />
+    <PackageReference Include="dSPACE.Runtime.InteropServices" Version="1.1.3" />
   </ItemGroup>
 </Project>

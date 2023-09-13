@@ -1427,7 +1427,7 @@ public static partial class NdfApi
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwszOperation;
+		public string? pwszOperation;
 
 		/// <summary>
 		/// <para>Type: <c>[string] LPWSTR</c></para>
@@ -1449,7 +1449,7 @@ public static partial class NdfApi
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwszParameters;
+		public string? pwszParameters;
 
 		/// <summary>
 		/// <para>Type: <c>[string] LPWSTR</c></para>
