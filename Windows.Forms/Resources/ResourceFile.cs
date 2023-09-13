@@ -127,7 +127,7 @@ namespace Vanara.Resources
 		/// <summary>Gets the resource names.</summary>
 		/// <param name="type">The type.</param>
 		/// <returns></returns>
-		public IList<ResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNamesEx(hLib, type);
+		public IReadOnlyList<ResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNamesEx(hLib, type);
 
 		/// <summary>Gets the bitmap.</summary>
 		/// <param name="name">The name.</param>
