@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.FwpUClnt;
@@ -13,7 +11,9 @@ namespace FwpUClnt;
 public class FwpUClntTests
 {
 	private const string nullStr = "(null)";
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	private SafeHFWPENG fwpEngineHandle;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup() => FwpmEngineOpen0(default, Rpc.RPC_C_AUTHN.RPC_C_AUTHN_WINNT, default, default, out fwpEngineHandle).ThrowIfFailed();

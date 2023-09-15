@@ -670,7 +670,7 @@ public static partial class FwpUClnt
 	{
 		using var p = new PinnedObject(str);
 		var c = Marshal.ReadInt32(p);
-		return ((IntPtr)p).ToArray<TElem>(c, Marshal.OffsetOf(typeof(FWP_BYTE_BLOB), "data").ToInt32());
+		return ((IntPtr)p).ToArray<TElem>(c, Marshal.OffsetOf(typeof(FWP_BYTE_BLOB), "data").ToInt32()) ?? new TElem[0];
 	}
 
 	/// <summary>Creates an <see cref="IBlob{T}"/> based structure from a sequence.</summary>
@@ -682,8 +682,14 @@ public static partial class FwpUClnt
 	public static TIn Make<TIn, TElem>(IEnumerable<TElem> items, out SafeAllocatedMemoryHandle mem) where TIn : unmanaged, IBlob<TElem>
 	{
 		var c = items?.Count() ?? 0;
-		mem = typeof(TElem) == typeof(string) ? SafeCoTaskMemHandle.CreateFromStringList(items.Cast<string>(), StringListPackMethod.Packed, GetCharSet())
-			: SafeCoTaskMemHandle.CreateFromList(items, c);
+		if (c == 0)
+		{
+			mem = SafeCoTaskMemHandle.Null;
+			return default;
+		}
+
+		mem = typeof(TElem) == typeof(string) ? SafeCoTaskMemHandle.CreateFromStringList(items!.Cast<string>(), StringListPackMethod.Packed, GetCharSet())
+			: SafeCoTaskMemHandle.CreateFromList(items!, c);
 		var blob = new FWP_BYTE_BLOB() { size = (uint)c, data = mem };
 		using var tmem = SafeCoTaskMemHandle.CreateFromStructure<TIn>();
 		tmem.Write(blob);

@@ -595,7 +595,7 @@ public static partial class FwpUClnt
 		public IntPtr pv4Addresses;
 
 		/// <summary>Array of IPv4 local addresses to indicate to peer.</summary>
-		public IN_ADDR[] v4Addresses => pv4Addresses.ToArray<IN_ADDR>((int)numV4Addresses);
+		public IN_ADDR[] v4Addresses => pv4Addresses.ToArray<IN_ADDR>((int)numV4Addresses) ?? new IN_ADDR[0];
 
 		/// <summary>The number of IPv6 addresses stored in the <c>v6Addresses</c> member.</summary>
 		public uint numV6Addresses;
@@ -604,7 +604,7 @@ public static partial class FwpUClnt
 		public IntPtr pv6Addresses;
 
 		/// <summary>Array of IPv6 local addresses to indicate to peer.</summary>
-		public IN6_ADDR[] v6Addresses => pv6Addresses.ToArray<IN6_ADDR>((int)numV6Addresses);
+		public IN6_ADDR[] v6Addresses => pv6Addresses.ToArray<IN6_ADDR>((int)numV6Addresses) ?? new IN6_ADDR[0];
 	}
 
 	/// <summary>The IPSEC_AGGREGATE_DROP_PACKET_STATISTICS1 is available.</summary>
@@ -1421,11 +1421,11 @@ public static partial class FwpUClnt
 	{
 		/// <summary>Optional main mode target service principal name (SPN). This is often the machine name.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string mmTargetName;
+		public string? mmTargetName;
 
 		/// <summary>Optional extended mode target SPN.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string emTargetName;
+		public string? emTargetName;
 
 		/// <summary>Optional. Number of IPSEC_TOKEN0 structures present in the <c>tokens</c> member.</summary>
 		public uint numTokens;

@@ -1,5 +1,4 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
-using Vanara.Extensions;
 
 namespace Vanara.PInvoke;
 
@@ -1041,11 +1040,11 @@ public static partial class FwpUClnt
 	{
 		/// <summary>Optional friendly name.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string name;
+		public string? name;
 
 		/// <summary>Optional description.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string description;
+		public string? description;
 	}
 
 	/// <summary>The <c>IPSEC_VIRTUAL_IF_TUNNEL_INFO0</c> structure is used to store information specific to virtual interface tunneling.</summary>

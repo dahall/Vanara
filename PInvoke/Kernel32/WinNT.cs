@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using static Vanara.Extensions.BitHelper;
+﻿using static Vanara.Extensions.BitHelper;
 
 namespace Vanara.PInvoke;
 
