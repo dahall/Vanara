@@ -2855,7 +2855,7 @@ public static partial class FwpUClnt
 		private readonly IntPtr _localPrincipalGroupSids;
 
 		/// <summary>Groups in the local security principal's token.</summary>
-		public string[] localPrincipalGroupSids => _localPrincipalGroupSids.ToStringEnum((int)numLocalPrincipalGroupSids, CharSet.Unicode).ToArray();
+		public string[] localPrincipalGroupSids => _localPrincipalGroupSids.ToStringEnum((int)numLocalPrincipalGroupSids, CharSet.Unicode).WhereNotNull().ToArray();
 
 		/// <summary>Number of groups in the remote security principal's token.</summary>
 		public uint numRemotePrincipalGroupSids;
@@ -2863,7 +2863,7 @@ public static partial class FwpUClnt
 		private readonly IntPtr _remotePrincipalGroupSids;
 
 		/// <summary>Groups in the remote security principal's token.</summary>
-		public string[] remotePrincipalGroupSids => _remotePrincipalGroupSids.ToStringEnum((int)numRemotePrincipalGroupSids, CharSet.Unicode).ToArray();
+		public string[] remotePrincipalGroupSids => _remotePrincipalGroupSids.ToStringEnum((int)numRemotePrincipalGroupSids, CharSet.Unicode).WhereNotNull().ToArray();
 
 		/// <summary>Type of traffic for which the embedded quick mode was being negotiated.</summary>
 		public IPSEC_TRAFFIC_TYPE saTrafficType;
@@ -3013,7 +3013,7 @@ public static partial class FwpUClnt
 		private readonly IntPtr _localPrincipalGroupSids;
 
 		/// <summary>Groups in the local security principal's token.</summary>
-		public string[] localPrincipalGroupSids => _localPrincipalGroupSids.ToStringEnum((int)numLocalPrincipalGroupSids, CharSet.Unicode).ToArray();
+		public string[] localPrincipalGroupSids => _localPrincipalGroupSids.ToStringEnum((int)numLocalPrincipalGroupSids, CharSet.Unicode).WhereNotNull().ToArray();
 
 		/// <summary>Number of groups in the remote security principal's token.</summary>
 		public uint numRemotePrincipalGroupSids;
@@ -3021,7 +3021,7 @@ public static partial class FwpUClnt
 		private readonly IntPtr _remotePrincipalGroupSids;
 
 		/// <summary>Groups in the remote security principal's token.</summary>
-		public string[] remotePrincipalGroupSids => _remotePrincipalGroupSids.ToStringEnum((int)numRemotePrincipalGroupSids, CharSet.Unicode).ToArray();
+		public string[] remotePrincipalGroupSids => _remotePrincipalGroupSids.ToStringEnum((int)numRemotePrincipalGroupSids, CharSet.Unicode).WhereNotNull().ToArray();
 	}
 
 	/// <summary>
@@ -4110,7 +4110,7 @@ public static partial class FwpUClnt
 
 		/// <summary>Optional name of the Windows service hosting the provider. This allows BFE to detect that a provider has been disabled.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string serviceName;
+		public string? serviceName;
 	}
 
 	/// <summary>The <c>FWPM_SESSION_ENUM_TEMPLATE0</c> structure is used for enumerating sessions.</summary>
@@ -4540,7 +4540,7 @@ public static partial class FwpUClnt
 		public IntPtr ports;
 
 		/// <summary>Array of IP port numbers ( <see cref="ushort"/>) for the specified type.</summary>
-		public ushort[] GetPorts() => ports.ToArray<ushort>((int)numPorts);
+		public ushort[] GetPorts() => ports.ToArray<ushort>((int)numPorts) ?? new ushort[0];
 	}
 
 	/// <summary>The <c>FWPM_SYSTEM_PORTS0</c> structure contains information about all of the system ports of all types.</summary>
@@ -4561,7 +4561,7 @@ public static partial class FwpUClnt
 		public IntPtr types;
 
 		/// <summary>A <see cref="FWPM_SYSTEM_PORTS_BY_TYPE0"/> structure that specifies the array of system port types.</summary>
-		public FWPM_SYSTEM_PORTS_BY_TYPE0[] GetTypes() => types.ToArray<FWPM_SYSTEM_PORTS_BY_TYPE0>((int)numTypes);
+		public FWPM_SYSTEM_PORTS_BY_TYPE0[] GetTypes() => types.ToArray<FWPM_SYSTEM_PORTS_BY_TYPE0>((int)numTypes) ?? new FWPM_SYSTEM_PORTS_BY_TYPE0[0];
 	}
 
 	/// <summary>
@@ -4637,7 +4637,7 @@ public static partial class FwpUClnt
 			public static implicit operator POSITIONINFO(_POSITIONINFO i) => new()
 			{
 				numvSwitchFilterExtensions = i.numvSwitchFilterExtensions,
-				vSwitchFilterExtensions = i.vSwitchFilterExtensions.ToStringEnum((int)i.numvSwitchFilterExtensions, CharSet.Unicode).ToArray()
+				vSwitchFilterExtensions = i.vSwitchFilterExtensions.ToStringEnum((int)i.numvSwitchFilterExtensions, CharSet.Unicode).WhereNotNull().ToArray()
 			};
 		}
 
@@ -4659,7 +4659,7 @@ public static partial class FwpUClnt
 			{
 				inRequiredPosition = i.inRequiredPosition,
 				numvSwitchFilterExtensions = i.numvSwitchFilterExtensions,
-				vSwitchFilterExtensions = i.vSwitchFilterExtensions.ToStringEnum((int)i.numvSwitchFilterExtensions, CharSet.Unicode).ToArray()
+				vSwitchFilterExtensions = i.vSwitchFilterExtensions.ToStringEnum((int)i.numvSwitchFilterExtensions, CharSet.Unicode).WhereNotNull().ToArray()
 			};
 		}
 

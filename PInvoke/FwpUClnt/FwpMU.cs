@@ -1298,7 +1298,7 @@ public static partial class FwpUClnt
 		/// of elements.
 		/// </param>
 		/// <returns>An array of type <typeparamref name="T"/> of length <paramref name="elemCount"/>.</returns>
-		public T[] ToArray<T>(SizeT elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? new IntPtr[0], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)) : handle.ToArray<T>(elemCount) ?? new T[0];
+		public T[] ToArray<T>(SizeT elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? new IntPtr[0], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)!) : handle.ToArray<T>(elemCount) ?? new T[0];
 
 		/// <summary>Extracts a structure from this memory.</summary>
 		/// <typeparam name="T">The type of the structure to extract.</typeparam>

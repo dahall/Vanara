@@ -647,7 +647,7 @@ public static partial class FwpUClnt
 	// PSECURITY_DESCRIPTOR *securityDescriptor );
 	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmCalloutGetSecurityInfoByKey0")]
-	public static extern Win32Error FwpmCalloutGetSecurityInfoByKey0([In] HFWPENG engineHandle, in Guid key, [In] SECURITY_INFORMATION securityInfo,
+	public static extern Win32Error FwpmCalloutGetSecurityInfoByKey0([In] HFWPENG engineHandle, [Optional] in Guid key, [In] SECURITY_INFORMATION securityInfo,
 		out PSID sidOwner, out PSID sidGroup, out PACL dacl, out PACL sacl, out SafeFwpmMem securityDescriptor);
 
 	/// <summary>
@@ -733,7 +733,7 @@ public static partial class FwpUClnt
 	// [in, optional] const SID *sidOwner, [in, optional] const SID *sidGroup, [in, optional] const ACL *dacl, [in, optional] const ACL *sacl );
 	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmCalloutSetSecurityInfoByKey0")]
-	public static extern Win32Error FwpmCalloutSetSecurityInfoByKey0([In] HFWPENG engineHandle, in Guid key, [In] SECURITY_INFORMATION securityInfo,
+	public static extern Win32Error FwpmCalloutSetSecurityInfoByKey0([In] HFWPENG engineHandle, [Optional] in Guid key, [In] SECURITY_INFORMATION securityInfo,
 		[In, Optional] PSID sidOwner, [In, Optional] PSID sidGroup, [In, Optional] PACL dacl, [In, Optional] PACL sacl);
 
 	/// <summary>
@@ -1674,7 +1674,15 @@ public static partial class FwpUClnt
 	/// <para>Examples</para>
 	/// <para>The following C++ example uses <c>FwpmEngineOpen0</c> to open a filter session.</para>
 	/// <para>
-	/// <code>// Open a session to the filter engine HFWPENG engineHandle = NULL; DWORD result = ERROR_SUCCESS; printf("Opening the filter engine.\n"); result = FwpmEngineOpen0( NULL, RPC_C_AUTHN_WINNT, NULL, NULL, &amp;engineHandle ); if (result != ERROR_SUCCESS) printf("FwpmEngineOpen0 failed. Return value: %d.\n", result); else printf("Filter engine opened successfully.\n");</code>
+	/// <code language="cpp"><![CDATA[// Open a session to the filter engine
+	/// HFWPENG engineHandle = NULL;
+	/// DWORD result = ERROR_SUCCESS;
+	/// printf("Opening the filter engine.\n");
+	/// result = FwpmEngineOpen0( NULL, RPC_C_AUTHN_WINNT, NULL, NULL, &amp;engineHandle );
+	/// if (result != ERROR_SUCCESS)
+	///    printf("FwpmEngineOpen0 failed. Return value: %d.\n", result);
+	/// else
+	///    printf("Filter engine opened successfully.\n");]]></code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-fwpmengineopen0 DWORD FwpmEngineOpen0( [in, optional] const wchar_t
@@ -1755,7 +1763,15 @@ public static partial class FwpUClnt
 	/// <para>Examples</para>
 	/// <para>The following C++ example uses <c>FwpmEngineOpen0</c> to open a filter session.</para>
 	/// <para>
-	/// <code>// Open a session to the filter engine HFWPENG engineHandle = NULL; DWORD result = ERROR_SUCCESS; printf("Opening the filter engine.\n"); result = FwpmEngineOpen0( NULL, RPC_C_AUTHN_WINNT, NULL, NULL, &amp;engineHandle ); if (result != ERROR_SUCCESS) printf("FwpmEngineOpen0 failed. Return value: %d.\n", result); else printf("Filter engine opened successfully.\n");</code>
+	/// <code language="cpp"><![CDATA[// Open a session to the filter engine
+	/// HFWPENG engineHandle = NULL;
+	/// DWORD result = ERROR_SUCCESS;
+	/// printf("Opening the filter engine.\n");
+	/// result = FwpmEngineOpen0( NULL, RPC_C_AUTHN_WINNT, NULL, NULL, &amp;engineHandle );
+	/// if (result != ERROR_SUCCESS)
+	///    printf("FwpmEngineOpen0 failed. Return value: %d.\n", result);
+	/// else
+	///    printf("Filter engine opened successfully.\n");]]></code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-fwpmengineopen0 DWORD FwpmEngineOpen0( [in, optional] const wchar_t

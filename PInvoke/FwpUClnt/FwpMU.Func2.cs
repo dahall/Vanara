@@ -1446,7 +1446,7 @@ public static partial class FwpUClnt
 	// [in, optional] const SID *sidOwner, [in, optional] const SID *sidGroup, [in, optional] const ACL *dacl, [in, optional] const ACL *sacl );
 	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmFilterSetSecurityInfoByKey0")]
-	public static extern Win32Error FwpmFilterSetSecurityInfoByKey0([In] HFWPENG engineHandle, in Guid key, SECURITY_INFORMATION securityInfo,
+	public static extern Win32Error FwpmFilterSetSecurityInfoByKey0([In] HFWPENG engineHandle, [Optional] in Guid key, SECURITY_INFORMATION securityInfo,
 		[In, Optional] PSID sidOwner, [In, Optional] PSID sidGroup, [In, Optional] PACL dacl, [In, Optional] PACL sacl);
 
 	/// <summary>
@@ -1712,7 +1712,7 @@ public static partial class FwpUClnt
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-fwpmgetappidfromfilename0 DWORD FwpmGetAppIdFromFileName0( [in]
 	// PCWSTR fileName, [out] FWP_BYTE_BLOB **appId );
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmGetAppIdFromFileName0")]
-	public static Win32Error FwpmGetAppIdFromFileName0([MarshalAs(UnmanagedType.LPWStr)] string fileName, out byte[] appId)
+	public static Win32Error FwpmGetAppIdFromFileName0([MarshalAs(UnmanagedType.LPWStr)] string fileName, out byte[]? appId)
 	{
 		Win32Error err = FwpmGetAppIdFromFileName0(fileName, out SafeFwpmMem mem);
 		FWP_BYTE_BLOB blob = mem.ToStructure<FWP_BYTE_BLOB>().GetValueOrDefault();

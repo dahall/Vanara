@@ -983,6 +983,6 @@ public static partial class FwpUClnt
 	/// <typeparam name="T">The type of the value.</typeparam>
 	/// <param name="item">The value.</param>
 	/// <returns>The name of the property or <see langword="null"/> if not found.</returns>
-	public static string GetNameOf<T>(T item) => typeof(FwpUClnt).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).
+	public static string? GetNameOf<T>(T item) => typeof(FwpUClnt).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).
 		Where(pi => pi.PropertyType == typeof(T) && Equals(pi.GetValue(null), item)).Select(pi => pi.Name).FirstOrDefault();
 }
