@@ -1,8 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.OleDlg;
 
 namespace Vanara.PInvoke.Tests;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 
@@ -942,9 +940,8 @@ public static partial class OleDlg
 		// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/nf-oledlg-ioleuiobjinfoa-getobjectinfo HRESULT GetObjectInfo( DWORD
 		// dwObject, DWORD *lpdwObjSize, LPSTR *lplpszLabel, LPSTR *lplpszType, LPSTR *lplpszShortType, LPSTR *lplpszLocation );
 		[PreserveSig]
-		HRESULT GetObjectInfo(uint dwObject, out uint lpdwObjSize, [MarshalAs(UnmanagedType.LPStr)] out string lplpszLabel,
-			[MarshalAs(UnmanagedType.LPStr)] out string lplpszType, [MarshalAs(UnmanagedType.LPStr)] out string lplpszShortType,
-			[MarshalAs(UnmanagedType.LPStr)] out string lplpszLocation);
+		HRESULT GetObjectInfo(uint dwObject, out uint lpdwObjSize, [In, Out, Optional] IntPtr lplpszLabel, [In, Out, Optional] IntPtr lplpszType,
+			[In, Out, Optional] IntPtr lplpszShortType, [In, Out, Optional] IntPtr lplpszLocation);
 
 		/// <summary>Gets the view information associated with the object.</summary>
 		/// <param name="dwObject">Unique identifier for the object.</param>
@@ -1074,7 +1071,7 @@ public static partial class OleDlg
 	[DllImport(Lib_OleDlg, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("oledlg.h", MSDNShortId = "NF:oledlg.OleUIAddVerbMenuA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OleUIAddVerbMenu(IOleObject lpOleObj, [MarshalAs(UnmanagedType.LPTStr)] string lpszShortType, HMENU hMenu, uint uPos, uint uIDVerbMin, uint uIDVerbMax,
+	public static extern bool OleUIAddVerbMenu(IOleObject lpOleObj, [MarshalAs(UnmanagedType.LPTStr)] string? lpszShortType, HMENU hMenu, uint uPos, uint uIDVerbMin, uint uIDVerbMax,
 		[MarshalAs(UnmanagedType.Bool)] bool bAddConvert, uint idConvert, out HMENU lphMenu);
 
 	/// <summary>Invokes the standard <c>Busy</c> dialog box, allowing the user to manage concurrency.</summary>
@@ -2702,7 +2699,7 @@ public static partial class OleDlg
 
 		/// <summary>A pointer to a string to be used as the title of the dialog box. If <c>NULL</c>, then the library uses <c>Busy</c>.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszCaption;
+		public string? lpszCaption;
 
 		/// <summary>
 		/// Pointer to a hook function that processes messages intended for the dialog box. The hook function must return zero to pass a
@@ -2727,7 +2724,7 @@ public static partial class OleDlg
 		/// substituted for the library's <c>Busy</c> dialog box template.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszTemplate;
+		public string? lpszTemplate;
 
 		/// <summary>Customized template handle.</summary>
 		public HRSRC hResource;
@@ -2798,7 +2795,7 @@ public static partial class OleDlg
 		/// Pointer to a string to be used as the title of the dialog box. If <c>NULL</c>, then the library uses <c>Change Icon</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszCaption;
+		public string? lpszCaption;
 
 		/// <summary>
 		/// Pointer to a hook function that processes messages intended for the dialog box. The hook function must return zero to pass a
@@ -2823,7 +2820,7 @@ public static partial class OleDlg
 		/// substituted for the library's <c>Change Icon</c> dialog box template.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszTemplate;
+		public string? lpszTemplate;
 
 		/// <summary>Customized template handle.</summary>
 		public HRSRC hResource;
@@ -2839,7 +2836,7 @@ public static partial class OleDlg
 		/// included in the <c>dwFlags</c> member and an attempt to retrieve the class icon from the specified CLSID fails.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
-		public string szIconExe;
+		public string? szIconExe;
 
 		/// <summary>
 		/// Input only. The number of characters in <c>szIconExe</c>. This member is ignored unless CIF_USEICONEXE is included in the
@@ -2900,7 +2897,7 @@ public static partial class OleDlg
 		/// Pointer to a string to be used as the title of the dialog box. If <c>NULL</c>, then the library uses <c>Change Source</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszCaption;
+		public string? lpszCaption;
 
 		/// <summary>
 		/// Pointer to a hook function that processes messages intended for the dialog box. The hook function must return zero to pass a
@@ -2927,7 +2924,7 @@ public static partial class OleDlg
 		/// substituted for the library's <c>Convert</c> dialog box template.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszTemplate;
+		public string? lpszTemplate;
 
 		/// <summary>
 		/// Resource handle for a custom dialog box. If this member is <c>NULL</c>, then the library uses the standard <c>Convert</c>
@@ -3052,7 +3049,7 @@ public static partial class OleDlg
 
 		/// <summary>Pointer to a string to be used as the title of the dialog box. If <c>NULL</c>, then the library uses <c>Convert</c>.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszCaption;
+		public string? lpszCaption;
 
 		/// <summary>
 		/// Pointer to a hook function that processes messages intended for the dialog box. The hook function must return zero to pass a
@@ -3079,7 +3076,7 @@ public static partial class OleDlg
 		/// substituted for the library's <c>Convert</c> dialog box template.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszTemplate;
+		public string? lpszTemplate;
 
 		/// <summary>
 		/// Resource handle for a custom dialog box. If this member is <c>NULL</c>, then the library uses the standard <c>Convert</c>
@@ -3127,7 +3124,7 @@ public static partial class OleDlg
 		/// will retrieve the User Type name from the registry. This string is freed on exit.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszUserType;
+		public string? lpszUserType;
 
 		/// <summary>
 		/// <c>TRUE</c> if the object's icon changed. (that is, if OleUIChangeIcon was called and not canceled.). This member is set on output.
@@ -3140,7 +3137,7 @@ public static partial class OleDlg
 		/// link, the caller should pass the display name of the link source. This is freed on exit.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszDefLabel;
+		public string? lpszDefLabel;
 
 		/// <summary>Number of CLSIDs in lpClsidExclude.</summary>
 		public uint cClsidExclude;
@@ -3201,7 +3198,7 @@ public static partial class OleDlg
 
 		/// <summary>Pointer to a string to be used as the title of the dialog box. If <c>NULL</c>, then the library uses <c>Links</c>.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszCaption;
+		public string? lpszCaption;
 
 		/// <summary>
 		/// Pointer to a hook function that processes messages intended for the dialog box. The hook function must return zero to pass a
@@ -3225,7 +3222,7 @@ public static partial class OleDlg
 		/// substituted for the library's <c>Edit Links</c> dialog box template.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszTemplate;
+		public string? lpszTemplate;
 
 		/// <summary>Customized template handle.</summary>
 		public HRSRC hResource;
@@ -3389,7 +3386,7 @@ public static partial class OleDlg
 		/// Pointer to a string to be used as the title of the dialog box. If <c>NULL</c>, then the library uses <c>Insert Object</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszCaption;
+		public string? lpszCaption;
 
 		/// <summary>
 		/// Pointer to a hook function that processes messages intended for the dialog box. The hook function must return zero to pass a
@@ -3413,7 +3410,7 @@ public static partial class OleDlg
 		/// substituted for the library's <c>Insert Object</c> dialog box template.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszTemplate;
+		public string? lpszTemplate;
 
 		/// <summary>Customized template handle.</summary>
 		public HRSRC hResource;
@@ -3724,7 +3721,7 @@ public static partial class OleDlg
 		/// Pointer to a string to be used as the title of the dialog box. If <c>NULL</c>, then the library uses <c>Paste Special</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszCaption;
+		public string? lpszCaption;
 
 		/// <summary>
 		/// Pointer to a hook function that processes messages intended for the dialog box. The hook function must return zero to pass a
@@ -3748,7 +3745,7 @@ public static partial class OleDlg
 		/// substituted for the library's <c>Paste Special</c> dialog box template.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszTemplate;
+		public string? lpszTemplate;
 
 		/// <summary>Customized template handle.</summary>
 		public HRSRC hResource;
@@ -3759,7 +3756,7 @@ public static partial class OleDlg
 		/// retrieve a pointer to an <c>IDataObject</c> from the clipboard. If <c>OleUIPasteSpecial</c> succeeds, it is the caller's
 		/// responsibility to free the <c>IDataObject</c> returned in <c>lpSrcDataObj</c>.
 		/// </summary>
-		public IDataObject lpSrcDataObj;
+		public IDataObject? lpSrcDataObj;
 
 		/// <summary>The <see cref="OLEUIPASTEENTRY"/> array which specifies acceptable formats. This member is filled on input.</summary>
 		public IntPtr arrPasteEntries;
