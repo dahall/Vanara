@@ -3961,11 +3961,11 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_id_128 typedef struct _FILE_ID_128 { BYTE
 		// Identifier[16]; } FILE_ID_128, *PFILE_ID_128;
 		[PInvokeData("winnt.h", MSDNShortId = "254ea6a9-e1dd-4b97-91f7-2693065c4bb8")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct FILE_ID_128
 		{
-			private readonly ulong id0;
-			private readonly ulong id1;
+			private ulong id0;
+			private ulong id1;
 
 			/// <summary>
 			/// <para>A byte array containing the 128 bit identifier.</para>
@@ -3974,13 +3974,16 @@ namespace Vanara.PInvoke
 			{
 				get
 				{
-					using PinnedObject pin = new(id0);
-					return ((IntPtr)pin).ToArray<byte>(16);
+					var ret = new byte[16];
+					BitConverter.GetBytes(id0).CopyTo(ret, 0);
+					BitConverter.GetBytes(id1).CopyTo(ret, 8);
+					return ret;
 				}
 				set
 				{
-					using PinnedObject pin = new(id0);
-					Marshal.Copy(value, 0, pin, 16);
+					if (value.Length != 16) throw new ArgumentOutOfRangeException("Array must be 16 bytes long.", nameof(value));
+					id0 = BitConverter.ToUInt64(value, 0);
+					id1 = BitConverter.ToUInt64(value, 8);
 				}
 			}
 		}
