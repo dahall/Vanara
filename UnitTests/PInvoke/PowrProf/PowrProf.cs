@@ -1,12 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Vanara.Extensions;
 using static Vanara.PInvoke.PowrProf;
 
 namespace Vanara.PInvoke.Tests;
@@ -19,7 +13,7 @@ public class PowrProfTests
 	{
 		Assert.That(EnumPwrSchemes(p), Is.True);
 
-		bool p(uint uiIndex, uint dwName, string sName, uint dwDesc, string sDesc, in POWER_POLICY pp, IntPtr lParam)
+		static bool p(uint uiIndex, uint dwName, string sName, uint dwDesc, string sDesc, in POWER_POLICY pp, IntPtr lParam)
 		{
 			TestContext.WriteLine($"Idx:{uiIndex}; Name:{sName}; Desc:{sDesc}");
 			return true;
@@ -45,13 +39,13 @@ public class PowrProfTests
 			}
 		}
 
-		void WriteName(Guid? sch, Guid? grp, Guid? setting) { TestContext.WriteLine($"{PowerReadFriendlyName(sch, grp, setting)} : {PowerReadDescription(sch, grp, setting)} : {setting}"); }
+		static void WriteName(Guid? sch, Guid? grp, Guid? setting) => TestContext.WriteLine($"{PowerReadFriendlyName(sch, grp, setting)} : {PowerReadDescription(sch, grp, setting)} : {setting}");
 	}
 
 	[Test]
 	public void PowerReadSettingAttributesTest()
 	{
-		var attr = PowerReadSettingAttributes(default(Guid), default(Guid));
+		var attr = PowerReadSettingAttributes(default, default);
 		TestContext.WriteLine($"DefGuid={attr}");
 		attr = PowerReadSettingAttributes(GUID_SYSTEM_BUTTON_SUBGROUP, default);
 		TestContext.WriteLine($"GUID_SYSTEM_BUTTON_SUBGROUP={attr}");
@@ -61,7 +55,7 @@ public class PowrProfTests
 	public void PowerSettingRegisterNotificationTest()
 	{
 		uint timeOut = 0;
-		var evt = new AutoResetEvent(false);
+		AutoResetEvent evt = new(false);
 		Assert.That(PowerSettingRegisterNotification(GUID_VIDEO_POWERDOWN_TIMEOUT, DEVICE_NOTIFY.DEVICE_NOTIFY_CALLBACK, new DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS { Callback = PowerSettingFunc }, out var powerNotification), ResultIs.Successful);
 		evt.WaitOne(1000);
 		Assert.That(PowerSettingUnregisterNotification(powerNotification), ResultIs.Successful);

@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -3656,21 +3652,20 @@ public static partial class PowrProf
 			return f(g1.HasValue ? (IntPtr)(void*)&ptrs[0] : IntPtr.Zero, g2.HasValue ? (IntPtr)(void*)&ptrs[1] : IntPtr.Zero, g3.HasValue ? (IntPtr)(void*)&ptrs[2] : IntPtr.Zero);
 	}
 
-	private static SafeHGlobalHandle PwrReadMem(PwrReadMemFunc f, Guid? g1, Guid? g2, Guid? g3)
-	{
-		return PwrGuidTsl(g1, g2, g3, (p1, p2, p3) => {
+	private static SafeHGlobalHandle PwrReadMem(PwrReadMemFunc f, Guid? g1, Guid? g2, Guid? g3) => 
+		PwrGuidTsl(g1, g2, g3, (p1, p2, p3) =>
+		{
 			var sz = 0U;
 			var err = f(HKEY.NULL, p1, p2, p3, IntPtr.Zero, ref sz);
 			if (err.Failed)
 			{
-				if (err == Win32Error.ERROR_FILE_NOT_FOUND) return null;
-				if (err != Win32Error.ERROR_MORE_DATA) throw err.GetException();
+				if (err == Win32Error.ERROR_FILE_NOT_FOUND) return SafeHGlobalHandle.Null;
+				if (err != Win32Error.ERROR_MORE_DATA) throw err.GetException()!;
 			}
 			var p = new SafeHGlobalHandle((int)sz);
 			f(HKEY.NULL, p1, p2, p3, (IntPtr)p, ref sz).ThrowIfFailed();
 			return p;
 		});
-	}
 
 	/// <summary>Contains parameters used when registering for a power notification.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/ns-powrprof-device_notify_subscribe_parameters typedef struct
