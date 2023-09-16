@@ -1,8 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vanara.PInvoke;
 
@@ -16,7 +12,7 @@ public static partial class WTSApi32
 	/// To work with sessions running on virtual machines on the RD Virtualization Host server on which the calling application is
 	/// running, specify WTS_CURRENT_SERVER_NAME for the pServerName parameter.
 	/// </summary>
-	public const string WTS_CURRENT_SERVER_NAME = null;
+	public const string? WTS_CURRENT_SERVER_NAME = null;
 
 	/// <summary>Indicates the RD Session Host server on which your application is running.</summary>
 	public static SafeHWTSSERVER WTS_CURRENT_SERVER => SafeHWTSSERVER.Current;
@@ -597,6 +593,19 @@ public static partial class WTSApi32
 		WTS_WSD_FASTREBOOT = 0x00000010,
 	}
 
+	/// <summary>Specifies which session notifications are to be received.</summary>
+	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSRegisterSessionNotificationEx")]
+	public enum WTSNotification
+	{
+		/// <summary>
+		/// Only session notifications involving the session attached to by the window identified by the hWnd parameter value are to be received.
+		/// </summary>
+		NOTIFY_FOR_THIS_SESSION = 0,
+
+		/// <summary>All session notifications are to be received.</summary>
+		NOTIFY_FOR_ALL_SESSIONS = 1
+	}
+
 	/// <summary>Closes an open handle to a Remote Desktop Session Host (RD Session Host) server.</summary>
 	/// <param name="hServer">
 	/// <para>A handle to an RD Session Host server opened by a call to the WTSOpenServer or WTSOpenServerEx function.</para>
@@ -773,7 +782,7 @@ public static partial class WTSApi32
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateListenersA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool WTSEnumerateListeners(HWTSSERVER hServer, [In, Optional] IntPtr pReserved, [In, Optional] uint Reserved,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WTSLISTENERNAME[] pListeners, ref uint pCount);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WTSLISTENERNAME[]? pListeners, ref uint pCount);
 
 	/// <summary>Retrieves information about the active processes on a specified Remote Desktop Session Host (RD Session Host) server.</summary>
 	/// <param name="hServer">
@@ -870,14 +879,14 @@ public static partial class WTSApi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateprocessesexa BOOL WTSEnumerateProcessesExA(
 	// HANDLE hServer, DWORD *pLevel, DWORD SessionId, LPSTR *ppProcessInfo, DWORD *pCount );
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateProcessesExA")]
-	public static bool WTSEnumerateProcessesEx(HWTSSERVER hServer, uint SessionId, out WTS_PROCESS_INFO_EX[] ppProcessInfo)
+	public static bool WTSEnumerateProcessesEx(HWTSSERVER hServer, uint SessionId, [NotNullWhen(true)] out WTS_PROCESS_INFO_EX[]? ppProcessInfo)
 	{
 		uint lvl = 1;
 		if (WTSEnumerateProcessesEx(hServer, ref lvl, SessionId, out var ptr, out var cnt) && lvl == 1)
 		{
 			try
 			{
-				ppProcessInfo = ptr.ToArray<WTS_PROCESS_INFO_EX>((int)cnt);
+				ppProcessInfo = ptr.ToArray<WTS_PROCESS_INFO_EX>((int)cnt) ?? new WTS_PROCESS_INFO_EX[0];
 			}
 			finally
 			{
@@ -930,7 +939,7 @@ public static partial class WTSApi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateserversa BOOL WTSEnumerateServersA( LPSTR
 	// pDomainName, DWORD Reserved, DWORD Version, PWTS_SERVER_INFOA *ppServerInfo, DWORD *pCount );
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateServersA")]
-	public static bool WTSEnumerateServers([Optional] string? pDomainName, out WTS_SERVER_INFO[] ppServerInfo)
+	public static bool WTSEnumerateServers([Optional] string? pDomainName, [NotNullWhen(true)] out WTS_SERVER_INFO[]? ppServerInfo)
 	{
 		if (WTSEnumerateServers(pDomainName, 0, 1, out var ptr, out var cnt))
 		{
@@ -1074,13 +1083,13 @@ public static partial class WTSApi32
 	// HANDLE hServer, DWORD *pLevel, DWORD Filter, PWTS_SESSION_INFO_1A *ppSessionInfo, DWORD *pCount );
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateSessionsExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static bool WTSEnumerateSessionsEx(HWTSSERVER hServer, out WTS_SESSION_INFO_1[] ppSessionInfo)
+	public static bool WTSEnumerateSessionsEx(HWTSSERVER hServer, [NotNullWhen(true)] out WTS_SESSION_INFO_1[]? ppSessionInfo)
 	{
 		if (WTSEnumerateSessionsEx(hServer, 1, 0, out var ptr, out var cnt))
 		{
 			try
 			{
-				ppSessionInfo = ptr.ToArray<WTS_SESSION_INFO_1>((int)cnt);
+				ppSessionInfo = ptr.ToArray<WTS_SESSION_INFO_1>((int)cnt) ?? new WTS_SESSION_INFO_1[0];
 			}
 			finally
 			{
@@ -1603,7 +1612,7 @@ public static partial class WTSApi32
 	[DllImport(Lib_WTSApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSRegisterSessionNotification")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WTSRegisterSessionNotification(HWND hWnd, uint dwFlags);
+	public static extern bool WTSRegisterSessionNotification(HWND hWnd, WTSNotification dwFlags);
 
 	/// <summary>Registers the specified window to receive session change notifications.</summary>
 	/// <param name="hServer">Handle of the server returned from WTSOpenServer or <c>WTS_CURRENT_SERVER</c>.</param>
@@ -1650,7 +1659,7 @@ public static partial class WTSApi32
 	[DllImport(Lib_WTSApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSRegisterSessionNotificationEx")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WTSRegisterSessionNotificationEx(HWTSSERVER hServer, HWND hWnd, uint dwFlags);
+	public static extern bool WTSRegisterSessionNotificationEx(HWTSSERVER hServer, HWND hWnd, WTSNotification dwFlags);
 
 	/// <summary>Displays a message box on the client desktop of a specified Remote Desktop Services session.</summary>
 	/// <param name="hServer">
@@ -2267,9 +2276,63 @@ public static partial class WTSApi32
 	/// Note that you should not explicitly close the file handle obtained by calling <c>WTSVirtualChannelQuery</c>. This is because
 	/// WTSVirtualChannelClose closes the file handle.
 	/// </para>
-	/// <para>
-	/// <code> PVOID vcFileHandlePtr = NULL; DWORD len; DWORD result = ERROR_SUCCESS; HANDLE vcHandle = NULL; HANDLE vcFileHandle = NULL; // // Open a virtual channel. // vcHandle = WTSVirtualChannelOpen( WTS_CURRENT_SERVER_HANDLE, // Current TS Server WTS_CURRENT_SESSION, // Current TS Session (LPSTR) "TSTCHNL" // Channel name ); if (vcHandle == NULL) { result = GetLastError(); } // // Gain access to the underlying file handle for // asynchronous I/O. // if (result == ERROR_SUCCESS) { if (!WTSVirtualChannelQuery( vcHandle, WTSVirtualFileHandle, &amp;vcFileHandlePtr, &amp;len )) { result = GetLastError(); } } // // Copy the data and // free the buffer allocated by WTSVirtualChannelQuery. // if (result == ERROR_SUCCESS) { memcpy(&amp;vcFileHandle, vcFileHandlePtr, sizeof(vcFileHandle)); WTSFreeMemory(vcFileHandlePtr); // // Use vcFileHandle for overlapped reads and writes here. // //. //. //. } // // Call WTSVirtualChannelClose to close the virtual channel. // Note: do not close the file handle. // if (vcHandle != NULL) { WTSVirtualChannelClose(vcHandle); vcFileHandle = NULL; }</code>
-	/// </para>
+	/// <para><code language="cpp"><![CDATA[PVOID vcFileHandlePtr = NULL;
+	/// DWORD len;
+	/// DWORD result = ERROR_SUCCESS;
+	/// HANDLE vcHandle = NULL;
+	/// HANDLE vcFileHandle = NULL;
+	/// //
+	/// // Open a virtual channel.
+	/// //
+	/// vcHandle = WTSVirtualChannelOpen(
+	///    WTS_CURRENT_SERVER_HANDLE, // Current TS Server
+	///    WTS_CURRENT_SESSION,       // Current TS Session
+	///    (LPSTR) "TSTCHNL"          // Channel name
+	/// );
+	/// 
+	/// if (vcHandle == NULL)
+	/// {
+	///    result = GetLastError();
+	/// }
+	/// 
+	/// //
+	/// // Gain access to the underlying file handle for
+	/// // asynchronous I/O.
+	/// //
+	/// if (result == ERROR_SUCCESS)
+	/// {
+	///    if (!WTSVirtualChannelQuery(vcHandle, WTSVirtualFileHandle, &vcFileHandlePtr, &len))
+	///    {
+	///       result = GetLastError();
+	///    }
+	/// }
+	/// 
+	/// //
+	/// // Copy the data and
+	/// // free the buffer allocated by WTSVirtualChannelQuery.
+	/// //
+	/// if (result == ERROR_SUCCESS)
+	/// {
+	///    memcpy(&vcFileHandle, vcFileHandlePtr, sizeof(vcFileHandle));
+	///    WTSFreeMemory(vcFileHandlePtr);
+	///    
+	///    //
+	///    // Use vcFileHandle for overlapped reads and writes here.
+	///    //
+	///    //.
+	///    //.
+	///    //.
+	/// }
+	/// 
+	/// //
+	/// // Call WTSVirtualChannelClose to close the virtual channel.
+	/// // Note: do not close the file handle.
+	/// //
+	/// if (vcHandle != NULL)
+	/// {
+	///    WTSVirtualChannelClose(vcHandle);
+	///    vcFileHandle = NULL;
+	/// }]]></code></para>
 	/// <para>For more information about overlapped mode, see Synchronization and Overlapped Input and Output.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsvirtualchannelquery BOOL WTSVirtualChannelQuery(
@@ -2403,7 +2466,7 @@ public static partial class WTSApi32
 		public HVIRTUALCHANNEL(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HVIRTUALCHANNEL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HVIRTUALCHANNEL NULL => new HVIRTUALCHANNEL(IntPtr.Zero);
+		public static HVIRTUALCHANNEL NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2416,7 +2479,7 @@ public static partial class WTSApi32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HVIRTUALCHANNEL"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HVIRTUALCHANNEL(IntPtr h) => new HVIRTUALCHANNEL(h);
+		public static implicit operator HVIRTUALCHANNEL(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2451,7 +2514,7 @@ public static partial class WTSApi32
 		public HWTSSERVER(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HWTSSERVER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static readonly HWTSSERVER NULL = new HWTSSERVER(IntPtr.Zero);
+		public static readonly HWTSSERVER NULL = new(IntPtr.Zero);
 
 		/// <summary>A constant representing the handle of the current WTS server.</summary>
 		public static readonly HWTSSERVER WTS_CURRENT_SERVER_HANDLE = NULL;
@@ -2470,7 +2533,7 @@ public static partial class WTSApi32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWTSSERVER"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWTSSERVER(IntPtr h) => new HWTSSERVER(h);
+		public static implicit operator HWTSSERVER(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2757,28 +2820,28 @@ public static partial class WTSApi32
 		/// session is running on a virtual machine, the string contains the name of the virtual machine.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pHostName;
+		public string? pHostName;
 
 		/// <summary>
 		/// A pointer to a null-terminated string that contains the name of the user who is logged on to the session. If no user is
 		/// logged on to the session, the string contains <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pUserName;
+		public string? pUserName;
 
 		/// <summary>
 		/// A pointer to a null-terminated string that contains the domain name of the user who is logged on to the session. If no user
 		/// is logged on to the session, the string contains <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pDomainName;
+		public string? pDomainName;
 
 		/// <summary>
 		/// A pointer to a null-terminated string that contains the name of the farm that the virtual machine is joined to. If the
 		/// session is not running on a virtual machine that is joined to a farm, the string contains <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pFarmName;
+		public string? pFarmName;
 	}
 
 	/// <summary>Contains information about a Remote Desktop Connection (RDC) client.</summary>
@@ -3510,7 +3573,7 @@ public static partial class WTSApi32
 		/// <summary>Performs an implicit conversion from <see cref="System.String"/> to <see cref="WTSLISTENERNAME"/>.</summary>
 		/// <param name="n">The n.</param>
 		/// <returns>The resulting <see cref="WTSLISTENERNAME"/> instance from the conversion.</returns>
-		public static implicit operator WTSLISTENERNAME(string n) => new WTSLISTENERNAME { Name = n };
+		public static implicit operator WTSLISTENERNAME(string n) => new() { Name = n };
 	}
 
 	/// <summary>
@@ -3773,18 +3836,18 @@ public static partial class WTSApi32
 		/// <typeparam name="T">The type of the structures to retrieve.</typeparam>
 		/// <param name="count">The number of structures to retrieve.</param>
 		/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
-		public T[] ToArray<T>(int count) => handle.ToArray<T>(count);
+		public T[] ToArray<T>(int count) => handle.ToArray<T>(count) ?? new T[0];
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <param name="allocatedBytes">The size, in bytes, of the data returned in ppBuffer.</param>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public string ToString(uint allocatedBytes) => StringHelper.GetString(handle, CharSet.Auto, allocatedBytes);
+		public string? ToString(uint allocatedBytes) => StringHelper.GetString(handle, CharSet.Auto, allocatedBytes);
 
 		/// <summary>Marshals data from this memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>A managed object that contains the data that this memory points to.</returns>
-		public T ToStructure<T>(uint allocatedBytes) => handle.Convert<T>(allocatedBytes == 0 ? uint.MaxValue : allocatedBytes);
+		public T? ToStructure<T>(uint allocatedBytes) => handle.Convert<T>(allocatedBytes == 0 ? uint.MaxValue : allocatedBytes);
 
 #if ALLOWSPAN
 		/// <summary>Creates a new span over this allocated memory.</summary>

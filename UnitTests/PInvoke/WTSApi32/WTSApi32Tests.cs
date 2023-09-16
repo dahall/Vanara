@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.WTSApi32;
 
 namespace Vanara.PInvoke.Tests;
@@ -23,7 +21,7 @@ public class WTSApi32Tests
 	public void WTSEnumerateServersTest()
 	{
 		Assert.That(WTSEnumerateServers(null, out var servers), ResultIs.Successful);
-		servers.WriteValues();
+		servers!.WriteValues();
 	}
 
 	[Test]
@@ -32,7 +30,7 @@ public class WTSApi32Tests
 		Assert.That(WTSEnumerateSessionsEx(HWTSSERVER.WTS_CURRENT_SERVER_HANDLE, out var sessionList),
 			ResultIs.Successful);
 
-		foreach (var session in sessionList)
+		foreach (var session in sessionList!)
 		{
 			if (WTSQuerySessionInformation(
 				    HWTSSERVER.WTS_CURRENT_SERVER_HANDLE,
@@ -60,7 +58,7 @@ public class WTSApi32Tests
 		Assert.That(WTSEnumerateSessionsEx(HWTSSERVER.WTS_CURRENT_SERVER_HANDLE, out var sessionList),
 			ResultIs.Successful);
 
-		foreach (var session in sessionList)
+		foreach (var session in sessionList!)
 		{
 			if (WTSQuerySessionInformation(
 				    HWTSSERVER.WTS_CURRENT_SERVER_HANDLE,
