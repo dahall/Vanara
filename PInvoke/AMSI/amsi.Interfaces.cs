@@ -1,8 +1,4 @@
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -548,14 +544,14 @@ public static partial class AMSI
 		/// <summary>Initializes a new instance of the <see cref="AmsiStream"/> class and inserts the contents of a buffer.</summary>
 		/// <param name="buffer">The buffer to copy.</param>
 		/// <param name="writable">if set to <see langword="true"/>, the stream is read-write; if <see langword="false"/>, it is read-only.</param>
-		public AmsiStream(byte[] buffer, bool writable) : base(new SafeCoTaskMemHandle(buffer), access: writable ? FileAccess.ReadWrite : FileAccess.Read)
+		public AmsiStream(byte[]? buffer, bool writable) : base(buffer is null ? SafeCoTaskMemHandle.Null : new SafeCoTaskMemHandle(buffer), access: writable ? FileAccess.ReadWrite : FileAccess.Read)
 		{
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="AmsiStream"/> class with file information.</summary>
 		/// <param name="file">The file information.</param>
 		/// <param name="writable">if set to <see langword="true"/>, the stream is read-write; if <see langword="false"/>, it is read-only.</param>
-		public AmsiStream(FileInfo file, bool writable) : this(file is null ? null : File.ReadAllBytes(file.FullName), writable) => ContentName = file.FullName;
+		public AmsiStream(FileInfo? file, bool writable) : this(file is null ? null : File.ReadAllBytes(file.FullName), writable) => ContentName = file?.FullName;
 
 		/// <summary>Initializes a new instance of the <see cref="AmsiStream"/> class.</summary>
 		/// <param name="mem">The memory allocator used to create and extend the native memory.</param>
@@ -565,10 +561,10 @@ public static partial class AMSI
 		}
 
 		/// <summary>Gets or sets the name, version, or GUID string of the calling application.</summary>
-		public string AppName { get; set; }
+		public string? AppName { get; set; }
 
 		/// <summary>Gets or sets the filename, URL, unique script ID, or similar of the content.</summary>
-		public string ContentName { get; set; }
+		public string? ContentName { get; set; }
 
 		/// <summary>
 		/// Gets or sets the session is used to associate different scan calls, such as if the contents to be scanned belong to the
@@ -578,10 +574,10 @@ public static partial class AMSI
 
 		HRESULT IAmsiStream.GetAttribute(AMSI_ATTRIBUTE attribute, uint dataSize, IntPtr data, out uint retData)
 		{
-			byte[] bytes = attribute switch
+			byte[]? bytes = attribute switch
 			{
-				AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_APP_NAME => StringHelper.GetBytes(AppName, true, CharSet.Unicode),
-				AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_NAME => StringHelper.GetBytes(ContentName, true, CharSet.Unicode),
+				AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_APP_NAME => AppName is null ? null : StringHelper.GetBytes(AppName, true, CharSet.Unicode),
+				AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_NAME => ContentName is null ? null : StringHelper.GetBytes(ContentName, true, CharSet.Unicode),
 				AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_SIZE => BitConverter.GetBytes((ulong)Length),
 				AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_ADDRESS => IntPtr.Size == 8 ? BitConverter.GetBytes(Pointer.ToInt64()) : BitConverter.GetBytes(Pointer.ToInt32()),
 				AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_SESSION => IntPtr.Size == 8 ? BitConverter.GetBytes(Session.ToInt64()) : BitConverter.GetBytes(Session.ToInt32()),

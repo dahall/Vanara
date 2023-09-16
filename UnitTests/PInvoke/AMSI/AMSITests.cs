@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AMSI;
 
 namespace Vanara.PInvoke.Tests;
@@ -68,10 +65,10 @@ public class AMSITests
 	{
 		var fn = TestCaseSources.BmpFile;
 		var app = "MyTestApp";
-		AmsiStream str = null;
+		AmsiStream? str = null;
 		Assert.That(() => str = new(new FileInfo(fn), false) { AppName = app }, Throws.Nothing);
 
-		var istr = str as IAmsiStream;
+		var istr = (IAmsiStream)str!;
 		using var mem = new SafeCoTaskMemHandle(2048);
 
 		Assert.That(istr.GetAttribute(AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_APP_NAME, mem.Size, mem, out var sz), ResultIs.Successful);
@@ -82,7 +79,7 @@ public class AMSITests
 
 		Assert.That(istr.GetAttribute(AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_SIZE, mem.Size, mem, out sz), ResultIs.Successful);
 		Assert.That(sz, Is.EqualTo(sizeof(ulong)));
-		Assert.That(mem.ToStructure<ulong>(), Is.EqualTo((ulong)str.Length));
+		Assert.That(mem.ToStructure<ulong>(), Is.EqualTo((ulong)str!.Length));
 
 		Assert.That(istr.GetAttribute(AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_ADDRESS, mem.Size, mem, out sz), ResultIs.Successful);
 		Assert.That(sz, Is.EqualTo(IntPtr.Size));
@@ -98,11 +95,11 @@ public class AMSITests
 	{
 		var fn = TestCaseSources.BmpFile;
 		var app = "MyTestApp";
-		AmsiStream str = null;
+		AmsiStream? str = null;
 		Assert.That(() => str = new(new FileInfo(fn), false) { AppName = app }, Throws.Nothing);
 
 		IAntimalware2 iam = new();
-		Assert.That(iam.Scan(str, out var res, out var prov), ResultIs.Successful);
+		Assert.That(iam.Scan(str!, out var res, out var prov), ResultIs.Successful);
 		TestContext.WriteLine(res);
 		Assert.That(prov.DisplayName(out var pname), ResultIs.Successful);
 		TestContext.WriteLine(pname);

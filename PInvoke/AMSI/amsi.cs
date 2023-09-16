@@ -1,5 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vanara.PInvoke;
 
@@ -265,7 +264,7 @@ public static partial class AMSI
 		public static bool operator ==(HAMSICONTEXT h1, HAMSICONTEXT h2) => h1.handle == h2.handle;
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
+		public override bool Equals(object? obj) => obj is IHandle h && handle == h.DangerousGetHandle() || obj is IntPtr p && handle == p;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -313,7 +312,7 @@ public static partial class AMSI
 		public static bool operator ==(HAMSISESSION h1, HAMSISESSION h2) => h1.handle == h2.handle;
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
+		public override bool Equals(object? obj) => obj is IHandle h && handle == h.DangerousGetHandle() || obj is IntPtr p && handle == p;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -340,6 +339,9 @@ public static partial class AMSI
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HAMSICONTEXT(SafeHAMSICONTEXT h) => h.handle;
 
+		/// <summary>Represents a NULL handle.</summary>
+		public static readonly SafeHAMSICONTEXT Null = new(IntPtr.Zero, false);
+
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() { AmsiUninitialize(handle); return true; }
 	}
@@ -354,11 +356,11 @@ public static partial class AMSI
 		/// <param name="ownsHandle">
 		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 		/// </param>
-		public SafeHAMSISESSION(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+		public SafeHAMSISESSION(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => ctx = SafeHAMSICONTEXT.Null;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeHAMSISESSION"/> class.</summary>
 		/// <param name="context">The context.</param>
-		public SafeHAMSISESSION(HAMSICONTEXT context) : base() => Open(Context = context);
+		public SafeHAMSISESSION(HAMSICONTEXT context) : base() => Open(ctx = new(context.DangerousGetHandle(), false));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeHAMSISESSION"/> class.</summary>
 		/// <param name="appName">The name, version, or GUID string of the app calling the AMSI API.</param>
@@ -369,7 +371,7 @@ public static partial class AMSI
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeHAMSISESSION"/> class.</summary>
-		private SafeHAMSISESSION() : base() { }
+		private SafeHAMSISESSION() : base() => ctx = SafeHAMSICONTEXT.Null;
 
 		/// <summary>Gets or sets the handle of type HAMSICONTEXT that was initially received from AmsiInitialize.</summary>
 		/// <value>The context handle.</value>
