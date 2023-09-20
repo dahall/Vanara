@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.ShlwApi;
@@ -63,7 +61,7 @@ public static class PathEx
 	/// <returns>The altered, compacted path string.</returns>
 	public static string Compact(string path, int maxChars) => SBAllocCallRet((s, sz) => PathCompactPathEx(s, path, (uint)maxChars + 1));
 
-#if NET20_OR_GREATER
+#if !NETSTANDARD2_0
 	/// <summary>
 	/// Truncates a file path to fit within a given pixel width by replacing path components with ellipses.
 	/// </summary>
@@ -88,16 +86,16 @@ public static class PathEx
 	/// </param>
 	/// <param name="foundFilePath">If the file is found, this variable holds the fully qualified path name of the found file.</param>
 	/// <returns>Returns <see langword="true"/> if found, or <see langword="false"/> otherwise.</returns>
-	public static bool FileExistsOnPath(string fileName, IEnumerable<string> searchDirectories, out string foundFilePath)
+	public static bool FileExistsOnPath(string fileName, IEnumerable<string>? searchDirectories, [NotNullWhen(true)] out string? foundFilePath)
 	{
 		var sb = new StringBuilder(fileName, MAX_PATH);
-		string[] dirs = searchDirectories?.ToArray();
+		string?[]? dirs = searchDirectories?.ToArray();
 		if (dirs != null)
 		{
 			Array.Resize(ref dirs, dirs.Length + 1);
 			dirs[dirs.Length - 1] = null;
 		}
-		foundFilePath = PathFindOnPath(sb, dirs) ? sb.ToString() : null;
+		foundFilePath = PathFindOnPath(sb, dirs?.WhereNotNull().ToArray()) ? sb.ToString() : null;
 		return foundFilePath != null;
 	}
 
@@ -456,16 +454,16 @@ public static class PathEx
 
 	private static string SBAllocCallRet(Action<StringBuilder, uint> func, string inval = "", uint sz = MAX_PATH)
 	{
-		if (inval == null) throw new ArgumentNullException("path");
+		if (inval == null) throw new ArgumentNullException(nameof(inval));
 		var sb = new StringBuilder((int)sz, (int)sz);
 		sb.Append(inval); // Done this way in case the input string is longer than the buffer.
 		func(sb, sz);
 		return sb.ToString();
 	}
 
-	private static string SBAllocCallRet(Func<StringBuilder, uint, HRESULT> func, string inval = "", uint sz = PATHCCH_MAX_CCH, Action<HRESULT> err = null)
+	private static string SBAllocCallRet(Func<StringBuilder, uint, HRESULT> func, string inval = "", uint sz = PATHCCH_MAX_CCH, Action<HRESULT>? err = null)
 	{
-		if (inval == null) throw new ArgumentNullException("path");
+		if (inval == null) throw new ArgumentNullException(nameof(inval));
 		var sb = new StringBuilder(inval, (int)sz);
 		var hr = func(sb, sz);
 		if (err != null) err?.Invoke(hr); else hr.ThrowIfFailed();

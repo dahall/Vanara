@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using Vanara.PInvoke;
@@ -84,15 +83,15 @@ public static class FileInfoExtension
 		return DeviceIoControlAsync(fs, IOControlCode.FSCTL_SET_COMPRESSION, (ushort)(compressed ? 1 : 0));
 	}
 
-	private static Task<TNew> ConvertTask<TCurrent, TNew>(Task<TCurrent> task, Converter<TCurrent, TNew> converter = null)
+	private static Task<TNew> ConvertTask<TCurrent, TNew>(Task<TCurrent> task, Converter<TCurrent, TNew>? converter = null)
 	{
-		var tret = new TaskCompletionSource<TNew>();
+		TaskCompletionSource<TNew> tret = new();
 		if (task.IsCanceled) tret.TrySetCanceled();
 		else if (task.IsFaulted && task.Exception != null) tret.TrySetException(task.Exception);
 		else
 		{
-			if (converter == null)
-				tret.TrySetResult((TNew)Convert.ChangeType(task.Result, typeof(TNew)));
+			if (converter is null)
+				tret.TrySetResult((TNew)(Convert.ChangeType(task.Result, typeof(TNew)) ?? throw new InvalidCastException()));
 			else
 				tret.TrySetResult(converter(task.Result));
 		}

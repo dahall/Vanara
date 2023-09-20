@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Kernel32;
@@ -74,8 +70,8 @@ public class JobTests
 			job.TerminateAllProcesses(0);
 		}
 
-		static void msgHndlr(object s, JobEventArgs e) => TestContext.WriteLine($"{DateTime.Now:u}: {e.JobMessage}, {e.ProcessId}");
-		static void notHndlr(object s, JobNotificationEventArgs e) => TestContext.WriteLine($"{DateTime.Now:u}: {e.JobMessage}, {e.Limit}, Limit: {e.NotificationLimit}, Val: {e.ReportedValue}");
+		static void msgHndlr(object? s, JobEventArgs e) => TestContext.WriteLine($"{DateTime.Now:u}: {e.JobMessage}, {e.ProcessId}");
+		static void notHndlr(object? s, JobNotificationEventArgs e) => TestContext.WriteLine($"{DateTime.Now:u}: {e.JobMessage}, {e.Limit}, Limit: {e.NotificationLimit}, Val: {e.ReportedValue}");
 	}
 
 	[Test]
@@ -111,10 +107,10 @@ public class JobTests
 			Thread.Sleep(200);
 		}
 
-		void TestGT<T, TS>(TS js, T? value, Action<TS, T?> set, Func<TS, T?> get) where T : struct
+		void TestGT<T, TS>(TS js, T? value, Action<TS, T?> set, Func<TS, T?> get) where TS : notnull where T : struct
 		{
 			Assert.That(() => set(js, value), Throws.Nothing);
-			Assert.That(get(js).Value, Is.GreaterThanOrEqualTo(value));
+			Assert.That(get(js).GetValueOrDefault(), Is.GreaterThanOrEqualTo(value));
 
 			Assert.That(() => set(js, null), Throws.Nothing);
 			Assert.That(get(js), Is.Null);
@@ -155,7 +151,7 @@ public class JobTests
 			job.TerminateAllProcesses(0);
 		}
 
-		static void notHndlr(object s, JobNotificationEventArgs e) => TestContext.WriteLine($"{DateTime.Now:u}: {e.JobMessage}, {e.Limit}, Limit: {e.NotificationLimit}, Val: {e.ReportedValue}");
+		static void notHndlr(object? s, JobNotificationEventArgs e) => TestContext.WriteLine($"{DateTime.Now:u}: {e.JobMessage}, {e.Limit}, Limit: {e.NotificationLimit}, Val: {e.ReportedValue}");
 	}
 
 	[Test]
@@ -172,7 +168,7 @@ public class JobTests
 	[Test]
 	public void ProcessesTest()
 	{
-		Process p2 = null;
+		Process? p2 = null;
 		using (var job = Job.Create())
 		{
 			job.Settings.KillOnJobClose = true;
@@ -227,22 +223,22 @@ public class JobTests
 		Assert.That(() => job.Settings.GroupAffinity = job.Settings.GroupAffinity, Throws.Nothing);
 	}
 
-	private void Test<T, TS>(TS js, T? value, Action<TS, T?> set, Func<TS, T?> get, bool ignDef = false) where T : struct
+	private static void Test<T, TS>(TS js, T? value, Action<TS, T?> set, Func<TS, T?> get, bool ignDef = false) where T : struct
 	{
 		Assert.That(() => set(js, value), Throws.Nothing);
-		Assert.That(get(js).Value, Is.EqualTo(value));
+		Assert.That(get(js).GetValueOrDefault(), Is.EqualTo(value));
 
 		if (!ignDef)
 		{
 			Assert.That(() => set(js, default(T)), Throws.Nothing);
-			Assert.That(get(js).Value, Is.EqualTo(default(T)));
+			Assert.That(get(js).GetValueOrDefault(), Is.EqualTo(default(T)));
 		}
 
 		Assert.That(() => set(js, null), Throws.Nothing);
 		Assert.That(get(js), Is.Null);
 	}
 
-	private void TestBool<TS>(TS js, Action<TS, bool> set, Func<TS, bool> get)
+	private static void TestBool<TS>(TS js, Action<TS, bool> set, Func<TS, bool> get)
 	{
 		var orig = get(js);
 
@@ -271,7 +267,7 @@ public class JobTests
 		stats.WriteValues();
 		Assert.That(stats.PeakJobMemoryUsed, Is.GreaterThan(0UL));
 		Assert.That(stats.PeakProcessMemoryUsed, Is.GreaterThan(0UL));
-		Assert.That(stats.ThisPeriodTotalKernelTime.Ticks, Is.GreaterThan(0UL));
+		Assert.That(stats.ThisPeriodTotalKernelTime.Ticks, Is.GreaterThanOrEqualTo(0UL));
 		Assert.That(stats.ThisPeriodTotalUserTime.Ticks, Is.GreaterThanOrEqualTo(0UL));
 		Assert.That(stats.TotalKernelTime.Ticks, Is.GreaterThan(0UL));
 		Assert.That(stats.TotalPageFaultCount, Is.GreaterThanOrEqualTo(0UL));

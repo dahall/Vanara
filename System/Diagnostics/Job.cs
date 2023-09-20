@@ -1,14 +1,11 @@
 ﻿using Microsoft.Win32.SafeHandles;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
@@ -55,11 +52,11 @@ public class Job : IDisposable
 	internal SafeHJOB hJob;
 	private readonly IoCompletionPort complPort;
 	private bool disposedValue = false;
-	private JobLimits limits;
-	private JobNotifications notifications;
-	private JobProcessCollection processes;
-	private JobSettings settings;
-	private JobStatistics stats;
+	private JobLimits? limits;
+	private JobNotifications? notifications;
+	private JobProcessCollection? processes;
+	private JobSettings? settings;
+	private JobStatistics? stats;
 
 	private Job(SafeHJOB jobHandle)
 	{
@@ -92,55 +89,55 @@ public class Job : IDisposable
 	/// Indicates that a process associated with the job exited with an exit code that indicates an abnormal exit (see the list following
 	/// this table).
 	/// </summary>
-	public event EventHandler<JobEventArgs> AbnormalProcessExit;
+	public event EventHandler<JobEventArgs>? AbnormalProcessExit;
 
 	/// <summary>
 	/// Indicates that the active process count has been decremented to 0. For example, if the job currently has two active processes,
 	/// the system sends this message after they both terminate.
 	/// </summary>
-	public event EventHandler<JobEventArgs> ActiveProcessCountZero;
+	public event EventHandler<JobEventArgs>? ActiveProcessCountZero;
 
 	/// <summary>Indicates that the active process limit has been exceeded.</summary>
-	public event EventHandler<JobEventArgs> ActiveProcessLimitExceeded;
+	public event EventHandler<JobEventArgs>? ActiveProcessLimitExceeded;
 
 	/// <summary>
 	/// Indicates that the Settings property <see cref="JobSettings.TerminateProcessesAtEndOfJobTimeLimit"/> is set to
 	/// <see langword="false"/> and the end-of-job time limit has been reached. Upon posting this message, the time limit is canceled and
 	/// the job's processes can continue to run.
 	/// </summary>
-	public event EventHandler<JobEventArgs> EndOfJobTime;
+	public event EventHandler<JobEventArgs>? EndOfJobTime;
 
 	/// <summary>
 	/// Indicates that a process has exceeded a per-process time limit. The system sends this message after the process termination has
 	/// been requested.
 	/// </summary>
-	public event EventHandler<JobEventArgs> EndofProcessTime;
+	public event EventHandler<JobEventArgs>? EndofProcessTime;
 
 	/// <summary>
 	/// Indicates that a process associated with the job caused the job to exceed the job-wide memory limit (if one is in effect). The
 	/// system does not send this message if the process has not yet reported its process identifier.
 	/// </summary>
-	public event EventHandler<JobEventArgs> JobMemoryLimitExceeded;
+	public event EventHandler<JobEventArgs>? JobMemoryLimitExceeded;
 
 	/// <summary>
 	/// Indicates that a process associated with a job that has registered for resource limit notifications has exceeded one or more
 	/// limits. The system does not send this message if the process has not yet reported its process identifier.
 	/// </summary>
-	public event EventHandler<JobNotificationEventArgs> JobNotificationLimitExceeded;
+	public event EventHandler<JobNotificationEventArgs>? JobNotificationLimitExceeded;
 
 	/// <summary>
 	/// Indicates that a process has been added to the job. Processes added to a job at the time a completion port is associated are also reported.
 	/// </summary>
-	public event EventHandler<JobEventArgs> NewProcess;
+	public event EventHandler<JobEventArgs>? NewProcess;
 
 	/// <summary>Indicates that a process associated with the job has exited.</summary>
-	public event EventHandler<JobEventArgs> ProcessExited;
+	public event EventHandler<JobEventArgs>? ProcessExited;
 
 	/// <summary>
 	/// Indicates that a process associated with the job has exceeded its memory limit (if one is in effect). The system does not send
 	/// this message if the process has not yet reported its process identifier.
 	/// </summary>
-	public event EventHandler<JobEventArgs> ProcessMemoryLimitExceeded;
+	public event EventHandler<JobEventArgs>? ProcessMemoryLimitExceeded;
 
 	/// <summary>Exposes the handle (HJOB) of the job.</summary>
 	/// <value>The handle.</value>
@@ -148,11 +145,11 @@ public class Job : IDisposable
 
 	/// <summary>Notification limits that can be set for various properties.</summary>
 	/// <value>The notifications.</value>
-	public JobNotifications Notifications => notifications ?? (notifications = new JobNotifications(this));
+	public JobNotifications Notifications => notifications ??= new JobNotifications(this);
 
 	/// <summary>Gets the processes assigned to this job.</summary>
 	/// <value>The process list for the job.</value>
-	public IReadOnlyCollection<Process> Processes => processes ?? (processes = new JobProcessCollection(this));
+	public IReadOnlyCollection<Process> Processes => processes ??= new JobProcessCollection(this);
 
 	/// <summary>Gets or sets the list of processor groups to which the job is currently assigned.</summary>
 	public IEnumerable<ushort> ProcessorGroups
@@ -178,15 +175,15 @@ public class Job : IDisposable
 
 	/// <summary>Gets the hard limits for different runtime values of the job object.</summary>
 	/// <value>The runtime limits.</value>
-	public JobLimits RuntimeLimits => limits ?? (limits = new JobLimits(this));
+	public JobLimits RuntimeLimits => limits ??= new JobLimits(this);
 
 	/// <summary>Gets the job settings.</summary>
 	/// <value>The job settings.</value>
-	public JobSettings Settings => settings ?? (settings = new JobSettings(this));
+	public JobSettings Settings => settings ??= new JobSettings(this);
 
 	/// <summary>Usage statistics for the job.</summary>
 	/// <value>Usage statistics.</value>
-	public JobStatistics Statistics => stats ?? (stats = new JobStatistics(this));
+	public JobStatistics Statistics => stats ??= new JobStatistics(this);
 
 	/// <summary>Creates or opens a job object.</summary>
 	/// <param name="jobName">
@@ -232,7 +229,7 @@ public class Job : IDisposable
 	/// associated processes and then destroys the job object itself.
 	/// </para>
 	/// </remarks>
-	public static Job Create(string jobName = null, JobSecurity jobSecurity = null, HandleInheritability inheritable = HandleInheritability.None)
+	public static Job Create(string? jobName = null, JobSecurity? jobSecurity = null, HandleInheritability inheritable = HandleInheritability.None)
 	{
 		var sa = GetSecAttr(jobSecurity, inheritable == HandleInheritability.Inheritable, out var hMem);
 		var job = new Job(CreateJobObject(sa, jobName));
@@ -248,7 +245,7 @@ public class Job : IDisposable
 	/// <summary>Performs an implicit conversion from <see cref="Job"/> to <see cref="SafeWaitHandle"/>.</summary>
 	/// <param name="job">The Job instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SafeWaitHandle(Job job) => new SafeWaitHandle(job.hJob.DangerousGetHandle(), false);
+	public static implicit operator SafeWaitHandle(Job job) => new(job.hJob.DangerousGetHandle(), false);
 
 	/// <summary>Opens an existing job object.</summary>
 	/// <param name="jobName">
@@ -270,7 +267,7 @@ public class Job : IDisposable
 	/// </param>
 	/// <returns>If the function succeeds, the return value is a <see cref="Job"/> object.</returns>
 	public static Job Open(string jobName, JobAccessRight desiredAccess = JobAccessRight.JOB_OBJECT_ALL_ACCESS, HandleInheritability inheritable = HandleInheritability.None) =>
-		new Job(OpenJobObject((uint)desiredAccess, inheritable == HandleInheritability.Inheritable, jobName));
+		new(OpenJobObject((uint)desiredAccess, inheritable == HandleInheritability.Inheritable, jobName));
 
 	/// <summary>Assigns a process to an existing job object.</summary>
 	/// <param name="process">
@@ -340,7 +337,7 @@ public class Job : IDisposable
 	/// <returns>
 	/// An array of <c>JOBOBJECT_IO_RATE_CONTROL_INFORMATION</c> structures that contain the information about I/O rate control for the job.
 	/// </returns>
-	public JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] GetIoRateControlInformation(string VolumeName = null) =>
+	public JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] GetIoRateControlInformation(string? VolumeName = null) =>
 		QueryIoRateControlInformationJobObject(hJob, VolumeName);
 
 	/// <summary>
@@ -379,7 +376,9 @@ public class Job : IDisposable
 	/// the others. In addition, Start may return a non-null Process with its <see cref="Process.HasExited"/> property already set to
 	/// <see langword="true"/>. In this case, the started process may have activated an existing instance of itself and then exited.
 	/// </returns>
-	public Process StartProcess(string filename, string arguments = null) => !string.IsNullOrEmpty(filename) ? StartProcess(new ProcessStartInfo(filename, arguments)) : throw new ArgumentNullException(nameof(filename));
+	public Process StartProcess(string filename, string? arguments = null) => !string.IsNullOrEmpty(filename) ?
+		StartProcess(arguments is null ? new ProcessStartInfo(filename) : new ProcessStartInfo(filename, arguments)) :
+		throw new ArgumentNullException(nameof(filename));
 
 	/// <summary>
 	/// Starts the process resource that is specified by the parameter containing process start information (for example, the file name
@@ -425,11 +424,12 @@ public class Job : IDisposable
 			Win32Error.ThrowLastError();
 	}
 
-	internal static SECURITY_ATTRIBUTES GetSecAttr(JobSecurity sec, bool inheritable, out ISafeMemoryHandle hMem)
+	internal static SECURITY_ATTRIBUTES? GetSecAttr(JobSecurity? sec, bool inheritable, out ISafeMemoryHandle hMem)
 	{
-		hMem = null;
+		hMem = SafeHGlobalHandle.Null;
 		if (sec is null && !inheritable) return null;
-		hMem = new SafeHGlobalHandle(sec.GetSecurityDescriptorBinaryForm());
+		if (sec is not null)
+			hMem = new SafeHGlobalHandle(sec.GetSecurityDescriptorBinaryForm());
 		return new SECURITY_ATTRIBUTES
 		{
 			bInheritHandle = inheritable,
@@ -537,7 +537,7 @@ public class Job : IDisposable
 				Debug.WriteLine($"Notification: {vi.ViolationLimitFlags}");
 				foreach (var l in vi.ViolationLimitFlags.GetFlags().Cast<JobLimit>())
 				{
-					object v = null, n = null;
+					object? v, n;
 					switch (l)
 					{
 						case JobLimit.JobMemory:
@@ -625,7 +625,7 @@ public class Job : IDisposable
 		private class Enumerator : IEnumerator<Process>
 		{
 			private int i;
-			private Job job;
+			private readonly Job job;
 			private Process[] procs;
 
 			public Enumerator(Job j)
@@ -638,10 +638,11 @@ public class Job : IDisposable
 
 			object IEnumerator.Current => Current;
 
-			public void Dispose() => job = null;
+			public void Dispose() => GC.SuppressFinalize(this);
 
 			public bool MoveNext() => ++i < procs.Length;
 
+			[MemberNotNull(nameof(procs))]
 			public void Reset()
 			{
 				i = -1;
@@ -652,7 +653,7 @@ public class Job : IDisposable
 					mem.Size *= 2;
 				}
 				var l = mem.ToStructure<uint>();
-				procs = mem.ToEnumerable<UIntPtr>((int)l, 8).Select(p => { try { return Process.GetProcessById((int)p.ToUInt32()); } catch { return null; } }).Where(p => p != null).ToArray();
+				procs = mem.ToEnumerable<UIntPtr>((int)l, 8).Select(p => { try { return Process.GetProcessById((int)p.ToUInt32()); } catch { return null; } }).Where(p => p != null).WhereNotNull().ToArray();
 			}
 		}
 	}
@@ -693,7 +694,7 @@ public abstract class JobHelper : IDisposable
 	protected JobHelper(Job job) => this.job = job;
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose() => job = null;
+	public virtual void Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>Gets field values from JOBOBJECT_BASIC_LIMIT_INFORMATION.</summary>
 	/// <typeparam name="T">The return type.</typeparam>
@@ -701,7 +702,7 @@ public abstract class JobHelper : IDisposable
 	/// <param name="getter">The method to get the field.</param>
 	/// <returns>The value.</returns>
 	internal T? GetBasic<T>(JOBOBJECT_LIMIT_FLAGS flag, Func<JOBOBJECT_BASIC_LIMIT_INFORMATION, T> getter) where T : struct =>
-		job.CheckThenGet<T?, JOBOBJECT_BASIC_LIMIT_INFORMATION>(n => n.LimitFlags.IsFlagSet(flag) ? (T?)getter(n) : null);
+		job.CheckThenGet<T?, JOBOBJECT_BASIC_LIMIT_INFORMATION>(n => n.LimitFlags.IsFlagSet(flag) ? getter(n) : null);
 
 	/// <summary>Sets a field value in JOBOBJECT_BASIC_LIMIT_INFORMATION.</summary>
 	/// <typeparam name="T">The field type.</typeparam>
@@ -848,16 +849,13 @@ public class JobLimits : JobHelper
 		get
 		{
 			var info = job.CheckThenGet<JOBOBJECT_NET_RATE_CONTROL_INFORMATION>();
-			return info.ControlFlags.IsFlagSet(JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH) ? (ulong?)info.MaxBandwidth : null;
+			return info.ControlFlags.IsFlagSet(JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH) ? info.MaxBandwidth : null;
 		}
-		set
+		set => job.CheckThenSet((ref JOBOBJECT_NET_RATE_CONTROL_INFORMATION i) =>
 		{
-			job.CheckThenSet((ref JOBOBJECT_NET_RATE_CONTROL_INFORMATION i) =>
-			{
-				i.ControlFlags = i.ControlFlags.SetFlags(JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH | JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_ENABLE, value.HasValue);
-				i.MaxBandwidth = value.GetValueOrDefault();
-			});
-		}
+			i.ControlFlags = i.ControlFlags.SetFlags(JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH | JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_ENABLE, value.HasValue);
+			i.MaxBandwidth = value.GetValueOrDefault();
+		});
 	}
 
 	/// <summary>
@@ -1264,7 +1262,7 @@ public class JobNotifications : JobHelper
 	/// <param name="getter">The method to get the field.</param>
 	/// <returns>The value.</returns>
 	private T? Get1<T>(JOBOBJECT_LIMIT_FLAGS flag, Func<JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION, T> getter) where T : struct =>
-		job.CheckThenGet<T?, JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION>(n => n.LimitFlags.IsFlagSet(flag) ? (T?)getter(n) : null);
+		job.CheckThenGet<T?, JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION>(n => n.LimitFlags.IsFlagSet(flag) ? getter(n) : null);
 
 	/// <summary>Gets field values from JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2.</summary>
 	/// <typeparam name="T">The return type.</typeparam>
@@ -1272,7 +1270,7 @@ public class JobNotifications : JobHelper
 	/// <param name="getter">The method to get the field.</param>
 	/// <returns>The value.</returns>
 	private T? Get2<T>(JOBOBJECT_LIMIT_FLAGS flag, Func<JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2, T> getter) where T : struct =>
-		job.CheckThenGet<T?, JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2>(n => n.LimitFlags.IsFlagSet(flag) ? (T?)getter(n) : null);
+		job.CheckThenGet<T?, JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2>(n => n.LimitFlags.IsFlagSet(flag) ? getter(n) : null);
 
 	/// <summary>Sets a field value in JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION.</summary>
 	/// <typeparam name="T">The field type.</typeparam>
@@ -1331,7 +1329,7 @@ public class JobSettings : JobHelper
 	public bool ChildProcessBreakawayAllowed
 	{
 		get => job.CheckThenGet<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>().BasicLimitInformation.LimitFlags.IsFlagSet(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_BREAKAWAY_OK);
-		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => { i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_BREAKAWAY_OK, value); });
+		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_BREAKAWAY_OK, value));
 	}
 
 	/// <summary>
@@ -1344,7 +1342,7 @@ public class JobSettings : JobHelper
 	public bool ChildProcessSilentBreakawayAllowed
 	{
 		get => job.CheckThenGet<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>().BasicLimitInformation.LimitFlags.IsFlagSet(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK);
-		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => { i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK, value); });
+		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK, value));
 	}
 
 	/// <summary>
@@ -1356,7 +1354,7 @@ public class JobSettings : JobHelper
 	public bool DieOnUnhandledException
 	{
 		get => job.CheckThenGet<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>().BasicLimitInformation.LimitFlags.IsFlagSet(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION);
-		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => { i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION, value); });
+		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION, value));
 	}
 
 	/// <summary>
@@ -1370,7 +1368,7 @@ public class JobSettings : JobHelper
 		get
 		{
 			var info = job.CheckThenGet<JOBOBJECT_NET_RATE_CONTROL_INFORMATION>();
-			return info.ControlFlags.IsFlagSet(JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG | JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_ENABLE) ? (byte?)info.DscpTag : null;
+			return info.ControlFlags.IsFlagSet(JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG | JOB_OBJECT_NET_RATE_CONTROL_FLAGS.JOB_OBJECT_NET_RATE_CONTROL_ENABLE) ? info.DscpTag : null;
 		}
 		set
 		{
@@ -1410,7 +1408,7 @@ public class JobSettings : JobHelper
 	public bool KillOnJobClose
 	{
 		get => job.CheckThenGet<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>().BasicLimitInformation.LimitFlags.IsFlagSet(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE);
-		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => { i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, value); });
+		set => job.CheckThenSet((ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION i) => i.BasicLimitInformation.LimitFlags = i.BasicLimitInformation.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, value));
 	}
 
 	/// <summary>

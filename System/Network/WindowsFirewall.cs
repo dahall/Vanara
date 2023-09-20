@@ -1,16 +1,10 @@
-﻿#nullable enable
-
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.ServiceProcess;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.FirewallApi;
 
@@ -323,7 +317,7 @@ public class FirewallProfile
 	public string[]? ExcludedInterfaces
 	{
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-		get => iPol.ExcludedInterfaces[type] is null ? null : (string[])Array.ConvertAll((object[])iPol.ExcludedInterfaces[type], o => o.ToString());
+		get => iPol.ExcludedInterfaces[type] is null ? null : Array.ConvertAll((object[])iPol.ExcludedInterfaces[type], o => o.ToString());
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 		set => iPol.ExcludedInterfaces[type] = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}
@@ -627,7 +621,7 @@ public class FirewallRule : INamedEntity, IEquatable<FirewallRule>
 	public string[]? InterfaceNames
 	{
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-		get => iRule.Interfaces is null ? null : (string[])Array.ConvertAll((object[])iRule.Interfaces, o => o.ToString());
+		get => iRule.Interfaces is null ? null : Array.ConvertAll((object[])iRule.Interfaces, o => o.ToString());
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 		set => iRule.Interfaces = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}

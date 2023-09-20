@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using Vanara.Collections;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.SetupAPI;
 
@@ -16,7 +13,7 @@ namespace Vanara.Diagnostics;
 /// <typeparam name="TKey">The type of the key.</typeparam>
 /// <typeparam name="TValue">The type of the value.</typeparam>
 /// <seealso cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>
-public interface IPropertyProvider<TKey, TValue> : IDictionary<TKey, TValue>
+public interface IPropertyProvider<TKey, TValue> : IDictionary<TKey, TValue> where TKey : notnull
 {
 }
 
@@ -40,12 +37,12 @@ public static class DeviceExtensions
 	{
 		var fi = LookupField(propKey);
 		if (fi is null) return Enumerable.Empty<Type>();
-		return fi.GetCustomAttributes<CorrespondingTypeAttribute>().Select(a => a.TypeRef);
+		return fi.GetCustomAttributes<CorrespondingTypeAttribute>().Select(a => a.TypeRef).WhereNotNull();
 	}
 
-	internal static System.Reflection.FieldInfo LookupField(this DEVPROPKEY propKey) =>
+	internal static System.Reflection.FieldInfo? LookupField(this DEVPROPKEY propKey) =>
 		typeof(SetupAPI).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public).
-		Where(fi => fi.FieldType == typeof(DEVPROPKEY) && fi.Name.StartsWith("DEVPKEY") && propKey.Equals((DEVPROPKEY)fi.GetValue(null))).FirstOrDefault();
+		Where(fi => fi.FieldType == typeof(DEVPROPKEY) && fi.Name.StartsWith("DEVPKEY") && propKey.Equals((DEVPROPKEY)fi.GetValue(null)!)).FirstOrDefault();
 }
 
 /// <summary>A class that represents a device on a machine.</summary>
@@ -55,8 +52,8 @@ public class Device : IDisposable
 	private readonly Lazy<SP_DEVINSTALL_PARAMS> instParam;
 	private readonly Lazy<string> name, desc, instId;
 	private SP_DEVINFO_DATA data;
-	private DeviceProperties props;
-	private DeviceRegProperties rprops;
+	private DeviceProperties? props;
+	private DeviceRegProperties? rprops;
 
 	internal Device(SafeHDEVINFO hdi, SP_DEVINFO_DATA data)
 	{
@@ -106,7 +103,7 @@ public class Device : IDisposable
 	/// A string that contains the name of the remote computer. If the device information set is for the local computer, this member is
 	/// <see langword="null"/>.
 	/// </summary>
-	public string MachineName => hdi.MachineName;
+	public string? MachineName => hdi.MachineName;
 
 	/// <summary>The name of the device instance.</summary>
 	/// <value>The name.</value>
@@ -114,12 +111,12 @@ public class Device : IDisposable
 
 	/// <summary>Gets a dictionary of properties.</summary>
 	/// <value>The properties.</value>
-	public IPropertyProvider<DEVPROPKEY, object> Properties =>
+	public IPropertyProvider<DEVPROPKEY, object?> Properties =>
 		props ??= (MachineName is null ? new DeviceProperties(this) : throw new InvalidOperationException("Properties cannot be retrieved for remote devices."));
 
 	/// <summary>Gets a dictionary of registry properties.</summary>
 	/// <value>The registry properties.</value>
-	public IPropertyProvider<SPDRP, object> RegistryProperties =>
+	public IPropertyProvider<SPDRP, object?> RegistryProperties =>
 		rprops ??= (MachineName is null ? new DeviceRegProperties(this) : throw new InvalidOperationException("Properties cannot be retrieved for remote devices."));
 
 	/// <inheritdoc/>
@@ -132,7 +129,7 @@ public class Device : IDisposable
 	/// property values, concatenated as a REG_MULTI_SZ-typed string.
 	/// </param>
 	/// <returns>The requested property information or <see langword="null"/> if the property does not exist.</returns>
-	public object GetCustomProperty(string propName, bool combine = false)
+	public object? GetCustomProperty(string propName, bool combine = false)
 	{
 		if (!SetupDiGetCustomDeviceProperty(hdi, data, propName, combine ? DICUSTOMDEVPROP.DICUSTOMDEVPROP_MERGE_MULTISZ : 0, out _, default, 0, out var bufSz) &&
 			Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
@@ -187,7 +184,7 @@ public class Device : IDisposable
 	}
 
 	/// <summary>Accesses properties with a device.</summary>
-	public class DeviceProperties : VirtualDictionary<DEVPROPKEY, object>, IPropertyProvider<DEVPROPKEY, object>
+	public class DeviceProperties : VirtualDictionary<DEVPROPKEY, object?>, IPropertyProvider<DEVPROPKEY, object?>
 	{
 		private readonly Device parent;
 
@@ -224,10 +221,10 @@ public class Device : IDisposable
 			SetupDiSetDeviceProperty(parent.hdi, parent.data, key, 0, default, 0);
 
 		/// <inheritdoc/>
-		public override bool TryGetValue(DEVPROPKEY key, out object value) => GetValue(key, out value).Succeeded;
+		public override bool TryGetValue(DEVPROPKEY key, [NotNullWhen(true)] out object? value) => (uint)GetValue(key, out value) is Win32Error.ERROR_SUCCESS or Win32Error.ERROR_NOT_FOUND;
 
 		/// <inheritdoc/>
-		protected override void SetValue(DEVPROPKEY key, object value)
+		protected override void SetValue(DEVPROPKEY key, object? value)
 		{
 			value = DeviceClass.DeviceClassProperties.CommonPropConv(value);
 			var type = GetPropType(key, value?.GetType());
@@ -244,15 +241,15 @@ public class Device : IDisposable
 			}
 		}
 
-		private DEVPROPTYPE GetPropType(DEVPROPKEY propKey, Type valType)
+		private DEVPROPTYPE GetPropType(DEVPROPKEY propKey, Type? valType)
 		{
 			if (SetupDiGetDeviceProperty(parent.hdi, parent.data, propKey, out var type, default, default, out _))
 				return type;
 			var fi = typeof(DEVPROPTYPE).GetFields().Where(fi => fi.IsLiteral && fi.GetCustomAttributes<CorrespondingTypeAttribute>(false, a => a.TypeRef == valType).Any()).FirstOrDefault();
-			return fi is not null ? (DEVPROPTYPE)fi.GetValue(null) : throw new ArgumentException("Unable to determine DEVPROPTYPE.");
+			return fi is not null ? (DEVPROPTYPE)fi.GetValue(null)! : throw new ArgumentException("Unable to determine DEVPROPTYPE.");
 		}
 
-		private Win32Error GetValue(in DEVPROPKEY propKey, out object value)
+		private Win32Error GetValue(in DEVPROPKEY propKey, out object? value)
 		{
 			value = null;
 			if (!SetupDiGetDeviceProperty(parent.hdi, parent.data, propKey, out _, default, 0, out var bufSz))
@@ -270,7 +267,7 @@ public class Device : IDisposable
 	}
 
 	/// <summary>Accesses registry properties with a device class.</summary>
-	public class DeviceRegProperties : VirtualDictionary<SPDRP, object>, IPropertyProvider<SPDRP, object>
+	public class DeviceRegProperties : VirtualDictionary<SPDRP, object?>, IPropertyProvider<SPDRP, object?>
 	{
 		private readonly Device parent;
 
@@ -288,10 +285,10 @@ public class Device : IDisposable
 		public override bool Remove(SPDRP key) => SetupDiSetDeviceRegistryProperty(parent.hdi, ref parent.data, key, default, 0);
 
 		/// <inheritdoc/>
-		public override bool TryGetValue(SPDRP key, out object value) => GetValue(key, out value).Succeeded;
+		public override bool TryGetValue(SPDRP key, [NotNullWhen(true)] out object? value) => (uint)GetValue(key, out value) is Win32Error.ERROR_SUCCESS or Win32Error.ERROR_NOT_FOUND;
 
 		/// <inheritdoc/>
-		protected override void SetValue(SPDRP key, object value)
+		protected override void SetValue(SPDRP key, object? value)
 		{
 			if (value is null)
 				throw new ArgumentNullException(nameof(value));
@@ -317,7 +314,7 @@ public class Device : IDisposable
 			}
 		}
 
-		private Win32Error GetValue(SPDRP propKey, out object value)
+		private Win32Error GetValue(SPDRP propKey, out object? value)
 		{
 			value = null;
 			if (!SetupDiGetDeviceRegistryProperty(parent.hdi, parent.data, propKey, out _, default, 0, out var bufSz))
@@ -348,15 +345,15 @@ public class DeviceClass : IDisposable
 #pragma warning restore IDE0052 // Remove unread private members
 	private readonly Lazy<int?> bmpIdx, imgIdx;
 	private readonly Lazy<string> name, desc;
-	private DeviceClassProperties props;
-	private DeviceClassRegProperties rprops;
+	private DeviceClassProperties? props;
+	private DeviceClassRegProperties? rprops;
 
 	/// <summary>Initializes a new instance of the <see cref="DeviceClass"/> class with its GUID and optional machine name.</summary>
 	/// <param name="guid">The GUID for the device setup class.</param>
 	/// <param name="machineName">
 	/// The name of the machine on which devices are managed. <see langword="null"/> indicates the local machine.
 	/// </param>
-	public DeviceClass(Guid guid, string machineName = null)
+	public DeviceClass(Guid guid, string? machineName = null)
 	{
 		Guid = guid;
 		MachineName = machineName;
@@ -371,12 +368,12 @@ public class DeviceClass : IDisposable
 	/// <param name="machineName">
 	/// The name of the machine on which devices are managed. <see langword="null"/> indicates the local machine.
 	/// </param>
-	public DeviceClass(string name, string machineName = null) : this(FromName(name, machineName), machineName)
+	public DeviceClass(string name, string? machineName = null) : this(FromName(name, machineName), machineName)
 	{
 	}
 
 	private delegate bool GetClassStringDelegate(in Guid ClassGuid, StringBuilder ClassName, uint ClassNameSize, out uint RequiredSize,
-		string MachineName, IntPtr Reserved = default);
+		string? MachineName, IntPtr Reserved = default);
 
 	/// <summary>Gets the index of the mini-icon supplied for this class.</summary>
 	/// <value>The index of the mini-icon supplied for this class.</value>
@@ -404,25 +401,25 @@ public class DeviceClass : IDisposable
 
 	/// <summary>Gets the name of the machine on which devices are managed. <see langword="null"/> indicates the local machine.</summary>
 	/// <value>The machine name for this manager.</value>
-	public string MachineName { get; }
+	public string? MachineName { get; }
 
 	/// <summary>Gets the class name associated with a class GUID.</summary>
 	/// <value>The class name associated with a class GUID.</value>
 	public string Name => name.Value;
 
 	/// <summary>Gets a value that controls whether devices in this setup class are displayed by the Device Manager.</summary>
-	public bool? NoDisplay => (bool?)Properties[DEVPKEY_DeviceClass_NoDisplayClass];
+	public bool? NoDisplay => Properties.TryGetValue(DEVPKEY_DeviceClass_NoDisplayClass, out var val) ? (bool?)val : null;
 
 	/// <summary>Gets a value that controls whether devices in this device setup class are displayed in the <c>Add Hardware Wizard</c>.</summary>
 	public bool? NoInstall => (bool?)Properties[DEVPKEY_DeviceClass_NoInstallClass];
 
 	/// <summary>Gets a dictionary of properties.</summary>
 	/// <value>The properties.</value>
-	public IPropertyProvider<DEVPROPKEY, object> Properties => props ??= new DeviceClassProperties(Guid, MachineName);
+	public IPropertyProvider<DEVPROPKEY, object?> Properties => props ??= new DeviceClassProperties(Guid, MachineName);
 
 	/// <summary>Gets a dictionary of registry properties.</summary>
 	/// <value>The registry properties.</value>
-	public IPropertyProvider<SPCRP, object> RegistryProperties => rprops ??= new DeviceClassRegProperties(Guid, MachineName);
+	public IPropertyProvider<SPCRP, object?> RegistryProperties => rprops ??= new DeviceClassRegProperties(Guid, MachineName);
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public void Dispose()
@@ -433,7 +430,7 @@ public class DeviceClass : IDisposable
 	/// <returns>A sequence of <see cref="Device"/> instances with this device class.</returns>
 	public IEnumerable<Device> GetDevices() => new DeviceCollection(Guid, null, MachineName);
 
-	private static Guid FromName(string name, string machine)
+	private static Guid FromName(string name, string? machine)
 	{
 		SetupDiClassGuidsFromNameEx(name, null, 0, out var len, machine);
 		if (len == 0) Win32Error.ThrowLastError();
@@ -467,13 +464,13 @@ public class DeviceClass : IDisposable
 	}
 
 	/// <summary>Accesses properties with a device class.</summary>
-	public class DeviceClassProperties : VirtualDictionary<DEVPROPKEY, object>, IPropertyProvider<DEVPROPKEY, object>
+	public class DeviceClassProperties : VirtualDictionary<DEVPROPKEY, object?>, IPropertyProvider<DEVPROPKEY, object?>
 	{
 		private readonly Guid Guid;
 
-		private readonly string MachineName;
+		private readonly string? MachineName;
 
-		internal DeviceClassProperties(Guid guid, string machineName) : base(false)
+		internal DeviceClassProperties(Guid guid, string? machineName) : base(false)
 		{
 			Guid = guid;
 			MachineName = machineName;
@@ -510,9 +507,9 @@ public class DeviceClass : IDisposable
 			SetupDiSetClassPropertyEx(Guid, key, 0, default, 0, DICLASSPROP.DICLASSPROP_INSTALLER, MachineName);
 
 		/// <inheritdoc/>
-		public override bool TryGetValue(DEVPROPKEY key, out object value) => GetValue(key, out value).Succeeded;
+		public override bool TryGetValue(DEVPROPKEY key, [NotNullWhen(true)] out object? value) => (uint)GetValue(key, out value) is Win32Error.ERROR_SUCCESS or Win32Error.ERROR_NOT_FOUND;
 
-		internal static object CommonPropConv(object value) => value switch
+		internal static object? CommonPropConv(object? value) => value switch
 		{
 			bool b => (BOOLEAN)b,
 			DateTime dt => dt.ToFileTimeStruct(),
@@ -521,7 +518,7 @@ public class DeviceClass : IDisposable
 			_ => value,
 		};
 
-		internal static ISafeMemoryHandle PrepValue(object value, DEVPROPTYPE type)
+		internal static ISafeMemoryHandle PrepValue(object? value, DEVPROPTYPE type)
 		{
 			// Changes types that need conversion or quick outs
 			if (value is null)
@@ -537,7 +534,7 @@ public class DeviceClass : IDisposable
 			{
 				if (!valType.IsArray)
 					throw new ArgumentException("Array required.", nameof(value));
-				valType = valType.GetElementType();
+				valType = valType.GetElementType()!;
 				type &= DEVPROPTYPE.DEVPROP_MASK_TYPE;
 			}
 			var cTypes = CorrespondingTypeAttribute.GetCorrespondingTypes(type & DEVPROPTYPE.DEVPROP_MASK_TYPE).ToArray();
@@ -563,7 +560,7 @@ public class DeviceClass : IDisposable
 		}
 
 		/// <inheritdoc/>
-		protected override void SetValue(DEVPROPKEY key, object value)
+		protected override void SetValue(DEVPROPKEY key, object? value)
 		{
 			value = CommonPropConv(value);
 			var type = GetPropType(key, value?.GetType());
@@ -580,15 +577,15 @@ public class DeviceClass : IDisposable
 			}
 		}
 
-		private DEVPROPTYPE GetPropType(DEVPROPKEY propKey, Type valType)
+		private DEVPROPTYPE GetPropType(DEVPROPKEY propKey, Type? valType)
 		{
 			if (SetupDiGetClassPropertyEx(Guid, propKey, out var type, default, default, out _, DICLASSPROP.DICLASSPROP_INSTALLER, MachineName))
 				return type;
 			var fi = typeof(DEVPROPTYPE).GetFields().Where(fi => fi.IsLiteral && fi.GetCustomAttributes<CorrespondingTypeAttribute>(false, a => a.TypeRef == valType).Any()).FirstOrDefault();
-			return fi is not null ? (DEVPROPTYPE)fi.GetValue(null) : throw new ArgumentException("Unable to determine DEVPROPTYPE.");
+			return fi is not null ? (DEVPROPTYPE)fi.GetValue(null)! : throw new ArgumentException("Unable to determine DEVPROPTYPE.");
 		}
 
-		private Win32Error GetValue(in DEVPROPKEY propKey, out object value)
+		private Win32Error GetValue(in DEVPROPKEY propKey, out object? value)
 		{
 			value = null;
 			if (!SetupDiGetClassPropertyEx(Guid, propKey, out _, default, 0, out var bufSz, DICLASSPROP.DICLASSPROP_INSTALLER, MachineName))
@@ -606,13 +603,13 @@ public class DeviceClass : IDisposable
 	}
 
 	/// <summary>Accesses registry properties with a device class.</summary>
-	public class DeviceClassRegProperties : VirtualDictionary<SPCRP, object>, IPropertyProvider<SPCRP, object>
+	public class DeviceClassRegProperties : VirtualDictionary<SPCRP, object?>, IPropertyProvider<SPCRP, object?>
 	{
 		private readonly Guid Guid;
 
-		private readonly string MachineName;
+		private readonly string? MachineName;
 
-		internal DeviceClassRegProperties(Guid guid, string machineName) : base(false)
+		internal DeviceClassRegProperties(Guid guid, string? machineName) : base(false)
 		{
 			Guid = guid;
 			MachineName = machineName;
@@ -630,7 +627,7 @@ public class DeviceClass : IDisposable
 		public override bool Remove(SPCRP key) => SetupDiSetClassRegistryProperty(Guid, key, default, 0, MachineName);
 
 		/// <inheritdoc/>
-		public override bool TryGetValue(SPCRP key, out object value) => GetValue(key, out value).Succeeded;
+		public override bool TryGetValue(SPCRP key, [NotNullWhen(true)] out object? value) => (uint)GetValue(key, out value) is Win32Error.ERROR_SUCCESS or Win32Error.ERROR_NOT_FOUND;
 
 		internal static object CommonPropConv(object value) => value switch
 		{
@@ -639,10 +636,10 @@ public class DeviceClass : IDisposable
 			_ => value,
 		};
 
-		internal static object GetRegValue<T>(T key, SafeAllocatedMemoryHandle mem, REG_VALUE_TYPE propType) where T : Enum =>
-						GetRegValue(mem, propType, CorrespondingTypeAttribute.GetCorrespondingTypes(key).FirstOrDefault());
+		internal static object? GetRegValue<T>(T key, SafeAllocatedMemoryHandle mem, REG_VALUE_TYPE propType) where T : Enum => 
+			GetRegValue(mem, propType, CorrespondingTypeAttribute.GetCorrespondingTypes(key).FirstOrDefault());
 
-		internal static object GetRegValue(SafeAllocatedMemoryHandle mem, REG_VALUE_TYPE propType, Type cType = null) => propType switch
+		internal static object? GetRegValue(SafeAllocatedMemoryHandle mem, REG_VALUE_TYPE propType, Type? cType = null) => propType switch
 		{
 			REG_VALUE_TYPE.REG_DWORD when cType is not null => ((IntPtr)mem).Convert(mem.Size, cType),
 			REG_VALUE_TYPE.REG_BINARY when cType is not null && cType != typeof(byte[]) => ((IntPtr)mem).Convert(mem.Size, cType),
@@ -650,14 +647,14 @@ public class DeviceClass : IDisposable
 		};
 
 		/// <inheritdoc/>
-		protected override void SetValue(SPCRP key, object value)
+		protected override void SetValue(SPCRP key, object? value)
 		{
 			if (value is null)
 				throw new ArgumentNullException(nameof(value));
 			value = CommonPropConv(value);
 			if (!CorrespondingTypeAttribute.CanSet(key, value.GetType()))
 				throw new ArgumentException("Value type not valid for key.");
-			SafeAllocatedMemoryHandle mem = key switch
+			SafeAllocatedMemoryHandle? mem = key switch
 			{
 				SPCRP.SPCRP_UPPERFILTERS => value is IEnumerable<string> uf ? SafeCoTaskMemHandle.CreateFromStringList(uf) : null,
 				SPCRP.SPCRP_LOWERFILTERS => value is IEnumerable<string> lf ? SafeCoTaskMemHandle.CreateFromStringList(lf) : null,
@@ -680,7 +677,7 @@ public class DeviceClass : IDisposable
 			}
 		}
 
-		private Win32Error GetValue(SPCRP propKey, out object value)
+		private Win32Error GetValue(SPCRP propKey, out object? value)
 		{
 			value = null;
 			if (!SetupDiGetClassRegistryProperty(Guid, propKey, out _, default, 0, out var bufSz, MachineName))
@@ -729,7 +726,7 @@ public class DeviceClassCollection : IReadOnlyCollection<DeviceClass>, IDisposab
 	/// and can be <see langword="null"/>. If MachineName is <see langword="null"/>, this class provides a list of classes installed on
 	/// the local computer.
 	/// </param>
-	public DeviceClassCollection(DIBCI flags = 0, string machineName = null)
+	public DeviceClassCollection(DIBCI flags = 0, string? machineName = null)
 	{
 		Flags = flags;
 		MachineName = machineName;
@@ -757,7 +754,7 @@ public class DeviceClassCollection : IReadOnlyCollection<DeviceClass>, IDisposab
 
 	/// <summary>Gets the name of the machine on which devices are managed. <see langword="null"/> indicates the local machine.</summary>
 	/// <value>The machine name for this manager.</value>
-	public string MachineName { get; }
+	public string? MachineName { get; }
 
 	// TODO
 	//bool ICollection<DeviceClass>.IsReadOnly => false;
@@ -829,7 +826,7 @@ public class DeviceCollection : IEnumerable<Device>, IDisposable
 	/// Specifies control options that filter the device information elements that are added to the device information set. This
 	/// property can be a bitwise OR of one or more of the <see cref="DIGCF"/> flags.
 	/// </param>
-	public DeviceCollection(Guid? classGuid = null, string enumerator = null, string machineName = null, DIGCF filter = DIGCF.DIGCF_PRESENT)
+	public DeviceCollection(Guid? classGuid = null, string? enumerator = null, string? machineName = null, DIGCF filter = DIGCF.DIGCF_PRESENT)
 	{
 		ClassGuid = classGuid;
 		PnPEnumeratorOrDevInstId = enumerator;
@@ -857,7 +854,7 @@ public class DeviceCollection : IEnumerable<Device>, IDisposable
 	/// The name of a remote computer on which the devices reside. A value of <see langword="null"/> specifies that the device is
 	/// installed on the local computer.
 	/// </value>
-	public string MachineName { get; }
+	public string? MachineName { get; }
 
 	/// <summary>
 	/// <para>Gets a string that specifies:</para>
@@ -879,7 +876,7 @@ public class DeviceCollection : IEnumerable<Device>, IDisposable
 	/// <para>This value is optional and can be <see langword="null"/>.</para>
 	/// </summary>
 	/// <value>The PnP enumerator or device instance ID.</value>
-	public string PnPEnumeratorOrDevInstId { get; }
+	public string? PnPEnumeratorOrDevInstId { get; }
 
 	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
 	public void Dispose() { }
@@ -896,6 +893,7 @@ public class DeviceCollection : IEnumerable<Device>, IDisposable
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+	[MemberNotNull(nameof(devInfoSet))]
 	private void Reset()
 	{
 		devInfoSet?.Dispose();
@@ -911,14 +909,14 @@ public class DeviceManager
 
 	/// <summary>Initializes a new instance of the <see cref="DeviceManager"/> class on a specified machine.</summary>
 	/// <param name="machineName">Name of the machine on which to manage devices. Specify <see langword="null"/> for the local machine.</param>
-	public DeviceManager(string machineName = null) => MachineName = machineName;
+	public DeviceManager(string? machineName = null) => MachineName = machineName;
 
 	/// <summary>Provides access to the local machine's devices.</summary>
 	public static DeviceManager LocalInstance => local.Value;
 
 	/// <summary>Gets the name of the machine on which devices are managed. <see langword="null"/> indicates the local machine.</summary>
 	/// <value>The machine name for this manager.</value>
-	public string MachineName { get; }
+	public string? MachineName { get; }
 
 	/// <summary>Gets the devices associated with this machine.</summary>
 	/// <param name="filter">

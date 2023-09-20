@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using Vanara.Extensions;
 using Vanara.Security;
 using static Vanara.PInvoke.NetApi32;
 
@@ -59,11 +57,12 @@ public class OpenFile
 public class ShareConnection
 {
 	private CONNECTION_INFO_1 ci;
-	private SharedDevice share;
+	private readonly SharedDevice share;
 
 	internal ShareConnection(in CONNECTION_INFO_1 ci, SharedDevice dev)
 	{
-		this.ci = ci; share = dev;
+		this.ci = ci;
+		share = dev;
 	}
 
 	/// <summary>
@@ -101,7 +100,7 @@ public class SharedDevice : INamedEntity
 {
 	private STYPE type = (STYPE)uint.MaxValue;
 
-	internal SharedDevice(string target, string netname, WindowsIdentity accessIdentity)
+	internal SharedDevice(string? target, string netname, WindowsIdentity accessIdentity)
 	{
 		Id = accessIdentity;
 		Target = target;
@@ -119,7 +118,7 @@ public class SharedDevice : INamedEntity
 
 	/// <summary>Gets or sets an optional comment about the shared resource.</summary>
 	/// <value>The resource description.</value>
-	public string Description
+	public string? Description
 	{
 		get => GetInfo<SHARE_INFO_1>().shi1_remark;
 		set => SetInfo((ref SHARE_INFO_1004 i) => i.shi1004_remark = value, false);
@@ -181,10 +180,10 @@ public class SharedDevice : INamedEntity
 	/// <value>
 	/// The access permissions for the share. If the caller does not have rights to get this information, this property returns <see langword="null"/>.
 	/// </value>
-	public RawSecurityDescriptor Permissions
+	public RawSecurityDescriptor? Permissions
 	{
 		get { try { return GetInfo<SHARE_INFO_502>().shi502_security_descriptor.ToManaged(); } catch { return null; } }
-		set => SetInfo((ref SHARE_INFO_502 i) => i.shi502_security_descriptor = value.ToNative());
+		set => SetInfo((ref SHARE_INFO_502 i) => i.shi502_security_descriptor = value?.ToNative() ?? PInvoke.AdvApi32.SafePSECURITY_DESCRIPTOR.Null);
 	}
 
 	/// <summary>
@@ -199,7 +198,7 @@ public class SharedDevice : INamedEntity
 	}
 
 	internal WindowsIdentity Id { get; private set; }
-	internal string Target { get; private set; }
+	internal string? Target { get; private set; }
 
 	/// <summary>Gets the shared resource's permissions for servers running with share-level security.</summary>
 	/// <value>Returns a <see cref="ShareLevelAccess"/> value.</value>
@@ -219,7 +218,7 @@ public class SharedDevice : INamedEntity
 	/// queue being shared.
 	/// </param>
 	/// <returns>On success, a new instance of <see cref="SharedDevice"/> represented a newly created shared disk.</returns>
-	public static SharedDevice CreateDiskVolumeShare(string target, string name, string comment, string path) =>
+	public static SharedDevice CreateDiskVolumeShare(string? target, string name, string? comment, string path) =>
 		Create(target, name, comment, path, STYPE.STYPE_DISKTREE, null);
 
 	/// <summary>Creates the specified target.</summary>
@@ -238,37 +237,35 @@ public class SharedDevice : INamedEntity
 	/// The identity of the user used to create the device. If this value is <see langword="null"/>, the current user's credentials are used.
 	/// </param>
 	/// <returns>On success, a new instance of <see cref="SharedDevice"/> represented a newly created shared resource.</returns>
-	internal static SharedDevice Create([Optional] string? target, string name, [Optional] string? comment, string path, STYPE type = STYPE.STYPE_DISKTREE, WindowsIdentity identity = null)
+	internal static SharedDevice Create([Optional] string? target, string name, [Optional] string? comment, string path, STYPE type = STYPE.STYPE_DISKTREE, WindowsIdentity? identity = null)
 	{
+		identity ??= WindowsIdentity.GetCurrent();
 		identity.Run(() => NetShareAdd(target, new SHARE_INFO_2 { shi2_netname = name, shi2_remark = comment, shi2_path = path, shi2_max_uses = unchecked((uint)-1), shi2_type = type }));
 		return new SharedDevice(target, name, identity);
 	}
 
 	private T GetInfo<T>() where T : struct => Id.Run(() => NetShareGetInfo<T>(Target, Name));
 
-	private void SetInfo<T>(Setter<T> f, bool getFirst = true) where T : struct
-	{
-		Id.Run(() =>
-		{
-			var value = getFirst ? GetInfo<T>() : default;
-			f(ref value);
-			NetShareSetInfo(Target, Name, value);
-		});
-	}
+	private void SetInfo<T>(Setter<T> f, bool getFirst = true) where T : struct => Id.Run(() =>
+																						{
+																							var value = getFirst ? GetInfo<T>() : default;
+																							f(ref value);
+																							NetShareSetInfo(Target, Name, value);
+																						});
 }
 
 /// <summary>Represents all the shared devices on a computers.</summary>
 public class SharedDevices : Collections.VirtualDictionary<string, SharedDevice>
 {
 	private readonly WindowsIdentity identity;
-	private readonly string target = null;
+	private readonly string? target = null;
 
 	/// <summary>Initializes a new instance of the <see cref="SharedDevices"/> class.</summary>
 	/// <param name="serverName">Name of the computer from which to retrieve and manage the shared devices.</param>
 	/// <param name="accessIdentity">
 	/// The Windows identity used to access the shared device information. If this value <see langword="null"/>, the current identity is used.
 	/// </param>
-	public SharedDevices(string serverName = null, WindowsIdentity accessIdentity = null) : base(false)
+	public SharedDevices(string? serverName = null, WindowsIdentity? accessIdentity = null) : base(false)
 	{
 		target = serverName;
 		identity = accessIdentity ?? WindowsIdentity.GetCurrent();
@@ -324,9 +321,9 @@ public class SharedDevices : Collections.VirtualDictionary<string, SharedDevice>
 	/// <see langword="true"/> if the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the key;
 	/// otherwise, <see langword="false"/>.
 	/// </returns>
-	public override bool TryGetValue(string key, out SharedDevice value)
+	public override bool TryGetValue(string key, [NotNullWhen(true)] out SharedDevice? value)
 	{
 		value = ContainsKey(key) ? new SharedDevice(target, key, identity) : null;
-		return !(value is null);
+		return value is not null;
 	}
 }

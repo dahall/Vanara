@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Vanara.Collections;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.PowrProf;
@@ -142,12 +139,7 @@ public enum PowerSupplyStatus
 /// </summary>
 public static class PowerManager
 {
-	private static readonly SystemPowerEventHandler Instance;
-
-	static PowerManager()
-	{
-		Instance = new SystemPowerEventHandler();
-	}
+	private static readonly SystemPowerEventHandler Instance = new();
 
 	/// <summary>
 	/// Occurs when the system is entering or exiting away mode. The Data property is a DWORD that indicates the current away mode state.
@@ -264,7 +256,7 @@ public static class PowerManager
 	/// broadcasts this event when remaining battery power slips below the threshold specified by the user or if the battery power
 	/// changes by a specified percentage.
 	/// </summary>
-	public static event EventHandler PowerStatusChanged;
+	public static event EventHandler? PowerStatusChanged;
 
 	/// <summary>
 	/// <para>
@@ -291,10 +283,10 @@ public static class PowerManager
 	/// Occurs when the system is resuming from sleep or hibernation. This event is delivered every time the system resumes and does not
 	/// indicate whether a user is present.
 	/// </summary>
-	public static event EventHandler ResumedAfterSleep;
+	public static event EventHandler? ResumedAfterSleep;
 
 	/// <summary>Occurs when the system has resumed operation after being suspended.</summary>
-	public static event EventHandler ResumedAfterSuspend;
+	public static event EventHandler? ResumedAfterSuspend;
 
 	/// <summary>
 	/// <para>Occurs when the display associated with the application's session has been powered on or off.</para>
@@ -341,7 +333,7 @@ public static class PowerManager
 	}
 
 	/// <summary>Occurs when the computer is about to enter a suspended state.</summary>
-	public static event EventHandler Suspending;
+	public static event EventHandler? Suspending;
 
 	/// <summary>
 	/// Occurs when the system is busy. This indicates that the system will not be moving into an idle state in the near future and that
@@ -379,21 +371,21 @@ public static class PowerManager
 		remove => Instance.RemoveEvent(GUID_ACDC_POWER_SOURCE, value);
 	}
 
-	internal static event EventHandler LowBattery;
+	internal static event EventHandler? LowBattery;
 
-	internal static event CancelEventHandler QueryStandby;
+	internal static event CancelEventHandler? QueryStandby;
 
-	internal static event CancelEventHandler QuerySuspend;
+	internal static event CancelEventHandler? QuerySuspend;
 
-	internal static event EventHandler ResumedAfterFailure;
+	internal static event EventHandler? ResumedAfterFailure;
 
-	internal static event EventHandler ResumedAfterStandby;
+	internal static event EventHandler? ResumedAfterStandby;
 
-	internal static event EventHandler StandbyFailed;
+	internal static event EventHandler? StandbyFailed;
 
-	internal static event EventHandler StandingBy;
+	internal static event EventHandler? StandingBy;
 
-	internal static event EventHandler SuspendFailed;
+	internal static event EventHandler? SuspendFailed;
 
 	/// <summary>Gets the device's battery status.</summary>
 	/// <value>Returns a <see cref="BatteryStatus"/> value.</value>
@@ -472,20 +464,20 @@ public static class PowerManager
 
 	/// <summary>Gets the total percentage of charge remaining from all batteries connected to the device.</summary>
 	/// <value>Returns a <c>int?</c> value from 0 to 100, or <see langword="null"/> if the status is unknown.</value>
-	public static int? RemainingChargePercent { get { var p = GetStatus().BatteryLifePercent; return p == 255 ? (int?)null : p; } }
+	public static int? RemainingChargePercent { get { var p = GetStatus().BatteryLifePercent; return p == 255 ? null : p; } }
 
 	/// <summary>Gets the total runtime remaining from all batteries connected to the device.</summary>
 	/// <value>
 	/// The total runtime remaining from all batteries connected to the device, or <see langword="null"/> if the status is unknown or
 	/// connected to AC power.
 	/// </value>
-	public static TimeSpan? RemainingDischargeTime { get { var s = GetStatus().BatteryLifeTime; return s == uint.MaxValue ? (TimeSpan?)null : TimeSpan.FromSeconds(s); } }
+	public static TimeSpan? RemainingDischargeTime { get { var s = GetStatus().BatteryLifeTime; return s == uint.MaxValue ? null : TimeSpan.FromSeconds(s); } }
 
 	/// <summary>Gets the collection of all power schemes on this device.</summary>
 	/// <value>Returns a <see cref="PowerSchemeCollection"/> value.</value>
 	public static PowerSchemeCollection Schemes { get; } = new PowerSchemeCollection();
 
-	internal static string NameForGuid(Guid guid) => typeof(PowrProf).GetFields(BindingFlags.Public | BindingFlags.Static).FirstOrDefault(i => i.FieldType == typeof(Guid) && guid.Equals(i.GetValue(null)))?.Name;
+	internal static string? NameForGuid(Guid guid) => typeof(PowrProf).GetFields(BindingFlags.Public | BindingFlags.Static).FirstOrDefault(i => i.FieldType == typeof(Guid) && guid.Equals(i.GetValue(null)))?.Name;
 
 	private static SYSTEM_POWER_CAPABILITIES GetCapabilities() => GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES c) ? c : default;
 
@@ -493,7 +485,7 @@ public static class PowerManager
 
 	private class SystemPowerEventHandler : SystemEventHandler
 	{
-		private readonly Dictionary<Guid, SafeHPOWERSETTINGNOTIFY> regs = new Dictionary<Guid, SafeHPOWERSETTINGNOTIFY>();
+		private readonly Dictionary<Guid, SafeHPOWERSETTINGNOTIFY> regs = new();
 
 		protected override void Dispose(bool disposing)
 		{
@@ -623,7 +615,7 @@ public static class PowerManager
 		{
 			lock (regs)
 			{
-				if (regs.TryGetValue(key, out SafeHPOWERSETTINGNOTIFY reg))
+				if (regs.TryGetValue(key, out var reg))
 				{
 					reg.Dispose();
 					regs.Remove(key);
@@ -685,7 +677,9 @@ public class PoweredDevice
 /// <seealso cref="VirtualDictionary{TKey, TValue}"/>
 public class PoweredDeviceCollection : VirtualDictionary<string, PoweredDevice>
 {
-	private static Finalizer finalizer;
+#pragma warning disable IDE0052 // Remove unread private members
+	private static Finalizer? finalizer;
+#pragma warning restore IDE0052 // Remove unread private members
 
 	internal PoweredDeviceCollection() : base(true)
 	{
@@ -717,7 +711,7 @@ public class PoweredDeviceCollection : VirtualDictionary<string, PoweredDevice>
 	private PDQUERY PDQUERY => (UseHardwareId ? PDQUERY.DEVICEPOWER_HARDWAREID : 0) | (OnlyPresentDevices ? PDQUERY.DEVICEPOWER_FILTER_DEVICES_PRESENT : 0) | (OnlyWakeEnabledDevices ? PDQUERY.DEVICEPOWER_FILTER_WAKEENABLED : 0);
 
 	/// <inheritdoc/>
-	public override bool TryGetValue(string key, out PoweredDevice value)
+	public override bool TryGetValue(string key, [NotNullWhen(true)] out PoweredDevice? value)
 	{
 		var ret = GetEnumValues(UseHardwareId ? PDQUERY.DEVICEPOWER_HARDWAREID : 0).Contains(key);
 		value = ret ? new PoweredDevice(key, UseHardwareId) : null;
@@ -741,10 +735,7 @@ public class PoweredDeviceCollection : VirtualDictionary<string, PoweredDevice>
 		}
 	}
 
-	private static void ValidateOpened()
-	{
-		if (finalizer is null) finalizer = new Finalizer();
-	}
+	private static void ValidateOpened() => finalizer ??= new Finalizer();
 
 	private class Finalizer
 	{
@@ -761,27 +752,27 @@ public class PowerEventArgs<T> : EventArgs
 {
 	/// <summary>Initializes a new instance of the <see cref="PowerEventArgs{T}"/> class.</summary>
 	/// <param name="value">The data value.</param>
-	public PowerEventArgs(T value) => Data = value;
+	public PowerEventArgs(T? value) => Data = value;
 
 	/// <summary>Gets the data associated with the power event.</summary>
 	/// <value>The data.</value>
-	public T Data { get; }
+	public T? Data { get; }
 }
 
 /// <summary>Represents a system power scheme (power plan).</summary>
 public class PowerScheme : IEquatable<Guid>, IEquatable<PowerScheme>
 {
 	/// <summary>The well-known, system defined Balance (or Typical) power scheme with fairly aggressive power savings measures.</summary>
-	public static readonly PowerScheme Balanced = new PowerScheme(GUID_TYPICAL_POWER_SAVINGS);
+	public static readonly PowerScheme Balanced = new(GUID_TYPICAL_POWER_SAVINGS);
 
 	/// <summary>The well-known, system defined High Performance (or Minimum) power scheme with almost no power savings measures.</summary>
-	public static readonly PowerScheme HighPerformance = new PowerScheme(GUID_MIN_POWER_SAVINGS);
+	public static readonly PowerScheme HighPerformance = new(GUID_MIN_POWER_SAVINGS);
 
 	/// <summary>
 	/// The well-known, system defined Power Saver (or Max) power scheme with very aggressive power savings measures to help stretch
 	/// battery life.
 	/// </summary>
-	public static readonly PowerScheme PowerSaver = new PowerScheme(GUID_MAX_POWER_SAVINGS);
+	public static readonly PowerScheme PowerSaver = new(GUID_MAX_POWER_SAVINGS);
 
 	internal PowerScheme(Guid g)
 	{
@@ -795,7 +786,7 @@ public class PowerScheme : IEquatable<Guid>, IEquatable<PowerScheme>
 
 	/// <summary>Gets the variable name of the GUID defined in the Windows SDK for this scheme.</summary>
 	/// <value>The API based variable name.</value>
-	public string ApiName => PowerManager.NameForGuid(Guid);
+	public string? ApiName => PowerManager.NameForGuid(Guid);
 
 	/// <summary>Gets or sets the description of the scheme.</summary>
 	/// <value>The description.</value>
@@ -845,7 +836,7 @@ public class PowerScheme : IEquatable<Guid>, IEquatable<PowerScheme>
 	/// <summary>Determines whether the specified <see cref="PowerScheme"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="PowerScheme"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="PowerScheme"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(PowerScheme other) => !(other is null) && Equals(other.Guid);
+	public bool Equals(PowerScheme? other) => other is not null && Equals(other.Guid);
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -927,7 +918,7 @@ public class PowerSchemeGroup
 
 	/// <summary>Gets the variable name of the GUID defined in the Windows SDK for this subgroup.</summary>
 	/// <value>The API based variable name.</value>
-	public string ApiName => PowerManager.NameForGuid(subgroup);
+	public string? ApiName => PowerManager.NameForGuid(subgroup);
 
 	/// <summary>Gets or sets the description of the subgroup.</summary>
 	/// <value>The description.</value>
@@ -994,7 +985,7 @@ public class PowerSchemeSetting
 
 	/// <summary>Retrieves the AC power value for the specified power setting.</summary>
 	/// <value>Returns the data value.</value>
-	public object ACValue
+	public object? ACValue
 	{
 		get
 		{
@@ -1024,11 +1015,11 @@ public class PowerSchemeSetting
 
 	/// <summary>Gets the variable name of the GUID defined in the Windows SDK for this setting.</summary>
 	/// <value>The API based variable name.</value>
-	public string ApiName => PowerManager.NameForGuid(setting);
+	public string? ApiName => PowerManager.NameForGuid(setting);
 
 	/// <summary>Retrieves the DC power value for the specified power setting.</summary>
 	/// <value>Returns the data value.</value>
-	public object DCValue
+	public object? DCValue
 	{
 		get
 		{
@@ -1078,21 +1069,21 @@ public class PowerSchemeSetting
 
 	/// <summary>Gets the possible values for this setting.</summary>
 	/// <value>Returns a <see cref="IEnumerable{T}"/> value.</value>
-	public IEnumerable<(object value, string name, string description)> PossibleValues
+	public IEnumerable<(object? value, string? name, string? description)> PossibleValues
 	{
 		get
 		{
 			if (IsRange) yield break;
 			for (var i = 0U; ; i++)
 			{
-				Win32Error err = FunctionHelper.CallMethodWithStrBuf((StringBuilder sb, ref uint ssz) => PowerReadPossibleFriendlyName(default, subgroup, setting, i, sb, ref ssz), out var name, (ssz, r) => ssz > 0);
+				Win32Error err = FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint ssz) => PowerReadPossibleFriendlyName(default, subgroup, setting, i, sb, ref ssz), out var name, (ssz, r) => ssz > 0);
 				if (err.Failed)
 					break;
-				err = FunctionHelper.CallMethodWithStrBuf((StringBuilder sb, ref uint ssz) => PowerReadPossibleDescription(default, subgroup, setting, i, sb, ref ssz), out var desc, (ssz, r) => ssz > 0);
+				err = FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint ssz) => PowerReadPossibleDescription(default, subgroup, setting, i, sb, ref ssz), out var desc, (ssz, r) => ssz > 0);
 				if (err.Failed)
 					break;
 				var sz = 0U;
-				object obj = null;
+				object? obj = null;
 				err = PowerReadPossibleValue(default, subgroup, setting, out REG_VALUE_TYPE regType, i, IntPtr.Zero, ref sz);
 				if (err.Succeeded)
 				{
@@ -1110,7 +1101,7 @@ public class PowerSchemeSetting
 	/// <summary>Gets or sets the range information for this setting.</summary>
 	/// <value>The range detail (min/max value, increment and unit specifier.</value>
 	/// <exception cref="InvalidOperationException">Setting is not a range value.</exception>
-	public (uint min, uint max, uint increment, string unitsSpecifier) Range
+	public (uint min, uint max, uint increment, string? unitsSpecifier) Range
 	{
 		get
 		{
@@ -1121,7 +1112,7 @@ public class PowerSchemeSetting
 					PowerReadValueMin(default, subgroup, setting, out var min).ThrowIfFailed();
 					PowerReadValueMax(default, subgroup, setting, out var max).ThrowIfFailed();
 					PowerReadValueIncrement(default, subgroup, setting, out var incr).ThrowIfFailed();
-					FunctionHelper.CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => PowerReadValueUnitsSpecifier(default, subgroup, setting, sb, ref sz), out var spec, (sz, r) => sz > 0).ThrowIfFailed();
+					FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => PowerReadValueUnitsSpecifier(default, subgroup, setting, sb, ref sz), out var spec, (sz, r) => sz > 0).ThrowIfFailed();
 					return (min, max, incr, spec);
 				}
 			}

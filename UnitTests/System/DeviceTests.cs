@@ -23,14 +23,14 @@ public class DeviceTests
 		cl.Guid.WriteValues();
 		cl.Name.WriteValues();
 		cl.Description.WriteValues();
-		cl.BitmapIndex.WriteValues();
-		cl.ImageIndex.WriteValues();
-		cl.NoDisplay.WriteValues();
-		cl.NoInstall.WriteValues();
+		cl.BitmapIndex?.WriteValues();
+		cl.ImageIndex?.WriteValues();
+		cl.NoDisplay?.WriteValues();
+		cl.NoInstall?.WriteValues();
 		foreach (var kv in cl.Properties)
-			TestContext.WriteLine($"{kv.Key.LookupName()} = {kv.Value.GetStringVal()}");
+			TestContext.WriteLine($"{kv.Key.LookupName()} = {kv.Value?.GetStringVal()}");
 		foreach (var kv in cl.RegistryProperties)
-			TestContext.WriteLine($"{kv.Key} = {kv.Value.GetStringVal()}");
+			TestContext.WriteLine($"{kv.Key} = {kv.Value?.GetStringVal()}");
 	}
 
 	[Test]
@@ -58,27 +58,30 @@ public class DeviceTests
 			dev.InstallFlagsEx.WriteValues();
 			dev.InstanceId.WriteValues();
 			foreach (var kv in dev.Properties)
-				TestContext.WriteLine($"{kv.Key.LookupName()} = {kv.Value.GetStringVal()}");
+				TestContext.WriteLine($"{kv.Key.LookupName()} = {kv.Value?.GetStringVal()}");
 			foreach (var kv in dev.RegistryProperties)
-				TestContext.WriteLine($"{kv.Key} = {kv.Value.GetStringVal()}");
+				TestContext.WriteLine($"{kv.Key} = {kv.Value?.GetStringVal()}");
 		}
 	}
 
 	[Test]
 	public void SetClassPropTest()
 	{
+		DEVPROPKEY item = DEVPKEY_DeviceClass_NoDisplayClass; // DEVPKEY_DeviceClass_Exclusive;
+
 		using var cl = new DeviceClass(GUID_DEVCLASS_DISKDRIVE);
-		var val = cl.Properties[DEVPKEY_DeviceClass_Exclusive];
+		var val = cl.Properties[item];
 		Assert.IsNull(val);
 		try
 		{
-			cl.Properties[DEVPKEY_DeviceClass_Exclusive] = false;
-			val = cl.Properties[DEVPKEY_DeviceClass_Exclusive];
-			Assert.IsFalse((bool)val);
+			cl.Properties[item] = false;
+			val = cl.Properties[item];
+			Assert.That(val, Is.Not.Null.And.TypeOf<bool>());
+			Assert.IsFalse((bool)val!);
 		}
 		finally
 		{
-			Assert.That(cl.Properties.Remove(DEVPKEY_DeviceClass_Exclusive), ResultIs.Successful);
+			Assert.That(cl.Properties.Remove(item), ResultIs.Successful);
 		}
 	}
 

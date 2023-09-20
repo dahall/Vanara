@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using static Vanara.PInvoke.IpHlpApi;
 
@@ -247,7 +246,7 @@ public enum NetworkInterfacePhysicalMedium
 /// <summary>Extension methods for various network related interfaces methods.</summary>
 public static class NetworkInterfaceExt
 {
-	private static Dictionary<int, MIB_IF_ROW2> adapters = new Dictionary<int, MIB_IF_ROW2>();
+	private static readonly Dictionary<int, MIB_IF_ROW2> adapters = new();
 
 	/// <summary>Gets the interface access type.</summary>
 	public static NetworkInterfaceAccessType GetAccessType(this IPInterfaceProperties ifprop) => (NetworkInterfaceAccessType)GetIfEntry(ifprop.GetIPv4Properties().Index).AccessType;

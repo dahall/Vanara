@@ -1,11 +1,6 @@
-﻿using System;
-using Vanara.Diagnostics;
-using NUnit.Framework;
-using System.Text;
+﻿using NUnit.Framework;
 using System.Linq;
 using static Vanara.PInvoke.PowrProf;
-using Vanara.PInvoke;
-using Vanara.PInvoke.Tests;
 
 namespace Vanara.Diagnostics.Tests;
 
@@ -40,8 +35,8 @@ public class PowerTests
 	[Test]
 	public void DeviceEnumTest()
 	{
-		PowerManager.PoweredDevices.TryGetValue(@"STORAGE\Volume", out var d1);
-		PowerManager.PoweredDevices.TryGetValue(@"ROOT\VOLMGR", out var d2);
+		PowerManager.PoweredDevices.TryGetValue(@"STORAGE\Volume", out _);
+		PowerManager.PoweredDevices.TryGetValue(@"ROOT\VOLMGR", out _);
 
 		PowerManager.PoweredDevices.UseHardwareId = true;
 		var fullNameList = PowerManager.PoweredDevices.Keys;
@@ -50,7 +45,7 @@ public class PowerTests
 		PowerManager.PoweredDevices.OnlyPresentDevices = true;
 		var presIdList = PowerManager.PoweredDevices;
 
-		Assert.That(presIdList.Count, Is.LessThanOrEqualTo(fullNameList.Count));
+		Assert.That(presIdList.Count, Is.Not.EqualTo(fullNameList.Count));
 
 		TestContext.WriteLine($"Full count: {fullNameList.Count}");
 		foreach (var i in fullNameList.Take(10))
@@ -109,12 +104,9 @@ public class PowerTests
 		PowerManager.PowerSchemePersonalityChanged -= EventHandler;
 		Assert.True(eventFired);
 
-		void EventHandler(object sender, PowerEventArgs<Guid> e) => eventFired = true;
+		void EventHandler(object? sender, PowerEventArgs<Guid> e) => eventFired = true;
 	}
 
 	[Test]
-	public void GetSettingTest()
-	{
-		var setting = PowerScheme.Active.Groups[GUID_SLEEP_SUBGROUP].Settings[GUID_STANDBY_TIMEOUT];
-	}
+	public void GetSettingTest() => _ = PowerScheme.Active.Groups[GUID_SLEEP_SUBGROUP].Settings[GUID_STANDBY_TIMEOUT];
 }

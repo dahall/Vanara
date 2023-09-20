@@ -15,7 +15,7 @@ namespace Vanara.PInvoke.Tests;
 
 public static class TestHelper
 {
-	private const string testApp = @"C:\Users\dahall\Documents\Visual Studio 2017\Projects\TestSysConsumption\bin\Debug\netcoreapp3.0\TestSysConsumption.exe";
+	private const string testApp = @"C:\Users\dahal\OneDrive\Documents\Visual Studio 2017\Projects\TestSysConsumption\bin\Debug\net6.0\TestSysConsumption.exe";
 
 	private static readonly Lazy<JsonSerializerSettings> jsonSet = new(() =>
 		new JsonSerializerSettings()

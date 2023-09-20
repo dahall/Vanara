@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if NET20_OR_GREATER
 using System.Management;
-#endif
-using System.Runtime.InteropServices;
-using System.Text;
 using Vanara.Extensions.Reflection;
-using Vanara.InteropServices;
 using Vanara.IO;
 using Vanara.PInvoke;
 using Vanara.Security;
@@ -41,7 +35,6 @@ public static partial class ProcessExtension
 		hObj.AdjustPrivilege(privilege, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 	}
 
-#if NET35_OR_GREATER
 	/// <summary>Gets the child processes.</summary>
 	/// <param name="p">The process.</param>
 	/// <param name="includeDescendants">if set to <c>true</c> include descendants of child processes as well.</param>
@@ -59,7 +52,6 @@ public static partial class ProcessExtension
 		}
 		return GetChildProcesses(p.Id, l.GroupBy(i => i.Item2).ToDictionary(g => g.Key, g => g.ToList()), p.MachineName, includeDescendants);
 	}
-#endif
 
 	/// <summary>Retrieves the name of the executable file in device form for the specified process.</summary>
 	/// <param name="process">The process.</param>
@@ -130,13 +122,12 @@ public static partial class ProcessExtension
 		return sb.ToString();
 	}
 
-#if NET20_OR_GREATER
 	/// <summary>
 	/// Gets the parent process.
 	/// </summary>
 	/// <returns>A <see cref="Process"/> object for the process that called the specified process. <c>null</c> if no parent can be established.</returns>
 	/// <exception cref="System.ArgumentNullException"><paramref name="p"/> must be a valid <see cref="Process"/>.</exception>
-	public static Process GetParentProcess(this Process p)
+	public static Process? GetParentProcess(this Process p)
 	{
 		if (p == null)
 			throw new ArgumentNullException(nameof(p));
@@ -149,7 +140,6 @@ public static partial class ProcessExtension
 		catch { }
 		return null;
 	}
-#endif
 
 	/// <summary>Gets a pointer to a PEB structure.</summary>
 	/// <param name="process">The process.</param>
@@ -241,7 +231,7 @@ public static partial class ProcessExtension
 	/// <para><c>Windows Server 2003 and Windows XP:</c> The handle must have the PROCESS_QUERY_INFORMATION access right.</para>
 	/// </param>
 	/// <returns><see langword="true"/> if the process is running in a job, and <see langword="false"/> otherwise.</returns>
-	public static bool IsInJob(this Process p) => IsProcessInJob(p, HJOB.NULL, out var res) ? res : throw Win32Error.GetLastError().GetException();
+	public static bool IsInJob(this Process p) => IsProcessInJob(p, HJOB.NULL, out var res) ? res : throw Win32Error.GetLastError().GetException()!;
 
 	/// <summary>
 	/// The function checks whether the primary access token of the process belongs to user account that is a member of the local Administrators group,
@@ -373,14 +363,14 @@ public static partial class ProcessExtension
 		bool retVal;
 		Win32Error errorCode = 0;
 		// handles used in parent process
-		SafeHPIPE standardInputWritePipeHandle = null, standardOutputReadPipeHandle = null, standardErrorReadPipeHandle = null, hStdInput = null, hStdOutput = null, hStdError = null;
+		SafeHPIPE? standardInputWritePipeHandle = null, standardOutputReadPipeHandle = null, standardErrorReadPipeHandle = null, hStdInput = null, hStdOutput = null, hStdError = null;
 
 		// set up the streams
 		if (startInfo.RedirectStandardInput || startInfo.RedirectStandardOutput || startInfo.RedirectStandardError)
 		{
 			if (startInfo.RedirectStandardInput)
 			{
-				CreatePipe(out standardInputWritePipeHandle, out hStdInput, new SECURITY_ATTRIBUTES(), 0);
+				Win32Error.ThrowLastErrorIfFalse(CreatePipe(out standardInputWritePipeHandle, out hStdInput, new SECURITY_ATTRIBUTES(), 0));
 				startupInfo.hStdInput = hStdInput;
 			}
 			else
@@ -390,7 +380,7 @@ public static partial class ProcessExtension
 
 			if (startInfo.RedirectStandardOutput)
 			{
-				CreatePipe(out standardOutputReadPipeHandle, out hStdOutput, new SECURITY_ATTRIBUTES(), 0);
+				Win32Error.ThrowLastErrorIfFalse(CreatePipe(out standardOutputReadPipeHandle, out hStdOutput, new SECURITY_ATTRIBUTES(), 0));
 				startupInfo.hStdOutput = hStdOutput;
 			}
 			else
@@ -400,7 +390,7 @@ public static partial class ProcessExtension
 
 			if (startInfo.RedirectStandardError)
 			{
-				CreatePipe(out standardErrorReadPipeHandle, out hStdError, new SECURITY_ATTRIBUTES(), 0);
+				Win32Error.ThrowLastErrorIfFalse(CreatePipe(out standardErrorReadPipeHandle, out hStdError, new SECURITY_ATTRIBUTES(), 0));
 				startupInfo.hStdError = hStdError;
 			}
 			else
@@ -419,7 +409,7 @@ public static partial class ProcessExtension
 		if (workingDirectory == string.Empty)
 			workingDirectory = Environment.CurrentDirectory;
 
-		SafePROCESS_INFORMATION processInfo;
+		SafePROCESS_INFORMATION? processInfo;
 		if (startInfo.UserName.Length != 0)
 		{
 			if (startInfo.Password != null)
@@ -437,7 +427,7 @@ public static partial class ProcessExtension
 				retVal = CreateProcessWithLogonW(
 						startInfo.UserName,
 						startInfo.Domain,
-						password,
+						(string)password!,
 						logonFlags,
 						null,               // we don't need this since all the info is in commandLine
 						commandLine,
@@ -451,9 +441,9 @@ public static partial class ProcessExtension
 			}
 			if (!retVal)
 			{
-				if (errorCode == Win32Error.ERROR_BAD_EXE_FORMAT || errorCode == Win32Error.ERROR_EXE_MACHINE_TYPE_MISMATCH)
-					throw errorCode.GetException("Invalid application");
-				throw errorCode.GetException();
+				if ((uint)errorCode is Win32Error.ERROR_BAD_EXE_FORMAT or Win32Error.ERROR_EXE_MACHINE_TYPE_MISMATCH)
+					throw errorCode.GetException("Invalid application")!;
+				throw errorCode.GetException()!;
 			}
 		}
 		else
@@ -478,34 +468,32 @@ public static partial class ProcessExtension
 			}
 			if (!retVal)
 			{
-				if (errorCode == Win32Error.ERROR_BAD_EXE_FORMAT || errorCode == Win32Error.ERROR_EXE_MACHINE_TYPE_MISMATCH)
-					throw errorCode.GetException("Invalid application");
-				throw errorCode.GetException();
+				if ((uint)errorCode is Win32Error.ERROR_BAD_EXE_FORMAT or Win32Error.ERROR_EXE_MACHINE_TYPE_MISMATCH)
+					throw errorCode.GetException("Invalid application")!;
+				throw errorCode.GetException()!;
 			}
 		}
 
-#pragma warning disable CS0618 // Type or member is obsolete
 		if (startInfo.RedirectStandardInput)
 		{
-			var stdIn = new StreamWriter(new FileStream(standardInputWritePipeHandle.DangerousGetHandle(), System.IO.FileAccess.Write, false, 4096),
+			var stdIn = new StreamWriter(new FileStream(standardInputWritePipeHandle!.DangerousGetHandle(), System.IO.FileAccess.Write, false, 4096),
 				Console.InputEncoding, 4096) { AutoFlush = true };
 			process.SetFieldValue("standardInput", stdIn);
 		}
 		if (startInfo.RedirectStandardOutput)
 		{
 			var enc = startInfo.StandardOutputEncoding ?? Console.OutputEncoding;
-			var stdOut = new StreamReader(new FileStream(standardOutputReadPipeHandle.DangerousGetHandle(), System.IO.FileAccess.Read, false, 4096), enc, true, 4096);
+			var stdOut = new StreamReader(new FileStream(standardOutputReadPipeHandle!.DangerousGetHandle(), System.IO.FileAccess.Read, false, 4096), enc, true, 4096);
 			process.SetFieldValue("standardOutput", stdOut);
 		}
 		if (startInfo.RedirectStandardError)
 		{
 			var enc = startInfo.StandardErrorEncoding ?? Console.OutputEncoding;
-			var stdErr = new StreamReader(new FileStream(standardErrorReadPipeHandle.DangerousGetHandle(), System.IO.FileAccess.Read, false, 4096), enc, true, 4096);
+			var stdErr = new StreamReader(new FileStream(standardErrorReadPipeHandle!.DangerousGetHandle(), System.IO.FileAccess.Read, false, 4096), enc, true, 4096);
 			process.SetFieldValue("standardError", stdErr);
 		}
-#pragma warning restore CS0618 // Type or member is obsolete
 
-		if (!processInfo.hProcess.IsInvalid)
+		if (processInfo is not null && !processInfo.hProcess.IsInvalid)
 		{
 			//process.InvokeMethod("SetProcessHandle", new Microsoft.Win32.SafeHandles.SafeProcessHandle(processInfo.hProcess.Duplicate(), true));
 			process.InvokeMethod("SetProcessId", (int)processInfo.dwProcessId);
@@ -559,7 +547,7 @@ public static partial class ProcessExtension
 			if (allChildren && allProcs.ContainsKey(cpid))
 				foreach (var cval in GetChildProcesses(cpid, allProcs, machineName))
 					yield return cval;
-			Process retProc = null;
+			Process? retProc = null;
 			try { retProc = Process.GetProcessById(cpid, machineName); } catch { }
 			if (retProc != null) yield return retProc;
 		}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Vanara.PInvoke;
@@ -12,7 +11,7 @@ namespace Vanara.Diagnostics;
 /// <seealso cref="System.IDisposable"/>
 public class IoCompletionPort : IDisposable
 {
-	private readonly ConcurrentDictionary<IntPtr, Action<uint, IntPtr, IntPtr>> handlers = new ConcurrentDictionary<IntPtr, Action<uint, IntPtr, IntPtr>>();
+	private readonly ConcurrentDictionary<IntPtr, Action<uint, IntPtr, IntPtr>> handlers = new();
 	private bool disposedValue = false;
 	private HANDLE hComplPort;
 
@@ -168,7 +167,7 @@ public class IoCompletionPort : IDisposable
 				var err = Win32Error.GetLastError();
 				if (err == Win32Error.ERROR_ABANDONED_WAIT_0)
 					break;
-				throw err.GetException();
+				throw err.GetException()!;
 			}
 
 			// End the thread if terminating completion key signals

@@ -18,12 +18,16 @@ BatteryStatus, EdgeTraversalType, EnergySaverStatus, FirewallAction, FirewallAut
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
-    <Reference Include="System.Management" />
-    <Reference Include="System.ServiceProcess" />
-  </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Management" Condition=" '$(TargetFramework)' == 'net45' " />
+    <Reference Include="System.ServiceProcess" Condition=" $(TargetFramework.StartsWith('net4')) " />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net45' ">
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) " />
+    <PackageReference Include="System.Management" Version="6.0.2" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
+    <PackageReference Include="System.Management" Version="7.0.2" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="6.0.1" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.1" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\AMSI\Vanara.PInvoke.AMSI.csproj" />

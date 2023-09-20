@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -19,18 +18,18 @@ public class Computer : Component, ISupportInitialize, ISerializable
 	/// <summary>The local computer connected by the current account.</summary>
 	public static readonly Computer Local = new();
 
-	private UserAccounts accounts;
-	private SharedDevices devices;
+	private UserAccounts? accounts;
+	private SharedDevices? devices;
 	private bool initializing;
-	private LocalGroups localGroups;
-	private NetworkDeviceConnectionCollection networkConnections;
-	private string targetServer;
+	private LocalGroups? localGroups;
+	private NetworkDeviceConnectionCollection? networkConnections;
+	private string? targetServer;
 	private bool targetServerSet;
-	private string userName;
+	private string? userName;
 	private bool userNameSet;
-	private string userPassword;
+	private string? userPassword;
 	private bool userPasswordSet;
-	private Sessions sessions;
+	private Sessions? sessions;
 
 	/// <summary>Initializes a new instance of the <see cref="Computer"/> class connecting to the local machine as the current user.</summary>
 	public Computer() => Connect();
@@ -46,7 +45,7 @@ public class Computer : Component, ISupportInitialize, ISerializable
 	/// <param name="password">
 	/// The password that is used to connect to the computer. If the user name and password are not specified, then the current token is used.
 	/// </param>
-	public Computer(string target, string userName = null, string password = null)
+	public Computer(string? target, string? userName = null, string? password = null)
 	{
 		BeginInit();
 		Target = target;
@@ -58,9 +57,9 @@ public class Computer : Component, ISupportInitialize, ISerializable
 	private Computer(SerializationInfo info, StreamingContext context)
 	{
 		BeginInit();
-		Target = (string)info.GetValue(nameof(Target), typeof(string));
-		UserName = (string)info.GetValue(nameof(UserName), typeof(string));
-		UserPassword = (string)info.GetValue(nameof(UserPassword), typeof(string));
+		Target = (string?)info.GetValue(nameof(Target), typeof(string));
+		UserName = (string?)info.GetValue(nameof(UserName), typeof(string));
+		UserPassword = (string?)info.GetValue(nameof(UserPassword), typeof(string));
 		EndInit();
 	}
 
@@ -90,7 +89,7 @@ public class Computer : Component, ISupportInitialize, ISerializable
 
 	/// <summary>Gets or sets the name of the computer that the user is connected to.</summary>
 	[Category("Data"), DefaultValue(null), Description("The name of the computer to connect to.")]
-	public string Target
+	public string? Target
 	{
 		get => ShouldSerializeTargetServer() ? targetServer : null;
 		set
@@ -115,7 +114,7 @@ public class Computer : Component, ISupportInitialize, ISerializable
 	/// <summary>Gets or sets the user name to be used when connecting to the <see cref="Target"/>.</summary>
 	/// <value>The user name.</value>
 	[Category("Data"), DefaultValue(null), Description("The user name to be used when connecting.")]
-	public string UserName
+	public string? UserName
 	{
 		get => ShouldSerializeUserName() ? userName : null;
 		set
@@ -137,7 +136,7 @@ public class Computer : Component, ISupportInitialize, ISerializable
 	/// <summary>Gets or sets the user password to be used when connecting to the <see cref="Target"/>.</summary>
 	/// <value>The user password.</value>
 	[Category("Data"), DefaultValue(null), Description("The user password to be used when connecting.")]
-	public string UserPassword
+	public string? UserPassword
 	{
 		get => userPassword;
 		set
@@ -161,13 +160,13 @@ public class Computer : Component, ISupportInitialize, ISerializable
 		get
 		{
 			if (UserName is null)
-			{
-				return null;
-			}
+				return WindowsIdentity.GetCurrent();
+			if (UserPassword is null)
+				throw new InvalidOperationException("A password must be supplied when a user name is specified.");
 
 			int nonUpnIdx = UserName.IndexOf('\\');
 			string un = UserName;
-			string dn = null;
+			string? dn = null;
 			if (nonUpnIdx >= 0)
 			{
 				dn = UserName.Substring(0, nonUpnIdx);
@@ -206,7 +205,7 @@ public class Computer : Component, ISupportInitialize, ISerializable
 			if (!string.IsNullOrEmpty(targetServer))
 			{
 				// Check to ensure character only server name. (Suggested by bigsan)
-				if (targetServer.StartsWith(@"\"))
+				if (targetServer!.StartsWith(@"\"))
 				{
 					targetServer = targetServer.TrimStart('\\');
 				}

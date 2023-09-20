@@ -1,8 +1,4 @@
-﻿#if NET20_OR_GREATER
-
-using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.ServiceProcess;
@@ -26,7 +22,7 @@ namespace Vanara.Extensions
 		/// A <see cref="Security.AccessControl.ServiceControllerSecurity"/> object that encapsulates the access control rules for the
 		/// current service.
 		/// </returns>
-		public static Security.AccessControl.ServiceControllerSecurity GetAccessControl(this ServiceController svc, AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Owner | AccessControlSections.Group) => new Security.AccessControl.ServiceControllerSecurity(svc.ServiceHandle, includeSections);
+		public static Security.AccessControl.ServiceControllerSecurity GetAccessControl(this ServiceController svc, AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Owner | AccessControlSections.Group) => new(svc.ServiceHandle, includeSections);
 
 		/// <summary>
 		/// Applies access control list (ACL) entries described by a <see cref="Security.AccessControl.ServiceControllerSecurity"/> object to
@@ -48,11 +44,9 @@ namespace Vanara.Extensions
 		/// <param name="mode">The new start mode.</param>
 		public static void SetStartType(this ServiceController svc, ServiceStartMode mode)
 		{
-			using (var serviceHandle = svc.ServiceHandle)
-			{
-				if (!ChangeServiceConfig(serviceHandle.DangerousGetHandle(), ServiceTypes.SERVICE_NO_CHANGE, (ServiceStartType)mode, ServiceErrorControlType.SERVICE_NO_CHANGE))
-					throw new ExternalException("Could not change service start type.", new Win32Exception());
-			}
+			using var serviceHandle = svc.ServiceHandle;
+			if (!ChangeServiceConfig(serviceHandle.DangerousGetHandle(), ServiceTypes.SERVICE_NO_CHANGE, (ServiceStartType)mode, ServiceErrorControlType.SERVICE_NO_CHANGE))
+				throw new ExternalException("Could not change service start type.", new Win32Exception());
 		}
 	}
 }
@@ -184,7 +178,7 @@ namespace Vanara.Security.AccessControl
 		public ServiceControllerAccessRights AccessRights => (ServiceControllerAccessRights)AccessMask;
 
 		internal static int AccessMaskFromRights(ServiceControllerAccessRights rights) =>
-			rights >= 0 && rights <= ServiceControllerAccessRights.FullControl ?
+			rights is >= 0 and <= ServiceControllerAccessRights.FullControl ?
 			(int)rights : throw new ArgumentOutOfRangeException(nameof(rights));
 	}
 
@@ -326,5 +320,3 @@ namespace Vanara.Security.AccessControl
 		}
 	}
 }
-
-#endif

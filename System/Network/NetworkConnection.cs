@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.PInvoke.NetListMgr;
+﻿using Vanara.PInvoke.NetListMgr;
 
 namespace Vanara.Network;
 
@@ -8,12 +6,9 @@ namespace Vanara.Network;
 public class NetworkConnection : IDisposable
 {
 	private INetworkConnection conn;
-	private INetworkConnectionCost cost;
+	private INetworkConnectionCost? cost;
 
-	internal NetworkConnection(INetworkConnection networkConnection)
-	{
-		conn = networkConnection ?? throw new ArgumentNullException(nameof(networkConnection));
-	}
+	internal NetworkConnection(INetworkConnection? networkConnection) => conn = networkConnection ?? throw new ArgumentNullException(nameof(networkConnection));
 
 	/// <summary>Returns the ID of the network adapter used by this connection. There may multiple connections using the same adapter ID.</summary>
 	/// <returns>A GUID that specifies the adapter ID of the TCP/IP interface used by this network connection.</returns>
@@ -29,11 +24,11 @@ public class NetworkConnection : IDisposable
 
 	/// <summary>Gets the network cost associated with a connection.</summary>
 	/// <value>The cost.</value>
-	public NLM_CONNECTION_COST Cost => (cost ?? (cost = (INetworkConnectionCost)conn)).GetCost();
+	public NLM_CONNECTION_COST Cost => (cost ??= (INetworkConnectionCost)conn).GetCost();
 
 	/// <summary>Gets the data plan status.</summary>
 	/// <value>The data plan status.</value>
-	public NLM_DATAPLAN_STATUS DataPlanStatus => (cost ?? (cost = (INetworkConnectionCost)conn)).GetDataPlanStatus();
+	public NLM_DATAPLAN_STATUS DataPlanStatus => (cost ??= (INetworkConnectionCost)conn).GetDataPlanStatus();
 
 	/// <summary>Returns the type of network connection.</summary>
 	/// <returns>An NLM_DOMAIN_TYPE enumeration value that specifies the domain type of the network.</returns>
@@ -49,7 +44,7 @@ public class NetworkConnection : IDisposable
 
 	/// <summary>Returns the associated network for the connection.</summary>
 	/// <returns>An instance that specifies the network profile associated with the connection.</returns>
-	public NetworkProfile Network => new NetworkProfile(conn.GetNetwork());
+	public NetworkProfile Network => new(conn.GetNetwork());
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -59,6 +54,6 @@ public class NetworkConnection : IDisposable
 	void IDisposable.Dispose()
 	{
 		cost = null;
-		conn = null;
+		GC.SuppressFinalize(this);
 	}
 }

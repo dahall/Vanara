@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke.NetListMgr;
 
 namespace Vanara.Network;
@@ -11,10 +9,10 @@ namespace Vanara.Network;
 /// <summary>Provides a set of methods to perform network list management functions.</summary>
 public static partial class NetworkListManager
 {
-	private static NetworkConnectionIterator connIter;
-	private static INetworkCostManager costmgr;
-	private static INetworkListManager manager;
-	private static NetworkIterator netIter;
+	private static NetworkConnectionIterator? connIter;
+	private static INetworkCostManager? costmgr;
+	private static INetworkListManager? manager;
+	private static NetworkIterator? netIter;
 
 	/// <summary>An enumerable list that supports a length and indexer.</summary>
 	/// <typeparam name="T">The type of the item.</typeparam>
@@ -46,11 +44,11 @@ public static partial class NetworkListManager
 
 	/// <summary>Gets the network connections for this device.</summary>
 	/// <value>The network connections.</value>
-	public static IEnumerableList<NetworkConnection, Guid> NetworkConnections => connIter ?? (connIter = new NetworkConnectionIterator());
+	public static IEnumerableList<NetworkConnection, Guid> NetworkConnections => connIter ??= new NetworkConnectionIterator();
 
 	/// <summary>Gets the active networks available.</summary>
 	/// <value>The networks.</value>
-	public static IEnumerableList<NetworkProfile, Guid> Networks => netIter ?? (netIter = new NetworkIterator());
+	public static IEnumerableList<NetworkProfile, Guid> Networks => netIter ??= new NetworkIterator();
 
 	/// <summary>
 	/// Gets the current cost of either a machine-wide internet connection, or the first-hop of routing to a specific destination on a
@@ -61,11 +59,11 @@ public static partial class NetworkListManager
 	/// preferred connection used for machine Internet connectivity.
 	/// </param>
 	/// <returns>The cost of the connection.</returns>
-	public static NLM_CONNECTION_COST GetConnectionCost(IPAddress destIPAddr = null)
+	public static NLM_CONNECTION_COST GetConnectionCost(IPAddress? destIPAddr = null)
 	{
 		var addr = NLM_SOCKADDR.FromIPAddress(destIPAddr);
 		var cost = NLM_CONNECTION_COST.NLM_CONNECTION_COST_UNKNOWN;
-		(costmgr ?? (costmgr = (INetworkCostManager)Manager))?.GetCost(out cost, addr);
+		(costmgr ??= (INetworkCostManager?)Manager)?.GetCost(out cost, addr);
 		return cost;
 	}
 
@@ -82,11 +80,11 @@ public static partial class NetworkListManager
 	/// An NLM_DATAPLAN_STATUS structure that describes the data plan status associated with a connection used to route to a destination.
 	/// If destIPAddr specifies a tunnel address, the first available data plan status in the interface stack is returned.
 	/// </returns>
-	public static NLM_DATAPLAN_STATUS GetConnectionDataPlanStatus(IPAddress destIPAddr = null)
+	public static NLM_DATAPLAN_STATUS GetConnectionDataPlanStatus(IPAddress? destIPAddr = null)
 	{
 		var addr = NLM_SOCKADDR.FromIPAddress(destIPAddr);
 		var cost = new NLM_DATAPLAN_STATUS();
-		(costmgr ?? (costmgr = (INetworkCostManager)Manager))?.GetDataPlanStatus(out cost, addr);
+		(costmgr ??= (INetworkCostManager?)Manager)?.GetDataPlanStatus(out cost, addr);
 		return cost;
 	}
 
@@ -112,7 +110,7 @@ public static partial class NetworkListManager
 		return false;
 	}
 
-	internal static INetworkListManager Manager
+	internal static INetworkListManager? Manager
 	{
 		get
 		{
@@ -129,30 +127,27 @@ public static partial class NetworkListManager
 
 	internal class NetworkConnectionIterator : IEnumerableList<NetworkConnection, Guid>, IDisposable
 	{
-		private IEnumNetworkConnections conns;
+		private IEnumNetworkConnections? conns;
 
-		internal NetworkConnectionIterator(IEnumNetworkConnections conns = null)
-		{
-			this.conns = conns;
-		}
+		internal NetworkConnectionIterator(IEnumNetworkConnections? conns = null) => this.conns = conns;
 
 		public int Length => Items.Count();
 
 		private IEnumerable<NetworkConnection> Items => GetItems(conns);
 
-		private static IEnumerable<NetworkConnection> GetItems(IEnumNetworkConnections conns)
+		private static IEnumerable<NetworkConnection> GetItems(IEnumNetworkConnections? conns)
 		{
-			IEnumerable<NetworkConnection> ie = null;
+			IEnumerable<NetworkConnection>? ie = null;
 			try
 			{
-				ie = (conns ?? Manager?.GetNetworkConnections()).Cast<INetworkConnection>().Select(i => new NetworkConnection(i));
+				ie = (conns ?? Manager?.GetNetworkConnections())?.Cast<INetworkConnection>().Select(i => new NetworkConnection(i));
 			}
 			catch (UnauthorizedAccessException) { }
 			catch (ExternalException) { }
-			return ie;
+			return ie ?? Enumerable.Empty<NetworkConnection>();
 		}
 
-		public NetworkConnection this[Guid id] => new NetworkConnection(Manager?.GetNetworkConnection(id));
+		public NetworkConnection this[Guid id] => new(Manager?.GetNetworkConnection(id));
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -167,6 +162,7 @@ public static partial class NetworkListManager
 		void IDisposable.Dispose()
 		{
 			conns = null;
+			GC.SuppressFinalize(this);
 		}
 	}
 
@@ -182,18 +178,18 @@ public static partial class NetworkListManager
 		{
 			get
 			{
-				IEnumerable<NetworkProfile> ie = null;
+				IEnumerable<NetworkProfile>? ie = null;
 				try
 				{
 					ie = Manager?.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_ALL).Cast<INetwork>().Select(i => new NetworkProfile(i));
 				}
 				catch (UnauthorizedAccessException) { }
 				catch (ExternalException) { }
-				return ie;
+				return ie ?? Enumerable.Empty<NetworkProfile>();
 			}
 		}
 
-		public NetworkProfile this[Guid id] => new NetworkProfile(Manager?.GetNetwork(id));
+		public NetworkProfile this[Guid id] => new(Manager?.GetNetwork(id));
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
+﻿using System.Collections.Generic;
 using Vanara.PInvoke.NetListMgr;
 
 namespace Vanara.Network;
@@ -9,21 +6,15 @@ namespace Vanara.Network;
 /// <summary>Represents a wireless network profile</summary>
 public class NetworkProfile : IDisposable
 {
-	private INetwork inet;
+	private readonly INetwork inet;
 
 	/// <summary>Initializes a new instance of the <see cref="NetworkProfile"/> class using the GUID of the network profile.</summary>
 	/// <param name="guid">The GUID of the network profile.</param>
-	public NetworkProfile(Guid guid)
-	{
-		inet = NetworkListManager.Manager.GetNetwork(guid);
-	}
+	public NetworkProfile(Guid guid) => inet = NetworkListManager.Manager?.GetNetwork(guid) ?? throw new InvalidOperationException("Cannot acquire network list manager instance.");
 
 	/// <summary>Initializes a new instance of the <see cref="NetworkProfile"/> class.</summary>
 	/// <param name="inetwork">The INetwork instance.</param>
-	internal NetworkProfile(INetwork inetwork)
-	{
-		inet = inetwork ?? throw new ArgumentNullException(nameof(inetwork));
-	}
+	internal NetworkProfile(INetwork? inetwork) => inet = inetwork ?? throw new ArgumentNullException(nameof(inetwork));
 
 	/// <summary>Returns the category of a network.</summary>
 	/// <returns>A NLM_NETWORK_CATEGORY enumeration value that specifies the category information for the network.</returns>
@@ -91,23 +82,18 @@ public class NetworkProfile : IDisposable
 	public static IEnumerable<NetworkProfile> GetAllLocalProfiles() => NetworkListManager.Networks;
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	void IDisposable.Dispose()
-	{
-		inet = null;
-	}
+	void IDisposable.Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>Determines whether the specified <see cref="System.Object"/> is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 	/// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
-	public override bool Equals(object? obj)
+	public override bool Equals(object? obj) => obj switch
 	{
-		if (obj is NetworkProfile np)
-			return np.Id == Id;
-		else if (obj is Guid g)
-			return g == Id;
-		return false;
-	}
+		NetworkProfile np => np.Id == Id,
+		Guid g => g == Id,
+		_ => false,
+	};
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>

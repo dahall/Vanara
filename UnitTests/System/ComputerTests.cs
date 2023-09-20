@@ -1,10 +1,6 @@
-﻿using System;
-using Vanara.Diagnostics;
-using NUnit.Framework;
-using System.Text;
+﻿using NUnit.Framework;
 using System.Linq;
 using Vanara.PInvoke.Tests;
-using Vanara.InteropServices;
 
 namespace Vanara.Diagnostics.Tests;
 
@@ -102,10 +98,11 @@ public class ComputerTests
 	public void MapUnmapDriveTest()
 	{
 		var remoteShare = TestCaseSources.Lookup["RemoteShare"];
-		string local = null;
+		Assert.NotNull(remoteShare);
+		string? local = null;
 		try
 		{
-			local = Computer.Local.NetworkDeviceConnections.Add(remoteShare, "*");
+			local = Computer.Local.NetworkDeviceConnections.Add(remoteShare!, "*");
 			var conns = Computer.Local.NetworkDeviceConnections.SelectMany(r => r.Children).Concat(Computer.Local.NetworkDeviceConnections).ToList();
 			Assert.That(conns.Select(r => r.LocalName), Has.One.EqualTo(local));
 			conns.WriteValues();
@@ -121,11 +118,12 @@ public class ComputerTests
 	public void AuthMapUnmapDriveTest()
 	{
 		var remoteShare = TestCaseSources.Lookup["RemoteShare"];
-		string local = null;
+		Assert.NotNull(remoteShare);
+		string? local = null;
 		using var authLocal = new Computer(null, Environment.MachineName + "\\" + TestCaseSources.Lookup["LocalUser"], TestCaseSources.Lookup["LocalUserPassword"]);
 		try
 		{
-			local = authLocal.NetworkDeviceConnections.Add(remoteShare, "*", TestCaseSources.Lookup["LocalAdmin"], TestCaseSources.Lookup["LocalAdminPassword"]);
+			local = authLocal.NetworkDeviceConnections.Add(remoteShare!, "*", TestCaseSources.Lookup["LocalAdmin"], TestCaseSources.Lookup["LocalAdminPassword"]);
 			var conns = authLocal.NetworkDeviceConnections.SelectMany(r => r.Children).Concat(Computer.Local.NetworkDeviceConnections).ToList();
 			Assert.That(conns.Select(r => r.LocalName), Has.One.EqualTo(local));
 			conns.WriteValues();

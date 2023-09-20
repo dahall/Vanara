@@ -1,5 +1,4 @@
-﻿using System;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 using Vanara.Security.AccessControl;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.User32;
@@ -15,7 +14,7 @@ public static class SystemShutdown
 	/// function stops the shutdown on the local computer.
 	/// </param>
 	/// <returns>0 on failure, non-zero for success</returns>
-	public static bool AbortShutdown(string machineName = null) => AbortSystemShutdown(machineName);
+	public static bool AbortShutdown(string? machineName = null) => AbortSystemShutdown(machineName);
 
 	/// <summary>
 	/// Logs off the current user, shuts down the system, or shuts down and restarts the system. It sends the WM_QUERYENDSESSION message
@@ -97,7 +96,7 @@ public static class SystemShutdown
 	/// </param>
 	/// <param name="reason">Reason for initiating the shutdown. This parameter must be one of the system shutdown reason codes.</param>
 	/// <returns>0 on failure, non-zero for success</returns>
-	public static bool InitiateShutdown(string machineName = null, string message = null, TimeSpan? timeout = null, bool forceAppsClosed = false, bool rebootAfterShutdown = false, SystemShutDownReason reason = SystemShutDownReason.SHTDN_REASON_UNKNOWN)
+	public static bool InitiateShutdown(string? machineName = null, string? message = null, TimeSpan? timeout = null, bool forceAppsClosed = false, bool rebootAfterShutdown = false, SystemShutDownReason reason = SystemShutDownReason.SHTDN_REASON_UNKNOWN)
 	{
 		var graceSecs = (uint)timeout.GetValueOrDefault().TotalSeconds;
 		if (Environment.OSVersion.Version.Major <= 5 && graceSecs > MAX_SHUTDOWN_TIMEOUT) throw new ArgumentOutOfRangeException(nameof(timeout), $"Timeout can be no longer than {MAX_SHUTDOWN_TIMEOUT} seconds on Windows XP and earlier systems.");

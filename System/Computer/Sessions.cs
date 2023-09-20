@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using Vanara.Security;
 using static Vanara.PInvoke.WTSApi32;
@@ -18,14 +16,14 @@ public class Session : INamedEntity
 	private readonly SafeHWTSSERVER hServer;
 	private WTS_SESSION_INFO_1 sessionInfo;
 
-	internal Session(string target, in WTS_SESSION_INFO_1 info)
+	internal Session(string? target, in WTS_SESSION_INFO_1 info)
 	{
 		sessionInfo = info;
 		//Id = new WindowsIdentity($"{info.pDomainName}\\{info.pUserName}");
 		hServer = target is null ? SafeHWTSSERVER.Current : WTSOpenServerEx(target);
 	}
 
-	private Session() { }
+	private Session() => throw new InvalidOperationException();
 
 	/// <summary>
 	/// The network type and network address of the client. For more information, see WTS_CLIENT_ADDRESS. The IP address is offset by two
@@ -114,20 +112,20 @@ public class Session : INamedEntity
 	/// A string that contains the domain name of the user who is logged on to the session. If no user is logged on to the session, the
 	/// string contains <see langword="null"/>.
 	/// </summary>
-	public string DomainName => sessionInfo.pDomainName;
+	public string? DomainName => sessionInfo.pDomainName;
 
 	/// <summary>
 	/// A string that contains the name of the farm that the virtual machine is joined to. If the session is not running on a virtual machine
 	/// that is joined to a farm, the string contains <see langword="null"/>.
 	/// </summary>
-	public string FarmName => sessionInfo.pFarmName;
+	public string? FarmName => sessionInfo.pFarmName;
 
 	/// <summary>
 	/// A string that contains the name of the computer that the session is running on. If the session is running directly on an RD Session
 	/// Host server or RD Virtualization Host server, the string contains <see langword="null"/>. If the session is running on a virtual
 	/// machine, the string contains the name of the virtual machine.
 	/// </summary>
-	public string HostName => sessionInfo.pHostName;
+	public string? HostName => sessionInfo.pHostName;
 
 	/// <summary>
 	/// The number of bytes of uncompressed Remote Desktop Protocol (RDP) data sent from the client to the server since the client connected.
@@ -180,14 +178,7 @@ public class Session : INamedEntity
 	/// address, the WTSQuerySessionInformation function returns ERROR_NOT_SUPPORTED.Windows Server 2008 and Windows
 	/// Vista: This value is not supported.
 	/// </summary>
-	public IPAddress SessionAddressV4
-	{
-		get
-		{
-			try { return new(QueryInfo<WTS_SESSION_ADDRESS>(WTS_INFO_CLASS.WTSSessionAddressV4).Address.Take(4).ToArray()); }
-			catch { return null; }
-		}
-	}
+	public IPAddress SessionAddressV4 => new(QueryInfo<WTS_SESSION_ADDRESS>(WTS_INFO_CLASS.WTSSessionAddressV4).Address.Take(4).ToArray());
 
 	/// <summary>
 	/// <para>The state of the session. This can be one or more of the following values.</para>
@@ -235,13 +226,13 @@ public class Session : INamedEntity
 	/// langword="null"/>, the local computer is assumed.
 	/// </summary>
 	/// <value>The target server.</value>
-	public string Target { get; }
+	public string? Target { get; }
 
 	/// <summary>
 	/// A string that contains the name of the user who is logged on to the session. If no user is logged on to the session, the string
 	/// contains <see langword="null"/>.
 	/// </summary>
-	public string UserName => sessionInfo.pUserName;
+	public string? UserName => sessionInfo.pUserName;
 
 	/// <summary>A string that contains the name of the Remote Desktop Services session.</summary>
 	public string WinStationName => QueryInfo<string>(WTS_INFO_CLASS.WTSWinStationName);
@@ -249,7 +240,7 @@ public class Session : INamedEntity
 	/// <summary>A string that contains the default directory used when launching the initial program.</summary>
 	public string WorkingDirectory => QueryInfo<string>(WTS_INFO_CLASS.WTSWorkingDirectory);
 
-	internal WindowsIdentity Id { get; private set; }
+	//internal WindowsIdentity Id { get; private set; }
 
 	/// <summary>Information about a Remote Desktop Connection (RDC) client. For more information, see WTSCLIENT.</summary>
 	private WTSCLIENT ClientInfo => QueryInfo<WTSCLIENT>(WTS_INFO_CLASS.WTSClientInfo);
@@ -384,7 +375,7 @@ public class Session : INamedEntity
 	private T QueryInfo<T>(WTS_INFO_CLASS c)
 	{
 		Win32Error.ThrowLastErrorIfFalse(WTSQuerySessionInformation(hServer, SessionId, c, out var mem, out var sz));
-		return typeof(T) == typeof(string) ? (T)(object)mem.ToString(sz) : mem.ToStructure<T>(sz);
+		return typeof(T) == typeof(string) ? (T)(object)mem.ToString(sz)! : mem.ToStructure<T>(sz)!;
 	}
 }
 
@@ -393,14 +384,14 @@ public class Sessions : IReadOnlyDictionary<uint, Session>
 {
 	private readonly SafeHWTSSERVER hServer;
 	private readonly WindowsIdentity identity;
-	private readonly string target = null;
+	private readonly string? target = null;
 
 	/// <summary>Initializes a new instance of the <see cref="SharedDevices"/> class.</summary>
 	/// <param name="serverName">Name of the computer from which to retrieve and manage the shared devices.</param>
 	/// <param name="accessIdentity">
 	/// The Windows identity used to access the shared device information. If this value <see langword="null"/>, the current identity is used.
 	/// </param>
-	public Sessions(string serverName = null, WindowsIdentity accessIdentity = null) : base()
+	public Sessions(string? serverName = null, WindowsIdentity? accessIdentity = null) : base()
 	{
 		target = serverName;
 		identity = accessIdentity ?? WindowsIdentity.GetCurrent();
@@ -427,7 +418,7 @@ public class Sessions : IReadOnlyDictionary<uint, Session>
 	/// <param name="key">The key.</param>
 	/// <returns>The <see cref="Session"/> instance with the specified session id.</returns>
 	/// <exception cref="System.ArgumentOutOfRangeException">key</exception>
-	public Session this[uint key] => TryGetValue(key, out var sess) ? sess : throw new ArgumentOutOfRangeException(nameof(key));
+	public Session this[uint key] => TryGetValue(key, out var sess) ? sess! : throw new ArgumentOutOfRangeException(nameof(key));
 
 	/// <summary>Determines whether the read-only dictionary contains an element that has the specified key.</summary>
 	/// <param name="key">The key to locate.</param>
@@ -448,7 +439,9 @@ public class Sessions : IReadOnlyDictionary<uint, Session>
 	/// <see langword="true"/> if the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the key; otherwise,
 	/// <see langword="false"/>.
 	/// </returns>
-	public bool TryGetValue(uint key, out Session value)
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+	public bool TryGetValue(uint key, [NotNullWhen(true)] out Session? value)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 	{
 		var si = EnumSessions().FirstOrDefault(s => Equals(key, s.SessionId));
 		if (si.SessionId == 0)
@@ -462,5 +455,5 @@ public class Sessions : IReadOnlyDictionary<uint, Session>
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private WTS_SESSION_INFO_1[] EnumSessions() => identity.Run(() => { Win32Error.ThrowLastErrorIfFalse(WTSEnumerateSessionsEx(hServer, out var sessions)); return sessions; });
+	private WTS_SESSION_INFO_1[] EnumSessions() => identity.Run(() => { Win32Error.ThrowLastErrorIfFalse(WTSEnumerateSessionsEx(hServer, out var sessions)); return sessions!; });
 }

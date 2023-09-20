@@ -1,12 +1,12 @@
 ﻿using Microsoft.Win32;
 using Microsoft.Win32.SafeHandles;
-using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Threading;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.Registry;
 
@@ -17,28 +17,23 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	private const int eventCount = 4;
 	private static readonly RegNotifyChangeFilter[] events = { RegNotifyChangeFilter.REG_NOTIFY_CHANGE_LAST_SET, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_NAME, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_ATTRIBUTES, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_SECURITY };
 	private readonly Action<RegistryEventArgs>[] actions;
-	private readonly ManualResetEvent breakEvent = new ManualResetEvent(false);
-	private readonly object threadLock = new object();
-	private readonly Thread[] threads = new Thread[eventCount];
-	private readonly AutoResetEvent[] threadsEnded = new AutoResetEvent[eventCount];
+	private readonly ManualResetEvent breakEvent = new(false);
+	private readonly object threadLock = new();
+	private readonly SafeHTHREAD[] threads = new SafeHTHREAD[eventCount];
 	private readonly AutoResetEvent[] threadsStarted = new AutoResetEvent[eventCount];
 	private bool enabled;
-	private SafeRegistryHandle hkey;
 	private bool includeSubKeys;
 	private bool initializing;
-	private string keyName;
-	private string remoteMachine;
-	private ISynchronizeInvoke synchObj;
+	private string? keyName;
+	private string? remoteMachine;
+	private ISynchronizeInvoke? synchObj;
 
 	/// <summary>Initializes a new instance of the <see cref="RegistryEventMonitor"/> class.</summary>
 	public RegistryEventMonitor()
 	{
 		actions = new Action<RegistryEventArgs>[eventCount] { OnValueChanged, OnSubkeyChanged, OnAttributesChanged, OnSecurityChanged };
-		for (var i = 0; i < eventCount; i++)
-		{
+		for (int i = 0; i < eventCount; i++)
 			threadsStarted[i] = new AutoResetEvent(false);
-			threadsEnded[i] = new AutoResetEvent(false);
-		}
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="RegistryEventMonitor"/> class.</summary>
@@ -54,19 +49,19 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 
 	/// <summary>Occurs when attributes have changed.</summary>
 	[Category("Behavior"), Description("An attribute has changed.")]
-	public event EventHandler<RegistryEventArgs> AttributesChanged;
+	public event EventHandler<RegistryEventArgs>? AttributesChanged;
 
 	/// <summary>Occurs when key security has changed.</summary>
 	[Category("Behavior"), Description("Key security has changed.")]
-	public event EventHandler<RegistryEventArgs> SecurityChanged;
+	public event EventHandler<RegistryEventArgs>? SecurityChanged;
 
 	/// <summary>Occurs when a subkey has changed.</summary>
 	[Category("Behavior"), Description("A subkey has changed.")]
-	public event EventHandler<RegistryEventArgs> SubkeyChanged;
+	public event EventHandler<RegistryEventArgs>? SubkeyChanged;
 
 	/// <summary>Occurs when a value has changed.</summary>
 	[Category("Behavior"), Description("A value has changed.")]
-	public event EventHandler<RegistryEventArgs> ValueChanged;
+	public event EventHandler<RegistryEventArgs>? ValueChanged;
 
 	/// <summary>Gets or sets a value indicating whether to enable raising events.</summary>
 	/// <value><c>true</c> if raising events is enabled; otherwise, <c>false</c>.</value>
@@ -103,7 +98,7 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	/// <summary>Gets or sets the machine name.</summary>
 	/// <value>The machine name. Use <see langword="null"/> or <see cref="string.Empty"/> to represent the local machine.</value>
 	[DefaultValue(null), Category("Behavior"), Description("The machine name.")]
-	public string MachineName
+	public string? MachineName
 	{
 		get => remoteMachine;
 		set
@@ -124,7 +119,7 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	/// <see langword="true"/>).
 	/// </summary>
 	[Browsable(false)]
-	public RegistryKey RegistryKey
+	public RegistryKey? RegistryKey
 	{
 		get => RegistryKeyFromName(RegistryKeyName, remoteMachine);
 		set => RegistryKeyName = value?.Name;
@@ -132,7 +127,7 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 
 	/// <summary>Gets or sets the name of the root registry key to monitor.</summary>
 	[DefaultValue(null), Category("Behavior"), Description("The name of the root registry key to monitor.")]
-	public string RegistryKeyName
+	public string? RegistryKeyName
 	{
 		get => keyName;
 		set
@@ -167,13 +162,13 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	/// </para>
 	/// </remarks>
 	[Browsable(false), DefaultValue(null)]
-	public ISynchronizeInvoke SynchronizingObject
+	public ISynchronizeInvoke? SynchronizingObject
 	{
 		get
 		{
 			if (synchObj == null && DesignMode)
 			{
-				var service = (IDesignerHost)GetService(typeof(IDesignerHost));
+				var service = (IDesignerHost?)GetService(typeof(IDesignerHost));
 				if (service?.RootComponent is ISynchronizeInvoke root)
 					synchObj = root;
 			}
@@ -212,8 +207,6 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 			if (disposing)
 			{
 				StopRaisingEvents();
-				hkey?.Dispose();
-				hkey = null;
 			}
 			else
 				keyName = null;
@@ -226,33 +219,21 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 
 	/// <summary>Raises the <see cref="E:AttributesChanged"/> event.</summary>
 	/// <param name="e">The <see cref="RegistryEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnAttributesChanged(RegistryEventArgs e)
-	{
-		SynchedInvoke(AttributesChanged, e);
-	}
+	protected virtual void OnAttributesChanged(RegistryEventArgs e) => SynchedInvoke(AttributesChanged, e);
 
 	/// <summary>Raises the <see cref="E:SecurityChanged"/> event.</summary>
 	/// <param name="e">The <see cref="RegistryEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnSecurityChanged(RegistryEventArgs e)
-	{
-		SynchedInvoke(SecurityChanged, e);
-	}
+	protected virtual void OnSecurityChanged(RegistryEventArgs e) => SynchedInvoke(SecurityChanged, e);
 
 	/// <summary>Raises the <see cref="E:SubkeyChanged"/> event.</summary>
 	/// <param name="e">The <see cref="RegistryEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnSubkeyChanged(RegistryEventArgs e)
-	{
-		SynchedInvoke(SubkeyChanged, e);
-	}
+	protected virtual void OnSubkeyChanged(RegistryEventArgs e) => SynchedInvoke(SubkeyChanged, e);
 
 	/// <summary>Raises the <see cref="E:ValueChanged"/> event.</summary>
 	/// <param name="e">The <see cref="RegistryEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnValueChanged(RegistryEventArgs e)
-	{
-		SynchedInvoke(ValueChanged, e);
-	}
+	protected virtual void OnValueChanged(RegistryEventArgs e) => SynchedInvoke(ValueChanged, e);
 
-	private static SafeRegistryHandle RegistryHandleFromName(string keyName, string serverName = null)
+	private static SafeRegistryHandle? RegistryHandleFromName(string keyName, string? serverName = null)
 	{
 		if (keyName == null)
 			return null;
@@ -260,7 +241,7 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 		var index = keyName.IndexOf('\\');
 		var str = index != -1 ? keyName.Substring(0, index).ToUpper(System.Globalization.CultureInfo.InvariantCulture) : keyName.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
 
-		if (!(typeof(Vanara.PInvoke.AdvApi32).GetField(str)?.GetValue(null) is HKEY hive))
+		if (typeof(HKEY).GetField(str)?.GetValue(null) is not HKEY hive)
 			return null;
 
 		try
@@ -278,7 +259,7 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 		}
 	}
 
-	private static RegistryKey RegistryKeyFromName(string keyName, string serverName = null)
+	private static RegistryKey? RegistryKeyFromName(string? keyName, string? serverName = null)
 	{
 		if (keyName == null)
 			return null;
@@ -334,33 +315,36 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 		}
 	}
 
-	private void MonitorRegThreadProc(object i)
+	private uint MonitorRegThreadProc(IntPtr i)
 	{
-		var idx = (int)i;
+		var idx = (int)i!;
 		var filter = events[idx];
-		using (var autoEvent = new AutoResetEvent(false))
-		using (var hEvent = autoEvent.SafeWaitHandle)
+		threadsStarted[idx].Set();
+		try
 		{
+			using var hkey = RegistryHandleFromName(keyName!, remoteMachine);
+			if (hkey == null || hkey.IsClosed || hkey.IsInvalid) throw new InvalidOperationException($"Unable to connect to registry key specified in {nameof(RegistryKeyName)}");
+			using var autoEvent = new AutoResetEvent(false);
+			using var hEvent = autoEvent.SafeWaitHandle;
 			var waitHandles = new WaitHandle[] { autoEvent, breakEvent };
 			while (!breakEvent.WaitOne(0, true))
 			{
 				Debug.WriteLine($"Calling RegNotify for {filter}");
-				RegNotifyChangeKeyValue(hkey, includeSubKeys, filter, autoEvent, true).ThrowIfFailed();
-				threadsStarted[idx].Set();
+				RegNotifyChangeKeyValue(hkey!, includeSubKeys, filter, autoEvent, true).ThrowIfFailed();
 				Debug.WriteLine($"Waiting for {filter}");
 				if (WaitHandle.WaitAny(waitHandles) == 0)
 				{
 					Debug.WriteLine($"Event called for {filter}");
 					actions[idx]?.Invoke(new RegistryEventArgs(RegistryKeyName, IncludeSubKeys));
 				}
-				else
-				{
-					Debug.WriteLine($"Canceled {filter}");
-				}
 			}
+			Debug.WriteLine($"Canceled {filter}");
 		}
-		threadsEnded[idx].Set();
+		finally
+		{
+		}
 		Debug.WriteLine($"Exiting {filter}");
+		return 0;
 	}
 
 	private void Restart()
@@ -374,20 +358,16 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	{
 		if (Environment.OSVersion.Platform != PlatformID.Win32NT)
 			throw new PlatformNotSupportedException();
-		if (keyName == null) throw new ArgumentNullException(nameof(RegistryKeyName));
 		if (!IsSuspended && EnableRaisingEvents)
 		{
 			lock (threadLock)
 			{
 				breakEvent.Reset();
-				hkey = RegistryHandleFromName(keyName, remoteMachine);
-				if (hkey == null || hkey.IsClosed || hkey.IsInvalid) throw new InvalidOperationException($"Unable to connect to registry key specified in {nameof(RegistryKeyName)}");
 				for (var i = 0; i < eventCount; i++)
 				{
-					if (threads[i] is not null && threads[i].IsAlive)
-						threads[i].Join(500);
-					threads[i] = new Thread(MonitorRegThreadProc) { IsBackground = false };
-					threads[i].Start(i);
+					if (threads[i] is not null && !threads[i].IsClosed)
+						threads[i].Wait(500);
+					threads[i] = CreateThread(lpStartAddress: MonitorRegThreadProc, lpParameter: (IntPtr)i, lpThreadId: out _);
 				}
 				if (!WaitHandle.WaitAll(threadsStarted, 5000))
 				{
@@ -402,11 +382,12 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	{
 		if (IsSuspended) return;
 		breakEvent.Set();
-		WaitHandle.WaitAll(threadsEnded);
+		WaitForMultipleObjects(threads, true, INFINITE);
+		Array.ForEach(threads, t => t?.Dispose());
 		enabled = false;
 	}
 
-	private void SynchedInvoke(EventHandler<RegistryEventArgs> h, RegistryEventArgs e)
+	private void SynchedInvoke(EventHandler<RegistryEventArgs>? h, RegistryEventArgs e)
 	{
 		if (h == null) return;
 		if (SynchronizingObject != null && SynchronizingObject.InvokeRequired)
@@ -419,7 +400,7 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	/// <seealso cref="System.EventArgs"/>
 	public class RegistryEventArgs : EventArgs
 	{
-		internal RegistryEventArgs(string keyName, bool inclSubKeys)
+		internal RegistryEventArgs(string? keyName, bool inclSubKeys)
 		{
 			RegistryKeyName = keyName;
 			IncludeSubKeys = inclSubKeys;
@@ -430,6 +411,6 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 		public bool IncludeSubKeys { get; }
 
 		/// <summary>Gets the name of the root registry key being monitored.</summary>
-		public string RegistryKeyName { get; }
+		public string? RegistryKeyName { get; }
 	}
 }

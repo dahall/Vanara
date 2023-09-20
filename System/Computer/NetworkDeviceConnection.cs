@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Text;
-using Vanara.Extensions;
 using Vanara.Security;
 using static Vanara.PInvoke.Mpr;
 
@@ -13,9 +10,9 @@ namespace Vanara;
 /// <summary>Information about a remote resource, usually in reference to a connection to that resource.</summary>
 public class NetworkDeviceConnection : IEquatable<NetworkDeviceConnection>
 {
-	internal readonly NETRESOURCE netRes = default;
+	internal readonly NETRESOURCE netRes;
 	internal WindowsIdentity identity;
-	private NetworkDeviceConnectionCollection children;
+	private NetworkDeviceConnectionCollection? children;
 
 	internal NetworkDeviceConnection(NETRESOURCE r, WindowsIdentity user)
 	{
@@ -24,10 +21,11 @@ public class NetworkDeviceConnection : IEquatable<NetworkDeviceConnection>
 		identity = user;
 	}
 
-	internal NetworkDeviceConnection(string remoteName, string localName = null, string provider = null, NETRESOURCEType type = NETRESOURCEType.RESOURCETYPE_ANY)
+	internal NetworkDeviceConnection(string remoteName, string? localName = null, string? provider = null, NETRESOURCEType type = NETRESOURCEType.RESOURCETYPE_ANY)
 	{
 		if (string.IsNullOrEmpty(remoteName)) throw new ArgumentNullException(nameof(remoteName));
 		netRes = new NETRESOURCE(remoteName, localName, provider) { dwType = type };
+		identity = WindowsIdentity.GetCurrent();
 	}
 
 	/// <summary>Gets the children of this resource if it is a container.</summary>
@@ -35,13 +33,13 @@ public class NetworkDeviceConnection : IEquatable<NetworkDeviceConnection>
 	public NetworkDeviceConnectionCollection Children => children ??= new NetworkDeviceConnectionCollection(identity, netRes);
 
 	/// <summary>A string that contains a comment supplied by the network provider.</summary>
-	public string Comment => netRes.lpComment;
+	public string? Comment => netRes.lpComment;
 
 	/// <summary>
 	/// A string that contains the name of the provider that owns the resource. This member can be <see langword="null"/> if the
 	/// provider name is unknown.
 	/// </summary>
-	public string Provider => netRes.lpProvider;
+	public string? Provider => netRes.lpProvider;
 
 	/// <summary>The display options for the network object in a network browsing user interface.</summary>
 	public NETRESOURCEDisplayType ResourceDisplayType => netRes.dwDisplayType;
@@ -53,7 +51,7 @@ public class NetworkDeviceConnection : IEquatable<NetworkDeviceConnection>
 	public NETRESOURCEUsage Use => netRes.dwUsage;
 
 	/// <summary>The name of a local device. This member is <see langword="null"/> if the connection does not use a device.</summary>
-	public string LocalName => netRes.lpLocalName;
+	public string? LocalName => netRes.lpLocalName;
 
 	/// <summary>
 	/// If the entry is a network resource, this member is a string that specifies the remote network name.
@@ -106,7 +104,7 @@ public class NetworkDeviceConnection : IEquatable<NetworkDeviceConnection>
 	/// provider the network name maps to.
 	/// </param>
 	/// <returns>An instance of <see cref="NetworkDeviceConnection"/> for the created connection.</returns>
-	public static NetworkDeviceConnection Create(string remoteName, string localName = null, string userName = null, string password = null, bool isPrinter = false, CONNECT flags = 0, string provider = null)
+	public static NetworkDeviceConnection Create(string remoteName, string? localName = null, string? userName = null, string? password = null, bool isPrinter = false, CONNECT flags = 0, string? provider = null)
 	{
 		if (localName == "*")
 		{
@@ -145,7 +143,7 @@ public class NetworkDeviceConnection : IEquatable<NetworkDeviceConnection>
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(NetworkDeviceConnection other) => other != null && LocalName == other.LocalName && RemoteName == other.RemoteName;
+	public bool Equals(NetworkDeviceConnection? other) => other is not null && LocalName == other.LocalName && RemoteName == other.RemoteName;
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -157,12 +155,12 @@ public class NetworkDeviceConnection : IEquatable<NetworkDeviceConnection>
 public class NetworkDeviceConnectionCollection : ICollection<NetworkDeviceConnection>
 {
 	internal WindowsIdentity identity;
-	private NETRESOURCE root;
+	private NETRESOURCE? root;
 
 	/// <summary>Initializes a new instance of the <see cref="NetworkDeviceConnectionCollection"/> class.</summary>
-	public NetworkDeviceConnectionCollection() { }
+	public NetworkDeviceConnectionCollection() => identity = WindowsIdentity.GetCurrent();
 
-	internal NetworkDeviceConnectionCollection(WindowsIdentity user, NETRESOURCE root)
+	internal NetworkDeviceConnectionCollection(WindowsIdentity user, NETRESOURCE? root)
 	{
 		identity = user;
 		this.root = root;
@@ -247,7 +245,7 @@ public class NetworkDeviceConnectionCollection : ICollection<NetworkDeviceConnec
 	/// set this member only if you know the network provider you want to use. Otherwise, let the operating system determine which
 	/// provider the network name maps to.
 	/// </param>
-	public string Add(string remoteName, string localName = null, string userName = null, string password = null, bool isPrinter = false, CONNECT flags = 0, string provider = null)
+	public string? Add(string remoteName, string? localName = null, string? userName = null, string? password = null, bool isPrinter = false, CONNECT flags = 0, string? provider = null)
 	{
 		var nr = identity.Run(() => NetworkDeviceConnection.Create(remoteName, localName, userName, password, isPrinter, flags, provider));
 		nr.identity = identity;
@@ -331,11 +329,8 @@ public class NetworkDeviceConnectionCollection : ICollection<NetworkDeviceConnec
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private IEnumerable<NetworkDeviceConnection> Enumerate()
-	{
-		return identity.Run(() =>
-			root is null || root.dwUsage.IsFlagSet(NETRESOURCEUsage.RESOURCEUSAGE_CONTAINER) ? 
-				WNetEnumResources(root, NETRESOURCEScope.RESOURCE_CONNECTED).Select(r => new NetworkDeviceConnection(r, identity)) :
-				new NetworkDeviceConnection[0]);
-	}
+	private IEnumerable<NetworkDeviceConnection> Enumerate() => identity.Run(() =>
+																		 root is null || root.dwUsage.IsFlagSet(NETRESOURCEUsage.RESOURCEUSAGE_CONTAINER) ?
+																			 WNetEnumResources(root, NETRESOURCEScope.RESOURCE_CONNECTED).Select(r => new NetworkDeviceConnection(r, identity)) :
+																			 new NetworkDeviceConnection[0]);
 }

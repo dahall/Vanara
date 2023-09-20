@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.NetApi32;
 
 namespace Vanara;
 
-    /// <summary>Represents a local group on a server.</summary>
-    public class LocalGroup : IEquatable<LocalGroup>
+/// <summary>Represents a local group on a server.</summary>
+public class LocalGroup : IEquatable<LocalGroup>
     {
-        private LocalGroupMembers members;
+        private LocalGroupMembers? members;
 
-        internal LocalGroup(string target, string name)
+        internal LocalGroup(string? target, string name)
         {
             Target = target;
             Name = name;
@@ -23,7 +21,7 @@ namespace Vanara;
         /// A remark associated with the local group. This member can be a <see langword="null"/> string. The comment can have as many as
         /// MAXCOMMENTSZ characters.
         /// </summary>
-        public string Comment
+        public string? Comment
         {
             get => NetLocalGroupGetInfo<LOCALGROUP_INFO_1>(Target, Name).lgrpi1_comment;
             set => NetLocalGroupSetInfo(Target, Name, new LOCALGROUP_INFO_1002 { lgrpi1002_comment = value }, 1002);
@@ -41,7 +39,7 @@ namespace Vanara;
         /// <see langword="null"/>, the local computer is assumed.
         /// </summary>
         /// <value>The target server.</value>
-        public string Target { get; }
+        public string? Target { get; }
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -50,7 +48,7 @@ namespace Vanara;
         /// <returns>
         /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(LocalGroup other) => other?.Name == Name && other.Target == Target;
+        public bool Equals(LocalGroup? other) => other?.Name == Name && other.Target == Target;
     }
 
     /// <summary>Represents a colleciton of local group members.</summary>
@@ -180,14 +178,14 @@ namespace Vanara;
         /// The DNS or NetBIOS name of the remote server on which the user account resides. If this value is <see langword="null"/>, the
         /// local computer is assumed.
         /// </param>
-        public LocalGroups(string target = null) => Target = target;
+        public LocalGroups(string? target = null) => Target = target;
 
         /// <summary>
         /// Gets the DNS or NetBIOS name of the remote server on which the user account resides. If this value is <see langword="null"/>,
         /// the local computer is assumed.
         /// </summary>
         /// <value>The target.</value>
-        public string Target { get; }
+        public string? Target { get; }
 
         /// <summary>Gets the number of elements contained in the collection.</summary>
         /// <value>The number of elements contained in the collection.</value>

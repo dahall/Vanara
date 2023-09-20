@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.WinINet;
 
@@ -44,7 +40,7 @@ public class InternetProxyOptions : IDisposable
 	/// not in the cache, a suitable error is returned.
 	/// </param>
 	/// <param name="asyncOnly">If <see langword="true"/>, makes only asynchronous requests.</param>
-	public InternetProxyOptions(string agentName, string manualProxyUrl, string[] proxyBypassEntries = null, bool offline = false, bool asyncOnly = false)
+	public InternetProxyOptions(string agentName, string manualProxyUrl, string[]? proxyBypassEntries = null, bool offline = false, bool asyncOnly = false)
 	{
 		InternetApiFlags flags = 0;
 		if (offline) flags |= InternetApiFlags.INTERNET_FLAG_OFFLINE;
@@ -68,7 +64,7 @@ public class InternetProxyOptions : IDisposable
 	public bool HasProxy => AutomaticallyDetectSettings || SetupScriptUrl != null || ManualProxyUrl != null;
 
 	/// <summary>Gets or sets a string containing the proxy server.</summary>
-	public string ManualProxyUrl
+	public string? ManualProxyUrl
 	{
 		get => HasProxyFlag(PER_CONN_FLAGS.PROXY_TYPE_PROXY) ? GetOption<string>(INTERNET_PER_CONN_OPTION_ID.INTERNET_PER_CONN_PROXY_SERVER) : null;
 		set
@@ -79,14 +75,14 @@ public class InternetProxyOptions : IDisposable
 	}
 
 	/// <summary>Gets or sets an array of URLs that do not use the proxy server.</summary>
-	public string[] ProxyBypassEntries
+	public string[]? ProxyBypassEntries
 	{
 		get => GetOption<string>(INTERNET_PER_CONN_OPTION_ID.INTERNET_PER_CONN_PROXY_BYPASS)?.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 		set => SetOptionString(INTERNET_PER_CONN_OPTION_ID.INTERNET_PER_CONN_PROXY_BYPASS, value is null ? null : string.Join(";", value));
 	}
 
 	/// <summary>Gets or sets a string containing the URL to the automatic configuration script.</summary>
-	public string SetupScriptUrl
+	public string? SetupScriptUrl
 	{
 		get => HasProxyFlag(PER_CONN_FLAGS.PROXY_TYPE_AUTO_PROXY_URL) ? GetOption<string>(INTERNET_PER_CONN_OPTION_ID.INTERNET_PER_CONN_AUTOCONFIG_URL) : null;
 		set
@@ -155,7 +151,7 @@ public class InternetProxyOptions : IDisposable
 		NotifyInternetOptionSettingsChanged();
 	}
 
-	private void SetOptionString(INTERNET_PER_CONN_OPTION_ID optionId, string value)
+	private void SetOptionString(INTERNET_PER_CONN_OPTION_ID optionId, string? value)
 	{
 		using var pProxy = new SafeCoTaskMemString(value, CharSet.Auto);
 		var option = new INTERNET_PER_CONN_OPTION { dwOption = optionId };
