@@ -74,7 +74,7 @@ public class WinHTTPTests
 
 		Assert.That(WinHttpCreateProxyResolver(hSession, out SafeHINTERNET hResolver), ResultIs.Successful);
 
-		using System.Threading.ManualResetEvent evt = new System.Threading.ManualResetEvent(false);
+		using System.Threading.ManualResetEvent evt = new(false);
 		Win32Error cbErr = Win32Error.ERROR_SUCCESS;
 		IntPtr prevCb = WinHttpSetStatusCallback(hResolver, callback, WINHTTP_CALLBACK_FLAG.WINHTTP_CALLBACK_FLAG_REQUEST_ERROR | WINHTTP_CALLBACK_FLAG.WINHTTP_CALLBACK_FLAG_GETPROXYFORURL_COMPLETE);
 		Assert.That(prevCb, Is.Not.EqualTo(WINHTTP_INVALID_STATUS_CALLBACK));

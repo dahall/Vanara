@@ -1733,7 +1733,7 @@ public static partial class PowrProf
 	// PossibleSettingIndex, PUCHAR Buffer, LPDWORD BufferSize );
 	[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("powrprof.h", MSDNShortId = "e803dc6b-706a-49fc-8c8d-ba9b0ccf8491")]
-	public static extern Win32Error PowerReadPossibleDescription([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, uint PossibleSettingIndex, StringBuilder Buffer, ref uint BufferSize);
+	public static extern Win32Error PowerReadPossibleDescription([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, uint PossibleSettingIndex, StringBuilder? Buffer, ref uint BufferSize);
 
 	/// <summary>Retrieves the friendly name for one of the possible choices of a power setting value.</summary>
 	/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -1806,7 +1806,7 @@ public static partial class PowrProf
 	// PossibleSettingIndex, PUCHAR Buffer, LPDWORD BufferSize );
 	[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("powrprof.h", MSDNShortId = "38f3c5f4-ec65-47f0-b15c-36cd2b1e2813")]
-	public static extern Win32Error PowerReadPossibleFriendlyName([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, uint PossibleSettingIndex, StringBuilder Buffer, ref uint BufferSize);
+	public static extern Win32Error PowerReadPossibleFriendlyName([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, uint PossibleSettingIndex, StringBuilder? Buffer, ref uint BufferSize);
 
 	/// <summary>Retrieves the value for a possible value of a power setting.</summary>
 	/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -2200,7 +2200,7 @@ public static partial class PowrProf
 	// *Buffer, LPDWORD BufferSize );
 	[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("powrprof.h", MSDNShortId = "48ad80b7-f89a-4dad-a991-056ce41d6975")]
-	public static extern Win32Error PowerReadValueUnitsSpecifier([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, StringBuilder Buffer, ref uint BufferSize);
+	public static extern Win32Error PowerReadValueUnitsSpecifier([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, StringBuilder? Buffer, ref uint BufferSize);
 
 	/// <summary>Deletes the specified power setting.</summary>
 	/// <param name="PowerSettingSubKeyGuid">
@@ -3366,7 +3366,7 @@ public static partial class PowrProf
 	// *Buffer, DWORD BufferSize );
 	[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("powrprof.h", MSDNShortId = "d9a81077-23e8-4bae-8e70-ffaaaf1ecda3")]
-	public static extern Win32Error PowerWriteValueUnitsSpecifier([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, string Buffer, uint BufferSize);
+	public static extern Win32Error PowerWriteValueUnitsSpecifier([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, string? Buffer, uint BufferSize);
 
 	/// <summary>
 	/// <para>

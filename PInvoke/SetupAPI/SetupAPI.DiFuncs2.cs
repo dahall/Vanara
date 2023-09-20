@@ -3201,6 +3201,10 @@ public static partial class SetupAPI
 				Value = mem.ToStringEnum(CharSet.Unicode).ToArray();
 				break;
 
+			case DEVPROPTYPE.DEVPROP_TYPE_BOOLEAN:
+				Value = mem.ToStructure<byte>() != 0;
+				break;
+
 			default:
 				(DEVPROPTYPE type, DEVPROPTYPE mod) spt = propType.Split();
 				var type = convType ?? CorrespondingTypeAttribute.GetCorrespondingTypes(spt.type).FirstOrDefault();

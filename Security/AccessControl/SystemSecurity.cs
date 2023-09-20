@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 

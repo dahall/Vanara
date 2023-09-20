@@ -1427,15 +1427,15 @@ public static partial class SetupAPI
 	public enum SPDRP
 	{
 		/// <summary>The function retrieves the device's address.</summary>
-		[CorrespondingType(typeof(uint))]
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 		SPDRP_ADDRESS = 0x0000001C,
 
 		/// <summary>The function retrieves the device's bus number.</summary>
-		[CorrespondingType(typeof(uint))]
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 		SPDRP_BUSNUMBER = 0x00000015,
 
 		/// <summary>The function retrieves the GUID for the device's bus type.</summary>
-		[CorrespondingType(typeof(Guid))]
+		[CorrespondingType(typeof(Guid), CorrespondingAction.Get)]
 		SPDRP_BUSTYPEGUID = 0x00000013,
 
 		/// <summary>
@@ -1489,7 +1489,7 @@ public static partial class SetupAPI
 		/// </item>
 		/// </list>
 		/// </summary>
-		[CorrespondingType(typeof(CM_DEVCAP))]
+		[CorrespondingType(typeof(CM_DEVCAP), CorrespondingAction.Get)]
 		SPDRP_CAPABILITIES = 0x0000000F,
 
 		/// <summary>
@@ -1500,7 +1500,7 @@ public static partial class SetupAPI
 		SPDRP_CHARACTERISTICS = 0x0000001B,
 
 		/// <summary>The function retrieves a REG_SZ string that contains the device setup class of a device.</summary>
-		[CorrespondingType(typeof(string))]
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
 		SPDRP_CLASS = 0x00000007,
 
 		/// <summary>The function retrieves a REG_SZ string that contains the GUID that represents the device setup class of a device.</summary>
@@ -1525,7 +1525,7 @@ public static partial class SetupAPI
 		/// <summary>
 		/// (Windows XP and later) The function retrieves a CM_POWER_DATA structure that contains the device's power management information.
 		/// </summary>
-		[CorrespondingType(typeof(CM_POWER_DATA))]
+		[CorrespondingType(typeof(CM_POWER_DATA), CorrespondingAction.Get)]
 		SPDRP_DEVICE_POWER_DATA = 0x0000001E,
 
 		/// <summary>The function retrieves a REG_SZ string that contains the description of a device.</summary>
@@ -1546,7 +1546,7 @@ public static partial class SetupAPI
 		SPDRP_DRIVER = 0x00000009,
 
 		/// <summary>The function retrieves a REG_SZ string that contains the name of the device's enumerator.</summary>
-		[CorrespondingType(typeof(string))]
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
 		SPDRP_ENUMERATOR_NAME = 0x00000016,
 
 		/// <summary>
@@ -1573,11 +1573,11 @@ public static partial class SetupAPI
 		/// installation state is represented by one of the CM_INSTALL_STATE_Xxx values that are defined in Cfgmgr32.h. The
 		/// CM_INSTALL_STATE_Xxx values correspond to the DEVICE_INSTALL_STATE enumeration values.
 		/// </summary>
-		[CorrespondingType(typeof(CM_INSTALL_STATE))]
+		[CorrespondingType(typeof(CM_INSTALL_STATE), CorrespondingAction.Get)]
 		SPDRP_INSTALL_STATE = 0x00000022,
 
 		/// <summary>The function retrieves the device's legacy bus type as an INTERFACE_TYPE value (defined in Wdm.h and Ntddk.h).</summary>
-		[CorrespondingType(typeof(INTERFACE_TYPE))]
+		[CorrespondingType(typeof(INTERFACE_TYPE), CorrespondingAction.Get)]
 		SPDRP_LEGACYBUSTYPE = 0x00000014,
 
 		/// <summary>The function retrieves a REG_SZ string that contains the hardware location of a device.</summary>
@@ -1588,8 +1588,8 @@ public static partial class SetupAPI
 		/// (Windows Server 2003 and later) The function retrieves a REG_MULTI_SZ string that represents the location of the device in
 		/// the device tree.
 		/// </summary>
-		[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
-		[CorrespondingType(typeof(string[]))]
+		[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
 		SPDRP_LOCATION_PATHS = 0x00000023,
 
 		/// <summary>The function retrieves a REG_MULTI_SZ string that contains the names of a device's lower-filter drivers.</summary>
@@ -1605,21 +1605,21 @@ public static partial class SetupAPI
 		/// The function retrieves a REG_SZ string that contains the name that is associated with the device's PDO. For more
 		/// information, see IoCreateDevice.
 		/// </summary>
-		[CorrespondingType(typeof(string))]
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
 		SPDRP_PHYSICAL_DEVICE_OBJECT_NAME = 0x0000000E,
 
 		/// <summary>
 		/// (Windows XP and later) The function retrieves the device's current removal policy as a DWORD that contains one of the
 		/// CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
 		/// </summary>
-		[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
+		[CorrespondingType(typeof(CM_REMOVAL_POLICY), CorrespondingAction.Get)]
 		SPDRP_REMOVAL_POLICY = 0x0000001F,
 
 		/// <summary>
 		/// (Windows XP and later) The function retrieves the device's hardware-specified default removal policy as a DWORD that
 		/// contains one of the CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
 		/// </summary>
-		[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
+		[CorrespondingType(typeof(CM_REMOVAL_POLICY), CorrespondingAction.Get)]
 		SPDRP_REMOVAL_POLICY_HW_DEFAULT = 0x00000020,
 
 		/// <summary>
@@ -1638,7 +1638,7 @@ public static partial class SetupAPI
 		/// descriptor strings, see Security Descriptor Definition Language (Windows). For information about the format of security
 		/// descriptor strings, see Security Descriptor Definition Language (Windows).
 		/// </summary>
-		[CorrespondingType(typeof(string))]
+		[CorrespondingType(typeof(string), CorrespondingAction.Set)]
 		SPDRP_SECURITY_SDS = 0x00000018,
 
 		/// <summary>The function retrieves a REG_SZ string that contains the service name for a device.</summary>
@@ -1648,7 +1648,7 @@ public static partial class SetupAPI
 		/// <summary>
 		/// The function retrieves a DWORD value set to the value of the <c>UINumber</c> member of the device's DEVICE_CAPABILITIES structure.
 		/// </summary>
-		[CorrespondingType(typeof(uint))]
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 		SPDRP_UI_NUMBER = 0x00000010,
 
 		/// <summary>The function retrieves a format string (REG_SZ) used to display the <c>UINumber</c> value.</summary>
@@ -1661,7 +1661,7 @@ public static partial class SetupAPI
 		SPDRP_UPPERFILTERS = 0x00000011,
 
 		/// <summary>Base ContainerID (R)</summary>
-		[CorrespondingType(typeof(Guid))]
+		[CorrespondingType(typeof(Guid), CorrespondingAction.Get)]
 		SPDRP_BASE_CONTAINERID = 0x00000024,
 	}
 

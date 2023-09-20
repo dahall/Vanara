@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Security.AccessControl;
 using static Vanara.PInvoke.Kernel32;
 
@@ -1386,7 +1387,7 @@ public static partial class AdvApi32
 	[PInvokeData("winbase.h", MSDNShortId = "dcfdcd5b-0269-4081-b1db-e272171c27a2")]
 	public static bool CreateProcessWithLogonW(string lpUsername, [Optional] string? lpDomain, string lpPassword, ProcessLogonFlags dwLogonFlags,
 		[Optional] string? lpApplicationName, [Optional] StringBuilder? lpCommandLine, CREATE_PROCESS dwCreationFlags,
-		[Optional] string[]? lpEnvironment, [Optional] string? lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION? lpProcessInformation)
+		[Optional] string[]? lpEnvironment, [Optional] string? lpCurrentDirectory, in STARTUPINFO lpStartupInfo, [NotNullWhen(true)] out SafePROCESS_INFORMATION? lpProcessInformation)
 	{
 		var ret = CreateProcessWithLogonW(lpUsername, lpDomain, lpPassword, dwLogonFlags, lpApplicationName, lpCommandLine, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, out PROCESS_INFORMATION pi);
 		lpProcessInformation = ret ? new SafePROCESS_INFORMATION(pi) : null;

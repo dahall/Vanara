@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Security.Principal;
 using static Vanara.PInvoke.AdvApi32;
@@ -36,7 +35,7 @@ public class WindowsLoggedInIdentity : IDisposable, IIdentity
 	/// The logon provider. This parameter can usually be left as the default. For more information, lookup more detail for the
 	/// dwLogonProvider parameter of the Windows LogonUser function.
 	/// </param>
-	public WindowsLoggedInIdentity(string userName, string domainName, string password, LogonUserType logonType = LogonUserType.LOGON32_LOGON_INTERACTIVE,
+	public WindowsLoggedInIdentity(string userName, string? domainName, string password, LogonUserType logonType = LogonUserType.LOGON32_LOGON_INTERACTIVE,
 		LogonUserProvider provider = LogonUserProvider.LOGON32_PROVIDER_DEFAULT)
 	{
 		if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException(nameof(userName));

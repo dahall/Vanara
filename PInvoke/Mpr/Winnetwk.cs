@@ -3034,7 +3034,7 @@ public static partial class Mpr
 		/// <para>The string can be MAX_PATH characters in length, and it must follow the network provider's naming conventions.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
-		public string? lpRemoteName;
+		public string lpRemoteName;
 
 		/// <summary>A pointer to a NULL-terminated string that contains a comment supplied by the network provider.</summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 1024)]
@@ -3051,7 +3051,7 @@ public static partial class Mpr
 		public static readonly NETRESOURCE Root = new();
 
 		/// <summary>Initializes a new instance of the <see cref="NETRESOURCE"/> class.</summary>
-		public NETRESOURCE() { }
+		public NETRESOURCE() => lpRemoteName = string.Empty;
 
 		/// <summary>Initializes a new instance of the <see cref="NETRESOURCE"/> class.</summary>
 		/// <param name="remoteName">

@@ -2636,7 +2636,7 @@ public static partial class NetApi32
 	public static IEnumerable<T> NetServerEnum<T>(NetServerEnumFilter netServerEnumFilter = NetServerEnumFilter.SV_TYPE_WORKSTATION | NetServerEnumFilter.SV_TYPE_SERVER, string? domain = null, int level = 0) where T : struct, INetServerInfo
 	{
 		if (level == 0) level = GetLevelFromStructure<T>();
-		if (level != 100 && level != 101)
+		if (level is not 100 and not 101)
 			throw new ArgumentOutOfRangeException(nameof(level), @"Only SERVER_INFO_100 or SERVER_INFO_101 are supported as valid structures.");
 		var resumeHandle = IntPtr.Zero;
 		NetServerEnum(null, (uint)level, out var bufptr, MAX_PREFERRED_LENGTH, out var entriesRead, out _, netServerEnumFilter, domain, resumeHandle).ThrowIfFailed();
@@ -2659,7 +2659,7 @@ public static partial class NetApi32
 	public static T NetServerGetInfo<T>([Optional] string? serverName, int level = 0) where T : struct, INetServerInfo
 	{
 		if (level == 0) level = GetLevelFromStructure<T>();
-		if (level != 100 && level != 101 && level != 102)
+		if (level is not 100 and not 101 and not 102)
 			throw new ArgumentOutOfRangeException(nameof(level), @"Only SERVER_INFO_100, SERVER_INFO_101, or SERVER_INFO_102 are supported as valid structures.");
 		NetServerGetInfo(serverName, level, out var ptr).ThrowIfFailed();
 		return ptr.DangerousGetHandle().ToStructure<T>();

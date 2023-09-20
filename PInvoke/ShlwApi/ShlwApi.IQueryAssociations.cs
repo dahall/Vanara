@@ -3,7 +3,7 @@
 public static partial class ShlwApi
 {
 	/// <summary>CLSID_QueryAssociations</summary>
-	public static readonly Guid CLSID_QueryAssociations = new Guid("a07034fd-6caa-4954-ac3f-97a27216f98a");
+	public static readonly Guid CLSID_QueryAssociations = new("a07034fd-6caa-4954-ac3f-97a27216f98a");
 
 	/// <summary>Provides information to the <c>IQueryAssociations</c> interface methods.</summary>
 	// typedef enum { ASSOCF_NONE = 0x00000000, ASSOCF_INIT_NOREMAPCLSID = 0x00000001, ASSOCF_INIT_BYEXENAME = 0x00000002,
