@@ -1,9 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using WINBIO_UNIT_ID = System.UInt32;
 
 namespace Vanara.PInvoke;
@@ -1008,6 +1003,151 @@ public static partial class WinBio
 		[MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen, out WINBIO_FRAMEWORK_HANDLE FrameworkHandle);
 
 	/// <summary>
+	/// Opens a handle to the biometric framework. Starting with Windows 10, build 1607, this function is available to use with a mobile
+	/// image. You can use this handle to asynchronously enumerate biometric units, databases, and service providers and to receive
+	/// asynchronous notification when biometric units are attached to the computer or removed.
+	/// </summary>
+	/// <param name="NotificationMethod">
+	/// <para>
+	/// Specifies how completion notifications for asynchronous operations in this framework session are to be delivered to the client
+	/// application. This must be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>WINBIO_ASYNC_NOTIFY_CALLBACK</term>
+	/// <term>The framework invokes the callback function defined by the application.</term>
+	/// </item>
+	/// <item>
+	/// <term>WINBIO_ASYNC_NOTIFY_MESSAGE</term>
+	/// <term>The framework posts a window message to the application's message queue.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="TargetWindow">
+	/// Handle of the window that will receive the completion notices. This value is ignored unless the NotificationMethod parameter is
+	/// set to <c>WINBIO_ASYNC_NOTIFY_MESSAGE</c>.
+	/// </param>
+	/// <param name="MessageCode">
+	/// <para>
+	/// Window message code the framework must send to signify completion notices. This value is ignored unless the NotificationMethod
+	/// parameter is set to <c>WINBIO_ASYNC_NOTIFY_MESSAGE</c>. The value must be within the range WM_APP (0x8000) to 0xBFFF.
+	/// </para>
+	/// <para>
+	/// The Windows Biometric Framework sets the <c>LPARAM</c> value of the message to the address of the WINBIO_ASYNC_RESULT structure
+	/// that contains the results of the operation. You must call WinBioFree to release the structure after you have finished using it.
+	/// </para>
+	/// </param>
+	/// <param name="CallbackRoutine">
+	/// Address of the callback routine to be invoked for completion notices. This value is ignored unless the NotificationMethod
+	/// parameter is set to <c>WINBIO_ASYNC_NOTIFY_CALLBACK</c>.
+	/// </param>
+	/// <param name="UserData">
+	/// Address of a buffer supplied by the caller. The buffer is not modified by the framework or the biometric unit. It is returned in
+	/// the WINBIO_ASYNC_RESULT structure. Your application can use the data to help it determine what actions to perform upon receipt
+	/// of the completion notice or to maintain additional information about the requested operation.
+	/// </param>
+	/// <param name="AsynchronousOpen">
+	/// <para>
+	/// Specifies whether to block until the framework session has been opened. Specifying <c>FALSE</c> causes the process to block.
+	/// Specifying <c>TRUE</c> causes the session to be opened asynchronously.
+	/// </para>
+	/// <para>
+	/// If you specify <c>FALSE</c> to open the framework session synchronously, success or failure is returned to the caller directly
+	/// by this function in the <c>HRESULT</c> return value. If the session is opened successfully, the first asynchronous completion
+	/// event your application receives will be for an asynchronous operation requested after the framework has been open.
+	/// </para>
+	/// <para>
+	/// If you specify <c>TRUE</c> to open the framework session asynchronously, the first asynchronous completion notice received will
+	/// be for opening the framework. If the NotificationMethod parameter is set to <c>WINBIO_ASYNC_NOTIFY_CALLBACK</c>, operation
+	/// results are delivered to the WINBIO_ASYNC_RESULT structure in the callback function specified by the CallbackRoutine parameter.
+	/// If the NotificationMethod parameter is set to <c>WINBIO_ASYNC_NOTIFY_MESSAGE</c>, operation results are delivered to the
+	/// <c>WINBIO_ASYNC_RESULT</c> structure pointed to by the <c>LPARAM</c> field of the window message.
+	/// </para>
+	/// </param>
+	/// <param name="FrameworkHandle">
+	/// <para>If the function does not succeed, this parameter will be <c>NULL</c>.</para>
+	/// <para>If the session is opened synchronously and successfully, this parameter will contain a pointer to the session handle.</para>
+	/// <para>
+	/// If you specify that the session be opened asynchronously, this method returns immediately, the session handle will be
+	/// <c>NULL</c>, and you must examine the WINBIO_ASYNC_RESULT structure to determine whether the session was successfully opened.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, it returns <c>S_OK</c>. If the function fails, it returns an <c>HRESULT</c> value that indicates the
+	/// error. Possible values include, but are not limited to, those in the following table. For a list of common error codes, see
+	/// Common HRESULT Values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>There is not enough memory available to create the framework session.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>
+	/// If you set the notification method to WINBIO_ASYNC_NOTIFY_MESSAGE, the TargetWindow parameter cannot be NULL or HWND_BROADCAST
+	/// and the MessageCode parameter cannot be zero (0).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>E_POINTER</term>
+	/// <term>
+	/// The FrameworkHandle parameter and the AsynchronousOpen parameter must be set. If you set the notification method to
+	/// WINBIO_ASYNC_NOTIFY_CALLBACK, you must also specify the address of a callback function in the CallbackRoutine parameter.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The framework handle returned by the <c>WinBioAsyncOpenFramework</c> function can be used to generate asynchronous completion
+	/// notifications for the following functions:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>WinBioAsyncEnumBiometricUnits</term>
+	/// </item>
+	/// <item>
+	/// <term>WinBioAsyncEnumDatabases</term>
+	/// </item>
+	/// <item>
+	/// <term>WinBioAsyncEnumServiceProviders</term>
+	/// </item>
+	/// <item>
+	/// <term>WinBioAsyncMonitorFrameworkChanges</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The AsynchronousOpen parameter determines only whether the open operation will block. This parameter has no effect on the
+	/// completion behavior of subsequent calls that use the session handle.
+	/// </para>
+	/// <para>
+	/// If you set the AsynchronousOpen parameter to <c>TRUE</c>, this function will return <c>S_OK</c> as soon as it has performed an
+	/// initial validation of the arguments. Any errors detected beyond that point will be reported to the caller using the method
+	/// specified by the NotificationMethod parameter. That is, a successful return value indicates only that the
+	/// <c>WinBioAsyncOpenFramework</c> parameters were fine and not that the open operation succeeded. To determine whether the open
+	/// operation succeeded, you must examine the WINBIO_ASYNC_RESULT structure.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winbio/nf-winbio-winbioasyncopenframework HRESULT WinBioAsyncOpenFramework(
+	// WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, HWND TargetWindow, UINT MessageCode, PWINBIO_ASYNC_COMPLETION_CALLBACK
+	// CallbackRoutine, PVOID UserData, BOOL AsynchronousOpen, WINBIO_FRAMEWORK_HANDLE *FrameworkHandle );
+	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
+	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioAsyncOpenFramework")]
+	public static extern HRESULT WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow, [In, Optional] uint MessageCode,
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] PWINBIO_ASYNC_COMPLETION_CALLBACK? CallbackRoutine, [In, Optional] IntPtr UserData,
+		[MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen, out WINBIO_FRAMEWORK_HANDLE FrameworkHandle);
+
+	/// <summary>
 	/// <para>
 	/// Asynchronously connects to a biometric service provider and one or more biometric units. Starting with Windows 10, build 1607,
 	/// this function is available to use with a mobile image. If successful, the function returns a biometric session handle. Every
@@ -1352,7 +1492,7 @@ public static partial class WinBio
 	public static extern HRESULT WinBioAsyncOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? UnitArray, [Optional] SizeT UnitCount, in Guid DatabaseId,
 		WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow,
-		[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK CallbackRoutine,
+		[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK? CallbackRoutine,
 		[In, Optional] IntPtr UserData, [MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen,
 		out WINBIO_SESSION_HANDLE SessionHandle);
 
@@ -1701,7 +1841,7 @@ public static partial class WinBio
 	public static extern HRESULT WinBioAsyncOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? UnitArray, [Optional] SizeT UnitCount, [In, Optional] GuidPtr DatabaseId,
 		WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow,
-		[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK CallbackRoutine,
+		[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK? CallbackRoutine,
 		[In, Optional] IntPtr UserData, [MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen,
 		out WINBIO_SESSION_HANDLE SessionHandle);
 
@@ -3907,7 +4047,7 @@ public static partial class WinBio
 	public static HRESULT WinBioEnumEnrollments(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_UNIT_ID UnitId, in WINBIO_IDENTITY Identity, out WINBIO_BIOMETRIC_SUBTYPE[] SubFactorArray)
 	{
 		var ret = WinBioEnumEnrollments(SessionHandle, UnitId, Identity, out var a, out var c);
-		SubFactorArray = ret.Succeeded ? a.DangerousGetHandle().ToArray<WINBIO_BIOMETRIC_SUBTYPE>(c) : null;
+		SubFactorArray = ret.Succeeded ? a.DangerousGetHandle().ToArray<WINBIO_BIOMETRIC_SUBTYPE>(c)! : new WINBIO_BIOMETRIC_SUBTYPE[0];
 		return ret;
 	}
 
@@ -6939,7 +7079,7 @@ public static partial class WinBio
 	private static HRESULT GetEnum<T>(EnumFunc f, WINBIO_BIOMETRIC_TYPE Factor, out T[] array)
 	{
 		var ret = f(Factor, out var a, out var c);
-		array = ret.Succeeded ? a.DangerousGetHandle().ToArray<T>(c) : null;
+		array = ret.Succeeded ? a.DangerousGetHandle().ToArray<T>(c)! : new T[0];
 		return ret;
 	}
 
@@ -7300,7 +7440,7 @@ public static partial class WinBio
 				public IntPtr _SubFactorArray;
 
 				/// <summary>Pointer to an array of sub-factors. For more information, see Remarks.</summary>
-				public WINBIO_BIOMETRIC_SUBTYPE[] SubFactorArray => _SubFactorArray.ToArray<WINBIO_BIOMETRIC_SUBTYPE>(SubFactorCount);
+				public WINBIO_BIOMETRIC_SUBTYPE[] SubFactorArray => _SubFactorArray.ToArray<WINBIO_BIOMETRIC_SUBTYPE>(SubFactorCount) ?? new WINBIO_BIOMETRIC_SUBTYPE[0];
 			}
 
 			/// <summary>Contains the results of an asynchronous call to WinBioCaptureSample.</summary>
@@ -7483,7 +7623,7 @@ public static partial class WinBio
 				/// <summary>
 				/// An array of WINBIO_BSP_SCHEMA structures that contain information about each of the available service providers.
 				/// </summary>
-				public WINBIO_BSP_SCHEMA[] BspSchemaArray => _BspSchemaArray.ToArray<WINBIO_BSP_SCHEMA>(BspCount);
+				public WINBIO_BSP_SCHEMA[] BspSchemaArray => _BspSchemaArray.ToArray<WINBIO_BSP_SCHEMA>(BspCount) ?? new WINBIO_BSP_SCHEMA[0];
 			}
 
 			/// <summary>Contains the results of an asynchronous call to WinBioEnumBiometricUnits or WinBioAsyncEnumBiometricUnits.</summary>
@@ -7501,7 +7641,7 @@ public static partial class WinBio
 				public IntPtr _UnitSchemaArray;
 
 				/// <summary>An array of WINBIO_UNIT_SCHEMA structures that contain information about each enumerated biometric unit.</summary>
-				public WINBIO_UNIT_SCHEMA[] UnitSchemaArray => _UnitSchemaArray.ToArray<WINBIO_UNIT_SCHEMA>(UnitCount);
+				public WINBIO_UNIT_SCHEMA[] UnitSchemaArray => _UnitSchemaArray.ToArray<WINBIO_UNIT_SCHEMA>(UnitCount) ?? new WINBIO_UNIT_SCHEMA[0];
 			}
 
 			/// <summary>Contains the results of an asynchronous call to WinBioEnumDatabases or WinBioAsyncEnumDatabases.</summary>
@@ -7519,7 +7659,7 @@ public static partial class WinBio
 				public IntPtr _StorageSchemaArray;
 
 				/// <summary>Array of WINBIO_STORAGE_SCHEMA structures that contain information about each database.</summary>
-				public WINBIO_STORAGE_SCHEMA[] StorageSchemaArray => _StorageSchemaArray.ToArray<WINBIO_STORAGE_SCHEMA>(StorageCount);
+				public WINBIO_STORAGE_SCHEMA[] StorageSchemaArray => _StorageSchemaArray.ToArray<WINBIO_STORAGE_SCHEMA>(StorageCount) ?? new WINBIO_STORAGE_SCHEMA[0];
 			}
 
 			/// <summary>Reserved. This member is supported starting in Windows 10.</summary>
@@ -7600,7 +7740,7 @@ public static partial class WinBio
 				public IntPtr _PresenceArray;
 
 				/// <summary>Address of the array of WINBIO_PRESENCE structures, one for each individual monitored.</summary>
-				public WINBIO_PRESENCE[] PresenceArray => _PresenceArray.ToArray<WINBIO_PRESENCE>(PresenceCount);
+				public WINBIO_PRESENCE[] PresenceArray => _PresenceArray.ToArray<WINBIO_PRESENCE>(PresenceCount) ?? new WINBIO_PRESENCE[0];
 			}
 
 			/// <summary/>
@@ -7694,7 +7834,7 @@ public static partial class WinBio
 	public class SafeWinBioStruct<TStruct> : SafeMemStruct<TStruct, WinBioMemoryMethods> where TStruct : struct
 	{
 		/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
-		public static readonly SafeWinBioStruct<TStruct> Null = new SafeWinBioStruct<TStruct>(IntPtr.Zero, false);
+		public static readonly SafeWinBioStruct<TStruct> Null = new(IntPtr.Zero, false);
 
 		/// <summary>Initializes a new instance of the <see cref="SafeWinBioStruct{TStruct}"/> class.</summary>
 		/// <param name="s">The TStruct value.</param>

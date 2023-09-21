@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WinBio.dll</summary>
@@ -2581,7 +2576,7 @@ public static partial class WinBio
 					private readonly byte first;
 
 					/// <summary/>
-					public string ColorSensorId
+					public string? ColorSensorId
 					{
 						get
 						{
@@ -2596,7 +2591,7 @@ public static partial class WinBio
 					}
 
 					/// <summary/>
-					public string InfraredSensorId
+					public string? InfraredSensorId
 					{
 						get
 						{

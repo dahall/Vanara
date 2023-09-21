@@ -1,12 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.WinBio;
 using TestContext = System.Console;
 
@@ -105,7 +99,7 @@ public class WinBioTests
 	{
 		ManualResetEvent evt = new(false);
 		using var wnd = new MsgWnd(Callback);
-		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, default, default, false, out var hFramework), ResultIs.Successful);
+		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, null, default, false, out var hFramework), ResultIs.Successful);
 		try
 		{
 			Assert.That(WinBioAsyncEnumBiometricUnits(hFramework, WINBIO_BIOMETRIC_TYPE.WINBIO_TYPE_FINGERPRINT), ResultIs.Successful);
@@ -144,7 +138,7 @@ public class WinBioTests
 	{
 		ManualResetEvent evt = new(false);
 		using var wnd = new MsgWnd(Callback);
-		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, default, default, false, out var hFramework), ResultIs.Successful);
+		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, null, default, false, out var hFramework), ResultIs.Successful);
 		try
 		{
 			Assert.That(WinBioAsyncEnumDatabases(hFramework, WINBIO_BIOMETRIC_TYPE.WINBIO_TYPE_FINGERPRINT), ResultIs.Successful);
@@ -183,7 +177,7 @@ public class WinBioTests
 	{
 		ManualResetEvent evt = new(false);
 		using var wnd = new MsgWnd(Callback);
-		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, default, default, false, out var hFramework), ResultIs.Successful);
+		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, null, default, false, out var hFramework), ResultIs.Successful);
 		try
 		{
 			Assert.That(WinBioAsyncEnumServiceProviders(hFramework, WINBIO_BIOMETRIC_TYPE.WINBIO_TYPE_FINGERPRINT), ResultIs.Successful);
@@ -222,7 +216,7 @@ public class WinBioTests
 	{
 		ManualResetEvent evt = new(false);
 		using var wnd = new MsgWnd(Callback);
-		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, default, default, false, out var hFramework), ResultIs.Successful);
+		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, null, default, false, out var hFramework), ResultIs.Successful);
 		try
 		{
 			Assert.That(WinBioAsyncMonitorFrameworkChanges(hFramework, WINBIO_FRAMEWORK_CHANGE_TYPE.WINBIO_FRAMEWORK_CHANGE_UNIT), ResultIs.Successful);
@@ -277,7 +271,7 @@ public class WinBioTests
 	public void WinBioAsyncOpenFrameworkHwnd2Test()
 	{
 		using var wnd = new MsgWnd();
-		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, default, default, false, out var hFramework), ResultIs.Successful);
+		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, null, default, false, out var hFramework), ResultIs.Successful);
 		try
 		{
 			Assert.That((uint)hFramework, Is.Not.Zero);
@@ -292,7 +286,7 @@ public class WinBioTests
 	public void WinBioAsyncOpenFrameworkHwndTest()
 	{
 		using var wnd = new MsgWnd();
-		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, default, default, true, out var hFramework), ResultIs.Successful);
+		Assert.That(WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD.WINBIO_ASYNC_NOTIFY_MESSAGE, wnd.MessageWindowHandle, compMsg, null, default, true, out var hFramework), ResultIs.Successful);
 		Assert.That((uint)hFramework, Is.Zero);
 	}
 
@@ -328,10 +322,10 @@ public class WinBioTests
 		var hr = WinBioCaptureSample(sessionHandle,
 			WINBIO_BIR_PURPOSE.WINBIO_NO_PURPOSE_AVAILABLE,
 			WINBIO_BIR_DATA_FLAGS.WINBIO_DATA_FLAG_RAW,
-			out var unitId,
+			out _,
 			out var sample,
 			out var sampleSize,
-			out var rejectDetail);
+			out _);
 		Assert.That(hr, ResultIs.Successful);
 		Assert.IsFalse(sample.IsInvalid);
 
@@ -393,9 +387,8 @@ public class WinBioTests
 	public void WinBioGetPropertyTest()
 	{
 		Assert.That(WinBioLocateSensor(sessionHandle, out var unitId), ResultIs.Successful);
-
 		Assert.That(WinBioGetProperty(sessionHandle, WINBIO_PROPERTY_TYPE.WINBIO_PROPERTY_TYPE_UNIT, WINBIO_PROPERTY_ID.WINBIO_PROPERTY_EXTENDED_SENSOR_INFO,
-			unitId, default, WINBIO_BIOMETRIC_SUBTYPE.WINBIO_SUBTYPE_NO_INFORMATION, out var propBuf, out var propSize), ResultIs.Successful);
+			unitId, default, WINBIO_BIOMETRIC_SUBTYPE.WINBIO_SUBTYPE_NO_INFORMATION, out _, out var propSize), ResultIs.Successful);
 
 		Assert.That((long)propSize, Is.GreaterThan(0L));
 	}
@@ -412,7 +405,7 @@ public class WinBioTests
 	{
 		Assert.That(WinBioIdentifyWithCallback(sessionHandle, Callback), ResultIs.Successful);
 
-		void Callback(IntPtr IdentifyCallbackContext, HRESULT OperationStatus, uint UnitId, in WINBIO_IDENTITY Identity, WINBIO_BIOMETRIC_SUBTYPE SubFactor, WINBIO_REJECT_DETAIL RejectDetail)
+		static void Callback(IntPtr IdentifyCallbackContext, HRESULT OperationStatus, uint UnitId, in WINBIO_IDENTITY Identity, WINBIO_BIOMETRIC_SUBTYPE SubFactor, WINBIO_REJECT_DETAIL RejectDetail)
 		{
 			Assert.That(UnitId, Is.Not.Zero);
 			TestContext.WriteLine($"{UnitId} : {SubFactor} : {RejectDetail}");
@@ -422,9 +415,9 @@ public class WinBioTests
 
 	private class MsgWnd : SystemEventHandler
 	{
-		private readonly User32.WindowProc callback;
+		private readonly User32.WindowProc? callback;
 
-		public MsgWnd(User32.WindowProc callback = null) => this.callback = callback;
+		public MsgWnd(User32.WindowProc? callback = null) => this.callback = callback;
 
 		protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 		{
