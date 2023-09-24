@@ -9,22 +9,13 @@ namespace Vanara.PInvoke.Tests;
 public partial class User32Tests
 {
 	[Test()]
-	public void CallNextHookExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void CallNextHookExTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void ChildWindowFromPointExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void ChildWindowFromPointExTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void DestroyIconTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DestroyIconTest() => throw new NotImplementedException();
 
 	[Test]
 	public void EnumDisplayDevicesTest()

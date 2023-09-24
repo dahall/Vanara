@@ -10,9 +10,11 @@ namespace Vanara.PInvoke.Tests;
 public class Usp10Tests
 {
 	private const string str = "Hello, world!\u064A\u064F\u0633\u0627\u0648\u0650\u064A How are you?";
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	private SafeHDC dc;
 	private SafeHFONT fnt;
 	private SafeSCRIPT_CACHE sc;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup()
@@ -137,8 +139,8 @@ public class Usp10Tests
 	[Test]
 	public void ScriptGetPropertiesTest()
 	{
-		Assert.That(ScriptGetProperties(out SCRIPT_PROPERTIES[] sp), ResultIs.Successful);
-		sp.WriteValues();
+		Assert.That(ScriptGetProperties(out SCRIPT_PROPERTIES[]? sp), ResultIs.Successful);
+		sp?.WriteValues();
 	}
 
 	[Test]
@@ -148,10 +150,10 @@ public class Usp10Tests
 	public void ScriptItemizeTest()
 	{
 		const int max = 50;
-		Assert.That(ScriptGetProperties(out SCRIPT_PROPERTIES[] sp), ResultIs.Successful);
+		Assert.That(ScriptGetProperties(out SCRIPT_PROPERTIES[]? sp), ResultIs.Successful);
 		SCRIPT_ITEM[] pItems = new SCRIPT_ITEM[max];
 		Assert.That(ScriptItemize(str, str.Length, pItems.Length, default, default, pItems, out int cItems), ResultIs.Successful);
-		Assert.That(pItems.Take(cItems).Select(i => i.a.eScript).Select(s => sp[s].fComplex), Has.Some.True);
+		Assert.That(pItems.Take(cItems).Select(i => i.a.eScript).Select(s => sp?[s].fComplex), Has.Some.True);
 		foreach (SCRIPT_ITEM i in pItems.Take(cItems))
 		{
 			i.WriteValues();
@@ -162,7 +164,7 @@ public class Usp10Tests
 	public void ScriptItemizeTest2()
 	{
 		const int max = 50;
-		Assert.That(ScriptGetProperties(out SCRIPT_PROPERTIES[] sp), ResultIs.Successful);
+		Assert.That(ScriptGetProperties(out SCRIPT_PROPERTIES[]? sp), ResultIs.Successful);
 
 		Assert.That(ScriptRecordDigitSubstitution(LCID.LOCALE_CUSTOM_DEFAULT, out SCRIPT_DIGITSUBSTITUTE sub), ResultIs.Successful);
 		sub.WriteValues();
@@ -173,7 +175,7 @@ public class Usp10Tests
 
 		SCRIPT_ITEM[] pItems = new SCRIPT_ITEM[max];
 		Assert.That(ScriptItemize(str, str.Length, pItems.Length, sc, ss, pItems, out int cItems), ResultIs.Successful);
-		Assert.That(pItems.Take(cItems).Select(i => i.a.eScript).Select(s => sp[s].fComplex), Has.Some.True);
+		Assert.That(pItems.Take(cItems).Select(i => i.a.eScript).Select(s => sp?[s].fComplex), Has.Some.True);
 		foreach (SCRIPT_ITEM i in pItems.Take(cItems))
 		{
 			i.WriteValues();
@@ -208,6 +210,6 @@ public class Usp10Tests
 		ssa.WriteValues();
 		Assert.That(ssa.Out(POINT.Empty), ResultIs.Successful);
 		Assert.That(ssa.CPtoX(5, true), Is.GreaterThan(0));
-		Assert.That(ssa.XtoCP(ssa.Size.Value.Width).cp, Is.GreaterThan(30));
+		Assert.That(ssa.XtoCP(ssa.Size!.Value.Width).cp, Is.GreaterThan(30));
 	}
 }

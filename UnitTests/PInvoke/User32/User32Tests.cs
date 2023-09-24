@@ -44,52 +44,28 @@ public partial class User32Tests
 	}
 
 	[Test()]
-	public void GetWindowLongTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void GetWindowLongTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void GetWindowLong32Test()
-	{
-		throw new NotImplementedException();
-	}
+	public void GetWindowLong32Test() => throw new NotImplementedException();
 
 	[Test()]
-	public void GetWindowLongPtrTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void GetWindowLongPtrTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void LockWorkStationTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void LockWorkStationTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void RealGetWindowClassTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void RealGetWindowClassTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void RegisterHotKeyTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void RegisterHotKeyTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void RegisterWindowMessageTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void RegisterWindowMessageTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void ScreenToClientTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void ScreenToClientTest() => throw new NotImplementedException();
 
 	[Test()]
 	public void SendMessageTest()
@@ -150,167 +126,86 @@ public partial class User32Tests
 		TestContext.WriteLine(sb);
 	}
 
-		[Test()]
-	public void SendMessageTest2()
-	{
-		throw new NotImplementedException();
-	}
+	[Test()]
+	public void SendMessageTest2() => throw new NotImplementedException();
 
 	[Test()]
-	public void SendMessageTest3()
-	{
-		throw new NotImplementedException();
-	}
+	public void SendMessageTest3() => throw new NotImplementedException();
 
 	[Test()]
-	public void SendMessageTest4()
-	{
-		throw new NotImplementedException();
-	}
+	public void SendMessageTest4() => throw new NotImplementedException();
 
 	[Test()]
-	public void SendMessageTest5()
-	{
-		throw new NotImplementedException();
-	}
+	public void SendMessageTest5() => throw new NotImplementedException();
 
 	[Test()]
-	public void SetWindowLongTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void SetWindowLongTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void SetWindowPosTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void SetWindowPosTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void SetWindowTextTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void SetWindowTextTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void ShutdownBlockReasonCreateTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void ShutdownBlockReasonCreateTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void ShutdownBlockReasonDestroyTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void ShutdownBlockReasonDestroyTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void ShutdownBlockReasonQueryTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void ShutdownBlockReasonQueryTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void ShutdownBlockReasonQueryTest1()
-	{
-		throw new NotImplementedException();
-	}
+	public void ShutdownBlockReasonQueryTest1() => throw new NotImplementedException();
 
 	[Test()]
-	public void UnhookWindowsHookExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void UnhookWindowsHookExTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void UnregisterHotKeyTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void UnregisterHotKeyTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void WindowFromPointTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void WindowFromPointTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void ExitWindowsExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void ExitWindowsExTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void DrawTextTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawTextTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void GetClientRectTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void GetClientRectTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void GetWindowRectTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void GetWindowRectTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void InvalidateRectTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void InvalidateRectTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void MapWindowPointsTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void MapWindowPointsTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void MapWindowPointsTest1()
-	{
-		throw new NotImplementedException();
-	}
+	public void MapWindowPointsTest1() => throw new NotImplementedException();
 
 	[Test()]
-	public void MapWindowPointsTest2()
-	{
-		throw new NotImplementedException();
-	}
+	public void MapWindowPointsTest2() => throw new NotImplementedException();
 
 	[Test()]
-	public void SendMessageTest6()
-	{
-		throw new NotImplementedException();
-	}
+	public void SendMessageTest6() => throw new NotImplementedException();
 
 	[Test()]
-	public void LoadImageTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void LoadImageTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void LoadStringTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void LoadStringTest() => throw new NotImplementedException();
 
 	[Test()]
-	public void LoadStringTest1()
-	{
-		throw new NotImplementedException();
-	}
+	public void LoadStringTest1() => throw new NotImplementedException();
 
 	[Test()]
-	public void SetWindowsHookExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void SetWindowsHookExTest() => throw new NotImplementedException();
 
 	[Test]
 	public void SystemParametersInfoGetTest()
@@ -371,35 +266,35 @@ public partial class User32Tests
 			var gmi = X(e, mi, CorrespondingAction.Get);
 			if (gmi is null)
 				continue;
-			var param = new object[] { e, null };
+			var param = new object?[] { e, null };
 			TestContext.Write($"{e}: ");
-			if ((bool)gmi.Invoke(null, param))
+			if ((bool)gmi.Invoke(null, param)!)
 				TestContext.WriteLine($"{param[1]}");
 			else
 				TestContext.Write($"ERROR: {Win32Error.GetLastError()}");
 
-			if (!Enum.TryParse(Enum.GetName(typeof(SPI), e).Replace("SPI_GET", "SPI_SET"), out SPI se) || se == SPI.SPI_SETSHOWSOUNDS)
+			if (!Enum.TryParse(Enum.GetName(typeof(SPI), e)!.Replace("SPI_GET", "SPI_SET"), out SPI se) || se == SPI.SPI_SETSHOWSOUNDS)
 				continue;
 			gmi = X(se, smi, CorrespondingAction.Set);
 			if (gmi is null)
 				continue;
-			var sparam = new object[] { se, param[1], false, false };
+			var sparam = new object?[] { se, param[1], false, false };
 			TestContext.Write($"{se}: ");
-			if ((bool)gmi.Invoke(null, sparam))
+			if ((bool)gmi.Invoke(null, sparam)!)
 				TestContext.WriteLine("Pass");
 			else
 				TestContext.Write($"Fail: {Win32Error.GetLastError()}");
 		}
 
-		static MethodInfo X(SPI e, MethodInfo mi, CorrespondingAction a)
+		static MethodInfo? X(SPI e, MethodInfo mi, CorrespondingAction a)
 		{
-			if (!e.GetType().GetField(e.ToString()).GetCustomAttributes<ObsoleteAttribute>().Any())
+			if (!e.GetType().GetField(e.ToString())!.GetCustomAttributes<ObsoleteAttribute>().Any())
 			{
 				var typeAttrs = CorrespondingTypeAttribute.GetAttrForEnum(e).ToArray();
 				if (typeAttrs.Length > 0 && typeAttrs[0].Action == a)
 				{
 					var genType = typeAttrs[0].TypeRef;
-					if (genType.IsValueType)
+					if (genType!.IsValueType)
 						return mi.MakeGenericMethod(genType);
 				}
 			}

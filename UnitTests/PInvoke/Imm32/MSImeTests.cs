@@ -42,7 +42,7 @@ public class MSImmTests
 	[Test]
 	public void PlugInDictDictionaryListTest()
 	{
-		var idlist = new ImePlugInDictDictionaryList1041() as IImePlugInDictDictionaryList;
+		var idlist = (IImePlugInDictDictionaryList)new ImePlugInDictDictionaryList1041();
 		Assert.That(() => idlist.GetDictionariesInUse(out var guids, out var dt, out var enc), Throws.Nothing);
 	}
 

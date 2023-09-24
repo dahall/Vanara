@@ -1199,7 +1199,7 @@ public static partial class User32
 	// nBuff, HKL *lpList );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int GetKeyboardLayoutList(int nBuff, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HKL[] lpList);
+	public static extern int GetKeyboardLayoutList(int nBuff, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HKL[]? lpList);
 
 	/// <summary>Retrieves the name of the active input locale identifier (formerly called the keyboard layout) for the system.</summary>
 	/// <param name="pwszKLID">

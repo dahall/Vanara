@@ -10,10 +10,10 @@ public partial class User32Tests
 	[Test]
 	public void WindowClassCtorTest()
 	{
-		WindowClass wc = null;
+		WindowClass? wc = null;
 
 		Assert.DoesNotThrow(() => wc = new());
-		Assert.AreEqual(wc.wc.hInstance, (HINSTANCE)GetModuleHandle());
+		Assert.AreEqual(wc!.wc.hInstance, (HINSTANCE)GetModuleHandle());
 		Assert.True(wc.Unregister());
 
 		Assert.DoesNotThrow(() => wc = new("MyCustomName"));
@@ -32,13 +32,13 @@ public partial class User32Tests
 	{
 		using BasicMessageWindow wnd = new();
 
-		WindowClass wc3 = null;
-		Assert.NotNull(wc3 = WindowClass.GetNamedInstance(wnd.ClassName, GetModuleHandle()));
-		Assert.AreEqual(wnd.ClassName, wc3.ClassName);
+		WindowClass? wc3 = null;
+		Assert.NotNull(wc3 = WindowClass.GetNamedInstance(wnd!.ClassName!, GetModuleHandle()));
+		Assert.AreEqual(wnd.ClassName, wc3!.ClassName);
 
-		WindowClass wc = null;
+		WindowClass? wc = null;
 		Assert.NotNull(wc = WindowClass.GetInstanceFromWindow(wnd.Handle));
-		Assert.AreEqual(wc.ClassName, wnd.ClassName);
+		Assert.AreEqual(wc!.ClassName, wnd.ClassName);
 	}
 
 	[Test]
@@ -67,10 +67,7 @@ public partial class User32Tests
 	}
 
 	[Test]
-	public void WindowRunTest()
-	{
-		VisibleWindow.Run<MyWin>(null, "Hello");
-	}
+	public void WindowRunTest() => VisibleWindow.Run<MyWin>(null, "Hello");
 
 	public class MyWin : VisibleWindow
 	{
