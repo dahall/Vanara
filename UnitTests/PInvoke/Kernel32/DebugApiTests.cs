@@ -29,7 +29,7 @@ public class DebugApiTests
 	// [Test]
 	public void TestMethod()
 	{
-		System.Diagnostics.Process p = CSharpRunner.RunProcess(typeof(DebugProcess));
+		System.Diagnostics.Process p = CSharpRunner.RunProcess(typeof(DebugProcess), null, "MyMain");
 		uint pid = (uint)p.Id;
 		Assert.That(DebugActiveProcess(pid), ResultIs.Successful);
 		//Assert.That(ContinueDebugEvent(pid, ))
@@ -40,7 +40,7 @@ public class DebugApiTests
 
 public static class DebugProcess
 {
-	public static int Main()
+	public static int MyMain()
 	{
 		Sleep(2000);
 		DebugBreak();

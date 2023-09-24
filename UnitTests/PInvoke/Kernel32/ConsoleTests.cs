@@ -11,7 +11,7 @@ public class ConsoleTests
 	[Test]
 	public void ConsoleTest()
 	{
-		Process p = CSharpRunner.RunProcess(typeof(ConsoleTestProcess));
+		Process p = CSharpRunner.RunProcess(typeof(ConsoleTestProcess), null, "MyMain");
 		p.WaitForExit();
 		Assert.That(p.ExitCode, Is.Zero);
 	}
@@ -21,7 +21,7 @@ public static class ConsoleTestProcess
 {
 	public static HFILE hStdin, hStdout;
 
-	public static int Main()
+	public static int MyMain()
 	{
 		// Get handles to STDIN and STDOUT.
 		hStdin = GetStdHandle(StdHandleType.STD_INPUT_HANDLE);

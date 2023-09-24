@@ -24,9 +24,9 @@ public class LibLoaderApiTests
 	public void EnumResourceLanguagesExTest()
 	{
 		using SafeHINSTANCE hLib = LoadLibraryEx(resFile, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-		IList<ushort> l = null;
+		IReadOnlyList<LANGID>? l = null;
 		Assert.That(() => l = EnumResourceLanguagesEx(hLib, ResourceType.RT_STRING, 2), Throws.Nothing);
-		Assert.That(l.Count, Is.GreaterThan(0));
+		Assert.That(l!.Count, Is.GreaterThan(0));
 		TestContext.WriteLine(string.Join(" : ", l));
 	}
 
@@ -34,9 +34,9 @@ public class LibLoaderApiTests
 	public void EnumResourceTypesExTest()
 	{
 		using SafeHINSTANCE hLib = LoadLibraryEx(resFile, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-		IList<ResourceId> l = null;
+		IReadOnlyList<ResourceId>? l = null;
 		Assert.That(() => l = EnumResourceTypesEx(hLib), Throws.Nothing);
-		Assert.That(l.Count, Is.GreaterThan(0));
+		Assert.That(l!.Count, Is.GreaterThan(0));
 		TestContext.WriteLine(string.Join(" : ", l.Select(i => (ResourceType)i.id)));
 	}
 
@@ -44,9 +44,9 @@ public class LibLoaderApiTests
 	public void EnumResourceNamesTest()
 	{
 		using SafeHINSTANCE hLib = LoadLibraryEx(resFile, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-		IList<ResourceId> l = null;
+		IReadOnlyList<ResourceId>? l = null;
 		Assert.That(() => l = EnumResourceNamesEx(hLib, ResourceType.RT_STRING), Throws.Nothing);
-		Assert.That(l.Count, Is.GreaterThan(0));
+		Assert.That(l!.Count, Is.GreaterThan(0));
 		foreach (ResourceId resourceName in l)
 			Assert.That(resourceName.ToString(), Has.Length.GreaterThan(0));
 		TestContext.WriteLine(string.Join(" : ", l.Select(i => i.id)));
