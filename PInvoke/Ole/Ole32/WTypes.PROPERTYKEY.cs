@@ -175,6 +175,7 @@ public static partial class Ole32
 				AddMembersToIndex(dict, ti, level + 1);
 		}
 
+		/// <summary>Listing of System property key hierarchy.</summary>
 		[PInvokeData("Propkey.h", MSDNShortId = "dd561977")]
 		public static class System
 		{

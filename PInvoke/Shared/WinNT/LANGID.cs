@@ -18,6 +18,7 @@ public struct LANGID : IEquatable<LANGID>, IEquatable<ushort>, IConvertible, ICo
 	/// <summary>Primary language identifier.</summary>
 	public enum LANG : ushort
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		LANG_NEUTRAL = 0x00,
 		LANG_INVARIANT = 0x7f,
 		LANG_AFRIKAANS = 0x36,
@@ -158,6 +159,7 @@ public struct LANGID : IEquatable<LANGID>, IEquatable<ushort>, IConvertible, ICo
 		LANG_YI = 0x78,
 		LANG_YORUBA = 0x6a,
 		LANG_ZULU = 0x35,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Sublanguage identifier.</summary>

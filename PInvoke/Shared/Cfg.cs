@@ -1,11 +1,11 @@
-﻿
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>The status of a device node (devnode).</summary>
 [PInvokeData("cfg.h")]
 [Flags]
 public enum DN : uint
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	DN_ROOT_ENUMERATED = 0x00000001,
 	DN_DRIVER_LOADED = 0x00000002,
 	DN_ENUM_LOADED = 0x00000004,
@@ -45,4 +45,5 @@ public enum DN : uint
 	DN_DEVICE_DISCONNECTED = DN_NEEDS_LOCKING,
 	DN_QUERY_REMOVE_PENDING = DN_MF_PARENT,
 	DN_QUERY_REMOVE_ACTIVE = DN_MF_CHILD,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

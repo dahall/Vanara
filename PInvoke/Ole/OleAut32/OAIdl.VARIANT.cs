@@ -1,4 +1,5 @@
-﻿using static Vanara.PInvoke.Ole32;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
 

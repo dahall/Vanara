@@ -87,69 +87,52 @@ public sealed class NotNullWhenAttribute : Attribute
 [Flags]
 public enum DynamicallyAccessedMemberTypes
 {
-	//
-	// Summary:
-	//     Specifies all members.
+	/// <summary>Specifies all members.</summary>
 	All = -1,
-	//
-	// Summary:
-	//     Specifies no members.
+
+	/// <summary>Specifies no members.</summary>
 	None = 0,
-	//
-	// Summary:
-	//     Specifies the default, parameterless public constructor.
+
+	/// <summary>Specifies the default, parameterless public constructor.</summary>
 	PublicParameterlessConstructor = 1,
-	//
-	// Summary:
-	//     Specifies all public constructors.
+
+	/// <summary>Specifies all public constructors.</summary>
 	PublicConstructors = 3,
-	//
-	// Summary:
-	//     Specifies all non-public constructors.
+
+	/// <summary>Specifies all non-public constructors.</summary>
 	NonPublicConstructors = 4,
-	//
-	// Summary:
-	//     Specifies all public methods.
+
+	/// <summary>Specifies all public methods.</summary>
 	PublicMethods = 8,
-	//
-	// Summary:
-	//     Specifies all non-public methods.
+
+	/// <summary>Specifies all non-public methods.</summary>
 	NonPublicMethods = 16,
-	//
-	// Summary:
-	//     Specifies all public fields.
+
+	/// <summary>Specifies all public fields.</summary>
 	PublicFields = 32,
-	//
-	// Summary:
-	//     Specifies all non-public fields.
+
+	/// <summary>Specifies all non-public fields.</summary>
 	NonPublicFields = 64,
-	//
-	// Summary:
-	//     Specifies all public nested types.
+
+	/// <summary>Specifies all public nested types.</summary>
 	PublicNestedTypes = 128,
-	//
-	// Summary:
-	//     Specifies all non-public nested types.
+
+	/// <summary>Specifies all non-public nested types.</summary>
 	NonPublicNestedTypes = 256,
-	//
-	// Summary:
-	//     Specifies all public properties.
+
+	/// <summary>Specifies all public properties.</summary>
 	PublicProperties = 512,
-	//
-	// Summary:
-	//     Specifies all non-public properties.
+
+	/// <summary>Specifies all non-public properties.</summary>
 	NonPublicProperties = 1024,
-	//
-	// Summary:
-	//     Specifies all public events.
+
+	/// <summary>Specifies all public events.</summary>
 	PublicEvents = 2048,
-	//
-	// Summary:
-	//     Specifies all non-public events.
+
+	/// <summary>Specifies all non-public events.</summary>
 	NonPublicEvents = 4096,
-	//
-	// Summary:
-	//     Specifies all interfaces implemented by the type.
+
+	/// <summary>Specifies all interfaces implemented by the type.</summary>
 	Interfaces = 8192
 }
 

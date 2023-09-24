@@ -410,7 +410,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 		if (!string.IsNullOrEmpty(value))
 		{
 			var curLen = Length;
-			Capacity += value.Length;
+			Capacity += value?.Length ?? 0;
 			StringHelper.Write(value, DangerousGetHandle().Offset(curLen * 2), out _, true, CharSet.Unicode, Size);
 		}
 	}
