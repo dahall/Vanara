@@ -1,15 +1,58 @@
-﻿using System;
+﻿
+/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
+Before:
+using System;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
+Before:
+using System;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
+Before:
+using System;
+After:
+using Microsoft.Win32;
+using System;
+*/
+using Microsoft.Win32;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+
+/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
+Before:
 using Microsoft.Win32;
 using Vanara.Extensions;
-using Vanara.InteropServices;
+After:
+using Vanara.Extensions;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
+Before:
+using Microsoft.Win32;
+using Vanara.Extensions;
+After:
+using Vanara.Extensions;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
+Before:
+using Microsoft.Win32;
+using Vanara.Extensions;
+After:
+using Vanara.Extensions;
+*/
 using Vanara.PInvoke;
 using Vanara.Resources;
-using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;

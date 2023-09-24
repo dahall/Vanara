@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Items from the Dwrite.dll</summary>
 public static partial class Dwrite

@@ -1,10 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Imm32;
 using static Vanara.PInvoke.User32;
 

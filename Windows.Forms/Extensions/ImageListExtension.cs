@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
-using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.Extensions;
 
 /// <summary>Extension methods for <see cref="ImageList"/>.</summary>
 public static partial class ImageListExtension
 {
-	private static Dictionary<ImageList, List<int>> imageListOverlays = new Dictionary<ImageList, List<int>>();
+	private static Dictionary<ImageList, List<int>> imageListOverlays = new();
 
 	/// <summary>Adds the specified image to the ImageList as an overlay, using the specified color to determine transparency.</summary>
 	/// <param name="imageList">The image list.</param>

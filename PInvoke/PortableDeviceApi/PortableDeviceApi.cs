@@ -1,16 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
 
-    /// <summary>Items from the PortableDeviceApi.dll</summary>
-    public static partial class PortableDeviceApi
+/// <summary>Items from the PortableDeviceApi.dll</summary>
+public static partial class PortableDeviceApi
     {
         private const string Lib_PortableDeviceApi = "PortableDeviceApi.dll";
 

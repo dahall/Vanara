@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke.VssApi;
+﻿namespace Vanara.PInvoke.VssApi;
 
 /// <summary>
 /// <para>

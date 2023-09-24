@@ -2,8 +2,8 @@
 using NUnit.Framework.Internal;
 using System.IO;
 using System.Threading;
-using static Vanara.PInvoke.DOSvc;
 using Vanara.Utilities;
+using static Vanara.PInvoke.DOSvc;
 
 namespace Vanara.PInvoke.Tests;
 

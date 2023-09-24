@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;

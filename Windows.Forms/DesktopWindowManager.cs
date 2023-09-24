@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Security;
 using System.Windows.Forms;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.DwmApi;
 
 namespace Vanara.Windows.Forms;
 
 /// <summary>Main DWM class, provides glass sheet effect and blur behind.</summary>
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
 [SecuritySafeCritical]
 public static partial class DesktopWindowManager
 {
-	internal static readonly ThumbnailMgr thumbnailMgr = new ThumbnailMgr();
-	private static readonly object _lock = new object();
-	private static readonly object colorizationColorChangedKey = new object();
-	private static readonly object compositionChangedKey = new object();
+	internal static readonly ThumbnailMgr thumbnailMgr = new();
+	private static readonly object _lock = new();
+	private static readonly object colorizationColorChangedKey = new();
+	private static readonly object compositionChangedKey = new();
 	private static readonly object[] keys = { compositionChangedKey, nonClientRenderingChangedKey, colorizationColorChangedKey/*, WindowMaximizedChangedKey*/ };
-	private static readonly object nonClientRenderingChangedKey = new object();
+	private static readonly object nonClientRenderingChangedKey = new();
 	private static EventHandlerList eventHandlerList;
 	private static MessageWindow msgWin;
 
@@ -48,7 +45,6 @@ public static partial class DesktopWindowManager
 	/// <summary>
 	/// Use with GetWindowAttr and WindowAttribute.Cloaked. If the window is cloaked, provides one of the following values explaining why.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1714:FlagsEnumsShouldHavePluralNames")]
 	[Flags]
 	public enum CloakingSource
 	{
@@ -305,7 +301,7 @@ public static partial class DesktopWindowManager
 	/// <summary>Gets the live client thumbnail.</summary>
 	/// <param name="window">The window.</param>
 	/// <returns></returns>
-	public static LiveThumbnail GetLiveClientThumbnail(this IWin32Window window) => new LiveThumbnail(window);
+	public static LiveThumbnail GetLiveClientThumbnail(this IWin32Window window) => new(window);
 
 	/// <summary>
 	/// The window will provide a bitmap for use by DWM as an iconic thumbnail or peek representation (a static bitmap) for the window.
@@ -411,7 +407,7 @@ public static partial class DesktopWindowManager
 
 	internal class ThumbnailMgr : IDisposable
 	{
-		private Dictionary<IntPtr, HTHUMBNAIL> thumbnails = new Dictionary<IntPtr, HTHUMBNAIL>();
+		private Dictionary<IntPtr, HTHUMBNAIL> thumbnails = new();
 
 		public ThumbnailMgr()
 		{
@@ -453,7 +449,6 @@ public static partial class DesktopWindowManager
 	[SecuritySafeCritical]
 	private class MessageWindow : NativeWindow, IDisposable
 	{
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
 		public MessageWindow()
 		{
 			var cp = new CreateParams { Style = 0, ExStyle = 0, ClassStyle = 0, Parent = IntPtr.Zero, Caption = GetType().Name };

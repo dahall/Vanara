@@ -1,5 +1,4 @@
-﻿#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
-#pragma warning disable IDE1006 // Naming Styles
+﻿#pragma warning disable IDE1006 // Naming Styles
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the AviFil32.dll</summary>

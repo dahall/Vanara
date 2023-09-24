@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Dwrite;
 using static Vanara.PInvoke.WindowsCodecs;
 

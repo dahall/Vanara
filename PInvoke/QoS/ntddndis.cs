@@ -1,6 +1,3 @@
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from Qwave.dll.</summary>

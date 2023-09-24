@@ -439,9 +439,7 @@ public class Sessions : IReadOnlyDictionary<uint, Session>
 	/// <see langword="true"/> if the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the key; otherwise,
 	/// <see langword="false"/>.
 	/// </returns>
-#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 	public bool TryGetValue(uint key, [NotNullWhen(true)] out Session? value)
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 	{
 		var si = EnumSessions().FirstOrDefault(s => Equals(key, s.SessionId));
 		if (si.SessionId == 0)

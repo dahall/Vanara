@@ -1,9 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.Linq;
 using System.Net.Sockets;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Qwave;
 using static Vanara.PInvoke.Traffic;
 using static Vanara.PInvoke.Ws2_32;

@@ -8,7 +8,7 @@ namespace Vanara.PInvoke.Tests;
 public class UrlTests
 {
 	const string url = "http://docs.microsoft.com/";
-	private static readonly Guid FMTID_InternetSite = new Guid("000214a1-0000-0000-c000-000000000046");
+	private static readonly Guid FMTID_InternetSite = new("000214a1-0000-0000-c000-000000000046");
 
 	[Test]
 	public void IUniformResourceLocatorTest()

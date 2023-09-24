@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Linq;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Authz;
 using static Vanara.PInvoke.Kernel32;

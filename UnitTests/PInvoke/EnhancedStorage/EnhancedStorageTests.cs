@@ -1,14 +1,10 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using static Vanara.PInvoke.EnhancedStorage;
 
 namespace Vanara.PInvoke.Tests;
 
-    [TestFixture]
+[TestFixture]
     public class EnhancedStorageTests
     {
         [Test]

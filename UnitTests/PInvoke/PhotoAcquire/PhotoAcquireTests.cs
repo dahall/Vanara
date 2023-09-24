@@ -1,10 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
 using System.Threading;
-using Vanara.Extensions;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PhotoAcquisition;
 
 namespace Vanara.PInvoke.Tests;

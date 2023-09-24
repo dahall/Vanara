@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
+﻿using System.Collections.Generic;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke;
 
-    public static partial class PortableDeviceApi
+public static partial class PortableDeviceApi
     {
         /// <summary>
         /// The <c>WPD_STREAM_UNITS</c> enumeration specifies the unit types to be used for <c>IPortableDeviceUnitsStream</c> operations.
@@ -805,7 +802,7 @@ namespace Vanara.PInvoke;
         /// <param name="iValues">The IPortableDeviceValues instance.</param>
         /// <returns>The PROPERTYKEY.</returns>
         public static PROPERTYKEY GetCommandPKey(this IPortableDeviceValues iValues) =>
-            new PROPERTYKEY(iValues.GetGuidValue(WPD_PROPERTY_COMMON_COMMAND_CATEGORY), iValues.GetUnsignedIntegerValue(WPD_PROPERTY_COMMON_COMMAND_ID));
+            new(iValues.GetGuidValue(WPD_PROPERTY_COMMON_COMMAND_CATEGORY), iValues.GetUnsignedIntegerValue(WPD_PROPERTY_COMMON_COMMAND_ID));
 
         /// <summary>Sets the values corresponding to a command property key using WPD_PROPERTY_COMMON_COMMAND_CATEGORY and WPD_PROPERTY_COMMON_COMMAND_ID.</summary>
         /// <param name="iValues">The IPortableDeviceValues instance.</param>

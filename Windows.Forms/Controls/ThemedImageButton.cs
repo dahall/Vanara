@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Vanara.Drawing;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.UxTheme;
 
@@ -115,7 +113,7 @@ public class ThemedImageDraw : CustomDrawBase
 	/// <summary>Retrieves the default size for the control.</summary>
 	/// <value></value>
 	/// <returns>The default <see cref="T:System.Drawing.Size"/> of the control.</returns>
-	protected override Size DefaultSize => new Size(30, 30);
+	protected override Size DefaultSize => new(30, 30);
 
 	/// <summary>Gets a value indicating whether on glass.</summary>
 	/// <value><c>true</c> if on glass; otherwise, <c>false</c>.</value>

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using static Vanara.PInvoke.User32;
 using ContentAlignment = System.Drawing.ContentAlignment;
 
@@ -189,7 +187,7 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	}
 
 	/// <summary>Gets the default size of the control.</summary>
-	protected override Size DefaultSize => new Size(75, 23);
+	protected override Size DefaultSize => new(75, 23);
 
 	/// <summary>Gets or sets a value indicating whether the button control is the default button.</summary>
 	/// <value><c>true</c> if the button control is the default button; otherwise, <c>false</c>.</value>

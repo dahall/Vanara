@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Vanara.PInvoke;
 
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 public static partial class Shell32
 {
 	/// <summary>Represents a managed pointer to an ITEMIDLIST.</summary>

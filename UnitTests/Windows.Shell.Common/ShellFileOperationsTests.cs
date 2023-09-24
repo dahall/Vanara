@@ -85,7 +85,7 @@ public class ShellFileOperationsTests
 		var tmp = new TempFile();
 		var winDir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
 
-		using ShellFileOperations Operation = new ShellFileOperations
+		using ShellFileOperations Operation = new()
 		{
 			Options = ShellFileOperations.OperationFlags.AddUndoRecord | ShellFileOperations.OperationFlags.NoConfirmMkDir | ShellFileOperations.OperationFlags.Silent
 		};

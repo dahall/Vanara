@@ -1,22 +1,17 @@
 ﻿//Copyright (c) Microsoft Corporation.  All rights reserved.
 
-using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Windows.Forms;
 using Vanara.PInvoke;
-using Vanara.Windows.Forms;
 using Vanara.Windows.Shell;
 
 namespace Microsoft.WindowsAPICodePack.Samples;
 
 public partial class ExplorerBrowserTestForm : Form
 {
-	private readonly AutoResetEvent itemsChanged = new AutoResetEvent(false);
-	private readonly AutoResetEvent selectionChanged = new AutoResetEvent(false);
+	private readonly AutoResetEvent itemsChanged = new(false);
+	private readonly AutoResetEvent selectionChanged = new(false);
 	private readonly System.Windows.Forms.Timer uiDecoupleTimer = new System.Windows.Forms.Timer();
 
 	public ExplorerBrowserTestForm()
@@ -275,7 +270,7 @@ public partial class ExplorerBrowserTestForm : Form
 
 	private class KFItem
 	{
-		private static readonly Shell32.IKnownFolderManager kfm = new Shell32.IKnownFolderManager();
+		private static readonly Shell32.IKnownFolderManager kfm = new();
 
 		public KFItem(Guid id)
 		{

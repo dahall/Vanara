@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 

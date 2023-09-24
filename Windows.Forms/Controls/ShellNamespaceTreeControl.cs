@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
@@ -1151,7 +1147,7 @@ public class ShellNamespaceTreeControlItemMouseClickEventArgs : HandledMouseEven
 /// <summary>Encapsulates the list of root items in a <see cref="ShellNamespaceTreeControl"/>.</summary>
 public class ShellNamespaceTreeRootList : IList<ShellItem>
 {
-	internal Dictionary<ShellItem, bool> onlyShowChildren = new Dictionary<ShellItem, bool>();
+	internal Dictionary<ShellItem, bool> onlyShowChildren = new();
 
 	internal ShellNamespaceTreeRootList(ShellNamespaceTreeControl parent) => Parent = parent;
 

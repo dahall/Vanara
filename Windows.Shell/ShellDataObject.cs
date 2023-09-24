@@ -209,7 +209,6 @@ public class ShellDataObject : DataObject
 				// to handle a IStorage it needs to be written into a second unmanaged memory mapped storage and then the data can be
 				// read from memory into a managed byte and returned as a MemoryStream
 
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				// create a ILockBytes (unmanaged byte array) and then create a IStorage using the byte array as a backing store
 				CreateILockBytesOnHGlobal(IntPtr.Zero, true, out ILockBytes iLockBytes).ThrowIfFailed();
 				using (ComReleaser<ILockBytes> pLockBytes = ComReleaserFactory.Create(iLockBytes))
@@ -232,7 +231,6 @@ public class ShellDataObject : DataObject
 					// wrapped the managed byte array into a memory stream and return it
 					return new MemoryStream(iLockBytesContent.GetBytes(0, iLockBytesContent.Size));
 				}
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 			case IStream pStream:
 				// Wrap in ComStream and return
@@ -265,9 +263,7 @@ public class ShellDataObject : DataObject
 	{
 		if (!ContainsShellIdList())
 			return null;
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHCreateShellItemArrayFromDataObject(this, typeof(IShellItemArray).GUID, out var isha).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return new ShellItemArray(isha);
 	}
 

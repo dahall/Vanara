@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -5136,7 +5127,7 @@ public static partial class WinSpool
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getspoolfilehandle HANDLE GetSpoolFileHandle( _In_ HANDLE hPrinter );
 	[PInvokeData("winspool.h", MSDNShortId = "df6f28b3-66a6-4fb7-bdde-40cd7d934c5f")]
-	public static SafeHSPOOLFILE GetSpoolFileHandle(HPRINTER hPrinter) => new SafeHSPOOLFILE(hPrinter, InternalGetSpoolFileHandle(hPrinter), true);
+	public static SafeHSPOOLFILE GetSpoolFileHandle(HPRINTER hPrinter) => new(hPrinter, InternalGetSpoolFileHandle(hPrinter), true);
 
 	/// <summary>The <c>IsValidDevmode</c> function verifies that the contents of a DEVMODE structure are valid.</summary>
 	/// <param name="pDevmode">A pointer to the <c>DEVMODE</c> to validate.</param>

@@ -467,9 +467,7 @@ public static partial class ShlwApi
 
 	/// <summary>Returns a pointer to an IQueryAssociations object.</summary>
 	/// <returns>The requested IQueryAssociations interface pointer.</returns>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static IQueryAssociations AssocCreate() { AssocCreate(CLSID_QueryAssociations, typeof(IQueryAssociations).GUID, out var qa).ThrowIfFailed(); return qa; }
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>
 	/// <para>Retrieves a file's perceived type based on its extension.</para>

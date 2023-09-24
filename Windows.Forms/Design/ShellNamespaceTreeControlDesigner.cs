@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
 namespace Vanara.Windows.Forms.Design;

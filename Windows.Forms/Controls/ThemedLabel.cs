@@ -1,9 +1,31 @@
-﻿using System;
+﻿
+/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
+Before:
+using System;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
+Before:
+using System;
+After:
+using Microsoft.Win32;
+using System;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
+Before:
+using System;
+After:
+using Microsoft.Win32;
+using System;
+*/
+using Microsoft.Win32;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.UxTheme;
@@ -235,7 +257,7 @@ public class ThemedLabel : Label
 							}
 						}
 
-						DTTOPTS opts = new DTTOPTS(null)
+						DTTOPTS opts = new(null)
 						{
 							AntiAliasedAlpha = true,
 							crText = new COLORREF(textColor),

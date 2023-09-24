@@ -1,10 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Security;
-using System.Text;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using Vanara.Security;
 using static Vanara.PInvoke.AdvApi32;

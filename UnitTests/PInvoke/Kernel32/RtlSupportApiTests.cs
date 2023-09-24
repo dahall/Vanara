@@ -1,10 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;
@@ -62,8 +56,8 @@ public class RtlSupportApiTests
 	[Test]
 	public void RtlRestoreContextTest()
 	{
-		CONTEXT ctx = default(CONTEXT);
-		EXCEPTION_RECORD exc = default(EXCEPTION_RECORD);
+		CONTEXT ctx = default;
+		EXCEPTION_RECORD exc = default;
 		Assert.That(() => RtlRestoreContext(ref ctx, ref exc), Throws.Nothing);
 		// TODO - Too undocumented to implement.
 	}

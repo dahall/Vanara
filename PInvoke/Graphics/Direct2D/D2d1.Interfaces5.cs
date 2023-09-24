@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1

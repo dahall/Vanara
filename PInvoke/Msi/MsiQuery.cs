@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the Msi.dll</summary>

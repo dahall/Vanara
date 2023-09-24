@@ -315,10 +315,7 @@ public class FirewallProfile
 	/// </para>
 	/// </remarks>
 	public string[]? ExcludedInterfaces
-	{
-#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-		get => iPol.ExcludedInterfaces[type] is null ? null : Array.ConvertAll((object[])iPol.ExcludedInterfaces[type], o => o.ToString());
-#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+	{ get => iPol.ExcludedInterfaces[type] is null ? null : Array.ConvertAll((object[])iPol.ExcludedInterfaces[type], o => o.ToString());
 		set => iPol.ExcludedInterfaces[type] = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}
 
@@ -619,10 +616,7 @@ public class FirewallRule : INamedEntity, IEquatable<FirewallRule>
 	/// <para>Also see the restrictions on changing properties described in the Remarks section of the <see cref="FirewallRule"/> class.</para>
 	/// </remarks>
 	public string[]? InterfaceNames
-	{
-#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-		get => iRule.Interfaces is null ? null : Array.ConvertAll((object[])iRule.Interfaces, o => o.ToString());
-#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+	{ get => iRule.Interfaces is null ? null : Array.ConvertAll((object[])iRule.Interfaces, o => o.ToString());
 		set => iRule.Interfaces = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}
 

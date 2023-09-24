@@ -108,7 +108,7 @@ public class ShellItemPropStoreTests
 	[Test]
 	public void PropXlsGetTest()
 	{
-		using ShellItem Item = new ShellItem(TestCaseSources.TempDirWhack + "Test.xlsx");
+		using ShellItem Item = new(TestCaseSources.TempDirWhack + "Test.xlsx");
 		if (Item.Properties.TryGetValue(PROPERTYKEY.System.Document.PageCount, out int PageCount))
 			TestContext.Write($"PageCount={PageCount}");
 	}

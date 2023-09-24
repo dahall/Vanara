@@ -32,9 +32,7 @@ public class PropertyDescription : IDisposable
 	/// <summary>Creates a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
 	/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static PropertyDescription? Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv, propkey) : null;
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Tries to create a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
@@ -45,13 +43,12 @@ public class PropertyDescription : IDisposable
 	/// <returns><see langword="true"/> if the supplied property key exists; otherwise <see langword="false"/>.</returns>
 	public static bool TryCreate(PROPERTYKEY propkey, [NotNullWhen(true)] out PropertyDescription? desc)
 	{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		if (PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded)
 		{
 			desc = new PropertyDescription((IPropertyDescription)ppv, propkey);
 			return true;
 		}
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+
 		desc = null;
 		return false;
 	}
@@ -198,9 +195,7 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// Initializes a new instance of the <see cref="PropertyDescriptionList"/> class from a string.
 	/// </summary>
 	/// <param name="propList">The property list. See <see cref="IPropertySystem.GetPropertyDescriptionListFromString"/> for the required format.</param>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public PropertyDescriptionList(string propList) => PSGetPropertyDescriptionListFromString(propList, typeof(IPropertyDescriptionList).GUID, out iList).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Initializes a new instance of the <see cref="PropertyDescriptionList"/> class.</summary>
 	/// <param name="list">The COM interface pointer.</param>

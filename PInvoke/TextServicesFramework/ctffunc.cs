@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Collections;
+﻿using Vanara.Collections;
 using LPARAM = System.IntPtr;
 
 using WPARAM = System.IntPtr;
@@ -102,7 +100,6 @@ public static partial class MSCTF
 	[PInvokeData("ctffunc.h")]
 	public enum TKBLayoutId : ushort
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		TKBLT_UNDEFINED = 0,
 		TKBL_CLASSIC_TRADITIONAL_CHINESE_PHONETIC = 0x0404,
 		TKBL_CLASSIC_TRADITIONAL_CHINESE_CHANGJIE = 0xF042,
@@ -110,10 +107,31 @@ public static partial class MSCTF
 		TKBL_OPT_JAPANESE_ABC = 0x0411,
 		TKBL_OPT_KOREAN_HANGUL_2_BULSIK = 0x0412,
 		TKBL_OPT_SIMPLIFIED_CHINESE_PINYIN = 0x0804,
-#pragma warning disable CA1069 // Enums values should not be duplicated
 		TKBL_OPT_TRADITIONAL_CHINESE_PHONETIC = 0x0404,
+
+/* Unmerged change from project 'Vanara.PInvoke.TextServicesFramework (netstandard2.0)'
+Before:
 #pragma warning restore CA1069 // Enums values should not be duplicated
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+After:
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.TextServicesFramework (net48)'
+Before:
+#pragma warning restore CA1069 // Enums values should not be duplicated
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+After:
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.TextServicesFramework (net45)'
+Before:
+#pragma warning restore CA1069 // Enums values should not be duplicated
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+After:
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+*/
 	}
 
 	/// <summary>

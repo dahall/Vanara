@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the AMSI.dll.</summary>

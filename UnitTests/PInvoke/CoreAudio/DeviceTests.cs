@@ -1,14 +1,9 @@
-using Microsoft.Win32;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.CoreAudio;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
@@ -18,9 +13,9 @@ namespace Vanara.PInvoke.Tests;
 
 public partial class CoreAudioTests
 {
-	private static readonly PROPERTYKEY PKEY_Device_FriendlyName = new PROPERTYKEY(new Guid(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0), 14);
+	private static readonly PROPERTYKEY PKEY_Device_FriendlyName = new(new Guid(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0), 14);
 
-	private static Dictionary<string, string> lookup = new Dictionary<string, string>();
+	private static Dictionary<string, string> lookup = new();
 
 	public static IEnumerable<IMMDevice> CreateIMMDeviceCollection(IMMDeviceEnumerator deviceEnumerator, EDataFlow direction = EDataFlow.eAll, DEVICE_STATE stateMasks = DEVICE_STATE.DEVICE_STATEMASK_ALL)
 	{

@@ -314,10 +314,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 
 		enabled = true;
 		if (IsSuspended) return;
-
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHGetIDListFromObject(Item.IShellItem, out PIDL pidlWatch).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = pidlWatch.DangerousGetHandle(), fRecursive = IncludeChildren } };
 		ulRegister = SHChangeNotifyRegister(hPump.MessageWindowHandle, sources, (SHCNE)NotifyFilter, hPump.MessageId, entries.Length, entries);
 		if (ulRegister == 0) throw new InvalidOperationException("Unable to register shell notifications.");

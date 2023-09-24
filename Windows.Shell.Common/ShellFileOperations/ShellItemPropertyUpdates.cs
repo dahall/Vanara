@@ -19,9 +19,7 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 	private IPropertyChangeArray changes;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemPropertyUpdates"/> class.</summary>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public ShellItemPropertyUpdates() => PSCreatePropertyChangeArray(null, null, null, 0, typeof(IPropertyChangeArray).GUID, out changes).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{T}"/>.</summary>
 	public int Count => (int)changes.GetCount();
@@ -173,9 +171,7 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 
 	private IPropertyChange ToPC(PROPERTYKEY key, object? value, PKA_FLAGS flags = PKA_FLAGS.PKA_SET)
 	{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		PSCreateSimplePropertyChange(flags, key, new PROPVARIANT(value), typeof(IPropertyChange).GUID, out var pc).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return pc;
 	}
 }

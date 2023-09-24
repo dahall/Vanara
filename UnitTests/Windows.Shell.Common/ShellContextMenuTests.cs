@@ -34,7 +34,7 @@ public class ShellContextMenuTests
 		for (int i = 0; i < 20; i++)
 		{
 			using ShellItem Item = ShellItem.Open(TestCaseSources.ImageFile);
-			using ShellContextMenu ContextMenu = new ShellContextMenu(Item);
+			using ShellContextMenu ContextMenu = new(Item);
 			TestContext.WriteLine(ContextMenu.ComInterface.GetType().Name);
 		}
 	}

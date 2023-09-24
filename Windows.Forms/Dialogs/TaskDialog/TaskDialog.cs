@@ -16,7 +16,6 @@
  * Major updates: 2015 Nov 6
  */
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
@@ -26,9 +25,7 @@ using System.Drawing.Design;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using Vanara.Resources;
 using static Vanara.PInvoke.ComCtl32;
@@ -39,7 +36,6 @@ using static Vanara.PInvoke.User32;
 namespace Vanara.Windows.Forms;
 
 /// <summary>Progress bar state.</summary>
-[SuppressMessage("Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue")]
 public enum ProgressBarState
 {
 	/// <summary>Normal.</summary>
@@ -95,7 +91,6 @@ public enum TaskDialogCommonButtons
 }
 
 /// <summary>The System icons the TaskDialog supports.</summary>
-[SuppressMessage("Microsoft.Design", "CA1028:EnumStorageShouldBeInt32")]
 public enum TaskDialogIcon : uint
 {
 	/// <summary>No Icon.</summary>
@@ -142,7 +137,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	private static readonly bool IsAvailable = Environment.OSVersion.Platform == PlatformID.Win32NT && (Environment.OSVersion.Version.CompareTo(requiredOsVersion) >= 0);
 
 	// The minimum Windows version needed to support TaskDialog.
-	private static readonly Version requiredOsVersion = new Version(6, 0, 5243);
+	private static readonly Version requiredOsVersion = new(6, 0, 5243);
 
 	private string content;
 	private Icon customFooterIcon;
@@ -1362,7 +1357,6 @@ public class TaskDialog : CommonDialog, IWin32Window
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => $"{ButtonText} ({ButtonId})";
 
-		[SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes")]
 		// Would be unused code as not required for usage.
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 		internal struct TASKDIALOG_BUTTON

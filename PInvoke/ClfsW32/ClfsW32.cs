@@ -1,4 +1,3 @@
-using System.Text;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;

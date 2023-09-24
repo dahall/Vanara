@@ -1,5 +1,3 @@
-using Vanara.Extensions;
-
 namespace Vanara.PInvoke;
 
 public static partial class ClfsW32

@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Security.Permissions;
-using System.Text;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 

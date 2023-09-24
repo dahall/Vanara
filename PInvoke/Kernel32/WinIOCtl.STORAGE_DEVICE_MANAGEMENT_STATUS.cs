@@ -2,7 +2,6 @@
 
 public static partial class Kernel32
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	private const int STORAGE_ADAPTER_SERIAL_NUMBER_V1_MAX_LENGTH = 128;
 
 	private const int STORAGE_DEVICE_MAX_OPERATIONAL_STATUS = 16;

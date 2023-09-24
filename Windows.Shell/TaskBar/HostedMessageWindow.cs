@@ -16,7 +16,6 @@ internal class HostedMessageWindow<THost> : NativeWindow where THost : IMessageW
 	private readonly THost host;
 	private GCHandle rooting;
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
 	internal HostedMessageWindow(THost host) => this.host = host ?? throw new ArgumentNullException(nameof(host));
 
 	~HostedMessageWindow()

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using static Vanara.PInvoke.Gdi32;
+﻿using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -3485,7 +3481,7 @@ public static partial class UxTheme
 		/// <value>The shadow offset.</value>
 		public POINT ShadowOffset
 		{
-			get => new POINT(ptShadowOffset.X, ptShadowOffset.Y);
+			get => new(ptShadowOffset.X, ptShadowOffset.Y);
 			set
 			{
 				ptShadowOffset = value;
@@ -3517,7 +3513,7 @@ public static partial class UxTheme
 		}
 
 		/// <summary>Gets an instance with default values set.</summary>
-		public static DTTOPTS Default => new DTTOPTS(null);
+		public static DTTOPTS Default => new(null);
 
 		private void SetFlag(DrawThemeTextOptionsMasks f, bool value) => dwMasks = dwMasks.SetFlags(f, value);
 	}
@@ -3719,7 +3715,7 @@ public static partial class UxTheme
 			}
 			set
 			{
-				rcClip = value ?? default(RECT);
+				rcClip = value ?? default;
 				SetFlag(DrawThemeBackgroundFlags.DTBG_CLIPRECT, value.HasValue);
 			}
 		}
@@ -3743,7 +3739,7 @@ public static partial class UxTheme
 		/// <summary>Performs an implicit conversion from <see cref="RECT"/> to <see cref="DTBGOPTS"/>.</summary>
 		/// <param name="clipRectangle">The clipping rectangle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator DTBGOPTS(RECT clipRectangle) => new DTBGOPTS(clipRectangle);
+		public static implicit operator DTBGOPTS(RECT clipRectangle) => new(clipRectangle);
 
 		private void SetFlag(DrawThemeBackgroundFlags f, bool value) => dwFlags = dwFlags.SetFlags(f, value);
 	}

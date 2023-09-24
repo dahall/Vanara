@@ -1,6 +1,4 @@
-﻿using System;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Gdi32;
+﻿using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;
 

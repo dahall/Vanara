@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.HttpApi;
 
 namespace Vanara.PInvoke.Tests;

@@ -1,12 +1,8 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WsmSvc.dll</summary>
 public static partial class WsmSvc
 {
-#pragma warning	disable CS0618
 	/// <summary>
 	/// <para>
 	/// The <c>__WSManEnumFlags</c> enumeration contains constants, as listed in the following list, used in the flags parameter by

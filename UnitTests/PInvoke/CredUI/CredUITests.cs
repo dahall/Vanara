@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke.Tests;
+﻿namespace Vanara.PInvoke.Tests;
 
 //[TestFixture()]
 public class CredUITests

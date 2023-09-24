@@ -2,7 +2,6 @@
 
 public static partial class FunDisc
 {
-#pragma warning disable CS1591
 	public const string FD_SUBKEY = "SOFTWARE\\Microsoft\\Function Discovery\\";
 	public const string FD_SUBKEY_CATEGORIES = FD_SUBKEY + "Categories\\";
 

@@ -1,6 +1,4 @@
 #nullable enable
-using System;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
@@ -13,7 +11,6 @@ namespace Vanara.PInvoke;
 /// <summary>Enums and interfaces from the Windows Photo Acquisition API.</summary>
 public static partial class PhotoAcquisition
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static readonly HRESULT PAQ_ERR = HRESULT.Make(true, HRESULT.FacilityCode.FACILITY_ITF, 0xA001);
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_CameraSequenceNumber = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 7);    // VT_LPWSTR
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_DuplicateDetectionID = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 10);    // VT_I4
@@ -24,7 +21,6 @@ public static partial class PhotoAcquisition
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_RelativePathname = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 2); // VT_LPWSTR
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_SkipImport = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 9);    // VT_BOOL
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_TransferResult = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 5);    // VT_SCODE
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>The enumeration type indicates the type of a selected device.</summary>
 	/// <remarks>This enumeration type is pointed to by the <c>pnDeviceType</c> parameter of IPhotoAcquireDeviceSelectionDialog::DoModal.</remarks>

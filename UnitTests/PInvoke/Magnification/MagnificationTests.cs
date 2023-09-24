@@ -1,16 +1,13 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Magnification;
-using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke.Tests;
 
 [TestFixture]
 public class MagnificationTests
 {
-	static readonly MAGCOLOREFFECT grayeff = new MAGCOLOREFFECT(new[,] {
+	static readonly MAGCOLOREFFECT grayeff = new(new[,] {
 			{ 0.3f,  0.3f,  0.3f,  0.0f,  0.0f },
 			{ 0.6f,  0.6f,  0.6f,  0.0f,  0.0f },
 			{ 0.1f,  0.1f,  0.1f,  0.0f,  0.0f },

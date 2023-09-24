@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class DbgHelp
 {
@@ -2840,7 +2836,6 @@ public static partial class DbgHelp
 		public MINIDUMP_USER_STREAM[] UserStreamArray;
 	}
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	[PInvokeData("minidumpapiset.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct MINIDUMP_VM_POST_READ_CALLBACK
@@ -2867,5 +2862,4 @@ public static partial class DbgHelp
 	{
 		public ulong Offset;
 	}
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -1,8 +1,5 @@
 ﻿#nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 

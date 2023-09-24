@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace Vanara.PInvoke;
 
-    /// <summary>Elements from the Enhanced Storage API.</summary>
-    public static partial class EnhancedStorage
+/// <summary>Elements from the Enhanced Storage API.</summary>
+public static partial class EnhancedStorage
     {
         private delegate void GetArrayDelegate(out SafeCoTaskMemHandle h, out uint c);
 

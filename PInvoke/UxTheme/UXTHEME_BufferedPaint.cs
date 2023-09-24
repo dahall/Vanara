@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Gdi32;
+﻿using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;
 
@@ -412,7 +408,42 @@ public static partial class UxTheme
 		}
 
 		/// <summary>Gets an instance of an empty structure with cbSize set.</summary>
+
+/* Unmerged change from project 'Vanara.PInvoke.UxTheme (net6.0)'
+Before:
 		public static BP_ANIMATIONPARAMS Empty => new BP_ANIMATIONPARAMS { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+After:
+		public static BP_ANIMATIONPARAMS Empty => new() { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.UxTheme (net7.0)'
+Before:
+		public static BP_ANIMATIONPARAMS Empty => new BP_ANIMATIONPARAMS { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+After:
+		public static BP_ANIMATIONPARAMS Empty => new() { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.UxTheme (netcoreapp3.1)'
+Before:
+		public static BP_ANIMATIONPARAMS Empty => new BP_ANIMATIONPARAMS { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+After:
+		public static BP_ANIMATIONPARAMS Empty => new() { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.UxTheme (netstandard2.0)'
+Before:
+		public static BP_ANIMATIONPARAMS Empty => new BP_ANIMATIONPARAMS { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+After:
+		public static BP_ANIMATIONPARAMS Empty => new() { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.UxTheme (net45)'
+Before:
+		public static BP_ANIMATIONPARAMS Empty => new BP_ANIMATIONPARAMS { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+After:
+		public static BP_ANIMATIONPARAMS Empty => new() { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
+*/
+		public static BP_ANIMATIONPARAMS Empty => new() { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
 	}
 
 	/// <summary>Provides a handle to an animation buffer.</summary>
@@ -426,7 +457,7 @@ public static partial class UxTheme
 		public HANIMATIONBUFFER(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HANIMATIONBUFFER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HANIMATIONBUFFER NULL => new HANIMATIONBUFFER(IntPtr.Zero);
+		public static HANIMATIONBUFFER NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -439,7 +470,7 @@ public static partial class UxTheme
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HANIMATIONBUFFER"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HANIMATIONBUFFER(IntPtr h) => new HANIMATIONBUFFER(h);
+		public static implicit operator HANIMATIONBUFFER(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -474,7 +505,7 @@ public static partial class UxTheme
 		public HPAINTBUFFER(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPAINTBUFFER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPAINTBUFFER NULL => new HPAINTBUFFER(IntPtr.Zero);
+		public static HPAINTBUFFER NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -487,7 +518,7 @@ public static partial class UxTheme
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPAINTBUFFER"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPAINTBUFFER(IntPtr h) => new HPAINTBUFFER(h);
+		public static implicit operator HPAINTBUFFER(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -578,10 +609,10 @@ public static partial class UxTheme
 		}
 
 		/// <summary>Gets an instance of this structure set to define no clipping.</summary>
-		public static BP_PAINTPARAMS NoClip => new BP_PAINTPARAMS(BufferedPaintParamsFlags.BPPF_NOCLIP);
+		public static BP_PAINTPARAMS NoClip => new(BufferedPaintParamsFlags.BPPF_NOCLIP);
 
 		/// <summary>Gets an instance of this structure set to define clearing the background.</summary>
-		public static BP_PAINTPARAMS ClearBg => new BP_PAINTPARAMS(BufferedPaintParamsFlags.BPPF_ERASE);
+		public static BP_PAINTPARAMS ClearBg => new(BufferedPaintParamsFlags.BPPF_ERASE);
 	}
 
 	/// <summary>

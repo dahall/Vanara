@@ -1,10 +1,10 @@
-﻿using Vanara.Extensions.Reflection;
-using NUnit.Framework;
-using System.Drawing;
-using static Vanara.Extensions.ReflectionExtensions;
+﻿using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using Vanara.Extensions.Reflection;
+using static Vanara.Extensions.ReflectionExtensions;
 
 namespace Vanara.Extensions.Tests;
 

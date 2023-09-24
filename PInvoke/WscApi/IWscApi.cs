@@ -1,6 +1,12 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+﻿
+/* Unmerged change from project 'Vanara.PInvoke.WscApi (netcoreapp3.1)'
+Before:
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using System;
-using System.Runtime.InteropServices;
+After:
+using System;
+*/
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace Vanara.PInvoke;
 

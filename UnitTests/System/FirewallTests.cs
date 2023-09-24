@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using Vanara.PInvoke.Tests;
 using System.Linq;
+using Vanara.PInvoke.Tests;
 
 namespace Vanara.Network.Tests;
 

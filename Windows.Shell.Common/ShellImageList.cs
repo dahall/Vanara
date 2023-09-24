@@ -82,9 +82,7 @@ public static class ShellImageList
 	/// <returns>An <see cref="SafeHICON"/> instance if found; otherwise <see langword="null"/>.</returns>
 	public static SafeHICON GetSystemIconHandle(int index, ShellImageSize iconSize = ShellImageSize.Large)
 	{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return ((IImageList)il).GetIcon(index, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
 	}
 

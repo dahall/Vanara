@@ -178,9 +178,7 @@ public abstract class VirtualDictionary<TKey, TValue> : IReadOnlyDictionary<TKey
 	/// <returns>
 	/// <see langword="true"/> if the <see cref="IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, <see langword="false"/>.
 	/// </returns>
-#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 	public abstract bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value);
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 
 	/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
 	/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
@@ -271,9 +269,7 @@ public abstract class VirtualReadOnlyDictionary<TKey, TValue> : IReadOnlyDiction
 	/// <returns>
 	/// <see langword="true"/> if the <see cref="IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, <see langword="false"/>.
 	/// </returns>
-#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 	public abstract bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value);
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>

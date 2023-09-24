@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests;

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Drawing;
@@ -13,7 +10,7 @@ namespace Vanara.Drawing;
 /// <summary>Buffered painting helper class.</summary>
 public static class BufferedPaint
 {
-	private static readonly Dictionary<IntPtr, Tuple<object, object>> paintAnimationInstances = new Dictionary<IntPtr, Tuple<object, object>>();
+	private static readonly Dictionary<IntPtr, Tuple<object, object>> paintAnimationInstances = new();
 
 	/// <summary>A method delegate that retrieves a duration, in milliseconds, to use as the time over which buffered painting occurs.</summary>
 	/// <typeparam name="TState">The type of the state that is used to determine the transition duration.</typeparam>
@@ -130,7 +127,7 @@ public static class BufferedPaint
 /// <seealso cref="System.IDisposable"/>
 public class BufferedAnimationPainter : IDisposable
 {
-	private static readonly BufferedPaintBlock block = new BufferedPaintBlock();
+	private static readonly BufferedPaintBlock block = new();
 
 	private bool disposedValue = false;
 	private SafeHANIMATIONBUFFER hba;
@@ -203,7 +200,7 @@ public class BufferedAnimationPainter : IDisposable
 /// <seealso cref="System.IDisposable"/>
 public class BufferedPainter : IDisposable
 {
-	private static readonly BufferedPaintBlock block = new BufferedPaintBlock();
+	private static readonly BufferedPaintBlock block = new();
 
 	private bool disposedValue = false;
 	private SafeHPAINTBUFFER hbp;

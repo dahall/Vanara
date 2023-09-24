@@ -12,9 +12,7 @@ public class MemoryPropertyStore : PropertyStore
 	/// <summary>Initializes a new instance of the <see cref="MemoryPropertyStore"/> class.</summary>
 	public MemoryPropertyStore()
 	{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		PSCreateMemoryPropertyStore(typeof(IPropertyStore).GUID, out var ppv).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		iPropertyStore = (IPropertyStore)(ppv ?? throw new InsufficientMemoryException());
 	}
 

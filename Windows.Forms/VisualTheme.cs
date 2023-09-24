@@ -1,10 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;

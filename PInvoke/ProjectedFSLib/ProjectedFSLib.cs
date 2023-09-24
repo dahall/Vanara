@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Functions, structures and constants from ProjectedFSLib.dll.</summary>
 public static partial class ProjectedFSLib
@@ -2017,7 +2014,7 @@ public static partial class ProjectedFSLib
 		public PRJ_DIR_ENTRY_BUFFER_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PRJ_DIR_ENTRY_BUFFER_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PRJ_DIR_ENTRY_BUFFER_HANDLE NULL => new PRJ_DIR_ENTRY_BUFFER_HANDLE(IntPtr.Zero);
+		public static PRJ_DIR_ENTRY_BUFFER_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2030,7 +2027,7 @@ public static partial class ProjectedFSLib
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PRJ_DIR_ENTRY_BUFFER_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PRJ_DIR_ENTRY_BUFFER_HANDLE(IntPtr h) => new PRJ_DIR_ENTRY_BUFFER_HANDLE(h);
+		public static implicit operator PRJ_DIR_ENTRY_BUFFER_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2129,7 +2126,7 @@ public static partial class ProjectedFSLib
 		/// <summary>
 		/// Returns an invalid handle by instantiating a <see cref="PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.
 		/// </summary>
-		public static PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT NULL => new PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT(IntPtr.Zero);
+		public static PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2142,7 +2139,7 @@ public static partial class ProjectedFSLib
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT(IntPtr h) => new PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT(h);
+		public static implicit operator PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

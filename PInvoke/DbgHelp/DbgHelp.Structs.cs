@@ -1,9 +1,5 @@
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.Extensions.Reflection;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -306,12 +302,47 @@ public static partial class DbgHelp
 		/// <param name="version">The version.</param>
 		/// <returns>The resulting <see cref="API_VERSION"/> instance from the conversion.</returns>
 		/// <exception cref="ArgumentException">version.Build must be 0</exception>
+
+/* Unmerged change from project 'Vanara.PInvoke.DbgHelp (netcoreapp3.1)'
+Before:
 		public static implicit operator API_VERSION(Version version) => new API_VERSION { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+After:
+		public static implicit operator API_VERSION(Version version) => new() { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.DbgHelp (net7.0)'
+Before:
+		public static implicit operator API_VERSION(Version version) => new API_VERSION { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+After:
+		public static implicit operator API_VERSION(Version version) => new() { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.DbgHelp (net45)'
+Before:
+		public static implicit operator API_VERSION(Version version) => new API_VERSION { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+After:
+		public static implicit operator API_VERSION(Version version) => new() { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.DbgHelp (net6.0)'
+Before:
+		public static implicit operator API_VERSION(Version version) => new API_VERSION { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+After:
+		public static implicit operator API_VERSION(Version version) => new() { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.DbgHelp (net48)'
+Before:
+		public static implicit operator API_VERSION(Version version) => new API_VERSION { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+After:
+		public static implicit operator API_VERSION(Version version) => new() { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
+*/
+		public static implicit operator API_VERSION(Version version) => new() { MajorVersion = (ushort)version.Major, MinorVersion = (ushort)version.Minor, Revision = (ushort)version.Revision, Reserved = version.Build == 0 ? (ushort)0 : throw new ArgumentException("version.Build must be 0") };
 
 		/// <summary>Performs an explicit conversion from <see cref="API_VERSION"/> to <see cref="Version"/>.</summary>
 		/// <param name="version">The version.</param>
 		/// <returns>The resulting <see cref="Version"/> instance from the conversion.</returns>
-		public static explicit operator Version(API_VERSION version) => new Version(version.MajorVersion, version.MinorVersion, 0, version.Revision);
+		public static explicit operator Version(API_VERSION version) => new(version.MajorVersion, version.MinorVersion, 0, version.Revision);
 	}
 
 	/// <summary>

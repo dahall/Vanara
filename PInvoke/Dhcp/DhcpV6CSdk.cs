@@ -9,7 +9,6 @@ public static partial class Dhcp
 	[PInvokeData("dhcpcsdk.h")]
 	public enum DHCPV6_OPTION_ID : uint
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		DHCPV6_OPTION_CLIENTID = 1,
 		DHCPV6_OPTION_SERVERID = 2,
 		DHCPV6_OPTION_IA_NA = 3,
@@ -31,7 +30,6 @@ public static partial class Dhcp
 		DHCPV6_OPTION_NISP_SERVERS = 28,
 		DHCPV6_OPTION_NIS_DOMAIN_NAME = 29,
 		DHCPV6_OPTION_NISP_DOMAIN_NAME = 30,
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>The <c>StatusCode</c> enum contains status codes for IPv6 operations.</summary>

@@ -230,7 +230,6 @@ public class FileInUseHandler : IFileIsInUse, IDisposable
 		}
 	}
 
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	private void RegisterInROT()
 	{
 		GetRunningObjectTable(0, out var rot).ThrowIfFailed();
@@ -248,5 +247,4 @@ public class FileInUseHandler : IFileIsInUse, IDisposable
 		regId = 0;
 		moniker = null;
 	}
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 }

@@ -1,11 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests;

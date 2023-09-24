@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke.VssApi;
+﻿namespace Vanara.PInvoke.VssApi;
 
 /// <summary>The <c>IVssAdmin</c> interface manages providers registered with VSS.</summary>
 // https://docs.microsoft.com/en-us/windows/win32/api/vsadmin/nn-vsadmin-ivssadmin

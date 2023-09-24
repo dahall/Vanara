@@ -4,7 +4,6 @@ namespace Vanara.PInvoke;
 
 public static partial class User32
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const int OBM_CLOSE = 32754;
 	public const int OBM_UPARROW = 32753;
 	public const int OBM_DNARROW = 32752;
@@ -39,7 +38,6 @@ public static partial class User32
 	public const int OBM_OLD_REDUCE = 32757;
 	public const int OBM_OLD_ZOOM = 32756;
 	public const int OBM_OLD_RESTORE = 32755;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>Specifies the load options for <see cref="LoadImage"/>.</summary>
 	[Flags]

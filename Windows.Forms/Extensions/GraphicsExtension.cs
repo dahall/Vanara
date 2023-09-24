@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;

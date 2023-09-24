@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Forms;
@@ -21,8 +19,8 @@ public sealed class VistaControlExtender : Component, IExtenderProvider, ISuppor
 	internal const string MinVisibleItems = "MinVisibleItems";
 	internal const string ShowShield = "ShowShield";
 
-	private readonly Dictionary<Component, Dictionary<string, (object value, Action<Control, object> setter)>> bag = new Dictionary<Component, Dictionary<string, (object value, Action<Control, object> setter)>>();
-	private readonly Container components = new Container();
+	private readonly Dictionary<Component, Dictionary<string, (object value, Action<Control, object> setter)>> bag = new();
+	private readonly Container components = new();
 
 	/// <summary>Initializes a new instance of the <see cref="VistaControlExtender"/> class.</summary>
 	public VistaControlExtender() { }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.CoreAudio;
+﻿using static Vanara.PInvoke.CoreAudio;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke.Tests;
 
-    /// <summary>Functions, structures and constants from Windows Core Audio Api.</summary>
-    public static partial class CoreAudio
+/// <summary>Functions, structures and constants from Windows Core Audio Api.</summary>
+public static partial class CoreAudio
     {
         public enum DeviceShareMode
         {

@@ -1,12 +1,12 @@
-﻿using NUnit.Framework;
+﻿using dSPACE.Runtime.InteropServices;
+using dSPACE.Runtime.InteropServices.ComTypes;
+using NUnit.Framework;
 using NUnit.Framework.Internal;
-using dSPACE.Runtime.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.NdfApi;
-using dSPACE.Runtime.InteropServices.ComTypes;
 
 namespace NdfApi;
 

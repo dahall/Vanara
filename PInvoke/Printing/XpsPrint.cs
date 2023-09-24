@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>XPS Print Api functions and interfaces.</summary>
 public static partial class XpsPrint

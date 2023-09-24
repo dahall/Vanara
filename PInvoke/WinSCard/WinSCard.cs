@@ -3,8 +3,6 @@ global using System.Runtime.InteropServices;
 global using Vanara.InteropServices;
 
 using System.Linq;
-using System.Text;
-using Vanara.Extensions;
 
 using SCARDCONTEXT = System.UIntPtr;
 

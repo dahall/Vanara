@@ -5,8 +5,6 @@ using System.Threading;
 using static Vanara.PInvoke.IpHlpApi;
 using static Vanara.PInvoke.Ws2_32;
 
-#pragma warning disable CS0618 // Type or member is obsolete
-
 namespace Vanara.PInvoke.Tests;
 
 public partial class IpHlpApiTests
@@ -625,5 +623,5 @@ public partial class IpHlpApiTests
 		Assert.That(SetSessionCompartmentId(1, 1), Is.GreaterThanOrEqualTo(0));
 	}
 
-	private SOCKADDR_IN6 GetV6Addr() => new SOCKADDR_IN6(new IN6_ADDR(new byte[] { 0xfe, 0x3f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x20, 0x00 }), 0);
+	private SOCKADDR_IN6 GetV6Addr() => new(new IN6_ADDR(new byte[] { 0xfe, 0x3f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x20, 0x00 }), 0);
 }

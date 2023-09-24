@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
-using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.VisualStyles;
-using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms;
 

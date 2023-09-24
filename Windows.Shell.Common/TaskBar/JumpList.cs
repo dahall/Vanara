@@ -2,7 +2,6 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Vanara.PInvoke;
@@ -76,9 +75,7 @@ public class JumpList : ObservableCollection<IJumpListItem>
 	public static void AddToRecentDocs(IShellItem iShellItem)
 	{
 		if (iShellItem is null) throw new ArgumentNullException(nameof(iShellItem));
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHAddToRecentDocs(SHARD.SHARD_SHELLITEM, iShellItem);
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>
@@ -89,9 +86,7 @@ public class JumpList : ObservableCollection<IJumpListItem>
 	public static void AddToRecentDocs(IShellLinkW iShellLink)
 	{
 		if (iShellLink is null) throw new ArgumentNullException(nameof(iShellLink));
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHAddToRecentDocs(SHARD.SHARD_LINK, iShellLink);
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>

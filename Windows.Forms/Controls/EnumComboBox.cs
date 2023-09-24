@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,8 +12,8 @@ namespace Vanara.Windows.Forms;
 /// <seealso cref="CustomComboBox"/>
 public class EnumComboBox : CustomComboBox
 {
-	private readonly List<ECBItem> items = new List<ECBItem>();
-	private readonly Timer timer = new Timer { Interval = 150 };
+	private readonly List<ECBItem> items = new();
+	private readonly Timer timer = new() { Interval = 150 };
 	private CheckedListBox checkListBox;
 	private Type type = null;
 

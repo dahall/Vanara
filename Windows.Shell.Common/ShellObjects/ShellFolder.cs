@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
@@ -99,9 +98,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 
 			IShellItem? ppv;
 			if (IsMinVista)
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				ppv = SHCreateItemFromRelativeName<IShellItem>(iShellItem, childName, BindContext);
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			else
 			{
 				SFGAO attr = 0;
@@ -123,9 +120,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 
 			IShellItem? ppv;
 			if (IsMinVista)
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				ppv = SHCreateItemWithParent<IShellItem>(iShellFolder, relativePidl);
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			else
 				ppv = new ShellItemImpl(PIDL.Combine(PIDL, relativePidl), false);
 			return Open(ppv ?? throw new ArgumentException("Cannot create IShellItem instance for supplied relative PIDL.", nameof(relativePidl)));

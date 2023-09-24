@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.User32;
@@ -63,5 +62,5 @@ public static partial class MapPointExtension
 		return ir;
 	}
 
-	private static HWND GetHandle(IWin32Window ctrl) => new HWND(ctrl?.Handle ?? IntPtr.Zero);
+	private static HWND GetHandle(IWin32Window ctrl) => new(ctrl?.Handle ?? IntPtr.Zero);
 }

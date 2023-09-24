@@ -1,7 +1,7 @@
+using Microsoft.Win32;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Principal;
-using Microsoft.Win32;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.Security;

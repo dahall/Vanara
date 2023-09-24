@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.AdvApi32;
+﻿using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Secur32;
 
 namespace Vanara.PInvoke;

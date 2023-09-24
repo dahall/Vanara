@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WebSocket.dll.</summary>

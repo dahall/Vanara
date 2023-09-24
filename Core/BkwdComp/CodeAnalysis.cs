@@ -1,6 +1,5 @@
 ﻿namespace System.Diagnostics.CodeAnalysis;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #if !NET5_0_OR_GREATER && !NETCOREAPP3_1_OR_GREATER
 /// <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
 /// <remarks>

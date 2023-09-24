@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 public static partial class DbgHelp
@@ -843,7 +838,6 @@ public static partial class DbgHelp
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IMAGE_EXPORT_DIRECTORY
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public uint Characteristics;
 		public uint TimeDateStamp;
 		public ushort MajorVersion;
@@ -855,7 +849,6 @@ public static partial class DbgHelp
 		public uint AddressOfFunctions; // RVA from base of image
 		public uint AddressOfNames; // RVA from base of image
 		public uint AddressOfNameOrdinals; // RVA from base of image
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Represents the COFF header format.</summary>

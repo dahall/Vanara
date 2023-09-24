@@ -1,9 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.VersionDll;
 
 namespace Vanara.PInvoke.Tests;

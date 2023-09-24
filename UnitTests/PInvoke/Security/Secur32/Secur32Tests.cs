@@ -1,12 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Security.Principal;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Schannel;
 using static Vanara.PInvoke.Secur32;

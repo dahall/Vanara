@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the Msi.dll</summary>
@@ -803,7 +800,7 @@ public static partial class Msi
 		public MSIHANDLE(ulong preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="MSIHANDLE"/> object with zero.</summary>
-		public static MSIHANDLE NULL => new MSIHANDLE(0UL);
+		public static MSIHANDLE NULL => new(0UL);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == 0UL;
@@ -816,7 +813,7 @@ public static partial class Msi
 		/// <summary>Performs an implicit conversion from <see cref="ulong"/> to <see cref="MSIHANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator MSIHANDLE(ulong h) => new MSIHANDLE(h);
+		public static implicit operator MSIHANDLE(ulong h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -837,7 +834,7 @@ public static partial class Msi
 		public override int GetHashCode() => handle.GetHashCode();
 
 		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => new IntPtr(unchecked((long)handle));
+		public IntPtr DangerousGetHandle() => new(unchecked((long)handle));
 	}
 
 	/// <summary>

@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Crypt32;
 
 namespace Vanara.PInvoke;

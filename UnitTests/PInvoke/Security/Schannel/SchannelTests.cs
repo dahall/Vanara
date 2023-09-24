@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Schannel;
 
 namespace Vanara.PInvoke.Tests;

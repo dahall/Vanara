@@ -1,9 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Mpr;
 
 namespace Vanara.Windows.Forms;
@@ -14,7 +10,7 @@ namespace Vanara.Windows.Forms;
 /// <seealso cref="System.Windows.Forms.CommonDialog" />
 public class NetworkConnectionDialog : CommonDialog
 {
-	private NETRESOURCE nres = new NETRESOURCE();
+	private NETRESOURCE nres = new();
 	private CONNECTDLGSTRUCT opts;
 
 	/// <summary>Initializes a new instance of the <see cref="NetworkConnectionDialog"/> class.</summary>

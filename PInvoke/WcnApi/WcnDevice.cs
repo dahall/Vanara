@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using static Vanara.PInvoke.Ole32;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Interfaces and constants for Windows Connect Now.</summary>
 public static partial class WcnApi

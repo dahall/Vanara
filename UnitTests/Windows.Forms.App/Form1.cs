@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 
@@ -16,7 +14,7 @@ public partial class Form1 : Form
 	private const bool systemWide = false;
 	private static readonly string[] extensions = new[] { ".dmy" };
 	private object currentDlg;
-	private List<string> tempFiles = new List<string>();
+	private List<string> tempFiles = new();
 
 	public Form1()
 	{

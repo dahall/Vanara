@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Forms;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32;
@@ -338,7 +336,7 @@ public static partial class ListViewExtension
 public class ListViewGroupingSet<T> where T : class
 {
 	private readonly Converter<T, ListViewGroup> converter;
-	private readonly List<KeyValuePair<T, Predicate<ListViewItem>>> list = new List<KeyValuePair<T, Predicate<ListViewItem>>>();
+	private readonly List<KeyValuePair<T, Predicate<ListViewItem>>> list = new();
 
 	/// <summary>Initializes a new instance of the <see cref="ListViewGroupingSet{T}"/> class.</summary>
 	/// <param name="converter">

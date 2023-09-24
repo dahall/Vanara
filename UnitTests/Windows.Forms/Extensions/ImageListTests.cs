@@ -1,10 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Windows.Forms;
-using Vanara.Extensions;
-using static Vanara.PInvoke.ComCtl32;
 using System.Drawing;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.ComCtl32;
 
 namespace Vanara.Windows.Forms.Tests;
 

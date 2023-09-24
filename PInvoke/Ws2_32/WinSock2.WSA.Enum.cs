@@ -1,5 +1,4 @@
-﻿#pragma warning disable IDE1006 // Naming Styles
-
+﻿
 
 namespace Vanara.PInvoke;
 
@@ -382,7 +381,6 @@ public static partial class Ws2_32
 		WSA_FLAG_REGISTERED_IO = 0x100,
 	}
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	[PInvokeData("winsock2.h")]
 	public enum WSACOMPLETIONTYPE
 	{
@@ -392,5 +390,4 @@ public static partial class Ws2_32
 		NSP_NOTIFY_PORT,
 		NSP_NOTIFY_APC,
 	}
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

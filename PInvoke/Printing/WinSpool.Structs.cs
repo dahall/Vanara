@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class WinSpool
 {
@@ -938,7 +933,7 @@ public static partial class WinSpool
 		public HPRINTER(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPRINTER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPRINTER NULL => new HPRINTER(IntPtr.Zero);
+		public static HPRINTER NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -951,7 +946,7 @@ public static partial class WinSpool
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPRINTER"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPRINTER(IntPtr h) => new HPRINTER(h);
+		public static implicit operator HPRINTER(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -986,7 +981,7 @@ public static partial class WinSpool
 		public HPRINTERCHANGENOTIFICATION(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPRINTERCHANGENOTIFICATION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPRINTERCHANGENOTIFICATION NULL => new HPRINTERCHANGENOTIFICATION(IntPtr.Zero);
+		public static HPRINTERCHANGENOTIFICATION NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -999,7 +994,7 @@ public static partial class WinSpool
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPRINTERCHANGENOTIFICATION"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPRINTERCHANGENOTIFICATION(IntPtr h) => new HPRINTERCHANGENOTIFICATION(h);
+		public static implicit operator HPRINTERCHANGENOTIFICATION(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1034,7 +1029,7 @@ public static partial class WinSpool
 		public HSPOOLFILE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HSPOOLFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HSPOOLFILE NULL => new HSPOOLFILE(IntPtr.Zero);
+		public static HSPOOLFILE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1047,7 +1042,7 @@ public static partial class WinSpool
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSPOOLFILE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSPOOLFILE(IntPtr h) => new HSPOOLFILE(h);
+		public static implicit operator HSPOOLFILE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -3371,7 +3366,7 @@ public static partial class WinSpool
 		public PRINTER_OPTION_FLAGS dwFlags;
 
 		/// <summary>An instance with the size preset.</summary>
-		public static readonly PRINTER_OPTIONS Default = new PRINTER_OPTIONS { cbSize = 8 };
+		public static readonly PRINTER_OPTIONS Default = new() { cbSize = 8 };
 	}
 
 	/// <summary>

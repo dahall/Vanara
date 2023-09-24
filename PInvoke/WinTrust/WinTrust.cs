@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Crypt32;
 
 namespace Vanara.PInvoke;
@@ -2014,7 +2010,7 @@ public static partial class WinTrust
 		public HCATADMIN(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HCATADMIN"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCATADMIN NULL => new HCATADMIN(IntPtr.Zero);
+		public static HCATADMIN NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2027,7 +2023,7 @@ public static partial class WinTrust
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCATADMIN"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCATADMIN(IntPtr h) => new HCATADMIN(h);
+		public static implicit operator HCATADMIN(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2062,7 +2058,7 @@ public static partial class WinTrust
 		public HCRYPTMSG(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTMSG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCRYPTMSG NULL => new HCRYPTMSG(IntPtr.Zero);
+		public static HCRYPTMSG NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2075,7 +2071,7 @@ public static partial class WinTrust
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTMSG"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCRYPTMSG(IntPtr h) => new HCRYPTMSG(h);
+		public static implicit operator HCRYPTMSG(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

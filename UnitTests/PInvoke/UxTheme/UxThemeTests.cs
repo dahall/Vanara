@@ -1,12 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Forms;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.UxTheme;
 

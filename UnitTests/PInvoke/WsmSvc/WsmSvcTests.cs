@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.WsmSvc;
 

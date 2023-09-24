@@ -1,8 +1,5 @@
 using NUnit.Framework;
-using System;
 using System.Linq;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.WcmApi;
 using static Vanara.PInvoke.WlanApi;

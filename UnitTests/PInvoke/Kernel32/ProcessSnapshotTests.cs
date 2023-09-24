@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Linq;
 using static Vanara.PInvoke.Kernel32;
 

@@ -1,18 +1,7 @@
-using Microsoft.Win32;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.CoreAudio;
-using static Vanara.PInvoke.Ole32;
-using static Vanara.PInvoke.PropSys;
-using static Vanara.PInvoke.WinMm;
 
 namespace Vanara.PInvoke.Tests;
 

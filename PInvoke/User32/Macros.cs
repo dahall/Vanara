@@ -2,7 +2,6 @@
 
 public static partial class User32
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static HINSTANCE GetWindowInstance(HWND hwnd) => GetWindowLong<HINSTANCE>(hwnd, WindowLongFlags.GWLP_HINSTANCE);
 	public static WindowStyles GetWindowStyle(HWND hwnd) => GetWindowLong<WindowStyles>(hwnd, WindowLongFlags.GWL_STYLE);
 	public static WindowStylesEx GetWindowExStyle(HWND hwnd) => GetWindowLong<WindowStylesEx>(hwnd, WindowLongFlags.GWL_EXSTYLE);

@@ -410,9 +410,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 		if (!string.IsNullOrEmpty(value))
 		{
 			var curLen = Length;
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
 			Capacity += value.Length;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 			StringHelper.Write(value, DangerousGetHandle().Offset(curLen * 2), out _, true, CharSet.Unicode, Size);
 		}
 	}

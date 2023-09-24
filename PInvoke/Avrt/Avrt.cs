@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Functions from Avrt.dll.</summary>

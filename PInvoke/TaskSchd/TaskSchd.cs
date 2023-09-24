@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -3454,7 +3451,7 @@ public static class TaskSchd
 		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{DateTime}"/> to <see cref="DateTimeBSTR"/>.</summary>
 		/// <param name="dt">The <see cref="DateTime"/> value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator DateTimeBSTR(DateTime? dt) => new DateTimeBSTR(dt);
+		public static implicit operator DateTimeBSTR(DateTime? dt) => new(dt);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -3519,7 +3516,7 @@ public static class TaskSchd
 		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TimeSpan}"/> to <see cref="TimeSpanBSTR"/>.</summary>
 		/// <param name="ts">The ts.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator TimeSpanBSTR(TimeSpan? ts) => new TimeSpanBSTR(ts);
+		public static implicit operator TimeSpanBSTR(TimeSpan? ts) => new(ts);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>

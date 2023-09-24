@@ -1,11 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Windows.Forms;
-using Vanara.Extensions;
-using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.User32;
 using ComboBoxStyle = System.Windows.Forms.ComboBoxStyle;
@@ -42,7 +37,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	private DateTime lastHideTime = DateTime.Now;
 
 	/// <summary>Popup control.</summary>
-	private PopupControl popupCtrl = new PopupControl();
+	private PopupControl popupCtrl = new();
 
 	/// <summary>Original size of combo box drop-down when first assigned.</summary>
 	private Size sizeCombo;
@@ -51,7 +46,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	private SizeMode sizeMode = SizeMode.UseComboSize;
 
 	/// <summary>Original size of control dimensions when first assigned.</summary>
-	private Size sizeOriginal = new Size(1, 1);
+	private Size sizeOriginal = new(1, 1);
 
 	/// <summary>Automatic focus timer helps make sure drop-down control is focused for user input upon drop-down.</summary>
 	private Timer timerAutoFocus;

@@ -1,7 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Text;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.KtmW32;
 

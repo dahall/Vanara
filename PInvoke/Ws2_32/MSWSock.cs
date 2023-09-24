@@ -4,7 +4,6 @@ namespace Vanara.PInvoke;
 
 public static partial class Ws2_32
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const int SO_CONNDATA = 0x7000;
 	public const int SO_CONNDATALEN = 0x7004;
 	/// <summary>
@@ -36,7 +35,6 @@ public static partial class Ws2_32
 	public static readonly uint SIO_SOCKET_CLOSE_NOTIFY = _WSAIOW(IOC_VENDOR, 13);
 	public static readonly uint SIO_UDP_CONNRESET = _WSAIOW(IOC_VENDOR, 12);
 	public static readonly uint SIO_UDP_NETRESET = _WSAIOW(IOC_VENDOR, 15);
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>GUID value used by SIO_GET_EXTENSION_FUNCTION_POINTER to get the LPFN_WSARECVMSG (WSARecvMsg) extension function.</summary>
 	public static readonly Guid WSAID_WSARECVMSG = new(0xf689d7c8,0x6f1f,0x436b,0x8a,0x53,0xe5,0x4f,0xe3,0x51,0xc3,0x22);

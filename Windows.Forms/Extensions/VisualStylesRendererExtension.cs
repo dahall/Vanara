@@ -1,10 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Extensions;
@@ -88,5 +85,5 @@ public static partial class VisualStylesRendererExtension
 		catch (EntryPointNotFoundException) { }
 	}
 
-	private static SafeHTHEME GetSafeHandle(this VisualStyleRenderer rnd) => new SafeHTHEME(rnd.Handle, false);
+	private static SafeHTHEME GetSafeHandle(this VisualStyleRenderer rnd) => new(rnd.Handle, false);
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -1474,7 +1471,7 @@ public static partial class KtmW32
 		public HENLISTMENT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HENLISTMENT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HENLISTMENT NULL => new HENLISTMENT(IntPtr.Zero);
+		public static HENLISTMENT NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1487,7 +1484,7 @@ public static partial class KtmW32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HENLISTMENT"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HENLISTMENT(IntPtr h) => new HENLISTMENT(h);
+		public static implicit operator HENLISTMENT(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1522,7 +1519,7 @@ public static partial class KtmW32
 		public HRESMGR(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HRESMGR"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HRESMGR NULL => new HRESMGR(IntPtr.Zero);
+		public static HRESMGR NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1535,7 +1532,7 @@ public static partial class KtmW32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRESMGR"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRESMGR(IntPtr h) => new HRESMGR(h);
+		public static implicit operator HRESMGR(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1570,7 +1567,7 @@ public static partial class KtmW32
 		public HTRXNMGR(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTRXNMGR"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTRXNMGR NULL => new HTRXNMGR(IntPtr.Zero);
+		public static HTRXNMGR NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1583,7 +1580,7 @@ public static partial class KtmW32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTRXNMGR"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTRXNMGR(IntPtr h) => new HTRXNMGR(h);
+		public static implicit operator HTRXNMGR(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

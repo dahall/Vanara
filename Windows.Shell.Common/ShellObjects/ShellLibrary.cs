@@ -178,11 +178,8 @@ public class ShellLibrary : ShellFolder
 	/// <param name="allowUnindexableLocations">
 	/// if set to <c>true</c> do not display a warning dialog to the user in collisions that concern network locations that cannot be indexed.
 	/// </param>
-	public void ShowLibraryManagementDialog(HWND parentWindow = default, string? title = null, string? instruction = null, bool allowUnindexableLocations = false) =>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
-		SHShowManageLibraryUI(iShellItem, parentWindow, title, instruction,
+	public void ShowLibraryManagementDialog(HWND parentWindow = default, string? title = null, string? instruction = null, bool allowUnindexableLocations = false) => SHShowManageLibraryUI(iShellItem, parentWindow, title, instruction,
 			allowUnindexableLocations ? LIBRARYMANAGEDIALOGOPTIONS.LMD_ALLOWUNINDEXABLENETWORKLOCATIONS : LIBRARYMANAGEDIALOGOPTIONS.LMD_DEFAULT).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 
 	/// <summary>Folders of a <see cref="ShellLibrary"/>.</summary>

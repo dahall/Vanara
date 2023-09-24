@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the WsmSvc.dll</summary>
@@ -2242,7 +2237,7 @@ public static partial class WsmSvc
 		public WSMAN_API_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_API_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_API_HANDLE NULL => new WSMAN_API_HANDLE(IntPtr.Zero);
+		public static WSMAN_API_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2255,7 +2250,7 @@ public static partial class WsmSvc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_API_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_API_HANDLE(IntPtr h) => new WSMAN_API_HANDLE(h);
+		public static implicit operator WSMAN_API_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2383,7 +2378,7 @@ public static partial class WsmSvc
 		public WSMAN_COMMAND_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_COMMAND_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_COMMAND_HANDLE NULL => new WSMAN_COMMAND_HANDLE(IntPtr.Zero);
+		public static WSMAN_COMMAND_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2396,7 +2391,7 @@ public static partial class WsmSvc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_COMMAND_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_COMMAND_HANDLE(IntPtr h) => new WSMAN_COMMAND_HANDLE(h);
+		public static implicit operator WSMAN_COMMAND_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2616,7 +2611,7 @@ public static partial class WsmSvc
 		public WSMAN_OPERATION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_OPERATION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_OPERATION_HANDLE NULL => new WSMAN_OPERATION_HANDLE(IntPtr.Zero);
+		public static WSMAN_OPERATION_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2629,7 +2624,7 @@ public static partial class WsmSvc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_OPERATION_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_OPERATION_HANDLE(IntPtr h) => new WSMAN_OPERATION_HANDLE(h);
+		public static implicit operator WSMAN_OPERATION_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2970,7 +2965,7 @@ public static partial class WsmSvc
 		public WSMAN_SESSION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_SESSION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_SESSION_HANDLE NULL => new WSMAN_SESSION_HANDLE(IntPtr.Zero);
+		public static WSMAN_SESSION_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2983,7 +2978,7 @@ public static partial class WsmSvc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_SESSION_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_SESSION_HANDLE(IntPtr h) => new WSMAN_SESSION_HANDLE(h);
+		public static implicit operator WSMAN_SESSION_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -3053,7 +3048,7 @@ public static partial class WsmSvc
 		public WSMAN_SHELL_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_SHELL_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_SHELL_HANDLE NULL => new WSMAN_SHELL_HANDLE(IntPtr.Zero);
+		public static WSMAN_SHELL_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -3066,7 +3061,7 @@ public static partial class WsmSvc
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_SHELL_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_SHELL_HANDLE(IntPtr h) => new WSMAN_SHELL_HANDLE(h);
+		public static implicit operator WSMAN_SHELL_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

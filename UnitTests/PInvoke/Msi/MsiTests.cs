@@ -2,7 +2,6 @@
 using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using static Vanara.PInvoke.Msi;
 
 namespace Vanara.PInvoke.Tests;

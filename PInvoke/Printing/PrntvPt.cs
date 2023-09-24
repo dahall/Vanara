@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
 
@@ -670,7 +666,7 @@ public static partial class PrntvPt
 		public HPTPROVIDER(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPTPROVIDER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPTPROVIDER NULL => new HPTPROVIDER(IntPtr.Zero);
+		public static HPTPROVIDER NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -683,7 +679,7 @@ public static partial class PrntvPt
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPTPROVIDER"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPTPROVIDER(IntPtr h) => new HPTPROVIDER(h);
+		public static implicit operator HPTPROVIDER(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

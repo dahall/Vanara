@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.AccessControl;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AclUI;
 using static Vanara.PInvoke.AdvApi32;
-using static Vanara.Security.AccessControl.AccessControlHelper;
 using ResourceType = System.Security.AccessControl.ResourceType;
 
 namespace Vanara.Security.AccessControl;
@@ -163,7 +161,7 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 
 	/// <summary>Gets the generic mapping for standard rights.</summary>
 	/// <returns>A <see cref="GENERIC_MAPPING"/> structure for this object type.</returns>
-	public virtual GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new GENERIC_MAPPING(0x80000000, 0x40000000, 0x20000000, 0x10000000);
+	public virtual GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new(0x80000000, 0x40000000, 0x20000000, 0x10000000);
 
 	/// <summary>
 	/// Determines the source of inherited access control entries (ACEs) in discretionary access
@@ -260,7 +258,7 @@ internal class FileProvider : GenericProvider
 	public override IntPtr GetDefaultSecurity() => defaultSd.DangerousGetHandle();
 
 	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) =>
-		new GENERIC_MAPPING((uint)(FileSystemRights.Read | FileSystemRights.Synchronize),
+		new((uint)(FileSystemRights.Read | FileSystemRights.Synchronize),
 			(uint)(FileSystemRights.Write | FileSystemRights.Synchronize), 0x1200A0, (uint)FileSystemRights.FullControl);
 
 	public override SI_INHERIT_TYPE[] GetInheritTypes() => new[] {
@@ -307,7 +305,7 @@ internal class RegistryProvider : GenericProvider
 
 	//public override IntPtr GetDefaultSecurity() => IntPtr.Zero;
 
-	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new GENERIC_MAPPING((uint)RegistryRights.ReadKey, (uint)RegistryRights.WriteKey, (uint)RegistryRights.ExecuteKey, (uint)RegistryRights.FullControl);
+	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new((uint)RegistryRights.ReadKey, (uint)RegistryRights.WriteKey, (uint)RegistryRights.ExecuteKey, (uint)RegistryRights.FullControl);
 
 	public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
 	{
@@ -368,7 +366,7 @@ internal class TaskProvider : GenericProvider
 
 	//public override IntPtr GetDefaultSecurity() => IntPtr.Zero;
 
-	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new GENERIC_MAPPING(0x120089, 0x120116, 0x1200A0, 0x1F01FF);
+	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new(0x120089, 0x120116, 0x1200A0, 0x1F01FF);
 
 	public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
 	{

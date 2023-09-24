@@ -10,7 +10,6 @@ using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 
 namespace Vanara.PInvoke;
 
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 public static partial class Shell32
 {
 	/// <remarks>Methods in this class will only work on Vista and above.</remarks>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Vanara.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 using TS_ATTRID = System.Guid;
 using TsViewCookie = System.UInt32;
 

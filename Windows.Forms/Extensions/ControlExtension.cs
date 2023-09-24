@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.Extensions;
@@ -193,5 +192,5 @@ public static partial class ControlExtension
 	/// <summary>Converts a <see cref="Message"/> structure to a <see cref="PInvoke.MSG"/> structure.</summary>
 	/// <param name="msg">The Message instance.</param>
 	/// <returns>An equivalent <see cref="PInvoke.MSG"/> structure.</returns>
-	public static PInvoke.MSG ToMSG(this Message msg) => new PInvoke.MSG { message = (uint)msg.Msg, hwnd = msg.HWnd, wParam = msg.WParam, lParam = msg.LParam };
+	public static PInvoke.MSG ToMSG(this Message msg) => new() { message = (uint)msg.Msg, hwnd = msg.HWnd, wParam = msg.WParam, lParam = msg.LParam };
 }

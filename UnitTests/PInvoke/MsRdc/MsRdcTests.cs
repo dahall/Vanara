@@ -1,11 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.MsRdc;
 
 namespace Vanara.PInvoke.Tests;

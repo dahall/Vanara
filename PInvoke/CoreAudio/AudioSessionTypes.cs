@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Functions, structures and constants from Windows Core Audio Api.</summary>
 public static partial class CoreAudio

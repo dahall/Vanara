@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Text;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Imm32;
 
 namespace Vanara.PInvoke.Tests;

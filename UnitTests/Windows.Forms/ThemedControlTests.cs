@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using System.Drawing;
-using System.Windows.Forms;
-using static Vanara.PInvoke.DwmApi;
 
 namespace Vanara.Windows.Forms.Tests;
 

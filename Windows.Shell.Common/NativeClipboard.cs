@@ -61,9 +61,7 @@ public static class NativeClipboard
 			HRESULT hr = HRESULT.S_OK;
 			for (int i = 1; i <= n; i++)
 			{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				hr = OleGetClipboard(out var idata);
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				if (hr.Succeeded)
 					return idata;
 				if (i < n)
@@ -169,9 +167,7 @@ public static class NativeClipboard
 	/// The IDataObject interface on the data object containing clipboard data of interest, which the caller previously placed on the clipboard.
 	/// </param>
 	/// <returns><see langword="true"/> on success; otherwise, <see langword="false"/>.</returns>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static bool IsCurrentDataObject(IComDataObject dataObject) => OleIsCurrentClipboard(dataObject) == HRESULT.S_OK;
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 	/// <param name="id">A standard or registered clipboard format.</param>

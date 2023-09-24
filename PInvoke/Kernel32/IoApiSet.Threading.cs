@@ -280,9 +280,7 @@ public static partial class Kernel32
 	/// <exception cref="Win32Exception"></exception>
 	private static unsafe Task<TOut?> ExplicitDeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
 	{
-#pragma warning disable CS0618 // Type or member is obsolete
 		ThreadPool.BindHandle((IntPtr)hDevice);
-#pragma warning restore CS0618 // Type or member is obsolete
 		var tcs = new TaskCompletionSource<TOut?>();
 		var buffer = Pack(inVal, outVal);
 		var nativeOverlapped = new Overlapped().Pack((code, bytes, overlap) =>

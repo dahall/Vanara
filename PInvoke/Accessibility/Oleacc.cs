@@ -1,11 +1,6 @@
 ﻿using Accessibility;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Vanara.PInvoke;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 public static partial class Oleacc
 {

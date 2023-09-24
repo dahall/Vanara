@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -11,7 +6,6 @@ namespace Vanara.PInvoke;
 /// <summary>Pdh Performance Counter functions and structures.</summary>
 public static partial class Pdh
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const uint PDH_CVERSION_WIN40 = 0x0400;
 	public const uint PDH_CVERSION_WIN50 = 0x0500;
 	public const int PDH_MAX_COUNTER_PATH = 2048;
@@ -19,7 +13,6 @@ public static partial class Pdh
 	// v1.1 revision of PDH -- basic log functions v1.2 of the PDH -- adds variable instance counters v1.3 of the PDH -- adds log service
 	// control & stubs for NT5/PDH v2 fn's v2.0 of the PDH -- is the NT v 5.0 B2 version
 	public const uint PDH_VERSION = PDH_CVERSION_WIN50 + 0x0003;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// Applications implement the <c>CounterPathCallBack</c> function to process the counter path strings returned by the <c>Browse</c>
@@ -4916,7 +4909,7 @@ public static partial class Pdh
 		public PDH_HCOUNTER(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PDH_HCOUNTER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PDH_HCOUNTER NULL => new PDH_HCOUNTER(IntPtr.Zero);
+		public static PDH_HCOUNTER NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -4929,7 +4922,7 @@ public static partial class Pdh
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PDH_HCOUNTER"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PDH_HCOUNTER(IntPtr h) => new PDH_HCOUNTER(h);
+		public static implicit operator PDH_HCOUNTER(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -4965,7 +4958,7 @@ public static partial class Pdh
 		public PDH_HLOG(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PDH_HLOG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PDH_HLOG NULL => new PDH_HLOG(IntPtr.Zero);
+		public static PDH_HLOG NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -4978,7 +4971,7 @@ public static partial class Pdh
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PDH_HLOG"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PDH_HLOG(IntPtr h) => new PDH_HLOG(h);
+		public static implicit operator PDH_HLOG(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -5014,7 +5007,7 @@ public static partial class Pdh
 		public PDH_HQUERY(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PDH_HQUERY"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PDH_HQUERY NULL => new PDH_HQUERY(IntPtr.Zero);
+		public static PDH_HQUERY NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -5027,7 +5020,7 @@ public static partial class Pdh
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PDH_HQUERY"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PDH_HQUERY(IntPtr h) => new PDH_HQUERY(h);
+		public static implicit operator PDH_HQUERY(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

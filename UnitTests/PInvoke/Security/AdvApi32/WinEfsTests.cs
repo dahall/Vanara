@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Crypt32;
 

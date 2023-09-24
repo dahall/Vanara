@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
+﻿using System.Runtime.InteropServices.ComTypes;
 
 using TfClientId = System.UInt32;
 

@@ -25,7 +25,6 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;

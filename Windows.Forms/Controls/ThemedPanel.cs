@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using Vanara.Extensions;
 using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Windows.Forms;
@@ -35,7 +33,7 @@ public class ThemedPanel : Panel
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public VisualStyleRenderer Style
 	{
-		get => new VisualStyleRenderer(styleClass, stylePart, styleState);
+		get => new(styleClass, stylePart, styleState);
 		set => SetTheme(value?.Class, value?.Part ?? 0, value?.State ?? 0);
 	}
 

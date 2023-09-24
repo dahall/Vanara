@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Magnification API functions and structures.</summary>
 /// <remarks>
@@ -919,7 +916,42 @@ public static partial class Magnification
 		public static bool operator !=(MAGCOLOREFFECT lhs, MAGCOLOREFFECT rhs) => !(lhs == rhs);
 
 		/// <summary>An Identity Matrix for MAGCOLOREFFECT.</summary>
+
+/* Unmerged change from project 'Vanara.PInvoke.Magnification (net48)'
+Before:
 		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+After:
+		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.Magnification (net7.0)'
+Before:
+		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+After:
+		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.Magnification (netcoreapp3.1)'
+Before:
+		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+After:
+		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.Magnification (netstandard2.0)'
+Before:
+		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+After:
+		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+*/
+
+/* Unmerged change from project 'Vanara.PInvoke.Magnification (net45)'
+Before:
+		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+After:
+		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
+*/
+		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
 	}
 
 	/// <summary>
@@ -1182,6 +1214,6 @@ public static partial class Magnification
 		public static bool operator !=(MAGTRANSFORM lhs, MAGTRANSFORM rhs) => !(lhs == rhs);
 
 		/// <summary>An Identity Matrix for MAGTRANSFORM.</summary>
-		public static readonly MAGTRANSFORM Identity = new MAGTRANSFORM { transform00 = 1, transform11 = 1, transform22 = 1 };
+		public static readonly MAGTRANSFORM Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1 };
 	}
 }

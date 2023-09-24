@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Vanara.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
 using HKL = System.IntPtr;
 

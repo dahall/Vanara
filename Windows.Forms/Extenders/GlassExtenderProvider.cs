@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms;
 
@@ -15,7 +13,7 @@ namespace Vanara.Windows.Forms;
 [Description("Extender for a Form that adds Aero glass properties.")]
 public sealed class GlassExtenderProvider : Component, IExtenderProvider
 {
-	private readonly Dictionary<Form, GlassFormProperties> formProps = new Dictionary<Form, GlassFormProperties>();
+	private readonly Dictionary<Form, GlassFormProperties> formProps = new();
 
 	/// <summary>Initializes a new instance of the <see cref="GlassExtenderProvider"/> class.</summary>
 	public GlassExtenderProvider()

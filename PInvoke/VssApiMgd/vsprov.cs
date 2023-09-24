@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke.VssApi;
+﻿namespace Vanara.PInvoke.VssApi;
 
 /// <summary>Contains the methods used by VSS to manage shadow copy volumes.</summary>
 // https://docs.microsoft.com/en-us/windows/win32/api/vsprov/nn-vsprov-ivssfilesharesnapshotprovider

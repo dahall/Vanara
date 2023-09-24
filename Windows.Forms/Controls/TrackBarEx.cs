@@ -1,15 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.ComponentModel.Design.Serialization;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Design;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Macros;
@@ -258,7 +252,7 @@ public class TrackBarEx : TrackBar
 	}
 
 	/// <inheritdoc/>
-	protected override Size DefaultSize => new Size(104, PreferredDimension);
+	protected override Size DefaultSize => new(104, PreferredDimension);
 
 	private int PreferredDimension
 	{

@@ -1,12 +1,9 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32;
@@ -144,7 +141,7 @@ public partial class IPAddressBox : Control
 	}
 
 	/// <inheritdoc/>
-	protected override Size DefaultSize => new Size(100, PreferredHeight);
+	protected override Size DefaultSize => new(100, PreferredHeight);
 
 	/// <summary>Clears the value and resets it to 0.0.0.0.</summary>
 	public void Clear() => SendMessage(IPAddressMessage.IPM_CLEARADDRESS);

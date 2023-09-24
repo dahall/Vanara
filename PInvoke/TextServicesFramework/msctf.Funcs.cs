@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Methods, constants, structures and interfaces for Microsoft Text Services Framework.</summary>
 public static partial class MSCTF

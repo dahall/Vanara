@@ -1,13 +1,8 @@
 ﻿using NUnit.Framework;
-using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Tests.Kernel32Tests;
 

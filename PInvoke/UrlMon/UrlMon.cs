@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Vanara.InteropServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -3622,6 +3618,6 @@ public static partial class UrlMon
 		public uint dwReserved;
 
 		/// <summary>A default instance of this structure with the size set.</summary>
-		public static readonly BINDINFO Default = new BINDINFO { cbSize = (uint)Marshal.SizeOf(typeof(BINDINFO)), securityAttributes = tagSECURITY_ATTRIBUTES.Default };
+		public static readonly BINDINFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(BINDINFO)), securityAttributes = tagSECURITY_ATTRIBUTES.Default };
 	}
 }

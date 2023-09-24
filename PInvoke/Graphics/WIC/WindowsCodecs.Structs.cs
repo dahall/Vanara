@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.D2d1;
 using static Vanara.PInvoke.DXGI;
 
@@ -667,6 +664,6 @@ public static partial class WindowsCodecs
 		/// <summary>Performs an implicit conversion from <see cref="WICRect"/> to <see cref="PWICRect"/>.</summary>
 		/// <param name="rect">The rect.</param>
 		/// <returns>The resulting <see cref="PWICRect"/> instance from the conversion.</returns>
-		public static implicit operator PWICRect(in WICRect rect) => new PWICRect(rect.X, rect.Y, rect.Width, rect.Height);
+		public static implicit operator PWICRect(in WICRect rect) => new(rect.X, rect.Y, rect.Width, rect.Height);
 	}
 }

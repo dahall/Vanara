@@ -1,7 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Threading;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using USN = System.Int64;
 
@@ -1152,7 +1149,7 @@ public static partial class CldApi
 		public HCFFILE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HCFFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCFFILE NULL => new HCFFILE(IntPtr.Zero);
+		public static HCFFILE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1165,7 +1162,7 @@ public static partial class CldApi
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCFFILE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCFFILE(IntPtr h) => new HCFFILE(h);
+		public static implicit operator HCFFILE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

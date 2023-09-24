@@ -1,10 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
+﻿using System.Security.AccessControl;
 using System.Security.Principal;
 using Vanara.PInvoke;
-using Vanara.InteropServices;
-using static Vanara.Security.AccessControl.AccessControlHelper;
 using static Vanara.PInvoke.AclUI;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Authz;
@@ -30,21 +26,22 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 	internal SI_OBJECT_INFO objectInfo;
 	private SI_OBJECT_INFO_Flags currentElevation;
 	private readonly string fullObjectName;
-	private IAccessControlEditorDialogProvider prov;
-	private SafeByteArray pSD;
+	private IAccessControlEditorDialogProvider? prov;
+	private SafeByteArray? pSD;
 
-	public SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, string fullName, string serverName = null, string pageTitle = null)
+	public SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, string fullName, string? serverName = null, string? pageTitle = null)
 	{
-		objectInfo = new SI_OBJECT_INFO(flags, objectName, serverName, pageTitle);
+		objectInfo = new(flags, objectName, serverName, pageTitle);
 		currentElevation = 0; // flags & (SI_OBJECT_INFO_Flags.OwnerElevationRequired | SI_OBJECT_INFO_Flags.AuditElevationRequired | SI_OBJECT_INFO_Flags.PermsElevationRequired);
 		fullObjectName = fullName;
 	}
 
-	public event EventHandler<SecurityEventArg> OnSetSecurity;
+	public event EventHandler<SecurityEventArg>? OnSetSecurity;
 
 	public byte[] SecurityDescriptor
 	{
-		get => pSD.ToArray(); set => pSD = new SafeByteArray(value);
+		get => pSD?.ToArray() ?? new byte[0];
+		set => pSD = new SafeByteArray(value);
 	}
 
 	HRESULT IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, PSECURITY_DESCRIPTOR pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out ACCESS_MASK[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
@@ -228,7 +225,11 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		return null;
 	}
 
-	public HRESULT ComputeEffectivePermissionWithSecondarySecurity(PSID pSid, PSID pDeviceSid, string pszServerName, SECURITY_OBJECT[] pSecurityObjects, uint dwSecurityObjectCount, in TOKEN_GROUPS pUserGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzUserGroupsOperations, in TOKEN_GROUPS pDeviceGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzDeviceGroupsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzUserClaimsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzDeviceClaimsOperations, EFFPERM_RESULT_LIST[] pEffpermResultLists)
+	public HRESULT ComputeEffectivePermissionWithSecondarySecurity(PSID pSid, PSID pDeviceSid, string? pszServerName, SECURITY_OBJECT[] pSecurityObjects,
+		uint dwSecurityObjectCount, in TOKEN_GROUPS pUserGroups, AUTHZ_SID_OPERATION[]? pAuthzUserGroupsOperations, in TOKEN_GROUPS pDeviceGroups,
+		AUTHZ_SID_OPERATION[]? pAuthzDeviceGroupsOperations, in AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims,
+		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[]? pAuthzUserClaimsOperations, in AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims,
+		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[]? pAuthzDeviceClaimsOperations, EFFPERM_RESULT_LIST[] pEffpermResultLists)
 	{
 		System.Diagnostics.Debug.WriteLine($"ComputeEffectivePermissionWithSecondarySecurity({dwSecurityObjectCount}):{new SecurityIdentifier((IntPtr)pSid).Value};{new SecurityIdentifier((IntPtr)pDeviceSid).Value}");
 		if (dwSecurityObjectCount != 1)
@@ -242,7 +243,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 			return HRESULT.S_OK;
 
 		var identifier = new LUID();
-		SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzCompoundContext = null;
+		SafeAUTHZ_CLIENT_CONTEXT_HANDLE? hAuthzCompoundContext = null;
 		if (!AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzUserContext))
 			return HRESULT.S_OK;
 
@@ -258,7 +259,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 			hAuthzCompoundContext = hAuthzUserContext;
 		}
 
-		if (hAuthzCompoundContext == null)
+		if (hAuthzCompoundContext is null)
 			return HRESULT.S_OK;
 
 		if (pAuthzUserClaims.Version != 0)

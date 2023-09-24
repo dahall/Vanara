@@ -20,8 +20,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-using System;
 
+
+/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
+Before:
+#pragma warning disable 1591
+// ReSharper disable UnusedMember.Global
+After:
+// ReSharper disable UnusedMember.Global
+*/
 #pragma warning disable 1591
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -32,19 +39,19 @@ using System;
 
 namespace Vanara.Windows.Forms.Annotations;
 
-  /// <summary>
-  /// Indicates that the value of the marked element could be <c>null</c> sometimes,
-  /// so the check for <c>null</c> is necessary before its usage.
-  /// </summary>
-  /// <example><code>
-  /// [CanBeNull] object Test() => null;
-  /// 
-  /// void UseTest() {
-  ///   var p = Test();
-  ///   var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
-  /// }
-  /// </code></example>
-  [AttributeUsage(
+/// <summary>
+/// Indicates that the value of the marked element could be <c>null</c> sometimes,
+/// so the check for <c>null</c> is necessary before its usage.
+/// </summary>
+/// <example><code>
+/// [CanBeNull] object Test() => null;
+/// 
+/// void UseTest() {
+///   var p = Test();
+///   var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
+/// }
+/// </code></example>
+[AttributeUsage(
     AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
     AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
     AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]

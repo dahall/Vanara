@@ -1,6 +1,4 @@
-﻿using System;
-using Vanara.Extensions;
-using static Vanara.PInvoke.AdvApi32;
+﻿using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;

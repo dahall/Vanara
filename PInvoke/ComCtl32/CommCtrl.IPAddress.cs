@@ -12,7 +12,6 @@ public static partial class ComCtl32
 
 	private const int IPN_FIRST = -860;
 
-#pragma warning disable 1584, 1711, 1572, 1581, 1580
 
 	/// <summary>IP Address Messages</summary>
 	public enum IPAddressMessage
@@ -140,7 +139,6 @@ public static partial class ComCtl32
 		IPN_FIELDCHANGED = IPN_FIRST - 0
 	}
 
-#pragma warning restore 1584, 1711, 1572, 1581, 1580
 
 	/// <summary>Gets the IP address represented as a byte array from an unsigned pointer.</summary>
 	/// <param name="ipAddress">The IP address.</param>

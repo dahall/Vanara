@@ -12,8 +12,6 @@ public static partial class CfgMgr32
 	// Win95 compatibility--not applicable to 32-bit ConfigMgr Win95 compatibility--not applicable to 32-bit ConfigMgr Win95
 	// compatibility--not applicable to 32-bit ConfigMgr
 	private const string Lib_Cfgmgr32 = "cfgmgr32.dll";
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const int CONFIGMG_VERSION = 0x0400;
 	public const int MAX_CLASS_NAME_LEN = 32;
 	public const int MAX_CONFIG_VALUE = 9999;
@@ -26,7 +24,6 @@ public static partial class CfgMgr32
 	public const int MAX_IRQS = 7;
 	public const int MAX_MEM_REGISTERS = 9;
 	public const int MAX_PROFILE_LEN = 80;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>Caller-supplied flag constant that specifies the list onto which the supplied device ID should be appended.</summary>
 	[PInvokeData("cfgmgr32.h")]
@@ -235,7 +232,6 @@ public static partial class CfgMgr32
 	[PInvokeData("cfgmgr32.h")]
 	public enum CONFIGRET : uint
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		CR_SUCCESS = 0x00000000,
 		CR_DEFAULT = 0x00000001,
 		CR_OUT_OF_MEMORY = 0x00000002,
@@ -300,7 +296,6 @@ public static partial class CfgMgr32
 		CR_INVALID_CONFLICT_LIST = 0x00000039,
 		CR_INVALID_INDEX = 0x0000003A,
 		CR_INVALID_STRUCTURE_SIZE = 0x0000003B,
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Caller-supplied flags that specify the type of the logical configuration.</summary>

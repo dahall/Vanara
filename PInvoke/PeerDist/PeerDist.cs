@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Vanara.PInvoke;
@@ -1751,7 +1749,7 @@ public static partial class PeerDist
 		public PEERDIST_CONTENT_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PEERDIST_CONTENT_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PEERDIST_CONTENT_HANDLE NULL => new PEERDIST_CONTENT_HANDLE(IntPtr.Zero);
+		public static PEERDIST_CONTENT_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1764,7 +1762,7 @@ public static partial class PeerDist
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PEERDIST_CONTENT_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PEERDIST_CONTENT_HANDLE(IntPtr h) => new PEERDIST_CONTENT_HANDLE(h);
+		public static implicit operator PEERDIST_CONTENT_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1813,7 +1811,7 @@ public static partial class PeerDist
 		public PEERDIST_CONTENTINFO_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PEERDIST_CONTENTINFO_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PEERDIST_CONTENTINFO_HANDLE NULL => new PEERDIST_CONTENTINFO_HANDLE(IntPtr.Zero);
+		public static PEERDIST_CONTENTINFO_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1826,7 +1824,7 @@ public static partial class PeerDist
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PEERDIST_CONTENTINFO_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PEERDIST_CONTENTINFO_HANDLE(IntPtr h) => new PEERDIST_CONTENTINFO_HANDLE(h);
+		public static implicit operator PEERDIST_CONTENTINFO_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1861,7 +1859,7 @@ public static partial class PeerDist
 		public PEERDIST_INSTANCE_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PEERDIST_INSTANCE_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PEERDIST_INSTANCE_HANDLE NULL => new PEERDIST_INSTANCE_HANDLE(IntPtr.Zero);
+		public static PEERDIST_INSTANCE_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1874,7 +1872,7 @@ public static partial class PeerDist
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PEERDIST_INSTANCE_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PEERDIST_INSTANCE_HANDLE(IntPtr h) => new PEERDIST_INSTANCE_HANDLE(h);
+		public static implicit operator PEERDIST_INSTANCE_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2037,7 +2035,7 @@ public static partial class PeerDist
 		public PEERDIST_STREAM_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PEERDIST_STREAM_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PEERDIST_STREAM_HANDLE NULL => new PEERDIST_STREAM_HANDLE(IntPtr.Zero);
+		public static PEERDIST_STREAM_HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2050,7 +2048,7 @@ public static partial class PeerDist
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PEERDIST_STREAM_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PEERDIST_STREAM_HANDLE(IntPtr h) => new PEERDIST_STREAM_HANDLE(h);
+		public static implicit operator PEERDIST_STREAM_HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Encapsulates classes exposed by DWNAPI.DLL</summary>
 public static partial class DwmApi
@@ -1176,10 +1172,10 @@ public static partial class DwmApi
 		public int cyBottomHeight;
 
 		/// <summary>Retrieves a <see cref="MARGINS"/> instance with all values set to 0.</summary>
-		public static readonly MARGINS Empty = new MARGINS(0);
+		public static readonly MARGINS Empty = new(0);
 
 		/// <summary>Retrieves a <see cref="MARGINS"/> instance with all values set to -1.</summary>
-		public static readonly MARGINS Infinite = new MARGINS(-1);
+		public static readonly MARGINS Infinite = new(-1);
 
 		/// <summary>Initializes a new instance of the <see cref="MARGINS"/> struct.</summary>
 		/// <param name="left">The left border value.</param>

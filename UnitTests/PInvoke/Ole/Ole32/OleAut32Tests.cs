@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using NUnit.Framework;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using NUnit.Framework;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.OleAut32;
 

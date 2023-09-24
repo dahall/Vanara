@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Windows.Security.Cryptography;
 using Windows.Storage;
 using Windows.Storage.Provider;
@@ -113,7 +109,7 @@ public class CloudSyncCallbackArgs<T> : EventArgs where T : struct
 	/// <summary>Makes a CF_OPERATION_INFO instance from the properties.</summary>
 	/// <param name="opType">Type of the operation to set.</param>
 	/// <returns>A CF_OPERATION_INFO instance.</returns>
-	public CF_OPERATION_INFO MakeOpInfo(CF_OPERATION_TYPE opType, IntPtr syncStatus = default) => new CF_OPERATION_INFO
+	public CF_OPERATION_INFO MakeOpInfo(CF_OPERATION_TYPE opType, IntPtr syncStatus = default) => new()
 	{
 		StructSize = (uint)Marshal.SizeOf<CF_OPERATION_INFO>(),
 		Type = opType,

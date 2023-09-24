@@ -2569,12 +2569,10 @@ public static partial class Kernel32
 		/// </returns>
 		public bool Set() => SetEvent(this);
 
-#pragma warning disable CS0618 // Type or member is obsolete
 		/// <summary>Performs an implicit conversion from <see cref="EventWaitHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 		/// <param name="h">The SafeSyncHandle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SafeEventHandle(EventWaitHandle h) => new(h.Handle, false);
-#pragma warning restore CS0618 // Type or member is obsolete
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeEventHandle"/> to <see cref="HEVENT"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>

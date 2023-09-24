@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 

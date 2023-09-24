@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -114,7 +113,7 @@ public class InputDialog : CommonDialog
 	{
 		private const int prefWidth = 340;
 
-		private static readonly Dictionary<Type, char[]> keyPressValidChars = new Dictionary<Type, char[]>
+		private static readonly Dictionary<Type, char[]> keyPressValidChars = new()
 		{
 			[typeof(byte)] = GetCultureChars(true, false, true),
 			[typeof(sbyte)] = GetCultureChars(true, true, true),
@@ -131,12 +130,12 @@ public class InputDialog : CommonDialog
 			[typeof(Guid)] = GetCultureChars(true, false, false, "-{}()".ToCharArray()),
 		};
 
-		private static readonly Size minSize = new Size(193, 104);
+		private static readonly Size minSize = new(193, 104);
 
 		private static readonly Type[] simpleTypes = { typeof(Enum), typeof(decimal), typeof(DateTime),
 			typeof(DateTimeOffset), typeof(string), typeof(TimeSpan), typeof(Guid) };
 
-		private static readonly Dictionary<Type, Predicate<string>> validations = new Dictionary<Type, Predicate<string>>
+		private static readonly Dictionary<Type, Predicate<string>> validations = new()
 		{
 			[typeof(byte)] = s => byte.TryParse(s, out var _),
 			[typeof(sbyte)] = s => sbyte.TryParse(s, out var _),
@@ -155,7 +154,7 @@ public class InputDialog : CommonDialog
 			[typeof(Guid)] = s => { try { var n = new Guid(s); return true; } catch { return false; } },
 		};
 
-		private readonly List<MemberInfo> items = new List<MemberInfo>();
+		private readonly List<MemberInfo> items = new();
 		private Panel borderPanel;
 		private TableLayoutPanel buttonPanel;
 		private Button cancelBtn;

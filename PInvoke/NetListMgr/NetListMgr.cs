@@ -112,7 +112,6 @@ public enum NLM_ENUM_NETWORK
 	NLM_ENUM_NETWORK_ALL = 0x03
 }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 [Flags]
 [PInvokeData("Netlistmgr.h")]
 public enum NLM_INTERNET_CONNECTIVITY
@@ -121,7 +120,6 @@ public enum NLM_INTERNET_CONNECTIVITY
 	NLM_INTERNET_CONNECTIVITY_PROXIED = 0x2,
 	NLM_INTERNET_CONNECTIVITY_CORPORATE = 0x4
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 /// <summary>The NLM_NETWORK_CATEGORY enumeration is a set of flags that specify the category type of a network.</summary>
 [PInvokeData("Netlistmgr.h")]
@@ -137,7 +135,6 @@ public enum NLM_NETWORK_CATEGORY
 	NLM_NETWORK_CATEGORY_DOMAIN_AUTHENTICATED
 }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 [Flags]
 [PInvokeData("Netlistmgr.h")]
 public enum NLM_NETWORK_CLASS
@@ -146,7 +143,6 @@ public enum NLM_NETWORK_CLASS
 	NLM_NETWORK_IDENTIFIED = 0x2,
 	NLM_NETWORK_UNIDENTIFIED = 0x3
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 /// <summary>The NLM_NETWORK_PROPERTY_CHANGE enumeration is a set of flags that define changes made to the properties of a network.</summary>
 [PInvokeData("Netlistmgr.h")]

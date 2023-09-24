@@ -367,7 +367,6 @@ public static partial class Shell32
 			}
 
 			CharSet charSet = GetCharSet(attr);
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			return attr.TypeRef switch
 			{
 				// Handle strings
@@ -381,7 +380,6 @@ public static partial class Shell32
 				// Handle unknown types
 				_ => hmem.GetBytes(),
 			};
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		}
 		finally
 		{

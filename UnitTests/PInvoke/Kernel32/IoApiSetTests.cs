@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.IO;
-using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Kernel32;
 using FileAccess = Vanara.PInvoke.Kernel32.FileAccess;

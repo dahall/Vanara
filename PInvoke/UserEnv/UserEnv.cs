@@ -1,10 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
+﻿using System.Linq;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
@@ -1619,7 +1613,7 @@ public static partial class UserEnv
 		}
 
 		/// <summary>Gets a default instance of this structure with the size field set appropriately.</summary>
-		public static readonly PROFILEINFO Default = new PROFILEINFO { dwSize = (uint)Marshal.SizeOf(typeof(PROFILEINFO)) };
+		public static readonly PROFILEINFO Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(PROFILEINFO)) };
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="EnterCriticalPolicySection"/> that is disposed using <see cref="LeaveCriticalPolicySection"/>.</summary>

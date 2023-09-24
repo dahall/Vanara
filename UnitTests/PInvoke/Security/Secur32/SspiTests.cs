@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using static Vanara.PInvoke.CredUI;
 using static Vanara.PInvoke.Secur32;
 

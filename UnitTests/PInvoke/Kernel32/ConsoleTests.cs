@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;
@@ -269,7 +267,7 @@ public static class ConsoleTestProcess
 			SMALL_RECT srctScrollRect = new(0, 1, (short)(csbiInfo.dwSize.X - x), (short)(csbiInfo.dwSize.Y - x));
 
 			// The destination for the scroll rectangle is one row up.
-			COORD coordDest = default(COORD);
+			COORD coordDest = default;
 
 			// The clipping rectangle is the same as the scrolling rectangle. The destination row is left unchanged.
 			SMALL_RECT srctClipRect = srctScrollRect;

@@ -17,9 +17,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	private IBindCtxV iBindCtx;
 
 	/// <summary>Initializes a new instance of the <see cref="BindContext"/> class.</summary>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public BindContext() => CreateBindCtx(0, out iBindCtx).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Initializes a new instance of the <see cref="BindContext"/> class.</summary>
 	/// <param name="openMode">
@@ -31,9 +29,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// <param name="bindFlags">Flags that control aspects of moniker binding operations.</param>
 	public BindContext(STGM openMode = STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_NONE, TimeSpan timeout = default, BIND_FLAGS bindFlags = 0)
 	{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		CreateBindCtx(0, out iBindCtx).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		var opts = new BIND_OPTS_V
 		{
 			dwTickCountDeadline = (uint)timeout.TotalMilliseconds,

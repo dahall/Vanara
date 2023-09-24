@@ -1,14 +1,38 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Vanara.Drawing;
-using Vanara.Extensions;
-using static Vanara.PInvoke.ComCtl32;
+using static Vanara.PInvoke.Macros;
+
+/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
+Before:
 using static Vanara.PInvoke.UxTheme;
 using static Vanara.PInvoke.Macros;
+After:
+using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.User32;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
+Before:
+using static Vanara.PInvoke.UxTheme;
+using static Vanara.PInvoke.Macros;
+After:
+using static Vanara.PInvoke.Macros;
+using static Vanara.PInvoke.User32;
+*/
+
+/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
+Before:
+using static Vanara.PInvoke.UxTheme;
+using static Vanara.PInvoke.Macros;
+After:
+using static Vanara.PInvoke.Macros;
+using static Vanara.PInvoke.User32;
+*/
+using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.UxTheme;
 using ComboBoxStyle = System.Windows.Forms.ComboBoxStyle;
 
 namespace Vanara.Windows.Forms;

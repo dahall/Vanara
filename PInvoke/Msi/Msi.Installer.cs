@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Vanara.PInvoke;
 
@@ -2339,8 +2336,8 @@ public static partial class Msi
 	public static IEnumerable<(string product, MSIINSTALLCONTEXT context, string sid)> MsiEnumClientsEx(string szComponent,
 		[Optional] string? szUserSid, MSIINSTALLCONTEXT dwContext)
 	{
-		StringBuilder prodCode = new StringBuilder(MAX_GUID_CHARS + 1);
-		StringBuilder sid = new StringBuilder(1024);
+		StringBuilder prodCode = new(MAX_GUID_CHARS + 1);
+		StringBuilder sid = new(1024);
 		for (uint i = 0; true; i++)
 		{
 			prodCode.Length = 0;
@@ -3923,8 +3920,8 @@ public static partial class Msi
 	public static IEnumerable<(string productCode, MSIINSTALLCONTEXT context, string sidString)> MsiEnumProductsEx(
 		[Optional] string? szProductCode, string szUserSid = null, MSIINSTALLCONTEXT dwContext = MSIINSTALLCONTEXT.MSIINSTALLCONTEXT_ALL)
 	{
-		StringBuilder prodCode = new StringBuilder(MAX_GUID_CHARS + 1);
-		StringBuilder sid = new StringBuilder(1024);
+		StringBuilder prodCode = new(MAX_GUID_CHARS + 1);
+		StringBuilder sid = new(1024);
 		for (uint i = 0; true; i++)
 		{
 			prodCode.Length = 0;

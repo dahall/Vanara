@@ -1,6 +1,4 @@
 ﻿using Accessibility;
-using System;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Oleacc;
 
 namespace Vanara.PInvoke;

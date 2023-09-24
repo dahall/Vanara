@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using Vanara.Extensions;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Forms;
@@ -92,7 +90,7 @@ public class CommandLink : Button
 	}
 
 	/// <summary>Gets the default size of the control.</summary>
-	protected override Size DefaultSize => new Size(200, AutoSize ? PreferredSize.Height : 58);
+	protected override Size DefaultSize => new(200, AutoSize ? PreferredSize.Height : 58);
 
 	private bool Default => ReferenceEquals(FindForm()?.AcceptButton, this);
 
@@ -193,9 +191,9 @@ internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonSt
 	private const int rndRectRadius = 6;
 	private const int tbMargin = 10;
 
-	private static readonly Font largeFont = new Font(fontName, 12, FontStyle.Regular, GraphicsUnit.Point, 0);
+	private static readonly Font largeFont = new(fontName, 12, FontStyle.Regular, GraphicsUnit.Point, 0);
 
-	private static readonly Dictionary<PushButtonState, DrawPattern> paintPattern = new Dictionary<PushButtonState, DrawPattern>
+	private static readonly Dictionary<PushButtonState, DrawPattern> paintPattern = new()
 	{
 		[PushButtonState.Normal] = new DrawPattern(Color.Transparent, Color.Transparent, Color.FromArgb(21, 28, 85), Properties.Resources.ArrowNormal),
 		[PushButtonState.Hot] = new DrawPattern(Color.White, Color.FromArgb(237, 237, 237), 40, Color.FromArgb(189, 189, 189), Color.FromArgb(7, 74, 229), Properties.Resources.ArrowHovered),
@@ -204,7 +202,7 @@ internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonSt
 		[PushButtonState.Default] = new DrawPattern(Color.Transparent, Color.FromArgb(192, 233, 243), Color.FromArgb(21, 28, 85), Properties.Resources.ArrowNormal)
 	};
 
-	private static readonly Font smallFont = new Font(fontName, 9, FontStyle.Regular, GraphicsUnit.Point, 0);
+	private static readonly Font smallFont = new(fontName, 9, FontStyle.Regular, GraphicsUnit.Point, 0);
 
 	public void Draw(CommandLink ctrl, PushButtonState state, PaintEventArgs e)
 	{

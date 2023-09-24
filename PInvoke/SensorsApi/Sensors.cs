@@ -1,7 +1,5 @@
 ﻿namespace Vanara.PInvoke;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
 public static partial class SensorsApi
 {
 	/// <summary>Sensor constants defined in sensors.h</summary>

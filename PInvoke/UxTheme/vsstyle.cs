@@ -1,9 +1,5 @@
-﻿using System;
-using Vanara.InteropServices;
+﻿namespace Vanara.PInvoke;
 
-namespace Vanara.PInvoke;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static partial class UxTheme
 {
 	public const int TMTVS_RESERVEDHIGH = 19999;

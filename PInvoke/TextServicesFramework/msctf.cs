@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using HKL = System.IntPtr;
+﻿using HKL = System.IntPtr;
 
 namespace Vanara.PInvoke;
 
@@ -28,114 +25,113 @@ public static partial class MSCTF
 	/// <summary>Used to notify atom functions that a thread input process has initiated.</summary>
 	public const string TF_PROCESS_ATOM = "_CTF_PROCESS_ATOM_";
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// Obtains the function provider implemented by the current application. This object is not available if the application does not
 	/// register itself as a function provider.
 	/// </summary>
-	public static readonly Guid GUID_APP_FUNCTIONPROVIDER = new Guid("4caef01e-12af-4b0e-9db1-a6ec5b881208");
+	public static readonly Guid GUID_APP_FUNCTIONPROVIDER = new("4caef01e-12af-4b0e-9db1-a6ec5b881208");
 
-	public static readonly Guid GUID_COMPARTMENT_EMPTYCONTEXT = new Guid("d7487dbf-804e-41c5-894d-ad96fd4eea13");
+	public static readonly Guid GUID_COMPARTMENT_EMPTYCONTEXT = new("d7487dbf-804e-41c5-894d-ad96fd4eea13");
 
-	public static readonly Guid GUID_COMPARTMENT_HANDWRITING_OPENCLOSE = new Guid("f9ae2c6b-1866-4361-af72-7aa30948890e");
+	public static readonly Guid GUID_COMPARTMENT_HANDWRITING_OPENCLOSE = new("f9ae2c6b-1866-4361-af72-7aa30948890e");
 
-	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_DISABLED = new Guid("71a5b253-1951-466b-9fbc-9c8808fa84f2");
+	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_DISABLED = new("71a5b253-1951-466b-9fbc-9c8808fa84f2");
 
-	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_INPUTMODE_CONVERSION = new Guid("ccf05dd8-4a87-11d7-a6e2-00065b84435c");
+	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_INPUTMODE_CONVERSION = new("ccf05dd8-4a87-11d7-a6e2-00065b84435c");
 
-	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_INPUTMODE_SENTENCE = new Guid("ccf05dd9-4a87-11d7-a6e2-00065b84435c");
+	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_INPUTMODE_SENTENCE = new("ccf05dd9-4a87-11d7-a6e2-00065b84435c");
 
-	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_OPENCLOSE = new Guid("58273aad-01bb-4164-95c6-755ba0b5162d");
+	public static readonly Guid GUID_COMPARTMENT_KEYBOARD_OPENCLOSE = new("58273aad-01bb-4164-95c6-755ba0b5162d");
 
-	public static readonly Guid GUID_COMPARTMENT_PERSISTMENUENABLED = new Guid("575f3783-70c8-47c8-ae5d-91a01a1f7592");
+	public static readonly Guid GUID_COMPARTMENT_PERSISTMENUENABLED = new("575f3783-70c8-47c8-ae5d-91a01a1f7592");
 
-	public static readonly Guid GUID_COMPARTMENT_SPEECH_DISABLED = new Guid("56c5c607-0703-4e59-8e52-cbc84e8bbe35");
+	public static readonly Guid GUID_COMPARTMENT_SPEECH_DISABLED = new("56c5c607-0703-4e59-8e52-cbc84e8bbe35");
 
-	public static readonly Guid GUID_COMPARTMENT_SPEECH_GLOBALSTATE = new Guid("2a54fe8e-0d08-460c-a75d-87035ff436c5");
+	public static readonly Guid GUID_COMPARTMENT_SPEECH_GLOBALSTATE = new("2a54fe8e-0d08-460c-a75d-87035ff436c5");
 
-	public static readonly Guid GUID_COMPARTMENT_SPEECH_OPENCLOSE = new Guid("544d6a63-e2e8-4752-bbd1-000960bca083");
+	public static readonly Guid GUID_COMPARTMENT_SPEECH_OPENCLOSE = new("544d6a63-e2e8-4752-bbd1-000960bca083");
 
-	public static readonly Guid GUID_COMPARTMENT_TIPUISTATUS = new Guid("148ca3ec-0366-401c-8d75-ed978d85fbc9");
+	public static readonly Guid GUID_COMPARTMENT_TIPUISTATUS = new("148ca3ec-0366-401c-8d75-ed978d85fbc9");
 
-	public static readonly Guid GUID_COMPARTMENT_TRANSITORYEXTENSION = new Guid("8be347f5-c7a0-11d7-b408-00065b84435c");
+	public static readonly Guid GUID_COMPARTMENT_TRANSITORYEXTENSION = new("8be347f5-c7a0-11d7-b408-00065b84435c");
 
-	public static readonly Guid GUID_COMPARTMENT_TRANSITORYEXTENSION_DOCUMENTMANAGER = new Guid("8be347f7-c7a0-11d7-b408-00065b84435c");
+	public static readonly Guid GUID_COMPARTMENT_TRANSITORYEXTENSION_DOCUMENTMANAGER = new("8be347f7-c7a0-11d7-b408-00065b84435c");
 
-	public static readonly Guid GUID_COMPARTMENT_TRANSITORYEXTENSION_PARENT = new Guid("8be347f8-c7a0-11d7-b408-00065b84435c");
+	public static readonly Guid GUID_COMPARTMENT_TRANSITORYEXTENSION_PARENT = new("8be347f8-c7a0-11d7-b408-00065b84435c");
 
-	public static readonly Guid GUID_INTEGRATIONSTYLE_SEARCHBOX = new Guid("E6D1BD11-82F7-4903-AE21-1A6397CDE2EB");
+	public static readonly Guid GUID_INTEGRATIONSTYLE_SEARCHBOX = new("E6D1BD11-82F7-4903-AE21-1A6397CDE2EB");
 
-	public static readonly Guid GUID_MODEBIAS_CHINESE = new Guid("7add26de-4328-489b-83ae-6493750cad5c");
+	public static readonly Guid GUID_MODEBIAS_CHINESE = new("7add26de-4328-489b-83ae-6493750cad5c");
 
-	public static readonly Guid GUID_MODEBIAS_CONVERSATION = new Guid("0f4ec104-1790-443b-95f1-e10f939d6546");
+	public static readonly Guid GUID_MODEBIAS_CONVERSATION = new("0f4ec104-1790-443b-95f1-e10f939d6546");
 
-	public static readonly Guid GUID_MODEBIAS_DATETIME = new Guid("f2bdb372-7f61-4039-92ef-1c35599f0222");
+	public static readonly Guid GUID_MODEBIAS_DATETIME = new("f2bdb372-7f61-4039-92ef-1c35599f0222");
 
-	public static readonly Guid GUID_MODEBIAS_FILENAME = new Guid("d7f707fe-44c6-4fca-8e76-86ab50c7931b");
+	public static readonly Guid GUID_MODEBIAS_FILENAME = new("d7f707fe-44c6-4fca-8e76-86ab50c7931b");
 
-	public static readonly Guid GUID_MODEBIAS_FULLWIDTHALPHANUMERIC = new Guid("81489fb8-b36a-473d-8146-e4a2258b24ae");
+	public static readonly Guid GUID_MODEBIAS_FULLWIDTHALPHANUMERIC = new("81489fb8-b36a-473d-8146-e4a2258b24ae");
 
-	public static readonly Guid GUID_MODEBIAS_FULLWIDTHHANGUL = new Guid("c01ae6c9-45b5-4fd0-9cb1-9f4cebc39fea");
+	public static readonly Guid GUID_MODEBIAS_FULLWIDTHHANGUL = new("c01ae6c9-45b5-4fd0-9cb1-9f4cebc39fea");
 
-	public static readonly Guid GUID_MODEBIAS_HALFWIDTHALPHANUMERIC = new Guid("c6f24fc0-4479-46ed-938a-6052b1653d3b");
+	public static readonly Guid GUID_MODEBIAS_HALFWIDTHALPHANUMERIC = new("c6f24fc0-4479-46ed-938a-6052b1653d3b");
 
-	public static readonly Guid GUID_MODEBIAS_HALFWIDTHKATAKANA = new Guid("005f6b63-78d4-41cc-8859-485ca821a795");
+	public static readonly Guid GUID_MODEBIAS_HALFWIDTHKATAKANA = new("005f6b63-78d4-41cc-8859-485ca821a795");
 
-	public static readonly Guid GUID_MODEBIAS_HANGUL = new Guid("76ef0541-23b3-4d77-a074-691801ccea17");
+	public static readonly Guid GUID_MODEBIAS_HANGUL = new("76ef0541-23b3-4d77-a074-691801ccea17");
 
-	public static readonly Guid GUID_MODEBIAS_HIRAGANA = new Guid("d73d316e-9b91-46f1-a280-31597f52c694");
+	public static readonly Guid GUID_MODEBIAS_HIRAGANA = new("d73d316e-9b91-46f1-a280-31597f52c694");
 
-	public static readonly Guid GUID_MODEBIAS_KATAKANA = new Guid("2e0eeddd-3a1a-499e-8543-3c7ee7949811");
+	public static readonly Guid GUID_MODEBIAS_KATAKANA = new("2e0eeddd-3a1a-499e-8543-3c7ee7949811");
 
-	public static readonly Guid GUID_MODEBIAS_NAME = new Guid("fddc10f0-d239-49bf-b8fc-5410caaa427e");
+	public static readonly Guid GUID_MODEBIAS_NAME = new("fddc10f0-d239-49bf-b8fc-5410caaa427e");
 
 	public static readonly Guid GUID_MODEBIAS_NONE = Guid.Empty;
 
-	public static readonly Guid GUID_MODEBIAS_NUMERIC = new Guid("4021766c-e872-48fd-9cee-4ec5c75e16c3");
+	public static readonly Guid GUID_MODEBIAS_NUMERIC = new("4021766c-e872-48fd-9cee-4ec5c75e16c3");
 
-	public static readonly Guid GUID_MODEBIAS_READING = new Guid("e31643a3-6466-4cbf-8d8b-0bd4d8545461");
+	public static readonly Guid GUID_MODEBIAS_READING = new("e31643a3-6466-4cbf-8d8b-0bd4d8545461");
 
-	public static readonly Guid GUID_MODEBIAS_URLHISTORY = new Guid("8b0e54d9-63f2-4c68-84d4-79aee7a59f09");
+	public static readonly Guid GUID_MODEBIAS_URLHISTORY = new("8b0e54d9-63f2-4c68-84d4-79aee7a59f09");
 
 	/// <summary>
 	/// Contains a TfGuidAtom value that represents the GUID of the display attribute. ITfCategoryMgr::GetGUID is used to convert this
 	/// value into a GUID. For more information, see Using Display Attributes.
 	/// </summary>
 	[CorrespondingType(typeof(uint))]
-	public static readonly Guid GUID_PROP_ATTRIBUTE = new Guid("34b45670-7526-11d2-a147-00105a2799b5");
+	public static readonly Guid GUID_PROP_ATTRIBUTE = new("34b45670-7526-11d2-a147-00105a2799b5");
 
 	/// <summary>
 	/// Contains a Boolean value that is nonzero if the text is part of a composition or zero otherwise. If this property is VT_EMPTY,
 	/// it can be assumed that the text is not part of a composition.
 	/// </summary>
 	[CorrespondingType(typeof(bool))]
-	public static readonly Guid GUID_PROP_COMPOSING = new Guid("e12ac060-af15-11d2-afc5-00105a2799b5");
+	public static readonly Guid GUID_PROP_COMPOSING = new("e12ac060-af15-11d2-afc5-00105a2799b5");
 
 	/// <summary>Contains a DWORD value that contains the language identifier ( LANGID ) of the text in the low word.</summary>
 	[CorrespondingType(typeof(LANGID))]
-	public static readonly Guid GUID_PROP_LANGID = new Guid("3280ce20-8032-11d2-b603-00105a2799b5");
+	public static readonly Guid GUID_PROP_LANGID = new("3280ce20-8032-11d2-b603-00105a2799b5");
 
 	[CorrespondingType(typeof(LANGID))]
 	public static readonly Guid GUID_PROP_LMLATTICE = new(0x8189b801, 0xd62f, 0x400a, 0x8c, 0x12, 0xe2, 0x93, 0x40, 0x96, 0x7b, 0xa8);
 
 	/// <summary>Contains a pointer to an ITfLMLattice object.</summary>
 	[CorrespondingType(typeof(ITfLMLattice))]
-	public static readonly Guid GUID_PROP_MODEBIAS = new Guid("372e0716-974f-40ac-a088-08cdc92ebfbc");
+	public static readonly Guid GUID_PROP_MODEBIAS = new("372e0716-974f-40ac-a088-08cdc92ebfbc");
 
 	/// <summary>
 	/// Contains the phonetic reading text for the text covered by the property. This can be different from the actual text. Windows
 	/// Store apps don't support this property.
 	/// </summary>
 	[CorrespondingType(typeof(string))]
-	public static readonly Guid GUID_PROP_READING = new Guid("5463f7c0-8e31-11d2-bf46-00105a2799b5");
+	public static readonly Guid GUID_PROP_READING = new("5463f7c0-8e31-11d2-bf46-00105a2799b5");
 
 	/// <summary>
 	/// Contains a TfGuidAtom value that represents the class identifier ( CLSID ) of the text service that owns the text.
 	/// ITfCategoryMgr::GetGUID is used to convert this value into a CLSID.
 	/// </summary>
 	[CorrespondingType(typeof(uint))]
-	public static readonly Guid GUID_PROP_TEXTOWNER = new Guid("f1e2d520-0969-11d3-8df0-00105a2799b5");
+	public static readonly Guid GUID_PROP_TEXTOWNER = new("f1e2d520-0969-11d3-8df0-00105a2799b5");
 
 	/// <summary>
 	/// Starting with Windows 8: Contains a DWORD value set by the touch keyboard. This property can be used by TSF-aware edit controls
@@ -148,47 +144,46 @@ public static partial class MSCTF
 	/// <para>See the following Remarks for the possible values of this property.</para>
 	/// </summary>
 	[CorrespondingType(typeof(TKB_ALTERNATES))]
-	public static readonly Guid GUID_PROP_TKB_ALTERNATES = new Guid("70B2A803-968D-462E-B93B-2164C91517F7");
+	public static readonly Guid GUID_PROP_TKB_ALTERNATES = new("70B2A803-968D-462E-B93B-2164C91517F7");
 
 	/// <summary>Obtains the TSF system function provider.</summary>
-	public static readonly Guid GUID_SYSTEM_FUNCTIONPROVIDER = new Guid("9a698bb0-0f21-11d3-8df1-00105a2799b5");
+	public static readonly Guid GUID_SYSTEM_FUNCTIONPROVIDER = new("9a698bb0-0f21-11d3-8df1-00105a2799b5");
 
-	public static readonly Guid GUID_TFCAT_CATEGORY_OF_TIP = new Guid("534c48c1-0607-4098-a521-4fc899c73e90");
+	public static readonly Guid GUID_TFCAT_CATEGORY_OF_TIP = new("534c48c1-0607-4098-a521-4fc899c73e90");
 
-	public static readonly Guid GUID_TFCAT_DISPLAYATTRIBUTEPROPERTY = new Guid("b95f181b-ea4c-4af1-8056-7c321abbb091");
+	public static readonly Guid GUID_TFCAT_DISPLAYATTRIBUTEPROPERTY = new("b95f181b-ea4c-4af1-8056-7c321abbb091");
 
-	public static readonly Guid GUID_TFCAT_DISPLAYATTRIBUTEPROVIDER = new Guid("046b8c80-1647-40f7-9b21-b93b81aabc1b");
+	public static readonly Guid GUID_TFCAT_DISPLAYATTRIBUTEPROVIDER = new("046b8c80-1647-40f7-9b21-b93b81aabc1b");
 
-	public static readonly Guid GUID_TFCAT_PROP_AUDIODATA = new Guid("9b7be3a9-e8ab-4d47-a8fe-254fa423436d");
+	public static readonly Guid GUID_TFCAT_PROP_AUDIODATA = new("9b7be3a9-e8ab-4d47-a8fe-254fa423436d");
 
-	public static readonly Guid GUID_TFCAT_PROP_INKDATA = new Guid("7c6a82ae-b0d7-4f14-a745-14f28b009d61");
+	public static readonly Guid GUID_TFCAT_PROP_INKDATA = new("7c6a82ae-b0d7-4f14-a745-14f28b009d61");
 
-	public static readonly Guid GUID_TFCAT_PROPSTYLE_CUSTOM = new Guid("25504FB4-7BAB-4BC1-9C69-CF81890F0EF5");
+	public static readonly Guid GUID_TFCAT_PROPSTYLE_CUSTOM = new("25504FB4-7BAB-4BC1-9C69-CF81890F0EF5");
 
-	public static readonly Guid GUID_TFCAT_PROPSTYLE_STATIC = new Guid("565fb8d8-6bd4-4ca1-b223-0f2ccb8f4f96");
+	public static readonly Guid GUID_TFCAT_PROPSTYLE_STATIC = new("565fb8d8-6bd4-4ca1-b223-0f2ccb8f4f96");
 
-	public static readonly Guid GUID_TFCAT_PROPSTYLE_STATICCOMPACT = new Guid("85f9794b-4d19-40d8-8864-4e747371a66d");
+	public static readonly Guid GUID_TFCAT_PROPSTYLE_STATICCOMPACT = new("85f9794b-4d19-40d8-8864-4e747371a66d");
 
-	public static readonly Guid GUID_TFCAT_TIP_HANDWRITING = new Guid("246ecb87-c2f2-4abe-905b-c8b38add2c43");
+	public static readonly Guid GUID_TFCAT_TIP_HANDWRITING = new("246ecb87-c2f2-4abe-905b-c8b38add2c43");
 
-	public static readonly Guid GUID_TFCAT_TIP_KEYBOARD = new Guid("34745c63-b2f0-4784-8b67-5e12c8701a31");
+	public static readonly Guid GUID_TFCAT_TIP_KEYBOARD = new("34745c63-b2f0-4784-8b67-5e12c8701a31");
 
-	public static readonly Guid GUID_TFCAT_TIP_SPEECH = new Guid("b5a73cd1-8355-426b-a161-259808f26b14");
+	public static readonly Guid GUID_TFCAT_TIP_SPEECH = new("b5a73cd1-8355-426b-a161-259808f26b14");
 
-	public static readonly Guid GUID_TFCAT_TIPCAP_COMLESS = new Guid("364215d9-75bc-11d7-a6ef-00065b84435c");
+	public static readonly Guid GUID_TFCAT_TIPCAP_COMLESS = new("364215d9-75bc-11d7-a6ef-00065b84435c");
 
-	public static readonly Guid GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT = new Guid("13A016DF-560B-46CD-947A-4C3AF1E0E35D");
+	public static readonly Guid GUID_TFCAT_TIPCAP_IMMERSIVESUPPORT = new("13A016DF-560B-46CD-947A-4C3AF1E0E35D");
 
-	public static readonly Guid GUID_TFCAT_TIPCAP_INPUTMODECOMPARTMENT = new Guid("ccf05dd7-4a87-11d7-a6e2-00065b84435c");
+	public static readonly Guid GUID_TFCAT_TIPCAP_INPUTMODECOMPARTMENT = new("ccf05dd7-4a87-11d7-a6e2-00065b84435c");
 
-	public static readonly Guid GUID_TFCAT_TIPCAP_SECUREMODE = new Guid("49d2f9ce-1f5e-11d7-a6d3-00065b84435c");
+	public static readonly Guid GUID_TFCAT_TIPCAP_SECUREMODE = new("49d2f9ce-1f5e-11d7-a6d3-00065b84435c");
 
-	public static readonly Guid GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT = new Guid("13A016DF-560B-46CD-947A-4C3AF1E0E35D");
+	public static readonly Guid GUID_TFCAT_TIPCAP_SYSTRAYSUPPORT = new("13A016DF-560B-46CD-947A-4C3AF1E0E35D");
 
-	public static readonly Guid GUID_TFCAT_TIPCAP_UIELEMENTENABLED = new Guid("49d2f9cf-1f5e-11d7-a6d3-00065b84435c");
+	public static readonly Guid GUID_TFCAT_TIPCAP_UIELEMENTENABLED = new("49d2f9cf-1f5e-11d7-a6d3-00065b84435c");
 
-	public static readonly Guid GUID_TFCAT_TIPCAP_WOW16 = new Guid("364215da-75bc-11d7-a6ef-00065b84435c");
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+	public static readonly Guid GUID_TFCAT_TIPCAP_WOW16 = new("364215da-75bc-11d7-a6ef-00065b84435c");
 
 	/// <summary>
 	/// <para>

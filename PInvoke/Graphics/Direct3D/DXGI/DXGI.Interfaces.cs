@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 // TODO: Move once DXGI lib is done
 /// <summary>Items from the DXGI.dll</summary>

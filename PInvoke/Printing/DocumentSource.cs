@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.DocumentTarget;
+﻿using static Vanara.PInvoke.DocumentTarget;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;

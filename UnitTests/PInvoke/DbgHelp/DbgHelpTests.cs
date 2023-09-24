@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using static Vanara.PInvoke.DbgHelp;
 using static Vanara.PInvoke.ImageHlp;
 using static Vanara.PInvoke.Kernel32;

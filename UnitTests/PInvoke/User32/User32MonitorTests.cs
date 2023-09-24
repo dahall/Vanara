@@ -1,11 +1,10 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke.Tests;
 
-    [TestFixture()]
+[TestFixture()]
     public partial class User32Tests
     {
         [Test]

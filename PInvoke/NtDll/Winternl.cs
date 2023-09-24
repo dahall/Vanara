@@ -5,7 +5,6 @@ namespace Vanara.PInvoke;
 /// <summary>Platform invokable enumerated types, constants and functions from ntdll.h</summary>
 public static partial class NtDll
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary></summary>
 	[Flags]
@@ -182,7 +181,6 @@ public static partial class NtDll
 		ProcessDynamicEHContinuationTargets, // PROCESS_DYNAMIC_EH_CONTINUATION_TARGETS_INFORMATION
 	}
 
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// Indicates the type of subsystem for a process or thread. This enumeration is used in NtQueryInformationProcess and

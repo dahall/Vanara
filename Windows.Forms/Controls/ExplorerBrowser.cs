@@ -2,18 +2,13 @@
 // designer experience, remove nested properties, add missing capabilities, simplify COM calls, align names to those in other mainstream
 // controls, and use the Vanara libraries.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
@@ -25,11 +20,11 @@ using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
 
 namespace Vanara.Windows.Forms;
 
-    /// <summary>
-    /// Indicates the content options of the explorer browser. Typically use one, or a bitwise combination of these flags to specify how
-    /// content should appear in the explorer browser control
-    /// </summary>
-    [Flags]
+/// <summary>
+/// Indicates the content options of the explorer browser. Typically use one, or a bitwise combination of these flags to specify how
+/// content should appear in the explorer browser control
+/// </summary>
+[Flags]
     public enum ExplorerBrowserContentSectionOptions : uint
     {
         /// <summary>No options.</summary>
@@ -340,7 +335,7 @@ namespace Vanara.Windows.Forms;
     {
         internal uint eventsCookie;
         internal IExplorerBrowser explorerBrowserControl;
-        internal FOLDERSETTINGS folderSettings = new FOLDERSETTINGS(FOLDERVIEWMODE.FVM_AUTO, defaultFolderFlags);
+        internal FOLDERSETTINGS folderSettings = new(FOLDERVIEWMODE.FVM_AUTO, defaultFolderFlags);
 
         private const FOLDERFLAGS defaultFolderFlags = FOLDERFLAGS.FWF_USESEARCHFOLDER | FOLDERFLAGS.FWF_NOWEBVIEW;
         private const int defaultThumbnailSize = 32;
@@ -754,7 +749,7 @@ namespace Vanara.Windows.Forms;
         }
 
         /// <inheritdoc/>
-        protected override Size DefaultSize => new Size(200, 150);
+        protected override Size DefaultSize => new(200, 150);
 
         /// <summary>Removes all items from the results folder.</summary>
         public void ClearCustomItems() => explorerBrowserControl?.RemoveAll();
@@ -1494,10 +1489,8 @@ namespace Vanara.Windows.Forms;
 
         /// <summary>This provides a connection point container compatible dispatch interface for hooking into the ExplorerBrowser view.</summary>
         [ComVisible(true)]
-#pragma warning disable CS0618 // Type or member is obsolete
-        [ClassInterface(ClassInterfaceType.AutoDual)]
-#pragma warning restore CS0618 // Type or member is obsolete
-        private class ViewEvents : IDisposable
+	[ClassInterface(ClassInterfaceType.AutoDual)]
+	private class ViewEvents : IDisposable
         {
             private static readonly Guid IID_DShellFolderViewEvents = typeof(DShellFolderViewEvents).GUID;
             private static readonly Guid IID_IDispatch = typeof(OleAut32.IDispatch).GUID;

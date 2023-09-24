@@ -1,11 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.PropSys;

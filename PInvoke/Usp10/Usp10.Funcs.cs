@@ -1,7 +1,4 @@
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;

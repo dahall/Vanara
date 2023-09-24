@@ -1,11 +1,8 @@
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke;
 
-    public static partial class PortableDeviceApi
+public static partial class PortableDeviceApi
     {
         /// <summary>
         /// The <c>IConnectionRequestCallback</c> interface defines a single callback method. A Windows Portable Devices (WPD) application

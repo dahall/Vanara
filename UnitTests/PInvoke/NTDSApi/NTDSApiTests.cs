@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices;
 using System.Linq;
 using static Vanara.PInvoke.NTDSApi;

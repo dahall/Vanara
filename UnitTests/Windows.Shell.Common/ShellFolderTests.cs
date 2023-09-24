@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System.IO;
 using System.Linq;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;

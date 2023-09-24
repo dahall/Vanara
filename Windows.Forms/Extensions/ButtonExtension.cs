@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.Extensions;

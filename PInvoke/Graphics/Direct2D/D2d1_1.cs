@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using static Vanara.PInvoke.Dwrite;
+﻿using static Vanara.PInvoke.Dwrite;
 using static Vanara.PInvoke.DXGI;
 
 namespace Vanara.PInvoke;

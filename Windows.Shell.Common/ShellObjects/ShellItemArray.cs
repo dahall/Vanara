@@ -35,9 +35,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	public ShellItemArray(IShellFolder parent, IEnumerable<PIDL>? pidls)
 	{
 		var pa = pidls?.Cast<IntPtr>().ToArray();
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHCreateShellItemArray(PIDL.Null, parent, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
@@ -46,16 +44,12 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	public ShellItemArray(PIDL pidlParent, IEnumerable<PIDL>? pidls)
 	{
 		var pa = pidls?.Cast<IntPtr>().ToArray();
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		SHCreateShellItemArray(pidlParent, null, (uint)(pa?.Length ?? 0), pa, out array).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
 	/// <param name="pidls">The IDList items to add to this array.</param>
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	private ShellItemArray(IntPtr[] pidls) => SHCreateShellItemArrayFromIDLists((uint)pidls.Length, pidls, out array).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
 	public int Count => (int)(array?.GetCount() ?? 0);

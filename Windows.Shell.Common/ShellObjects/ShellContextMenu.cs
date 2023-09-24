@@ -1,5 +1,4 @@
 ﻿// Credit due to Gong-Shell from which this was largely taken.
-using System.Diagnostics.CodeAnalysis;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;

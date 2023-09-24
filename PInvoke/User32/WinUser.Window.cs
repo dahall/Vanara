@@ -4,10 +4,8 @@ namespace Vanara.PInvoke;
 
 public static partial class User32
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const int CCHILDREN_SCROLLBAR = 5;
 	public const int CCHILDREN_TITLEBAR = 5;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// Pass this value to the x, y, nWidth and nHeight parameteres of <see cref="CreateWindow"/> and <c>CreateWindowEx</c> to

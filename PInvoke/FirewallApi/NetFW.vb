@@ -6,7 +6,6 @@ Imports System.Runtime.InteropServices.CustomMarshalers
 
 Partial Public Module FirewallApi
 
-#Disable Warning BC40000 ' Obsolete LPStruct
 
     ''' <summary>
     ''' <para>

@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms;
 
@@ -49,7 +47,7 @@ internal class CollapsiblePanelHeader : Control
 	/// <returns>
 	/// The default <see cref="T:System.Drawing.Size"/> of the control.
 	/// </returns>
-	protected override Size DefaultSize => new Size(200, 200);
+	protected override Size DefaultSize => new(200, 200);
 
 	/// <summary>
 	/// Retrieves the size of a rectangular area into which a control can be fitted.

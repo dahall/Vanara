@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Ole32;
+﻿using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace Vanara.PInvoke;
 
-    /// <summary>Elements from the Enhanced Storage API.</summary>
-    public static partial class EnhancedStorage
+/// <summary>Elements from the Enhanced Storage API.</summary>
+public static partial class EnhancedStorage
     {
         /// <summary>Identifier used to communicate support for RSA 1024 bit keys.</summary>
         public const string CERT_RSA_1024_OID = "1.2.840.113549.1.1.1,1024";

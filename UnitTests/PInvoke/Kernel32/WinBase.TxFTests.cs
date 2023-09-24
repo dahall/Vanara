@@ -1,9 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;
@@ -27,7 +22,7 @@ public partial class WinBaseTests_TxF
 			FindFirstFileNameTransactedW(default, default, ref u, default, default);
 			FindFirstFileTransacted(default, default, out _, default, default, default, default);
 			FindFirstStreamTransactedW(default, default, out _, default, default);
-			WIN32_FILE_ATTRIBUTE_DATA fd = default(WIN32_FILE_ATTRIBUTE_DATA);
+			WIN32_FILE_ATTRIBUTE_DATA fd = default;
 			GetFileAttributesTransacted(default, default, ref fd, default);
 			GetFullPathNameTransacted(default, default, default, out _, default);
 			GetLongPathNameTransacted(default, default, default, default);

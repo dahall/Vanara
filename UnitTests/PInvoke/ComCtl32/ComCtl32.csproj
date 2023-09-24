@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.ComCtl32</AssemblyName>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />

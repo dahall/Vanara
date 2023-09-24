@@ -1,5 +1,4 @@
-﻿#pragma warning disable IDE1006 // Naming Styles
-#nullable enable
+﻿#nullable enable
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke;

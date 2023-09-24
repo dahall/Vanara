@@ -22,11 +22,11 @@ public static class CSharpRunner
 		Invoke(CompileLib(Decompile(methodInfo.DeclaringType), methodInfo.DeclaringType.GetReferencedAssemblyNames()), methodInfo.DeclaringType.FullName!, methodInfo.Name, args) :
 		throw new ArgumentNullException(nameof(methodInfo), "The DeclaringType of methodInfo is null");
 
-	public static Process RunProcess<T>(string? args = null) where T : class => RunProcess(typeof(T), args);
+	public static Process RunProcess<T>(string? args = null, string entryPoint = "Main") where T : class => RunProcess(typeof(T), args, entryPoint);
 
-	public static Process RunProcess(Type mainType, string? args = null)
+	public static Process RunProcess(Type mainType, string? args = null, string entryPoint = "Main")
 	{
-		if (mainType.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) is null)
+		if (mainType.GetMethod(entryPoint, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) is null)
 			throw new ArgumentException("Supplied type must include a static Main method.");
 		var exe = Path.Combine(Path.GetDirectoryName(mainType.Assembly.Location)!, "tmp" + Guid.NewGuid().ToString("N") + ".exe");
 		CompileExe(exe, Decompile(mainType), mainType.GetReferencedAssemblyNames(), mainType.FullName);

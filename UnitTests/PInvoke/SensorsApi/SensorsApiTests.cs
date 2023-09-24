@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.PortableDeviceApi;
 using static Vanara.PInvoke.SensorsApi;
 
 namespace Vanara.PInvoke.Tests;

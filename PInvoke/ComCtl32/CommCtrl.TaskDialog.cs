@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -179,8 +178,15 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>The System icons the TaskDialog supports for <see cref="TASKDIALOGCONFIG.footerIcon"/> and <see cref="TASKDIALOGCONFIG.mainIcon"/>.</summary>
+
+/* Unmerged change from project 'Vanara.PInvoke.ComCtl32 (netcoreapp3.1)'
+Before:
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
 	[SuppressMessage("Microsoft.Design", "CA1028:EnumStorageShouldBeInt32")] // Type comes from CommCtrl.h
+After:
+	[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
+*/
+	[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
 	public enum TaskDialogIcon : uint
 	{
 		/// <summary>An exclamation-point icon appears in the task dialog.</summary>

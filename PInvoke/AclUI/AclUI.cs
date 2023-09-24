@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.AdvApi32;
+﻿using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Authz;
 
 namespace Vanara.PInvoke;
@@ -895,7 +892,7 @@ public static partial class AclUI
 		/// can be NULL to specify the local computer. The access control editor does not free this pointer.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszServerName;
+		public string? pszServerName;
 
 		/// <summary>
 		/// A pointer to a null-terminated, Unicode string that names the object being edited. This name appears in the title of the
@@ -911,7 +908,7 @@ public static partial class AclUI
 		/// control editor does not free this pointer.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszPageTitle;
+		public string? pszPageTitle;
 
 		/// <summary>A GUID for the object. This member is ignored unless the SI_OBJECT_GUID flag is set in dwFlags.</summary>
 		public Guid guidObjectType;
@@ -922,7 +919,7 @@ public static partial class AclUI
 		/// <param name="serverName">Names the computer on which to look up account names and SIDs.</param>
 		/// <param name="pageTitle">The title of the basic security property page.</param>
 		/// <param name="guidObject">The unique identifier for the object.</param>
-		public SI_OBJECT_INFO(SI_OBJECT_INFO_Flags flags, string objectName, string serverName = null, string pageTitle = null, Guid? guidObject = null)
+		public SI_OBJECT_INFO(SI_OBJECT_INFO_Flags flags, string objectName, string? serverName = null, string? pageTitle = null, Guid? guidObject = null)
 		{
 			dwFlags = flags;
 			hInstance = IntPtr.Zero;

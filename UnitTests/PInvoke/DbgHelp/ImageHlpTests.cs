@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using static Vanara.PInvoke.ImageHlp;
 
 namespace Vanara.PInvoke.Tests;

@@ -348,8 +348,7 @@ public static partial class Mpr
 	[PInvokeData("wnnc.h")]
 	public enum WNNC_NET
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-		WNNC_NET_MSNET       = 0x00010000,
+		WNNC_NET_MSNET = 0x00010000,
 		WNNC_NET_SMB         = 0x00020000,
 		WNNC_NET_NETWARE     = 0x00030000,
 		WNNC_NET_VINES       = 0x00040000,
@@ -419,7 +418,6 @@ public static partial class Mpr
 		WNNC_NET_DOCUSHARE   = 0x00450000,
 		WNNC_NET_AURISTOR_FS = 0x00460000,
 		WNNC_NET_SECUREAGENT = 0x00470000,
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>

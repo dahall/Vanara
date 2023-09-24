@@ -1,8 +1,4 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.PropSys;
+﻿using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke;
 

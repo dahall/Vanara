@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
@@ -9,7 +8,6 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Design.Behavior;
-using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms.Design;
 
@@ -1062,7 +1060,7 @@ internal class DesignerActionVerbList : DesignerActionList
 
 	public override DesignerActionItemCollection GetSortedActionItems()
 	{
-		DesignerActionItemCollection items = new DesignerActionItemCollection();
+		DesignerActionItemCollection items = new();
 		foreach (DesignerVerb v in _verbs)
 			if ((v.Visible && v.Enabled) && v.Supported)
 				items.Add(new DesignerActionVerbItem(v));

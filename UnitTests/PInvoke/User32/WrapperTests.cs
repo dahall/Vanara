@@ -1,11 +1,4 @@
-﻿using ICSharpCode.Decompiler.IL;
-using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.InteropServices;
+﻿using NUnit.Framework;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 

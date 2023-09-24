@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke;

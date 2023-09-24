@@ -1,5 +1,4 @@
-﻿#pragma warning disable IDE1006 // Naming Styles
-
+﻿
 namespace Vanara.PInvoke;
 
 /// <summary>Functions, structures and constants from wlanapi.h.</summary>

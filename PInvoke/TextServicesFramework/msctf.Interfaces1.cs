@@ -1,8 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Runtime.InteropServices.ComTypes;
 using Vanara.Collections;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using LPARAM = System.IntPtr;
 using TfClientId = System.UInt32;

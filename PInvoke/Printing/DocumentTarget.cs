@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
@@ -10,11 +8,11 @@ namespace Vanara.PInvoke;
 public static partial class DocumentTarget
 {
 	/// <summary/>
-	public static readonly Guid ID_DOCUMENTPACKAGETARGET_MSXPS = new Guid(0x9cae40a8, 0xded1, 0x41c9, 0xa9, 0xfd, 0xd7, 0x35, 0xef, 0x33, 0xae, 0xda);
+	public static readonly Guid ID_DOCUMENTPACKAGETARGET_MSXPS = new(0x9cae40a8, 0xded1, 0x41c9, 0xa9, 0xfd, 0xd7, 0x35, 0xef, 0x33, 0xae, 0xda);
 	/// <summary/>
-	public static readonly Guid ID_DOCUMENTPACKAGETARGET_OPENXPS = new Guid(0x0056bb72, 0x8c9c, 0x4612, 0xbd, 0x0f, 0x93, 0x01, 0x2a, 0x87, 0x09, 0x9d);
+	public static readonly Guid ID_DOCUMENTPACKAGETARGET_OPENXPS = new(0x0056bb72, 0x8c9c, 0x4612, 0xbd, 0x0f, 0x93, 0x01, 0x2a, 0x87, 0x09, 0x9d);
 	/// <summary/>
-	public static readonly Guid ID_DOCUMENTPACKAGETARGET_OPENXPS_WITH_3D = new Guid(0x63dbd720, 0x8b14, 0x4577, 0xb0, 0x74, 0x7b, 0xb1, 0x1b, 0x59, 0x6d, 0x28);
+	public static readonly Guid ID_DOCUMENTPACKAGETARGET_OPENXPS_WITH_3D = new(0x63dbd720, 0x8b14, 0x4577, 0xb0, 0x74, 0x7b, 0xb1, 0x1b, 0x59, 0x6d, 0x28);
 
 	/// <summary>The PrintDocumentPackageCompletion enumeration specifies the status of the print operation.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/documenttarget/ne-documenttarget-printdocumentpackagecompletion typedef enum

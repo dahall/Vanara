@@ -1,8 +1,5 @@
 #pragma warning disable IDE1006 // Naming Styles
 
-using System;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
 
 namespace Vanara.PInvoke;
 

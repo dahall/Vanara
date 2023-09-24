@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using static Vanara.PInvoke.Gdi32;
-using static Vanara.PInvoke.AviFil32;
-using static Vanara.PInvoke.WinMm;
 using System.Drawing;
 using System.Drawing.Imaging;
+using static Vanara.PInvoke.AviFil32;
+using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.WinMm;
 
 namespace Vanara.PInvoke.Tests;
 

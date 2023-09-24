@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 

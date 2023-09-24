@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security;
+﻿using System.Security;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 

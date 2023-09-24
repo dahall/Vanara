@@ -18,7 +18,6 @@ public static partial class Dhcp
 	[PInvokeData("dhcpcsdk.h")]
 	public enum DHCP_OPTION_ID : uint
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		OPTION_PAD = 0,
 		OPTION_SUBNET_MASK = 1,
 		OPTION_TIME_OFFSET = 2,
@@ -85,7 +84,6 @@ public static partial class Dhcp
 		OPTION_BOOTFILE_NAME = 67,
 		OPTION_MSFT_IE_PROXY = 252,
 		OPTION_END = 255,
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Flags that specify the data being requested.</summary>
@@ -123,7 +121,6 @@ public static partial class Dhcp
 	/// <summary>This option, sent by both client and server, specifies the type of DHCP message contained in the DHCP packet.</summary>
 	public enum DhcpMessageType : byte
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		DHCPDISCOVER = 1,
 		DHCPOFFER = 2,
 		DHCPREQUEST = 3,
@@ -132,7 +129,6 @@ public static partial class Dhcp
 		DHCPNAK = 6,
 		DHCPRELEASE = 7,
 		DHCPINFORM = 8,
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>

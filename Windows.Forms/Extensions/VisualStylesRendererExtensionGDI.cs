@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -17,7 +16,7 @@ namespace Vanara.Extensions;
 /// </summary>
 public static partial class VisualStylesRendererExtension
 {
-	private static readonly Dictionary<long, Bitmap> bmpCache = new Dictionary<long, Bitmap>();
+	private static readonly Dictionary<long, Bitmap> bmpCache = new();
 
 	private delegate void DrawWrapperMethod(HDC hdc);
 
@@ -244,5 +243,5 @@ public static partial class VisualStylesRendererExtension
 
 	private static long GetHashCode(this VisualStyleRenderer r) => (long)r.Class.GetHashCode() << 32 | ((uint)r.Part << 16 | (ushort)r.State);
 
-	private static Size MaxSize(Size sz1, Size sz2) => new Size(Math.Max(sz1.Width, sz2.Width), Math.Max(sz1.Height, sz2.Height));
+	private static Size MaxSize(Size sz1, Size sz2) => new(Math.Max(sz1.Width, sz2.Width), Math.Max(sz1.Height, sz2.Height));
 }

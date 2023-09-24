@@ -1,7 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Vanara.PInvoke;
@@ -79,10 +78,8 @@ public class ShellAssociation
 	{
 		get
 		{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			if (SHAssocEnumHandlers(Extension, ASSOC_FILTER.ASSOC_FILTER_NONE, out var ieah).Failed)
 				return new List<ShellAssociationHandler>();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			using var pieah = ComReleaserFactory.Create(ieah);
 			var e = new Collections.IEnumFromCom<IAssocHandler>(ieah.Next, () => { });
 			return e.Select(i => new ShellAssociationHandler(i)).ToList();

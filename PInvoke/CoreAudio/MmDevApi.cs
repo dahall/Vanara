@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Ole32;
+﻿using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke;
@@ -1532,23 +1529,23 @@ public static partial class CoreAudio
 		/// Specifies the query string used to enumerate all audio capture devices on the system. This value is returned by MediaDevice::GetAudioCaptureSelector.
 		/// <para>Passing this value to ActivateAudioInterfaceAsync activates the requested interface on the default audio capture device.</para>
 		/// </summary>
-		public static readonly Guid DEVINTERFACE_AUDIO_CAPTURE = new Guid(0x2eef81be, 0x33fa, 0x4800, 0x96, 0x70, 0x1c, 0xd4, 0x74, 0x97, 0x2c, 0x3f);
+		public static readonly Guid DEVINTERFACE_AUDIO_CAPTURE = new(0x2eef81be, 0x33fa, 0x4800, 0x96, 0x70, 0x1c, 0xd4, 0x74, 0x97, 0x2c, 0x3f);
 
 		/// <summary>
 		/// Specifies the query string used to enumerate all audio render devices on the system. This value is returned by MediaDevice::GetAudioRenderSelector.
 		/// <para>Passing this value to ActivateAudioInterfaceAsync activates the requested interface on the default audio render device.</para>
 		/// </summary>
-		public static readonly Guid DEVINTERFACE_AUDIO_RENDER = new Guid(0xe6327cad, 0xdcec, 0x4949, 0xae, 0x8a, 0x99, 0x1e, 0x97, 0x6a, 0x79, 0xd2);
+		public static readonly Guid DEVINTERFACE_AUDIO_RENDER = new(0xe6327cad, 0xdcec, 0x4949, 0xae, 0x8a, 0x99, 0x1e, 0x97, 0x6a, 0x79, 0xd2);
 
 		/// <summary>
 		/// Specifies the query string used to enumerate all MidiInPort objects on the system. This value is returned by MidiInPort::GetDeviceSelector.
 		/// </summary>
-		public static readonly Guid DEVINTERFACE_MIDI_INPUT = new Guid(0x504be32c, 0xccf6, 0x4d2c, 0xb7, 0x3f, 0x6f, 0x8b, 0x37, 0x47, 0xe2, 0x2b);
+		public static readonly Guid DEVINTERFACE_MIDI_INPUT = new(0x504be32c, 0xccf6, 0x4d2c, 0xb7, 0x3f, 0x6f, 0x8b, 0x37, 0x47, 0xe2, 0x2b);
 
 		/// <summary>
 		/// Specifies the query string used to enumerate all MidiOutPort objects on the system. This value is returned by MidiOutPort::GetDeviceSelector.
 		/// </summary>
-		public static readonly Guid DEVINTERFACE_MIDI_OUTPUT = new Guid(0x6dc23320, 0xab33, 0x4ce4, 0x80, 0xd4, 0xbb, 0xb3, 0xeb, 0xbf, 0x28, 0x14);
+		public static readonly Guid DEVINTERFACE_MIDI_OUTPUT = new(0x6dc23320, 0xab33, 0x4ce4, 0x80, 0xd4, 0xbb, 0xb3, 0xeb, 0xbf, 0x28, 0x14);
 	}
 
 	/// <summary>Core Audio SDK includes several properties of audio endpoint devices. For more information, see Audio Endpoint Properties.</summary>
@@ -1570,7 +1567,7 @@ public static partial class CoreAudio
 		/// contains a KS pin category GUID.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Association = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 2);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Association = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 2);
 
 		/// <summary>
 		/// <para>
@@ -1585,7 +1582,7 @@ public static partial class CoreAudio
 		/// contains a GUID that identifies the provider of the control-panel extension.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_ControlPanelPageProvider = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 1);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_ControlPanelPageProvider = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 1);
 
 		/// <summary>
 		/// <para>
@@ -1616,7 +1613,7 @@ public static partial class CoreAudio
 		/// 16 bits are used for the fractional portion of the value.
 		/// </para>
 		/// </remarks>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Default_VolumeInDb = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 9);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Default_VolumeInDb = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 9);
 
 		/// <summary>
 		/// <para>
@@ -1643,7 +1640,7 @@ public static partial class CoreAudio
 		/// enabled or to <c>ENDPOINT_SYSFX_DISABLED</c> if they are disabled.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Disable_SysFx = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 5);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Disable_SysFx = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 5);
 
 		/// <summary>
 		/// <para>
@@ -1691,7 +1688,7 @@ public static partial class CoreAudio
 		/// </item>
 		/// </list>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_FormFactor = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 0);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_FormFactor = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 0);
 
 		/// <summary>
 		/// <para>
@@ -1742,7 +1739,7 @@ public static partial class CoreAudio
 		/// KSAUDIO_SPEAKER_STEREO are defined in header file Ksmedia.h.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_FullRangeSpeakers = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 6);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_FullRangeSpeakers = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 6);
 
 		/// <summary>
 		/// <para>
@@ -1798,7 +1795,7 @@ public static partial class CoreAudio
 		/// </para>
 		/// <para>For a code example that uses the PKEY_AudioEndpoint_GUID property, see Device Roles for DirectSound Applications.</para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_GUID = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 4);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_GUID = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 4);
 
 		/// <summary>
 		/// <para>
@@ -1814,7 +1811,7 @@ public static partial class CoreAudio
 		/// contains a category GUID.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_JackSubType = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 8);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_JackSubType = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 8);
 
 		/// <summary>
 		/// <para>
@@ -1838,7 +1835,7 @@ public static partial class CoreAudio
 		/// The <c>uintVal</c> member of the <c>PROPVARIANT</c> structure contains a channel-configuration mask that is cast to type <c>UINT</c>.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_PhysicalSpeakers = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 3);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_PhysicalSpeakers = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 3);
 
 		/// <summary>
 		/// <para>
@@ -1854,19 +1851,19 @@ public static partial class CoreAudio
 		/// This property value is populated by an audio OEM in an .inf file to indicate that the HDAudio hardware supports event driven
 		/// mode as per the WHQL requirement.
 		/// </remarks>
-		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Supports_EventDriven_Mode = new PROPERTYKEY(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 7);
+		public static readonly PROPERTYKEY PKEY_AudioEndpoint_Supports_EventDriven_Mode = new(new Guid(0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e), 7);
 
 		/// <summary/>
-		public static readonly PROPERTYKEY PKEY_AudioEndpointLogo_IconEffects = new PROPERTYKEY(new Guid(0xf1ab780d, 0x2010, 0x4ed3, 0xa3, 0xa6, 0x8b, 0x87, 0xf0, 0xf0, 0xc4, 0x76), 0);
+		public static readonly PROPERTYKEY PKEY_AudioEndpointLogo_IconEffects = new(new Guid(0xf1ab780d, 0x2010, 0x4ed3, 0xa3, 0xa6, 0x8b, 0x87, 0xf0, 0xf0, 0xc4, 0x76), 0);
 
 		/// <summary/>
-		public static readonly PROPERTYKEY PKEY_AudioEndpointLogo_IconPath = new PROPERTYKEY(new Guid(0xf1ab780d, 0x2010, 0x4ed3, 0xa3, 0xa6, 0x8b, 0x87, 0xf0, 0xf0, 0xc4, 0x76), 1);
+		public static readonly PROPERTYKEY PKEY_AudioEndpointLogo_IconPath = new(new Guid(0xf1ab780d, 0x2010, 0x4ed3, 0xa3, 0xa6, 0x8b, 0x87, 0xf0, 0xf0, 0xc4, 0x76), 1);
 
 		/// <summary/>
-		public static readonly PROPERTYKEY PKEY_AudioEndpointSettings_LaunchContract = new PROPERTYKEY(new Guid(0x14242002, 0x0320, 0x4de4, 0x95, 0x55, 0xa7, 0xd8, 0x2b, 0x73, 0xc2, 0x86), 1);
+		public static readonly PROPERTYKEY PKEY_AudioEndpointSettings_LaunchContract = new(new Guid(0x14242002, 0x0320, 0x4de4, 0x95, 0x55, 0xa7, 0xd8, 0x2b, 0x73, 0xc2, 0x86), 1);
 
 		/// <summary/>
-		public static readonly PROPERTYKEY PKEY_AudioEndpointSettings_MenuText = new PROPERTYKEY(new Guid(0x14242002, 0x0320, 0x4de4, 0x95, 0x55, 0xa7, 0xd8, 0x2b, 0x73, 0xc2, 0x86), 0);
+		public static readonly PROPERTYKEY PKEY_AudioEndpointSettings_MenuText = new(new Guid(0x14242002, 0x0320, 0x4de4, 0x95, 0x55, 0xa7, 0xd8, 0x2b, 0x73, 0xc2, 0x86), 0);
 
 		/// <summary>
 		/// <para>
@@ -1884,7 +1881,7 @@ public static partial class CoreAudio
 		/// about <c>BLOB</c>, see the Windows SDK documentation. For more information about <c>WAVEFORMATEX</c>, see the Windows DDK documentation.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEngine_DeviceFormat = new PROPERTYKEY(new Guid(0xf19f064d, 0x82c, 0x4e27, 0xbc, 0x73, 0x68, 0x82, 0xa1, 0xbb, 0x8e, 0x4c), 0);
+		public static readonly PROPERTYKEY PKEY_AudioEngine_DeviceFormat = new(new Guid(0xf19f064d, 0x82c, 0x4e27, 0xbc, 0x73, 0x68, 0x82, 0xa1, 0xbb, 0x8e, 0x4c), 0);
 
 		/// <summary>
 		/// <para>
@@ -1899,6 +1896,6 @@ public static partial class CoreAudio
 		/// about BLOB, see the Windows SDK documentation. For more information about <c>WAVEFORMATEX</c>, see the Windows DDK documentation.
 		/// </para>
 		/// </summary>
-		public static readonly PROPERTYKEY PKEY_AudioEngine_OEMFormat = new PROPERTYKEY(new Guid(0xe4870e26, 0x3cc5, 0x4cd2, 0xba, 0x46, 0xca, 0xa, 0x9a, 0x70, 0xed, 0x4), 3);
+		public static readonly PROPERTYKEY PKEY_AudioEngine_OEMFormat = new(new Guid(0xe4870e26, 0x3cc5, 0x4cd2, 0xba, 0x46, 0xca, 0xa, 0x9a, 0x70, 0xed, 0x4), 3);
 	}
 }

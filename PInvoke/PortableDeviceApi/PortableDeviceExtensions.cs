@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using static Vanara.PInvoke.Ole32;
@@ -7,8 +6,8 @@ using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace Vanara.Extensions;
 
-    /// <summary>Extension methods for classes in Vanara.PInvoke.PortableDeviceApi.</summary>
-    public static class PortableDeviceExtensions
+/// <summary>Extension methods for classes in Vanara.PInvoke.PortableDeviceApi.</summary>
+public static class PortableDeviceExtensions
     {
         private const BindingFlags BindStPub = BindingFlags.Static | BindingFlags.Public;
 

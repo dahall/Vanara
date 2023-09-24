@@ -507,9 +507,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		get
 		{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			SHGetIDListFromObject(iShellItem, out var pidl).ThrowIfFailed();
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			return pidl;
 		}
 	}

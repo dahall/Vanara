@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Vanara.Extensions.Reflection;
+﻿using Vanara.Extensions.Reflection;
 using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;
@@ -2450,8 +2449,6 @@ public static partial class User32
 	/// extended error information, call GetLastError.
 	/// </returns>
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
-	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
 	[System.Security.SecurityCritical]
 	public static extern int GetWindowLong(HWND hWnd, WindowLongFlags nIndex);
 
@@ -2514,7 +2511,6 @@ public static partial class User32
 	/// extended error information, call GetLastError.
 	/// </returns>
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-	[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
 	[System.Security.SecurityCritical]
 	public static extern IntPtr GetWindowLongPtr(HWND hWnd, WindowLongFlags nIndex);
 
@@ -2961,9 +2957,16 @@ public static partial class User32
 	/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
 	/// </para>
 	/// </returns>
+
+/* Unmerged change from project 'Vanara.PInvoke.User32 (net45)'
+Before:
 	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
 	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
 	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
+After:
+	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
+*/
+	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
 	private static extern int SetWindowLongPtr32(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
 
 	/// <summary>
@@ -2989,7 +2992,6 @@ public static partial class User32
 	/// </para>
 	/// </returns>
 	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
-	[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
 	private static extern IntPtr SetWindowLongPtr64(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
 
 	/// <summary>

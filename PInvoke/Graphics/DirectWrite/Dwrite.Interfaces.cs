@@ -1,9 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Vanara.InteropServices;
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the Dwrite.dll</summary>

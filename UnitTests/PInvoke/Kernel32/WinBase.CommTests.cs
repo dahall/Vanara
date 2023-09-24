@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using System.Threading;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;

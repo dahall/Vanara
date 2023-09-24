@@ -11,7 +11,6 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 [SuppressUnmanagedCodeSecurity]
 public static partial class Shell32
 {

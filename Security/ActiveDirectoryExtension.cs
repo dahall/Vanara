@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.DirectoryServices.ActiveDirectory;
+﻿using System.DirectoryServices.ActiveDirectory;
+using System.Linq;
 using Vanara.Extensions.Reflection;
 using static Vanara.PInvoke.NTDSApi;
 

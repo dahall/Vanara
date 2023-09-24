@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
+﻿
 namespace Vanara.PInvoke;
 
 /// <summary>The status of a device node (devnode).</summary>
