@@ -9,8 +9,8 @@ public class SysInfoTests
 	[Test]
 	public void DnsHostnameToComputerNameTest()
 	{
-		Assert.That(GetComputerNameEx(COMPUTER_NAME_FORMAT.ComputerNameDnsFullyQualified, out string name), ResultIs.Successful);
-		Assert.That(DnsHostnameToComputerName(name, out string compName), ResultIs.Successful);
+		Assert.That(GetComputerNameEx(COMPUTER_NAME_FORMAT.ComputerNameDnsFullyQualified, out var name), ResultIs.Successful);
+		Assert.That(DnsHostnameToComputerName(name!, out var compName), ResultIs.Successful);
 		Assert.That(compName, Is.EqualTo(Environment.MachineName));
 		TestContext.WriteLine($"{name} => {compName}");
 	}
@@ -18,15 +18,15 @@ public class SysInfoTests
 	[Test]
 	public void EnumSystemFirmwareTablesTest()
 	{
-		Assert.That(EnumSystemFirmwareTables(FirmwareTableProviderId.ACPI, out uint[] ids), ResultIs.Successful);
-		Assert.That(ids.Length, Is.GreaterThan(0));
-		ids.WriteValues();
+		Assert.That(EnumSystemFirmwareTables(FirmwareTableProviderId.ACPI, out var ids), ResultIs.Successful);
+		Assert.That(ids?.Length, Is.GreaterThan(0));
+		ids?.WriteValues();
 	}
 
 	[Test]
 	public void GetComputerNameTest()
 	{
-		Assert.That(GetComputerName(out string name), ResultIs.Successful);
+		Assert.That(GetComputerName(out var name), ResultIs.Successful);
 		Assert.That(name, Is.EqualTo(Environment.MachineName));
 		TestContext.WriteLine(name);
 	}
@@ -89,9 +89,9 @@ public class SysInfoTests
 	[Test]
 	public void GetLogicalProcessorInformationTest()
 	{
-		Assert.That(GetLogicalProcessorInformation(out SYSTEM_LOGICAL_PROCESSOR_INFORMATION[] info), ResultIs.Successful);
-		Assert.That(info.Length, Is.GreaterThan(0));
-		info.WriteValues();
+		Assert.That(GetLogicalProcessorInformation(out var info), ResultIs.Successful);
+		Assert.That(info?.Length, Is.GreaterThan(0));
+		info?.WriteValues();
 	}
 
 	[Test]
@@ -125,9 +125,9 @@ public class SysInfoTests
 	[Test]
 	public void GetProcessorSystemCycleTimeTest()
 	{
-		Assert.That(GetProcessorSystemCycleTime(0, out SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION[] info), ResultIs.Successful);
-		Assert.That(info.Length, Is.GreaterThan(0));
-		info.WriteValues();
+		Assert.That(GetProcessorSystemCycleTime(0, out var info), ResultIs.Successful);
+		Assert.That(info?.Length, Is.GreaterThan(0));
+		info?.WriteValues();
 	}
 
 	[Test]
@@ -188,14 +188,14 @@ public class SysInfoTests
 	[Test]
 	public void GetSystemTimeAsFileTimeTest()
 	{
-		GetSystemTimeAsFileTime(out System.Runtime.InteropServices.ComTypes.FILETIME ft);
+		GetSystemTimeAsFileTime(out FILETIME ft);
 		Assert.That(ft.ToSYSTEMTIME().Ticks, Is.Not.Zero);
 	}
 
 	[Test]
 	public void GetSystemTimePreciseAsFileTimeTest()
 	{
-		GetSystemTimePreciseAsFileTime(out System.Runtime.InteropServices.ComTypes.FILETIME ft);
+		GetSystemTimePreciseAsFileTime(out FILETIME ft);
 		Assert.That(ft.ToSYSTEMTIME().Ticks, Is.Not.Zero);
 	}
 

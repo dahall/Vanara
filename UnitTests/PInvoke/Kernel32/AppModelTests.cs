@@ -7,13 +7,13 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class AppModelTests
 {
-	public string pkgFamilyName = "DesktopView_cw5n1h2txyewy", pkgFullName = "DesktopView_10.0.22621.1_neutral_neutral_cw5n1h2txyewy";
+	public string? pkgFamilyName = "DesktopView_cw5n1h2txyewy", pkgFullName = "DesktopView_10.0.22621.1_neutral_neutral_cw5n1h2txyewy";
 
 	//[OneTimeSetUp]
 	public void _Setup()
 	{
-		FunctionHelper.CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => GetCurrentPackageFamilyName(ref sz, sb), out pkgFamilyName).ThrowIfFailed();
-		FunctionHelper.CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => GetCurrentPackageFullName(ref sz, sb), out pkgFullName).ThrowIfFailed();
+		FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetCurrentPackageFamilyName(ref sz, sb), out pkgFamilyName).ThrowIfFailed();
+		FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetCurrentPackageFullName(ref sz, sb), out pkgFullName).ThrowIfFailed();
 	}
 
 	[Test]
@@ -52,7 +52,7 @@ public class AppModelTests
 	[Test]
 	public void FindPackagesByPackageFamilyTest()
 	{
-		Assert.That(FindPackagesByPackageFamily(pkgFamilyName, PACKAGE_FLAGS.PACKAGE_FILTER_HEAD | PACKAGE_FLAGS.PACKAGE_INFORMATION_BASIC, out string[] fullNames, out uint[] props), ResultIs.Successful);
+		Assert.That(FindPackagesByPackageFamily(pkgFamilyName!, PACKAGE_FLAGS.PACKAGE_FILTER_HEAD | PACKAGE_FLAGS.PACKAGE_INFORMATION_BASIC, out string?[] fullNames, out uint[] props), ResultIs.Successful);
 		for (int i = 0; i < fullNames.Length; i++)
 			TestContext.WriteLine($"{pkgFamilyName} = {fullNames[i]} : {props[i]}");
 		Assert.That(fullNames, Is.Not.Empty);
@@ -61,7 +61,7 @@ public class AppModelTests
 	[Test]
 	public void GetPackagesByPackageFamilyTest()
 	{
-		Assert.That(GetPackagesByPackageFamily(pkgFamilyName, out string[] pkgNames), ResultIs.Successful);
+		Assert.That(GetPackagesByPackageFamily(pkgFamilyName!, out string?[] pkgNames), ResultIs.Successful);
 		pkgNames.WriteValues();
 	}
 
@@ -69,7 +69,7 @@ public class AppModelTests
 	public void GetPackageApplicationIdsTest()
 	{
 		PACKAGE_INFO_REFERENCE pir = new();
-		Assert.That(OpenPackageInfoByFullName(pkgFullName, 0, ref pir), ResultIs.Successful);
+		Assert.That(OpenPackageInfoByFullName(pkgFullName!, 0, ref pir), ResultIs.Successful);
 		uint sz = 0;
 		Assert.That(GetPackageApplicationIds(pir, ref sz, default, out _), ResultIs.FailureCode(Win32Error.ERROR_INSUFFICIENT_BUFFER));
 		using SafeCoTaskMemHandle buffer = new(sz);

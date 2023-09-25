@@ -38,10 +38,10 @@ public class WerApiTests
 		// Print a few lines into the log file.
 		byte[] BytesToPrint = Encoding.Unicode.GetBytes("Line 1\nLine 2\n");
 
-		Assert.That(WriteFile(LogFileHandle.hFile, BytesToPrint, (uint)BytesToPrint.Length, out uint BytesWritten), ResultIs.Successful);
+		Assert.That(WriteFile(LogFileHandle.hFile!, BytesToPrint, (uint)BytesToPrint.Length, out uint BytesWritten), ResultIs.Successful);
 
 		// Make sure we flush the log file so the bytes actually make it to the file-system.
-		Assert.That(FlushFileBuffers(LogFileHandle.hFile), ResultIs.Successful);
+		Assert.That(FlushFileBuffers(LogFileHandle.hFile!), ResultIs.Successful);
 
 		// Get the full path to the log file. We need this because WerRegisterFile requires a full path.
 		string LogFullPath = LogFileHandle.FullName;

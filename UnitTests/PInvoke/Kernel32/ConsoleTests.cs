@@ -45,10 +45,10 @@ public static class ConsoleTestProcess
 
 	private static int Aliases()
 	{
-		if (!AddConsoleAlias("test", "expansion string", Assembly.GetEntryAssembly().Location))
+		if (!AddConsoleAlias("test", "expansion string", Assembly.GetEntryAssembly()!.Location))
 			return ShowErr("AddConsoleAlias");
 		StringBuilder sb = new(256);
-		if (!GetConsoleAlias("test", sb, (uint)sb.Capacity, Assembly.GetEntryAssembly().Location))
+		if (!GetConsoleAlias("test", sb, (uint)sb.Capacity, Assembly.GetEntryAssembly()!.Location))
 			return ShowErr("GetConsoleAlias");
 		foreach (string exe in GetConsoleAliasExes())
 		{

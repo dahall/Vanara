@@ -13,6 +13,7 @@ public partial class WinBaseTests_TxF
 		Assert.That(() =>
 		{
 			bool b = false;
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 			CopyFileTransacted(default, default, default, default, ref b, default, default);
 			CreateDirectoryTransacted(default, default, default, default);
 			CreateFileTransacted(default, default, default, default, default, default, default, default, default, default);
@@ -29,6 +30,7 @@ public partial class WinBaseTests_TxF
 			MoveFileTransacted(default, default, default, default, default, default);
 			RemoveDirectoryTransacted(default, default);
 			SetFileAttributesTransacted(default, default, default);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 		}, Throws.Nothing);
 	}
 }

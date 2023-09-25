@@ -55,7 +55,7 @@ public class ThreadPoolApiSetTests
 		Assert.That(timer, ResultIs.ValidHandle);
 
 		// Set the timer to fire in one second.
-		System.Runtime.InteropServices.ComTypes.FILETIME FileDueTime = TimeSpan.FromSeconds(-1).ToFileTimeStruct();
+		FILETIME FileDueTime = TimeSpan.FromSeconds(-1).ToFileTimeStruct();
 		Assert.That(SetThreadpoolTimerEx(timer, FileDueTime, 0, 0), Is.False);
 		Assert.That(IsThreadpoolTimerSet(timer), Is.True);
 

@@ -10,7 +10,7 @@ public partial class WinBaseTests_Power
 	public void GetSetDevicePowerStateTest()
 	{
 		using TempFile tmp = new(FileAccess.GENERIC_READ, System.IO.FileShare.Read);
-		Assert.That(GetDevicePowerState(tmp.hFile.DangerousGetHandle(), out bool on), ResultIs.Successful);
+		Assert.That(GetDevicePowerState(tmp.hFile!.DangerousGetHandle(), out bool on), ResultIs.Successful);
 		Assert.That(on);
 	}
 

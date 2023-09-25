@@ -51,7 +51,7 @@ public class TLHelp32Tests
 	[Test]
 	public void Toolhelp32ReadProcessMemoryTest()
 	{
-		throw new System.NotImplementedException("No documentation on how.");
+		throw new NotImplementedException("No documentation on how.");
 		//Assert.That(Toolhelp32ReadProcessMemory(), Is.True);
 	}
 }

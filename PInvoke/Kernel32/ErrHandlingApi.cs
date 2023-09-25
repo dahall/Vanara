@@ -946,7 +946,7 @@ public static partial class Kernel32
 	/// call GetLastError.
 	/// </returns>
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-	public static string FormatMessage(string formatString, object[]? args, FormatMessageFlags flags = 0)
+	public static string? FormatMessage(string? formatString, object[]? args, FormatMessageFlags flags = 0)
 	{
 		if (string.IsNullOrEmpty(formatString) || args == null || args.Length == 0 || flags.IsFlagSet(FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS)) return formatString;
 		flags &= ~(FormatMessageFlags.FORMAT_MESSAGE_FROM_HMODULE | FormatMessageFlags.FORMAT_MESSAGE_FROM_SYSTEM);

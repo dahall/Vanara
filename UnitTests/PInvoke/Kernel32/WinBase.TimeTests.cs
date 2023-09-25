@@ -9,10 +9,10 @@ public partial class WinBaseTests_Time
 	[Test]
 	public void DosDateTimeToFileTimeTest()
 	{
-		System.Runtime.InteropServices.ComTypes.FILETIME ft = new DateTime(2019, 10, 29, 13, 51, 24, DateTimeKind.Local).ToFileTimeStruct();
+		FILETIME ft = new DateTime(2019, 10, 29, 13, 51, 24, DateTimeKind.Local).ToFileTimeStruct();
 		Assert.That(FileTimeToDosDateTime(ft, out ushort fatDate, out ushort fatTime), ResultIs.Successful);
 		Assert.That(BitHelper.GetBits(fatDate, 5, 4), Is.EqualTo(10));
-		Assert.That(DosDateTimeToFileTime(fatDate, fatTime, out System.Runtime.InteropServices.ComTypes.FILETIME outFt), ResultIs.Successful);
+		Assert.That(DosDateTimeToFileTime(fatDate, fatTime, out FILETIME outFt), ResultIs.Successful);
 		Assert.That(outFt.ToUInt64(), Is.EqualTo(ft.ToUInt64()));
 	}
 

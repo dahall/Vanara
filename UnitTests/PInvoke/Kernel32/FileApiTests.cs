@@ -42,8 +42,8 @@ public class FileApiTests
 	[Test]
 	public void CompareFileTimeTest()
 	{
-		System.Runtime.InteropServices.ComTypes.FILETIME now = DateTime.Now.ToFileTimeStruct();
-		System.Runtime.InteropServices.ComTypes.FILETIME today = DateTime.Today.ToFileTimeStruct();
+		FILETIME now = DateTime.Now.ToFileTimeStruct();
+		FILETIME today = DateTime.Today.ToFileTimeStruct();
 		Assert.That(CompareFileTime(now, today), Is.GreaterThan(0));
 		Assert.That(CompareFileTime(now, now), Is.Zero);
 	}
@@ -68,7 +68,7 @@ public class FileApiTests
 		Assert.That(b);
 		if (read < sb.Capacity) Marshal.WriteInt16((IntPtr)sb, (int)read, '\0');
 		Assert.That(read, Is.Not.Zero.And.LessThanOrEqualTo(sb.Capacity));
-		Assert.That((string)sb, Is.EqualTo(tmpstr));
+		Assert.That((string?)sb, Is.EqualTo(tmpstr));
 
 		b = SetFilePointerEx(f, 0, out long pos, SeekOrigin.Begin);
 		if (!b) TestContext.WriteLine($"SetFilePointerEx:{Win32Error.GetLastError()}");
@@ -134,12 +134,12 @@ public class FileApiTests
 	[Test]
 	public void FileTimeToLocalFileTimeTest()
 	{
-		System.Runtime.InteropServices.ComTypes.FILETIME utc = DateTime.UtcNow.ToFileTimeStruct();
+		FILETIME utc = DateTime.UtcNow.ToFileTimeStruct();
 		FileTimeToSystemTime(utc, out SYSTEMTIME st);
-		Assert.That(FileTimeToLocalFileTime(utc, out System.Runtime.InteropServices.ComTypes.FILETIME ftlocal), Is.True);
+		Assert.That(FileTimeToLocalFileTime(utc, out FILETIME ftlocal), Is.True);
 		FileTimeToSystemTime(ftlocal, out SYSTEMTIME stl);
 		Assert.That(stl.wHour, Is.EqualTo(DateTime.Now.Hour));
-		Assert.That(LocalFileTimeToFileTime(ftlocal, out System.Runtime.InteropServices.ComTypes.FILETIME utc2), Is.True);
+		Assert.That(LocalFileTimeToFileTime(ftlocal, out FILETIME utc2), Is.True);
 		Assert.That(utc.ToUInt64(), Is.EqualTo(utc2.ToUInt64()));
 	}
 
@@ -211,7 +211,7 @@ public class FileApiTests
 	public void GetFileInformationByHandleTest()
 	{
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		Assert.That(GetFileInformationByHandle(tmp.hFile, out BY_HANDLE_FILE_INFORMATION fi), Is.True);
+		Assert.That(GetFileInformationByHandle(tmp.hFile!, out BY_HANDLE_FILE_INFORMATION fi), Is.True);
 		Assert.That(fi.nFileSizeLow, Is.EqualTo(tmpstr.Length));
 	}
 
@@ -219,9 +219,9 @@ public class FileApiTests
 	public void GetFileSizeTest()
 	{
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		Assert.That(GetFileSize(tmp.hFile, out uint hw), Is.EqualTo(TempFile.tmpstr.Length));
+		Assert.That(GetFileSize(tmp.hFile!, out uint hw), Is.EqualTo(TempFile.tmpstr.Length));
 		Assert.That(hw, Is.Zero);
-		Assert.That(GetFileSizeEx(tmp.hFile, out long sz), Is.True);
+		Assert.That(GetFileSizeEx(tmp.hFile!, out long sz), Is.True);
 		Assert.That(sz, Is.EqualTo(TempFile.tmpstr.Length));
 	}
 
@@ -229,7 +229,7 @@ public class FileApiTests
 	public void GetFileTypeTest()
 	{
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		Assert.That(GetFileType(tmp.hFile), Is.EqualTo(FileType.FILE_TYPE_DISK));
+		Assert.That(GetFileType(tmp.hFile!), Is.EqualTo(FileType.FILE_TYPE_DISK));
 	}
 
 	[Test]
@@ -237,7 +237,7 @@ public class FileApiTests
 	{
 		StringBuilder sb = new(MAX_PATH);
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		uint u = GetFinalPathNameByHandle(tmp.hFile, sb, MAX_PATH, FinalPathNameOptions.FILE_NAME_NORMALIZED);
+		uint u = GetFinalPathNameByHandle(tmp.hFile!, sb, MAX_PATH, FinalPathNameOptions.FILE_NAME_NORMALIZED);
 		Assert.That(u, Is.Not.Zero);
 		TestContext.WriteLine(sb);
 	}
@@ -280,12 +280,12 @@ public class FileApiTests
 	public void GetSetFileTimeTest()
 	{
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_ALL_ACCESS, FileShare.Read);
-		Assert.That(GetFileTime(tmp.hFile, out System.Runtime.InteropServices.ComTypes.FILETIME ft1, out System.Runtime.InteropServices.ComTypes.FILETIME ft2, out System.Runtime.InteropServices.ComTypes.FILETIME ft3), Is.True);
-		System.Runtime.InteropServices.ComTypes.FILETIME nft = DateTime.UtcNow.ToFileTimeStruct();
-		bool b = SetFileTime(tmp.hFile, ft1, ft2, nft);
+		Assert.That(GetFileTime(tmp.hFile!, out FILETIME ft1, out FILETIME ft2, out FILETIME ft3), Is.True);
+		FILETIME nft = DateTime.UtcNow.ToFileTimeStruct();
+		bool b = SetFileTime(tmp.hFile!, ft1, ft2, nft);
 		if (!b) TestContext.WriteLine($"SetFileTime:{Win32Error.GetLastError()}");
 		Assert.That(b, Is.True);
-		Assert.That(GetFileTime(tmp.hFile, out System.Runtime.InteropServices.ComTypes.FILETIME nft1, out System.Runtime.InteropServices.ComTypes.FILETIME nft2, out System.Runtime.InteropServices.ComTypes.FILETIME nft3), Is.True);
+		Assert.That(GetFileTime(tmp.hFile!, out FILETIME nft1, out FILETIME nft2, out FILETIME nft3), Is.True);
 		Assert.That(ft1, Is.EqualTo(nft1));
 		Assert.That(nft, Is.EqualTo(nft3));
 	}
@@ -324,7 +324,7 @@ public class FileApiTests
 		StringBuilder vn = new(1024);
 		StringBuilder fsn = new(1024);
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		bool b = GetVolumeInformationByHandleW(tmp.hFile, vn, (uint)vn.Capacity, out uint vsn, out uint mcl, out FileSystemFlags fsf, fsn, (uint)fsn.Capacity);
+		bool b = GetVolumeInformationByHandleW(tmp.hFile!, vn, (uint)vn.Capacity, out uint vsn, out uint mcl, out FileSystemFlags fsf, fsn, (uint)fsn.Capacity);
 		Assert.That(b, Is.True);
 		Assert.That(vn.ToString(), Is.Not.Null.And.Not.Empty);
 		Assert.That(vsn, Is.Not.EqualTo(0));
@@ -375,9 +375,9 @@ public class FileApiTests
 	{
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
 		NativeOverlapped nativeOverlapped = new();
-		Assert.That(LockFileEx(tmp.hFile, LOCKFILE.LOCKFILE_FAIL_IMMEDIATELY, 0, 5, 0, &nativeOverlapped), Is.True);
+		Assert.That(LockFileEx(tmp.hFile!, LOCKFILE.LOCKFILE_FAIL_IMMEDIATELY, 0, 5, 0, &nativeOverlapped), Is.True);
 		SleepEx(0, true);
-		Assert.That(UnlockFileEx(tmp.hFile, 0, 5, 0, &nativeOverlapped), Is.True);
+		Assert.That(UnlockFileEx(tmp.hFile!, 0, 5, 0, &nativeOverlapped), Is.True);
 		SleepEx(0, true);
 	}
 
@@ -385,8 +385,8 @@ public class FileApiTests
 	public void LockFileTest()
 	{
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		Assert.That(LockFile(tmp.hFile, 0, 0, 5, 0), Is.True);
-		Assert.That(UnlockFile(tmp.hFile, 0, 0, 5, 0), Is.True);
+		Assert.That(LockFile(tmp.hFile!, 0, 0, 5, 0), Is.True);
+		Assert.That(UnlockFile(tmp.hFile!, 0, 0, 5, 0), Is.True);
 	}
 
 	[Test]
@@ -396,7 +396,7 @@ public class FileApiTests
 		using SafeCoTaskMemString sb = new(100, CharSet.Ansi);
 		uint read = 0U;
 		NativeOverlapped nativeOverlapped = new();
-		bool b = ReadFileEx(tmp.hFile, (byte*)(IntPtr)sb, (uint)sb.Capacity, &nativeOverlapped, fnComplete);
+		bool b = ReadFileEx(tmp.hFile!, (byte*)(IntPtr)sb, (uint)sb.Capacity, &nativeOverlapped, fnComplete);
 		if (!b) TestContext.WriteLine($"ReadFileEx:{Win32Error.GetLastError()}");
 		Assert.That(b);
 		SleepEx(0, true);
@@ -407,7 +407,7 @@ public class FileApiTests
 		unsafe void fnComplete(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped)
 		{
 			if (dwErrorCode == 0)
-				GetOverlappedResult(tmp.hFile, lpOverlapped, out read, false);
+				GetOverlappedResult(tmp.hFile!, lpOverlapped, out read, false);
 			else
 				read = dwNumberOfBytesTransfered;
 		}
@@ -418,7 +418,7 @@ public class FileApiTests
 	{
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_ALL_ACCESS, FileShare.Read);
 		FILE_ALLOCATION_INFO fai = new() { AllocationSize = 512 };
-		bool b = SetFileInformationByHandle(tmp.hFile, FILE_INFO_BY_HANDLE_CLASS.FileAllocationInfo, fai);
+		bool b = SetFileInformationByHandle(tmp.hFile!, FILE_INFO_BY_HANDLE_CLASS.FileAllocationInfo, fai);
 		if (!b) TestContext.WriteLine($"SetFileInformationByHandle:{Win32Error.GetLastError()}");
 		Assert.That(b, Is.True);
 	}

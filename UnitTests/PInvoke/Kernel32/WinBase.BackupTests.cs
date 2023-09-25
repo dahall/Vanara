@@ -12,7 +12,7 @@ public partial class WinBaseTests
 		// No tape drives to test against, so just checking each method runs.
 		Assert.That(() =>
 		{
-			BackupRead(HFILE.NULL, default, 0, out _, false, false, out System.IntPtr ctx);
+			BackupRead(HFILE.NULL, default, 0, out _, false, false, out IntPtr ctx);
 			BackupSeek(HFILE.NULL, 0, 0, out _, out _, ref ctx);
 			BackupWrite(HFILE.NULL, default, 0, out _, false, false, out ctx);
 			CreateTapePartition(HFILE.NULL, TAPE_PARTITION_METHOD.TAPE_FIXED_PARTITIONS, 1, 1);

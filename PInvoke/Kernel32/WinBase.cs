@@ -1417,7 +1417,7 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcmpa int lstrcmpA( LPCSTR lpString1, LPCSTR lpString2 );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "windows/desktop/api/winbase/nf-winbase-lstrcmpa")]
-	public static extern int lstrcmp(string lpString1, string lpString2);
+	public static extern int lstrcmp(string? lpString1, string? lpString2);
 
 	/// <summary>
 	/// <para>Compares two character strings. The comparison is not case-sensitive.</para>
@@ -1471,7 +1471,7 @@ public static partial class Kernel32
 	// lpString2 );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "windows/desktop/api/winbase/nf-winbase-lstrcmpia")]
-	public static extern int lstrcmpi(string lpString1, string lpString2);
+	public static extern int lstrcmpi(string? lpString1, string? lpString2);
 
 	/// <summary>
 	/// <para>Copies a specified number of characters from a source string into a buffer.</para>
@@ -1538,7 +1538,7 @@ public static partial class Kernel32
 	// lpString2, int iMaxLength );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h")]
-	public static extern StrPtrAuto lstrcpyn(StringBuilder lpString1, string lpString2, int iMaxLength);
+	public static extern StrPtrAuto lstrcpyn(StringBuilder lpString1, string? lpString2, int iMaxLength);
 
 	/// <summary>Determines the length of the specified string (not including the terminating null character).</summary>
 	/// <param name="lpString">
@@ -1552,7 +1552,7 @@ public static partial class Kernel32
 	// int WINAPI lstrlen( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms647492(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms647492")]
-	public static extern int lstrlen(string lpString);
+	public static extern int lstrlen(string? lpString);
 
 	/// <summary>
 	/// Multiplies two 32-bit values and then divides the 64-bit result by a third 32-bit value. The final result is rounded to the

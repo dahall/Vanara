@@ -771,7 +771,7 @@ public class SynchApiTests
 			Assert.That(WaitForSingleObject(gDoneEvent, INFINITE), Is.EqualTo(WAIT_STATUS.WAIT_OBJECT_0));
 
 			Assert.That(timerOrWaitFired.HasValue, Is.True);
-			Assert.That(timerOrWaitFired.Value, Is.True);
+			Assert.That(timerOrWaitFired!.Value, Is.True);
 		}
 
 		void TimerRoutine(IntPtr lpParameter, bool TimerOrWaitFired)
@@ -789,7 +789,7 @@ public class SynchApiTests
 		Assert.That(hTimer.IsNull, Is.False);
 
 		// Set a timer to wait for 2 seconds.
-		System.Runtime.InteropServices.ComTypes.FILETIME liDueTime = TimeSpan.FromSeconds(2).ToFileTimeStruct();
+		FILETIME liDueTime = TimeSpan.FromSeconds(2).ToFileTimeStruct();
 		Assert.That(SetWaitableTimerEx(hTimer, liDueTime, 0, null, default, new REASON_CONTEXT("Because"), 50), ResultIs.Successful);
 
 		// Wait for the timer.
@@ -808,7 +808,7 @@ public class SynchApiTests
 		new System.Threading.Thread(ThreadProc).Start();
 
 		// Set a timer to wait for 2 seconds.
-		System.Runtime.InteropServices.ComTypes.FILETIME liDueTime = TimeSpan.FromSeconds(2).ToFileTimeStruct();
+		FILETIME liDueTime = TimeSpan.FromSeconds(2).ToFileTimeStruct();
 		Assert.That(SetWaitableTimer(hTimer, liDueTime, 0, null, default, false), ResultIs.Successful);
 
 		// Wait for the timer.

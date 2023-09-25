@@ -30,7 +30,7 @@ public partial class WinBaseTests_Resource
 		Assert.That(hResLoad, ResultIs.ValidHandle);
 
 		// Lock the resource into global memory.
-		System.IntPtr lpResLock = LockResource(hResLoad);
+		IntPtr lpResLock = LockResource(hResLoad);
 		Assert.That(lpResLock, ResultIs.ValidHandle);
 
 		// Open the file to which you want to add the resource resource.

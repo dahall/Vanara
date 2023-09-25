@@ -93,10 +93,10 @@ public class Kernel32Tests
 	[Test]
 	public void QueryDosDeviceTest()
 	{
-		System.Collections.Generic.IEnumerable<string> ie = null;
+		System.Collections.Generic.IEnumerable<string>? ie = null;
 		Assert.That(() => ie = QueryDosDevice("C:"), Throws.Nothing);
 		Assert.That(ie, Is.Not.Null);
-		TestContext.WriteLine(string.Join(",", ie));
+		TestContext.WriteLine(string.Join(",", ie!));
 		Assert.That(ie, Is.Not.Empty);
 	}
 

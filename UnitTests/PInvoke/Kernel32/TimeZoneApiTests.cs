@@ -18,7 +18,7 @@ public class TimeZoneApiTests
 	public void FileTimeToSystemTimeTest()
 	{
 		DateTime dt = DateTime.Today;
-		System.Runtime.InteropServices.ComTypes.FILETIME ft = dt.ToFileTimeStruct();
+		FILETIME ft = dt.ToFileTimeStruct();
 		Assert.That(FileTimeToSystemTime(ft, out SYSTEMTIME st), ResultIs.Successful);
 		Assert.That(dt.Year, Is.EqualTo(st.wYear));
 		Assert.That(dt.Day, Is.EqualTo(st.wDay));
@@ -84,7 +84,7 @@ public class TimeZoneApiTests
 		DateTime dt = new(2000, 1, 1, 4, 4, 4, 444, DateTimeKind.Utc);
 		SYSTEMTIME st = new(dt, DateTimeKind.Utc);
 		Assert.That(st.ToString(DateTimeKind.Utc, null, null), Is.EqualTo(dt.ToString()));
-		Assert.That(SystemTimeToFileTime(st, out System.Runtime.InteropServices.ComTypes.FILETIME ft), ResultIs.Successful);
+		Assert.That(SystemTimeToFileTime(st, out FILETIME ft), ResultIs.Successful);
 		Assert.That(FileTimeExtensions.Equals(ft, dt.ToFileTimeStruct()));
 	}
 

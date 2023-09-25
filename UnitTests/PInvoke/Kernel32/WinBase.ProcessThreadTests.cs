@@ -72,7 +72,7 @@ public partial class WinBaseTests_ProcessThread
 	public void GetNumaNodeNumberFromHandleTest()
 	{
 		using TempFile tmp = new(FileAccess.GENERIC_READ, System.IO.FileShare.Read);
-		Assert.That(GetNumaNodeNumberFromHandle(tmp.hFile, out ushort num), ResultIs.Successful);
+		Assert.That(GetNumaNodeNumberFromHandle(tmp.hFile!, out ushort num), ResultIs.Successful);
 		TestContext.Write(num);
 	}
 

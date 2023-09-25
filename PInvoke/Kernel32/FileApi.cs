@@ -6216,7 +6216,59 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "ms724933")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool SetFileTime([In] HFILE hFile, [In, Optional] PFILETIME lpCreationTime, [In, Optional] PFILETIME lpLastAccessTime, [In, Optional] PFILETIME lpLastWriteTime);
+	public static extern bool SetFileTime([In] HFILE hFile, [In, Optional] PFILETIME lpCreationTime, [In, Optional] PFILETIME lpLastAccessTime, [In, Optional] PFILETIME lpLastWriteTime);
+
+	/// <summary>
+	/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>
+	/// A handle to the file or directory. The handle must have been created using the <c>CreateFile</c> function with the
+	/// <c>FILE_WRITE_ATTRIBUTES</c> access right. For more information, see File Security and Access Rights.
+	/// </para>
+	/// </param>
+	/// <param name="lpCreationTime">
+	/// <para>
+	/// A pointer to a <c>FILETIME</c> structure that contains the new creation date and time for the file or directory. If the
+	/// application does not need to change this information, set this parameter either to <c>NULL</c> or to a pointer to a
+	/// <c>FILETIME</c> structure that has both the <c>dwLowDateTime</c> and <c>dwHighDateTime</c> members set to 0.
+	/// </para>
+	/// </param>
+	/// <param name="lpLastAccessTime">
+	/// <para>
+	/// A pointer to a <c>FILETIME</c> structure that contains the new last access date and time for the file or directory. The last
+	/// access time includes the last time the file or directory was written to, read from, or (in the case of executable files) run. If
+	/// the application does not need to change this information, set this parameter either to <c>NULL</c> or to a pointer to a
+	/// <c>FILETIME</c> structure that has both the <c>dwLowDateTime</c> and <c>dwHighDateTime</c> members set to 0.
+	/// </para>
+	/// <para>
+	/// To prevent file operations using the given handle from modifying the last access time, call <c>SetFileTime</c> immediately after
+	/// opening the file handle and pass a <c>FILETIME</c> structure that has both the <c>dwLowDateTime</c> and <c>dwHighDateTime</c>
+	/// members set to 0xFFFFFFFF.
+	/// </para>
+	/// </param>
+	/// <param name="lpLastWriteTime">
+	/// <para>
+	/// A pointer to a <c>FILETIME</c> structure that contains the new last modified date and time for the file or directory. If the
+	/// application does not need to change this information, set this parameter either to <c>NULL</c> or to a pointer to a
+	/// <c>FILETIME</c> structure that has both the <c>dwLowDateTime</c> and <c>dwHighDateTime</c> members set to 0.
+	/// </para>
+	/// <para>
+	/// To prevent file operations using the given handle from modifying the last access time, call <c>SetFileTime</c> immediately after
+	/// opening the file handle and pass a <c>FILETIME</c> structure that has both the <c>dwLowDateTime</c> and <c>dwHighDateTime</c>
+	/// members set to 0xFFFFFFFF.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	// BOOL WINAPI SetFileTime( _In_ HANDLE hFile, _In_opt_ const FILETIME *lpCreationTime, _In_opt_ const FILETIME *lpLastAccessTime,
+	// _In_opt_ const FILETIME *lpLastWriteTime);
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("FileAPI.h", MSDNShortId = "ms724933")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool SetFileTime([In] HFILE hFile, in FILETIME lpCreationTime, in FILETIME lpLastAccessTime, in FILETIME lpLastWriteTime);
 
 	/// <summary>
 	/// Sets the valid data length of the specified file. This function is useful in very limited scenarios. For more information, see

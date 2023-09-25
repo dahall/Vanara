@@ -1542,7 +1542,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366753")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MapUserPhysicalPages([In] IntPtr lpAddress, SizeT NumberOfPages, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] UserPfnArray);
+	public static extern bool MapUserPhysicalPages([In] IntPtr lpAddress, SizeT NumberOfPages, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[]? UserPfnArray);
 
 	/// <summary>
 	/// <para>Maps previously allocated physical memory pages at a specified address in an Address Windowing Extensions (AWE) region.</para>
@@ -1583,7 +1583,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366755")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MapUserPhysicalPagesScatter([In] IntPtr VirtualAddresses, SizeT NumberOfPages, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] PageArray);
+	public static extern bool MapUserPhysicalPagesScatter([In] IntPtr VirtualAddresses, SizeT NumberOfPages, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[]? PageArray);
 
 	/// <summary>
 	/// <para>Maps a view of a file mapping into the address space of a calling process.</para>

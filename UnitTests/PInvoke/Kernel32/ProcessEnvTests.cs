@@ -79,7 +79,7 @@ public class ProcessEnvTests
 	public void SearchPathTest()
 	{
 		StringBuilder sb = new(MAX_PATH);
-		Assert.That(SearchPath(null, "notepad.exe", null, (uint)sb.Capacity, sb, out InteropServices.StrPtrAuto ptr), Is.Not.Zero);
+		Assert.That(SearchPath(null, "notepad.exe", null, (uint)sb.Capacity, sb, out StrPtrAuto ptr), Is.Not.Zero);
 		Assert.That(sb.ToString().StartsWith("C:"));
 		Assert.That(ptr.ToString(), Is.EqualTo("notepad.exe"));
 	}

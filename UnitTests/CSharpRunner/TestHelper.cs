@@ -111,10 +111,10 @@ Simple:
 		static long GetTypeSize(Type t) { try { return (long)InteropExtensions.SizeOf(t); } catch { return -1; } }
 	}
 
-	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object?, object[]>? action = null, Action<Exception?>? error = null) where TEnum : Enum =>
+	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object?[]> makeParam, Action<TEnum, object?, object?[]>? action = null, Action<Exception?>? error = null) where TEnum : Enum =>
 		RunForEach(lib, name, makeParam, (e, ex) => error?.Invoke(ex), action);
 
-	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception?>? error = null, Action<TEnum, object?, object[]>? action = null, CorrespondingAction? filter = null) where TEnum : Enum
+	public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object?[]> makeParam, Action<TEnum, Exception?>? error = null, Action<TEnum, object?, object?[]>? action = null, CorrespondingAction? filter = null) where TEnum : Enum
 	{
 		MethodInfo mi = lib.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First() ?? throw new ArgumentException("Unable to find method.");
 		foreach (TEnum e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())

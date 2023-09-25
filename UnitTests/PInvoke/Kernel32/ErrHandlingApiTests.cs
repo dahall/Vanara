@@ -43,7 +43,7 @@ public class ErrHandlingApiTests
 		Assert.That(FormatMessage("X", null), Is.EqualTo("X"));
 		Assert.That(FormatMessage("X", objs), Is.EqualTo("X"));
 		Assert.That(FormatMessage("X %1", new[] { "YZ" }), Is.EqualTo("X YZ"));
-		string s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
+		string? s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
 		Assert.That(s, Is.EqualTo(string.Join(" ", objs)));
 		s = FormatMessage("%1 %2", new object[] { 4, "Alan" }, FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
 		Assert.That(s, Is.EqualTo("%1 %2"));

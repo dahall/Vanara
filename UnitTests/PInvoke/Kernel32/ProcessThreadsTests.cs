@@ -223,18 +223,18 @@ public class ProcessThreadsTests
 	public void GetProcessMitigationPolicyTest()
 	{
 		HPROCESS hProc = GetCurrentProcess();
-		TestHelper.RunForEach<PROCESS_MITIGATION_POLICY>(typeof(Kernel32), "GetProcessMitigationPolicy", e => new object[] { hProc, e, null }, (e, ret, param) =>
+		TestHelper.RunForEach<PROCESS_MITIGATION_POLICY>(typeof(Kernel32), "GetProcessMitigationPolicy", e => new object?[] { hProc, e, null }, (e, ret, param) =>
 		{
-			if (!(bool)ret) TestContext.WriteLine($"{e} -> {Win32Error.GetLastError()}");
+			if (!(bool)ret!) TestContext.WriteLine($"{e} -> {Win32Error.GetLastError()}");
 			Assert.That(ret, Is.True);
-			param[2].WriteValues();
+			param?[2]?.WriteValues();
 		});
 	}
 
 	[Test]
 	public void GetProcessTimesTest()
 	{
-		Assert.That(GetProcessTimes(GetCurrentProcess(), out System.Runtime.InteropServices.ComTypes.FILETIME ct, out System.Runtime.InteropServices.ComTypes.FILETIME xt, out System.Runtime.InteropServices.ComTypes.FILETIME kt, out System.Runtime.InteropServices.ComTypes.FILETIME ut), Is.True);
+		Assert.That(GetProcessTimes(GetCurrentProcess(), out FILETIME ct, out FILETIME xt, out FILETIME kt, out FILETIME ut), Is.True);
 		Assert.That(ct.ToDateTime(), Is.LessThan(DateTime.Now));
 		TestContext.Write($"{ct.ToDateTime()}, {xt.ToDateTime()}, {kt.ToDateTime()}, {ut.ToDateTime()}");
 	}
@@ -348,7 +348,7 @@ public class ProcessThreadsTests
 	[Test]
 	public void GetSystemTimesTest()
 	{
-		Assert.That(GetSystemTimes(out System.Runtime.InteropServices.ComTypes.FILETIME idle, out System.Runtime.InteropServices.ComTypes.FILETIME kern, out System.Runtime.InteropServices.ComTypes.FILETIME user), Is.True);
+		Assert.That(GetSystemTimes(out FILETIME idle, out FILETIME kern, out FILETIME user), Is.True);
 		Assert.That(kern.ToDateTime(), Is.GreaterThan(idle.ToDateTime()));
 		Assert.That(user.ToUInt64(), Is.Not.Zero);
 	}
@@ -364,7 +364,7 @@ public class ProcessThreadsTests
 	public void GetThreadInformationTest()
 	{
 		TestHelper.RunForEach<THREAD_INFORMATION_CLASS>(typeof(Kernel32), "GetThreadInformation", e => new object[] { GetCurrentThread(), e },
-			(e, ret, param) => ret.WriteValues(), ex => throw ex);
+			(e, ret, param) => ret?.WriteValues(), ex => throw ex!);
 	}
 
 	[Test]
@@ -376,7 +376,7 @@ public class ProcessThreadsTests
 	[Test]
 	public void GetThreadTimesTest()
 	{
-		Assert.That(GetThreadTimes(GetCurrentThread(), out System.Runtime.InteropServices.ComTypes.FILETIME ct, out System.Runtime.InteropServices.ComTypes.FILETIME xt, out System.Runtime.InteropServices.ComTypes.FILETIME kt, out System.Runtime.InteropServices.ComTypes.FILETIME ut), Is.True);
+		Assert.That(GetThreadTimes(GetCurrentThread(), out FILETIME ct, out FILETIME xt, out FILETIME kt, out FILETIME ut), Is.True);
 		Assert.That(ct.ToDateTime(), Is.LessThan(DateTime.Now));
 		TestContext.Write($"{ct.ToDateTime()}, {xt.ToDateTime()}, {kt.ToDateTime()}, {ut.ToDateTime()}");
 	}

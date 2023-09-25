@@ -135,8 +135,8 @@ public partial class WinBaseTests_File
 		using TempFile tmp = new(FileAccess.GENERIC_READ, FileShare.Read);
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
 		List<Exception> exes = new();
-		TestHelper.RunForEach<FILE_INFO_BY_HANDLE_CLASS>(typeof(Kernel32), "GetFileInformationByHandleEx", e => new object[] { IsDir(e) ? (HFILE)hDir : (HFILE)tmp.hFile, e },
-			(e, ex) => { ex.Source = e.ToString(); exes.Add(ex); }, (e, ret, param) => ret.WriteValues(), CorrespondingAction.Get);
+		TestHelper.RunForEach<FILE_INFO_BY_HANDLE_CLASS>(typeof(Kernel32), "GetFileInformationByHandleEx", e => new object[] { IsDir(e) ? (HFILE)hDir : (HFILE)tmp.hFile!, e },
+			(e, ex) => { ex!.Source = e.ToString(); exes.Add(ex); }, (e, ret, param) => ret?.WriteValues(), CorrespondingAction.Get);
 		if (exes.Count > 0)
 			throw new AggregateException(exes.ToArray());
 
@@ -149,8 +149,8 @@ public partial class WinBaseTests_File
 	{
 		using TempFile tmp = new(FileAccess.GENERIC_READ, FileShare.Read);
 		// This shouldn't work on NTFS vols.
-		Assert.That(GetFileBandwidthReservation(tmp.hFile, out uint per, out uint bpp, out bool disc, out uint tsz, out uint reqs), ResultIs.FailureCode(Win32Error.ERROR_INVALID_FUNCTION));
-		Assert.That(SetFileBandwidthReservation(tmp.hFile, per, bpp, disc, out tsz, out reqs), ResultIs.FailureCode(Win32Error.ERROR_INVALID_FUNCTION));
+		Assert.That(GetFileBandwidthReservation(tmp.hFile!, out uint per, out uint bpp, out bool disc, out uint tsz, out uint reqs), ResultIs.FailureCode(Win32Error.ERROR_INVALID_FUNCTION));
+		Assert.That(SetFileBandwidthReservation(tmp.hFile!, per, bpp, disc, out tsz, out reqs), ResultIs.FailureCode(Win32Error.ERROR_INVALID_FUNCTION));
 	}
 
 	[Test]
@@ -197,7 +197,7 @@ public partial class WinBaseTests_File
 	[Test]
 	public unsafe void ReadDirectoryChangesExWTest()
 	{
-		string newFile = Path.Combine(Path.GetDirectoryName(fn), "X.ico");
+		string newFile = Path.Combine(Path.GetDirectoryName(fn)!, "X.ico");
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
 		using SafeHGlobalHandle mem = new(4096);
 		new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
@@ -208,7 +208,7 @@ public partial class WinBaseTests_File
 		do
 		{
 			FILE_NOTIFY_EXTENDED_INFORMATION i = mem.DangerousGetHandle().Offset(nxt).ToStructure<FILE_NOTIFY_EXTENDED_INFORMATION>();
-			i.FileName = StringHelper.GetString(mem.DangerousGetHandle().Offset(nxt + 76), CharSet.Unicode, i.FileNameLength);
+			i.FileName = StringHelper.GetString(mem.DangerousGetHandle().Offset(nxt + 76), CharSet.Unicode, i.FileNameLength)!;
 			nxt += i.NextEntryOffset;
 			list.Add(i);
 		} while (nxt > 0);
@@ -223,7 +223,7 @@ public partial class WinBaseTests_File
 	[Test]
 	public void ReadDirectoryChangesTest()
 	{
-		string newFile = Path.Combine(Path.GetDirectoryName(fn), "X.ico");
+		string newFile = Path.Combine(Path.GetDirectoryName(fn)!, "X.ico");
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
 		using SafeHGlobalHandle mem = new(4096);
 		new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
@@ -234,7 +234,7 @@ public partial class WinBaseTests_File
 		do
 		{
 			FILE_NOTIFY_INFORMATION i = mem.DangerousGetHandle().Offset(nxt).ToStructure<FILE_NOTIFY_INFORMATION>();
-			i.FileName = StringHelper.GetString(mem.DangerousGetHandle().Offset(nxt + 12), CharSet.Unicode, i.FileNameLength);
+			i.FileName = StringHelper.GetString(mem.DangerousGetHandle().Offset(nxt + 12), CharSet.Unicode, i.FileNameLength)!;
 			nxt += i.NextEntryOffset;
 			list.Add(i);
 		} while (nxt > 0);
@@ -251,7 +251,7 @@ public partial class WinBaseTests_File
 	{
 		using TempFile tmp = new(FileAccess.GENERIC_WRITE, FileShare.Read);
 		Assert.That(tmp, ResultIs.ValidHandle);
-		using SafeHFILE hRe = ReOpenFile(tmp.hFile, FileAccess.GENERIC_READ, FileShare.ReadWrite, 0);
+		using SafeHFILE hRe = ReOpenFile(tmp.hFile!, FileAccess.GENERIC_READ, FileShare.ReadWrite, 0);
 		Assert.That(hRe, ResultIs.ValidHandle);
 	}
 
@@ -267,7 +267,7 @@ public partial class WinBaseTests_File
 	public void SetFileCompletionNotificationModesTest()
 	{
 		using TempFile tmp = new(FileAccess.GENERIC_WRITE, FileShare.Read, FileMode.Create, FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED);
-		Assert.That(SetFileCompletionNotificationModes(tmp.hFile, FILE_NOTIFICATION_MODE.FILE_SKIP_SET_EVENT_ON_HANDLE), ResultIs.Successful);
+		Assert.That(SetFileCompletionNotificationModes(tmp.hFile!, FILE_NOTIFICATION_MODE.FILE_SKIP_SET_EVENT_ON_HANDLE), ResultIs.Successful);
 	}
 
 	[Test]
@@ -276,7 +276,7 @@ public partial class WinBaseTests_File
 		using ElevPriv priv = new("SeLockMemoryPrivilege");
 		using TempFile tmp = new(FileAccess.FILE_READ_ATTRIBUTES | FileAccess.GENERIC_READ, FileShare.Read, FileMode.Create, FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED | FileFlagsAndAttributes.FILE_FLAG_NO_BUFFERING);
 		using AlignedMemory<HGlobalMemoryMethods> mem = new(1024, 1024);
-		Assert.That(SetFileIoOverlappedRange(tmp.hFile, mem, (uint)mem.Size), ResultIs.Failure); // Not sure why I'm having permissions problems.
+		Assert.That(SetFileIoOverlappedRange(tmp.hFile!, mem, (uint)mem.Size), ResultIs.Failure); // Not sure why I'm having permissions problems.
 	}
 
 	[Test]
@@ -284,7 +284,7 @@ public partial class WinBaseTests_File
 	{
 		using (new ElevPriv("SeRestorePrivilege"))
 		using (TempFile tmp = new(FileAccess.GENERIC_ALL, FileShare.ReadWrite, dwFlagsAndAttributes: FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS))
-			Assert.That(SetFileShortName(tmp.hFile, "SN.TXT"), ResultIs.Successful);
+			Assert.That(SetFileShortName(tmp.hFile!, "SN.TXT"), ResultIs.Successful);
 	}
 
 	[Test]

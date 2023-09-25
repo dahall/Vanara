@@ -38,7 +38,7 @@ public class InterlockedApiTests
 			PROGRAM_ITEM? programItem = pListEntry.ToNullableStructure<PROGRAM_ITEM>();
 			if (!programItem.HasValue)
 				Assert.Fail("NULL from InterlockedPopEntrySList");
-			Assert.That(Count, Is.EqualTo(programItem.Value.Signature));
+			Assert.That(Count, Is.EqualTo(programItem!.Value.Signature));
 
 			Marshal.FreeHGlobal(pListEntry);
 		}

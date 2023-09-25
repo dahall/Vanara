@@ -45,7 +45,7 @@ public class PsApiTests
 	[Test]
 	public void GetDeviceDriverBaseFileNameTest()
 	{
-		System.IntPtr imgBase = EnumDeviceDrivers()[0];
+		IntPtr imgBase = EnumDeviceDrivers()[0];
 		StringBuilder sb = new(MAX_PATH);
 		Assert.That(GetDeviceDriverBaseName(imgBase, sb, (uint)sb.Capacity), Is.Not.Zero);
 		TestContext.Write(sb + " : ");
