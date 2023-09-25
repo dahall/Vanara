@@ -25,6 +25,7 @@ public enum NavigationLogDirection
 /// <summary>Undocumented Flags used by <see cref="IShellFolderViewCB.MessageSFVCB"/> Callback Handler.</summary>
 public enum SFVMUD
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	SFVM_SELECTIONCHANGED = 8,
 	SFVM_DRAWMENUITEM = 9,
 	SFVM_MEASUREMENUITEM = 10,
@@ -58,6 +59,7 @@ public enum SFVMUD
 	SFVM_GET_WEBVIEW_TASKS = 84,
 	SFVM_GET_WEBVIEW_THEME = 86,
 	SFVM_GETDEFERREDVIEWSETTINGS = 92,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
 
 /// <summary>Indicates the viewing mode of the ShellBrowser</summary>
@@ -361,7 +363,9 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	{
 		if (viewStateStream is not null)
 			Marshal.ReleaseComObject(viewStateStream);
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		stream = viewStateStream = ShlwApi.SHOpenRegStream2(HKEY.HKEY_CURRENT_USER, ViewStateRegistryKey, viewStateStreamIdentifier, grfMode);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return stream is null ? HRESULT.E_FAIL : HRESULT.S_OK;
 	}
 
@@ -786,7 +790,9 @@ public class ShellBrowserViewHandler : IShellFolderViewCB
 				psvOuter = null,
 				psfvcb = this,
 			};
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			SHCreateShellFolderView(sfvCreate, out IShellView? shellView).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			ShellView = shellView ?? throw new InvalidComObjectException(nameof(ShellView));
 
 			FolderView2 = ShellView as IFolderView2 ?? throw new InvalidComObjectException(nameof(FolderView2));
