@@ -15,7 +15,7 @@ public static partial class UxTheme
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759745(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("uxtheme.h", MSDNShortId = "bb759745")]
-	public static extern HRESULT GetThemeFont(SafeHTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, out LOGFONT pFont);
+	public static extern HRESULT GetThemeFont(SafeHTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, int iPropId, out LOGFONT pFont);
 
 	/// <summary>Retrieves the LOGFONT of a system font.</summary>
 	/// <param name="hTheme">Handle to theme data.</param>

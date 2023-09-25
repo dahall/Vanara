@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Drawing;
+using System.Windows.Forms;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.UxTheme;
 
@@ -9,7 +10,9 @@ namespace Vanara.PInvoke.Tests;
 public class UxThemeTests
 {
 	private const int bufSz = 1024;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	private SafeHTHEME hwt, hbt;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup()
@@ -30,87 +33,45 @@ public class UxThemeTests
 	}
 
 	[Test]
-	public void BeginBufferedAnimationTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void BeginBufferedAnimationTest() => throw new NotImplementedException();
 
 	[Test]
-	public void BeginBufferedPaintTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void BeginBufferedPaintTest() => throw new NotImplementedException();
 
 	[Test]
-	public void BufferedPaintInitTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void BufferedPaintInitTest() => throw new NotImplementedException();
 
 	[Test]
-	public void BufferedPaintRenderAnimationTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void BufferedPaintRenderAnimationTest() => throw new NotImplementedException();
 
 	[Test]
-	public void BufferedPaintStopAllAnimationsTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void BufferedPaintStopAllAnimationsTest() => throw new NotImplementedException();
 
 	[Test]
-	public void BufferedPaintUnInitTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void BufferedPaintUnInitTest() => throw new NotImplementedException();
 
 	[Test]
-	public void DrawThemeBackgroundExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeBackgroundExTest() => throw new NotImplementedException();
 
 	[Test]
-	public void DrawThemeBackgroundTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeBackgroundTest() => throw new NotImplementedException();
 
 	[Test]
-	public void DrawThemeEdgeTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeEdgeTest() => throw new NotImplementedException();
 
 	[Test]
-	public void DrawThemeIconTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeIconTest() => throw new NotImplementedException();
 
 	[Test]
-	public void DrawThemeParentBackgroundExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeParentBackgroundExTest() => throw new NotImplementedException();
 
 	[Test]
-	public void DrawThemeParentBackgroundTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeParentBackgroundTest() => throw new NotImplementedException();
 	[Test]
-	public void DrawThemeTextExTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeTextExTest() => throw new NotImplementedException();
 
 	[Test]
-	public void DrawThemeTextTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void DrawThemeTextTest() => throw new NotImplementedException();
 
 	[Test]
 	public void EnableThemeDialogTextureTest()
@@ -126,16 +87,10 @@ public class UxThemeTests
 	}
 
 	[Test]
-	public void EndBufferedAnimationTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void EndBufferedAnimationTest() => throw new NotImplementedException();
 
 	[Test]
-	public void EndBufferedPaintTest()
-	{
-		throw new NotImplementedException();
-	}
+	public void EndBufferedPaintTest() => throw new NotImplementedException();
 
 	[Test]
 	public void GetCurrentThemeNameTest()
@@ -236,7 +191,7 @@ public class UxThemeTests
 		Assert.That(hr.Succeeded);
 		Assert.That(result, Is.EqualTo(new COLORREF(0,0,0)));
 
-		hr = GetThemeColor(hwt, 1, 0, (int)ThemeProperty.TMT_FILLCOLOR, out result);
+		hr = GetThemeColor(hwt, 1, 0, (int)ThemeProperty.TMT_FILLCOLOR, out _);
 		if (hr.Failed) TestContext.WriteLine(hr);
 		Assert.That(hr.Succeeded, Is.False);
 	}
@@ -292,11 +247,9 @@ public class UxThemeTests
 	[Test]
 	public void GetThemeIntTest()
 	{
-		using (var hat = OpenThemeDataEx(HWND.NULL, "AeroWizard", OpenThemeDataOptions.None))
-		{
-			Assert.That(GetThemeInt(hat, 1, 0, (int)ThemeProperty.TMT_TEXTGLOWSIZE, out var result).Succeeded);
-			Assert.That(result, Is.EqualTo(12));
-		}
+		using var hat = OpenThemeDataEx(HWND.NULL, "AeroWizard", OpenThemeDataOptions.None);
+		Assert.That(GetThemeInt(hat, 1, 0, (int)ThemeProperty.TMT_TEXTGLOWSIZE, out var result).Succeeded);
+		Assert.That(result, Is.EqualTo(12));
 	}
 	[Test]
 	public void GetThemeMarginsTest()
@@ -337,31 +290,25 @@ public class UxThemeTests
 	public void GetThemeRectTest()
 	{
 		Application.EnableVisualStyles();
-		using (var h = OpenThemeData(HWND.NULL, "DWMWINDOW"))
-		{
-			Assert.That(h.IsInvalid, Is.False);
-			var hr = GetThemeRect(h, 3, 1, (int)ThemeProperty.TMT_ATLASRECT, out var result);
-			if (hr.Failed) TestContext.WriteLine(hr);
-			Assert.That(hr.Succeeded);
-			Assert.That(result.Width, Is.GreaterThan(0));
-		}
+		using var h = OpenThemeData(HWND.NULL, "DWMWINDOW");
+		Assert.That(h.IsInvalid, Is.False);
+		var hr = GetThemeRect(h, 3, 1, (int)ThemeProperty.TMT_ATLASRECT, out var result);
+		if (hr.Failed) TestContext.WriteLine(hr);
+		Assert.That(hr.Succeeded);
+		Assert.That(result.Width, Is.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetThemeStreamTest()
 	{
 		Application.EnableVisualStyles();
-		using (var h = OpenThemeData(HWND.NULL, "DWMWINDOW"))
-		{
-			Assert.That(h.IsInvalid, Is.False);
-			using (var hInstance = Kernel32.LoadLibraryEx(@"C:\Windows\resources\themes\Aero\Aero.msstyles", Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
-			{
-				var hr = GetThemeStream(h, 0, 0, 213, out var themeStream, out var streamSize, hInstance);
-				Assert.That(hr.Succeeded);
-				Assert.That(streamSize, Is.GreaterThan(0));
-				Assert.That(() => themeStream.ToByteArray((int)streamSize), Throws.Nothing);
-			}
-		}
+		using var h = OpenThemeData(HWND.NULL, "DWMWINDOW");
+		Assert.That(h.IsInvalid, Is.False);
+		using var hInstance = Kernel32.LoadLibraryEx(@"C:\Windows\resources\themes\Aero\Aero.msstyles", Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
+		var hr = GetThemeStream(h, 0, 0, 213, out var themeStream, out var streamSize, hInstance);
+		Assert.That(hr.Succeeded);
+		Assert.That(streamSize, Is.GreaterThan(0));
+		Assert.That(() => themeStream.ToByteArray((int)streamSize), Throws.Nothing);
 	}
 
 	[Test]
@@ -376,16 +323,10 @@ public class UxThemeTests
 	}
 
 	[Test]
-	public void GetThemeSysBoolTest()
-	{
-		Assert.That(GetThemeSysBool(hwt, (int)ThemeProperty.TMT_FLATMENUS), Is.True);
-	}
+	public void GetThemeSysBoolTest() => Assert.That(GetThemeSysBool(hwt, (int)ThemeProperty.TMT_FLATMENUS), Is.True);
 
 	[Test]
-	public void GetThemeSysColorTest()
-	{
-		Assert.That(GetThemeSysColor(hwt, SystemColorIndex.COLOR_WINDOW), Is.EqualTo(new COLORREF(255, 255, 255)));
-	}
+	public void GetThemeSysColorTest() => Assert.That(GetThemeSysColor(hwt, SystemColorIndex.COLOR_WINDOW), Is.EqualTo(new COLORREF(255, 255, 255)));
 
 	[Test]
 	public void GetThemeSysColorBrushTest()
@@ -409,10 +350,7 @@ public class UxThemeTests
 	}
 
 	[Test]
-	public void GetThemeSysSizeTest()
-	{
-		Assert.That(GetThemeSysSize(hwt, (int)User32.SystemMetric.SM_CYSIZE), Is.Not.Zero);
-	}
+	public void GetThemeSysSizeTest() => Assert.That(GetThemeSysSize(hwt, (int)User32.SystemMetric.SM_CYSIZE), Is.Not.Zero);
 
 	[Test]
 	public void GetThemeSysStringTest()
@@ -445,7 +383,7 @@ public class UxThemeTests
 	public void GetThemeTimingFunctionTest()
 	{
 		var buf = new SafeCoTaskMemHandle(100);
-		var hr = GetThemeTimingFunction(hbt, 1, (IntPtr)buf, (uint)buf.Size, out var sz);
+		var hr = GetThemeTimingFunction(hbt, 1, (IntPtr)buf, (uint)buf.Size, out _);
 		// Can't test this as there are no properties that return a value.
 		Assert.That(hr.Failed);
 	}
@@ -497,22 +435,13 @@ public class UxThemeTests
 	}
 
 	[Test]
-	public void IsAppThemedTest()
-	{
-		Assert.That(IsAppThemed());
-	}
+	public void IsAppThemedTest() => Assert.That(IsAppThemed());
 
 	[Test]
-	public void IsCompositionActiveTest()
-	{
-		Assert.That(IsCompositionActive());
-	}
+	public void IsCompositionActiveTest() => Assert.That(IsCompositionActive());
 
 	[Test]
-	public void IsThemeActiveTest()
-	{
-		Assert.That(IsThemeActive());
-	}
+	public void IsThemeActiveTest() => Assert.That(IsThemeActive());
 
 	[Test]
 	public void IsThemeBackgroundPartiallyTransparentTest()
@@ -545,10 +474,7 @@ public class UxThemeTests
 	}
 
 	[Test]
-	public void SetThemeAppPropertiesTest()
-	{
-		Assert.That(() => SetThemeAppProperties(ThemeAppProperties.STAP_ALLOW_NONCLIENT | ThemeAppProperties.STAP_ALLOW_CONTROLS), Throws.Nothing);
-	}
+	public void SetThemeAppPropertiesTest() => Assert.That(() => SetThemeAppProperties(ThemeAppProperties.STAP_ALLOW_NONCLIENT | ThemeAppProperties.STAP_ALLOW_CONTROLS), Throws.Nothing);
 
 	[Test]
 	public void SetWindowThemeNonClientAttributesTest()

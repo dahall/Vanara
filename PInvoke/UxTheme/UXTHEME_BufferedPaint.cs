@@ -116,7 +116,7 @@ public static partial class UxTheme
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773252")]
 	public static extern SafeHANIMATIONBUFFER BeginBufferedAnimation(HWND hwnd, HDC hdcTarget, in RECT rcTarget, BP_BUFFERFORMAT dwFormat,
-		[In] BP_PAINTPARAMS pPaintParams, in BP_ANIMATIONPARAMS pAnimationParams, out HDC phdcFrom, out HDC phdcTo);
+		[In, Optional] BP_PAINTPARAMS? pPaintParams, in BP_ANIMATIONPARAMS pAnimationParams, out HDC phdcFrom, out HDC phdcTo);
 
 	/// <summary>Begins a buffered paint operation.</summary>
 	/// <param name="hdcTarget">
@@ -156,7 +156,7 @@ public static partial class UxTheme
 	// *pPaintParams, _Out_ HDC *phdc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773257(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773257")]
-	public static extern SafeHPAINTBUFFER BeginBufferedPaint(HDC hdcTarget, in RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In] BP_PAINTPARAMS pPaintParams, out HDC phdc);
+	public static extern SafeHPAINTBUFFER BeginBufferedPaint(HDC hdcTarget, in RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In, Optional] BP_PAINTPARAMS? pPaintParams, out HDC phdc);
 
 	/// <summary>Clears a specified rectangle in the buffer to ARGB = {0,0,0,0}.</summary>
 	/// <param name="hBufferedPaint">
@@ -235,6 +235,34 @@ public static partial class UxTheme
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773276")]
 	public static extern HRESULT BufferedPaintSetAlpha(HPAINTBUFFER hBufferedPaint, in RECT prc, byte alpha);
+
+	/// <summary>
+	/// Sets the alpha to a specified value in a given rectangle. The alpha controls the amount of transparency applied when blending
+	/// with the buffer onto the destination target device context (DC).
+	/// </summary>
+	/// <param name="hBufferedPaint">
+	/// <para>Type: <c>HPAINTBUFFER</c></para>
+	/// <para>The handle of the buffered paint context, obtained through <c>BeginBufferedPaint</c>.</para>
+	/// </param>
+	/// <param name="prc">
+	/// <para>Type: <c>const <c>RECT</c>*</c></para>
+	/// <para>
+	/// A pointer to a <c>RECT</c> structure that specifies the rectangle in which to set the alpha. Set this parameter to <c>NULL</c> to
+	/// specify the entire buffer.
+	/// </para>
+	/// </param>
+	/// <param name="alpha">
+	/// <para>Type: <c><c>BYTE</c></c></para>
+	/// <para>The alpha value to set. The alpha value can range from zero (fully transparent) to 255 (fully opaque).</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c><c>HRESULT</c></c></para>
+	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	// HRESULT BufferedPaintSetAlpha( HPAINTBUFFER hBufferedPaint, _In_ const RECT *prc, BYTE alpha); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773276(v=vs.85).aspx
+	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773276")]
+	public static extern HRESULT BufferedPaintSetAlpha(HPAINTBUFFER hBufferedPaint, [In, Optional] PRECT prc, byte alpha);
 
 	/// <summary>Stops all buffered animations for the given window.</summary>
 	/// <param name="hwnd">
@@ -485,7 +513,7 @@ After:
 		public static bool operator ==(HANIMATIONBUFFER h1, HANIMATIONBUFFER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HANIMATIONBUFFER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HANIMATIONBUFFER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -533,7 +561,7 @@ After:
 		public static bool operator ==(HPAINTBUFFER h1, HPAINTBUFFER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HPAINTBUFFER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPAINTBUFFER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();

@@ -484,7 +484,7 @@ public static partial class UxTheme
 	// *pClipRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773289(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773289")]
-	public static extern HRESULT DrawThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, PRECT pClipRect);
+	public static extern HRESULT DrawThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, [Optional] PRECT? pClipRect);
 
 	/// <summary>
 	/// <para>
@@ -528,7 +528,7 @@ public static partial class UxTheme
 	// *pOptions); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773294(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773294")]
-	public static extern HRESULT DrawThemeBackgroundEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, DTBGOPTS pOptions);
+	public static extern HRESULT DrawThemeBackgroundEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, [Optional] DTBGOPTS? pOptions);
 
 	/// <summary>Draws one or more edges defined by the visual style of a rectangle.</summary>
 	/// <param name="hTheme">
@@ -768,7 +768,7 @@ public static partial class UxTheme
 	// HRESULT DrawThemeParentBackground( _In_ HWND hwnd, _In_ HDC hdc, _In_ const RECT *prc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773306(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773306")]
-	public static extern HRESULT DrawThemeParentBackground(HWND hwnd, HDC hdc, PRECT prc);
+	public static extern HRESULT DrawThemeParentBackground(HWND hwnd, HDC hdc, [Optional] PRECT? prc);
 
 	/// <summary>
 	/// Used by partially-transparent or alpha-blended child controls to draw the part of their parent in front of which they appear.
@@ -822,7 +822,7 @@ public static partial class UxTheme
 	// HRESULT DrawThemeParentBackgroundEx( _In_ HWND hwnd, _In_ HDC hdc, _In_ DWORD dwFlags, _In_ const RECT *prc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773309(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773309")]
-	public static extern HRESULT DrawThemeParentBackgroundEx(HWND hwnd, HDC hdc, DrawThemeParentBackgroundFlags dwFlags, PRECT prc);
+	public static extern HRESULT DrawThemeParentBackgroundEx(HWND hwnd, HDC hdc, DrawThemeParentBackgroundFlags dwFlags, [Optional] PRECT? prc);
 
 	/// <summary>Draws text using the color and font defined by the visual style.</summary>
 	/// <param name="hTheme">
@@ -1064,8 +1064,8 @@ public static partial class UxTheme
 	// cchMaxColorChars, _Out_ LPWSTR pszSizeBuff, _In_ int cchMaxSizeChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773365(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773365")]
-	public static extern HRESULT GetCurrentThemeName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszThemeFileName, int dwMaxNameChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszColorBuff,
-		int cchMaxColorChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSizeBuff, int cchMaxSizeChars);
+	public static extern HRESULT GetCurrentThemeName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pszThemeFileName, int dwMaxNameChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pszColorBuff,
+		int cchMaxColorChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pszSizeBuff, int cchMaxSizeChars);
 
 	/*
 	/// <summary>Gets the string containing the name of an element like ‘StartBackground’ or ‘StartDesktopTilesBackground’.</summary>
@@ -1217,7 +1217,7 @@ public static partial class UxTheme
 	// pBoundingRect, _Out_ LPRECT pContentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773375(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773375")]
-	public static extern HRESULT GetThemeBackgroundContentRect(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pBoundingRect, out RECT pContentRect);
+	public static extern HRESULT GetThemeBackgroundContentRect(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, in RECT pBoundingRect, out RECT pContentRect);
 
 	/// <summary>Calculates the size and location of the background, defined by the visual style, given the content area.</summary>
 	/// <param name="hTheme">
@@ -1257,7 +1257,7 @@ public static partial class UxTheme
 	// pContentRect, _Out_ LPRECT pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773380(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773380")]
-	public static extern HRESULT GetThemeBackgroundExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pContentRect, out RECT pExtentRect);
+	public static extern HRESULT GetThemeBackgroundExtent(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, in RECT pContentRect, out RECT pExtentRect);
 
 	/// <summary>Computes the region for a regular or partially transparent background that is bounded by a specified rectangle.</summary>
 	/// <param name="hTheme">
@@ -1294,7 +1294,7 @@ public static partial class UxTheme
 	// HRGN *pRegion); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773384(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773384")]
-	public static extern HRESULT GetThemeBackgroundRegion(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, out SafeHRGN pRegion);
+	public static extern HRESULT GetThemeBackgroundRegion(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, in RECT pRect, out SafeHRGN pRegion);
 
 	/// <summary>Retrieves the bitmap associated with a particular theme, part, state, and property.</summary>
 	/// <param name="hTheme">
@@ -1699,7 +1699,7 @@ public static partial class UxTheme
 	/// <para>Value of type <c>int</c> that specifies the property to retrieve. See Property Identifiers.</para>
 	/// </param>
 	/// <returns>An array of integers.</returns>
-	public static int[] GetThemeIntList(HTHEME hTheme, int partId, int stateId, int propId)
+	public static int[]? GetThemeIntList(HTHEME hTheme, int partId, int stateId, int propId)
 	{
 		if (Environment.OSVersion.Version.Major < 6)
 		{
@@ -1790,7 +1790,50 @@ public static partial class UxTheme
 	// *pMargins); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759755(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759755")]
-	public static extern HRESULT GetThemeMargins(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, PRECT prc, out MARGINS pMargins);
+	public static extern HRESULT GetThemeMargins(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, int iPropId, [Optional] PRECT? prc, out MARGINS pMargins);
+
+	/// <summary>Retrieves the value of a <c>MARGINS</c> property.</summary>
+	/// <param name="hTheme">
+	/// <para>Type: <c>HTHEME</c></para>
+	/// <para>Handle to a window's specified theme data. Use <c>OpenThemeData</c> to create an HTHEME.</para>
+	/// </param>
+	/// <param name="hdc">
+	/// <para>Type: <c><c>HDC</c></c></para>
+	/// <para>HDC to select fonts into. This parameter may be set to <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="iPartId">
+	/// <para>Type: <c>int</c></para>
+	/// <para>Value of type <c>int</c> that specifies the part that contains the <c>MARGINS</c> property. See Parts and States.</para>
+	/// </param>
+	/// <param name="iStateId">
+	/// <para>Type: <c>int</c></para>
+	/// <para>Value of type <c>int</c> that specifies the state of the part. See Parts and States.</para>
+	/// </param>
+	/// <param name="iPropId">
+	/// <para>Type: <c>int</c></para>
+	/// <para>Value of type <c>int</c> that specifies the property to retrieve. For a list of possible values, see Property Identifiers.</para>
+	/// </param>
+	/// <param name="prc">
+	/// <para>Type: <c>LPRECT</c></para>
+	/// <para>
+	/// Pointer to a <c>RECT</c> structure that contains the rectangle that specifies the area to be drawn into. This parameter may be
+	/// set to <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pMargins">
+	/// <para>Type: <c><c>MARGINS</c>*</c></para>
+	/// <para>Pointer to a <c>MARGINS</c> structure that receives the retrieved value.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c><c>HRESULT</c></c></para>
+	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	// HRESULT GetThemeMargins( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _In_ LPRECT prc,
+	// _Out_ MARGINS
+	// *pMargins); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759755(v=vs.85).aspx
+	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759755")]
+	public static extern HRESULT GetThemeMargins(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, int iPropId, in RECT prc, out MARGINS pMargins);
 
 	/// <summary>Retrieves the value of a metric property.</summary>
 	/// <param name="hTheme">
@@ -1932,7 +1975,7 @@ public static partial class UxTheme
 	// *piVal); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759757(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759757")]
-	public static extern HRESULT GetThemeMetric(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, out int piVal);
+	public static extern HRESULT GetThemeMetric(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, int iPropId, out int piVal);
 
 	/// <summary>Calculates the original size of the part defined by a visual style.</summary>
 	/// <param name="hTheme">
@@ -1975,7 +2018,7 @@ public static partial class UxTheme
 	// *psz); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759759(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759759")]
-	public static extern HRESULT GetThemePartSize(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, PRECT prc, THEMESIZE eSize, out SIZE psz);
+	public static extern HRESULT GetThemePartSize(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, [Optional] PRECT? prc, THEMESIZE eSize, out SIZE psz);
 
 	/// <summary>Retrieves the value of a position property.</summary>
 	/// <param name="hTheme">
@@ -2094,7 +2137,7 @@ public static partial class UxTheme
 	// DWORD *pcbStream, _In_ HINSTANCE hInst); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759768(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759768")]
-	public static extern HRESULT GetThemeStream(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, HINSTANCE hInst);
+	public static extern HRESULT GetThemeStream(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, [Optional] HINSTANCE hInst);
 
 	/// <summary>Retrieves the value of a string property.</summary>
 	/// <param name="hTheme">
@@ -2522,7 +2565,7 @@ public static partial class UxTheme
 	// iCharCount, _In_ DWORD dwTextFlags, _In_ LPCRECT pBoundingRect, _Out_ LPRECT pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759798(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759798")]
-	public static extern HRESULT GetThemeTextExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, PRECT pBoundingRect, out RECT pExtentRect);
+	public static extern HRESULT GetThemeTextExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, [Optional] PRECT? pBoundingRect, out RECT pExtentRect);
 
 	/// <summary>Retrieves information about the font specified by a visual style for a particular part.</summary>
 	/// <param name="hTheme">
@@ -2552,7 +2595,7 @@ public static partial class UxTheme
 	// HRESULT GetThemeTextMetrics( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _Out_ TEXTMETRIC *ptm); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759801(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759801")]
-	public static extern HRESULT GetThemeTextMetrics(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, out TEXTMETRIC ptm);
+	public static extern HRESULT GetThemeTextMetrics(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, out TEXTMETRIC ptm);
 
 	/// <summary>Gets a predefined timing function based ona timing function identifier.</summary>
 	/// <param name="hTheme">An opened theme handle.</param>
@@ -2664,7 +2707,7 @@ public static partial class UxTheme
 	// LPCRECT pRect, _In_ HRGN hrgn, _In_ POINT ptTest, _Out_ WORD *pwHitTestCode); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759808(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759808")]
-	public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, in RECT pRect, HRGN hrgn, POINT ptTest, out HitTestValues pwHitTestCode);
+	public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, [Optional] HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, in RECT pRect, [Optional] HRGN hrgn, POINT ptTest, out HitTestValues pwHitTestCode);
 
 	/// <summary>Reports whether the current application's user interface displays using visual styles.</summary>
 	/// <returns>
@@ -2978,7 +3021,7 @@ public static partial class UxTheme
 	// HTHEME OpenThemeDataEx( _In_ HWND hwnd, _In_ LPCWSTR pszClassIdList, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759823(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759823")]
-	public static extern SafeHTHEME OpenThemeDataEx(HWND hwnd, string pszClassIdList, OpenThemeDataOptions dwFlags);
+	public static extern SafeHTHEME OpenThemeDataEx(HWND hwnd, string pszClassIdList, [Optional] OpenThemeDataOptions dwFlags);
 
 	/// <summary>A variant of OpenThemeData that opens a theme handle associated with a specific DPI.</summary>
 	/// <param name="hwnd">The handle of the window for which theme data is required.</param>
@@ -3050,7 +3093,7 @@ public static partial class UxTheme
 	// HRESULT SetWindowTheme( _In_ HWND hwnd, _In_ LPCWSTR pszSubAppName, _In_ LPCWSTR pszSubIdList); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759827(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759827")]
-	public static extern HRESULT SetWindowTheme(HWND hwnd, string pszSubAppName, string pszSubIdList);
+	public static extern HRESULT SetWindowTheme(HWND hwnd, [Optional] string? pszSubAppName, [Optional] string? pszSubIdList);
 
 	/// <summary>Sets attributes to control how visual styles are applied to a specified window.</summary>
 	/// <param name="hwnd">
@@ -3334,7 +3377,7 @@ public static partial class UxTheme
 		/// <para>Pointer to callback function for <c>DrawThemeTextEx</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public DTT_CALLBACK_PROC pfnDrawTextCallback;
+		public DTT_CALLBACK_PROC? pfnDrawTextCallback;
 
 		/// <summary>
 		/// <para>Type: <c><c>LPARAM</c></c></para>
@@ -3351,11 +3394,7 @@ public static partial class UxTheme
 		public ThemeProperty AlternateColorProperty
 		{
 			get => iColorPropId;
-			set
-			{
-				iColorPropId = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_COLORPROP;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_COLORPROP, (iColorPropId = value) != 0);
 		}
 
 		/// <summary>Gets or sets an alternate font property to use when drawing text.</summary>
@@ -3363,11 +3402,7 @@ public static partial class UxTheme
 		public ThemeProperty AlternateFont
 		{
 			get => iFontPropId;
-			set
-			{
-				iFontPropId = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_FONTPROP;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_FONTPROP, (iFontPropId = value) != 0);
 		}
 
 		/// <summary>
@@ -3390,11 +3425,7 @@ public static partial class UxTheme
 		public bool ApplyOverlay
 		{
 			get => fApplyOverlay;
-			set
-			{
-				fApplyOverlay = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_APPLYOVERLAY;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_APPLYOVERLAY, value);
 		}
 
 		/// <summary>Gets or sets the color of the outline that will be drawn around the text.</summary>
@@ -3402,11 +3433,7 @@ public static partial class UxTheme
 		public COLORREF BorderColor
 		{
 			get => crBorder;
-			set
-			{
-				crBorder = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_BORDERCOLOR;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_BORDERCOLOR, (crBorder = value) != 0);
 		}
 
 		/// <summary>Gets or sets the radius of the outline that will be drawn around the text.</summary>
@@ -3414,23 +3441,15 @@ public static partial class UxTheme
 		public int BorderSize
 		{
 			get => iBorderSize;
-			set
-			{
-				iBorderSize = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_BORDERSIZE;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_BORDERSIZE, (iBorderSize = value) != 0);
 		}
 
 		/// <summary>Gets or sets the callback function.</summary>
 		/// <value>The callback function.</value>
-		public DTT_CALLBACK_PROC Callback
+		public DTT_CALLBACK_PROC? Callback
 		{
 			get => pfnDrawTextCallback;
-			set
-			{
-				pfnDrawTextCallback = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_CALLBACK;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_CALLBACK, (pfnDrawTextCallback = value) is not null);
 		}
 
 		/// <summary>Gets or sets the size of a glow that will be drawn on the background prior to any text being drawn.</summary>
@@ -3438,11 +3457,7 @@ public static partial class UxTheme
 		public int GlowSize
 		{
 			get => iGlowSize;
-			set
-			{
-				iGlowSize = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_GLOWSIZE;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_GLOWSIZE, (iGlowSize = value) != 0);
 		}
 
 		/// <summary>Gets or sets the parameter for callback back function specified by <see cref="Callback"/>.</summary>
@@ -3470,34 +3485,23 @@ public static partial class UxTheme
 		public COLORREF ShadowColor
 		{
 			get => crShadow;
-			set
-			{
-				crShadow = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_SHADOWCOLOR;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_SHADOWCOLOR, (crShadow = value) != 0);
 		}
 
 		/// <summary>Gets or sets the amount of offset, in logical coordinates, between the shadow and the text.</summary>
 		/// <value>The shadow offset.</value>
 		public POINT ShadowOffset
 		{
-			get => new(ptShadowOffset.X, ptShadowOffset.Y);
-			set
-			{
-				ptShadowOffset = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_SHADOWOFFSET;
-			}
+			get => ptShadowOffset;
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_SHADOWOFFSET, (ptShadowOffset = value) != default);
 		}
 
 		/// <summary>Gets or sets the type of the shadow that will be drawn behind the text.</summary>
 		/// <value>The type of the shadow.</value>
 		public TextShadowType ShadowType
 		{
-			get => iTextShadowType; set
-			{
-				iTextShadowType = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_SHADOWTYPE;
-			}
+			get => iTextShadowType;
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_SHADOWTYPE, (iTextShadowType = value) != 0);
 		}
 
 		/// <summary>Gets or sets the color of the text that will be drawn.</summary>
@@ -3505,11 +3509,7 @@ public static partial class UxTheme
 		public COLORREF TextColor
 		{
 			get => crText;
-			set
-			{
-				crText = value;
-				dwMasks |= DrawThemeTextOptionsMasks.DTT_TEXTCOLOR;
-			}
+			set => SetFlag(DrawThemeTextOptionsMasks.DTT_TEXTCOLOR, (crText = value) != 0);
 		}
 
 		/// <summary>Gets an instance with default values set.</summary>
