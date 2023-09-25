@@ -248,7 +248,7 @@ public class PropSysTests
 		var pv = new PROPVARIANT(new[] {true, false, true, false});
 		var hr = PropVariantToBooleanVectorAlloc(pv, out var h, out var cnt);
 		Assert.That(hr.Succeeded);
-		bool[] ba = null;
+		bool[]? ba = null;
 		Assert.That(() => ba = h.ToEnumerable<uint>((int)cnt).Select(i => i != 0).ToArray(), Throws.Nothing);
 		Assert.That(ba, Is.Not.Null.And.Exactly(4).Items);
 	}

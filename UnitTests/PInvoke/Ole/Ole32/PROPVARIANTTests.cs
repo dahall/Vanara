@@ -104,9 +104,9 @@ public class PROPVARIANTTests
 		using PROPVARIANT pv = new(arr);
 		Assert.That(pv.vt, Is.EqualTo(vt | VARTYPE.VT_VECTOR));
 		Assert.That(pv.Value, Is.EquivalentTo(arr));
-		System.Reflection.PropertyInfo pi = pv.GetType().GetProperty(prop);
+		System.Reflection.PropertyInfo? pi = pv.GetType().GetProperty(prop);
 		Assert.That(pi, Is.Not.Null);
-		Assert.That(pi.GetValue(pv), Is.EquivalentTo(arr));
+		Assert.That(pi!.GetValue(pv), Is.EquivalentTo(arr));
 	}
 
 	[TestCase(VARTYPE.VT_CF, "pclipdata")]
@@ -146,21 +146,21 @@ public class PROPVARIANTTests
 	[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR, "calpstr")]
 	public void PROPVARIANTOtherPropsTest(VARTYPE vt, string prop)
 	{
-		object value;
+		object? value;
 		Assert.That(() =>
 		{
 			if ((value = GetSampleData(vt)) == null) return;
 			using PROPVARIANT pv = new(value, (VarEnum)vt);
 			bool isa = value.GetType().IsArray || value is SafeSAFEARRAY;
 			Assert.That(pv.vt, Is.EqualTo(vt));
-			object pvVal = pv.Value;
+			object? pvVal = pv.Value;
 			if (isa)
 				Assert.That(pvVal, Is.EquivalentTo((IEnumerable)value));
 			else
 				Assert.That(pvVal, Is.EqualTo(value));
-			System.Reflection.PropertyInfo pi = pv.GetType().GetProperty(prop);
+			System.Reflection.PropertyInfo? pi = pv.GetType().GetProperty(prop);
 			Assert.That(pi, Is.Not.Null);
-			object piVal = pi.GetValue(pv);
+			object? piVal = pi!.GetValue(pv);
 			if (isa)
 				Assert.That(piVal, Is.EquivalentTo((IEnumerable)value));
 			else
@@ -186,9 +186,9 @@ public class PROPVARIANTTests
 		using PROPVARIANT pv = new(value);
 		Assert.That(pv.vt, Is.EqualTo(vt));
 		Assert.That(pv.Value, Is.EqualTo(value));
-		System.Reflection.PropertyInfo pi = pv.GetType().GetProperty(prop);
+		System.Reflection.PropertyInfo? pi = pv.GetType().GetProperty(prop);
 		Assert.That(pi, Is.Not.Null);
-		Assert.That(pi.GetValue(pv), Is.EqualTo(value));
+		Assert.That(pi!.GetValue(pv), Is.EqualTo(value));
 	}
 
 	[Test]
@@ -241,7 +241,7 @@ public class PROPVARIANTTests
 		}
 	}*/
 
-	private static object GetSampleData(VARTYPE vt)
+	private static object? GetSampleData(VARTYPE vt)
 	{
 		switch (vt)
 		{
@@ -273,7 +273,7 @@ public class PROPVARIANTTests
 				return new DateTime(1999, 12, 31, 23, 59, 59);
 
 			case VARTYPE.VT_DISPATCH:
-				return Activator.CreateInstance(Type.GetTypeFromProgID("Excel.Application"));
+				return Activator.CreateInstance(Type.GetTypeFromProgID("Excel.Application")!);
 
 			case VARTYPE.VT_ERROR:
 			case VARTYPE.VT_BYREF | VARTYPE.VT_ERROR:
@@ -299,7 +299,7 @@ public class PROPVARIANTTests
 				return stm;
 
 			case VARTYPE.VT_UNKNOWN:
-				return Activator.CreateInstance(Type.GetTypeFromProgID("ADODB.Error"));
+				return Activator.CreateInstance(Type.GetTypeFromProgID("ADODB.Error")!);
 
 			case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
 			case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
@@ -337,11 +337,11 @@ public class PROPVARIANTTests
 
 	private static void PVRefTest<T>(T? nval, VARTYPE vt, string prop) where T : struct
 	{
-		System.Reflection.PropertyInfo pi = typeof(PROPVARIANT).GetProperty(prop);
+		System.Reflection.PropertyInfo? pi = typeof(PROPVARIANT).GetProperty(prop);
 		Assert.That(pi, Is.Not.Null);
 		using PROPVARIANT pv = new(null, (VarEnum)(VARTYPE.VT_BYREF | vt));
 		Assert.That(pv.vt, Is.EqualTo(vt | VARTYPE.VT_BYREF));
 		Assert.That(pv.Value, Is.Null);
-		Assert.That(pi.GetValue(pv), Is.Null);
+		Assert.That(pi!.GetValue(pv), Is.Null);
 	}
 }

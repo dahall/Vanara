@@ -45,7 +45,7 @@ public class VarTests
 						continue;
 
 					string fn = $"Var{(t1 == typeof(string) ? "Bstr" : funcPart[t1])}From{funcPart[t2]}";
-					MethodInfo mi = typeof(OleAut32).GetMethod(fn, BindingFlags.Static | BindingFlags.Public);
+					MethodInfo? mi = typeof(OleAut32).GetMethod(fn, BindingFlags.Static | BindingFlags.Public);
 					if (mi is not null)
 						yield return new TestCaseData(GetVal(i, j), GetVal(j, i), mi).SetName(fn);
 				}
@@ -80,18 +80,19 @@ public class VarTests
 	//[Test]
 	public void ShowOther()
 	{
-		List<string> tested = NumericTests.Select(t => ((MethodInfo)t.Arguments[2]).Name).ToList();
+		List<string>? tested = NumericTests.Select(t => ((MethodInfo?)t.Arguments[2])?.Name)?.WhereNotNull().ToList();
+		Assert.NotNull(tested);
 		List<string> all = typeof(OleAut32).GetMethods(BindingFlags.Static | BindingFlags.Public).Where(mi => mi.Name.StartsWith("Var")).Select(mi => mi.Name).ToList();
-		all.Except(tested).OrderBy(s => s.ToLowerInvariant()).ToList().WriteValues();
+		all.Except(tested!).OrderBy(s => s.ToLowerInvariant()).ToList().WriteValues();
 	}
 
 	[TestCaseSource(nameof(NumericTests))]
 	public void VarConvTest(object toVal, object fromVal, MethodInfo mi)
 	{
 		bool hasStr = fromVal is string || toVal is string;
-		object[] p = hasStr ? new[] { fromVal, curLoc, Activator.CreateInstance(mi.GetParameters()[2].ParameterType), null } : new[] { fromVal, null };
+		object?[] p = hasStr ? new[] { fromVal, curLoc, Activator.CreateInstance(mi.GetParameters()[2].ParameterType), null } : new[] { fromVal, null };
 		HRESULT hr = 0;
-		try { hr = (HRESULT)mi.Invoke(null, p); }
+		try { hr = (HRESULT)mi.Invoke(null, p)!; }
 		catch { Assert.Ignore($"Function {mi.Name} fails Invoke."); }
 		Assert.That(hr, ResultIs.Successful);
 		Assert.That(p[hasStr ? 3 : 1], Is.EqualTo(toVal));

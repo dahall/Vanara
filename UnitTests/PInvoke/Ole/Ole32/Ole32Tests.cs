@@ -94,9 +94,9 @@ public class Ole32Tests
 		using (ComReleaser<IPropertyStorage> pipse = ComReleaserFactory.Create(ipse))
 		{
 			PROPVARIANT[] prvs = new PROPVARIANT[0];
-			ipse.ReadMultiple(prcs, out PROPVARIANT[] prvRead).ThrowIfFailed();
+			ipse.ReadMultiple(prcs, out PROPVARIANT[]? prvRead).ThrowIfFailed();
 
-			CollectionAssert.AreEqual(prvRead.Select(prv => prv.Value), vals);
+			CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value), vals);
 
 			foreach (PROPVARIANT prv in prvs)
 				prv.Dispose();
