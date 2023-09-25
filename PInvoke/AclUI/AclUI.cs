@@ -586,7 +586,7 @@ public static partial class AclUI
 		/// or destroyed.
 		/// </param>
 		[PreserveSig]
-		HRESULT PropertySheetPageCallback([In] HWND hwnd, [In] PropertySheetCallbackMessage uMsg, [In] SI_PAGE_TYPE uPage);
+		HRESULT PropertySheetPageCallback([In, Optional] HWND hwnd, [In] PropertySheetCallbackMessage uMsg, [In] SI_PAGE_TYPE uPage);
 	}
 
 	/// <summary>
@@ -805,8 +805,10 @@ public static partial class AclUI
 	/// </para>
 	/// </returns>
 	[PInvokeData("aclui.h", MSDNShortId = "E451BBB9-4E01-4A8F-9ACD-750351F16453")]
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static HRESULT EditSecurityAdvanced([Optional] HWND hwndOwner, ISecurityInformation psi, SI_PAGE_TYPE pageType, SI_PAGE_ACTIVATED pageActivated) =>
 		EditSecurityAdvanced(hwndOwner, psi, COMBINE_PAGE_ACTIVATION(pageType, pageActivated));
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>The EFFPERM_RESULT_LIST structure lists the effective permissions.</summary>
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -814,7 +816,8 @@ public static partial class AclUI
 	public struct EFFPERM_RESULT_LIST
 	{
 		/// <summary>Indicates if the effective permissions results have been evaluated.</summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool fEvaluated;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool fEvaluated;
 
 		/// <summary>The number of elements in both the pObjectTypeList and pGrantedAccessList members.</summary>
 		public uint cObjectTypeListLength;
@@ -822,12 +825,14 @@ public static partial class AclUI
 		/// <summary>
 		/// A pointer to an array of OBJECT_TYPE_LIST structures that specifies the properties and property sets for which access was evaluated.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPArray)] public OBJECT_TYPE_LIST[] pObjectTypeList;
+		[MarshalAs(UnmanagedType.LPArray)]
+		public OBJECT_TYPE_LIST[] pObjectTypeList;
 
 		/// <summary>
 		/// A pointer to an array of ACCESS_MASK values that specifies the access rights granted for each corresponding object type.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPArray)] public uint[] pGrantedAccessList;
+		[MarshalAs(UnmanagedType.LPArray)]
+		public uint[] pGrantedAccessList;
 	}
 
 	/// <summary>The SECURITY_OBJECT structure contains the security object information.</summary>
@@ -836,7 +841,8 @@ public static partial class AclUI
 	public struct SECURITY_OBJECT
 	{
 		/// <summary>A pointer to the name.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string pwszName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pwszName;
 
 		/// <summary>A pointer to the security data.</summary>
 		public IntPtr pData;
@@ -866,7 +872,8 @@ public static partial class AclUI
 		public uint Id;
 
 		/// <summary>TRUE if the security object represents one of the well-know security objects listed in the Id member.</summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool fWellKnown;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool fWellKnown;
 	}
 
 	/// <summary>
@@ -969,7 +976,7 @@ public static partial class AclUI
 		/// designated for the SID structure, the value of this parameter is NULL.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pwzUPN;
+		public string? pwzUPN;
 	}
 
 	/// <summary>

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+using NUnit.Framework;
 using static Vanara.PInvoke.AclUI;
 
 namespace Vanara.PInvoke.Tests;
