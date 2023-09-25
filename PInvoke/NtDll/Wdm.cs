@@ -2397,6 +2397,35 @@ public static partial class NtDll
 	// KeyInformation, uint Length, ref uint ResultLength);
 	public static extern NTStatus NtQueryKey(HKEY KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, [Out] SafeHGlobalHandle KeyInformation, uint Length, out uint ResultLength);
 
+	/// <summary>Gets version information about the currently running operating system.</summary>
+	/// <param name="lpVersionInformation">
+	/// Pointer to either a <c>RTL_OSVERSIONINFOW</c> structure or a <c>RTL_OSVERSIONINFOEXW</c> structure that contains the version
+	/// information about the currently running operating system. A caller specifies which input structure is used by setting the
+	/// <c>dwOSVersionInfoSize</c> member of the structure to the size in bytes of the structure that is used.
+	/// </param>
+	/// <returns>Returns STATUS_SUCCESS.</returns>
+	/// <remarks>
+	/// <para>
+	/// <c>RtlGetVersion</c> is the equivalent of the <c>GetVersionEx</c> function in the Windows SDK. See the example in the Windows SDK
+	/// that shows how to get the system version.
+	/// </para>
+	/// <para>
+	/// When using <c>RtlGetVersion</c> to determine whether a particular version of the operating system is running, a caller should check
+	/// for version numbers that are greater than or equal to the required version number. This ensures that a version test succeeds for
+	/// later versions of Windows.
+	/// </para>
+	/// <para>
+	/// Because operating system features can be added in a redistributable DLL, checking only the major and minor version numbers is not the
+	/// most reliable way to verify the presence of a specific system feature. A driver should use <c>RtlVerifyVersionInfo</c> to test for
+	/// the presence of a specific system feature.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/devnotes/rtlgetversion
+	// NTSTATUS RtlGetVersion( _Out_&#194; PRTL_OSVERSIONINFOW lpVersionInformation );
+	[PInvokeData("Ntddk.h")]
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	public static extern NTStatus RtlGetVersion(out OSVERSIONINFOW lpVersionInformation);
+
 	/// <summary>
 	/// <para>
 	/// A driver sets an IRP's I/O status block to indicate the final status of an I/O request, before calling IoCompleteRequest for the IRP.
@@ -2630,6 +2659,198 @@ public static partial class NtDll
 		/// </summary>
 		public StrPtrUni Name;
 	}
+
+	/// <summary>
+	/// <para>
+	/// Contains operating system version information. The information includes major and minor version numbers, a build number, a platform
+	/// identifier, and descriptive text about the operating system. This structure is used with the GetVersionEx function.
+	/// </para>
+	/// <para>To obtain additional version information, use the OSVERSIONINFOEX structure with GetVersionEx instead.</para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Relying on version information is not the best way to test for a feature. Instead, refer to the documentation for the feature of
+	/// interest. For more information on common techniques for feature detection, see Operating System Version.
+	/// </para>
+	/// <para>
+	/// If you must require a particular operating system, be sure to use it as a minimum supported version, rather than design the test for
+	/// the one operating system. This way, your detection code will continue to work on future versions of Windows.
+	/// </para>
+	/// <para>
+	/// The following table summarizes the values returned by supported versions of Windows. Use the information in the column labeled
+	/// "Other" to distinguish between operating systems with identical version numbers.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Operating system</description>
+	/// <description>Version number</description>
+	/// <description><c>dwMajorVersion</c></description>
+	/// <description><c>dwMinorVersion</c></description>
+	/// <description>Other</description>
+	/// </listheader>
+	/// <item>
+	/// <description>WindowsÂ 10</description>
+	/// <description>10.0*</description>
+	/// <description>10</description>
+	/// <description>0</description>
+	/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>Windows ServerÂ 2016</description>
+	/// <description>10.0*</description>
+	/// <description>10</description>
+	/// <description>0</description>
+	/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>WindowsÂ 8.1</description>
+	/// <description>6.3*</description>
+	/// <description>6</description>
+	/// <description>3</description>
+	/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>Windows ServerÂ 2012Â R2</description>
+	/// <description>6.3*</description>
+	/// <description>6</description>
+	/// <description>3</description>
+	/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>WindowsÂ 8</description>
+	/// <description>6.2</description>
+	/// <description>6</description>
+	/// <description>2</description>
+	/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>Windows ServerÂ 2012</description>
+	/// <description>6.2</description>
+	/// <description>6</description>
+	/// <description>2</description>
+	/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>WindowsÂ 7</description>
+	/// <description>6.1</description>
+	/// <description>6</description>
+	/// <description>1</description>
+	/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>Windows ServerÂ 2008Â R2</description>
+	/// <description>6.1</description>
+	/// <description>6</description>
+	/// <description>1</description>
+	/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>Windows ServerÂ 2008</description>
+	/// <description>6.0</description>
+	/// <description>6</description>
+	/// <description>0</description>
+	/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>WindowsÂ Vista</description>
+	/// <description>6.0</description>
+	/// <description>6</description>
+	/// <description>0</description>
+	/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+	/// </item>
+	/// <item>
+	/// <description>Windows ServerÂ 2003Â R2</description>
+	/// <description>5.2</description>
+	/// <description>5</description>
+	/// <description>2</description>
+	/// <description>GetSystemMetrics(SM_SERVERR2) != 0</description>
+	/// </item>
+	/// <item>
+	/// <description>Windows ServerÂ 2003</description>
+	/// <description>5.2</description>
+	/// <description>5</description>
+	/// <description>2</description>
+	/// <description>GetSystemMetrics(SM_SERVERR2) == 0</description>
+	/// </item>
+	/// <item>
+	/// <description>WindowsÂ XP</description>
+	/// <description>5.1</description>
+	/// <description>5</description>
+	/// <description>1</description>
+	/// <description>Not applicable</description>
+	/// </item>
+	/// <item>
+	/// <description>WindowsÂ 2000</description>
+	/// <description>5.0</description>
+	/// <description>5</description>
+	/// <description>0</description>
+	/// <description>Not applicable</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <c>*</c> For applications that have been manifested for WindowsÂ 8.1 or WindowsÂ 10. Applications not manifested for WindowsÂ 8.1 or
+	/// WindowsÂ 10 will return the WindowsÂ 8 OS version value (6.2). To manifest your applications for WindowsÂ 8.1 or WindowsÂ 10, refer
+	/// to Targeting your application for Windows.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>Â</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Getting the System Version.</para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The winnt.h header defines OSVERSIONINFO as an alias which automatically selects the ANSI or Unicode version of this function based
+	/// on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfow typedef struct _OSVERSIONINFOW { DWORD
+	// dwOSVersionInfoSize; DWORD dwMajorVersion; DWORD dwMinorVersion; DWORD dwBuildNumber; DWORD dwPlatformId; WCHAR szCSDVersion[128]; }
+	// OSVERSIONINFOW, *POSVERSIONINFOW, *LPOSVERSIONINFOW, RTL_OSVERSIONINFOW, *PRTL_OSVERSIONINFOW;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._OSVERSIONINFOW")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct OSVERSIONINFOW
+	{
+		/// <summary>The size of this data structure, in bytes. Set this member to .</summary>
+		public uint dwOSVersionInfoSize;
+
+		/// <summary>The major version number of the operating system. For more information, see Remarks.</summary>
+		public uint dwMajorVersion;
+
+		/// <summary>The minor version number of the operating system. For more information, see Remarks.</summary>
+		public uint dwMinorVersion;
+
+		/// <summary>The build number of the operating system.</summary>
+		public uint dwBuildNumber;
+
+		/// <summary>
+		/// <para>The operating system platform. This member can be the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>VER_PLATFORM_WIN32_NT</c> 2</description>
+		/// <description>
+		/// The operating system is WindowsÂ 7, Windows ServerÂ 2008, WindowsÂ Vista, Windows ServerÂ 2003, WindowsÂ XP, or WindowsÂ 2000.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public uint dwPlatformId;
+
+		/// <summary>
+		/// A null-terminated string, such as "Service Pack 3", that indicates the latest Service Pack installed on the system. If no Service
+		/// Pack has been installed, the string is empty.
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+		public string szCSDVersion;
+	}	
+
 /*
 ACCESS_STATE structure
 ACL structure
