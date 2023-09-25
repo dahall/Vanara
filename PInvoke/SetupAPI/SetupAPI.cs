@@ -580,6 +580,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h")]
 	public enum DI_FUNCTION : uint
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		DIF_SELECTDEVICE = 0x00000001,
 		DIF_INSTALLDEVICE = 0x00000002,
 		DIF_ASSIGNRESOURCES = 0x00000003,
@@ -625,6 +626,7 @@ public static partial class SetupAPI
 
 		[Obsolete]
 		DIF_MOVEDEVICE = 0x0000000E,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Flags that indicate the scope of the device removal.</summary>

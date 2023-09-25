@@ -1949,7 +1949,9 @@ public static partial class ShlwApi
 	public static TOut? IUnknown_QueryService<TOut>([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid? riid = null) where TOut : class
 	{
 		var iid = riid ?? typeof(TOut).GUID;
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		IUnknown_QueryService(punk, guidService, iid, out object? ppvOut).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return (TOut?)ppvOut;
 	}
 
