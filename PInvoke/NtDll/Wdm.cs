@@ -2408,31 +2408,60 @@ namespace Vanara.PInvoke
 		// KeyInformation, uint Length, ref uint ResultLength);
 		public static extern NTStatus NtQueryKey(HKEY KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass, [Out] SafeHGlobalHandle KeyInformation, uint Length, out uint ResultLength);
 
-		/// <summary>
-		/// <para>
-		/// A driver sets an IRP's I/O status block to indicate the final status of an I/O request, before calling IoCompleteRequest for the IRP.
-		/// </para>
-		/// </summary>
+		/// <summary>Gets version information about the currently running operating system.</summary>
+		/// <param name="lpVersionInformation">
+		/// Pointer to either a <c>RTL_OSVERSIONINFOW</c> structure or a <c>RTL_OSVERSIONINFOEXW</c> structure that contains the version
+		/// information about the currently running operating system. A caller specifies which input structure is used by setting the
+		/// <c>dwOSVersionInfoSize</c> member of the structure to the size in bytes of the structure that is used.
+		/// </param>
+		/// <returns>Returns STATUS_SUCCESS.</returns>
 		/// <remarks>
 		/// <para>
-		/// Unless a driver's dispatch routine completes an IRP with an error status value, the lowest-level driver in the chain frequently
-		/// sets the IRP's I/O status block to the values that will be returned to the original requester of the I/O operation.
+		/// <c>RtlGetVersion</c> is the equivalent of the <c>GetVersionEx</c> function in the Windows SDK. See the example in the Windows SDK
+		/// that shows how to get the system version.
 		/// </para>
 		/// <para>
-		/// The IoCompletion routines of higher-level drivers usually check the I/O status block in IRPs completed by lower drivers. By
-		/// design, the I/O status block in an IRP is the only information passed back from the underlying device driver to all higher-level
-		/// drivers' IoCompletion routines.
+		/// When using <c>RtlGetVersion</c> to determine whether a particular version of the operating system is running, a caller should check
+		/// for version numbers that are greater than or equal to the required version number. This ensures that a version test succeeds for
+		/// later versions of Windows.
 		/// </para>
 		/// <para>
-		/// The operating system implements support routines that write <c>IO_STATUS_BLOCK</c> values to caller-supplied output buffers. For
-		/// example, see ZwOpenFile or NtOpenFile. These routines return status codes that might not match the status codes in the
-		/// <c>IO_STATUS_BLOCK</c> structures. If one of these routines returns STATUS_PENDING, the caller should wait for the I/O operation
-		/// to complete, and then check the status code in the <c>IO_STATUS_BLOCK</c> structure to determine the final status of the
-		/// operation. If the routine returns a status code other than STATUS_PENDING, the caller should rely on this status code instead of
-		/// the status code in the <c>IO_STATUS_BLOCK</c> structure.
+		/// Because operating system features can be added in a redistributable DLL, checking only the major and minor version numbers is not the
+		/// most reliable way to verify the presence of a specific system feature. A driver should use <c>RtlVerifyVersionInfo</c> to test for
+		/// the presence of a specific system feature.
 		/// </para>
-		/// <para>For more information, see I/O Status Blocks.</para>
 		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/devnotes/rtlgetversion
+		// NTSTATUS RtlGetVersion( _Out_&#194; PRTL_OSVERSIONINFOW lpVersionInformation );
+		[PInvokeData("Ntddk.h")]
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		public static extern NTStatus RtlGetVersion(out OSVERSIONINFOW lpVersionInformation);       
+		
+		/// <summary>
+																									/// <para>
+																									/// A driver sets an IRP's I/O status block to indicate the final status of an I/O request, before calling IoCompleteRequest for the IRP.
+																									/// </para>
+																									/// </summary>
+																									/// <remarks>
+																									/// <para>
+																									/// Unless a driver's dispatch routine completes an IRP with an error status value, the lowest-level driver in the chain frequently
+																									/// sets the IRP's I/O status block to the values that will be returned to the original requester of the I/O operation.
+																									/// </para>
+																									/// <para>
+																									/// The IoCompletion routines of higher-level drivers usually check the I/O status block in IRPs completed by lower drivers. By
+																									/// design, the I/O status block in an IRP is the only information passed back from the underlying device driver to all higher-level
+																									/// drivers' IoCompletion routines.
+																									/// </para>
+																									/// <para>
+																									/// The operating system implements support routines that write <c>IO_STATUS_BLOCK</c> values to caller-supplied output buffers. For
+																									/// example, see ZwOpenFile or NtOpenFile. These routines return status codes that might not match the status codes in the
+																									/// <c>IO_STATUS_BLOCK</c> structures. If one of these routines returns STATUS_PENDING, the caller should wait for the I/O operation
+																									/// to complete, and then check the status code in the <c>IO_STATUS_BLOCK</c> structure to determine the final status of the
+																									/// operation. If the routine returns a status code other than STATUS_PENDING, the caller should rely on this status code instead of
+																									/// the status code in the <c>IO_STATUS_BLOCK</c> structure.
+																									/// </para>
+																									/// <para>For more information, see I/O Status Blocks.</para>
+																									/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_io_status_block typedef struct _IO_STATUS_BLOCK
 		// { union { NTSTATUS Status; PVOID Pointer; } DUMMYUNIONNAME; ULONG_PTR Information; } IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
 		[PInvokeData("wdm.h", MSDNShortId = "1ce2b1d0-a8b2-4a05-8895-e13802690a7b")]
@@ -2641,1387 +2670,1579 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public StrPtrUni Name;
 		}
-/*
-ACCESS_STATE structure
-ACL structure
-ClfsCreateMarshallingAreaEx function
-DIRECTORY_NOTIFY_INFORMATION_CLASS enumeration
-DRIVER_DIRECTORY_TYPE enumeration
-ExInitializeWorkItem function
-ExQueueWorkItem function
-FAST_IO_DISPATCH structure
-FILE_INFORMATION_CLASS enumeration
-FILE_MEMORY_PARTITION_INFORMATION structure
-FILE_SFIO_RESERVE_INFORMATION structure
-FS_INFORMATION_CLASS enumeration
-IoGetTopLevelIrp function
-IoRemoveLinkShareAccessEx function
-IoSetTopLevelIrp function
-LOCK_OPERATION enumeration
-LUID_AND_ATTRIBUTES structure
-SeCaptureSubjectContext function
-SECURITY_IMPERSONATION_LEVEL enumeration
-SECURITY_SUBJECT_CONTEXT structure
-SeLockSubjectContext function
-SeReleaseSubjectContext function
-SeUnlockSubjectContext function
-VPB structure
-WORK_QUEUE_ITEM structure
 
-ASSERTMSG macro
-DbgBreakPoint function
-DbgBreakPointWithStatus function
-DbgPrint function
-DbgPrintEx function
-EtwActivityIdControl function
-ETWENABLECALLBACK callback function
-EtwEventEnabled function
-EtwProviderEnabled function
-EtwRegister function
-EtwUnregister function
-EtwWrite function
-EtwWriteEx function
-EtwWriteString function
-EtwWriteTransfer function
-FAULT_INFORMATION structure
-FAULT_INFORMATION_ARCH enumeration
-FAULT_INFORMATION_ARM64 structure
-FAULT_INFORMATION_ARM64_FLAGS structure
-FAULT_INFORMATION_ARM64_TYPE enumeration
-KBUGCHECK_CALLBACK_RECORD structure
-KBUGCHECK_REASON_CALLBACK_RECORD structure
-KBUGCHECK_REMOVE_PAGES structure
-KBUGCHECK_SECONDARY_DUMP_DATA_EX structure
-KBUGCHECK_TRIAGE_DUMP_DATA structure
-KdBreakPointWithStatus macro
-KdChangeOption function
-KdDisableDebugger function
-KdEnableDebugger function
-KdPrint macro
-KdPrintEx macro
-KdRefreshDebuggerNotPresent function
-KeInitializeTriageDumpDataArray function
-KTRIAGE_DUMP_DATA_ARRAY structure
-PCW_CALLBACK callback function
-PCW_CALLBACK_INFORMATION union
-PCW_CALLBACK_TYPE enumeration
-PCW_COUNTER_DESCRIPTOR structure
-PCW_COUNTER_INFORMATION structure
-PCW_DATA structure
-PCW_MASK_INFORMATION structure
-PCW_REGISTRATION_INFORMATION structure
-PcwAddInstance function
-PcwCloseInstance function
-PcwCreateInstance function
-PcwRegister function
-PcwUnregister function
-SeEtwWriteKMCveEvent function
-vDbgPrintEx function
-vDbgPrintExWithPrefix function
+		/// <summary>
+		/// <para>
+		/// Contains operating system version information. The information includes major and minor version numbers, a build number, a platform
+		/// identifier, and descriptive text about the operating system. This structure is used with the GetVersionEx function.
+		/// </para>
+		/// <para>To obtain additional version information, use the OSVERSIONINFOEX structure with GetVersionEx instead.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Relying on version information is not the best way to test for a feature. Instead, refer to the documentation for the feature of
+		/// interest. For more information on common techniques for feature detection, see Operating System Version.
+		/// </para>
+		/// <para>
+		/// If you must require a particular operating system, be sure to use it as a minimum supported version, rather than design the test for
+		/// the one operating system. This way, your detection code will continue to work on future versions of Windows.
+		/// </para>
+		/// <para>
+		/// The following table summarizes the values returned by supported versions of Windows. Use the information in the column labeled
+		/// "Other" to distinguish between operating systems with identical version numbers.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Operating system</description>
+		/// <description>Version number</description>
+		/// <description><c>dwMajorVersion</c></description>
+		/// <description><c>dwMinorVersion</c></description>
+		/// <description>Other</description>
+		/// </listheader>
+		/// <item>
+		/// <description>WindowsÂ 10</description>
+		/// <description>10.0*</description>
+		/// <description>10</description>
+		/// <description>0</description>
+		/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>Windows ServerÂ 2016</description>
+		/// <description>10.0*</description>
+		/// <description>10</description>
+		/// <description>0</description>
+		/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>WindowsÂ 8.1</description>
+		/// <description>6.3*</description>
+		/// <description>6</description>
+		/// <description>3</description>
+		/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>Windows ServerÂ 2012Â R2</description>
+		/// <description>6.3*</description>
+		/// <description>6</description>
+		/// <description>3</description>
+		/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>WindowsÂ 8</description>
+		/// <description>6.2</description>
+		/// <description>6</description>
+		/// <description>2</description>
+		/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>Windows ServerÂ 2012</description>
+		/// <description>6.2</description>
+		/// <description>6</description>
+		/// <description>2</description>
+		/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>WindowsÂ 7</description>
+		/// <description>6.1</description>
+		/// <description>6</description>
+		/// <description>1</description>
+		/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>Windows ServerÂ 2008Â R2</description>
+		/// <description>6.1</description>
+		/// <description>6</description>
+		/// <description>1</description>
+		/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>Windows ServerÂ 2008</description>
+		/// <description>6.0</description>
+		/// <description>6</description>
+		/// <description>0</description>
+		/// <description>OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>WindowsÂ Vista</description>
+		/// <description>6.0</description>
+		/// <description>6</description>
+		/// <description>0</description>
+		/// <description>OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION</description>
+		/// </item>
+		/// <item>
+		/// <description>Windows ServerÂ 2003Â R2</description>
+		/// <description>5.2</description>
+		/// <description>5</description>
+		/// <description>2</description>
+		/// <description>GetSystemMetrics(SM_SERVERR2) != 0</description>
+		/// </item>
+		/// <item>
+		/// <description>Windows ServerÂ 2003</description>
+		/// <description>5.2</description>
+		/// <description>5</description>
+		/// <description>2</description>
+		/// <description>GetSystemMetrics(SM_SERVERR2) == 0</description>
+		/// </item>
+		/// <item>
+		/// <description>WindowsÂ XP</description>
+		/// <description>5.1</description>
+		/// <description>5</description>
+		/// <description>1</description>
+		/// <description>Not applicable</description>
+		/// </item>
+		/// <item>
+		/// <description>WindowsÂ 2000</description>
+		/// <description>5.0</description>
+		/// <description>5</description>
+		/// <description>0</description>
+		/// <description>Not applicable</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>*</c> For applications that have been manifested for WindowsÂ 8.1 or WindowsÂ 10. Applications not manifested for WindowsÂ 8.1 or
+		/// WindowsÂ 10 will return the WindowsÂ 8 OS version value (6.2). To manifest your applications for WindowsÂ 8.1 or WindowsÂ 10, refer
+		/// to Targeting your application for Windows.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para>Â</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Getting the System Version.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The winnt.h header defines OSVERSIONINFO as an alias which automatically selects the ANSI or Unicode version of this function based
+		/// on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfow typedef struct _OSVERSIONINFOW { DWORD
+		// dwOSVersionInfoSize; DWORD dwMajorVersion; DWORD dwMinorVersion; DWORD dwBuildNumber; DWORD dwPlatformId; WCHAR szCSDVersion[128]; }
+		// OSVERSIONINFOW, *POSVERSIONINFOW, *LPOSVERSIONINFOW, RTL_OSVERSIONINFOW, *PRTL_OSVERSIONINFOW;
+		[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._OSVERSIONINFOW")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct OSVERSIONINFOW
+		{
+			/// <summary>The size of this data structure, in bytes. Set this member to .</summary>
+			public uint dwOSVersionInfoSize;
 
-DMA_ADAPTER structure
-DMA_OPERATIONS structure
-_BitTest64 function
-_BitTestAndComplement64 function
-_BitTestAndReset64 function
-_BitTestAndSet64 function
-ACPI_INTERFACE_STANDARD2 structure
-ALLOCATE_FUNCTION_EX callback function
-AppendTailList function
-ARM64_SYSREG_CRM macro
-ARM64_SYSREG_CRN macro
-ARM64_SYSREG_OP1 macro
-ARM64_SYSREG_OP2 macro
-BOOTDISK_INFORMATION structure
-BOOTDISK_INFORMATION_EX structure
-BOUND_CALLBACK callback function
-BOUND_CALLBACK_STATUS enumeration
-BUS_INTERFACE_STANDARD structure
-BUS_RESOURCE_UPDATE_INTERFACE structure
-CLFS_CONTEXT_MODE enumeration
-CLFS_LOG_NAME_INFORMATION structure
-CLFS_MGMT_CLIENT_REGISTRATION structure
-CLFS_MGMT_POLICY structure
-CLFS_MGMT_POLICY_TYPE enumeration
-CLFS_STREAM_ID_INFORMATION structure
-ClfsAddLogContainer function
-ClfsAddLogContainerSet function
-ClfsAdvanceLogBase function
-ClfsAlignReservedLog function
-ClfsAllocReservedLog function
-ClfsCloseAndResetLogFile function
-ClfsCloseLogFileObject function
-ClfsCreateLogFile function
-ClfsCreateMarshallingArea function
-ClfsCreateScanContext function
-ClfsDeleteLogByPointer function
-ClfsDeleteLogFile function
-ClfsDeleteMarshallingArea function
-ClfsFlushBuffers function
-ClfsFlushToLsn function
-ClfsGetContainerName function
-ClfsGetIoStatistics function
-ClfsLsnBlockOffset function
-ClfsLsnContainer function
-ClfsLsnCreate function
-ClfsLsnEqual function
-ClfsLsnGreater function
-ClfsLsnLess function
-ClfsLsnNull function
-ClfsLsnRecordSequence function
-ClfsMgmtDeregisterManagedClient function
-ClfsMgmtHandleLogFileFull function
-ClfsMgmtInstallPolicy function
-ClfsMgmtQueryPolicy function
-ClfsMgmtRegisterManagedClient function
-ClfsMgmtRemovePolicy function
-ClfsMgmtSetLogFileSize function
-ClfsMgmtSetLogFileSizeAsClient function
-ClfsMgmtTailAdvanceFailure function
-ClfsQueryLogFileInformation function
-ClfsReadLogRecord function
-ClfsReadNextLogRecord function
-ClfsReadPreviousRestartArea function
-ClfsReadRestartArea function
-ClfsRemoveLogContainer function
-ClfsRemoveLogContainerSet function
-ClfsReserveAndAppendLog function
-ClfsReserveAndAppendLogAligned function
-ClfsScanLogContainers function
-ClfsSetArchiveTail function
-ClfsSetEndOfLog function
-ClfsSetLogFileInformation function
-ClfsTerminateReadLog function
-ClfsWriteRestartArea function
-CLS_CONTAINER_INFORMATION structure
-CLS_INFORMATION structure
-CLS_IO_STATISTICS structure
-CLS_IO_STATISTICS_HEADER structure
-CLS_LOG_INFORMATION_CLASS enumeration
-CLS_LSN structure
-CLS_SCAN_CONTEXT structure
-CLS_WRITE_ENTRY structure
-CM_EISA_FUNCTION_INFORMATION structure
-CM_EISA_SLOT_INFORMATION structure
-CM_FLOPPY_DEVICE_DATA structure
-CM_FULL_RESOURCE_DESCRIPTOR structure
-CM_INT13_DRIVE_PARAMETER structure
-CM_KEYBOARD_DEVICE_DATA structure
-CM_MCA_POS_DATA structure
-CM_PARTIAL_RESOURCE_DESCRIPTOR structure
-CM_PARTIAL_RESOURCE_LIST structure
-CM_POWER_DATA structure
-CM_RESOURCE_LIST structure
-CM_SCSI_DEVICE_DATA structure
-CM_SERIAL_DEVICE_DATA structure
-CmCallbackGetKeyObjectID function
-CmCallbackGetKeyObjectIDEx function
-CmCallbackReleaseKeyObjectIDEx function
-CmGetBoundTransaction function
-CmGetCallbackVersion function
-CmRegisterCallback function
-CmRegisterCallbackEx function
-CmSetCallbackObjectContext function
-CmUnRegisterCallback function
-COUNTED_REASON_CONTEXT structure
-D3COLD_AUX_POWER_AND_TIMING_INTERFACE structure
-D3COLD_LAST_TRANSITION_STATUS enumeration
-D3COLD_REQUEST_AUX_POWER callback function
-D3COLD_REQUEST_CORE_POWER_RAIL callback function
-D3COLD_REQUEST_PERST_DELAY callback function
-D3COLD_SUPPORT_INTERFACE structure
-DEVICE_BUS_SPECIFIC_RESET_INFO structure
-DEVICE_BUS_SPECIFIC_RESET_TYPE union
-DEVICE_CAPABILITIES structure
-DEVICE_DESCRIPTION structure
-DEVICE_DIRECTORY_TYPE enumeration
-DEVICE_FAULT_CONFIGURATION structure
-DEVICE_INSTALL_STATE enumeration
-DEVICE_INTERFACE_CHANGE_NOTIFICATION structure
-DEVICE_OBJECT structure
-DEVICE_POWER_STATE enumeration
-DEVICE_REGISTRY_PROPERTY enumeration
-DEVICE_REMOVAL_POLICY enumeration
-DEVICE_RESET_INTERFACE_STANDARD structure
-DEVICE_RESET_TYPE enumeration
-DEVICE_USAGE_NOTIFICATION_TYPE enumeration
-DEVICE_WAKE_DEPTH enumeration
-DMA_ADAPTER_INFO structure
-DMA_ADAPTER_INFO_V1 structure
-DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE enumeration
-DMA_COMPLETION_ROUTINE callback function
-DMA_COMPLETION_STATUS enumeration
-DMA_IOMMU_INTERFACE structure
-DMA_IOMMU_INTERFACE_EX structure
-DMA_IOMMU_INTERFACE_V1 structure
-DMA_IOMMU_INTERFACE_V2 structure
-DMA_TRANSFER_INFO structure
-DMA_TRANSFER_INFO_V1 structure
-DMA_TRANSFER_INFO_V2 structure
-DOMAIN_CONFIGURATION structure
-DOMAIN_CONFIGURATION_ARCH enumeration
-DOMAIN_CONFIGURATION_ARM64 structure
-DOMAIN_CONFIGURATION_X64 structure
-DRIVER_ADD_DEVICE callback function
-DRIVER_CANCEL callback function
-DRIVER_CONTROL callback function
-DRIVER_DISPATCH callback function
-DRIVER_INITIALIZE callback function
-DRIVER_LIST_CONTROL callback function
-DRIVER_OBJECT structure
-DRIVER_REGKEY_TYPE enumeration
-DRIVER_STARTIO callback function
-DRIVER_UNLOAD callback function
-ENLISTMENT_BASIC_INFORMATION structure
-ENLISTMENT_INFORMATION_CLASS enumeration
-EX_CALLBACK_FUNCTION callback function
-EX_POOL_PRIORITY enumeration
-ExAcquirePushLockExclusive macro
-ExAcquirePushLockShared macro
-ExAcquireResourceExclusiveLite function
-ExAcquireResourceSharedLite function
-ExAcquireRundownProtection function
-ExAcquireRundownProtectionEx function
-ExAcquireSharedStarveExclusive function
-ExAcquireSharedWaitForExclusive function
-ExAllocateFromLookasideListEx function
-ExAllocateFromNPagedLookasideList function
-ExAllocateFromPagedLookasideList function
-ExAllocatePool function
-ExAllocatePool2 function
-ExAllocatePool3 function
-ExAllocatePoolPriorityUninitialized function
-ExAllocatePoolPriorityZero function
-ExAllocatePoolQuotaUninitialized function
-ExAllocatePoolQuotaZero function
-ExAllocatePoolUninitialized function
-ExAllocatePoolWithQuota function
-ExAllocatePoolWithQuotaTag function
-ExAllocatePoolWithTag function
-ExAllocatePoolWithTagPriority function
-ExAllocatePoolZero function
-ExAllocateTimer function
-ExCancelTimer function
-ExConvertExclusiveToSharedLite function
-ExCreateCallback function
-ExCreatePool function
-ExDeleteLookasideListEx function
-ExDeleteNPagedLookasideList function
-ExDeletePagedLookasideList function
-ExDeleteResourceLite function
-ExDeleteTimer function
-ExDestroyPool function
-ExFlushLookasideListEx function
-ExFreePool function
-ExFreePool2 function
-ExFreePoolWithTag function
-ExFreeToLookasideListEx function
-ExFreeToNPagedLookasideList function
-ExFreeToPagedLookasideList function
-ExGetExclusiveWaiterCount function
-ExGetFirmwareEnvironmentVariable function
-ExGetFirmwareType function
-ExGetPreviousMode function
-ExGetSharedWaiterCount function
-ExInitializeDeleteTimerParameters function
-ExInitializeDeviceAts function
-ExInitializeDriverRuntime function
-ExInitializeFastMutex function
-ExInitializeLookasideListEx function
-ExInitializeNPagedLookasideList function
-ExInitializePagedLookasideList function
-ExInitializePushLock function
-ExInitializeResourceLite function
-ExInitializeRundownProtection function
-ExInitializeSetTimerParameters function
-ExInterlockedAddLargeInteger function
-ExInterlockedAddLargeStatistic macro
-ExInterlockedAddUlong function
-ExInterlockedCompareExchange64 macro
-ExInterlockedFlushSList function
-ExInterlockedInsertHeadList function
-ExInterlockedInsertTailList function
-ExInterlockedPopEntryList function
-ExInterlockedPopEntrySList function
-ExInterlockedPushEntryList function
-ExInterlockedPushEntrySList function
-ExInterlockedRemoveHeadList function
-ExIsProcessorFeaturePresent function
-ExIsResourceAcquiredExclusiveLite function
-ExIsResourceAcquiredSharedLite function
-ExIsSoftBoot function
-ExLocalTimeToSystemTime function
-ExNotifyCallback function
-ExQueryDepthSList function
-ExQueryTimerResolution function
-ExRaiseStatus function
-ExRegisterCallback function
-ExReinitializeResourceLite function
-ExReInitializeRundownProtection function
-ExReleasePushLockExclusive macro
-ExReleasePushLockShared macro
-ExReleaseResourceForThreadLite function
-ExReleaseResourceLite function
-ExReleaseRundownProtection function
-ExReleaseRundownProtectionEx function
-ExReleaseSpinLockExclusive function
-ExReleaseSpinLockShared function
-ExRundownCompleted function
-ExSecurePoolUpdate function
-ExSecurePoolValidate function
-ExSetFirmwareEnvironmentVariable function
-ExSetResourceOwnerPointer function
-ExSetResourceOwnerPointerEx function
-ExSetTimer function
-ExSetTimerResolution function
-ExSystemTimeToLocalTime function
-EXT_CALLBACK callback function
-EXT_DELETE_CALLBACK callback function
-EXT_DELETE_PARAMETERS structure
-EXT_SET_PARAMETERS structure
-ExTryConvertSharedSpinLockExclusive function
-ExUnregisterCallback function
-ExWaitForRundownProtectionRelease function
-FIELD_OFFSET macro
-FILE_BASIC_INFORMATION structure
-FILE_FS_DEVICE_INFORMATION structure
-FILE_FULL_EA_INFORMATION structure
-FILE_IO_PRIORITY_HINT_INFORMATION structure
-FILE_IS_REMOTE_DEVICE_INFORMATION structure
-FILE_NETWORK_OPEN_INFORMATION structure
-FILE_OBJECT structure
-FILE_POSITION_INFORMATION structure
-FILE_STANDARD_INFORMATION structure
-FILE_STANDARD_INFORMATION_EX structure
-FirstEntrySList function
-FPGA_BUS_SCAN callback function
-FPGA_CONTROL_CONFIG_SPACE callback function
-FPGA_CONTROL_ERROR_REPORTING callback function
-FPGA_CONTROL_INTERFACE structure
-FPGA_CONTROL_LINK callback function
-FREE_FUNCTION_EX callback function
-FUNCTION_LEVEL_DEVICE_RESET_PARAMETERS structure
-GENERIC_MAPPING structure
-GET_D3COLD_CAPABILITY callback function
-GET_D3COLD_LAST_TRANSITION_STATUS callback function
-GET_DMA_ADAPTER callback function
-GET_IDLE_WAKE_INFO callback function
-GET_SDEV_IDENTIFIER callback function
-GET_SET_DEVICE_DATA callback function
-GET_UPDATED_BUS_RESOURCE callback function
-HWPROFILE_CHANGE_NOTIFICATION structure
-IMAGE_POLICY_ENTRY structure
-IMAGE_POLICY_ENTRY_TYPE enumeration
-IMAGE_POLICY_ID enumeration
-IMAGE_POLICY_METADATA structure
-IMAGE_POLICY_OVERRIDE macro
-InitializeListHead function
-InitializeSListHead function
-INPUT_MAPPING_ELEMENT structure
-InsertHeadList function
-InsertTailList function
-INTERFACE structure
-INTERFACE_TYPE enumeration
-InterlockedAnd function
-InterlockedCompareExchange function
-InterlockedCompareExchangePointer function
-InterlockedDecrement function
-InterlockedExchange function
-InterlockedExchangeAdd function
-InterlockedExchangePointer function
-InterlockedIncrement function
-InterlockedOr function
-InterlockedXor function
-IO_ACCESS_MODE enumeration
-IO_ACCESS_TYPE enumeration
-IO_ALLOCATION_ACTION enumeration
-IO_COMPLETION_ROUTINE callback function
-IO_CONNECT_INTERRUPT_PARAMETERS structure
-IO_CONTAINER_INFORMATION_CLASS enumeration
-IO_CONTAINER_NOTIFICATION_CLASS enumeration
-IO_CSQ_ACQUIRE_LOCK callback function
-IO_CSQ_COMPLETE_CANCELED_IRP callback function
-IO_CSQ_INSERT_IRP callback function
-IO_CSQ_INSERT_IRP_EX callback function
-IO_CSQ_PEEK_NEXT_IRP callback function
-IO_CSQ_RELEASE_LOCK callback function
-IO_CSQ_REMOVE_IRP callback function
-IO_DISCONNECT_INTERRUPT_PARAMETERS structure
-IO_DPC_ROUTINE callback function
-IO_ERROR_LOG_PACKET structure
-IO_INTERRUPT_MESSAGE_INFO structure
-IO_INTERRUPT_MESSAGE_INFO_ENTRY structure
-IO_NOTIFICATION_EVENT_CATEGORY enumeration
-IO_PAGING_PRIORITY enumeration
-IO_PRIORITY_HINT enumeration
-IO_REPORT_INTERRUPT_ACTIVE_STATE_PARAMETERS structure
-IO_RESOURCE_DESCRIPTOR structure
-IO_RESOURCE_LIST structure
-IO_RESOURCE_REQUIREMENTS_LIST structure
-IO_SECURITY_CONTEXT structure
-IO_SESSION_CONNECT_INFO structure
-IO_SESSION_EVENT enumeration
-IO_SESSION_NOTIFICATION_FUNCTION callback function
-IO_SESSION_STATE enumeration
-IO_SESSION_STATE_INFORMATION structure
-IO_SESSION_STATE_NOTIFICATION structure
-IO_STACK_LOCATION structure
-IO_STATUS_BLOCK structure
-IO_STATUS_BLOCK64 structure
-IO_TIMER_ROUTINE callback function
-IO_WORKITEM_ROUTINE callback function
-IO_WORKITEM_ROUTINE_EX callback function
-IoAcquireKsrPersistentMemory function
-IoAcquireKsrPersistentMemoryEx function
-IoAcquireRemoveLock macro
-IoAdjustPagingPathCount macro
-IoAllocateDriverObjectExtension function
-IoAllocateErrorLogEntry function
-IoAllocateIrp function
-IoAllocateIrpEx function
-IoAllocateMdl function
-IoAllocateWorkItem function
-IoAttachDevice function
-IoAttachDeviceToDeviceStack function
-IoBuildAsynchronousFsdRequest function
-IoBuildDeviceIoControlRequest function
-IoBuildPartialMdl function
-IoBuildSynchronousFsdRequest function
-IoCallDriver macro
-IoCancelIrp function
-IoCheckLinkShareAccess function
-IoCheckShareAccess function
-IoCheckShareAccessEx function
-IoConnectInterrupt function
-IoConnectInterruptEx function
-IoCopyCurrentIrpStackLocationToNext function
-IoCreateDevice function
-IoCreateFile function
-IoCreateNotificationEvent function
-IoCreateSymbolicLink function
-IoCreateSynchronizationEvent function
-IoCreateSystemThread function
-IoCreateUnprotectedSymbolicLink function
-IoCsqInitialize function
-IoCsqInitializeEx function
-IoCsqInsertIrp function
-IoCsqInsertIrpEx function
-IoCsqRemoveIrp function
-IoCsqRemoveNextIrp function
-IoDeleteDevice function
-IoDeleteSymbolicLink function
-IoDetachDevice function
-IoDisconnectInterrupt function
-IoDisconnectInterruptEx function
-IoEnumerateKsrPersistentMemoryEx function
-IofCallDriver function
-IofCompleteRequest function
-IoForwardIrpSynchronously function
-IoFreeErrorLogEntry function
-IoFreeIrp function
-IoFreeKsrPersistentMemory function
-IoFreeMdl function
-IoFreeWorkItem function
-IoGetAffinityInterrupt function
-IoGetAttachedDeviceReference function
-IoGetBootDiskInformation function
-IoGetContainerInformation function
-IoGetCurrentIrpStackLocation function
-IoGetCurrentProcess function
-IoGetDeviceDirectory function
-IoGetDeviceInterfaceAlias function
-IoGetDeviceInterfacePropertyData function
-IoGetDeviceInterfaces function
-IoGetDeviceNumaNode function
-IoGetDeviceObjectPointer function
-IoGetDeviceProperty function
-IoGetDevicePropertyData function
-IoGetDmaAdapter function
-IoGetDriverDirectory function
-IoGetDriverObjectExtension function
-IoGetFunctionCodeFromCtlCode macro
-IoGetInitialStack function
-IoGetIommuInterface function
-IoGetIommuInterfaceEx function
-IoGetIoPriorityHint function
-IoGetNextIrpStackLocation function
-IoGetRelatedDeviceObject function
-IoGetRemainingStackSize function
-IoGetStackLimits function
-IoInitializeDpcRequest function
-IoInitializeIrp function
-IoInitializeRemoveLock macro
-IoInitializeTimer function
-IoInitializeWorkItem function
-IoInvalidateDeviceRelations function
-IoInvalidateDeviceState function
-IoIs32bitProcess function
-IoIsErrorUserInduced macro
-IoIsWdmVersionAvailable function
-IoMarkIrpPending function
-IOMMU_DEVICE_CREATE callback function
-IOMMU_DEVICE_CREATION_CONFIGURATION structure
-IOMMU_DEVICE_CREATION_CONFIGURATION_ACPI structure
-IOMMU_DEVICE_CREATION_CONFIGURATION_TYPE enumeration
-IOMMU_DEVICE_DELETE callback function
-IOMMU_DEVICE_FAULT_HANDLER callback function
-IOMMU_DEVICE_QUERY_DOMAIN_TYPES callback function
-IOMMU_DMA_DOMAIN_CREATION_FLAGS union
-IOMMU_DMA_DOMAIN_TYPE enumeration
-IOMMU_DMA_LOGICAL_ADDRESS_TOKEN structure
-IOMMU_DMA_LOGICAL_ADDRESS_TOKEN_MAPPED_SEGMENT structure
-IOMMU_DMA_LOGICAL_ALLOCATOR_CONFIG structure
-IOMMU_DMA_LOGICAL_ALLOCATOR_TYPE enumeration
-IOMMU_DMA_RESERVED_REGION structure
-IOMMU_DOMAIN_ATTACH_DEVICE callback function
-IOMMU_DOMAIN_ATTACH_DEVICE_EX callback function
-IOMMU_DOMAIN_CONFIGURE callback function
-IOMMU_DOMAIN_CREATE callback function
-IOMMU_DOMAIN_CREATE_EX callback function
-IOMMU_DOMAIN_DELETE callback function
-IOMMU_DOMAIN_DETACH_DEVICE callback function
-IOMMU_DOMAIN_DETACH_DEVICE_EX callback function
-IOMMU_FLUSH_DOMAIN callback function
-IOMMU_FLUSH_DOMAIN_VA_LIST callback function
-IOMMU_FREE_RESERVED_LOGICAL_ADDRESS_RANGE callback function
-IOMMU_INTERFACE_STATE_CHANGE structure
-IOMMU_INTERFACE_STATE_CHANGE_CALLBACK callback function
-IOMMU_INTERFACE_STATE_CHANGE_FIELDS union
-IOMMU_MAP_IDENTITY_RANGE callback function
-IOMMU_MAP_IDENTITY_RANGE_EX callback function
-IOMMU_MAP_LOGICAL_RANGE callback function
-IOMMU_MAP_LOGICAL_RANGE_EX callback function
-IOMMU_MAP_PHYSICAL_ADDRESS structure
-IOMMU_MAP_PHYSICAL_ADDRESS_TYPE enumeration
-IOMMU_MAP_RESERVED_LOGICAL_RANGE callback function
-IOMMU_QUERY_INPUT_MAPPINGS callback function
-IOMMU_REGISTER_INTERFACE_STATE_CHANGE_CALLBACK callback function
-IOMMU_RESERVE_LOGICAL_ADDRESS_RANGE callback function
-IOMMU_SET_DEVICE_FAULT_REPORTING callback function
-IOMMU_SET_DEVICE_FAULT_REPORTING_EX callback function
-IOMMU_UNMAP_IDENTITY_RANGE callback function
-IOMMU_UNMAP_IDENTITY_RANGE_EX callback function
-IOMMU_UNMAP_LOGICAL_RANGE callback function
-IOMMU_UNMAP_RESERVED_LOGICAL_RANGE callback function
-IOMMU_UNREGISTER_INTERFACE_STATE_CHANGE_CALLBACK callback function
-IoOpenDeviceInterfaceRegistryKey function
-IoOpenDeviceRegistryKey function
-IoOpenDriverRegistryKey function
-IoQueryKsrPersistentMemorySize function
-IoQueryKsrPersistentMemorySizeEx function
-IoQueueWorkItem function
-IoQueueWorkItemEx function
-IoRegisterContainerNotification function
-IoRegisterDeviceInterface function
-IoRegisterLastChanceShutdownNotification function
-IoRegisterPlugPlayNotification function
-IoRegisterShutdownNotification function
-IoReleaseRemoveLock macro
-IoReleaseRemoveLockAndWait macro
-IoRemoveLinkShareAccess function
-IoRemoveShareAccess function
-IoReportInterruptActive function
-IoReportInterruptInactive function
-IoReportTargetDeviceChange function
-IoReportTargetDeviceChangeAsynchronous function
-IoRequestDeviceEject function
-IoRequestDpc function
-IoReserveKsrPersistentMemory function
-IoReserveKsrPersistentMemoryEx function
-IoReuseIrp function
-Iosb64ToIosb macro
-IosbToIosb64 macro
-IoSetCancelRoutine function
-IoSetCompletionRoutine function
-IoSetCompletionRoutineEx function
-IoSetDeviceInterfacePropertyData function
-IoSetDeviceInterfaceState function
-IoSetDevicePropertyData function
-IoSetIoPriorityHint function
-IoSetLinkShareAccess function
-IoSetNextIrpStackLocation function
-IoSetShareAccess function
-IoSetShareAccessEx function
-IoSetStartIoAttributes function
-IoSizeOfIrp macro
-IoSizeofWorkItem function
-IoStartNextPacket function
-IoStartNextPacketByKey function
-IoStartPacket function
-IoStartTimer function
-IoStopTimer function
-IoUninitializeWorkItem function
-IoUnregisterContainerNotification function
-IoUnregisterPlugPlayNotification function
-IoUnregisterPlugPlayNotificationEx function
-IoUnregisterShutdownNotification function
-IoUpdateLinkShareAccess function
-IoUpdateLinkShareAccessEx function
-IoUpdateShareAccess function
-IoValidateDeviceIoControlAccess function
-IoWithinStackLimits function
-IoWMIAllocateInstanceIds function
-IoWMIDeviceObjectToInstanceName function
-IoWMIDeviceObjectToProviderId function
-IoWMIExecuteMethod function
-IoWMIHandleToInstanceName function
-IoWMIOpenBlock function
-IoWMIQueryAllData function
-IoWMIQueryAllDataMultiple function
-IoWMIQuerySingleInstance function
-IoWMIQuerySingleInstanceMultiple function
-IoWMIRegistrationControl function
-IoWMISetNotificationCallback function
-IoWMISetSingleInstance function
-IoWMISetSingleItem function
-IoWMISuggestInstanceName function
-IoWMIWriteEvent function
-IoWriteErrorLogEntry function
-IoWriteKsrPersistentMemory function
-IRP structure
-IRQ_DEVICE_POLICY enumeration
-IRQ_PRIORITY enumeration
-IsListEmpty function
-KBUGCHECK_ADD_PAGES structure
-KBUGCHECK_CALLBACK_REASON enumeration
-KBUGCHECK_CALLBACK_ROUTINE callback function
-KBUGCHECK_DUMP_IO structure
-KBUGCHECK_DUMP_IO_TYPE enumeration
-KBUGCHECK_REASON_CALLBACK_ROUTINE callback function
-KBUGCHECK_SECONDARY_DUMP_DATA structure
-KDEFERRED_ROUTINE callback function
-KDPC_WATCHDOG_INFORMATION structure
-KE_PROCESSOR_CHANGE_NOTIFY_CONTEXT structure
-KeAcquireSpinLock macro
-KeAcquireSpinLockAtDpcLevel function
-KeAddTriageDumpDataBlock function
-KeAreAllApcsDisabled function
-KeAreApcsDisabled function
-KeBugCheckEx function
-KeCancelTimer function
-KeClearEvent function
-KeConvertAuxiliaryCounterToPerformanceCounter function
-KeConvertPerformanceCounterToAuxiliaryCounter function
-KeDelayExecutionThread function
-KeDeregisterBoundCallback function
-KeDeregisterBugCheckCallback function
-KeDeregisterBugCheckReasonCallback function
-KeDeregisterNmiCallback function
-KeDeregisterProcessorChangeCallback function
-KeEnterCriticalRegion function
-KeEnterGuardedRegion function
-KeFlushIoBuffers function
-KeFlushQueuedDpcs function
-KefReleaseSpinLockFromDpcLevel function
-KeGetCurrentIrql function
-KeGetCurrentNodeNumber function
-KeGetCurrentProcessorNumberEx function
-KeGetCurrentThread function
-KeGetProcessorIndexFromNumber function
-KeGetProcessorNumberFromIndex function
-KeGetRecommendedSharedDataAlignment function
-KeInitializeCrashDumpHeader function
-KeInitializeDeviceQueue function
-KeInitializeDpc function
-KeInitializeEvent function
-KeInitializeGuardedMutex function
-KeInitializeMutex function
-KeInitializeSemaphore function
-KeInitializeSpinLock function
-KeInitializeThreadedDpc function
-KeInitializeTimer function
-KeInitializeTimerEx function
-KeInsertByKeyDeviceQueue function
-KeInsertDeviceQueue function
-KeInsertQueueDpc function
-KeIpiGenericCall function
-KeIsExecutingDpc function
-KeLeaveCriticalRegion function
-KeLeaveGuardedRegion function
-KeLowerIrql function
-KeMemoryBarrier function
-KeQueryActiveGroupCount function
-KeQueryActiveProcessorCount function
-KeQueryActiveProcessorCountEx function
-KeQueryActiveProcessors function
-KeQueryAuxiliaryCounterFrequency function
-KeQueryDpcWatchdogInformation function
-KeQueryGroupAffinity function
-KeQueryHighestNodeNumber function
-KeQueryInterruptTime function
-KeQueryInterruptTimePrecise function
-KeQueryLogicalProcessorRelationship function
-KeQueryMaximumGroupCount function
-KeQueryMaximumProcessorCount function
-KeQueryMaximumProcessorCountEx function
-KeQueryNodeActiveAffinity function
-KeQueryNodeActiveAffinity2 function
-KeQueryNodeActiveProcessorCount function
-KeQueryNodeMaximumProcessorCount function
-KeQueryPerformanceCounter function
-KeQueryPriorityThread function
-KeQueryRuntimeThread function
-KeQuerySystemTime function
-KeQuerySystemTimePrecise function
-KeQueryTickCount macro
-KeQueryTimeIncrement function
-KeQueryTotalCycleTimeThread function
-KeQueryUnbiasedInterruptTime function
-KeRaiseIrql macro
-KeRaiseIrqlToDpcLevel function
-KeReadStateEvent function
-KeReadStateMutex function
-KeReadStateSemaphore function
-KeReadStateTimer function
-KeRegisterBoundCallback function
-KeRegisterBugCheckCallback function
-KeRegisterBugCheckReasonCallback function
-KeRegisterNmiCallback function
-KeRegisterProcessorChangeCallback function
-KeReleaseGuardedMutex function
-KeReleaseGuardedMutexUnsafe function
-KeReleaseInStackQueuedSpinLock function
-KeReleaseInStackQueuedSpinLockForDpc function
-KeReleaseInStackQueuedSpinLockFromDpcLevel function
-KeReleaseInterruptSpinLock function
-KeReleaseMutex function
-KeReleaseSemaphore function
-KeReleaseSpinLock function
-KeReleaseSpinLockForDpc function
-KeReleaseSpinLockFromDpcLevel function
-KeRemoveByKeyDeviceQueue function
-KeRemoveDeviceQueue function
-KeRemoveEntryDeviceQueue function
-KeRemoveQueueDpc function
-KeResetEvent function
-KeRestoreExtendedProcessorState function
-KeRestoreFloatingPointState function
-KeRevertToUserAffinityThreadEx function
-KeRevertToUserGroupAffinityThread function
-KERNEL_CET_CONTEXT structure
-KERNEL_SOFT_RESTART_NOTIFICATION structure
-KeSaveExtendedProcessorState function
-KeSaveFloatingPointState function
-KeSetCoalescableTimer function
-KeSetEvent function
-KeSetImportanceDpc function
-KeSetPriorityThread function
-KeSetSystemAffinityThread function
-KeSetSystemAffinityThreadEx function
-KeSetSystemGroupAffinityThread function
-KeSetTargetProcessorDpc function
-KeSetTargetProcessorDpcEx function
-KeSetTimer function
-KeSetTimerEx function
-KeShouldYieldProcessor function
-KeStallExecutionProcessor function
-KeSynchronizeExecution function
-KeTestSpinLock function
-KeTryToAcquireGuardedMutex function
-KeTryToAcquireSpinLockAtDpcLevel function
-KeWaitForMultipleObjects function
-KeWaitForSingleObject function
-KEY_BASIC_INFORMATION structure
-KEY_FULL_INFORMATION structure
-KEY_INFORMATION_CLASS enumeration
-KEY_NODE_INFORMATION structure
-KEY_SET_INFORMATION_CLASS enumeration
-KEY_VALUE_BASIC_INFORMATION structure
-KEY_VALUE_ENTRY structure
-KEY_VALUE_FULL_INFORMATION structure
-KEY_VALUE_INFORMATION_CLASS enumeration
-KEY_VALUE_PARTIAL_INFORMATION structure
-KEY_WRITE_TIME_INFORMATION structure
-KINTERRUPT_MODE enumeration
-KINTERRUPT_POLARITY enumeration
-KIPI_BROADCAST_WORKER callback function
-KMESSAGE_SERVICE_ROUTINE callback function
-KMUTANT structure
-KSERVICE_ROUTINE callback function
-KSTART_ROUTINE callback function
-KSYNCHRONIZE_ROUTINE callback function
-KTMOBJECT_CURSOR structure
-KTMOBJECT_TYPE enumeration
-KzLowerIrql function
-KzRaiseIrql function
-LINK_SHARE_ACCESS structure
-MAILSLOT_CREATE_PARAMETERS structure
-MDL structure
-MEM_EXTENDED_PARAMETER structure
-MEM_EXTENDED_PARAMETER_TYPE enumeration
-MEM_SECTION_EXTENDED_PARAMETER_TYPE enumeration
-MEMORY_CACHING_TYPE enumeration
-MEMORY_PARTITION_DEDICATED_MEMORY_OPEN_INFORMATION structure
-MM_MDL_ROUTINE callback function
-MM_PHYSICAL_ADDRESS_LIST structure
-MmAdvanceMdl function
-MmAllocateContiguousMemory function
-MmAllocateContiguousMemoryEx function
-MmAllocateContiguousMemorySpecifyCache function
-MmAllocateContiguousMemorySpecifyCacheNode function
-MmAllocateContiguousNodeMemory function
-MmAllocateMappingAddress function
-MmAllocateMappingAddressEx function
-MmAllocateMdlForIoSpace function
-MmAllocateNodePagesForMdlEx function
-MmAllocatePagesForMdl function
-MmAllocatePagesForMdlEx function
-MmBuildMdlForNonPagedPool function
-MmFreeContiguousMemory function
-MmFreeContiguousMemorySpecifyCache function
-MmFreeMappingAddress function
-MmFreePagesFromMdl function
-MmGetMdlByteCount macro
-MmGetSystemAddressForMdl macro
-MmGetSystemRoutineAddress function
-MmGetSystemRoutineAddressEx function
-MmIsDriverSuspectForVerifier function
-MmIsDriverVerifying function
-MmIsDriverVerifyingByAddress function
-MmLockPagableCodeSection macro
-MmLockPagableDataSection function
-MmMapIoSpace function
-MmMapIoSpaceEx function
-MmMapLockedPages function
-MmMapLockedPagesSpecifyCache function
-MmMapLockedPagesWithReservedMapping function
-MmMapMdl function
-MmMapMemoryDumpMdlEx function
-MmPageEntireDriver function
-MmProbeAndLockPages function
-MmProbeAndLockSelectedPages function
-MmProtectDriverSection function
-MmProtectMdlSystemAddress function
-MmQuerySystemSize function
-MmResetDriverPaging function
-MmSizeOfMdl function
-MmUnlockPagableImageSection function
-MmUnlockPages function
-MmUnmapIoSpace function
-MmUnmapLockedPages function
-MmUnmapReservedMapping function
-MONITOR_DISPLAY_STATE enumeration
-NAMED_PIPE_CREATE_PARAMETERS structure
-NtCommitComplete function
-NtCommitEnlistment function
-NtCommitTransaction function
-NtCreateEnlistment function
-NtCreateResourceManager function
-NtCreateTransaction function
-NtCreateTransactionManager function
-NtEnumerateTransactionObject function
-NtGetNotificationResourceManager function
-NtManagePartition function
-NtOpenEnlistment function
-NtOpenResourceManager function
-NtOpenTransaction function
-NtOpenTransactionManager function
-NtPowerInformation function
-NtPrepareComplete function
-NtPrepareEnlistment function
-NtPrePrepareComplete function
-NtPrePrepareEnlistment function
-NtQueryInformationEnlistment function
-NtQueryInformationResourceManager function
-NtQueryInformationTransaction function
-NtQueryInformationTransactionManager function
-NtReadOnlyEnlistment function
-NtRecoverEnlistment function
-NtRecoverResourceManager function
-NtRecoverTransactionManager function
-NtRenameTransactionManager function
-NtRollbackComplete function
-NtRollbackEnlistment function
-NtRollbackTransaction function
-NtRollforwardTransactionManager function
-NtSetInformationEnlistment function
-NtSetInformationResourceManager function
-NtSetInformationTransaction function
-NtSetInformationTransactionManager function
-NtSinglePhaseReject function
-OB_CALLBACK_REGISTRATION structure
-OB_OPERATION_REGISTRATION structure
-OB_POST_CREATE_HANDLE_INFORMATION structure
-OB_POST_DUPLICATE_HANDLE_INFORMATION structure
-OB_POST_OPERATION_INFORMATION structure
-OB_POST_OPERATION_PARAMETERS union
-OB_PRE_CREATE_HANDLE_INFORMATION structure
-OB_PRE_DUPLICATE_HANDLE_INFORMATION structure
-OB_PRE_OPERATION_INFORMATION structure
-OB_PRE_OPERATION_PARAMETERS union
-ObCloseHandle function
-ObDereferenceObject macro
-ObDereferenceObjectDeferDelete function
-ObDereferenceObjectDeferDeleteWithTag function
-ObDereferenceObjectWithTag macro
-ObfReferenceObject function
-ObGetObjectSecurity function
-ObReferenceObject macro
-ObReferenceObjectByHandle function
-ObReferenceObjectByHandleWithTag function
-ObReferenceObjectByPointer function
-ObReferenceObjectByPointerWithTag function
-ObReferenceObjectSafe function
-ObReferenceObjectWithTag macro
-ObRegisterCallbacks function
-ObReleaseObjectSecurity function
-ObUnRegisterCallbacks function
-OSVERSIONINFOEXW structure
-OSVERSIONINFOW structure
-PALLOCATE_ADAPTER_CHANNEL callback function
-PALLOCATE_ADAPTER_CHANNEL_EX callback function
-PALLOCATE_COMMON_BUFFER callback function
-PALLOCATE_COMMON_BUFFER_EX callback function
-PALLOCATE_COMMON_BUFFER_VECTOR callback function
-PALLOCATE_COMMON_BUFFER_WITH_BOUNDS callback function
-PALLOCATE_DOMAIN_COMMON_BUFFER callback function
-PBUILD_MDL_FROM_SCATTER_GATHER_LIST callback function
-PBUILD_SCATTER_GATHER_LIST callback function
-PBUILD_SCATTER_GATHER_LIST_EX callback function
-PCALCULATE_SCATTER_GATHER_LIST_SIZE callback function
-PCANCEL_ADAPTER_CHANNEL callback function
-PCANCEL_MAPPED_TRANSFER callback function
-PCI_ATS_INTERFACE structure
-PCI_COMMON_CONFIG structure
-PCI_MSIX_MASKUNMASK_ENTRY callback function
-PCI_MSIX_SET_ENTRY callback function
-PCI_MSIX_TABLE_CONFIG_INTERFACE structure
-PCI_SECURITY_INTERFACE2 structure
-PCI_SEGMENT_BUS_NUMBER structure
-PCI_SLOT_NUMBER structure
-PCLFS_CLIENT_ADVANCE_TAIL_CALLBACK callback function
-PCLFS_CLIENT_LFF_HANDLER_COMPLETE_CALLBACK callback function
-PCLFS_CLIENT_LOG_UNPINNED_CALLBACK callback function
-PCONFIGURE_ADAPTER_CHANNEL callback function
-PDEVICE_RESET_HANDLER callback function
-PFLUSH_ADAPTER_BUFFERS callback function
-PFLUSH_ADAPTER_BUFFERS_EX callback function
-PFLUSH_DMA_BUFFER callback function
-PFREE_ADAPTER_CHANNEL callback function
-PFREE_ADAPTER_OBJECT callback function
-PFREE_COMMON_BUFFER callback function
-PFREE_COMMON_BUFFER_FROM_VECTOR callback function
-PFREE_COMMON_BUFFER_VECTOR callback function
-PFREE_MAP_REGISTERS callback function
-PGET_COMMON_BUFFER_FROM_VECTOR_BY_INDEX callback function
-PGET_DEVICE_RESET_STATUS callback function
-PGET_DMA_ADAPTER_INFO callback function
-PGET_DMA_ALIGNMENT callback function
-PGET_DMA_DOMAIN callback function
-PGET_DMA_TRANSFER_INFO callback function
-PGET_SCATTER_GATHER_LIST callback function
-PGET_SCATTER_GATHER_LIST_EX callback function
-PINITIALIZE_DMA_TRANSFER_CONTEXT callback function
-PINTERFACE_DEREFERENCE callback function
-PINTERFACE_REFERENCE callback function
-PJOIN_DMA_DOMAIN callback function
-PLEAVE_DMA_DOMAIN callback function
-PLUGPLAY_NOTIFICATION_HEADER structure
-PMAP_TRANSFER callback function
-PMAP_TRANSFER_EX callback function
-PNP_BUS_INFORMATION structure
-PO_FX_COMPONENT_ACTIVE_CONDITION_CALLBACK callback function
-PO_FX_COMPONENT_CRITICAL_TRANSITION_CALLBACK callback function
-PO_FX_COMPONENT_IDLE_CONDITION_CALLBACK callback function
-PO_FX_COMPONENT_IDLE_STATE structure
-PO_FX_COMPONENT_IDLE_STATE_CALLBACK callback function
-PO_FX_COMPONENT_PERF_INFO structure
-PO_FX_COMPONENT_PERF_SET structure
-PO_FX_COMPONENT_PERF_STATE_CALLBACK callback function
-PO_FX_COMPONENT_V1 structure
-PO_FX_COMPONENT_V2 structure
-PO_FX_DEVICE_POWER_NOT_REQUIRED_CALLBACK callback function
-PO_FX_DEVICE_POWER_REQUIRED_CALLBACK callback function
-PO_FX_DEVICE_V1 structure
-PO_FX_DEVICE_V2 structure
-PO_FX_DEVICE_V3 structure
-PO_FX_DIRECTED_POWER_DOWN_CALLBACK callback function
-PO_FX_DIRECTED_POWER_UP_CALLBACK callback function
-PO_FX_PERF_STATE structure
-PO_FX_PERF_STATE_CHANGE structure
-PO_FX_PERF_STATE_TYPE enumeration
-PO_FX_PERF_STATE_UNIT enumeration
-PO_FX_POWER_CONTROL_CALLBACK callback function
-POB_POST_OPERATION_CALLBACK callback function
-POB_PRE_OPERATION_CALLBACK callback function
-PoCallDriver function
-PoClearPowerRequest function
-PoCreatePowerRequest function
-PoDeletePowerRequest function
-PoEndDeviceBusy function
-PoFxActivateComponent function
-PoFxCompleteDevicePowerNotRequired function
-PoFxCompleteDirectedPowerDown function
-PoFxCompleteIdleCondition function
-PoFxCompleteIdleState function
-PoFxIdleComponent function
-PoFxIssueComponentPerfStateChange function
-PoFxIssueComponentPerfStateChangeMultiple function
-PoFxNotifySurprisePowerOn function
-PoFxPowerControl function
-PoFxPowerOnCrashdumpDevice function
-PoFxQueryCurrentComponentPerfState function
-PoFxRegisterComponentPerfStates function
-PoFxRegisterCrashdumpDevice function
-PoFxRegisterDevice function
-PoFxReportDevicePoweredOn function
-PoFxSetComponentLatency function
-PoFxSetComponentResidency function
-PoFxSetComponentWake function
-PoFxSetDeviceIdleTimeout function
-PoFxSetTargetDripsDevicePowerState function
-PoFxStartDevicePowerManagement function
-PoFxUnregisterDevice function
-PoGetSystemWake function
-POOL_CREATE_EXTENDED_PARAMS structure
-POOL_EXTENDED_PARAMETER structure
-POOL_EXTENDED_PARAMETER_TYPE enumeration
-POOL_EXTENDED_PARAMS_SECURE_POOL structure
-POOL_TYPE enumeration
-PopEntryList function
-PoQueryWatchdogTime function
-PoRegisterDeviceForIdleDetection function
-PoRegisterPowerSettingCallback function
-PoRegisterSystemState function
-PoRequestPowerIrp function
-PoSetDeviceBusyEx function
-PoSetPowerRequest function
-PoSetPowerState function
-PoSetSystemState function
-PoSetSystemWake function
-PoSetSystemWakeDevice function
-PoStartDeviceBusy function
-PoStartNextPowerIrp function
-PoUnregisterPowerSettingCallback function
-PoUnregisterSystemState function
-POWER_ACTION enumeration
-POWER_INFORMATION_LEVEL enumeration
-POWER_PLATFORM_INFORMATION structure
-POWER_REQUEST_TYPE enumeration
-POWER_SESSION_ALLOW_EXTERNAL_DMA_DEVICES structure
-POWER_STATE union
-POWER_STATE_TYPE enumeration
-PPUT_DMA_ADAPTER callback function
-PPUT_SCATTER_GATHER_LIST callback function
-PREAD_DMA_COUNTER callback function
-PREENUMERATE_SELF callback function
-PRIVILEGE_SET structure
-ProbeForRead function
-ProbeForWrite function
-PROCESSOR_HALT_ROUTINE callback function
-PsAllocateAffinityToken function
-PsCreateSystemThread function
-PsFreeAffinityToken function
-PsGetCurrentThread function
-PsGetVersion function
-PsQueryTotalCycleTimeProcess function
-PsRevertToUserMultipleGroupAffinityThread function
-PsSetSystemMultipleGroupAffinityThread function
-PsTerminateSystemThread function
-PTM_CONTROL_INTERFACE structure
-PTM_RM_NOTIFICATION callback function
-PushEntryList function
-READ_PORT_BUFFER_UCHAR function
-READ_PORT_BUFFER_ULONG function
-READ_PORT_BUFFER_USHORT function
-READ_PORT_UCHAR function
-READ_PORT_ULONG function
-READ_PORT_USHORT function
-READ_REGISTER_BUFFER_UCHAR function
-READ_REGISTER_BUFFER_ULONG function
-READ_REGISTER_BUFFER_ULONG64 function
-READ_REGISTER_BUFFER_USHORT function
-READ_REGISTER_UCHAR function
-READ_REGISTER_ULONG function
-READ_REGISTER_ULONG64 function
-READ_REGISTER_USHORT function
-ReadInt32Acquire function
-ReadInt32NoFence function
-ReadInt32Raw function
-ReadUInt32Acquire function
-ReadUInt32NoFence function
-ReadUInt32Raw function
-REENUMERATE_SELF_INTERFACE_STANDARD structure
-REG_CALLBACK_CONTEXT_CLEANUP_INFORMATION structure
-REG_CREATE_KEY_INFORMATION structure
-REG_CREATE_KEY_INFORMATION_V1 structure
-REG_DELETE_KEY_INFORMATION structure
-REG_DELETE_VALUE_KEY_INFORMATION structure
-REG_ENUMERATE_KEY_INFORMATION structure
-REG_ENUMERATE_VALUE_KEY_INFORMATION structure
-REG_KEY_HANDLE_CLOSE_INFORMATION structure
-REG_LOAD_KEY_INFORMATION structure
-REG_LOAD_KEY_INFORMATION_V2 structure
-REG_NOTIFY_CLASS enumeration
-REG_POST_CREATE_KEY_INFORMATION structure
-REG_POST_OPERATION_INFORMATION structure
-REG_PRE_CREATE_KEY_INFORMATION structure
-REG_QUERY_KEY_INFORMATION structure
-REG_QUERY_KEY_NAME structure
-REG_QUERY_KEY_SECURITY_INFORMATION structure
-REG_QUERY_MULTIPLE_VALUE_KEY_INFORMATION structure
-REG_QUERY_VALUE_KEY_INFORMATION structure
-REG_RENAME_KEY_INFORMATION structure
-REG_REPLACE_KEY_INFORMATION structure
-REG_RESTORE_KEY_INFORMATION structure
-REG_SAVE_KEY_INFORMATION structure
-REG_SAVE_MERGED_KEY_INFORMATION structure
-REG_SET_INFORMATION_KEY_INFORMATION structure
-REG_SET_KEY_SECURITY_INFORMATION structure
-REG_SET_VALUE_KEY_INFORMATION structure
-REG_UNLOAD_KEY_INFORMATION structure
-RemoveEntryList function
-RemoveHeadList function
-RemoveTailList function
-REQUEST_POWER_COMPLETE callback function
-RESOURCEMANAGER_BASIC_INFORMATION structure
-RESOURCEMANAGER_COMPLETION_INFORMATION structure
-RESOURCEMANAGER_INFORMATION_CLASS enumeration
-RTL_QUERY_REGISTRY_ROUTINE callback function
-RtlAnsiStringToUnicodeSize macro
-RtlAnsiStringToUnicodeString function
-RtlAppendUnicodeStringToString function
-RtlAppendUnicodeToString function
-RtlAreBitsClear function
-RtlAreBitsSet function
-RtlCheckBit function
-RtlCheckRegistryKey function
-RtlClearAllBits function
-RtlClearBit function
-RtlClearBits function
-RtlCmDecodeMemIoResource function
-RtlCmEncodeMemIoResource function
-RtlCompareMemory function
-RtlCompareUnicodeString function
-RtlConvertLongToLargeInteger function
-RtlConvertUlongToLargeInteger function
-RtlCopyMemory macro
-RtlCopyMemoryNonTemporal function
-RtlCopyUnicodeString function
-RtlCreateRegistryKey function
-RtlCreateSecurityDescriptor function
-RtlDeleteRegistryValue function
-RtlDowncaseUnicodeChar function
-RtlEqualMemory macro
-RtlEqualUnicodeString function
-RtlFillMemory macro
-RtlFillMemoryNonTemporal function
-RtlFindClearBits function
-RtlFindClearBitsAndSet function
-RtlFindClearRuns function
-RtlFindFirstRunClear function
-RtlFindLastBackwardRunClear function
-RtlFindLeastSignificantBit function
-RtlFindLongestRunClear function
-RtlFindMostSignificantBit function
-RtlFindNextForwardRunClear function
-RtlFindSetBits function
-RtlFindSetBitsAndClear function
-RtlFreeAnsiString function
-RtlFreeUnicodeString function
-RtlFreeUTF8String function
-RtlGetVersion function
-RtlGUIDFromString function
-RtlHashUnicodeString function
-RtlInitAnsiString function
-RtlInitializeBitMap function
-RtlInitString function
-RtlInitStringEx function
-RtlInitUnicodeString function
-RtlInitUTF8String function
-RtlInitUTF8StringEx function
-RtlInt64ToUnicodeString function
-RtlIntegerToUnicodeString function
-RtlIntPtrToUnicodeString macro
-RtlIoDecodeMemIoResource function
-RtlIoEncodeMemIoResource function
-RtlIsNtDdiVersionAvailable function
-RtlIsServicePackVersionInstalled function
-RtlLengthSecurityDescriptor function
-RtlMoveMemory macro
-RtlNumberOfClearBits function
-RtlNumberOfSetBits function
-RtlNumberOfSetBitsUlongPtr function
-RtlPrefetchMemoryNonTemporal function
-RtlQueryRegistryValues function
-RtlSanitizeUnicodeStringPadding function
-RtlSecureZeroMemory function
-RtlSetAllBits function
-RtlSetBit function
-RtlSetBits function
-RtlSetDaclSecurityDescriptor function
-RtlStringFromGUID function
-RtlTestBit function
-RtlTimeFieldsToTime function
-RtlTimeToTimeFields function
-RtlUlongByteSwap function
-RtlUlonglongByteSwap function
-RtlUnicodeStringToAnsiSize macro
-RtlUnicodeStringToAnsiString function
-RtlUnicodeStringToInteger function
-RtlUnicodeStringToUTF8String function
-RtlUnicodeToUTF8N function
-RtlUpcaseUnicodeChar function
-RtlUshortByteSwap function
-RtlUTF8StringToUnicodeString function
-RtlUTF8ToUnicodeN function
-RtlValidRelativeSecurityDescriptor function
-RtlValidSecurityDescriptor function
-RtlVerifyVersionInfo function
-RtlWriteRegistryValue function
-RtlxAnsiStringToUnicodeSize function
-RtlxUnicodeStringToAnsiSize function
-RtlZeroMemory macro
-SCATTER_GATHER_LIST structure
-SDEV_IDENTIFIER_INTERFACE structure
-SE_IMAGE_TYPE enumeration
-SeAccessCheck function
-SeAssignSecurity function
-SeAssignSecurityEx function
-SECTION_OBJECT_POINTERS structure
-SeDeassignSecurity function
-SET_D3COLD_SUPPORT callback function
-SeValidSecurityDescriptor function
-SLIST_ENTRY structure
-SYSTEM_POOL_ZEROING_INFORMATION structure
-SYSTEM_POWER_STATE enumeration
-SYSTEM_POWER_STATE_CONTEXT structure
-TARGET_DEVICE_CUSTOM_NOTIFICATION structure
-TARGET_DEVICE_REMOVAL_NOTIFICATION structure
-TIME_FIELDS structure
-TmCommitComplete function
-TmCommitEnlistment function
-TmCommitTransaction function
-TmCreateEnlistment function
-TmDereferenceEnlistmentKey function
-TmEnableCallbacks function
-TmGetTransactionId function
-TmInitializeTransactionManager function
-TmIsTransactionActive function
-TmPrepareComplete function
-TmPrepareEnlistment function
-TmPrePrepareComplete function
-TmPrePrepareEnlistment function
-TmReadOnlyEnlistment function
-TmRecoverEnlistment function
-TmRecoverResourceManager function
-TmRecoverTransactionManager function
-TmReferenceEnlistmentKey function
-TmRenameTransactionManager function
-TmRequestOutcomeEnlistment function
-TmRollbackComplete function
-TmRollbackEnlistment function
-TmRollbackTransaction function
-TmSinglePhaseReject function
-TRACE_INFORMATION_CLASS enumeration
-TRANSACTION_BASIC_INFORMATION structure
-TRANSACTION_ENLISTMENT_PAIR structure
-TRANSACTION_ENLISTMENTS_INFORMATION structure
-TRANSACTION_INFORMATION_CLASS enumeration
-TRANSACTION_OUTCOME enumeration
-TRANSACTION_PROPERTIES_INFORMATION structure
-TRANSACTION_STATE enumeration
-TRANSACTIONMANAGER_BASIC_INFORMATION structure
-TRANSACTIONMANAGER_INFORMATION_CLASS enumeration
-TRANSACTIONMANAGER_LOG_INFORMATION structure
-TRANSACTIONMANAGER_LOGPATH_INFORMATION structure
-TRANSACTIONMANAGER_RECOVERY_INFORMATION structure
-TRANSLATE_BUS_ADDRESS callback function
-VslCreateSecureSection function
-VslDeleteSecureSection function
-WAIT_CONTEXT_BLOCK structure
-WmiQueryTraceInformation function
-WmiTraceMessage function
-WmiTraceMessageVa function
-WORK_QUEUE_TYPE enumeration
-WRITE_PORT_BUFFER_UCHAR function
-WRITE_PORT_BUFFER_ULONG function
-WRITE_PORT_BUFFER_USHORT function
-WRITE_PORT_UCHAR function
-WRITE_PORT_ULONG function
-WRITE_PORT_USHORT function
-WRITE_REGISTER_BUFFER_UCHAR function
-WRITE_REGISTER_BUFFER_ULONG function
-WRITE_REGISTER_BUFFER_ULONG64 function
-WRITE_REGISTER_BUFFER_USHORT function
-WRITE_REGISTER_UCHAR function
-WRITE_REGISTER_ULONG function
-WRITE_REGISTER_ULONG64 function
-WRITE_REGISTER_USHORT function
-WriteInt32NoFence function
-WriteInt32Raw function
-WriteInt32Release function
-WriteUInt32NoFence function
-WriteUInt32Raw function
-WriteUInt32Release function
-XSAVE_CET_U_FORMAT structure
-ZwClose function
-ZwCommitComplete function
-ZwCommitEnlistment function
-ZwCommitTransaction function
-ZwCreateDirectoryObject function
-ZwCreateEnlistment function
-ZwCreateFile function
-ZwCreateKey function
-ZwCreateKeyTransacted function
-ZwCreateResourceManager function
-ZwCreateSection function
-ZwCreateTransaction function
-ZwCreateTransactionManager function
-ZwDeleteKey function
-ZwDeleteValueKey function
-ZwEnumerateKey function
-ZwEnumerateTransactionObject function
-ZwEnumerateValueKey function
-ZwFlushKey function
-ZwGetNotificationResourceManager function
-ZwLoadDriver function
-ZwMakeTemporaryObject function
-ZwMapViewOfSection function
-ZwOpenEnlistment function
-ZwOpenEvent function
-ZwOpenFile function
-ZwOpenKey function
-ZwOpenKeyEx function
-ZwOpenKeyTransacted function
-ZwOpenKeyTransactedEx function
-ZwOpenResourceManager function
-ZwOpenSection function
-ZwOpenSymbolicLinkObject function
-ZwOpenTransaction function
-ZwOpenTransactionManager function
-ZwPrepareComplete function
-ZwPrepareEnlistment function
-ZwPrePrepareComplete function
-ZwPrePrepareEnlistment function
-ZwQueryFullAttributesFile function
-ZwQueryInformationByName function
-ZwQueryInformationEnlistment function
-ZwQueryInformationFile function
-ZwQueryInformationResourceManager function
-ZwQueryInformationTransaction function
-ZwQueryInformationTransactionManager function
-ZwQueryKey function
-ZwQuerySymbolicLinkObject function
-ZwQueryValueKey function
-ZwReadFile function
-ZwReadOnlyEnlistment function
-ZwRecoverEnlistment function
-ZwRecoverResourceManager function
-ZwRecoverTransactionManager function
-ZwRollbackComplete function
-ZwRollbackEnlistment function
-ZwRollbackTransaction function
-ZwRollforwardTransactionManager function
-ZwSetInformationEnlistment function
-ZwSetInformationFile function
-ZwSetInformationResourceManager function
-ZwSetInformationTransaction function
-ZwSetValueKey function
-ZwSinglePhaseReject function
-ZwUnloadDriver function
-ZwUnmapViewOfSection function
-ZwWriteFile function
-*/
+			/// <summary>The major version number of the operating system. For more information, see Remarks.</summary>
+			public uint dwMajorVersion;
+
+			/// <summary>The minor version number of the operating system. For more information, see Remarks.</summary>
+			public uint dwMinorVersion;
+
+			/// <summary>The build number of the operating system.</summary>
+			public uint dwBuildNumber;
+
+			/// <summary>
+			/// <para>The operating system platform. This member can be the following value.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <description>Value</description>
+			/// <description>Meaning</description>
+			/// </listheader>
+			/// <item>
+			/// <description><c>VER_PLATFORM_WIN32_NT</c> 2</description>
+			/// <description>
+			/// The operating system is WindowsÂ 7, Windows ServerÂ 2008, WindowsÂ Vista, Windows ServerÂ 2003, WindowsÂ XP, or WindowsÂ 2000.
+			/// </description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwPlatformId;
+
+			/// <summary>
+			/// A null-terminated string, such as "Service Pack 3", that indicates the latest Service Pack installed on the system. If no Service
+			/// Pack has been installed, the string is empty.
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string szCSDVersion;
+		}
+
+		/*
+		ACCESS_STATE structure
+		ACL structure
+		ClfsCreateMarshallingAreaEx function
+		DIRECTORY_NOTIFY_INFORMATION_CLASS enumeration
+		DRIVER_DIRECTORY_TYPE enumeration
+		ExInitializeWorkItem function
+		ExQueueWorkItem function
+		FAST_IO_DISPATCH structure
+		FILE_INFORMATION_CLASS enumeration
+		FILE_MEMORY_PARTITION_INFORMATION structure
+		FILE_SFIO_RESERVE_INFORMATION structure
+		FS_INFORMATION_CLASS enumeration
+		IoGetTopLevelIrp function
+		IoRemoveLinkShareAccessEx function
+		IoSetTopLevelIrp function
+		LOCK_OPERATION enumeration
+		LUID_AND_ATTRIBUTES structure
+		SeCaptureSubjectContext function
+		SECURITY_IMPERSONATION_LEVEL enumeration
+		SECURITY_SUBJECT_CONTEXT structure
+		SeLockSubjectContext function
+		SeReleaseSubjectContext function
+		SeUnlockSubjectContext function
+		VPB structure
+		WORK_QUEUE_ITEM structure
+
+		ASSERTMSG macro
+		DbgBreakPoint function
+		DbgBreakPointWithStatus function
+		DbgPrint function
+		DbgPrintEx function
+		EtwActivityIdControl function
+		ETWENABLECALLBACK callback function
+		EtwEventEnabled function
+		EtwProviderEnabled function
+		EtwRegister function
+		EtwUnregister function
+		EtwWrite function
+		EtwWriteEx function
+		EtwWriteString function
+		EtwWriteTransfer function
+		FAULT_INFORMATION structure
+		FAULT_INFORMATION_ARCH enumeration
+		FAULT_INFORMATION_ARM64 structure
+		FAULT_INFORMATION_ARM64_FLAGS structure
+		FAULT_INFORMATION_ARM64_TYPE enumeration
+		KBUGCHECK_CALLBACK_RECORD structure
+		KBUGCHECK_REASON_CALLBACK_RECORD structure
+		KBUGCHECK_REMOVE_PAGES structure
+		KBUGCHECK_SECONDARY_DUMP_DATA_EX structure
+		KBUGCHECK_TRIAGE_DUMP_DATA structure
+		KdBreakPointWithStatus macro
+		KdChangeOption function
+		KdDisableDebugger function
+		KdEnableDebugger function
+		KdPrint macro
+		KdPrintEx macro
+		KdRefreshDebuggerNotPresent function
+		KeInitializeTriageDumpDataArray function
+		KTRIAGE_DUMP_DATA_ARRAY structure
+		PCW_CALLBACK callback function
+		PCW_CALLBACK_INFORMATION union
+		PCW_CALLBACK_TYPE enumeration
+		PCW_COUNTER_DESCRIPTOR structure
+		PCW_COUNTER_INFORMATION structure
+		PCW_DATA structure
+		PCW_MASK_INFORMATION structure
+		PCW_REGISTRATION_INFORMATION structure
+		PcwAddInstance function
+		PcwCloseInstance function
+		PcwCreateInstance function
+		PcwRegister function
+		PcwUnregister function
+		SeEtwWriteKMCveEvent function
+		vDbgPrintEx function
+		vDbgPrintExWithPrefix function
+
+		DMA_ADAPTER structure
+		DMA_OPERATIONS structure
+		_BitTest64 function
+		_BitTestAndComplement64 function
+		_BitTestAndReset64 function
+		_BitTestAndSet64 function
+		ACPI_INTERFACE_STANDARD2 structure
+		ALLOCATE_FUNCTION_EX callback function
+		AppendTailList function
+		ARM64_SYSREG_CRM macro
+		ARM64_SYSREG_CRN macro
+		ARM64_SYSREG_OP1 macro
+		ARM64_SYSREG_OP2 macro
+		BOOTDISK_INFORMATION structure
+		BOOTDISK_INFORMATION_EX structure
+		BOUND_CALLBACK callback function
+		BOUND_CALLBACK_STATUS enumeration
+		BUS_INTERFACE_STANDARD structure
+		BUS_RESOURCE_UPDATE_INTERFACE structure
+		CLFS_CONTEXT_MODE enumeration
+		CLFS_LOG_NAME_INFORMATION structure
+		CLFS_MGMT_CLIENT_REGISTRATION structure
+		CLFS_MGMT_POLICY structure
+		CLFS_MGMT_POLICY_TYPE enumeration
+		CLFS_STREAM_ID_INFORMATION structure
+		ClfsAddLogContainer function
+		ClfsAddLogContainerSet function
+		ClfsAdvanceLogBase function
+		ClfsAlignReservedLog function
+		ClfsAllocReservedLog function
+		ClfsCloseAndResetLogFile function
+		ClfsCloseLogFileObject function
+		ClfsCreateLogFile function
+		ClfsCreateMarshallingArea function
+		ClfsCreateScanContext function
+		ClfsDeleteLogByPointer function
+		ClfsDeleteLogFile function
+		ClfsDeleteMarshallingArea function
+		ClfsFlushBuffers function
+		ClfsFlushToLsn function
+		ClfsGetContainerName function
+		ClfsGetIoStatistics function
+		ClfsLsnBlockOffset function
+		ClfsLsnContainer function
+		ClfsLsnCreate function
+		ClfsLsnEqual function
+		ClfsLsnGreater function
+		ClfsLsnLess function
+		ClfsLsnNull function
+		ClfsLsnRecordSequence function
+		ClfsMgmtDeregisterManagedClient function
+		ClfsMgmtHandleLogFileFull function
+		ClfsMgmtInstallPolicy function
+		ClfsMgmtQueryPolicy function
+		ClfsMgmtRegisterManagedClient function
+		ClfsMgmtRemovePolicy function
+		ClfsMgmtSetLogFileSize function
+		ClfsMgmtSetLogFileSizeAsClient function
+		ClfsMgmtTailAdvanceFailure function
+		ClfsQueryLogFileInformation function
+		ClfsReadLogRecord function
+		ClfsReadNextLogRecord function
+		ClfsReadPreviousRestartArea function
+		ClfsReadRestartArea function
+		ClfsRemoveLogContainer function
+		ClfsRemoveLogContainerSet function
+		ClfsReserveAndAppendLog function
+		ClfsReserveAndAppendLogAligned function
+		ClfsScanLogContainers function
+		ClfsSetArchiveTail function
+		ClfsSetEndOfLog function
+		ClfsSetLogFileInformation function
+		ClfsTerminateReadLog function
+		ClfsWriteRestartArea function
+		CLS_CONTAINER_INFORMATION structure
+		CLS_INFORMATION structure
+		CLS_IO_STATISTICS structure
+		CLS_IO_STATISTICS_HEADER structure
+		CLS_LOG_INFORMATION_CLASS enumeration
+		CLS_LSN structure
+		CLS_SCAN_CONTEXT structure
+		CLS_WRITE_ENTRY structure
+		CM_EISA_FUNCTION_INFORMATION structure
+		CM_EISA_SLOT_INFORMATION structure
+		CM_FLOPPY_DEVICE_DATA structure
+		CM_FULL_RESOURCE_DESCRIPTOR structure
+		CM_INT13_DRIVE_PARAMETER structure
+		CM_KEYBOARD_DEVICE_DATA structure
+		CM_MCA_POS_DATA structure
+		CM_PARTIAL_RESOURCE_DESCRIPTOR structure
+		CM_PARTIAL_RESOURCE_LIST structure
+		CM_POWER_DATA structure
+		CM_RESOURCE_LIST structure
+		CM_SCSI_DEVICE_DATA structure
+		CM_SERIAL_DEVICE_DATA structure
+		CmCallbackGetKeyObjectID function
+		CmCallbackGetKeyObjectIDEx function
+		CmCallbackReleaseKeyObjectIDEx function
+		CmGetBoundTransaction function
+		CmGetCallbackVersion function
+		CmRegisterCallback function
+		CmRegisterCallbackEx function
+		CmSetCallbackObjectContext function
+		CmUnRegisterCallback function
+		COUNTED_REASON_CONTEXT structure
+		D3COLD_AUX_POWER_AND_TIMING_INTERFACE structure
+		D3COLD_LAST_TRANSITION_STATUS enumeration
+		D3COLD_REQUEST_AUX_POWER callback function
+		D3COLD_REQUEST_CORE_POWER_RAIL callback function
+		D3COLD_REQUEST_PERST_DELAY callback function
+		D3COLD_SUPPORT_INTERFACE structure
+		DEVICE_BUS_SPECIFIC_RESET_INFO structure
+		DEVICE_BUS_SPECIFIC_RESET_TYPE union
+		DEVICE_CAPABILITIES structure
+		DEVICE_DESCRIPTION structure
+		DEVICE_DIRECTORY_TYPE enumeration
+		DEVICE_FAULT_CONFIGURATION structure
+		DEVICE_INSTALL_STATE enumeration
+		DEVICE_INTERFACE_CHANGE_NOTIFICATION structure
+		DEVICE_OBJECT structure
+		DEVICE_POWER_STATE enumeration
+		DEVICE_REGISTRY_PROPERTY enumeration
+		DEVICE_REMOVAL_POLICY enumeration
+		DEVICE_RESET_INTERFACE_STANDARD structure
+		DEVICE_RESET_TYPE enumeration
+		DEVICE_USAGE_NOTIFICATION_TYPE enumeration
+		DEVICE_WAKE_DEPTH enumeration
+		DMA_ADAPTER_INFO structure
+		DMA_ADAPTER_INFO_V1 structure
+		DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE enumeration
+		DMA_COMPLETION_ROUTINE callback function
+		DMA_COMPLETION_STATUS enumeration
+		DMA_IOMMU_INTERFACE structure
+		DMA_IOMMU_INTERFACE_EX structure
+		DMA_IOMMU_INTERFACE_V1 structure
+		DMA_IOMMU_INTERFACE_V2 structure
+		DMA_TRANSFER_INFO structure
+		DMA_TRANSFER_INFO_V1 structure
+		DMA_TRANSFER_INFO_V2 structure
+		DOMAIN_CONFIGURATION structure
+		DOMAIN_CONFIGURATION_ARCH enumeration
+		DOMAIN_CONFIGURATION_ARM64 structure
+		DOMAIN_CONFIGURATION_X64 structure
+		DRIVER_ADD_DEVICE callback function
+		DRIVER_CANCEL callback function
+		DRIVER_CONTROL callback function
+		DRIVER_DISPATCH callback function
+		DRIVER_INITIALIZE callback function
+		DRIVER_LIST_CONTROL callback function
+		DRIVER_OBJECT structure
+		DRIVER_REGKEY_TYPE enumeration
+		DRIVER_STARTIO callback function
+		DRIVER_UNLOAD callback function
+		ENLISTMENT_BASIC_INFORMATION structure
+		ENLISTMENT_INFORMATION_CLASS enumeration
+		EX_CALLBACK_FUNCTION callback function
+		EX_POOL_PRIORITY enumeration
+		ExAcquirePushLockExclusive macro
+		ExAcquirePushLockShared macro
+		ExAcquireResourceExclusiveLite function
+		ExAcquireResourceSharedLite function
+		ExAcquireRundownProtection function
+		ExAcquireRundownProtectionEx function
+		ExAcquireSharedStarveExclusive function
+		ExAcquireSharedWaitForExclusive function
+		ExAllocateFromLookasideListEx function
+		ExAllocateFromNPagedLookasideList function
+		ExAllocateFromPagedLookasideList function
+		ExAllocatePool function
+		ExAllocatePool2 function
+		ExAllocatePool3 function
+		ExAllocatePoolPriorityUninitialized function
+		ExAllocatePoolPriorityZero function
+		ExAllocatePoolQuotaUninitialized function
+		ExAllocatePoolQuotaZero function
+		ExAllocatePoolUninitialized function
+		ExAllocatePoolWithQuota function
+		ExAllocatePoolWithQuotaTag function
+		ExAllocatePoolWithTag function
+		ExAllocatePoolWithTagPriority function
+		ExAllocatePoolZero function
+		ExAllocateTimer function
+		ExCancelTimer function
+		ExConvertExclusiveToSharedLite function
+		ExCreateCallback function
+		ExCreatePool function
+		ExDeleteLookasideListEx function
+		ExDeleteNPagedLookasideList function
+		ExDeletePagedLookasideList function
+		ExDeleteResourceLite function
+		ExDeleteTimer function
+		ExDestroyPool function
+		ExFlushLookasideListEx function
+		ExFreePool function
+		ExFreePool2 function
+		ExFreePoolWithTag function
+		ExFreeToLookasideListEx function
+		ExFreeToNPagedLookasideList function
+		ExFreeToPagedLookasideList function
+		ExGetExclusiveWaiterCount function
+		ExGetFirmwareEnvironmentVariable function
+		ExGetFirmwareType function
+		ExGetPreviousMode function
+		ExGetSharedWaiterCount function
+		ExInitializeDeleteTimerParameters function
+		ExInitializeDeviceAts function
+		ExInitializeDriverRuntime function
+		ExInitializeFastMutex function
+		ExInitializeLookasideListEx function
+		ExInitializeNPagedLookasideList function
+		ExInitializePagedLookasideList function
+		ExInitializePushLock function
+		ExInitializeResourceLite function
+		ExInitializeRundownProtection function
+		ExInitializeSetTimerParameters function
+		ExInterlockedAddLargeInteger function
+		ExInterlockedAddLargeStatistic macro
+		ExInterlockedAddUlong function
+		ExInterlockedCompareExchange64 macro
+		ExInterlockedFlushSList function
+		ExInterlockedInsertHeadList function
+		ExInterlockedInsertTailList function
+		ExInterlockedPopEntryList function
+		ExInterlockedPopEntrySList function
+		ExInterlockedPushEntryList function
+		ExInterlockedPushEntrySList function
+		ExInterlockedRemoveHeadList function
+		ExIsProcessorFeaturePresent function
+		ExIsResourceAcquiredExclusiveLite function
+		ExIsResourceAcquiredSharedLite function
+		ExIsSoftBoot function
+		ExLocalTimeToSystemTime function
+		ExNotifyCallback function
+		ExQueryDepthSList function
+		ExQueryTimerResolution function
+		ExRaiseStatus function
+		ExRegisterCallback function
+		ExReinitializeResourceLite function
+		ExReInitializeRundownProtection function
+		ExReleasePushLockExclusive macro
+		ExReleasePushLockShared macro
+		ExReleaseResourceForThreadLite function
+		ExReleaseResourceLite function
+		ExReleaseRundownProtection function
+		ExReleaseRundownProtectionEx function
+		ExReleaseSpinLockExclusive function
+		ExReleaseSpinLockShared function
+		ExRundownCompleted function
+		ExSecurePoolUpdate function
+		ExSecurePoolValidate function
+		ExSetFirmwareEnvironmentVariable function
+		ExSetResourceOwnerPointer function
+		ExSetResourceOwnerPointerEx function
+		ExSetTimer function
+		ExSetTimerResolution function
+		ExSystemTimeToLocalTime function
+		EXT_CALLBACK callback function
+		EXT_DELETE_CALLBACK callback function
+		EXT_DELETE_PARAMETERS structure
+		EXT_SET_PARAMETERS structure
+		ExTryConvertSharedSpinLockExclusive function
+		ExUnregisterCallback function
+		ExWaitForRundownProtectionRelease function
+		FIELD_OFFSET macro
+		FILE_BASIC_INFORMATION structure
+		FILE_FS_DEVICE_INFORMATION structure
+		FILE_FULL_EA_INFORMATION structure
+		FILE_IO_PRIORITY_HINT_INFORMATION structure
+		FILE_IS_REMOTE_DEVICE_INFORMATION structure
+		FILE_NETWORK_OPEN_INFORMATION structure
+		FILE_OBJECT structure
+		FILE_POSITION_INFORMATION structure
+		FILE_STANDARD_INFORMATION structure
+		FILE_STANDARD_INFORMATION_EX structure
+		FirstEntrySList function
+		FPGA_BUS_SCAN callback function
+		FPGA_CONTROL_CONFIG_SPACE callback function
+		FPGA_CONTROL_ERROR_REPORTING callback function
+		FPGA_CONTROL_INTERFACE structure
+		FPGA_CONTROL_LINK callback function
+		FREE_FUNCTION_EX callback function
+		FUNCTION_LEVEL_DEVICE_RESET_PARAMETERS structure
+		GENERIC_MAPPING structure
+		GET_D3COLD_CAPABILITY callback function
+		GET_D3COLD_LAST_TRANSITION_STATUS callback function
+		GET_DMA_ADAPTER callback function
+		GET_IDLE_WAKE_INFO callback function
+		GET_SDEV_IDENTIFIER callback function
+		GET_SET_DEVICE_DATA callback function
+		GET_UPDATED_BUS_RESOURCE callback function
+		HWPROFILE_CHANGE_NOTIFICATION structure
+		IMAGE_POLICY_ENTRY structure
+		IMAGE_POLICY_ENTRY_TYPE enumeration
+		IMAGE_POLICY_ID enumeration
+		IMAGE_POLICY_METADATA structure
+		IMAGE_POLICY_OVERRIDE macro
+		InitializeListHead function
+		InitializeSListHead function
+		INPUT_MAPPING_ELEMENT structure
+		InsertHeadList function
+		InsertTailList function
+		INTERFACE structure
+		INTERFACE_TYPE enumeration
+		InterlockedAnd function
+		InterlockedCompareExchange function
+		InterlockedCompareExchangePointer function
+		InterlockedDecrement function
+		InterlockedExchange function
+		InterlockedExchangeAdd function
+		InterlockedExchangePointer function
+		InterlockedIncrement function
+		InterlockedOr function
+		InterlockedXor function
+		IO_ACCESS_MODE enumeration
+		IO_ACCESS_TYPE enumeration
+		IO_ALLOCATION_ACTION enumeration
+		IO_COMPLETION_ROUTINE callback function
+		IO_CONNECT_INTERRUPT_PARAMETERS structure
+		IO_CONTAINER_INFORMATION_CLASS enumeration
+		IO_CONTAINER_NOTIFICATION_CLASS enumeration
+		IO_CSQ_ACQUIRE_LOCK callback function
+		IO_CSQ_COMPLETE_CANCELED_IRP callback function
+		IO_CSQ_INSERT_IRP callback function
+		IO_CSQ_INSERT_IRP_EX callback function
+		IO_CSQ_PEEK_NEXT_IRP callback function
+		IO_CSQ_RELEASE_LOCK callback function
+		IO_CSQ_REMOVE_IRP callback function
+		IO_DISCONNECT_INTERRUPT_PARAMETERS structure
+		IO_DPC_ROUTINE callback function
+		IO_ERROR_LOG_PACKET structure
+		IO_INTERRUPT_MESSAGE_INFO structure
+		IO_INTERRUPT_MESSAGE_INFO_ENTRY structure
+		IO_NOTIFICATION_EVENT_CATEGORY enumeration
+		IO_PAGING_PRIORITY enumeration
+		IO_PRIORITY_HINT enumeration
+		IO_REPORT_INTERRUPT_ACTIVE_STATE_PARAMETERS structure
+		IO_RESOURCE_DESCRIPTOR structure
+		IO_RESOURCE_LIST structure
+		IO_RESOURCE_REQUIREMENTS_LIST structure
+		IO_SECURITY_CONTEXT structure
+		IO_SESSION_CONNECT_INFO structure
+		IO_SESSION_EVENT enumeration
+		IO_SESSION_NOTIFICATION_FUNCTION callback function
+		IO_SESSION_STATE enumeration
+		IO_SESSION_STATE_INFORMATION structure
+		IO_SESSION_STATE_NOTIFICATION structure
+		IO_STACK_LOCATION structure
+		IO_STATUS_BLOCK structure
+		IO_STATUS_BLOCK64 structure
+		IO_TIMER_ROUTINE callback function
+		IO_WORKITEM_ROUTINE callback function
+		IO_WORKITEM_ROUTINE_EX callback function
+		IoAcquireKsrPersistentMemory function
+		IoAcquireKsrPersistentMemoryEx function
+		IoAcquireRemoveLock macro
+		IoAdjustPagingPathCount macro
+		IoAllocateDriverObjectExtension function
+		IoAllocateErrorLogEntry function
+		IoAllocateIrp function
+		IoAllocateIrpEx function
+		IoAllocateMdl function
+		IoAllocateWorkItem function
+		IoAttachDevice function
+		IoAttachDeviceToDeviceStack function
+		IoBuildAsynchronousFsdRequest function
+		IoBuildDeviceIoControlRequest function
+		IoBuildPartialMdl function
+		IoBuildSynchronousFsdRequest function
+		IoCallDriver macro
+		IoCancelIrp function
+		IoCheckLinkShareAccess function
+		IoCheckShareAccess function
+		IoCheckShareAccessEx function
+		IoConnectInterrupt function
+		IoConnectInterruptEx function
+		IoCopyCurrentIrpStackLocationToNext function
+		IoCreateDevice function
+		IoCreateFile function
+		IoCreateNotificationEvent function
+		IoCreateSymbolicLink function
+		IoCreateSynchronizationEvent function
+		IoCreateSystemThread function
+		IoCreateUnprotectedSymbolicLink function
+		IoCsqInitialize function
+		IoCsqInitializeEx function
+		IoCsqInsertIrp function
+		IoCsqInsertIrpEx function
+		IoCsqRemoveIrp function
+		IoCsqRemoveNextIrp function
+		IoDeleteDevice function
+		IoDeleteSymbolicLink function
+		IoDetachDevice function
+		IoDisconnectInterrupt function
+		IoDisconnectInterruptEx function
+		IoEnumerateKsrPersistentMemoryEx function
+		IofCallDriver function
+		IofCompleteRequest function
+		IoForwardIrpSynchronously function
+		IoFreeErrorLogEntry function
+		IoFreeIrp function
+		IoFreeKsrPersistentMemory function
+		IoFreeMdl function
+		IoFreeWorkItem function
+		IoGetAffinityInterrupt function
+		IoGetAttachedDeviceReference function
+		IoGetBootDiskInformation function
+		IoGetContainerInformation function
+		IoGetCurrentIrpStackLocation function
+		IoGetCurrentProcess function
+		IoGetDeviceDirectory function
+		IoGetDeviceInterfaceAlias function
+		IoGetDeviceInterfacePropertyData function
+		IoGetDeviceInterfaces function
+		IoGetDeviceNumaNode function
+		IoGetDeviceObjectPointer function
+		IoGetDeviceProperty function
+		IoGetDevicePropertyData function
+		IoGetDmaAdapter function
+		IoGetDriverDirectory function
+		IoGetDriverObjectExtension function
+		IoGetFunctionCodeFromCtlCode macro
+		IoGetInitialStack function
+		IoGetIommuInterface function
+		IoGetIommuInterfaceEx function
+		IoGetIoPriorityHint function
+		IoGetNextIrpStackLocation function
+		IoGetRelatedDeviceObject function
+		IoGetRemainingStackSize function
+		IoGetStackLimits function
+		IoInitializeDpcRequest function
+		IoInitializeIrp function
+		IoInitializeRemoveLock macro
+		IoInitializeTimer function
+		IoInitializeWorkItem function
+		IoInvalidateDeviceRelations function
+		IoInvalidateDeviceState function
+		IoIs32bitProcess function
+		IoIsErrorUserInduced macro
+		IoIsWdmVersionAvailable function
+		IoMarkIrpPending function
+		IOMMU_DEVICE_CREATE callback function
+		IOMMU_DEVICE_CREATION_CONFIGURATION structure
+		IOMMU_DEVICE_CREATION_CONFIGURATION_ACPI structure
+		IOMMU_DEVICE_CREATION_CONFIGURATION_TYPE enumeration
+		IOMMU_DEVICE_DELETE callback function
+		IOMMU_DEVICE_FAULT_HANDLER callback function
+		IOMMU_DEVICE_QUERY_DOMAIN_TYPES callback function
+		IOMMU_DMA_DOMAIN_CREATION_FLAGS union
+		IOMMU_DMA_DOMAIN_TYPE enumeration
+		IOMMU_DMA_LOGICAL_ADDRESS_TOKEN structure
+		IOMMU_DMA_LOGICAL_ADDRESS_TOKEN_MAPPED_SEGMENT structure
+		IOMMU_DMA_LOGICAL_ALLOCATOR_CONFIG structure
+		IOMMU_DMA_LOGICAL_ALLOCATOR_TYPE enumeration
+		IOMMU_DMA_RESERVED_REGION structure
+		IOMMU_DOMAIN_ATTACH_DEVICE callback function
+		IOMMU_DOMAIN_ATTACH_DEVICE_EX callback function
+		IOMMU_DOMAIN_CONFIGURE callback function
+		IOMMU_DOMAIN_CREATE callback function
+		IOMMU_DOMAIN_CREATE_EX callback function
+		IOMMU_DOMAIN_DELETE callback function
+		IOMMU_DOMAIN_DETACH_DEVICE callback function
+		IOMMU_DOMAIN_DETACH_DEVICE_EX callback function
+		IOMMU_FLUSH_DOMAIN callback function
+		IOMMU_FLUSH_DOMAIN_VA_LIST callback function
+		IOMMU_FREE_RESERVED_LOGICAL_ADDRESS_RANGE callback function
+		IOMMU_INTERFACE_STATE_CHANGE structure
+		IOMMU_INTERFACE_STATE_CHANGE_CALLBACK callback function
+		IOMMU_INTERFACE_STATE_CHANGE_FIELDS union
+		IOMMU_MAP_IDENTITY_RANGE callback function
+		IOMMU_MAP_IDENTITY_RANGE_EX callback function
+		IOMMU_MAP_LOGICAL_RANGE callback function
+		IOMMU_MAP_LOGICAL_RANGE_EX callback function
+		IOMMU_MAP_PHYSICAL_ADDRESS structure
+		IOMMU_MAP_PHYSICAL_ADDRESS_TYPE enumeration
+		IOMMU_MAP_RESERVED_LOGICAL_RANGE callback function
+		IOMMU_QUERY_INPUT_MAPPINGS callback function
+		IOMMU_REGISTER_INTERFACE_STATE_CHANGE_CALLBACK callback function
+		IOMMU_RESERVE_LOGICAL_ADDRESS_RANGE callback function
+		IOMMU_SET_DEVICE_FAULT_REPORTING callback function
+		IOMMU_SET_DEVICE_FAULT_REPORTING_EX callback function
+		IOMMU_UNMAP_IDENTITY_RANGE callback function
+		IOMMU_UNMAP_IDENTITY_RANGE_EX callback function
+		IOMMU_UNMAP_LOGICAL_RANGE callback function
+		IOMMU_UNMAP_RESERVED_LOGICAL_RANGE callback function
+		IOMMU_UNREGISTER_INTERFACE_STATE_CHANGE_CALLBACK callback function
+		IoOpenDeviceInterfaceRegistryKey function
+		IoOpenDeviceRegistryKey function
+		IoOpenDriverRegistryKey function
+		IoQueryKsrPersistentMemorySize function
+		IoQueryKsrPersistentMemorySizeEx function
+		IoQueueWorkItem function
+		IoQueueWorkItemEx function
+		IoRegisterContainerNotification function
+		IoRegisterDeviceInterface function
+		IoRegisterLastChanceShutdownNotification function
+		IoRegisterPlugPlayNotification function
+		IoRegisterShutdownNotification function
+		IoReleaseRemoveLock macro
+		IoReleaseRemoveLockAndWait macro
+		IoRemoveLinkShareAccess function
+		IoRemoveShareAccess function
+		IoReportInterruptActive function
+		IoReportInterruptInactive function
+		IoReportTargetDeviceChange function
+		IoReportTargetDeviceChangeAsynchronous function
+		IoRequestDeviceEject function
+		IoRequestDpc function
+		IoReserveKsrPersistentMemory function
+		IoReserveKsrPersistentMemoryEx function
+		IoReuseIrp function
+		Iosb64ToIosb macro
+		IosbToIosb64 macro
+		IoSetCancelRoutine function
+		IoSetCompletionRoutine function
+		IoSetCompletionRoutineEx function
+		IoSetDeviceInterfacePropertyData function
+		IoSetDeviceInterfaceState function
+		IoSetDevicePropertyData function
+		IoSetIoPriorityHint function
+		IoSetLinkShareAccess function
+		IoSetNextIrpStackLocation function
+		IoSetShareAccess function
+		IoSetShareAccessEx function
+		IoSetStartIoAttributes function
+		IoSizeOfIrp macro
+		IoSizeofWorkItem function
+		IoStartNextPacket function
+		IoStartNextPacketByKey function
+		IoStartPacket function
+		IoStartTimer function
+		IoStopTimer function
+		IoUninitializeWorkItem function
+		IoUnregisterContainerNotification function
+		IoUnregisterPlugPlayNotification function
+		IoUnregisterPlugPlayNotificationEx function
+		IoUnregisterShutdownNotification function
+		IoUpdateLinkShareAccess function
+		IoUpdateLinkShareAccessEx function
+		IoUpdateShareAccess function
+		IoValidateDeviceIoControlAccess function
+		IoWithinStackLimits function
+		IoWMIAllocateInstanceIds function
+		IoWMIDeviceObjectToInstanceName function
+		IoWMIDeviceObjectToProviderId function
+		IoWMIExecuteMethod function
+		IoWMIHandleToInstanceName function
+		IoWMIOpenBlock function
+		IoWMIQueryAllData function
+		IoWMIQueryAllDataMultiple function
+		IoWMIQuerySingleInstance function
+		IoWMIQuerySingleInstanceMultiple function
+		IoWMIRegistrationControl function
+		IoWMISetNotificationCallback function
+		IoWMISetSingleInstance function
+		IoWMISetSingleItem function
+		IoWMISuggestInstanceName function
+		IoWMIWriteEvent function
+		IoWriteErrorLogEntry function
+		IoWriteKsrPersistentMemory function
+		IRP structure
+		IRQ_DEVICE_POLICY enumeration
+		IRQ_PRIORITY enumeration
+		IsListEmpty function
+		KBUGCHECK_ADD_PAGES structure
+		KBUGCHECK_CALLBACK_REASON enumeration
+		KBUGCHECK_CALLBACK_ROUTINE callback function
+		KBUGCHECK_DUMP_IO structure
+		KBUGCHECK_DUMP_IO_TYPE enumeration
+		KBUGCHECK_REASON_CALLBACK_ROUTINE callback function
+		KBUGCHECK_SECONDARY_DUMP_DATA structure
+		KDEFERRED_ROUTINE callback function
+		KDPC_WATCHDOG_INFORMATION structure
+		KE_PROCESSOR_CHANGE_NOTIFY_CONTEXT structure
+		KeAcquireSpinLock macro
+		KeAcquireSpinLockAtDpcLevel function
+		KeAddTriageDumpDataBlock function
+		KeAreAllApcsDisabled function
+		KeAreApcsDisabled function
+		KeBugCheckEx function
+		KeCancelTimer function
+		KeClearEvent function
+		KeConvertAuxiliaryCounterToPerformanceCounter function
+		KeConvertPerformanceCounterToAuxiliaryCounter function
+		KeDelayExecutionThread function
+		KeDeregisterBoundCallback function
+		KeDeregisterBugCheckCallback function
+		KeDeregisterBugCheckReasonCallback function
+		KeDeregisterNmiCallback function
+		KeDeregisterProcessorChangeCallback function
+		KeEnterCriticalRegion function
+		KeEnterGuardedRegion function
+		KeFlushIoBuffers function
+		KeFlushQueuedDpcs function
+		KefReleaseSpinLockFromDpcLevel function
+		KeGetCurrentIrql function
+		KeGetCurrentNodeNumber function
+		KeGetCurrentProcessorNumberEx function
+		KeGetCurrentThread function
+		KeGetProcessorIndexFromNumber function
+		KeGetProcessorNumberFromIndex function
+		KeGetRecommendedSharedDataAlignment function
+		KeInitializeCrashDumpHeader function
+		KeInitializeDeviceQueue function
+		KeInitializeDpc function
+		KeInitializeEvent function
+		KeInitializeGuardedMutex function
+		KeInitializeMutex function
+		KeInitializeSemaphore function
+		KeInitializeSpinLock function
+		KeInitializeThreadedDpc function
+		KeInitializeTimer function
+		KeInitializeTimerEx function
+		KeInsertByKeyDeviceQueue function
+		KeInsertDeviceQueue function
+		KeInsertQueueDpc function
+		KeIpiGenericCall function
+		KeIsExecutingDpc function
+		KeLeaveCriticalRegion function
+		KeLeaveGuardedRegion function
+		KeLowerIrql function
+		KeMemoryBarrier function
+		KeQueryActiveGroupCount function
+		KeQueryActiveProcessorCount function
+		KeQueryActiveProcessorCountEx function
+		KeQueryActiveProcessors function
+		KeQueryAuxiliaryCounterFrequency function
+		KeQueryDpcWatchdogInformation function
+		KeQueryGroupAffinity function
+		KeQueryHighestNodeNumber function
+		KeQueryInterruptTime function
+		KeQueryInterruptTimePrecise function
+		KeQueryLogicalProcessorRelationship function
+		KeQueryMaximumGroupCount function
+		KeQueryMaximumProcessorCount function
+		KeQueryMaximumProcessorCountEx function
+		KeQueryNodeActiveAffinity function
+		KeQueryNodeActiveAffinity2 function
+		KeQueryNodeActiveProcessorCount function
+		KeQueryNodeMaximumProcessorCount function
+		KeQueryPerformanceCounter function
+		KeQueryPriorityThread function
+		KeQueryRuntimeThread function
+		KeQuerySystemTime function
+		KeQuerySystemTimePrecise function
+		KeQueryTickCount macro
+		KeQueryTimeIncrement function
+		KeQueryTotalCycleTimeThread function
+		KeQueryUnbiasedInterruptTime function
+		KeRaiseIrql macro
+		KeRaiseIrqlToDpcLevel function
+		KeReadStateEvent function
+		KeReadStateMutex function
+		KeReadStateSemaphore function
+		KeReadStateTimer function
+		KeRegisterBoundCallback function
+		KeRegisterBugCheckCallback function
+		KeRegisterBugCheckReasonCallback function
+		KeRegisterNmiCallback function
+		KeRegisterProcessorChangeCallback function
+		KeReleaseGuardedMutex function
+		KeReleaseGuardedMutexUnsafe function
+		KeReleaseInStackQueuedSpinLock function
+		KeReleaseInStackQueuedSpinLockForDpc function
+		KeReleaseInStackQueuedSpinLockFromDpcLevel function
+		KeReleaseInterruptSpinLock function
+		KeReleaseMutex function
+		KeReleaseSemaphore function
+		KeReleaseSpinLock function
+		KeReleaseSpinLockForDpc function
+		KeReleaseSpinLockFromDpcLevel function
+		KeRemoveByKeyDeviceQueue function
+		KeRemoveDeviceQueue function
+		KeRemoveEntryDeviceQueue function
+		KeRemoveQueueDpc function
+		KeResetEvent function
+		KeRestoreExtendedProcessorState function
+		KeRestoreFloatingPointState function
+		KeRevertToUserAffinityThreadEx function
+		KeRevertToUserGroupAffinityThread function
+		KERNEL_CET_CONTEXT structure
+		KERNEL_SOFT_RESTART_NOTIFICATION structure
+		KeSaveExtendedProcessorState function
+		KeSaveFloatingPointState function
+		KeSetCoalescableTimer function
+		KeSetEvent function
+		KeSetImportanceDpc function
+		KeSetPriorityThread function
+		KeSetSystemAffinityThread function
+		KeSetSystemAffinityThreadEx function
+		KeSetSystemGroupAffinityThread function
+		KeSetTargetProcessorDpc function
+		KeSetTargetProcessorDpcEx function
+		KeSetTimer function
+		KeSetTimerEx function
+		KeShouldYieldProcessor function
+		KeStallExecutionProcessor function
+		KeSynchronizeExecution function
+		KeTestSpinLock function
+		KeTryToAcquireGuardedMutex function
+		KeTryToAcquireSpinLockAtDpcLevel function
+		KeWaitForMultipleObjects function
+		KeWaitForSingleObject function
+		KEY_BASIC_INFORMATION structure
+		KEY_FULL_INFORMATION structure
+		KEY_INFORMATION_CLASS enumeration
+		KEY_NODE_INFORMATION structure
+		KEY_SET_INFORMATION_CLASS enumeration
+		KEY_VALUE_BASIC_INFORMATION structure
+		KEY_VALUE_ENTRY structure
+		KEY_VALUE_FULL_INFORMATION structure
+		KEY_VALUE_INFORMATION_CLASS enumeration
+		KEY_VALUE_PARTIAL_INFORMATION structure
+		KEY_WRITE_TIME_INFORMATION structure
+		KINTERRUPT_MODE enumeration
+		KINTERRUPT_POLARITY enumeration
+		KIPI_BROADCAST_WORKER callback function
+		KMESSAGE_SERVICE_ROUTINE callback function
+		KMUTANT structure
+		KSERVICE_ROUTINE callback function
+		KSTART_ROUTINE callback function
+		KSYNCHRONIZE_ROUTINE callback function
+		KTMOBJECT_CURSOR structure
+		KTMOBJECT_TYPE enumeration
+		KzLowerIrql function
+		KzRaiseIrql function
+		LINK_SHARE_ACCESS structure
+		MAILSLOT_CREATE_PARAMETERS structure
+		MDL structure
+		MEM_EXTENDED_PARAMETER structure
+		MEM_EXTENDED_PARAMETER_TYPE enumeration
+		MEM_SECTION_EXTENDED_PARAMETER_TYPE enumeration
+		MEMORY_CACHING_TYPE enumeration
+		MEMORY_PARTITION_DEDICATED_MEMORY_OPEN_INFORMATION structure
+		MM_MDL_ROUTINE callback function
+		MM_PHYSICAL_ADDRESS_LIST structure
+		MmAdvanceMdl function
+		MmAllocateContiguousMemory function
+		MmAllocateContiguousMemoryEx function
+		MmAllocateContiguousMemorySpecifyCache function
+		MmAllocateContiguousMemorySpecifyCacheNode function
+		MmAllocateContiguousNodeMemory function
+		MmAllocateMappingAddress function
+		MmAllocateMappingAddressEx function
+		MmAllocateMdlForIoSpace function
+		MmAllocateNodePagesForMdlEx function
+		MmAllocatePagesForMdl function
+		MmAllocatePagesForMdlEx function
+		MmBuildMdlForNonPagedPool function
+		MmFreeContiguousMemory function
+		MmFreeContiguousMemorySpecifyCache function
+		MmFreeMappingAddress function
+		MmFreePagesFromMdl function
+		MmGetMdlByteCount macro
+		MmGetSystemAddressForMdl macro
+		MmGetSystemRoutineAddress function
+		MmGetSystemRoutineAddressEx function
+		MmIsDriverSuspectForVerifier function
+		MmIsDriverVerifying function
+		MmIsDriverVerifyingByAddress function
+		MmLockPagableCodeSection macro
+		MmLockPagableDataSection function
+		MmMapIoSpace function
+		MmMapIoSpaceEx function
+		MmMapLockedPages function
+		MmMapLockedPagesSpecifyCache function
+		MmMapLockedPagesWithReservedMapping function
+		MmMapMdl function
+		MmMapMemoryDumpMdlEx function
+		MmPageEntireDriver function
+		MmProbeAndLockPages function
+		MmProbeAndLockSelectedPages function
+		MmProtectDriverSection function
+		MmProtectMdlSystemAddress function
+		MmQuerySystemSize function
+		MmResetDriverPaging function
+		MmSizeOfMdl function
+		MmUnlockPagableImageSection function
+		MmUnlockPages function
+		MmUnmapIoSpace function
+		MmUnmapLockedPages function
+		MmUnmapReservedMapping function
+		MONITOR_DISPLAY_STATE enumeration
+		NAMED_PIPE_CREATE_PARAMETERS structure
+		NtCommitComplete function
+		NtCommitEnlistment function
+		NtCommitTransaction function
+		NtCreateEnlistment function
+		NtCreateResourceManager function
+		NtCreateTransaction function
+		NtCreateTransactionManager function
+		NtEnumerateTransactionObject function
+		NtGetNotificationResourceManager function
+		NtManagePartition function
+		NtOpenEnlistment function
+		NtOpenResourceManager function
+		NtOpenTransaction function
+		NtOpenTransactionManager function
+		NtPowerInformation function
+		NtPrepareComplete function
+		NtPrepareEnlistment function
+		NtPrePrepareComplete function
+		NtPrePrepareEnlistment function
+		NtQueryInformationEnlistment function
+		NtQueryInformationResourceManager function
+		NtQueryInformationTransaction function
+		NtQueryInformationTransactionManager function
+		NtReadOnlyEnlistment function
+		NtRecoverEnlistment function
+		NtRecoverResourceManager function
+		NtRecoverTransactionManager function
+		NtRenameTransactionManager function
+		NtRollbackComplete function
+		NtRollbackEnlistment function
+		NtRollbackTransaction function
+		NtRollforwardTransactionManager function
+		NtSetInformationEnlistment function
+		NtSetInformationResourceManager function
+		NtSetInformationTransaction function
+		NtSetInformationTransactionManager function
+		NtSinglePhaseReject function
+		OB_CALLBACK_REGISTRATION structure
+		OB_OPERATION_REGISTRATION structure
+		OB_POST_CREATE_HANDLE_INFORMATION structure
+		OB_POST_DUPLICATE_HANDLE_INFORMATION structure
+		OB_POST_OPERATION_INFORMATION structure
+		OB_POST_OPERATION_PARAMETERS union
+		OB_PRE_CREATE_HANDLE_INFORMATION structure
+		OB_PRE_DUPLICATE_HANDLE_INFORMATION structure
+		OB_PRE_OPERATION_INFORMATION structure
+		OB_PRE_OPERATION_PARAMETERS union
+		ObCloseHandle function
+		ObDereferenceObject macro
+		ObDereferenceObjectDeferDelete function
+		ObDereferenceObjectDeferDeleteWithTag function
+		ObDereferenceObjectWithTag macro
+		ObfReferenceObject function
+		ObGetObjectSecurity function
+		ObReferenceObject macro
+		ObReferenceObjectByHandle function
+		ObReferenceObjectByHandleWithTag function
+		ObReferenceObjectByPointer function
+		ObReferenceObjectByPointerWithTag function
+		ObReferenceObjectSafe function
+		ObReferenceObjectWithTag macro
+		ObRegisterCallbacks function
+		ObReleaseObjectSecurity function
+		ObUnRegisterCallbacks function
+		OSVERSIONINFOEXW structure
+		OSVERSIONINFOW structure
+		PALLOCATE_ADAPTER_CHANNEL callback function
+		PALLOCATE_ADAPTER_CHANNEL_EX callback function
+		PALLOCATE_COMMON_BUFFER callback function
+		PALLOCATE_COMMON_BUFFER_EX callback function
+		PALLOCATE_COMMON_BUFFER_VECTOR callback function
+		PALLOCATE_COMMON_BUFFER_WITH_BOUNDS callback function
+		PALLOCATE_DOMAIN_COMMON_BUFFER callback function
+		PBUILD_MDL_FROM_SCATTER_GATHER_LIST callback function
+		PBUILD_SCATTER_GATHER_LIST callback function
+		PBUILD_SCATTER_GATHER_LIST_EX callback function
+		PCALCULATE_SCATTER_GATHER_LIST_SIZE callback function
+		PCANCEL_ADAPTER_CHANNEL callback function
+		PCANCEL_MAPPED_TRANSFER callback function
+		PCI_ATS_INTERFACE structure
+		PCI_COMMON_CONFIG structure
+		PCI_MSIX_MASKUNMASK_ENTRY callback function
+		PCI_MSIX_SET_ENTRY callback function
+		PCI_MSIX_TABLE_CONFIG_INTERFACE structure
+		PCI_SECURITY_INTERFACE2 structure
+		PCI_SEGMENT_BUS_NUMBER structure
+		PCI_SLOT_NUMBER structure
+		PCLFS_CLIENT_ADVANCE_TAIL_CALLBACK callback function
+		PCLFS_CLIENT_LFF_HANDLER_COMPLETE_CALLBACK callback function
+		PCLFS_CLIENT_LOG_UNPINNED_CALLBACK callback function
+		PCONFIGURE_ADAPTER_CHANNEL callback function
+		PDEVICE_RESET_HANDLER callback function
+		PFLUSH_ADAPTER_BUFFERS callback function
+		PFLUSH_ADAPTER_BUFFERS_EX callback function
+		PFLUSH_DMA_BUFFER callback function
+		PFREE_ADAPTER_CHANNEL callback function
+		PFREE_ADAPTER_OBJECT callback function
+		PFREE_COMMON_BUFFER callback function
+		PFREE_COMMON_BUFFER_FROM_VECTOR callback function
+		PFREE_COMMON_BUFFER_VECTOR callback function
+		PFREE_MAP_REGISTERS callback function
+		PGET_COMMON_BUFFER_FROM_VECTOR_BY_INDEX callback function
+		PGET_DEVICE_RESET_STATUS callback function
+		PGET_DMA_ADAPTER_INFO callback function
+		PGET_DMA_ALIGNMENT callback function
+		PGET_DMA_DOMAIN callback function
+		PGET_DMA_TRANSFER_INFO callback function
+		PGET_SCATTER_GATHER_LIST callback function
+		PGET_SCATTER_GATHER_LIST_EX callback function
+		PINITIALIZE_DMA_TRANSFER_CONTEXT callback function
+		PINTERFACE_DEREFERENCE callback function
+		PINTERFACE_REFERENCE callback function
+		PJOIN_DMA_DOMAIN callback function
+		PLEAVE_DMA_DOMAIN callback function
+		PLUGPLAY_NOTIFICATION_HEADER structure
+		PMAP_TRANSFER callback function
+		PMAP_TRANSFER_EX callback function
+		PNP_BUS_INFORMATION structure
+		PO_FX_COMPONENT_ACTIVE_CONDITION_CALLBACK callback function
+		PO_FX_COMPONENT_CRITICAL_TRANSITION_CALLBACK callback function
+		PO_FX_COMPONENT_IDLE_CONDITION_CALLBACK callback function
+		PO_FX_COMPONENT_IDLE_STATE structure
+		PO_FX_COMPONENT_IDLE_STATE_CALLBACK callback function
+		PO_FX_COMPONENT_PERF_INFO structure
+		PO_FX_COMPONENT_PERF_SET structure
+		PO_FX_COMPONENT_PERF_STATE_CALLBACK callback function
+		PO_FX_COMPONENT_V1 structure
+		PO_FX_COMPONENT_V2 structure
+		PO_FX_DEVICE_POWER_NOT_REQUIRED_CALLBACK callback function
+		PO_FX_DEVICE_POWER_REQUIRED_CALLBACK callback function
+		PO_FX_DEVICE_V1 structure
+		PO_FX_DEVICE_V2 structure
+		PO_FX_DEVICE_V3 structure
+		PO_FX_DIRECTED_POWER_DOWN_CALLBACK callback function
+		PO_FX_DIRECTED_POWER_UP_CALLBACK callback function
+		PO_FX_PERF_STATE structure
+		PO_FX_PERF_STATE_CHANGE structure
+		PO_FX_PERF_STATE_TYPE enumeration
+		PO_FX_PERF_STATE_UNIT enumeration
+		PO_FX_POWER_CONTROL_CALLBACK callback function
+		POB_POST_OPERATION_CALLBACK callback function
+		POB_PRE_OPERATION_CALLBACK callback function
+		PoCallDriver function
+		PoClearPowerRequest function
+		PoCreatePowerRequest function
+		PoDeletePowerRequest function
+		PoEndDeviceBusy function
+		PoFxActivateComponent function
+		PoFxCompleteDevicePowerNotRequired function
+		PoFxCompleteDirectedPowerDown function
+		PoFxCompleteIdleCondition function
+		PoFxCompleteIdleState function
+		PoFxIdleComponent function
+		PoFxIssueComponentPerfStateChange function
+		PoFxIssueComponentPerfStateChangeMultiple function
+		PoFxNotifySurprisePowerOn function
+		PoFxPowerControl function
+		PoFxPowerOnCrashdumpDevice function
+		PoFxQueryCurrentComponentPerfState function
+		PoFxRegisterComponentPerfStates function
+		PoFxRegisterCrashdumpDevice function
+		PoFxRegisterDevice function
+		PoFxReportDevicePoweredOn function
+		PoFxSetComponentLatency function
+		PoFxSetComponentResidency function
+		PoFxSetComponentWake function
+		PoFxSetDeviceIdleTimeout function
+		PoFxSetTargetDripsDevicePowerState function
+		PoFxStartDevicePowerManagement function
+		PoFxUnregisterDevice function
+		PoGetSystemWake function
+		POOL_CREATE_EXTENDED_PARAMS structure
+		POOL_EXTENDED_PARAMETER structure
+		POOL_EXTENDED_PARAMETER_TYPE enumeration
+		POOL_EXTENDED_PARAMS_SECURE_POOL structure
+		POOL_TYPE enumeration
+		PopEntryList function
+		PoQueryWatchdogTime function
+		PoRegisterDeviceForIdleDetection function
+		PoRegisterPowerSettingCallback function
+		PoRegisterSystemState function
+		PoRequestPowerIrp function
+		PoSetDeviceBusyEx function
+		PoSetPowerRequest function
+		PoSetPowerState function
+		PoSetSystemState function
+		PoSetSystemWake function
+		PoSetSystemWakeDevice function
+		PoStartDeviceBusy function
+		PoStartNextPowerIrp function
+		PoUnregisterPowerSettingCallback function
+		PoUnregisterSystemState function
+		POWER_ACTION enumeration
+		POWER_INFORMATION_LEVEL enumeration
+		POWER_PLATFORM_INFORMATION structure
+		POWER_REQUEST_TYPE enumeration
+		POWER_SESSION_ALLOW_EXTERNAL_DMA_DEVICES structure
+		POWER_STATE union
+		POWER_STATE_TYPE enumeration
+		PPUT_DMA_ADAPTER callback function
+		PPUT_SCATTER_GATHER_LIST callback function
+		PREAD_DMA_COUNTER callback function
+		PREENUMERATE_SELF callback function
+		PRIVILEGE_SET structure
+		ProbeForRead function
+		ProbeForWrite function
+		PROCESSOR_HALT_ROUTINE callback function
+		PsAllocateAffinityToken function
+		PsCreateSystemThread function
+		PsFreeAffinityToken function
+		PsGetCurrentThread function
+		PsGetVersion function
+		PsQueryTotalCycleTimeProcess function
+		PsRevertToUserMultipleGroupAffinityThread function
+		PsSetSystemMultipleGroupAffinityThread function
+		PsTerminateSystemThread function
+		PTM_CONTROL_INTERFACE structure
+		PTM_RM_NOTIFICATION callback function
+		PushEntryList function
+		READ_PORT_BUFFER_UCHAR function
+		READ_PORT_BUFFER_ULONG function
+		READ_PORT_BUFFER_USHORT function
+		READ_PORT_UCHAR function
+		READ_PORT_ULONG function
+		READ_PORT_USHORT function
+		READ_REGISTER_BUFFER_UCHAR function
+		READ_REGISTER_BUFFER_ULONG function
+		READ_REGISTER_BUFFER_ULONG64 function
+		READ_REGISTER_BUFFER_USHORT function
+		READ_REGISTER_UCHAR function
+		READ_REGISTER_ULONG function
+		READ_REGISTER_ULONG64 function
+		READ_REGISTER_USHORT function
+		ReadInt32Acquire function
+		ReadInt32NoFence function
+		ReadInt32Raw function
+		ReadUInt32Acquire function
+		ReadUInt32NoFence function
+		ReadUInt32Raw function
+		REENUMERATE_SELF_INTERFACE_STANDARD structure
+		REG_CALLBACK_CONTEXT_CLEANUP_INFORMATION structure
+		REG_CREATE_KEY_INFORMATION structure
+		REG_CREATE_KEY_INFORMATION_V1 structure
+		REG_DELETE_KEY_INFORMATION structure
+		REG_DELETE_VALUE_KEY_INFORMATION structure
+		REG_ENUMERATE_KEY_INFORMATION structure
+		REG_ENUMERATE_VALUE_KEY_INFORMATION structure
+		REG_KEY_HANDLE_CLOSE_INFORMATION structure
+		REG_LOAD_KEY_INFORMATION structure
+		REG_LOAD_KEY_INFORMATION_V2 structure
+		REG_NOTIFY_CLASS enumeration
+		REG_POST_CREATE_KEY_INFORMATION structure
+		REG_POST_OPERATION_INFORMATION structure
+		REG_PRE_CREATE_KEY_INFORMATION structure
+		REG_QUERY_KEY_INFORMATION structure
+		REG_QUERY_KEY_NAME structure
+		REG_QUERY_KEY_SECURITY_INFORMATION structure
+		REG_QUERY_MULTIPLE_VALUE_KEY_INFORMATION structure
+		REG_QUERY_VALUE_KEY_INFORMATION structure
+		REG_RENAME_KEY_INFORMATION structure
+		REG_REPLACE_KEY_INFORMATION structure
+		REG_RESTORE_KEY_INFORMATION structure
+		REG_SAVE_KEY_INFORMATION structure
+		REG_SAVE_MERGED_KEY_INFORMATION structure
+		REG_SET_INFORMATION_KEY_INFORMATION structure
+		REG_SET_KEY_SECURITY_INFORMATION structure
+		REG_SET_VALUE_KEY_INFORMATION structure
+		REG_UNLOAD_KEY_INFORMATION structure
+		RemoveEntryList function
+		RemoveHeadList function
+		RemoveTailList function
+		REQUEST_POWER_COMPLETE callback function
+		RESOURCEMANAGER_BASIC_INFORMATION structure
+		RESOURCEMANAGER_COMPLETION_INFORMATION structure
+		RESOURCEMANAGER_INFORMATION_CLASS enumeration
+		RTL_QUERY_REGISTRY_ROUTINE callback function
+		RtlAnsiStringToUnicodeSize macro
+		RtlAnsiStringToUnicodeString function
+		RtlAppendUnicodeStringToString function
+		RtlAppendUnicodeToString function
+		RtlAreBitsClear function
+		RtlAreBitsSet function
+		RtlCheckBit function
+		RtlCheckRegistryKey function
+		RtlClearAllBits function
+		RtlClearBit function
+		RtlClearBits function
+		RtlCmDecodeMemIoResource function
+		RtlCmEncodeMemIoResource function
+		RtlCompareMemory function
+		RtlCompareUnicodeString function
+		RtlConvertLongToLargeInteger function
+		RtlConvertUlongToLargeInteger function
+		RtlCopyMemory macro
+		RtlCopyMemoryNonTemporal function
+		RtlCopyUnicodeString function
+		RtlCreateRegistryKey function
+		RtlCreateSecurityDescriptor function
+		RtlDeleteRegistryValue function
+		RtlDowncaseUnicodeChar function
+		RtlEqualMemory macro
+		RtlEqualUnicodeString function
+		RtlFillMemory macro
+		RtlFillMemoryNonTemporal function
+		RtlFindClearBits function
+		RtlFindClearBitsAndSet function
+		RtlFindClearRuns function
+		RtlFindFirstRunClear function
+		RtlFindLastBackwardRunClear function
+		RtlFindLeastSignificantBit function
+		RtlFindLongestRunClear function
+		RtlFindMostSignificantBit function
+		RtlFindNextForwardRunClear function
+		RtlFindSetBits function
+		RtlFindSetBitsAndClear function
+		RtlFreeAnsiString function
+		RtlFreeUnicodeString function
+		RtlFreeUTF8String function
+		RtlGetVersion function
+		RtlGUIDFromString function
+		RtlHashUnicodeString function
+		RtlInitAnsiString function
+		RtlInitializeBitMap function
+		RtlInitString function
+		RtlInitStringEx function
+		RtlInitUnicodeString function
+		RtlInitUTF8String function
+		RtlInitUTF8StringEx function
+		RtlInt64ToUnicodeString function
+		RtlIntegerToUnicodeString function
+		RtlIntPtrToUnicodeString macro
+		RtlIoDecodeMemIoResource function
+		RtlIoEncodeMemIoResource function
+		RtlIsNtDdiVersionAvailable function
+		RtlIsServicePackVersionInstalled function
+		RtlLengthSecurityDescriptor function
+		RtlMoveMemory macro
+		RtlNumberOfClearBits function
+		RtlNumberOfSetBits function
+		RtlNumberOfSetBitsUlongPtr function
+		RtlPrefetchMemoryNonTemporal function
+		RtlQueryRegistryValues function
+		RtlSanitizeUnicodeStringPadding function
+		RtlSecureZeroMemory function
+		RtlSetAllBits function
+		RtlSetBit function
+		RtlSetBits function
+		RtlSetDaclSecurityDescriptor function
+		RtlStringFromGUID function
+		RtlTestBit function
+		RtlTimeFieldsToTime function
+		RtlTimeToTimeFields function
+		RtlUlongByteSwap function
+		RtlUlonglongByteSwap function
+		RtlUnicodeStringToAnsiSize macro
+		RtlUnicodeStringToAnsiString function
+		RtlUnicodeStringToInteger function
+		RtlUnicodeStringToUTF8String function
+		RtlUnicodeToUTF8N function
+		RtlUpcaseUnicodeChar function
+		RtlUshortByteSwap function
+		RtlUTF8StringToUnicodeString function
+		RtlUTF8ToUnicodeN function
+		RtlValidRelativeSecurityDescriptor function
+		RtlValidSecurityDescriptor function
+		RtlVerifyVersionInfo function
+		RtlWriteRegistryValue function
+		RtlxAnsiStringToUnicodeSize function
+		RtlxUnicodeStringToAnsiSize function
+		RtlZeroMemory macro
+		SCATTER_GATHER_LIST structure
+		SDEV_IDENTIFIER_INTERFACE structure
+		SE_IMAGE_TYPE enumeration
+		SeAccessCheck function
+		SeAssignSecurity function
+		SeAssignSecurityEx function
+		SECTION_OBJECT_POINTERS structure
+		SeDeassignSecurity function
+		SET_D3COLD_SUPPORT callback function
+		SeValidSecurityDescriptor function
+		SLIST_ENTRY structure
+		SYSTEM_POOL_ZEROING_INFORMATION structure
+		SYSTEM_POWER_STATE enumeration
+		SYSTEM_POWER_STATE_CONTEXT structure
+		TARGET_DEVICE_CUSTOM_NOTIFICATION structure
+		TARGET_DEVICE_REMOVAL_NOTIFICATION structure
+		TIME_FIELDS structure
+		TmCommitComplete function
+		TmCommitEnlistment function
+		TmCommitTransaction function
+		TmCreateEnlistment function
+		TmDereferenceEnlistmentKey function
+		TmEnableCallbacks function
+		TmGetTransactionId function
+		TmInitializeTransactionManager function
+		TmIsTransactionActive function
+		TmPrepareComplete function
+		TmPrepareEnlistment function
+		TmPrePrepareComplete function
+		TmPrePrepareEnlistment function
+		TmReadOnlyEnlistment function
+		TmRecoverEnlistment function
+		TmRecoverResourceManager function
+		TmRecoverTransactionManager function
+		TmReferenceEnlistmentKey function
+		TmRenameTransactionManager function
+		TmRequestOutcomeEnlistment function
+		TmRollbackComplete function
+		TmRollbackEnlistment function
+		TmRollbackTransaction function
+		TmSinglePhaseReject function
+		TRACE_INFORMATION_CLASS enumeration
+		TRANSACTION_BASIC_INFORMATION structure
+		TRANSACTION_ENLISTMENT_PAIR structure
+		TRANSACTION_ENLISTMENTS_INFORMATION structure
+		TRANSACTION_INFORMATION_CLASS enumeration
+		TRANSACTION_OUTCOME enumeration
+		TRANSACTION_PROPERTIES_INFORMATION structure
+		TRANSACTION_STATE enumeration
+		TRANSACTIONMANAGER_BASIC_INFORMATION structure
+		TRANSACTIONMANAGER_INFORMATION_CLASS enumeration
+		TRANSACTIONMANAGER_LOG_INFORMATION structure
+		TRANSACTIONMANAGER_LOGPATH_INFORMATION structure
+		TRANSACTIONMANAGER_RECOVERY_INFORMATION structure
+		TRANSLATE_BUS_ADDRESS callback function
+		VslCreateSecureSection function
+		VslDeleteSecureSection function
+		WAIT_CONTEXT_BLOCK structure
+		WmiQueryTraceInformation function
+		WmiTraceMessage function
+		WmiTraceMessageVa function
+		WORK_QUEUE_TYPE enumeration
+		WRITE_PORT_BUFFER_UCHAR function
+		WRITE_PORT_BUFFER_ULONG function
+		WRITE_PORT_BUFFER_USHORT function
+		WRITE_PORT_UCHAR function
+		WRITE_PORT_ULONG function
+		WRITE_PORT_USHORT function
+		WRITE_REGISTER_BUFFER_UCHAR function
+		WRITE_REGISTER_BUFFER_ULONG function
+		WRITE_REGISTER_BUFFER_ULONG64 function
+		WRITE_REGISTER_BUFFER_USHORT function
+		WRITE_REGISTER_UCHAR function
+		WRITE_REGISTER_ULONG function
+		WRITE_REGISTER_ULONG64 function
+		WRITE_REGISTER_USHORT function
+		WriteInt32NoFence function
+		WriteInt32Raw function
+		WriteInt32Release function
+		WriteUInt32NoFence function
+		WriteUInt32Raw function
+		WriteUInt32Release function
+		XSAVE_CET_U_FORMAT structure
+		ZwClose function
+		ZwCommitComplete function
+		ZwCommitEnlistment function
+		ZwCommitTransaction function
+		ZwCreateDirectoryObject function
+		ZwCreateEnlistment function
+		ZwCreateFile function
+		ZwCreateKey function
+		ZwCreateKeyTransacted function
+		ZwCreateResourceManager function
+		ZwCreateSection function
+		ZwCreateTransaction function
+		ZwCreateTransactionManager function
+		ZwDeleteKey function
+		ZwDeleteValueKey function
+		ZwEnumerateKey function
+		ZwEnumerateTransactionObject function
+		ZwEnumerateValueKey function
+		ZwFlushKey function
+		ZwGetNotificationResourceManager function
+		ZwLoadDriver function
+		ZwMakeTemporaryObject function
+		ZwMapViewOfSection function
+		ZwOpenEnlistment function
+		ZwOpenEvent function
+		ZwOpenFile function
+		ZwOpenKey function
+		ZwOpenKeyEx function
+		ZwOpenKeyTransacted function
+		ZwOpenKeyTransactedEx function
+		ZwOpenResourceManager function
+		ZwOpenSection function
+		ZwOpenSymbolicLinkObject function
+		ZwOpenTransaction function
+		ZwOpenTransactionManager function
+		ZwPrepareComplete function
+		ZwPrepareEnlistment function
+		ZwPrePrepareComplete function
+		ZwPrePrepareEnlistment function
+		ZwQueryFullAttributesFile function
+		ZwQueryInformationByName function
+		ZwQueryInformationEnlistment function
+		ZwQueryInformationFile function
+		ZwQueryInformationResourceManager function
+		ZwQueryInformationTransaction function
+		ZwQueryInformationTransactionManager function
+		ZwQueryKey function
+		ZwQuerySymbolicLinkObject function
+		ZwQueryValueKey function
+		ZwReadFile function
+		ZwReadOnlyEnlistment function
+		ZwRecoverEnlistment function
+		ZwRecoverResourceManager function
+		ZwRecoverTransactionManager function
+		ZwRollbackComplete function
+		ZwRollbackEnlistment function
+		ZwRollbackTransaction function
+		ZwRollforwardTransactionManager function
+		ZwSetInformationEnlistment function
+		ZwSetInformationFile function
+		ZwSetInformationResourceManager function
+		ZwSetInformationTransaction function
+		ZwSetValueKey function
+		ZwSinglePhaseReject function
+		ZwUnloadDriver function
+		ZwUnmapViewOfSection function
+		ZwWriteFile function
+		*/
 	}
 }
