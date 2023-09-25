@@ -653,7 +653,7 @@ public static partial class DwmApi
 	/// </param>
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[PInvokeData("dwmapi.h")]
-	public static HRESULT DwmGetWindowAttribute<T>(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, out T pvAttribute)
+	public static HRESULT DwmGetWindowAttribute<T>(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, out T? pvAttribute)
 	{
 		if (!CorrespondingTypeAttribute.CanGet(dwAttribute, typeof(T))) throw new ArgumentException();
 		var m = SafeCoTaskMemHandle.CreateFromStructure<T>();

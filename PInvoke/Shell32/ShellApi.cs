@@ -1463,8 +1463,10 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-assoccreateforclasses SHSTDAPI AssocCreateForClasses(
 	// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static TIntf? AssocCreateForClasses<TIntf>(ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
 		IidGetObj<TIntf>((in Guid g, out object? o) => AssocCreateForClasses(rgClasses, (uint)rgClasses.Length, g, out o));
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>
 	/// <para>
@@ -3326,8 +3328,10 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shgetpropertystoreforwindow SHSTDAPI
 	// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 	public static TIntf? SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class =>
 		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetPropertyStoreForWindow(hwnd, g, out o));
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>
 	/// <para>Retrieves information about system-defined Shell icons.</para>

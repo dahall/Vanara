@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
