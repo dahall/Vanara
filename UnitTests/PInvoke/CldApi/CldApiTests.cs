@@ -10,7 +10,7 @@ namespace Vanara.PInvoke.Tests;
 
 public class CldApiTests
 {
-	private static readonly string syncRootPath = Environment.GetEnvironmentVariable("OneDrive");
+	private static readonly string syncRootPath = Environment.GetEnvironmentVariable("OneDrive")!;
 	//private const string tempSubDir = "CfSource";
 
 	private static string SetupTempDir(string subDir) => Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), subDir)).FullName;
@@ -79,7 +79,7 @@ public class CldApiTests
 				evt.Set();
 				while (!token.IsCancellationRequested) { Task.Delay(100); }
 
-				static void ShowInfo<T>(object s, CloudSyncCallbackArgs<T> e) where T : struct
+				static void ShowInfo<T>(object? s, CloudSyncCallbackArgs<T> e) where T : struct
 				{
 					Debug.WriteLine($"\n{typeof(T).Name}: {e.NormalizedPath ?? "(null)"}, {e.FileSize}\n" +
 						Newtonsoft.Json.JsonConvert.SerializeObject(e.ParamData, Newtonsoft.Json.Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter()));

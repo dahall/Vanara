@@ -144,20 +144,17 @@ public class PlaceHolderFileInfo : PlaceholderInfo
 	/// <param name="inSync">if set to <see langword="true"/>, information is synchronized.</param>
 	/// <param name="relativeFilePath">The relative file path.</param>
 	/// <returns>A platholder for the file.</returns>
-	public static PlaceHolderFileInfo CreateFromFile(FileInfo fileInfo, bool inSync = true, string relativeFilePath = null)
+	public static PlaceHolderFileInfo CreateFromFile(FileInfo fileInfo, bool inSync = true, string? relativeFilePath = null) => new()
 	{
-		return new PlaceHolderFileInfo
-		{
-			ChangeTime = fileInfo.LastWriteTime,
-			CreationTime = fileInfo.CreationTime,
-			FileAttributes = fileInfo.Attributes,
-			FileSize = fileInfo.Length,
-			LastAccessTime = fileInfo.LastAccessTime,
-			LastWriteTime = fileInfo.LastWriteTime,
-			RelativePath = relativeFilePath ?? fileInfo.FullName,
-			InSync = inSync,
-		};
-	}
+		ChangeTime = fileInfo.LastWriteTime,
+		CreationTime = fileInfo.CreationTime,
+		FileAttributes = fileInfo.Attributes,
+		FileSize = fileInfo.Length,
+		LastAccessTime = fileInfo.LastAccessTime,
+		LastWriteTime = fileInfo.LastWriteTime,
+		RelativePath = relativeFilePath ?? fileInfo.FullName,
+		InSync = inSync,
+	};
 }
 
 /// <summary>Information about a placeholder.</summary>
@@ -198,7 +195,7 @@ public abstract class PlaceholderInfo
 	public DateTime LastWriteTime;
 
 	/// <summary>The name of the child placeholder file or directory to be created.</summary>
-	public string RelativePath;
+	public string? RelativePath;
 
 	/// <summary>The result of placeholder creation. On successful creation, the value is: STATUS_OK.</summary>
 	public HRESULT Result;
@@ -209,7 +206,7 @@ public abstract class PlaceholderInfo
 internal class CloudSyncProvider : IDisposable
 {
 	private const string MSSEARCH_INDEX = "SystemIndex";
-	private CF_CALLBACK_REGISTRATION[] callbackTable;
+	private CF_CALLBACK_REGISTRATION[]? callbackTable;
 	private bool disposed = false;
 	private CF_CONNECTION_KEY? key = null;
 
@@ -220,9 +217,9 @@ internal class CloudSyncProvider : IDisposable
 	/// <param name="version">The version number of the sync root.</param>
 	/// <param name="customProperties">The custom properties.</param>
 	/// <exception cref="System.ArgumentException">Name cannot have spaces. - name</exception>
-	public CloudSyncProvider(string syncRootPath, string name, string iconResource = ",0", Version version = null, IEnumerable<(string name, int id)> customProperties = null)
+	public CloudSyncProvider(string syncRootPath, string name, string iconResource = ",0", Version? version = null, IEnumerable<(string name, int id)>? customProperties = null)
 	{
-		if (name.Contains(" "))
+		if (name.Contains(' '))
 			throw new ArgumentException("Name cannot have spaces.", nameof(name));
 		if (!Directory.Exists(syncRootPath))
 			Directory.CreateDirectory(syncRootPath);
@@ -238,31 +235,31 @@ internal class CloudSyncProvider : IDisposable
 		ConnectSyncRootTransferCallbacks();
 	}
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CANCEL>> CancelFetchData;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CANCEL>>? CancelFetchData;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CANCEL>> CancelFetchPlaceholders;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CANCEL>>? CancelFetchPlaceholders;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.FETCHDATA>> FetchData;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.FETCHDATA>>? FetchData;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.FETCHPLACEHOLDERS>> FetchPlaceholders;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.FETCHPLACEHOLDERS>>? FetchPlaceholders;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DEHYDRATE>> NotifyDehydrate;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DEHYDRATE>>? NotifyDehydrate;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DEHYDRATECOMPLETION>> NotifyDehydrateCompletion;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DEHYDRATECOMPLETION>>? NotifyDehydrateCompletion;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DELETE>> NotifyDelete;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DELETE>>? NotifyDelete;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DELETECOMPLETION>> NotifyDeleteCompletion;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.DELETECOMPLETION>>? NotifyDeleteCompletion;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CLOSECOMPLETION>> NotifyFileCloseCompletion;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.CLOSECOMPLETION>>? NotifyFileCloseCompletion;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.OPENCOMPLETION>> NotifyFileOpenCompletion;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.OPENCOMPLETION>>? NotifyFileOpenCompletion;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.RENAME>> NotifyRename;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.RENAME>>? NotifyRename;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.RENAMECOMPLETION>> NotifyRenameCompletion;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.RENAMECOMPLETION>>? NotifyRenameCompletion;
 
-	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.VALIDATEDATA>> ValidateData;
+	public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.VALIDATEDATA>>? ValidateData;
 
 	/// <summary>Gets an optional display name that maps to the existing sync root registration.</summary>
 	public string DisplayName { get; }
@@ -270,7 +267,7 @@ internal class CloudSyncProvider : IDisposable
 	/// <summary>Gets a path to an icon resource for the custom state of a file or folder.</summary>
 	public string IconResource { get; }
 
-	public IEnumerable<StorageProviderItemPropertyDefinition> PropertyDefinitions { get; }
+	public IEnumerable<StorageProviderItemPropertyDefinition>? PropertyDefinitions { get; }
 
 	/// <summary>Gets a Uri to a cloud storage recycle bin.</summary>
 	public Uri RecycleBinUri { get; }
@@ -278,8 +275,8 @@ internal class CloudSyncProvider : IDisposable
 	/// <summary>Gets or sets the current status of the sync provider.</summary>
 	public CF_SYNC_PROVIDER_STATUS Status
 	{
-		get => CfQuerySyncProviderStatus(key.Value, out var stat).Succeeded ? stat : CF_SYNC_PROVIDER_STATUS.CF_PROVIDER_STATUS_ERROR;
-		set => CfUpdateSyncProviderStatus(key.Value, value);
+		get => key is not null && CfQuerySyncProviderStatus(key.Value, out var stat).Succeeded ? stat : CF_SYNC_PROVIDER_STATUS.CF_PROVIDER_STATUS_ERROR;
+		set { if (key is not null) CfUpdateSyncProviderStatus(key.Value, value); else throw new InvalidOperationException(); }
 	}
 
 	/// <summary>Gets an identifier for the sync root.</summary>
@@ -429,7 +426,7 @@ internal class CloudSyncProvider : IDisposable
 		ph[0].FileIdentity = pRelativeName;
 		ph[0].FileIdentityLength = pRelativeName.Size;
 		if (CreatePlaceholders(ph) != 1)
-			throw ph[0].Result.GetException();
+			throw ph[0].Result.GetException()!;
 		return ph[0].CreateUsn;
 	}
 
@@ -463,7 +460,7 @@ internal class CloudSyncProvider : IDisposable
 			{
 				FileIdentity = ph.FileIdentity,
 				FileIdentityLength = ph.FileIdentityLength,
-				RelativeFileName = ph.RelativePath,
+				RelativeFileName = ph.RelativePath!,
 				Flags = flags,
 				FsMetadata = new CF_FS_METADATA
 				{
@@ -559,7 +556,7 @@ internal class CloudSyncProvider : IDisposable
 	/// <param name="handler">The handler method.</param>
 	/// <param name="CallbackInfo">The callback information.</param>
 	/// <param name="CallbackParameters">The callback parameters.</param>
-	protected virtual void HandleEvent<T>(EventHandler<CloudSyncCallbackArgs<T>> handler, in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) where T : struct
+	protected virtual void HandleEvent<T>(EventHandler<CloudSyncCallbackArgs<T>>? handler, in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) where T : struct
 	{
 		if (handler != null && !disposed)
 		{
@@ -693,8 +690,5 @@ internal class CloudSyncProvider : IDisposable
 		Thread.Sleep(1000);
 	}
 
-	private void UnregisterWithShell()
-	{
-		StorageProviderSyncRootManager.Unregister(SyncRootId);
-	}
+	private void UnregisterWithShell() => StorageProviderSyncRootManager.Unregister(SyncRootId);
 }
