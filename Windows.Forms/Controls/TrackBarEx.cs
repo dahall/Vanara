@@ -14,7 +14,7 @@ namespace Vanara.Windows.Forms;
 /// <summary>
 /// Extends the <see cref="TrackBar"/> class to provide full native-control functionality, including tick marks and value, and custom drawing.
 /// </summary>
-/// <seealso cref="System.Windows.Forms.TrackBar"/>
+/// <seealso cref="TrackBar"/>
 public class TrackBarEx : TrackBar
 {
 	private bool autoTicks = true;
@@ -23,7 +23,7 @@ public class TrackBarEx : TrackBar
 	private bool limitThumbToSel, showSel;
 	private int requestedDim;
 	private int selMin, selMax, thumbLength = -1;
-	private int[] ticks;
+	private int[] ticks = new int[0];
 
 	/// <summary>Initializes a new instance of the <see cref="TrackBarEx"/> class.</summary>
 	public TrackBarEx()
@@ -37,19 +37,19 @@ public class TrackBarEx : TrackBar
 	/// Occurs when the channel for a <see cref="TrackBarEx"/> needs to be drawn and the <see cref="OwnerDraw"/> property is set to <c>true</c>.
 	/// </summary>
 	[Category("Drawing")]
-	public event PaintEventHandler DrawChannel;
+	public event PaintEventHandler? DrawChannel;
 
 	/// <summary>
 	/// Occurs when the thumb for a <see cref="TrackBarEx"/> needs to be drawn and the <see cref="OwnerDraw"/> property is set to <c>true</c>.
 	/// </summary>
 	[Category("Drawing")]
-	public event PaintEventHandler DrawThumb;
+	public event PaintEventHandler? DrawThumb;
 
 	/// <summary>
 	/// Occurs when the ticks for a <see cref="TrackBarEx"/> need to be drawn and the <see cref="OwnerDraw"/> property is set to <c>true</c>.
 	/// </summary>
 	[Category("Drawing")]
-	public event PaintEventHandler DrawTics;
+	public event PaintEventHandler? DrawTics;
 
 	/// <summary>Gets or sets a value indicating whether to draw ticks based on the <see cref="TrackBar.TickFrequency"/> interval.</summary>
 	/// <value><c>true</c> if automatic ticks should be shown; otherwise, <c>false</c>.</value>
@@ -105,7 +105,7 @@ public class TrackBarEx : TrackBar
 		set
 		{
 			//valid values are 0x0 to 0x1
-			if (value != Orientation.Horizontal && value != Orientation.Vertical)
+			if (value is not Orientation.Horizontal and not Orientation.Vertical)
 				throw new InvalidEnumArgumentException(nameof(Orientation), (int)value, typeof(Orientation));
 
 			if (base.Orientation != value)
@@ -377,8 +377,7 @@ public class TrackBarEx : TrackBar
 	protected override void OnMouseWheel(MouseEventArgs e)
 	{
 		const int WHEEL_DELTA = 120;
-		var hme = e as HandledMouseEventArgs;
-		if (hme != null)
+		if (e is HandledMouseEventArgs hme)
 		{
 			if (hme.Handled) return;
 			hme.Handled = true;
@@ -461,7 +460,7 @@ public class TrackBarEx : TrackBar
 			}
 		}
 		// Call base method on Control and not TrackBar
-		typeof(Control).GetMethod("SetBoundsCore", BindingFlags.Instance | BindingFlags.NonPublic).InvokeNotOverride(this, x, y, width, height, specified);
+		typeof(Control).GetMethod("SetBoundsCore", BindingFlags.Instance | BindingFlags.NonPublic)?.InvokeNotOverride(this, x, y, width, height, specified);
 	}
 
 	/// <inheritdoc/>
@@ -473,17 +472,17 @@ public class TrackBarEx : TrackBar
 		{
 			if (OwnerDraw)
 			{
-				var hdr = (NMHDR)m.GetLParam(typeof(NMHDR));
+				var hdr = (NMHDR)m.GetLParam(typeof(NMHDR))!;
 				if (hdr.code == (int)CommonControlNotification.NM_CUSTOMDRAW)
 				{
-					var cd = (NMCUSTOMDRAW)m.GetLParam(typeof(NMCUSTOMDRAW));
+					var cd = (NMCUSTOMDRAW)m.GetLParam(typeof(NMCUSTOMDRAW))!;
 					Debug.WriteLine($"{new TimeSpan(Environment.TickCount)} TBCustDraw: {cd.dwDrawStage}, {cd.dwItemSpec.ToInt32()}, {cd.uItemState}, {(Rectangle)cd.rc}");
 					m.Result = new IntPtr((int)CustomDraw(ref cd));
 					return;
 				}
 			}
 		}
-		else if (msg == (WindowMessage.WM_HSCROLL | WindowMessage.WM_REFLECT) || msg == (WindowMessage.WM_VSCROLL | WindowMessage.WM_REFLECT))
+		else if (msg is (WindowMessage.WM_HSCROLL | WindowMessage.WM_REFLECT) or (WindowMessage.WM_VSCROLL | WindowMessage.WM_REFLECT))
 		{
 			var pos = Value;
 			var code = (TrackBarScrollNotification)LOWORD(m.WParam);

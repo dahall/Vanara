@@ -16,7 +16,7 @@ public static partial class MapPointExtension
 	/// <param name="pt">The pt.</param>
 	/// <param name="newWin">The new win.</param>
 	/// <returns></returns>
-	public static POINT MapPoint(this IWin32Window ctrl, POINT pt, IWin32Window newWin = null)
+	public static POINT MapPoint(this IWin32Window? ctrl, POINT pt, IWin32Window? newWin = null)
 	{
 		MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), ref pt, 1);
 		return pt;
@@ -29,8 +29,8 @@ public static partial class MapPointExtension
 	/// <param name="ctrl">The control.</param>
 	/// <param name="points">The points.</param>
 	/// <param name="newWin">The new win.</param>
-	/// <exception cref="System.ArgumentNullException">points</exception>
-	public static void MapPoints(this IWin32Window ctrl, POINT[] points, IWin32Window newWin = null)
+	/// <exception cref="ArgumentNullException">points</exception>
+	public static void MapPoints(this IWin32Window? ctrl, POINT[] points, IWin32Window? newWin = null)
 	{
 		if (points == null) throw new ArgumentNullException(nameof(points));
 		MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), points, points.Length);
@@ -45,7 +45,7 @@ public static partial class MapPointExtension
 	/// <param name="ctrl">The control.</param>
 	/// <param name="pt">The pt.</param>
 	/// <returns></returns>
-	public static POINT MapPointToClient(this IWin32Window ctrl, POINT pt) => MapPoint(null, pt, ctrl);
+	public static POINT MapPointToClient(this IWin32Window? ctrl, POINT pt) => MapPoint(null, pt, ctrl);
 
 	/// <summary>
 	/// The MapPoint method converts (maps) a rectangle from a coordinate space relative to one window to a coordinate space relative to
@@ -55,12 +55,12 @@ public static partial class MapPointExtension
 	/// <param name="rectangle">The rectangle.</param>
 	/// <param name="newWin">The new win.</param>
 	/// <returns></returns>
-	public static Rectangle MapRectangle(this IWin32Window ctrl, Rectangle rectangle, IWin32Window newWin = null)
+	public static Rectangle MapRectangle(this IWin32Window? ctrl, Rectangle rectangle, IWin32Window? newWin = null)
 	{
 		RECT ir = rectangle;
 		MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), ref ir, 2);
 		return ir;
 	}
 
-	private static HWND GetHandle(IWin32Window ctrl) => new(ctrl?.Handle ?? IntPtr.Zero);
+	private static HWND GetHandle(IWin32Window? ctrl) => new(ctrl?.Handle ?? IntPtr.Zero);
 }

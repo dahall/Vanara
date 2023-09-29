@@ -134,27 +134,27 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// Returns true if the current operating system supports TaskDialog. If false TaskDialog.Show should not be called as the results
 	/// are undefined but often results in a crash.
 	/// </summary>
-	private static readonly bool IsAvailable = Environment.OSVersion.Platform == PlatformID.Win32NT && (Environment.OSVersion.Version.CompareTo(requiredOsVersion) >= 0);
+	private static readonly bool IsAvailable = Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.CompareTo(requiredOsVersion) >= 0;
 
 	// The minimum Windows version needed to support TaskDialog.
 	private static readonly Version requiredOsVersion = new(6, 0, 5243);
 
-	private string content;
-	private Icon customFooterIcon;
-	private Icon customMainIcon;
-	private string expandedInformation;
+	private string? content;
+	private Icon? customFooterIcon;
+	private Icon? customMainIcon;
+	private string? expandedInformation;
 
 	// The otherFlags passed to TaskDialogIndirect.
 	private EnumFlagIndexer<TASKDIALOG_FLAGS> flags;
 
-	private string footer;
+	private string? footer;
 	private TaskDialogIcon footerIcon;
 
 	// When active, holds the handle of the current window.
 	private HWND handle = HWND.NULL;
 
 	private TaskDialogIcon mainIcon;
-	private string mainInstruction;
+	private string? mainInstruction;
 
 	/// <summary>Initializes a new instance of the <see cref="TaskDialog"/> class.</summary>
 	public TaskDialog()
@@ -165,35 +165,35 @@ public class TaskDialog : CommonDialog, IWin32Window
 
 	/// <summary>Occurs when a button is clicked.</summary>
 	[Category("Action"), Description("Occurs when a button is clicked.")]
-	public event EventHandler<ButtonClickedEventArgs> ButtonClicked;
+	public event EventHandler<ButtonClickedEventArgs>? ButtonClicked;
 
 	/// <summary>Occurs when the dialog is closed.</summary>
 	[Category("Behavior"), Description("Occurs when the dialog is closed.")]
-	public event EventHandler Closed;
+	public event EventHandler? Closed;
 
 	/// <summary>Occurs when the expando button is clicked and the dialog expands or contracts.</summary>
 	[Category("Behavior"), Description("Occurs when the expando button is clicked and the dialog expands or contracts.")]
-	public event EventHandler<ExpandedEventArgs> Expanded;
+	public event EventHandler<ExpandedEventArgs>? Expanded;
 
 	/// <summary>Occurs when a link is clicked.</summary>
 	[Category("Action"), Description("Occurs when a link is clicked.")]
-	public event LinkClickedEventHandler LinkClicked;
+	public event LinkClickedEventHandler? LinkClicked;
 
 	/// <summary>Occurs before the dialog is displayed for the first time.</summary>
 	[Category("Behavior"), Description("Occurs before the dialog is displayed for the first time.")]
-	public event EventHandler Load;
+	public event EventHandler? Load;
 
 	/// <summary>Occurs when a radio button is clicked.</summary>
 	[Category("Action"), Description("Occurs when a radio button is clicked.")]
-	public event EventHandler<ButtonClickedEventArgs> RadioButtonClicked;
+	public event EventHandler<ButtonClickedEventArgs>? RadioButtonClicked;
 
 	/// <summary>Occurs when the timer fires.</summary>
 	[Category("Action"), Description("Occurs when the timer fires.")]
-	public event EventHandler<TimerEventArgs> Timer;
+	public event EventHandler<TimerEventArgs>? Timer;
 
 	/// <summary>Occurs when the verification check box is checked or unchecked.</summary>
 	[Category("Action"), Description("Occurs when the verification check box is checked or unchecked.")]
-	public event EventHandler<VerificationClickedEventArgs> VerificationClicked;
+	public event EventHandler<VerificationClickedEventArgs>? VerificationClicked;
 
 	/// <summary>
 	/// Indicates that the dialog should be able to be closed using Alt-F4, Escape and the title bar’s close button even if no cancel
@@ -279,7 +279,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("Button label for expanding the expanded information")]
-	public string CollapsedControlText { get; set; }
+	public string? CollapsedControlText { get; set; }
 
 	/// <summary>
 	/// Specifies the push buttons displayed in the dialog box. This parameter may be a combination of otherFlags. If no common buttons
@@ -298,7 +298,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("Optional text for the primary content area.")]
-	public string Content
+	public string? Content
 	{
 		get => content;
 		set
@@ -316,7 +316,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// </summary>
 	[DefaultValue(null)]
 	[Category("Appearance"), Description("")]
-	public Icon CustomFooterIcon
+	public Icon? CustomFooterIcon
 	{
 		get => customFooterIcon;
 		set
@@ -335,7 +335,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// </summary>
 	[DefaultValue(null)]
 	[Category("Appearance"), Description("")]
-	public Icon CustomMainIcon
+	public Icon? CustomMainIcon
 	{
 		get => customMainIcon;
 		set
@@ -403,7 +403,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("")]
-	public string ExpandedControlText { get; set; }
+	public string? ExpandedControlText { get; set; }
 
 	/// <summary>
 	/// The string to be used for displaying additional information. The additional information is displayed either immediately below
@@ -414,7 +414,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("")]
-	public string ExpandedInformation
+	public string? ExpandedInformation
 	{
 		get => expandedInformation;
 		set
@@ -448,7 +448,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("")]
-	public string Footer
+	public string? Footer
 	{
 		get => footer;
 		set
@@ -482,7 +482,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// <summary>Gets the image for the configured footer icon.</summary>
 	/// <value>The main icon image.</value>
 	[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-	public Image FooterIconImage => GetSmallImage(customFooterIcon ?? IconFromTaskDialogIcon(footerIcon));
+	public Image? FooterIconImage => GetSmallImage(customFooterIcon ?? IconFromTaskDialogIcon(footerIcon));
 
 	/// <summary>Gets the handle for the active dialog.</summary>
 	/// <value>The handle. This value will be <c>IntPtr.Zero</c> if no active dialog is being displayed.</value>
@@ -513,13 +513,13 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// <summary>Gets the image for the configured main icon.</summary>
 	/// <value>The main icon image.</value>
 	[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-	public Image MainIconImage => (customFooterIcon ?? IconFromTaskDialogIcon(footerIcon)).ToBitmap();
+	public Image? MainIconImage => (customFooterIcon ?? IconFromTaskDialogIcon(footerIcon))?.ToBitmap();
 
 	/// <summary>The string to be used for the main instruction.</summary>
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("")]
-	public string MainInstruction
+	public string? MainInstruction
 	{
 		get => mainInstruction;
 		set
@@ -624,7 +624,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("")]
-	public string VerificationText { get; set; }
+	public string? VerificationText { get; set; }
 
 	/// <summary>width of the Task Dialog's client area in DLU's. If 0, Task Dialog will calculate the ideal width.</summary>
 	[DefaultValue(0)]
@@ -637,7 +637,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	[DefaultValue(null), Localizable(true),
 	 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 	[Category("Appearance"), Description("")]
-	public string WindowTitle { get; set; }
+	public string? WindowTitle { get; set; }
 
 	/// <summary>Indicates that an Marquee Progress Bar should be displayed.</summary>
 	[DefaultValue(false)]
@@ -699,7 +699,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// </param>
 	/// <param name="icon">One of the <see cref="TaskDialogIcon"/> values that specifies which icon to display in the task dialog.</param>
 	/// <returns>One of the <see cref="DialogResult"/> values.</returns>
-	public static int Show(IWin32Window win32Window, string mainInstruction, string content = null, string caption = "",
+	public static int Show(IWin32Window? win32Window, string mainInstruction, string? content = null, string caption = "",
 		TaskDialogCommonButtons buttons = TaskDialogCommonButtons.Ok, TaskDialogIcon icon = TaskDialogIcon.None)
 	{
 		if (mainInstruction == null) throw new ArgumentNullException(nameof(mainInstruction));
@@ -730,7 +730,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// <returns>
 	/// The 1-based index of the selected radio button, or <c>0</c> if no radio button was selected or the task dialog was cancelled.
 	/// </returns>
-	public static int Show(IWin32Window win32Window, string mainInstruction, string content, string caption,
+	public static int Show(IWin32Window? win32Window, string mainInstruction, string content, string caption,
 		string[] radioButtons, TaskDialogCommonButtons buttons = TaskDialogCommonButtons.Ok | TaskDialogCommonButtons.Cancel,
 		TaskDialogIcon icon = TaskDialogIcon.None)
 	{
@@ -758,7 +758,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// </param>
 	/// <param name="icon">One of the <see cref="TaskDialogIcon"/> values that specifies which icon to display in the task dialog.</param>
 	/// <returns>One of the <see cref="DialogResult"/> values.</returns>
-	public static int Show(string mainInstruction, string content = null, string caption = "",
+	public static int Show(string mainInstruction, string? content = null, string caption = "",
 		TaskDialogCommonButtons buttons = TaskDialogCommonButtons.Ok, TaskDialogIcon icon = TaskDialogIcon.None) =>
 			Show(null, mainInstruction, content, caption, buttons, icon);
 
@@ -777,7 +777,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	/// The value of the button clicked starting with 101. Each subsequent button's id will increment by 1. (e.g. Three strings for
 	/// buttons would have the identifiers of 101, 102, and 103.).
 	/// </returns>
-	public static int Show(IWin32Window win32Window, string mainInstruction, string caption, string[] buttons,
+	public static int Show(IWin32Window? win32Window, string mainInstruction, string caption, string[] buttons,
 		TaskDialogIcon icon = TaskDialogIcon.None)
 	{
 		if (mainInstruction == null) throw new ArgumentNullException(nameof(mainInstruction));
@@ -834,8 +834,8 @@ public class TaskDialog : CommonDialog, IWin32Window
 	{
 		// TDM_CLICK_VERIFICATION = WM_USER+113, // wParam = 0 (unchecked), 1 (checked), lParam = 1 (set key focus)
 		if (!handle.IsNull)
-			SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_VERIFICATION, (checkedState ? new IntPtr(1) : IntPtr.Zero),
-				(setKeyboardFocusToCheckBox ? new IntPtr(1) : IntPtr.Zero));
+			SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_VERIFICATION, checkedState ? new IntPtr(1) : IntPtr.Zero,
+				setKeyboardFocusToCheckBox ? new IntPtr(1) : IntPtr.Zero);
 	}
 
 	/// <summary>Resets the Task Dialog to the state when first constructed, all properties set to their default value.</summary>
@@ -863,7 +863,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 		WindowTitle = null;
 	}
 
-	internal static Image GetSmallImage(Icon icon)
+	internal static Image? GetSmallImage(Icon? icon)
 	{
 		if (icon == null) return null;
 		var sz = SystemInformation.SmallIconSize;
@@ -876,56 +876,32 @@ public class TaskDialog : CommonDialog, IWin32Window
 		return bmp;
 	}
 
-	internal static Icon IconFromTaskDialogIcon(TaskDialogIcon icon)
+	internal static Icon? IconFromTaskDialogIcon(TaskDialogIcon icon)
 	{
 		if (Environment.OSVersion.Version >= requiredOsVersion)
 		{
 			var ie = new ResourceFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "imageres.dll"));
-			switch (icon)
+			return icon switch
 			{
-				case TaskDialogIcon.None:
-					return null;
-
-				case TaskDialogIcon.Warning:
-					return ie.GroupIcons[79];
-
-				case TaskDialogIcon.Error:
-					return ie.GroupIcons[93];
-
-				case TaskDialogIcon.Information:
-					return ie.GroupIcons[76];
-
-				case TaskDialogIcon.SecurityWarning:
-					return ie.GroupIcons[102];
-
-				case TaskDialogIcon.SecurityError:
-					return ie.GroupIcons[100];
-
-				case TaskDialogIcon.SecuritySuccess:
-					return ie.GroupIcons[101];
-
-				default:
-					return ie.GroupIcons[73];
-			}
+				TaskDialogIcon.None => null,
+				TaskDialogIcon.Warning => ie.GroupIcons[79],
+				TaskDialogIcon.Error => ie.GroupIcons[93],
+				TaskDialogIcon.Information => ie.GroupIcons[76],
+				TaskDialogIcon.SecurityWarning => ie.GroupIcons[102],
+				TaskDialogIcon.SecurityError => ie.GroupIcons[100],
+				TaskDialogIcon.SecuritySuccess => ie.GroupIcons[101],
+				_ => ie.GroupIcons[73],
+			};
 		}
 
-		switch (icon)
+		return icon switch
 		{
-			case TaskDialogIcon.None:
-				return null;
-
-			case TaskDialogIcon.Warning:
-				return SystemIcons.Warning;
-
-			case TaskDialogIcon.Error:
-				return SystemIcons.Error;
-
-			case TaskDialogIcon.Information:
-				return SystemIcons.Information;
-
-			default:
-				return SystemIcons.Shield;
-		}
+			TaskDialogIcon.None => null,
+			TaskDialogIcon.Warning => SystemIcons.Warning,
+			TaskDialogIcon.Error => SystemIcons.Error,
+			TaskDialogIcon.Information => SystemIcons.Information,
+			_ => SystemIcons.Shield,
+		};
 	}
 
 	/// <summary>
@@ -985,7 +961,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 
 	/// <summary>Raises the <see cref="LinkClicked"/> event.</summary>
 	/// <param name="url">The URL of the link.</param>
-	internal virtual void OnLinkClicked(string url) => LinkClicked?.Invoke(this, new LinkClickedEventArgs(url));
+	internal virtual void OnLinkClicked(string? url) => LinkClicked?.Invoke(this, new LinkClickedEventArgs(url));
 
 	/// <summary>Raises the <see cref="Load"/> event.</summary>
 	internal virtual void OnLoad() => Load?.Invoke(this, EventArgs.Empty);
@@ -1106,7 +1082,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	protected override bool RunDialog(IntPtr hwndOwner)
 	{
 		var res = PrivateShow(hwndOwner);
-		return (res.DialogResult != (int)DialogResult.Cancel);
+		return res.DialogResult != (int)DialogResult.Cancel;
 	}
 
 	/// <summary>The callback from the native Task Dialog. This prepares the friendlier arguments and calls the simpler callback.</summary>
@@ -1260,21 +1236,20 @@ public class TaskDialog : CommonDialog, IWin32Window
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString()
-			=> $"{dialogResult} : {(verificationFlagChecked ? "checked" : "unchecked")} : {selectedRadioButton}";
+		public override string ToString() => $"{dialogResult} : {(verificationFlagChecked ? "checked" : "unchecked")} : {selectedRadioButton}";
 	}
 
 	/// <summary>Provides data for the <see cref="ButtonClicked"/> and the <see cref="RadioButtonClicked"/> events.</summary>
 	public class ButtonClickedEventArgs : CancelEventArgs
 	{
-		internal ButtonClickedEventArgs(int id, TaskDialogButtonBase button)
+		internal ButtonClickedEventArgs(int id, TaskDialogButtonBase? button)
 		{
 			ButtonId = id; Button = button;
 		}
 
 		/// <summary>Gets the button that was clicked.</summary>
 		/// <value>The button.</value>
-		public TaskDialogButtonBase Button { get; }
+		public TaskDialogButtonBase? Button { get; }
 
 		/// <summary>Gets the id of the button clicked.</summary>
 		/// <value>The button id.</value>
@@ -1297,7 +1272,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 	{
 		internal static int idSeed = 101;
 		internal TASKDIALOG_BUTTON nativeButton;
-		internal TaskDialog parent;
+		[NotNull] internal TaskDialog? parent;
 
 		/// <summary>Initializes a new instance of the <see cref="TaskDialogButtonBase"/> class.</summary>
 		protected TaskDialogButtonBase() : this(null) { }
@@ -1308,7 +1283,9 @@ public class TaskDialog : CommonDialog, IWin32Window
 		/// in the DialogResult enum.
 		/// </param>
 		/// <param name="text">The string that appears on the button.</param>
-		protected TaskDialogButtonBase(string text, int id = -1)
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+		protected TaskDialogButtonBase(string? text, int id = -1)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		{
 			if (id == -1) id = idSeed++;
 			nativeButton.buttonId = id;
@@ -1324,10 +1301,9 @@ public class TaskDialog : CommonDialog, IWin32Window
 		}
 
 		/// <summary>The string that appears on the button.</summary>
-		[DefaultValue(null), Localizable(true),
-		 Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
+		[DefaultValue(null), Localizable(true), Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 		[Category("Appearance"), Description("")]
-		public string ButtonText
+		public string? ButtonText
 		{
 			get => nativeButton.buttonText; set => nativeButton.buttonText = value;
 		}
@@ -1346,8 +1322,8 @@ public class TaskDialog : CommonDialog, IWin32Window
 		/// <summary>Determines whether the specified <see cref="TaskDialogButtonBase"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="TaskDialogButtonBase"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="TaskDialogButtonBase"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public bool Equals(TaskDialogButtonBase other)
-			=> other.nativeButton.buttonId == nativeButton.buttonId && other.nativeButton.buttonText == nativeButton.buttonText;
+		public bool Equals(TaskDialogButtonBase? other)
+			=> other?.nativeButton.buttonId == nativeButton.buttonId && other?.nativeButton.buttonText == nativeButton.buttonText;
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -1365,7 +1341,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 			public int buttonId;
 
 			/// <summary>The string that appears on the button.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string buttonText;
+			[MarshalAs(UnmanagedType.LPWStr)] public string? buttonText;
 		}
 	}
 
@@ -1401,7 +1377,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 				// Clean up old array
 				((IDisposable)c).Dispose();
 				// Build new
-				c.ptr = c.Select(b => b.nativeButton).MarshalToPtr<TaskDialogButtonBase.TASKDIALOG_BUTTON>(Marshal.AllocHGlobal, out var _);
+				c.ptr = c.Select(b => b.nativeButton).MarshalToPtr(Marshal.AllocHGlobal, out var _);
 				// Set hash to new value
 				c.ptrHash = h;
 			}
@@ -1426,6 +1402,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 				ptr = IntPtr.Zero;
 				ptrHash = hashSeed;
 			}
+			GC.SuppressFinalize(this);
 		}
 	}
 
@@ -1485,7 +1462,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 
 		/// <summary>Gets or sets the style of the progress bar.</summary>
 		/// <value>The style.</value>
-		/// <exception cref="System.NotSupportedException">TaskDialog does not support Block style progress bars.</exception>
+		/// <exception cref="NotSupportedException">TaskDialog does not support Block style progress bars.</exception>
 		[DefaultValue(typeof(ProgressBarStyle), "Continuous")]
 		public ProgressBarStyle Style
 		{
@@ -1497,12 +1474,12 @@ public class TaskDialog : CommonDialog, IWin32Window
 						throw new NotSupportedException("TaskDialog does not support Block style progress bars.");
 					style = value;
 					if (taskDialog == null) return;
-					var cont = (style == ProgressBarStyle.Continuous);
+					var cont = style == ProgressBarStyle.Continuous;
 					taskDialog.ShowProgressBar = cont;
 					taskDialog.ShowMarqueeProgressBar = !cont;
 					if (taskDialog.Handle != IntPtr.Zero)
 						SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_MARQUEE_PROGRESS_BAR,
-							(value == ProgressBarStyle.Marquee ? (IntPtr)1 : IntPtr.Zero), IntPtr.Zero);
+							value == ProgressBarStyle.Marquee ? (IntPtr)1 : IntPtr.Zero, IntPtr.Zero);
 				}
 			}
 		}
@@ -1555,7 +1532,7 @@ public class TaskDialog : CommonDialog, IWin32Window
 			style = ProgressBarStyle.Continuous;
 		}
 
-		private static uint MakeLong(short low, short high) => ((ushort)low | (uint)(high << 16));
+		private static uint MakeLong(short low, short high) => (ushort)low | (uint)(high << 16);
 
 		private void SetMarqueeSpeed(int value)
 		{
@@ -1608,13 +1585,13 @@ public class TaskDialog : CommonDialog, IWin32Window
 }
 
 /// <summary>Represents a button on a task dialog.</summary>
-/// <seealso cref="Vanara.Windows.Forms.TaskDialog.TaskDialogButtonBase"/>
+/// <seealso cref="TaskDialog.TaskDialogButtonBase"/>
 public class TaskDialogButton : TaskDialog.TaskDialogButtonBase
 {
 	private bool shield;
 
 	/// <summary>Initializes a new instance of the <see cref="TaskDialogButton"/> class.</summary>
-	public TaskDialogButton() : this(null) { }
+	public TaskDialogButton() : this(string.Empty) { }
 
 	/// <summary>Initialize the custom button.</summary>
 	/// <param name="text">The string that appears on the button.</param>
@@ -1622,14 +1599,11 @@ public class TaskDialogButton : TaskDialog.TaskDialogButtonBase
 	/// The ID of the button. This value is returned by TaskDialog.Show when the button is clicked. Typically this will be a value in
 	/// the DialogResult enum. Specifying a value of (-1) will insert a potentially non-unique value.
 	/// </param>
-	public TaskDialogButton(string text, int id = -1) : base(text, id)
-	{
-		if (ButtonText == null) ButtonText = $"Button{ButtonId}";
-	}
+	public TaskDialogButton(string text, int id = -1) : base(text, id) => ButtonText ??= $"Button{ButtonId}";
 
 	/// <summary>Occurs when the button is clicked.</summary>
 	[Category("Action"), Description("")]
-	public event CancelEventHandler Click;
+	public event CancelEventHandler? Click;
 
 	/// <summary>
 	/// Gets or sets a value indicating whether to close the <see cref="TaskDialog"/> on click and returns this button's <see
@@ -1685,11 +1659,11 @@ public class TaskDialogButton : TaskDialog.TaskDialogButtonBase
 }
 
 /// <summary>Represents a radio button on a task dialog.</summary>
-/// <seealso cref="Vanara.Windows.Forms.TaskDialog.TaskDialogButtonBase"/>
+/// <seealso cref="TaskDialog.TaskDialogButtonBase"/>
 public class TaskDialogRadioButton : TaskDialog.TaskDialogButtonBase
 {
 	/// <summary>Initializes a new instance of the <see cref="TaskDialogButton"/> class.</summary>
-	public TaskDialogRadioButton() : this(null) { }
+	public TaskDialogRadioButton() : this(string.Empty) { }
 
 	/// <summary>Initialize the custom radio button.</summary>
 	/// <param name="text">The string that appears on the radio button.</param>
@@ -1697,20 +1671,18 @@ public class TaskDialogRadioButton : TaskDialog.TaskDialogButtonBase
 	/// The ID of the readio button. This value is returned by TaskDialog.Show when the button is clicked. Specifying a value of (-1)
 	/// will insert a potentially non-unique value.
 	/// </param>
-	public TaskDialogRadioButton(string text, int id = -1) : base(text, id)
-	{
-		if (ButtonText == null) ButtonText = $"RadioButton{ButtonId}";
-	}
+	public TaskDialogRadioButton(string text, int id = -1) : base(text, id) => ButtonText ??= $"RadioButton{ButtonId}";
 
 	/// <summary>Occurs when the radio button is clicked.</summary>
-	public event EventHandler Click;
+	public event EventHandler? Click;
 
 	/// <summary>Gets or sets a value indicating whether this <see cref="TaskDialogRadioButton"/> is enabled.</summary>
 	/// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
 	[DefaultValue(true)]
 	public override bool Enabled
 	{
-		get => base.Enabled; set
+		get => base.Enabled;
+		set
 		{
 			if (base.Enabled != value)
 			{

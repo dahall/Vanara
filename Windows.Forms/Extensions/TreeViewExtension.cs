@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32;
@@ -35,7 +36,7 @@ public static partial class TreeViewExtension
 	/// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="TreeNode"/> instances in the collection.</returns>
 	public static IEnumerable<TreeNode> AsEnumerable(this TreeNodeCollection nodes, bool forAllChildren = false)
 	{
-		foreach (TreeNode item in nodes)
+		foreach (TreeNode item in nodes.Cast<TreeNode>())
 		{
 			yield return item;
 			if (forAllChildren)
@@ -99,16 +100,11 @@ public static partial class TreeViewExtension
 		return tvItem;
 	}
 
-	private static IconSize GetIconSizeFromSize(Size sz)
+	private static IconSize GetIconSizeFromSize(Size sz) => sz.Height switch
 	{
-		switch (sz.Height)
-		{
-			case 16: return IconSize.Small;
-			case 48: return IconSize.ExtraLarge;
-			case 256: return IconSize.Jumbo;
-			case 32:
-			default:
-				return IconSize.Large;
-		}
-	}
+		16 => IconSize.Small,
+		48 => IconSize.ExtraLarge,
+		256 => IconSize.Jumbo,
+		_ => IconSize.Large,
+	};
 }

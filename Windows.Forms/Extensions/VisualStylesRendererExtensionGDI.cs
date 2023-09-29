@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
@@ -16,7 +15,7 @@ namespace Vanara.Extensions;
 /// </summary>
 public static partial class VisualStylesRendererExtension
 {
-	private static readonly Dictionary<long, Bitmap> bmpCache = new();
+	//private static readonly Dictionary<long, Bitmap> bmpCache = new();
 
 	private delegate void DrawWrapperMethod(HDC hdc);
 
@@ -29,26 +28,26 @@ public static partial class VisualStylesRendererExtension
 	/// <param name="bounds">A <see cref="System.Drawing.Rectangle"/> in which the background image is drawn.</param>
 	/// <param name="clipRectangle">A <see cref="System.Drawing.Rectangle"/> that defines a clipping rectangle for the drawing operation.</param>
 	/// <param name="rightToLeft">If set to <c>true</c> flip the image for right to left layout.</param>
-	public static void DrawBackground(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false)
+	public static void DrawBackground(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false) =>
+	/*
 	{
-		/*var h = rnd.GetHashCode();
-		Bitmap bmp;
-		if (!bmpCache.TryGetValue(h, out bmp))
-			bmpCache.Add(h, bmp = GraphicsExtension.GetTransparentBitmap(GetBackgroundBitmap(rnd, Color.White), GetBackgroundBitmap(rnd, Color.Black)));
-		if (rightToLeft)
-			bmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
-		if (clipRectangle != null) dc.SetClip(clipRectangle.Value);
-		using (var attr = new ImageAttributes())
-		{
-			dc.CompositingMode = CompositingMode.SourceOver;
-			dc.CompositingQuality = CompositingQuality.HighQuality;
-			dc.InterpolationMode = InterpolationMode.HighQualityBicubic;
-			dc.PixelOffsetMode = PixelOffsetMode.HighQuality;
-			attr.SetWrapMode(WrapMode.TileFlipXY);
-			dc.DrawImage(bmp, bounds, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attr);
-		}*/
+	  var h = rnd.GetHashCode();
+	  Bitmap bmp;
+	  if (!bmpCache.TryGetValue(h, out bmp))
+	  bmpCache.Add(h, bmp = GraphicsExtension.GetTransparentBitmap(GetBackgroundBitmap(rnd, Color.White), GetBackgroundBitmap(rnd, Color.Black)));
+	  if (rightToLeft)
+	  bmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
+	  if (clipRectangle != null) dc.SetClip(clipRectangle.Value);
+	  using (var attr = new ImageAttributes())
+	  {
+	  dc.CompositingMode = CompositingMode.SourceOver;
+	  dc.CompositingQuality = CompositingQuality.HighQuality;
+	  dc.InterpolationMode = InterpolationMode.HighQualityBicubic;
+	  dc.PixelOffsetMode = PixelOffsetMode.HighQuality;
+	  attr.SetWrapMode(WrapMode.TileFlipXY);
+	  dc.DrawImage(bmp, bounds, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attr);
+	}*/
 		rnd.DrawBackground(dc, bounds, clipRectangle ?? bounds);
-	}
 
 	/// <summary>
 	/// Draws the background image of the current visual style element onto a glass background within the specified bounding rectangle
@@ -63,19 +62,18 @@ public static partial class VisualStylesRendererExtension
 	{
 		var ht = new SafeHTHEME(rnd.Handle, false);
 		dc.DrawViaDIB(bounds, (memoryHdc, b) =>
-			{
-				var rBounds = new RECT(bounds);
-				//var opts = new DrawThemeBackgroundOptions(clipRectangle);
-				// Draw background
-				var oldLayout = DCLayout.GDI_ERROR;
-				if (rightToLeft)
-					if ((oldLayout = SetLayout(memoryHdc, DCLayout.LAYOUT_RTL)) == DCLayout.GDI_ERROR)
-						throw new NotSupportedException("Unable to change graphics layout to RTL.");
-				DrawThemeBackground(ht, memoryHdc, rnd.Part, rnd.State, rBounds, clipRectangle);
-				if (oldLayout != DCLayout.GDI_ERROR)
-					SetLayout(memoryHdc, oldLayout);
-			}
-			);
+		{
+			var rBounds = new RECT(bounds);
+			//var opts = new DrawThemeBackgroundOptions(clipRectangle);
+			// Draw background
+			var oldLayout = DCLayout.GDI_ERROR;
+			if (rightToLeft)
+				if ((oldLayout = SetLayout(memoryHdc, DCLayout.LAYOUT_RTL)) == DCLayout.GDI_ERROR)
+					throw new NotSupportedException("Unable to change graphics layout to RTL.");
+			DrawThemeBackground(ht, memoryHdc, rnd.Part, rnd.State, rBounds, clipRectangle);
+			if (oldLayout != DCLayout.GDI_ERROR)
+				SetLayout(memoryHdc, oldLayout);
+		});
 	}
 
 	/// <summary>Draws the image from the specified <paramref name="imageList"/> within the specified bounds on a glass background.</summary>
@@ -99,20 +97,15 @@ public static partial class VisualStylesRendererExtension
 	/// <param name="disabled">
 	/// if set to <c>true</c> draws the image in a disabled state using the <see cref="ControlPaint.DrawImageDisabled"/> method.
 	/// </param>
-	public static void DrawGlassImage(this VisualStyleRenderer rnd, IDeviceContext g, Rectangle bounds, Image image, bool disabled = false)
-	{
+	public static void DrawGlassImage(this VisualStyleRenderer? rnd, IDeviceContext g, Rectangle bounds, Image image, bool disabled = false) =>
 		g.DrawViaDIB(bounds, (memoryHdc, b) =>
-			{
-				using (var mg = Graphics.FromHdc(memoryHdc.DangerousGetHandle()))
-				{
-					if (disabled)
-						ControlPaint.DrawImageDisabled(mg, image, bounds.X, bounds.Y, Color.Transparent);
-					else
-						mg.DrawImage(image, bounds);
-				}
-			}
-			);
-	}
+		{
+			using var mg = Graphics.FromHdc(memoryHdc.DangerousGetHandle());
+			if (disabled)
+				ControlPaint.DrawImageDisabled(mg, image, bounds.X, bounds.Y, Color.Transparent);
+			else
+				mg.DrawImage(image, bounds);
+		});
 
 	/// <summary>
 	/// Draws glowing text in the specified bounding rectangle with the option of overriding text color and applying other text formatting.
@@ -167,7 +160,7 @@ public static partial class VisualStylesRendererExtension
 	/// <param name="clr">The background color. This color cannot have an alpha channel.</param>
 	/// <param name="states">The optional list of states to render side by side.</param>
 	/// <returns>The background image.</returns>
-	public static Bitmap GetBackgroundBitmap(this VisualStyleRenderer rnd, Color clr, int[] states = null)
+	public static Bitmap GetBackgroundBitmap(this VisualStyleRenderer rnd, Color clr, int[]? states = null)
 	{
 		const int wh = 200;
 		if (rnd == null) throw new ArgumentNullException(nameof(rnd));
@@ -183,43 +176,41 @@ public static partial class VisualStylesRendererExtension
 			imgSz = new Size(rnd.GetInteger(IntegerProperty.Width), rnd.GetInteger(IntegerProperty.Height));
 		if (imgSz.Width == 0 || imgSz.Height == 0)
 		{
-			using (var sg = Graphics.FromHwnd(IntPtr.Zero))
-				imgSz = MaxSize(rnd.GetPartSize(sg, new Rectangle(0, 0, wh, wh), ThemeSizeType.Minimum), imgSz);
+			using var sg = Graphics.FromHwnd(IntPtr.Zero);
+			imgSz = MaxSize(rnd.GetPartSize(sg, new Rectangle(0, 0, wh, wh), ThemeSizeType.Minimum), imgSz);
 		}
 
 		var bounds = new Rectangle(0, 0, imgSz.Width * i, imgSz.Height);
 
 		// Draw each background linearly down the bitmap
-		using (var memoryHdc = SafeHDC.ScreenCompatibleDCHandle)
+		using var memoryHdc = SafeHDC.ScreenCompatibleDCHandle;
+		// Create a device-independent bitmap and select it into our DC
+		var info = new BITMAPINFO(bounds.Width, -bounds.Height);
+		using (memoryHdc.SelectObject(CreateDIBSection(HDC.NULL, info, DIBColorMode.DIB_RGB_COLORS, out var ppv)))
 		{
-			// Create a device-independent bitmap and select it into our DC
-			var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-			using (memoryHdc.SelectObject(CreateDIBSection(HDC.NULL, info, DIBColorMode.DIB_RGB_COLORS, out var ppv)))
+			using (var memoryGraphics = Graphics.FromHdc(memoryHdc.DangerousGetHandle()))
 			{
-				using (var memoryGraphics = Graphics.FromHdc(memoryHdc.DangerousGetHandle()))
+				// Setup graphics
+				memoryGraphics.CompositingMode = CompositingMode.SourceOver;
+				memoryGraphics.CompositingQuality = CompositingQuality.HighQuality;
+				memoryGraphics.SmoothingMode = SmoothingMode.HighQuality;
+				memoryGraphics.Clear(clr);
+
+				// Draw each background linearly down the bitmap
+				var rect = new Rectangle(0, 0, imgSz.Width, imgSz.Height);
+				foreach (var state in states)
 				{
-					// Setup graphics
-					memoryGraphics.CompositingMode = CompositingMode.SourceOver;
-					memoryGraphics.CompositingQuality = CompositingQuality.HighQuality;
-					memoryGraphics.SmoothingMode = SmoothingMode.HighQuality;
-					memoryGraphics.Clear(clr);
-
-					// Draw each background linearly down the bitmap
-					var rect = new Rectangle(0, 0, imgSz.Width, imgSz.Height);
-					foreach (var state in states)
-					{
-						rnd.SetParameters(rnd.Class, rnd.Part, state);
-						rnd.DrawBackground(memoryGraphics, rect);
-						rect.X += imgSz.Width;
-					}
+					rnd.SetParameters(rnd.Class, rnd.Part, state);
+					rnd.DrawBackground(memoryGraphics, rect);
+					rect.X += imgSz.Width;
 				}
-
-				// Copy DIB to Bitmap
-				var bmp = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
-				using (var primaryHdc = new SafeTempHDC(Graphics.FromImage(bmp)))
-					BitBlt(primaryHdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, RasterOperationMode.SRCCOPY);
-				return bmp;
 			}
+
+			// Copy DIB to Bitmap
+			var bmp = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
+			using (var primaryHdc = new SafeTempHDC(Graphics.FromImage(bmp)))
+				BitBlt(primaryHdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, RasterOperationMode.SRCCOPY);
+			return bmp;
 		}
 	}
 
@@ -230,13 +221,11 @@ public static partial class VisualStylesRendererExtension
 	/// <returns>
 	/// A <see cref="Font"/> that contains the value of the property specified by the prop parameter for the current visual style element.
 	/// </returns>
-	public static Font GetFont2(this VisualStyleRenderer rnd, IDeviceContext dc = null, Font defaultValue = null)
+	public static Font? GetFont2(this VisualStyleRenderer rnd, IDeviceContext? dc = null, Font? defaultValue = null)
 	{
-		using (var hdc = new SafeTempHDC(dc))
-		{
-			return 0 != GetThemeFont(new SafeHTHEME(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out var f)
-				? defaultValue : Font.FromLogFont(f);
-		}
+		using var hdc = new SafeTempHDC(dc);
+		return 0 != GetThemeFont(new SafeHTHEME(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out var f)
+			? defaultValue : Font.FromLogFont(f);
 	}
 
 	private static DrawTextFlags FromTFF(TextFormatFlags tff) => (DrawTextFlags)(int)tff;

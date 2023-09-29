@@ -10,7 +10,7 @@ internal class CommandLinkDesigner : AttributedControlDesigner<CommandLink>, ITo
 {
 	public CommandLinkDesigner() { }
 
-	public override SelectionRules SelectionRules => (SelectionRules.Visible | SelectionRules.AllSizeable | SelectionRules.Moveable);
+	public override SelectionRules SelectionRules => SelectionRules.Visible | SelectionRules.AllSizeable | SelectionRules.Moveable;
 
 	protected override IEnumerable<string> PropertiesToRemove { get; } = new string[] { "AllowDrop", "AutoEllipsis", "BackColor",
 		"BackgroundImage", "BackgroundImageLayout", "ContextMenuStrip", "Cursor", "FlatStyle", "FlatAppearance", "Font",

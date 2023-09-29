@@ -22,9 +22,9 @@ internal class CollapsiblePanelDesigner : AttributedParentControlDesignerEx<Coll
 
 	public Control ControlContainer => Control.contentPanel;
 
-	public ParentControlDesigner ControlContainerDesigner => DesignerHost?.GetDesigner(ControlContainer) as ParentControlDesigner;
+	public ParentControlDesigner? ControlContainerDesigner => DesignerHost?.GetDesigner(ControlContainer) as ParentControlDesigner;
 
-	public override SelectionRules SelectionRules => (SelectionRules.Visible | SelectionRules.AllSizeable | SelectionRules.Moveable);
+	public override SelectionRules SelectionRules => SelectionRules.Visible | SelectionRules.AllSizeable | SelectionRules.Moveable;
 
 	protected IDesignerHost DesignerHost => GetService<IDesignerHost>();
 
@@ -55,7 +55,7 @@ internal class CollapsiblePanelDesigner : AttributedParentControlDesignerEx<Coll
 
 	void IToolboxUser.ToolPicked(ToolboxItem tool) { }
 
-	internal void RefreshDesigner() { GetService<DesignerActionUIService>()?.Refresh(Control); }
+	internal void RefreshDesigner() => GetService<DesignerActionUIService>()?.Refresh(Control);
 
 	private void SelectComponent(Component p)
 	{

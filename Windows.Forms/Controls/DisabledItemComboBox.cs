@@ -4,33 +4,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Vanara.Drawing;
 using static Vanara.PInvoke.Macros;
-
-/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
-Before:
-using static Vanara.PInvoke.UxTheme;
-using static Vanara.PInvoke.Macros;
-After:
-using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
-Before:
-using static Vanara.PInvoke.UxTheme;
-using static Vanara.PInvoke.Macros;
-After:
-using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
-Before:
-using static Vanara.PInvoke.UxTheme;
-using static Vanara.PInvoke.Macros;
-After:
-using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32;
-*/
 using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.UxTheme;
 using ComboBoxStyle = System.Windows.Forms.ComboBoxStyle;
@@ -53,8 +26,8 @@ public class DisabledItemComboBox : ComboBox
 
 	private bool animationsNeedCleanup;
 	private ComboBoxState currentState = ComboBoxState.Normal, newState = ComboBoxState.Normal;
-	private ListBoxNativeWindow dropDownWindow;
-	private readonly VisualStyleRenderer vsr;
+	private ListBoxNativeWindow? dropDownWindow;
+	private readonly VisualStyleRenderer? vsr;
 
 	/// <summary>Initializes a new instance of the <see cref="DisabledItemComboBox"/> class.</summary>
 	public DisabledItemComboBox()
@@ -109,7 +82,7 @@ public class DisabledItemComboBox : ComboBox
 	/// <summary>Determines whether an item is enabled.</summary>
 	/// <param name="idx">The index of the item.</param>
 	/// <returns><c>true</c> if enabled; otherwise, <c>false</c>.</returns>
-	public bool IsItemEnabled(int idx) => !(idx > -1 && idx < Items.Count && Items[idx] is IEnableable && !((IEnableable)Items[idx]).Enabled);
+	public bool IsItemEnabled(int idx) => !(idx > -1 && idx < Items.Count && Items[idx] is IEnableable enableable && !enableable.Enabled);
 
 	/// <summary>
 	/// Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.ComboBox"/> and optionally releases the managed resources.
@@ -143,8 +116,8 @@ public class DisabledItemComboBox : ComboBox
 				}
 				else
 				{
-					using (var bb = new SolidBrush(e.BackColor))
-						e.Graphics.FillRectangle(bb, e.Bounds);
+					using var bb = new SolidBrush(e.BackColor);
+					e.Graphics.FillRectangle(bb, e.Bounds);
 				}
 				TextRenderer.DrawText(e.Graphics, itemString, e.Font, Rectangle.Inflate(e.Bounds, -2, 0), iEnabled ? e.ForeColor : SystemColors.GrayText, tff);
 			}
@@ -250,7 +223,7 @@ public class DisabledItemComboBox : ComboBox
 		if (IsDisposed)
 			return;
 
-		BufferedPaint.PaintAnimation(e.Graphics, this, ClientRectangle, PaintControl, currentState, Enabled ? newState : ComboBoxState.Disabled, (a, b) => (int)vsr.GetTransitionDuration((int)a, (int)b));
+		BufferedPaint.PaintAnimation(e.Graphics, this, ClientRectangle, PaintControl, currentState, Enabled ? newState : ComboBoxState.Disabled, (a, b) => (int)(vsr?.GetTransitionDuration((int)a, (int)b) ?? 0U));
 	}
 
 	/// <summary>Paints the background of the control.</summary>

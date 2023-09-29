@@ -24,7 +24,7 @@ public static class GdiObjExtensions2
 	/// <summary>Gets the copy of the device handle in an IDeviceContext supporting GDI+.</summary>
 	/// <param name="dc">The <see cref="IDeviceContext"/> instance.</param>
 	/// <returns>A <see cref="SafeHDC"/> instance that contains a copy of the context.</returns>
-	public static SafeHDC GetCompatibleSafeHDC(this IDeviceContext dc)
+	public static SafeHDC GetCompatibleSafeHDC(this IDeviceContext? dc)
 	{
 		if (dc is null)
 		{
@@ -48,55 +48,55 @@ public static class GdiObjExtensions2
 
 	/// <summary>Creates a managed <see cref="Bitmap"/> from a HICON instance.</summary>
 	/// <returns>A managed bitmap instance.</returns>
-	public static Bitmap ToBitmap(this in HICON hIcon) => hIcon.IsNull ? null : (Bitmap)Bitmap.FromHicon((IntPtr)hIcon).Clone();
+	public static Bitmap? ToBitmap(this in HICON hIcon) => hIcon.IsNull ? null : (Bitmap)Bitmap.FromHicon((IntPtr)hIcon).Clone();
 
 	/// <summary>Creates a managed <see cref="Bitmap"/> from a SafeHICON instance.</summary>
 	/// <returns>A managed bitmap instance.</returns>
-	public static Bitmap ToBitmap(this SafeHICON hIcon) => ToBitmap((HICON)hIcon);
+	public static Bitmap? ToBitmap(this SafeHICON hIcon) => ToBitmap((HICON)hIcon);
 
 	/// <summary>Creates a managed <see cref="Brush"/> from this HBRUSH instance.</summary>
 	/// <param name="hbr">The HBRUSH value.</param>
 	/// <returns>A managed brush instance.</returns>
-	public static Brush ToBrush(this in HBRUSH hbr) => hbr.IsNull ? null : new NativeBrush(hbr);
+	public static Brush? ToBrush(this in HBRUSH hbr) => hbr.IsNull ? null : new NativeBrush(hbr);
 
 	/// <summary>Creates a managed <see cref="Brush"/> from this HBRUSH instance.</summary>
 	/// <param name="hbr">The HBRUSH value.</param>
 	/// <returns>A managed brush instance.</returns>
-	public static Brush ToBrush(this SafeHBRUSH hbr) => ((HBRUSH)hbr).ToBrush();
+	public static Brush? ToBrush(this SafeHBRUSH hbr) => ((HBRUSH)hbr).ToBrush();
 
 	/// <summary>Creates a <see cref="Font"/> from an <see cref="HFONT"/>.</summary>
 	/// <param name="hf">The HFONT value.</param>
 	/// <returns>The Font instance.</returns>
-	public static Font ToFont(this in HFONT hf) => hf.IsNull ? null : Font.FromHfont((IntPtr)hf);
+	public static Font? ToFont(this in HFONT hf) => hf.IsNull ? null : Font.FromHfont((IntPtr)hf);
 
 	/// <summary>Creates a <see cref="Font"/> from an <see cref="HFONT"/>.</summary>
 	/// <param name="hf">The HFONT value.</param>
 	/// <returns>The Font instance.</returns>
-	public static Font ToFont(this SafeHFONT hf) => ((HFONT)hf).ToFont();
+	public static Font? ToFont(this SafeHFONT hf) => ((HFONT)hf).ToFont();
 
 	/// <summary>Creates a managed <see cref="Icon"/> from an HICON instance.</summary>
 	/// <returns>A managed icon instance.</returns>
-	public static Icon ToIcon(this in HICON hIcon) => hIcon.IsNull ? null : (Icon)Icon.FromHandle((IntPtr)hIcon).Clone();
+	public static Icon? ToIcon(this in HICON hIcon) => hIcon.IsNull ? null : (Icon)Icon.FromHandle((IntPtr)hIcon).Clone();
 
 	/// <summary>Creates a managed <see cref="Icon"/> from a SafeHICON instance.</summary>
 	/// <returns>A managed icon instance.</returns>
-	public static Icon ToIcon(this SafeHICON hIcon) => ToIcon((HICON)hIcon);
+	public static Icon? ToIcon(this SafeHICON hIcon) => ToIcon((HICON)hIcon);
 
 	/// <summary>Creates a <see cref="Pen"/> from an <see cref="HPEN"/>.</summary>
 	/// <param name="hpen">The HPEN value.</param>
 	/// <returns>The Pen instance.</returns>
-	public static Pen ToPen(this in HPEN hpen)
+	public static Pen? ToPen(this in HPEN hpen)
 	{
 		using InteropServices.ISafeMemoryHandle ptr = GetObject(hpen);
 		EXTLOGPEN lpen = ptr.ToStructure<EXTLOGPEN>();
-		Pen pen = null;
+		Pen? pen = null;
 		switch (lpen.elpBrushStyle)
 		{
 			case BrushStyle.BS_DIBPATTERN:
 			case BrushStyle.BS_DIBPATTERNPT:
 				DIBColorMode lw = (DIBColorMode)(uint)lpen.elpColor;
 				SafeHBRUSH hb = CreateDIBPatternBrushPt(lpen.elpHatch, lw);
-				pen = new Pen(((HBRUSH)hb).ToBrush());
+				pen = new Pen(((HBRUSH)hb).ToBrush()!);
 				break;
 
 			case BrushStyle.BS_HATCHED:
@@ -115,7 +115,7 @@ public static class GdiObjExtensions2
 				pen = new Pen(lpen.elpColor) { DashStyle = (DashStyle)lpen.Style };
 				if (pen.DashStyle == DashStyle.Custom && lpen.elpNumEntries > 0)
 				{
-					uint[] styleArray = lpen.elpStyleEntry.ToArray<uint>((int)lpen.elpNumEntries);
+					uint[] styleArray = lpen.elpStyleEntry.ToArray<uint>((int)lpen.elpNumEntries) ?? new uint[0];
 					pen.DashPattern = Array.ConvertAll(styleArray, i => (float)i);
 				}
 				break;
@@ -136,17 +136,17 @@ public static class GdiObjExtensions2
 	/// <summary>Creates a <see cref="Pen"/> from an <see cref="HPEN"/>.</summary>
 	/// <param name="hpen">The HPEN value.</param>
 	/// <returns>The Pen instance.</returns>
-	public static Pen ToPen(this SafeHPEN hpen) => ((HPEN)hpen).ToPen();
+	public static Pen? ToPen(this SafeHPEN hpen) => ((HPEN)hpen).ToPen();
 
 	/// <summary>Creates a <see cref="Region"/> from an <see cref="HRGN"/>.</summary>
 	/// <param name="hrgn">The HRGN value.</param>
 	/// <returns>The Region instance.</returns>
-	public static Region ToRegion(this in HRGN hrgn) => hrgn.IsNull ? null : Region.FromHrgn((IntPtr)hrgn);
+	public static Region? ToRegion(this in HRGN hrgn) => hrgn.IsNull ? null : Region.FromHrgn((IntPtr)hrgn);
 
 	/// <summary>Creates a <see cref="Region"/> from an <see cref="HRGN"/>.</summary>
 	/// <param name="hrgn">The HRGN value.</param>
 	/// <returns>The Region instance.</returns>
-	public static Region ToRegion(this SafeHRGN hrgn) => ((HRGN)hrgn).ToRegion();
+	public static Region? ToRegion(this SafeHRGN hrgn) => ((HRGN)hrgn).ToRegion();
 
 	// TODO: Fix code below to process different bpp bitmaps w/o flipping
 	//{
@@ -215,12 +215,12 @@ public static class GdiObjExtensions2
 /// <seealso cref="System.IDisposable"/>
 public class SafeTempHDC : IDisposable, IGraphicsObjectHandle
 {
-	private readonly IDeviceContext dc;
+	private readonly IDeviceContext? dc;
 	private readonly IntPtr hdc;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeTempHDC"/> class with an <see cref="IDeviceContext"/>.</summary>
 	/// <param name="dc">The <see cref="IDeviceContext"/> instance.</param>
-	public SafeTempHDC(IDeviceContext dc)
+	public SafeTempHDC(IDeviceContext? dc)
 	{
 		this.dc = dc;
 		hdc = dc?.GetHdc() ?? default;

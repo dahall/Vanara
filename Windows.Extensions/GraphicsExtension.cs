@@ -307,7 +307,7 @@ public static partial class GdiExtension
 
 		/// <summary>Creates a new bitmap from the current bits.</summary>
 		/// <returns>A new <see cref="Bitmap"/></returns>
-		public Bitmap ToBitmap() => new Bitmap(bmp.Width, bmp.Height, bd.Stride, PixelFormat.Format32bppArgb, bd.Scan0).Clone() as Bitmap;
+		public Bitmap ToBitmap() => (Bitmap)new Bitmap(bmp.Width, bmp.Height, bd.Stride, PixelFormat.Format32bppArgb, bd.Scan0).Clone();
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -342,20 +342,11 @@ public static partial class GdiExtension
 
 			object IEnumerator.Current => Current;
 
-			public void Dispose()
-			{
-				bmpLock = null;
-			}
+			public void Dispose() => GC.SuppressFinalize(this);
 
-			public bool MoveNext()
-			{
-				return idx < bmpLock.Length - 1 && ++idx >= 0;
-			}
+			public bool MoveNext() => idx < bmpLock.Length - 1 && ++idx >= 0;
 
-			public void Reset()
-			{
-				idx = -1;
-			}
+			public void Reset() => idx = -1;
 		}
 	}
 }

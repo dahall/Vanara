@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Vanara.Windows.Forms.Tests;
 

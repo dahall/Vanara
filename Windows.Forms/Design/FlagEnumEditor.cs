@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -7,13 +8,13 @@ namespace Vanara.Windows.Forms.Design;
 
 /// <summary>A <see cref="UITypeEditor"/> for editing flag enums.</summary>
 /// <typeparam name="TE">The type of the enum.</typeparam>
-/// <seealso cref="System.Drawing.Design.UITypeEditor"/>
-public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
+/// <seealso cref="UITypeEditor"/>
+public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, Enum
 {
 	private readonly FlagCheckedListBox listBox;
 
 	/// <summary>Initializes a new instance of the <see cref="FlagEnumUIEditor{TE}"/> class.</summary>
-	public FlagEnumUIEditor() { listBox = new FlagCheckedListBox { BorderStyle = BorderStyle.None }; }
+	public FlagEnumUIEditor() => listBox = new FlagCheckedListBox { BorderStyle = BorderStyle.None };
 
 	/// <summary>
 	/// Edits the specified object's value using the editor style indicated by the <see
@@ -27,7 +28,7 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 	/// <returns>
 	/// The new value of the object. If the value of the object has not changed, this should return the same object it was passed.
 	/// </returns>
-	public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	public override object? EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 	{
 		if (context?.Instance != null && provider != null)
 		{
@@ -57,19 +58,19 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) => UITypeEditorEditStyle.DropDown;
 
 	/// <summary>A checked list box to use as the editor.</summary>
-	/// <seealso cref="System.Drawing.Design.UITypeEditor"/>
+	/// <seealso cref="UITypeEditor"/>
 	public class FlagCheckedListBox : CheckedListBox
 	{
-		private readonly Container components = null;
+		private readonly Container? components = null;
 		private TE enumValue;
 		private bool isUpdatingCheckStates;
 
 		/// <summary>Initializes a new instance of the <see cref="FlagCheckedListBox"/> class.</summary>
-		public FlagCheckedListBox() { CheckOnClick = true; }
+		public FlagCheckedListBox() => CheckOnClick = true;
 
 		/// <summary>Gets or sets the value.</summary>
 		/// <value>The value.</value>
-		[DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public TE Value
 		{
 			get
@@ -77,8 +78,7 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 				long sum = 0;
 				for (var i = 0; i < Items.Count; i++)
 				{
-					var item = Items[i] as FlagCheckedListBoxItem;
-					if (item != null && GetItemChecked(i))
+					if (Items[i] is FlagCheckedListBoxItem item && GetItemChecked(i))
 						sum |= item.LongVal;
 				}
 				return FromLong(sum);
@@ -87,7 +87,7 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 			{
 				Items.Clear();
 				enumValue = value;
-				foreach (TE val in Enum.GetValues(typeof(TE)))
+				foreach (TE val in Enum.GetValues(typeof(TE)).Cast<TE>())
 					Add(val);
 				UpdateCheckedItems(enumValue);
 			}
@@ -116,8 +116,7 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 			base.OnItemCheck(e);
 
 			if (isUpdatingCheckStates) return;
-			var item = Items[e.Index] as FlagCheckedListBoxItem;
-			if (item != null) UpdateCheckedItems(item, e.NewValue);
+			if (Items[e.Index] is FlagCheckedListBoxItem item) UpdateCheckedItems(item, e.NewValue);
 		}
 
 		/// <summary>Updates the checked items.</summary>
@@ -129,9 +128,8 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 			// Iterate over all items
 			for (var i = 0; i < Items.Count; i++)
 			{
-				var item = Items[i] as FlagCheckedListBoxItem;
-				if (item == null) continue;
-				SetItemChecked(i, (item.LongVal == 0 && lval == 0) || value.IsFlagSet(item.Value));
+				if (Items[i] is not FlagCheckedListBoxItem item) continue;
+				SetItemChecked(i, item.LongVal == 0 && lval == 0 || value.IsFlagSet(item.Value));
 				//SetItemChecked(i, item.Value == 0 ? value == 0 : (item.value & value) == item.value && item.value != 0);
 			}
 			isUpdatingCheckStates = false;
@@ -148,7 +146,7 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 				sum = Convert.ToInt64(Value);
 				// If the item has been unchecked, remove its bits from the sum
 				if (cs == CheckState.Unchecked)
-					sum = sum & ~composite.LongVal;
+					sum &= ~composite.LongVal;
 				// If the item has been checked, combine its bits with the sum
 				else
 					sum |= composite.LongVal;
@@ -159,12 +157,12 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 		private static TE FromLong(long val) => (TE)Enum.ToObject(typeof(TE), val);
 
 		/// <summary>Represents an item in the CheckListBox</summary>
-		/// <seealso cref="System.Drawing.Design.UITypeEditor"/>
+		/// <seealso cref="UITypeEditor"/>
 		public class FlagCheckedListBoxItem
 		{
 			/// <summary>Initializes a new instance of the <see cref="FlagCheckedListBoxItem"/> class.</summary>
 			/// <param name="value">The value.</param>
-			public FlagCheckedListBoxItem(TE value) { Value = value; }
+			public FlagCheckedListBoxItem(TE value) => Value = value;
 
 			/// <summary>Gets the long value.</summary>
 			/// <value>The long value.</value>
@@ -175,7 +173,7 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 			public TE Value { get; }
 
 			/// <summary>Converts to string.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => Value.ToString();
 		}
 	}

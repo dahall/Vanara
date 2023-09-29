@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +13,7 @@ namespace Vanara.Windows.Forms;
 /// </summary>
 public class InputDialog : CommonDialog
 {
-	private object data;
+	private object? data;
 
 	/// <summary>
 	/// Gets or sets the data for the input dialog box. The data type will determine the type of input mechanism displayed. For simple
@@ -23,7 +24,7 @@ public class InputDialog : CommonDialog
 	/// <value>The data for the input dialog box.</value>
 	/// <remarks>TBD</remarks>
 	[DefaultValue(null), Browsable(false), Category("Data"), Description("The data for the input dialog box.")]
-	public object Data
+	public object? Data
 	{
 		get => data;
 		set => data = value;
@@ -35,13 +36,13 @@ public class InputDialog : CommonDialog
 	/// <value>The image to display on the top left corner of the dialog.</value>
 	[DefaultValue(null), Category("Appearance"), Description("The image to display on the top left corner of the dialog.")]
 	[Localizable(true)]
-	public Image Image { get; set; }
+	public Image? Image { get; set; }
 
 	/// <summary>Gets or sets the text prompt to display above all input options. This value can be <c>null</c>.</summary>
 	/// <value>The text prompt to display above all input options.</value>
 	[DefaultValue(null), Category("Appearance"), Description("The text prompt to display above all input options.")]
 	[Localizable(true), Bindable(true), Editor(typeof(System.ComponentModel.Design.MultilineStringEditor), typeof(System.Drawing.Design.UITypeEditor))]
-	public string Prompt { get; set; }
+	public string? Prompt { get; set; }
 
 	/// <summary>Gets or sets the input dialog box title.</summary>
 	/// <value>The input dialog box title. The default value is an empty string ("").</value>
@@ -68,7 +69,7 @@ public class InputDialog : CommonDialog
 	/// include the updated values from the <see cref="InternalInputDialog"/>.
 	/// </returns>
 	/// <remarks></remarks>
-	public static DialogResult Show(IWin32Window owner, string prompt, string caption, ref object data, Image image = null, int width = 0)
+	public static DialogResult Show(IWin32Window? owner, string? prompt, string caption, ref object? data, Image? image = null, int width = 0)
 	{
 		using var dlg = new InternalInputDialog(prompt, caption, image, data, width);
 		var ret = owner == null ? dlg.ShowDialog() : dlg.ShowDialog(owner);
@@ -95,7 +96,7 @@ public class InputDialog : CommonDialog
 	/// include the updated values from the <see cref="InternalInputDialog"/>.
 	/// </returns>
 	/// <remarks></remarks>
-	public static DialogResult Show(string prompt, string caption, ref object data, Image image = null, int width = 0) => Show(null, prompt, caption, ref data, image, width);
+	public static DialogResult Show(string? prompt, string caption, ref object? data, Image? image = null, int width = 0) => Show(null, prompt, caption, ref data, image, width);
 
 	/// <summary>Resets all properties to their default values.</summary>
 	public override void Reset() { }
@@ -154,22 +155,22 @@ public class InputDialog : CommonDialog
 			[typeof(Guid)] = s => { try { var n = new Guid(s); return true; } catch { return false; } },
 		};
 
-		private readonly List<MemberInfo> items = new();
+		private readonly List<MemberInfo?> items = new();
 		private Panel borderPanel;
 		private TableLayoutPanel buttonPanel;
 		private Button cancelBtn;
 		private IContainer components;
-		private object dataObj;
+		private object? dataObj;
 		private ErrorProvider errorProvider;
-		private Image image;
+		private Image? image;
 		private Button okBtn;
-		private string prompt;
+		private string? prompt;
 		private TableLayoutPanel table;
 
 		/// <summary>Initializes a new instance of the <see cref="InternalInputDialog"/> class.</summary>
 		public InternalInputDialog() => InitializeComponent();
 
-		internal InternalInputDialog(string prompt, string caption, Image image, object data, int width) : this()
+		internal InternalInputDialog(string? prompt, string caption, Image? image, object? data, int width) : this()
 		{
 			Width = width;
 			this.prompt = prompt;
@@ -181,13 +182,12 @@ public class InputDialog : CommonDialog
 		/// <summary>Gets or sets the data.</summary>
 		/// <value>The data.</value>
 		[DefaultValue(null), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public object Data
+		public object? Data
 		{
 			get => dataObj;
 			set
 			{
-				if (value == null)
-					value = string.Empty;
+				value ??= string.Empty;
 
 				items.Clear();
 
@@ -197,7 +197,7 @@ public class InputDialog : CommonDialog
 				{
 					foreach (var mi in value.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public))
 					{
-						if (GetAttr(mi)?.Hidden ?? false)
+						if (InternalInputDialog.GetAttr(mi)?.Hidden ?? false)
 							continue;
 						if (mi is FieldInfo fi && IsSupportedType(fi.FieldType))
 						{
@@ -209,7 +209,7 @@ public class InputDialog : CommonDialog
 						}
 					}
 
-					items.Sort((x, y) => (GetAttr(x)?.Order ?? int.MaxValue) - (GetAttr(y)?.Order ?? int.MaxValue));
+					items.Sort((x, y) => (InternalInputDialog.GetAttr(x)?.Order ?? int.MaxValue) - (InternalInputDialog.GetAttr(y)?.Order ?? int.MaxValue));
 				}
 
 				dataObj = value;
@@ -221,7 +221,7 @@ public class InputDialog : CommonDialog
 		/// <summary>Gets or sets the image.</summary>
 		/// <value>The image.</value>
 		[DefaultValue(null)]
-		public Image Image
+		public Image? Image
 		{
 			get => image;
 			set
@@ -235,7 +235,7 @@ public class InputDialog : CommonDialog
 		/// <summary>Gets or sets the prompt.</summary>
 		/// <value>The prompt.</value>
 		[DefaultValue(null)]
-		public string Prompt
+		public string? Prompt
 		{
 			get => prompt;
 			set
@@ -261,7 +261,7 @@ public class InputDialog : CommonDialog
 
 		private bool HasPrompt => !string.IsNullOrEmpty(Prompt);
 
-		private static object ConvertFromStr(string value, Type destType)
+		private static object? ConvertFromStr(string value, Type destType)
 		{
 			if (destType == typeof(string))
 				return value;
@@ -272,15 +272,12 @@ public class InputDialog : CommonDialog
 			return TypeDescriptor.GetConverter(destType).ConvertFrom(value);
 		}
 
-		private static string ConvertToStr(object value)
+		private static string ConvertToStr(object? value) => value switch
 		{
-			return value switch
-			{
-				null => string.Empty,
-
-				IConvertible _ => value.ToString(), _ => (string)TypeDescriptor.GetConverter(value).ConvertTo(value, typeof(string)),
-			};
-		}
+			null => string.Empty,
+			IConvertible _ => value!.ToString()!,
+			_ => (string)TypeDescriptor.GetConverter(value).ConvertTo(value, typeof(string))!,
+		};
 
 		private static int GetBestHeight(Control c)
 		{
@@ -298,7 +295,7 @@ public class InputDialog : CommonDialog
 			if (dec) l.Add(c.NumberDecimalSeparator);
 			if (grp) l.Add(c.NumberGroupSeparator);
 			if (e) l.Add("Ee");
-			var sb = new System.Text.StringBuilder();
+			var sb = new StringBuilder();
 			foreach (var s in l)
 				sb.Append(s);
 			var ca = sb.ToString().ToCharArray();
@@ -314,7 +311,7 @@ public class InputDialog : CommonDialog
 			if (timeSep) { l.Add(c.DateTimeFormat.TimeSeparator); l.Add(c.NumberFormat.NumberDecimalSeparator); }
 			if (dateSep) l.Add(c.DateTimeFormat.DateSeparator);
 			if (other != null && other.Length > 0) l.Add(new string(other));
-			var sb = new System.Text.StringBuilder();
+			var sb = new StringBuilder();
 			foreach (var s in l)
 				sb.Append(s);
 			var ca = sb.ToString().ToCharArray();
@@ -349,8 +346,8 @@ public class InputDialog : CommonDialog
 				// Apply value to dataObj
 				if (item == null)
 					dataObj = val;
-				else if (item is PropertyInfo)
-					((PropertyInfo)item).SetValue(dataObj, val, null);
+				else if (item is PropertyInfo info)
+					info.SetValue(dataObj, val, null);
 				else
 					((FieldInfo)item).SetValue(dataObj, val);
 			}
@@ -362,11 +359,11 @@ public class InputDialog : CommonDialog
 			var itemType = GetItemType(item);
 
 			// Get default text value
-			object val;
+			object? val;
 			if (item == null)
 				val = dataObj;
-			else if (item is PropertyInfo)
-				val = ((PropertyInfo)item).GetValue(dataObj, null);
+			else if (item is PropertyInfo info)
+				val = info.GetValue(dataObj, null);
 			else
 				val = ((FieldInfo)item).GetValue(dataObj);
 			var t = ConvertToStr(val);
@@ -375,7 +372,7 @@ public class InputDialog : CommonDialog
 			Control retVal;
 			if (itemType == typeof(bool))
 			{
-				retVal = new CheckBox { AutoSize = true, Checked = (bool)val, Margin = new Padding(0, 7, 0, 0), MinimumSize = new Size(0, 20) };
+				retVal = new CheckBox { AutoSize = true, Checked = (bool)val!, Margin = new Padding(0, 7, 0, 0), MinimumSize = new Size(0, 20) };
 			}
 			else if (itemType.IsEnum)
 			{
@@ -386,15 +383,15 @@ public class InputDialog : CommonDialog
 			}
 			else
 			{
-				var tb = new TextBox { CausesValidation = true, Dock = DockStyle.Fill, Text = t, UseSystemPasswordChar = GetAttr(item)?.UsePasswordChar ?? false };
+				var tb = new TextBox { CausesValidation = true, Dock = DockStyle.Fill, Text = t, UseSystemPasswordChar = InternalInputDialog.GetAttr(item)?.UsePasswordChar ?? false };
 				tb.Enter += (s, e) => tb.SelectAll();
 				if (itemType == typeof(char))
 					tb.KeyPress += (s, e) => e.Handled = !char.IsControl(e.KeyChar) && tb.TextLength > 0;
 				else
-					tb.KeyPress += (s, e) => e.Handled = IsInvalidKey(e.KeyChar, itemType);
+					tb.KeyPress += (s, e) => e.Handled = InternalInputDialog.IsInvalidKey(e.KeyChar, itemType);
 				tb.Validating += (s, e) =>
 				{
-					var invalid = TextIsInvalid(tb, itemType);
+					var invalid = InternalInputDialog.TextIsInvalid(tb, itemType);
 					e.Cancel = invalid;
 					errorProvider.SetError(tb, invalid ? $"Text must be in a valid format for {itemType.Name}." : "");
 				};
@@ -416,7 +413,7 @@ public class InputDialog : CommonDialog
 			var lbl = new Label { AutoSize = true, Dock = DockStyle.Left, Margin = new Padding(0, 0, 1, 0) };
 			if (item != null)
 			{
-				lbl.Text = (GetAttr(item)?.Label ?? item.Name) + ":";
+				lbl.Text = (InternalInputDialog.GetAttr(item)?.Label ?? item.Name) + ":";
 				// TODO: Change out '10' for spacing needed to align label text with TextBox and '4' for DPI specific spacing
 				lbl.Margin = new Padding(0, 10, 4, 0);
 			}
@@ -444,7 +441,7 @@ public class InputDialog : CommonDialog
 			var hrow = 0;
 
 			// Add header row if needed
-			Label lbl = null;
+			Label? lbl = null;
 			if (HasPrompt)
 			{
 				lbl = new Label
@@ -476,12 +473,13 @@ public class InputDialog : CommonDialog
 				lbl.MinimumSize = lbl.Size;
 		}
 
-		private void CancelBtn_Click(object sender, EventArgs e) => Close();
+		private void CancelBtn_Click(object? sender, EventArgs e) => Close();
 
-		private InputDialogItemAttribute GetAttr(MemberInfo mi) => mi is null ? null : (InputDialogItemAttribute)Attribute.GetCustomAttribute(mi, typeof(InputDialogItemAttribute), true);
+		private static InputDialogItemAttribute? GetAttr(MemberInfo? mi) => mi is null ? null : (InputDialogItemAttribute?)Attribute.GetCustomAttribute(mi, typeof(InputDialogItemAttribute), true);
 
-		private Type GetItemType(MemberInfo mi) => mi == null ? dataObj.GetType() : ((mi as PropertyInfo)?.PropertyType ?? ((FieldInfo)mi).FieldType);
+		private Type GetItemType(MemberInfo? mi) => mi == null ? dataObj!.GetType() : ((mi as PropertyInfo)?.PropertyType ?? ((FieldInfo)mi).FieldType);
 
+		[MemberNotNull(nameof(buttonPanel), nameof(cancelBtn), nameof(okBtn), nameof(borderPanel), nameof(table), nameof(components), nameof(errorProvider))]
 		private void InitializeComponent()
 		{
 			components = new Container();
@@ -584,7 +582,7 @@ public class InputDialog : CommonDialog
 			PerformLayout();
 		}
 
-		private bool IsInvalidKey(char keyChar, Type itemType)
+		private static bool IsInvalidKey(char keyChar, Type itemType)
 		{
 			if (char.IsControl(keyChar))
 				return false;
@@ -599,14 +597,14 @@ public class InputDialog : CommonDialog
 			return false;
 		}
 
-		private void OkBtn_Click(object sender, EventArgs e)
+		private void OkBtn_Click(object? sender, EventArgs e)
 		{
 			BindToData();
 			DialogResult = DialogResult.OK;
 			Close();
 		}
 
-		private bool TextIsInvalid(TextBox tb, Type itemType)
+		private static bool TextIsInvalid(TextBox tb, Type itemType)
 		{
 			if (string.IsNullOrEmpty(tb.Text))
 				return false;
@@ -616,7 +614,7 @@ public class InputDialog : CommonDialog
 
 		private class RegexTextBox : TextBox
 		{
-			public string RegexPattern { get; set; }
+			public string? RegexPattern { get; set; }
 
 			protected override void OnKeyPress(KeyPressEventArgs e) =>
 				//System.Text.RegularExpressions.Regex.IsMatch()
@@ -644,7 +642,7 @@ public sealed class InputDialogItemAttribute : Attribute
 
 	/// <summary>Gets or sets the label to use in the <see cref="InputDialog"/> as the label for this field or property.</summary>
 	/// <value>The label for this item.</value>
-	public string Label { get; }
+	public string Label { get; } = "";
 
 	/// <summary>Gets or sets the order in which to display the input for this field or property within the <see cref="InputDialog"/>.</summary>
 	/// <value>The display order for this item.</value>

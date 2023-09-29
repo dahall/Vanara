@@ -2718,7 +2718,7 @@ public static partial class Mpr
 		/// such as "F:" or "LPT1".
 		/// </para>
 		/// </summary>
-		public string lpLocalName;
+		public string? lpLocalName;
 
 		/// <summary>
 		/// <para>Type: <c>LPTSTR</c></para>

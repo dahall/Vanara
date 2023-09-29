@@ -14,8 +14,8 @@ public class EnumComboBox : CustomComboBox
 {
 	private readonly List<ECBItem> items = new();
 	private readonly Timer timer = new() { Interval = 150 };
-	private CheckedListBox checkListBox;
-	private Type type = null;
+	private CheckedListBox? checkListBox;
+	private Type? type = null;
 
 	/// <summary>Initializes a new instance of the <see cref="EnumComboBox"/> class.</summary>
 	public EnumComboBox() : base()
@@ -46,7 +46,7 @@ public class EnumComboBox : CustomComboBox
 		get => type?.FullName ?? "";
 		set
 		{
-			type = FindType(value, true);
+			type = EnumComboBox.FindType(value, true);
 			if (type is null || !type.IsEnum)
 				throw new ArgumentException("EnumTypeString must be an enumerated type.");
 
@@ -88,40 +88,38 @@ public class EnumComboBox : CustomComboBox
 	/// <summary>
 	/// Gets or sets the value of the member property specified by the <see cref="P:System.Windows.Forms.ListControl.ValueMember"/> property.
 	/// </summary>
-	public new object SelectedValue
+	public new object? SelectedValue
 	{
 		get
 		{
+			if (type is null) return null;
 			var ret = 0L;
 			if (!HasFlags)
 			{
 				ret = Convert.ToInt64(items[SelectedIndex].Value);
 			}
-			else
+			else if (checkListBox is not null)
 			{
 				for (var i = 0; i < checkListBox.CheckedItems.Count; i++)
 				{
-					var o = checkListBox.CheckedItems[i] as ECBItem;
-					if (o != null && o.Value is IConvertible)
+					if (checkListBox.CheckedItems[i] is ECBItem o && o.Value is IConvertible)
 						try { ret |= Convert.ToInt64(o.Value); } catch { }
 				}
 			}
-
 			return Convert.ChangeType(ret, GetEnumUnderlyingType(type));
 		}
 		set
 		{
 			if (!HasFlags)
 				SelectedIndex = items.FindIndex(i => i.Value == value);
-			else
+			else if (checkListBox is not null)
 			{
 				var lval = Convert.ToInt64(value);
 				checkListBox.BeginUpdate();
 				for (var i = 0; i < checkListBox.Items.Count; i++)
 				{
 					long? val = null;
-					var o = checkListBox.Items[i] as ECBItem;
-					if (o != null && o.Value is IConvertible)
+					if (checkListBox.Items[i] is ECBItem o && o.Value is IConvertible)
 						try { val = Convert.ToInt64(o.Value); } catch { }
 					checkListBox.SetItemCheckState(i, (val.HasValue && (val.Value & lval) == val.Value) ? CheckState.Checked : CheckState.Unchecked);
 				}
@@ -143,7 +141,7 @@ public class EnumComboBox : CustomComboBox
 	/// <summary>Gets the selected value.</summary>
 	/// <typeparam name="T">The type of the value to retrieve.</typeparam>
 	/// <returns>The selected value cast to <typeparamref name="T"/>.</returns>
-	public T GetSelectedValue<T>() => SelectedValue == null ? default : (T)SelectedValue;
+	public T? GetSelectedValue<T>() => SelectedValue == null ? default : (T)SelectedValue;
 
 	private static Type GetEnumUnderlyingType(Type eType)
 	{
@@ -155,19 +153,20 @@ public class EnumComboBox : CustomComboBox
 		return fields[0].FieldType;
 	}
 
-	private void CheckListBox_ItemCheck(object sender, ItemCheckEventArgs e) => timer.Enabled = true;
+	private void CheckListBox_ItemCheck(object? sender, ItemCheckEventArgs e) => timer.Enabled = true;
 
-	private Type FindType(string name, bool ignoreCase) => AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(name, false, ignoreCase)).Where(t => t != null).FirstOrDefault();
+	private static Type? FindType(string name, bool ignoreCase) => AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(name, false, ignoreCase)).WhereNotNull().FirstOrDefault();
 
 	private string GetFlagText()
 	{
-		var items = new string[checkListBox.CheckedItems.Count];
-		for (var i = 0; i < checkListBox.CheckedItems.Count; i++)
-			items[i] = checkListBox.CheckedItems[i].ToString();
+		var c = checkListBox?.CheckedItems.Count ?? 0;
+		var items = new string?[c];
+		for (var i = 0; i < c; i++)
+			items[i] = checkListBox?.CheckedItems[i].ToString();
 		return string.Join(", ", items);
 	}
 
-	private void Timer_Tick(object sender, EventArgs e)
+	private void Timer_Tick(object? sender, EventArgs e)
 	{
 		timer.Enabled = false;
 		if (HasFlags)
@@ -177,16 +176,16 @@ public class EnumComboBox : CustomComboBox
 	[Serializable]
 	private class ECBItem
 	{
-		public ECBItem(object value)
+		public ECBItem(object? value)
 		{
 			Value = value;
-			Text = value.ToString();
+			Text = value?.ToString();
 			// TODO: Alternatively get text from resource or translation service.
 		}
 
-		public string Text { get; set; }
-		public object Value { get; set; }
+		public string? Text { get; set; }
+		public object? Value { get; set; }
 
-		public override string ToString() => Text;
+		public override string? ToString() => Text;
 	}
 }

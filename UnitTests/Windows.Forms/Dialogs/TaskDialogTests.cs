@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿global using System.Windows.Forms;
+global using NUnit.Framework;
 
 namespace Vanara.Windows.Forms.Tests;
 

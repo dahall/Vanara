@@ -6,6 +6,8 @@ namespace Vanara.PInvoke;
 /// <summary>Platform invokable enumerated types, constants and functions from aclui.h</summary>
 public static partial class AclUI
 {
+	private static readonly SafeCoTaskMemStruct<Guid> guidNullPtr = Guid.Empty;
+
 	/// <summary>Messages sent from property sheet.</summary>
 	public enum PropertySheetCallbackMessage : uint
 	{
@@ -337,10 +339,10 @@ public static partial class AclUI
 		/// </param>
 		[PreserveSig]
 		HRESULT GetEffectivePermission(in Guid pguidObjectType, [In] PSID pUserSid,
-			[In, MarshalAs(UnmanagedType.LPWStr)] string pszServerName, [In] PSECURITY_DESCRIPTOR pSD,
-			[MarshalAs(UnmanagedType.LPArray)] out OBJECT_TYPE_LIST[] ppObjectTypeList,
+			[In, MarshalAs(UnmanagedType.LPWStr)] string? pszServerName, [In] PSECURITY_DESCRIPTOR pSD,
+			[MarshalAs(UnmanagedType.LPArray)] out OBJECT_TYPE_LIST[]? ppObjectTypeList,
 			out uint pcObjectTypeListLength,
-			[MarshalAs(UnmanagedType.LPArray)] out ACCESS_MASK[] ppGrantedAccessList,
+			[MarshalAs(UnmanagedType.LPArray)] out ACCESS_MASK[]? ppGrantedAccessList,
 			out uint pcGrantedAccessListLength);
 	}
 
@@ -538,7 +540,7 @@ public static partial class AclUI
 		/// control editor uses this entry as the initial access rights in a new ACE.
 		/// </param>
 		[PreserveSig]
-		HRESULT GetAccessRights(in Guid guidObject, [In] int dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] access, ref uint access_count, out uint DefaultAccess);
+		HRESULT GetAccessRights([In, Optional] IntPtr guidObject, [In] SI_OBJECT_INFO_Flags dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] access, ref uint access_count, out uint DefaultAccess);
 
 		/// <summary>
 		/// The MapGeneric method requests that the generic access rights in an access mask be mapped to their corresponding standard and
@@ -557,7 +559,7 @@ public static partial class AclUI
 		/// rights to the corresponding standard and specific access rights for the specified object type.
 		/// </param>
 		[PreserveSig]
-		HRESULT MapGeneric(in Guid guidObjectType, ref System.Security.AccessControl.AceFlags AceFlags, ref ACCESS_MASK Mask);
+		HRESULT MapGeneric([In, Optional] IntPtr guidObjectType, ref System.Security.AccessControl.AceFlags AceFlags, ref ACCESS_MASK Mask);
 
 		/// <summary>
 		/// The GetInheritTypes method requests information about how ACEs can be inherited by child objects. For more information, see
@@ -899,7 +901,7 @@ public static partial class AclUI
 		/// can be NULL to specify the local computer. The access control editor does not free this pointer.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string? pszServerName;
+		public string pszServerName;
 
 		/// <summary>
 		/// A pointer to a null-terminated, Unicode string that names the object being edited. This name appears in the title of the
@@ -926,7 +928,7 @@ public static partial class AclUI
 		/// <param name="serverName">Names the computer on which to look up account names and SIDs.</param>
 		/// <param name="pageTitle">The title of the basic security property page.</param>
 		/// <param name="guidObject">The unique identifier for the object.</param>
-		public SI_OBJECT_INFO(SI_OBJECT_INFO_Flags flags, string objectName, string? serverName = null, string? pageTitle = null, Guid? guidObject = null)
+		public SI_OBJECT_INFO(SI_OBJECT_INFO_Flags flags, string objectName, string serverName, string? pageTitle = null, Guid? guidObject = null)
 		{
 			dwFlags = flags;
 			hInstance = IntPtr.Zero;
@@ -986,14 +988,14 @@ public static partial class AclUI
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	[PInvokeData("aclui.h", MSDNShortId = "aa379603")]
-	public sealed class SI_ACCESS : IDisposable
+	public struct SI_ACCESS
 	{
 		/// <summary>
 		/// A pointer to a GUID structure that identifies the type of object to which the access right or default access mask applies.
 		/// The GUID can identify a property set or property on the object, or a type of child object that can be contained by the
 		/// object. If this member points to GUID_NULL, the access right applies to the object itself.
 		/// </summary>
-		public GuidPtr pguid;
+		public GuidPtr pguid = guidNullPtr;
 
 		/// <summary>
 		/// A bitmask that specifies the access right described by this structure. The mask can contain any combination of standard and
@@ -1013,13 +1015,12 @@ public static partial class AclUI
 		/// <param name="name">The display name.</param>
 		/// <param name="flags">The access flags.</param>
 		/// <param name="objType">Type of the object.</param>
-		public SI_ACCESS(uint mask, string name, INHERIT_FLAGS flags, Guid? objType = null)
+		public SI_ACCESS(uint mask, string name, INHERIT_FLAGS flags, GuidPtr objType = default)
 		{
 			this.mask = mask;
 			pszName = name;
 			dwFlags = flags;
-			if (objType != null)
-				ObjectTypeId = objType.Value;
+			pguid = objType == default ? guidNullPtr : objType;
 		}
 
 		/// <summary>
@@ -1027,13 +1028,7 @@ public static partial class AclUI
 		/// object-specific ACE.
 		/// </summary>
 		/// <value>The object type identifier.</value>
-		public Guid ObjectTypeId
-		{
-			get => pguid.Value.GetValueOrDefault();
-			set => pguid.Assign(value);
-		}
-
-		void IDisposable.Dispose() => pguid.Free();
+		public Guid ObjectTypeId => pguid.Value.GetValueOrDefault();
 	}
 
 	/// <summary>
@@ -1043,13 +1038,13 @@ public static partial class AclUI
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	[PInvokeData("aclui.h", MSDNShortId = "aa379604")]
-	public sealed class SI_INHERIT_TYPE : IDisposable
+	public struct SI_INHERIT_TYPE
 	{
 		/// <summary>
 		/// A pointer to a GUID structure that identifies the type of child object. This member can be a pointer to GUID_NULL. The GUID
 		/// corresponds to the InheritedObjectType member of an object-specific ACE.
 		/// </summary>
-		public GuidPtr pguid;
+		public GuidPtr pguid = guidNullPtr;
 
 		/// <summary>
 		/// A set of <see cref="INHERIT_FLAGS"/> that indicate the types of ACEs that can be inherited by the
@@ -1074,22 +1069,13 @@ public static partial class AclUI
 		/// <param name="childObjectType">Type of the child object.</param>
 		/// <param name="flags">The inheritance flags.</param>
 		/// <param name="name">The display name.</param>
-		public SI_INHERIT_TYPE(Guid childObjectType, INHERIT_FLAGS flags, string name) : this(flags, name)
-		{
-			ChildObjectTypeId = childObjectType;
-		}
+		public SI_INHERIT_TYPE(GuidPtr childObjectType, INHERIT_FLAGS flags, string name) : this(flags, name) => pguid = childObjectType;
 
 		/// <summary>
 		/// The type of child object. This member can be <see cref="Guid.Empty"/>. The GUID corresponds to the InheritedObjectType member
 		/// of an object-specific ACE.
 		/// </summary>
 		/// <value>The child object type identifier.</value>
-		public Guid ChildObjectTypeId
-		{
-			get => pguid.Value.GetValueOrDefault();
-			set => pguid.Assign(value);
-		}
-
-		void IDisposable.Dispose() => pguid.Free();
+		public Guid ChildObjectTypeId => pguid.Value.GetValueOrDefault();
 	}
 }

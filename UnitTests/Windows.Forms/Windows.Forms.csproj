@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.Windows.Forms</AssemblyName>
     <TargetFramework>$(TargetFramework)-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

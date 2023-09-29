@@ -46,11 +46,12 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <summary>Pseudo type cast for a Task specific ResourceType.</summary>
 	public const ResourceType taskResourceType = (ResourceType)99;
 
-	private static SI_OBJECT_INFO_Flags defaultFlags = SI_OBJECT_INFO_Flags.SI_EDIT_ALL | SI_OBJECT_INFO_Flags.SI_ADVANCED | SI_OBJECT_INFO_Flags.SI_VIEW_ONLY;
+	private static readonly SI_OBJECT_INFO_Flags defaultFlags = SI_OBJECT_INFO_Flags.SI_EDIT_ALL | SI_OBJECT_INFO_Flags.SI_ADVANCED | SI_OBJECT_INFO_Flags.SI_VIEW_ONLY;
 
 	private SI_OBJECT_INFO_Flags flags = defaultFlags;
-	private SecurityInfoImpl iSecInfo;
-	private string objectName, serverName, title;
+	private SecurityInfoImpl? iSecInfo;
+	private string objectName = "", serverName = "";
+	private string? title;
 
 	/// <summary>Initializes a new instance of the <see cref="AccessControlEditorDialog"/> class.</summary>
 	public AccessControlEditorDialog()
@@ -216,7 +217,8 @@ public class AccessControlEditorDialog : CommonDialog
 	[Description("The full name of the object.")]
 	public string ObjectName
 	{
-		get => objectName; set
+		get => objectName;
+		set
 		{
 			objectName = value;
 			if (iSecInfo != null)
@@ -282,12 +284,12 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <summary>Gets the resulting Security Descriptor.</summary>
 	/// <value>The resulting Security Descriptor.</value>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public RawSecurityDescriptor Result { get; private set; }
+	public RawSecurityDescriptor? Result { get; private set; }
 
 	/// <summary>Gets the resulting Security Descriptor in SDDL form.</summary>
 	/// <value>The resulting Security Descriptor in SDDL form.</value>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public string Sddl => Result.GetSddlForm(AccessControlSections.All);
+	public string? Sddl => Result?.GetSddlForm(AccessControlSections.All);
 
 	/// <summary>
 	/// Set this flag if the computer defined by the ServerName property is known to be a domain controller. If this flag is set, the domain name is included
@@ -302,7 +304,7 @@ public class AccessControlEditorDialog : CommonDialog
 
 	/// <summary>Gets or sets the name of the server on which the object resides. A <c>null</c> value indicates the local machine.</summary>
 	/// <value>The name of the server.</value>
-	[DefaultValue(null), Category("Data")]
+	[DefaultValue(""), Category("Data")]
 	[Description("Name of the server on which the object resides.")]
 	public string ServerName
 	{
@@ -368,7 +370,7 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <value>The title.</value>
 	[DefaultValue(null), Category("Appearance")]
 	[Description("Title of the property page tab.")]
-	public string TabTitle
+	public string? TabTitle
 	{
 		get => title; set { title = value; if (iSecInfo != null) iSecInfo.objectInfo.pszPageTitle = value; CustomPageTitle = !string.IsNullOrEmpty(value); }
 	}
@@ -398,7 +400,7 @@ public class AccessControlEditorDialog : CommonDialog
 	///   <item><description>System.Win32.RegistryKey</description></item>
 	///   <item><description><see cref="System.Threading.Semaphore"/></description></item>
 	///   <item><description>System.IO.MemoryMappedFiles.MemoryMappedFile</description></item>
-	///   <item><description><see cref="System.Security.AccessControl.CommonObjectSecurity"/> or derived class. <c>Note:</c> When using this option, be sure to 
+	///   <item><description><see cref="CommonObjectSecurity"/> or derived class. <c>Note:</c> When using this option, be sure to 
 	///   set the <see cref="ObjectIsContainer"/>, <see cref="ResourceType"/>, <see cref="ObjectName"/>, and <see cref="ServerName"/> properties.</description></item>
 	///   <item><description>Any object that supports the following methods and properties:
 	///     <list type="bullet"><item><description><code>GetAccessControl()</code> or <code>GetAccessControl(AccessControlSections)</code> method</description></item>
@@ -427,8 +429,8 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <param name="fullObjectName">Full name of the object.</param>
 	/// <param name="server">Name of the server. This value can be <c>null</c>.</param>
 	/// <param name="resourceType">Type of the object resource.</param>
-	/// <exception cref="System.ArgumentException">Unable to create an object from supplied arguments.</exception>
-	public void Initialize(string fullObjectName, string server, ResourceType resourceType) => Initialize(SecuredObject.GetKnownObject(resourceType, fullObjectName, server));
+	/// <exception cref="ArgumentException">Unable to create an object from supplied arguments.</exception>
+	public void Initialize(string fullObjectName, string? server, ResourceType resourceType) => Initialize(SecuredObject.GetKnownObject(resourceType, fullObjectName, server));
 
 	/// <summary>Initializes the dialog with a custom provider.</summary>
 	/// <param name="displayName">The object name.</param>
@@ -437,7 +439,7 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <param name="customProvider">The custom provider.</param>
 	/// <param name="sd">The binary Security Descriptor.</param>
 	/// <param name="targetServer">The target server.</param>
-	public void Initialize(string displayName, string fullObjectName, bool isContainer, IAccessControlEditorDialogProvider customProvider, byte[] sd, string targetServer = null)
+	public void Initialize(string displayName, string fullObjectName, bool isContainer, IAccessControlEditorDialogProvider customProvider, byte[] sd, string? targetServer = null)
 	{
 		if (isContainer)
 			ObjectIsContainer = true;
@@ -463,14 +465,14 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <param name="resourceType">Type of the resource.</param>
 	/// <param name="sd">The raw security descriptor.</param>
 	/// <param name="targetServer">The target server.</param>
-	public void Initialize(string displayName, string fullName, bool isContainer, ResourceType resourceType, byte[] sd, string targetServer = null)
+	public void Initialize(string displayName, string fullName, bool isContainer, ResourceType resourceType, byte[] sd, string? targetServer = null)
 	{
 		Initialize(displayName, fullName, isContainer, ProviderFromResourceType(resourceType), sd, targetServer);
 		ResourceType = resourceType;
 	}
 
 	/// <summary>When overridden in a derived class, resets the properties of a common dialog box to their default values.</summary>
-	/// <exception cref="System.InvalidOperationException">
+	/// <exception cref="InvalidOperationException">
 	/// AccessControlEditorDialog cannot be reset. It must be instantiated with a valid securable object.
 	/// </exception>
 	public override void Reset() => throw new InvalidOperationException("AccessControlEditorDialog cannot be reset. It must be instantiated with a valid securable object.");
@@ -482,11 +484,11 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <summary>Runs the dialog.</summary>
 	/// <param name="hWndOwner">The h WND owner.</param>
 	/// <returns></returns>
-	/// <exception cref="System.InvalidOperationException">The Initialize method must be called before the dialog can be shown.</exception>
+	/// <exception cref="InvalidOperationException">The Initialize method must be called before the dialog can be shown.</exception>
 	protected override bool RunDialog(IntPtr hWndOwner)
 	{
 		if (iSecInfo == null && !string.IsNullOrEmpty(ObjectName) && ResourceType != ResourceType.Unknown)
-			Initialize(ObjectName, ServerName, ResourceType);
+			Initialize(ObjectName, string.IsNullOrEmpty(ServerName) ? Environment.MachineName : ServerName, ResourceType);
 
 		if (iSecInfo == null)
 			throw new InvalidOperationException("The Initialize method must be called before the dialog can be shown.");

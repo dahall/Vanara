@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,8 +37,8 @@ public class ProgressDialog : CommonDialog
 	private const string defaultCancelText = "&Cancel";
 	private readonly InternalProgressDialog progressDlg;
 	private readonly Progress<ProgressEventArgs> update;
-	private CancellationTokenSource cancelToken;
-	private IWin32Window parent;
+	private CancellationTokenSource? cancelToken;
+	private IWin32Window? parent;
 	private bool running;
 
 	/// <summary>Initializes a new instance of the <see cref="ProgressDialog"/> class.</summary>
@@ -51,7 +52,7 @@ public class ProgressDialog : CommonDialog
 	/// <summary>Background task to run when calling <see cref="CommonDialog.ShowDialog()"/> without any specified action.</summary>
 	/// <value>The background task.</value>
 	[Browsable(false)]
-	public Func<CancellationToken, IProgress<ProgressEventArgs>, Task> BackgroundTask { get; set; }
+	public Func<CancellationToken, IProgress<ProgressEventArgs>, Task>? BackgroundTask { get; set; }
 
 	/// <summary>Gets or sets the cancel button text.</summary>
 	/// <value>The cancel button text.</value>
@@ -100,7 +101,7 @@ public class ProgressDialog : CommonDialog
 	/// <exception cref="InvalidOperationException">Another instance is already running.</exception>
 	public async Task ShowDialog(IWin32Window owner, Func<CancellationToken, IProgress<ProgressEventArgs>, Task> function)
 	{
-		if (function == null) throw new ArgumentNullException();
+		if (function == null) throw new ArgumentNullException(nameof(function));
 		if (running) throw new InvalidOperationException("Another instance is already running.");
 		try
 		{
@@ -122,9 +123,9 @@ public class ProgressDialog : CommonDialog
 	/// <returns>The task object representing the asynchronous operation. The <see cref="Task{TResult}.Result"/> property on the task object returns the value returned by <paramref name="function"/>.</returns>
 	/// <exception cref="ArgumentNullException">The <paramref name="function"/> value cannot be <c>null</c>.</exception>
 	/// <exception cref="InvalidOperationException">Another instance is already running.</exception>
-	public async Task<T> ShowDialog<T>(IWin32Window owner, Func<CancellationToken, IProgress<ProgressEventArgs>, Task<T>> function)
+	public async Task<T> ShowDialog<T>(IWin32Window? owner, Func<CancellationToken, IProgress<ProgressEventArgs>, Task<T>> function)
 	{
-		if (function == null) throw new ArgumentNullException();
+		if (function == null) throw new ArgumentNullException(nameof(function));
 		if (running) throw new InvalidOperationException("Another instance is already running.");
 		try
 		{
@@ -146,6 +147,8 @@ public class ProgressDialog : CommonDialog
 	{
 		try
 		{
+			if (BackgroundTask is null)
+				throw new InvalidOperationException($"{nameof(BackgroundTask)} must be set before calling {nameof(RunDialog)}.");
 			ShowDialog(NativeWindow.FromHandle(hwndOwner), BackgroundTask).Wait();
 			return true;
 		}
@@ -192,7 +195,7 @@ public class ProgressDialog : CommonDialog
 		}
 
 		/// <summary>Occurs when the Cancel button is pressed.</summary>
-		public event CancelEventHandler Cancelled;
+		public event CancelEventHandler? Cancelled;
 
 		/// <summary>
 		/// Gets or sets the value of the macro progress bar. Valid values are 0 to 100. If this value is 0 and <see cref="MacroStatusText"/> is null or
@@ -254,10 +257,7 @@ public class ProgressDialog : CommonDialog
 
 		/// <summary>Raises the <see cref="E:Cancelled"/> event.</summary>
 		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
-		protected virtual void OnCancelled(CancelEventArgs e)
-		{
-			Cancelled?.Invoke(this, e);
-		}
+		protected virtual void OnCancelled(CancelEventArgs e) => Cancelled?.Invoke(this, e);
 
 		/// <summary>Raises the <see cref="E:System.Windows.Forms.Form.FormClosed"/> event.</summary>
 		/// <param name="e">A <see cref="T:System.Windows.Forms.FormClosedEventArgs"/> that contains the event data.</param>
@@ -270,11 +270,9 @@ public class ProgressDialog : CommonDialog
 		/// <summary>Handles the Click event of the cancelBtn control.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void CancelBtn_Click(object sender, EventArgs e)
-		{
-			OnCancelled(new CancelEventArgs(true));
-		}
+		private void CancelBtn_Click(object? sender, EventArgs e) => OnCancelled(new CancelEventArgs(true));
 
+		[MemberNotNull(nameof(commandPanel), nameof(contentPanel), nameof(progressBar), nameof(statusLabel), nameof(cancelBtn), nameof(dividerPanel), nameof(macroStatusLabel), nameof(macroProgressBar))]
 		private void InitializeComponent()
 		{
 			progressBar = new ProgressBar();
@@ -436,7 +434,7 @@ public class ProgressEventArgs : EventArgs
 	/// </summary>
 	/// <value>The macro status text.</value>
 	[DefaultValue("")]
-	public string MacroStatusText { get; set; }
+	public string MacroStatusText { get; set; } = "";
 
 	/// <summary>Gets or sets the value of the standard progress bar. Valid values are 0 to 100.</summary>
 	/// <value>The percent complete.</value>

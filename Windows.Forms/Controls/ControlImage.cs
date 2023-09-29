@@ -6,23 +6,23 @@ namespace Vanara.Windows.Forms;
 /// <summary>Represents an image used within a control.</summary>
 public class ControlImage
 {
-	private Image image;
+	private Image? image;
 	private string imageKey = string.Empty;
-	private ImageList imageList;
+	private ImageList? imageList;
 	private int index = -1;
 	private bool useIntegerIndex = true;
 
 	/// <summary>Initializes a new instance of the <see cref="ControlImage"/> class.</summary>
 	/// <param name="parent">The parent.</param>
-	public ControlImage(Control parent) { Control = parent; }
+	public ControlImage(Control parent) => Control = parent;
 
 	/// <summary>Gets or sets the image.</summary>
 	/// <value>The image.</value>
-	public virtual Image Image
+	public virtual Image? Image
 	{
 		get
 		{
-			if ((image == null) && (imageList != null))
+			if (image == null && imageList != null)
 			{
 				int actualIndex = ActualIndex;
 				if (actualIndex >= imageList.Images.Count)
@@ -47,12 +47,12 @@ public class ControlImage
 
 	/// <summary>Gets or sets the index of the image.</summary>
 	/// <value>The index of the image.</value>
-	/// <exception cref="System.ArgumentOutOfRangeException">ImageIndex</exception>
+	/// <exception cref="ArgumentOutOfRangeException">ImageIndex</exception>
 	public virtual int ImageIndex
 	{
 		get
 		{
-			if ((index != -1) && (imageList != null) && (index >= imageList.Images.Count))
+			if (index != -1 && imageList != null && index >= imageList.Images.Count)
 				return imageList.Images.Count - 1;
 			return index;
 		}
@@ -85,7 +85,7 @@ public class ControlImage
 
 	/// <summary>Gets or sets the image list.</summary>
 	/// <value>The image list.</value>
-	public virtual ImageList ImageList
+	public virtual ImageList? ImageList
 	{
 		get => imageList; set
 		{
@@ -119,7 +119,7 @@ public class ControlImage
 	/// <value>The control.</value>
 	protected Control Control { get; set; }
 
-	private void ImageListOnRecreateHandle(object sender, EventArgs eventArgs)
+	private void ImageListOnRecreateHandle(object? sender, EventArgs eventArgs)
 	{
 		if (Control?.IsHandleCreated ?? false) Control.Invalidate();
 	}

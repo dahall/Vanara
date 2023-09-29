@@ -70,41 +70,41 @@ namespace Vanara.Windows.Forms
 			base.Dispose(disposing);
 		}
 
-		private void EmulateExpInfoButton_Click(object sender, EventArgs e)
+		private void EmulateExpInfoButton_Click(object? sender, EventArgs e)
 		{
 			OnClick(e);
 		}
 
-		private void EmulateExpInfoButton_Enter(object sender, EventArgs e)
+		private void EmulateExpInfoButton_Enter(object? sender, EventArgs e)
 		{
 			// Focus rectangle.
 			// http://msdn.microsoft.com/en-us/library/system.windows.forms.controlpaint.drawfocusrectangle(VS.71).aspx
 			ControlPaint.DrawFocusRectangle(Graphics.FromHwnd(label.Handle), label.ClientRectangle);
 		}
 
-		private void EmulateExpInfoButton_Leave(object sender, EventArgs e)
+		private void EmulateExpInfoButton_Leave(object? sender, EventArgs e)
 		{
 			// Lost focus.
 			// Correct way to erase a border?
 			ControlPaint.DrawBorder(Graphics.FromHwnd(label.Handle), label.ClientRectangle, label.BackColor, ButtonBorderStyle.Solid);
 		}
 
-		private void EmulateExpInfoButton_MouseDown(object sender, MouseEventArgs e)
+		private void EmulateExpInfoButton_MouseDown(object? sender, MouseEventArgs e)
 		{
 			pictureBox.Image = imageList.Images[isExpanded ? 2 : 6];
 		}
 
-		private void EmulateExpInfoButton_MouseEnter(object sender, EventArgs e)
+		private void EmulateExpInfoButton_MouseEnter(object? sender, EventArgs e)
 		{
 			pictureBox.Image = imageList.Images[isExpanded ? 1 : 5];
 		}
 
-		private void EmulateExpInfoButton_MouseLeave(object sender, EventArgs e)
+		private void EmulateExpInfoButton_MouseLeave(object? sender, EventArgs e)
 		{
 			pictureBox.Image = imageList.Images[isExpanded ? 0 : 4];
 		}
 
-		private void EmulateExpInfoButton_MouseUp(object sender, MouseEventArgs e)
+		private void EmulateExpInfoButton_MouseUp(object? sender, MouseEventArgs e)
 		{
 			pictureBox.Image = imageList.Images[isExpanded ? 0 : 4];
 		}

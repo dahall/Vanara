@@ -11,7 +11,7 @@ internal class CollapsiblePanelHeader : Control
 	private const int tbpadding = 8;
 	private const string bgClass = "LISTVIEW", btnClass = "TASKDIALOG", txtClass = btnClass;
 	private const int bgPart = 6, btnPart = 13, txtPart = 2;
-	private readonly VisualStyleRenderer bgRnd, btnRnd, txtRnd;
+	private readonly VisualStyleRenderer? bgRnd, btnRnd, txtRnd;
 	private int headerHeight;
 	private Size imgSz;
 	private Rectangle buttonBounds;
@@ -154,22 +154,22 @@ internal class CollapsiblePanelHeader : Control
 			g.CompositingQuality = CompositingQuality.HighQuality;
 			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-			if (bgRnd == null)
+			if (bgRnd is null)
 				try
 				{
-					e.Graphics.Clear(ButtonState == PushButtonState.Hot || ButtonState == PushButtonState.Pressed ? SystemColors.Highlight : SystemColors.Window);
-					TextRenderer.DrawText(e.Graphics, Text, SystemFonts.CaptionFont, textBounds.Location, ButtonState == PushButtonState.Hot || ButtonState == PushButtonState.Pressed ? SystemColors.HighlightText : SystemColors.WindowText);
+					e.Graphics.Clear(ButtonState is PushButtonState.Hot or PushButtonState.Pressed ? SystemColors.Highlight : SystemColors.Window);
+					TextRenderer.DrawText(e.Graphics, Text, SystemFonts.CaptionFont, textBounds.Location, ButtonState is PushButtonState.Hot or PushButtonState.Pressed ? SystemColors.HighlightText : SystemColors.WindowText);
 				}
 				catch { }
 			else
 			{
 				LayoutElements(e.Graphics, e.ClipRectangle);
 				bgRnd.DrawBackground(e.Graphics, ClientRectangle);
-				btnRnd.DrawBackground(e.Graphics, buttonBounds, null, this.GetRightToLeftProperty() == RightToLeft.Yes);
+				btnRnd!.DrawBackground(e.Graphics, buttonBounds, null, this.GetRightToLeftProperty() == RightToLeft.Yes);
 				var tff = TextFormatFlags.SingleLine;
 				if (this.GetRightToLeftProperty() == RightToLeft.Yes)
 					tff |= TextFormatFlags.RightToLeft;
-				txtRnd.DrawText(e.Graphics, textBounds, Text, !Enabled, tff);
+				txtRnd!.DrawText(e.Graphics, textBounds, Text, !Enabled, tff);
 			}
 			base.OnPaint(e);
 		}
@@ -177,17 +177,17 @@ internal class CollapsiblePanelHeader : Control
 
 	private void LayoutElements(IDeviceContext g, Rectangle clipRect)
 	{
-		if (btnRnd == null) return;
+		if (btnRnd is null) return;
 		var state = (int)ButtonState;
 		if (state == 4)
 			state = Collapsed ? 7 : 8;
 		else if (!Collapsed)
 			state += 3;
 		btnRnd.SetState(state);
-		state = (ButtonState == PushButtonState.Hot || ButtonState == PushButtonState.Pressed) ? 2 : 1;
-		bgRnd.SetState(state);
-		var r = txtRnd.GetTextExtent(g, "W", TextFormatFlags.Default);
-		headerHeight = (tbpadding * 2) + r.Height;
+		state = (ButtonState is PushButtonState.Hot or PushButtonState.Pressed) ? 2 : 1;
+		bgRnd!.SetState(state);
+		var r = txtRnd!.GetTextExtent(g, "W", TextFormatFlags.Default);
+		headerHeight = tbpadding * 2 + r.Height;
 		imgSz = new Size(btnRnd.GetInteger(IntegerProperty.Width), btnRnd.GetInteger(IntegerProperty.Height));
 		buttonBounds = new Rectangle(clipRect.Width - imgSz.Width - HorzPadding, (headerHeight - imgSz.Height) / 2, imgSz.Width, imgSz.Height);
 		textBounds = new Rectangle(HorzPadding, tbpadding, clipRect.Width - HorzPadding - imgSz.Width, tbpadding + r.Height);

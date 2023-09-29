@@ -25,28 +25,28 @@ public partial class ShellNamespaceTreeControlTestForm : Form
 
 	private void shellNamespaceTreeControl1_AfterExpand(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs e)
 	{
-		log.AppendText($"After expand: {e.Item.Name}, {e.Action}" + Environment.NewLine);
+		log.AppendText($"After expand: {e.Item?.Name}, {e.Action}" + Environment.NewLine);
 	}
 
 	private void shellNamespaceTreeControl1_AfterLabelEdit(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlItemLabelEditEventArgs e)
 	{
-		log.AppendText($"After label edit: {e.Item.Name}, {e.Label}" + Environment.NewLine);
+		log.AppendText($"After label edit: {e.Item?.Name}, {e.Label}" + Environment.NewLine);
 	}
 
 	private void shellNamespaceTreeControl1_BeforeExpand(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlCancelEventArgs e)
 	{
-		log.AppendText($"Before expand: {e.Item.Name}, {e.Action}" + Environment.NewLine);
+		log.AppendText($"Before expand: {e.Item?.Name}, {e.Action}" + Environment.NewLine);
 	}
 
 	private void shellNamespaceTreeControl1_BeforeItemDelete(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlCancelEventArgs e)
 	{
-		log.AppendText($"Before delete: {e.Item.Name}, {e.Action}" + Environment.NewLine);
+		log.AppendText($"Before delete: {e.Item?.Name}, {e.Action}" + Environment.NewLine);
 		e.Cancel = MessageBox.Show(this, "Delete?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No;
 	}
 
 	private void shellNamespaceTreeControl1_BeforeLabelEdit(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlItemLabelEditEventArgs e)
 	{
-		log.AppendText($"Before label edit: {e.Item.Name}, {e.Label}" + Environment.NewLine);
+		log.AppendText($"Before label edit: {e.Item?.Name}, {e.Label}" + Environment.NewLine);
 		e.CancelEdit = true;
 	}
 

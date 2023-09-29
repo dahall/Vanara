@@ -151,7 +151,7 @@ public enum ShellTreeItemState : uint
 [ComVisible(true), Guid("0639efb8-7701-472e-863d-d6fbc543d736")]
 public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INameSpaceTreeControlEvents, INameSpaceTreeControlDropHandler, IMessageFilter //, INameSpaceTreeAccessible
 {
-	internal INameSpaceTreeControl pCtrl;
+	internal INameSpaceTreeControl? pCtrl;
 
 	private const NSTCSTYLE defaultStyle = NSTCSTYLE.NSTCS_HASEXPANDOS | NSTCSTYLE.NSTCS_ROOTHASEXPANDO | NSTCSTYLE.NSTCS_FADEINOUTEXPANDOS |
 		NSTCSTYLE.NSTCS_NOINFOTIP | NSTCSTYLE.NSTCS_ALLOWJUNCTIONS | NSTCSTYLE.NSTCS_SHOWSELECTIONALWAYS | NSTCSTYLE.NSTCS_FULLROWSELECT |
@@ -179,10 +179,10 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	private BorderStyle borderStyle = BorderStyle.None;
 	private HWND hWndNsTreeCtrl, hWndTreeView;
 	private bool oleUninit = false;
-	private INameSpaceTreeControl2 pCtrl2;
+	private INameSpaceTreeControl2? pCtrl2;
 	private EnumFlagIndexer<NSTCSTYLE> style = defaultStyle;
 	private EnumFlagIndexer<NSTCSTYLE2> style2 = defaultStyle2;
-	private string theme = null;
+	private string? theme = null;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellNamespaceTreeControl"/> class.</summary>
 	public ShellNamespaceTreeControl()
@@ -194,43 +194,43 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 
 	/// <summary>Called after an item is expanded.</summary>
 	[Category("Behavior"), Description("Occurs when an item has been expanded.")]
-	public event EventHandler<ShellNamespaceTreeControlEventArgs> AfterExpand;
+	public event EventHandler<ShellNamespaceTreeControlEventArgs>? AfterExpand;
 
 	/// <summary>Called after an item has been added.</summary>
 	[Category("Behavior"), Description("Occurs when an item has been added.")]
-	public event EventHandler<ShellNamespaceTreeControlEventArgs> AfterItemAdd;
+	public event EventHandler<ShellNamespaceTreeControlEventArgs>? AfterItemAdd;
 
 	/// <summary>Called after an item and all of its children are deleted.</summary>
 	[Category("Behavior"), Description("Occurs when an item has been deleted.")]
-	public event EventHandler<ShellNamespaceTreeControlEventArgs> AfterItemDelete;
+	public event EventHandler<ShellNamespaceTreeControlEventArgs>? AfterItemDelete;
 
 	/// <summary>Called after the item leaves edit mode.</summary>
 	[Category("Behavior"), Description("Occurs when the text of an item has been edited by the user.")]
-	public event EventHandler<ShellNamespaceTreeControlItemLabelEditEventArgs> AfterLabelEdit;
+	public event EventHandler<ShellNamespaceTreeControlItemLabelEditEventArgs>? AfterLabelEdit;
 
 	/// <summary>Occurs when the selection changes.</summary>
 	[Category("Behavior"), Description("Occurs when an item has been selected.")]
-	public event EventHandler AfterSelect;
+	public event EventHandler? AfterSelect;
 
 	/// <summary>Called before an item is expanded.</summary>
 	[Category("Behavior"), Description("Occurs when an item it about to be expanded.")]
-	public event EventHandler<ShellNamespaceTreeControlCancelEventArgs> BeforeExpand;
+	public event EventHandler<ShellNamespaceTreeControlCancelEventArgs>? BeforeExpand;
 
 	/// <summary>Called before an item and all of its children are deleted.</summary>
 	[Category("Behavior"), Description("Occurs when an item is about to be deleted.")]
-	public event EventHandler<ShellNamespaceTreeControlCancelEventArgs> BeforeItemDelete;
+	public event EventHandler<ShellNamespaceTreeControlCancelEventArgs>? BeforeItemDelete;
 
 	/// <summary>Called before the item goes into edit mode.</summary>
 	[Category("Behavior"), Description("Occurs when the text of an item is about to be edited by the user.")]
-	public event EventHandler<ShellNamespaceTreeControlItemLabelEditEventArgs> BeforeLabelEdit;
+	public event EventHandler<ShellNamespaceTreeControlItemLabelEditEventArgs>? BeforeLabelEdit;
 
 	/// <summary>Called when the user clicks a button on the mouse.</summary>
 	[Category("Behavior"), Description("Occurs when an item is clicked by the user.")]
-	public event EventHandler<ShellNamespaceTreeControlItemMouseClickEventArgs> ItemMouseClick;
+	public event EventHandler<ShellNamespaceTreeControlItemMouseClickEventArgs>? ItemMouseClick;
 
 	/// <summary>Called when the user double-clicks a button on the mouse.</summary>
 	[Category("Behavior"), Description("Occurs when an item is double-clicked with the mouse.")]
-	public event EventHandler<ShellNamespaceTreeControlItemMouseClickEventArgs> ItemMouseDoubleClick;
+	public event EventHandler<ShellNamespaceTreeControlItemMouseClickEventArgs>? ItemMouseDoubleClick;
 
 	/// <summary>Indicates whether to insert spacing (padding) between top-level nodes.</summary>
 	[DefaultValue(false), Category("Appearance"), Description("Indicates whether to insert spacing (padding) between top-level nodes.")]
@@ -385,7 +385,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	/// <summary>Gets the currently selected item, or <see langword="null"/> if nothing is selected.</summary>
 	/// <value>The selected item, or <see langword="null"/> if nothing is selected.</value>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public ShellItem SelectedItem
+	public ShellItem? SelectedItem
 	{
 		get
 		{
@@ -396,11 +396,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 			}
 			return null;
 		}
-		set
-		{
-			var state = GetItemState(value);
-			SetItemState(value, (ShellTreeItemState)NSTCITEMSTATE_ALL, state | ShellTreeItemState.Selected);
-		}
+		set => SetItemState(value, (ShellTreeItemState)NSTCITEMSTATE_ALL, GetItemState(value) | ShellTreeItemState.Selected);
 	}
 
 	/// <summary>
@@ -508,7 +504,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	/// <summary>Gets or sets the desktop theme for the current control.</summary>
 	/// <value>The name of the desktop theme to which the current window is being set.</value>
 	[DefaultValue(null), Category("Appearance"), Description("Gets or sets the desktop theme for the current control.")]
-	public string Theme { get => theme; set { theme = value; pCtrl?.SetTheme(value); } }
+	public string? Theme { get => theme; set { theme = value; pCtrl?.SetTheme(value); } }
 
 	// TODO: Figure how to do this best
 	//[DefaultValue(false)]
@@ -559,23 +555,24 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	}
 
 	/// <summary>Collapses all of the items in the tree.</summary>
-	public void CollapseAll() => pCtrl.CollapseAll();
+	public void CollapseAll() => pCtrl?.CollapseAll();
 
 	/// <summary>Ensures that the given item is visible.</summary>
 	/// <param name="item">The Shell item for which the visibility is being ensured.</param>
-	public void EnsureVisible(ShellItem item) => pCtrl.EnsureItemVisible(item.IShellItem);
+	public void EnsureVisible(ShellItem item) => pCtrl?.EnsureItemVisible(item.IShellItem);
 
 	/// <summary>Gets state information about a Shell item.</summary>
 	/// <param name="item">A pointer to the Shell item from which to retrieve the state.</param>
 	/// <returns>The state of the specified item.</returns>
-	public ShellTreeItemState GetItemState(ShellItem item) => pCtrl.GetItemState(item?.IShellItem, NSTCITEMSTATE_ALL, out var state).Succeeded ? (ShellTreeItemState)state : 0;
+	public ShellTreeItemState GetItemState(ShellItem? item) => pCtrl is not null && item is not null && pCtrl.GetItemState(item.IShellItem, NSTCITEMSTATE_ALL, out var state).Succeeded ? (ShellTreeItemState)state : 0;
 
 	/// <summary>Retrieves the item that a given point is in, if any.</summary>
 	/// <param name="pt">The point to be tested.</param>
 	/// <returns>The item in which the point exists, or <see langword="null"/> if the point does not exist in an item.</returns>
-	public ShellItem HitTest(Point pt)
+	public ShellItem? HitTest(Point pt)
 	{
-		pCtrl.HitTest(pt, out var psi);
+		IShellItem? psi = null;
+		pCtrl?.HitTest(pt, out psi);
 		return psi is null ? null : ShellItem.Open(psi);
 	}
 
@@ -594,16 +591,16 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	/// Other bits are ignored. As a simple example, if <paramref name="stateMask"/>=Selected, then the first bit in the <paramref
 	/// name="state"/> value determines whether that flag is set (1) or removed (0).
 	/// </remarks>
-	public void SetItemState(ShellItem item, ShellTreeItemState stateMask, ShellTreeItemState state) => pCtrl.SetItemState(item?.IShellItem, (NSTCITEMSTATE)stateMask, (NSTCITEMSTATE)state);
+	public void SetItemState(ShellItem? item, ShellTreeItemState stateMask, ShellTreeItemState state) { if (item is not null) pCtrl?.SetItemState(item.IShellItem, (NSTCITEMSTATE)stateMask, (NSTCITEMSTATE)state); }
 
 	bool IMessageFilter.PreFilterMessage(ref Message m)
 	{
-		if (m.Msg == (int)WindowMessage.WM_KEYDOWN || m.Msg == (int)WindowMessage.WM_KEYUP)
+		if (m.Msg is ((int)WindowMessage.WM_KEYDOWN) or ((int)WindowMessage.WM_KEYUP))
 			Debug.WriteLine($"PreFileter msg: {(WindowMessage)m.Msg}, {(Keys)unchecked((int)(long)m.WParam)}");
 		return (pCtrl as ExplorerBrowser.IInputObject_WinForms)?.TranslateAcceleratorIO(m) == HRESULT.S_OK;
 	}
 
-	HRESULT INameSpaceTreeControlEvents.OnAfterContextMenu(IShellItem psi, IContextMenu pcmIn, in Guid riid, out object ppv)
+	HRESULT INameSpaceTreeControlEvents.OnAfterContextMenu(IShellItem? psi, IContextMenu pcmIn, in Guid riid, out object? ppv)
 	{
 		if (riid == typeof(IContextMenu).GUID)
 		{
@@ -629,7 +626,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 		return HRESULT.S_OK;
 	}
 
-	HRESULT INameSpaceTreeControlEvents.OnBeforeContextMenu(IShellItem psi, in Guid riid, out object ppv)
+	HRESULT INameSpaceTreeControlEvents.OnBeforeContextMenu(IShellItem? psi, in Guid riid, out object? ppv)
 	{
 		if (riid == typeof(IContextMenu).GUID)
 		{
@@ -665,7 +662,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 		return HRESULT.S_OK;
 	}
 
-	HRESULT INameSpaceTreeControlDropHandler.OnDragEnter(IShellItem psiOver, IShellItemArray psiaData, bool fOutsideSource, uint grfKeyState, ref uint pdwEffect)
+	HRESULT INameSpaceTreeControlDropHandler.OnDragEnter(IShellItem? psiOver, IShellItemArray psiaData, bool fOutsideSource, uint grfKeyState, ref uint pdwEffect)
 	{
 		var ido = new DataObject();
 		ido.SetFileDropList(GetStringCollection(psiaData));
@@ -675,13 +672,13 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 		return HRESULT.S_OK;
 	}
 
-	HRESULT INameSpaceTreeControlDropHandler.OnDragLeave(IShellItem psiOver)
+	HRESULT INameSpaceTreeControlDropHandler.OnDragLeave(IShellItem? psiOver)
 	{
 		base.OnDragLeave(EventArgs.Empty);
 		return HRESULT.S_OK;
 	}
 
-	HRESULT INameSpaceTreeControlDropHandler.OnDragOver(IShellItem psiOver, IShellItemArray psiaData, uint grfKeyState, ref uint pdwEffect)
+	HRESULT INameSpaceTreeControlDropHandler.OnDragOver(IShellItem? psiOver, IShellItemArray psiaData, uint grfKeyState, ref uint pdwEffect)
 	{
 		var ido = new DataObject();
 		ido.SetFileDropList(GetStringCollection(psiaData));
@@ -691,9 +688,9 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 		return HRESULT.S_OK;
 	}
 
-	HRESULT INameSpaceTreeControlDropHandler.OnDragPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
+	HRESULT INameSpaceTreeControlDropHandler.OnDragPosition(IShellItem? psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
 
-	HRESULT INameSpaceTreeControlDropHandler.OnDrop(IShellItem psiOver, IShellItemArray psiaData, int iPosition, uint grfKeyState, ref uint pdwEffect)
+	HRESULT INameSpaceTreeControlDropHandler.OnDrop(IShellItem? psiOver, IShellItemArray psiaData, int iPosition, uint grfKeyState, ref uint pdwEffect)
 	{
 		var ido = new DataObject();
 		ido.SetFileDropList(GetStringCollection(psiaData));
@@ -703,7 +700,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 		return HRESULT.S_OK;
 	}
 
-	HRESULT INameSpaceTreeControlDropHandler.OnDropPosition(IShellItem psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
+	HRESULT INameSpaceTreeControlDropHandler.OnDropPosition(IShellItem? psiOver, IShellItemArray psiaData, int iNewPosition, int iOldPosition) => HRESULT.E_FAIL;
 
 	HRESULT INameSpaceTreeControlEvents.OnEndLabelEdit(IShellItem psi)
 	{
@@ -817,10 +814,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 
 		bool IsExpanded(IntPtr item) => SendMessage(hWndTreeView, (uint)ComCtl32.TreeViewMessage.TVM_GETITEMSTATE, item, (IntPtr)(int)ComCtl32.TreeViewItemStates.TVIS_EXPANDED) == (IntPtr)(int)ComCtl32.TreeViewItemStates.TVIS_EXPANDED;
 
-		void Move(ComCtl32.TreeViewActionFlag dir)
-		{
-			SelItem(SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_GETNEXTITEM, dir, hSel));
-		}
+		void Move(ComCtl32.TreeViewActionFlag dir) => SelItem(SendMessage(hWndTreeView, ComCtl32.TreeViewMessage.TVM_GETNEXTITEM, dir, hSel));
 
 		void SelItem(IntPtr hNext)
 		{
@@ -960,42 +954,23 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 	/// A pointer to the <c>IServiceProvider</c> interface pointer of the site managing this object. If <see langword="null"/>, the
 	/// object should call Release on any existing site at which point the object no longer knows its site.
 	/// </param>
-	protected virtual void SetSite(Shell32.IServiceProvider sp) => (pCtrl as IObjectWithSite)?.SetSite(sp);
+	protected virtual void SetSite(Shell32.IServiceProvider? sp) => (pCtrl as IObjectWithSite)?.SetSite(sp);
 
 	private static System.Collections.Specialized.StringCollection GetStringCollection(IShellItemArray psiaData)
 	{
 		using var shiArray = new ShellItemArray(psiaData);
 		var fileList = new System.Collections.Specialized.StringCollection();
-		fileList.AddRange(shiArray.Select(shi => shi.ParsingName).ToArray());
+		fileList.AddRange(shiArray.Select(shi => shi.ParsingName).WhereNotNull().ToArray());
 		return fileList;
-	}
-
-	private IEnumerable<IShellItem> EnumChildren(IShellItem psi)
-	{
-		if (psi is null) yield break;
-		foreach (var i in GetChildren(psi))
-		{
-			yield return i;
-			GetChildren(i);
-		}
-
-		IEnumerable<IShellItem> GetChildren(IShellItem shi)
-		{
-			var hr = pCtrl.GetNextItem(shi, NSTCGNI.NSTCGNI_CHILD, out var nxt);
-			while (hr.Succeeded)
-			{
-				yield return nxt;
-				hr = pCtrl.GetNextItem(nxt, NSTCGNI.NSTCGNI_NEXT, out nxt);
-			}
-		}
 	}
 
 	private IEnumerable<IShellItem> EnumVisibleItems()
 	{
+		if (pCtrl is null) yield break;
 		var hr = pCtrl.GetNextItem(null, NSTCGNI.NSTCGNI_FIRSTVISIBLE, out var psi);
 		while (hr.Succeeded)
 		{
-			yield return psi;
+			yield return psi!;
 			hr = pCtrl.GetNextItem(psi, NSTCGNI.NSTCGNI_NEXTVISIBLE, out psi);
 		}
 	}
@@ -1021,7 +996,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 
 	private void UpdateStyle()
 	{
-		if (!IsHandleCreated) return;
+		if (pCtrl is null || !IsHandleCreated) return;
 
 		// Set styles
 		pCtrl2?.SetControlStyle(NSTCSTYLE_ALL, style);
@@ -1063,22 +1038,22 @@ public class ShellNamespaceTreeControlCancelEventArgs : CancelEventArgs
 	/// <param name="shellItem">The shell item instance.</param>
 	/// <param name="cancel"><see langword="true"/> to cancel the event; otherwise, <see langword="false"/>.</param>
 	/// <param name="action">The action performed.</param>
-	public ShellNamespaceTreeControlCancelEventArgs(ShellItem shellItem, bool cancel, ShellNamespaceTreeControlAction action) : base(cancel)
+	public ShellNamespaceTreeControlCancelEventArgs(ShellItem? shellItem, bool cancel, ShellNamespaceTreeControlAction action) : base(cancel)
 	{
 		Item = shellItem;
 		Action = action;
 	}
 
-	internal ShellNamespaceTreeControlCancelEventArgs(IShellItem psi, bool cancel, ShellNamespaceTreeControlAction action) :
+	internal ShellNamespaceTreeControlCancelEventArgs(IShellItem? psi, bool cancel, ShellNamespaceTreeControlAction action) :
 		this(psi is null ? null : ShellItem.Open(psi), cancel, action)
 	{
 	}
 
 	/// <summary>The action associated with this event.</summary>
-	public ShellNamespaceTreeControlAction Action { get; }
+	public ShellNamespaceTreeControlAction? Action { get; }
 
 	/// <summary>The shell item associated with this event.</summary>
-	public ShellItem Item { get; }
+	public ShellItem? Item { get; }
 }
 
 /// <summary>Event arguments for actions against <see cref="ShellNamespaceTreeControl"/>.</summary>
@@ -1088,23 +1063,23 @@ public class ShellNamespaceTreeControlEventArgs : EventArgs
 	/// <summary>Initializes a new instance of the <see cref="ShellNamespaceTreeControlEventArgs"/> class.</summary>
 	/// <param name="shellItem">The shell item instance.</param>
 	/// <param name="action">The action performed.</param>
-	public ShellNamespaceTreeControlEventArgs(ShellItem shellItem, ShellNamespaceTreeControlAction action)
+	public ShellNamespaceTreeControlEventArgs(ShellItem? shellItem, ShellNamespaceTreeControlAction action)
 	{
 		Item = shellItem;
 		Action = action;
 	}
 
-	internal ShellNamespaceTreeControlEventArgs(IShellItem psi, ShellNamespaceTreeControlAction action)
+	internal ShellNamespaceTreeControlEventArgs(IShellItem? psi, ShellNamespaceTreeControlAction action)
 	{
 		Item = psi is null ? null : ShellItem.Open(psi);
 		Action = action;
 	}
 
 	/// <summary>The action associated with this event.</summary>
-	public ShellNamespaceTreeControlAction Action { get; }
+	public ShellNamespaceTreeControlAction? Action { get; }
 
 	/// <summary>The shell item associated with this event.</summary>
-	public ShellItem Item { get; }
+	public ShellItem? Item { get; }
 }
 
 /// <summary>Arguments for item label edit events in a <see cref="ShellNamespaceTreeControl"/>.</summary>
@@ -1113,18 +1088,18 @@ public class ShellNamespaceTreeControlItemLabelEditEventArgs : EventArgs
 {
 	/// <summary>Initializes a new instance of the <see cref="ShellNamespaceTreeControlItemLabelEditEventArgs"/> class.</summary>
 	/// <param name="shellItem">The shell item.</param>
-	public ShellNamespaceTreeControlItemLabelEditEventArgs(ShellItem shellItem) => Item = shellItem;
+	public ShellNamespaceTreeControlItemLabelEditEventArgs(ShellItem? shellItem) => Item = shellItem;
 
-	internal ShellNamespaceTreeControlItemLabelEditEventArgs(IShellItem psi) => Item = psi is null ? null : ShellItem.Open(psi);
+	internal ShellNamespaceTreeControlItemLabelEditEventArgs(IShellItem? psi) => Item = psi is null ? null : ShellItem.Open(psi);
 
 	/// <summary>On return, set to <see langword="true"/> to cancel the edit.</summary>
 	public bool CancelEdit { get; set; }
 
 	/// <summary>The shell item associated with this event.</summary>
-	public ShellItem Item { get; }
+	public ShellItem? Item { get; }
 
 	/// <summary>The label associated with the selected item.</summary>
-	public string Label => Item?.Name;
+	public string? Label => Item?.Name;
 }
 
 /// <summary>Arguments for mouse click events in a <see cref="ShellNamespaceTreeControl"/>.</summary>
@@ -1185,7 +1160,7 @@ public class ShellNamespaceTreeRootList : IList<ShellItem>
 	/// <param name="expanded">The root is expanded upon initialization.</param>
 	public void Add(ShellItem item, bool showChildrenOnly, bool expanded)
 	{
-		Parent.pCtrl.AppendRoot(item.IShellItem, item.IsFolder ? SHCONTF.SHCONTF_FOLDERS : SHCONTF.SHCONTF_NONFOLDERS,
+		Parent.pCtrl?.AppendRoot(item.IShellItem, item.IsFolder ? SHCONTF.SHCONTF_FOLDERS : SHCONTF.SHCONTF_NONFOLDERS,
 			(expanded ? NSTCROOTSTYLE.NSTCRS_EXPANDED : 0) | (showChildrenOnly ? NSTCROOTSTYLE.NSTCRS_HIDDEN : NSTCROOTSTYLE.NSTCRS_VISIBLE));
 		onlyShowChildren[item] = showChildrenOnly;
 	}
@@ -1193,7 +1168,7 @@ public class ShellNamespaceTreeRootList : IList<ShellItem>
 	/// <summary>Removes all items from this list.</summary>
 	public void Clear()
 	{
-		Parent.pCtrl.RemoveAllRoots();
+		Parent.pCtrl?.RemoveAllRoots();
 		onlyShowChildren.Clear();
 	}
 
@@ -1224,7 +1199,7 @@ public class ShellNamespaceTreeRootList : IList<ShellItem>
 	/// <param name="expanded">The root is expanded upon initialization.</param>
 	public void Insert(int index, ShellItem item, bool showChildrenOnly, bool expanded)
 	{
-		Parent.pCtrl.InsertRoot(index, item.IShellItem, item.IsFolder ? SHCONTF.SHCONTF_FOLDERS : SHCONTF.SHCONTF_NONFOLDERS,
+		Parent.pCtrl?.InsertRoot(index, item.IShellItem, item.IsFolder ? SHCONTF.SHCONTF_FOLDERS : SHCONTF.SHCONTF_NONFOLDERS,
 			(expanded ? NSTCROOTSTYLE.NSTCRS_EXPANDED : 0) | (showChildrenOnly ? NSTCROOTSTYLE.NSTCRS_HIDDEN : NSTCROOTSTYLE.NSTCRS_VISIBLE));
 		onlyShowChildren[item] = showChildrenOnly;
 	}
@@ -1238,7 +1213,7 @@ public class ShellNamespaceTreeRootList : IList<ShellItem>
 	public bool Remove(ShellItem item)
 	{
 		onlyShowChildren.Remove(item);
-		return Parent.pCtrl.RemoveRoot(item.IShellItem).Succeeded;
+		return Parent.pCtrl?.RemoveRoot(item.IShellItem).Succeeded ?? true;
 	}
 
 	internal void SyncWithParent()
@@ -1272,10 +1247,7 @@ public class ShellNamespaceTreeRootList : IList<ShellItem>
 
 	/// <summary>Removes the element at the specified index of the list.</summary>
 	/// <param name="index">The zero-based index of the element to remove.</param>
-	void IList<ShellItem>.RemoveAt(int index)
-	{
-		Remove(this[index]);
-	}
+	void IList<ShellItem>.RemoveAt(int index) => Remove(this[index]);
 
-	internal ShellItemArray GetItemArray() => Parent.pCtrl.GetRootItems(out var pItems).Succeeded ? new ShellItemArray(pItems) : new ShellItemArray();
+	internal ShellItemArray GetItemArray() => Parent.pCtrl is not null && Parent.pCtrl.GetRootItems(out var pItems).Succeeded ? new ShellItemArray(pItems) : new ShellItemArray();
 }

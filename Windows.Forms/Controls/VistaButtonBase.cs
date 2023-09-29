@@ -11,16 +11,13 @@ namespace Vanara.Windows.Forms;
 [ToolboxBitmap(typeof(Button))]
 public abstract class VistaButtonBase : Button
 {
-	private Icon icon;
+	private Icon? icon;
 	private bool showShield;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CommandLink"/> class.
 	/// </summary>
-	protected VistaButtonBase()
-	{
-		FlatStyle = FlatStyle.System;
-	}
+	protected VistaButtonBase() => FlatStyle = FlatStyle.System;
 
 	/*/// <summary>
 	/// Gets or sets the flat style.
@@ -39,7 +36,7 @@ public abstract class VistaButtonBase : Button
 	/// Gets or sets the icon that is displayed on a button control.
 	/// </summary>
 	[Description("Gets or sets the icon that is displayed on a button control."), Category("Appearance"), DefaultValue(null)]
-	public Icon Icon
+	public Icon? Icon
 	{
 		get => icon;
 		set
@@ -62,7 +59,7 @@ public abstract class VistaButtonBase : Button
 	///   <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
 	/// </PermissionSet>
 	[Description("Gets or sets the image that is displayed on a button control."), Category("Appearance"), DefaultValue(null)]
-	public new Image Image
+	public new Image? Image
 	{
 		get => base.Image;
 		set
@@ -126,7 +123,7 @@ public abstract class VistaButtonBase : Button
 		if (Image != null)
 			iconhandle = new Bitmap(Image).GetHicon();
 		else if (icon != null)
-			iconhandle = Icon.Handle;
+			iconhandle = icon.Handle;
 
 		const uint BM_SETIMAGE = 0xF7;
 		SendMessage(Handle, BM_SETIMAGE, (IntPtr)1, iconhandle);

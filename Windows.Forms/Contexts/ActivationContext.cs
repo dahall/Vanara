@@ -1,11 +1,12 @@
-﻿using System.Security;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.Windows.Forms;
 
 /// <summary>Provides an activation context for a manifest file or PE image. On disposal, the context is deactivated.</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 [SuppressUnmanagedCodeSecurity]
 public class ActivationContext : IDisposable
 {
@@ -22,7 +23,7 @@ public class ActivationContext : IDisposable
 	/// The base directory in which to perform private assembly probing if assemblies in the activation context are not present in the
 	/// system-wide store.
 	/// </param>
-	public ActivationContext(string source, string assemblyDirectory = null)
+	public ActivationContext(string source, string? assemblyDirectory = null)
 	{
 		var actctx = new ACTCTX(source);
 		CreateAndAttach(ref actctx, assemblyDirectory: assemblyDirectory);
@@ -44,7 +45,7 @@ public class ActivationContext : IDisposable
 	/// <param name="langId">Specifies the language manifest that should be used. The default is the current user's current UI language.</param>
 	/// <param name="processor">Identifies the type of processor used. Specifies the system's processor architecture.</param>
 	/// <param name="setAsProcessDefault">if set to <c>true</c> [set as process default].</param>
-	public ActivationContext(string peImagePath, string resourceName, string assemblyDirectory = null, string appName = null, ushort langId = 0, ProcessorArchitecture processor = 0, bool setAsProcessDefault = false)
+	public ActivationContext(string peImagePath, string resourceName, string? assemblyDirectory = null, string? appName = null, ushort langId = 0, ProcessorArchitecture processor = 0, bool setAsProcessDefault = false)
 	{
 		var actctx = new ACTCTX(peImagePath ?? throw new ArgumentNullException(nameof(peImagePath)));
 		if (resourceName == null) throw new ArgumentNullException(nameof(resourceName));
@@ -69,7 +70,7 @@ public class ActivationContext : IDisposable
 	/// <param name="langId">Specifies the language manifest that should be used. The default is the current user's current UI language.</param>
 	/// <param name="processor">Identifies the type of processor used. Specifies the system's processor architecture.</param>
 	/// <param name="setAsProcessDefault">if set to <c>true</c> [set as process default].</param>
-	public ActivationContext(HINSTANCE hInst, string resourceName, string assemblyDirectory = null, string appName = null, ushort langId = 0, ProcessorArchitecture processor = 0, bool setAsProcessDefault = false)
+	public ActivationContext(HINSTANCE hInst, string resourceName, string? assemblyDirectory = null, string? appName = null, ushort langId = 0, ProcessorArchitecture processor = 0, bool setAsProcessDefault = false)
 	{
 		if (hInst.IsNull) throw new ArgumentNullException(nameof(hInst));
 		if (resourceName == null) throw new ArgumentNullException(nameof(resourceName));
@@ -98,6 +99,7 @@ public class ActivationContext : IDisposable
 		if (localCookie != IntPtr.Zero && DeactivateActCtx(0, localCookie))
 			localCookie = IntPtr.Zero;
 		hActCtx.Dispose();
+		GC.SuppressFinalize(this);
 	}
 
 	private void Activate()
@@ -105,13 +107,15 @@ public class ActivationContext : IDisposable
 		if (!ActivateActCtx(hActCtx, out localCookie)) Win32Error.ThrowLastError();
 	}
 
+	[MemberNotNull(nameof(hActCtx))]
 	private void Create(in ACTCTX context)
 	{
 		hActCtx = CreateActCtx(context);
 		if (hActCtx.IsInvalid) Win32Error.ThrowLastError();
 	}
 
-	private void CreateAndAttach(ref ACTCTX actctx, string resourceName = null, string assemblyDirectory = null, string appName = null, ushort langId = 0, ProcessorArchitecture processor = 0, bool setAsProcessDefault = false)
+	[MemberNotNull(nameof(hActCtx))]
+	private void CreateAndAttach(ref ACTCTX actctx, string? resourceName = null, string? assemblyDirectory = null, string? appName = null, ushort langId = 0, ProcessorArchitecture processor = 0, bool setAsProcessDefault = false)
 	{
 		if (resourceName != null)
 		{

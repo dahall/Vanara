@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Security;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.CredUI;
@@ -16,20 +17,15 @@ public class AuthenticationBuffer : IDisposable
 	/// <summary>Initializes a new instance of the <see cref="AuthenticationBuffer"/> class.</summary>
 	/// <param name="userName">Name of the user.</param>
 	/// <param name="password">The password.</param>
-	public AuthenticationBuffer(string userName, string password)
-	{
-		var pUserName = new SafeCoTaskMemString(userName ?? "");
-		var pPassword = new SafeCoTaskMemString(password ?? "");
-		Init(0, pUserName, pPassword);
-	}
+	public AuthenticationBuffer(string? userName, string? password) => Init(0, userName, password);
 
 	/// <summary>Initializes a new instance of the <see cref="AuthenticationBuffer"/> class.</summary>
 	/// <param name="userName">Name of the user.</param>
 	/// <param name="password">The password.</param>
-	public AuthenticationBuffer(SecureString userName, SecureString password)
+	public AuthenticationBuffer(SecureString? userName, SecureString? password)
 	{
-		var pUserName = new SafeCoTaskMemString(userName);
-		var pPassword = new SafeCoTaskMemString(password);
+		var pUserName = userName is null ? SafeCoTaskMemString.Null : new SafeCoTaskMemString(userName);
+		var pPassword = password is null ? SafeCoTaskMemString.Null : new SafeCoTaskMemString(password);
 		Init(0, pUserName, pPassword);
 	}
 
@@ -54,9 +50,8 @@ public class AuthenticationBuffer : IDisposable
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public void Dispose()
 	{
-		if (buffer is null) return;
 		buffer.Zero();
-		buffer = null;
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Unpacks the credentials.</summary>
@@ -65,7 +60,7 @@ public class AuthenticationBuffer : IDisposable
 	/// <param name="domainName">Name of the domain.</param>
 	/// <param name="password">The password.</param>
 	/// <exception cref="Win32Exception"></exception>
-	public void UnPack(bool decryptProtectedCredentials, out string userName, out string domainName, out string password)
+	public void UnPack(bool decryptProtectedCredentials, out string userName, out string? domainName, out string password)
 	{
 		var pUserName = new StringBuilder(CRED_MAX_USERNAME_LENGTH);
 		var pDomainName = new StringBuilder(CRED_MAX_USERNAME_LENGTH);
@@ -79,7 +74,7 @@ public class AuthenticationBuffer : IDisposable
 			throw new Win32Exception();
 
 		userName = pUserName.ToString();
-		domainName = pDomainName.ToString();
+		domainName = domainNameSize == 0 ? null : pDomainName.ToString();
 		password = pPassword.ToString();
 	}
 
@@ -89,7 +84,7 @@ public class AuthenticationBuffer : IDisposable
 	/// <param name="domainName">Name of the domain.</param>
 	/// <param name="password">The password.</param>
 	/// <exception cref="Win32Exception"></exception>
-	public void UnPack(bool decryptProtectedCredentials, out SecureString userName, out SecureString domainName, out SecureString password)
+	public void UnPack(bool decryptProtectedCredentials, out SecureString userName, out SecureString? domainName, out SecureString password)
 	{
 		var pUserName = new SafeCoTaskMemString(CRED_MAX_USERNAME_LENGTH);
 		var pDomainName = new SafeCoTaskMemString(CRED_MAX_USERNAME_LENGTH);
@@ -102,18 +97,19 @@ public class AuthenticationBuffer : IDisposable
 			(IntPtr)pUserName, ref userNameSize, (IntPtr)pDomainName, ref domainNameSize, (IntPtr)pPassword, ref passwordSize))
 			throw new Win32Exception();
 
-		userName = pUserName.DangerousGetHandle().ToSecureString();
-		domainName = pDomainName.DangerousGetHandle().ToSecureString();
-		password = pPassword.DangerousGetHandle().ToSecureString();
+		userName = pUserName.DangerousGetHandle().ToSecureString()!;
+		domainName = domainNameSize == 0 ? null : pDomainName.DangerousGetHandle().ToSecureString();
+		password = pPassword.DangerousGetHandle().ToSecureString()!;
 	}
 
-	private void Init(CredPackFlags flags, string pUserName, string pPassword)
+	[MemberNotNull(nameof(buffer))]
+	private void Init(CredPackFlags flags, string? pUserName, string? pPassword)
 	{
 		var bufferSize = 0;
-		if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, IntPtr.Zero, ref bufferSize) && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		if (!CredPackAuthenticationBuffer(flags, pUserName ?? "", pPassword ?? "", IntPtr.Zero, ref bufferSize) && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 		{
 			buffer = new SafeCoTaskMemHandle(bufferSize);
-			if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, DangerousHandle, ref bufferSize))
+			if (!CredPackAuthenticationBuffer(flags, pUserName ?? "", pPassword ?? "", DangerousHandle, ref bufferSize))
 				throw new Win32Exception();
 		}
 		else

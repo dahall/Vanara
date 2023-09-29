@@ -10,7 +10,7 @@ using static Vanara.PInvoke.UxTheme;
 namespace Vanara.Windows.Forms;
 
 /// <summary>A wrapper around the UxTheme methods.</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class VisualTheme : IDisposable
 {
 	/// <summary>Initializes a new instance of the <see cref="VisualTheme"/> class.</summary>
@@ -20,17 +20,14 @@ public class VisualTheme : IDisposable
 
 	/// <summary>Initializes a new instance of the <see cref="VisualTheme"/> class.</summary>
 	/// <param name="handle">A handle to a theme (HTHEME). This handle will not be freed on disposal.</param>
-	public VisualTheme(IntPtr handle)
-	{
-		Handle = new SafeHTHEME(handle, false);
-	}
+	public VisualTheme(IntPtr handle) => Handle = new SafeHTHEME(handle, false);
 
 	/// <summary>Initializes a new instance of the <see cref="VisualTheme"/> class.</summary>
 	/// <param name="window">A window or control that the theme is to be retrieved from. This value can be <c>null</c>.</param>
 	/// <param name="classList">A semicolon-separated list of class names to match.</param>
 	/// <param name="opt">Optional flags that control how to return the theme data.</param>
 	/// <exception cref="Win32Exception"></exception>
-	public VisualTheme(IWin32Window window, string classList, OpenThemeDataOptions opt = OpenThemeDataOptions.None)
+	public VisualTheme(IWin32Window? window, string classList, OpenThemeDataOptions opt = OpenThemeDataOptions.None)
 	{
 		Handle = OpenThemeDataEx(window?.Handle ?? HWND.NULL, classList, opt);
 		if (Handle.IsInvalid)
@@ -573,7 +570,7 @@ public class VisualTheme : IDisposable
 	}
 
 	/// <summary>Gets the full path of the current visual style file.</summary>
-	public static string CurrentThemePath
+	public static string? CurrentThemePath
 	{
 		get
 		{
@@ -583,26 +580,27 @@ public class VisualTheme : IDisposable
 	}
 
 	/// <summary>Gets the name of the author of the theme.</summary>
-	public string Author => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_AUTHOR);
+	public string? Author => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_AUTHOR);
 
 	/// <summary>Gets the name of the theme.</summary>
-	public string CanonicalName => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_CANONICALNAME);
+	public string? CanonicalName => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_CANONICALNAME);
 
 	/// <summary>Gets the display name of the theme.</summary>
-	public string DisplayName => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_DISPLAYNAME);
+	public string? DisplayName => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_DISPLAYNAME);
 
 	/// <summary>Gets the native theme handle (HTHEME).</summary>
 	public SafeHTHEME Handle { get; private set; }
 
 	/// <summary>Gets the tooltip associated with this theme.</summary>
-	public string Tooltip => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_TOOLTIP);
+	public string? Tooltip => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_TOOLTIP);
 
 	/// <summary>Retrieves the value for a theme property from the documentation section of the specified theme file.</summary>
 	/// <param name="themeFile">The name of the theme file that will be opened to query for the property.</param>
 	/// <param name="prop">The name of the theme property to query.</param>
 	/// <returns>The property string value.</returns>
-	public static string GetDocumentationProperty(string themeFile, string prop)
+	public static string? GetDocumentationProperty(string? themeFile, string prop)
 	{
+		if (themeFile is null) return null;
 		var sb = new StringBuilder(MAX_PATH);
 		return GetThemeDocumentationProperty(themeFile, prop, sb, MAX_PATH).Succeeded ? sb.ToString() : null;
 	}
@@ -611,13 +609,13 @@ public class VisualTheme : IDisposable
 	/// <param name="window">The window or control.</param>
 	/// <param name="enable">If set to <see langword="true"/> apply the background style; <see langword="false"/> to remove.</param>
 	public static void UseAeroWizardTexture(IWin32Window window, bool enable) =>
-				EnableThemeDialogTexture(window.Handle, ThemeDialogTextureFlags.ETDT_USEAEROWIZARDTABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
+		EnableThemeDialogTexture(window.Handle, ThemeDialogTextureFlags.ETDT_USEAEROWIZARDTABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
 
 	/// <summary>Uses the tab control background style for a window or control.</summary>
 	/// <param name="window">The window or control.</param>
 	/// <param name="enable">If set to <see langword="true"/> apply the background style; <see langword="false"/> to remove.</param>
 	public static void UseTabTexture(IWin32Window window, bool enable) =>
-				EnableThemeDialogTexture(window.Handle, ThemeDialogTextureFlags.ETDT_USETABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
+		EnableThemeDialogTexture(window.Handle, ThemeDialogTextureFlags.ETDT_USETABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
 
 	/// <summary>Retrieves a hit test code for a point in the background specified by a visual style.</summary>
 	/// <param name="dc">Device context.</param>
@@ -629,8 +627,8 @@ public class VisualTheme : IDisposable
 	/// <returns>The hit test code that indicates whether the point in <paramref name="pt"/> is in the background area bounded by <paramref name="bounds"/>.</returns>
 	public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(IDeviceContext dc, int partId, int stateId, Rectangle bounds, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 	{
-		using (var hdc = new SafeTempHDC(dc))
-			return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, HRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+		using var hdc = new SafeTempHDC(dc);
+		return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, HRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 	}
 
 	/// <summary>Retrieves a hit test code for a point in the background specified by a visual style.</summary>
@@ -646,12 +644,12 @@ public class VisualTheme : IDisposable
 	/// </returns>
 	public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(Graphics graphics, int partId, int stateId, Rectangle bounds, Region region, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, new HRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+		using var hdc = new SafeTempHDC(graphics);
+		return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, new HRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public void Dispose() { Handle?.Dispose(); }
+	public void Dispose() => Handle?.Dispose();
 
 	/// <summary>Draws the background image defined by the visual style for the specified control part.</summary>
 	/// <param name="graphics">Used for drawing the theme-defined background image.</param>
@@ -665,8 +663,8 @@ public class VisualTheme : IDisposable
 	public void DrawBackground(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, Rectangle? clipRect, bool rightToLeft = false, bool omitBorder = false, bool omitContent = false)
 	{
 		var o = new DTBGOPTS(clipRect) {HasMirroredDC = rightToLeft, OmitBorder = omitBorder, OmitContent = omitContent};
-		using (var hdc = new SafeTempHDC(graphics))
-			DrawThemeBackgroundEx(Handle, hdc, partId, stateId, bounds, o);
+		using var hdc = new SafeTempHDC(graphics);
+		DrawThemeBackgroundEx(Handle, hdc, partId, stateId, bounds, o);
 	}
 
 	/// <summary>Draws one or more edges defined by the visual style of a rectangle.</summary>
@@ -680,12 +678,10 @@ public class VisualTheme : IDisposable
 	/// </param>
 	public void DrawEdge(IDeviceContext graphics, int partId, int stateId, ref Rectangle bounds, BorderStyles3D edges = BorderStyles3D.BDR_SUNKEN, BorderFlags borderType = BorderFlags.BF_RECT | BorderFlags.BF_ADJUST)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-		{
-			DrawThemeEdge(Handle, hdc, partId, stateId, bounds, edges, borderType, out var r);
-			if (borderType.IsFlagSet(BorderFlags.BF_ADJUST))
-				bounds = r;
-		}
+		using var hdc = new SafeTempHDC(graphics);
+		DrawThemeEdge(Handle, hdc, partId, stateId, bounds, edges, borderType, out var r);
+		if (borderType.IsFlagSet(BorderFlags.BF_ADJUST))
+			bounds = r;
 	}
 
 	/// <summary>Draws an image from an image list with the icon effect defined by the visual style.</summary>
@@ -697,8 +693,8 @@ public class VisualTheme : IDisposable
 	/// <param name="bounds">The bounding rectangle, in logical coordinates.</param>
 	public void DrawIcon(IDeviceContext graphics, int partId, int stateId, ImageList imageList, int imageIndex, Rectangle bounds)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			DrawThemeIcon(Handle, hdc, partId, stateId, bounds, imageList.Handle, imageIndex);
+		using var hdc = new SafeTempHDC(graphics);
+		DrawThemeIcon(Handle, hdc, partId, stateId, bounds, imageList.Handle, imageIndex);
 	}
 
 	/// <summary>Draws the part of a parent control that is covered by a partially-transparent or alpha-blended child control.</summary>
@@ -710,8 +706,8 @@ public class VisualTheme : IDisposable
 	/// </param>
 	public void DrawParentBackground(IWin32Window childWindow, IDeviceContext graphics, Rectangle? bounds = null)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			DrawThemeParentBackground(childWindow.Handle, hdc, bounds);
+		using var hdc = new SafeTempHDC(graphics);
+		DrawThemeParentBackground(childWindow.Handle, hdc, bounds);
 	}
 
 	/// <summary>Draws text using the color and font defined by the visual style.</summary>
@@ -723,7 +719,7 @@ public class VisualTheme : IDisposable
 	/// <param name="fmt">One or more values that specify the string's formatting.</param>
 	/// <param name="disabled">Draw text disabled.</param>
 	/// <param name="font">The font to use when drawing the text. If <c>null</c>, the default system font is used.</param>
-	public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, bool disabled = false, Font font = null)
+	public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, bool disabled = false, Font? font = null)
 	{
 		RECT b = bounds;
 		using (var hdc = new SafeTempHDC(graphics))
@@ -741,7 +737,7 @@ public class VisualTheme : IDisposable
 	/// <param name="fmt">One or more values that specify the string's formatting.</param>
 	/// <param name="options">Additional formatting options.</param>
 	/// <param name="font">The font to use when drawing the text. If <c>null</c>, the default system font is used.</param>
-	public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, DTTOPTS? options = null, Font font = null)
+	public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, DTTOPTS? options = null, Font? font = null)
 	{
 		RECT b = bounds;
 		var dt = options ?? DTTOPTS.Default;
@@ -759,8 +755,8 @@ public class VisualTheme : IDisposable
 	/// <returns>The content area background rectangle, in logical coordinates. This rectangle is calculated to fit the content area.</returns>
 	public Rectangle? GetBackgroundContentRect([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			return GetThemeBackgroundContentRect(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
+		using var hdc = new SafeTempHDC(graphics);
+		return GetThemeBackgroundContentRect(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
 	}
 
 	/// <summary>Calculates the size and location of the background, defined by the visual style, given the content area.</summary>
@@ -771,8 +767,8 @@ public class VisualTheme : IDisposable
 	/// <returns>The background rectangle, in logical coordinates. This rectangle is based on <paramref name="bounds"/>.</returns>
 	public Rectangle? GetBackgroundExtent([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			return GetThemeBackgroundExtent(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
+		using var hdc = new SafeTempHDC(graphics);
+		return GetThemeBackgroundExtent(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
 	}
 
 	/// <summary>Retrieves the bitmap associated with a particular theme, part, state, and property.</summary>
@@ -780,7 +776,7 @@ public class VisualTheme : IDisposable
 	/// <param name="stateId">Value that specifies the state of the part that contains the bitmap.</param>
 	/// <param name="propId">The bitmap property identifier.</param>
 	/// <returns>The requested bitmap, if successful; otherwise <c>null</c>.</returns>
-	public Bitmap GetBitmap(int partId, int stateId, BitmapProperty propId) => GetThemeBitmap(Handle, partId, stateId, (int)propId, GBF.GBF_COPY, out var hBmp).Succeeded ? hBmp.ToBitmap() : null;
+	public Bitmap? GetBitmap(int partId, int stateId, BitmapProperty propId) => GetThemeBitmap(Handle, partId, stateId, (int)propId, GBF.GBF_COPY, out var hBmp).Succeeded ? hBmp.ToBitmap() : null;
 
 	/// <summary>Retrieves the value of a <c>bool</c> property from the SysMetrics section of theme data.</summary>
 	/// <param name="partId">Value that specifies the part that contains the bool property.</param>
@@ -808,7 +804,7 @@ public class VisualTheme : IDisposable
 	/// <param name="partId">Specifies the part to retrieve a stream from.</param>
 	/// <param name="stateId">Specifies the state of the part.</param>
 	/// <returns>The data stream.</returns>
-	public byte[] GetDiskStream(HINSTANCE hInst, int partId, int stateId)
+	public byte[]? GetDiskStream(HINSTANCE hInst, int partId, int stateId)
 	{
 		var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_DISKSTREAM, out var bytes, out var bLen, hInst);
 		if (r.Succeeded) return bytes.ToByteArray((int)bLen);
@@ -835,7 +831,7 @@ public class VisualTheme : IDisposable
 	/// <param name="stateId">Value that specifies the state of the part that contains the string property.</param>
 	/// <param name="propId">The string property identifier.</param>
 	/// <returns>The requested string value, if successful; otherwise <c>null</c>.</returns>
-	public string GetFilename(int partId, int stateId, FilenameProperty propId)
+	public string? GetFilename(int partId, int stateId, FilenameProperty propId)
 	{
 		const int sbLen = 1024;
 		var sb = new StringBuilder(sbLen);
@@ -848,14 +844,12 @@ public class VisualTheme : IDisposable
 	/// <param name="stateId">Value that specifies the state of the part that contains the font property.</param>
 	/// <param name="propId">The font property identifier.</param>
 	/// <returns>The requested font value, if successful; otherwise <c>null</c>.</returns>
-	public Font GetFont(IDeviceContext graphics, int partId, int stateId, FontProperty propId)
+	public Font? GetFont(IDeviceContext graphics, int partId, int stateId, FontProperty propId)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-		{
-			if (GetThemeFont(Handle, hdc, partId, stateId, (int)propId, out var f).Succeeded)
-				return Font.FromLogFont(f);
-			return GetThemeSysFont(Handle, (int)propId, out f).Succeeded ? Font.FromLogFont(f) : null;
-		}
+		using var hdc = new SafeTempHDC(graphics);
+		if (GetThemeFont(Handle, hdc, partId, stateId, (int)propId, out var f).Succeeded)
+			return Font.FromLogFont(f);
+		return GetThemeSysFont(Handle, (int)propId, out f).Succeeded ? Font.FromLogFont(f) : null;
 	}
 
 	/// <summary>Retrieves the value of an int property.</summary>
@@ -875,7 +869,7 @@ public class VisualTheme : IDisposable
 	/// <param name="stateId">Value that specifies the state of the part.</param>
 	/// <param name="propId">Value that specifies the property to retrieve.</param>
 	/// <returns>The requested list of data, if successful; otherwise <c>null</c>.</returns>
-	public int[] GetIntList(int partId, int stateId, int propId = (int)ThemeProperty.TMT_TRANSITIONDURATIONS) => GetThemeIntList(Handle, partId, stateId, propId);
+	public int[]? GetIntList(int partId, int stateId, int propId = (int)ThemeProperty.TMT_TRANSITIONDURATIONS) => GetThemeIntList(Handle, partId, stateId, propId);
 
 	/// <summary>Retrieves the margins from a visual style.</summary>
 	/// <param name="graphics">The device context from which to get the property.</param>
@@ -885,8 +879,8 @@ public class VisualTheme : IDisposable
 	/// <returns>The requested margins, if successful; otherwise <c>null</c>.</returns>
 	public Padding? GetMargins(IDeviceContext graphics, int partId, int stateId, MarginsProperty propId)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			return GetThemeMargins(Handle, hdc, partId, stateId, (int)propId, null, out var m).Succeeded ? (Padding?)new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight) : null;
+		using var hdc = new SafeTempHDC(graphics);
+		return GetThemeMargins(Handle, hdc, partId, stateId, (int)propId, null, out var m).Succeeded ? (Padding?)new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight) : null;
 	}
 
 	/// <summary>Retrieves the value of a metric property.</summary>
@@ -897,8 +891,8 @@ public class VisualTheme : IDisposable
 	/// <returns>The requested metric value, if successful; otherwise <c>null</c>.</returns>
 	public int? GetMetric(IDeviceContext graphics, int partId, int stateId, MetricProperty propId)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			return GetThemeMetric(Handle, hdc, partId, stateId, (int)propId, out var i).Succeeded ? (int?)i : null;
+		using var hdc = new SafeTempHDC(graphics);
+		return GetThemeMetric(Handle, hdc, partId, stateId, (int)propId, out var i).Succeeded ? (int?)i : null;
 	}
 
 	/// <summary>Retrives the value of a property</summary>
@@ -907,9 +901,9 @@ public class VisualTheme : IDisposable
 	/// <param name="stateId">Value that specifies the state of the part that contains the property.</param>
 	/// <param name="propId">The property identifier.</param>
 	/// <returns>The requested value, if successful; otherwise <c>null</c>.</returns>
-	public object GetObject(IDeviceContext graphics, int partId, int stateId, int propId)
+	public object? GetObject(IDeviceContext graphics, int partId, int stateId, int propId)
 	{
-		object o = null;
+		object? o = null;
 		try
 		{
 			switch (LookupGetType(propId))
@@ -985,8 +979,8 @@ public class VisualTheme : IDisposable
 	/// <returns>The dimensions of the specified part.</returns>
 	public Size? GetPartSize(IDeviceContext graphics, int partId, int stateId, Rectangle? destRect = null, PartSize size = PartSize.Default)
 	{
-		using (var hdc = new SafeTempHDC(graphics))
-			return GetThemePartSize(Handle, hdc, partId, stateId, destRect, (THEMESIZE)size, out var sz).Succeeded ? (Size?)sz : null;
+		using var hdc = new SafeTempHDC(graphics);
+		return GetThemePartSize(Handle, hdc, partId, stateId, destRect, (THEMESIZE)size, out var sz).Succeeded ? (Size?)sz : null;
 	}
 
 	/// <summary>Retrieves the value of a position property.</summary>
@@ -1014,7 +1008,7 @@ public class VisualTheme : IDisposable
 	/// <param name="partId">Specifies the part to retrieve a stream from.</param>
 	/// <param name="stateId">Specifies the state of the part.</param>
 	/// <returns>The data stream.</returns>
-	public byte[] GetStream(int partId, int stateId)
+	public byte[]? GetStream(int partId, int stateId)
 	{
 		var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_STREAM, out var bytes, out var bLen, HINSTANCE.NULL);
 		if (r.Succeeded) return bytes.ToByteArray((int)bLen);
@@ -1027,7 +1021,7 @@ public class VisualTheme : IDisposable
 	/// <param name="stateId">Value that specifies the state of the part that contains the string property.</param>
 	/// <param name="propId">The string property identifier.</param>
 	/// <returns>The requested string value, if successful; otherwise <c>null</c>.</returns>
-	public string GetString(int partId, int stateId, StringProperty propId)
+	public string? GetString(int partId, int stateId, StringProperty propId)
 	{
 		const int sbLen = 1024;
 		var sb = new StringBuilder(sbLen);
@@ -1040,7 +1034,7 @@ public class VisualTheme : IDisposable
 	/// <summary>Retrieves a system color brush.</summary>
 	/// <param name="colorId">Value that specifies the color number.</param>
 	/// <returns>Handle to brush data.</returns>
-	public Brush GetSystemBrush(SystemColorIndex colorId)
+	public Brush? GetSystemBrush(SystemColorIndex colorId)
 	{
 		var hbrush = GetThemeSysColorBrush(Handle, (int)colorId);
 		return !hbrush.IsInvalid ? hbrush.ToBrush() : null;
@@ -1054,12 +1048,12 @@ public class VisualTheme : IDisposable
 	/// <summary>Gets the system font.</summary>
 	/// <param name="fontId">The font property identifier.</param>
 	/// <returns>The value of the specified font.</returns>
-	public Font GetSystemFont(int fontId) => GetThemeSysFont(Handle, fontId, out var lf).Succeeded ? Font.FromLogFont(lf) : null;
+	public Font? GetSystemFont(int fontId) => GetThemeSysFont(Handle, fontId, out var lf).Succeeded ? Font.FromLogFont(lf) : null;
 
 	/// <summary>Retrieves the value of a system size metric from theme data.</summary>
 	/// <param name="metric">Value that specifies the system size metric desired.</param>
 	/// <returns>Returns the size in pixels.</returns>
-	public int GetSystemMetric(User32.SystemMetric metric) => GetThemeSysSize(Handle, (int)metric);
+	public int GetSystemMetric(SystemMetric metric) => GetThemeSysSize(Handle, (int)metric);
 
 	/// <summary>Calculates the size and location of the specified text when rendered in the visual style font.</summary>
 	/// <param name="dc">
@@ -1085,8 +1079,8 @@ public class VisualTheme : IDisposable
 	/// </returns>
 	public Rectangle? GetTextExtent(IDeviceContext dc, int partId, int stateId, string text, DrawTextFlags flags, Rectangle? bounds)
 	{
-		using (var hdc = new SafeTempHDC(dc))
-			return GetThemeTextExtent(Handle, hdc, partId, stateId, text, -1, flags, bounds, out var ext).Succeeded ? (Rectangle?)ext : null;
+		using var hdc = new SafeTempHDC(dc);
+		return GetThemeTextExtent(Handle, hdc, partId, stateId, text, -1, flags, bounds, out var ext).Succeeded ? (Rectangle?)ext : null;
 	}
 
 	/// <summary>Retrieves information about the font specified by a visual style for a particular part.</summary>
@@ -1104,8 +1098,8 @@ public class VisualTheme : IDisposable
 	/// </returns>
 	public TEXTMETRIC? GetTextMetrics(IDeviceContext dc, int partId, int stateId)
 	{
-		using (var hdc = new SafeTempHDC(dc))
-			return GetThemeTextMetrics(Handle, hdc, partId, stateId, out var m).Succeeded ? (TEXTMETRIC?)m : null;
+		using var hdc = new SafeTempHDC(dc);
+		return GetThemeTextMetrics(Handle, hdc, partId, stateId, out var m).Succeeded ? (TEXTMETRIC?)m : null;
 	}
 
 	/// <summary>Gets the duration for the specified transition.</summary>
@@ -1132,39 +1126,39 @@ public class VisualTheme : IDisposable
 
 	private static PropertyType LookupGetType(int propId)
 	{
-		if ((propId >= 4001 && propId <= 4015))
+		if (propId is >= 4001 and <= 4015)
 			return PropertyType.Enum;
-		if ((propId >= 401 && propId <= 402) || (propId >= 600 && propId <= 608) || (propId >= 1401 && propId <= 1404) ||
-			(propId >= 3201 && propId <= 3202) || propId == 8001)
+		if (propId is >= 401 and <= 402 or >= 600 and <= 608 or >= 1401 and <= 1404 or
+			>= 3201 and <= 3202 or 8001)
 			return PropertyType.String;
-		if (propId == 403 || (propId >= 1201 && propId <= 1210) || (propId >= 1801 && propId <= 1810) || propId == 5006)
+		if (propId is 403 or >= 1201 and <= 1210 or >= 1801 and <= 1810 or 5006)
 			return PropertyType.Int;
-		if (propId >= 2401 && propId <= 2434 && propId != 2431)
+		if (propId is >= 2401 and <= 2434 and not 2431)
 			return PropertyType.Metric;
 		if (propId == 1301)
 			return PropertyType.SysInt;
-		if (propId == 1001 || (propId >= 2201 && propId <= 2220) || propId == 5001 || propId == 7001)
+		if (propId is 1001 or >= 2201 and <= 2220 or 5001 or 7001)
 			return PropertyType.Bool;
-		if ((propId >= 1601 && propId <= 1631) || (propId >= 2001 && propId <= 2010) || propId == 2431 ||
-			(propId >= 3801 && propId <= 3827) || propId == 5003)
+		if (propId is >= 1601 and <= 1631 or >= 2001 and <= 2010 or 2431 or
+			>= 3801 and <= 3827 or 5003)
 			return PropertyType.Color;
-		if ((propId >= 3601 && propId <= 3603))
+		if (propId is >= 3601 and <= 3603)
 			return PropertyType.Margins;
-		if ((propId >= 3001 && propId <= 3010))
+		if (propId is >= 3001 and <= 3010)
 			return PropertyType.FileName;
-		if ((propId >= 0 && propId <= 2))
+		if (propId is >= 0 and <= 2)
 			return PropertyType.Size;
-		if ((propId >= 3401 && propId <= 3411))
+		if (propId is >= 3401 and <= 3411)
 			return PropertyType.Position;
-		if (propId == 5002 || propId == 5004 || propId == 5005 || propId == 8002)
+		if (propId is 5002 or 5004 or 5005 or 8002)
 			return PropertyType.Rect;
-		if ((propId >= 801 && propId <= 809) || propId == 2601)
+		if (propId is >= 801 and <= 809 or 2601)
 			return PropertyType.Font;
 		if (propId == 6000)
 			return PropertyType.IntList;
 		if ( /*propId == 2 ||*/ propId == 8)
 			return PropertyType.HBitmap;
-		if (propId == 8000 || propId == (int)PropertyType.DiskStream)
+		if (propId is 8000 or ((int)PropertyType.DiskStream))
 			return PropertyType.DiskStream;
 		if (propId == (int)PropertyType.Stream)
 			return PropertyType.Stream;

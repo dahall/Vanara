@@ -19,7 +19,7 @@ public sealed class VistaControlExtender : Component, IExtenderProvider, ISuppor
 	internal const string MinVisibleItems = "MinVisibleItems";
 	internal const string ShowShield = "ShowShield";
 
-	private readonly Dictionary<Component, Dictionary<string, (object value, Action<Control, object> setter)>> bag = new();
+	private readonly Dictionary<Component, Dictionary<string, (object? value, Action<Control, object?> setter)>> bag = new();
 	private readonly Container components = new();
 
 	/// <summary>Initializes a new instance of the <see cref="VistaControlExtender"/> class.</summary>
@@ -36,12 +36,12 @@ public sealed class VistaControlExtender : Component, IExtenderProvider, ISuppor
 	/// <returns>The cue text to display.</returns>
 	[DisplayName(CueBanner), DefaultValue(null), Category("Appearance")]
 	[Description("Text that is displayed as a prompt for an unselected ComboBox.")]
-	public string GetCueBanner(ComboBox comboBox) => GetValue<string>(comboBox, CueBanner, out _);
+	public string? GetCueBanner(ComboBox comboBox) => GetValue<string>(comboBox, CueBanner, out _);
 
 	/// <summary>Sets the text that is displayed as a prompt for an unselected <see cref="ComboBox"/>.</summary>
 	/// <param name="comboBox">The <see cref="ComboBox"/> instance.</param>
 	/// <param name="value">The cue text to display.</param>
-	public void SetCueBanner(ComboBox comboBox, string value) => SetValue(comboBox, CueBanner, value, SetCueBannerValue);
+	public void SetCueBanner(ComboBox comboBox, string? value) => SetValue(comboBox, CueBanner, value, SetCueBannerValue);
 
 	/// <summary>Gets the minimum number of visible items in the drop-down list of a <see cref="ComboBox"/>.</summary>
 	/// <param name="comboBox">The <see cref="ComboBox"/> instance.</param>
@@ -77,7 +77,7 @@ public sealed class VistaControlExtender : Component, IExtenderProvider, ISuppor
 	{
 	}
 
-	bool IExtenderProvider.CanExtend(object extendee) => extendee is ComboBox || (extendee is ButtonBase && extendee.GetType().GetProperty(ShowShield) is null);
+	bool IExtenderProvider.CanExtend(object extendee) => extendee is ComboBox || extendee is ButtonBase && extendee.GetType().GetProperty(ShowShield) is null;
 
 	void ISupportInitialize.EndInit()
 	{
@@ -105,22 +105,22 @@ public sealed class VistaControlExtender : Component, IExtenderProvider, ISuppor
 		base.Dispose(disposing);
 	}
 
-	private static void SetCueBannerValue(Control comboBox, object value)
+	private static void SetCueBannerValue(Control comboBox, object? value)
 	{
-		(comboBox as ComboBox)?.SetCueBanner(value?.ToString());
+		(comboBox as ComboBox)?.SetCueBanner((string?)value);
 		comboBox.Invalidate();
 	}
 
-	private static void SetMinVisibleItemsValue(Control comboBox, object value)
+	private static void SetMinVisibleItemsValue(Control comboBox, object? value)
 	{
 		if (!IsMinVista) return;
-		comboBox.SendMessage((uint)ComboBoxMessage.CB_SETMINVISIBLE, (IntPtr)value);
+		comboBox.SendMessage((uint)ComboBoxMessage.CB_SETMINVISIBLE, (IntPtr)(int)value!);
 		comboBox.Invalidate();
 	}
 
-	private static void SetShowShieldValue(Control btn, object value)
+	private static void SetShowShieldValue(Control btn, object? value)
 	{
-		(btn as ButtonBase)?.SetElevationRequiredState((bool)value);
+		(btn as ButtonBase)?.SetElevationRequiredState((bool)value!);
 		btn.Invalidate();
 	}
 
@@ -134,29 +134,29 @@ public sealed class VistaControlExtender : Component, IExtenderProvider, ISuppor
 			textBox.SetCueBanner(value);
 	}*/
 
-	private T GetValue<T>(Control comp, string propName, out Action<Control, object> setter, T defValue = default)
+	private T? GetValue<T>(Control comp, string propName, out Action<Control, object?>? setter, T? defValue = default)
 	{
 		if (bag.TryGetValue(comp, out var props) && props.TryGetValue(propName, out var value))
 		{
 			setter = value.setter;
-			return (T)value.value;
+			return (T?)value.value;
 		}
 		setter = null;
 		return defValue;
 	}
 
-	private void OnComponentHandleCreated(object sender, EventArgs e)
+	private void OnComponentHandleCreated(object? sender, EventArgs e)
 	{
 		foreach (var kv in bag.Where(kv => ReferenceEquals(kv.Key, sender)))
 			foreach (var (value, setter) in kv.Value.Values)
-				setter?.Invoke(sender as Control, value);
+				setter?.Invoke((Control)sender!, value);
 	}
 
-	private bool SetValue<T>(Control comp, string propName, T value, Action<Control, object> setter)
+	private bool SetValue<T>(Control comp, string propName, T? value, Action<Control, object?> setter)
 	{
 		if (Equals(value, GetValue<T>(comp, propName, out _))) return false;
 		if (!bag.ContainsKey(comp))
-			bag.Add(comp, new Dictionary<string, (object value, Action<Control, object> setter)>());
+			bag.Add(comp, new Dictionary<string, (object? value, Action<Control, object?> setter)>());
 		bag[comp][propName] = (value, setter);
 		return true;
 	}

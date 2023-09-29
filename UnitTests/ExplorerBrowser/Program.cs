@@ -1,17 +1,19 @@
-﻿//Copyright (c) Microsoft Corporation.  All rights reserved.
+﻿global using System.Windows.Forms;
+
+//Copyright (c) Microsoft Corporation.  All rights reserved.
 
 namespace Microsoft.WindowsAPICodePack.Samples;
 
 static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ExplorerBrowserTestForm());  //new SimpleForm()); // new ExplorerBrowserTestForm()); // ShellNamespaceTreeControlTestForm());
-        }
-    }
+{
+	/// <summary>
+	/// The main entry point for the application.
+	/// </summary>
+	[STAThread]
+	static void Main()
+	{
+		Application.EnableVisualStyles();
+		Application.SetCompatibleTextRenderingDefault(false);
+		Application.Run(new ExplorerBrowserTestForm());  //new SimpleForm()); // new ExplorerBrowserTestForm()); // ShellNamespaceTreeControlTestForm());
+	}
+}

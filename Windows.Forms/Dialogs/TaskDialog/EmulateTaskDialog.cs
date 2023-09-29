@@ -837,7 +837,7 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		private void button_Click(object sender, EventArgs e)
+		private void button_Click(object? sender, EventArgs e)
 		{
 			var id = (int)((Button)sender).Tag;
 			if (taskDialog.OnButtonClicked(id))
@@ -887,7 +887,7 @@ namespace Vanara.Windows.Forms
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void EmulateTaskDialog_KeyDown(object sender, KeyEventArgs e)
+		private void EmulateTaskDialog_KeyDown(object? sender, KeyEventArgs e)
 		{
 			var notWanted = Keys.Alt | Keys.Shift;
 
@@ -903,7 +903,7 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		private void expandedInfoButton_Click(object sender, EventArgs e)
+		private void expandedInfoButton_Click(object? sender, EventArgs e)
 		{
 			ToggleExpandedInformationState();
 
@@ -1179,7 +1179,7 @@ namespace Vanara.Windows.Forms
 			PerformLayout();
 		}
 
-		private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		private void linkLabel_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e)
 		{
 			taskDialog.OnLinkClicked((string)e.Link.LinkData);
 		}
@@ -1231,7 +1231,7 @@ namespace Vanara.Windows.Forms
 			return linkLabel;
 		}
 
-		private void radioButton_Click(object sender, EventArgs e)
+		private void radioButton_Click(object? sender, EventArgs e)
 		{
 			var id = (int)((RadioButton)sender).Tag;
 			taskDialog.OnRadioButtonClicked(id);
@@ -1318,7 +1318,7 @@ namespace Vanara.Windows.Forms
 			tableLayoutPanelMainArea.ColumnStyles[0].Width = pictureBoxMainAreaIcon.Image?.Width + 10 ?? 0;
 		}
 
-		private void timer_Tick(object sender, EventArgs e)
+		private void timer_Tick(object? sender, EventArgs e)
 		{
 			timerTickCount += (uint)timer.Interval;
 
@@ -1359,7 +1359,7 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		private void verificationCheckBox_Click(object sender, EventArgs e)
+		private void verificationCheckBox_Click(object? sender, EventArgs e)
 		{
 			taskDialog.OnVerificationClicked(((CheckBox)sender).Checked);
 		}

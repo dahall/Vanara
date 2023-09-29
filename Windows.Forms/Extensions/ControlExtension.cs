@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.Extensions;
@@ -19,7 +20,7 @@ public static partial class ControlExtension
 		}
 		else if (!ctrl.IsDesignMode())
 		{
-			void handler(object sender, EventArgs e)
+			void handler(object? sender, EventArgs e)
 			{
 				if (!ctrl.IsHandleCreated) return;
 				ctrl.HandleCreated -= handler;
@@ -35,9 +36,9 @@ public static partial class ControlExtension
 	/// <param name="enabled">If set to <c>true</c> enable all children, otherwise disable all children.</param>
 	public static void EnableChildren(this Control ctl, bool enabled)
 	{
-		foreach (Control sub in ctl.Controls)
+		foreach (Control sub in ctl.Controls.Cast<Control>())
 		{
-			if (sub is ButtonBase || sub is ListControl || sub is TextBoxBase)
+			if (sub is ButtonBase or ListControl or TextBoxBase)
 				sub.Enabled = enabled;
 			sub.EnableChildren(enabled);
 		}
@@ -47,10 +48,10 @@ public static partial class ControlExtension
 	/// <typeparam name="T">The <see cref="Control"/> based <see cref="Type"/> of the parent control to retrieve.</typeparam>
 	/// <param name="ctrl">This control.</param>
 	/// <returns>The parent control matching T or null if not found.</returns>
-	public static T GetParent<T>(this Control ctrl) where T : class
+	public static T? GetParent<T>(this Control ctrl) where T : class
 	{
 		var p = ctrl.Parent;
-		while (p != null & !(p is T))
+		while (p is not null and not T)
 			p = p.Parent;
 		return p as T;
 	}
@@ -59,7 +60,7 @@ public static partial class ControlExtension
 	/// <typeparam name="T">The <see cref="Control"/> based <see cref="Type"/> of the parent control to retrieve.</typeparam>
 	/// <param name="ctrl">This control.</param>
 	/// <returns>The top-most parent control matching T or null if not found.</returns>
-	public static T GetTopMostParent<T>(this Control ctrl) where T : class
+	public static T? GetTopMostParent<T>(this Control ctrl) where T : class
 	{
 		var stack = new System.Collections.Generic.Stack<Control>();
 		var p = ctrl.Parent;
@@ -111,11 +112,11 @@ public static partial class ControlExtension
 	/// <param name="getLenMsg">The window message identifier for retrieving the string length.</param>
 	/// <param name="getTextMsg">The window message identifier for retrieving the string.</param>
 	/// <returns>The string result from the message call.</returns>
-	public static string GetMessageString(this Control ctrl, uint getLenMsg, uint getTextMsg)
+	public static string? GetMessageString(this Control ctrl, uint getLenMsg, uint getTextMsg)
 	{
 		if (!ctrl.IsHandleCreated) return null;
 		var cp = ctrl.SendMessage(getLenMsg).ToInt32() + 1;
-		var sb = new System.Text.StringBuilder(cp);
+		var sb = new StringBuilder(cp);
 		PInvoke.User32.SendMessage(ctrl.Handle, getTextMsg, ref cp, sb);
 		return sb.ToString();
 	}
@@ -128,16 +129,15 @@ public static partial class ControlExtension
 	/// <summary>Removes the mnemonic, if one exists, from the string.</summary>
 	/// <param name="str">The string.</param>
 	/// <returns>A mnemonic free string.</returns>
-	public static string RemoveMnemonic(this string str)
+	public static string? RemoveMnemonic(this string? str)
 	{
-		if (str == null) return null;
-		var idx = str?.IndexOf('&');
-		if (idx >= 0)
-		{
-			var sb = new System.Text.StringBuilder(str);
-			sb.Remove(idx.Value, 1);
-			return sb.ToString();
-		}
+		if (string.IsNullOrEmpty(str)) return str;
+		for (int i = 0; i < str!.Length; i++)
+			if (str[i] == '&')
+				if (i < str.Length - 1 && str[i +  1] == '&')
+					i++;
+				else
+					return str.Remove(i, 1);
 		return str;
 	}
 

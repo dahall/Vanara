@@ -32,7 +32,7 @@ public enum ShellProgressDialogStyle
 /// </summary>
 /// <example>This is an example of how to use ShellProgressDialog.
 /// <code>
-/// private void button1_Click(object sender, System.EventArgs e)
+/// private void button1_Click(object? sender, System.EventArgs e)
 /// {
 ///    var dlg = new ShellProgressDialog
 ///    {
@@ -53,19 +53,16 @@ public enum ShellProgressDialogStyle
 /// </example>
 public class ShellProgressDialog : Component
 {
-	private string cancelMsg;
+	private string? cancelMsg;
 	private bool closed = true;
-	private string description;
-	private string detail;
+	private string? description;
+	private string? detail;
 	private EnumFlagIndexer<PROGDLG> flags;
 	private IProgressDialog iDlg;
 	private string title = string.Empty;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellProgressDialog"/> class.</summary>
-	public ShellProgressDialog()
-	{
-		iDlg = new IProgressDialog();
-	}
+	public ShellProgressDialog() => iDlg = new IProgressDialog();
 
 	/// <summary> Gets or sets a value indicating whether to automatically estimate the remaining time and display it.</summary>
 	[DefaultValue(false), Category("Behavior"), Description("Automatically estimate the remaining time and display it.")]
@@ -80,7 +77,7 @@ public class ShellProgressDialog : Component
 	/// normal and that the progress dialog box will be closed shortly. It is typically is set to something like "Please wait while ...".
 	/// </remarks>
 	[DefaultValue(null), Category("Appearance"), Description("Message to be displayed if the user cancels the operation.")]
-	public string CancelMessage
+	public string? CancelMessage
 	{
 		get => cancelMsg;
 		set
@@ -98,7 +95,7 @@ public class ShellProgressDialog : Component
 	/// <summary>Gets or sets the description that appears on the first line.</summary>
 	/// <value>The description.</value>
 	[DefaultValue(null), Category("Appearance"), Description("Description that appears on the first line.")]
-	public string Description
+	public string? Description
 	{
 		get => description;
 		set
@@ -111,7 +108,7 @@ public class ShellProgressDialog : Component
 	/// <summary>Gets or sets the detail that appears on the second line.</summary>
 	/// <value>The detail.</value>
 	[DefaultValue(null), Category("Appearance"), Description("Detail text that appears on the second line.")]
-	public string Detail
+	public string? Detail
 	{
 		get => detail;
 		set
@@ -239,6 +236,6 @@ public class ShellProgressDialog : Component
 			return;
 		if (!closed)
 			Stop();
-		iDlg = null;
+		GC.SuppressFinalize(this);
 	}
 }

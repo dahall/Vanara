@@ -782,7 +782,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-settheme HRESULT
 		// SetTheme( LPCWSTR pszTheme );
 		[PreserveSig]
-		HRESULT SetTheme([MarshalAs(UnmanagedType.LPWStr)] string pszTheme);
+		HRESULT SetTheme([MarshalAs(UnmanagedType.LPWStr)] string? pszTheme);
 
 		/// <summary>Retrieves the next item in the tree according to which method is requested.</summary>
 		/// <param name="psi">

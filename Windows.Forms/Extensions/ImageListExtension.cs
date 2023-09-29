@@ -46,11 +46,9 @@ public static partial class ImageListExtension
 			throw new ArgumentOutOfRangeException(nameof(index));
 		if (overlayImageIndex < 0 || overlayImageIndex > imageList.GetOverlayCount())
 			throw new ArgumentOutOfRangeException(nameof(overlayImageIndex));
-		using (var hg = new SafeTempHDC(g))
-		{
-			var p = new IMAGELISTDRAWPARAMS(hg, bounds, index, bgColor, style | (IMAGELISTDRAWFLAGS)INDEXTOOVERLAYMASK(overlayImageIndex)) { rgbFg = fgColor };
-			imageList.GetIImageList().Draw(p);
-		}
+		using var hg = new SafeTempHDC(g);
+		var p = new IMAGELISTDRAWPARAMS(hg, bounds, index, bgColor, style | (IMAGELISTDRAWFLAGS)INDEXTOOVERLAYMASK(overlayImageIndex)) { rgbFg = fgColor };
+		imageList.GetIImageList().Draw(p);
 	}
 
 	/// <summary>Gets the current background color for an image list.</summary>
@@ -75,10 +73,12 @@ public static partial class ImageListExtension
 		var iil = dhiml.Interface;
 		// Get internal handle class
 		var nilfi = typeof(ImageList).GetField("nativeImageList", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic) ?? throw new PlatformNotSupportedException();
-		var nil = nilfi.FieldType;
+		Type nil = nilfi.FieldType;
 		// Create a new instance with the handle param
-		var nili = nil.Assembly.CreateInstance(nil.FullName, false, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, new object[] { dhiml.DangerousGetHandle() }, null, null);
-		// Create a new ImageList and initialize with settings from handle
+#pragma warning disable IL2058 // Parameters passed to method cannot be analyzed. Consider using methods 'System.Type.GetType' and `System.Activator.CreateInstance` instead.
+		var nili = nil.Assembly.CreateInstance(nil.FullName!, false, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, new object[] { dhiml.DangerousGetHandle() }, null, null);
+#pragma warning restore IL2058 // Parameters passed to method cannot be analyzed. Consider using methods 'System.Type.GetType' and `System.Activator.CreateInstance` instead.
+							  // Create a new ImageList and initialize with settings from handle
 		var il = new ImageList();
 		nilfi.SetValue(il, nili);
 		var depthfi = typeof(ImageList).GetField("colorDepth", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -108,8 +108,8 @@ public static partial class ImageListExtension
 	/// <returns>A merged image.</returns>
 	public static Icon MergeImage(this ImageList il1, int idx1, ImageList il2, int idx2, Point offset = default)
 	{
-		var il3 = il1.GetIImageList().Merge(idx1, il2.GetIImageList(), idx2, offset.X, offset.Y, typeof(IImageList).GUID);
-		return il3.GetIcon(0, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT | IMAGELISTDRAWFLAGS.ILD_PRESERVEALPHA).ToIcon();
+		IImageList il3 = il1.GetIImageList().Merge(idx1, il2.GetIImageList(), idx2, offset.X, offset.Y, typeof(IImageList).GUID);
+		return il3.GetIcon(0, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT | IMAGELISTDRAWFLAGS.ILD_PRESERVEALPHA).ToIcon()!;
 	}
 
 	/// <summary>Gets the current background color for an image list.</summary>
@@ -122,7 +122,7 @@ public static partial class ImageListExtension
 	/// <param name="imageList">The image list.</param>
 	/// <param name="imageIndex">Index of the image within the ImageList.</param>
 	/// <returns>The 1 based index of the overlay.</returns>
-	/// <exception cref="System.ArgumentOutOfRangeException">The imageIndex is not in the current list.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">The imageIndex is not in the current list.</exception>
 	/// <exception cref="System.ComponentModel.Win32Exception">The image cannot be added as an overlay.</exception>
 	public static int SetImageIndexAsOverlay(this ImageList imageList, int imageIndex)
 	{
@@ -141,9 +141,9 @@ public static partial class ImageListExtension
 
 	private static int GetOverlayCount(this ImageList imageList) => imageListOverlays.TryGetValue(imageList, out var vals) ? vals.Count : 0;
 
-	private static void ImageList_RecreateHandle(object sender, EventArgs e)
+	private static void ImageList_RecreateHandle(object? sender, EventArgs e)
 	{
-		if (!(sender is ImageList il) || !imageListOverlays.TryGetValue(il, out var vals)) return;
+		if (sender is not ImageList il || !imageListOverlays.TryGetValue(il, out var vals)) return;
 		var iil = il.GetIImageList();
 		for (var i = 0; i < vals.Count; i++)
 			iil.SetOverlayImage(vals[i], i + 1);

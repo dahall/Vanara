@@ -10,7 +10,7 @@ public static partial class ComboBoxExtension
 	/// <param name="cb">The <see cref="ComboBox"/> instance.</param>
 	/// <param name="cueBannerText">The cue banner text.</param>
 	/// <exception cref="PlatformNotSupportedException">This method is only support on Windows Vista and later.</exception>
-	public static void SetCueBanner(this ComboBox cb, string cueBannerText)
+	public static void SetCueBanner(this ComboBox cb, string? cueBannerText)
 	{
 		if (Environment.OSVersion.Version.Major >= 6)
 		{

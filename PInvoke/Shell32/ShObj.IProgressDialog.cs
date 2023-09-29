@@ -83,7 +83,7 @@ public static partial class Shell32
 
 		/// <summary>Sets the title of the progress dialog box.</summary>
 		/// <param name="pwzTitle">A pointer to a null-terminated Unicode string that contains the dialog box title.</param>
-		void SetTitle([MarshalAs(UnmanagedType.LPWStr)] string pwzTitle);
+		void SetTitle([MarshalAs(UnmanagedType.LPWStr)] string? pwzTitle);
 
 		/// <summary>
 		/// Specifies an Audio-Video Interleaved (AVI) clip that runs in the dialog box. Note: Note This method is not supported in
@@ -139,7 +139,7 @@ public static partial class Shell32
 		/// This function is typically used to display a message such as "Item XXX is now being processed." typically, messages are
 		/// displayed on lines 1 and 2, with line 3 reserved for the estimated time.
 		/// </remarks>
-		void SetLine(uint dwLineNum, [MarshalAs(UnmanagedType.LPWStr)] string pwzString, [MarshalAs(UnmanagedType.VariantBool)] bool fCompactPath, IntPtr pvResevered = default);
+		void SetLine(uint dwLineNum, [MarshalAs(UnmanagedType.LPWStr)] string? pwzString, [MarshalAs(UnmanagedType.VariantBool)] bool fCompactPath, IntPtr pvResevered = default);
 
 		/// <summary>Sets a message to be displayed if the user cancels the operation.</summary>
 		/// <param name="pwzCancelMsg">A pointer to a null-terminated Unicode string that contains the message to be displayed.</param>
@@ -152,7 +152,7 @@ public static partial class Shell32
 		/// the user know that the delay is normal and that the progress dialog box will be closed shortly. It is typically is set to
 		/// something like "Please wait while ...".
 		/// </remarks>
-		void SetCancelMsg([MarshalAs(UnmanagedType.LPWStr)] string pwzCancelMsg, IntPtr pvResevered = default);
+		void SetCancelMsg([MarshalAs(UnmanagedType.LPWStr)] string? pwzCancelMsg, IntPtr pvResevered = default);
 
 		/// <summary>Resets the progress dialog box timer to zero.</summary>
 		/// <param name="dwTimerAction">Flags that indicate the action to be taken by the timer.</param>

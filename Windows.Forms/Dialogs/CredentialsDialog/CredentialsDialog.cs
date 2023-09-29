@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Security;
 using System.Windows.Forms;
@@ -27,7 +28,7 @@ public class CredentialsDialog : CommonDialog
 	/// <param name="caption">The caption.</param>
 	/// <param name="message">The message.</param>
 	/// <param name="userName">Name of the user.</param>
-	public CredentialsDialog(string caption, string message = null, string userName = null) : this()
+	public CredentialsDialog(string caption, string? message = null, string? userName = null) : this()
 	{
 		Caption = caption;
 		Message = message;
@@ -40,7 +41,7 @@ public class CredentialsDialog : CommonDialog
 	/// not. If <c>false</c>, the <see cref="CommonDialog.ShowDialog()"/> method will return <see cref="DialogResult.Cancel"/>.
 	/// </remarks>
 	[Description("Validates the supplied credentials."), Category("Data")]
-	public event EventHandler<PasswordValidatorEventArgs> ValidatePassword;
+	public event EventHandler<PasswordValidatorEventArgs>? ValidatePassword;
 
 	/// <summary>Gets or sets the Windows Error Code that caused this credential dialog to appear, if applicable.</summary>
 	[DefaultValue(0), Category("Data"), Description("Windows Error Code that caused this credential dialog")]
@@ -60,13 +61,13 @@ public class CredentialsDialog : CommonDialog
 
 	/// <summary><c>Windows XP and earlier:</c> Gets or sets the image to display as the banner for the dialog.</summary>
 	[DefaultValue(null), Category("Appearance"), Description("Image to display in dialog banner")]
-	public Bitmap Banner { get; set; }
+	public Bitmap? Banner { get; set; }
 
 	/// <summary>
 	/// Gets or sets the caption for the dialog. If this value is <c>null</c> or an empty string, the name of the application will be shown as the caption.
 	/// </summary>
 	[DefaultValue(null), Category("Appearance"), Description("Caption to display for dialog")]
-	public string Caption { get; set; }
+	public string? Caption { get; set; }
 
 	/// <summary>Gets or sets a value indicating whether to encrypt password.</summary>
 	/// <value><c>true</c> if password is to be encrypted; otherwise, <c>false</c>.</value>
@@ -80,11 +81,11 @@ public class CredentialsDialog : CommonDialog
 
 	/// <summary>Gets or sets the message to display on the dialog</summary>
 	[DefaultValue(null), Category("Appearance"), Description("Message to display in the dialog")]
-	public string Message { get; set; }
+	public string? Message { get; set; }
 
 	/// <summary>Gets the password entered by the user</summary>
 	[DefaultValue(null), Browsable(false)]
-	public string Password { get; private set; }
+	public string? Password { get; private set; }
 
 	/// <summary>Gets or sets a boolean indicating if the save check box was checked</summary>
 	[DefaultValue(false), Category("Behavior"), Description("Indicates if the save check box is checked.")]
@@ -92,7 +93,7 @@ public class CredentialsDialog : CommonDialog
 
 	/// <summary>Gets the password entered by the user using an encrypted string</summary>
 	[DefaultValue(null), Browsable(false)]
-	public SecureString SecurePassword { get; private set; }
+	public SecureString? SecurePassword { get; private set; }
 
 	/// <summary>Gets or sets a value that determines if the combo box is populated with local administrators only.</summary>
 	public bool ShowAdminsOnly { get; set; }
@@ -104,12 +105,12 @@ public class CredentialsDialog : CommonDialog
 	/// <summary>Gets or sets the name of the target for these credentials</summary>
 	/// <remarks>This value is used as a key to store the credentials if persisted</remarks>
 	[DefaultValue(null), Category("Data"), Description("Target for the credentials")]
-	public string Target { get; set; }
+	public string? Target { get; set; }
 
 	/// <summary>Gets or sets the username entered</summary>
 	/// <remarks>If non-empty before calling <see cref="RunDialog"/>, this value will be displayed in the dialog</remarks>
 	[DefaultValue(null), Category("Data"), Description("User name displayed in the dialog")]
-	public string UserName { get; set; }
+	public string? UserName { get; set; }
 
 	/// <summary>Gets a default value for the target.</summary>
 	/// <value>The default target.</value>
@@ -119,7 +120,7 @@ public class CredentialsDialog : CommonDialog
 	/// <param name="userName">Name of the user.</param>
 	/// <param name="password">The password.</param>
 	/// <returns><c>true</c> if the credentials are validated, otherwise <c>false</c>.</returns>
-	public static bool IsValidPassword(string userName, string password)
+	public static bool IsValidPassword(string userName, string? password)
 	{
 		ParseUserName(userName, out var user, out var domain);
 		try
@@ -135,7 +136,7 @@ public class CredentialsDialog : CommonDialog
 	/// <param name="userName">Contains the user name to be parsed. The name must be in UPN or down-level format, or a certificate.</param>
 	/// <param name="user">Receives the user account name.</param>
 	/// <param name="domain">Receives the domain name. If <paramref name="userName"/> specifies a certificate, domain will be NULL.</param>
-	public static void ParseUserName(string userName, out string user, out string domain)
+	public static void ParseUserName(string userName, out string user, out string? domain)
 	{
 		if (userName == null)
 			throw new ArgumentNullException(nameof(userName));
@@ -150,7 +151,7 @@ public class CredentialsDialog : CommonDialog
 	/// <summary>Implements a standard password validator using the LogonUser API function.</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="args">The <see cref="PasswordValidatorEventArgs"/> instance containing the event data.</param>
-	public static void StandardPasswordValidator(object sender, PasswordValidatorEventArgs args)
+	public static void StandardPasswordValidator(object? sender, PasswordValidatorEventArgs args)
 	{
 		if (args.SecurePassword != null) throw new ArgumentException();
 		args.Validated = IsValidPassword(args.Username, args.Password);
@@ -159,7 +160,7 @@ public class CredentialsDialog : CommonDialog
 	/// <summary>Confirms the credentials.</summary>
 	/// <param name="updateCredentials">If set to <c>true</c> the credentials are stored in the credential manager.</param>
 	/// <returns><c>true</c> if the credentials were confirmed; otherwise <c>false</c>.</returns>
-	public bool ConfirmCredentials(bool updateCredentials) => CredUIConfirmCredentials(Target, updateCredentials).Succeeded;
+	public bool ConfirmCredentials(bool updateCredentials) => CredUIConfirmCredentials(Target ?? DefaultTarget, updateCredentials).Succeeded;
 
 	/// <summary>When overridden in a derived class, resets the properties of a common dialog box to their default values.</summary>
 	public override void Reset()
@@ -171,21 +172,15 @@ public class CredentialsDialog : CommonDialog
 
 	/// <summary>Gets the flags to use in <see cref="CredUIPromptForWindowsCredentials"/>.</summary>
 	/// <returns>The flags based on current properties.</returns>
-	protected virtual WindowsCredentialsDialogOptions GetDialogFlags()
-	{
-		return WindowsCredentialsDialogOptions.CREDUIWIN_GENERIC |
+	protected virtual WindowsCredentialsDialogOptions GetDialogFlags() => WindowsCredentialsDialogOptions.CREDUIWIN_GENERIC |
 			(ShowAdminsOnly ? WindowsCredentialsDialogOptions.CREDUIWIN_ENUMERATE_ADMINS : 0) |
 			(ShowSaveCheckBox ? WindowsCredentialsDialogOptions.CREDUIWIN_CHECKBOX : 0);
-	}
 
 	/// <summary>Gets the flags to use in <see cref="CredUIPromptForCredentials"/>.</summary>
 	/// <returns>The flags based on current properties.</returns>
-	protected virtual CredentialsDialogOptions GetPreVistaDialogFlags()
-	{
-		return CredentialsDialogOptions.CREDUI_FLAGS_DEFAULT |
+	protected virtual CredentialsDialogOptions GetPreVistaDialogFlags() => CredentialsDialogOptions.CREDUI_FLAGS_DEFAULT |
 			(ShowAdminsOnly ? CredentialsDialogOptions.CREDUI_FLAGS_REQUEST_ADMINISTRATOR : 0) |
 			(ShowSaveCheckBox ? CredentialsDialogOptions.CREDUI_FLAGS_SHOW_SAVE_CHECK_BOX : 0);
-	}
 
 	/// <summary>When overridden in a derived class, specifies a common dialog box.</summary>
 	/// <param name="parentWindowHandle">A value that represents the window handle of the owner window for the common dialog box.</param>
@@ -201,8 +196,8 @@ public class CredentialsDialog : CommonDialog
 				var password = new StringBuilder(CREDUI_MAX_PASSWORD_LENGTH);
 
 				if (string.IsNullOrEmpty(Target)) Target = DefaultTarget;
-				var ret = CredUIPromptForCredentials(info, Target, IntPtr.Zero, unchecked((uint)AuthenticationError), userName, CREDUI_MAX_USERNAME_LENGTH,
-					password, CREDUI_MAX_PASSWORD_LENGTH, ref saveChecked, GetPreVistaDialogFlags());
+				var ret = CredUIPromptForCredentials(info, Target ?? DefaultTarget, IntPtr.Zero, unchecked((uint)AuthenticationError), userName,
+					CREDUI_MAX_USERNAME_LENGTH, password, CREDUI_MAX_PASSWORD_LENGTH, ref saveChecked, GetPreVistaDialogFlags());
 				if (ret == Win32Error.ERROR_CANCELLED)
 					return false;
 				if (ret != Win32Error.ERROR_SUCCESS)
@@ -245,7 +240,7 @@ public class CredentialsDialog : CommonDialog
 			}
 			else
 			{
-				using (var buf = EncryptPassword && SecurePassword != null ? new AuthenticationBuffer(UserName.ToSecureString(), SecurePassword)
+				using (var buf = EncryptPassword && SecurePassword != null ? new AuthenticationBuffer(UserName?.ToSecureString(), SecurePassword)
 					: new AuthenticationBuffer(UserName, Password))
 				{
 					var retVal = CredUIPromptForWindowsCredentials(info, 0, ref authPackage, buf, (uint)buf.Size, out var outAuthBuffer, out var outAuthBufferSize, ref saveChecked, GetDialogFlags());
@@ -271,7 +266,7 @@ public class CredentialsDialog : CommonDialog
 				}
 				if (ValidatePassword != null)
 				{
-					var pve = new PasswordValidatorEventArgs(UserName, Password, SecurePassword);
+					var pve = new PasswordValidatorEventArgs(UserName ?? string.Empty, Password, SecurePassword);
 					ValidatePassword.Invoke(this, pve);
 					if (!pve.Validated)
 						return false;
@@ -299,14 +294,14 @@ public class CredentialsDialog : CommonDialog
 		return newPassword;
 	}
 
-	/// <summary>Used by the <see cref="CredentialsDialog.ValidatePassword"/> event.</summary>
+	/// <summary>Used by the <see cref="ValidatePassword"/> event.</summary>
 	public class PasswordValidatorEventArgs : EventArgs
 	{
 		/// <summary>Initializes a new instance of the <see cref="PasswordValidatorEventArgs"/> class.</summary>
 		/// <param name="un">The user name.</param>
 		/// <param name="pwd">The password.</param>
 		/// <param name="sPwd">The secure password.</param>
-		internal PasswordValidatorEventArgs(string un, string pwd, SecureString sPwd)
+		internal PasswordValidatorEventArgs(string un, string? pwd, SecureString? sPwd)
 		{
 			Username = un;
 			Password = pwd;
@@ -315,11 +310,11 @@ public class CredentialsDialog : CommonDialog
 
 		/// <summary>Gets the password.</summary>
 		/// <value>The password.</value>
-		public string Password { get; }
+		public string? Password { get; }
 
 		/// <summary>Gets the secure password.</summary>
 		/// <value>The secure password.</value>
-		public SecureString SecurePassword { get; }
+		public SecureString? SecurePassword { get; }
 
 		/// <summary>Gets the username.</summary>
 		/// <value>The username.</value>

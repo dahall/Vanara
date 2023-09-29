@@ -7069,7 +7069,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the bottom description text.</summary>
 		/// <value>The bottom description text.</value>
-		public string DescriptionBottom
+		public string? DescriptionBottom
 		{
 			get => pszDescriptionBottom.ToString();
 			set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_DESCRIPTIONBOTTOM, pszDescriptionBottom.Assign(value, out cchDescriptionBottom));
@@ -7077,7 +7077,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the top description text.</summary>
 		/// <value>The top description text.</value>
-		public string DescriptionTop
+		public string? DescriptionTop
 		{
 			get => pszDescriptionTop.ToString();
 			set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_DESCRIPTIONTOP, pszDescriptionTop.Assign(value, out cchDescriptionTop));
@@ -7085,7 +7085,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the footer.</summary>
 		/// <value>The footer.</value>
-		public string Footer
+		public string? Footer
 		{
 			get => pszFooter.ToString();
 			set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_FOOTER, pszFooter.Assign(value, out cchFooter));
@@ -7129,7 +7129,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the header text.</summary>
 		/// <value>The header text.</value>
-		public string Header
+		public string? Header
 		{
 			get => pszHeader.ToString();
 			set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_HEADER, pszHeader.Assign(value, out cchHeader));
@@ -7137,7 +7137,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the subtitle.</summary>
 		/// <value>The subtitle.</value>
-		public string Subtitle
+		public string? Subtitle
 		{
 			get => pszSubtitle.ToString();
 			set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_SUBTITLE, pszSubtitle.Assign(value, out cchSubtitle));
@@ -7145,7 +7145,7 @@ public static partial class ComCtl32
 
 		/// <summary>Gets or sets the task link text.</summary>
 		/// <value>The task link text.</value>
-		public string TaskLink
+		public string? TaskLink
 		{
 			get => pszTask.ToString();
 			set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_TASK, pszTask.Assign(value, out cchTask));

@@ -1,4 +1,5 @@
-﻿using System.Security.AccessControl;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.AccessControl;
 using System.Security.Principal;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AclUI;
@@ -21,17 +22,20 @@ internal class SecurityEventArg : EventArgs
 	public SafePSECURITY_DESCRIPTOR SecurityDesciptor { get; }
 }
 
-internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, ISecurityObjectTypeInfo, IEffectivePermission, ISecurityInformation4, IEffectivePermission2
+/// <summary>Internal implementation of a number of COM interfaces needed for interaction with the Windows ACL Editor.</summary>
+internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo, IEffectivePermission, IEffectivePermission2
 {
 	internal SI_OBJECT_INFO objectInfo;
 	private SI_OBJECT_INFO_Flags currentElevation;
 	private readonly string fullObjectName;
-	private IAccessControlEditorDialogProvider? prov;
-	private SafeByteArray? pSD;
+	[NotNull] private IAccessControlEditorDialogProvider? prov;
+	private SafeByteArray pSD = new(0);
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, string fullName, string? serverName = null, string? pageTitle = null)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	{
-		objectInfo = new(flags, objectName, serverName, pageTitle);
+		objectInfo = new(flags, objectName, serverName ?? Environment.MachineName, pageTitle);
 		currentElevation = 0; // flags & (SI_OBJECT_INFO_Flags.OwnerElevationRequired | SI_OBJECT_INFO_Flags.AuditElevationRequired | SI_OBJECT_INFO_Flags.PermsElevationRequired);
 		fullObjectName = fullName;
 	}
@@ -40,11 +44,12 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 
 	public byte[] SecurityDescriptor
 	{
-		get => pSD?.ToArray() ?? new byte[0];
+		get => pSD.ToArray();
 		set => pSD = new SafeByteArray(value);
 	}
 
-	HRESULT IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, PSECURITY_DESCRIPTOR pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out ACCESS_MASK[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
+	HRESULT IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string? pszServerName, PSECURITY_DESCRIPTOR pSecDesc,
+		out OBJECT_TYPE_LIST[]? ppObjectTypeList, out uint pcObjectTypeListLength, out ACCESS_MASK[]? ppGrantedAccessList, out uint pcGrantedAccessListLength)
 	{
 		System.Diagnostics.Debug.WriteLine($"GetEffectivePermission: {pguidObjectType}, {pszServerName}");
 		if (pguidObjectType == Guid.Empty)
@@ -64,12 +69,10 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityInformation.GetAccessRights(in Guid guidObject, int dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
+	HRESULT ISecurityInformation.GetAccessRights(IntPtr guidObject, SI_OBJECT_INFO_Flags dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
 	{
-		System.Diagnostics.Debug.WriteLine($"GetAccessRight: {guidObject}, {(SI_OBJECT_INFO_Flags)dwFlags}");
-		prov.GetAccessListInfo((SI_OBJECT_INFO_Flags)dwFlags, out var ari, out var defAcc);
-		defaultAccess = defAcc;
-		access = ari;
+		System.Diagnostics.Debug.WriteLine($"GetAccessRight: {guidObject}, {dwFlags}");
+		prov.GetAccessListInfo(dwFlags, out access, out defaultAccess);
 		accessCount = (uint)access.Length;
 		return HRESULT.S_OK;
 	}
@@ -86,7 +89,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 	{
 		System.Diagnostics.Debug.WriteLine($"GetObjectInformation: {objInfo.dwFlags} {currentElevation}");
 		objInfo = objectInfo;
-		objInfo.dwFlags &= ~(currentElevation);
+		objInfo.dwFlags &= ~currentElevation;
 		return HRESULT.S_OK;
 	}
 
@@ -102,7 +105,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityInformation.MapGeneric(in Guid guidObjectType, ref AceFlags AceFlags, ref ACCESS_MASK Mask)
+	HRESULT ISecurityInformation.MapGeneric(IntPtr guidObjectType, ref AceFlags AceFlags, ref ACCESS_MASK Mask)
 	{
 		var stMask = Mask;
 		var gm = prov.GetGenericMapping(AceFlags);
@@ -141,11 +144,11 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		switch (pgActv)
 		{
 			case SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT:
-				currentElevation |= (SI_OBJECT_INFO_Flags.SI_PERMS_ELEVATION_REQUIRED | SI_OBJECT_INFO_Flags.SI_VIEW_ONLY);
+				currentElevation |= SI_OBJECT_INFO_Flags.SI_PERMS_ELEVATION_REQUIRED | SI_OBJECT_INFO_Flags.SI_VIEW_ONLY;
 				break;
 
 			case SI_PAGE_ACTIVATED.SI_SHOW_PERM_ACTIVATED:
-				currentElevation |= (SI_OBJECT_INFO_Flags.SI_PERMS_ELEVATION_REQUIRED | SI_OBJECT_INFO_Flags.SI_VIEW_ONLY);
+				currentElevation |= SI_OBJECT_INFO_Flags.SI_PERMS_ELEVATION_REQUIRED | SI_OBJECT_INFO_Flags.SI_VIEW_ONLY;
 				pgType = SI_PAGE_TYPE.SI_PAGE_ADVPERM;
 				break;
 
@@ -190,22 +193,23 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 
 	public void SetProvider(IAccessControlEditorDialogProvider provider) => prov = provider;
 
-	public RawSecurityDescriptor ShowDialog(HWND hWnd, SI_PAGE_TYPE pageType = SI_PAGE_TYPE.SI_PAGE_PERM, SI_PAGE_ACTIVATED pageAct = SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT)
+	public RawSecurityDescriptor? ShowDialog(HWND hWnd, SI_PAGE_TYPE pageType = SI_PAGE_TYPE.SI_PAGE_PERM, SI_PAGE_ACTIVATED pageAct = SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT)
 	{
 		System.Diagnostics.Debug.WriteLine($"ShowDialog: {pageType} {pageAct}");
-		SecurityEventArg sd = null;
-		void fn(object o, SecurityEventArg e) => sd = e;
+		SecurityEventArg? sd = null;
+		void fn(object? o, SecurityEventArg e) => sd = e;
 		try
 		{
 			OnSetSecurity += fn;
-			if (Environment.OSVersion.Version.Major == 5 || (pageType == SI_PAGE_TYPE.SI_PAGE_PERM && pageAct == SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT))
+			if (Environment.OSVersion.Version.Major == 5 || pageType == SI_PAGE_TYPE.SI_PAGE_PERM && pageAct == SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT)
 			{
-				if (!EditSecurity(hWnd, this))
-					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+				Win32Error.ThrowLastErrorIfFalse(EditSecurity(hWnd, this));
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			}
 			else
 			{
-				Marshal.ThrowExceptionForHR((int)EditSecurityAdvanced(hWnd, this, pageType, pageAct));
+				EditSecurityAdvanced(hWnd, this, pageType, pageAct).ThrowIfFailed();
 			}
 			if (sd != null)
 			{
@@ -247,6 +251,9 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		if (!AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzUserContext))
 			return HRESULT.S_OK;
 
+		pAuthzDeviceGroupsOperations ??= new AUTHZ_SID_OPERATION[0];
+		pAuthzUserClaimsOperations ??= new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[0];
+		pAuthzDeviceClaimsOperations ??= new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[0];
 		if (!pDeviceSid.IsNull)
 		{
 			if (AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pDeviceSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzDeviceContext))

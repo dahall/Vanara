@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -21,7 +22,7 @@ public class ThemedImageDraw : CustomDrawBase
 	private string styleClass;
 	private int stylePart;
 	private bool supportGlass;
-	private VisualTheme theme;
+	private VisualTheme? theme;
 
 	/// <summary>Initializes a new instance of the <see cref="ThemedImageDraw"/> class.</summary>
 	public ThemedImageDraw()
@@ -36,7 +37,7 @@ public class ThemedImageDraw : CustomDrawBase
 	}
 
 	/// <summary>Fired when button state needs to be translated.</summary>
-	public event Func<ControlState, int> TranslateButtonState;
+	public event Func<ControlState, int>? TranslateButtonState;
 
 	/// <summary>Gets or sets the background color of the control.</summary>
 	/// <returns>A <see cref="T:System.Drawing.Color"/> value representing the background color.</returns>
@@ -49,7 +50,7 @@ public class ThemedImageDraw : CustomDrawBase
 	/// <summary>Gets or sets the image that is displayed on a button control.</summary>
 	/// <returns>The <see cref="T:System.Drawing.Image"/> displayed on the button control. The default value is null.</returns>
 	[DefaultValue(null)]
-	public new Image Image
+	public new Image? Image
 	{
 		get => base.Image;
 		set
@@ -57,7 +58,7 @@ public class ThemedImageDraw : CustomDrawBase
 			if (value != null)
 			{
 				InitializeImageList(value.Size);
-				ImageList.Images.Add(value);
+				ImageList?.Images.Add(value);
 			}
 			else
 				ImageList = null;
@@ -138,17 +139,18 @@ public class ThemedImageDraw : CustomDrawBase
 			var imageSize = orientation == Orientation.Vertical ? new Size(imageStrip.Width, imageStrip.Height / 4) : new Size(imageStrip.Width / 4, imageStrip.Height);
 			InitializeImageList(imageSize);
 			if (orientation == Orientation.Horizontal)
-				ImageList.Images.AddStrip(imageStrip);
+				ImageList?.Images.AddStrip(imageStrip);
 			else
 				using (var bmp = new Bitmap(imageStrip))
 					for (var r = new Rectangle(Point.Empty, imageSize); r.Y < imageStrip.Height; r.Y += imageSize.Height)
-						ImageList.Images.Add(bmp.Clone(r, bmp.PixelFormat));
+						ImageList?.Images.Add(bmp.Clone(r, bmp.PixelFormat));
 		}
 	}
 
 	/// <summary>Sets the theme using theme class information.</summary>
 	/// <param name="className">Name of the theme class.</param>
 	/// <param name="part">The theme part.</param>
+	[MemberNotNull(nameof(styleClass))]
 	public void SetTheme(string className, int part)
 	{
 		styleClass = className;

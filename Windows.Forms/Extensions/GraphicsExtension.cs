@@ -54,12 +54,12 @@ public static partial class GraphicsExtension
 	/// <param name="format">The format.</param>
 	/// <param name="actualTextBounds">The actual text bounds.</param>
 	/// <param name="actualImageBounds">The actual image bounds.</param>
-	public static void CalcImageAndTextBounds(Rectangle bounds, string text, Font font, Image image, ContentAlignment textAlignment,
+	public static void CalcImageAndTextBounds(Rectangle bounds, string? text, Font font, Image? image, ContentAlignment textAlignment,
 		ContentAlignment imageAlignment, TextImageRelation textImageRelation, bool wordWrap, int glowSize,
 		ref TextFormatFlags format, out Rectangle actualTextBounds, out Rectangle actualImageBounds)
 	{
 		var horizontalRelation = (int)textImageRelation > 2;
-		var imageHasPreference = textImageRelation == TextImageRelation.ImageBeforeText || textImageRelation == TextImageRelation.ImageAboveText;
+		var imageHasPreference = textImageRelation is TextImageRelation.ImageBeforeText or TextImageRelation.ImageAboveText;
 
 		var preferredAlignmentValue = imageHasPreference ? (int)imageAlignment : (int)textAlignment;
 
@@ -161,7 +161,7 @@ public static partial class GraphicsExtension
 				? contentRectangle.Y
 				: (int)textAlignment >= 256
 					? contentRectangle.Bottom - actualTextSize.Height
-					: contentRectangle.Y + (contentRectangle.Height / 2) - (actualTextSize.Height / 2);
+					: contentRectangle.Y + contentRectangle.Height / 2 - actualTextSize.Height / 2;
 		}
 		else if (textImageRelation == 0)
 		{
@@ -204,7 +204,7 @@ public static partial class GraphicsExtension
 	/// <param name="glowSize">The size in pixels of the glow around text.</param>
 	/// <param name="enabled">Set false to draw image grayed out.</param>
 	/// <param name="format">The <see cref="TextFormatFlags"/> used to format the text.</param>
-	public static void DrawImageAndText(this Graphics graphics, Rectangle bounds, string text, Font font, Image image,
+	public static void DrawImageAndText(this Graphics graphics, Rectangle bounds, string? text, Font font, Image? image,
 		ContentAlignment textAlignment, ContentAlignment imageAlignment, TextImageRelation textImageRelation, Color textColor,
 		bool wordWrap, int glowSize, bool enabled = true, TextFormatFlags format = TextFormatFlags.TextBoxControl)
 	{
@@ -256,7 +256,7 @@ public static partial class GraphicsExtension
 	/// The return value is the text height in logical units. If <see cref="TextFormatFlags.VerticalCenter"/> or <see
 	/// cref="TextFormatFlags.Bottom"/> is specified, the return value is the offset to the bottom of the drawn text.
 	/// </returns>
-	public static int MeasureText(this IDeviceContext dc, System.Text.StringBuilder text, Font font, Size proposedSize, TextFormatFlags flags)
+	public static int MeasureText(this IDeviceContext dc, StringBuilder text, Font font, Size proposedSize, TextFormatFlags flags)
 	{
 		using var hdc = new SafeTempHDC(dc);
 		using var ctx = new GdiObjectContext(hdc, (HFONT)font.ToHfont());

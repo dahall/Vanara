@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using System.Security.AccessControl;
 using Vanara.Extensions.Reflection;
 
@@ -45,7 +46,7 @@ internal class SecuredObject
 	///   <item><description>System.Win32.RegistryKey</description></item>
 	///   <item><description><see cref="System.Threading.Semaphore"/></description></item>
 	///   <item><description>System.IO.MemoryMappedFiles.MemoryMappedFile</description></item>
-	///   <item><description><see cref="System.Security.AccessControl.CommonObjectSecurity"/> or derived class. <c>Note:</c> When using this option, be sure to 
+	///   <item><description><see cref="CommonObjectSecurity"/> or derived class. <c>Note:</c> When using this option, be sure to 
 	///   set the <see cref="IsContainer"/>, <see cref="ResourceType"/>, <see cref="ObjectName"/>, and <see cref="TargetServer"/> properties.</description></item>
 	///   <item><description>Any object that supports the following methods and properties:
 	///     <list type="bullet"><item><description><code>GetAccessControl()</code> or <code>GetAccessControl(AccessControlSections)</code> method</description></item>
@@ -57,62 +58,85 @@ internal class SecuredObject
 	/// </remarks>
 	public SecuredObject(object knownObject)
 	{
+		const AccessControlSections minACS = AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner;
+
+		// Special handling for files and directories
+		if (knownObject is FileSystemInfo fsi)
+		{
+			IsContainer = knownObject is DirectoryInfo;
+			TargetServer = null;
+			try
+			{
+				ObjectSecurity = IsContainer ? new DirectorySecurity(fsi.FullName, AccessControlSections.All) : new FileSecurity(fsi.FullName, AccessControlSections.All);
+			}
+			catch (PrivilegeNotHeldException)
+			{
+				ObjectSecurity = IsContainer ? new DirectorySecurity(fsi.FullName, minACS) : new FileSecurity(fsi.FullName, minACS);
+			}
+			DisplayName = fsi.Name;
+			ObjectName = fsi.FullName;
+			BaseObject = ObjectSecurity;
+			goto FinalInit;
+		}
 		// Special handling for Tasks
-		if (knownObject.GetType().FullName == "Microsoft.Win32.TaskScheduler.Task" || knownObject.GetType().FullName == "Microsoft.Win32.TaskScheduler.TaskFolder")
+		else if (knownObject.GetType().FullName is "Microsoft.Win32.TaskScheduler.Task" or "Microsoft.Win32.TaskScheduler.TaskFolder")
 		{
 			IsContainer = knownObject.GetType().Name == "TaskFolder";
-			TargetServer = knownObject.GetPropertyValue<object>("TaskService").GetPropertyValue<string>("TargetServer");
+			TargetServer = knownObject.GetPropertyValue<object>("TaskService")?.GetPropertyValue<string>("TargetServer");
 		}
 
 		// Get the security object using the standard "GetAccessControl" method
-		try
-		{
-			ObjectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl", AccessControlSections.All);
-		}
-		catch (TargetInvocationException)
+		CommonObjectSecurity? objectSecurity = null;
+		if (objectSecurity == null)
 		{
 			try
 			{
-				ObjectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl",
-					AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner);
+				objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl", AccessControlSections.All);
+			}
+			catch (TargetInvocationException)
+			{
+				try
+				{
+					objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl", minACS);
+				}
+				catch { }
 			}
 			catch { }
 		}
-		catch { }
-		if (ObjectSecurity == null)
+		if (objectSecurity == null)
 		{
 			try
 			{
-				ObjectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl");
+				objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl");
 			}
 			catch { }
 		}
-		if (ObjectSecurity == null)
-			throw new ArgumentException("Object must be valid and have a GetAccessControl member.");
+		ObjectSecurity = objectSecurity ?? throw new ArgumentException("Object must be valid and have a GetAccessControl member."); ;
 
 		// Get the object names
 		switch (knownObject.GetType().Name)
 		{
 			case "RegistryKey":
-				ObjectName = knownObject.GetPropertyValue<string>("Name");
+				ObjectName = knownObject.GetPropertyValue<string>("Name") ?? throw new ArgumentException("Unable to retrieve an object name.", nameof(knownObject));
 				DisplayName = System.IO.Path.GetFileNameWithoutExtension(ObjectName);
 				break;
 
 			case "Task":
-				DisplayName = knownObject.GetPropertyValue<string>("Name");
-				ObjectName = knownObject.GetPropertyValue<string>("Path");
+				DisplayName = knownObject.GetPropertyValue<string>("Name") ?? throw new ArgumentException("Unable to retrieve an object name.", nameof(knownObject));
+				ObjectName = knownObject.GetPropertyValue<string>("Path") ?? throw new ArgumentException("Unable to retrieve an object path.", nameof(knownObject));
 				break;
 
 			default:
-				ObjectName = knownObject.GetPropertyValue<string>("FullName");
-				DisplayName = knownObject.GetPropertyValue<string>("Name");
-				if (ObjectName == null) ObjectName = DisplayName;
+				DisplayName = knownObject.GetPropertyValue<string>("Name") ?? throw new ArgumentException("Unable to retrieve an object name.", nameof(knownObject));
+				ObjectName = knownObject.GetPropertyValue<string>("FullName") ?? DisplayName ?? throw new ArgumentException("Unable to retrieve an object name or full name.", nameof(knownObject));
 				break;
 		}
 
 		// Set the base object
 		BaseObject = knownObject;
 		IsContainer = IsContainerObject(ObjectSecurity);
+
+FinalInit:
 		MandatoryLabel = new SystemMandatoryLabel(ObjectSecurity);
 	}
 
@@ -133,7 +157,7 @@ internal class SecuredObject
 		NoExecuteUp = 4
 	}
 
-	public object BaseObject { get; }
+	public object? BaseObject { get; }
 
 	public string DisplayName { get; set; }
 
@@ -144,7 +168,7 @@ internal class SecuredObject
 
 	public ResourceType ResourceType => GetResourceType(ObjectSecurity);
 
-	public string TargetServer { get; set; }
+	public string? TargetServer { get; set; }
 
 	public static object GetAccessMask(CommonObjectSecurity acl, AuthorizationRule rule)
 	{
@@ -153,14 +177,14 @@ internal class SecuredObject
 			var accRightType = acl.AccessRightType;
 			foreach (var pi in rule.GetType().GetProperties())
 				if (pi.PropertyType == accRightType)
-					return Enum.ToObject(accRightType, pi.GetValue(rule, null));
+					return Enum.ToObject(accRightType, pi.GetValue(rule, null) ?? 0);
 		}
 		throw new ArgumentException();
 	}
 
-	public static object GetKnownObject(ResourceType resType, string objName, string serverName)
+	public static object GetKnownObject(ResourceType resType, string objName, string? serverName)
 	{
-		object obj = null;
+		object? obj = null;
 		switch (resType)
 		{
 			case ResourceType.FileObject:
@@ -185,30 +209,14 @@ internal class SecuredObject
 		return obj;
 	}
 
-	public static ResourceType GetResourceType(CommonObjectSecurity sec)
+	public static ResourceType GetResourceType(CommonObjectSecurity sec) => sec.GetType().Name switch
 	{
-		switch (sec.GetType().Name)
-		{
-			case "FileSecurity":
-			case "DirectorySecurity":
-			case "CryptoKeySecurity":
-				return ResourceType.FileObject;
-
-			case "PipeSecurity":
-			case "EventWaitHandleSecurity":
-			case "MutexSecurity":
-			case "MemoryMappedFileSecurity":
-			case "SemaphoreSecurity":
-				return ResourceType.KernelObject;
-
-			case "RegistrySecurity":
-				return ResourceType.RegistryKey;
-
-			case "TaskSecurity":
-				return Windows.Forms.AccessControlEditorDialog.taskResourceType;
-		}
-		return ResourceType.Unknown;
-	}
+		"FileSecurity" or "DirectorySecurity" or "CryptoKeySecurity" => ResourceType.FileObject,
+		"PipeSecurity" or "EventWaitHandleSecurity" or "MutexSecurity" or "MemoryMappedFileSecurity" or "SemaphoreSecurity" => ResourceType.KernelObject,
+		"RegistrySecurity" => ResourceType.RegistryKey,
+		"TaskSecurity" => Windows.Forms.AccessControlEditorDialog.taskResourceType,
+		_ => ResourceType.Unknown,
+	};
 
 	public static bool IsContainerObject(CommonObjectSecurity sec)
 	{
@@ -218,14 +226,14 @@ internal class SecuredObject
 
 	public object GetAccessMask(AuthorizationRule rule) => GetAccessMask(ObjectSecurity, rule);
 
-	public void Persist(object newBase = null)
+	public void Persist(object? newBase = null)
 	{
 		var obj = (newBase ?? BaseObject) ?? throw new ArgumentNullException(nameof(newBase), @"Either newBase or BaseObject must not be null.");
 		var mi = obj.GetType().GetMethod("SetAccessControl", BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null) ?? throw new InvalidOperationException("Either newBase or BaseObject must represent a securable object.");
 		mi.Invoke(obj, new object[] { ObjectSecurity });
 	}
 
-	private static Microsoft.Win32.RegistryKey GetKeyFromKeyName(string keyName, string serverName)
+	private static Microsoft.Win32.RegistryKey? GetKeyFromKeyName(string? keyName, string? serverName)
 	{
 		if (keyName == null)
 			return null;
@@ -264,19 +272,18 @@ internal class SecuredObject
 				return null;
 		}
 
-		if (serverName == null)
-			serverName = string.Empty;
+		serverName ??= string.Empty;
 
 		var retVal = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(hive, serverName);
 
-		if ((index == -1) || (index == keyName.Length))
+		if (index == -1 || index == keyName.Length)
 			return retVal;
 
-		var subKeyName = keyName.Substring(index + 1, (keyName.Length - index) - 1);
+		var subKeyName = keyName.Substring(index + 1, keyName.Length - index - 1);
 		return retVal.OpenSubKey(subKeyName);
 	}
 
-	private static object GetTaskObj(string objName, string serverName)
+	private static object? GetTaskObj(string objName, string? serverName)
 	{
 		try
 		{

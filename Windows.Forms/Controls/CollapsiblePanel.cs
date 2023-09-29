@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -151,10 +152,7 @@ public class CollapsiblePanel : Control, ISupportInitialize
 
 	/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated"/> event.</summary>
 	/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-	protected override void OnHandleCreated(EventArgs e)
-	{
-		base.OnHandleCreated(e);
-	}
+	protected override void OnHandleCreated(EventArgs e) => base.OnHandleCreated(e);
 
 	/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.</summary>
 	/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
@@ -230,18 +228,19 @@ public class CollapsiblePanel : Control, ISupportInitialize
 		Refresh();
 	}
 
-	private void HeaderPanel_Click(object sender, EventArgs e)
+	private void HeaderPanel_Click(object? sender, EventArgs e)
 	{
 		bool collapsed = headerPanel.Collapsed;
 		contentBackground.Visible = !collapsed;
 		var h = collapsed ? headerPanel.Height : headerPanel.Height + contentBackground.Height;
-		if (TopBorderCondition == CollapsiblePanelBorderCondition.Always || (TopBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed))
+		if (TopBorderCondition == CollapsiblePanelBorderCondition.Always || TopBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed)
 			h++;
-		if (BottomBorderCondition == CollapsiblePanelBorderCondition.Always || (BottomBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed))
+		if (BottomBorderCondition == CollapsiblePanelBorderCondition.Always || BottomBorderCondition == CollapsiblePanelBorderCondition.OnlyExpanded && !collapsed)
 			h++;
 		Height = h;
 	}
 
+	[MemberNotNull(nameof(backgroundPanel), nameof(topBorder), nameof(headerPanel), nameof(contentBackground), nameof(contentPanel), nameof(bottomBorder))]
 	private void InitializeComponent()
 	{
 		backgroundPanel = new ThemedTableLayoutPanel();
@@ -343,11 +342,11 @@ public class CollapsiblePanel : Control, ISupportInitialize
 
 		/// <summary>Gets or sets the expando images.</summary>
 		/// <value>The expando images.</value>
-		public Image[] ExpandoImages { get; set; }
+		public Image[]? ExpandoImages { get; set; }
 
 		/// <summary>Gets or sets the font.</summary>
 		/// <value>The font.</value>
-		public Font Font { get; set; }
+		public Font? Font { get; set; }
 
 		/// <summary>Gets or sets the foreground color.</summary>
 		/// <value>The foreground color.</value>
@@ -361,7 +360,7 @@ public class CollapsiblePanel : Control, ISupportInitialize
 
 		/// <summary>Gets or sets the header font.</summary>
 		/// <value>The header font.</value>
-		public Font HeaderFont { get; set; }
+		public Font? HeaderFont { get; set; }
 
 		/// <summary>Gets or sets the height of the header.</summary>
 		/// <value>The height of the header.</value>
@@ -384,25 +383,19 @@ public class CollapsiblePanel : Control, ISupportInitialize
 		public Padding Padding { get; set; }
 
 		/// <summary>Converts to string.</summary>
-		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => @"Style: " + string.Join("; ", GetType().GetProperties().Select(p => $"{p.Name}={p.GetValue(this, null)}").ToArray());
 	}
 
 	internal abstract class BaseRenderer
 	{
-		protected BaseRenderer(CollapsiblePanel ctrl)
-		{
-			Control = ctrl;
-		}
+		protected BaseRenderer(CollapsiblePanel ctrl) => Control = ctrl;
 
 		public CollapsiblePanel Control { get; }
 
 		public abstract CollapsiblePanelMousePosition GetMousePosition(MouseEventArgs e);
 
-		public virtual Size GetPreferredSize(Size proposedSize)
-		{
-			return proposedSize;
-		}
+		public virtual Size GetPreferredSize(Size proposedSize) => proposedSize;
 
 		public abstract void Layout(PaintEventArgs e);
 
@@ -414,10 +407,7 @@ public class CollapsiblePanel : Control, ISupportInitialize
 		private readonly ImageList headerImages;
 		private Rectangle buttonBounds;
 
-		public CustomRenderer(CollapsiblePanel ctrl) : base(ctrl)
-		{
-			headerImages = new ImageList { ColorDepth = ColorDepth.Depth32Bit, TransparentColor = Color.Transparent };
-		}
+		public CustomRenderer(CollapsiblePanel ctrl) : base(ctrl) => headerImages = new ImageList { ColorDepth = ColorDepth.Depth32Bit, TransparentColor = Color.Transparent };
 
 		public override CollapsiblePanelMousePosition GetMousePosition(MouseEventArgs e)
 		{
@@ -438,11 +428,11 @@ public class CollapsiblePanel : Control, ISupportInitialize
 			Layout(e);
 			using (var br = new SolidBrush(Control.headerHot ? Control.CustomStyle.HeaderHotBackColor : Control.CustomStyle.HeaderBackColor))
 				e.Graphics.FillRectangle(br, new Rectangle(Point.Empty, new Size(Control.Width, Control.CustomStyle.HeaderHeight)));
-			var imgSz = Control.CustomStyle.ExpandoImages[0].Size;
+			var imgSz = Control.CustomStyle.ExpandoImages?[0].Size ?? default;
 			buttonBounds = new Rectangle(e.ClipRectangle.Width - imgSz.Width - Control.CustomStyle.Padding.Right, (Control.CustomStyle.HeaderHeight - imgSz.Height) / 2, imgSz.Width, imgSz.Height);
 			headerImages.Draw(e.Graphics, buttonBounds.Location, (int)Control.buttonState);
 			using (var br = new SolidBrush(Control.CustomStyle.HeaderTextColor))
-				e.Graphics.DrawString(Control.Text, Control.CustomStyle.HeaderFont, br, new RectangleF(Control.CustomStyle.Padding.Left, Control.CustomStyle.Padding.Top, Control.Width - Control.CustomStyle.Padding.Horizontal - imgSz.Width, Control.CustomStyle.HeaderHeight), new StringFormat(StringFormatFlags.NoWrap));
+				e.Graphics.DrawString(Control.Text, Control.CustomStyle.HeaderFont ?? SystemFonts.DefaultFont, br, new RectangleF(Control.CustomStyle.Padding.Left, Control.CustomStyle.Padding.Top, Control.Width - Control.CustomStyle.Padding.Horizontal - imgSz.Width, Control.CustomStyle.HeaderHeight), new StringFormat(StringFormatFlags.NoWrap));
 		}
 	}
 
@@ -470,14 +460,12 @@ public class CollapsiblePanel : Control, ISupportInitialize
 
 		public override Size GetPreferredSize(Size proposedSize)
 		{
-			using (var g = Control.CreateGraphics())
-			{
-				Layout(new PaintEventArgs(g, new Rectangle(Point.Empty, proposedSize)));
-				int minW = (imgSz.Width * 2) + (lrpadding * 3);
-				if (proposedSize.Width < minW) proposedSize.Width = minW;
-				if (proposedSize.Height < headerHeight) proposedSize.Height = headerHeight;
-				return proposedSize;
-			}
+			using var g = Control.CreateGraphics();
+			Layout(new PaintEventArgs(g, new Rectangle(Point.Empty, proposedSize)));
+			int minW = imgSz.Width * 2 + lrpadding * 3;
+			if (proposedSize.Width < minW) proposedSize.Width = minW;
+			if (proposedSize.Height < headerHeight) proposedSize.Height = headerHeight;
+			return proposedSize;
 		}
 
 		public override void Layout(PaintEventArgs e)
@@ -485,7 +473,7 @@ public class CollapsiblePanel : Control, ISupportInitialize
 			// Get TaskDialog-MainInstructionPane
 			var vs = new VisualStyleRenderer(taskDialogClass, 2, 0);
 			var r = vs.GetTextExtent(e.Graphics, "W", TextFormatFlags.Default);
-			headerHeight = (tbpadding * 2) + r.Height;
+			headerHeight = tbpadding * 2 + r.Height;
 			// Get TaskDialog-ExpandoButton
 			vs = new VisualStyleRenderer(taskDialogClass, 13, (int)Control.buttonState);
 			imgSz = new Size(vs.GetInteger(IntegerProperty.Width), vs.GetInteger(IntegerProperty.Height));
@@ -511,7 +499,7 @@ public class CollapsiblePanel : Control, ISupportInitialize
 				vs.DrawBackground(e.Graphics, hdrRect, e.ClipRectangle);
 			}
 			// Get TaskDialog-ExpandoButton
-			vs = new VisualStyleRenderer(taskDialogClass, 13, ((int)Control.buttonState) + 1);
+			vs = new VisualStyleRenderer(taskDialogClass, 13, (int)Control.buttonState + 1);
 			vs.DrawBackground(e.Graphics, buttonBounds);
 			// Get TaskDialog-MainInstructionPane
 			vs = new VisualStyleRenderer(taskDialogClass, 2, 0);

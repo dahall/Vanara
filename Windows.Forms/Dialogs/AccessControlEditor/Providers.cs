@@ -8,7 +8,7 @@ using ResourceType = System.Security.AccessControl.ResourceType;
 namespace Vanara.Security.AccessControl;
 
 /// <summary>
-/// An interface for defining an information provider for object types supplied to the <see cref="Vanara.Windows.Forms.AccessControlEditorDialog"/>.
+/// An interface for defining an information provider for object types supplied to the <see cref="Windows.Forms.AccessControlEditorDialog"/>.
 /// </summary>
 public interface IAccessControlEditorDialogProvider
 {
@@ -43,7 +43,7 @@ public interface IAccessControlEditorDialogProvider
 	/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 	/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 	/// <returns>An array of access masks.</returns>
-	ACCESS_MASK[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor);
+	ACCESS_MASK[] GetEffectivePermission(PSID pUserSid, string? serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
 	/// <summary>
 	/// Gets the effective permissions for the provided Sid within the Security Descriptor.
@@ -56,7 +56,7 @@ public interface IAccessControlEditorDialogProvider
 	/// <param name="objectTypeList">The object type list.</param>
 	/// <param name="grantedAccessList">An array of access masks.</param>
 	/// <returns>An array of access masks.</returns>
-	HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out ACCESS_MASK[] grantedAccessList);
+	HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string? serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[]? objectTypeList, out ACCESS_MASK[]? grantedAccessList);
 
 	/// <summary>Gets the generic mapping for standard rights.</summary>
 	/// <param name="aceFlags">The ace flags.</param>
@@ -81,7 +81,7 @@ public interface IAccessControlEditorDialogProvider
 	/// cref="INHERITED_FROM"/> entry provides inheritance information for the corresponding
 	/// ACE entry in pACL.
 	/// </returns>
-	INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl);
+	INHERITED_FROM[] GetInheritSource(string objName, string? serverName, bool isContainer, uint si, PACL pAcl);
 
 	/// <summary>Gets inheritance information for supported object type.</summary>
 	/// <returns>
@@ -134,7 +134,7 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 	/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 	/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 	/// <returns>An array of access masks.</returns>
-	public virtual ACCESS_MASK[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor)
+	public virtual ACCESS_MASK[] GetEffectivePermission(PSID pUserSid, string? serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor)
 	{
 		ACCESS_MASK mask = pSecurityDescriptor.GetEffectiveRights(pUserSid);
 		return new[] { mask };
@@ -151,8 +151,8 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 	/// <param name="objectTypeList">The object type list.</param>
 	/// <param name="grantedAccessList">An array of access masks.</param>
 	/// <returns></returns>
-	/// <exception cref="System.NotImplementedException"></exception>
-	public virtual HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList, out ACCESS_MASK[] grantedAccessList)
+	/// <exception cref="NotImplementedException"></exception>
+	public virtual HRESULT GetEffectivePermission(Guid objTypeId, PSID pUserSid, string? serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[]? objectTypeList, out ACCESS_MASK[]? grantedAccessList)
 	{
 		objectTypeList = null;
 		grantedAccessList = null;
@@ -181,7 +181,7 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 	/// cref="INHERITED_FROM"/> entry provides inheritance information for the corresponding
 	/// ACE entry in pACL.
 	/// </returns>
-	public virtual INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
+	public virtual INHERITED_FROM[] GetInheritSource(string objName, string? serverName, bool isContainer, uint si, PACL pAcl)
 	{
 		var gMap = GetGenericMapping(0);
 		return GetInheritanceSource(objName, ResourceType, (SECURITY_INFORMATION)si, isContainer, pAcl, ref gMap).ToArray();
@@ -226,31 +226,31 @@ internal class FileProvider : GenericProvider
 
 	public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 	{
-		rights = new[] {
-			new SI_ACCESS((uint)FileSystemRights.FullControl, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL| INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
-			new SI_ACCESS((uint)FileSystemRights.Modify, ResStr("FileRightModify"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
-			new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
-			new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightListFolderContents"), INHERIT_FLAGS.SI_ACCESS_CONTAINER | INHERIT_FLAGS.CONTAINER_INHERIT_ACE),
-			new SI_ACCESS((uint)FileSystemRights.Read, ResStr("FileRightRead"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
-			new SI_ACCESS((uint)FileSystemRights.Write, ResStr("FileRightWrite"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
-			new SI_ACCESS((uint)FileSystemRights.ExecuteFile, ResStr("FileRightExecuteFile"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.ReadData, ResStr("FileRightReadData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.ReadAttributes, ResStr("FileRightReadAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.ReadExtendedAttributes, ResStr("FileRightReadExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.WriteData, ResStr("FileRightWriteData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.AppendData, ResStr("FileRightAppendData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.WriteAttributes, ResStr("FileRightWriteAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.WriteExtendedAttributes, ResStr("FileRightWriteExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.DeleteSubdirectoriesAndFiles, ResStr("FileRightDeleteSubdirectoriesAndFiles"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.Delete, ResStr("StdRightDelete"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.ReadPermissions, ResStr("FileRightReadPermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.ChangePermissions, ResStr("FileRightChangePermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.TakeOwnership, ResStr("StdRightTakeOwnership"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
-			new SI_ACCESS((uint)FileSystemRights.Modify, ResStr("FileRightModify"), 0),
-			new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), 0),
-			new SI_ACCESS((uint)(FileSystemRights.Write | FileSystemRights.ExecuteFile), ResStr("FileRightWriteAndExecute"), 0),
-			new SI_ACCESS((uint)(FileSystemRights.ReadAndExecute | FileSystemRights.Write), ResStr("FileRightReadWriteAndExecute"), 0),
-			new SI_ACCESS(0, ResStr("File"), 0)
+		rights = new SI_ACCESS[] {
+			new((uint)FileSystemRights.FullControl, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL| INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+			new((uint)FileSystemRights.Modify, ResStr("FileRightModify"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+			new((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+			new((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightListFolderContents"), INHERIT_FLAGS.SI_ACCESS_CONTAINER | INHERIT_FLAGS.CONTAINER_INHERIT_ACE),
+			new((uint)FileSystemRights.Read, ResStr("FileRightRead"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+			new((uint)FileSystemRights.Write, ResStr("FileRightWrite"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+			new((uint)FileSystemRights.ExecuteFile, ResStr("FileRightExecuteFile"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.ReadData, ResStr("FileRightReadData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.ReadAttributes, ResStr("FileRightReadAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.ReadExtendedAttributes, ResStr("FileRightReadExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.WriteData, ResStr("FileRightWriteData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.AppendData, ResStr("FileRightAppendData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.WriteAttributes, ResStr("FileRightWriteAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.WriteExtendedAttributes, ResStr("FileRightWriteExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.DeleteSubdirectoriesAndFiles, ResStr("FileRightDeleteSubdirectoriesAndFiles"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.Delete, ResStr("StdRightDelete"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.ReadPermissions, ResStr("FileRightReadPermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.ChangePermissions, ResStr("FileRightChangePermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.TakeOwnership, ResStr("StdRightTakeOwnership"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+			new((uint)FileSystemRights.Modify, ResStr("FileRightModify"), 0),
+			new((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), 0),
+			new((uint)(FileSystemRights.Write | FileSystemRights.ExecuteFile), ResStr("FileRightWriteAndExecute"), 0),
+			new((uint)(FileSystemRights.ReadAndExecute | FileSystemRights.Write), ResStr("FileRightReadWriteAndExecute"), 0),
+			new(0, ResStr("File"), 0)
 		};
 		defaultIndex = 3;
 	}
@@ -261,14 +261,14 @@ internal class FileProvider : GenericProvider
 		new((uint)(FileSystemRights.Read | FileSystemRights.Synchronize),
 			(uint)(FileSystemRights.Write | FileSystemRights.Synchronize), 0x1200A0, (uint)FileSystemRights.FullControl);
 
-	public override SI_INHERIT_TYPE[] GetInheritTypes() => new[] {
-			new SI_INHERIT_TYPE(0, ResStr("FileInheritance")),
-			new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceCIOI")),
-			new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceCI")),
-			new SI_INHERIT_TYPE(INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceOI")),
-			new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOCIOI")),
-			new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceIOCI")),
-			new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOOI"))
+	public override SI_INHERIT_TYPE[] GetInheritTypes() => new SI_INHERIT_TYPE[] {
+			new(0, ResStr("FileInheritance")),
+			new(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceCIOI")),
+			new(INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceCI")),
+			new(INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceOI")),
+			new(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOCIOI")),
+			new(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceIOCI")),
+			new(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOOI"))
 		};
 }
 
@@ -307,7 +307,7 @@ internal class RegistryProvider : GenericProvider
 
 	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new((uint)RegistryRights.ReadKey, (uint)RegistryRights.WriteKey, (uint)RegistryRights.ExecuteKey, (uint)RegistryRights.FullControl);
 
-	public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
+	public override INHERITED_FROM[] GetInheritSource(string objName, string? serverName, bool isContainer, uint si, PACL pAcl)
 	{
 		var ret = base.GetInheritSource(objName, serverName, isContainer, si, pAcl);
 		for (var i = 0; i < ret.Length; i++)
@@ -368,8 +368,7 @@ internal class TaskProvider : GenericProvider
 
 	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) => new(0x120089, 0x120116, 0x1200A0, 0x1F01FF);
 
-	public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
-	{
+	public override INHERITED_FROM[] GetInheritSource(string objName, string? serverName, bool isContainer, uint si, PACL pAcl) =>
 		// Get list of all parents
 		//var obj = SecuredObject.GetKnownObject(Windows.Forms.AccessControlEditorDialog.TaskResourceType, objName, serverName);
 		//var parents = new System.Collections.Generic.List<object>();
@@ -384,6 +383,5 @@ internal class TaskProvider : GenericProvider
 		// var acl = RawAclFromPtr(pAcl);
 		// for (int i = 0; i < acl.Count; i++) { }
 
-		return new INHERITED_FROM[pAcl.AceCount()];
-	}
+		new INHERITED_FROM[pAcl.AceCount()];
 }

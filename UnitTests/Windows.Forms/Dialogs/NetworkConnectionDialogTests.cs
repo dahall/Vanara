@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace Vanara.Windows.Forms.Tests;
+﻿namespace Vanara.Windows.Forms.Tests;
 
 [TestFixture()]
 public class NetworkConnectionDialogTests

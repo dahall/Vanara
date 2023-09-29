@@ -1,56 +1,8 @@
-﻿
-/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
-Before:
-using System;
-After:
-using Microsoft.Win32;
-using System;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
-Before:
-using System;
-After:
-using Microsoft.Win32;
-using System;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
-Before:
-using System;
-After:
-using Microsoft.Win32;
-using System;
-*/
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-
-/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
-Before:
-using Microsoft.Win32;
-using Vanara.Extensions;
-After:
-using Vanara.Extensions;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
-Before:
-using Microsoft.Win32;
-using Vanara.Extensions;
-After:
-using Vanara.Extensions;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
-Before:
-using Microsoft.Win32;
-using Vanara.Extensions;
-After:
-using Vanara.Extensions;
-*/
 using Vanara.PInvoke;
 using Vanara.Resources;
 using static Vanara.PInvoke.Kernel32;
@@ -450,7 +402,7 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 	private FolderBrowserDialogOptions browseOption;
 	private bool initialized;
 	private KnownFolder rootFolder;
-	private PIDL rootPidl;
+	private PIDL? rootPidl;
 
 	/// <summary>Initializes a new instance of the <see cref="FolderBrowserDialog"/> class.</summary>
 	public FolderBrowserDialog()
@@ -460,20 +412,21 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 	}
 
 	/// <summary>Occurs when dialog box has been initialized and primary values have been set.</summary>
-	public event EventHandler<FolderBrowserDialogInitializedEventArgs> Initialized;
+	public event EventHandler<FolderBrowserDialogInitializedEventArgs>? Initialized;
 
 	/// <summary>Event that is raised when the user selects an invalid folder.</summary>
-	public event EventHandler<InvalidFolderEventArgs> InvalidFolderSelected;
+	public event EventHandler<InvalidFolderEventArgs>? InvalidFolderSelected;
 
 	/// <summary>Occurs when <see cref="SelectedItem"/> property has changed.</summary>
-	public event PropertyChangedEventHandler SelectedItemChanged;
+	public event PropertyChangedEventHandler? SelectedItemChanged;
 
 	/// <summary>Gets or sets the types of items to browse.</summary>
 	[DefaultValue(typeof(FolderBrowserDialogOptions), "Folders"), Localizable(false), Category("Behavior"),
 	 Description("The types of items to browse")]
 	public FolderBrowserDialogOptions BrowseOption
 	{
-		get => browseOption; set
+		get => browseOption;
+		set
 		{
 			if (browseOption != value)
 			{
@@ -482,7 +435,7 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 				{
 					case FolderBrowserDialogOptions.Folders:
 					case FolderBrowserDialogOptions.FoldersAndFiles:
-						if (RootFolder == defaultComputersFolder || RootFolder == defaultPrintersFolder)
+						if (RootFolder is defaultComputersFolder or defaultPrintersFolder)
 							RootFolder = defaultFolderFolder;
 						break;
 					case FolderBrowserDialogOptions.Computers:
@@ -492,7 +445,7 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 						RootFolder = defaultPrintersFolder;
 						break;
 					default:
-						throw new ArgumentOutOfRangeException();
+						throw new ArgumentOutOfRangeException(nameof(BrowseOption));
 				}
 			}
 		}
@@ -526,7 +479,8 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 	[Localizable(false), Category("Data"), Description("Root folder of tree."), DefaultValue(defaultFolderFolder)]
 	public KnownFolder RootFolder
 	{
-		get => rootFolder; set
+		get => rootFolder;
+		set
 		{
 			rootFolder = value;
 			try { rootPidl = ((KNOWNFOLDERID)RootFolder).PIDL(); }
@@ -541,10 +495,10 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 	/// <summary>Gets or sets the PIDL associated with the root folder. This can be used to specify a non-known folder as the root.</summary>
 	/// <value>The root folder's PIDL.</value>
 	[DefaultValue(0), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	// ReSharper disable once InconsistentNaming
-	public PIDL RootFolderPIDL
+	public PIDL? RootFolderPIDL
 	{
-		get => rootPidl; set
+		get => rootPidl;
+		set
 		{
 			rootPidl = value;
 			rootFolder = KnownFolder.Undefined;
@@ -558,13 +512,13 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 	/// <summary>Gets the image from the system image list associated with the selected item.</summary>
 	/// <value>The selected item's image.</value>
 	[DefaultValue(null), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public Icon SelectedItemImage => SelectedItemPIDL.GetIcon(IconSize.Small);
+	public Icon? SelectedItemImage => SelectedItemPIDL?.GetIcon(IconSize.Small);
 
 	/// <summary>Gets the PIDL associated with the selected item.</summary>
 	/// <value>The selected item's PIDL.</value>
 	[DefaultValue(0), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	// ReSharper disable once InconsistentNaming
-	public PIDL SelectedItemPIDL { get; private set; }
+	public PIDL? SelectedItemPIDL { get; private set; }
 
 	/// <summary>Gets or sets whether or not to show file junctions, such as a library or compressed file. This only is available in Windows 7 and later.</summary>
 	[DefaultValue(false), Localizable(false), Category("Behavior"), Description("Whether or not to show file junctions.")]
@@ -617,28 +571,21 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 				browseInfoFlag |= BrowseInfoFlag.BIF_BROWSEFORPRINTER;
 				RootFolder = defaultPrintersFolder;
 				break;
-			default:
-				throw new ArgumentOutOfRangeException();
 		}
 
 		// Setup the BROWSEINFO structure
 		var dn = new SafeCoTaskMemString(MAX_PATH);
-		var bi = new BROWSEINFO(parentWindowHandle, rootPidl.DangerousGetHandle(), Description, browseInfoFlag, OnBrowseEvent, dn);
+		var bi = new BROWSEINFO(parentWindowHandle, rootPidl?.DangerousGetHandle() ?? IntPtr.Zero, Description, browseInfoFlag, OnBrowseEvent, dn);
 
 		// Show the dialog
 		SelectedItemPIDL = SHBrowseForFolder(bi);
 		if (SelectedItemPIDL.IsInvalid) return false;
 		if (browseInfoFlag[BrowseInfoFlag.BIF_BROWSEFORPRINTER] || browseInfoFlag[BrowseInfoFlag.BIF_BROWSEFORCOMPUTER])
-			SelectedItem = bi.DisplayName;
+			SelectedItem = bi.DisplayName ?? string.Empty;
 		else
 			SelectedItem = GetNameForPidl(SelectedItemPIDL);
 		return true;
 	}
-
-	/// <summary>Enables or disables the OK button in the dialog box.</summary>
-	/// <param name="hwnd">The hwnd of the dialog box.</param>
-	/// <param name="isEnabled">Whether or not the OK button should be enabled.</param>
-	private static void EnableOk(HWND hwnd, bool isEnabled) => SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_ENABLEOK, (IntPtr)0, (IntPtr)(isEnabled ? 1 : 0));
 
 	private static string GetNameForPidl(PIDL pidl)
 	{
@@ -646,24 +593,6 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 		try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_DESKTOPABSOLUTEEDITING, out var mStr); return mStr; } catch { }
 		try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_NORMALDISPLAY, out var mStr); return mStr; } catch { }
 		return string.Empty;
-	}
-
-	private static Icon GetSystemImageListIcon(int idx)
-	{
-		// Test first for overridden icon images
-		var regVal = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", idx.ToString(), null);
-		if (regVal != null)
-			return ResourceFile.GetResourceIcon(regVal.ToString());
-
-		// Get the image from the system image list
-		try
-		{
-			return IconExtension.GetSystemIcon(System.IO.Path.GetPathRoot(Environment.SystemDirectory), IconSize.Small);
-		}
-		catch
-		{
-			return null;
-		}
 	}
 
 	/// <summary>Callback for Windows.</summary>
@@ -689,7 +618,7 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 					SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_SETSELECTIONW, (IntPtr)1, SelectedItem);
 
 				if (Expanded)
-					SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_SETEXPANDED, (IntPtr)1, rootPidl.DangerousGetHandle());
+					SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_SETEXPANDED, (IntPtr)1, rootPidl?.DangerousGetHandle() ?? IntPtr.Zero);
 
 				if (!string.IsNullOrEmpty(OkText))
 					SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_SETOKTEXT, (IntPtr)0, OkText);
@@ -721,7 +650,7 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 			case BrowseForFolderMessages.BFFM_VALIDATEFAILEDW:
 				if (InvalidFolderSelected != null)
 				{
-					var folderName = messsage == BrowseForFolderMessages.BFFM_VALIDATEFAILEDA ? Marshal.PtrToStringAnsi(lParam) : Marshal.PtrToStringUni(lParam);
+					var folderName = messsage == BrowseForFolderMessages.BFFM_VALIDATEFAILEDA ? Marshal.PtrToStringAnsi(lParam)! : Marshal.PtrToStringUni(lParam)!;
 					var e = new InvalidFolderEventArgs(folderName, true);
 					InvalidFolderSelected?.Invoke(this, e);
 					return e.DismissDialog ? 0 : 1;
@@ -733,40 +662,21 @@ public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 		}
 	}
 
-	private void ResetRootFolder()
+	private void ResetRootFolder() => RootFolder = BrowseOption switch
 	{
-		switch (BrowseOption)
-		{
-			case FolderBrowserDialogOptions.Folders:
-			case FolderBrowserDialogOptions.FoldersAndFiles:
-				RootFolder = defaultFolderFolder;
-				break;
-			case FolderBrowserDialogOptions.Computers:
-				RootFolder = defaultComputersFolder;
-				break;
-			case FolderBrowserDialogOptions.Printers:
-				RootFolder = defaultPrintersFolder;
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-	}
+		FolderBrowserDialogOptions.Folders or FolderBrowserDialogOptions.FoldersAndFiles => defaultFolderFolder,
+		FolderBrowserDialogOptions.Computers => defaultComputersFolder,
+		FolderBrowserDialogOptions.Printers => defaultPrintersFolder,
+		_ => 0,
+	};
 
-	private bool ShouldSerializeRootFolder()
+	private bool ShouldSerializeRootFolder() => BrowseOption switch
 	{
-		switch (BrowseOption)
-		{
-			case FolderBrowserDialogOptions.Folders:
-			case FolderBrowserDialogOptions.FoldersAndFiles:
-				return RootFolder != KnownFolder.ComputerFolder;
-			case FolderBrowserDialogOptions.Computers:
-				return RootFolder != KnownFolder.NetworkFolder;
-			case FolderBrowserDialogOptions.Printers:
-				return RootFolder != KnownFolder.PrintersFolder;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-	}
+		FolderBrowserDialogOptions.Folders or FolderBrowserDialogOptions.FoldersAndFiles => RootFolder != KnownFolder.ComputerFolder,
+		FolderBrowserDialogOptions.Computers => RootFolder != KnownFolder.NetworkFolder,
+		FolderBrowserDialogOptions.Printers => RootFolder != KnownFolder.PrintersFolder,
+		_ => false,
+	};
 }
 
 /// <summary>Event arguments for when the <see cref="FolderBrowserDialog"/> has been initialized.</summary>
@@ -777,7 +687,7 @@ public class FolderBrowserDialogInitializedEventArgs : EventArgs
 
 	/// <summary>Initializes a new instance of the <see cref="FolderBrowserDialogInitializedEventArgs"/> class.</summary>
 	/// <param name="hwnd">The HWND of the dialog box.</param>
-	public FolderBrowserDialogInitializedEventArgs(HWND hwnd) { this.hwnd = hwnd; }
+	public FolderBrowserDialogInitializedEventArgs(HWND hwnd) => this.hwnd = hwnd;
 }
 
 /// <summary>Event arguments for when an invalid folder is selected.</summary>

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.VisualStyles;
@@ -10,13 +11,13 @@ using System.Windows.Forms.VisualStyles;
 namespace Vanara.Windows.Forms;
 
 /// <summary>A custom drawn button.</summary>
-/// <seealso cref="Vanara.Windows.Forms.CustomDrawBase"/>
+/// <seealso cref="CustomDrawBase"/>
 public class CustomButton : CustomDrawBase
 {
 	private const int pad = 3;
 	private RectangleF contentRect;
 	private int cornerRadius = 4;
-	private DrawPattern defDrawPattern;
+	private DrawPattern? defDrawPattern;
 	private Corners roundCorners = Corners.All;
 
 	/// <summary>Initializes a new instance of the <see cref="CustomButton"/> class.</summary>
@@ -64,7 +65,7 @@ public class CustomButton : CustomDrawBase
 		}
 	}
 
-	private DrawPattern DefaultDrawPattern => defDrawPattern ?? (defDrawPattern = new DrawPattern(BackColor, BackColor, ForeColor));
+	private DrawPattern DefaultDrawPattern => defDrawPattern ??= new DrawPattern(BackColor, BackColor, ForeColor);
 
 	/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.</summary>
 	/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
@@ -102,7 +103,7 @@ public class CustomButton : CustomDrawBase
 		pevent.Graphics.DrawPath(dp.Line, path);
 
 		// Get the Rectangle to be used for Content
-		var xy = Math.Max(Convert.ToSingle(CornerRadius - (CornerRadius / Math.Sqrt(2))), pad);
+		var xy = Math.Max(Convert.ToSingle(CornerRadius - CornerRadius / Math.Sqrt(2)), pad);
 		contentRect = RectangleF.Inflate(pevent.ClipRectangle, -xy, -xy);
 	}
 
@@ -131,11 +132,7 @@ public class CustomButton : CustomDrawBase
 		}
 	}
 
-	private DrawPattern GetPaintPattern(PushButtonState state)
-	{
-		DrawPattern dp;
-		return !PaintPattern.TryGetValue(ButtonState, out dp) ? DefaultDrawPattern : dp;
-	}
+	private DrawPattern GetPaintPattern(PushButtonState state) => PaintPattern.TryGetValue(ButtonState, out DrawPattern? dp) ? dp : DefaultDrawPattern;
 
 	/// <summary>A pattern to use for drawing the button.</summary>
 	public class DrawPattern
@@ -147,10 +144,7 @@ public class CustomButton : CustomDrawBase
 		/// <param name="line">The line.</param>
 		/// <param name="text">The text.</param>
 		/// <param name="imageIndex">Index of the image.</param>
-		public DrawPattern(Color fill, Color line, Color text, int imageIndex = -1) : this(line, text, imageIndex)
-		{
-			Fill = fill.IsSystemColor ? SystemBrushes.FromSystemColor(fill) : new SolidBrush(fill);
-		}
+		public DrawPattern(Color fill, Color line, Color text, int imageIndex = -1) : this(line, text, imageIndex) => Fill = fill.IsSystemColor ? SystemBrushes.FromSystemColor(fill) : new SolidBrush(fill);
 
 		/// <summary>Initializes a new instance of the <see cref="DrawPattern"/> class.</summary>
 		/// <param name="fill1">The fill1.</param>
@@ -159,12 +153,11 @@ public class CustomButton : CustomDrawBase
 		/// <param name="line">The line.</param>
 		/// <param name="text">The text.</param>
 		/// <param name="imageIndex">Index of the image.</param>
-		public DrawPattern(Color fill1, Color fill2, Point pt, Color line, Color text, int imageIndex = -1) : this(line, text, imageIndex)
-		{
-			SetGradientFill(fill1, fill2, pt);
-		}
+		public DrawPattern(Color fill1, Color fill2, Point pt, Color line, Color text, int imageIndex = -1) : this(line, text, imageIndex) => SetGradientFill(fill1, fill2, pt);
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		private DrawPattern(Color line, Color text, int imageIndex)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		{
 			Line = line.IsSystemColor ? SystemPens.FromSystemColor(line) : new Pen(line, 1);
 			Text = text;
@@ -207,17 +200,14 @@ public class CustomButton : CustomDrawBase
 		/// <value>The text brush.</value>
 		public Brush TextBrush => Text.IsSystemColor ? SystemBrushes.FromSystemColor(Text) : new SolidBrush(Text);
 
-		private void SetGradientFill(Color fill1, Color fill2, Point point)
+		private void SetGradientFill(Color fill1, Color fill2, Point point) => Fill = new LinearGradientBrush(Point.Empty, point, fill1, fill2)
 		{
-			Fill = new LinearGradientBrush(Point.Empty, point, fill1, fill2)
+			Blend = new Blend
 			{
-				Blend = new Blend
-				{
-					Positions = new[] { 0, 0.45F, 0.55F, 1 },
-					Factors = new float[] { 0, 0, 1, 1 }
-				}
-			};
-		}
+				Positions = new[] { 0, 0.45F, 0.55F, 1 },
+				Factors = new float[] { 0, 0, 1, 1 }
+			}
+		};
 	}
 }
 
@@ -228,7 +218,7 @@ internal class RoundCornersEditor : UITypeEditor
 		if (!(value is Corners) || provider == null)
 			return value;
 
-		var edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+		var edSvc = (IWindowsFormsEditorService?)provider.GetService(typeof(IWindowsFormsEditorService));
 		if (edSvc == null || context == null) return value;
 
 		var cornerFlags = Corners.None;
@@ -240,8 +230,8 @@ internal class RoundCornersEditor : UITypeEditor
 			lb.Items.Add("BottomRight", (((CustomButton)context.Instance).RoundCorners & Corners.BottomRight) == Corners.BottomRight);
 
 			edSvc.DropDownControl(lb);
-			foreach (var o in lb.CheckedItems)
-				cornerFlags |= (Corners)Enum.Parse(typeof(Corners), o.ToString());
+			foreach (var o in lb.CheckedItems.Cast<object>().Select(o => o.ToString()).WhereNotNull())
+				cornerFlags |= (Corners)Enum.Parse(typeof(Corners), o);
 		}
 		edSvc.CloseDropDown();
 		return cornerFlags;

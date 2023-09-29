@@ -1170,14 +1170,14 @@ After:
 		/// <summary>
 		/// The string to be used for the task dialog title. If this parameter is NULL, the filename of the executable program is used.
 		/// </summary>
-		public string WindowTitle
+		public string? WindowTitle
 		{
 			get => SafeResourceId.GetString(pszWindowTitle, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszWindowTitle, out var _, value, CharSet.Unicode);
 		}
 
 		/// <summary>The string to be used for the main instruction.</summary>
-		public string MainInstruction
+		public string? MainInstruction
 		{
 			get => SafeResourceId.GetString(pszMainInstruction, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszMainInstruction, out var _, value, CharSet.Unicode);
@@ -1188,7 +1188,7 @@ After:
 		/// then this string may contain hyperlinks in the form: &lt;A HREF="executablestring"&gt;Hyperlink Text&lt;/A&gt;. WARNING:
 		/// Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.
 		/// </summary>
-		public string Content
+		public string? Content
 		{
 			get => SafeResourceId.GetString(pszContent, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszContent, out var _, value, CharSet.Unicode);
@@ -1198,7 +1198,7 @@ After:
 		/// The string to be used to label the verification checkbox. If this parameter is NULL, the verification checkbox is not
 		/// displayed in the task dialog. If the pfVerificationFlagChecked parameter of TaskDialogIndirect is NULL, the checkbox is not enabled.
 		/// </summary>
-		public string VerificationText
+		public string? VerificationText
 		{
 			get => SafeResourceId.GetString(pszVerificationText, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszVerificationText, out var _, value, CharSet.Unicode);
@@ -1211,7 +1211,7 @@ After:
 		/// HREF="executablestring"&gt;Hyperlink Text&lt;/A&gt;. WARNING: Enabling hyperlinks when using content from an unsafe source
 		/// may cause security vulnerabilities.
 		/// </summary>
-		public string ExpandedInformation
+		public string? ExpandedInformation
 		{
 			get => SafeResourceId.GetString(pszExpandedInformation, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszExpandedInformation, out var _, value, CharSet.Unicode);
@@ -1222,7 +1222,7 @@ After:
 		/// pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified, then the
 		/// pszCollapsedControlText value will be used for this member as well.
 		/// </summary>
-		public string ExpandedControlText
+		public string? ExpandedControlText
 		{
 			get => SafeResourceId.GetString(pszExpandedControlText, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszExpandedControlText, out var _, value, CharSet.Unicode);
@@ -1233,7 +1233,7 @@ After:
 		/// pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified, then the
 		/// pszCollapsedControlText value will be used for this member as well.
 		/// </summary>
-		public string CollapsedControlText
+		public string? CollapsedControlText
 		{
 			get => SafeResourceId.GetString(pszCollapsedControlText, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszCollapsedControlText, out var _, value, CharSet.Unicode);
@@ -1245,7 +1245,7 @@ After:
 		/// <para>&lt;A HREF="executablestring"&gt;Hyperlink Text&lt;/A&gt;</para>
 		/// <note type="warning">Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.</note>
 		/// </summary>
-		public string Footer
+		public string? Footer
 		{
 			get => SafeResourceId.GetString(pszFooter, CharSet.Unicode);
 			set => StringHelper.RefreshString(ref pszFooter, out var _, value, CharSet.Unicode);

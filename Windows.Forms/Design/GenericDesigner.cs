@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Design;
 using System.Linq;
 using System.Reflection;
@@ -16,13 +17,13 @@ public interface IActionGetItem
 {
 	/// <summary>Gets the category.</summary>
 	/// <value>The category.</value>
-	string Category { get; }
+	string? Category { get; }
 
 	/// <summary>Gets the item.</summary>
 	/// <param name="actions">The actions.</param>
 	/// <param name="mbr">The MBR.</param>
 	/// <returns></returns>
-	DesignerActionItem GetItem(DesignerActionList actions, global::System.Reflection.MemberInfo mbr);
+	DesignerActionItem GetItem(DesignerActionList actions, MemberInfo mbr);
 }
 
 /// <summary>Methods to assist when using designer code.</summary>
@@ -35,9 +36,9 @@ public static class ComponentDesignerExtension
 	/// The object on which to edit the property. If this value is null, the Component property of the designer is used.
 	/// </param>
 	/// <returns>The new value returned by the editor.</returns>
-	public static object EditValue(this ComponentDesigner designer, string propName, object objectToChange = null)
+	public static object? EditValue(this ComponentDesigner designer, string propName, object? objectToChange = null)
 	{
-		if (objectToChange == null) objectToChange = designer.Component;
+		objectToChange ??= designer.Component;
 		var prop = ((propName == null) ? TypeDescriptor.GetDefaultProperty(objectToChange) : TypeDescriptor.GetProperties(objectToChange)[propName]) ?? throw new ArgumentException("Unable to retrieve specified property.");
 		var context = new EditorServiceContext(designer, prop);
 		var editor = prop.GetEditor(typeof(UITypeEditor)) as UITypeEditor;
@@ -83,16 +84,16 @@ public static partial class ServiceProviderExtension
 	/// <typeparam name="T"></typeparam>
 	/// <param name="sp">The sp.</param>
 	/// <returns></returns>
-	public static T GetService<T>(this IServiceProvider sp) where T : class => (T)sp.GetService(typeof(T));
+	public static T? GetService<T>(this IServiceProvider sp) where T : class => (T?)sp.GetService(typeof(T));
 }
 
 /// <summary>A designer for components that support attributes.</summary>
 /// <typeparam name="TComponent">The type of the component.</typeparam>
-/// <seealso cref="System.ComponentModel.Design.ComponentDesigner"/>
+/// <seealso cref="ComponentDesigner"/>
 public abstract class AttributedComponentDesigner<TComponent> : ComponentDesigner where TComponent : Component
 {
-	private IDictionary<string, List<Attribute>> redirectedProps;
-	private DesignerVerbCollection verbs;
+	private readonly IDictionary<string, List<Attribute>>? redirectedProps;
+	private readonly DesignerVerbCollection? verbs;
 
 	/// <summary>Initializes a new instance of the <see cref="AttributedComponentDesigner{TComponent}"/> class.</summary>
 	public AttributedComponentDesigner()
@@ -102,7 +103,7 @@ public abstract class AttributedComponentDesigner<TComponent> : ComponentDesigne
 	}
 
 	/// <summary>Gets the design-time verbs supported by the component that is associated with the designer.</summary>
-	public override DesignerVerbCollection Verbs => verbs;
+	public override DesignerVerbCollection? Verbs => verbs;
 
 	/// <summary>Gets the design-time action lists supported by the component associated with the designer.</summary>
 	public override DesignerActionListCollection ActionLists =>
@@ -113,11 +114,11 @@ public abstract class AttributedComponentDesigner<TComponent> : ComponentDesigne
 
 	/// <summary>Gets the actions.</summary>
 	/// <value>The actions.</value>
-	protected virtual AttributedDesignerActionList Actions => null;
+	protected virtual AttributedDesignerActionList? Actions => null;
 
 	/// <summary>Gets the properties to remove.</summary>
 	/// <value>The properties to remove.</value>
-	protected virtual IEnumerable<string> PropertiesToRemove => null;
+	protected virtual IEnumerable<string>? PropertiesToRemove => null;
 
 	/// <summary>Allows a designer to add to the set of properties that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor"/>.</summary>
 	/// <param name="properties">The properties for the class of the component.</param>
@@ -135,14 +136,15 @@ public abstract class AttributedComponentDesigner<TComponent> : ComponentDesigne
 
 /// <summary>An extended designer for components that support attributes.</summary>
 /// <typeparam name="TComponent">The type of the component.</typeparam>
-/// <seealso cref="System.ComponentModel.Design.ComponentDesigner"/>
+/// <seealso cref="ComponentDesigner"/>
 public abstract class AttributedComponentDesignerEx<TComponent> : AttributedComponentDesigner<TComponent>
 	where TComponent : Component
 {
-	private Adorner adorner;
+	private Adorner? adorner;
 
 	/// <summary>Gets the behavior service.</summary>
 	/// <value>The behavior service.</value>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public BehaviorService BehaviorService { get; private set; }
 
 	/// <summary>Gets the component change service.</summary>
@@ -152,6 +154,7 @@ public abstract class AttributedComponentDesignerEx<TComponent> : AttributedComp
 	/// <summary>Gets the selection service.</summary>
 	/// <value>The selection service.</value>
 	public ISelectionService SelectionService { get; private set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/// <summary>Gets the glyphs.</summary>
 	/// <value>The glyphs.</value>
@@ -174,11 +177,9 @@ public abstract class AttributedComponentDesignerEx<TComponent> : AttributedComp
 		base.Initialize(component);
 		BehaviorService = GetService<BehaviorService>();
 		SelectionService = GetService<ISelectionService>();
-		if (SelectionService != null)
-			SelectionService.SelectionChanged += OnSelectionChanged;
+		SelectionService.SelectionChanged += OnSelectionChanged;
 		ComponentChangeService = GetService<IComponentChangeService>();
-		if (ComponentChangeService != null)
-			ComponentChangeService.ComponentChanged += OnComponentChanged;
+		ComponentChangeService.ComponentChanged += OnComponentChanged;
 	}
 
 	/// <summary>
@@ -191,7 +192,7 @@ public abstract class AttributedComponentDesignerEx<TComponent> : AttributedComp
 		if (disposing)
 		{
 			if (BehaviorService != null & adorner != null)
-				BehaviorService.Adorners.Remove(adorner);
+				BehaviorService?.Adorners.Remove(adorner);
 			var ss = SelectionService;
 			if (ss != null)
 				ss.SelectionChanged -= OnSelectionChanged;
@@ -210,26 +211,26 @@ public abstract class AttributedComponentDesignerEx<TComponent> : AttributedComp
 	/// <summary>Called when [component changed].</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="e">The <see cref="ComponentChangedEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnComponentChanged(object sender, ComponentChangedEventArgs e)
+	protected virtual void OnComponentChanged(object? sender, ComponentChangedEventArgs e)
 	{
 	}
 
 	/// <summary>Called when [selection changed].</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-	protected virtual void OnSelectionChanged(object sender, EventArgs e)
+	protected virtual void OnSelectionChanged(object? sender, EventArgs e)
 	{
 	}
 }
 
 /// <summary>A designer for controls that support attributes.</summary>
 /// <typeparam name="TControl">The type of the control.</typeparam>
-/// <seealso cref="System.Windows.Forms.Design.ControlDesigner"/>
+/// <seealso cref="ControlDesigner"/>
 public abstract class AttributedControlDesigner<TControl> : ControlDesigner where TControl : Control
 {
-	private IDictionary<string, List<Attribute>> redirectedEvents;
-	private IDictionary<string, List<Attribute>> redirectedProps;
-	private DesignerVerbCollection verbs;
+	private readonly IDictionary<string, List<Attribute>>? redirectedEvents;
+	private readonly IDictionary<string, List<Attribute>>? redirectedProps;
+	private readonly DesignerVerbCollection? verbs;
 
 	/// <summary>Initializes a new instance of the <see cref="AttributedControlDesigner{TControl}"/> class.</summary>
 	public AttributedControlDesigner()
@@ -240,7 +241,7 @@ public abstract class AttributedControlDesigner<TControl> : ControlDesigner wher
 	}
 
 	/// <summary>Gets the design-time verbs supported by the component that is associated with the designer.</summary>
-	public override DesignerVerbCollection Verbs => verbs;
+	public override DesignerVerbCollection? Verbs => verbs;
 
 	/// <summary>Gets the design-time action lists supported by the component associated with the designer.</summary>
 	public override DesignerActionListCollection ActionLists =>
@@ -251,15 +252,15 @@ public abstract class AttributedControlDesigner<TControl> : ControlDesigner wher
 
 	/// <summary>Gets the actions.</summary>
 	/// <value>The actions.</value>
-	protected virtual AttributedDesignerActionList Actions => null;
+	protected virtual AttributedDesignerActionList? Actions => null;
 
 	/// <summary>Gets the events to remove.</summary>
 	/// <value>The events to remove.</value>
-	protected virtual IEnumerable<string> EventsToRemove => null;
+	protected virtual IEnumerable<string>? EventsToRemove => null;
 
 	/// <summary>Gets the properties to remove.</summary>
 	/// <value>The properties to remove.</value>
-	protected virtual IEnumerable<string> PropertiesToRemove => null;
+	protected virtual IEnumerable<string>? PropertiesToRemove => null;
 
 	/// <summary>Allows a designer to add to the set of events that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor"/>.</summary>
 	/// <param name="events">The events for the class of the component.</param>
@@ -290,18 +291,20 @@ public abstract class AttributedControlDesigner<TControl> : ControlDesigner wher
 
 /// <summary>An extended designer for controls that support attributes.</summary>
 /// <typeparam name="TControl">The type of the control.</typeparam>
-/// <seealso cref="Vanara.Windows.Forms.Design.AttributedControlDesigner{TControl}"/>
+/// <seealso cref="AttributedControlDesigner{TControl}"/>
 public abstract class AttributedControlDesignerEx<TControl> : AttributedControlDesigner<TControl> where TControl : Control
 {
-	private Adorner adorner;
+	private Adorner? adorner;
 
 	/// <summary>Gets the component change service.</summary>
 	/// <value>The component change service.</value>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public IComponentChangeService ComponentChangeService { get; private set; }
 
 	/// <summary>Gets the selection service.</summary>
 	/// <value>The selection service.</value>
 	public ISelectionService SelectionService { get; private set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/// <summary>Gets the <see cref="T:System.Windows.Forms.Design.Behavior.BehaviorService"/> from the design environment.</summary>
 	public new BehaviorService BehaviorService => base.BehaviorService;
@@ -329,11 +332,9 @@ public abstract class AttributedControlDesignerEx<TControl> : AttributedControlD
 	{
 		base.Initialize(component);
 		SelectionService = GetService<ISelectionService>();
-		if (SelectionService != null)
-			SelectionService.SelectionChanged += OnSelectionChanged;
+		SelectionService.SelectionChanged += OnSelectionChanged;
 		ComponentChangeService = GetService<IComponentChangeService>();
-		if (ComponentChangeService != null)
-			ComponentChangeService.ComponentChanged += OnComponentChanged;
+		ComponentChangeService.ComponentChanged += OnComponentChanged;
 	}
 
 	/// <summary>
@@ -364,23 +365,23 @@ public abstract class AttributedControlDesignerEx<TControl> : AttributedControlD
 	/// <summary>Called when a component has changed.</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="e">The <see cref="ComponentChangedEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnComponentChanged(object sender, ComponentChangedEventArgs e)
+	protected virtual void OnComponentChanged(object? sender, ComponentChangedEventArgs e)
 	{
 	}
 
 	/// <summary>Called when the selection on the designer has changed.</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-	protected virtual void OnSelectionChanged(object sender, EventArgs e)
+	protected virtual void OnSelectionChanged(object? sender, EventArgs e)
 	{
 	}
 }
 
 /// <summary>A designer action list pulled from attributes.</summary>
-/// <seealso cref="System.ComponentModel.Design.DesignerActionList"/>
+/// <seealso cref="DesignerActionList"/>
 public abstract class AttributedDesignerActionList : DesignerActionList
 {
-	private IEnumerable<DesignerActionItem> fullAIList;
+	private IEnumerable<DesignerActionItem>? fullAIList;
 
 	/// <summary>Initializes a new instance of the <see cref="AttributedDesignerActionList"/> class.</summary>
 	/// <param name="designer">The designer.</param>
@@ -403,8 +404,7 @@ public abstract class AttributedDesignerActionList : DesignerActionList
 	public override DesignerActionItemCollection GetSortedActionItems()
 	{
 		// Retrieve all attributed methods and properties
-		if (fullAIList == null)
-			fullAIList = this.GetAllAttributedActionItems();
+		fullAIList ??= this.GetAllAttributedActionItems();
 
 		// Filter for conditions and load
 		return this.GetFilteredActionItems(fullAIList);
@@ -414,11 +414,11 @@ public abstract class AttributedDesignerActionList : DesignerActionList
 	/// <typeparam name="T"></typeparam>
 	/// <param name="propName">Name of the property.</param>
 	/// <returns></returns>
-	protected T GetComponentProperty<T>(string propName)
+	protected T? GetComponentProperty<T>(string propName)
 	{
 		var p = ComponentProp(propName, typeof(T));
 		if (p != null)
-			return (T)p.GetValue(Component, null);
+			return (T?)p.GetValue(Component, null);
 		return default;
 	}
 
@@ -426,21 +426,18 @@ public abstract class AttributedDesignerActionList : DesignerActionList
 	/// <typeparam name="T"></typeparam>
 	/// <param name="propName">Name of the property.</param>
 	/// <param name="value">The value.</param>
-	protected void SetComponentProperty<T>(string propName, T value)
-	{
-		ComponentProp(propName, typeof(T))?.SetValue(Component, value, null);
-	}
+	protected void SetComponentProperty<T>(string propName, T value) => ComponentProp(propName, typeof(T))?.SetValue(Component, value, null);
 
-	private global::System.Reflection.PropertyInfo ComponentProp(string propName, Type retType) => Component.GetType().GetProperty(propName, InternalComponentDesignerExtension.allInstBind, null, retType, Type.EmptyTypes, null);
+	private PropertyInfo? ComponentProp(string propName, Type retType) => Component.GetType().GetProperty(propName, InternalComponentDesignerExtension.allInstBind, null, retType, Type.EmptyTypes, null);
 }
 
 /// <summary>A designer for parent controls supported by attributes.</summary>
 /// <typeparam name="TControl">The type of the control.</typeparam>
-/// <seealso cref="System.Windows.Forms.Design.ParentControlDesigner"/>
+/// <seealso cref="ParentControlDesigner"/>
 public abstract class AttributedParentControlDesigner<TControl> : ParentControlDesigner where TControl : Control
 {
-	private IDictionary<string, List<Attribute>> redirectedProps;
-	private DesignerVerbCollection verbs;
+	private readonly IDictionary<string, List<Attribute>>? redirectedProps;
+	private readonly DesignerVerbCollection? verbs;
 
 	/// <summary>Initializes a new instance of the <see cref="AttributedParentControlDesigner{TControl}"/> class.</summary>
 	public AttributedParentControlDesigner()
@@ -450,7 +447,7 @@ public abstract class AttributedParentControlDesigner<TControl> : ParentControlD
 	}
 
 	/// <summary>Gets the design-time verbs supported by the component that is associated with the designer.</summary>
-	public override DesignerVerbCollection Verbs => verbs;
+	public override DesignerVerbCollection? Verbs => verbs;
 
 	/// <summary>Gets the design-time action lists supported by the component associated with the designer.</summary>
 	public override DesignerActionListCollection ActionLists =>
@@ -461,11 +458,11 @@ public abstract class AttributedParentControlDesigner<TControl> : ParentControlD
 
 	/// <summary>Gets the actions.</summary>
 	/// <value>The actions.</value>
-	protected virtual AttributedDesignerActionList Actions => null;
+	protected virtual AttributedDesignerActionList? Actions => null;
 
 	/// <summary>Gets the properties to remove.</summary>
 	/// <value>The properties to remove.</value>
-	protected virtual IEnumerable<string> PropertiesToRemove => null;
+	protected virtual IEnumerable<string>? PropertiesToRemove => null;
 
 	/// <summary>Adjusts the set of properties the component will expose through a <see cref="T:System.ComponentModel.TypeDescriptor"/>.</summary>
 	/// <param name="properties">
@@ -485,18 +482,20 @@ public abstract class AttributedParentControlDesigner<TControl> : ParentControlD
 
 /// <summary>An extended designer for parent controls supported by attributes.</summary>
 /// <typeparam name="TControl">The type of the control.</typeparam>
-/// <seealso cref="Vanara.Windows.Forms.Design.AttributedParentControlDesigner{TControl}"/>
+/// <seealso cref="AttributedParentControlDesigner{TControl}"/>
 public abstract class AttributedParentControlDesignerEx<TControl> : AttributedParentControlDesigner<TControl> where TControl : Control
 {
-	private Adorner adorner;
+	private Adorner? adorner;
 
 	/// <summary>Gets the component change service.</summary>
 	/// <value>The component change service.</value>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public IComponentChangeService ComponentChangeService { get; private set; }
 
 	/// <summary>Gets the selection service.</summary>
 	/// <value>The selection service.</value>
 	public ISelectionService SelectionService { get; private set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/// <summary>Gets the <see cref="T:System.Windows.Forms.Design.Behavior.BehaviorService"/> from the design environment.</summary>
 	public new BehaviorService BehaviorService => base.BehaviorService;
@@ -521,11 +520,9 @@ public abstract class AttributedParentControlDesignerEx<TControl> : AttributedPa
 	{
 		base.Initialize(component);
 		SelectionService = GetService<ISelectionService>();
-		if (SelectionService != null)
-			SelectionService.SelectionChanged += OnSelectionChanged;
+		SelectionService.SelectionChanged += OnSelectionChanged;
 		ComponentChangeService = GetService<IComponentChangeService>();
-		if (ComponentChangeService != null)
-			ComponentChangeService.ComponentChanged += OnComponentChanged;
+		ComponentChangeService.ComponentChanged += OnComponentChanged;
 	}
 
 	/// <summary>
@@ -537,7 +534,7 @@ public abstract class AttributedParentControlDesignerEx<TControl> : AttributedPa
 	{
 		if (disposing)
 		{
-			if (BehaviorService != null & adorner != null)
+			if (adorner != null)
 				BehaviorService.Adorners.Remove(adorner);
 			var ss = SelectionService;
 			if (ss != null)
@@ -557,21 +554,21 @@ public abstract class AttributedParentControlDesignerEx<TControl> : AttributedPa
 	/// <summary>Called when [component changed].</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="e">The <see cref="ComponentChangedEventArgs"/> instance containing the event data.</param>
-	protected virtual void OnComponentChanged(object sender, ComponentChangedEventArgs e)
+	protected virtual void OnComponentChanged(object? sender, ComponentChangedEventArgs e)
 	{
 	}
 
 	/// <summary>Called when [selection changed].</summary>
 	/// <param name="sender">The sender.</param>
 	/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-	protected virtual void OnSelectionChanged(object sender, EventArgs e)
+	protected virtual void OnSelectionChanged(object? sender, EventArgs e)
 	{
 	}
 }
 
 /// <summary>Attribute placed on methods that indicate they support a designer action.</summary>
-/// <seealso cref="System.Attribute"/>
-/// <seealso cref="Vanara.Windows.Forms.Design.IActionGetItem"/>
+/// <seealso cref="Attribute"/>
+/// <seealso cref="IActionGetItem"/>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class DesignerActionMethodAttribute : Attribute, IActionGetItem
 {
@@ -590,15 +587,15 @@ public sealed class DesignerActionMethodAttribute : Attribute, IActionGetItem
 
 	/// <summary>Gets or sets the category.</summary>
 	/// <value>The category.</value>
-	public string Category { get; set; }
+	public string? Category { get; set; }
 
 	/// <summary>Gets or sets the condition.</summary>
 	/// <value>The condition.</value>
-	public string Condition { get; set; }
+	public string? Condition { get; set; }
 
 	/// <summary>Gets or sets the description.</summary>
 	/// <value>The description.</value>
-	public string Description { get; set; }
+	public string? Description { get; set; }
 
 	/// <summary>Gets the display name.</summary>
 	/// <value>The display name.</value>
@@ -612,7 +609,7 @@ public sealed class DesignerActionMethodAttribute : Attribute, IActionGetItem
 	/// <value><see langword="true"/> if [include as designer verb]; otherwise, <see langword="false"/>.</value>
 	public bool IncludeAsDesignerVerb { get; set; }
 
-	DesignerActionItem IActionGetItem.GetItem(DesignerActionList actions, global::System.Reflection.MemberInfo mbr)
+	DesignerActionItem IActionGetItem.GetItem(DesignerActionList actions, MemberInfo mbr)
 	{
 		var ret = new DesignerActionMethodItem(actions, mbr.Name, DisplayName, Category, Description, IncludeAsDesignerVerb)
 		{ AllowAssociate = AllowAssociate };
@@ -624,8 +621,8 @@ public sealed class DesignerActionMethodAttribute : Attribute, IActionGetItem
 }
 
 /// <summary>Attribute placed on properties that indicate they support a designer action.</summary>
-/// <seealso cref="System.Attribute"/>
-/// <seealso cref="Vanara.Windows.Forms.Design.IActionGetItem"/>
+/// <seealso cref="Attribute"/>
+/// <seealso cref="IActionGetItem"/>
 [AttributeUsage(AttributeTargets.Property)]
 public sealed class DesignerActionPropertyAttribute : Attribute, IActionGetItem
 {
@@ -644,15 +641,15 @@ public sealed class DesignerActionPropertyAttribute : Attribute, IActionGetItem
 
 	/// <summary>Gets or sets the category.</summary>
 	/// <value>The category.</value>
-	public string Category { get; set; }
+	public string? Category { get; set; }
 
 	/// <summary>Gets or sets the condition.</summary>
 	/// <value>The condition.</value>
-	public string Condition { get; set; }
+	public string? Condition { get; set; }
 
 	/// <summary>Gets or sets the description.</summary>
 	/// <value>The description.</value>
-	public string Description { get; set; }
+	public string? Description { get; set; }
 
 	/// <summary>Gets the display name.</summary>
 	/// <value>The display name.</value>
@@ -662,7 +659,7 @@ public sealed class DesignerActionPropertyAttribute : Attribute, IActionGetItem
 	/// <value>The display order.</value>
 	public int DisplayOrder { get; }
 
-	DesignerActionItem IActionGetItem.GetItem(DesignerActionList actions, global::System.Reflection.MemberInfo mbr)
+	DesignerActionItem IActionGetItem.GetItem(DesignerActionList actions, MemberInfo mbr)
 	{
 		var ret = new DesignerActionPropertyItem(mbr.Name, DisplayName, Category, Description)
 		{ AllowAssociate = AllowAssociate };
@@ -674,19 +671,16 @@ public sealed class DesignerActionPropertyAttribute : Attribute, IActionGetItem
 }
 
 /// <summary>Attribute placed on methods that indicate they support a designer attribute.</summary>
-/// <seealso cref="System.Attribute"/>
+/// <seealso cref="Attribute"/>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class DesignerVerbAttribute : Attribute
 {
-	private readonly CommandID cmdId;
+	private readonly CommandID? cmdId;
 	private readonly string menuText;
 
 	/// <summary>Initializes a new instance of the <see cref="DesignerVerbAttribute"/> class.</summary>
 	/// <param name="menuText">The menu text.</param>
-	public DesignerVerbAttribute(string menuText)
-	{
-		this.menuText = menuText;
-	}
+	public DesignerVerbAttribute(string menuText) => this.menuText = menuText;
 
 	/// <summary>Initializes a new instance of the <see cref="DesignerVerbAttribute"/> class.</summary>
 	/// <param name="menuText">The menu text.</param>
@@ -698,54 +692,46 @@ public sealed class DesignerVerbAttribute : Attribute
 		cmdId = new CommandID(commandMenuGroup, commandId);
 	}
 
-	internal DesignerVerb GetDesignerVerb(object obj, global::System.Reflection.MethodInfo mi)
+	internal DesignerVerb GetDesignerVerb(object obj, MethodInfo mi)
 	{
 		var handler = (EventHandler)Delegate.CreateDelegate(typeof(EventHandler), obj, mi);
-		if (cmdId != null)
-			return new DesignerVerb(menuText, handler, cmdId);
-		return new DesignerVerb(menuText, handler);
+		return cmdId != null ? new DesignerVerb(menuText, handler, cmdId) : new DesignerVerb(menuText, handler);
 	}
 }
 
 /// <summary>A service context implementation for an editor.</summary>
-/// <seealso cref="System.Windows.Forms.Design.IWindowsFormsEditorService"/>
-/// <seealso cref="System.ComponentModel.ITypeDescriptorContext"/>
+/// <seealso cref="IWindowsFormsEditorService"/>
+/// <seealso cref="ITypeDescriptorContext"/>
 public class EditorServiceContext : IWindowsFormsEditorService, ITypeDescriptorContext
 {
 	private readonly ComponentDesigner designer;
-	private readonly PropertyDescriptor targetProperty;
-	private IComponentChangeService componentChangeSvc;
+	private readonly PropertyDescriptor? targetProperty;
+	private IComponentChangeService? componentChangeSvc;
 
-	internal EditorServiceContext(ComponentDesigner designer)
-	{
-		this.designer = designer;
-	}
+	internal EditorServiceContext(ComponentDesigner designer) => this.designer = designer;
 
-	internal EditorServiceContext(ComponentDesigner designer, PropertyDescriptor prop)
+	internal EditorServiceContext(ComponentDesigner designer, PropertyDescriptor? prop)
 	{
 		this.designer = designer;
 		targetProperty = prop;
 		if (prop == null)
 		{
 			prop = TypeDescriptor.GetDefaultProperty(designer.Component);
-			if ((prop != null) && typeof(ICollection).IsAssignableFrom(prop.PropertyType))
+			if (prop != null && typeof(ICollection).IsAssignableFrom(prop.PropertyType))
 				targetProperty = prop;
 		}
 	}
 
 	internal EditorServiceContext(ComponentDesigner designer, PropertyDescriptor prop, string newVerbText)
-		: this(designer, prop)
-	{
-		this.designer.Verbs.Add(new DesignerVerb(newVerbText, OnEditItems));
-	}
+		: this(designer, prop) => this.designer.Verbs.Add(new DesignerVerb(newVerbText, OnEditItems));
 
-	IContainer ITypeDescriptorContext.Container => designer.Component.Site?.Container;
+	IContainer ITypeDescriptorContext.Container => designer.Component.Site?.Container ?? throw new InvalidOperationException();
 
 	object ITypeDescriptorContext.Instance => designer.Component;
 
-	PropertyDescriptor ITypeDescriptorContext.PropertyDescriptor => targetProperty;
+	PropertyDescriptor ITypeDescriptorContext.PropertyDescriptor => targetProperty ?? throw new InvalidOperationException();
 
-	private IComponentChangeService ChangeService => componentChangeSvc ?? (componentChangeSvc = GetService<IComponentChangeService>());
+	private IComponentChangeService ChangeService => componentChangeSvc ??= GetService<IComponentChangeService>() ?? throw new InvalidOperationException();
 
 	/// <summary>Shows the specified <see cref="T:System.Windows.Forms.Form"/>.</summary>
 	/// <param name="dialog">The <see cref="T:System.Windows.Forms.Form"/> to display.</param>
@@ -766,17 +752,14 @@ public class EditorServiceContext : IWindowsFormsEditorService, ITypeDescriptorC
 	{
 	}
 
-	object IServiceProvider.GetService(Type serviceType)
+	object? IServiceProvider.GetService(Type serviceType)
 	{
-		if ((serviceType == typeof(ITypeDescriptorContext)) || (serviceType == typeof(IWindowsFormsEditorService)))
+		if (serviceType == typeof(ITypeDescriptorContext) || serviceType == typeof(IWindowsFormsEditorService))
 			return this;
 		return designer.Component?.Site?.GetService(serviceType);
 	}
 
-	void ITypeDescriptorContext.OnComponentChanged()
-	{
-		ChangeService.OnComponentChanged(designer.Component, targetProperty, null, null);
-	}
+	void ITypeDescriptorContext.OnComponentChanged() => ChangeService.OnComponentChanged(designer.Component, targetProperty, null, null);
 
 	bool ITypeDescriptorContext.OnComponentChanging()
 	{
@@ -793,11 +776,11 @@ public class EditorServiceContext : IWindowsFormsEditorService, ITypeDescriptorC
 		return true;
 	}
 
-	private T GetService<T>() where T : class => ((IServiceProvider)this).GetService<T>();
+	private T? GetService<T>() where T : class => ((IServiceProvider)this).GetService<T>();
 
-	private void OnEditItems(object sender, EventArgs e)
+	private void OnEditItems(object? sender, EventArgs e)
 	{
-		var component = targetProperty.GetValue(designer.Component);
+		var component = targetProperty?.GetValue(designer.Component);
 		if (component != null)
 		{
 			var editor = TypeDescriptor.GetEditor(component, typeof(UITypeEditor)) as CollectionEditor;
@@ -807,12 +790,12 @@ public class EditorServiceContext : IWindowsFormsEditorService, ITypeDescriptorC
 }
 
 /// <summary>Attribute placed on class items that indicate they support a designer redirected item.</summary>
-/// <seealso cref="System.Attribute"/>
+/// <seealso cref="Attribute"/>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Event | AttributeTargets.Method)]
 public sealed class RedirectedDesignerItemAttribute : Attribute
 {
 	/// <summary>Initializes a new instance of the <see cref="RedirectedDesignerItemAttribute"/> class.</summary>
-	public RedirectedDesignerItemAttribute() { ApplyOtherAttributes = true; }
+	public RedirectedDesignerItemAttribute() => ApplyOtherAttributes = true;
 
 	/// <summary>Gets or sets a value indicating whether to apply other attributes.</summary>
 	/// <value><see langword="true"/> if this should apply other attributes; otherwise, <see langword="false"/>.</value>
@@ -821,15 +804,12 @@ public sealed class RedirectedDesignerItemAttribute : Attribute
 
 /// <summary>A behavior derivative for a supplied type.</summary>
 /// <typeparam name="TControlDesigner">The type of the control designer.</typeparam>
-/// <seealso cref="System.Windows.Forms.Design.Behavior.Behavior"/>
+/// <seealso cref="Behavior"/>
 public abstract class TypedBehavior<TControlDesigner> : Behavior where TControlDesigner : ControlDesigner
 {
 	/// <summary>Initializes a new instance of the <see cref="TypedBehavior{TControlDesigner}"/> class.</summary>
 	/// <param name="designer">The designer.</param>
-	protected TypedBehavior(TControlDesigner designer)
-	{
-		Designer = designer;
-	}
+	protected TypedBehavior(TControlDesigner designer) => Designer = designer;
 
 	/// <summary>Gets the designer.</summary>
 	/// <value>The designer.</value>
@@ -839,16 +819,13 @@ public abstract class TypedBehavior<TControlDesigner> : Behavior where TControlD
 /// <summary>An action list for a generic designer.</summary>
 /// <typeparam name="TComponentDesigner">The type of the component designer.</typeparam>
 /// <typeparam name="TComponent">The type of the component.</typeparam>
-/// <seealso cref="Vanara.Windows.Forms.Design.AttributedDesignerActionList"/>
+/// <seealso cref="AttributedDesignerActionList"/>
 public abstract class TypedDesignerActionList<TComponentDesigner, TComponent> : AttributedDesignerActionList where TComponentDesigner : ComponentDesigner where TComponent : Component
 {
 	/// <summary>Initializes a new instance of the <see cref="TypedDesignerActionList{TComponentDesigner, TComponent}"/> class.</summary>
 	/// <param name="designer">The designer.</param>
 	/// <param name="component">The component.</param>
-	protected TypedDesignerActionList(TComponentDesigner designer, TComponent component) : base(designer, component)
-	{
-		ParentDesigner = designer;
-	}
+	protected TypedDesignerActionList(TComponentDesigner designer, TComponent component) : base(designer, component) => ParentDesigner = designer;
 
 	/// <summary>Gets the parent designer.</summary>
 	/// <value>The parent designer.</value>
@@ -860,17 +837,14 @@ public abstract class TypedDesignerActionList<TComponentDesigner, TComponent> : 
 
 /// <summary>A glyph associated with a designer.</summary>
 /// <typeparam name="TControlDesigner">The type of the control designer.</typeparam>
-/// <seealso cref="System.Windows.Forms.Design.Behavior.Glyph"/>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="Glyph"/>
+/// <seealso cref="IDisposable"/>
 public abstract class TypedGlyph<TControlDesigner> : Glyph, IDisposable where TControlDesigner : ControlDesigner
 {
 	/// <summary>Initializes a new instance of the <see cref="TypedGlyph{TControlDesigner}"/> class.</summary>
 	/// <param name="designer">The designer.</param>
 	/// <param name="behavior">The behavior.</param>
-	protected TypedGlyph(TControlDesigner designer, Behavior behavior) : base(behavior)
-	{
-		Designer = designer;
-	}
+	protected TypedGlyph(TControlDesigner designer, Behavior behavior) : base(behavior) => Designer = designer;
 
 	/// <summary>Gets the designer.</summary>
 	/// <value>The designer.</value>
@@ -881,14 +855,14 @@ public abstract class TypedGlyph<TControlDesigner> : Glyph, IDisposable where TC
 
 	/// <summary>Sets the behavior.</summary>
 	/// <param name="b">The b.</param>
-	public void SetBehavior(TypedBehavior<TControlDesigner> b) { base.SetBehavior(b); }
+	public void SetBehavior(TypedBehavior<TControlDesigner> b) => base.SetBehavior(b);
 }
 
 internal static class InternalComponentDesignerExtension
 {
 	public const BindingFlags allInstBind = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
 
-	public static DesignerActionListCollection GetActionLists(this ComponentDesigner designer, Component component, AttributedDesignerActionList actions, DesignerActionListCollection baseActions, DesignerVerbCollection verbs)
+	public static DesignerActionListCollection GetActionLists(this ComponentDesigner designer, Component component, AttributedDesignerActionList? actions, DesignerActionListCollection? baseActions, DesignerVerbCollection? verbs)
 	{
 		var lists = new DesignerActionListCollection();
 		if (baseActions != null && baseActions.Count > 0)
@@ -935,7 +909,7 @@ internal static class InternalComponentDesignerExtension
 		}
 	}
 
-	public static DesignerVerbCollection GetAttributedVerbs(this ComponentDesigner designer)
+	public static DesignerVerbCollection? GetAttributedVerbs(this ComponentDesigner designer)
 	{
 		var verbs = new DesignerVerbCollection();
 		foreach (var m in designer.GetType().GetMethods(allInstBind))
@@ -956,7 +930,7 @@ internal static class InternalComponentDesignerExtension
 				col.Add(ai);
 
 		// Add header items for displayed items
-		string cat = null;
+		string? cat = null;
 		for (var i = 0; i < col.Count; i++)
 		{
 			var curCat = col[i].Category;
@@ -973,15 +947,15 @@ internal static class InternalComponentDesignerExtension
 		{
 			if (ai.Properties["Condition"] != null)
 			{
-				var p = actionList.GetType().GetProperty((string)ai.Properties["Condition"], allInstBind, null, typeof(bool), Type.EmptyTypes, null);
+				var p = actionList.GetType().GetProperty((string)ai.Properties["Condition"]!, allInstBind, null, typeof(bool), Type.EmptyTypes, null);
 				if (p != null)
-					return (bool)p.GetValue(actionList, null);
+					return (bool)p.GetValue(actionList, null)!;
 			}
 			return true;
 		}
 	}
 
-	public static IDictionary<string, List<Attribute>> GetRedirectedEvents(this ComponentDesigner d)
+	public static IDictionary<string, List<Attribute>>? GetRedirectedEvents(this ComponentDesigner d)
 	{
 		var ret = new Dictionary<string, List<Attribute>>();
 		foreach (var evt in d.GetType().GetEvents(allInstBind))
@@ -989,7 +963,7 @@ internal static class InternalComponentDesignerExtension
 			foreach (var attr in evt.GetCustomAttributes<RedirectedDesignerItemAttribute>(false))
 			{
 				var attributes = attr.ApplyOtherAttributes
-					? evt.GetCustomAttributes<Attribute>().Where(a => !(a is RedirectedDesignerItemAttribute)).ToList()
+					? evt.GetCustomAttributes<Attribute>().Where(a => a is not RedirectedDesignerItemAttribute).ToList()
 					: new List<Attribute>();
 				ret.Add(evt.Name, attributes);
 			}
@@ -1001,7 +975,7 @@ internal static class InternalComponentDesignerExtension
 	{
 		foreach (var propName in redirectedProps.Keys)
 		{
-			var oldPropertyDescriptor = (PropertyDescriptor)properties[propName];
+			var oldPropertyDescriptor = (PropertyDescriptor?)properties[propName];
 			if (oldPropertyDescriptor != null)
 			{
 				var attributes = redirectedProps[propName];
@@ -1010,7 +984,7 @@ internal static class InternalComponentDesignerExtension
 		}
 	}
 
-	public static IDictionary<string, List<Attribute>> GetRedirectedProperties(this ComponentDesigner d)
+	public static IDictionary<string, List<Attribute>>? GetRedirectedProperties(this ComponentDesigner d)
 	{
 		var ret = new Dictionary<string, List<Attribute>>();
 		foreach (var prop in d.GetType().GetProperties(allInstBind))
@@ -1018,7 +992,7 @@ internal static class InternalComponentDesignerExtension
 			foreach (var attr in prop.GetCustomAttributes<RedirectedDesignerItemAttribute>(false))
 			{
 				var attributes = attr.ApplyOtherAttributes
-					? prop.GetCustomAttributes<Attribute>().Where(a => !(a is RedirectedDesignerItemAttribute)).ToList()
+					? prop.GetCustomAttributes<Attribute>().Where(a => a is not RedirectedDesignerItemAttribute).ToList()
 					: new List<Attribute>();
 				ret.Add(prop.Name, attributes);
 			}
@@ -1030,7 +1004,7 @@ internal static class InternalComponentDesignerExtension
 	{
 		foreach (var propName in redirectedProps.Keys)
 		{
-			var oldPropertyDescriptor = (PropertyDescriptor)properties[propName];
+			var oldPropertyDescriptor = (PropertyDescriptor?)properties[propName];
 			if (oldPropertyDescriptor != null)
 			{
 				var attributes = redirectedProps[propName];
@@ -1051,18 +1025,15 @@ internal class DesignerActionVerbList : DesignerActionList
 {
 	private DesignerVerbCollection _verbs;
 
-	public DesignerActionVerbList(DesignerVerbCollection verbs) : base(null)
-	{
-		_verbs = verbs;
-	}
+	public DesignerActionVerbList(DesignerVerbCollection verbs) : base(null) => _verbs = verbs;
 
 	public override bool AutoShow => false;
 
 	public override DesignerActionItemCollection GetSortedActionItems()
 	{
 		DesignerActionItemCollection items = new();
-		foreach (DesignerVerb v in _verbs)
-			if ((v.Visible && v.Enabled) && v.Supported)
+		foreach (DesignerVerb v in _verbs.Cast<DesignerVerb>())
+			if (v.Visible && v.Enabled && v.Supported)
 				items.Add(new DesignerActionVerbItem(v));
 		return items;
 	}
@@ -1071,14 +1042,8 @@ internal class DesignerActionVerbList : DesignerActionList
 	{
 		private DesignerVerb targetVerb;
 
-		public DesignerActionVerbItem(DesignerVerb verb) : base(null, null, verb.Text, "Verbs", verb.Description, false)
-		{
-			targetVerb = verb;
-		}
+		public DesignerActionVerbItem(DesignerVerb verb) : base(null, null, verb.Text, "Verbs", verb.Description, false) => targetVerb = verb;
 
-		public override void Invoke()
-		{
-			targetVerb.Invoke();
-		}
+		public override void Invoke() => targetVerb.Invoke();
 	}
 }

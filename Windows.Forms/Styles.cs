@@ -29,5 +29,5 @@ public interface IDrawingStyle<in TCtrl, in TEnum> where TEnum : struct, IConver
 	/// <param name="state">The state.</param>
 	/// <param name="g">The g.</param>
 	/// <returns></returns>
-	Size Measure(TCtrl ctrl, TEnum state, Graphics g = null);
+	Size Measure(TCtrl ctrl, TEnum state, Graphics? g = null);
 }

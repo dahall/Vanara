@@ -720,10 +720,10 @@ public static partial class CredUI
 		/// <summary>
 		/// Pointer to a string containing a brief message to display in the dialog box. The length of this string should not exceed CREDUI_MAX_MESSAGE_LENGTH.
 		/// </summary>
-		public string pszMessageText;
+		public string? pszMessageText;
 
 		/// <summary>Pointer to a string containing the title for the dialog box. The length of this string should not exceed CREDUI_MAX_CAPTION_LENGTH.</summary>
-		public string pszCaptionText;
+		public string? pszCaptionText;
 
 		/// <summary>
 		/// Bitmap to display in the dialog box. If this member is NULL, a default bitmap is used. The bitmap size is limited to 320x60 pixels.
@@ -734,14 +734,14 @@ public static partial class CredUI
 		/// <param name="hwndOwner">Specifies the handle to the parent window of the dialog box.</param>
 		/// <param name="caption">The string containing the title for the dialog box.</param>
 		/// <param name="message">The string containing a brief message to display in the dialog box.</param>
-		public CREDUI_INFO(HWND hwndOwner, string caption, string message)
+		public CREDUI_INFO(HWND hwndOwner, string? caption, string? message)
 		{
 			cbSize = Marshal.SizeOf(typeof(CREDUI_INFO));
 			hwndParent = hwndOwner;
-			if (caption.Length > CREDUI_MAX_CAPTION_LENGTH)
+			if (caption?.Length > CREDUI_MAX_CAPTION_LENGTH)
 				throw new ArgumentOutOfRangeException(nameof(caption), $"The caption may not be longer than {CREDUI_MAX_CAPTION_LENGTH}.");
 			pszCaptionText = caption;
-			if (message.Length > CREDUI_MAX_MESSAGE_LENGTH)
+			if (message?.Length > CREDUI_MAX_MESSAGE_LENGTH)
 				throw new ArgumentOutOfRangeException(nameof(message), $"The message may not be longer than {CREDUI_MAX_MESSAGE_LENGTH}.");
 			pszMessageText = message;
 			hbmBanner = HBITMAP.NULL;

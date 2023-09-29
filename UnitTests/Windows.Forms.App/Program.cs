@@ -1,4 +1,6 @@
-﻿namespace Windows.Forms.App;
+﻿global using System.Windows.Forms;
+
+namespace Windows.Forms.App;
 
 static class Program
 {

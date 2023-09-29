@@ -17,7 +17,7 @@ public static partial class NotifyIconExtensions
 	{
 		// Super sketchy way of doing this, but it works
 		var iconid = trayIcon.GetFieldValue<uint>("id");
-		NativeWindow win = trayIcon.GetFieldValue<NativeWindow>("window");
+		NativeWindow win = trayIcon.GetFieldValue<NativeWindow>("window") ?? throw new InvalidOperationException();
 		var nii = new Shell32.NOTIFYICONIDENTIFIER(win.Handle, iconid);
 		Shell32.Shell_NotifyIconGetRect(nii, out RECT loc).ThrowIfFailed();
 		return loc;

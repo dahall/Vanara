@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Vanara.PInvoke;
@@ -11,14 +12,14 @@ namespace Vanara.Extensions;
 /// <summary>Extension methods for <see cref="ListView"/>.</summary>
 public static partial class ListViewExtension
 {
-	private static PropertyInfo GroupIdProperty;
+	private static PropertyInfo? GroupIdProperty;
 
 	/// <summary>Gets the items in a list view as a sequence.</summary>
 	/// <param name="items">The items.</param>
 	/// <returns></returns>
 	public static IEnumerable<ListViewItem> AsEnumerable(this ListView.ListViewItemCollection items)
 	{
-		foreach (ListViewItem item in items)
+		foreach (ListViewItem item in items.Cast<ListViewItem>())
 			yield return item;
 	}
 
@@ -27,7 +28,7 @@ public static partial class ListViewExtension
 	/// <returns></returns>
 	public static IEnumerable<ListViewGroup> AsEnumerable(this ListViewGroupCollection items)
 	{
-		foreach (ListViewGroup item in items)
+		foreach (ListViewGroup item in items.Cast<ListViewGroup>())
 			yield return item;
 	}
 
@@ -36,13 +37,13 @@ public static partial class ListViewExtension
 	/// <param name="action">The action.</param>
 	public static void ForEach(this ListView.ListViewItemCollection items, Action<ListViewItem> action)
 	{
-		foreach (ListViewItem item in items) action(item);
+		foreach (ListViewItem item in items.Cast<ListViewItem>()) action(item);
 	}
 
 	/// <summary>Gets the collapsed state of the list view group.</summary>
 	/// <param name="group">The list view group.</param>
 	/// <returns></returns>
-	/// <exception cref="System.ArgumentNullException"></exception>
+	/// <exception cref="ArgumentNullException"></exception>
 	public static bool GetCollapsed(this ListViewGroup group)
 	{
 		if (group == null)
@@ -53,7 +54,7 @@ public static partial class ListViewExtension
 	/// <summary>Determines if the list view group is collapsible.</summary>
 	/// <param name="group">The group.</param>
 	/// <returns></returns>
-	/// <exception cref="System.ArgumentNullException"></exception>
+	/// <exception cref="ArgumentNullException"></exception>
 	public static bool GetCollapsible(this ListViewGroup group)
 	{
 		if (group == null)
@@ -82,7 +83,7 @@ public static partial class ListViewExtension
 	/// <summary>Sets the collapsed state of the list view group.</summary>
 	/// <param name="group">The group.</param>
 	/// <param name="value">if set to <see langword="true"/> [value].</param>
-	/// <exception cref="System.ArgumentNullException"></exception>
+	/// <exception cref="ArgumentNullException"></exception>
 	public static void SetCollapsed(this ListViewGroup group, bool value)
 	{
 		if (group == null)
@@ -93,8 +94,8 @@ public static partial class ListViewExtension
 	/// <summary>Sets a value that determines if the list view group is collapsible.</summary>
 	/// <param name="group">The group.</param>
 	/// <param name="value">if set to <see langword="true"/> [value].</param>
-	/// <exception cref="System.ArgumentNullException"></exception>
-	/// <exception cref="System.PlatformNotSupportedException"></exception>
+	/// <exception cref="ArgumentNullException"></exception>
+	/// <exception cref="PlatformNotSupportedException"></exception>
 	public static void SetCollapsible(this ListViewGroup group, bool value)
 	{
 		if (group == null)
@@ -108,10 +109,10 @@ public static partial class ListViewExtension
 	/// <param name="listView">The list view.</param>
 	/// <param name="columnIndex">Index of the column.</param>
 	/// <param name="enable">if set to <see langword="true"/> show the column header as a split button.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">columnIndex</exception>
+	/// <exception cref="ArgumentOutOfRangeException">columnIndex</exception>
 	public static void SetColumnDropDown(this ListView listView, int columnIndex, bool enable)
 	{
-		if (((columnIndex < 0) || ((columnIndex >= 0) && (listView.Columns == null))) || (columnIndex >= listView.Columns.Count))
+		if (columnIndex < 0 || columnIndex >= 0 && listView.Columns == null || columnIndex >= listView.Columns.Count)
 			throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
 		if (listView.IsHandleCreated)
@@ -142,10 +143,10 @@ public static partial class ListViewExtension
 	/// <param name="group">The group.</param>
 	/// <param name="footer">The footer text.</param>
 	/// <param name="footerAlignment">The footer alignment.</param>
-	public static void SetFooter(this ListViewGroup group, string footer = null, HorizontalAlignment footerAlignment = HorizontalAlignment.Left)
+	public static void SetFooter(this ListViewGroup group, string? footer = null, HorizontalAlignment footerAlignment = HorizontalAlignment.Left)
 	{
 		var groupId = GetGroupId(group);
-		if (groupId >= 0)
+		if (groupId >= 0 && group.ListView != null)
 		{
 			using var lvgroup = new LVGROUP { Footer = footer, Alignment = MakeAlignment(group.HeaderAlignment, footerAlignment) };
 			SendLVMsg(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
@@ -155,10 +156,10 @@ public static partial class ListViewExtension
 	/// <summary>Sets the image list to use for a list view group.</summary>
 	/// <param name="group">The group.</param>
 	/// <param name="imageList">The image list.</param>
-	/// <exception cref="System.InvalidOperationException"></exception>
+	/// <exception cref="InvalidOperationException"></exception>
 	public static void SetGroupImageList(this ListViewGroup group, ImageList imageList)
 	{
-		if (!group.ListView.IsHandleCreated)
+		if (group.ListView is null || !group.ListView.IsHandleCreated)
 			throw new InvalidOperationException();
 		var lparam = imageList?.Handle ?? IntPtr.Zero;
 		SendMessage(group.ListView.Handle, (uint)ListViewMessage.LVM_SETIMAGELIST, (IntPtr)3, lparam);
@@ -169,10 +170,10 @@ public static partial class ListViewExtension
 	/// <param name="titleImageIndex">Index of the title image.</param>
 	/// <param name="descriptionTop">The description top.</param>
 	/// <param name="descriptionBottom">The description bottom.</param>
-	public static void SetImage(this ListViewGroup group, int titleImageIndex, string descriptionTop = null, string descriptionBottom = null)
+	public static void SetImage(this ListViewGroup group, int titleImageIndex, string? descriptionTop = null, string? descriptionBottom = null)
 	{
 		var groupId = GetGroupId(group);
-		if (groupId >= 0)
+		if (groupId >= 0 && group.ListView != null)
 		{
 			using var lvgroup = new LVGROUP { TitleImageIndex = titleImageIndex };
 			if (descriptionBottom != null)
@@ -186,12 +187,12 @@ public static partial class ListViewExtension
 	/// <summary>Sets the overlay image for an item in a list view.</summary>
 	/// <param name="lvi">The list view item.</param>
 	/// <param name="imageIndex">Index of the image.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">imageIndex</exception>
-	/// <exception cref="System.ArgumentNullException">lvi - ListViewItem must be attached to a valid ListView.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">imageIndex</exception>
+	/// <exception cref="ArgumentNullException">lvi - ListViewItem must be attached to a valid ListView.</exception>
 	/// <exception cref="Win32Exception"></exception>
 	public static void SetOverlayImage(this ListViewItem lvi, int imageIndex)
 	{
-		if (imageIndex < 1 || imageIndex > 15)
+		if (imageIndex is < 1 or > 15)
 			throw new ArgumentOutOfRangeException(nameof(imageIndex));
 		if (lvi.ListView == null)
 			throw new ArgumentNullException(nameof(lvi), @"ListViewItem must be attached to a valid ListView.");
@@ -240,14 +241,14 @@ public static partial class ListViewExtension
 	public static void SetTask(this ListViewGroup group, string taskLink)
 	{
 		var groupId = GetGroupId(group);
-		if (groupId >= 0)
+		if (groupId >= 0 && group.ListView != null)
 		{
 			using var lvgroup = new LVGROUP { TaskLink = taskLink };
 			SendLVMsg(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 		}
 	}
 
-	private static void ApplyGroupingSet<T>(this ListView listView, ListViewGroupingSet<T> set, string nonMatchingGroupName = "Other") where T : class
+	private static void ApplyGroupingSet<T>(this ListView listView, ListViewGroupingSet<T> set, string? nonMatchingGroupName = "Other") where T : class
 	{
 		var vm = listView.VirtualMode;
 		listView.BeginUpdate();
@@ -256,7 +257,7 @@ public static partial class ListViewExtension
 		listView.Groups.Clear();
 		listView.Groups.AddRange(set.Groups);
 		var other = new List<ListViewItem>();
-		foreach (ListViewItem i in listView.Items)
+		foreach (ListViewItem i in listView.Items.Cast<ListViewItem>())
 		{
 			var found = false;
 			for (var r = 0; r < set.Conditions.Length; r++)
@@ -284,15 +285,14 @@ public static partial class ListViewExtension
 
 	private static int GetGroupId(ListViewGroup group)
 	{
-		if (GroupIdProperty == null)
-			GroupIdProperty = typeof(ListViewGroup).GetProperty("ID", BindingFlags.NonPublic | BindingFlags.Instance);
+		GroupIdProperty ??= typeof(ListViewGroup).GetProperty("ID", BindingFlags.NonPublic | BindingFlags.Instance);
 		return (int?)GroupIdProperty?.GetValue(group, null) ?? -1;
 	}
 
 	private static bool GetState(ListViewGroup group, ListViewGroupState state)
 	{
 		var groupId = GetGroupId(group);
-		if (groupId < 0)
+		if (groupId < 0 || group.ListView is null)
 			return false;
 		return (SendMessage(group.ListView.Handle, (uint)ListViewMessage.LVM_GETGROUPSTATE, (IntPtr)groupId, new IntPtr((int)state)).ToInt32() & (int)state) != 0;
 	}
@@ -301,7 +301,7 @@ public static partial class ListViewExtension
 
 	private static ListViewGroupAlignment MakeAlignment(HorizontalAlignment hdr, HorizontalAlignment ftr)
 	{
-		var h = (hdr == HorizontalAlignment.Left ? ListViewGroupAlignment.LVGA_HEADER_LEFT : (hdr == HorizontalAlignment.Center ? ListViewGroupAlignment.LVGA_HEADER_CENTER : ListViewGroupAlignment.LVGA_HEADER_RIGHT));
+		var h = hdr == HorizontalAlignment.Left ? ListViewGroupAlignment.LVGA_HEADER_LEFT : (hdr == HorizontalAlignment.Center ? ListViewGroupAlignment.LVGA_HEADER_CENTER : ListViewGroupAlignment.LVGA_HEADER_RIGHT);
 		return h | (ftr == HorizontalAlignment.Left ? ListViewGroupAlignment.LVGA_FOOTER_LEFT : (ftr == HorizontalAlignment.Center ? ListViewGroupAlignment.LVGA_FOOTER_CENTER : ListViewGroupAlignment.LVGA_FOOTER_RIGHT));
 	}
 
@@ -320,7 +320,7 @@ public static partial class ListViewExtension
 	private static void SetState(ListViewGroup group, ListViewGroupState state, bool value)
 	{
 		var groupId = GetGroupId(group);
-		if (groupId >= 0)
+		if (groupId >= 0 && group.ListView != null)
 		{
 			var lvgroup = new LVGROUP(ListViewGroupMask.LVGF_STATE);
 			{
@@ -343,33 +343,31 @@ public class ListViewGroupingSet<T> where T : class
 	/// The converter to take the <typeparamref name="T"/> and convert it to a <see cref="ListViewGroup"/>. If <typeparamref name="T"/>
 	/// is not <see cref="ListViewGroup"/>, an exception is thrown.
 	/// </param>
-	/// <exception cref="System.InvalidCastException">Generic type T must be convertible to a ListViewGroup.</exception>
-	public ListViewGroupingSet(Converter<T, ListViewGroup> converter = null)
+	/// <exception cref="InvalidCastException">Generic type T must be convertible to a ListViewGroup.</exception>
+	public ListViewGroupingSet(Converter<T, ListViewGroup>? converter = null)
 	{
 		if (converter != null)
 			this.converter = converter;
 		else
 		{
 			if (typeof(T) == typeof(ListViewGroup))
-				this.converter = a => a as ListViewGroup;
+				this.converter = a => (ListViewGroup)(object)a;
 			else
 			{
 				var tc = TypeDescriptor.GetConverter(typeof(T));
 				if (!tc.CanConvertTo(typeof(ListViewGroup)))
 					throw new InvalidCastException("Generic type T must be convertible to a ListViewGroup.");
-				this.converter = t => (ListViewGroup)tc.ConvertTo(t, typeof(ListViewGroup));
+				this.converter = t => (ListViewGroup)(tc.ConvertTo(t, typeof(ListViewGroup)) ?? throw new InvalidOperationException("Unable to create a converter for the list view group."));
 			}
 		}
 	}
 
 	internal Predicate<ListViewItem>[] Conditions => list.ConvertAll(kvp => kvp.Value).ToArray();
+
 	internal ListViewGroup[] Groups => list.ConvertAll(kvp => converter(kvp.Key)).ToArray();
 
 	/// <summary>Adds the specified group and matching condition to the set.</summary>
 	/// <param name="group">The group.</param>
 	/// <param name="condition">The condition for <see cref="ListViewItem"/> instances to be added to the group.</param>
-	public void Add(T group, Predicate<ListViewItem> condition)
-	{
-		list.Add(new KeyValuePair<T, Predicate<ListViewItem>>(group, condition));
-	}
+	public void Add(T group, Predicate<ListViewItem> condition) => list.Add(new KeyValuePair<T, Predicate<ListViewItem>>(group, condition));
 }

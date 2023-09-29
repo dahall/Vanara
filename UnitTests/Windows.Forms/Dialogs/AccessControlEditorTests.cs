@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace Vanara.Windows.Forms.Tests;
+﻿namespace Vanara.Windows.Forms.Tests;
 
 [TestFixture()]
 public class AccessControlEditorTests
@@ -17,7 +15,7 @@ public class AccessControlEditorTests
 		dlg.Initialize(new System.IO.DirectoryInfo(PInvoke.Tests.TestCaseSources.TempDir));
 		dlg.ShowDialog();
 
-		dlg.Initialize(Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Console"));
+		dlg.Initialize(Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Console")!);
 		dlg.ShowDialog();
 	}
 }

@@ -11,7 +11,7 @@ using static Vanara.PInvoke.User32;
 namespace Vanara.Windows.Forms;
 
 /// <summary>An Internet Protocol (IP) address control allows the user to enter an IP address in an easily understood format.</summary>
-/// <seealso cref="System.Windows.Forms.Control"/>
+/// <seealso cref="Control"/>
 [DefaultEvent(nameof(FieldChanged)), DefaultProperty(nameof(Text))]
 //[Designer(typeof(IPAddressBoxDesigner))]
 public partial class IPAddressBox : Control
@@ -31,7 +31,7 @@ public partial class IPAddressBox : Control
 	/// Occurs when one of the fields change. To change the value set in the control, set the
 	/// <see cref="IPAddressFieldChangedEventArgs.Value"/> property.
 	/// </summary>
-	public event EventHandler<IPAddressFieldChangedEventArgs> FieldChanged;
+	public event EventHandler<IPAddressFieldChangedEventArgs>? FieldChanged;
 
 	/// <summary>Gets or sets the border style.</summary>
 	/// <value>The border style.</value>
@@ -52,7 +52,7 @@ public partial class IPAddressBox : Control
 	/// <summary>Gets or sets the IP address.</summary>
 	/// <value>The IP address.</value>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public IPAddress IPAddress
+	public IPAddress? IPAddress
 	{
 		get
 		{
@@ -123,8 +123,8 @@ public partial class IPAddressBox : Control
 		{
 			var cp = base.CreateParams;
 			cp.ClassName = WC_IPADDRESS;
-			cp.ExStyle &= (~(int)WindowStylesEx.WS_EX_CLIENTEDGE);
-			cp.Style &= (~(int)WindowStyles.WS_BORDER);
+			cp.ExStyle &= ~(int)WindowStylesEx.WS_EX_CLIENTEDGE;
+			cp.Style &= ~(int)WindowStyles.WS_BORDER;
 			switch (borderStyle)
 			{
 				case BorderStyle.Fixed3D:
@@ -184,10 +184,10 @@ public partial class IPAddressBox : Control
 	/// <param name="field">A zero-based field index to which the range will be applied.</param>
 	/// <param name="minValue">The lower limit of the range (inclusive).</param>
 	/// <param name="maxValue">The upper limit of the range (inclusive).</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">field - Field must be a value from 0 to 3.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">field - Field must be a value from 0 to 3.</exception>
 	public bool SetFieldRange(int field, byte minValue, byte maxValue)
 	{
-		if (field < 0 || field > 3)
+		if (field is < 0 or > 3)
 			throw new ArgumentOutOfRangeException(nameof(field), @"Field must be a value from 0 to 3.");
 		var ipr = MAKEIPRANGE(minValue, maxValue);
 		return SendMessage(IPAddressMessage.IPM_SETRANGE, (IntPtr)field, ref ipr).ToInt32() > 0;
@@ -231,7 +231,7 @@ public partial class IPAddressBox : Control
 }
 
 /// <summary>Contains the arguments needed to handle the <see cref="IPAddressBox.FieldChanged"/> event.</summary>
-/// <seealso cref="System.EventArgs"/>
+/// <seealso cref="EventArgs"/>
 public class IPAddressFieldChangedEventArgs : EventArgs
 {
 	/// <summary>Initializes a new instance of the <see cref="IPAddressFieldChangedEventArgs"/> class.</summary>

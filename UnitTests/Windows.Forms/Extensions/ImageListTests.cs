@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using System.Drawing;
+﻿using System.Drawing;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 
@@ -21,7 +20,7 @@ public class ImageListTests
 	public void ImageListFromHandleTest()
 	{
 		var himl = ImageList_Create(32, 32, ILC.ILC_COLOR32 | ILC.ILC_MASK, 8, 8);
-		himl.Interface.Add(new Gdi32.SafeHBITMAP((Image.FromFile(PInvoke.Tests.TestCaseSources.ImageFile, true) as Bitmap).GetHbitmap()), HBITMAP.NULL);
+		himl.Interface.Add(new Gdi32.SafeHBITMAP(((Bitmap)Image.FromFile(PInvoke.Tests.TestCaseSources.ImageFile, true)).GetHbitmap()), HBITMAP.NULL);
 		Assert.That(himl.IsNull, Is.False);
 		var il2 = ImageListExtension.ToImageList(himl);
 		Assert.That(il2.HandleCreated, Is.True);

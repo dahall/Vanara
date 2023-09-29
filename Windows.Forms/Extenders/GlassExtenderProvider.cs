@@ -27,7 +27,7 @@ public sealed class GlassExtenderProvider : Component, IExtenderProvider
 	[DefaultValue(true)]
 	[Category("Behavior")]
 	[Description("Indicates whether extending glass into the client area is enabled.")]
-	public bool GetGlassEnabled(Form form) => formProps.TryGetValue(form, out var prop) ? prop.GlassEnabled : true;
+	public bool GetGlassEnabled(Form form) => !formProps.TryGetValue(form, out var prop) || prop.GlassEnabled;
 
 	/// <summary>Gets a value indicating whether clicking and dragging within the top margin will move the form.</summary>
 	/// <param name="form">The <see cref="Form"/> to be extended.</param>
@@ -36,7 +36,7 @@ public sealed class GlassExtenderProvider : Component, IExtenderProvider
 	[DefaultValue(true)]
 	[Category("Behavior")]
 	[Description("Specifies if clicking and dragging within the margin will move the form. ")]
-	public bool GetGlassMarginMovesForm(Form form) => formProps.TryGetValue(form, out var prop) ? prop.GlassMarginMovesForm : true;
+	public bool GetGlassMarginMovesForm(Form form) => !formProps.TryGetValue(form, out var prop) || prop.GlassMarginMovesForm;
 
 	/// <summary>Gets the glass margins.</summary>
 	/// <param name="form">The <see cref="Form"/> to be extended.</param>
@@ -123,22 +123,22 @@ public sealed class GlassExtenderProvider : Component, IExtenderProvider
 			form.ClientRectangle.Width - prop.GlassMargins.Horizontal, form.ClientRectangle.Height - prop.GlassMargins.Vertical);
 	}
 
-	private void form_MouseDown(object sender, MouseEventArgs e)
+	private void form_MouseDown(object? sender, MouseEventArgs e)
 	{
 		if (e.Button == MouseButtons.Left)
 		{
-			var prop = GetFormProperties(sender as Form);
+			var prop = GetFormProperties((Form)sender!);
 			if (prop.GlassMarginMovesForm)
 			{
 				prop.FormMoveTracking = true;
-				prop.FormMoveLastMousePos = ((Control)sender).PointToScreen(e.Location);
+				prop.FormMoveLastMousePos = ((Control)sender!).PointToScreen(e.Location);
 			}
 		}
 	}
 
-	private void form_MouseMove(object sender, MouseEventArgs e)
+	private void form_MouseMove(object? sender, MouseEventArgs e)
 	{
-		var form = sender as Form;
+		var form = (Form)sender!;
 		var prop = GetFormProperties(form);
 		if (prop.FormMoveTracking && !GetNonGlassArea(form, prop).Contains(e.Location))
 		{
@@ -154,24 +154,24 @@ public sealed class GlassExtenderProvider : Component, IExtenderProvider
 		}
 	}
 
-	private void form_MouseUp(object sender, MouseEventArgs e)
+	private void form_MouseUp(object? sender, MouseEventArgs e)
 	{
 		if (e.Button == MouseButtons.Left)
 		{
-			GetFormProperties(sender as Form).FormMoveTracking = false;
+			GetFormProperties((Form)sender!).FormMoveTracking = false;
 		}
 	}
 
-	private void form_Paint(object sender, PaintEventArgs e) => GlassifyForm(sender as Form, e.Graphics);
+	private void form_Paint(object? sender, PaintEventArgs e) => GlassifyForm((Form)sender!, e.Graphics);
 
-	private void form_Resize(object sender, EventArgs e)
+	private void form_Resize(object? sender, EventArgs e)
 	{
-		var form = sender as Form;
+		var form = (Form)sender!;
 		if (DesktopWindowManager.CompositionEnabled && GetGlassEnabled(form) || form.IsDesignMode())
 			InvalidateNonGlassClientArea(form);
 	}
 
-	private void form_Shown(object sender, EventArgs e) => GlassifyForm(sender as Form);
+	private void form_Shown(object? sender, EventArgs e) => GlassifyForm((Form)sender!);
 
 	private GlassFormProperties GetFormProperties(Form form)
 	{
@@ -180,12 +180,12 @@ public sealed class GlassExtenderProvider : Component, IExtenderProvider
 		return prop;
 	}
 
-	private void GlassifyForm(Form form, Graphics g = null)
+	private void GlassifyForm(Form form, Graphics? g = null)
 	{
 		if (!(DesktopWindowManager.CompositionEnabled && GetGlassEnabled(form)) && !form.IsDesignMode())
 			return;
 
-		if (g is null) g = form.CreateGraphics();
+		g ??= form.CreateGraphics();
 
 		if (!formProps.TryGetValue(form, out var prop))
 			return;
@@ -195,11 +195,9 @@ public sealed class GlassExtenderProvider : Component, IExtenderProvider
 			g.FillRectangle(Brushes.Black, form.ClientRectangle);
 		else
 		{
-			using (var r = new Region(form.ClientRectangle))
-			{
-				r.Exclude(GetNonGlassArea(form, prop));
-				g.FillRegion(Brushes.Black, r);
-			}
+			using var r = new Region(form.ClientRectangle);
+			r.Exclude(GetNonGlassArea(form, prop));
+			g.FillRegion(Brushes.Black, r);
 		}
 
 		if (!form.IsDesignMode())

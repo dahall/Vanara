@@ -1,29 +1,6 @@
-﻿
-/* Unmerged change from project 'Vanara.Windows.Forms (net6.0-windows)'
-Before:
-using System;
-After:
-using Microsoft.Win32;
-using System;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (net48)'
-Before:
-using System;
-After:
-using Microsoft.Win32;
-using System;
-*/
-
-/* Unmerged change from project 'Vanara.Windows.Forms (netcoreapp3.1)'
-Before:
-using System;
-After:
-using Microsoft.Win32;
-using System;
-*/
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Windows.Forms;
 using Vanara.PInvoke;
@@ -42,12 +19,12 @@ public class ThemedLabel : Label
 	private const int defaultPart = 4;
 	private const int defaultState = 0;
 
-	private string styleClass;
+	private string? styleClass;
 	private int stylePart;
 	private int styleState;
 	private bool supportGlass;
 	private TextImageRelation textImageRelation;
-	private VisualTheme theme;
+	private VisualTheme? theme;
 
 	/// <summary>Initializes a new instance of the <see cref="ThemedLabel"/> class.</summary>
 	public ThemedLabel()
@@ -81,8 +58,8 @@ public class ThemedLabel : Label
 	/// <returns>
 	/// An <see cref="T:System.Drawing.Image"/> displayed on the <see cref="T:System.Windows.Forms.Label"/>. The default is null.
 	/// </returns>
-	[DefaultValue((Image)null)]
-	public new Image Image
+	[DefaultValue((Image?)null)]
+	public new Image? Image
 	{
 		get => base.Image;
 		set
@@ -96,7 +73,7 @@ public class ThemedLabel : Label
 	/// <summary>Gets or sets the style class.</summary>
 	/// <value>The style class.</value>
 	[DefaultValue(defaultClass), Category("Appearance")]
-	public string StyleClass
+	public string? StyleClass
 	{
 		get => styleClass;
 		set { if (styleClass != value) { styleClass = value; ResetTheme(); } }
@@ -146,19 +123,17 @@ public class ThemedLabel : Label
 	public override Size GetPreferredSize(Size proposedSize)
 	{
 		if (Text.Length <= 0 || theme == null) return base.GetPreferredSize(proposedSize);
-		using (var g = CreateGraphics())
-		{
-			var tff = this.BuildTextFormatFlags();
-			GraphicsExtension.CalcImageAndTextBounds(new Rectangle(Point.Empty, proposedSize), Text, Font, Image, TextAlign, ImageAlign, TextImageRelation, !AutoSize, 0, ref tff, out var tRect, out var iRect);
-			return Size.Add(Rectangle.Union(tRect, iRect).Size, Padding.Size);
-		}
+		using var g = CreateGraphics();
+		var tff = this.BuildTextFormatFlags();
+		GraphicsExtension.CalcImageAndTextBounds(new Rectangle(Point.Empty, proposedSize), Text, Font, Image, TextAlign, ImageAlign, TextImageRelation, !AutoSize, 0, ref tff, out var tRect, out var iRect);
+		return Size.Add(Rectangle.Union(tRect, iRect).Size, Padding.Size);
 	}
 
 	/// <summary>Sets the theme using theme class information.</summary>
 	/// <param name="className">Name of the theme class.</param>
 	/// <param name="part">The theme part.</param>
 	/// <param name="state">The theme state.</param>
-	public void SetTheme(string className, int part, int state)
+	public void SetTheme(string? className, int part, int state)
 	{
 		styleClass = className;
 		stylePart = part;
@@ -234,7 +209,7 @@ public class ThemedLabel : Label
 						// which we must check for first. (I don't know any public API calls that return this value.)
 						using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\DWM"))
 						{
-							var prevalenceValue = key.GetValue("ColorPrevalence", null);
+							var prevalenceValue = key!.GetValue("ColorPrevalence", null);
 							if (prevalenceValue is int i && Convert.ToBoolean(i))
 							{
 								// While this API does not return the *exact* shade used in title bars, its value
@@ -244,7 +219,7 @@ public class ThemedLabel : Label
 
 								// These values were taken from here:
 								// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color/3943023
-								if ((color.R * 0.299 + color.G * 0.587 + color.B * 0.114) > 186)
+								if (color.R * 0.299 + color.G * 0.587 + color.B * 0.114 > 186)
 									textColor = SystemColors.ControlText;
 								else
 									textColor = Color.White;

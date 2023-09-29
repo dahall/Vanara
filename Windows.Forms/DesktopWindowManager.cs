@@ -16,30 +16,30 @@ public static partial class DesktopWindowManager
 	private static readonly object _lock = new();
 	private static readonly object colorizationColorChangedKey = new();
 	private static readonly object compositionChangedKey = new();
-	private static readonly object[] keys = { compositionChangedKey, nonClientRenderingChangedKey, colorizationColorChangedKey/*, WindowMaximizedChangedKey*/ };
 	private static readonly object nonClientRenderingChangedKey = new();
-	private static EventHandlerList eventHandlerList;
-	private static MessageWindow msgWin;
+	private static readonly object[] keys = { compositionChangedKey, nonClientRenderingChangedKey, colorizationColorChangedKey/*, WindowMaximizedChangedKey*/ };
+	private static EventHandlerList? eventHandlerList;
+	private static MessageWindow? msgWin;
 
 	/// <summary>Occurs when the colorization color has changed.</summary>
 	public static event EventHandler ColorizationColorChanged
 	{
-		add { AddEventHandler(colorizationColorChangedKey, value); }
-		remove { RemoveEventHandler(colorizationColorChangedKey, value); }
+		add => AddEventHandler(colorizationColorChangedKey, value);
+		remove => RemoveEventHandler(colorizationColorChangedKey, value);
 	}
 
 	/// <summary>Occurs when the desktop window composition has been enabled or disabled.</summary>
 	public static event EventHandler CompositionChanged
 	{
-		add { AddEventHandler(compositionChangedKey, value); }
-		remove { RemoveEventHandler(compositionChangedKey, value); }
+		add => AddEventHandler(compositionChangedKey, value);
+		remove => RemoveEventHandler(compositionChangedKey, value);
 	}
 
 	/// <summary>Occurs when the non-client area rendering policy has changed.</summary>
 	public static event EventHandler NonClientRenderingChanged
 	{
-		add { AddEventHandler(nonClientRenderingChangedKey, value); }
-		remove { RemoveEventHandler(nonClientRenderingChangedKey, value); }
+		add => AddEventHandler(nonClientRenderingChangedKey, value);
+		remove => RemoveEventHandler(nonClientRenderingChangedKey, value);
 	}
 
 	/// <summary>
@@ -97,7 +97,7 @@ public static partial class DesktopWindowManager
 		{
 			if (!CompositionSupported)
 				return Color.Transparent;
-			var value = (int)Microsoft.Win32.Registry.CurrentUser.GetValue(@"Software\Microsoft\Windows\DWM\ColorizationColor", 0);
+			var value = (int)Microsoft.Win32.Registry.CurrentUser.GetValue(@"Software\Microsoft\Windows\DWM\ColorizationColor", 0)!;
 			return Color.FromArgb(value);
 		}
 		set
@@ -140,7 +140,7 @@ public static partial class DesktopWindowManager
 		{
 			if (!CompositionSupported)
 				return false;
-			var value = (int)Microsoft.Win32.Registry.CurrentUser.GetValue(@"Software\Microsoft\Windows\DWM\ColorizationOpaqueBlend", 1);
+			var value = (int)Microsoft.Win32.Registry.CurrentUser.GetValue(@"Software\Microsoft\Windows\DWM\ColorizationOpaqueBlend", 1)!;
 			return value == 0;
 		}
 		set
@@ -203,7 +203,7 @@ public static partial class DesktopWindowManager
 	/// <param name="transitionOnMaximized">
 	/// <c>true</c> if the window's colorization should transition to match the maximized windows; otherwise, <c>false</c>.
 	/// </param>
-	public static void EnableBlurBehind(this IWin32Window window, Graphics graphics, Region region, bool enabled, bool transitionOnMaximized)
+	public static void EnableBlurBehind(this IWin32Window window, Graphics? graphics, Region? region, bool enabled, bool transitionOnMaximized)
 	{
 		if (window == null)
 			throw new ArgumentNullException(nameof(window));
@@ -351,10 +351,8 @@ public static partial class DesktopWindowManager
 	{
 		lock (_lock)
 		{
-			if (msgWin == null)
-				msgWin = new MessageWindow();
-			if (eventHandlerList == null)
-				eventHandlerList = new EventHandlerList();
+			msgWin ??= new MessageWindow();
+			eventHandlerList ??= new EventHandlerList();
 			eventHandlerList.AddHandler(id, value);
 		}
 	}
@@ -368,11 +366,9 @@ public static partial class DesktopWindowManager
 	{
 		if (window == null)
 			throw new ArgumentNullException(nameof(window));
-		using (var ptr = SafeCoTaskMemHandle.CreateFromStructure<T>())
-		{
-			DwmGetWindowAttribute(window.Handle, attribute, (IntPtr)ptr, ptr.Size);
-			return ptr.ToStructure<T>();
-		}
+		using var ptr = SafeCoTaskMemHandle.CreateFromStructure<T>();
+		DwmGetWindowAttribute(window.Handle, attribute, (IntPtr)ptr, ptr.Size);
+		return ptr.ToStructure<T>();
 	}
 
 	/// <summary>Indicates whether Desktop Window Manager (DWM) composition is enabled.</summary>
@@ -401,13 +397,13 @@ public static partial class DesktopWindowManager
 	{
 		if (window == null)
 			throw new ArgumentNullException(nameof(window));
-		using (var ptr = SafeCoTaskMemHandle.CreateFromStructure(value))
-			DwmSetWindowAttribute(window.Handle, attribute, (IntPtr)ptr, ptr.Size);
+		using var ptr = SafeCoTaskMemHandle.CreateFromStructure(value);
+		DwmSetWindowAttribute(window.Handle, attribute, (IntPtr)ptr, ptr.Size);
 	}
 
 	internal class ThumbnailMgr : IDisposable
 	{
-		private Dictionary<IntPtr, HTHUMBNAIL> thumbnails = new();
+		private readonly Dictionary<IntPtr, HTHUMBNAIL> thumbnails = new();
 
 		public ThumbnailMgr()
 		{
@@ -417,7 +413,7 @@ public static partial class DesktopWindowManager
 		{
 			foreach (var hThumb in thumbnails.Values)
 				DwmUnregisterThumbnail(hThumb);
-			thumbnails = null;
+			GC.SuppressFinalize(this);
 		}
 
 		public HTHUMBNAIL Register(IWin32Window win)
@@ -466,7 +462,7 @@ public static partial class DesktopWindowManager
 			//const int WM_DWMWINDOWMAXIMIZEDCHANGE = 0x0321;
 			// ReSharper restore InconsistentNaming
 
-			if (m.Msg >= WM_DWMCOMPOSITIONCHANGED && m.Msg <= WM_DWMCOLORIZATIONCOLORCHANGED)
+			if (m.Msg is >= WM_DWMCOMPOSITIONCHANGED and <= WM_DWMCOLORIZATIONCOLORCHANGED)
 				ExecuteEvents(m.Msg - WM_DWMCOMPOSITIONCHANGED);
 
 			base.WndProc(ref m);
@@ -477,7 +473,7 @@ public static partial class DesktopWindowManager
 			if (eventHandlerList == null) return;
 			lock (_lock)
 			{
-				try { ((EventHandler)eventHandlerList[keys[idx]]).Invoke(null, EventArgs.Empty); }
+				try { ((EventHandler)eventHandlerList[keys[idx]]!).Invoke(null, EventArgs.Empty); }
 				catch { };
 			}
 		}

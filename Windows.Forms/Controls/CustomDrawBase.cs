@@ -41,9 +41,9 @@ public enum ControlState
 /// Abstract class for implementing a custom-drawn control that tracks mouse movement and has text and/or an image. It exposes all
 /// property changes.
 /// </summary>
-/// <seealso cref="System.Windows.Forms.Control"/>
-/// <seealso cref="System.Windows.Forms.IButtonControl"/>
-/// <seealso cref="System.ComponentModel.INotifyPropertyChanged"/>
+/// <seealso cref="Control"/>
+/// <seealso cref="IButtonControl"/>
+/// <seealso cref="INotifyPropertyChanged"/>
 public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyChanged
 {
 	private readonly ControlImage image;
@@ -56,7 +56,7 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	private EnumFlagIndexer<ControlState> state;
 	private ContentAlignment textAlign = ContentAlignment.MiddleCenter;
 	private TextImageRelation textImageRelation = TextImageRelation.Overlay;
-	private ToolTip textToolTip;
+	private ToolTip? textToolTip;
 	private bool useMnemonic = true;
 
 	/// <summary>Initializes a new instance of the <see cref="CustomDrawBase"/> class.</summary>
@@ -69,22 +69,22 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 
 	/// <summary>Occurs when the control is double-clicked.</summary>
 	[Browsable(false), EditorBrowsable(EditorBrowsableState.Advanced)]
-	public new event EventHandler DoubleClick
+	public new event EventHandler? DoubleClick
 	{
-		add { base.DoubleClick += value; }
-		remove { base.DoubleClick -= value; }
+		add => base.DoubleClick += value;
+		remove => base.DoubleClick -= value;
 	}
 
 	/// <summary>Occurs when the control is double clicked by the mouse.</summary>
 	[Browsable(false), EditorBrowsable(EditorBrowsableState.Advanced)]
-	public new event MouseEventHandler MouseDoubleClick
+	public new event MouseEventHandler? MouseDoubleClick
 	{
-		add { base.MouseDoubleClick += value; }
-		remove { base.MouseDoubleClick -= value; }
+		add => base.MouseDoubleClick += value;
+		remove => base.MouseDoubleClick -= value;
 	}
 
 	/// <summary>Occurs when a property value changes.</summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	/// <summary>
 	/// Gets or sets a value indicating whether the ellipsis character (...) appears at the right edge of the control, denoting that the
@@ -96,7 +96,8 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[Category("Behavior"), DefaultValue(true), Browsable(true), EditorBrowsable(EditorBrowsableState.Always), Description("")]
 	public bool AutoEllipsis
 	{
-		get => autoEllipsis; set => SetField(ref autoEllipsis, value, nameof(AutoEllipsis), true, b => { if (b && textToolTip == null) textToolTip = new ToolTip(); });
+		get => autoEllipsis;
+		set => SetField(ref autoEllipsis, value, nameof(AutoEllipsis), true, b => { if (b && textToolTip == null) textToolTip = new ToolTip(); });
 	}
 
 	/// <summary>Gets or sets the value returned to the parent form when the button is clicked.</summary>
@@ -107,9 +108,15 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	/// <summary>Gets or sets the image that is displayed on a button control.</summary>
 	/// <value>The Image displayed on the button control. The default value is <c>null</c>.</value>
 	[Description(""), Localizable(true), Category("Appearance"), DefaultValue(null)]
-	public Image Image
+	public Image? Image
 	{
-		get => image.Image; set { if (image.Image != value) image.Image = value; else OnPropertyChanged(nameof(Image)); }
+		get => image.Image;
+		set
+		{
+			if (image.Image == value) return;
+			image.Image = value;
+			OnPropertyChanged(nameof(Image));
+		}
 	}
 
 	/// <summary>Gets or sets the alignment of the image on the button control.</summary>
@@ -118,7 +125,8 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[Description("The alignment of the image that will be displayed in the face of the control.")]
 	public virtual ContentAlignment ImageAlign
 	{
-		get => imageAlign; set => SetField(ref imageAlign, value, nameof(imageAlign));
+		get => imageAlign;
+		set => SetField(ref imageAlign, value, nameof(imageAlign));
 	}
 
 	/// <summary>Gets or sets the image list index value of the image displayed on the button control.</summary>
@@ -127,7 +135,13 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[TypeConverter(typeof(ImageIndexConverter)), Editor("System.Windows.Forms.Design.ImageIndexEditor, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
 	public int ImageIndex
 	{
-		get => image.ImageIndex; set { if (image.ImageIndex != value) image.ImageIndex = value; else OnPropertyChanged(nameof(ImageIndex)); }
+		get => image.ImageIndex;
+		set
+		{
+			if (image.ImageIndex == value) return;
+			image.ImageIndex = value;
+			OnPropertyChanged(nameof(ImageIndex));
+		}
 	}
 
 	/// <summary>Gets or sets the key accessor for the image in the <see cref="ImageList"/>.</summary>
@@ -136,15 +150,27 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[TypeConverter(typeof(ImageKeyConverter)), Editor("System.Windows.Forms.Design.ImageIndexEditor, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
 	public string ImageKey
 	{
-		get => image.ImageKey; set { if (image.ImageKey != value) image.ImageKey = value; else OnPropertyChanged(nameof(ImageKey)); }
+		get => image.ImageKey;
+		set
+		{
+			if (image.ImageKey == value) return;
+			image.ImageKey = value;
+			OnPropertyChanged(nameof(ImageKey));
+		}
 	}
 
 	/// <summary>Gets or sets the <see cref="ImageList"/> that contains the <see cref="Image"/> displayed on a button control.</summary>
 	/// <value>An <see cref="ImageList"/>. The default value is <c>null</c>.</value>
 	[Description(""), Category("Appearance"), DefaultValue(null), RefreshProperties(RefreshProperties.Repaint)]
-	public ImageList ImageList
+	public ImageList? ImageList
 	{
-		get => image.ImageList; set { if (image.ImageList != value) image.ImageList = value; else OnPropertyChanged(nameof(ImageList)); }
+		get => image.ImageList;
+		set
+		{
+			if (image.ImageList == value) return;
+			image.ImageList = value;
+			OnPropertyChanged(nameof(ImageList));
+		}
 	}
 
 	/// <summary>Gets or sets the alignment of the text on the button control.</summary>
@@ -153,7 +179,8 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[Description("The alignment of the text that will be displayed in the face of the control.")]
 	public virtual ContentAlignment TextAlign
 	{
-		get => textAlign; set => SetField(ref textAlign, value, nameof(TextAlign));
+		get => textAlign;
+		set => SetField(ref textAlign, value, nameof(TextAlign));
 	}
 
 	/// <summary>Gets or sets the position of text and image relative to each other.</summary>
@@ -161,7 +188,8 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[DefaultValue(0), Localizable(true), Description(""), Category("Appearance")]
 	public TextImageRelation TextImageRelation
 	{
-		get => textImageRelation; set => SetField(ref textImageRelation, value, nameof(TextImageRelation));
+		get => textImageRelation;
+		set => SetField(ref textImageRelation, value, nameof(TextImageRelation));
 	}
 
 	/// <summary>
@@ -175,7 +203,8 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[DefaultValue(true), Description(""), Category("Appearance")]
 	public bool UseMnemonic
 	{
-		get => useMnemonic; set => SetField(ref useMnemonic, value, nameof(UseMnemonic));
+		get => useMnemonic;
+		set => SetField(ref useMnemonic, value, nameof(UseMnemonic));
 	}
 
 	/// <summary>Gets or sets a value indicating whether this <see cref="CustomDrawBase"/> is animating.</summary>
@@ -183,7 +212,8 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[Browsable(false)]
 	protected virtual bool Animating
 	{
-		get => state[ControlState.Animating]; set => SetState(ControlState.Animating, value, false);
+		get => state[ControlState.Animating];
+		set => SetState(ControlState.Animating, value, false);
 	}
 
 	/// <summary>Gets the default size of the control.</summary>
@@ -194,7 +224,8 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	[Browsable(false)]
 	protected virtual bool IsDefault
 	{
-		get => state[ControlState.Defaulted]; set => SetState(ControlState.Defaulted, value);
+		get => state[ControlState.Defaulted];
+		set => SetState(ControlState.Defaulted, value);
 	}
 
 	/// <summary>Gets the last state of the control.</summary>
@@ -262,7 +293,7 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 		{
 			if (SetState(ControlState.MouseDown | ControlState.Pressed, false, false))
 				Refresh();
-			if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+			if (e.KeyCode is Keys.Space or Keys.Enter)
 				OnClick(EventArgs.Empty);
 			e.Handled = true;
 		}
@@ -293,7 +324,7 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	protected override void OnMouseEnter(EventArgs e)
 	{
 		SetState(ControlState.Hot, true);
-		if (ShowToolTip)
+		if (ShowToolTip && textToolTip is not null)
 			try { textToolTip.Show(Text.RemoveMnemonic(), this); } catch { }
 		base.OnMouseEnter(e);
 	}
@@ -369,10 +400,7 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 
 	/// <summary>Raises the <see cref="PropertyChanged"/> event.</summary>
 	/// <param name="propertyName">Name of the property that has changed.</param>
-	protected virtual void OnPropertyChanged(string propertyName)
-	{
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-	}
+	protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 	/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.TextChanged"/> event.</summary>
 	/// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -404,7 +432,7 @@ public abstract class CustomDrawBase : Control, IButtonControl, INotifyPropertyC
 	/// <param name="invalidateOnSet">if set to <c>true</c> the control is invalidated if this is a changed value.</param>
 	/// <param name="validate">An optional action function that is called when it is determined that this is a changed value.</param>
 	/// <returns><c>true</c> if the value has been changed; otherwise <c>false</c>.</returns>
-	protected virtual bool SetField<T>(ref T field, T value, string propertyName, bool invalidateOnSet = true, Action<T> validate = null) where T : struct
+	protected virtual bool SetField<T>(ref T field, T value, string propertyName, bool invalidateOnSet = true, Action<T>? validate = null) where T : struct
 	{
 		if (EqualityComparer<T>.Default.Equals(field, value)) return false;
 		validate?.Invoke(value);

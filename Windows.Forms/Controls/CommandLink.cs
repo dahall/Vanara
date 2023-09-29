@@ -9,13 +9,13 @@ using static Vanara.PInvoke.User32;
 namespace Vanara.Windows.Forms;
 
 /// <summary>Represents a Windows Command Link control.</summary>
-/// <seealso cref="System.Windows.Forms.Button"/>
+/// <seealso cref="Button"/>
 [Designer(typeof(Design.CommandLinkDesigner)), DefaultProperty("Text")]
 public class CommandLink : Button
 {
 	private static readonly bool IsPlatformSupported = Environment.OSVersion.Version.Major > 5;
 	private PushButtonState buttonState = PushButtonState.Normal;
-	private string noteText;
+	private string? noteText;
 	private bool showShield;
 
 	/// <summary>Initializes a new instance of the <see cref="CommandLink"/> class.</summary>
@@ -31,7 +31,7 @@ public class CommandLink : Button
 	/// <summary>Gets or sets the image that is displayed on a button control.</summary>
 	[DefaultValue(null), Category("Appearance"), Localizable(true)]
 	[Description("The image that is displayed on a button control.")]
-	public new Bitmap Image
+	public new Bitmap? Image
 	{
 		get => base.Image is null ? null : base.Image as Bitmap ?? new Bitmap(base.Image);
 		set
@@ -47,7 +47,7 @@ public class CommandLink : Button
 	[Bindable(true)]
 	[DefaultValue(null), Category("Appearance"), Localizable(true)]
 	[Description("The text to display for the note.")]
-	public string NoteText
+	public string? NoteText
 	{
 		get => noteText;
 		set
@@ -219,9 +219,9 @@ internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonSt
 			TextRenderer.DrawText(e.Graphics, ctrl.NoteText, smallFont, m.noteRect, m.dp.Text, m.tff);
 	}
 
-	public Size Measure(CommandLink ctrl, PushButtonState state, Graphics g = null)
+	public Size Measure(CommandLink ctrl, PushButtonState state, Graphics? g = null)
 	{
-		if (g == null) g = ctrl.CreateGraphics();
+		g ??= ctrl.CreateGraphics();
 		var m = new Measurements(ctrl, state, g);
 		return new Size(m.client.Width, m.minHeight);
 	}
@@ -240,7 +240,9 @@ internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonSt
 			Fill = new LinearGradientBrush(r, fill1, fill2, LinearGradientMode.Vertical);
 		}
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		private DrawPattern(Color line, Color text, Image arrow)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		{
 			Line = line.IsSystemColor ? SystemPens.FromSystemColor(line) : new Pen(line, 1);
 			Text = text;
@@ -283,7 +285,7 @@ internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonSt
 				paintPattern[PushButtonState.Hot].LinGradHeight = ctrl.ClientRectangle.Height;
 			dp = paintPattern[state];
 			img = ctrl.ShowShield ? (ctrl.Enabled ? Properties.Resources.SmallSecurity : Properties.Resources.SmallSecurityDisabled) : (ctrl.Image ?? dp.Arrow);
-			var maxTextSz = new Size(ctrl.Width - (lrMargin * 2) - img.Width - imgSpacer, int.MaxValue);
+			var maxTextSz = new Size(ctrl.Width - lrMargin * 2 - img.Width - imgSpacer, int.MaxValue);
 			tff = ctrl.BuildTextFormatFlags(false);
 			var szL = GetTextSize(g, ctrl.Text, maxTextSz, largeFont);
 			maxTextSz.Width -= line2Pad;
@@ -294,9 +296,9 @@ internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonSt
 			var r = RectangleF.Union(imgRect, txtRect);
 			if (noteRect.Size != SizeF.Empty)
 				r = RectangleF.Union(r, noteRect);
-			minHeight = Convert.ToInt32(Math.Ceiling(r.Height)) + (tbMargin * 2);
+			minHeight = Convert.ToInt32(Math.Ceiling(r.Height)) + tbMargin * 2;
 		}
 
-		private Size GetTextSize(IDeviceContext g, string s, Size sz, Font f) => string.IsNullOrEmpty(s) ? Size.Empty : TextRenderer.MeasureText(g, s, f, sz, tff);
+		private Size GetTextSize(IDeviceContext g, string? s, Size sz, Font f) => string.IsNullOrEmpty(s) ? Size.Empty : TextRenderer.MeasureText(g, s, f, sz, tff);
 	}
 }

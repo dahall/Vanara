@@ -13,8 +13,8 @@ public partial class Form1 : Form
 	private const string appId = "Windows.Forms.App";
 	private const bool systemWide = false;
 	private static readonly string[] extensions = new[] { ".dmy" };
-	private object currentDlg;
-	private List<string> tempFiles = new();
+	private object? currentDlg;
+	private readonly List<string> tempFiles = new();
 
 	public Form1()
 	{
@@ -36,7 +36,7 @@ public partial class Form1 : Form
 		base.OnHandleDestroyed(e);
 	}
 
-	private static void FillComboWithDialogs(ComboBox cb) => cb.Items.AddRange(Assembly.GetAssembly(typeof(Vanara.Windows.Forms.AccessControlEditorDialog)).GetTypes().Where(t => t.IsPublic && !t.IsNested && typeof(CommonDialog).IsAssignableFrom(t) || typeof(Form).IsAssignableFrom(t)).ToArray());
+	private static void FillComboWithDialogs(ComboBox cb) => cb.Items.AddRange(Assembly.GetAssembly(typeof(Vanara.Windows.Forms.AccessControlEditorDialog))!.GetTypes().Where(t => t.IsPublic && !t.IsNested && typeof(CommonDialog).IsAssignableFrom(t) || typeof(Form).IsAssignableFrom(t)).ToArray());
 
 	private void button1_Click(object sender, EventArgs e)
 	{

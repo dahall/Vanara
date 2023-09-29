@@ -5,6 +5,8 @@
     <AssemblyTitle>Windows.Forms.App</AssemblyTitle>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <TargetFramework>$(TargetFramework)-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <StartupObject>Windows.Forms.App.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />

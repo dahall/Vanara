@@ -7,16 +7,13 @@ namespace Vanara.Windows.Forms;
 /// <summary>
 /// A dialog box that allows the user to browse and connect to network resources.
 /// </summary>
-/// <seealso cref="System.Windows.Forms.CommonDialog" />
+/// <seealso cref="CommonDialog" />
 public class NetworkDisconnectDialog : CommonDialog
 {
 	private DISCDLGSTRUCT opts;
 
 	/// <summary>Initializes a new instance of the <see cref="NetworkDisconnectDialog"/> class.</summary>
-	public NetworkDisconnectDialog()
-	{
-		opts.cbStructure = (uint)Marshal.SizeOf(typeof(DISCDLGSTRUCT));
-	}
+	public NetworkDisconnectDialog() => opts.cbStructure = (uint)Marshal.SizeOf(typeof(DISCDLGSTRUCT));
 
 	/// <summary>Gets or sets a value indicating whether to force when attempting to disconnect from the network resource.</summary>
 	/// <value><c>true</c> if forcing a disconnect; otherwise, <c>false</c>.</value>
@@ -30,12 +27,12 @@ public class NetworkDisconnectDialog : CommonDialog
 	/// <summary>Gets or sets the name of the local device, such as "F:" or "LPT1".</summary>
 	/// <value>The name of the local device.</value>
 	[DefaultValue(null), Category("Behavior"), Description("The local device name.")]
-	public string LocalDeviceName { get => opts.lpLocalName; set => opts.lpLocalName = value; }
+	public string? LocalDeviceName { get => opts.lpLocalName; set => opts.lpLocalName = value; }
 
 	/// <summary>Gets or sets the name of the remote network.</summary>
 	/// <value>The name of the remote network.</value>
 	[DefaultValue(null), Category("Behavior"), Description("The value displayed in the path field.")]
-	public string RemoteNetworkName { get => opts.lpRemoteName; set => opts.lpRemoteName = value; }
+	public string? RemoteNetworkName { get => opts.lpRemoteName; set => opts.lpRemoteName = value; }
 
 	/// <summary>Gets or sets a value indicating whether to enter the most recently used paths into the combination box.</summary>
 	/// <value><c>true</c> to use MRU path; otherwise, <c>false</c>.</value>

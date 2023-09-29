@@ -28,11 +28,12 @@ public class MenuStripMRUManager : MRUManager
 	/// <param name="onClearRecentFilesClick">Optional. The on clear recent files click.</param>
 	/// <param name="storageHandler">Optional. The storage handler.</param>
 	public MenuStripMRUManager(string extensions, ToolStripMenuItem parentMenuItem, Action<string> onRecentFileClick,
-		Action<StringCollection> onClearRecentFilesClick = null, IFileListStorage storageHandler = null)
+		Action<StringCollection>? onClearRecentFilesClick = null, IFileListStorage? storageHandler = null)
 		: base(storageHandler ?? new AppSettingsFileListStorage(), new MenuStripMenuBuilder())
 	{
 		FileExtensions = extensions;
-		((MenuStripMenuBuilder)MenuBuilderHandler).RecentFileMenuItem = parentMenuItem;
+		if (MenuBuilderHandler is not null)
+			((MenuStripMenuBuilder)MenuBuilderHandler).RecentFileMenuItem = parentMenuItem;
 		if (onRecentFileClick != null)
 			RecentFileMenuItemClick += onRecentFileClick;
 		if (onClearRecentFilesClick != null)
@@ -44,14 +45,12 @@ public class MenuStripMRUManager : MRUManager
 	/// <summary>Gets or sets the clear list menu item image.</summary>
 	/// <value>The clear list menu item image.</value>
 	[Category("Appearance"), DefaultValue(null), Description("The clear list menu item icon."), Localizable(true)]
-	public Image ClearListMenuItemImage
+	public Image? ClearListMenuItemImage
 	{
 		get => clearListMenuItemImage as Image;
 		set
 		{
-			if (value is null)
-				throw new ArgumentException("Must be of type Image.");
-			clearListMenuItemImage = value;
+			clearListMenuItemImage = value ?? throw new ArgumentException("Must be of type Image.");
 			RefreshRecentFilesMenu();
 		}
 	}
@@ -59,20 +58,25 @@ public class MenuStripMRUManager : MRUManager
 	/// <summary>Gets or sets the recent file menu item.</summary>
 	/// <value>The recent file menu item.</value>
 	[DefaultValue(null), Category("Behavior"), Description("The recent file menu item.")]
-	public ToolStripMenuItem RecentFileMenuItem
+	public ToolStripMenuItem? RecentFileMenuItem
 	{
-		get => ((MenuStripMenuBuilder)MenuBuilderHandler).RecentFileMenuItem;
-		set { ((MenuStripMenuBuilder)MenuBuilderHandler).RecentFileMenuItem = value; RefreshRecentFilesMenu(); }
+		get => ((MenuStripMenuBuilder?)MenuBuilderHandler)?.RecentFileMenuItem;
+		set
+		{
+			if (MenuBuilderHandler is not null)
+				((MenuStripMenuBuilder)MenuBuilderHandler).RecentFileMenuItem = value;
+			RefreshRecentFilesMenu();
+		}
 	}
 
 	/// <summary>Builds a menu within a MenuStrip.</summary>
 	private class MenuStripMenuBuilder : IMenuBuilder
 	{
-		private Action<string> fileMenuItemClickAction;
+		private Action<string>? fileMenuItemClickAction;
 
 		/// <summary>Gets or sets the recent file menu item.</summary>
 		/// <value>The recent file menu item.</value>
-		public ToolStripMenuItem RecentFileMenuItem { get; set; }
+		public ToolStripMenuItem? RecentFileMenuItem { get; set; }
 
 		/// <summary>Clears the recent files.</summary>
 		public void ClearRecentFiles()
@@ -94,7 +98,7 @@ public class MenuStripMRUManager : MRUManager
 		/// </param>
 		/// <param name="clearListMenuItemOnTop">if set to <see langword="true"/>, the clear list menu item precedes the files.</param>
 		/// <param name="menuImageCallback">The menu image callback delegate.</param>
-		public void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string clearListMenuItemText = null, Action clearListMenuItemClick = null, object clearListMenuItemImage = null, bool clearListMenuItemOnTop = false, Func<string, object> menuImageCallback = null)
+		public void RebuildMenus(IEnumerable<string> files, Action<string> fileMenuItemClick, string? clearListMenuItemText = null, Action? clearListMenuItemClick = null, object? clearListMenuItemImage = null, bool clearListMenuItemOnTop = false, Func<string, object>? menuImageCallback = null)
 		{
 			if (RecentFileMenuItem == null) return;
 
@@ -139,10 +143,10 @@ public class MenuStripMRUManager : MRUManager
 			return sb.ToString(); // string.Concat(stringToCompact.TakeWhile(c => c != '\0'));
 		}
 
-		private void OnFileMenuItemClick(object sender, EventArgs e)
+		private void OnFileMenuItemClick(object? sender, EventArgs e)
 		{
 			if (sender is ToolStripMenuItem item)
-				fileMenuItemClickAction(item.Tag.ToString());
+				fileMenuItemClickAction?.Invoke(item.Tag.ToString()!);
 		}
 	}
 }

@@ -11,14 +11,14 @@ using static Vanara.PInvoke.User32;
 namespace Vanara.Resources;
 
 /// <summary>Represents a file that contains resources.</summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public class ResourceFile : IDisposable
 {
-	private SafeHINSTANCE hLib;
+	private readonly SafeHINSTANCE hLib;
 
 	/// <summary>Initializes a new instance of the <see cref="ResourceFile"/> class.</summary>
 	/// <param name="filename">The filename.</param>
-	/// <exception cref="System.ArgumentNullException">filename</exception>
+	/// <exception cref="ArgumentNullException">filename</exception>
 	public ResourceFile(string filename) : this()
 	{
 		if (filename == null)
@@ -31,6 +31,8 @@ public class ResourceFile : IDisposable
 
 	private ResourceFile()
 	{
+		hLib = new SafeHINSTANCE(IntPtr.Zero, false);
+		FileName = "";
 		Bitmaps = new ImageResIndexer<Bitmap>(GetBitmap);
 		GroupIcons = new GroupIconResIndexer(GetGroupIcon);
 		Icons = new ImageResIndexer<Icon>(GetIcon);
@@ -63,8 +65,8 @@ public class ResourceFile : IDisposable
 	public static Icon GetResourceGrouoIcon(string resourceReference)
 	{
 		var parts = GetResourceRefParts(resourceReference);
-		using (var nr = new ResourceFile(parts.Item1))
-			return nr.GetGroupIcon(parts.Item2);
+		using var nr = new ResourceFile(parts.Item1);
+		return nr.GetGroupIcon(parts.Item2);
 	}
 
 	/// <summary>Gets the resource icon.</summary>
@@ -74,7 +76,7 @@ public class ResourceFile : IDisposable
 	{
 		var parts = GetResourceRefParts(resourceReference);
 		SHDefExtractIcon(parts.Item1, parts.Item2, 0, out var hIcon, out var _, 0).ThrowIfFailed();
-		return hIcon.ToIcon();
+		return hIcon.ToIcon()!;
 	}
 
 	/// <summary>Gets the resource string.</summary>
@@ -83,15 +85,12 @@ public class ResourceFile : IDisposable
 	public static string GetResourceString(string resourceReference)
 	{
 		var parts = GetResourceRefParts(resourceReference);
-		using (var nr = new ResourceFile(parts.Item1))
-			return nr.GetString(parts.Item2);
+		using var nr = new ResourceFile(parts.Item1);
+		return nr.GetString(parts.Item2);
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public void Dispose()
-	{
-		hLib = null;
-	}
+	public void Dispose() => GC.SuppressFinalize(this);
 
 	/// <summary>Get binary image of the specified resource.</summary>
 	/// <param name="name">The resource name.</param>
@@ -125,7 +124,7 @@ public class ResourceFile : IDisposable
 	/// <summary>Gets the resource names.</summary>
 	/// <param name="type">The type.</param>
 	/// <returns></returns>
-	public IList<ResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNamesEx(hLib, type);
+	public IReadOnlyList<ResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNamesEx(hLib, type);
 
 	/// <summary>Gets the bitmap.</summary>
 	/// <param name="name">The name.</param>
@@ -150,35 +149,33 @@ public class ResourceFile : IDisposable
 		var srcBuf = GetResourceData(name, ResourceType.RT_GROUP_ICON);
 
 		// Convert the resource into an .ico file image.
-		using (var destStream = new MemoryStream())
-		using (var writer = new BinaryWriter(destStream))
+		using var destStream = new MemoryStream();
+		using var writer = new BinaryWriter(destStream);
+		int count = BitConverter.ToUInt16(srcBuf, 4); // ICONDIR.idCount
+		var imgOffset = sIconDir + sIconDirEntry * count;
+
+		// Copy ICONDIR.
+		writer.Write(srcBuf, 0, sIconDir);
+
+		for (var i = 0; i < count; i++)
 		{
-			int count = BitConverter.ToUInt16(srcBuf, 4); // ICONDIR.idCount
-			var imgOffset = sIconDir + sIconDirEntry * count;
+			// Copy GRPICONDIRENTRY converting into ICONDIRENTRY.
+			writer.BaseStream.Seek(sIconDir + sIconDirEntry * i, SeekOrigin.Begin);
+			writer.Write(srcBuf, sIconDir + szGrpIconDirEntry * i, sIconDirEntry - 4); // Common fields of structures
+			writer.Write(imgOffset); // ICONDIRENTRY.dwImageOffset
 
-			// Copy ICONDIR.
-			writer.Write(srcBuf, 0, sIconDir);
+			// Get picture and mask data, then copy them.
+			var nId = BitConverter.ToUInt16(srcBuf, sIconDir + szGrpIconDirEntry * i + 12); // GRPICONDIRENTRY.nID
+			var imgBuf = GetResourceData(nId, ResourceType.RT_ICON);
 
-			for (var i = 0; i < count; i++)
-			{
-				// Copy GRPICONDIRENTRY converting into ICONDIRENTRY.
-				writer.BaseStream.Seek(sIconDir + sIconDirEntry * i, SeekOrigin.Begin);
-				writer.Write(srcBuf, sIconDir + szGrpIconDirEntry * i, sIconDirEntry - 4); // Common fields of structures
-				writer.Write(imgOffset); // ICONDIRENTRY.dwImageOffset
+			writer.BaseStream.Seek(imgOffset, SeekOrigin.Begin);
+			writer.Write(imgBuf, 0, imgBuf.Length);
 
-				// Get picture and mask data, then copy them.
-				var nId = BitConverter.ToUInt16(srcBuf, sIconDir + szGrpIconDirEntry * i + 12); // GRPICONDIRENTRY.nID
-				var imgBuf = GetResourceData(nId, ResourceType.RT_ICON);
-
-				writer.BaseStream.Seek(imgOffset, SeekOrigin.Begin);
-				writer.Write(imgBuf, 0, imgBuf.Length);
-
-				imgOffset += imgBuf.Length;
-			}
-
-			destStream.Seek(0, SeekOrigin.Begin);
-			return new Icon(destStream);
+			imgOffset += imgBuf.Length;
 		}
+
+		destStream.Seek(0, SeekOrigin.Begin);
+		return new Icon(destStream);
 	}
 
 	/// <summary>Gets the icon.</summary>
@@ -189,26 +186,20 @@ public class ResourceFile : IDisposable
 	protected virtual Icon GetIcon(SafeResourceId name, Size size)
 	{
 		var hIcon = new SafeHICON(LoadImage(hLib, name, LoadImageType.IMAGE_ICON, size.Width, size.Height, LoadImageOptions.LR_LOADTRANSPARENT));
-		return !hIcon.IsNull ? hIcon.ToIcon() : throw new Win32Exception();
+		return !hIcon.IsNull ? hIcon.ToIcon()! : throw new Win32Exception();
 	}
 
 	/// <summary>Gets the string.</summary>
 	/// <param name="id">The identifier.</param>
 	/// <returns></returns>
-	protected virtual string GetString(int id)
-	{
-		var sb = new System.Text.StringBuilder(260);
-		var len = LoadString(hLib, id, sb, 260);
-		return len == 0 ? null : sb.ToString();
-	}
+	protected virtual string GetString(int id) => LoadString(hLib, id);
 
 	private static Tuple<string, int> GetResourceRefParts(string resourceReference)
 	{
 		var parts = resourceReference.Split(',');
 		if (parts.Length != 2)
 			throw new ArgumentException(@"Invalid string format.", nameof(resourceReference));
-		int id;
-		if (!int.TryParse(parts[1], out id))
+		if (!int.TryParse(parts[1], out int id))
 			throw new ArgumentException(@"Invalid resource identifier.", nameof(resourceReference));
 		var fn = parts[0];
 		try
@@ -227,10 +218,7 @@ public class ResourceFile : IDisposable
 	{
 		private readonly IndexerGetter getter;
 
-		internal GroupIconResIndexer(IndexerGetter getFn)
-		{
-			getter = getFn;
-		}
+		internal GroupIconResIndexer(IndexerGetter getFn) => getter = getFn;
 
 		internal delegate Icon IndexerGetter(SafeResourceId name);
 
@@ -253,10 +241,7 @@ public class ResourceFile : IDisposable
 	{
 		private readonly IndexerGetter getter;
 
-		internal ImageResIndexer(IndexerGetter getFn)
-		{
-			getter = getFn;
-		}
+		internal ImageResIndexer(IndexerGetter getFn) => getter = getFn;
 
 		internal delegate T IndexerGetter(SafeResourceId name, Size size);
 
@@ -292,15 +277,12 @@ public class ResourceFile : IDisposable
 	{
 		private readonly IndexerGetter getter;
 
-		internal StringResIndexer(IndexerGetter getFn)
-		{
-			getter = getFn;
-		}
+		internal StringResIndexer(IndexerGetter getFn) => getter = getFn;
 
 		internal delegate string IndexerGetter(int name);
 
-		/// <summary>Gets the <see cref="System.String"/> at the specified index.</summary>
-		/// <value>The <see cref="System.String"/>.</value>
+		/// <summary>Gets the <see cref="string"/> at the specified index.</summary>
+		/// <value>The <see cref="string"/>.</value>
 		/// <param name="index">The index.</param>
 		/// <returns></returns>
 		public string this[int index] => getter(index);

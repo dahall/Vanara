@@ -25,8 +25,7 @@ namespace Vanara.Windows.Forms.Forms;
 /// </code></para></remarks>
 public class PreventShutdownContext : IDisposable
 {
-	private const int WM_QUERYENDSESSION = 0x11;
-	private HandleRef href;
+	private readonly HandleRef href;
 
 	/// <summary>Initializes a new instance of the <see cref="PreventShutdownContext" /> class.</summary>
 	/// <param name="window">The <see cref="Form" /> that contains a valid window handle.</param>
@@ -35,8 +34,8 @@ public class PreventShutdownContext : IDisposable
 	/// <exception cref="SystemException">The system is configured to bypass showing application reasons for preventing shutdown.</exception>
 	public PreventShutdownContext(Form window, string reason, bool tryToPreventShutdown = false)
 	{
-		if ((Microsoft.Win32.Registry.GetValue(@"HKEY_USERS\.DEFAULT\Control Panel\Desktop", "AutoEndTasks", 0) is uint v1 && v1 == 1) ||
-			(Microsoft.Win32.Registry.GetValue(@"HKEY_CURRENT_USER\Control Panel\Desktop", "AutoEndTasks", 0) is uint v2 && v2 == 1))
+		if (Microsoft.Win32.Registry.GetValue(@"HKEY_USERS\.DEFAULT\Control Panel\Desktop", "AutoEndTasks", 0) is uint v1 && v1 == 1 ||
+			Microsoft.Win32.Registry.GetValue(@"HKEY_CURRENT_USER\Control Panel\Desktop", "AutoEndTasks", 0) is uint v2 && v2 == 1)
 			throw new SystemException("The system is configured to bypass showing application reasons for preventing shutdown.");
 		href = new HandleRef(window, window.Handle);
 		if (tryToPreventShutdown)
@@ -56,7 +55,7 @@ public class PreventShutdownContext : IDisposable
 		}
 		set
 		{
-			if (value == null) value = string.Empty;
+			value ??= string.Empty;
 			if (ShutdownBlockReasonQuery(href.Handle, out var _))
 				ShutdownBlockReasonDestroy(href.Handle);
 			if (!ShutdownBlockReasonCreate(href.Handle, value))
@@ -68,5 +67,6 @@ public class PreventShutdownContext : IDisposable
 	public void Dispose()
 	{
 		ShutdownBlockReasonDestroy(href.Handle);
+		GC.SuppressFinalize(this);
 	}
 }

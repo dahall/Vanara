@@ -2698,7 +2698,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[System.Security.SecurityCritical]
-	public static extern IntPtr SendMessage(HWND hWnd, uint msg, [In, Optional] IntPtr wParam, string lParam);
+	public static extern IntPtr SendMessage(HWND hWnd, uint msg, [In, Optional] IntPtr wParam, string? lParam);
 
 	/// <summary>
 	/// <para>

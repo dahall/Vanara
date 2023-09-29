@@ -9,6 +9,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFramework>$(TargetFramework)-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <StartupObject>Microsoft.WindowsAPICodePack.Samples.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="ShellViewTestForm.cs" />

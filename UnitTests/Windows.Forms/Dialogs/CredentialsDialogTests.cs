@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace Vanara.Windows.Forms.Tests;
+﻿namespace Vanara.Windows.Forms.Tests;
 
 [TestFixture()]
 public class CredentialsDialogTests
@@ -32,7 +30,7 @@ public class CredentialsDialogTests
 
 		CredentialsDialog.ParseUserName(cd.UserName, out var user, out var dom);
 
-		void CredDlgOnValidatePassword(object sender, CredentialsDialog.PasswordValidatorEventArgs e)
+		void CredDlgOnValidatePassword(object? sender, CredentialsDialog.PasswordValidatorEventArgs e)
 		{
 			Assert.That(ReferenceEquals(sender, cd));
 			if (cd.EncryptPassword)

@@ -67,7 +67,8 @@ public static class IconExtension
 		var fi = typeof(Icon).GetField("iconData", BindingFlags.Instance | BindingFlags.NonPublic);
 		var gen = dm.GetILGenerator();
 		gen.Emit(OpCodes.Ldarg_0);
-		gen.Emit(OpCodes.Ldfld, fi);
+		if (fi != null)
+			gen.Emit(OpCodes.Ldfld, fi);
 		gen.Emit(OpCodes.Ret);
 		getIconData = (GetIconDataDelegate)dm.CreateDelegate(typeof(GetIconDataDelegate));
 	}
@@ -100,15 +101,15 @@ public static class IconExtension
 	/// <returns>An <see cref="Icon"/> instance.</returns>
 	public static Icon IconFromFile(string filename)
 	{
-		using (var fs = File.OpenRead(filename))
-			return new Icon(fs);
+		using var fs = File.OpenRead(filename);
+		return new Icon(fs);
 	}
 
 	/// <summary>Gets the icon associated with this ITEMIDLIST, if one does.</summary>
 	/// <param name="pidl">The ITEMIDLIST pointer from which to retrieve the icon.</param>
 	/// <param name="iconSize">Size of the icon.</param>
 	/// <returns>Icon of the specified size, or <c>null</c> if no icon is associated with this ITEMIDLIST.</returns>
-	public static Icon GetIcon(this PIDL pidl, IconSize iconSize = IconSize.Large)
+	public static Icon? GetIcon(this PIDL pidl, IconSize iconSize = IconSize.Large)
 	{
 		if (pidl.IsInvalid) return null;
 		var shfi = new SHFILEINFO();
@@ -120,7 +121,7 @@ public static class IconExtension
 	/// <param name="fileNameOrExtension">The file name or extension.</param>
 	/// <param name="iconSize">Size of the icon.</param>
 	/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
-	public static Icon GetSystemIcon(string fileNameOrExtension, IconSize iconSize = IconSize.Large)
+	public static Icon? GetSystemIcon(string fileNameOrExtension, IconSize iconSize = IconSize.Large)
 	{
 		var shfi = new SHFILEINFO();
 		if (hSystemImageList.IsNull)
@@ -136,7 +137,7 @@ public static class IconExtension
 	/// <param name="fileNameOrExtension">The file name or extension .</param>
 	/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo(string, FileAttributes, ref SHFILEINFO, int, SHGFI)"/> method and can only retrieve small or large icons.</param>
 	/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
-	public static Icon GetFileIcon(string fileNameOrExtension, IconSize iconType = IconSize.Large)
+	public static Icon? GetFileIcon(string fileNameOrExtension, IconSize iconType = IconSize.Large)
 	{
 		var shfi = new SHFILEINFO();
 		var ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON | (SHGFI)iconType);
@@ -163,26 +164,22 @@ public static class IconExtension
 		var splitIcons = new Icon[count];
 		for (var i = 0; i < count; i++)
 		{
-			using (var destStream = new MemoryStream())
-			{
-				using (var writer = new BinaryWriter(destStream))
-				{
-					// Copy ICONDIR and ICONDIRENTRY.
-					writer.Write(srcBuf, 0, sIconDir - 2);
-					writer.Write((short)1); // ICONDIR.idCount == 1;
-					writer.Write(srcBuf, sIconDir + sIconDirEntry * i, sIconDirEntry - 4);
-					writer.Write(sIconDir + sIconDirEntry); // ICONDIRENTRY.dwImageOffset = sizeof(ICONDIR) + sizeof(ICONDIRENTRY)
+			using var destStream = new MemoryStream();
+			using var writer = new BinaryWriter(destStream);
+			// Copy ICONDIR and ICONDIRENTRY.
+			writer.Write(srcBuf, 0, sIconDir - 2);
+			writer.Write((short)1); // ICONDIR.idCount == 1;
+			writer.Write(srcBuf, sIconDir + sIconDirEntry * i, sIconDirEntry - 4);
+			writer.Write(sIconDir + sIconDirEntry); // ICONDIRENTRY.dwImageOffset = sizeof(ICONDIR) + sizeof(ICONDIRENTRY)
 
-					// Copy picture and mask data.
-					var imgSize = BitConverter.ToInt32(srcBuf, sIconDir + sIconDirEntry * i + 8); // ICONDIRENTRY.dwBytesInRes
-					var imgOffset = BitConverter.ToInt32(srcBuf, sIconDir + sIconDirEntry * i + 12); // ICONDIRENTRY.dwImageOffset
-					writer.Write(srcBuf, imgOffset, imgSize);
+			// Copy picture and mask data.
+			var imgSize = BitConverter.ToInt32(srcBuf, sIconDir + sIconDirEntry * i + 8); // ICONDIRENTRY.dwBytesInRes
+			var imgOffset = BitConverter.ToInt32(srcBuf, sIconDir + sIconDirEntry * i + 12); // ICONDIRENTRY.dwImageOffset
+			writer.Write(srcBuf, imgOffset, imgSize);
 
-					// Create new icon.
-					destStream.Seek(0, SeekOrigin.Begin);
-					splitIcons[i] = new Icon(destStream);
-				}
-			}
+			// Create new icon.
+			destStream.Seek(0, SeekOrigin.Begin);
+			splitIcons[i] = new Icon(destStream);
 		}
 
 		return splitIcons;
@@ -196,7 +193,7 @@ public static class IconExtension
 		if (icon.GetBitCount() < 32) return icon.ToBitmap();
 		var il = new ImageList {ColorDepth = ColorDepth.Depth32Bit, ImageSize = icon.Size};
 		il.Images.Add(icon);
-		return il.Images[0] as Bitmap;
+		return (Bitmap)il.Images[0];
 		/*var ii = new ICONINFO();
 		if (!GetIconInfo(icon.Handle, ref ii)) throw new Win32Exception();
 		var bmp = ii.Bitmap;
@@ -219,11 +216,9 @@ public static class IconExtension
 		var data = getIconData(icon);
 		if (data != null)
 			return data;
-		using (var ms = new MemoryStream())
-		{
-			icon.Save(ms);
-			return ms.ToArray();
-		}
+		using var ms = new MemoryStream();
+		icon.Save(ms);
+		return ms.ToArray();
 	}
 
 	/*[StructLayout(LayoutKind.Sequential)]

@@ -14,11 +14,11 @@ public class ThemedPanel : Panel
 	private const int defaultPart = 29;
 	private const int defaultState = 0;
 
-	private string styleClass;
+	private string? styleClass;
 	private int stylePart;
 	private int styleState;
 	private bool supportGlass;
-	private VisualTheme theme;
+	private VisualTheme? theme;
 
 	/// <summary>Initializes a new instance of the <see cref="ThemedPanel"/> class.</summary>
 	public ThemedPanel()
@@ -31,16 +31,16 @@ public class ThemedPanel : Panel
 
 	/// <summary>Sets the theme using a defined <see cref="VisualStyleElement"/>.</summary>
 	[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public VisualStyleRenderer Style
+	public VisualStyleRenderer? Style
 	{
-		get => new(styleClass, stylePart, styleState);
+		get => styleClass is not null ? new(styleClass, stylePart, styleState) : null;
 		set => SetTheme(value?.Class, value?.Part ?? 0, value?.State ?? 0);
 	}
 
 	/// <summary>Gets or sets the style class.</summary>
 	/// <value>The style class.</value>
 	[DefaultValue(defaultClass), Category("Appearance")]
-	public string StyleClass
+	public string? StyleClass
 	{
 		get => styleClass;
 		set { if (styleClass != value) { styleClass = value; ResetTheme(); } }
@@ -84,7 +84,7 @@ public class ThemedPanel : Panel
 	/// <param name="className">Name of the theme class.</param>
 	/// <param name="part">The theme part.</param>
 	/// <param name="state">The theme state.</param>
-	public void SetTheme(string className, int part, int state)
+	public void SetTheme(string? className, int part, int state)
 	{
 		styleClass = className;
 		stylePart = part;
@@ -155,7 +155,7 @@ public class ThemedPanel : Panel
 		}
 	}
 
-	private void ParentStateChanged(object sender, EventArgs e) => Refresh();
+	private void ParentStateChanged(object? sender, EventArgs e) => Refresh();
 
 	private void ResetTheme()
 	{

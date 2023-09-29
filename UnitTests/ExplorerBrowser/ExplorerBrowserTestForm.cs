@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 
@@ -46,21 +47,21 @@ public partial class ExplorerBrowserTestForm : Form
 
 	private void DebugEnterFunc([System.Runtime.CompilerServices.CallerMemberName] string func = "") => Debug.WriteLine($"Entering {func}...");
 
-	private void backButton_Click(object sender, EventArgs e) =>
+	private void backButton_Click(object? sender, EventArgs e) =>
 		// Move backwards through navigation log
 		explorerBrowser.NavigateFromHistory(NavigationLogDirection.Backward);
 
-	private void clearHistoryButton_Click(object sender, EventArgs e) =>
+	private void clearHistoryButton_Click(object? sender, EventArgs e) =>
 		// clear navigation log
 		explorerBrowser.History.Clear();
 
-	private void explorerBrowser_ItemsChanged(object sender, EventArgs e)
+	private void explorerBrowser_ItemsChanged(object? sender, EventArgs e)
 	{
 		DebugEnterFunc();
 		itemsChanged.Set();
 	}
 
-	private void explorerBrowser_ItemsEnumerated(object sender, EventArgs e)
+	private void explorerBrowser_ItemsEnumerated(object? sender, EventArgs e)
 	{
 		DebugEnterFunc();
 		// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
@@ -75,7 +76,7 @@ public partial class ExplorerBrowserTestForm : Form
 		itemsChanged.Set();
 	}
 
-	private void explorerBrowser_Navigated(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatedEventArgs args)
+	private void explorerBrowser_Navigated(object? sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatedEventArgs args)
 	{
 		DebugEnterFunc();
 		// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
@@ -89,7 +90,7 @@ public partial class ExplorerBrowserTestForm : Form
 		}));
 	}
 
-	private void explorerBrowser_Navigating(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatingEventArgs args)
+	private void explorerBrowser_Navigating(object? sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatingEventArgs args)
 	{
 		DebugEnterFunc();
 		// fail navigation if check selected (this must be synchronous)
@@ -114,7 +115,7 @@ public partial class ExplorerBrowserTestForm : Form
 		}));
 	}
 
-	private void explorerBrowser_NavigationFailed(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationFailedEventArgs args)
+	private void explorerBrowser_NavigationFailed(object? sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationFailedEventArgs args)
 	{
 		DebugEnterFunc();
 		// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
@@ -133,15 +134,15 @@ public partial class ExplorerBrowserTestForm : Form
 		}));
 	}
 
-	private void explorerBrowser_SelectionChanged(object sender, EventArgs e)
+	private void explorerBrowser_SelectionChanged(object? sender, EventArgs e)
 	{
 		DebugEnterFunc();
 		selectionChanged.Set();
 	}
 
-	private void filePathEdit_TextChanged(object sender, EventArgs e) => filePathNavigate.Enabled = (filePathEdit.Text.Length > 0);
+	private void filePathEdit_TextChanged(object? sender, EventArgs e) => filePathNavigate.Enabled = (filePathEdit.Text.Length > 0);
 
-	private void filePathNavigate_Click(object sender, EventArgs e)
+	private void filePathNavigate_Click(object? sender, EventArgs e)
 	{
 		DebugEnterFunc();
 		try
@@ -155,15 +156,15 @@ public partial class ExplorerBrowserTestForm : Form
 		}
 	}
 
-	private void forwardButton_Click(object sender, EventArgs e)
+	private void forwardButton_Click(object? sender, EventArgs e)
 	{
 		DebugEnterFunc();
 		explorerBrowser.NavigateFromHistory(NavigationLogDirection.Forward);
 	}
 
-	private void knownFolderCombo_SelectedIndexChanged(object sender, EventArgs e) => knownFolderNavigate.Enabled = (knownFolderCombo.Text.Length > 0);
+	private void knownFolderCombo_SelectedIndexChanged(object? sender, EventArgs e) => knownFolderNavigate.Enabled = (knownFolderCombo.Text.Length > 0);
 
-	private void knownFolderNavigate_Click(object sender, EventArgs e)
+	private void knownFolderNavigate_Click(object? sender, EventArgs e)
 	{
 		try
 		{
@@ -176,7 +177,7 @@ public partial class ExplorerBrowserTestForm : Form
 		}
 	}
 
-	private void navigateButton_Click(object sender, EventArgs e)
+	private void navigateButton_Click(object? sender, EventArgs e)
 	{
 		DebugEnterFunc();
 		try
@@ -190,11 +191,11 @@ public partial class ExplorerBrowserTestForm : Form
 		}
 	}
 
-	private void navigationHistoryCombo_SelectedIndexChanged(object sender, EventArgs e) =>
+	private void navigationHistoryCombo_SelectedIndexChanged(object? sender, EventArgs e) =>
 		// navigating to specific index in navigation log
 		explorerBrowser.NavigateToHistoryIndex(navigationHistoryCombo.SelectedIndex);
 
-	private void NavigationLog_NavigationLogChanged(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationLogEventArgs args)
+	private void NavigationLog_NavigationLogChanged(object? sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationLogEventArgs args)
 	{
 		DebugEnterFunc();
 		// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
@@ -226,9 +227,9 @@ public partial class ExplorerBrowserTestForm : Form
 		}));
 	}
 
-	private void pathEdit_TextChanged(object sender, EventArgs e) => navigateButton.Enabled = (pathEdit.Text.Length > 0);
+	private void pathEdit_TextChanged(object? sender, EventArgs e) => navigateButton.Enabled = (pathEdit.Text.Length > 0);
 
-	private void uiDecoupleTimer_Tick(object sender, EventArgs e)
+	private void uiDecoupleTimer_Tick(object? sender, EventArgs e)
 	{
 		DebugEnterFunc();
 		try

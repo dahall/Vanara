@@ -13,13 +13,11 @@ public static partial class VisualStylesRendererExtension
 	/// <param name="dc">A device context for any font selection. This value can be <see langword="null"/>.</param>
 	/// <param name="prop">The property to retrieve.</param>
 	/// <returns>The margins defined for the property.</returns>
-	public static Padding GetMargins2(this VisualStyleRenderer rnd, IDeviceContext dc = null, MarginProperty prop = MarginProperty.ContentMargins)
+	public static Padding GetMargins2(this VisualStyleRenderer rnd, IDeviceContext? dc = null, MarginProperty prop = MarginProperty.ContentMargins)
 	{
-		using (var hdc = new SafeTempHDC(dc))
-		{
-			GetThemeMargins(rnd.GetSafeHandle(), hdc, rnd.Part, rnd.State, (int)prop, null, out MARGINS m);
-			return new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight);
-		}
+		using var hdc = new SafeTempHDC(dc);
+		GetThemeMargins(rnd.GetSafeHandle(), hdc, rnd.Part, rnd.State, (int)prop, null, out MARGINS m);
+		return new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight);
 	}
 
 	/// <summary>Gets the duration of the specified transition.</summary>
@@ -36,7 +34,7 @@ public static partial class VisualStylesRendererExtension
 	/// <summary>Gets the transition matrix for a visual style.</summary>
 	/// <param name="rnd">The visual style to query.</param>
 	/// <returns>A two dimensional array that represents the transition durations, in milliseconds, between any two parts.</returns>
-	public static int[,] GetTransitionMatrix(this VisualStyleRenderer rnd)
+	public static int[,]? GetTransitionMatrix(this VisualStyleRenderer rnd)
 	{
 		var res = GetThemeIntList(rnd.GetSafeHandle(), rnd.Part, rnd.State, (int)ThemeProperty.TMT_TRANSITIONDURATIONS);
 		if (res == null || res.Length == 0) return null;
@@ -63,13 +61,13 @@ public static partial class VisualStylesRendererExtension
 	/// </summary>
 	/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 	/// <param name="state">The state.</param>
-	public static void SetState(this VisualStyleRenderer rnd, int state) { rnd.SetParameters(rnd.Class, rnd.Part, state); }
+	public static void SetState(this VisualStyleRenderer rnd, int state) => rnd.SetParameters(rnd.Class, rnd.Part, state);
 
 	/// <summary>Sets the window theme.</summary>
 	/// <param name="window">The window on which to apply the theme.</param>
 	/// <param name="subAppName">Name of the sub application. This is the theme name (e.g. "Explorer").</param>
 	/// <param name="subIdList">The sub identifier list. This can be left <c>null</c>.</param>
-	public static void SetWindowTheme(this IWin32Window window, string subAppName, string[] subIdList = null)
+	public static void SetWindowTheme(this IWin32Window window, string? subAppName, string[]? subIdList = null)
 	{
 		var idl = subIdList == null ? null : string.Join(";", subIdList);
 		try { UxTheme.SetWindowTheme(window.Handle, subAppName, idl); } catch { }
