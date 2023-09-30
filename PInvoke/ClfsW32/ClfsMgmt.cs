@@ -321,8 +321,11 @@ public static partial class ClfsW32
 				public ushort PrefixLengthInBytes;
 
 				// Complete hack to get this structure to hold 266 characters
-				private char _PrefixString;
-				private uint pad01, pad02, pad03, pad04, pad05, pad06, pad07, pad08, pad09, pad10, pad11, pad12, pad13, pad14, pad15, pad16, pad17, pad18, pad19, pad20, pad21, pad22, pad23, pad24, pad25, pad26, pad27, pad28, pad29, pad30, pad31, pad32, pad33, pad34, pad35, pad36, pad37, pad38, pad39, pad40, pad41, pad42, pad43, pad44, pad45, pad46, pad47, pad48, pad49, pad50, pad51, pad52, pad53, pad54, pad55, pad56, pad57, pad58, pad59, pad60, pad61, pad62, pad63, pad64, pad65, pad66;
+				private readonly char _PrefixString;
+				private readonly uint pad01, pad02, pad03, pad04, pad05, pad06, pad07, pad08, pad09, pad10, pad11, pad12, pad13, pad14, pad15, pad16,
+					pad17, pad18, pad19, pad20, pad21, pad22, pad23, pad24, pad25, pad26, pad27, pad28, pad29, pad30, pad31, pad32, pad33, pad34,
+					pad35, pad36, pad37, pad38, pad39, pad40, pad41, pad42, pad43, pad44, pad45, pad46, pad47, pad48, pad49, pad50, pad51, pad52,
+					pad53, pad54, pad55, pad56, pad57, pad58, pad59, pad60, pad61, pad62, pad63, pad64, pad65, pad66;
 
 				/// <summary>
 				/// <para>
@@ -344,7 +347,7 @@ public static partial class ClfsW32
 						{
 							fixed (char* c = &_PrefixString)
 							{
-								var b = StringHelper.GetBytes(value?.Substring(0, Math.Min(value.Length, strLen)), false, CharSet.Unicode);
+								var b = StringHelper.GetBytes(value.Substring(0, Math.Min(value.Length, strLen)), false, CharSet.Unicode);
 								PrefixLengthInBytes = (ushort)b.Length;
 								Marshal.Copy(b, 0, (IntPtr)c, b.Length);
 							}
@@ -369,8 +372,11 @@ public static partial class ClfsW32
 				public ushort ExtensionLengthInBytes;
 
 				// Complete hack to get this structure to hold 266 characters
-				private char _ExtensionString;
-				private uint pad01, pad02, pad03, pad04, pad05, pad06, pad07, pad08, pad09, pad10, pad11, pad12, pad13, pad14, pad15, pad16, pad17, pad18, pad19, pad20, pad21, pad22, pad23, pad24, pad25, pad26, pad27, pad28, pad29, pad30, pad31, pad32, pad33, pad34, pad35, pad36, pad37, pad38, pad39, pad40, pad41, pad42, pad43, pad44, pad45, pad46, pad47, pad48, pad49, pad50, pad51, pad52, pad53, pad54, pad55, pad56, pad57, pad58, pad59, pad60, pad61, pad62, pad63, pad64, pad65, pad66;
+				private readonly char _ExtensionString;
+				private readonly uint pad01, pad02, pad03, pad04, pad05, pad06, pad07, pad08, pad09, pad10, pad11, pad12, pad13, pad14, pad15, pad16,
+					pad17, pad18, pad19, pad20, pad21, pad22, pad23, pad24, pad25, pad26, pad27, pad28, pad29, pad30, pad31, pad32,
+					pad33, pad34, pad35, pad36, pad37, pad38, pad39, pad40, pad41, pad42, pad43, pad44, pad45, pad46, pad47, pad48,
+					pad49, pad50, pad51, pad52, pad53, pad54, pad55, pad56, pad57, pad58, pad59, pad60, pad61, pad62, pad63, pad64, pad65, pad66;
 
 				/// <summary>Specifies the extension given to the container file.</summary>
 				public string ExtensionString
@@ -380,7 +386,7 @@ public static partial class ClfsW32
 					{
 						unsafe {
 							fixed (char* c = &_ExtensionString) {
-								var b = StringHelper.GetBytes(value?.Substring(0, Math.Min(value.Length, strLen - 1)), false, CharSet.Unicode);
+								var b = StringHelper.GetBytes(value.Substring(0, Math.Min(value.Length, strLen - 1)), false, CharSet.Unicode);
 								ExtensionLengthInBytes = (ushort)b.Length;
 								Marshal.Copy(b, 0, (IntPtr)c, b.Length);
 							}

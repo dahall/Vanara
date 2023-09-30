@@ -1,3 +1,4 @@
+using System.Threading;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -119,6 +120,70 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainer")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AddLogContainer([In] HLOG hLog, [In, Optional] IntPtr pcbContainer, [MarshalAs(UnmanagedType.LPWStr)] string pwszContainerPath, [In, Out, Optional] IntPtr pReserved);
+
+	/// <summary>
+	/// Adds multiple log containers to the physical log that is associated with the log handle—if the calling process has access to the log
+	/// handle. Adding containers allows a client to increase the size of a log.
+	/// </summary>
+	/// <param name="hLog">
+	/// <para>The handle to an open log that is obtained from CreateLogFile with permissions to add a log container.</para>
+	/// <para>The file can be dedicated or multiplexed.</para>
+	/// </param>
+	/// <param name="cContainer">
+	/// <para>The number of containers in the <c>rgwszContainerPath</c> array.</para>
+	/// <para>This value must be nonzero. A log must have at least two containers before any I/O can be performed on it.</para>
+	/// </param>
+	/// <param name="pcbContainer">
+	/// <para>The size of the container, in bytes.</para>
+	/// <para>
+	/// The minimum size is 512 KB for normal logs and 1024 KB for multiplexed logs. The maximum size is approximately 4 gigabytes (GB).
+	/// </para>
+	/// <para>
+	/// This parameter is required if the containers are being added to a newly created log. If a container is already created, this
+	/// parameter can be <c>NULL</c>, or some value that is at least as large as the size of the first container.
+	/// </para>
+	/// <para>
+	/// Log container sizes are multiples of the log region size (512 KB). When you add a container to a new file, the AddLogContainer
+	/// function rounds the size of the container up to the next 512 KB boundary, and returns that size in the value pointed to by <c>pcbContainer</c>.
+	/// </para>
+	/// <para>
+	/// Similarly, if the log already has at least one container and the value of <c>*pcbContainer</c> is at least as large as the current
+	/// container size, the function creates all containers with the current internal size and returns that size in <c>*pcbContainer</c>.
+	/// </para>
+	/// </param>
+	/// <param name="rgwszContainerPath">
+	/// <para>An array of <c>cContainer</c> path names for containers.</para>
+	/// <para>Each element in the array is a wide-character string that contains a valid path for the new container in the log volume.</para>
+	/// </param>
+	/// <param name="pReserved">Reserved. Set <c>Reserved</c> to <c>NULL</c>.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero, which indicates that all containers are added successfully to the log.</para>
+	/// <para>
+	/// If the function fails, the return value is zero, which indicates that none of the containers are added. To get extended error
+	/// information, call GetLastError.
+	/// </para>
+	/// <para>The following list identifies the possible error codes:</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>AddLogContainerSet</c> function is not atomic. If the operation is interrupted, for example, by an invalid path name, the call
+	/// to <c>AddLogContainerSet</c> returns a failure, but some containers may have been created. Your application must recover from this
+	/// error, for example, by determining which containers were added.
+	/// </para>
+	/// <para>
+	/// Because <c>AddLogContainerSet</c> adds more than one container, it is more efficient than making repeated calls to AddLogContainer,
+	/// which only adds one container.
+	/// </para>
+	/// <para>Containers are created and opened in a noncompressed mode, and are initialized with 0 (zeros) when they are created.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainerset CLFSUSER_API BOOL AddLogContainerSet( [in]
+	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] LPWSTR *rgwszContainerPath, [in, out, optional]
+	// LPVOID pReserved );
+	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool AddLogContainerSet([In] HLOG hLog, [In] ushort cContainer, [In, Optional] IntPtr pcbContainer,
+		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] rgwszContainerPath, [In, Out, Optional] IntPtr pReserved);
 
 	/// <summary>
 	/// Adds multiple log containers to the physical log that is associated with the log handle—if the calling process has access to the log
@@ -647,7 +712,7 @@ public static partial class ClfsW32
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.CreateLogFile")]
 	public static extern SafeHLOG CreateLogFile([MarshalAs(UnmanagedType.LPWStr)] string pszLogFileName, [In] ACCESS_MASK fDesiredAccess,
-		[In] System.IO.FileShare dwShareMode, [In, Optional] SECURITY_ATTRIBUTES psaLogFile, [In] CreationOption fCreateDisposition,
+		[In] System.IO.FileShare dwShareMode, [In, Optional] SECURITY_ATTRIBUTES? psaLogFile, [In] CreationOption fCreateDisposition,
 		[In] FileFlagsAndAttributes fFlagsAndAttributes);
 
 	/// <summary>
@@ -725,8 +790,8 @@ public static partial class ClfsW32
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.CreateLogMarshallingArea")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateLogMarshallingArea([In] HLOG hLog, [In, Optional] CLFS_BLOCK_ALLOCATION pfnAllocBuffer,
-		[In, Optional] CLFS_BLOCK_DEALLOCATION pfnFreeBuffer, [In, Optional] IntPtr pvBlockAllocContext, [In] uint cbMarshallingBuffer,
+	public static extern bool CreateLogMarshallingArea([In] HLOG hLog, [In, Optional] CLFS_BLOCK_ALLOCATION? pfnAllocBuffer,
+		[In, Optional] CLFS_BLOCK_DEALLOCATION? pfnFreeBuffer, [In, Optional] IntPtr pvBlockAllocContext, [In] uint cbMarshallingBuffer,
 		[In] uint cMaxWriteBuffers, [In] uint cMaxReadBuffers, out IntPtr ppvMarshal);
 
 	/// <summary>
@@ -932,8 +997,8 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.DumpLogRecords")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool DumpLogRecords([MarshalAs(UnmanagedType.LPWStr)] string pwszLogFileName, [In] CLS_RECORD_TYPE fRecordType,
-		in CLS_LSN plsnStart, in CLS_LSN plsnEnd, [In, Optional] HFILE pstrmOut, [In, Optional] CLFS_PRINT_RECORD_ROUTINE pfnPrintRecord,
-		[In, Optional] CLFS_BLOCK_ALLOCATION pfnAllocBlock, [In, Optional] CLFS_BLOCK_DEALLOCATION pfnFreeBlock,
+		in CLS_LSN plsnStart, in CLS_LSN plsnEnd, [In, Optional] HFILE pstrmOut, [In, Optional] CLFS_PRINT_RECORD_ROUTINE? pfnPrintRecord,
+		[In, Optional] CLFS_BLOCK_ALLOCATION? pfnAllocBlock, [In, Optional] CLFS_BLOCK_DEALLOCATION? pfnFreeBlock,
 		[In, Optional] IntPtr pvBlockAllocContext, [In] uint cbBlock, [In] uint cMaxBlocks);
 
 	/// <summary>
@@ -1050,8 +1115,8 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.DumpLogRecords")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool DumpLogRecords([MarshalAs(UnmanagedType.LPWStr)] string pwszLogFileName, [In] CLS_RECORD_TYPE fRecordType,
-		[In, Optional] IntPtr plsnStart, [In, Optional] IntPtr plsnEnd, [In, Optional] HFILE pstrmOut, [In, Optional] CLFS_PRINT_RECORD_ROUTINE pfnPrintRecord,
-		[In, Optional] CLFS_BLOCK_ALLOCATION pfnAllocBlock, [In, Optional] CLFS_BLOCK_DEALLOCATION pfnFreeBlock,
+		[In, Optional] IntPtr plsnStart, [In, Optional] IntPtr plsnEnd, [In, Optional] HFILE pstrmOut, [In, Optional] CLFS_PRINT_RECORD_ROUTINE? pfnPrintRecord,
+		[In, Optional] CLFS_BLOCK_ALLOCATION? pfnAllocBlock, [In, Optional] CLFS_BLOCK_DEALLOCATION? pfnFreeBlock,
 		[In, Optional] IntPtr pvBlockAllocContext, [In] uint cbBlock, [In] uint cMaxBlocks);
 
 	/// <summary>
@@ -3158,8 +3223,8 @@ public static partial class ClfsW32
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.ValidateLog")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ValidateLog([MarshalAs(UnmanagedType.LPWStr)] string pszLogFileName, [In, Optional] SECURITY_ATTRIBUTES psaLogFile,
-		[Out] SafeCoTaskMemStruct<CLS_INFORMATION> pinfoBuffer, ref uint pcbBuffer);
+	public static extern bool ValidateLog([MarshalAs(UnmanagedType.LPWStr)] string pszLogFileName, [In, Optional] SECURITY_ATTRIBUTES? psaLogFile,
+		[Out] IntPtr pinfoBuffer, ref uint pcbBuffer);
 
 	/// <summary>
 	/// <para>Appends a new client restart area to a log, and optionally advances the base log sequence number (LSN) of the log.</para>

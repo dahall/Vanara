@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Vanara.PInvoke;
 
 public static partial class ClfsW32

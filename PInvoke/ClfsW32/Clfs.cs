@@ -1,11 +1,5 @@
-
-global using System;
-global using System.Runtime.InteropServices;
-global using System.Threading;
-global using Vanara.InteropServices;
-
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 global using CLFS_CONTAINER_ID = System.UInt32;
-using Vanara.Extensions;
 
 namespace Vanara.PInvoke;
 
@@ -738,7 +732,7 @@ public static partial class ClfsW32
 		/// A pointer to a client-allocated array of CLFS_CONTAINER_INFORMATION structures to be filled by ScanLogContainers after each
 		/// successful call.
 		/// </summary>
-		public CLS_CONTAINER_INFORMATION[] pinfoContainer => _pinfoContainer.ToArray<CLS_CONTAINER_INFORMATION>((int)cContainersReturned);
+		public CLS_CONTAINER_INFORMATION[] pinfoContainer => _pinfoContainer.ToArray<CLS_CONTAINER_INFORMATION>((int)cContainersReturned) ?? new CLS_CONTAINER_INFORMATION[0];
 	}
 
 	/// <summary>

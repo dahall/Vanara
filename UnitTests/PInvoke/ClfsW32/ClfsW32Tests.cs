@@ -10,7 +10,9 @@ public class ClfsW32Tests
 {
 	const string fnbase = @"C:\Temp\testlog";
 	const string fn = @"log:" + fnbase;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	private SafeHLOG hLog;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup()
@@ -80,7 +82,7 @@ public class ClfsW32Tests
 	public void GetLogIoStatisticsTest()
 	{
 		SafeCoTaskMemStruct<CLS_IO_STATISTICS> stats = new();
-		Assert.That(GetLogIoStatistics(hLog, stats, stats.Size, CLFS_IOSTATS_CLASS.ClfsIoStatsMax, out var written), ResultIs.Successful);
+		Assert.That(GetLogIoStatistics(hLog, stats, stats.Size, CLFS_IOSTATS_CLASS.ClfsIoStatsMax, out _), ResultIs.Successful);
 		stats.Value.WriteValues();
 	}
 
