@@ -192,7 +192,7 @@ public static partial class DavClnt
 	// *ConnectionHandle, LPCWSTR RemoteName, LPCWSTR UserName, LPCWSTR Password, PBYTE ClientCert, DWORD CertSize );
 	[DllImport(Lib_DavClnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "d69cba04-503c-4d21-b762-3094c0921e28")]
-	public static extern Win32Error DavAddConnection(out SafeDavConnectionHandle ConnectionHandle, string RemoteName, string UserName, string Password, IntPtr ClientCert, uint CertSize);
+	public static extern Win32Error DavAddConnection(out SafeDavConnectionHandle ConnectionHandle, string RemoteName, string? UserName, string? Password, IntPtr ClientCert, uint CertSize);
 
 	/// <summary>Closes all connections to a WebDAV server or a remote file or directory on a WebDAV server.</summary>
 	/// <param name="lpName">
@@ -460,7 +460,7 @@ public static partial class DavClnt
 	// DavGetTheLockOwnerOfTheFile( LPCWSTR FileName, PWSTR LockOwnerName, PULONG LockOwnerNameLengthInBytes );
 	[DllImport(Lib_DavClnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "94a4607c-2770-4656-8710-987d6b951e0e")]
-	public static extern Win32Error DavGetTheLockOwnerOfTheFile(string FileName, StringBuilder LockOwnerName, ref uint LockOwnerNameLengthInBytes);
+	public static extern Win32Error DavGetTheLockOwnerOfTheFile(string FileName, StringBuilder? LockOwnerName, ref uint LockOwnerNameLengthInBytes);
 
 	/// <summary>Converts the specified HTTP path to an equivalent UNC path.</summary>
 	/// <param name="Url">
@@ -643,6 +643,7 @@ public static partial class DavClnt
 		public uint ulUserNameLength;
 
 		/// <summary>A pointer to a string that contains the password. This string is allocated by DavAuthCallback.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszPassword;
 
 		/// <summary>The length, in WCHAR, of the password, not including the terminating <c>NULL</c> character.</summary>
