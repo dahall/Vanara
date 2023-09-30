@@ -15,13 +15,15 @@ public class DbgHelpTests
 	const string imgName = "imagehlp.dll";
 	const string testAppName = "TestDbgApp";
 	static readonly string testAppPath = TestCaseSources.TempDirWhack + testAppName + ".exe";
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	private Process testApp;
 	private ProcessSymbolHandler hProc;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup()
 	{
-		testApp = Process.Start(new ProcessStartInfo(testAppPath) { WindowStyle = ProcessWindowStyle.Minimized });
+		testApp = Process.Start(new ProcessStartInfo(testAppPath) { WindowStyle = ProcessWindowStyle.Minimized })!;
 		hProc = new ProcessSymbolHandler(testApp.Handle);
 	}
 
@@ -83,7 +85,7 @@ public class DbgHelpTests
 			ImageExportDirectory.WriteValues();
 			var addr = ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, ImageExportDirectory.AddressOfNames, out _); // (uint*)
 			Assert.That(addr, ResultIs.ValidHandle);
-			foreach (var rva in addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames))
+			foreach (var rva in addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames)!)
 			{
 				var sName = ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, rva, out _);
 				TestContext.WriteLine(Marshal.PtrToStringAnsi(sName) ?? "(null)");
@@ -143,7 +145,7 @@ public class DbgHelpTests
 	public unsafe void SymGetOmapsTest()
 	{
 		var (_, BaseOfDll) = SymEnumerateModules(hProc, true).First();
-		Assert.That(SymGetOmaps(hProc, unchecked((ulong)BaseOfDll.ToInt64()), out var to, out var cto, out var from, out var cfrom), ResultIs.Successful);
+		Assert.That(SymGetOmaps(hProc, unchecked((ulong)BaseOfDll.ToInt64()), out _, out _, out _, out _), ResultIs.Successful);
 	}
 
 	[Test]
@@ -187,11 +189,11 @@ public class DbgHelpTests
 
 			var addr = ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, ImageExportDirectory.AddressOfNames, out _); // (uint*)
 			Assert.That(addr, ResultIs.ValidHandle);
-			var rnameaddrs = addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames);
+			uint[] rnameaddrs = addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames)!;
 
 			addr = ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, ImageExportDirectory.AddressOfNameOrdinals, out _); // (uint*)
 			Assert.That(addr, ResultIs.ValidHandle);
-			var rordaddrs = addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames);
+			uint[] rordaddrs = addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames)!;
 
 			for (int i = 0; i < rnameaddrs.Length; i++)
 			{

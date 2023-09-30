@@ -711,7 +711,7 @@ public static partial class ImageHlp
 	// DllName, PCSTR DllPath );
 	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.ImageLoad")]
-	public static extern SafeLOADED_IMAGE ImageLoad([MarshalAs(UnmanagedType.LPStr)] string DllName, [MarshalAs(UnmanagedType.LPStr)] string DllPath);
+	public static extern SafeLOADED_IMAGE ImageLoad([MarshalAs(UnmanagedType.LPStr)] string DllName, [MarshalAs(UnmanagedType.LPStr)] string? DllPath);
 
 	/// <summary>Removes the specified certificate from the given file.</summary>
 	/// <param name="FileHandle">

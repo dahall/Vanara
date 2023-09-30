@@ -261,7 +261,7 @@ public static partial class DbgHelp
 	// PsymbolFuncentryCallback64; PVOID PsymbolFuncentryCallback64( HANDLE hProcess, ULONG64 AddrBase, ULONG64 UserContext ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PSYMBOL_FUNCENTRY_CALLBACK64")]
-	public delegate IntPtr PSYMBOL_FUNCENTRY_CALLBACK64(HPROCESS hProcess, ulong AddrBase, ulong UserContext);
+	public delegate IntPtr PSYMBOL_FUNCENTRY_CALLBACK64(HPROCESS hProcess, ulong AddrBase, [Optional] ulong UserContext);
 
 	/// <summary>
 	/// <para>An application-defined callback function used with the SymRegisterCallback64 function. It is called by the symbol handler.</para>
@@ -403,7 +403,7 @@ public static partial class DbgHelp
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PSYMBOL_REGISTERED_CALLBACK")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool PSYMBOL_REGISTERED_CALLBACK(HPROCESS hProcess, CBA ActionCode, IntPtr CallbackData, IntPtr UserContext);
+	public delegate bool PSYMBOL_REGISTERED_CALLBACK(HPROCESS hProcess, CBA ActionCode, [Optional] IntPtr CallbackData, [Optional] IntPtr UserContext);
 
 	/// <summary>
 	/// <para>An application-defined callback function used with the SymRegisterCallback64 function. It is called by the symbol handler.</para>
@@ -545,7 +545,7 @@ public static partial class DbgHelp
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PSYMBOL_REGISTERED_CALLBACK64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool PSYMBOL_REGISTERED_CALLBACK64(HPROCESS hProcess, CBA ActionCode, ulong CallbackData, ulong UserContext);
+	public delegate bool PSYMBOL_REGISTERED_CALLBACK64(HPROCESS hProcess, CBA ActionCode, [Optional] ulong CallbackData, [Optional] ulong UserContext);
 
 	/// <summary>Callback code for PSYMBOL_REGISTERED_CALLBACK.</summary>
 	[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PSYMBOL_REGISTERED_CALLBACK64")]
@@ -1116,7 +1116,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymAddSourceStream")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymAddSourceStream(HPROCESS hProcess, ulong Base, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? StreamFile, [In] IntPtr Buffer, SizeT Size);
+	public static extern bool SymAddSourceStream(HPROCESS hProcess, ulong Base, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? StreamFile, [In, Optional] IntPtr Buffer, SizeT Size);
 
 	/// <summary>Adds a virtual symbol to the specified module.</summary>
 	/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
@@ -1600,7 +1600,7 @@ public static partial class DbgHelp
 	/// than one thread to this function.
 	/// </para>
 	/// </remarks>
-	public static IList<(string Obj, string FileName, uint LineNumber, ulong Address)> SymEnumLines(HPROCESS hProcess, ulong Base, string Obj = null, string File = null)
+	public static IList<(string Obj, string FileName, uint LineNumber, ulong Address)> SymEnumLines(HPROCESS hProcess, ulong Base, string? Obj = null, string? File = null)
 	{
 		var ret = new List<(string, string, uint, ulong)>();
 		if (!SymEnumLines(hProcess, Base, Obj, File, Callback))
@@ -2127,7 +2127,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymFindDebugInfoFile")]
 	public static extern HFILE SymFindDebugInfoFile(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPTStr)] string FileName,
-		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder DebugFilePath, [Optional] PFIND_DEBUG_FILE_CALLBACK Callback, [In, Optional] IntPtr CallerData);
+		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder DebugFilePath, [Optional] PFIND_DEBUG_FILE_CALLBACK? Callback, [In, Optional] IntPtr CallerData);
 
 	/// <summary>Locates an executable file in the process search path.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -2162,7 +2162,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymFindExecutableImage")]
 	public static extern HFILE SymFindExecutableImage(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPTStr)] string FileName,
-		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder ImageFilePath, [Optional] PFIND_EXE_FILE_CALLBACK Callback, [In, Optional] IntPtr CallerData);
+		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder ImageFilePath, [Optional] PFIND_EXE_FILE_CALLBACK? Callback, [In, Optional] IntPtr CallerData);
 
 	/// <summary>Locates a symbol file or executable image.</summary>
 	/// <param name="hprocess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -2244,7 +2244,7 @@ public static partial class DbgHelp
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SymFindFileInPath(HPROCESS hprocess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SearchPath,
 		[MarshalAs(UnmanagedType.LPTStr)] string FileName, [In, Optional] IntPtr id, uint two, uint three, SSRVOPT flags,
-		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder FoundFile, [In, Optional] PFINDFILEINPATHCALLBACK callback, [In, Optional] IntPtr context);
+		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder FoundFile, [In, Optional] PFINDFILEINPATHCALLBACK? callback, [In, Optional] IntPtr context);
 
 	/// <summary>Retrieves symbol information for the specified address.</summary>
 	/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
@@ -2448,8 +2448,8 @@ public static partial class DbgHelp
 	// PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine );
 	[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymFunctionTableAccess64AccessRoutines")]
-	public static extern IntPtr SymFunctionTableAccess64AccessRoutines(HPROCESS hProcess, ulong AddrBase, [Optional] PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine,
-		[Optional] PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine);
+	public static extern IntPtr SymFunctionTableAccess64AccessRoutines(HPROCESS hProcess, ulong AddrBase, [Optional] PREAD_PROCESS_MEMORY_ROUTINE64? ReadMemoryRoutine,
+		[Optional] PGET_MODULE_BASE_ROUTINE64? GetModuleBaseRoutine);
 
 	/// <summary>Gets whether the specified extended symbol option on or off.</summary>
 	/// <param name="option">
@@ -2788,8 +2788,8 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetLineFromName")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymGetLineFromName(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPStr)] string ModuleName,
-		[MarshalAs(UnmanagedType.LPStr)] string FileName, uint dwLineNumber, out int plDisplacement, ref IMAGEHLP_LINE Line);
+	public static extern bool SymGetLineFromName(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPStr)] string? ModuleName,
+		[MarshalAs(UnmanagedType.LPStr)] string? FileName, uint dwLineNumber, out int plDisplacement, ref IMAGEHLP_LINE Line);
 
 	/// <summary>Locates a source line for the specified module, file name, and line number.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -2845,8 +2845,8 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetLineFromName64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymGetLineFromName64(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPStr)] string ModuleName,
-		[MarshalAs(UnmanagedType.LPStr)] string FileName, uint dwLineNumber, out int plDisplacement, ref IMAGEHLP_LINE64 Line);
+	public static extern bool SymGetLineFromName64(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPStr)] string? ModuleName,
+		[MarshalAs(UnmanagedType.LPStr)] string? FileName, uint dwLineNumber, out int plDisplacement, ref IMAGEHLP_LINE64 Line);
 
 	/// <summary>Locates a source line for the specified module, file name, and line number.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -2902,8 +2902,8 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetLineFromNameW64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymGetLineFromNameW64(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPWStr)] string ModuleName,
-		[MarshalAs(UnmanagedType.LPWStr)] string FileName, uint dwLineNumber, out int plDisplacement, ref IMAGEHLP_LINE64 Line);
+	public static extern bool SymGetLineFromNameW64(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPWStr)] string? ModuleName,
+		[MarshalAs(UnmanagedType.LPWStr)] string? FileName, uint dwLineNumber, out int plDisplacement, ref IMAGEHLP_LINE64 Line);
 
 	/// <summary>Retrieves the line information for the next source line.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -4873,7 +4873,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymRegisterCallback")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymRegisterCallback(HPROCESS hProcess, PSYMBOL_REGISTERED_CALLBACK CallbackFunction, IntPtr UserContext);
+	public static extern bool SymRegisterCallback(HPROCESS hProcess, PSYMBOL_REGISTERED_CALLBACK CallbackFunction, [In, Optional] IntPtr UserContext);
 
 	/// <summary>Registers a callback function for use by the symbol handler.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -4917,7 +4917,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymRegisterCallback64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymRegisterCallback64(HPROCESS hProcess, PSYMBOL_REGISTERED_CALLBACK64 CallbackFunction, ulong UserContext);
+	public static extern bool SymRegisterCallback64(HPROCESS hProcess, PSYMBOL_REGISTERED_CALLBACK64 CallbackFunction, [In, Optional] ulong UserContext);
 
 	/// <summary>Registers a callback function for use by the symbol handler.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -4961,7 +4961,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymRegisterCallbackW64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymRegisterCallbackW64(HPROCESS hProcess, PSYMBOL_REGISTERED_CALLBACK64 CallbackFunction, ulong UserContext);
+	public static extern bool SymRegisterCallbackW64(HPROCESS hProcess, PSYMBOL_REGISTERED_CALLBACK64 CallbackFunction, [In, Optional] ulong UserContext);
 
 	/// <summary>Registers a callback function for use by the stack walking procedure on Alpha computers.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the StackWalk64 function.</param>
@@ -5001,7 +5001,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymRegisterFunctionEntryCallback")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymRegisterFunctionEntryCallback(HPROCESS hProcess, PSYMBOL_FUNCENTRY_CALLBACK CallbackFunction, IntPtr UserContext);
+	public static extern bool SymRegisterFunctionEntryCallback(HPROCESS hProcess, PSYMBOL_FUNCENTRY_CALLBACK CallbackFunction, [In, Optional] IntPtr UserContext);
 
 	/// <summary>Registers a callback function for use by the stack walking procedure on Alpha computers.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the StackWalk64 function.</param>
@@ -5041,7 +5041,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymRegisterFunctionEntryCallback64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymRegisterFunctionEntryCallback64(HPROCESS hProcess, PSYMBOL_FUNCENTRY_CALLBACK64 CallbackFunction, ulong UserContext);
+	public static extern bool SymRegisterFunctionEntryCallback64(HPROCESS hProcess, PSYMBOL_FUNCENTRY_CALLBACK64 CallbackFunction, [In, Optional] ulong UserContext);
 
 	/// <summary>Searches for PDB symbols that meet the specified criteria.</summary>
 	/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
@@ -5508,7 +5508,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymSrvDeltaName")]
 	[return: MarshalAs(UnmanagedType.LPTStr)]
-	public static extern string SymSrvDeltaName(HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SymPath,
+	public static extern string? SymSrvDeltaName(HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SymPath,
 		[MarshalAs(UnmanagedType.LPTStr)] string Type, [MarshalAs(UnmanagedType.LPTStr)] string File1, [MarshalAs(UnmanagedType.LPTStr)] string File2);
 
 	/// <summary>
@@ -5727,7 +5727,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymSrvStoreFile")]
 	[return: MarshalAs(UnmanagedType.LPTStr)]
-	public static extern string SymSrvStoreFile(HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SrvPath,
+	public static extern string? SymSrvStoreFile(HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SrvPath,
 		[MarshalAs(UnmanagedType.LPTStr)] string File, SYMSTOREOPT Flags);
 
 	/// <summary>
@@ -5771,7 +5771,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymSrvStoreSupplement")]
 	[return: MarshalAs(UnmanagedType.LPTStr)]
-	public static extern string SymSrvStoreSupplement(HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SrvPath,
+	public static extern string? SymSrvStoreSupplement(HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SrvPath,
 		[MarshalAs(UnmanagedType.LPTStr)] string Node, [MarshalAs(UnmanagedType.LPTStr)] string File, SYMSTOREOPT Flags);
 
 	/// <summary>
@@ -5938,7 +5938,7 @@ public static partial class DbgHelp
 		/// If this value is <see langword="true"/>, enumerates the loaded modules for the process and effectively calls the
 		/// SymLoadModule64 function for each module.
 		/// </param>
-		public ProcessSymbolHandler(HPROCESS hProcess, string UserSearchPath = null, bool fInvadeProcess = true) =>
+		public ProcessSymbolHandler(HPROCESS hProcess, string? UserSearchPath = null, bool fInvadeProcess = true) =>
 			SymInitialize(hProc = hProcess, UserSearchPath, fInvadeProcess);
 
 		/// <summary>Performs an implicit conversion from <see cref="ProcessSymbolHandler"/> to <see cref="HPROCESS"/>.</summary>

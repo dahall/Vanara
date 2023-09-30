@@ -23,7 +23,7 @@ public class MyConstraintExpression
 
 	public ValidHandleConstraint ValidHandle => new(op);
 
-	public ValueConstraint Value(object value) => new(value, op);
+	public ValueConstraint Value(object? value) => new(value, op);
 }
 
 public class FailureConstraint : Constraint
@@ -238,9 +238,9 @@ public class ValidHandleConstraint : OpConstraint
 
 public class ValueConstraint : OpConstraint
 {
-	public object Expected { get; }
+	public object? Expected { get; }
 
-	public ValueConstraint(object expected, Op op = Op.None) : base(op) => Expected = expected;
+	public ValueConstraint(object? expected, Op op = Op.None) : base(op) => Expected = expected;
 
 	public override ConstraintResult ApplyTo<TActual>(TActual actual)
 	{

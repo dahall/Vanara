@@ -817,7 +817,7 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.EnumDirTree")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool EnumDirTree([Optional] HPROCESS hProcess, [MarshalAs(UnmanagedType.LPTStr)] string RootPath, [MarshalAs(UnmanagedType.LPTStr)] string InputPathName,
-		[Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder OutputPathBuffer, [Optional] PENUMDIRTREE_CALLBACK cb, [In, Optional] IntPtr data);
+		[Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? OutputPathBuffer, [Optional] PENUMDIRTREE_CALLBACK? cb, [In, Optional] IntPtr data);
 
 	/// <summary>Enumerates all occurrences of the specified file in the specified directory tree.</summary>
 	/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
@@ -826,15 +826,9 @@ public static partial class DbgHelp
 	/// <returns>A list of files matching the <paramref name="InputPathName"/>.</returns>
 	public static IList<string> EnumDirTree(HPROCESS hProcess, string RootPath, string InputPathName)
 	{
-		var paths = new List<string>();
-		EnumDirTree(hProcess, RootPath, InputPathName, null, Callback);
+		List<string> paths = new();
+		Win32Error.ThrowLastErrorIfFalse(EnumDirTree(hProcess, RootPath, InputPathName, null, (f, d) => { paths.Add(f); return false; }));
 		return paths;
-
-		bool Callback(string FilePath, IntPtr CallerData)
-		{
-			paths.Add(FilePath);
-			return false;
-		}
 	}
 
 	/// <summary>Enumerates the loaded modules for the specified process.</summary>
@@ -904,24 +898,12 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.EnumerateLoadedModules")]
 	public static IList<(string ModuleName, IntPtr ModuleBase, uint ModuleSize)> EnumerateLoadedModules(HPROCESS hProcess)
 	{
-		var mods = new List<(string, IntPtr, uint)>();
+		List<(string, IntPtr, uint)> mods = new();
 		if (LibHelper.Is64BitProcess)
-			EnumerateLoadedModules64(hProcess, Callback64);
+			Win32Error.ThrowLastErrorIfFalse(EnumerateLoadedModules64(hProcess, (n, b, s, c) => { mods.Add((n, new IntPtr(unchecked((long)b)), s)); return true; }));
 		else
-			EnumerateLoadedModules(hProcess, Callback);
+			Win32Error.ThrowLastErrorIfFalse(EnumerateLoadedModules(hProcess, (n, b, s, c) => { mods.Add((n, new IntPtr(unchecked((int)b)), s)); return true; }));
 		return mods;
-
-		bool Callback(string ModuleName, uint ModuleBase, uint ModuleSize, IntPtr UserContext)
-		{
-			mods.Add((ModuleName, new IntPtr(unchecked((int)ModuleBase)), ModuleSize));
-			return true;
-		}
-
-		bool Callback64(string ModuleName, ulong ModuleBase, uint ModuleSize, IntPtr UserContext)
-		{
-			mods.Add((ModuleName, new IntPtr(unchecked((long)ModuleBase)), ModuleSize));
-			return true;
-		}
 	}
 
 	/// <summary>Enumerates the loaded modules for the specified process.</summary>
@@ -953,15 +935,9 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.EnumerateLoadedModulesExW")]
 	public static IList<(string ModuleName, IntPtr ModuleBase, uint ModuleSize)> EnumerateLoadedModulesEx(HPROCESS hProcess)
 	{
-		var mods = new List<(string, IntPtr, uint)>();
-		EnumerateLoadedModulesEx(hProcess, Callback);
+		List<(string, IntPtr, uint)> mods = new();
+		Win32Error.ThrowLastErrorIfFalse(EnumerateLoadedModulesEx(hProcess, (n, b, s, c) => { mods.Add((n, new IntPtr(unchecked((long)b)), s)); return true; }));
 		return mods;
-
-		bool Callback(string ModuleName, ulong ModuleBase, uint ModuleSize, IntPtr UserContext)
-		{
-			mods.Add((ModuleName, new IntPtr(unchecked((long)ModuleBase)), ModuleSize));
-			return true;
-		}
 	}
 
 	/// <summary>
@@ -1054,7 +1030,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.FindDebugInfoFileEx")]
 	public static extern SafeHFILE FindDebugInfoFileEx([MarshalAs(UnmanagedType.LPTStr)] string FileName, [MarshalAs(UnmanagedType.LPTStr)] string SymbolPath,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder DebugFilePath, [Optional] PFIND_DEBUG_FILE_CALLBACK Callback, [In, Optional] IntPtr CallerData);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder DebugFilePath, [Optional] PFIND_DEBUG_FILE_CALLBACK? Callback, [In, Optional] IntPtr CallerData);
 
 	/// <summary>
 	/// <para>Locates an executable file.</para>
@@ -1128,7 +1104,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.FindExecutableImageEx")]
 	public static extern SafeHFILE FindExecutableImageEx([MarshalAs(UnmanagedType.LPTStr)] string FileName, [MarshalAs(UnmanagedType.LPTStr)] string SymbolPath,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ImageFilePath, [Optional] PFIND_EXE_FILE_CALLBACK Callback, [In, Optional] IntPtr CallerData);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ImageFilePath, [Optional] PFIND_EXE_FILE_CALLBACK? Callback, [In, Optional] IntPtr CallerData);
 
 	/// <summary>Locates the specified executable file.</summary>
 	/// <param name="FileName">The name of the symbol file to be located. This parameter can be a partial path.</param>
@@ -1151,7 +1127,7 @@ public static partial class DbgHelp
 	/// <paramref name="SymbolPaths"/> with the paths in the correct order.
 	/// </para>
 	/// </remarks>
-	public static string FindExecutableImageEx(string FileName, string[] SymbolPaths, Func<string, bool> verifyFoundFile = null)
+	public static string? FindExecutableImageEx(string FileName, string[] SymbolPaths, Func<string, bool>? verifyFoundFile = null)
 	{
 		var sb = new StringBuilder(261);
 		if (verifyFoundFile is null)
@@ -1635,7 +1611,7 @@ public static partial class DbgHelp
 	// MapDebugInformation( HANDLE FileHandle, PCSTR FileName, PCSTR SymbolPath, ULONG ImageBase );
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.MapDebugInformation")]
-	public static extern IntPtr MapDebugInformation([Optional] HFILE FileHandle, [MarshalAs(UnmanagedType.LPStr)] string FileName, [Optional, MarshalAs(UnmanagedType.LPStr)] string? SymbolPath, uint ImageBase);
+	public static extern IntPtr MapDebugInformation([Optional] HFILE FileHandle, [MarshalAs(UnmanagedType.LPStr)] string? FileName, [Optional, MarshalAs(UnmanagedType.LPStr)] string? SymbolPath, uint ImageBase);
 
 	/// <summary>Searches a directory tree for a specified file.</summary>
 	/// <param name="RootPath">The path where the function should begin searching for the file.</param>
@@ -1747,8 +1723,8 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.StackWalk")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool StackWalk(IMAGE_FILE_MACHINE MachineType, HPROCESS hProcess, HTHREAD hThread, ref STACKFRAME StackFrame, [In, Out] IntPtr ContextRecord,
-		[Optional] PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine,
-		[Optional] PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE TranslateAddress);
+		[Optional] PREAD_PROCESS_MEMORY_ROUTINE? ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE? FunctionTableAccessRoutine,
+		[Optional] PGET_MODULE_BASE_ROUTINE? GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE? TranslateAddress);
 
 	/// <summary>Obtains a stack trace.</summary>
 	/// <param name="MachineType">
@@ -1872,8 +1848,8 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.StackWalk64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool StackWalk64(IMAGE_FILE_MACHINE MachineType, HPROCESS hProcess, HTHREAD hThread, ref STACKFRAME64 StackFrame, [In, Out] IntPtr ContextRecord,
-		[Optional] PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
-		[Optional] PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress);
+		[Optional] PREAD_PROCESS_MEMORY_ROUTINE64? ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE64? FunctionTableAccessRoutine,
+		[Optional] PGET_MODULE_BASE_ROUTINE64? GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE64? TranslateAddress);
 
 	/// <summary>Obtains a stack trace.</summary>
 	/// <param name="MachineType">
@@ -1995,8 +1971,8 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.StackWalkEx")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool StackWalkEx(IMAGE_FILE_MACHINE MachineType, HPROCESS hProcess, HTHREAD hThread, ref STACKFRAME_EX StackFrame, [In, Out] IntPtr ContextRecord,
-		[Optional] PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
-		[Optional] PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress, SYM_STKWALK Flags);
+		[Optional] PREAD_PROCESS_MEMORY_ROUTINE64? ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE64? FunctionTableAccessRoutine,
+		[Optional] PGET_MODULE_BASE_ROUTINE64? GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE64? TranslateAddress, SYM_STKWALK Flags);
 
 	/// <summary>Undecorates the specified decorated C++ symbol name.</summary>
 	/// <param name="name">

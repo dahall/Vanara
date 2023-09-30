@@ -838,6 +838,7 @@ public static partial class DbgHelp
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IMAGE_EXPORT_DIRECTORY
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public uint Characteristics;
 		public uint TimeDateStamp;
 		public ushort MajorVersion;
@@ -849,6 +850,7 @@ public static partial class DbgHelp
 		public uint AddressOfFunctions; // RVA from base of image
 		public uint AddressOfNames; // RVA from base of image
 		public uint AddressOfNameOrdinals; // RVA from base of image
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Represents the COFF header format.</summary>
@@ -1801,7 +1803,7 @@ public static partial class DbgHelp
 				{
 					fixed (void* dd = _DataDirectory)
 					{
-						return ((IntPtr)dd).ToArray<IMAGE_DATA_DIRECTORY>(16);
+						return ((IntPtr)dd).ToArray<IMAGE_DATA_DIRECTORY>(16)!;
 					}
 				}
 			}

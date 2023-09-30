@@ -9,7 +9,9 @@ namespace Vanara.PInvoke.Tests;
 public class ImageHlpTests
 {
 	const string imgName = "imagehlp.dll";
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	string imgPath;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup()

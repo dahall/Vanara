@@ -1377,7 +1377,7 @@ After:
 	{
 		private static readonly Type structType;
 		private static readonly System.Reflection.FieldInfo fiStr;
-		private CharSet charSet;
+		private readonly CharSet charSet;
 
 		static SafeAnysizeStringMarshaler()
 		{
@@ -1393,10 +1393,7 @@ After:
 		/// <param name="cookie">
 		/// The name of the field in <typeparamref name="T"/> that specifies the string length of the last field of <typeparamref name="T"/>.
 		/// </param>
-		public SafeAnysizeStringMarshaler(string cookie)
-		{
-			charSet = (CharSet)Enum.Parse(typeof(CharSet), cookie);
-		}
+		public SafeAnysizeStringMarshaler(string cookie) => charSet = (CharSet)Enum.Parse(typeof(CharSet), cookie);
 
 		/// <summary>Gets the size of the native data.</summary>
 		/// <returns>
@@ -1404,11 +1401,11 @@ After:
 		/// </returns>
 		public SizeT GetNativeSize() => Marshal.SizeOf(structType);
 
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
 			// Get structure information
 			if (managedObject is null) return SafeHGlobalHandle.Null;
-			if (!(managedObject is T value))
+			if (managedObject is not T value)
 				throw new ArgumentException($"{nameof(managedObject)} must be an instance of {structType.Name}.");
 
 			// Get the current value for the last field (or create one if needed)
@@ -1425,14 +1422,14 @@ After:
 			return ret;
 		}
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 
 			// Move structure and assign string
-			var value = (T)Marshal.PtrToStructure(pNativeData, typeof(T));
+			var value = (T?)Marshal.PtrToStructure(pNativeData, typeof(T));
 			var strVal = StringHelper.GetString(pNativeData.Offset(Marshal.OffsetOf(typeof(T), fiStr.Name).ToInt32()), charSet);
-			fiStr.SetValueDirect(__makeref(value), strVal);
+			fiStr.SetValueDirect(__makeref(value), strVal!);
 
 			return value;
 		}
@@ -1627,12 +1624,11 @@ After:
 		public uint StackLimit;
 
 		/// <summary>This member is reserved for use by the operating system.</summary>
-		private uint Reserved0;
-
-		private uint Reserved1;
-		private uint Reserved2;
-		private uint Reserved3;
-		private uint Reserved4;
+		private readonly uint Reserved0;
+		private readonly uint Reserved1;
+		private readonly uint Reserved2;
+		private readonly uint Reserved3;
+		private readonly uint Reserved4;
 	}
 
 	/// <summary>Information that is used by kernel debuggers to trace through user-mode callbacks in a thread's kernel stack.</summary>
@@ -1707,9 +1703,8 @@ After:
 		public uint RetpolineStubSize;
 
 		/// <summary>This member is reserved for use by the operating system.</summary>
-		private ulong Reserved0;
-
-		private ulong Reserved1;
+		private readonly ulong Reserved0;
+		private readonly ulong Reserved1;
 	}
 
 	/// <summary>Contains information about the loaded image.</summary>
