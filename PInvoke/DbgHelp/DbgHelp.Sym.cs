@@ -5904,7 +5904,8 @@ public static partial class DbgHelp
 	/// </summary>
 	public class ProcessSymbolHandler : IDisposable
 	{
-		private HPROCESS hProc;
+		private readonly HPROCESS hProc;
+		private readonly SYMOPT opt;
 
 		/// <summary>Initializes the symbol handler for a process.</summary>
 		/// <param name="hProcess">
@@ -5938,8 +5939,61 @@ public static partial class DbgHelp
 		/// If this value is <see langword="true"/>, enumerates the loaded modules for the process and effectively calls the
 		/// SymLoadModule64 function for each module.
 		/// </param>
-		public ProcessSymbolHandler(HPROCESS hProcess, string? UserSearchPath = null, bool fInvadeProcess = true) =>
-			SymInitialize(hProc = hProcess, UserSearchPath, fInvadeProcess);
+		public ProcessSymbolHandler(HPROCESS hProcess, string? UserSearchPath = null, bool fInvadeProcess = true) :
+			this(hProcess, 0, UserSearchPath, fInvadeProcess) { }
+
+		/// <summary>Initializes the symbol handler for a process.</summary>
+		/// <param name="hProcess">
+		/// <para>
+		/// A handle that identifies the caller. This value should be unique and nonzero, but need not be a process handle. However, if you
+		/// do use a process handle, be sure to use the correct handle. If the application is a debugger, use the process handle for the
+		/// process being debugged. Do not use the handle returned by GetCurrentProcess when debugging another process, because calling
+		/// functions like SymLoadModuleEx can have unexpected results.
+		/// </para>
+		/// <para>This parameter cannot be <see cref="HPROCESS.NULL"/>.</para>
+		/// </param>
+		/// <param name="opts">
+		/// The symbol options. Zero is a valid value and indicates that all options are turned off. The options values are combined using
+		/// the OR operator to form a valid options value.
+		/// </param>
+		/// <param name="UserSearchPath">
+		/// <para>
+		/// The path, or series of paths separated by a semicolon (;), that is used to search for symbol files. If this parameter is <see
+		/// langword="null"/>, the library attempts to form a symbol path from the following sources:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The current working directory of the application</term>
+		/// </item>
+		/// <item>
+		/// <term>The _NT_SYMBOL_PATH environment variable</term>
+		/// </item>
+		/// <item>
+		/// <term>The _NT_ALTERNATE_SYMBOL_PATH environment variable</term>
+		/// </item>
+		/// </list>
+		/// <para>Note that the search path can also be set using the <see cref="SymSetSearchPath"/> function.</para>
+		/// </param>
+		/// <param name="fInvadeProcess">
+		/// If this value is <see langword="true"/>, enumerates the loaded modules for the process and effectively calls the SymLoadModule64
+		/// function for each module.
+		/// </param>
+		public ProcessSymbolHandler(HPROCESS hProcess, SYMOPT opts, string? UserSearchPath = null, bool fInvadeProcess = true)
+		{
+			SymSetOptions(opts | (opt = SymGetOptions()));
+			Win32Error.ThrowLastErrorIfFalse(SymInitialize(hProc = hProcess, UserSearchPath, fInvadeProcess));
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="ProcessSymbolHandler"/> class.</summary>
+		/// <param name="imagePath">
+		/// The name of the executable image. This name can contain a partial path, a full path, or no path at all. If the file cannot be
+		/// located by the name provided, the symbol search path is used.
+		/// </param>
+		public ProcessSymbolHandler(string imagePath) : this(Kernel32.GetCurrentProcess(), SYMOPT.SYMOPT_DEBUG | SYMOPT.SYMOPT_DEFERRED_LOADS, null, false)
+		{
+			var dllBase = SymLoadModuleEx(hProc, default, imagePath);
+			Win32Error.ThrowLastErrorIf(dllBase, d => d == 0);
+		}
 
 		/// <summary>Performs an implicit conversion from <see cref="ProcessSymbolHandler"/> to <see cref="HPROCESS"/>.</summary>
 		/// <param name="h">The <see cref="ProcessSymbolHandler"/> instance.</param>
@@ -5947,7 +6001,7 @@ public static partial class DbgHelp
 		public static implicit operator HPROCESS(ProcessSymbolHandler h) => h.hProc;
 
 		/// <summary>Deallocates all resources associated with this process handle.</summary>
-		public void Dispose() => SymCleanup(hProc);
+		public void Dispose() { SymCleanup(hProc); SymSetOptions(opt); GC.SuppressFinalize(this); }
 
 		/// <summary>Refreshes the module list for the process.</summary>
 		public void RefreshModuleList() => SymRefreshModuleList(hProc);

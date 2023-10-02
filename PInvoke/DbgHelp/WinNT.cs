@@ -1198,6 +1198,21 @@ public static partial class DbgHelp
 
 		/// <summary/>
 		public uint GuardEHContinuationCount;
+		
+		/// <summary/>
+		public uint GuardXFGCheckFunctionPointer;   // VA
+		
+		/// <summary/>
+		public uint GuardXFGDispatchFunctionPointer; // VA
+		
+		/// <summary/>
+		public uint GuardXFGTableDispatchFunctionPointer; // VA
+		
+		/// <summary/>
+		public uint CastGuardOsDeterminedFailureMode; // VA
+
+		/// <summary/>
+		public uint GuardMemcpyFunctionPointer;     // VA
 	}
 
 	/// <summary>Contains the load configuration data of an image.</summary>
@@ -1375,6 +1390,21 @@ public static partial class DbgHelp
 
 		/// <summary/>
 		public ulong GuardEHContinuationCount;
+
+		/// <summary/>
+		public ulong GuardXFGCheckFunctionPointer;   //VA
+
+		/// <summary/>
+		public ulong GuardXFGDispatchFunctionPointer; //VA
+
+		/// <summary/>
+		public ulong GuardXFGTableDispatchFunctionPointer; //VA
+
+		/// <summary/>
+		public ulong CastGuardOsDeterminedFailureMode; //VA
+
+		/// <summary/>
+		public ulong GuardMemcpyFunctionPointer;     //VA
 	}
 
 	/// <summary>Represents the PE header format.</summary>
@@ -1830,7 +1860,7 @@ public static partial class DbgHelp
 	// NumberOfLinenumbers; DWORD Characteristics; } IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_SECTION_HEADER")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct IMAGE_SECTION_HEADER
+	public unsafe struct IMAGE_SECTION_HEADER
 	{
 		/// <summary>
 		/// An 8-byte, null-padded UTF-8 string. There is no terminating null character if the string is exactly eight characters long.
@@ -1838,8 +1868,7 @@ public static partial class DbgHelp
 		/// an offset into the string table. Executable images do not use a string table and do not support section names longer than
 		/// eight characters.
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8 /*IMAGE_SIZEOF_SHORT_NAME*/)]
-		public byte[] Name;
+		public fixed byte Name[8];
 
 		/// <summary/>
 		public MISC Misc;

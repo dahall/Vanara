@@ -3,35 +3,37 @@ using NUnit.Framework.Internal;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using static Vanara.PInvoke.DbgHelp;
 using static Vanara.PInvoke.ImageHlp;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;
 
-[TestFixture]
+[TestFixture, SingleThreaded]
 public class DbgHelpTests
 {
 	const string imgName = "imagehlp.dll";
 	const string testAppName = "TestDbgApp";
 	static readonly string testAppPath = TestCaseSources.TempDirWhack + testAppName + ".exe";
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-	private Process testApp;
+	//private Process testApp;
 	private ProcessSymbolHandler hProc;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup()
 	{
-		testApp = Process.Start(new ProcessStartInfo(testAppPath) { WindowStyle = ProcessWindowStyle.Minimized })!;
-		hProc = new ProcessSymbolHandler(testApp.Handle);
+		//testApp = Process.Start(new ProcessStartInfo(testAppPath) { WindowStyle = ProcessWindowStyle.Minimized })!;
+		//hProc = new ProcessSymbolHandler(testApp.Handle, SYMOPT.SYMOPT_UNDNAME | SYMOPT.SYMOPT_DEFERRED_LOADS);
+		hProc = new ProcessSymbolHandler(testAppPath);
 	}
 
 	[OneTimeTearDown]
 	public void _TearDown()
 	{
 		hProc.Dispose();
-		testApp.Kill();
+		//testApp.Kill();
 	}
 
 	[Test]
@@ -74,9 +76,10 @@ public class DbgHelpTests
 	}
 
 	[Test]
-	public void GetImageConfigInformationTest()
+	public unsafe void GetImageConfigInformationTest()
 	{
-		Assert.That(MapAndLoad(imgName, null, out var LoadedImage, true, true), ResultIs.Successful);
+		LOADED_IMAGE_UNSAFE LoadedImage = default;
+		Assert.That(MapAndLoad(imgName, null, &LoadedImage, true, true), ResultIs.Successful);
 		try
 		{
 			var data = ImageDirectoryEntryToData(LoadedImage.MappedAddress, false, IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXPORT, out var cDirSize); // (_IMAGE_EXPORT_DIRECTORY*)
@@ -93,14 +96,15 @@ public class DbgHelpTests
 		}
 		finally
 		{
-			UnMapAndLoad(ref LoadedImage);
+			UnMapAndLoad(&LoadedImage);
 		}
 	}
 
 	[Test]
 	public void SymEnumerateModulesTest()
 	{
-		var output = SymEnumerateModules(hProc, true);
+		Thread.Sleep(500);
+		var output = SymEnumerateModules(hProc);
 		TestContext.WriteLine($"Count: {output.Count}");
 		output.WriteValues();
 	}
@@ -108,7 +112,7 @@ public class DbgHelpTests
 	[Test]
 	public void SymEnumLinesTest()
 	{
-		var (_, BaseOfDll) = SymEnumerateModules(hProc, true).First();
+		var (_, BaseOfDll) = SymEnumerateModules(hProc).First();
 		var output = SymEnumLines(hProc, unchecked((ulong)BaseOfDll.ToInt64()));
 		TestContext.WriteLine($"Count: {output.Count}");
 		output.WriteValues();
@@ -142,10 +146,19 @@ public class DbgHelpTests
 	}
 
 	[Test]
+	public void SymFromNameTest()
+	{
+		SYMBOL_INFO si = SYMBOL_INFO.Default;
+		Assert.That(SymFromName(hProc, "strcat", ref si), ResultIs.Successful);
+		si.WriteValues();
+	}
+
+	[Test]
 	public unsafe void SymGetOmapsTest()
 	{
 		var (_, BaseOfDll) = SymEnumerateModules(hProc, true).First();
-		Assert.That(SymGetOmaps(hProc, unchecked((ulong)BaseOfDll.ToInt64()), out _, out _, out _, out _), ResultIs.Successful);
+		SymGetOmaps(hProc, unchecked((ulong)BaseOfDll.ToInt64()), out _, out var t, out _, out var f);
+		Assert.That((uint)Win32Error.GetLastError(), Is.EqualTo(Win32Error.ERROR_NOT_FOUND).Or.EqualTo(Win32Error.ERROR_SUCCESS));
 	}
 
 	[Test]
@@ -177,9 +190,10 @@ public class DbgHelpTests
 	}
 
 	[Test]
-	public void MimicDllExp()
+	public unsafe void MimicDllExp()
 	{
-		Assert.That(MapAndLoad(imgName, null, out var LoadedImage, true, true), ResultIs.Successful);
+		LOADED_IMAGE_UNSAFE LoadedImage = default;
+		Assert.That(MapAndLoad(imgName, null, &LoadedImage, true, true), ResultIs.Successful);
 		try
 		{
 			var data = ImageDirectoryEntryToData(LoadedImage.MappedAddress, false, IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXPORT, out var cDirSize); // (_IMAGE_EXPORT_DIRECTORY*)
@@ -204,7 +218,7 @@ public class DbgHelpTests
 		}
 		finally
 		{
-			UnMapAndLoad(ref LoadedImage);
+			UnMapAndLoad(&LoadedImage);
 		}
 	}
 

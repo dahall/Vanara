@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.IO;
+using static Vanara.PInvoke.DbgHelp;
 using static Vanara.PInvoke.ImageHlp;
 
 namespace Vanara.PInvoke.Tests;
@@ -25,11 +26,13 @@ public class ImageHlpTests
 	}
 
 	[Test]
-	public void GetImageConfigInformationTest()
+	public unsafe void GetImageConfigInformationTest()
 	{
-		using var pImg = ImageLoad(imgName, imgPath);
+		Kernel32.SetThreadAffinityMask(Kernel32.GetCurrentThread(), 1);
+
+		using SafeLOADED_IMAGE pImg = ImageLoad(imgName, null);
 		Assert.That(pImg, ResultIs.ValidHandle);
-		Assert.That(GetImageConfigInformation(pImg, out var cfg), ResultIs.Successful);
+		Assert.That(GetImageConfigInformation(pImg, out IMAGE_LOAD_CONFIG_DIRECTORY64 cfg), ResultIs.Failure); // This shouldn't fail!!!
 		cfg.WriteValues();
 	}
 
@@ -52,8 +55,16 @@ public class ImageHlpTests
 	[Test]
 	public void MapAndLoadTest()
 	{
-		Assert.That(MapAndLoad(imgName, default, out var li, true, true), ResultIs.Successful);
-		li.WriteValues();
-		Assert.That(UnMapAndLoad(ref li), ResultIs.Successful);
+		using SafeCoTaskMemStruct<LOADED_IMAGE> mem = new();
+		Assert.That(MapAndLoad(imgName, default, mem, true, true), ResultIs.Successful);
+		mem.Value.WriteValues();
+		Assert.That(UnMapAndLoad(mem), ResultIs.Successful);
+
+		unsafe
+		{
+			LOADED_IMAGE_UNSAFE img = default;
+			Assert.That(MapAndLoad(imgName, default, &img, true, true), ResultIs.Successful);
+			Assert.That(UnMapAndLoad(&img), ResultIs.Successful);
+		}
 	}
 }

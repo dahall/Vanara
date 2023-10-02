@@ -1843,6 +1843,141 @@ After:
 		public uint SizeOfImage;
 	}
 
+	/// <summary>Contains information about the loaded image.</summary>
+	/// <remarks>
+	/// <para>The <c>LIST_ENTRY</c> structure is defined as follows:</para>
+	/// <para>
+	/// <code>typedef struct _LIST_ENTRY { struct _LIST_ENTRY *Flink; struct _LIST_ENTRY *Blink; } LIST_ENTRY, *PLIST_ENTRY, *RESTRICTED_POINTER PRLIST_ENTRY;</code>
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { PSTR
+	// ModuleName; HANDLE hFile; PUCHAR MappedAddress; #if ... PIMAGE_NT_HEADERS64 FileHeader; #else PIMAGE_NT_HEADERS32 FileHeader;
+	// #endif PIMAGE_SECTION_HEADER LastRvaSection; ULONG NumberOfSections; PIMAGE_SECTION_HEADER Sections; ULONG Characteristics;
+	// BOOLEAN fSystemImage; BOOLEAN fDOSImage; BOOLEAN fReadOnly; UCHAR Version; LIST_ENTRY Links; ULONG SizeOfImage; } LOADED_IMAGE, *PLOADED_IMAGE;
+	[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._LOADED_IMAGE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public unsafe struct LOADED_IMAGE_UNSAFE
+	{
+		/// <summary>The file name of the mapped file.</summary>
+		public StrPtrAnsi ModuleName;
+
+		/// <summary>A handle to the mapped file.</summary>
+		public HFILE hFile;
+
+		/// <summary>The base address of the mapped file.</summary>
+		public IntPtr MappedAddress;
+
+		/// <summary>A pointer to an <see cref="IMAGE_NT_HEADERS"/> structure.</summary>
+		public IMAGE_NT_HEADERS* FileHeader;
+
+		/// <summary>A pointer to an <see cref="IMAGE_SECTION_HEADER"/> structure.</summary>
+		public IMAGE_SECTION_HEADER* LastRvaSection;
+
+		/// <summary>The number of COFF section headers.</summary>
+		public uint NumberOfSections;
+
+		/// <summary>A pointer to an IMAGE_SECTION_HEADER structure.</summary>
+		public IMAGE_SECTION_HEADER* Sections;
+
+		/// <summary>
+		/// <para>The image characteristics value. This member can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IMAGE_FILE_RELOCS_STRIPPED 0x0001</term>
+		/// <term>Relocation information is stripped from the file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_EXECUTABLE_IMAGE 0x0002</term>
+		/// <term>The file is executable (there are no unresolved external references).</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_LINE_NUMS_STRIPPED 0x0004</term>
+		/// <term>Line numbers are stripped from the file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_LOCAL_SYMS_STRIPPED 0x0008</term>
+		/// <term>Local symbols are stripped from file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_AGGRESIVE_WS_TRIM 0x0010</term>
+		/// <term>Aggressively trim the working set.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_LARGE_ADDRESS_AWARE 0x0020</term>
+		/// <term>The application can handle addresses larger than 2 GB.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_BYTES_REVERSED_LO 0x0080</term>
+		/// <term>Bytes of word are reversed.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_32BIT_MACHINE 0x0100</term>
+		/// <term>Computer supports 32-bit words.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_DEBUG_STRIPPED 0x0200</term>
+		/// <term>Debugging information is stored separately in a .dbg file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP 0x0400</term>
+		/// <term>If the image is on removable media, copy and run from the swap file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_NET_RUN_FROM_SWAP 0x0800</term>
+		/// <term>If the image is on the network, copy and run from the swap file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_SYSTEM 0x1000</term>
+		/// <term>System file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_DLL 0x2000</term>
+		/// <term>DLL file.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_UP_SYSTEM_ONLY 0x4000</term>
+		/// <term>File should be run only on a uniprocessor computer.</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_BYTES_REVERSED_HI 0x8000</term>
+		/// <term>Bytes of the word are reversed.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public IMAGE_FILE Characteristics;
+
+		/// <summary>If the image is a kernel mode executable image, this value is <c>TRUE</c>.</summary>
+		[MarshalAs(UnmanagedType.U1)]
+		public bool fSystemImage;
+
+		/// <summary>If the image is a 16-bit executable image, this value is <c>TRUE</c>.</summary>
+		[MarshalAs(UnmanagedType.U1)]
+		public bool fDOSImage;
+
+		/// <summary>
+		/// <para>If the image is read-only, this value is <c>TRUE</c>.</para>
+		/// <para><c>Prior to Windows Vista:</c> This member is not included in the structure.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.U1)]
+		public bool fReadOnly;
+
+		/// <summary>
+		/// <para>The version string.</para>
+		/// <para><c>Prior to Windows Vista:</c> This member is not included in the structure.</para>
+		/// </summary>
+		public byte Version;
+
+		/// <summary>The list of loaded images.</summary>
+		public LIST_ENTRY Links;
+
+		/// <summary>The size of the image, in bytes.</summary>
+		public uint SizeOfImage;
+	}
+
 	/// <summary>Contains CodeView and Misc records.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-modload_cvmisc typedef struct _MODLOAD_CVMISC { DWORD oCV;
 	// size_t cCV; DWORD oMisc; size_t cMisc; DWORD dtImage; DWORD cImage; } MODLOAD_CVMISC, *PMODLOAD_CVMISC;
@@ -2655,10 +2790,20 @@ After:
 		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
 		public override bool IsInvalid => handle == IntPtr.Zero;
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeLOADED_IMAGE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="i">The <see cref="SafeLOADED_IMAGE"/> instance.</param>
+		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
+		public static implicit operator IntPtr(SafeLOADED_IMAGE i) => i.handle;
+
 		/// <summary>Performs an implicit conversion from <see cref="SafeLOADED_IMAGE"/> to <see cref="LOADED_IMAGE"/>.</summary>
 		/// <param name="i">The <see cref="SafeLOADED_IMAGE"/> instance.</param>
 		/// <returns>The resulting <see cref="LOADED_IMAGE"/> instance from the conversion.</returns>
 		public static implicit operator LOADED_IMAGE(SafeLOADED_IMAGE i) => i.handle.ToStructure<LOADED_IMAGE>();
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeLOADED_IMAGE"/> to <see cref="LOADED_IMAGE_UNSAFE"/>*.</summary>
+		/// <param name="i">The <see cref="SafeLOADED_IMAGE"/> instance.</param>
+		/// <returns>The resulting <see cref="LOADED_IMAGE_UNSAFE"/> pointer from the conversion.</returns>
+		public static unsafe explicit operator LOADED_IMAGE_UNSAFE*(SafeLOADED_IMAGE i) => (LOADED_IMAGE_UNSAFE*)i.handle;
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 		/// <returns>

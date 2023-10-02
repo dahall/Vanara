@@ -827,7 +827,8 @@ public static partial class DbgHelp
 	public static IList<string> EnumDirTree(HPROCESS hProcess, string RootPath, string InputPathName)
 	{
 		List<string> paths = new();
-		Win32Error.ThrowLastErrorIfFalse(EnumDirTree(hProcess, RootPath, InputPathName, null, (f, d) => { paths.Add(f); return false; }));
+		if (!EnumDirTree(hProcess, RootPath, InputPathName, null, (f, d) => { paths.Add(f); return false; }))
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_FILES);
 		return paths;
 	}
 
@@ -1514,6 +1515,40 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.ImageRvaToVa")]
 	public static extern IntPtr ImageRvaToVa(in IMAGE_NT_HEADERS NtHeaders, IntPtr Base, uint Rva, out IntPtr LastRvaSection);
+
+	/// <summary>
+	/// Locates a relative virtual address (RVA) within the image header of a file that is mapped as a file and returns the virtual
+	/// address of the corresponding byte in the file.
+	/// </summary>
+	/// <param name="NtHeaders">
+	/// A pointer to an IMAGE_NT_HEADERS structure. This structure can be obtained by calling the ImageNtHeader function.
+	/// </param>
+	/// <param name="Base">The base address of an image that is mapped into memory through a call to the MapViewOfFile function.</param>
+	/// <param name="Rva">The relative virtual address to be located.</param>
+	/// <param name="LastRvaSection">
+	/// A pointer to an IMAGE_SECTION_HEADER structure that specifies the last RVA section. This is an optional parameter. When
+	/// specified, it points to a variable that contains the last section value used for the specified image to translate an RVA to a VA.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is the virtual address in the mapped file.</para>
+	/// <para>If the function fails, the return value is <c>NULL</c>. To retrieve extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>ImageRvaToVa</c> function locates an RVA within the image header of a file that is mapped as a file and returns the
+	/// virtual address of the corresponding byte in the file.
+	/// </para>
+	/// <para>
+	/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
+	/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
+	/// than one thread to this function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-imagervatova PVOID IMAGEAPI ImageRvaToVa( PIMAGE_NT_HEADERS
+	// NtHeaders, PVOID Base, ULONG Rva, OUT PIMAGE_SECTION_HEADER *LastRvaSection );
+	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.ImageRvaToVa")]
+	public static unsafe extern IntPtr ImageRvaToVa([In] IMAGE_NT_HEADERS* NtHeaders, IntPtr Base, uint Rva, out IMAGE_SECTION_HEADER* LastRvaSection);
 
 	/// <summary>
 	/// Locates a relative virtual address (RVA) within the image header of a file that is mapped as a file and returns the virtual

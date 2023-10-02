@@ -470,7 +470,31 @@ public static partial class ImageHlp
 	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.GetImageConfigInformation")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetImageConfigInformation(in LOADED_IMAGE LoadedImage, out IMAGE_LOAD_CONFIG_DIRECTORY32 ImageConfigInformation);
+	public static extern bool GetImageConfigInformation([In] IntPtr LoadedImage, out IMAGE_LOAD_CONFIG_DIRECTORY32 ImageConfigInformation);
+
+	/// <summary>Locates and returns the load configuration data of an image.</summary>
+	/// <param name="LoadedImage">A pointer to a LOADED_IMAGE structure that is returned from a call to MapAndLoad or ImageLoad.</param>
+	/// <param name="ImageConfigInformation">
+	/// A pointer to an IMAGE_LOAD_CONFIG_DIRECTORY64 structure that receives the configuration information.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+	/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The SetImageConfigInformation function locates and changes the load configuration data of an image.</para>
+	/// <para>
+	/// All ImageHlp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
+	/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
+	/// than one thread to this function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nf-imagehlp-getimageconfiginformation BOOL IMAGEAPI
+	// GetImageConfigInformation( PLOADED_IMAGE LoadedImage, PIMAGE_LOAD_CONFIG_DIRECTORY ImageConfigInformation );
+	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.GetImageConfigInformation")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool GetImageConfigInformation([In] IntPtr LoadedImage, out IMAGE_LOAD_CONFIG_DIRECTORY64 ImageConfigInformation);
 
 	/// <summary>Retrieves the offset and size of the part of the PE header that is currently unused.</summary>
 	/// <param name="LoadedImage">A pointer to a LOADED_IMAGE structure that is returned from a call to MapAndLoad or ImageLoad.</param>
@@ -791,7 +815,44 @@ public static partial class ImageHlp
 	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.MapAndLoad")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MapAndLoad(string ImageName, [Optional] string? DllPath, out LOADED_IMAGE LoadedImage, [MarshalAs(UnmanagedType.Bool)] bool DotDll, [MarshalAs(UnmanagedType.Bool)] bool ReadOnly);
+	public static extern bool MapAndLoad(string ImageName, [Optional] string? DllPath, IntPtr LoadedImage, [MarshalAs(UnmanagedType.Bool)] bool DotDll, [MarshalAs(UnmanagedType.Bool)] bool ReadOnly);
+
+	/// <summary>Maps an image and preloads data from the mapped file.</summary>
+	/// <param name="ImageName">The file name of the image (executable file or DLL) that is loaded.</param>
+	/// <param name="DllPath">
+	/// The path used to locate the image if the name provided cannot be found. If this parameter is <c>NULL</c>, then the search path rules
+	/// set using the SearchPath function apply.
+	/// </param>
+	/// <param name="LoadedImage">A pointer to a LOADED_IMAGE structure that receives information about the image after it is loaded.</param>
+	/// <param name="DotDll">
+	/// The default extension to be used if the image name does not contain a file name extension. If the value is <c>TRUE</c>, a .DLL
+	/// extension is used. If the value is <c>FALSE</c>, then an .EXE extension is used.
+	/// </param>
+	/// <param name="ReadOnly">
+	/// The access mode. If this value is <c>TRUE</c>, the file is mapped for read-access only. If the value is <c>FALSE</c>, the file is
+	/// mapped for read and write access.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+	/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>MapAndLoad</c> function maps an image and preloads data from the mapped file. The corresponding function, <see
+	/// cref="UnMapAndLoad(LOADED_IMAGE_UNSAFE*)"/>, must be used to deallocate all resources that are allocated by the <c>MapAndLoad</c> function.
+	/// </para>
+	/// <para>
+	/// All ImageHlp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
+	/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more than
+	/// one thread to this function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nf-imagehlp-mapandload BOOL IMAGEAPI MapAndLoad( PCSTR ImageName,
+	// PCSTR DllPath, PLOADED_IMAGE LoadedImage, BOOL DotDll, BOOL ReadOnly );
+	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.MapAndLoad")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static unsafe extern bool MapAndLoad(string ImageName, [Optional] string? DllPath, [Out] LOADED_IMAGE_UNSAFE* LoadedImage, [MarshalAs(UnmanagedType.Bool)] bool DotDll, [MarshalAs(UnmanagedType.Bool)] bool ReadOnly);
 
 	/// <summary>Computes the checksum of the specified file.</summary>
 	/// <param name="Filename">The file name of the file for which the checksum is to be computed.</param>
@@ -1154,7 +1215,36 @@ public static partial class ImageHlp
 	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.UnMapAndLoad")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnMapAndLoad(ref LOADED_IMAGE LoadedImage);
+	//public static extern bool UnMapAndLoad([In] ref LOADED_IMAGE LoadedImage);
+	public static extern bool UnMapAndLoad([In] IntPtr LoadedImage);
+
+	/// <summary>Deallocate all resources that are allocated by a previous call to the MapAndLoad function.</summary>
+	/// <param name="LoadedImage">
+	/// A pointer to a LOADED_IMAGE structure. This structure is obtained through a call to the MapAndLoad function.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+	/// <para>If the function fails, the return value is <c>FALSE</c>. To retrieve extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>UnMapAndLoad</c> function must be used to deallocate all resources that are allocated by a previous call to MapAndLoad.
+	/// This function also writes a new checksum value into the image before the file is closed. This ensures that if a file is changed,
+	/// it can be successfully loaded by the system loader.
+	/// </para>
+	/// <para>
+	/// All ImageHlp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
+	/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
+	/// than one thread to this function.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nf-imagehlp-unmapandload BOOL IMAGEAPI UnMapAndLoad( PLOADED_IMAGE
+	// LoadedImage );
+	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.UnMapAndLoad")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	//public static extern bool UnMapAndLoad([In] ref LOADED_IMAGE LoadedImage);
+	public static unsafe extern bool UnMapAndLoad([In] LOADED_IMAGE_UNSAFE* LoadedImage);
 
 	/// <summary>
 	/// <para>Uses the specified information to update the corresponding fields in the symbol file.</para>
