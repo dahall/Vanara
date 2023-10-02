@@ -599,7 +599,7 @@ public static partial class DwmApi
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dwmapi.h")]
-	public static extern HRESULT DwmGetCompositionTimingInfo(HWND hwnd, ref DWM_TIMING_INFO dwAttribute);
+	public static extern HRESULT DwmGetCompositionTimingInfo([Optional] HWND hwnd, ref DWM_TIMING_INFO dwAttribute);
 
 	/// <summary>Retrieves transport attributes.</summary>
 	/// <param name="pfIsRemoting">
@@ -827,12 +827,12 @@ public static partial class DwmApi
 	/// </param>
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[PInvokeData("dwmapi.h")]
-	public static HRESULT DwmSetWindowAttribute<T>(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] T pvAttribute)
+	public static HRESULT DwmSetWindowAttribute<T>(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] T? pvAttribute)
 	{
 		if (pvAttribute == null || !CorrespondingTypeAttribute.CanSet(dwAttribute, typeof(T))) throw new ArgumentException();
 		var attr = pvAttribute is bool ? Convert.ToUInt32(pvAttribute) : (pvAttribute.GetType().IsEnum ? Convert.ChangeType(pvAttribute, Enum.GetUnderlyingType(pvAttribute.GetType())) : pvAttribute);
-		using (var p = new PinnedObject(attr))
-			return DwmSetWindowAttribute(hwnd, dwAttribute, p, Marshal.SizeOf(attr));
+		using var p = new PinnedObject(attr);
+		return DwmSetWindowAttribute(hwnd, dwAttribute, p, Marshal.SizeOf(attr));
 	}
 
 	/// <summary>
@@ -1236,7 +1236,7 @@ public static partial class DwmApi
 		{
 			int RotateLeft(int value, int nBits)
 			{
-				nBits = nBits % 0x20;
+				nBits %= 0x20;
 				return (value << nBits) | (value >> (0x20 - nBits));
 			}
 			return cxLeftWidth ^ RotateLeft(cyTopHeight, 8) ^ RotateLeft(cxRightWidth, 0x10) ^ RotateLeft(cyBottomHeight, 0x18);
