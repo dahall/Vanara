@@ -1625,7 +1625,9 @@ public static partial class DXGI
 	/// </remarks>
 	public static IDXGIFactory CreateDXGIFactory()
 	{
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		CreateDXGIFactory(typeof(IDXGIFactory).GUID, out var f).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return (IDXGIFactory)f;
 	}
 

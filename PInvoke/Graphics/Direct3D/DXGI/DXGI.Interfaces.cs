@@ -2926,7 +2926,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiswapchain-setfullscreenstate HRESULT SetFullscreenState(
 		// BOOL Fullscreen, IDXGIOutput *pTarget );
-		void SetFullscreenState([MarshalAs(UnmanagedType.Bool)] bool Fullscreen, [In, Optional]  IDXGIOutput pTarget);
+		void SetFullscreenState([MarshalAs(UnmanagedType.Bool)] bool Fullscreen, [In, Optional]  IDXGIOutput? pTarget);
 
 		/// <summary>Get the state associated with full-screen mode.</summary>
 		/// <param name="pFullscreen">

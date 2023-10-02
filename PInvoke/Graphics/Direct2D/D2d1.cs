@@ -1123,7 +1123,9 @@ public static partial class D2d1
 	public static T D2D1CreateFactory<T>(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, [In] D2D1_FACTORY_OPTIONS? pFactoryOptions = null) where T : class
 	{
 		using SafeCoTaskMemStruct<D2D1_FACTORY_OPTIONS> opts = pFactoryOptions;
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		D2D1CreateFactory(factoryType, typeof(T).GUID, opts, out var ppv).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return (T)ppv;
 	}
 

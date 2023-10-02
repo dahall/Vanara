@@ -371,7 +371,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getwidenedbounds%28float_id2d1strokestyle_constd2d1_matrix_3x2_f_float_d2d1_rect_f%29
 		// HRESULT GetWidenedBounds( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Determines whether the geometry's stroke contains the specified point given the specified stroke thickness, style, and transform.
@@ -410,7 +410,7 @@ public static partial class D2d1
 		// HRESULT StrokeContainsPoint( D2D1_POINT_2F point, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F
 		// *worldTransform, FLOAT flatteningTolerance, BOOL *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Indicates whether the area filled by the geometry would contain the specified point given the specified flattening tolerance.
@@ -740,7 +740,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-widen(float_id2d1strokestyle_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT Widen( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
 
 		/// <summary>Retrieves the source geometry of this transformed geometry object.</summary>
 		/// <param name="sourceGeometry">

@@ -303,7 +303,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createbitmapbrush(id2d1bitmap_constd2d1_bitmap_brush_properties_constd2d1_brush_properties_id2d1bitmapbrush)
 		// HRESULT CreateBitmapBrush( ID2D1Bitmap *bitmap, const D2D1_BITMAP_BRUSH_PROPERTIES *bitmapBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1BitmapBrush **bitmapBrush );
-		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
+		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap? bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
 
 		/// <summary>Creates a new ID2D1SolidColorBrush that has the specified color and opacity.</summary>
 		/// <param name="color">
@@ -534,7 +534,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-drawline void DrawLine( D2D1_POINT_2F
 		// point0, D2D1_POINT_2F point1, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle );
 		[PreserveSig]
-		new void DrawLine(D2D_POINT_2F point0, D2D_POINT_2F point1, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle strokeStyle = null);
+		new void DrawLine(D2D_POINT_2F point0, D2D_POINT_2F point1, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle? strokeStyle = null);
 
 		/// <summary>Draws the outline of a rectangle that has the specified dimensions and stroke style.</summary>
 		/// <param name="rect">
@@ -564,7 +564,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-drawrectangle(constd2d1_rect_f__id2d1brush_float_id2d1strokestyle)
 		// void DrawRectangle( const D2D1_RECT_F &amp; rect, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle );
 		[PreserveSig]
-		new void DrawRectangle(in D2D_RECT_F rect, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle strokeStyle = null);
+		new void DrawRectangle(in D2D_RECT_F rect, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle? strokeStyle = null);
 
 		/// <summary>Paints the interior of the specified rectangle.</summary>
 		/// <param name="rect">
@@ -614,7 +614,7 @@ public static partial class D2d1
 		// void DrawRoundedRectangle( const D2D1_ROUNDED_RECT &amp; roundedRect, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle
 		// *strokeStyle );
 		[PreserveSig]
-		new void DrawRoundedRectangle(in D2D1_ROUNDED_RECT roundedRect, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle strokeStyle = null);
+		new void DrawRoundedRectangle(in D2D1_ROUNDED_RECT roundedRect, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle? strokeStyle = null);
 
 		/// <summary>Paints the interior of the specified rounded rectangle.</summary>
 		/// <param name="roundedRect">
@@ -663,7 +663,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-drawellipse(constd2d1_ellipse__id2d1brush_float_id2d1strokestyle)
 		// void DrawEllipse( const D2D1_ELLIPSE &amp; ellipse, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle );
 		[PreserveSig]
-		new void DrawEllipse(in D2D1_ELLIPSE ellipse, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle strokeStyle = null);
+		new void DrawEllipse(in D2D1_ELLIPSE ellipse, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle? strokeStyle = null);
 
 		/// <summary>Paints the interior of the specified ellipse.</summary>
 		/// <param name="ellipse">
@@ -712,7 +712,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-drawgeometry void DrawGeometry(
 		// ID2D1Geometry *geometry, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle );
 		[PreserveSig]
-		new void DrawGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle strokeStyle = null);
+		new void DrawGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, float strokeWidth = 1.0f, [In] ID2D1StrokeStyle? strokeStyle = null);
 
 		/// <summary>Paints the interior of the specified geometry.</summary>
 		/// <param name="geometry">
@@ -750,7 +750,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-fillgeometry void FillGeometry(
 		// ID2D1Geometry *geometry, ID2D1Brush *brush, ID2D1Brush *opacityBrush );
 		[PreserveSig]
-		new void FillGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, [In] ID2D1Brush opacityBrush = null);
+		new void FillGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, [In] ID2D1Brush? opacityBrush = null);
 
 		/// <summary>Paints the interior of the specified mesh.</summary>
 		/// <param name="mesh">
@@ -1082,7 +1082,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-settextrenderingparams void
 		// SetTextRenderingParams( IDWriteRenderingParams *textRenderingParams );
 		[PreserveSig]
-		new void SetTextRenderingParams([In, Optional] IDWriteRenderingParams textRenderingParams);
+		new void SetTextRenderingParams([In, Optional] IDWriteRenderingParams? textRenderingParams);
 
 		/// <summary>Retrieves the render target's current text rendering options.</summary>
 		/// <param name="textRenderingParams">
@@ -1180,7 +1180,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-pushlayer(constd2d1_layer_parameters__id2d1layer)
 		// void PushLayer( const D2D1_LAYER_PARAMETERS &amp; layerParameters, ID2D1Layer *layer );
 		[PreserveSig]
-		new void PushLayer(in D2D1_LAYER_PARAMETERS layerParameters, [In, Optional] ID2D1Layer layer);
+		new void PushLayer(in D2D1_LAYER_PARAMETERS layerParameters, [In, Optional] ID2D1Layer? layer);
 
 		/// <summary>Stops redirecting drawing operations to the layer that is specified by the last PushLayer call.</summary>
 		/// <returns>None</returns>
@@ -1910,7 +1910,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createimagebrush(id2d1image_constd2d1_image_brush_properties__constd2d1_brush_properties__id2d1imagebrush)
 		// HRESULT CreateImageBrush( ID2D1Image *image, const D2D1_IMAGE_BRUSH_PROPERTIES &amp; imageBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES &amp; brushProperties, ID2D1ImageBrush **imageBrush );
-		ID2D1ImageBrush CreateImageBrush([Optional] ID2D1Image image, in D2D1_IMAGE_BRUSH_PROPERTIES imageBrushProperties, [In, Optional] IntPtr brushProperties);
+		ID2D1ImageBrush CreateImageBrush([Optional] ID2D1Image? image, in D2D1_IMAGE_BRUSH_PROPERTIES imageBrushProperties, [In, Optional] IntPtr brushProperties);
 
 		/// <summary>Creates a bitmap brush, the input image is a Direct2D bitmap object.</summary>
 		/// <param name="bitmap">
@@ -1932,7 +1932,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapbrush%28id2d1bitmap_constd2d1_bitmap_brush_properties1_constd2d1_brush_properties_id2d1bitmapbrush1%29
 		// HRESULT CreateBitmapBrush( ID2D1Bitmap *bitmap, const D2D1_BITMAP_BRUSH_PROPERTIES1 *bitmapBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1BitmapBrush1 **bitmapBrush );
-		ID2D1BitmapBrush1 CreateBitmapBrush1([Optional] ID2D1Bitmap bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
+		ID2D1BitmapBrush1 CreateBitmapBrush1([Optional] ID2D1Bitmap? bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
 
 		/// <summary>Creates a ID2D1CommandList object.</summary>
 		/// <returns>
@@ -2125,7 +2125,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-settarget void SetTarget( ID2D1Image
 		// *image );
 		[PreserveSig]
-		void SetTarget(ID2D1Image image);
+		void SetTarget(ID2D1Image? image);
 
 		/// <summary>Gets the target currently associated with the device context.</summary>
 		/// <param name="image">
@@ -2212,7 +2212,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-gettarget void GetTarget( ID2D1Image
 		// **image );
 		[PreserveSig]
-		void GetTarget(out ID2D1Image image);
+		void GetTarget(out ID2D1Image? image);
 
 		/// <summary>Sets the rendering controls for the given device context.</summary>
 		/// <param name="renderingControls">
@@ -2473,7 +2473,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-pushlayer(constd2d1_layer_parameters1__id2d1layer)
 		// void PushLayer( const D2D1_LAYER_PARAMETERS1 &amp; layerParameters, ID2D1Layer *layer );
 		[PreserveSig]
-		void PushLayer(in D2D1_LAYER_PARAMETERS1 layerParameters, [In, Optional] ID2D1Layer layer);
+		void PushLayer(in D2D1_LAYER_PARAMETERS1 layerParameters, [In, Optional] ID2D1Layer? layer);
 
 		/// <summary>
 		/// <para>This indicates that a portion of an effect's input is invalid. This method can be called many times.</para>
@@ -2676,7 +2676,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1drawingstateblock-settextrenderingparams void
 		// SetTextRenderingParams( IDWriteRenderingParams *textRenderingParams );
 		[PreserveSig]
-		void SetTextRenderingParams([In, Optional] IDWriteRenderingParams textRenderingParams);
+		void SetTextRenderingParams([In, Optional] IDWriteRenderingParams? textRenderingParams);
 
 		/// <summary>Retrieves the text-rendering configuration of the drawing state.</summary>
 		/// <param name="textRenderingParams">
@@ -2770,7 +2770,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getwidenedbounds%28float_id2d1strokestyle_constd2d1_matrix_3x2_f_float_d2d1_rect_f%29
 		// HRESULT GetWidenedBounds( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Determines whether the geometry's stroke contains the specified point given the specified stroke thickness, style, and transform.
@@ -2809,7 +2809,7 @@ public static partial class D2d1
 		// HRESULT StrokeContainsPoint( D2D1_POINT_2F point, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F
 		// *worldTransform, FLOAT flatteningTolerance, BOOL *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Indicates whether the area filled by the geometry would contain the specified point given the specified flattening tolerance.
@@ -2913,7 +2913,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-simplify%28d2d1_geometry_simplification_option_constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Simplify( D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink? geometrySink);
 
 		/// <summary>
 		/// Creates a set of clockwise-wound triangles that cover the geometry after it has been transformed using the specified matrix
@@ -3139,7 +3139,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-widen(float_id2d1strokestyle_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT Widen( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
 
 		/// <summary>Gets the D2D1_ELLIPSE structure that describes this ellipse geometry.</summary>
 		/// <param name="ellipse">
@@ -3225,7 +3225,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1factory-getdesktopdpi void GetDesktopDpi( FLOAT *dpiX,
 		// FLOAT *dpiY );
-		[PreserveSig, Obsolete]
+		[PreserveSig, Obsolete("ID2D1Factory::GetDesktopDpi is deprecated. For a desktop app, instead use GetDpiForWindow. For a Universal Windows Platform (UWP) app, instead use DisplayInformation::LogicalDpi.")]
 		void GetDesktopDpi(out float dpiX, out float dpiY);
 
 		/// <summary>Creates an ID2D1RectangleGeometry.</summary>
@@ -3382,7 +3382,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1factory-createdrawingstateblock%28constd2d1_drawing_state_description_idwriterenderingparams_id2d1drawingstateblock%29
 		// HRESULT CreateDrawingStateBlock( const D2D1_DRAWING_STATE_DESCRIPTION *drawingStateDescription, IDWriteRenderingParams
 		// *textRenderingParams, ID2D1DrawingStateBlock **drawingStateBlock );
-		ID2D1DrawingStateBlock CreateDrawingStateBlock([In, Optional] IntPtr drawingStateDescription, [In, Optional] IDWriteRenderingParams textRenderingParams);
+		ID2D1DrawingStateBlock CreateDrawingStateBlock([In, Optional] IntPtr drawingStateDescription, [In, Optional] IDWriteRenderingParams? textRenderingParams);
 
 		/// <summary>Creates a render target that renders to a Microsoft Windows Imaging Component (WIC) bitmap.</summary>
 		/// <param name="target">

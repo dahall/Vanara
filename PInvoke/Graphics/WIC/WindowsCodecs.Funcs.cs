@@ -62,7 +62,7 @@ public static partial class WindowsCodecs
 	// REFWICPixelFormatGUID dstFormat, IWICBitmapSource *pISrc, IWICBitmapSource **ppIDst );
 	[DllImport(Lib.Windowscodecs, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincodec.h", MSDNShortId = "ea735296-1bfd-4175-b8c9-cb5a61ab4203")]
-	public static extern HRESULT WICConvertBitmapSource(in Guid dstFormat, [In] IWICBitmapSource pISrc, out IWICBitmapSource ppIDst);
+	public static extern HRESULT WICConvertBitmapSource(in Guid dstFormat, [In] IWICBitmapSource pISrc, out IWICBitmapSource? ppIDst);
 
 	/// <summary>Returns a IWICBitmapSource that is backed by the pixels of a Windows Graphics Device Interface (GDI) section handle.</summary>
 	/// <param name="width">
@@ -106,7 +106,7 @@ public static partial class WindowsCodecs
 	// offset, IWICBitmap **ppIBitmap );
 	[DllImport(Lib.Windowscodecs, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincodec.h", MSDNShortId = "a14022a0-7af6-4c06-9afa-4709b81efc96")]
-	public static extern HRESULT WICCreateBitmapFromSection(uint width, uint height, in Guid pixelFormat, HSECTION hSection, uint stride, uint offset, out IWICBitmap ppIBitmap);
+	public static extern HRESULT WICCreateBitmapFromSection(uint width, uint height, in Guid pixelFormat, HSECTION hSection, uint stride, uint offset, out IWICBitmap? ppIBitmap);
 
 	/// <summary>Returns a IWICBitmapSource that is backed by the pixels of a Windows Graphics Device Interface (GDI) section handle.</summary>
 	/// <param name="width">
@@ -150,7 +150,7 @@ public static partial class WindowsCodecs
 	// offset, WICSectionAccessLevel desiredAccessLevel, IWICBitmap **ppIBitmap );
 	[DllImport(Lib.Windowscodecs, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincodec.h", MSDNShortId = "0c9892a5-c136-41f6-8161-8077afe1a9da")]
-	public static extern HRESULT WICCreateBitmapFromSectionEx(uint width, uint height, in Guid pixelFormat, HSECTION hSection, uint stride, uint offset, WICSectionAccessLevel desiredAccessLevel, out IWICBitmap ppIBitmap);
+	public static extern HRESULT WICCreateBitmapFromSectionEx(uint width, uint height, in Guid pixelFormat, HSECTION hSection, uint stride, uint offset, WICSectionAccessLevel desiredAccessLevel, out IWICBitmap? ppIBitmap);
 
 	/// <summary>Obtains the short name associated with a given GUID.</summary>
 	/// <param name="guid">

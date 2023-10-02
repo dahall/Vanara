@@ -490,7 +490,7 @@ public static partial class Dwrite
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefactory-createtextformat HRESULT CreateTextFormat(
 		// WCHAR const *fontFamilyName, IDWriteFontCollection *fontCollection, DWRITE_FONT_WEIGHT fontWeight, DWRITE_FONT_STYLE
 		// fontStyle, DWRITE_FONT_STRETCH fontStretch, FLOAT fontSize, WCHAR const *localeName, IDWriteTextFormat **textFormat );
-		IDWriteTextFormat CreateTextFormat([MarshalAs(UnmanagedType.LPWStr)] string fontFamilyName, [In, Optional] IDWriteFontCollection fontCollection, DWRITE_FONT_WEIGHT fontWeight,
+		IDWriteTextFormat CreateTextFormat([MarshalAs(UnmanagedType.LPWStr)] string fontFamilyName, [In, Optional] IDWriteFontCollection? fontCollection, DWRITE_FONT_WEIGHT fontWeight,
 			DWRITE_FONT_STYLE fontStyle, DWRITE_FONT_STRETCH fontStretch, float fontSize, [MarshalAs(UnmanagedType.LPWStr)] string localeName);
 
 		/// <summary>Creates a typography object for use in a text layout.</summary>
@@ -998,7 +998,7 @@ public static partial class Dwrite
 		// HRESULT CreateEnumeratorFromKey( IDWriteFactory *factory, void const *collectionKey, UINT32 collectionKeySize,
 		// IDWriteFontFileEnumerator **fontFileEnumerator );
 		[PreserveSig]
-		HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator fontFileEnumerator);
+		HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator? fontFileEnumerator);
 	}
 
 	/// <summary>
@@ -1640,7 +1640,7 @@ public static partial class Dwrite
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileenumerator-getcurrentfontfile HRESULT
 		// GetCurrentFontFile( IDWriteFontFile **fontFile );
 		[PreserveSig]
-		HRESULT GetCurrentFontFile(out IDWriteFontFile fontFile);
+		HRESULT GetCurrentFontFile(out IDWriteFontFile? fontFile);
 	}
 
 	/// <summary>
@@ -1679,7 +1679,7 @@ public static partial class Dwrite
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileloader-createstreamfromkey
 		// HRESULT CreateStreamFromKey( void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, IDWriteFontFileStream **fontFileStream );
 		[PreserveSig]
-		HRESULT CreateStreamFromKey([In] IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out IDWriteFontFileStream fontFileStream);
+		HRESULT CreateStreamFromKey([In] IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out IDWriteFontFileStream? fontFileStream);
 	}
 
 	/// <summary>Loads font file data from a custom font file loader.</summary>
@@ -2147,7 +2147,7 @@ public static partial class Dwrite
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileloader-createstreamfromkey
 		// HRESULT CreateStreamFromKey( void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, IDWriteFontFileStream **fontFileStream );
 		[PreserveSig]
-		new HRESULT CreateStreamFromKey([In] IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out IDWriteFontFileStream fontFileStream);
+		new HRESULT CreateStreamFromKey([In] IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out IDWriteFontFileStream? fontFileStream);
 
 		/// <summary>Obtains the length of the absolute file path from the font file reference key.</summary>
 		/// <param name="fontFileReferenceKey">
@@ -2766,7 +2766,7 @@ public static partial class Dwrite
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-getnumbersubstitution HRESULT
 		// GetNumberSubstitution( UINT32 textPosition, UINT32 *textLength, IDWriteNumberSubstitution **numberSubstitution );
 		[PreserveSig]
-		HRESULT GetNumberSubstitution(uint textPosition, out uint textLength, out IDWriteNumberSubstitution numberSubstitution);
+		HRESULT GetNumberSubstitution(uint textPosition, out uint textLength, out IDWriteNumberSubstitution? numberSubstitution);
 	}
 
 	/// <summary>
@@ -2983,7 +2983,7 @@ public static partial class Dwrite
 		void GetGlyphs([MarshalAs(UnmanagedType.LPWStr)] string textString, uint textLength, [In] IDWriteFontFace fontFace,
 			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft,
 			in DWRITE_SCRIPT_ANALYSIS scriptAnalysis, [MarshalAs(UnmanagedType.LPWStr)] string localeName,
-			[In, Optional] IDWriteNumberSubstitution numberSubstitution, [In, Optional, MarshalAs(UnmanagedType.LPArray)] DWRITE_TYPOGRAPHIC_FEATURES[]? features,
+			[In, Optional] IDWriteNumberSubstitution? numberSubstitution, [In, Optional, MarshalAs(UnmanagedType.LPArray)] DWRITE_TYPOGRAPHIC_FEATURES[]? features,
 			[In, Optional] uint[]? featureRangeLengths, uint featureRanges, uint maxGlyphCount, [Out, MarshalAs(UnmanagedType.LPArray)] ushort[] clusterMap,
 			[Out, MarshalAs(UnmanagedType.LPArray)] DWRITE_SHAPING_TEXT_PROPERTIES[] textProps, [Out, MarshalAs(UnmanagedType.LPArray)] ushort[] glyphIndices,
 			[Out, MarshalAs(UnmanagedType.LPArray)] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProps, out uint actualGlyphCount);
@@ -3319,7 +3319,7 @@ public static partial class Dwrite
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextformat-settrimming HRESULT SetTrimming(
 		// DWRITE_TRIMMING const *trimmingOptions, IDWriteInlineObject *trimmingSign );
-		void SetTrimming(in DWRITE_TRIMMING trimmingOptions, [In, Optional] IDWriteInlineObject trimmingSign);
+		void SetTrimming(in DWRITE_TRIMMING trimmingOptions, [In, Optional] IDWriteInlineObject? trimmingSign);
 
 		/// <summary>Sets the line spacing.</summary>
 		/// <param name="lineSpacingMethod">
@@ -3414,7 +3414,7 @@ public static partial class Dwrite
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextformat-gettrimming HRESULT GetTrimming(
 		// DWRITE_TRIMMING *trimmingOptions, IDWriteInlineObject **trimmingSign );
-		void GetTrimming(out DWRITE_TRIMMING trimmingOptions, out IDWriteInlineObject trimmingSign);
+		void GetTrimming(out DWRITE_TRIMMING trimmingOptions, out IDWriteInlineObject? trimmingSign);
 
 		/// <summary>Gets the line spacing adjustment set for a multiline text paragraph.</summary>
 		/// <param name="lineSpacingMethod">
@@ -3661,7 +3661,7 @@ public static partial class Dwrite
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextformat-settrimming HRESULT SetTrimming(
 		// DWRITE_TRIMMING const *trimmingOptions, IDWriteInlineObject *trimmingSign );
-		new void SetTrimming(in DWRITE_TRIMMING trimmingOptions, [In, Optional] IDWriteInlineObject trimmingSign);
+		new void SetTrimming(in DWRITE_TRIMMING trimmingOptions, [In, Optional] IDWriteInlineObject? trimmingSign);
 
 		/// <summary>Sets the line spacing.</summary>
 		/// <param name="lineSpacingMethod">
@@ -4984,7 +4984,9 @@ public static partial class Dwrite
 	[PInvokeData("dwrite.h", MSDNShortId = "c74c0906-0a5c-4ab8-87cf-a195566e1d9e")]
 	public static T DWriteCreateFactory<T>(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) where T : class
 	{
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		DWriteCreateFactory(factoryType, typeof(T).GUID, out var factory).ThrowIfFailed();
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return (T)factory;
 	}
 }

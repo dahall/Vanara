@@ -2486,7 +2486,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframeencode-setpalette HRESULT SetPalette(
 		// IWICPalette *pIPalette );
-		void SetPalette([Optional]  IWICPalette pIPalette);
+		void SetPalette([Optional]  IWICPalette? pIPalette);
 
 		/// <summary>Sets the frame thumbnail if supported by the codec.</summary>
 		/// <param name="pIThumbnail">
@@ -2523,7 +2523,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframeencode-setthumbnail HRESULT
 		// SetThumbnail( IWICBitmapSource *pIThumbnail );
-		void SetThumbnail([Optional] IWICBitmapSource pIThumbnail);
+		void SetThumbnail([Optional] IWICBitmapSource? pIThumbnail);
 
 		/// <summary>Copies scan-line data from a caller-supplied buffer to the IWICBitmapFrameEncode object.</summary>
 		/// <param name="lineCount">
@@ -2587,7 +2587,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframeencode-writesource HRESULT
 		// WriteSource( IWICBitmapSource *pIBitmapSource, WICRect *prc );
-		void WriteSource([Optional] IWICBitmapSource pIBitmapSource, [In, Optional] PWICRect prc);
+		void WriteSource([Optional] IWICBitmapSource? pIBitmapSource, [In, Optional] PWICRect prc);
 
 		/// <summary>Commits the frame to the image.</summary>
 		/// <remarks>
@@ -3540,7 +3540,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwiccolortransform-initialize
 		// HRESULT Initialize( IWICBitmapSource *pIBitmapSource, IWICColorContext *pIContextSource, IWICColorContext *pIContextDest, in Guid pixelFmtDest );
-		void Initialize([Optional] IWICBitmapSource pIBitmapSource, [Optional] IWICColorContext pIContextSource, [Optional] IWICColorContext pIContextDest, in Guid pixelFmtDest);
+		void Initialize([Optional] IWICBitmapSource? pIBitmapSource, [Optional] IWICColorContext? pIContextSource, [Optional] IWICColorContext? pIContextDest, in Guid pixelFmtDest);
 	}
 
 	/// <summary>Exposes methods that create components used by component developers. This includes metadata readers, writers and other services for use by codec and metadata handler developers.</summary>

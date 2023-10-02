@@ -950,7 +950,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmapbrush-setbitmap void SetBitmap( ID2D1Bitmap
 		// *bitmap );
 		[PreserveSig]
-		new void SetBitmap([In, Optional] ID2D1Bitmap bitmap);
+		new void SetBitmap([In, Optional] ID2D1Bitmap? bitmap);
 
 		/// <summary>Gets the method by which the brush horizontally tiles those areas that extend past its bitmap.</summary>
 		/// <returns>
@@ -1387,7 +1387,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-settextrenderingparams HRESULT
 		// SetTextRenderingParams( IDWriteRenderingParams *textRenderingParams );
 		[PreserveSig]
-		HRESULT SetTextRenderingParams([In, Optional] IDWriteRenderingParams textRenderingParams);
+		HRESULT SetTextRenderingParams([In, Optional] IDWriteRenderingParams? textRenderingParams);
 
 		/// <summary>Sets a new transform.</summary>
 		/// <param name="transform">
@@ -1530,7 +1530,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-drawline HRESULT DrawLine( D2D1_POINT_2F
 		// point0, D2D1_POINT_2F point1, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle );
 		[PreserveSig]
-		HRESULT DrawLine(D2D_POINT_2F point0, D2D_POINT_2F point1, [In] ID2D1Brush brush, float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle);
+		HRESULT DrawLine(D2D_POINT_2F point0, D2D_POINT_2F point1, [In] ID2D1Brush brush, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle);
 
 		/// <summary>Indicates the geometry to be drawn to the command sink.</summary>
 		/// <param name="geometry">
@@ -1560,7 +1560,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-drawgeometry HRESULT DrawGeometry(
 		// ID2D1Geometry *geometry, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle );
 		[PreserveSig]
-		HRESULT DrawGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle);
+		HRESULT DrawGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle);
 
 		/// <summary>Draws a rectangle.</summary>
 		/// <param name="rect">
@@ -1586,7 +1586,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-drawrectangle HRESULT DrawRectangle(
 		// const D2D1_RECT_F *rect, ID2D1Brush *brush, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle );
 		[PreserveSig]
-		HRESULT DrawRectangle(in D2D_RECT_F rect, [In] ID2D1Brush brush, float strokeWidth, [In, Optional] ID2D1StrokeStyle strokeStyle);
+		HRESULT DrawRectangle(in D2D_RECT_F rect, [In] ID2D1Brush brush, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle);
 
 		/// <summary>Draws a bitmap to the render target.</summary>
 		/// <param name="bitmap">
@@ -1763,7 +1763,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-fillgeometry HRESULT FillGeometry(
 		// ID2D1Geometry *geometry, ID2D1Brush *brush, ID2D1Brush *opacityBrush );
 		[PreserveSig]
-		HRESULT FillGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, [In, Optional] ID2D1Brush opacityBrush);
+		HRESULT FillGeometry([In] ID2D1Geometry geometry, [In] ID2D1Brush brush, [In, Optional] ID2D1Brush? opacityBrush);
 
 		/// <summary>Indicates to the command sink a rectangle to be filled.</summary>
 		/// <param name="rect">
@@ -1821,7 +1821,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-pushlayer HRESULT PushLayer( const
 		// D2D1_LAYER_PARAMETERS1 *layerParameters1, ID2D1Layer *layer );
 		[PreserveSig]
-		HRESULT PushLayer(in D2D1_LAYER_PARAMETERS1 layerParameters1, [In, Optional] ID2D1Layer layer);
+		HRESULT PushLayer(in D2D1_LAYER_PARAMETERS1 layerParameters1, [In, Optional] ID2D1Layer? layer);
 
 		/// <summary>Removes an axis-aligned clip from the layer and clip stack.</summary>
 		/// <returns>
@@ -2179,7 +2179,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1effect-setinput void SetInput( UINT32 index,
 		// ID2D1Image *input, BOOL invalidate );
 		[PreserveSig]
-		void SetInput(uint index, [In, Optional] ID2D1Image input, [MarshalAs(UnmanagedType.Bool)] bool invalidate = true);
+		void SetInput(uint index, [In, Optional] ID2D1Image? input, [MarshalAs(UnmanagedType.Bool)] bool invalidate = true);
 
 		/// <summary>Allows the application to change the number of inputs to an effect.</summary>
 		/// <param name="inputCount">
@@ -2591,7 +2591,7 @@ public static partial class D2d1
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1imagebrush-setimage void SetImage( ID2D1Image *image );
 		[PreserveSig]
-		void SetImage([In, Optional] ID2D1Image image);
+		void SetImage([In, Optional] ID2D1Image? image);
 
 		/// <summary>Sets how the content inside the source rectangle in the image brush will be extended on the x-axis.</summary>
 		/// <param name="extendModeX">

@@ -7,9 +7,9 @@ namespace Vanara.PInvoke;
 /// <summary>Items from the WindowsCodecs.dll</summary>
 public static partial class WindowsCodecs
 {
-	private delegate void GetArrayAction<T>(uint cbSize, T[] value, out uint actualSize);
+	private delegate void GetArrayAction<T>(uint cbSize, T[]? value, out uint actualSize);
 
-	private delegate void GetStringAction(uint cbSize, StringBuilder value, out uint actualSize);
+	private delegate void GetStringAction(uint cbSize, StringBuilder? value, out uint actualSize);
 
 	/// <summary>
 	/// Provides access to a single frame of DDS image data in its native DXGI_FORMAT form, as well as information about the image data.
@@ -3810,7 +3810,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicpalette-initializefrombitmap HRESULT
 		// InitializeFromBitmap( IWICBitmapSource *pISurface, UINT cCount, BOOL fAddTransparentColor );
-		void InitializeFromBitmap([Optional] IWICBitmapSource pISurface, uint cCount, [MarshalAs(UnmanagedType.Bool)] bool fAddTransparentColor);
+		void InitializeFromBitmap([Optional] IWICBitmapSource? pISurface, uint cCount, [MarshalAs(UnmanagedType.Bool)] bool fAddTransparentColor);
 
 		/// <summary>Initialize the palette based on a given palette.</summary>
 		/// <param name="pIPalette">
@@ -4125,7 +4125,7 @@ public static partial class WindowsCodecs
 		/// <remarks>NULL can be passed in for pguidPreferredVendor to indicate no preference.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicpersiststream-loadex HRESULT LoadEx(
 		// IStream *pIStream, const GUID *pguidPreferredVendor, DWORD dwPersistOptions );
-		void LoadEx([In, Optional] IStream pIStream, [In] SafeGuidPtr pguidPreferredVendor, WICPersistOptions dwPersistOptions);
+		void LoadEx([In, Optional] IStream? pIStream, [In] SafeGuidPtr pguidPreferredVendor, WICPersistOptions dwPersistOptions);
 
 		/// <summary>Saves the IWICPersistStream to the given input IStream using the given parameters.</summary>
 		/// <param name="pIStream">
@@ -4142,7 +4142,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicpersiststream-saveex HRESULT SaveEx(
 		// IStream *pIStream, DWORD dwPersistOptions, BOOL fClearDirty );
-		void SaveEx([In, Optional] IStream pIStream, WICPersistOptions dwPersistOptions, [MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
+		void SaveEx([In, Optional] IStream? pIStream, WICPersistOptions dwPersistOptions, [MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
 	}
 
 	/// <summary>Exposes methods that provide information about a pixel format.</summary>
@@ -5184,7 +5184,7 @@ public static partial class WindowsCodecs
 		// Initialize( IWICBitmapSource **ppPlanes, UINT cPlanes, REFWICPixelFormatGUID dstFormat, WICBitmapDitherType dither,
 		// IWICPalette *pIPalette, double alphaThresholdPercent, WICBitmapPaletteType paletteTranslate );
 		void Initialize([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 1)] IWICBitmapSource[] ppPlanes, uint cPlanes,
-			in Guid dstFormat, WICBitmapDitherType dither, [Optional] IWICPalette pIPalette, double alphaThresholdPercent, WICBitmapPaletteType paletteTranslate);
+			in Guid dstFormat, WICBitmapDitherType dither, [Optional] IWICPalette? pIPalette, double alphaThresholdPercent, WICBitmapPaletteType paletteTranslate);
 
 		/// <summary>Query if the format converter can convert from one format to another.</summary>
 		/// <param name="pSrcPixelFormats">An array of WIC pixel formats that represents source image planes.</param>

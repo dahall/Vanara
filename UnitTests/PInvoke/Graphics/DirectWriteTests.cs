@@ -159,13 +159,13 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 	[ComVisible(true)]
 	public class FontLoader : IDWriteFontCollectionLoader
 	{
-		public HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator fontFileEnumerator)
+		public HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator? fontFileEnumerator)
 		{
 			fontFileEnumerator = null;
 			if (factory is null || collectionKey == default)
 				return HRESULT.E_INVALIDARG;
 
-			fontFileEnumerator = new FontEnumerator(factory, StringHelper.GetString(collectionKey, CharSet.Unicode, collectionKeySize));
+			fontFileEnumerator = new FontEnumerator(factory, StringHelper.GetString(collectionKey, CharSet.Unicode, collectionKeySize)!);
 
 			return HRESULT.S_OK;
 		}
@@ -243,7 +243,7 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 
 		public HRESULT MoveNext([MarshalAs(UnmanagedType.Bool)] out bool hasCurrentFile) { hasCurrentFile = enumerator.MoveNext(); return HRESULT.S_OK; }
 
-		public HRESULT GetCurrentFontFile(out IDWriteFontFile fontFile)
+		public HRESULT GetCurrentFontFile(out IDWriteFontFile? fontFile)
 		{
 			try { fontFile = factory.CreateFontFileReference(enumerator.Current); }
 			catch (COMException ex) { fontFile = null; return ex.HResult; }
