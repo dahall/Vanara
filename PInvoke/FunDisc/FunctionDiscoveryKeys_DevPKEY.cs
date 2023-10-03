@@ -4,6 +4,7 @@ namespace Vanara.PInvoke;
 
 public static partial class FunDisc
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	//
 	// _NAME
 	//
@@ -178,4 +179,5 @@ public static partial class FunDisc
 	// Device interface class properties
 	//
 	public static readonly PROPERTYKEY PKEY_DeviceInterfaceClass_DefaultInterface = new(new Guid(0x14c83a99, 0x0b3f, 0x44b7, 0xbe, 0x4c, 0xa1, 0x78, 0xd3, 0x99, 0x05, 0x64), 2); // DEVPROP_TYPE_STRING
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

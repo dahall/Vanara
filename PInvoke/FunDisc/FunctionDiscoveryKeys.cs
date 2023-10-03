@@ -4,6 +4,7 @@ namespace Vanara.PInvoke;
 
 public static partial class FunDisc
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	/* 08c0c253-a154-4746-9005-82de5317148b */
 	public static readonly PROPERTYKEY PKEY_FunctionInstance = new(new Guid(0x08c0c253, 0xa154, 0x4746, 0x90, 0x05, 0x82, 0xde, 0x53, 0x17, 0x14, 0x8b), 0x00000001);  // VT_UNKNOWN
 
@@ -338,4 +339,5 @@ public static partial class FunDisc
 	//  Type:     Unspecified -- VT_NULL
 	//  FormatID: 5EAF3EF2-E0CA-4598-BF06-71ED1D9DD953, 4096
 	public static readonly PROPERTYKEY PKEY_Hardware_Status = new(new Guid(0x5EAF3EF2, 0xE0CA, 0x4598, 0xBF, 0x06, 0x71, 0xED, 0x1D, 0x9D, 0xD9, 0x53), 4096);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -211,7 +211,7 @@ public static partial class FunDisc
 		// IFunctionInstanceCollection **ppIFunctionInstanceCollection );
 		[PreserveSig]
 		HRESULT GetInstanceCollection([MarshalAs(UnmanagedType.LPWStr)] string pszCategory, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pszSubCategory,
-			[MarshalAs(UnmanagedType.Bool)] bool fIncludeAllSubCategories, out IFunctionInstanceCollection ppIFunctionInstanceCollection);
+			[MarshalAs(UnmanagedType.Bool)] bool fIncludeAllSubCategories, out IFunctionInstanceCollection? ppIFunctionInstanceCollection);
 
 		/// <summary>
 		/// <para>
@@ -260,7 +260,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctiondiscovery-getinstance
 		// HRESULT GetInstance( const WCHAR *pszFunctionInstanceIdentity, IFunctionInstance **ppIFunctionInstance );
 		[PreserveSig]
-		HRESULT GetInstance([MarshalAs(UnmanagedType.LPWStr)] string pszFunctionInstanceIdentity, out IFunctionInstance ppIFunctionInstance);
+		HRESULT GetInstance([MarshalAs(UnmanagedType.LPWStr)] string pszFunctionInstanceIdentity, out IFunctionInstance? ppIFunctionInstance);
 
 		/// <summary>
 		/// <para>
@@ -345,8 +345,8 @@ public static partial class FunDisc
 		HRESULT CreateInstanceCollectionQuery([MarshalAs(UnmanagedType.LPWStr)] string pszCategory,
 			[MarshalAs(UnmanagedType.LPWStr), Optional] string? pszSubCategory,
 			[MarshalAs(UnmanagedType.Bool)] bool fIncludeAllSubCategories,
-			IFunctionDiscoveryNotification pIFunctionDiscoveryNotification, ref ulong pfdqcQueryContext,
-			out IFunctionInstanceCollectionQuery ppIFunctionInstanceCollectionQuery);
+			IFunctionDiscoveryNotification? pIFunctionDiscoveryNotification, ref ulong pfdqcQueryContext,
+			out IFunctionInstanceCollectionQuery? ppIFunctionInstanceCollectionQuery);
 
 		/// <summary>
 		/// <para>
@@ -399,8 +399,8 @@ public static partial class FunDisc
 		// *pIFunctionDiscoveryNotification, ulong *pfdqcQueryContext, IFunctionInstanceQuery **ppIFunctionInstanceQuery );
 		[PreserveSig]
 		HRESULT CreateInstanceQuery([MarshalAs(UnmanagedType.LPWStr)] string pszFunctionInstanceIdentity,
-			IFunctionDiscoveryNotification pIFunctionDiscoveryNotification, ref ulong pfdqcQueryContext,
-			out IFunctionInstanceQuery ppIFunctionInstanceQuery);
+			IFunctionDiscoveryNotification? pIFunctionDiscoveryNotification, ref ulong pfdqcQueryContext,
+			out IFunctionInstanceQuery? ppIFunctionInstanceQuery);
 
 		/// <summary>
 		/// <para>
@@ -493,7 +493,7 @@ public static partial class FunDisc
 		[PreserveSig]
 		HRESULT AddInstance(SystemVisibilityFlags enumSystemVisibility, [MarshalAs(UnmanagedType.LPWStr)] string pszCategory,
 			[MarshalAs(UnmanagedType.LPWStr), Optional] string? pszSubCategory,
-			[MarshalAs(UnmanagedType.LPWStr)] string pszCategoryIdentity, out IFunctionInstance ppIFunctionInstance);
+			[MarshalAs(UnmanagedType.LPWStr)] string pszCategoryIdentity, out IFunctionInstance? ppIFunctionInstance);
 
 		/// <summary>
 		/// <para>
@@ -652,7 +652,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctiondiscoverynotification-onupdate
 		// HRESULT OnUpdate( QueryUpdateAction enumQueryUpdateAction, ulong fdqcQueryContext, IFunctionInstance *pIFunctionInstance );
 		[PreserveSig]
-		HRESULT OnUpdate(QueryUpdateAction enumQueryUpdateAction, ulong fdqcQueryContext, IFunctionInstance pIFunctionInstance);
+		HRESULT OnUpdate(QueryUpdateAction enumQueryUpdateAction, [Optional] ulong fdqcQueryContext, IFunctionInstance pIFunctionInstance);
 
 		/// <summary>
 		/// <para>
@@ -805,7 +805,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctiondiscoverynotification-onevent
 		// HRESULT OnEvent( DWORD dwEventID, FDQUERYCONTEXT fdqcQueryContext, const WCHAR *pszProvider );
 		[PreserveSig]
-		HRESULT OnEvent(FD_EVENTID dwEventID, ulong fdqcQueryContext, [MarshalAs(UnmanagedType.LPWStr)] string pszProvider);
+		HRESULT OnEvent(FD_EVENTID dwEventID, [Optional] ulong fdqcQueryContext, [MarshalAs(UnmanagedType.LPWStr)] string pszProvider);
 	}
 
 	/// <summary>
@@ -829,7 +829,7 @@ public static partial class FunDisc
 		/// <param name="ppvObject">The interface specified by the <paramref name="riid"/> parameter.</param>
 		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT QueryService(in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppvObject);
+		HRESULT QueryService(in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppvObject);
 
 		/// <summary>
 		/// <para>
@@ -882,7 +882,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstance-getid
 		// HRESULT GetID( WCHAR **ppszCoMemIdentity );
 		[PreserveSig]
-		HRESULT GetID([MarshalAs(UnmanagedType.LPWStr)] out string ppszCoMemIdentity);
+		HRESULT GetID([MarshalAs(UnmanagedType.LPWStr)] out string? ppszCoMemIdentity);
 
 		/// <summary>
 		/// <para>
@@ -919,7 +919,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstance-getproviderinstanceid
 		// HRESULT GetProviderInstanceID( WCHAR **ppszCoMemProviderInstanceIdentity );
 		[PreserveSig]
-		HRESULT GetProviderInstanceID([MarshalAs(UnmanagedType.LPWStr)] out string ppszCoMemProviderInstanceIdentity);
+		HRESULT GetProviderInstanceID([MarshalAs(UnmanagedType.LPWStr)] out string? ppszCoMemProviderInstanceIdentity);
 
 		/// <summary>
 		/// <para>
@@ -986,7 +986,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstance-openpropertystore
 		// HRESULT OpenPropertyStore( DWORD dwStgAccess, IPropertyStore **ppIPropertyStore );
 		[PreserveSig]
-		HRESULT OpenPropertyStore(STGM dwStgAccess, out IPropertyStore ppIPropertyStore);
+		HRESULT OpenPropertyStore(STGM dwStgAccess, out IPropertyStore? ppIPropertyStore);
 
 		/// <summary>
 		/// <para>
@@ -1023,7 +1023,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstance-getcategory
 		// HRESULT GetCategory( WCHAR **ppszCoMemCategory, WCHAR **ppszCoMemSubCategory );
 		[PreserveSig]
-		HRESULT GetCategory([MarshalAs(UnmanagedType.LPWStr)] out string ppszCoMemCategory, [MarshalAs(UnmanagedType.LPWStr)] out string ppszCoMemSubCategory);
+		HRESULT GetCategory([MarshalAs(UnmanagedType.LPWStr)] out string? ppszCoMemCategory, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszCoMemSubCategory);
 	}
 
 	/// <summary>
@@ -1116,7 +1116,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstancecollection-get
 		// HRESULT Get( const WCHAR *pszInstanceIdentity, DWORD *pdwIndex, IFunctionInstance **ppIFunctionInstance );
 		[PreserveSig]
-		HRESULT Get([MarshalAs(UnmanagedType.LPWStr)] string pszInstanceIdentity, out uint pdwIndex, out IFunctionInstance ppIFunctionInstance);
+		HRESULT Get([MarshalAs(UnmanagedType.LPWStr)] string pszInstanceIdentity, out uint pdwIndex, out IFunctionInstance? ppIFunctionInstance);
 
 		/// <summary>
 		/// <para>
@@ -1151,7 +1151,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstancecollection-item
 		// HRESULT Item( DWORD dwIndex, IFunctionInstance **ppIFunctionInstance );
 		[PreserveSig]
-		HRESULT Item(uint dwIndex, out IFunctionInstance ppIFunctionInstance);
+		HRESULT Item(uint dwIndex, out IFunctionInstance? ppIFunctionInstance);
 
 		/// <summary>
 		/// <para>
@@ -1222,7 +1222,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstancecollection-remove
 		// HRESULT Remove( DWORD dwIndex, IFunctionInstance **ppIFunctionInstance );
 		[PreserveSig]
-		HRESULT Remove(uint dwIndex, out IFunctionInstance ppIFunctionInstance);
+		HRESULT Remove(uint dwIndex, out IFunctionInstance? ppIFunctionInstance);
 
 		/// <summary>
 		/// <para>
@@ -1651,7 +1651,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstancequery-execute
 		// HRESULT Execute( IFunctionInstance **ppIFunctionInstance );
 		[PreserveSig]
-		HRESULT Execute(out IFunctionInstance ppIFunctionInstance);
+		HRESULT Execute(out IFunctionInstance? ppIFunctionInstance);
 	}
 
 	/// <summary>CLSID_FunctionDiscovery</summary>

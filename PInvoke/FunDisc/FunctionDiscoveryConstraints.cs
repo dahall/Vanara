@@ -6,6 +6,7 @@ public static partial class FunDisc
 	// QUERY Constraint defines
 	///////////////////////////////////////////////////////////////////////////////
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const int MAX_FDCONSTRAINTNAME_LENGTH = 100;
 	public const int MAX_FDCONSTRAINTVALUE_LENGTH = 1000;
 
@@ -118,6 +119,7 @@ public static partial class FunDisc
 	public const string PROVIDERDDO_QUERYCONSTRAINT_DEVICEFUNCTIONDISPLAYOBJECTS = "DeviceFunctionDisplayObjects";
 	public const string PROVIDERDDO_QUERYCONSTRAINT_ONLYCONNECTEDDEVICES = "OnlyConnectedDevices";
 	public const string PROVIDERDDO_QUERYCONSTRAINT_DEVICEINTERFACES = "DeviceInterfaces";
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// <para>

@@ -2,6 +2,7 @@
 
 public static partial class FunDisc
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const string FD_SUBKEY = "SOFTWARE\\Microsoft\\Function Discovery\\";
 	public const string FD_SUBKEY_CATEGORIES = FD_SUBKEY + "Categories\\";
 
@@ -50,4 +51,5 @@ public static partial class FunDisc
 	// Subcategories of Registry
 	public const string FCTN_SUBCAT_REG_PUBLICATION = "Publication";
 	public const string FCTN_SUBCAT_REG_DIRECTED = "Directed";
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
