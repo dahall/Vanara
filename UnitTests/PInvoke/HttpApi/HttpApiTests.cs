@@ -7,7 +7,9 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class HttpApiTests
 {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	SafeHttpInitialize init;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
 	public void _Setup()

@@ -1,9 +1,4 @@
-﻿global using System;
-global using System.Collections.Generic;
-global using System.Runtime.InteropServices;
-global using Vanara.Extensions;
-global using Vanara.InteropServices;
-global using static Vanara.PInvoke.Ws2_32;
+﻿global using static Vanara.PInvoke.Ws2_32;
 global using HTTP_SERVICE_CONFIG_SETTING_PARAM = System.UInt32;
 global using HTTP_CONNECTION_ID = System.UInt64;
 global using HTTP_OPAQUE_ID = System.UInt64;

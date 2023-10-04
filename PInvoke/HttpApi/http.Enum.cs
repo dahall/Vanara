@@ -1,4 +1,3 @@
-
 namespace Vanara.PInvoke;
 
 /// <summary>Items from HttpApi.dll.</summary>
@@ -235,9 +234,11 @@ public static partial class HttpApi
 	[Flags]
 	public enum HTTP_CREATE_REQUEST_QUEUE_FLAG : uint
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		HTTP_CREATE_REQUEST_QUEUE_FLAG_OPEN_EXISTING = 0x00000001,
 		HTTP_CREATE_REQUEST_QUEUE_FLAG_CONTROLLER = 0x00000002,
 		HTTP_CREATE_REQUEST_QUEUE_FLAG_DELEGATION = 0x00000008,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary/>
@@ -1601,10 +1602,12 @@ public static partial class HttpApi
 	[Flags]
 	public enum HTTP_REQUEST_SIZING_INFO_FLAG : uint
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		HTTP_REQUEST_SIZING_INFO_FLAG_TCP_FAST_OPEN = 0x00000001,
 		HTTP_REQUEST_SIZING_INFO_FLAG_TLS_SESSION_RESUMPTION = 0x00000002,
 		HTTP_REQUEST_SIZING_INFO_FLAG_TLS_FALSE_START = 0x00000004,
 		HTTP_REQUEST_SIZING_INFO_FLAG_FIRST_REQUEST = 0x00000008,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>List of possible sizes for which information will be retured in HTTP_REQUEST_SIZING_INFO.</summary>
@@ -1636,6 +1639,7 @@ public static partial class HttpApi
 	[PInvokeData("http.h")]
 	public enum HTTP_REQUEST_TIMING_TYPE
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		HttpRequestTimingTypeConnectionStart,
 		HttpRequestTimingTypeDataStart,
 		HttpRequestTimingTypeTlsCertificateLoadStart,
@@ -1667,6 +1671,7 @@ public static partial class HttpApi
 		HttpRequestTimingTypeHttp3HeaderDecodeStart,
 		HttpRequestTimingTypeHttp3HeaderDecodeEnd,
 		HttpRequestTimingTypeMax
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>
@@ -2070,8 +2075,10 @@ public static partial class HttpApi
 	[PInvokeData("http.h")]
 	public enum HTTP_SERVICE_CONFIG_SETTING_KEY
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		HttpNone = 0,
 		HttpTlsThrottle
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>A combination of zero or more of the following flag values can be combined with OR as appropriate.</summary>
@@ -2156,6 +2163,7 @@ public static partial class HttpApi
 		HeaderWaitTimeout,
 	}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	/// <summary>The extended param type for the SSL extended params.</summary>
 	[PInvokeData("http.h")]
 	public enum HTTP_SSL_SERVICE_CONFIG_EX_PARAM_TYPE
@@ -2177,6 +2185,7 @@ public static partial class HttpApi
 		HttpSchemeHttps,
 		HttpSchemeMaximum
 	}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>The URL flags qualifying the URL that is removed.</summary>
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpRemoveUrlFromUrlGroup")]

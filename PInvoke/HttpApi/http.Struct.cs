@@ -1,3 +1,5 @@
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System.Collections.Generic;
 
 namespace Vanara.PInvoke;
 
@@ -260,7 +262,7 @@ public static partial class HttpApi
 
 		/// <summary>Pointer to the first question mark (?) in the string, or <c>NULL</c> if there is none.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pQueryString;
+		public string? pQueryString;
 	}
 
 	/// <summary>Properties that can be passed down with IOCTL_HTTP_CREATE_REQUEST_QUEUE_EX.</summary>
@@ -295,42 +297,29 @@ public static partial class HttpApi
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromMemory</c>.</summary>
 		/// <param name="mem">The memory.</param>
-		public HTTP_DATA_CHUNK(SafeAllocatedMemoryHandleBase mem) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromMemory)
-		{
-			FromMemory = new(mem);
-		}
+		public HTTP_DATA_CHUNK(SafeAllocatedMemoryHandleBase mem) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromMemory) => FromMemory = new(mem);
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFileHandle</c>.</summary>
 		/// <param name="hFile">The file handle.</param>
 		/// <param name="startingOffset">The starting offset.</param>
 		/// <param name="length">The length.</param>
-		public HTTP_DATA_CHUNK(HFILE hFile, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFileHandle)
-		{
+		public HTTP_DATA_CHUNK(HFILE hFile, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFileHandle) =>
 			FromFileHandle = new() { FileHandle = hFile, ByteRange = new() { StartingOffset = startingOffset, Length = length } };
-		}
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFragmentCache</c>.</summary>
 		/// <param name="fragmentName">Name of the fragment.</param>
-		public HTTP_DATA_CHUNK(SafeLPWSTR fragmentName) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCache)
-		{
-			FromFragmentCache = new(fragmentName);
-		}
+		public HTTP_DATA_CHUNK(SafeLPWSTR fragmentName) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCache) => FromFragmentCache = new(fragmentName);
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFragmentCacheEx</c>.</summary>
 		/// <param name="fragmentName">Name of the fragment.</param>
 		/// <param name="startingOffset">The starting offset.</param>
 		/// <param name="length">The length.</param>
-		public HTTP_DATA_CHUNK(SafeLPWSTR fragmentName, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCacheEx)
-		{
+		public HTTP_DATA_CHUNK(SafeLPWSTR fragmentName, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCacheEx) =>
 			FromFragmentCacheEx = new() { pFragmentName = fragmentName, ByteRange = new() { StartingOffset = startingOffset, Length = length } };
-		}
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkTrailers</c>.</summary>
 		/// <param name="headers">The headers.</param>
-		public HTTP_DATA_CHUNK(SafeNativeArray<HTTP_UNKNOWN_HEADER> headers) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkTrailers)
-		{
-			Trailers = new() { TrailerCount = (ushort)(headers?.Count ?? 0), pTrailers = headers };
-		}
+		public HTTP_DATA_CHUNK(SafeNativeArray<HTTP_UNKNOWN_HEADER> headers) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkTrailers) => Trailers = new() { TrailerCount = (ushort)headers.Count, pTrailers = headers };
 
 		/// <summary>Type of data store. This member can be one of the values from the <c>HTTP_DATA_CHUNK_TYPE</c> enumeration.</summary>
 		public HTTP_DATA_CHUNK_TYPE DataChunkType;
@@ -338,6 +327,7 @@ public static partial class HttpApi
 		/// <summary/>
 		private UNION union;
 
+		/// <summary/>
 		public FROMMEMORY FromMemory { get => union.FromMemory; set => union.FromMemory = value; }
 
 		/// <summary/>
@@ -387,7 +377,7 @@ public static partial class HttpApi
 			/// <summary>Length, in bytes, of the data block.</summary>
 			public uint BufferLength;
 
-			internal FROMMEMORY(SafeAllocatedMemoryHandleBase mem) { pBuffer = mem ?? default; BufferLength = mem?.Size ?? 0; }
+			internal FROMMEMORY(SafeAllocatedMemoryHandleBase mem) { pBuffer = mem; BufferLength = mem.Size; }
 		}
 
 		/// <summary/>
@@ -921,7 +911,7 @@ public static partial class HttpApi
 		/// is <c>NULL</c>, the HTTP Server API logs a default string.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string SoftwareName;
+		public string? SoftwareName;
 
 		/// <summary>
 		/// <para>The length, in bytes, of the software name. The length cannot be greater than <c>MAX_PATH</c>.</para>
@@ -1450,7 +1440,7 @@ public static partial class HttpApi
 		/// An array of HTTP_UNKNOWN_HEADER structures. This array contains one structure for each of the unknown headers sent
 		/// in the HTTP request.
 		/// </summary>
-		public HTTP_UNKNOWN_HEADER[] UnknownHeaders => pUnknownHeaders.ToArray<HTTP_UNKNOWN_HEADER>(UnknownHeaderCount);
+		public HTTP_UNKNOWN_HEADER[] UnknownHeaders => pUnknownHeaders.ToArray<HTTP_UNKNOWN_HEADER>(UnknownHeaderCount) ?? new HTTP_UNKNOWN_HEADER[0];
 	}
 
 	/// <summary>The <c>HTTP_REQUEST_INFO</c> structure extends the HTTP_REQUEST structure with additional information about the request.</summary>
@@ -1891,7 +1881,7 @@ public static partial class HttpApi
 		/// An array of <see cref="HTTP_DATA_CHUNK"/> structures that contains the data blocks making up the entity body.
 		/// HttpReceiveHttpRequest does not copy the entity body unless called with the HTTP_RECEIVE_REQUEST_FLAG_COPY_BODY flag set.
 		/// </summary>
-		public HTTP_DATA_CHUNK[] EntityChunks => Ptr.AsRef().pEntityChunks.ToArray<HTTP_DATA_CHUNK>(Ptr.AsRef().EntityChunkCount);
+		public HTTP_DATA_CHUNK[] EntityChunks => Ptr.AsRef().pEntityChunks.ToArray<HTTP_DATA_CHUNK>(Ptr.AsRef().EntityChunkCount) ?? new HTTP_DATA_CHUNK[0];
 
 		/// <summary>Raw connection ID for an Secure Sockets Layer (SSL) request.</summary>
 		public HTTP_RAW_CONNECTION_ID RawConnectionId => Ptr.AsRef().RawConnectionId;
@@ -1905,7 +1895,7 @@ public static partial class HttpApi
 		/// <summary>
 		/// An array of <see cref="HTTP_REQUEST_INFO"/> structures that contains additional information about the request.
 		/// </summary>
-		public HTTP_REQUEST_INFO[] RequestInfo => Ptr.AsRef().pRequestInfo.ToArray<HTTP_REQUEST_INFO>(Ptr.AsRef().RequestInfoCount);
+		public HTTP_REQUEST_INFO[] RequestInfo => Ptr.AsRef().pRequestInfo.ToArray<HTTP_REQUEST_INFO>(Ptr.AsRef().RequestInfoCount) ?? new HTTP_REQUEST_INFO[0];
 
 		internal SafeCoTaskMemStruct<HTTP_REQUEST_V2> Ptr { get; private set; }
 	}
@@ -2150,7 +2140,7 @@ public static partial class HttpApi
 		/// <para>If <c>NULL</c>, the client assumes the protection space consists of all the URIs under the responding server.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string DomainName;
+		public string? DomainName;
 
 		/// <summary>The length, in bytes, of the <c>Realm</c> member.</summary>
 		public ushort RealmLength;
@@ -2635,7 +2625,7 @@ public static partial class HttpApi
 		/// store location.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pSslCertStoreName;
+		public string? pSslCertStoreName;
 
 		/// <summary>
 		/// <para>Determines how client certificates are checked. This member can be one of the following values.</para>
@@ -3126,7 +3116,7 @@ public static partial class HttpApi
 		[MarshalAs(UnmanagedType.U1)] public bool CertDeniedByMapper;
 
 		/// <summary>The actual certificate.</summary>
-		public byte[] CertEncoded => pCertEncoded.ToByteArray((int)CertEncodedSize);
+		public byte[] CertEncoded => pCertEncoded.ToByteArray((int)CertEncodedSize) ?? new byte[0];
 	}
 
 	/// <summary>

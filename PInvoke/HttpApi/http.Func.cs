@@ -582,7 +582,7 @@ public static partial class HttpApi
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpCreateRequestQueue")]
 	public static extern Win32Error HttpCreateRequestQueue(HTTPAPI_VERSION Version, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? Name,
-		[In, Optional] SECURITY_ATTRIBUTES SecurityAttributes, [In, Optional] HTTP_CREATE_REQUEST_QUEUE_FLAG Flags,
+		[In, Optional] SECURITY_ATTRIBUTES? SecurityAttributes, [In, Optional] HTTP_CREATE_REQUEST_QUEUE_FLAG Flags,
 		out SafeHREQQUEUE RequestQueueHandle);
 
 	/// <summary>The <c>HttpCreateServerSession</c> function creates a server session for the specified version.</summary>
@@ -997,7 +997,7 @@ public static partial class HttpApi
 	{
 		if (!CorrespondingTypeAttribute.CanSet<T, HTTP_SERVICE_CONFIG_ID>(out var ConfigId))
 			throw new ArgumentOutOfRangeException(nameof(pConfigInformation));
-		using var mem = new SafeCoTaskMemStruct<T>(pConfigInformation);
+		using SafeCoTaskMemStruct<T> mem = pConfigInformation;
 		return HttpDeleteServiceConfiguration(default, ConfigId, mem, mem.Size, default);
 	}
 
@@ -1245,7 +1245,7 @@ public static partial class HttpApi
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpprepareurl HTTPAPI_LINKAGE ULONG HttpPrepareUrl( PVOID Reserved,
 	// ULONG Flags, [in] PCWSTR Url, [out] PWSTR *PreparedUrl );
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpPrepareUrl")]
-	public static Win32Error HttpPrepareUrl(string Url, out string PreparedUrl)
+	public static Win32Error HttpPrepareUrl(string Url, out string? PreparedUrl)
 	{
 		var err = HttpPrepareUrl(default, default, Url, out var pUrl);
 		PreparedUrl = err.Succeeded ? pUrl.ToString(-1, CharSet.Unicode) : null;
@@ -2883,7 +2883,7 @@ public static partial class HttpApi
 	/// </para>
 	/// </remarks>
 	public static Win32Error HttpReceiveHttpRequest(HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
-		[In] HTTP_RECEIVE_REQUEST_FLAG Flags, out HTTP_REQUEST RequestBuffer)
+		[In] HTTP_RECEIVE_REQUEST_FLAG Flags, out HTTP_REQUEST? RequestBuffer)
 	{
 		RequestBuffer = new();
 		var err = HttpReceiveHttpRequest(RequestQueueHandle, RequestId, Flags, RequestBuffer.Ptr, RequestBuffer.Ptr.Size, out var sz, default);
@@ -3002,7 +3002,7 @@ public static partial class HttpApi
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReceiveRequestEntityBody")]
 	public static extern Win32Error HttpReceiveRequestEntityBody([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
-		[In] HTTP_RECEIVE_REQUEST_ENTITY_BODY_FLAG Flags, [Out] IntPtr EntityBuffer, [In] uint EntityBufferLength, out uint BytesReturned,
+		[In] HTTP_RECEIVE_REQUEST_ENTITY_BODY_FLAG Flags, [Out] IntPtr EntityBuffer, [In] uint EntityBufferLength, [In, Optional] IntPtr BytesReturned,
 		in NativeOverlapped Overlapped);
 
 	/// <summary>The <c>HttpReceiveRequestEntityBody</c> function receives additional entity body data for a specified HTTP request.</summary>
@@ -3224,7 +3224,7 @@ public static partial class HttpApi
 	// HttpRemoveUrlFromUrlGroup( [in] HTTP_URL_GROUP_ID UrlGroupId, [in] PCWSTR pFullyQualifiedUrl, [in] ULONG Flags );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpRemoveUrlFromUrlGroup")]
-	public static extern Win32Error HttpRemoveUrlFromUrlGroup([In] HTTP_URL_GROUP_ID UrlGroupId, [MarshalAs(UnmanagedType.LPWStr)] string pFullyQualifiedUrl,
+	public static extern Win32Error HttpRemoveUrlFromUrlGroup([In] HTTP_URL_GROUP_ID UrlGroupId, [MarshalAs(UnmanagedType.LPWStr)] string? pFullyQualifiedUrl,
 		[In, Optional] HTTP_URL_FLAG Flags);
 
 	/// <summary>The <c>HttpSendHttpResponse</c> function sends an HTTP response to the specified HTTP request.</summary>
@@ -3380,7 +3380,7 @@ public static partial class HttpApi
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendHttpResponse")]
 	public static extern Win32Error HttpSendHttpResponse([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
-		in HTTP_RESPONSE_V1 HttpResponse, in HTTP_CACHE_POLICY CachePolicy, out uint BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
+		in HTTP_RESPONSE_V1 HttpResponse, in HTTP_CACHE_POLICY CachePolicy, [Optional] IntPtr BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
 		in NativeOverlapped Overlapped, in HTTP_LOG_DATA LogData);
 
 	/// <summary>The <c>HttpSendHttpResponse</c> function sends an HTTP response to the specified HTTP request.</summary>
@@ -3692,7 +3692,7 @@ public static partial class HttpApi
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendHttpResponse")]
 	public static extern Win32Error HttpSendHttpResponse([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
-		in HTTP_RESPONSE_V2 HttpResponse, in HTTP_CACHE_POLICY CachePolicy, out uint BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
+		in HTTP_RESPONSE_V2 HttpResponse, in HTTP_CACHE_POLICY CachePolicy, [Optional] IntPtr BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
 		in NativeOverlapped Overlapped, in HTTP_LOG_DATA LogData);
 
 	/// <summary>The <c>HttpSendHttpResponse</c> function sends an HTTP response to the specified HTTP request.</summary>
@@ -3851,6 +3851,162 @@ public static partial class HttpApi
 		in HTTP_RESPONSE_V2 HttpResponse, [In, Optional] IntPtr CachePolicy, out uint BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
 		[In, Optional] IntPtr Overlapped, [In, Optional] IntPtr LogData);
 
+	/// <summary>The <c>HttpSendHttpResponse</c> function sends an HTTP response to the specified HTTP request.</summary>
+	/// <param name="RequestQueueHandle">
+	/// <para>
+	/// A handle to the request queue from which the specified request was retrieved. A request queue is created and its handle returned by a
+	/// call to the HttpCreateRequestQueue function.
+	/// </para>
+	/// <para>
+	/// <c>Windows Server 2003 with SP1 and Windows XP with SP2:</c> The handle to the request queue is created by the HttpCreateHttpHandle function.
+	/// </para>
+	/// </param>
+	/// <param name="RequestId">
+	/// An identifier of the HTTP request to which this response corresponds. This value is returned in the <c>RequestId</c> member of the
+	/// HTTP_REQUEST structure by a call to the HttpReceiveHttpRequest function. This value cannot be <c>HTTP_NULL_ID</c>.
+	/// </param>
+	/// <param name="Flags">
+	/// <para>This parameter can be a combination of some of the following flag values. Those that are mutually exclusive are marked accordingly.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Flags</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HTTP_SEND_RESPONSE_FLAG_DISCONNECT</c></term>
+	/// <term>
+	/// The network connection should be disconnected after sending this response, overriding any persistent connection features associated
+	/// with the version of HTTP in use.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>HTTP_SEND_RESPONSE_FLAG_MORE_DATA</c></term>
+	/// <term>
+	/// Additional entity body data for this response is sent by the application through one or more subsequent calls to
+	/// HttpSendResponseEntityBody. The last call sending entity-body data then sets this flag to zero.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>HTTP_SEND_RESPONSE_FLAG_BUFFER_DATA</c></term>
+	/// <term>
+	/// This flag enables buffering of data in the kernel on a per-response basis. It should be used by an application doing synchronous I/O
+	/// or by an application doing asynchronous I/O with no more than one outstanding send at a time. Applications that use asynchronous I/O
+	/// and that may have more than one send outstanding at a time should not use this flag. When this flag is set, it should also be used
+	/// consistently in calls to the HttpSendResponseEntityBody function. <c>Windows Server 2003:</c> This flag is not supported. This flag
+	/// is new for Windows Server 2003 with SP1.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>HTTP_SEND_RESPONSE_FLAG_ENABLE_NAGLING</c></term>
+	/// <term>
+	/// Enables the TCP nagling algorithm for this send only. <c>Windows Server 2003 with SP1 and Windows XP with SP2:</c> This flag is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>HTTP_SEND_RESPONSE_FLAG_PROCESS_RANGES</c></term>
+	/// <term>
+	/// Specifies that for a range request, the full response content is passed and the caller wants the HTTP API to process ranges
+	/// appropriately. Windows Server 2008 R2 and Windows 7 or later. <c>Note</c> This flag is supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>HTTP_SEND_RESPONSE_FLAG_OPAQUE</c></term>
+	/// <term>
+	/// Specifies that the request/response is not HTTP compliant and all subsequent bytes should be treated as entity-body. Applications
+	/// specify this flag when it is accepting a Web Socket upgrade request and informing HTTP.sys to treat the connection data as opaque
+	/// data. This flag is only allowed when the <c>StatusCode</c> member of <c>pHttpResponse</c> is <c>101</c>, switching protocols.
+	/// <c>HttpSendHttpResponse</c> returns <c>ERROR_INVALID_PARAMETER</c> for all other HTTP response types if this flag is used. <c>Windows
+	/// 8 and later:</c> This flag is supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="HttpResponse">A pointer to an HTTP_RESPONSE structure that defines the HTTP response.</param>
+	/// <param name="CachePolicy">
+	/// <para>A pointer to the HTTP_CACHE_POLICY structure used to cache the response.</para>
+	/// <para><c>Windows Server 2003 with SP1 and Windows XP with SP2:</c> This parameter is reserved and must be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="BytesSent">
+	/// <para>Optional. A pointer to a variable that receives the number, in bytes, sent if the function operates synchronously.</para>
+	/// <para>
+	/// When making an asynchronous call using <c>pOverlapped</c>, set <c>pBytesSent</c> to <c>NULL</c>. Otherwise, when <c>pOverlapped</c>
+	/// is set to <c>NULL</c>, <c>pBytesSent</c> must contain a valid memory address and not be set to <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="Reserved1">This parameter is reserved and must be <c>NULL</c>.</param>
+	/// <param name="Reserved2">This parameter is reserved and must be zero.</param>
+	/// <param name="Overlapped">
+	/// <para>For asynchronous calls, set <c>pOverlapped</c> to point to an OVERLAPPED structure; for synchronous calls, set to <c>NULL</c>.</para>
+	/// <para>
+	/// A synchronous call blocks until all response data specified in the <c>pHttpResponse</c> parameter is sent, whereas an asynchronous
+	/// call immediately returns <c>ERROR_IO_PENDING</c> and the calling application then uses GetOverlappedResult or I/O completion ports to
+	/// determine when the operation is completed. For more information about using OVERLAPPED structures for synchronization, see
+	/// Synchronization and Overlapped Input and Output.
+	/// </para>
+	/// </param>
+	/// <param name="LogData">
+	/// <para>
+	/// A pointer to the HTTP_LOG_DATA structure used to log the response. Pass a pointer to the HTTP_LOG_FIELDS_DATA structure and cast it
+	/// to <c>PHTTP_LOG_DATA</c>.
+	/// </para>
+	/// <para>
+	/// Be aware that even when logging is enabled on a URL Group, or server session, the response will not be logged unless the application
+	/// supplies the log fields data structure.
+	/// </para>
+	/// <para><c>Windows Server 2003 and Windows XP with SP2:</c> This parameter is reserved and must be <c>NULL</c>.</para>
+	/// <para><c>Windows Vista and Windows Server 2008:</c> This parameter is new for Windows Vista, and Windows Server 2008</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns <c>NO_ERROR</c>.</para>
+	/// <para>
+	/// If the function is used asynchronously, a return value of <c>ERROR_IO_PENDING</c> indicates that the next request is not yet ready
+	/// and is retrieved later through normal overlapped I/O completion mechanisms.
+	/// </para>
+	/// <para>If the function fails, it returns one of the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>One or more of the supplied parameters is in an unusable form.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Other</c></term>
+	/// <term>A system error code defined in WinError.h.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>HttpSendHttpResponse</c> function is used to create and send a response header, and the HttpSendResponseEntityBody function
+	/// can be used to send entity-body data as required.
+	/// </para>
+	/// <para>
+	/// If neither a content-length header nor a transfer-encoding header is included with the response, the application must indicate the
+	/// end of the response by explicitly closing the connection by using the <c>HTTP_SEND_RESPONSE_DISCONNECT</c> flag.
+	/// </para>
+	/// <para>
+	/// If an application specifies a "Server:" header in a response, using the <c>HttpHeaderServer</c> identifier in the HTTP_KNOWN_HEADER
+	/// structure, that specified value is placed as the first part of the header, followed by a space and then "Microsoft-HTTPAPI/1.0". If
+	/// no server header is specified, <c>HttpSendHttpResponse</c> supplies "Microsoft-HTTPAPI/1.0" as the server header.
+	/// </para>
+	/// <para>
+	/// <c>Note</c> The <c>HttpSendHttpResponse</c> and HttpSendResponseEntityBody function must not be called simultaneously from different
+	/// threads on the same <c>RequestId</c>.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpsendhttpresponse HTTPAPI_LINKAGE ULONG HttpSendHttpResponse( [in]
+	// HANDLE RequestQueueHandle, [in] HTTP_REQUEST_ID RequestId, [in] ULONG Flags, [in] PHTTP_RESPONSE HttpResponse, [in, optional]
+	// PHTTP_CACHE_POLICY CachePolicy, [out] PULONG BytesSent, [in] PVOID Reserved1, [in] ULONG Reserved2, [in] LPOVERLAPPED Overlapped, [in,
+	// optional] PHTTP_LOG_DATA LogData );
+	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendHttpResponse")]
+	public static unsafe extern Win32Error HttpSendHttpResponse([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
+		[In] IntPtr HttpResponse, [In] HTTP_CACHE_POLICY* CachePolicy, [Optional] uint* BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
+		[In, Optional] NativeOverlapped* Overlapped, [In, Optional] HTTP_LOG_DATA* LogData);
+
 	/// <summary>The <c>HttpSendResponseEntityBody</c> function sends entity-body data associated with an HTTP response.</summary>
 	/// <param name="RequestQueueHandle">
 	/// <para>
@@ -3998,7 +4154,7 @@ public static partial class HttpApi
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendResponseEntityBody")]
 	public static extern Win32Error HttpSendResponseEntityBody([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
-		[In] ushort EntityChunkCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HTTP_DATA_CHUNK[] EntityChunks, out uint BytesSent,
+		[In] ushort EntityChunkCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HTTP_DATA_CHUNK[] EntityChunks, [Optional] IntPtr BytesSent,
 		[In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2, in NativeOverlapped Overlapped, in HTTP_LOG_DATA LogData);
 
 	/// <summary>The <c>HttpSendResponseEntityBody</c> function sends entity-body data associated with an HTTP response.</summary>
