@@ -6,6 +6,7 @@ namespace Vanara.PInvoke;
 /// <summary>Functions, structures and constants from ws2_32.h.</summary>
 public static partial class Ws2_32
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static readonly uint SIO_ABSORB_RTRALERT = _WSAIOW(IOC_VENDOR, 5);
 	public static readonly uint SIO_ACQUIRE_PORT_RESERVATION = _WSAIOW(IOC_VENDOR, 100);
 	public static readonly uint SIO_APPLY_TRANSPORT_SETTING = _WSAIOW(IOC_VENDOR, 19);
@@ -44,6 +45,7 @@ public static partial class Ws2_32
 	public static readonly uint SIO_TCP_SET_ICW = _WSAIOW(IOC_VENDOR, 22);
 	public static readonly uint SIO_TIMESTAMPING = _WSAIOW(IOC_VENDOR, 235);
 	public static readonly uint SIO_UCAST_IF = _WSAIOW(IOC_VENDOR, 6);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// The CONTROL_CHANNEL_TRIGGER_STATUS enumeration specifies the status from a query for the <c>REAL_TIME_NOTIFICATION_CAPABILITY</c>

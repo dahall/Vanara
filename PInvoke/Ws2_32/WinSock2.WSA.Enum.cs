@@ -381,6 +381,7 @@ public static partial class Ws2_32
 		WSA_FLAG_REGISTERED_IO = 0x100,
 	}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	[PInvokeData("winsock2.h")]
 	public enum WSACOMPLETIONTYPE
 	{
@@ -390,4 +391,5 @@ public static partial class Ws2_32
 		NSP_NOTIFY_PORT,
 		NSP_NOTIFY_APC,
 	}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

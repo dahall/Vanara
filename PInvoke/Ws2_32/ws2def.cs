@@ -6,6 +6,7 @@ namespace Vanara.PInvoke;
 
 public static partial class Ws2_32
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const uint IOC_UNIX                      = 0x00000000;
 	public const uint IOC_WS2                       = 0x08000000;
 	public const uint IOC_PROTOCOL                  = 0x10000000;
@@ -38,6 +39,7 @@ public static partial class Ws2_32
 	public static readonly uint SIO_RESERVED_1                = _WSAIOW(IOC_WS2,26);
 	public static readonly uint SIO_RESERVED_2                = _WSAIOW(IOC_WS2,33);
 	public static readonly uint SIO_GET_MULTIPLE_EXTENSION_FUNCTION_POINTER = _WSAIORW(IOC_WS2, 36);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>Flags that indicate options used in the GetAddrInfoW function.</summary>
 	[PInvokeData("ws2def.h", MSDNShortId = "a4896eac-68ae-4a08-8647-36be65fe4478")]

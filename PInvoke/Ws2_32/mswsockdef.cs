@@ -7,12 +7,14 @@ namespace Vanara.PInvoke;
 
 public static partial class Ws2_32
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const int RIO_MAX_CQ_SIZE = 0x8000000;
 	public static readonly RIO_CQ RIO_CORRUPT_CQ = (RIO_CQ)unchecked((int)0xFFFFFFFF);
 	public static readonly RIO_BUFFERID RIO_INVALID_BUFFERID = (RIO_BUFFERID)unchecked((int)0xFFFFFFFF);
 	public static readonly RIO_CQ RIO_INVALID_CQ = (RIO_CQ)0;
 	public static readonly RIO_RQ RIO_INVALID_RQ = (RIO_RQ)0;
 	public static readonly uint SIO_SET_COMPATIBILITY_MODE = _WSAIOW(IOC_VENDOR, 300);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>A set of flags that modify the behavior of the <c>RIOSendEx</c> function.</summary>
 	[PInvokeData("mswsockdef.h", MSDNShortId = "NC:mswsock.LPFN_RIORECEIVE")]
