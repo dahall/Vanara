@@ -1674,7 +1674,7 @@ public static partial class Opc
 		// LPCWSTR filename, OPC_STREAM_IO_MODE ioMode, LPSECURITY_ATTRIBUTES securityAttributes, DWORD dwFlagsAndAttributes, IStream
 		// **stream );
 		[PreserveSig]
-		HRESULT CreateStreamOnFile([MarshalAs(UnmanagedType.LPWStr)] string filename, OPC_STREAM_IO_MODE ioMode, [Optional] SECURITY_ATTRIBUTES securityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes, out IStream stream);
+		HRESULT CreateStreamOnFile([MarshalAs(UnmanagedType.LPWStr)] string filename, OPC_STREAM_IO_MODE ioMode, [Optional] SECURITY_ATTRIBUTES? securityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes, out IStream stream);
 
 		/// <summary>Creates a package object that represents an empty package.</summary>
 		/// <returns>A pointer to the IOpcPackage interface of the package object that represents an empty package.</returns>

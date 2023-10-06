@@ -490,7 +490,7 @@ public class WinRegTests
 	// IsolationFlags, IN DWORD Timeout, LPWSTR Description );
 	[DllImport("KtmW32.dll", SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "578bda35-bd35-4f6d-8366-a4bfb4dbfe42")]
-	private static extern HTRXN CreateTransaction([In, Optional] SECURITY_ATTRIBUTES lpTransactionAttributes, [Optional] IntPtr UOW, uint CreateOptions, [Optional] uint IsolationLevel, [Optional] uint IsolationFlags, [In] uint Timeout, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
+	private static extern HTRXN CreateTransaction([In, Optional] SECURITY_ATTRIBUTES? lpTransactionAttributes, [Optional] IntPtr UOW, uint CreateOptions, [Optional] uint IsolationLevel, [Optional] uint IsolationFlags, [In] uint Timeout, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
 
 	private static Win32Error CreateTree(string keyPath, out SafeRegistryHandle hKey)
 	{

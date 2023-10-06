@@ -566,7 +566,8 @@ public static partial class KtmW32
 	// NotificationMask, IN DWORD CreateOptions, IN PVOID EnlistmentKey );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "7bc06468-947f-48ec-8e58-20df58ed93bd")]
-	public static extern SafeHENLISTMENT CreateEnlistment([In, Optional] SECURITY_ATTRIBUTES lpEnlistmentAttributes, [In] HRESMGR ResourceManagerHandle, [In] HTRXN TransactionHandle, [In] NOTIFICATION_MASK NotificationMask, [In, Optional] CreateEnlistmentOptions CreateOptions, [In, Optional] IntPtr EnlistmentKey);
+	public static extern SafeHENLISTMENT CreateEnlistment([In, Optional] SECURITY_ATTRIBUTES? lpEnlistmentAttributes, [In] HRESMGR ResourceManagerHandle,
+		[In] HTRXN TransactionHandle, [In] NOTIFICATION_MASK NotificationMask, [In, Optional] CreateEnlistmentOptions CreateOptions, [In, Optional] IntPtr EnlistmentKey);
 
 	/// <summary>Creates a new resource manager (RM) object, and associates the RM with a transaction manager (TM).</summary>
 	/// <param name="lpResourceManagerAttributes">
@@ -611,7 +612,8 @@ public static partial class KtmW32
 	// Description );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "ad88e478-1dff-4f35-a0e3-6bda8bb45711")]
-	public static extern SafeHRESMGR CreateResourceManager([In, Optional] SECURITY_ATTRIBUTES lpResourceManagerAttributes, [In] in Guid ResourceManagerId, [In, Optional] CreateRMOptions CreateOptions, [In] HTRXNMGR TmHandle, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
+	public static extern SafeHRESMGR CreateResourceManager([In, Optional] SECURITY_ATTRIBUTES? lpResourceManagerAttributes, [In] in Guid ResourceManagerId,
+		[In, Optional] CreateRMOptions CreateOptions, [In] HTRXNMGR TmHandle, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
 
 	/// <summary>Creates a new transaction object.</summary>
 	/// <param name="lpTransactionAttributes">
@@ -673,7 +675,9 @@ public static partial class KtmW32
 	// IsolationFlags, IN DWORD Timeout, LPWSTR Description );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "578bda35-bd35-4f6d-8366-a4bfb4dbfe42")]
-	public static extern SafeHTRXN CreateTransaction([In, Optional] SECURITY_ATTRIBUTES lpTransactionAttributes, [In, Optional] IntPtr UOW, [In, Optional] CreateTrxnOptions CreateOptions, [In, Optional] uint IsolationLevel, [In, Optional] uint IsolationFlags, [In, Optional] uint Timeout, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
+	public static extern SafeHTRXN CreateTransaction([In, Optional] SECURITY_ATTRIBUTES? lpTransactionAttributes, [In, Optional] IntPtr UOW,
+		[In, Optional] CreateTrxnOptions CreateOptions, [In, Optional] uint IsolationLevel, [In, Optional] uint IsolationFlags,
+		[In, Optional] uint Timeout, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
 
 	/// <summary>Creates a new transaction manager (TM) object and returns a handle with the specified access.</summary>
 	/// <param name="lpTransactionAttributes">The transaction SECURITY_ATTRIBUTES (ACLs) for the TM object.</param>
@@ -711,7 +715,8 @@ public static partial class KtmW32
 	// LPSECURITY_ATTRIBUTES lpTransactionAttributes, LPWSTR LogFileName, IN ULONG CreateOptions, IN ULONG CommitStrength );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "f5b7d0c1-9cd0-48fc-8125-d4da040951c4")]
-	public static extern SafeHTRXNMGR CreateTransactionManager([In, Optional] SECURITY_ATTRIBUTES lpTransactionAttributes, [MarshalAs(UnmanagedType.LPWStr), Optional] string? LogFileName, [In, Optional] CreateTrxnMgrOptions CreateOptions, uint CommitStrength = 0);
+	public static extern SafeHTRXNMGR CreateTransactionManager([In, Optional] SECURITY_ATTRIBUTES? lpTransactionAttributes,
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? LogFileName, [In, Optional] CreateTrxnMgrOptions CreateOptions, uint CommitStrength = 0);
 
 	/// <summary>Obtains a virtual clock value from a transaction manager.</summary>
 	/// <param name="TransactionManagerHandle">A handle to the transaction manager to obtain a virtual clock value for.</param>
@@ -797,7 +802,8 @@ public static partial class KtmW32
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "d606f960-e843-4478-8ba7-5201f85c44ce")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNotificationResourceManager([In] HRESMGR ResourceManagerHandle, IntPtr TransactionNotification, [In] uint NotificationLength, [In, Optional] uint dwMilliseconds, out uint ReturnLength);
+	public static extern bool GetNotificationResourceManager([In] HRESMGR ResourceManagerHandle, IntPtr TransactionNotification,
+		[In] uint NotificationLength, [In, Optional] uint dwMilliseconds, out uint ReturnLength);
 
 	/// <summary>
 	/// Requests and receives asynchronous notification for a resource manager (RM). This function is used by the RM register to receive
@@ -835,7 +841,8 @@ public static partial class KtmW32
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "c83e104b-6cd7-4399-8232-7c2e7b408f1a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool GetNotificationResourceManagerAsync([In] HRESMGR ResourceManagerHandle, IntPtr TransactionNotification, [In] uint TransactionNotificationLength, out uint ReturnLength, [In] NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool GetNotificationResourceManagerAsync([In] HRESMGR ResourceManagerHandle, IntPtr TransactionNotification,
+		[In] uint TransactionNotificationLength, out uint ReturnLength, [In] NativeOverlapped* lpOverlapped);
 
 	/// <summary>Obtains the identifier (ID) for the specified transaction.</summary>
 	/// <param name="TransactionHandle">A handle to the transaction.</param>
@@ -878,7 +885,8 @@ public static partial class KtmW32
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "5ce3c96a-629e-49d0-8ec4-f9bf76af99ac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTransactionInformation([In] HTRXN TransactionHandle, out TRANSACTION_OUTCOME Outcome, [Optional] IntPtr IsolationLevel, [Optional] IntPtr IsolationFlags, out uint Timeout, uint BufferLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder Description);
+	public static extern bool GetTransactionInformation([In] HTRXN TransactionHandle, out TRANSACTION_OUTCOME Outcome, [Optional] IntPtr IsolationLevel,
+		[Optional] IntPtr IsolationFlags, out uint Timeout, uint BufferLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder Description);
 
 	/// <summary>Obtains an identifier for the specified transaction manager.</summary>
 	/// <param name="TransactionManagerHandle">A handle to the transaction manager.</param>
@@ -1410,7 +1418,8 @@ public static partial class KtmW32
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "e33d221b-cd06-4f20-a4b5-407a04362ba0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetTransactionInformation([In] HTRXN TransactionHandle, [In, Optional] uint IsolationLevel, [In, Optional] uint IsolationFlags, [In, Optional] uint Timeout, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
+	public static extern bool SetTransactionInformation([In] HTRXN TransactionHandle, [In, Optional] uint IsolationLevel,
+		[In, Optional] uint IsolationFlags, [In, Optional] uint Timeout, [MarshalAs(UnmanagedType.LPWStr), Optional] string? Description);
 
 	/// <summary>
 	/// Indicates that the resource manager (RM) is refusing a single-phase request. When a transaction manager (TM) receives this call,
@@ -1499,7 +1508,7 @@ public static partial class KtmW32
 		public static bool operator ==(HENLISTMENT h1, HENLISTMENT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HENLISTMENT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HENLISTMENT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1547,7 +1556,7 @@ public static partial class KtmW32
 		public static bool operator ==(HRESMGR h1, HRESMGR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HRESMGR h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HRESMGR h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1595,7 +1604,7 @@ public static partial class KtmW32
 		public static bool operator ==(HTRXNMGR h1, HTRXNMGR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HTRXNMGR h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HTRXNMGR h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
