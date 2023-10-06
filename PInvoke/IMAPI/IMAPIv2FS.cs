@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -172,7 +173,7 @@ public static partial class IMAPI
 	{
 		/// <summary>Initializes a new instance of the <see cref="DFileSystemImageEventsSink"/> class.</summary>
 		/// <param name="onUpdate">The delegate to assign to the <see cref="Update"/> event.</param>
-		public DFileSystemImageEventsSink(Action<IFileSystemImage, string, long, long> onUpdate)
+		public DFileSystemImageEventsSink(Action<IFileSystemImage, string, long, long>? onUpdate)
 		{
 			if (onUpdate is not null) Update += onUpdate;
 		}
@@ -220,7 +221,7 @@ public static partial class IMAPI
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public event Action<IFileSystemImage, string, long, long> Update;
+		public event Action<IFileSystemImage, string, long, long>? Update;
 
 		void DFileSystemImageEvents.Update(IFileSystemImage @object, string currentFile, long copiedSectors, long totalSectors) => Update?.Invoke(@object, currentFile, copiedSectors, totalSectors);
 	}
@@ -290,7 +291,7 @@ public static partial class IMAPI
 	{
 		/// <summary>Initializes a new instance of the <see cref="DFileSystemImageImportEventsSink"/> class.</summary>
 		/// <param name="onUpdateImport">The delegate to call on import update.</param>
-		public DFileSystemImageImportEventsSink(Action<IFileSystemImage, FsiFileSystems, string, long, long, long, long> onUpdateImport)
+		public DFileSystemImageImportEventsSink(Action<IFileSystemImage, FsiFileSystems, string, long, long, long, long>? onUpdateImport)
 		{
 			if (onUpdateImport is not null) UpdateImport += onUpdateImport;
 		}
@@ -323,7 +324,7 @@ public static partial class IMAPI
 		/// <para>Import notifications are generated only for files and directories, and not for associated named streams.</para>
 		/// <para>If the currentItem is a directory, it contains a back slash '' at the end.</para>
 		/// </remarks>
-		public event Action<IFileSystemImage, FsiFileSystems, string, long, long, long, long> UpdateImport;
+		public event Action<IFileSystemImage, FsiFileSystems, string, long, long, long, long>? UpdateImport;
 
 		void DFileSystemImageImportEvents.UpdateImport(IFileSystemImage @object, FsiFileSystems fileSystem, string currentItem, long importedDirectoryItems, long totalDirectoryItems, long importedFileItems, long totalFileItems) =>
 			UpdateImport?.Invoke(@object, fileSystem, currentItem, importedDirectoryItems, totalDirectoryItems, importedFileItems, totalFileItems);
@@ -689,14 +690,14 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_importedvolumename HRESULT
 		// get_ImportedVolumeName( BSTR *pVal );
 		[DispId(5)]
-		string ImportedVolumeName { [return: MarshalAs(UnmanagedType.BStr)] get; }
+		string? ImportedVolumeName { [return: MarshalAs(UnmanagedType.BStr)] get; }
 
 		/// <summary>Retrieves the boot image that you want to add to the file system image.</summary>
 		/// <value>An IBootOptions interface of the boot image to add to the disc. Is <c>NULL</c> if a boot image has not been specified.</value>
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_bootimageoptions HRESULT
 		// get_BootImageOptions( IBootOptions **pVal );
 		[DispId(6)]
-		IBootOptions BootImageOptions { [return: MarshalAs(UnmanagedType.Interface)] get; set; }
+		IBootOptions? BootImageOptions { [return: MarshalAs(UnmanagedType.Interface)] get; set; }
 
 		/// <summary>Retrieves the number of files in the file system image.</summary>
 		/// <value>Number of files in the file system image.</value>
@@ -908,7 +909,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-identifyfilesystemsondisc HRESULT
 		// IdentifyFileSystemsOnDisc( IDiscRecorder2 *discRecorder, FsiFileSystems *fileSystems );
 		[DispId(19)]
-		FsiFileSystems IdentifyFileSystemsOnDisc(IDiscRecorder2 discRecorder);
+		FsiFileSystems IdentifyFileSystemsOnDisc(IDiscRecorder2? discRecorder);
 
 		/// <summary>Retrieves the file system to import by default.</summary>
 		/// <param name="fileSystems">One or more file system values. For possible values, see the FsiFileSystems enumeration type.</param>
@@ -1206,14 +1207,14 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_importedvolumename HRESULT
 		// get_ImportedVolumeName( BSTR *pVal );
 		[DispId(5)]
-		new string ImportedVolumeName { [return: MarshalAs(UnmanagedType.BStr)] get; }
+		new string? ImportedVolumeName { [return: MarshalAs(UnmanagedType.BStr)] get; }
 
 		/// <summary>Retrieves the boot image that you want to add to the file system image.</summary>
 		/// <value>An IBootOptions interface of the boot image to add to the disc. Is <c>NULL</c> if a boot image has not been specified.</value>
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_bootimageoptions HRESULT
 		// get_BootImageOptions( IBootOptions **pVal );
 		[DispId(6)]
-		new IBootOptions BootImageOptions { [return: MarshalAs(UnmanagedType.Interface)] get; set; }
+		new IBootOptions? BootImageOptions { [return: MarshalAs(UnmanagedType.Interface)] get; set; }
 
 		/// <summary>Retrieves the number of files in the file system image.</summary>
 		/// <value>Number of files in the file system image.</value>
@@ -1425,7 +1426,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-identifyfilesystemsondisc HRESULT
 		// IdentifyFileSystemsOnDisc( IDiscRecorder2 *discRecorder, FsiFileSystems *fileSystems );
 		[DispId(19)]
-		new FsiFileSystems IdentifyFileSystemsOnDisc(IDiscRecorder2 discRecorder);
+		new FsiFileSystems IdentifyFileSystemsOnDisc(IDiscRecorder2? discRecorder);
 
 		/// <summary>Retrieves the file system to import by default.</summary>
 		/// <param name="fileSystems">One or more file system values. For possible values, see the FsiFileSystems enumeration type.</param>
@@ -1742,14 +1743,14 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_importedvolumename HRESULT
 		// get_ImportedVolumeName( BSTR *pVal );
 		[DispId(5)]
-		new string ImportedVolumeName { [return: MarshalAs(UnmanagedType.BStr)] get; }
+		new string? ImportedVolumeName { [return: MarshalAs(UnmanagedType.BStr)] get; }
 
 		/// <summary>Retrieves the boot image that you want to add to the file system image.</summary>
 		/// <value>An IBootOptions interface of the boot image to add to the disc. Is <c>NULL</c> if a boot image has not been specified.</value>
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_bootimageoptions HRESULT
 		// get_BootImageOptions( IBootOptions **pVal );
 		[DispId(6)]
-		new IBootOptions BootImageOptions { [return: MarshalAs(UnmanagedType.Interface)] get; set; }
+		new IBootOptions? BootImageOptions { [return: MarshalAs(UnmanagedType.Interface)] get; set; }
 
 		/// <summary>Retrieves the number of files in the file system image.</summary>
 		/// <value>Number of files in the file system image.</value>
@@ -1961,7 +1962,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-identifyfilesystemsondisc HRESULT
 		// IdentifyFileSystemsOnDisc( IDiscRecorder2 *discRecorder, FsiFileSystems *fileSystems );
 		[DispId(19)]
-		new FsiFileSystems IdentifyFileSystemsOnDisc(IDiscRecorder2 discRecorder);
+		new FsiFileSystems IdentifyFileSystemsOnDisc(IDiscRecorder2? discRecorder);
 
 		/// <summary>Retrieves the file system to import by default.</summary>
 		/// <param name="fileSystems">One or more file system values. For possible values, see the FsiFileSystems enumeration type.</param>
@@ -3540,7 +3541,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifsinamedstreams-get_item HRESULT get_Item( LONG
 		// index, IFsiFileItem2 **item );
 		[DispId(0)]
-		IFsiFileItem2 this[int index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
+		IFsiFileItem2? this[int index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
 
 		/// <summary>Returns the number of the named streams associated with a file in the file system image.</summary>
 		/// <value>Pointer to a value indicating the total number of named streams in the collection.</value>
