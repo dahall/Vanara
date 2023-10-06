@@ -1169,6 +1169,43 @@ public static partial class IScsiDsc
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.GetIScsiSessionListA")]
 	public static extern Win32Error GetIScsiSessionList(ref uint BufferSize, out uint SessionCount, [Out, Optional] IntPtr SessionInfo);
 
+	/// <summary>The <c>GetIscsiSessionList</c> function retrieves the list of active iSCSI sessions.</summary>
+	/// <param name="SessionInfo">
+	/// A pointer to a buffer that contains a series of contiguous structures of type ISCSI_SESSION_INFO that describe the active login sessions.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns ERROR_SUCCESS if the operation succeeds and ERROR_INSUFFICIENT_BUFFER if the size of the buffer at <c>SessionInfo</c> was
+	/// insufficient to hold the output data.
+	/// </para>
+	/// <para>Otherwise, <c>GetIscsiSessionList</c> returns the appropriate Win32 or iSCSI error code on failure.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Note</para>
+	/// <para>
+	/// The iscsidsc.h header defines GetIScsiSessionList as an alias which automatically selects the ANSI or Unicode version of this
+	/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-getiscsisessionlista
+	// ISDSC_STATUS ISDSC_API GetIScsiSessionListA( [in, out] ULONG *BufferSize, [out] ULONG *SessionCount, [out] PISCSI_SESSION_INFOA SessionInfo );
+	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.GetIScsiSessionListA")]
+	public static Win32Error GetIScsiSessionList(out ISCSI_SESSION_INFO_MGD[]? SessionInfo)
+	{
+		SessionInfo = null;
+		uint sz = 0;
+		var ret = GetIScsiSessionList(ref sz, out _);
+		if (ret != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			return ret;
+		using var mem = new SafeHGlobalHandle((int)sz);
+		ret = GetIScsiSessionList(ref sz, out var cnt, mem);
+		if (ret.Succeeded)
+			SessionInfo = Array.ConvertAll(mem.ToArray<ISCSI_SESSION_INFO>((int)cnt), a => (ISCSI_SESSION_INFO_MGD)a);
+		return ret;
+	}
+
 	/// <summary>The <c>GetIscsiTargetInformation</c> function retrieves information about the specified target.</summary>
 	/// <param name="TargetName">The name of the target for which information is retrieved.</param>
 	/// <param name="DiscoveryMechanism">
@@ -1249,7 +1286,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.GetIScsiTargetInformationA")]
-	public static T GetIScsiTargetInformation<T>(string TargetName, TARGET_INFORMATION_CLASS InfoClass, [Optional] string? DiscoveryMechanism)
+	public static T? GetIScsiTargetInformation<T>(string TargetName, TARGET_INFORMATION_CLASS InfoClass, [Optional] string? DiscoveryMechanism)
 	{
 		if (!CorrespondingTypeAttribute.CanGet(InfoClass, typeof(T)))
 			throw new ArgumentException("Invalid return type for specified InfoClass.");
@@ -1735,7 +1772,38 @@ public static partial class IScsiDsc
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiPersistentTargetA")]
 	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string InitiatorInstance, [Optional] uint InitiatorPortNumber,
-		[MarshalAs(UnmanagedType.LPTStr)] string TargetName, [Optional] in ISCSI_TARGET_PORTAL Portal);
+		[MarshalAs(UnmanagedType.LPTStr)] string TargetName, in ISCSI_TARGET_PORTAL Portal);
+
+	/// <summary>
+	/// The <c>RemoveIscsiPersistentTarget</c> function removes a persistent login for the specified hardware initiator Host Bus Adapter
+	/// (HBA), initiator port, and target portal.
+	/// </summary>
+	/// <param name="InitiatorInstance">The name of the initiator that maintains the persistent login to remove.</param>
+	/// <param name="InitiatorPortNumber">
+	/// The port number on which the initiator connects to TargetName. If InitiatorPortNumber is <c>ISCSI_ALL_INITIATOR_PORTS</c> the
+	/// miniport driver for the initiator HBA removes the TargetName from the persistent login lists for all initiator ports.
+	/// </param>
+	/// <param name="TargetName">The name of the target.</param>
+	/// <param name="Portal">
+	/// The portal through which the initiator connects to the target. If Portal is <c>null</c> or contains no information, the miniport
+	/// driver for the initiator HBA removes persistent logins for the target on all portals.
+	/// </param>
+	/// <returns>Returns ERROR_SUCCESS if the operation succeeds. Otherwise, it returns the appropriate Win32 or iSCSI error code.</returns>
+	/// <remarks>
+	/// <para>Note</para>
+	/// <para>
+	/// The iscsidsc.h header defines RemoveIScsiPersistentTarget as an alias which automatically selects the ANSI or Unicode version of
+	/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+	/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+	/// Conventions for Function Prototypes.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeiscsipersistenttargeta ISDSC_STATUS ISDSC_API
+	// RemoveIScsiPersistentTargetA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PSTR TargetName, PISCSI_TARGET_PORTALA Portal );
+	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiPersistentTargetA")]
+	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string InitiatorInstance, [Optional] uint InitiatorPortNumber,
+		[MarshalAs(UnmanagedType.LPTStr)] string TargetName, [In, Optional] IntPtr Portal);
 
 	/// <summary>
 	/// The <c>RemoveIscsiSendTargetPortal</c> function removes a portal from the list of portals to which the iSCSI initiator service
@@ -3001,8 +3069,53 @@ public static partial class IScsiDsc
 		/// <summary>The number of connections associated with the session.</summary>
 		public uint ConnectionCount;
 
-		/// <summary>A pointer to a ISCSI_CONNECTION_INFO structure.</summary>
+		/// <summary>A pointer to a <see cref="ISCSI_CONNECTION_INFO"/> structure.</summary>
 		public IntPtr Connections;
+	}
+
+	/// <summary>The <c>ISCSI_SESSION_INFO</c> structure contains session information.</summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/ns-iscsidsc-iscsi_session_infoa typedef struct {
+	// ISCSI_UNIQUE_SESSION_ID SessionId; PCHAR InitiatorName; PCHAR TargetNodeName; PCHAR TargetName; UCHAR ISID[6]; UCHAR TSID[2];
+	// ULONG ConnectionCount; PISCSI_CONNECTION_INFOA Connections; } ISCSI_SESSION_INFOA, *PISCSI_SESSION_INFOA;
+	[PInvokeData("iscsidsc.h", MSDNShortId = "NS:iscsidsc.__unnamed_struct_17")]
+	public struct ISCSI_SESSION_INFO_MGD
+	{
+		/// <summary>A ISCSI_UNIQUE_SESSION_ID structure containing a unique identifier that represents the session.</summary>
+		public ISCSI_UNIQUE_SESSION_ID SessionId;
+
+		/// <summary>A string that represents the initiator name.</summary>
+		public string InitiatorName;
+
+		/// <summary>A string that represents the target node name.</summary>
+		public string TargetNodeName;
+
+		/// <summary>A string that represents the target name.</summary>
+		public string TargetName;
+
+		/// <summary>The initiator-side identifier (ISID) used in the iSCSI protocol.</summary>
+		public byte[] ISID;
+
+		/// <summary>The target-side identifier (TSID) used in the iSCSI protocol.</summary>
+		public byte[] TSID;
+
+		/// <summary>The connections associated with the session.</summary>
+		public ISCSI_CONNECTION_INFO[] Connections;
+
+		internal ISCSI_SESSION_INFO_MGD(in ISCSI_SESSION_INFO info)
+		{
+			SessionId = info.SessionId;
+			InitiatorName = info.InitiatorName;
+			TargetNodeName = info.TargetNodeName;
+			TargetName = info.TargetName;
+			ISID = info.ISID;
+			TSID = info.TSID;
+			Connections = info.Connections.ToArray<ISCSI_CONNECTION_INFO>((int)info.ConnectionCount) ?? new ISCSI_CONNECTION_INFO[0];
+		}
+
+		/// <summary>Performs an implicit conversion from <see cref="ISCSI_SESSION_INFO"/> to <see cref="ISCSI_SESSION_INFO_MGD"/>.</summary>
+		/// <param name="info">The information.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator ISCSI_SESSION_INFO_MGD(in ISCSI_SESSION_INFO info) => new(info);
 	}
 
 	/// <summary>
