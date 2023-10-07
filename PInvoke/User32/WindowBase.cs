@@ -291,7 +291,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <summary>Performs an implicit conversion from <see cref="WindowBase"/> to <see cref="HWND"/>.</summary>
 	/// <param name="w">The <see cref="WindowBase"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HWND(WindowBase w) => w.Handle;
+	public static implicit operator HWND(WindowBase? w) => w?.Handle ?? HWND.NULL;
 
 	[DebuggerStepThrough]
 	private void CheckDetached()

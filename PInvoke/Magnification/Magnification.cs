@@ -394,6 +394,38 @@ public static partial class Magnification
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool MagSetColorEffect(HWND hwnd, in MAGCOLOREFFECT pEffect);
 
+	/// <summary>Sets the color transformation matrix for a magnifier control.</summary>
+	/// <param name="hwnd">
+	/// <para>Type: <c>HWND</c></para>
+	/// <para>The magnification window.</para>
+	/// </param>
+	/// <param name="pEffect">
+	/// <para>Type: <c>PMAGCOLOREFFECT</c></para>
+	/// <para>The color transformation matrix, or <c>NULL</c> to remove the current color effect, if any.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>BOOL</c></para>
+	/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The magnifier control uses the color transformation matrix to apply a color effect to the entire magnifier window. If the
+	/// function is called multiple times, the most recent color transform is used.
+	/// </para>
+	/// <para>This function requires Windows Display Driver Model (WDDM)-capable video cards.</para>
+	/// <para>Examples</para>
+	/// <para>The following example sets a color transformation matrix that converts the colors displayed in the magnifier to grayscale.</para>
+	/// <para>
+	/// <code>// Description: // Converts the colors displayed in the magnifier window to grayscale, or // returns the colors to normal. // Parameters: // hwndMag - Handle of the magnifier control. // fInvert - TRUE to convert to grayscale, or FALSE for normal colors. // BOOL ConvertToGrayscale(HWND hwndMag, BOOL fConvert) { // Convert the screen colors in the magnifier window. if (fConvert) { MAGCOLOREFFECT magEffectGrayscale = {{ // MagEffectGrayscale { 0.3f, 0.3f, 0.3f, 0.0f, 0.0f }, { 0.6f, 0.6f, 0.6f, 0.0f, 0.0f }, { 0.1f, 0.1f, 0.1f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f } }}; return MagSetColorEffect(hwndMag, &amp;magEffectGrayscale); } // Return the colors to normal. else { return MagSetColorEffect(hwndMag, NULL); } }</code>
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/magnification/nf-magnification-magsetcoloreffect BOOL MagSetColorEffect( HWND
+	// hwnd, PMAGCOLOREFFECT pEffect );
+	[DllImport(Lib_Magnification, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("magnification.h", MSDNShortId = "NF:magnification.MagSetColorEffect")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool MagSetColorEffect(HWND hwnd, [In, Optional] IntPtr pEffect);
+
 	/// <summary>Changes the color transformation matrix associated with the full-screen magnifier.</summary>
 	/// <param name="pEffect">
 	/// <para>Type: <c>PMAGCOLOREFFECT</c></para>
@@ -529,7 +561,7 @@ public static partial class Magnification
 	[DllImport(Lib_Magnification, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("magnification.h", MSDNShortId = "NF:magnification.MagSetImageScalingCallback")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MagSetImageScalingCallback(HWND hwnd, MagImageScalingCallback callback);
+	public static extern bool MagSetImageScalingCallback(HWND hwnd, MagImageScalingCallback? callback);
 
 	/// <summary>
 	/// Sets the current active input transformation for pen and touch input, represented as a source rectangle and a destination rectangle.
@@ -579,7 +611,7 @@ public static partial class Magnification
 	[DllImport(Lib_Magnification, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("magnification.h", MSDNShortId = "NF:magnification.MagSetInputTransform")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MagSetInputTransform([MarshalAs(UnmanagedType.Bool)] bool fEnabled, [Optional] in RECT pRectSource, [Optional] in RECT pRectDest);
+	public static extern bool MagSetInputTransform([MarshalAs(UnmanagedType.Bool)] bool fEnabled, [In, Optional] PRECT? pRectSource, [In, Optional] PRECT? pRectDest);
 
 	/// <summary>Sets the list of windows to be magnified or the list of windows to be excluded from magnification.</summary>
 	/// <param name="hwnd">
@@ -737,7 +769,7 @@ public static partial class Magnification
 	// { float transform[5][5]; } MAGCOLOREFFECT, *PMAGCOLOREFFECT;
 	[PInvokeData("magnification.h", MSDNShortId = "NS:magnification.tagMAGCOLOREFFECT")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct MAGCOLOREFFECT
+	public struct MAGCOLOREFFECT : IEquatable<MAGCOLOREFFECT>
 	{
 		private const int dimLen = 5;
 
@@ -916,41 +948,6 @@ public static partial class Magnification
 		public static bool operator !=(MAGCOLOREFFECT lhs, MAGCOLOREFFECT rhs) => !(lhs == rhs);
 
 		/// <summary>An Identity Matrix for MAGCOLOREFFECT.</summary>
-
-/* Unmerged change from project 'Vanara.PInvoke.Magnification (net48)'
-Before:
-		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-After:
-		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-*/
-
-/* Unmerged change from project 'Vanara.PInvoke.Magnification (net7.0)'
-Before:
-		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-After:
-		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-*/
-
-/* Unmerged change from project 'Vanara.PInvoke.Magnification (netcoreapp3.1)'
-Before:
-		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-After:
-		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-*/
-
-/* Unmerged change from project 'Vanara.PInvoke.Magnification (netstandard2.0)'
-Before:
-		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-After:
-		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-*/
-
-/* Unmerged change from project 'Vanara.PInvoke.Magnification (net45)'
-Before:
-		public static readonly MAGCOLOREFFECT Identity = new MAGCOLOREFFECT { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-After:
-		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
-*/
 		public static readonly MAGCOLOREFFECT Identity = new() { transform00 = 1, transform11 = 1, transform22 = 1, transform33 = 1, transform44 = 1 };
 	}
 
