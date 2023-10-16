@@ -149,7 +149,7 @@ public static partial class CoreAudio
 	{
 		/// <summary>Undocumented</summary>
 		[PreserveSig]
-		HRESULT SetEchoCancellationRenderEndpoint([MarshalAs(UnmanagedType.LPWStr)] string endpointId);
+		HRESULT SetEchoCancellationRenderEndpoint([MarshalAs(UnmanagedType.LPWStr)] string? endpointId);
 	}
 
 	/// <summary>Undocumented</summary>
@@ -1265,7 +1265,7 @@ public static partial class CoreAudio
 		/// <para>
 		/// By itself, a <c>WAVEFORMATEX</c> structure cannot specify the mapping of channels to speaker positions. In addition, although
 		/// <c>WAVEFORMATEX</c> specifies the size of the container for each audio sample, it cannot specify the number of bits of precision
-		/// in a sample (for example, 20 bits of precision in a 24-bit container). However, the <c>WAVEFORMATEXTENSIBLE</c> structure can
+		/// in a sample (for example, 20 bits of precision in a 24-bit container). However, the <see cref="WAVEFORMATEXTENSIBLE"/> structure can
 		/// specify both the mapping of channels to speakers and the number of bits of precision in each sample. For this reason, the
 		/// <c>GetMixFormat</c> method retrieves a format descriptor that is in the form of a <c>WAVEFORMATEXTENSIBLE</c> structure instead
 		/// of a standalone <c>WAVEFORMATEX</c> structure. Through the ppDeviceFormat parameter, the method outputs a pointer to the
@@ -1542,7 +1542,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getservice HRESULT GetService( REFIID
 		// riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
-		object GetService(in Guid riid);
+		object? GetService(in Guid riid);
 	}
 
 	/// <summary>
@@ -2566,7 +2566,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getservice HRESULT GetService( REFIID
 		// riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
-		new object GetService(in Guid riid);
+		new object? GetService(in Guid riid);
 
 		/// <summary>
 		/// The <c>IsOffloadCapable</c> method retrieves information about whether or not the endpoint on which a stream is created is
@@ -3632,7 +3632,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getservice HRESULT GetService( REFIID
 		// riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
-		new object GetService(in Guid riid);
+		new object? GetService(in Guid riid);
 
 		/// <summary>
 		/// The <c>IsOffloadCapable</c> method retrieves information about whether or not the endpoint on which a stream is created is
@@ -4966,7 +4966,7 @@ public static partial class CoreAudio
 	/// </item>
 	/// </list>
 	/// </remarks>
-	public static T GetService<T>(this IAudioClient client) => (T)client.GetService(typeof(T).GUID);
+	public static T? GetService<T>(this IAudioClient client) where T : class => client.GetService(typeof(T).GUID) as T;
 
 	/// <summary>The <c>Initialize</c> method initializes the audio stream.</summary>
 	/// <param name="client">The client.</param>
@@ -5368,11 +5368,9 @@ public static partial class CoreAudio
 	/// <para>Examples</para>
 	/// <para>The following example code shows how to respond to the <c>AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED</c> return code.</para>
 	/// </remarks>
-	public static HRESULT Initialize(this IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, AUDCLNT_STREAMFLAGS StreamFlags, long hnsBufferDuration, long hnsPeriodicity, in WAVEFORMATEX pFormat, [In, Optional] in Guid AudioSessionGuid)
-	{
-		using SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.CreateFromStructure(pFormat);
-		return client.Initialize(ShareMode, StreamFlags, hnsBufferDuration, hnsPeriodicity, mem, AudioSessionGuid);
-	}
+	public static unsafe HRESULT Initialize(this IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, AUDCLNT_STREAMFLAGS StreamFlags,
+		long hnsBufferDuration, long hnsPeriodicity, [In] WAVEFORMATEX* pFormat, [In, Optional] Guid* AudioSessionGuid) =>
+		client.Initialize(ShareMode, StreamFlags, hnsBufferDuration, hnsPeriodicity, (IntPtr)(void*)pFormat, AudioSessionGuid == null ? Guid.Empty : *AudioSessionGuid);
 
 	/// <summary>The <c>Initialize</c> method initializes the audio stream.</summary>
 	/// <param name="client">The client.</param>
@@ -6017,7 +6015,7 @@ public static partial class CoreAudio
 	/// method, see Device Formats.
 	/// </para>
 	/// </remarks>
-	public static bool IsFormatSupported(this IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, in WAVEFORMATEX pFormat, out WAVEFORMATEX ppClosestMatch) =>
+	public static bool IsFormatSupported(this IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, in WAVEFORMATEX pFormat, out WAVEFORMATEX? ppClosestMatch) =>
 		IsFormatSupportedGeneric(client, ShareMode, pFormat, out ppClosestMatch);
 
 	/// <summary>The <c>IsFormatSupported</c> method indicates whether the audio endpoint device supports a particular stream format.</summary>
@@ -6081,19 +6079,19 @@ public static partial class CoreAudio
 	/// method, see Device Formats.
 	/// </para>
 	/// </remarks>
-	public static bool IsFormatSupported(this IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, in WAVEFORMATEXTENSIBLE pFormat, out WAVEFORMATEXTENSIBLE ppClosestMatch) =>
+	public static bool IsFormatSupported(this IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, in WAVEFORMATEXTENSIBLE pFormat, out WAVEFORMATEXTENSIBLE? ppClosestMatch) =>
 		IsFormatSupportedGeneric(client, ShareMode, pFormat, out ppClosestMatch);
 
-	private static bool IsFormatSupportedGeneric<T>(IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, in T pFormat, out T ppClosestMatch) where T : struct
+	private static bool IsFormatSupportedGeneric<T>(IAudioClient client, [In] AUDCLNT_SHAREMODE ShareMode, in T pFormat, out T? ppClosestMatch) where T : struct
 	{
-		using SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.CreateFromStructure<T>(pFormat);
+		using SafeCoTaskMemStruct<T> mem = pFormat;
 		HRESULT hr = client.IsFormatSupported(ShareMode, mem, out SafeCoTaskMemHandle ret);
 		if (hr != HRESULT.S_OK && hr != HRESULT.S_FALSE && hr != HRESULT.AUDCLNT_E_UNSUPPORTED_FORMAT)
 		{
-			throw hr.GetException();
+			throw hr.GetException()!;
 		}
 
-		ppClosestMatch = ret.ToStructure<T>();
+		ppClosestMatch = ret.IsInvalid ? null : ret.ToStructure<T>();
 		ret.Dispose();
 		return hr == HRESULT.S_OK;
 	}

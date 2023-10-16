@@ -181,6 +181,7 @@ public static partial class Msvfw32
 	[PInvokeData("vfw.h")]
 	public enum ICERR
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		ICERR_OK = 0,
 		ICERR_DONTDRAW = 1,
 		ICERR_NEWPALETTE = 2,
@@ -200,6 +201,7 @@ public static partial class Msvfw32
 		ICERR_BADBITDEPTH = -200,
 		ICERR_BADIMAGESIZE = -201,
 		ICERR_CUSTOM = -400,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Flags defining the contents of lParam in <see cref="ICInstall"/>.</summary>

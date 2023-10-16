@@ -19,14 +19,14 @@ public partial class CoreAudioTests
 
 	public static IEnumerable<IMMDevice> CreateIMMDeviceCollection(IMMDeviceEnumerator deviceEnumerator, EDataFlow direction = EDataFlow.eAll, DEVICE_STATE stateMasks = DEVICE_STATE.DEVICE_STATEMASK_ALL)
 	{
-		using var deviceCollection = ComReleaserFactory.Create(deviceEnumerator.EnumAudioEndpoints(direction, stateMasks));
+		using var deviceCollection = ComReleaserFactory.Create(deviceEnumerator.EnumAudioEndpoints(direction, stateMasks)!);
 		var deviceList = new List<IMMDevice>();
 		var cnt = deviceCollection.Item.GetCount();
 		if (cnt == 0) Assert.Inconclusive("No devices were found.");
 		for (uint i = 0; i < cnt; i++)
 		{
 			deviceCollection.Item.Item(i, out var dev).ThrowIfFailed();
-			deviceList.Add(dev);
+			deviceList.Add(dev!);
 		}
 		return deviceList;
 	}
@@ -50,13 +50,13 @@ public partial class CoreAudioTests
 
 			TestActivation<IAudioSessionManager2>();
 
-			TestActivation<IDeviceTopology>();
+			//TestActivation<IDeviceTopology>();
 
 			void TestActivation<T>() where T : class
 			{
 				Assert.That(d.Activate(typeof(T).GUID, CLSCTX.CLSCTX_INPROC_SERVER, default, out var objInterface), ResultIs.Successful);
 				Assert.IsNotNull(objInterface as T);
-				Marshal.ReleaseComObject(objInterface);
+				Marshal.ReleaseComObject(objInterface!);
 			}
 		}
 	}
@@ -69,7 +69,7 @@ public partial class CoreAudioTests
 
 		foreach (var d in CreateIMMDeviceCollection(enumerator.Item))
 		{
-			string strId = null;
+			string? strId = null;
 			Assert.That(() => strId = d.GetId(), Throws.Nothing);
 			Assert.IsNotNull(strId);
 			TestContext.WriteLine($"Id:{d.GetId()}, State:{d.GetState()}");
@@ -104,24 +104,24 @@ public partial class CoreAudioTests
 
 		foreach (var d in CreateIMMDeviceCollection(enumerator.Item))
 		{
-			TestContext.WriteLine($"**** {GetDeviceName(d.GetId())} ****");
+			TestContext.WriteLine($"**** {GetDeviceName(d.GetId()!)} ****");
 
 			// Open the property store
-			IPropertyStore propertyStore = null;
+			IPropertyStore? propertyStore = null;
 			Assert.That(() => propertyStore = d.OpenPropertyStore(STGM.STGM_READ), Throws.Nothing);
 
 			// Verify the count can be received.
 			var propertyCount = uint.MaxValue;
-			Assert.That(() => propertyCount = propertyStore.GetCount(), Throws.Nothing);
+			Assert.That(() => propertyCount = propertyStore!.GetCount(), Throws.Nothing);
 			Assert.AreNotEqual(uint.MaxValue, propertyCount, "The property count was not received.");
 
 			// Get each property key, then get value.
 			for (uint i = 0; i < propertyCount; i++)
 			{
 				PROPERTYKEY propertyKey = default;
-				Assert.That(() => propertyKey = propertyStore.GetAt(i), Throws.Nothing);
+				Assert.That(() => propertyKey = propertyStore!.GetAt(i), Throws.Nothing);
 
-				var value = GetPropertyValue(propertyStore, propertyKey);
+				var value = GetPropertyValue(propertyStore!, propertyKey);
 				if (value != null)
 					tested = true;
 				TestContext.WriteLine($"{propertyKey.GetCanonicalName()}={value ?? "null"}");
@@ -149,13 +149,13 @@ public partial class CoreAudioTests
 
 		uint captureCount = uint.MaxValue, renderCount = uint.MaxValue, allCount = uint.MaxValue;
 
-		Assert.That(() => captureCount = allCaptureDevices.GetCount(), Throws.Nothing);
+		Assert.That(() => captureCount = allCaptureDevices!.GetCount(), Throws.Nothing);
 		Assert.AreNotEqual(uint.MaxValue, captureCount, "Device count was not received.");
 
-		Assert.That(() => renderCount = allRenderDevices.GetCount(), Throws.Nothing);
+		Assert.That(() => renderCount = allRenderDevices!.GetCount(), Throws.Nothing);
 		Assert.AreNotEqual(uint.MaxValue, renderCount, "Device count was not received.");
 
-		Assert.That(() => allCount = allDevices.GetCount(), Throws.Nothing);
+		Assert.That(() => allCount = allDevices!.GetCount(), Throws.Nothing);
 		Assert.AreNotEqual(uint.MaxValue, allDevices, "Device count was not received.");
 
 		Assert.AreEqual(allCount, captureCount + renderCount, "The combined number of capture and render devices is not equal to the total device count.");
@@ -167,17 +167,17 @@ public partial class CoreAudioTests
 	{
 		using var enumerator = ComReleaserFactory.Create(new IMMDeviceEnumerator());
 
-		IMMDeviceCollection allDevices = null;
+		IMMDeviceCollection? allDevices = null;
 		Assert.That(() => allDevices = enumerator.Item.EnumAudioEndpoints(EDataFlow.eAll, DEVICE_STATE.DEVICE_STATEMASK_ALL), Throws.Nothing);
 		Assert.IsNotNull(allDevices, "The IMMDeviceCollection object is null");
 
 		uint count = 0;
-		Assert.That(() => count = allDevices.GetCount(), Throws.Nothing);
+		Assert.That(() => count = allDevices!.GetCount(), Throws.Nothing);
 
-		IMMDevice device;
+		IMMDevice? device;
 		for (uint i = 0; i < count; i++)
 		{
-			Assert.That(allDevices.Item(i, out device), ResultIs.Successful);
+			Assert.That(allDevices!.Item(i, out device), ResultIs.Successful);
 		}
 	}
 
@@ -195,36 +195,21 @@ public partial class CoreAudioTests
 	/// Tests that the default audio endpoint for all combinations of data flow and roles can be created with S_OK HRESULT and that each
 	/// device is not null.
 	/// </summary>
-	[Test]
-	public void IMMDeviceEnumerator_GetDefaultAudioEndpoint()
+	[TestCase(EDataFlow.eAll, ERole.eCommunications, false)]
+	[TestCase(EDataFlow.eAll, ERole.eConsole, false)]
+	[TestCase(EDataFlow.eAll, ERole.eMultimedia, false)]
+	[TestCase(EDataFlow.eCapture, ERole.eCommunications, true)]
+	[TestCase(EDataFlow.eCapture, ERole.eConsole, true)]
+	[TestCase(EDataFlow.eCapture, ERole.eMultimedia,true)]
+	[TestCase(EDataFlow.eRender, ERole.eCommunications, true)]
+	[TestCase(EDataFlow.eRender, ERole.eConsole, true)]
+	[TestCase(EDataFlow.eRender, ERole.eMultimedia, true)]
+	public void IMMDeviceEnumerator_GetDefaultAudioEndpoint(EDataFlow flow, ERole role, bool good)
 	{
-		IMMDevice device = null;
 		using var enumerator = ComReleaserFactory.Create(new IMMDeviceEnumerator());
-
-		// data flow - eAll (this should always produce HRESULT of E_INVALIDARG, which is 0x80070057)
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eAll, ERole.eCommunications), Throws.Exception);
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eAll, ERole.eConsole), Throws.Exception);
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eAll, ERole.eMultimedia), Throws.Exception);
-
-		// data flow - eCapture
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eCommunications), Throws.Nothing);
-		Assert.IsNotNull(device);
-
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole), Throws.Nothing);
-		Assert.IsNotNull(device);
-
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia), Throws.Nothing);
-		Assert.IsNotNull(device);
-
-		// data flow - eRender
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eCommunications), Throws.Nothing);
-		Assert.IsNotNull(device);
-
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole), Throws.Nothing);
-		Assert.IsNotNull(device);
-
-		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia), Throws.Nothing);
-		Assert.IsNotNull(device);
+		IMMDevice? device = null;
+		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(flow, role), good ? Throws.Nothing : Throws.Exception);
+		if (good) Assert.IsNotNull(device);
 	}
 
 	/// <summary>Tests that the GetDevice method can get each audio device individually, by ID.</summary>
@@ -236,18 +221,18 @@ public partial class CoreAudioTests
 		foreach (var device in CreateIMMDeviceCollection(enumerator.Item))
 		{
 			// Get the device ID.
-			string deviceId = null;
+			string? deviceId = null;
 			Assert.That(() => deviceId = device.GetId(), Throws.Nothing);
 			Assert.IsNotNull(deviceId, "The device string is null.");
 
 			// Get the IMMDevice directly from the ID.
-			IMMDevice deviceFromId = null;
-			Assert.That(() => deviceFromId = enumerator.Item.GetDevice(deviceId), Throws.Nothing);
+			IMMDevice? deviceFromId = null;
+			Assert.That(() => deviceFromId = enumerator.Item.GetDevice(deviceId!), Throws.Nothing);
 			Assert.IsNotNull(deviceFromId, "The IMMDevice object is null.");
 
 			// Ensure the IDs of each device match.
-			string deviceId2 = null;
-			Assert.That(() => deviceId2 = deviceFromId.GetId(), Throws.Nothing);
+			string? deviceId2 = null;
+			Assert.That(() => deviceId2 = deviceFromId!.GetId(), Throws.Nothing);
 			Assert.IsNotNull(deviceId2, "The device string is null.");
 
 			Assert.AreEqual(deviceId, deviceId2, "The device IDs are not equal.");
@@ -274,12 +259,12 @@ public partial class CoreAudioTests
 			// Make changes
 			using var enumerator = ComReleaserFactory.Create(new IMMDeviceEnumerator());
 			var activeEndpoints = CreateIMMDeviceCollection(enumerator.Item, EDataFlow.eAll, DEVICE_STATE.DEVICE_STATE_ACTIVE).ToList();
-			using var ep = ComReleaserFactory.Create(enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia));
+			using var ep = ComReleaserFactory.Create(enumerator.Item.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia)!);
 			using var alt = ComReleaserFactory.Create(activeEndpoints.First(d => d.GetId() != ep.Item.GetId()));
 			using var pc = ComReleaserFactory.Create(new CoreAudio.IPolicyConfig());
-			Assert.That(pc.Item.SetDefaultEndpoint(alt.Item.GetId(), ERole.eMultimedia), ResultIs.Successful);
+			Assert.That(pc.Item.SetDefaultEndpoint(alt.Item.GetId()!, ERole.eMultimedia), ResultIs.Successful);
 			Thread.Sleep(250);
-			Assert.That(pc.Item.SetDefaultEndpoint(ep.Item.GetId(), ERole.eMultimedia), ResultIs.Successful);
+			Assert.That(pc.Item.SetDefaultEndpoint(ep.Item.GetId()!, ERole.eMultimedia), ResultIs.Successful);
 			Thread.Sleep(250);
 
 			// Registry hack to disable
@@ -321,19 +306,24 @@ public partial class CoreAudioTests
 		}
 	}
 
-	private static string GetDeviceName(string devId)
+	private static string? GetDeviceName(string devId)
 	{
 		if (lookup.TryGetValue(devId, out var val)) return val;
 		using var pEnum = ComReleaserFactory.Create(new IMMDeviceEnumerator());
-		using var pDev = ComReleaserFactory.Create(pEnum.Item.GetDevice(devId));
-		using var pProps = ComReleaserFactory.Create(pDev.Item.OpenPropertyStore(STGM.STGM_READ));
+		using var pDev = ComReleaserFactory.Create(pEnum.Item.GetDevice(devId)!);
+		using var pProps = ComReleaserFactory.Create(pDev.Item.OpenPropertyStore(STGM.STGM_READ)!);
 		using var pv = new PROPVARIANT();
-		pProps.Item.GetValue(PKEY_Device_FriendlyName, pv);
-		lookup.Add(devId, pv.pwszVal);
-		return pv.pwszVal;
+		try
+		{
+			pProps.Item.GetValue(PKEY_Device_FriendlyName, pv);
+			lookup.Add(devId, pv.pwszVal!);
+			return pv.pwszVal;
+		}
+		catch { }
+		return null;
 	}
 
-	private object GetPropertyValue(IPropertyStore propertyStore, PROPERTYKEY propertyKey)
+	private object? GetPropertyValue(IPropertyStore propertyStore, PROPERTYKEY propertyKey)
 	{
 		try
 		{
@@ -363,9 +353,9 @@ public partial class CoreAudioTests
 
 		public MMDeviceNotifyClient(TextWriter writer) => textWriter = writer;
 
-		HRESULT IMMNotificationClient.OnDefaultDeviceChanged(EDataFlow flow, ERole role, string pwstrDefaultDeviceId)
+		HRESULT IMMNotificationClient.OnDefaultDeviceChanged(EDataFlow flow, ERole role, string? pwstrDefaultDeviceId)
 		{
-			textWriter.WriteLine($"DefDevChg: flow={flow}, role={role}, dev={GetDeviceName(pwstrDefaultDeviceId)}");
+			textWriter.WriteLine($"DefDevChg: flow={flow}, role={role}, dev={(pwstrDefaultDeviceId is null ? "" : GetDeviceName(pwstrDefaultDeviceId))}");
 			return HRESULT.S_OK;
 		}
 

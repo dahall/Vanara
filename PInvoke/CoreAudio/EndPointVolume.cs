@@ -233,7 +233,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setmastervolumelevel
 		// HRESULT SetMasterVolumeLevel( float fLevelDB, LPCGUID pguidEventContext );
-		void SetMasterVolumeLevel([In] float fLevelDB, in Guid pguidEventContext);
+		void SetMasterVolumeLevel([In] float fLevelDB, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>SetMasterVolumeLevelScalar</c> method sets the master volume level of the audio stream that enters or leaves the
@@ -265,7 +265,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setmastervolumelevelscalar
 		// HRESULT SetMasterVolumeLevelScalar( float fLevel, LPCGUID pguidEventContext );
-		void SetMasterVolumeLevelScalar([In] float fLevel, in Guid pguidEventContext);
+		void SetMasterVolumeLevelScalar([In] float fLevel, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>GetMasterVolumeLevel</c> method gets the master volume level, in decibels, of the audio stream that enters or leaves
@@ -330,7 +330,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setchannelvolumelevel
 		// HRESULT SetChannelVolumeLevel( UINT nChannel, float fLevelDB, LPCGUID pguidEventContext );
-		void SetChannelVolumeLevel([In] uint nChannel, float fLevelDB, in Guid pguidEventContext);
+		void SetChannelVolumeLevel([In] uint nChannel, float fLevelDB, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>SetChannelVolumeLevelScalar</c> method sets the normalized, audio-tapered volume level of the specified channel in
@@ -363,7 +363,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setchannelvolumelevelscalar
 		// HRESULT SetChannelVolumeLevelScalar( UINT nChannel, float fLevel, LPCGUID pguidEventContext );
-		void SetChannelVolumeLevelScalar([In] uint nChannel, float fLevel, in Guid pguidEventContext);
+		void SetChannelVolumeLevelScalar([In] uint nChannel, float fLevel, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>GetChannelVolumeLevel</c> method gets the volume level, in decibels, of the specified channel in the audio stream
@@ -425,7 +425,7 @@ public static partial class CoreAudio
 		/// <remarks>For a code example that calls <c>SetMute</c>, see Endpoint Volume Controls.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setmute HRESULT
 		// SetMute( BOOL bMute, LPCGUID pguidEventContext );
-		void SetMute([In] [MarshalAs(UnmanagedType.Bool)] bool bMute, in Guid pguidEventContext);
+		void SetMute([In] [MarshalAs(UnmanagedType.Bool)] bool bMute, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>GetMute</c> method gets the muting state of the audio stream that enters or leaves the audio endpoint device.
@@ -506,7 +506,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-volumestepup HRESULT
 		// VolumeStepUp( LPCGUID pguidEventContext );
-		void VolumeStepUp(in Guid pguidEventContext);
+		void VolumeStepUp([Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>VolumeStepDown</c> method decrements, by one step, the volume level of the audio stream that enters or leaves the
@@ -538,7 +538,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-volumestepdown
 		// HRESULT VolumeStepDown( LPCGUID pguidEventContext );
-		void VolumeStepDown(in Guid pguidEventContext);
+		void VolumeStepDown([Optional] in Guid pguidEventContext);
 
 		/// <summary>The QueryHardwareSupport method queries the audio endpoint device for its hardware-supported functions.</summary>
 		/// <returns>
@@ -835,7 +835,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setmastervolumelevel
 		// HRESULT SetMasterVolumeLevel( float fLevelDB, LPCGUID pguidEventContext );
-		new void SetMasterVolumeLevel([In] float fLevelDB, in Guid pguidEventContext);
+		new void SetMasterVolumeLevel([In] float fLevelDB, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>SetMasterVolumeLevelScalar</c> method sets the master volume level of the audio stream that enters or leaves the
@@ -867,7 +867,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setmastervolumelevelscalar
 		// HRESULT SetMasterVolumeLevelScalar( float fLevel, LPCGUID pguidEventContext );
-		new void SetMasterVolumeLevelScalar([In] float fLevel, in Guid pguidEventContext);
+		new void SetMasterVolumeLevelScalar([In] float fLevel, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>GetMasterVolumeLevel</c> method gets the master volume level, in decibels, of the audio stream that enters or leaves
@@ -932,7 +932,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setchannelvolumelevel
 		// HRESULT SetChannelVolumeLevel( UINT nChannel, float fLevelDB, LPCGUID pguidEventContext );
-		new void SetChannelVolumeLevel([In] uint nChannel, float fLevelDB, in Guid pguidEventContext);
+		new void SetChannelVolumeLevel([In] uint nChannel, float fLevelDB, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>SetChannelVolumeLevelScalar</c> method sets the normalized, audio-tapered volume level of the specified channel in
@@ -965,7 +965,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setchannelvolumelevelscalar
 		// HRESULT SetChannelVolumeLevelScalar( UINT nChannel, float fLevel, LPCGUID pguidEventContext );
-		new void SetChannelVolumeLevelScalar([In] uint nChannel, float fLevel, in Guid pguidEventContext);
+		new void SetChannelVolumeLevelScalar([In] uint nChannel, float fLevel, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>GetChannelVolumeLevel</c> method gets the volume level, in decibels, of the specified channel in the audio stream
@@ -1027,7 +1027,7 @@ public static partial class CoreAudio
 		/// <remarks>For a code example that calls <c>SetMute</c>, see Endpoint Volume Controls.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-setmute HRESULT
 		// SetMute( BOOL bMute, LPCGUID pguidEventContext );
-		new void SetMute([In] [MarshalAs(UnmanagedType.Bool)] bool bMute, in Guid pguidEventContext);
+		new void SetMute([In] [MarshalAs(UnmanagedType.Bool)] bool bMute, [Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>GetMute</c> method gets the muting state of the audio stream that enters or leaves the audio endpoint device.
@@ -1108,7 +1108,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-volumestepup HRESULT
 		// VolumeStepUp( LPCGUID pguidEventContext );
-		new void VolumeStepUp(in Guid pguidEventContext);
+		new void VolumeStepUp([Optional] in Guid pguidEventContext);
 
 		/// <summary>
 		/// The <c>VolumeStepDown</c> method decrements, by one step, the volume level of the audio stream that enters or leaves the
@@ -1140,7 +1140,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudioendpointvolume-volumestepdown
 		// HRESULT VolumeStepDown( LPCGUID pguidEventContext );
-		new void VolumeStepDown(in Guid pguidEventContext);
+		new void VolumeStepDown([Optional] in Guid pguidEventContext);
 
 		/// <summary>The QueryHardwareSupport method queries the audio endpoint device for its hardware-supported functions.</summary>
 		/// <returns>

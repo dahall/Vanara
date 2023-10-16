@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using static Vanara.PInvoke.Ole32;
+﻿using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke;
@@ -307,7 +305,7 @@ public static partial class CoreAudio
 		// https://learn.microsoft.com/en-us/windows/win32/api/audioenginebaseapo/nf-audioenginebaseapo-iaudiosystemeffects2-geteffectslist
 		// HRESULT GetEffectsList( [out] LPGUID *ppEffectsIds, [out] UINT *pcEffects, [in] HANDLE Event );
 		[PreserveSig]
-		new HRESULT GetEffectsList(out SafeCoTaskMemHandle ppEffectsIds, out uint pcEffects, [In] IntPtr Event);
+		new HRESULT GetEffectsList(out SafeCoTaskMemHandle ppEffectsIds, out uint pcEffects, [In] HEVENT Event);
 
 		/// <summary>
 		/// Implemented by System Effects Audio Processing Object (sAPO) audio effects to allow the caller to get the current list of effects.

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using static Vanara.PInvoke.Macros;
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -327,7 +328,7 @@ public struct ResourceIdOrHandle<THandle> : IEquatable<string>, IEquatable<int>,
 
 /// <summary>Represents a system resource name that can identify as a string, integer, or pointer.</summary>
 /// <seealso cref="SafeHandle"/>
-public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<int>, IEquatable<SafeResourceId>, IEquatable<ResourceId>, IEquatable<IntPtr>, IHandle
+public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<int>, IEquatable<SafeResourceId>, IEquatable<ResourceId>, IEquatable<IntPtr>, IEquatable<ResourceType>, IHandle
 {
 	/// <summary>Represent a NULL value.</summary>
 	public static readonly SafeResourceId Null = new();
@@ -474,9 +475,14 @@ public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<
 			case SafeResourceId r:
 				return Equals(r);
 
+			case ResourceType t:
+				return Equals(t);
+
+			case object o when TypeDescriptor.GetConverter(typeof(int)).CanConvertFrom(o.GetType()):
+				return Equals(Convert.ToInt32(o));
+
 			default:
-				if (!obj.GetType().IsPrimitive) return false;
-				try { return Equals(Convert.ToInt32(obj)); } catch { return false; }
+				return false;
 		}
 	}
 
@@ -499,6 +505,11 @@ public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 	public bool Equals(ResourceId other) => other.Equals((ResourceId)this);
+
+	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+	/// <param name="other">An object to compare with this object.</param>
+	/// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+	public bool Equals(ResourceType other) => id == (int)other;
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>

@@ -776,7 +776,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/spatialaudioclient/nf-spatialaudioclient-ispatialaudioobjectrenderstreambase-getservice
 		// HRESULT GetService( REFIID riid, void **service );
 		[PreserveSig]
-		new HRESULT GetService(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object service);
+		new HRESULT GetService(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? service);
 
 		/// <summary>Starts the spatial audio stream.</summary>
 		/// <remarks>

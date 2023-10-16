@@ -1497,7 +1497,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iconnector-getconnectedto HRESULT
 		// GetConnectedTo( IConnector **ppConTo );
-		IConnector GetConnectedTo();
+		IConnector? GetConnectedTo();
 
 		/// <summary>
 		/// The <c>GetConnectorIdConnectedTo</c> method gets the global ID of the connector, if any, that this connector is connected to.
@@ -1896,7 +1896,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-idevicetopology-getconnector HRESULT
 		// GetConnector( UINT nIndex, IConnector **ppConnector );
-		IConnector GetConnector([In] uint nIndex);
+		IConnector? GetConnector([In] uint nIndex);
 
 		/// <summary>The <c>GetSubunitCount</c> method gets the number of subunits in the device topology.</summary>
 		/// <returns>
@@ -1918,7 +1918,7 @@ public static partial class CoreAudio
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-idevicetopology-getsubunit HRESULT
 		// GetSubunit( UINT nIndex, ISubunit **ppSubunit );
-		ISubunit GetSubunit([In] uint nIndex);
+		ISubunit? GetSubunit([In] uint nIndex);
 
 		/// <summary>The <c>GetPartById</c> method gets a part that is identified by its local ID.</summary>
 		/// <param name="nId">The part to get. This parameter is the local ID of the part. For more information, see Remarks.</param>
@@ -1936,7 +1936,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-idevicetopology-getpartbyid HRESULT
 		// GetPartById( UINT nId, IPart **ppPart );
-		IPart GetPartById([In] uint nId);
+		IPart? GetPartById([In] uint nId);
 
 		/// <summary>
 		/// The <c>GetDeviceId</c> method gets the device identifier of the device that is represented by the device-topology object.
@@ -1993,7 +1993,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-idevicetopology-getsignalpath HRESULT
 		// GetSignalPath( IPart *pIPartFrom, IPart *pIPartTo, BOOL bRejectMixedPaths, IPartsList **ppParts );
-		IPartsList GetSignalPath([In] IPart pIPartFrom, [In] IPart pIPartTo, [In] [MarshalAs(UnmanagedType.Bool)] bool bRejectMixedPaths);
+		IPartsList? GetSignalPath([In] IPart pIPartFrom, [In] IPart pIPartTo, [In] [MarshalAs(UnmanagedType.Bool)] bool bRejectMixedPaths);
 	}
 
 	/// <summary>
@@ -2483,7 +2483,7 @@ public static partial class CoreAudio
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-getcontrolinterface HRESULT
 		// GetControlInterface( UINT nIndex, IControlInterface **ppInterfaceDesc );
-		IControlInterface GetControlInterface([In] uint nIndex);
+		IControlInterface? GetControlInterface([In] uint nIndex);
 
 		/// <summary>
 		/// The <c>EnumPartsIncoming</c> method gets a list of all the incoming parts—that is, the parts that reside on data paths that
@@ -2508,7 +2508,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-enumpartsincoming HRESULT
 		// EnumPartsIncoming( IPartsList **ppParts );
-		IPartsList EnumPartsIncoming();
+		IPartsList? EnumPartsIncoming();
 
 		/// <summary>
 		/// The <c>EnumPartsOutgoing</c> method retrieves a list of all the outgoing parts—that is, the parts that reside on data paths
@@ -2537,7 +2537,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-enumpartsoutgoing HRESULT
 		// EnumPartsOutgoing( IPartsList **ppParts );
-		IPartsList EnumPartsOutgoing();
+		IPartsList? EnumPartsOutgoing();
 
 		/// <summary>
 		/// The <c>GetTopologyObject</c> method gets a reference to the IDeviceTopology interface of the device-topology object that
@@ -2562,7 +2562,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-gettopologyobject HRESULT
 		// GetTopologyObject( IDeviceTopology **ppTopology );
-		IDeviceTopology GetTopologyObject();
+		IDeviceTopology? GetTopologyObject();
 
 		/// <summary>The <c>Activate</c> method activates a function-specific interface on a connector or subunit.</summary>
 		/// <param name="dwClsContext">
@@ -2652,7 +2652,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-activate HRESULT Activate( DWORD
 		// dwClsContext, REFIID refiid, void **ppvObject );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object Activate([In] CLSCTX dwClsContext, in Guid refiid);
+		object? Activate([In] CLSCTX dwClsContext, in Guid refiid);
 
 		/// <summary>
 		/// The <c>RegisterControlChangeCallback</c> method registers the IControlChangeNotify interface, which the client implements to
@@ -2826,7 +2826,7 @@ public static partial class CoreAudio
 	///   </item>
 	/// </list>
 	/// </remarks>
-	public static T Activate<T>(this IPart part, [In] CLSCTX dwClsContext = CLSCTX.CLSCTX_ALL) where T : class => part.Activate(dwClsContext, typeof(T).GUID) as T;
+	public static T? Activate<T>(this IPart part, [In] CLSCTX dwClsContext = CLSCTX.CLSCTX_ALL) where T : class => part.Activate(dwClsContext, typeof(T).GUID) as T;
 
 	/// <summary>
 	/// <para>
@@ -2866,7 +2866,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipartslist-getpart HRESULT GetPart( UINT
 		// nIndex, IPart **ppPart );
-		IPart GetPart([In] uint nIndex);
+		IPart? GetPart([In] uint nIndex);
 	}
 
 	/// <summary>

@@ -1,4 +1,5 @@
-﻿using static Vanara.PInvoke.PropSys;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke;
 
@@ -181,7 +182,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioenginebaseapo/nf-audioenginebaseapo-iaudioprocessingobject-initialize
 		// HRESULT Initialize( UINT32 cbDataSize, BYTE *pbyData );
-		void Initialize(uint cbDataSize, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] byte[] pbyData);
+		void Initialize(uint cbDataSize, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] byte[]? pbyData);
 
 		/// <summary>This method negotiates with the Windows Vista audio engine to establish a data format for the stream of audio data.</summary>
 		/// <param name="pOppositeFormat">
@@ -239,7 +240,7 @@ public static partial class CoreAudio
 		// HRESULT IsInputFormatSupported( IAudioMediaType *pOppositeFormat, IAudioMediaType *pRequestedInputFormat, IAudioMediaType
 		// **ppSupportedInputFormat );
 		[PreserveSig]
-		HRESULT IsInputFormatSupported(IAudioMediaType pOppositeFormat, IAudioMediaType pRequestedInputFormat, out IAudioMediaType ppSupportedInputFormat);
+		HRESULT IsInputFormatSupported(IAudioMediaType? pOppositeFormat, IAudioMediaType pRequestedInputFormat, out IAudioMediaType? ppSupportedInputFormat);
 
 		/// <summary>The method is used to verify that a specific output format is supported.</summary>
 		/// <param name="pOppositeFormat">
@@ -290,7 +291,7 @@ public static partial class CoreAudio
 		// HRESULT IsOutputFormatSupported( IAudioMediaType *pOppositeFormat, IAudioMediaType *pRequestedOutputFormat, IAudioMediaType
 		// **ppSupportedOutputFormat );
 		[PreserveSig]
-		HRESULT IsOutputFormatSupported(IAudioMediaType pOppositeFormat, IAudioMediaType pRequestedOutputFormat, out IAudioMediaType ppSupportedOutputFormat);
+		HRESULT IsOutputFormatSupported(IAudioMediaType? pOppositeFormat, IAudioMediaType pRequestedOutputFormat, out IAudioMediaType? ppSupportedOutputFormat);
 
 		/// <summary>GetInputChannelCount returns the input channel count (samples-per-frame) for this APO.</summary>
 		/// <returns>The input channel count.</returns>
@@ -491,7 +492,7 @@ public static partial class CoreAudio
 		// https://learn.microsoft.com/en-us/windows/win32/api/audioenginebaseapo/nf-audioenginebaseapo-iaudiosystemeffects2-geteffectslist
 		// HRESULT GetEffectsList( [out] LPGUID *ppEffectsIds, [out] UINT *pcEffects, [in] HANDLE Event );
 		[PreserveSig]
-		HRESULT GetEffectsList(out SafeCoTaskMemHandle ppEffectsIds, out uint pcEffects, [In] IntPtr Event);
+		HRESULT GetEffectsList(out SafeCoTaskMemHandle ppEffectsIds, out uint pcEffects, [In] HEVENT Event);
 	}
 
 	/// <summary>
@@ -625,7 +626,7 @@ public static partial class CoreAudio
 	/// define and return a custom GUID in rare cases where the type of effect is clearly different from the ones defined by Windows.
 	/// </para>
 	/// </remarks>
-	public static Guid[] GetEffectsList(this IAudioSystemEffects2 ase2, [In] IntPtr Event)
+	public static Guid[] GetEffectsList(this IAudioSystemEffects2 ase2, [In] HEVENT Event)
 	{
 		ase2.GetEffectsList(out SafeCoTaskMemHandle ids, out uint i, Event);
 		using (ids)
@@ -641,12 +642,12 @@ public static partial class CoreAudio
 	/// of GetFormatCount. In other words, any value in the range from zero to GetFormatCount( ) - 1.
 	/// </param>
 	/// <returns>A string that describes the custom format.</returns>
-	public static string GetFormatRepresentation(this IAudioSystemEffectsCustomFormats fmts, uint nFormat)
+	public static string? GetFormatRepresentation(this IAudioSystemEffectsCustomFormats fmts, uint nFormat)
 	{
 		fmts.GetFormatRepresentation(nFormat, out SafeCoTaskMemString rep);
 		using (rep)
 		{
-			return (string)rep;
+			return (string?)rep;
 		}
 	}
 

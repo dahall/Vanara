@@ -1472,7 +1472,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessionmanager2-registerducknotification
 		// HRESULT RegisterDuckNotification( LPCWSTR sessionID, IAudioVolumeDuckNotification *duckNotification );
-		void RegisterDuckNotification([MarshalAs(UnmanagedType.LPWStr)] string sessionID, [In] IAudioVolumeDuckNotification duckNotification);
+		void RegisterDuckNotification([MarshalAs(UnmanagedType.LPWStr)] string? sessionID, [In] IAudioVolumeDuckNotification duckNotification);
 
 		/// <summary>The <c>UnregisterDuckNotification</c> method deletes a previous registration by the application to receive notifications.</summary>
 		/// <param name="duckNotification">
