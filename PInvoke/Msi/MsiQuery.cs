@@ -1007,7 +1007,7 @@ public static partial class Msi
 	// LPCSTR szAction );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiDoActionA")]
-	public static extern Win32Error MsiDoAction(MSIHANDLE hInstall, [MarshalAs(UnmanagedType.LPTStr)] string szAction);
+	public static extern Win32Error MsiDoAction(MSIHANDLE hInstall, [MarshalAs(UnmanagedType.LPTStr)] string? szAction);
 
 	/// <summary>
 	/// The <c>MsiEnableUIPreview</c> function enables preview mode of the user interface to facilitate authoring of user-interface
@@ -1729,7 +1729,21 @@ public static partial class Msi
 	/// tries to obtain extended error information by using <c>MsiGetLastErrorRecord</c>.
 	/// </para>
 	/// <para>
-	/// <code>#include &lt;windows.h&gt; #include &lt;Msiquery.h&gt; #pragma comment(lib, "msi.lib") //------------------------------------------------------------------- // Function: OpenViewOnDatabase // // Arguments: hDatabase - handle to a MSI package obtained // via a call to MsiOpenDatabase // // Returns: UINT status code. ERROR_SUCCESS for success. //-------------------------------------------------------------------------------------------------- UINT __stdcall OpenViewOnDatabase(MSIHANDLE hDatabase) { if (!hDatabase) return ERROR_INVALID_PARAMETER; PMSIHANDLE hView = 0; UINT uiReturn = MsiDatabaseOpenView(hDatabase, TEXT("SELECT * FROM `UnknownTable`"), &amp;hView); if (ERROR_SUCCESS != uiReturn) { // try to obtain extended error information. PMSIHANDLE hLastErrorRec = MsiGetLastErrorRecord(); TCHAR* szExtendedError = NULL; DWORD cchExtendedError = 0; if (hLastErrorRec) { // Since we are not currently calling MsiFormatRecord during an // install session, hInstall is NULL. If MsiFormatRecord was called // via a DLL custom action, the hInstall handle provided to the DLL // custom action entry point could be used to further resolve // properties that might be contained within the error record. // To determine the size of the buffer required for the text, // szResultBuf must be provided as an empty string with // *pcchResultBuf set to 0. UINT uiStatus = MsiFormatRecord(NULL, hLastErrorRec, TEXT(""), &amp;cchExtendedError); if (ERROR_MORE_DATA == uiStatus) { // returned size does not include null terminator. cchExtendedError++; szExtendedError = new TCHAR[cchExtendedError]; if (szExtendedError) { uiStatus = MsiFormatRecord(NULL, hLastErrorRec, szExtendedError, &amp;cchExtendedError); if (ERROR_SUCCESS == uiStatus) { // We now have an extended error // message to report. // PLACE ADDITIONAL CODE HERE // TO LOG THE ERROR MESSAGE // IN szExtendedError. } delete [] szExtendedError; szExtendedError = NULL; } } } } return uiReturn; }</code>
+	/// <code>#include &lt;windows.h&gt; #include &lt;Msiquery.h&gt; #pragma comment(lib, "msi.lib") //-------------------------------------------------------------------
+	/// // Function: OpenViewOnDatabase // // Arguments: hDatabase - handle to a MSI package obtained // via a call to MsiOpenDatabase //
+	/// // Returns: UINT status code. ERROR_SUCCESS for success. //--------------------------------------------------------------------------------------------------
+	/// UINT __stdcall OpenViewOnDatabase(MSIHANDLE hDatabase) { if (!hDatabase) return ERROR_INVALID_PARAMETER; PMSIHANDLE hView = 0;
+	/// UINT uiReturn = MsiDatabaseOpenView(hDatabase, TEXT("SELECT * FROM `UnknownTable`"), &amp;hView); if (ERROR_SUCCESS != uiReturn)
+	/// { // try to obtain extended error information. PMSIHANDLE hLastErrorRec = MsiGetLastErrorRecord(); TCHAR* szExtendedError = NULL;
+	/// DWORD cchExtendedError = 0; if (hLastErrorRec) { // Since we are not currently calling MsiFormatRecord during an 
+	/// // install session, hInstall is NULL. If MsiFormatRecord was called // via a DLL custom action, the hInstall handle provided to the DLL
+	/// // custom action entry point could be used to further resolve // properties that might be contained within the error record.
+	/// // To determine the size of the buffer required for the text, // szResultBuf must be provided as an empty string with
+	/// // *pcchResultBuf set to 0. UINT uiStatus = MsiFormatRecord(NULL, hLastErrorRec, TEXT(""), &amp;cchExtendedError);
+	/// if (ERROR_MORE_DATA == uiStatus) { // returned size does not include null terminator. cchExtendedError++;
+	/// szExtendedError = new TCHAR[cchExtendedError]; if (szExtendedError) { uiStatus = MsiFormatRecord(NULL, hLastErrorRec, szExtendedError, &amp;cchExtendedError);
+	/// if (ERROR_SUCCESS == uiStatus) { // We now have an extended error // message to report. // PLACE ADDITIONAL CODE HERE
+	/// // TO LOG THE ERROR MESSAGE // IN szExtendedError. } delete [] szExtendedError; szExtendedError = NULL; } } } } return uiReturn; }</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msigetlasterrorrecord MSIHANDLE MsiGetLastErrorRecord();
@@ -1851,33 +1865,33 @@ public static partial class Msi
 	/// </param>
 	/// <param name="szName">A null-terminated string that specifies the name of the property.</param>
 	/// <param name="szValueBuf">
-	/// Pointer to the buffer that receives the null terminated string containing the value of the property. Do not attempt to determine
-	/// the size of the buffer by passing in a null (value=0) for szValueBuf. You can get the size of the buffer by passing in an empty
-	/// string (for example ""). The function will then return ERROR_MORE_DATA and pchValueBuf will contain the required buffer size in
-	/// TCHARs, not including the terminating null character. On return of ERROR_SUCCESS, pcchValueBuf contains the number of TCHARs
-	/// written to the buffer, not including the terminating null character.
+	/// Pointer to the buffer that receives the null terminated string containing the value of the property. Do not attempt to determine the
+	/// size of the buffer by passing in a null (value=0) for szValueBuf. You can get the size of the buffer by passing in an empty string
+	/// (for example ""). The function will then return ERROR_MORE_DATA and pchValueBuf will contain the required buffer size in TCHARs, not
+	/// including the terminating null character. On return of ERROR_SUCCESS, pcchValueBuf contains the number of TCHARs written to the
+	/// buffer, not including the terminating null character.
 	/// </param>
 	/// <param name="pcchValueBuf">
-	/// Pointer to the variable that specifies the size, in TCHARs, of the buffer pointed to by the variable szValueBuf. When the
-	/// function returns ERROR_SUCCESS, this variable contains the size of the data copied to szValueBuf, not including the terminating
-	/// null character. If szValueBuf is not large enough, the function returns ERROR_MORE_DATA and stores the required size, not
-	/// including the terminating null character, in the variable pointed to by pchValueBuf.
+	/// Pointer to the variable that specifies the size, in TCHARs, of the buffer pointed to by the variable szValueBuf. When the function
+	/// returns ERROR_SUCCESS, this variable contains the size of the data copied to szValueBuf, not including the terminating null
+	/// character. If szValueBuf is not large enough, the function returns ERROR_MORE_DATA and stores the required size, not including the
+	/// terminating null character, in the variable pointed to by pchValueBuf.
 	/// </param>
 	/// <returns>This function returns UINT.</returns>
 	/// <remarks>
 	/// <para>
-	/// If the value for the property retrieved by the <c>MsiGetProperty</c> function is not defined, it is equivalent to a 0-length
-	/// value. It is not an error.
+	/// If the value for the property retrieved by the <c>MsiGetProperty</c> function is not defined, it is equivalent to a 0-length value.
+	/// It is not an error.
 	/// </para>
 	/// <para>
 	/// If ERROR_MORE_DATA is returned, the parameter which is a pointer gives the size of the buffer required to hold the string. If
 	/// ERROR_SUCCESS is returned, it gives the number of characters written to the string buffer. Therefore you can get the size of the
-	/// buffer by passing in an empty string (for example "") for the parameter that specifies the buffer. Do not attempt to determine
-	/// the size of the buffer by passing in a Null (value=0).
+	/// buffer by passing in an empty string (for example "") for the parameter that specifies the buffer. Do not attempt to determine the
+	/// size of the buffer by passing in a Null (value=0).
 	/// </para>
 	/// <para>
-	/// The following example shows how a DLL custom action could access the value of a property by dynamically determining the size of
-	/// the value buffer.
+	/// The following example shows how a DLL custom action could access the value of a property by dynamically determining the size of the
+	/// value buffer.
 	/// </para>
 	/// <para>
 	/// <code>UINT __stdcall MyCustomAction(MSIHANDLE hInstall) { TCHAR* szValueBuf = NULL; DWORD cchValueBuf = 0; UINT uiStat = MsiGetProperty(hInstall, TEXT("MyProperty"), TEXT(""), &amp;cchValueBuf); //cchValueBuf now contains the size of the property's string, without null termination if (ERROR_MORE_DATA == uiStat) { ++cchValueBuf; // add 1 for null termination szValueBuf = new TCHAR[cchValueBuf]; if (szValueBuf) { uiStat = MsiGetProperty(hInstall, TEXT("MyProperty"), szValueBuf, &amp;cchValueBuf); } } if (ERROR_SUCCESS != uiStat) { if (szValueBuf != NULL) delete[] szValueBuf; return ERROR_INSTALL_FAILURE; } // custom action uses MyProperty // ... delete[] szValueBuf; return ERROR_SUCCESS; }</code>
@@ -2165,18 +2179,6 @@ public static partial class Msi
 	public static extern Win32Error MsiOpenDatabase([MarshalAs(UnmanagedType.LPTStr)] string szDatabasePath,
 		[In] IntPtr szPersist, out PMSIHANDLE phDatabase);
 
-	// Database open read-only, no persistent changes
-
-	// Database read/write in transaction mode
-
-	// Database direct read/write without transaction
-
-	// Create new database, transact mode read/write
-
-	// Create new database, direct mode read/write
-
-	// add flag to indicate patch file
-
 	/// <summary>The <c>MsiPreviewBillboard</c> function displays a billboard with the host control in the displayed dialog box.</summary>
 	/// <param name="hPreview">Handle to the preview.</param>
 	/// <param name="szControlName">Specifies the name of the host control.</param>
@@ -2199,7 +2201,7 @@ public static partial class Msi
 	// hPreview, LPCWSTR szDialogName );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiPreviewDialogW")]
-	public static extern Win32Error MsiPreviewDialog(MSIHANDLE hPreview, [MarshalAs(UnmanagedType.LPTStr)] string szDialogName);
+	public static extern Win32Error MsiPreviewDialog(MSIHANDLE hPreview, [MarshalAs(UnmanagedType.LPTStr)] string? szDialogName);
 
 	/// <summary>The <c>MsiProcessMessage</c> function sends an error record to the installer for processing.</summary>
 	/// <param name="hInstall">
@@ -2501,8 +2503,6 @@ public static partial class Msi
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiRecordGetInteger")]
 	public static extern int MsiRecordGetInteger(MSIHANDLE hRecord, uint iField);
 
-	// integer value reserved for null
-
 	/// <summary>The <c>MsiRecordGetString</c> function returns the string value of a record field.</summary>
 	/// <param name="hRecord">Handle to the record.</param>
 	/// <param name="iField">Specifies the field requested.</param>
@@ -2624,7 +2624,7 @@ public static partial class Msi
 	// hRecord, UINT iField, LPCSTR szFilePath );
 	[DllImport(Lib_Msi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiRecordSetStreamA")]
-	public static extern Win32Error MsiRecordSetStream(MSIHANDLE hRecord, uint iField, [MarshalAs(UnmanagedType.LPTStr)] string szFilePath);
+	public static extern Win32Error MsiRecordSetStream(MSIHANDLE hRecord, uint iField, [MarshalAs(UnmanagedType.LPTStr)] string? szFilePath);
 
 	/// <summary>The <c>MsiRecordSetString</c> function copies a string into the designated field.</summary>
 	/// <param name="hRecord">Handle to the record.</param>
@@ -2642,7 +2642,7 @@ public static partial class Msi
 	// hRecord, UINT iField, LPCSTR szValue );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiRecordSetStringA")]
-	public static extern Win32Error MsiRecordSetString(MSIHANDLE hRecord, uint iField, [MarshalAs(UnmanagedType.LPTStr)] string szValue);
+	public static extern Win32Error MsiRecordSetString(MSIHANDLE hRecord, uint iField, [MarshalAs(UnmanagedType.LPTStr)] string? szValue);
 
 	/// <summary>The <c>MsiSequence</c> function executes another action sequence, as described in the specified table.</summary>
 	/// <param name="hInstall">

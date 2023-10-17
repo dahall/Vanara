@@ -2038,8 +2038,8 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumClientsExA")]
 	public static extern Win32Error MsiEnumClientsEx([MarshalAs(UnmanagedType.LPTStr)] string szComponent,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, uint dwProductIndex,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szProductBuf, out MSIINSTALLCONTEXT pdwInstalledContext,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szSid, ref uint pcchSid);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szProductBuf, out MSIINSTALLCONTEXT pdwInstalledContext,
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szSid, ref uint pcchSid);
 
 	/// <summary>
 	/// <para>
@@ -2333,7 +2333,7 @@ public static partial class Msi
 	/// </para>
 	/// </returns>
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumClientsExA")]
-	public static IEnumerable<(string product, MSIINSTALLCONTEXT context, string sid)> MsiEnumClientsEx(string szComponent,
+	public static IEnumerable<(string product, MSIINSTALLCONTEXT context, string? sid)> MsiEnumClientsEx(string szComponent,
 		[Optional] string? szUserSid, MSIINSTALLCONTEXT dwContext)
 	{
 		StringBuilder prodCode = new(MAX_GUID_CHARS + 1);
@@ -2686,7 +2686,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumComponentsExA")]
 	public static extern Win32Error MsiEnumComponentsEx([Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext,
 		uint dwIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szInstalledComponentCode,
-		out MSIINSTALLCONTEXT pdwInstalledContext, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szSid, ref uint pcchSid);
+		out MSIINSTALLCONTEXT pdwInstalledContext, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szSid, ref uint pcchSid);
 
 	/// <summary>
 	/// <para>
@@ -3209,11 +3209,11 @@ public static partial class Msi
 	// MSIINSTALLCONTEXT *pdwTargetProductContext, LPSTR szTargetUserSid, LPDWORD pcchTargetUserSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumPatchesExA")]
-	public static extern Win32Error MsiEnumPatchesEx([MarshalAs(UnmanagedType.LPTStr)] string szProductCode,
+	public static extern Win32Error MsiEnumPatchesEx([MarshalAs(UnmanagedType.LPTStr)] string? szProductCode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, MSIPATCHSTATE dwFilter,
-		uint dwIndex, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szPatchCode,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szTargetProductCode, out MSIINSTALLCONTEXT pdwTargetProductContext,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szTargetUserSid, ref uint pcchTargetUserSid);
+		uint dwIndex, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szPatchCode,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szTargetProductCode, out MSIINSTALLCONTEXT pdwTargetProductContext,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szTargetUserSid, ref uint pcchTargetUserSid);
 
 	/// <summary>
 	/// The <c>MsiEnumPatchesEx</c> function enumerates all patches in a specific context or across all contexts. Patches already
@@ -3411,7 +3411,7 @@ public static partial class Msi
 	// MSIINSTALLCONTEXT *pdwTargetProductContext, LPSTR szTargetUserSid, LPDWORD pcchTargetUserSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumPatchesExA")]
-	public static extern Win32Error MsiEnumPatchesEx([MarshalAs(UnmanagedType.LPTStr)] string szProductCode,
+	public static extern Win32Error MsiEnumPatchesEx([MarshalAs(UnmanagedType.LPTStr)] string? szProductCode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, MSIPATCHSTATE dwFilter,
 		uint dwIndex, [Out, Optional] IntPtr szPatchCode, [Out, Optional] IntPtr szTargetProductCode, [Out, Optional] IntPtr pdwTargetProductContext,
 		[Out, Optional] IntPtr szTargetUserSid, [Out, Optional] IntPtr pcchTargetUserSid);
@@ -3647,8 +3647,8 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumProductsExA")]
 	public static extern Win32Error MsiEnumProductsEx([Optional, MarshalAs(UnmanagedType.LPTStr)] string? szProductCode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, uint dwIndex,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szInstalledProductCode,
-		out MSIINSTALLCONTEXT pdwInstalledContext, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szSid,
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szInstalledProductCode,
+		out MSIINSTALLCONTEXT pdwInstalledContext, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szSid,
 		ref uint pcchSid);
 
 	/// <summary>
@@ -3825,7 +3825,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumProductsExA")]
 	public static extern Win32Error MsiEnumProductsEx([Optional, MarshalAs(UnmanagedType.LPTStr)] string? szProductCode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, uint dwIndex,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szInstalledProductCode,
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szInstalledProductCode,
 		[Out, Optional] IntPtr pdwInstalledContext, [Out, Optional] IntPtr szSid, [Out, Optional] IntPtr pcchSid);
 
 	/// <summary>
@@ -3917,8 +3917,8 @@ public static partial class Msi
 	/// </item>
 	/// </list>
 	/// </returns>
-	public static IEnumerable<(string productCode, MSIINSTALLCONTEXT context, string sidString)> MsiEnumProductsEx(
-		[Optional] string? szProductCode, string szUserSid = null, MSIINSTALLCONTEXT dwContext = MSIINSTALLCONTEXT.MSIINSTALLCONTEXT_ALL)
+	public static IEnumerable<(string productCode, MSIINSTALLCONTEXT context, string? sidString)> MsiEnumProductsEx(
+		[Optional] string? szProductCode, string? szUserSid = null, MSIINSTALLCONTEXT dwContext = MSIINSTALLCONTEXT.MSIINSTALLCONTEXT_ALL)
 	{
 		StringBuilder prodCode = new(MAX_GUID_CHARS + 1);
 		StringBuilder sid = new(1024);

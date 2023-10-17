@@ -78,7 +78,7 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiExtractPatchXMLDataA")]
 	public static extern Win32Error MsiExtractPatchXMLData([MarshalAs(UnmanagedType.LPTStr)] string szPatchPath, [Optional] uint dwReserved,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szXMLData, ref uint pcchXMLData);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szXMLData, ref uint pcchXMLData);
 
 	/// <summary>
 	/// The <c>MsiGetComponentPath</c> function returns the full path to an installed component. If the key path for the component is a
@@ -194,7 +194,7 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetComponentPathA")]
 	public static extern INSTALLSTATE MsiGetComponentPath([MarshalAs(UnmanagedType.LPTStr)] string szProduct,
-		[MarshalAs(UnmanagedType.LPTStr)] string szComponent, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf,
+		[MarshalAs(UnmanagedType.LPTStr)] string szComponent, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf,
 		ref uint pcchBuf);
 
 	/// <summary>
@@ -382,7 +382,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetComponentPathExA")]
 	public static extern INSTALLSTATE MsiGetComponentPathEx([MarshalAs(UnmanagedType.LPTStr)] string szProductCode,
 		[MarshalAs(UnmanagedType.LPTStr)] string szComponentCode, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid,
-		[Optional] MSIINSTALLCONTEXT dwContext, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpOutPathBuffer,
+		[Optional] MSIINSTALLCONTEXT dwContext, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpOutPathBuffer,
 		ref uint pcchOutPathBuffer);
 
 	/// <summary>The <c>MsiGetFeatureInfo</c> function returns descriptive information for a feature.</summary>
@@ -459,8 +459,8 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetFeatureInfoW")]
 	public static extern Win32Error MsiGetFeatureInfo(MSIHANDLE hProduct, [MarshalAs(UnmanagedType.LPTStr)] string szFeature,
-		out INSTALLFEATUREATTRIBUTE lpAttributes, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpTitleBuf,
-		ref uint pcchTitleBuf, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpHelpBuf, ref uint pcchHelpBuf);
+		out INSTALLFEATUREATTRIBUTE lpAttributes, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpTitleBuf,
+		ref uint pcchTitleBuf, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpHelpBuf, ref uint pcchHelpBuf);
 
 	/// <summary>The <c>MsiGetFeatureUsage</c> function returns the usage metrics for a product feature.</summary>
 	/// <param name="szProduct">Specifies the product code for the product that contains the feature.</param>
@@ -768,8 +768,8 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetFileVersionA")]
 	public static extern Win32Error MsiGetFileVersion([MarshalAs(UnmanagedType.LPTStr)] string szFilePath,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpVersionBuf, ref uint pcchVersionBuf,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpLangBuf, ref uint pcchLangBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpVersionBuf, ref uint pcchVersionBuf,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpLangBuf, ref uint pcchLangBuf);
 
 	/// <summary>
 	/// The <c>MsiGetFileVersion</c> returns the version string and language string in the format that the installer expects to find
@@ -837,8 +837,8 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetFileVersionA")]
 	public static extern Win32Error MsiGetFileVersion([MarshalAs(UnmanagedType.LPTStr)] string szFilePath,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpVersionBuf, [In, Optional] IntPtr pcchVersionBuf,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpLangBuf, [In, Optional] IntPtr pcchLangBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpVersionBuf, [In, Optional] IntPtr pcchVersionBuf,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpLangBuf, [In, Optional] IntPtr pcchLangBuf);
 
 	/// <summary>
 	/// The <c>MsiGetPatchFileList</c> function is provided a list of .msp files, delimited by semicolons, and retrieves the list of
@@ -974,7 +974,7 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetPatchInfoA")]
 	public static extern Win32Error MsiGetPatchInfo([MarshalAs(UnmanagedType.LPTStr)] string szPatch,
-		[MarshalAs(UnmanagedType.LPTStr)] string szAttribute, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpValueBuf,
+		[MarshalAs(UnmanagedType.LPTStr)] string szAttribute, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpValueBuf,
 		ref uint pcchValueBuf);
 
 	/// <summary>
@@ -1175,7 +1175,7 @@ public static partial class Msi
 	public static extern Win32Error MsiGetPatchInfoEx([MarshalAs(UnmanagedType.LPTStr)] string szPatchCode,
 		[MarshalAs(UnmanagedType.LPTStr)] string szProductCode, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid,
 		MSIINSTALLCONTEXT dwContext, [MarshalAs(UnmanagedType.LPTStr)] string szProperty,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpValue, ref uint pcchValue);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpValue, ref uint pcchValue);
 
 	/// <summary>
 	/// The <c>MsiGetProductCode</c> function returns the product code of an application by using the component code of an installed or
@@ -1228,7 +1228,7 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetProductCodeA")]
 	public static extern Win32Error MsiGetProductCode([MarshalAs(UnmanagedType.LPTStr)] string szComponent,
-[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpBuf39);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpBuf39);
 
 	/// <summary>The <c>MsiGetProductInfo</c> function returns product information for published and installed products.</summary>
 	/// <param name="szProduct">Specifies the product code for the product.</param>
@@ -1462,7 +1462,7 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetProductInfoA")]
 	public static extern Win32Error MsiGetProductInfo([MarshalAs(UnmanagedType.LPTStr)] string szProduct, [MarshalAs(UnmanagedType.LPTStr)] string szAttribute,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpValueBuf, ref uint pcchValueBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpValueBuf, ref uint pcchValueBuf);
 
 	/// <summary>
 	/// <para>
@@ -1787,7 +1787,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetProductInfoExA")]
 	public static extern Win32Error MsiGetProductInfoEx([MarshalAs(UnmanagedType.LPTStr)] string szProductCode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, [MarshalAs(UnmanagedType.LPTStr)] string szProperty,
-		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szValue, ref uint pcchValue);
+		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szValue, ref uint pcchValue);
 
 	/// <summary>The <c>MsiGetProductInfoFromScript</c> function returns product information for a Windows Installer script file.</summary>
 	/// <param name="szScriptFile">
@@ -1849,9 +1849,9 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetProductInfoFromScriptA")]
 	public static extern Win32Error MsiGetProductInfoFromScript([MarshalAs(UnmanagedType.LPTStr)] string szScriptFile,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpProductBuf39, out ushort plgidLanguage, out uint pdwVersion,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpNameBuf, ref uint pcchNameBuf,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPackageBuf, ref uint pcchPackageBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpProductBuf39, out ushort plgidLanguage, out uint pdwVersion,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpNameBuf, ref uint pcchNameBuf,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPackageBuf, ref uint pcchPackageBuf);
 
 	/// <summary>The <c>MsiGetProductProperty</c> function retrieves product properties. These properties are in the product database.</summary>
 	/// <param name="hProduct">Handle to the product obtained from MsiOpenProduct.</param>
@@ -1904,7 +1904,7 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetProductPropertyA")]
 	public static extern Win32Error MsiGetProductProperty(MSIHANDLE hProduct, [MarshalAs(UnmanagedType.LPTStr)] string szProperty,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpValueBuf, ref uint pcchValueBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpValueBuf, ref uint pcchValueBuf);
 
 	/// <summary>
 	/// The <c>MsiGetShortcutTarget</c> function examines a shortcut and returns its product, feature name, and component if available.
@@ -1933,9 +1933,9 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetShortcutTargetA")]
 	public static extern Win32Error MsiGetShortcutTarget([MarshalAs(UnmanagedType.LPTStr)] string szShortcutPath,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szProductCode,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szFeatureId,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szComponentCode);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szProductCode,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szFeatureId,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szComponentCode);
 
 	/// <summary>The <c>MsiGetUserInfo</c> function returns the registered user information for an installed product.</summary>
 	/// <param name="szProduct">Specifies the product code for the product to be queried.</param>
@@ -1999,9 +1999,9 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetUserInfoA")]
 	public static extern USERINFOSTATE MsiGetUserInfo([MarshalAs(UnmanagedType.LPTStr)] string szProduct,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpUserNameBuf, ref uint pcchUserNameBuf,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpOrgNameBuf, ref uint pcchOrgNameBuf,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpSerialBuf, ref uint pcchSerialBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpUserNameBuf, ref uint pcchUserNameBuf,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpOrgNameBuf, ref uint pcchOrgNameBuf,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpSerialBuf, ref uint pcchSerialBuf);
 
 	/// <summary>The <c>MsiInstallMissingComponent</c> function installs files that are unexpectedly missing.</summary>
 	/// <param name="szProduct">Specifies the product code for the product that owns the component to be installed.</param>
@@ -2421,7 +2421,7 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiLocateComponentA")]
 	public static extern INSTALLSTATE MsiLocateComponent([MarshalAs(UnmanagedType.LPTStr)] string szComponent,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, ref uint pcchBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, ref uint pcchBuf);
 
 	/// <summary>
 	/// The <c>MsiNotifySidChange</c> function notifies and updates the Windows Installer internal information with changes to user SIDs.
@@ -2909,7 +2909,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiProvideAssemblyA")]
 	public static extern Win32Error MsiProvideAssembly([MarshalAs(UnmanagedType.LPTStr)] string szAssemblyName,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szAppContext, INSTALLMODE dwInstallMode, MSIASSEMBLYINFO dwAssemblyInfo,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, ref uint pcchPathBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, ref uint pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiProvideAssembly</c> function returns the full path to a Windows Installer component that contains an assembly. The
@@ -3077,7 +3077,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiProvideAssemblyA")]
 	public static extern Win32Error MsiProvideAssembly([MarshalAs(UnmanagedType.LPTStr)] string szAssemblyName,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szAppContext, INSTALLMODE dwInstallMode, MSIASSEMBLYINFO dwAssemblyInfo,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiProvideComponent</c> function returns the full component path, performing any necessary installation. This function
@@ -3221,7 +3221,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiProvideComponentA")]
 	public static extern Win32Error MsiProvideComponent([MarshalAs(UnmanagedType.LPTStr)] string szProduct,
 		[MarshalAs(UnmanagedType.LPTStr)] string szFeature, [MarshalAs(UnmanagedType.LPTStr)] string szComponent,
-		INSTALLMODE dwInstallMode, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, ref uint pcchPathBuf);
+		INSTALLMODE dwInstallMode, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, ref uint pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiProvideComponent</c> function returns the full component path, performing any necessary installation. This function
@@ -3365,7 +3365,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiProvideComponentA")]
 	public static extern Win32Error MsiProvideComponent([MarshalAs(UnmanagedType.LPTStr)] string szProduct,
 		[MarshalAs(UnmanagedType.LPTStr)] string szFeature, [MarshalAs(UnmanagedType.LPTStr)] string szComponent,
-		INSTALLMODE dwInstallMode, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
+		INSTALLMODE dwInstallMode, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiProvideQualifiedComponent</c> function returns the full component path for a qualified component and performs any
@@ -3478,7 +3478,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiProvideQualifiedComponentA")]
 	public static extern Win32Error MsiProvideQualifiedComponent([MarshalAs(UnmanagedType.LPTStr)] string szCategory,
 		[MarshalAs(UnmanagedType.LPTStr)] string szQualifier, INSTALLMODE dwInstallMode,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, ref uint pcchPathBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, ref uint pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiProvideQualifiedComponent</c> function returns the full component path for a qualified component and performs any
@@ -3591,7 +3591,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiProvideQualifiedComponentA")]
 	public static extern Win32Error MsiProvideQualifiedComponent([MarshalAs(UnmanagedType.LPTStr)] string szCategory,
 		[MarshalAs(UnmanagedType.LPTStr)] string szQualifier, INSTALLMODE dwInstallMode,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiProvideQualifiedComponentEx</c> function returns the full component path for a qualified component that is published
@@ -3717,7 +3717,7 @@ public static partial class Msi
 	public static extern Win32Error MsiProvideQualifiedComponentEx([MarshalAs(UnmanagedType.LPTStr)] string szCategory,
 		[MarshalAs(UnmanagedType.LPTStr)] string szQualifier, INSTALLMODE dwInstallMode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szProduct, [Optional] uint dwUnused1, [Optional] uint dwUnused2,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, ref uint pcchPathBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, ref uint pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiProvideQualifiedComponentEx</c> function returns the full component path for a qualified component that is published
@@ -3843,7 +3843,7 @@ public static partial class Msi
 	public static extern Win32Error MsiProvideQualifiedComponentEx([MarshalAs(UnmanagedType.LPTStr)] string szCategory,
 		[MarshalAs(UnmanagedType.LPTStr)] string szQualifier, INSTALLMODE dwInstallMode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szProduct, [Optional] uint dwUnused1, [Optional] uint dwUnused2,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpPathBuf, [In, Optional] IntPtr pcchPathBuf);
 
 	/// <summary>
 	/// The <c>MsiQueryComponentState</c> function returns the installed state for a component. This function can query for a component
@@ -4621,7 +4621,7 @@ public static partial class Msi
 	// INSTALLUI_HANDLERA puiHandler, DWORD dwMessageFilter, LPVOID pvContext );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiSetExternalUIA")]
-	public static extern INSTALLUI_HANDLER MsiSetExternalUI([Optional] INSTALLUI_HANDLER puiHandler, INSTALLLOGMODE dwMessageFilter,
+	public static extern INSTALLUI_HANDLER MsiSetExternalUI([Optional] INSTALLUI_HANDLER? puiHandler, INSTALLLOGMODE dwMessageFilter,
 		[In, Optional] IntPtr pvContext);
 
 	/// <summary>The <c>MsiSetExternalUIRecord</c> function enables an external user-interface (UI) handler.</summary>
@@ -4783,8 +4783,8 @@ public static partial class Msi
 	// INSTALLUI_HANDLER_RECORD puiHandler, DWORD dwMessageFilter, LPVOID pvContext, PINSTALLUI_HANDLER_RECORD ppuiPrevHandler );
 	[DllImport(Lib_Msi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiSetExternalUIRecord")]
-	public static extern Win32Error MsiSetExternalUIRecord([Optional] INSTALLUI_HANDLER_RECORD puiHandler, INSTALLLOGMODE dwMessageFilter,
-		[In, Optional] IntPtr pvContext, out INSTALLUI_HANDLER_RECORD ppuiPrevHandler);
+	public static extern Win32Error MsiSetExternalUIRecord([Optional] INSTALLUI_HANDLER_RECORD? puiHandler, INSTALLLOGMODE dwMessageFilter,
+		[In, Optional] IntPtr pvContext, out INSTALLUI_HANDLER_RECORD? ppuiPrevHandler);
 
 	/// <summary>
 	/// The <c>MsiSetInternalUI</c> function enables the installer's internal user interface. Then this user interface is used for all
@@ -6124,9 +6124,9 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiSourceListEnumMediaDisksA")]
 	public static extern Win32Error MsiSourceListEnumMediaDisks([MarshalAs(UnmanagedType.LPTStr)] string szProductCodeOrPatchCode,
-		[MarshalAs(UnmanagedType.LPTStr)] string szUserSid, MSIINSTALLCONTEXT dwContext, MSICODE dwOptions, uint dwIndex,
-		out uint pdwDiskId, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szVolumeLabel, ref uint pcchVolumeLabel,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szDiskPrompt, ref uint pcchDiskPrompt);
+		[MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, MSICODE dwOptions, uint dwIndex,
+		out uint pdwDiskId, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szVolumeLabel, ref uint pcchVolumeLabel,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szDiskPrompt, ref uint pcchDiskPrompt);
 
 	/// <summary>
 	/// The <c>MsiSourceListEnumMediaDisks</c> function enumerates the list of disks registered for the media source for a patch or product.
@@ -6322,9 +6322,9 @@ public static partial class Msi
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiSourceListEnumMediaDisksA")]
 	public static extern Win32Error MsiSourceListEnumMediaDisks([MarshalAs(UnmanagedType.LPTStr)] string szProductCodeOrPatchCode,
-		[MarshalAs(UnmanagedType.LPTStr)] string szUserSid, MSIINSTALLCONTEXT dwContext, MSICODE dwOptions, uint dwIndex,
-		out uint pdwDiskId, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szVolumeLabel, [In, Optional] IntPtr pcchVolumeLabel,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szDiskPrompt, [In, Optional] IntPtr pcchDiskPrompt);
+		[MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, MSICODE dwOptions, uint dwIndex,
+		out uint pdwDiskId, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szVolumeLabel, [In, Optional] IntPtr pcchVolumeLabel,
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szDiskPrompt, [In, Optional] IntPtr pcchDiskPrompt);
 
 	/// <summary>The <c>MsiSourceListEnumSources</c> function enumerates the sources in the source list of a specified patch or product.</summary>
 	/// <param name="szProductCodeOrPatchCode">
@@ -6506,7 +6506,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiSourceListEnumSourcesA")]
 	public static extern Win32Error MsiSourceListEnumSources([MarshalAs(UnmanagedType.LPTStr)] string szProductCodeOrPatchCode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, uint dwOptions, uint dwIndex,
-		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szSource, ref uint pcchSource);
+		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szSource, ref uint pcchSource);
 
 	/// <summary>
 	/// The <c>MsiSourceListForceResolution</c> function forces the installer to search the source list for a valid product source the
@@ -6923,7 +6923,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiSourceListGetInfoA")]
 	public static extern Win32Error MsiSourceListGetInfo([MarshalAs(UnmanagedType.LPTStr)] string szProductCodeOrPatchCode,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? szUserSid, MSIINSTALLCONTEXT dwContext, MSICODE dwOptions,
-		[MarshalAs(UnmanagedType.LPTStr)] string szProperty, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szValue, ref uint pcchValue);
+		[MarshalAs(UnmanagedType.LPTStr)] string szProperty, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? szValue, ref uint pcchValue);
 
 	/// <summary>
 	/// The <c>MsiSourceListSetInfo</c> function sets information about the source list for a product or patch in a specific context.

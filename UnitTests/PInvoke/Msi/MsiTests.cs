@@ -26,7 +26,7 @@ public class MsiTests
 		Assert.That(prods, Is.Not.Empty);
 
 		var value = new StringBuilder(1024);
-		foreach ((string productCode, MSIINSTALLCONTEXT ctx, string sidString) in prods)
+		foreach ((string productCode, MSIINSTALLCONTEXT ctx, string? sidString) in prods)
 		{
 			var err = GetProp(productCode, ctx, sidString, INSTALLPROPERTY.INSTALLPROPERTY_PRODUCTNAME);
 			var name = err.Succeeded ? value.ToString() : err.ToString();
@@ -36,7 +36,7 @@ public class MsiTests
 			TestContext.WriteLine($"{ctx} : {name} : {ver} : Elev={elev}");
 		}
 
-		Win32Error GetProp(string productCode, MSIINSTALLCONTEXT ctx, string sidString, string prop)
+		Win32Error GetProp(string productCode, MSIINSTALLCONTEXT ctx, string? sidString, string prop)
 		{
 			value.Length = 0;
 			var valueSz = (uint)value.Capacity;
