@@ -56,6 +56,13 @@ public partial class User32Tests
 	public void LockWorkStationTest() => throw new NotImplementedException();
 
 	[Test()]
+	public void MB_GetStringTest()
+	{
+		Assert.NotNull((string?)MB_GetString(1));
+		TestContext.WriteLine((string?)MB_GetString(1));
+	}
+
+	[Test()]
 	public void RealGetWindowClassTest() => throw new NotImplementedException();
 
 	[Test()]
