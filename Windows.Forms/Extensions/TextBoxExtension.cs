@@ -29,10 +29,10 @@ public static partial class TextBoxExtension
 	/// <param name="textBox">The text box.</param>
 	/// <param name="items">The autocomplete strings.</param>
 	/// <param name="options">The autocomplete options.</param>
-	public static void SetCustomAutoCompleteList(this TextBox textBox, IList<string> items, AUTOCOMPLETEOPTIONS options = AUTOCOMPLETEOPTIONS.ACO_AUTOSUGGEST)
+	public static void SetCustomAutoCompleteList(this TextBox textBox, IReadOnlyList<string> items, AUTOCOMPLETEOPTIONS options = AUTOCOMPLETEOPTIONS.ACO_AUTOSUGGEST)
 	{
 		var ac = new IAutoComplete2();
-		ac.Init(textBox.Handle, new ComEnumStringImpl(items), null, null);
+		ac.Init(textBox.Handle, new Vanara.PInvoke.InteropServices.ComEnumString(items), null, null);
 		ac.SetOptions(options);
 	}
 
@@ -45,30 +45,5 @@ public static partial class TextBoxExtension
 		using (var ptr = SafeCoTaskMemHandle.CreateFromList(tabs))
 			SendMessage(textBox.Handle, (uint)EditMessage.EM_SETTABSTOPS, (IntPtr)tabs.Length, (IntPtr)ptr);
 		textBox.Invalidate();
-	}
-
-	private class ComEnumStringImpl : IEnumString
-	{
-		private readonly IList<string> list;
-		private int cur;
-
-		public ComEnumStringImpl(IList<string> items) => list = items;
-
-		void IEnumString.Clone(out IEnumString ppenum) => ppenum = new ComEnumStringImpl(list) { cur = cur };
-
-		int IEnumString.Next(int celt, string[] rgelt, IntPtr pceltFetched)
-		{
-			if (celt < 0) throw new ArgumentOutOfRangeException(nameof(celt));
-			int idx;
-			for (idx = 0; cur < list.Count && celt > 0; idx++, cur++, celt--)
-				rgelt[idx] = list[cur];
-			if (pceltFetched != IntPtr.Zero)
-				Marshal.WriteInt32(pceltFetched, idx);
-			return celt == 0 ? 0 : 1;
-		}
-
-		void IEnumString.Reset() => cur = 0;
-
-		int IEnumString.Skip(int celt) => (cur += celt) >= list.Count ? 1 : 0;
 	}
 }
