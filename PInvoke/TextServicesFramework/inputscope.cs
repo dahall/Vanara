@@ -694,7 +694,7 @@ public static partial class MSCTF
 	// const InputScope *pInputScopes, UINT cInputScopes, PWSTR *ppszPhraseList, UINT cPhrases, PWSTR pszRegExp, PWSTR pszSRGS );
 	[DllImport(Lib_Msctf, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("inputscope.h", MSDNShortId = "NF:inputscope.SetInputScopes")]
-	public static extern HRESULT SetInputScopes(HWND hwnd, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] InputScope[] pInputScopes, uint cInputScopes,
+	public static extern HRESULT SetInputScopes(HWND hwnd, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] InputScope[]? pInputScopes, uint cInputScopes,
 		[Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 4)] string[]? ppszPhraseList,
 		uint cPhrases, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszRegExp, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszSRGS);
 
@@ -742,7 +742,7 @@ public static partial class MSCTF
 	// const InputScope *pInputScopes, UINT cInputScopes, IEnumString *pEnumString, PWSTR pszRegExp, PWSTR pszSRGS );
 	[DllImport(Lib_Msctf, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("inputscope.h", MSDNShortId = "NF:inputscope.SetInputScopes2")]
-	public static extern HRESULT SetInputScopes2(HWND hwnd, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] InputScope[] pInputScopes, uint cInputScopes,
+	public static extern HRESULT SetInputScopes2(HWND hwnd, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] InputScope[]? pInputScopes, uint cInputScopes,
 		IEnumString pEnumString, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszRegExp, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszSRGS);
 
 	/// <summary>Do not use.</summary>

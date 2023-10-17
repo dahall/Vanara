@@ -1,6 +1,5 @@
 ﻿using Vanara.Collections;
 using LPARAM = System.IntPtr;
-
 using WPARAM = System.IntPtr;
 
 namespace Vanara.PInvoke;
@@ -100,6 +99,7 @@ public static partial class MSCTF
 	[PInvokeData("ctffunc.h")]
 	public enum TKBLayoutId : ushort
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		TKBLT_UNDEFINED = 0,
 		TKBL_CLASSIC_TRADITIONAL_CHINESE_PHONETIC = 0x0404,
 		TKBL_CLASSIC_TRADITIONAL_CHINESE_CHANGJIE = 0xF042,
@@ -108,30 +108,7 @@ public static partial class MSCTF
 		TKBL_OPT_KOREAN_HANGUL_2_BULSIK = 0x0412,
 		TKBL_OPT_SIMPLIFIED_CHINESE_PINYIN = 0x0804,
 		TKBL_OPT_TRADITIONAL_CHINESE_PHONETIC = 0x0404,
-
-/* Unmerged change from project 'Vanara.PInvoke.TextServicesFramework (netstandard2.0)'
-Before:
-#pragma warning restore CA1069 // Enums values should not be duplicated
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-After:
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-*/
-
-/* Unmerged change from project 'Vanara.PInvoke.TextServicesFramework (net48)'
-Before:
-#pragma warning restore CA1069 // Enums values should not be duplicated
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-After:
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-*/
-
-/* Unmerged change from project 'Vanara.PInvoke.TextServicesFramework (net45)'
-Before:
-#pragma warning restore CA1069 // Enums values should not be duplicated
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-After:
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-*/
 	}
 
 	/// <summary>
@@ -1127,7 +1104,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffngetsapiobject-get HRESULT Get( TfSapiObject sObj,
 		// IUnknown **ppunk );
 		[PreserveSig]
-		HRESULT Get([In] TfSapiObject sObj, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppunk);
+		HRESULT Get([In] TfSapiObject sObj, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppunk);
 	}
 
 	/// <summary>
@@ -1303,7 +1280,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnlmprocessor-queryrange HRESULT QueryRange(
 		// ITfRange *pRange, ITfRange **ppNewRange, BOOL *pfAccepted );
 		[PreserveSig]
-		new HRESULT QueryRange([In] ITfRange pRange, out ITfRange ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfAccepted);
+		new HRESULT QueryRange([In] ITfRange pRange, out ITfRange? ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfAccepted);
 
 		/// <summary>Determines if the language model text service supports a particular language.</summary>
 		/// <param name="langid">Contains a <c>LANGID</c> that specifies the identifier of the language that the query applies to.</param>
@@ -1372,7 +1349,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnlmprocessor-getreconversion HRESULT
 		// GetReconversion( ITfRange *pRange, ITfCandidateList **ppCandList );
 		[PreserveSig]
-		new HRESULT GetReconversion([In] ITfRange pRange, out ITfCandidateList ppCandList);
+		new HRESULT GetReconversion([In] ITfRange pRange, out ITfCandidateList? ppCandList);
 
 		/// <summary>Invokes the reconversion process in the language model text service for a range.</summary>
 		/// <param name="pRange">Pointer to an ITfRange object that covers the text to reconvert.</param>
@@ -1608,7 +1585,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnlmprocessor-queryrange HRESULT QueryRange(
 		// ITfRange *pRange, ITfRange **ppNewRange, BOOL *pfAccepted );
 		[PreserveSig]
-		HRESULT QueryRange([In] ITfRange pRange, out ITfRange ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfAccepted);
+		HRESULT QueryRange([In] ITfRange pRange, out ITfRange? ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfAccepted);
 
 		/// <summary>Determines if the language model text service supports a particular language.</summary>
 		/// <param name="langid">Contains a <c>LANGID</c> that specifies the identifier of the language that the query applies to.</param>
@@ -1677,7 +1654,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnlmprocessor-getreconversion HRESULT
 		// GetReconversion( ITfRange *pRange, ITfCandidateList **ppCandList );
 		[PreserveSig]
-		HRESULT GetReconversion([In] ITfRange pRange, out ITfCandidateList ppCandList);
+		HRESULT GetReconversion([In] ITfRange pRange, out ITfCandidateList? ppCandList);
 
 		/// <summary>Invokes the reconversion process in the language model text service for a range.</summary>
 		/// <param name="pRange">Pointer to an ITfRange object that covers the text to reconvert.</param>
@@ -1888,7 +1865,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnplayback-queryrange HRESULT QueryRange( ITfRange
 		// *pRange, ITfRange **ppNewRange, BOOL *pfPlayable );
 		[PreserveSig]
-		HRESULT QueryRange([In] ITfRange pRange, out ITfRange ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfPlayable);
+		HRESULT QueryRange([In] ITfRange pRange, out ITfRange? ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfPlayable);
 
 		/// <summary>Causes the audio data for a range of text to be played.</summary>
 		/// <param name="pRange">
@@ -2140,7 +2117,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnreconversion-queryrange HRESULT QueryRange(
 		// ITfRange *pRange, ITfRange **ppNewRange, BOOL *pfConvertable );
 		[PreserveSig]
-		HRESULT QueryRange([In] ITfRange pRange, out ITfRange ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfConvertable);
+		HRESULT QueryRange([In] ITfRange pRange, out ITfRange? ppNewRange, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfConvertable);
 
 		/// <summary>Obtains an ITfCandidateList object for a range of text.</summary>
 		/// <param name="pRange">
@@ -2175,7 +2152,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnreconversion-getreconversion HRESULT
 		// GetReconversion( ITfRange *pRange, ITfCandidateList **ppCandList );
 		[PreserveSig]
-		HRESULT GetReconversion([In] ITfRange pRange, out ITfCandidateList ppCandList);
+		HRESULT GetReconversion([In] ITfRange pRange, out ITfCandidateList? ppCandList);
 
 		/// <summary>Invokes the reconversion process for a range of text.</summary>
 		/// <param name="pRange">
@@ -2297,7 +2274,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itffnsearchcandidateprovider-getsearchcandidates
 		// HRESULT GetSearchCandidates( BSTR bstrQuery, BSTR bstrApplicationId, ITfCandidateList **pplist );
 		[PreserveSig]
-		HRESULT GetSearchCandidates([In, MarshalAs(UnmanagedType.BStr)] string bstrQuery, [In, MarshalAs(UnmanagedType.BStr)] string bstrApplicationId, out ITfCandidateList pplist);
+		HRESULT GetSearchCandidates([In, MarshalAs(UnmanagedType.BStr)] string bstrQuery, [In, MarshalAs(UnmanagedType.BStr)] string bstrApplicationId, out ITfCandidateList? pplist);
 
 		/// <summary>Provides a text Service or IME with history data when a candidate is chosen by the user.</summary>
 		/// <param name="bstrQuery">The reading string for the text service or IME to convert.</param>
@@ -2333,7 +2310,7 @@ After:
 		// SetResult( BSTR bstrQuery, BSTR bstrApplicationID, BSTR bstrResult );
 		[PreserveSig]
 		HRESULT SetResult([In, MarshalAs(UnmanagedType.BStr)] string bstrQuery, [In, MarshalAs(UnmanagedType.BStr)] string bstrApplicationID, [In, MarshalAs(UnmanagedType.BStr)] string bstrResult);
-	};
+	}
 
 	/// <summary>
 	/// The <c>ITfFnShowHelp</c> interface is implemented by a text service to enable the language bar to place a help command for the
@@ -2527,7 +2504,7 @@ After:
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctffunc/nf-ctffunc-itfintegratablecandidatelistuielement-getselectionstyle
 		// HRESULT GetSelectionStyle( TfIntegratableCandidateListSelectionStyle *ptfSelectionStyle );
 		[PreserveSig]
-		HRESULT GetSelectionStyle(out TfIntegratableCandidateListSelectionStyle ptfSelectionStyle);
+		HRESULT GetSelectionStyle(out TfIntegratableCandidateListSelectionStyle? ptfSelectionStyle);
 
 		/// <summary>Processes a key press.</summary>
 		/// <param name="wParam">

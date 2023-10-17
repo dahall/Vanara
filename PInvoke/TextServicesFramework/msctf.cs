@@ -32,6 +32,7 @@ public static partial class MSCTF
 	/// </summary>
 	public static readonly Guid GUID_APP_FUNCTIONPROVIDER = new("4caef01e-12af-4b0e-9db1-a6ec5b881208");
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static readonly Guid GUID_COMPARTMENT_EMPTYCONTEXT = new("d7487dbf-804e-41c5-894d-ad96fd4eea13");
 
 	public static readonly Guid GUID_COMPARTMENT_HANDWRITING_OPENCLOSE = new("f9ae2c6b-1866-4361-af72-7aa30948890e");
@@ -93,6 +94,7 @@ public static partial class MSCTF
 	public static readonly Guid GUID_MODEBIAS_READING = new("e31643a3-6466-4cbf-8d8b-0bd4d8545461");
 
 	public static readonly Guid GUID_MODEBIAS_URLHISTORY = new("8b0e54d9-63f2-4c68-84d4-79aee7a59f09");
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// Contains a TfGuidAtom value that represents the GUID of the display attribute. ITfCategoryMgr::GetGUID is used to convert this
@@ -112,6 +114,7 @@ public static partial class MSCTF
 	[CorrespondingType(typeof(LANGID))]
 	public static readonly Guid GUID_PROP_LANGID = new("3280ce20-8032-11d2-b603-00105a2799b5");
 
+	/// <summary/>
 	[CorrespondingType(typeof(LANGID))]
 	public static readonly Guid GUID_PROP_LMLATTICE = new(0x8189b801, 0xd62f, 0x400a, 0x8c, 0x12, 0xe2, 0x93, 0x40, 0x96, 0x7b, 0xa8);
 
@@ -149,6 +152,7 @@ public static partial class MSCTF
 	/// <summary>Obtains the TSF system function provider.</summary>
 	public static readonly Guid GUID_SYSTEM_FUNCTIONPROVIDER = new("9a698bb0-0f21-11d3-8df1-00105a2799b5");
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static readonly Guid GUID_TFCAT_CATEGORY_OF_TIP = new("534c48c1-0607-4098-a521-4fc899c73e90");
 
 	public static readonly Guid GUID_TFCAT_DISPLAYATTRIBUTEPROPERTY = new("b95f181b-ea4c-4af1-8056-7c321abbb091");
@@ -184,6 +188,7 @@ public static partial class MSCTF
 	public static readonly Guid GUID_TFCAT_TIPCAP_UIELEMENTENABLED = new("49d2f9cf-1f5e-11d7-a6d3-00065b84435c");
 
 	public static readonly Guid GUID_TFCAT_TIPCAP_WOW16 = new("364215da-75bc-11d7-a6ef-00065b84435c");
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// <para>
@@ -1354,7 +1359,7 @@ public static partial class MSCTF
 		/// Pointer to an ITfRange object that halts the shift. If the range shift encounters this range during the shift, the shift
 		/// halts. This member can be <c>NULL</c>.
 		/// </summary>
-		public ITfRange pHaltRange;
+		public ITfRange? pHaltRange;
 
 		/// <summary>
 		/// Contains one of the TfAnchor values that specifies which anchor of <c>pHaltRange</c> the anchor will get shifted to if

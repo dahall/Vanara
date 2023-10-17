@@ -1,11 +1,9 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
+
 using HKL = System.IntPtr;
-
 using LPARAM = System.IntPtr;
-
 using TfClientId = System.UInt32;
-
 using TfEditCookie = System.UInt32;
 using WPARAM = System.IntPtr;
 
@@ -119,7 +117,8 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextownerservices-unserialize HRESULT Unserialize(
 		// ITfProperty *pProp, const TF_PERSISTENT_PROPERTY_HEADER_ACP *pHdr, IStream *pStream, ITfPersistentPropertyLoaderACP *pLoader );
-		void Unserialize([In] ITfProperty pProp, in TF_PERSISTENT_PROPERTY_HEADER_ACP pHdr, [In, Optional] IStream pStream, [In, Optional] ITfPersistentPropertyLoaderACP pLoader);
+		void Unserialize([In] ITfProperty pProp, in TF_PERSISTENT_PROPERTY_HEADER_ACP pHdr, [In, Optional] IStream? pStream,
+			[In, Optional] ITfPersistentPropertyLoaderACP? pLoader);
 
 		/// <summary>Forces a property load.</summary>
 		/// <param name="pProp">Pointer to an ITfProperty object that specifies the property to load.</param>
@@ -191,7 +190,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextview-getrangefrompoint HRESULT GetRangeFromPoint(
 		// TfEditCookie ec, const POINT *ppt, DWORD dwFlags, ITfRange **ppRange );
-		ITfRange GetRangeFromPoint([In] TfEditCookie ec, in POINT ppt, GXFPF dwFlags);
+		ITfRange? GetRangeFromPoint([In] TfEditCookie ec, in POINT ppt, GXFPF dwFlags);
 
 		/// <summary>
 		/// The <c>ITfContextView::GetTextExt</c> method returns the bounding box, in screen coordinates, of a range of text.
@@ -587,7 +586,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfdisplayattributeprovider-getdisplayattributeinfo HRESULT
 		// GetDisplayAttributeInfo( REFGUID guid, ITfDisplayAttributeInfo **ppInfo );
 		[PreserveSig]
-		HRESULT GetDisplayAttributeInfo(in Guid guid, out ITfDisplayAttributeInfo ppInfo);
+		HRESULT GetDisplayAttributeInfo(in Guid guid, out ITfDisplayAttributeInfo? ppInfo);
 	}
 
 	/// <summary>
@@ -619,7 +618,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfdocumentmgr-createcontext HRESULT CreateContext(
 		// TfClientId tidOwner, DWORD dwFlags, IUnknown *punk, ITfContext **ppic, TfEditCookie *pecTextStore );
-		void CreateContext([In] TfClientId tidOwner, [Optional] uint dwFlags, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punk, out ITfContext ppic, out TfEditCookie pecTextStore);
+		void CreateContext([In] TfClientId tidOwner, [Optional] uint dwFlags, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? punk, out ITfContext ppic, out TfEditCookie pecTextStore);
 
 		/// <summary>Adds a context to the top of the context stack.</summary>
 		/// <param name="pic">
@@ -1009,7 +1008,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfinputprocessorprofileactivationsink-onactivated HRESULT
 		// OnActivated( DWORD dwProfileType, LANGID langid, REFCLSID clsid, REFGUID catid, REFGUID guidProfile, HKL hkl, DWORD dwFlags );
 		[PreserveSig]
-		HRESULT OnActivated([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid catid, in Guid guidProfile, [In] HKL hkl, [In] TF_IPSINK_FLAG dwFlags);
+		HRESULT OnActivated([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid catid, in Guid guidProfile, [In, Optional] HKL hkl, [In] TF_IPSINK_FLAG dwFlags);
 	}
 
 	/// <summary>
@@ -1090,7 +1089,7 @@ public static partial class MSCTF
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfinputprocessorprofilemgr-activateprofile HRESULT
 		// ActivateProfile( DWORD dwProfileType, LANGID langid, REFCLSID clsid, REFGUID guidProfile, HKL hkl, DWORD dwFlags );
-		void ActivateProfile([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid guidProfile, [In] HKL hkl, [In] TF_IPPMF dwFlags);
+		void ActivateProfile([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid guidProfile, [In, Optional] HKL hkl, [In] TF_IPPMF dwFlags);
 
 		/// <summary>
 		/// The <c>ITfInputProcessorProfileMgr::DeactivateProfile</c> method deactivates the specified text service's profile or
@@ -1144,7 +1143,7 @@ public static partial class MSCTF
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfinputprocessorprofilemgr-deactivateprofile HRESULT
 		// DeactivateProfile( DWORD dwProfileType, LANGID langid, REFCLSID clsid, REFGUID guidProfile, HKL hkl, DWORD dwFlags );
-		void DeactivateProfile([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid guidProfile, [In] HKL hkl, [In] TF_IPPMF dwFlags);
+		void DeactivateProfile([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid guidProfile, [In, Optional] HKL hkl, [In] TF_IPPMF dwFlags);
 
 		/// <summary>
 		/// The <c>ITfInputProcessorProfileMgr::GetProfile</c> method returns the information of the specified text service's profile or
@@ -1178,7 +1177,7 @@ public static partial class MSCTF
 		/// <returns>[out] The buffer to receive TF_INPUTPROCESSORPROFILE.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfinputprocessorprofilemgr-getprofile HRESULT GetProfile(
 		// DWORD dwProfileType, LANGID langid, REFCLSID clsid, REFGUID guidProfile, HKL hkl, TF_INPUTPROCESSORPROFILE *pProfile );
-		TF_INPUTPROCESSORPROFILE GetProfile([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid guidProfile, [In] HKL hkl);
+		TF_INPUTPROCESSORPROFILE GetProfile([In] TF_PROFILETYPE dwProfileType, [In] LANGID langid, in Guid clsid, in Guid guidProfile, [In, Optional] HKL hkl);
 
 		/// <summary>The <c>ITfInputProcessorProfileMgr::EnumProfiles</c> method returns profiles to be enumerated.</summary>
 		/// <param name="langid">[in] langid of the profiles to be enumerated. If langid is 0, all profiles will be enumerated.</param>
@@ -1283,7 +1282,7 @@ public static partial class MSCTF
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfinputprocessorprofilemgr-unregisterprofile HRESULT
 		// UnregisterProfile( REFCLSID rclsid, LANGID langid, REFGUID guidProfile, DWORD dwFlags );
-		void UnregisterProfile(in Guid rclsid, [In] LANGID langid, in Guid guidProfile, [In] TF_URP dwFlags);
+		void UnregisterProfile(in Guid rclsid, [In, Optional] LANGID langid, [Optional] in Guid guidProfile, [In] TF_URP dwFlags);
 
 		/// <summary>This method returns the current active profile.</summary>
 		/// <param name="catid">
@@ -1304,7 +1303,15 @@ public static partial class MSCTF
 	/// <para>Examples</para>
 	/// <para><c>ITfInputProcessorProfiles</c></para>
 	/// <para>
-	/// <code> HRESULT hr; ITfInputProcessorProfiles *pProfiles; //Create the object. hr = CoCreateInstance( CLSID_TF_InputProcessorProfiles, NULL, CLSCTX_INPROC_SERVER, IID_ITfInputProcessorProfiles, (LPVOID*)&amp;pProfiles); if(SUCCEEDED(hr)) { //Use the interface. //Release the interface. pProfiles-&gt;Release(); }</code>
+	/// <code language="cs">HRESULT hr;
+	/// ITfInputProcessorProfiles *pProfiles;
+	/// //Create the object.
+	/// hr = CoCreateInstance( CLSID_TF_InputProcessorProfiles, NULL, CLSCTX_INPROC_SERVER, IID_ITfInputProcessorProfiles, (LPVOID*)&amp;pProfiles);
+	/// if(SUCCEEDED(hr)) {
+	///   //Use the interface.
+	///   //Release the interface.
+	///   pProfiles-&gt;Release();
+	/// }</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nn-msctf-itfinputprocessorprofiles
@@ -1361,7 +1368,7 @@ public static partial class MSCTF
 		// AddLanguageProfile( REFCLSID rclsid, LANGID langid, REFGUID guidProfile, const WCHAR *pchDesc, ULONG cchDesc, const WCHAR
 		// *pchIconFile, ULONG cchFile, ULONG uIconIndex );
 		void AddLanguageProfile(in Guid rclsid, [In] LANGID langid, in Guid guidProfile, [In, MarshalAs(UnmanagedType.LPWStr)] string pchDesc, uint cchDesc,
-			[In, MarshalAs(UnmanagedType.LPWStr)] string pchIconFile, uint cchFile, uint uIconIndex);
+			[In, MarshalAs(UnmanagedType.LPWStr), Optional] string? pchIconFile, [Optional] uint cchFile, [Optional] uint uIconIndex);
 
 		/// <summary>Removes a language profile.</summary>
 		/// <param name="rclsid">Contains the text service CLSID.</param>
@@ -1579,7 +1586,7 @@ public static partial class MSCTF
 		// AddLanguageProfile( REFCLSID rclsid, LANGID langid, REFGUID guidProfile, const WCHAR *pchDesc, ULONG cchDesc, const WCHAR
 		// *pchIconFile, ULONG cchFile, ULONG uIconIndex );
 		new void AddLanguageProfile(in Guid rclsid, [In] LANGID langid, in Guid guidProfile, [In, MarshalAs(UnmanagedType.LPWStr)] string pchDesc, uint cchDesc,
-			[In, MarshalAs(UnmanagedType.LPWStr)] string pchIconFile, uint cchFile, uint uIconIndex);
+			[In, MarshalAs(UnmanagedType.LPWStr), Optional] string? pchIconFile, [Optional] uint cchFile, [Optional] uint uIconIndex);
 
 		/// <summary>Removes a language profile.</summary>
 		/// <param name="rclsid">Contains the text service CLSID.</param>
@@ -1832,7 +1839,7 @@ public static partial class MSCTF
 		/// <remarks>To insert an IDataObject object instead of text, use ITfInsertAtSelection::InsertEmbeddedAtSelection.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfinsertatselection-inserttextatselection HRESULT
 		// InsertTextAtSelection( TfEditCookie ec, DWORD dwFlags, const WCHAR *pchText, LONG cch, ITfRange **ppRange );
-		ITfRange InsertTextAtSelection([In] TfEditCookie ec, [In] TF_IAS dwFlags, [In, MarshalAs(UnmanagedType.LPWStr)] string pchText, int cch);
+		ITfRange? InsertTextAtSelection([In] TfEditCookie ec, [In] TF_IAS dwFlags, [In, MarshalAs(UnmanagedType.LPWStr)] string pchText, int cch);
 
 		/// <summary>
 		/// The <c>ITfInsertAtSelection::InsertEmbeddedAtSelection</c> method inserts an IDataObject object at the selection or
@@ -1865,7 +1872,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfinsertatselection-insertembeddedatselection HRESULT
 		// InsertEmbeddedAtSelection( TfEditCookie ec, DWORD dwFlags, IDataObject *pDataObject, ITfRange **ppRange );
-		ITfRange InsertEmbeddedAtSelection([In] TfEditCookie ec, [In] TF_IAS dwFlags, [In] IDataObject pDataObject);
+		ITfRange? InsertEmbeddedAtSelection([In] TfEditCookie ec, [In] TF_IAS dwFlags, [In, Optional] IDataObject? pDataObject);
 	}
 
 	/// <summary>
@@ -2892,7 +2899,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfreadonlyproperty-enumranges HRESULT EnumRanges(
 		// TfEditCookie ec, IEnumTfRanges **ppEnum, ITfRange *pTargetRange );
-		new void EnumRanges([In] TfEditCookie ec, out IEnumTfRanges ppEnum, [In, Optional] ITfRange pTargetRange);
+		new void EnumRanges([In] TfEditCookie ec, out IEnumTfRanges ppEnum, [In, Optional] ITfRange? pTargetRange);
 
 		/// <summary>Obtains the value of the property for a range of text.</summary>
 		/// <param name="ec">
@@ -2968,7 +2975,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfproperty-findrange HRESULT FindRange( TfEditCookie ec,
 		// ITfRange *pRange, ITfRange **ppRange, TfAnchor aPos );
-		void FindRange([In] TfEditCookie ec, [In] ITfRange pRange, out ITfRange ppRange, [In] TfAnchor aPos);
+		void FindRange([In] TfEditCookie ec, [In] ITfRange pRange, out ITfRange? ppRange, [In] TfAnchor aPos);
 
 		/// <summary>Sets the value of the property for a range of text using a property store object.</summary>
 		/// <param name="ec">
@@ -3035,7 +3042,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfproperty-clear HRESULT Clear( TfEditCookie ec, ITfRange
 		// *pRange );
-		void Clear([In] TfEditCookie ec, [In] ITfRange pRange);
+		void Clear([In] TfEditCookie ec, [In, Optional] ITfRange? pRange);
 	}
 
 	/// <summary>
@@ -3338,7 +3345,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfqueryembedded-queryinsertembedded HRESULT
 		// QueryInsertEmbedded( const GUID *pguidService, const FORMATETC *pFormatEtc, BOOL *pfInsertable );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		bool QueryInsertEmbedded(in Guid pguidService, in FORMATETC pFormatEtc);
+		unsafe bool QueryInsertEmbedded([In, Optional] Guid* pguidService, [In, Optional] FORMATETC* pFormatEtc);
 	}
 
 	/// <summary>
@@ -3488,7 +3495,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfrange-getembedded HRESULT GetEmbedded( TfEditCookie ec,
 		// REFGUID rguidService, REFIID riid, IUnknown **ppunk );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		object GetEmbedded([In] TfEditCookie ec, in Guid rguidService, in Guid riid);
+		object? GetEmbedded([In] TfEditCookie ec, in Guid rguidService, in Guid riid);
 
 		/// <summary>
 		/// The <c>ITfRange::InsertEmbedded</c> method inserts an object at the location of the start anchor of the range of text.
@@ -3970,10 +3977,10 @@ public static partial class MSCTF
 	/// Contains a GUID value that identifies the function group that the requested function belongs to. This value can be GUID_NULL.
 	/// </param>
 	/// <returns>An interface of <typeparamref name="T"/> that receives the requested function interface.</returns>
-	public static T GetFunction<T>(this ITfFunctionProvider fp, Guid rguid = default) where T : class
+	public static T? GetFunction<T>(this ITfFunctionProvider fp, Guid rguid = default) where T : class
 	{
 		HRESULT hr = fp.GetFunction(rguid, typeof(T).GUID, out var obj);
-		return hr.Succeeded ? (T)obj : (hr == HRESULT.E_NOINTERFACE ? null : throw hr.GetException());
+		return hr.Succeeded ? (T)obj! : (hr == HRESULT.E_NOINTERFACE ? null : throw hr.GetException()!);
 	}
 
 	/// <summary>The <c>ITfRange::GetText</c> method obtains the content covered by this range of text.</summary>

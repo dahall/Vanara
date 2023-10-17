@@ -459,7 +459,7 @@ public static partial class MSCTF
 	[DllImport(Lib_input, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SaveDefaultUserInputSettings([In] HWND hwndParent, [In] HKEY hSourceRegKey);
+	public static extern bool SaveDefaultUserInputSettings([In, Optional] HWND hwndParent, [In] HKEY hSourceRegKey);
 
 	/// <summary>Applies the user keyboard layout and text service setting to the system accounts hive.</summary>
 	/// <param name="hwndParent">
@@ -489,7 +489,7 @@ public static partial class MSCTF
 	[DllImport(Lib_input, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SaveSystemAcctInputSettings([In] HWND hwndParent, [In] HKEY hSourceRegKey);
+	public static extern bool SaveSystemAcctInputSettings([In, Optional] HWND hwndParent, [In] HKEY hSourceRegKey);
 
 	/// <summary>Sets the specified keyboard layout or a text service as the default input item of the current user.</summary>
 	/// <param name="psz">A string that represents a keyboard layout list or a text services profile list.</param>
@@ -870,7 +870,7 @@ public static partial class MSCTF
 	// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-tf_getthreadmgr HRESULT TF_GetThreadMgr( ITfThreadMgr **pptim );
 	[DllImport(Lib_Msctf, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("msctf.h", MSDNShortId = "NF:msctf.TF_GetThreadMgr")]
-	public static extern HRESULT TF_GetThreadMgr(out ITfThreadMgr pptim);
+	public static extern HRESULT TF_GetThreadMgr(out ITfThreadMgr? pptim);
 
 	/// <summary>
 	/// The <c>TF_InvalidAssemblyListCacheIfExist</c> function invalidates the text input processor's description cache. It is not

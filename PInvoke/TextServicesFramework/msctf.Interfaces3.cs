@@ -1,7 +1,5 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
-
 using TfClientId = System.UInt32;
-
 using TfEditCookie = System.UInt32;
 
 namespace Vanara.PInvoke;
@@ -141,7 +139,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfrange-getembedded HRESULT GetEmbedded( TfEditCookie ec,
 		// REFGUID rguidService, REFIID riid, IUnknown **ppunk );
 		[return: MarshalAs(UnmanagedType.IUnknown)]
-		new object GetEmbedded([In] TfEditCookie ec, in Guid rguidService, in Guid riid);
+		new object? GetEmbedded([In] TfEditCookie ec, in Guid rguidService, in Guid riid);
 
 		/// <summary>
 		/// The <c>ITfRange::InsertEmbedded</c> method inserts an object at the location of the start anchor of the range of text.
@@ -658,7 +656,7 @@ public static partial class MSCTF
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfrangebackup-restore HRESULT Restore( TfEditCookie ec,
 		// ITfRange *pRange );
-		void Restore([In] TfEditCookie ec, [In] ITfRange pRange);
+		void Restore([In] TfEditCookie ec, [In, Optional] ITfRange? pRange);
 	}
 
 	/// <summary>
@@ -1110,7 +1108,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfreadonlyproperty-enumranges HRESULT EnumRanges(
 		// TfEditCookie ec, IEnumTfRanges **ppEnum, ITfRange *pTargetRange );
-		void EnumRanges([In] TfEditCookie ec, out IEnumTfRanges ppEnum, [In, Optional] ITfRange pTargetRange);
+		void EnumRanges([In] TfEditCookie ec, out IEnumTfRanges ppEnum, [In, Optional] ITfRange? pTargetRange);
 
 		/// <summary>Obtains the value of the property for a range of text.</summary>
 		/// <param name="ec">
@@ -1713,7 +1711,7 @@ public static partial class MSCTF
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgr-getfocus HRESULT GetFocus( ITfDocumentMgr
 		// **ppdimFocus );
-		ITfDocumentMgr GetFocus();
+		ITfDocumentMgr? GetFocus();
 
 		/// <summary>Sets the input focus to the specified document manager.</summary>
 		/// <param name="pdimFocus">Pointer to a ITfDocumentMgr interface that receives the input focus. This parameter cannot be <c>NULL</c>.</param>
@@ -1756,7 +1754,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgr-associatefocus HRESULT AssociateFocus( HWND
 		// hwnd, ITfDocumentMgr *pdimNew, ITfDocumentMgr **ppdimPrev );
-		ITfDocumentMgr AssociateFocus([In] HWND hwnd, [In] ITfDocumentMgr pdimNew);
+		ITfDocumentMgr AssociateFocus([In] HWND hwnd, [In, Optional] ITfDocumentMgr? pdimNew);
 
 		/// <summary>Determines if the calling thread has the TSF input focus.</summary>
 		/// <returns>
@@ -1865,7 +1863,7 @@ public static partial class MSCTF
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgr-getfocus HRESULT GetFocus( ITfDocumentMgr
 		// **ppdimFocus );
-		ITfDocumentMgr GetFocus();
+		ITfDocumentMgr? GetFocus();
 
 		/// <summary>Sets the input focus to the specified document manager.</summary>
 		/// <param name="pdimFocus">Pointer to a ITfDocumentMgr interface that receives the input focus. This parameter cannot be <c>NULL</c>.</param>
@@ -2066,7 +2064,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgreventsink-onsetfocus HRESULT OnSetFocus(
 		// ITfDocumentMgr *pdimFocus, ITfDocumentMgr *pdimPrevFocus );
 		[PreserveSig]
-		HRESULT OnSetFocus([In] ITfDocumentMgr pdimFocus, [In] ITfDocumentMgr pdimPrevFocus);
+		HRESULT OnSetFocus([In] ITfDocumentMgr? pdimFocus, [In] ITfDocumentMgr? pdimPrevFocus);
 
 		/// <summary>Called when a context is added to the context stack</summary>
 		/// <param name="pic">Pointer to the context added to the stack.</param>
@@ -2132,7 +2130,7 @@ public static partial class MSCTF
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgr-getfocus HRESULT GetFocus( ITfDocumentMgr
 		// **ppdimFocus );
-		new ITfDocumentMgr GetFocus();
+		new ITfDocumentMgr? GetFocus();
 
 		/// <summary>Sets the input focus to the specified document manager.</summary>
 		/// <param name="pdimFocus">Pointer to a ITfDocumentMgr interface that receives the input focus. This parameter cannot be <c>NULL</c>.</param>
@@ -2175,7 +2173,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgr-associatefocus HRESULT AssociateFocus( HWND
 		// hwnd, ITfDocumentMgr *pdimNew, ITfDocumentMgr **ppdimPrev );
-		new ITfDocumentMgr AssociateFocus([In] HWND hwnd, [In] ITfDocumentMgr pdimNew);
+		new ITfDocumentMgr? AssociateFocus([In] HWND hwnd, [In] ITfDocumentMgr? pdimNew);
 
 		/// <summary>Determines if the calling thread has the TSF input focus.</summary>
 		/// <returns>
@@ -2921,7 +2919,7 @@ public static partial class MSCTF
 	[PInvokeData("msctf.h", MSDNShortId = "NN:msctf.ITfInputProcessorProfiles")]
 	public static LANGID[] GetLanguageList(this ITfInputProcessorProfiles ipp)
 	{
-		ipp.GetLanguageList(out InteropServices.SafeCoTaskMemHandle mem, out var c);
+		ipp.GetLanguageList(out SafeCoTaskMemHandle mem, out var c);
 		return mem.ToArray<LANGID>((int)c);
 	}
 

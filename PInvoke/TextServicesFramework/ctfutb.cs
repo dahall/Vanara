@@ -1,5 +1,4 @@
 ﻿using LPARAM = System.IntPtr;
-
 using WPARAM = System.IntPtr;
 
 namespace Vanara.PInvoke;
@@ -1855,7 +1854,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctfutb/nf-ctfutb-itflangbarmgr-getthreadlangbaritemmgr HRESULT
 		// GetThreadLangBarItemMgr( DWORD dwThreadId, ITfLangBarItemMgr **pplbi, DWORD *pdwThreadid );
 		[Obsolete("Should not be used.")]
-		void GetThreadLangBarItemMgr(uint dwThreadId, out ITfLangBarItemMgr pplbi, out uint pdwThreadid);
+		void GetThreadLangBarItemMgr(uint dwThreadId, out ITfLangBarItemMgr? pplbi, out uint pdwThreadid);
 
 		/// <summary>Should not be used.</summary>
 		/// <param name="dwThreadId"/>
@@ -1864,7 +1863,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctfutb/nf-ctfutb-itflangbarmgr-getinputprocessorprofiles HRESULT
 		// GetInputProcessorProfiles( DWORD dwThreadId, ITfInputProcessorProfiles **ppaip, DWORD *pdwThreadid );
 		[Obsolete("Should not be used.")]
-		void GetInputProcessorProfiles(uint dwThreadId, out ITfInputProcessorProfiles ppaip, out uint pdwThreadid);
+		void GetInputProcessorProfiles(uint dwThreadId, out ITfInputProcessorProfiles? ppaip, out uint pdwThreadid);
 
 		/// <summary>Should not be used.</summary>
 		/// <param name="pdwThreadId"/>
@@ -2018,8 +2017,8 @@ public static partial class MSCTF
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ctfutb/nf-ctfutb-itfmenu-addmenuitem HRESULT AddMenuItem( UINT uId, DWORD
 		// dwFlags, HBITMAP hbmp, HBITMAP hbmpMask, const WCHAR *pch, ULONG cch, ITfMenu **ppMenu );
-		void AddMenuItem(uint uId, [In] TF_LBMENUF dwFlags, [In] HBITMAP hbmp, [In] HBITMAP hbmpMask, [MarshalAs(UnmanagedType.LPWStr)] string pch,
-			uint cch, [MarshalAs(UnmanagedType.Interface), NullAllowed] out ITfMenu ppMenu);
+		void AddMenuItem(uint uId, [In] TF_LBMENUF dwFlags, [In, Optional] HBITMAP hbmp, [In, Optional] HBITMAP hbmpMask,
+			[MarshalAs(UnmanagedType.LPWStr)] string pch, uint cch, [MarshalAs(UnmanagedType.Interface), NullAllowed] out ITfMenu? ppMenu);
 	}
 
 	/// <summary>

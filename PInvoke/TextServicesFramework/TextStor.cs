@@ -601,7 +601,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/textstor/nf-textstor-ianchor-shift HRESULT Shift( DWORD dwFlags, LONG
 		// cchReq, LONG *pcch, IAnchor *paHaltAnchor );
-		void Shift([In] uint dwFlags, [In] int cchReq, out int pcch, [In] IAnchor paHaltAnchor);
+		void Shift([In] uint dwFlags, [In] int cchReq, out int pcch, [In] IAnchor? paHaltAnchor);
 
 		/// <summary>The <c>IAnchor::ShiftTo</c> method shifts the current anchor to the same position as another anchor.</summary>
 		/// <param name="paSite">Anchor occupying a position that the current anchor will be moved to.</param>
@@ -1163,8 +1163,9 @@ public static partial class MSCTF
 		// LONG acpEnd, WCHAR *pchPlain, ULONG cchPlainReq, ULONG *pcchPlainRet, TS_RUNINFO *prgRunInfo, ULONG cRunInfoReq, ULONG
 		// *pcRunInfoRet, LONG *pacpNext );
 		[PreserveSig]
-		HRESULT GetText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pchPlain, [In] uint cchPlainReq,
-			out uint pcchPlainRet, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] TS_RUNINFO[] prgRunInfo, [In] uint cRunInfoReq, out uint pcRunInfoRet, out int pacpNext);
+		HRESULT GetText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pchPlain, [In] uint cchPlainReq,
+			out uint pcchPlainRet, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] TS_RUNINFO[]? prgRunInfo, [In] uint cRunInfoReq,
+			out uint pcRunInfoRet, out int pacpNext);
 
 		/// <summary>The <c>ITextStoreACP::SetText</c> method sets the text selection to the supplied character positions.</summary>
 		/// <param name="dwFlags">
@@ -1358,7 +1359,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/textstor/nf-textstor-itextstoreacp-getembedded HRESULT GetEmbedded( LONG
 		// acpPos, REFGUID rguidService, REFIID riid, IUnknown **ppunk );
 		[PreserveSig]
-		HRESULT GetEmbedded([In] int acpPos, in Guid rguidService, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppunk);
+		HRESULT GetEmbedded([In] int acpPos, in Guid rguidService, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppunk);
 
 		/// <summary>Gets a value indicating whether the specified object can be inserted into the document.</summary>
 		/// <param name="pguidService">Pointer to the object type. Can be <c>NULL</c>.</param>
@@ -2512,8 +2513,9 @@ public static partial class MSCTF
 		// acpStart, LONG acpEnd, WCHAR *pchPlain, ULONG cchPlainReq, ULONG *pcchPlainRet, TS_RUNINFO *prgRunInfo, ULONG cRunInfoReq,
 		// ULONG *pcRunInfoRet, LONG *pacpNext );
 		[PreserveSig]
-		HRESULT GetText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pchPlain, [In] uint cchPlainReq,
-			out uint pcchPlainRet, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] TS_RUNINFO[] prgRunInfo, [In] uint cRunInfoReq, out uint pcRunInfoRet, out int pacpNext);
+		HRESULT GetText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pchPlain, [In] uint cchPlainReq,
+			out uint pcchPlainRet, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] TS_RUNINFO[]? prgRunInfo, [In] uint cRunInfoReq,
+			out uint pcRunInfoRet, out int pacpNext);
 
 		/// <summary>Sets the text selection to the supplied character positions.</summary>
 		/// <param name="dwFlags">
@@ -4209,7 +4211,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/textstor/nf-textstor-itextstoreanchor-queryinsert HRESULT QueryInsert(
 		// IAnchor *paTestStart, IAnchor *paTestEnd, ULONG cch, IAnchor **ppaResultStart, IAnchor **ppaResultEnd );
 		[PreserveSig]
-		HRESULT QueryInsert([In] IAnchor paTestStart, [In] IAnchor paTestEnd, uint cch, out IAnchor ppaResultStart, out IAnchor ppaResultEnd);
+		HRESULT QueryInsert([In] IAnchor paTestStart, [In] IAnchor paTestEnd, uint cch, out IAnchor? ppaResultStart, out IAnchor? ppaResultEnd);
 
 		/// <summary>
 		/// The <c>ITextStoreAnchor::GetSelection</c> method returns the offset of a text selection in a text stream. This method
@@ -4361,7 +4363,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/textstor/nf-textstor-itextstoreanchor-gettext HRESULT GetText( DWORD
 		// dwFlags, IAnchor *paStart, IAnchor *paEnd, WCHAR *pchText, ULONG cchReq, ULONG *pcch, BOOL fUpdateAnchor );
 		[PreserveSig]
-		HRESULT GetText(uint dwFlags, [In] IAnchor paStart, [In] IAnchor paEnd, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pchText, uint cchReq, out uint pcch,
+		HRESULT GetText(uint dwFlags, [In] IAnchor paStart, [In] IAnchor paEnd, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pchText, uint cchReq, out uint pcch,
 			[In, MarshalAs(UnmanagedType.Bool)] bool fUpdateAnchor);
 
 		/// <summary>The <c>ITextStoreAnchor::SetText</c> method sets the text selection between two supplied anchor locations.</summary>

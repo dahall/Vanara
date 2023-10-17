@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
 using Vanara.Collections;
 using static Vanara.PInvoke.Ole32;
+
 using LPARAM = System.IntPtr;
 using TfClientId = System.UInt32;
-
 using TfEditCookie = System.UInt32;
 using TfGuidAtom = System.UInt32;
 using WPARAM = System.IntPtr;
@@ -1101,7 +1101,8 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itextstoreacpservices-unserialize HRESULT Unserialize(
 		// ITfProperty *pProp, const TF_PERSISTENT_PROPERTY_HEADER_ACP *pHdr, IStream *pStream, ITfPersistentPropertyLoaderACP *pLoader );
-		void Unserialize([In] ITfProperty pProp, in TF_PERSISTENT_PROPERTY_HEADER_ACP pHdr, [In, Optional] IStream pStream, [In, Optional] ITfPersistentPropertyLoaderACP pLoader);
+		void Unserialize([In] ITfProperty pProp, in TF_PERSISTENT_PROPERTY_HEADER_ACP pHdr, [In, Optional] IStream? pStream,
+			[In, Optional] ITfPersistentPropertyLoaderACP? pLoader);
 
 		/// <summary>Forces all values of an asynchronously loaded property to be loaded.</summary>
 		/// <param name="pProp">Pointer to an ITfProperty object that specifies the property to load.</param>
@@ -3103,7 +3104,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontext-getdocumentmgr HRESULT GetDocumentMgr(
 		// ITfDocumentMgr **ppDm );
-		ITfDocumentMgr GetDocumentMgr();
+		ITfDocumentMgr? GetDocumentMgr();
 
 		/// <summary>Creates a backup of a range.</summary>
 		/// <param name="ec">Contains an edit cookie that identifies the edit session. This is the value passed to ITfEditSession::DoEditSession.</param>
@@ -3146,7 +3147,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextcomposition-startcomposition HRESULT
 		// StartComposition( TfEditCookie ecWrite, ITfRange *pCompositionRange, ITfCompositionSink *pSink, ITfComposition
 		// **ppComposition );
-		ITfComposition StartComposition([In] TfEditCookie ecWrite, [In] ITfRange pCompositionRange, [In, Optional] ITfCompositionSink pSink);
+		ITfComposition? StartComposition([In] TfEditCookie ecWrite, [In] ITfRange pCompositionRange, [In, Optional] ITfCompositionSink? pSink);
 
 		/// <summary>Creates an enumerator object that contains all compositions in the context.</summary>
 		/// <returns>Pointer to an IEnumITfCompositionView interface pointer that receives the enumerator object.</returns>
@@ -3163,7 +3164,7 @@ public static partial class MSCTF
 		/// <returns>Pointer to an IEnumITfCompositionView interface pointer that receives the enumerator object.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextcomposition-findcomposition HRESULT
 		// FindComposition( TfEditCookie ecRead, ITfRange *pTestRange, IEnumITfCompositionView **ppEnum );
-		IEnumITfCompositionView FindComposition([In] TfEditCookie ecRead, [In, Optional] ITfRange pTestRange);
+		IEnumITfCompositionView FindComposition([In] TfEditCookie ecRead, [In, Optional] ITfRange? pTestRange);
 
 		/// <summary>Not currently implemented.</summary>
 		/// <param name="ecWrite">Not used.</param>
@@ -3606,7 +3607,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextcomposition-startcomposition HRESULT
 		// StartComposition( TfEditCookie ecWrite, ITfRange *pCompositionRange, ITfCompositionSink *pSink, ITfComposition
 		// **ppComposition );
-		new ITfComposition StartComposition([In] TfEditCookie ecWrite, [In] ITfRange pCompositionRange, [In, Optional] ITfCompositionSink pSink);
+		new ITfComposition StartComposition([In] TfEditCookie ecWrite, [In] ITfRange pCompositionRange, [In, Optional] ITfCompositionSink? pSink);
 
 		/// <summary>Creates an enumerator object that contains all compositions in the context.</summary>
 		/// <returns>Pointer to an IEnumITfCompositionView interface pointer that receives the enumerator object.</returns>
@@ -3623,7 +3624,7 @@ public static partial class MSCTF
 		/// <returns>Pointer to an IEnumITfCompositionView interface pointer that receives the enumerator object.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextcomposition-findcomposition HRESULT
 		// FindComposition( TfEditCookie ecRead, ITfRange *pTestRange, IEnumITfCompositionView **ppEnum );
-		new IEnumITfCompositionView FindComposition([In] TfEditCookie ecRead, [In, Optional] ITfRange pTestRange);
+		new IEnumITfCompositionView FindComposition([In] TfEditCookie ecRead, [In, Optional] ITfRange? pTestRange);
 
 		/// <summary>Not currently implemented.</summary>
 		/// <param name="ecWrite">Not used.</param>
@@ -3665,7 +3666,7 @@ public static partial class MSCTF
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextownercompositionservices-terminatecomposition
 		// HRESULT TerminateComposition( ITfCompositionView *pComposition );
-		void TerminateComposition([In, Optional] ITfCompositionView pComposition);
+		void TerminateComposition([In, Optional] ITfCompositionView? pComposition);
 	}
 
 	/// <summary>
@@ -3753,10 +3754,10 @@ public static partial class MSCTF
 		{
 			fixed (Guid* pp = prgProp, pap = prgAppProp)
 			{
-				Guid*[] pprgProp = cProp == 0 ? null : new Guid*[cProp];
+				Guid*[] pprgProp = new Guid*[cProp];
 				for (var i = 0; i < cProp; i++)
 					pprgProp[i] = &pp[i];
-				Guid*[] pprgAppProp = cAppProp == 0 ? null : new Guid*[cAppProp];
+				Guid*[] pprgAppProp = new Guid*[cAppProp];
 				for (var i = 0; i < cAppProp; i++)
 					pprgAppProp[i] = &pap[i];
 				fixed (Guid** ppp = pprgProp, ppap = pprgAppProp)
