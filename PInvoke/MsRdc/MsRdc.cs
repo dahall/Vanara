@@ -799,7 +799,7 @@ public static partial class MsRdc
 		// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-isimilarity-createtable HRESULT CreateTable( [in] wchar_t
 		// *path, [in] BOOL truncate, [in] BYTE *securityDescriptor, [in] DWORD recordSize, [out] RdcCreatedTables *isNew );
 		void CreateTable([MarshalAs(UnmanagedType.LPWStr)] string path, [MarshalAs(UnmanagedType.Bool)] bool truncate,
-			[In, Optional] IntPtr securityDescriptor, uint recordSize, out RdcCreatedTables isNew);
+			[In, Optional] PSECURITY_DESCRIPTOR securityDescriptor, uint recordSize, out RdcCreatedTables isNew);
 
 		/// <summary>
 		/// Creates or opens a similarity traits table and a similarity file ID table using the RDC application's implementations of the
@@ -877,7 +877,7 @@ public static partial class MsRdc
 		// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-isimilarity-findsimilarfileid HRESULT FindSimilarFileId(
 		// [in] SimilarityData *similarityData, USHORT numberOfMatchesRequired, [in] DWORD resultsSize, [out, optional]
 		// IFindSimilarResults **findSimilarResults );
-		IFindSimilarResults FindSimilarFileId(in SimilarityData similarityData, ushort numberOfMatchesRequired, uint resultsSize);
+		IFindSimilarResults? FindSimilarFileId(in SimilarityData similarityData, ushort numberOfMatchesRequired, uint resultsSize);
 
 		/// <summary>
 		/// <para>
@@ -900,7 +900,7 @@ public static partial class MsRdc
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-isimilarity-copyandswap HRESULT CopyAndSwap( [in, optional]
 		// ISimilarity *newSimilarityTables, [in, optional] ISimilarityReportProgress *reportProgress );
-		void CopyAndSwap([In] ISimilarity newSimilarityTables, [In] ISimilarityReportProgress reportProgress);
+		void CopyAndSwap([In] ISimilarity? newSimilarityTables, [In] ISimilarityReportProgress? reportProgress);
 
 		/// <summary>Retrieves the number of records that are stored in the similarity file ID table in a similarity file.</summary>
 		/// <returns>A pointer to a variable that receives the number of records.</returns>
@@ -948,7 +948,7 @@ public static partial class MsRdc
 		// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-isimilarityfileidtable-createtable HRESULT CreateTable( [in]
 		// wchar_t *path, [in] BOOL truncate, [in] BYTE *securityDescriptor, [in] DWORD recordSize, [out] RdcCreatedTables *isNew );
 		void CreateTable([MarshalAs(UnmanagedType.LPWStr)] string path, [MarshalAs(UnmanagedType.Bool)] bool truncate,
-			 [In, Optional] IntPtr securityDescriptor, uint recordSize, out RdcCreatedTables isNew);
+			 [In, Optional] PSECURITY_DESCRIPTOR securityDescriptor, uint recordSize, out RdcCreatedTables isNew);
 
 		/// <summary>
 		/// Creates or opens a similarity file ID table using the RDC application's implementation of the IRdcFileWriter interface.
@@ -1279,7 +1279,7 @@ public static partial class MsRdc
 		// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-isimilaritytraitstable-createtable HRESULT CreateTable( [in]
 		// wchar_t *path, [in] BOOL truncate, [in] BYTE *securityDescriptor, [out] RdcCreatedTables *isNew );
 		RdcCreatedTables CreateTable([MarshalAs(UnmanagedType.LPWStr)] string path, [MarshalAs(UnmanagedType.Bool)] bool truncate,
-			[In, Optional] IntPtr securityDescriptor);
+			[In, Optional] PSECURITY_DESCRIPTOR securityDescriptor);
 
 		/// <summary>
 		/// Creates or opens a similarity traits table using the RDC application's implementation of the ISimilarityTraitsMapping interface.
@@ -1365,7 +1365,7 @@ public static partial class MsRdc
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-isimilaritytraitstable-begindump HRESULT BeginDump( [out,
 		// optional] ISimilarityTableDumpState **similarityTableDumpState );
-		ISimilarityTableDumpState BeginDump();
+		ISimilarityTableDumpState? BeginDump();
 
 		/// <summary>Retrieves the index of the last entry that was stored in the similarity traits table.</summary>
 		/// <returns>A pointer to a variable that receives the index of the last entry.</returns>
@@ -1604,8 +1604,6 @@ public static partial class MsRdc
 		/// <summary>Initializes a new instance of the <see cref="RdcStreamReader"/> class with stream to read.</summary>
 		/// <param name="stream">The stream to read from.</param>
 		public RdcStreamReader(Stream stream) => this.stream = stream;
-
-		private RdcStreamReader() { }
 
 		HRESULT IRdcFileReader.GetFilePosition(out ulong offsetFromStart)
 		{

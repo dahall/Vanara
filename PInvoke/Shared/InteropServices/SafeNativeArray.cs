@@ -196,7 +196,7 @@ public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TE
 
 	/// <summary>Gets an array of pointers to each element in this native array.</summary>
 	/// <returns>An array of pointers to each element in this native array.</returns>
-	public IntPtr[] GetPointers() => Enumerable.Range(0, Count - 1).Select(PtrOfElem).ToArray();
+	public IntPtr[] GetPointers() => Enumerable.Range(0, Count).Select(PtrOfElem).ToArray();
 
 	/// <summary>Gets a reference to the structure at a specified index.</summary>
 	/// <param name="index">The index.</param>
