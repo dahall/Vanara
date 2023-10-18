@@ -52,7 +52,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <returns>The last error.</returns>
 	[SecurityCritical]
 	[System.Diagnostics.DebuggerStepThrough]
-	public static Win32Error GetLastError() => new(ExtGetLastError());
+	public static Win32Error GetLastError() => new(unchecked((uint)Marshal.GetLastWin32Error()));
 
 	/// <summary>Performs an explicit conversion from <see cref="int"/> to <see cref="Win32Error"/>.</summary>
 	/// <param name="value">The value.</param>
@@ -249,9 +249,6 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)value).ToUInt32(provider);
 
 	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)value).ToUInt64(provider);
-
-	[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetLastError")]
-	private static extern uint ExtGetLastError();
 
 	private static uint? ValueFromObj(object? obj)
 	{
