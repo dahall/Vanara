@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Kernel32.d
 
 - Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Kernel32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)  
-### Methods - 100% API coverage (1151 of 1151 functions)  
+### Methods - 99% API coverage (1151 of 1152 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -369,6 +369,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetDateFormat](https://www.google.com/search?num=5&q=GetDateFormatA+site%3Alearn.microsoft.com) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetDateFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetDateFormat)  
 [GetDateFormatEx](https://www.google.com/search?num=5&q=GetDateFormatEx+site%3Alearn.microsoft.com) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetDateFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetDateFormatEx)  
 [GetDefaultCommConfig](https://www.google.com/search?num=5&q=GetDefaultCommConfigA+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDefaultCommConfig](https://github.com/dahall/Vanara/search?l=C%23&q=GetDefaultCommConfig)  
+[GetDeveloperDriveEnablementState](https://www.google.com/search?num=5&q=GetDeveloperDriveEnablementState+site%3Alearn.microsoft.com) | kernelbase.dll |  |   
 [GetDeviceDriverBaseName](https://www.google.com/search?num=5&q=GetDeviceDriverBaseNameA+site%3Alearn.microsoft.com) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetDeviceDriverBaseName](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceDriverBaseName)  
 [GetDeviceDriverFileName](https://www.google.com/search?num=5&q=GetDeviceDriverFileNameA+site%3Alearn.microsoft.com) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetDeviceDriverFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceDriverFileName)  
 [GetDevicePowerState](https://www.google.com/search?num=5&q=GetDevicePowerState+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDevicePowerState](https://github.com/dahall/Vanara/search?l=C%23&q=GetDevicePowerState)  
@@ -1795,6 +1796,9 @@ Native Structure | Header | Managed Structure
 [MEMORYSTATUS](https://www.google.com/search?num=5&q=MEMORYSTATUS+site%3Alearn.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.MEMORYSTATUS](https://github.com/dahall/Vanara/search?l=C%23&q=MEMORYSTATUS)  
 [MEMORYSTATUSEX](https://www.google.com/search?num=5&q=MEMORYSTATUSEX+site%3Alearn.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.MEMORYSTATUSEX](https://github.com/dahall/Vanara/search?l=C%23&q=MEMORYSTATUSEX)  
 [MENU_EVENT_RECORD](https://www.google.com/search?num=5&q=MENU_EVENT_RECORD+site%3Alearn.microsoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.MENU_EVENT_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=MENU_EVENT_RECORD)  
+[MESSAGE_RESOURCE_BLOCK](https://www.google.com/search?num=5&q=MESSAGE_RESOURCE_BLOCK+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.MESSAGE_RESOURCE_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=MESSAGE_RESOURCE_BLOCK)  
+[MESSAGE_RESOURCE_DATA](https://www.google.com/search?num=5&q=MESSAGE_RESOURCE_DATA+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.MESSAGE_RESOURCE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=MESSAGE_RESOURCE_DATA)  
+[MESSAGE_RESOURCE_ENTRY](https://www.google.com/search?num=5&q=MESSAGE_RESOURCE_ENTRY+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.MESSAGE_RESOURCE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=MESSAGE_RESOURCE_ENTRY)  
 [MFT_ENUM_DATA_V0](https://www.google.com/search?num=5&q=MFT_ENUM_DATA_V0+site%3Alearn.microsoft.com) | winioctl.h | [Vanara.PInvoke.Kernel32.MFT_ENUM_DATA_V0](https://github.com/dahall/Vanara/search?l=C%23&q=MFT_ENUM_DATA_V0)  
 [MFT_ENUM_DATA_V1](https://www.google.com/search?num=5&q=MFT_ENUM_DATA_V1+site%3Alearn.microsoft.com) | winioctl.h | [Vanara.PInvoke.Kernel32.MFT_ENUM_DATA_V1](https://github.com/dahall/Vanara/search?l=C%23&q=MFT_ENUM_DATA_V1)  
 [MFT2WRITESUSERLEVEL](https://www.google.com/search?num=5&q=MFT2WRITESUSERLEVEL+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.NTFS_STATISTICS.MFT2WRITESUSERLEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=MFT2WRITESUSERLEVEL)  
