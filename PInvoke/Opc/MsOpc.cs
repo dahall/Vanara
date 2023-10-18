@@ -1236,7 +1236,7 @@ public static partial class Opc
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignaturemanager-getsignatureoriginpartname
 		// HRESULT GetSignatureOriginPartName( IOpcPartUri **signatureOriginPartName );
-		IOpcPartUri GetSignatureOriginPartName();
+		IOpcPartUri? GetSignatureOriginPartName();
 
 		/// <summary>
 		/// Sets the part name of the Digital Signature Origin part to the name represented by a specified IOpcPartUri interface pointer.
@@ -2605,7 +2605,7 @@ public static partial class Opc
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775016(v=vs.85)
 		// HRESULT GetDomain( [out] BSTR *pbstrDomain );
 		[return: MarshalAs(UnmanagedType.BStr)]
-		new string GetDomain();
+		new string? GetDomain();
 
 		/// <summary>Returns the file name extension of the resource.</summary>
 		/// <returns>Address of a string that receives the property value.</returns>
@@ -3910,7 +3910,7 @@ public static partial class Opc
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationshipselectorset-create HRESULT Create(
 		// OPC_RELATIONSHIP_SELECTOR selector, LPCWSTR selectionCriterion, IOpcRelationshipSelector **relationshipSelector );
-		IOpcRelationshipSelector Create(OPC_RELATIONSHIP_SELECTOR selector, [MarshalAs(UnmanagedType.LPWStr)] string selectionCriterion);
+		IOpcRelationshipSelector? Create(OPC_RELATIONSHIP_SELECTOR selector, [MarshalAs(UnmanagedType.LPWStr)] string selectionCriterion);
 
 		/// <summary>Deletes a specified IOpcRelationshipSelector interface pointer from the set.</summary>
 		/// <param name="relationshipSelector">An IOpcRelationshipSelector interface pointer to be deleted.</param>
@@ -4035,7 +4035,7 @@ public static partial class Opc
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationshipset-createrelationship HRESULT
 		// CreateRelationship( LPCWSTR relationshipIdentifier, LPCWSTR relationshipType, IUri *targetUri, OPC_URI_TARGET_MODE
 		// targetMode, IOpcRelationship **relationship );
-		IOpcRelationship CreateRelationship([Optional, MarshalAs(UnmanagedType.LPWStr)] string? relationshipIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string relationshipType, IUri targetUri, OPC_URI_TARGET_MODE targetMode);
+		IOpcRelationship? CreateRelationship([Optional, MarshalAs(UnmanagedType.LPWStr)] string? relationshipIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string relationshipType, IUri targetUri, OPC_URI_TARGET_MODE targetMode);
 
 		/// <summary>Deletes a specified IOpcRelationship interface pointer from the set.</summary>
 		/// <param name="relationshipIdentifier">
@@ -4550,7 +4550,7 @@ public static partial class Opc
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturecustomobjectset-create HRESULT Create( const
 		// UINT8 *xmlMarkup, UINT32 count, IOpcSignatureCustomObject **customObject );
-		IOpcSignatureCustomObject Create([In] byte[] xmlMarkup, uint count);
+		IOpcSignatureCustomObject? Create([In] byte[] xmlMarkup, uint count);
 
 		/// <summary>Deletes a specified IOpcSignatureCustomObject interface pointer from the set.</summary>
 		/// <param name="customObject">An IOpcSignatureCustomObject interface pointer to be deleted.</param>
@@ -4891,7 +4891,7 @@ public static partial class Opc
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreferenceset-create HRESULT Create(
 		// IOpcPartUri *partUri, LPCWSTR digestMethod, OPC_CANONICALIZATION_METHOD transformMethod, IOpcSignaturePartReference
 		// **partReference );
-		IOpcSignaturePartReference Create(IOpcPartUri partUri, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? digestMethod, OPC_CANONICALIZATION_METHOD transformMethod);
+		IOpcSignaturePartReference? Create(IOpcPartUri partUri, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? digestMethod, OPC_CANONICALIZATION_METHOD transformMethod);
 
 		/// <summary>Deletes a specified IOpcSignaturePartReference interface pointer from the set.</summary>
 		/// <param name="partReference">An IOpcSignaturePartReference interface pointer to be deleted.</param>
@@ -5331,7 +5331,7 @@ public static partial class Opc
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereferenceset-create HRESULT Create( IUri
 		// *referenceUri, LPCWSTR referenceId, LPCWSTR type, LPCWSTR digestMethod, OPC_CANONICALIZATION_METHOD transformMethod,
 		// IOpcSignatureReference **reference );
-		IOpcSignatureReference Create(IUri referenceUri, [MarshalAs(UnmanagedType.LPWStr)] string referenceId, [MarshalAs(UnmanagedType.LPWStr)] string type,
+		IOpcSignatureReference Create(IUri referenceUri, [MarshalAs(UnmanagedType.LPWStr)] string? referenceId, [MarshalAs(UnmanagedType.LPWStr)] string? type,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] string? digestMethod, OPC_CANONICALIZATION_METHOD transformMethod);
 
 		/// <summary>Deletes a specified IOpcSignatureReference interface pointer from the set.</summary>
@@ -5776,7 +5776,7 @@ public static partial class Opc
 		// IOpcRelationshipSelectorSet *selectorSet, OPC_CANONICALIZATION_METHOD transformMethod, IOpcSignatureRelationshipReference
 		// **relationshipReference );
 		IOpcSignatureRelationshipReference Create(IOpcUri sourceUri, [MarshalAs(UnmanagedType.LPWStr)] string digestMethod, OPC_RELATIONSHIPS_SIGNING_OPTION relationshipSigningOption,
-			IOpcRelationshipSelectorSet selectorSet, OPC_CANONICALIZATION_METHOD transformMethod);
+			IOpcRelationshipSelectorSet? selectorSet, OPC_CANONICALIZATION_METHOD transformMethod);
 
 		/// <summary>
 		/// Creates an IOpcRelationshipSelectorSet interface pointer that is used as the selectorSet parameter value of the Create method.
@@ -6170,7 +6170,7 @@ public static partial class Opc
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getsignaturepartname HRESULT
 		// GetSignaturePartName( IOpcPartUri **signaturePartName );
-		IOpcPartUri GetSignaturePartName();
+		IOpcPartUri? GetSignaturePartName();
 
 		/// <summary>Sets the part name of the signature part where the signature markup will be stored.</summary>
 		/// <param name="signaturePartName">
@@ -6194,7 +6194,7 @@ public static partial class Opc
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-setsignaturepartname HRESULT
 		// SetSignaturePartName( IOpcPartUri *signaturePartName );
-		void SetSignaturePartName(IOpcPartUri signaturePartName);
+		void SetSignaturePartName(IOpcPartUri? signaturePartName);
 	}
 
 	/// <summary>Represents the URI of the package root or of a part that is relative to the package root.</summary>
@@ -6398,7 +6398,7 @@ public static partial class Opc
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775016(v=vs.85)
 		// HRESULT GetDomain( [out] BSTR *pbstrDomain );
 		[return: MarshalAs(UnmanagedType.BStr)]
-		new string GetDomain();
+		new string? GetDomain();
 
 		/// <summary>Returns the file name extension of the resource.</summary>
 		/// <returns>Address of a string that receives the property value.</returns>
@@ -6820,11 +6820,11 @@ public static partial class Opc
 	/// </typeparam>
 	/// <typeparam name="TElem">The type of the elemement interface returned as the parameter in TElem.GetCurrent.</typeparam>
 	/// <seealso cref="IEnumerator{T}"/>
-	public class OpcEnumerator<TEnum, TElem> : IEnumerator<TElem>
+	public class OpcEnumerator<TEnum, TElem> : IEnumerator<TElem> where TEnum : class where TElem : class
 	{
 		private MethodInfo getCurrent;
 		private MethodInfo moveNext;
-		private TEnum opcEnum;
+		private TEnum? opcEnum;
 
 		/// <summary>Initializes a new instance of the <see cref="OpcEnumerator{TEnum, TElem}"/> class.</summary>
 		/// <param name="opcEnumerator">The opc enumerator.</param>
@@ -6843,9 +6843,9 @@ public static partial class Opc
 		{
 			get
 			{
-				var p = new object[] { default(TElem) };
+				var p = new object?[] { null };
 				((HRESULT)getCurrent.Invoke(opcEnum, p)).ThrowIfFailed();
-				return (TElem)p[0];
+				return (TElem)p[0]!;
 			}
 		}
 
