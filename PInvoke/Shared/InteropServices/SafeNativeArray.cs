@@ -200,7 +200,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets an array of pointers to each element in this native array.</summary>
 		/// <returns>An array of pointers to each element in this native array.</returns>
-		public IntPtr[] GetPointers() => Enumerable.Range(0, Count - 1).Select(i => PtrOfElem(i)).ToArray();
+		public IntPtr[] GetPointers() => Enumerable.Range(0, Count).Select(i => PtrOfElem(i)).ToArray();
 
 		/// <summary>Gets a reference to the structure at a specified index.</summary>
 		/// <param name="index">The index.</param>
