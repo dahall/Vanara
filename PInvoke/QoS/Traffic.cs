@@ -172,7 +172,7 @@ public static partial class Traffic
 	// Buffer ) {...}
 	[PInvokeData("traffic.h", MSDNShortId = "NC:traffic.TCI_NOTIFY_HANDLER")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
-	public delegate void TCI_NOTIFY_HANDLER([In] IntPtr ClRegCtx, [In] IntPtr ClIfcCtx, TC_NOTIFY Event, [In] IntPtr SubCode,
+	public delegate void TCI_NOTIFY_HANDLER([In] IntPtr ClRegCtx, [In, Optional] IntPtr ClIfcCtx, TC_NOTIFY Event, [In] IntPtr SubCode,
 		uint BufSize, [In] IntPtr Buffer);
 
 	/// <summary>Describes the notification event.</summary>
@@ -697,7 +697,7 @@ public static partial class Traffic
 	/// <para><c>Note</c> Use of the <c>TcEnumerateFlows</c> function requires administrative privilege.</para>
 	/// </remarks>
 	[PInvokeData("traffic.h", MSDNShortId = "NF:traffic.TcEnumerateFlows")]
-	public static ENUMERATION_BUFFER_MGD TcEnumerateFlows(HIFC IfcHandle, uint pFlowCount = 0xFFFF)
+	public static ENUMERATION_BUFFER_MGD? TcEnumerateFlows(HIFC IfcHandle, uint pFlowCount = 0xFFFF)
 	{
 		HFLOWENUM hEnum = default;
 		uint bufSz = 1024, cnt;
@@ -1484,7 +1484,7 @@ public static partial class Traffic
 		public IntPtr pFlow;
 
 		/// <summary>The corresponding <see cref="TC_GEN_FLOW"/> structure.</summary>
-		public TC_GEN_FLOW Flow => pFlow.ToStructure<TC_GEN_FLOW>();
+		public TC_GEN_FLOW Flow => pFlow.ToStructure<TC_GEN_FLOW>()!;
 
 		/// <summary>Specifies the number of filters associated with the flow.</summary>
 		public uint NumberOfFilters;
@@ -1511,7 +1511,7 @@ public static partial class Traffic
 	[PInvokeData("traffic.h", MSDNShortId = "NS:traffic._ENUMERATION_BUFFER")]
 	public class ENUMERATION_BUFFER_MGD
 	{
-		private ENUMERATION_BUFFER_MGD() { }
+		private ENUMERATION_BUFFER_MGD() => throw new NotImplementedException();
 
 		internal ENUMERATION_BUFFER_MGD(IntPtr ptr)
 		{
@@ -1972,6 +1972,25 @@ public static partial class Traffic
 		/// criteria). Note that the <c>Mask</c> member must be of the same type as the <c>Pattern</c> member.
 		/// </summary>
 		public IntPtr Mask;
+
+		/// <summary>Creates a <see cref="TC_GEN_FILTER"/> instance.</summary>
+		/// <typeparam name="T">The type of the pattern.</typeparam>
+		/// <param name="AddressType">The filter type to be applied with the filter.</param>
+		/// <param name="Pattern">Indicates the specific format of the pattern to be applied to the filter, such as IP_PATTERN.</param>
+		/// <param name="Mask">A bitmask applied to the bits designated in the <c>Pattern</c> member.</param>
+		/// <param name="memAlloc">The memory allocated too the <paramref name="Pattern"/> and <paramref name="Mask"/> fields.</param>
+		/// <returns>
+		/// A complete <see cref="TC_GEN_FILTER"/> instance. Do not dispose the value returned in <paramref name="memAlloc"/> until this
+		/// structure is no longer needed.
+		/// </returns>
+		public static TC_GEN_FILTER Create<T>(NDIS_PROTOCOL_ID AddressType, in T Pattern, in T Mask, out SafeHandle memAlloc) where T : struct
+		{
+			var sz = Marshal.SizeOf(typeof(T));
+			SafeNativeArray<T> parts = new(new T[] { Pattern, Mask });
+			memAlloc = parts;
+			var ptrs = parts.GetPointers();
+			return new TC_GEN_FILTER { AddressType = AddressType, PatternSize = (uint)sz, Pattern = ptrs[0], Mask = ptrs[1] };
+		}
 	}
 
 	/// <summary>
@@ -1998,7 +2017,7 @@ public static partial class Traffic
 	public class TC_GEN_FILTER_MGD_UNK : TC_GEN_FILTER_MGD_BASE
 	{
 		/// <summary>
-		/// Indicates the specific format of the pattern to be applied to the filter, such as IP_PATTERN. The pattern specifies which bits of
+		/// Indicates the specific format of the pattern to be applied to the filter, such as <see cref="IP_PATTERN"/>. The pattern specifies which bits of
 		/// a given packet should be evaluated when determining whether a packet is included in the filter.
 		/// </summary>
 		public byte[] Pattern;
@@ -2013,8 +2032,8 @@ public static partial class Traffic
 		internal TC_GEN_FILTER_MGD_UNK(in TC_GEN_FILTER f)
 		{
 			AddressType = f.AddressType;
-			Pattern = f.Pattern.ToByteArray((int)f.PatternSize);
-			Mask = f.Mask.ToByteArray((int)f.PatternSize);
+			Pattern = f.Pattern.ToByteArray((int)f.PatternSize) ?? new byte[0];
+			Mask = f.Mask.ToByteArray((int)f.PatternSize) ?? new byte[0];
 		}
 	}
 
@@ -2076,30 +2095,31 @@ public static partial class Traffic
 		/// <para>QOS_SHAPING_RATE</para>
 		/// <para>QOS_OBJECT_END_OF_LIST</para>
 		/// </summary>
-		public IQoSObjectHdr[] TcObjects;
+		public IQoSObjectHdr[]? TcObjects;
 
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(INT_TC_GEN_FLOW));
 
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
 			if (managedObject is not TC_GEN_FLOW f)
 				throw new ArgumentException("Only objects of type TC_GEN_FLOW can be marshaled.");
 			int objLen = f.TcObjects?.Length ?? 0;
-			SafeCoTaskMemStruct<INT_TC_GEN_FLOW> pFlow = new(new INT_TC_GEN_FLOW() { SendingFlowspec = f.SendingFlowspec, ReceivingFlowspec = f.ReceivingFlowspec, TcObjectsLength = objLen });
-			pFlow.Size += f.TcObjects?.Sum(o => Marshal.SizeOf(o.GetType())) ?? 0;
+			int objByteLen = f.TcObjects?.Sum(o => Marshal.SizeOf(o.GetType())) ?? 0;
+			SafeCoTaskMemStruct<INT_TC_GEN_FLOW> pFlow = new(new INT_TC_GEN_FLOW() { SendingFlowspec = f.SendingFlowspec, ReceivingFlowspec = f.ReceivingFlowspec, TcObjectsLength = objByteLen });
+			pFlow.Size += objByteLen;
 			if (objLen > 0)
 			{
 				var oPtr = pFlow.GetFieldAddress(nameof(TcObjects));
 				for (int i = 0; i < objLen; i++)
 				{
-					oPtr.Write(f.TcObjects[i]);
+					oPtr.Write(f.TcObjects![i]);
 					oPtr = oPtr.Offset(Marshal.SizeOf(f.TcObjects[i].GetType()));
 				}
 			}
 			return pFlow;
 		}
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			var f = pNativeData.ToStructure<INT_TC_GEN_FLOW>(allocatedBytes);
 			TC_GEN_FLOW ret = new() { SendingFlowspec = f.SendingFlowspec, ReceivingFlowspec = f.ReceivingFlowspec, TcObjects = new IQoSObjectHdr[f.TcObjectsLength] };
@@ -2171,15 +2191,15 @@ public static partial class Traffic
 
 		/// <summary>Pointer to the client-callback function ClAddFlowComplete.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public TCI_ADD_FLOW_COMPLETE_HANDLER ClAddFlowCompleteHandler;
+		public TCI_ADD_FLOW_COMPLETE_HANDLER? ClAddFlowCompleteHandler;
 
 		/// <summary>Pointer to the client-callback function ClModifyFlowComplete.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public TCI_MOD_FLOW_COMPLETE_HANDLER ClModifyFlowCompleteHandler;
+		public TCI_MOD_FLOW_COMPLETE_HANDLER? ClModifyFlowCompleteHandler;
 
 		/// <summary>Pointer to the client-callback function ClDeleteFlowComplete.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public TCI_DEL_FLOW_COMPLETE_HANDLER ClDeleteFlowCompleteHandler;
+		public TCI_DEL_FLOW_COMPLETE_HANDLER? ClDeleteFlowCompleteHandler;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCLIENT"/> that is disposed using <see cref="TcDeregisterClient"/>.</summary>

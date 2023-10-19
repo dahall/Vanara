@@ -7,6 +7,7 @@ using static Vanara.PInvoke.Traffic;
 using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.PInvoke.Tests;
+
 [TestFixture]
 public class QoSTests
 {
@@ -67,16 +68,19 @@ public class QoSTests
 			{
 				TC_GEN_FLOW flow = new()
 				{
-					SendingFlowspec = FLOWSPEC.NotSpecified,
-					ReceivingFlowspec = FLOWSPEC.NotSpecified,
-					TcObjects = new IQoSObjectHdr[] { new QOS_DS_CLASS { ObjectHdr = QOS_OBJECT_HDR.Init<QOS_DS_CLASS>(), DSField = 0x28 } }
+					SendingFlowspec = new FLOWSPEC(SERVICETYPE.SERVICETYPE_GUARANTEED, 10000, maxSduSize: 344, minimumPolicedSize: 12, peakBandwidth: 32000, tokenBucketSize: 680),
+					ReceivingFlowspec = new(SERVICETYPE.SERVICETYPE_GUARANTEED, 10000),
+					TcObjects = new IQoSObjectHdr[] { new QOS_DS_CLASS { ObjectHdr = QOS_OBJECT_HDR.Init<QOS_DS_CLASS>(), DSField = 0x2E }, QOS_OBJECT_HDR.EndOfList }
 				};
 				Assert.That(TcAddFlow(hIfc, default, default, flow, out var hFlow), ResultIs.Successful);
 				try
 				{
-					TC_GEN_FILTER filter = new() { };
+					IP_PATTERN pattern = new() { ProtocolId = (byte)IPPROTO.IPPROTO_UDP, tcDstPort = 5000 };
+					IP_PATTERN mask = new() { ProtocolId = 0xFF, tcDstPort = 0xFFFF };
+					TC_GEN_FILTER filter = TC_GEN_FILTER.Create(NDIS_PROTOCOL_ID.NDIS_PROTOCOL_ID_TCP_IP, pattern, mask, out var mem);
 					Assert.That(TcAddFilter(hFlow, filter, out SafeHFILTER hFilt), ResultIs.Successful);
 					hFilt.Dispose();
+					mem.Dispose();
 				}
 				finally
 				{
@@ -119,12 +123,12 @@ public class QoSTests
 			using var pin = new PinnedObject(dscp);
 			Assert.That(QOSSetFlow(hQos, flowId, QOS_SET_FLOW.QOSSetOutgoingDSCPValue, 4, pin), ResultIs.Successful);
 
-			uint[] flowIds = null;
+			uint[]? flowIds = null;
 			Assert.That(() => flowIds = QOSEnumerateFlows(hQos), Throws.Nothing);
 			Assert.That(flowIds, Is.Not.Empty);
-			flowIds.WriteValues();
+			flowIds!.WriteValues();
 
-			Assert.That(() => QOSQueryFlow<ulong>(hQos, flowIds[0], QOS_QUERY_FLOW.QOSQueryOutgoingRate, false).WriteValues(), Throws.Nothing);
+			Assert.That(() => QOSQueryFlow<ulong>(hQos, flowIds![0], QOS_QUERY_FLOW.QOSQueryOutgoingRate, false).WriteValues(), Throws.Nothing);
 
 			Assert.That(QOSRemoveSocketFromFlow(hQos, socket.Handle, flowId), ResultIs.Successful);
 

@@ -202,7 +202,7 @@ public static partial class Qwave
 
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(ACTUAL));
 
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
 			if (managedObject is not CONTROL_SERVICE cs)
 			{
@@ -224,13 +224,13 @@ public static partial class Qwave
 			}
 			else
 			{
-				native.union.ParamBuffer = new() { ParameterId = ParamBuffer.Value.ParameterId, Length = 8U + (uint)bufLen };
+				native.union.ParamBuffer = new() { ParameterId = ParamBuffer!.Value.ParameterId, Length = 8U + (uint)bufLen };
 			}
 
 			ret.Write(native);
-			if (bufLen > 0)
+			if (bufLen > 0 && ParamBuffer.HasValue)
 			{
-				ret.Write(ParamBuffer.Value.Buffer, false, bufOffset);
+				ret.Write(ParamBuffer!.Value.Buffer!, false, bufOffset);
 			}
 
 			return ret;
@@ -239,7 +239,7 @@ public static partial class Qwave
 		private static readonly int bufOffset = Marshal.OffsetOf(typeof(ACTUAL), "union").ToInt32() +
 					Marshal.OffsetOf(typeof(UNION.DUMMYBUF), "Buffer").ToInt32();
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
 			{
@@ -255,7 +255,7 @@ public static partial class Qwave
 			else
 			{
 				PARAM_BUFFER pb = new() { ParameterId = actual.union.ParamBuffer.ParameterId, Length = actual.union.ParamBuffer.Length };
-				pb.Buffer = pNativeData.ToByteArray((int)pb.Length - 8, bufOffset, allocatedBytes);
+				pb.Buffer = pNativeData.ToByteArray((int)pb.Length - 8, bufOffset, allocatedBytes)!;
 				ret.ParamBuffer = pb;
 			}
 			return ret;
