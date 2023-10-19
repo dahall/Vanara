@@ -10,15 +10,16 @@ public class PdhTests
 {
 	private const string counterPath = @"\Processor(0)\% Processor Time";
 	private const string dsn = "TestSet";
-	private const string logFile = @"C:\PerfLogs\Admin\TestSet\System Monitor Log.blg";
+	private const string logFile = @"C:\PerfLogs\Admin\TestSet\Performance Counter.blg";
 
 	[Test]
 	public void BrowsePerfCountersTest()
 	{
 		Assert.That(PdhOpenQuery(null, default, out var Query), ResultIs.Successful);
 		using (Query)
-		using (var CounterPathBuffer = new SafeCoTaskMemString(counterPath + '\0', PDH_MAX_COUNTER_PATH))
 		{
+			using SafeCoTaskMemString CounterPathBuffer = new(counterPath + '\0', PDH_MAX_COUNTER_PATH);
+
 			// Initialize the browser dialog window settings.
 			var BrowseDlgData = new PDH_BROWSE_DLG_CONFIG
 			{
@@ -34,7 +35,7 @@ public class PdhTests
 			TestContext.Write("Counter(s) selected: {0}\n", string.Join(", ", BrowseDlgData.CounterPaths));
 
 			// Add the selected counter to the query.
-			Assert.That(PdhAddCounter(Query, CounterPathBuffer, default, out var Counter), ResultIs.Successful);
+			Assert.That(PdhAddCounter(Query, (string)CounterPathBuffer!, default, out var Counter), ResultIs.Successful);
 			using (Counter)
 			{
 				// Most counters require two sample values to display a formatted value. PDH stores the current sample value and the
@@ -76,14 +77,12 @@ public class PdhTests
 			Assert.That(PdhAddCounter(Query, counterPath, default, out var Counter), ResultIs.Successful);
 			using (Counter)
 			{
-				using (var evt = new AutoResetEvent(false))
-				{
-					Assert.That(PdhCollectQueryDataEx(Query, 0, evt), ResultIs.Successful);
-					evt.WaitOne(100);
-					Thread.Sleep(1000);
-					Assert.That(PdhCollectQueryDataEx(Query, 0, evt), ResultIs.Successful);
-					evt.WaitOne(100);
-				}
+				using var evt = new AutoResetEvent(false);
+				Assert.That(PdhCollectQueryDataEx(Query, 0, evt), ResultIs.Successful);
+				evt.WaitOne(100);
+				Thread.Sleep(1000);
+				Assert.That(PdhCollectQueryDataEx(Query, 0, evt), ResultIs.Successful);
+				evt.WaitOne(100);
 			}
 		}
 	}
@@ -160,105 +159,77 @@ public class PdhTests
 	[Test]
 	public void PdhEnumLogSetNamesTest()
 	{
-		Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhEnumLogSetNames(dsn, p, ref sz), out var strs), ResultIs.Successful);
-		TestContext.WriteLine(string.Join("\n", strs));
+		Assert.That(PdhEnumLogSetNames(dsn, out var strs), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", strs!));
 	}
 
 	[Test]
 	public void PdhEnumMachinesHTest()
 	{
-		Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhEnumMachinesH(PDH_HLOG.NULL, p, ref sz), out var strs), ResultIs.Successful);
-		TestContext.WriteLine(string.Join("\n", strs));
+		Assert.That(PdhEnumMachinesH(PDH_HLOG.NULL, out var strs), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", strs!));
 	}
 
 	[Test]
 	public void PdhEnumMachinesTest()
 	{
-		Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhEnumMachines(null, p, ref sz), out var strs), ResultIs.Successful);
-		TestContext.WriteLine(string.Join("\n", strs));
+		Assert.That(PdhEnumMachines(null, out var strs), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", strs!));
 	}
 
 	[Test]
 	public void PdhEnumObjectItemsHTest()
 	{
-		// Determine the required buffer size for the data.
-		uint dwCounterListSize = 0U, dwInstanceListSize = 0U;
-		Assert.That(PdhEnumObjectItemsH(default, null, "Process", default, ref dwCounterListSize, default, ref dwInstanceListSize, PERF_DETAIL.PERF_DETAIL_WIZARD), ResultIs.FailureCode(Win32Error.PDH_MORE_DATA));
-
-		// Allocate the buffers and try the call again.
-		using (var pwsCounterListBuffer = new SafeCoTaskMemHandle(dwCounterListSize * StringHelper.GetCharSize()))
-		using (var pwsInstanceListBuffer = new SafeCoTaskMemHandle(dwInstanceListSize * StringHelper.GetCharSize()))
-		{
-			Assert.That(PdhEnumObjectItemsH(default, null, "Process", pwsCounterListBuffer, ref dwCounterListSize, pwsInstanceListBuffer, ref dwInstanceListSize, PERF_DETAIL.PERF_DETAIL_WIZARD), ResultIs.Successful);
-			TestContext.WriteLine("Counters that the Process objects defines:\n");
-			TestContext.WriteLine(string.Join("\n", pwsCounterListBuffer.ToStringEnum()));
-			TestContext.WriteLine("\nInstances of the Process object:\n");
-			TestContext.WriteLine(string.Join("\n", pwsInstanceListBuffer.ToStringEnum()));
-		}
+		Assert.That(PdhEnumObjectItemsH(default, null, "Process", PERF_DETAIL.PERF_DETAIL_WIZARD, out var pwsCounterListBuffer, out var pwsInstanceListBuffer), ResultIs.Successful);
+		TestContext.WriteLine("Counters that the Process objects defines:\n");
+		TestContext.WriteLine(string.Join("\n", pwsCounterListBuffer!));
+		TestContext.WriteLine("\nInstances of the Process object:\n");
+		TestContext.WriteLine(string.Join("\n", pwsInstanceListBuffer!));
 	}
 
 	[Test]
 	public void PdhEnumObjectItemsTest()
 	{
-		// Determine the required buffer size for the data.
-		uint dwCounterListSize = 0U, dwInstanceListSize = 0U;
-		Assert.That(PdhEnumObjectItems(null, null, "Process", default, ref dwCounterListSize, default, ref dwInstanceListSize, PERF_DETAIL.PERF_DETAIL_WIZARD), ResultIs.FailureCode(Win32Error.PDH_MORE_DATA));
-
-		// Allocate the buffers and try the call again.
-		using (var pwsCounterListBuffer = new SafeCoTaskMemHandle(dwCounterListSize * StringHelper.GetCharSize()))
-		using (var pwsInstanceListBuffer = new SafeCoTaskMemHandle(dwInstanceListSize * StringHelper.GetCharSize()))
-		{
-			Assert.That(PdhEnumObjectItems(null, null, "Process", pwsCounterListBuffer, ref dwCounterListSize, pwsInstanceListBuffer, ref dwInstanceListSize, PERF_DETAIL.PERF_DETAIL_WIZARD), ResultIs.Successful);
-			TestContext.WriteLine("Counters that the Process objects defines:\n");
-			TestContext.WriteLine(string.Join("\n", pwsCounterListBuffer.ToStringEnum()));
-			TestContext.WriteLine("\nInstances of the Process object:\n");
-			TestContext.WriteLine(string.Join("\n", pwsInstanceListBuffer.ToStringEnum()));
-		}
+		Assert.That(PdhEnumObjectItems(null, null, "Process", PERF_DETAIL.PERF_DETAIL_WIZARD, out var pwsCounterListBuffer, out var pwsInstanceListBuffer), ResultIs.Successful);
+		TestContext.WriteLine("Counters that the Process objects defines:\n");
+		TestContext.WriteLine(string.Join("\n", pwsCounterListBuffer!));
+		TestContext.WriteLine("\nInstances of the Process object:\n");
+		TestContext.WriteLine(string.Join("\n", pwsInstanceListBuffer!));
 	}
 
 	[Test]
 	public void PdhEnumObjectsHTest()
 	{
-		uint sz = 0U;
-		Assert.That(PdhEnumObjectsH(default, null, default, ref sz, PERF_DETAIL.PERF_DETAIL_WIZARD, true), ResultIs.FailureCode(Win32Error.PDH_MORE_DATA));
-		using (var buffer = new SafeCoTaskMemHandle(sz * StringHelper.GetCharSize()))
-		{
-			Assert.That(PdhEnumObjectsH(default, null, buffer, ref sz, PERF_DETAIL.PERF_DETAIL_WIZARD, false), ResultIs.Successful);
-			TestContext.WriteLine(string.Join("\n", buffer.ToStringEnum()));
-		}
+		Assert.That(PdhEnumObjectsH(default, null, PERF_DETAIL.PERF_DETAIL_WIZARD, out var buffer), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", buffer!));
 	}
 
 	[Test]
 	public void PdhEnumObjectsTest()
 	{
-		uint sz = 0U;
-		Assert.That(PdhEnumObjects(null, null, default, ref sz, PERF_DETAIL.PERF_DETAIL_WIZARD, true), ResultIs.FailureCode(Win32Error.PDH_MORE_DATA));
-		using (var buffer = new SafeCoTaskMemHandle(sz * StringHelper.GetCharSize()))
-		{
-			Assert.That(PdhEnumObjects(null, null, buffer, ref sz, PERF_DETAIL.PERF_DETAIL_WIZARD, false), ResultIs.Successful);
-			TestContext.WriteLine(string.Join("\n", buffer.ToStringEnum()));
-		}
+		Assert.That(PdhEnumObjects(null, null, PERF_DETAIL.PERF_DETAIL_WIZARD, out var buffer), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", buffer!));
 	}
 
 	[Test]
 	public void PdhExpandCounterPathTest()
 	{
-		Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhExpandCounterPath(@"\Process(*)\ID Process", p, ref sz), out var strs), ResultIs.Successful);
-		TestContext.WriteLine(string.Join("\n", strs));
+		Assert.That(PdhExpandCounterPath(@"\Process(*)\ID Process", out var strs), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", strs!));
 	}
 
 	[Test]
 	public void PdhExpandWildCardPathHTest()
 	{
-		Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhExpandWildCardPathH(default, @"\Process(*)\ID Process", p, ref sz, 0), out var strs), ResultIs.Successful);
-		TestContext.WriteLine(string.Join("\n", strs));
+		Assert.That(PdhExpandWildCardPathH(default, @"\Process(*)\ID Process", 0, out var strs), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", strs!));
 	}
 
 	[Test]
 	public void PdhExpandWildCardPathTest()
 	{
-		Assert.That(CallMethodWithStrings((IntPtr p, ref uint sz) => PdhExpandWildCardPath(null, @"\Process(*)\ID Process", p, ref sz, 0), out var strs), ResultIs.Successful);
-		TestContext.WriteLine(string.Join("\n", strs));
+		Assert.That(PdhExpandWildCardPath(null, @"\Process(*)\ID Process", 0, out var strs), ResultIs.Successful);
+		TestContext.WriteLine(string.Join("\n", strs!));
 	}
 
 	[Test]
@@ -272,14 +243,8 @@ public class PdhTests
 			using (Counter)
 			{
 				Assert.That(PdhSetCounterScaleFactor(Counter, 1), ResultIs.Successful);
-
-				uint sz = 0;
-				Assert.That(PdhGetCounterInfo(Counter, true, ref sz, default), ResultIs.FailureCode(Win32Error.PDH_MORE_DATA));
-				using (var buffer = new SafeHGlobalHandle(sz))
-				{
-					Assert.That(PdhGetCounterInfo(Counter, true, ref sz, buffer), ResultIs.Successful);
-					buffer.ToStructure<PDH_COUNTER_INFO>().WriteValues();
-				}
+				Assert.That(PdhGetCounterInfo(Counter, true, out var info), ResultIs.Successful);
+				info?.WriteValues();
 			}
 		}
 	}
@@ -371,18 +336,16 @@ public class PdhTests
 				Assert.That(PdhCollectQueryData(Query), ResultIs.Successful);
 
 				// Compute a displayable value for the counter.
-				using (var mem = new SafeHGlobalHandle(4096))
-				{
-					var sz = (uint)mem.Size;
-					Assert.That(PdhGetFormattedCounterArray(Counter, PDH_FMT.PDH_FMT_DOUBLE, ref sz, out var n, mem), ResultIs.Successful);
-					mem.ToArray<PDH_FMT_COUNTERVALUE_ITEM>((int)n).WriteValues();
+				using var mem = new SafeHGlobalHandle(4096);
+				var sz = (uint)mem.Size;
+				Assert.That(PdhGetFormattedCounterArray(Counter, PDH_FMT.PDH_FMT_DOUBLE, ref sz, out var n, mem), ResultIs.Successful);
+				mem.ToArray<PDH_FMT_COUNTERVALUE_ITEM>((int)n).WriteValues();
 
-					TestContext.WriteLine("===============================");
+				TestContext.WriteLine("===============================");
 
-					sz = (uint)mem.Size;
-					Assert.That(PdhGetRawCounterArray(Counter, ref sz, out n, mem), ResultIs.Successful);
-					mem.ToArray<PDH_RAW_COUNTER_ITEM>((int)n).WriteValues();
-				}
+				sz = (uint)mem.Size;
+				Assert.That(PdhGetRawCounterArray(Counter, ref sz, out n, mem), ResultIs.Successful);
+				mem.ToArray<PDH_RAW_COUNTER_ITEM>((int)n).WriteValues();
 			}
 		}
 	}
@@ -425,12 +388,10 @@ public class PdhTests
 	[Test]
 	public void PdhParseCounterPathTest()
 	{
-		using (var mem = new SafeCoTaskMemHandle(1024))
-		{
-			uint sz = mem.Size;
-			Assert.That(PdhParseCounterPath(counterPath, mem, ref sz), ResultIs.Successful);
-			mem.ToStructure<PDH_COUNTER_PATH_ELEMENTS>().WriteValues();
-		}
+		using var mem = new SafeCoTaskMemHandle(1024);
+		uint sz = mem.Size;
+		Assert.That(PdhParseCounterPath(counterPath, mem, ref sz), ResultIs.Successful);
+		mem.ToStructure<PDH_COUNTER_PATH_ELEMENTS>().WriteValues();
 	}
 
 	[Test]
@@ -448,20 +409,18 @@ public class PdhTests
 	[Test]
 	public void PdhReadRawLogRecordTest()
 	{
-		using (var hlog = PdhBindInputDataSource(logFile))
-		using (var mem = new SafeCoTaskMemHandle(1024))
-		{
-			uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
-			Assert.That(PdhGetDataSourceTimeRangeH(hlog, out var cnt, out var info, ref sz), ResultIs.Successful);
-			TestContext.WriteLine($"Start:{info.StartTime.ToString("U")}; End:{info.EndTime.ToString("U")}; Cnt:{info.SampleCount}");
+		using var hlog = PdhBindInputDataSource(logFile);
+		using var mem = new SafeCoTaskMemHandle(1024);
+		uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
+		Assert.That(PdhGetDataSourceTimeRangeH(hlog, out var cnt, out var info, ref sz), ResultIs.Successful);
+		TestContext.WriteLine($"Start:{info.StartTime.ToString("U")}; End:{info.EndTime.ToString("U")}; Cnt:{info.SampleCount}");
 
-			sz = mem.Size;
-			// TODO: Can't get this to return anything but PDH_ENTRY_NOT_IN_LOG_FILE
-			Assert.That(PdhReadRawLogRecord(hlog, info.StartTime, mem, ref sz), ResultIs.FailureCode(Win32Error.PDH_ENTRY_NOT_IN_LOG_FILE));
-			//var rec = mem.ToStructure<PDH_RAW_LOG_RECORD>();
-			//rec.WriteValues();
-			//TestContext.Write(mem.ToByteArray((int)rec.dwItems, 12).ToHexString((int)rec.dwItems));
-		}
+		sz = mem.Size;
+		// TODO: Can't get this to return anything but PDH_ENTRY_NOT_IN_LOG_FILE
+		Assert.That(PdhReadRawLogRecord(hlog, info.StartTime, mem, ref sz), ResultIs.FailureCode(Win32Error.PDH_ENTRY_NOT_IN_LOG_FILE));
+		//var rec = mem.ToStructure<PDH_RAW_LOG_RECORD>();
+		//rec.WriteValues();
+		//TestContext.Write(mem.ToByteArray((int)rec.dwItems, 12).ToHexString((int)rec.dwItems));
 	}
 
 	[Test]
@@ -475,15 +434,13 @@ public class PdhTests
 	[Test]
 	public void PdhSetQueryTimeRangeTest()
 	{
-		using (var hlog = PdhBindInputDataSource(logFile))
-		{
-			uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
-			Assert.That(PdhGetDataSourceTimeRangeH(hlog, out var cnt, out var info, ref sz), ResultIs.Successful);
+		using var hlog = PdhBindInputDataSource(logFile);
+		uint sz = (uint)Marshal.SizeOf<PDH_TIME_INFO>();
+		Assert.That(PdhGetDataSourceTimeRangeH(hlog, out var cnt, out var info, ref sz), ResultIs.Successful);
 
-			Assert.That(PdhOpenQueryH(hlog, default, out var Query), ResultIs.Successful);
-			using (Query)
-				Assert.That(PdhSetQueryTimeRange(Query, info), ResultIs.Successful);
-		}
+		Assert.That(PdhOpenQueryH(hlog, default, out var Query), ResultIs.Successful);
+		using (Query)
+			Assert.That(PdhSetQueryTimeRange(Query, info), ResultIs.Successful);
 	}
 
 	[Test]
@@ -517,25 +474,5 @@ public class PdhTests
 	public void PdhValidatePathTest()
 	{
 		Assert.That(PdhValidatePath(counterPath), ResultIs.Successful);
-	}
-
-	private static Win32Error CallMethodWithStrings(FunctionHelper.PtrFunc<uint> method, out string[] result)
-	{
-		var sz = 0U;
-		var err = method(IntPtr.Zero, ref sz);
-		if (err == Win32Error.PDH_MORE_DATA)
-		{
-			using (var mem = new SafeCoTaskMemHandle(sz * StringHelper.GetCharSize()))
-			{
-				err = method(mem, ref sz);
-				if (err.Succeeded)
-				{
-					result = mem.ToStringEnum().ToArray();
-					return err;
-				}
-			}
-		}
-		result = null;
-		return err;
 	}
 }

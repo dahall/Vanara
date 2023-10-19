@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Common;
+using System.Linq;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -6,6 +7,7 @@ namespace Vanara.PInvoke;
 /// <summary>Pdh Performance Counter functions and structures.</summary>
 public static partial class Pdh
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public const uint PDH_CVERSION_WIN40 = 0x0400;
 	public const uint PDH_CVERSION_WIN50 = 0x0500;
 	public const int PDH_MAX_COUNTER_PATH = 2048;
@@ -13,6 +15,7 @@ public static partial class Pdh
 	// v1.1 revision of PDH -- basic log functions v1.2 of the PDH -- adds variable instance counters v1.3 of the PDH -- adds log service
 	// control & stubs for NT5/PDH v2 fn's v2.0 of the PDH -- is the NT v 5.0 B2 version
 	public const uint PDH_VERSION = PDH_CVERSION_WIN50 + 0x0003;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>
 	/// Applications implement the <c>CounterPathCallBack</c> function to process the counter path strings returned by the <c>Browse</c>
@@ -798,7 +801,7 @@ public static partial class Pdh
 	// PDH_HLOG *phDataSource, LPCSTR LogFileNameList );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "eaed9b28-eb09-4123-9317-5d3d50e2d77a")]
-	public static extern Win32Error PdhBindInputDataSource(out SafePDH_HLOG phDataSource, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] LogFileNameList);
+	public static extern Win32Error PdhBindInputDataSource(out SafePDH_HLOG phDataSource, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[]? LogFileNameList);
 
 	/// <summary>Binds one or more binary log files together for reading log data.</summary>
 	/// <param name="LogFileNameList">
@@ -822,7 +825,7 @@ public static partial class Pdh
 	public static SafePDH_HLOG PdhBindInputDataSource(params string[] LogFileNameList)
 	{
 		var err = PdhBindInputDataSource(out var hLog, LogFileNameList is null || LogFileNameList.Length == 0 ? null : LogFileNameList);
-		return err.Succeeded ? hLog : throw err.GetException();
+		return err.Succeeded ? hLog : throw err.GetException()!;
 	}
 
 	/// <summary>
@@ -1394,10 +1397,10 @@ public static partial class Pdh
 	/// <c>null</c>-terminator character. Set to <c>NULL</c> if the pcchBufferLength parameter is zero.
 	/// </param>
 	/// <param name="pcchBufferLength">
-	/// Size of the mszLogSetNameList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this
-	/// parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the
-	/// actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
-	/// should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszLogSetNameList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this parameter
+	/// to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual size of
+	/// the buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not rely on
+	/// the returned size to reallocate the buffer.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
@@ -1410,16 +1413,16 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
-	/// The size of the mszLogSetNameList buffer is too small to contain all the data. This return value is expected if pcchBufferLength
-	/// is zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// The size of the mszLogSetNameList buffer is too small to contain all the data. This return value is expected if pcchBufferLength is
+	/// zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
 	/// returned size to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -1434,28 +1437,69 @@ public static partial class Pdh
 	[PInvokeData("pdh.h", MSDNShortId = "c74cc8a6-915b-40ed-a88b-bc2147215d52")]
 	public static extern Win32Error PdhEnumLogSetNames(string szDataSource, IntPtr mszDataSetNameList, ref uint pcchBufferLength);
 
+	/// <summary>Enumerates the names of the log sets within the DSN.</summary>
+	/// <param name="szDataSource"><c>Null</c>-terminated string that specifies the DSN.</param>
+	/// <param name="mszDataSetNameList">
+	/// Caller-allocated buffer that receives the list of <c>null</c>-terminated log set names. The list is terminated with a
+	/// <c>null</c>-terminator character. Set to <c>NULL</c> if the pcchBufferLength parameter is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The size of the mszLogSetNameList buffer is too small to contain all the data. This return value is expected if pcchBufferLength is
+	/// zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// returned size to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// You should call this function twice, the first time to get the required buffer size (set mszLogSetNameList to <c>NULL</c> and
+	/// pcchBufferLength to 0), and the second time to get the data.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumlogsetnamesa PDH_FUNCTION PdhEnumLogSetNamesA( LPCSTR
+	// szDataSource, PZZSTR mszDataSetNameList, LPDWORD pcchBufferLength );
+	[PInvokeData("pdh.h", MSDNShortId = "c74cc8a6-915b-40ed-a88b-bc2147215d52")]
+	public static Win32Error PdhEnumLogSetNames(string szDataSource, out string[]? mszDataSetNameList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz) => PdhEnumLogSetNames(szDataSource, p, ref sz), out mszDataSetNameList);
+
 	/// <summary>
 	/// <para>
 	/// Returns a list of the computer names associated with counters in a log file. The computer names were either specified when adding
-	/// counters to the query or when calling the PdhConnectMachine function. The computers listed include those that are currently
-	/// connected and online, in addition to those that are offline or not returning performance data.
+	/// counters to the query or when calling the PdhConnectMachine function. The computers listed include those that are currently connected
+	/// and online, in addition to those that are offline or not returning performance data.
 	/// </para>
 	/// <para>To use handles to data sources, use the PdhEnumMachinesH function.</para>
 	/// </summary>
 	/// <param name="szDataSource">
-	/// <c>Null</c>-terminated string that specifies the name of a log file. The function enumerates the names of the computers whose
-	/// counter data is in the log file. If <c>NULL</c>, the function enumerates the list of computers that were specified when adding
-	/// counters to a real time query or when calling the PdhConnectMachine function.
+	/// <c>Null</c>-terminated string that specifies the name of a log file. The function enumerates the names of the computers whose counter
+	/// data is in the log file. If <c>NULL</c>, the function enumerates the list of computers that were specified when adding counters to a
+	/// real time query or when calling the PdhConnectMachine function.
 	/// </param>
 	/// <param name="mszMachineList">
-	/// Caller-allocated buffer to receive the list of <c>null</c>-terminated strings that contain the computer names. The list is
-	/// terminated with two <c>null</c>-terminator characters. Set to <c>NULL</c> if pcchBufferLength is zero.
+	/// Caller-allocated buffer to receive the list of <c>null</c>-terminated strings that contain the computer names. The list is terminated
+	/// with two <c>null</c>-terminator characters. Set to <c>NULL</c> if pcchBufferLength is zero.
 	/// </param>
 	/// <param name="pcchBufferSize">
-	/// Size of the mszMachineNameList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this
-	/// parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the
-	/// actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
-	/// should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszMachineNameList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this parameter
+	/// to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual size of
+	/// the buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not rely on
+	/// the returned size to reallocate the buffer.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
@@ -1469,15 +1513,15 @@ public static partial class Pdh
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
 	/// The mszMachineNameList buffer is too small to contain all the data. This return value is expected if pcchBufferLength is zero on
-	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned
-	/// size to reallocate the buffer.
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -1495,21 +1539,19 @@ public static partial class Pdh
 	/// <summary>
 	/// <para>
 	/// Returns a list of the computer names associated with counters in a log file. The computer names were either specified when adding
-	/// counters to the query or when calling the PdhConnectMachine function. The computers listed include those that are currently
-	/// connected and online, in addition to those that are offline or not returning performance data.
+	/// counters to the query or when calling the PdhConnectMachine function. The computers listed include those that are currently connected
+	/// and online, in addition to those that are offline or not returning performance data.
 	/// </para>
-	/// <para>This function is identical to the PdhEnumMachines function, except that it supports the use of handles to data sources.</para>
+	/// <para>To use handles to data sources, use the PdhEnumMachinesH function.</para>
 	/// </summary>
-	/// <param name="hDataSource">Handle to a data source returned by the PdhBindInputDataSource function.</param>
-	/// <param name="mszMachineList">
-	/// Caller-allocated buffer to receive the list of <c>null</c>-terminated strings that contain the computer names. The list is
-	/// terminated with two <c>null</c>-terminator characters. Set to <c>NULL</c> if pcchBufferLength is zero.
+	/// <param name="szDataSource">
+	/// <c>Null</c>-terminated string that specifies the name of a log file. The function enumerates the names of the computers whose counter
+	/// data is in the log file. If <c>NULL</c>, the function enumerates the list of computers that were specified when adding counters to a
+	/// real time query or when calling the PdhConnectMachine function.
 	/// </param>
-	/// <param name="pcchBufferSize">
-	/// Size of the mszMachineNameList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this
-	/// parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the
-	/// actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
-	/// should not rely on the returned size to reallocate the buffer.
+	/// <param name="mszMachineList">
+	/// Caller-allocated buffer to receive the list of <c>null</c>-terminated strings that contain the computer names. The list is terminated
+	/// with two <c>null</c>-terminator characters. Set to <c>NULL</c> if pcchBufferLength is zero.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
@@ -1523,15 +1565,15 @@ public static partial class Pdh
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
 	/// The mszMachineNameList buffer is too small to contain all the data. This return value is expected if pcchBufferLength is zero on
-	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned
-	/// size to reallocate the buffer.
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -1540,16 +1582,116 @@ public static partial class Pdh
 	/// You should call this function twice, the first time to get the required buffer size (set mszMachineNameList to <c>NULL</c> and
 	/// pcchBufferLength to 0), and the second time to get the data.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenummachinesha PDH_FUNCTION PdhEnumMachinesHA( PDH_HLOG
-	// hDataSource, PZZSTR mszMachineList, LPDWORD pcchBufferSize );
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenummachinesa PDH_FUNCTION PdhEnumMachinesA( LPCSTR szDataSource,
+	// PZZSTR mszMachineList, LPDWORD pcchBufferSize );
+	[PInvokeData("pdh.h", MSDNShortId = "77584d3b-3ba5-4288-b730-be2458f4fc1c")]
+	public static Win32Error PdhEnumMachines([Optional] string? szDataSource, out string[]? mszMachineList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz) => PdhEnumMachines(szDataSource, p, ref sz), out mszMachineList);
+
+	/// <summary>
+	/// <para>
+	/// Returns a list of the computer names associated with counters in a log file. The computer names were either specified when adding
+	/// counters to the query or when calling the PdhConnectMachine function. The computers listed include those that are currently connected
+	/// and online, in addition to those that are offline or not returning performance data.
+	/// </para>
+	/// <para>This function is identical to the PdhEnumMachines function, except that it supports the use of handles to data sources.</para>
+	/// </summary>
+	/// <param name="hDataSource">Handle to a data source returned by the PdhBindInputDataSource function.</param>
+	/// <param name="mszMachineList">
+	/// Caller-allocated buffer to receive the list of <c>null</c>-terminated strings that contain the computer names. The list is terminated
+	/// with two <c>null</c>-terminator characters. Set to <c>NULL</c> if pcchBufferLength is zero.
+	/// </param>
+	/// <param name="pcchBufferSize">
+	/// Size of the mszMachineNameList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this parameter
+	/// to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual size of
+	/// the buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not rely on
+	/// the returned size to reallocate the buffer.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The mszMachineNameList buffer is too small to contain all the data. This return value is expected if pcchBufferLength is zero on
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// You should call this function twice, the first time to get the required buffer size (set mszMachineNameList to <c>NULL</c> and
+	/// pcchBufferLength to 0), and the second time to get the data.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenummachinesha PDH_FUNCTION PdhEnumMachinesHA( PDH_HLOG hDataSource,
+	// PZZSTR mszMachineList, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "7e8dc113-76a7-4a7a-bbad-1a4387831501")]
 	public static extern Win32Error PdhEnumMachinesH([Optional] PDH_HLOG hDataSource, IntPtr mszMachineList, ref uint pcchBufferSize);
 
 	/// <summary>
 	/// <para>
-	/// Returns the specified object's counter and instance names that exist on the specified computer or in the specified log file.
+	/// Returns a list of the computer names associated with counters in a log file. The computer names were either specified when adding
+	/// counters to the query or when calling the PdhConnectMachine function. The computers listed include those that are currently connected
+	/// and online, in addition to those that are offline or not returning performance data.
 	/// </para>
+	/// <para>This function is identical to the PdhEnumMachines function, except that it supports the use of handles to data sources.</para>
+	/// </summary>
+	/// <param name="hDataSource">Handle to a data source returned by the PdhBindInputDataSource function.</param>
+	/// <param name="mszMachineList">
+	/// Caller-allocated buffer to receive the list of <c>null</c>-terminated strings that contain the computer names. The list is terminated
+	/// with two <c>null</c>-terminator characters. Set to <c>NULL</c> if pcchBufferLength is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The mszMachineNameList buffer is too small to contain all the data. This return value is expected if pcchBufferLength is zero on
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// You should call this function twice, the first time to get the required buffer size (set mszMachineNameList to <c>NULL</c> and
+	/// pcchBufferLength to 0), and the second time to get the data.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenummachinesha PDH_FUNCTION PdhEnumMachinesHA( PDH_HLOG hDataSource,
+	// PZZSTR mszMachineList, LPDWORD pcchBufferSize );
+	[PInvokeData("pdh.h", MSDNShortId = "7e8dc113-76a7-4a7a-bbad-1a4387831501")]
+	public static Win32Error PdhEnumMachinesH([Optional] PDH_HLOG hDataSource, out string[]? mszMachineList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz) => PdhEnumMachinesH(hDataSource, p, ref sz), out mszMachineList);
+
+	/// <summary>
+	/// <para>Returns the specified object's counter and instance names that exist on the specified computer or in the specified log file.</para>
 	/// <para>To use handles to data sources, use the PdhEnumObjectItemsH function.</para>
 	/// </summary>
 	/// <param name="szDataSource">
@@ -1561,8 +1703,7 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="szMachineName">
 	/// <para>
-	/// <c>Null</c>-terminated string that specifies the name of the computer that contains the counter and instance names that you want
-	/// to enumerate.
+	/// <c>Null</c>-terminated string that specifies the name of the computer that contains the counter and instance names that you want to enumerate.
 	/// </para>
 	/// <para>Include the leading slashes in the computer name, for example, \computername.</para>
 	/// <para>If the szDataSource parameter is <c>NULL</c>, you can set szMachineName to <c>NULL</c> to specify the local computer.</para>
@@ -1576,27 +1717,26 @@ public static partial class Pdh
 	/// pcchCounterListLengthparameter is zero.
 	/// </param>
 	/// <param name="pcchCounterListLength">
-	/// Size of the mszCounterList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA
-	/// and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this
-	/// parameter to the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the
-	/// required size, you should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszCounterList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA and
+	/// sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to
+	/// the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
+	/// should not rely on the returned size to reallocate the buffer.
 	/// </param>
 	/// <param name="mszInstanceList">
 	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated instance names provided by the specified object. The list
-	/// contains unique instance names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if
-	/// pcchInstanceListLength is zero.
+	/// contains unique instance names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if pcchInstanceListLength is zero.
 	/// </param>
 	/// <param name="pcchInstanceListLength">
 	/// <para>
-	/// Size of the mszInstanceList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA
-	/// and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this
-	/// parameter to the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the
-	/// required size, you should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszInstanceList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA and
+	/// sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to
+	/// the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
+	/// should not rely on the returned size to reallocate the buffer.
 	/// </para>
 	/// <para>
 	/// If the specified object does not support variable instances, then the returned value will be zero. If the specified object does
-	/// support variable instances, but does not currently have any instances, then the value returned is 2, which is the size of an
-	/// empty MULTI_SZ list string.
+	/// support variable instances, but does not currently have any instances, then the value returned is 2, which is the size of an empty
+	/// MULTI_SZ list string.
 	/// </para>
 	/// </param>
 	/// <param name="dwDetailLevel">
@@ -1647,8 +1787,8 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1667,13 +1807,13 @@ public static partial class Pdh
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// You should call this function twice, the first time to get the required buffer size (set the buffers to <c>NULL</c> and the sizes
-	/// to 0), and the second time to get the data.
+	/// You should call this function twice, the first time to get the required buffer size (set the buffers to <c>NULL</c> and the sizes to
+	/// 0), and the second time to get the data.
 	/// </para>
 	/// <para>
 	/// Consecutive calls to this function will return identical lists of counters and instances, because <c>PdhEnumObjectItems</c> will
-	/// always query the list of performance objects defined by the last call to PdhEnumObjects or <c>PdhEnumObjectItems</c>. To refresh
-	/// the list of performance objects, call <c>PdhEnumObjects</c> with a bRefresh flag value of <c>TRUE</c> before calling
+	/// always query the list of performance objects defined by the last call to PdhEnumObjects or <c>PdhEnumObjectItems</c>. To refresh the
+	/// list of performance objects, call <c>PdhEnumObjects</c> with a bRefresh flag value of <c>TRUE</c> before calling
 	/// <c>PdhEnumObjectItems</c> again.
 	/// </para>
 	/// <para>The order of the instance and counter names is undetermined.</para>
@@ -1681,23 +1821,248 @@ public static partial class Pdh
 	/// <para>For an example, see Enumerating Process Objects.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectitemsa PDH_FUNCTION PdhEnumObjectItemsA( LPCSTR
-	// szDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PZZSTR mszCounterList, LPDWORD pcchCounterListLength, PZZSTR
-	// mszInstanceList, LPDWORD pcchInstanceListLength, DWORD dwDetailLevel, DWORD dwFlags );
+	// szDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PZZSTR mszCounterList, LPDWORD pcchCounterListLength, PZZSTR mszInstanceList,
+	// LPDWORD pcchInstanceListLength, DWORD dwDetailLevel, DWORD dwFlags );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "b3efdd31-44e6-47ff-bd0e-d31451c32818")]
-	public static extern Win32Error PdhEnumObjectItems([Optional] string? szDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] IntPtr mszCounterList, ref uint pcchCounterListLength, [Optional] IntPtr mszInstanceList, ref uint pcchInstanceListLength, PERF_DETAIL dwDetailLevel, uint dwFlags = 0);
+	public static extern Win32Error PdhEnumObjectItems([Optional] string? szDataSource, [Optional] string? szMachineName, string szObjectName,
+		[Optional] IntPtr mszCounterList, ref uint pcchCounterListLength, [Optional] IntPtr mszInstanceList, ref uint pcchInstanceListLength, PERF_DETAIL dwDetailLevel, uint dwFlags = 0);
 
 	/// <summary>
+	/// <para>Returns the specified object's counter and instance names that exist on the specified computer or in the specified log file.</para>
+	/// <para>To use handles to data sources, use the PdhEnumObjectItemsH function.</para>
+	/// </summary>
+	/// <param name="szDataSource">
 	/// <para>
-	/// Returns the specified object's counter and instance names that exist on the specified computer or in the specified log file.
+	/// <c>Null</c>-terminated string that specifies the name of the log file used to enumerate the counter and instance names. If
+	/// <c>NULL</c>, the function uses the computer specified in
 	/// </para>
+	/// <para>the szMachineName parameter to enumerate the names.</para>
+	/// </param>
+	/// <param name="szMachineName">
+	/// <para>
+	/// <c>Null</c>-terminated string that specifies the name of the computer that contains the counter and instance names that you want to enumerate.
+	/// </para>
+	/// <para>Include the leading slashes in the computer name, for example, \computername.</para>
+	/// <para>If the szDataSource parameter is <c>NULL</c>, you can set szMachineName to <c>NULL</c> to specify the local computer.</para>
+	/// </param>
+	/// <param name="szObjectName">
+	/// <c>Null</c>-terminated string that specifies the name of the object whose counter and instance names you want to enumerate.
+	/// </param>
+	/// <param name="dwDetailLevel">
+	/// <para>
+	/// Detail level of the performance items to return. All items that are of the specified detail level or less will be returned (the
+	/// levels are listed in increasing order). This parameter can be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PERF_DETAIL_NOVICE</term>
+	/// <term>Novice user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_ADVANCED</term>
+	/// <term>Advanced user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_EXPERT</term>
+	/// <term>Expert user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_WIZARD</term>
+	/// <term>System designer level of detail.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="mszCounterList">
+	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated counter names provided by the specified object. The list
+	/// contains unique counter names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if the
+	/// pcchCounterListLengthparameter is zero.
+	/// </param>
+	/// <param name="mszInstanceList">
+	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated instance names provided by the specified object. The list
+	/// contains unique instance names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if pcchInstanceListLength is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// One of the buffers is too small to contain the list of names. This return value is expected if pcchCounterListLength or
+	/// pcchInstanceListLength is zero on input. If the specified size on input is greater than zero but less than the required size, you
+	/// should not rely on the returned size to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_MEMORY_ALLOCATION_FAILURE</term>
+	/// <term>Unable to allocate memory to support this function.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_MACHINE</term>
+	/// <term>The specified computer is offline or unavailable.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_OBJECT</term>
+	/// <term>The specified object could not be found on the specified computer or in the specified log file.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// You should call this function twice, the first time to get the required buffer size (set the buffers to <c>NULL</c> and the sizes to
+	/// 0), and the second time to get the data.
+	/// </para>
+	/// <para>
+	/// Consecutive calls to this function will return identical lists of counters and instances, because <c>PdhEnumObjectItems</c> will
+	/// always query the list of performance objects defined by the last call to PdhEnumObjects or <c>PdhEnumObjectItems</c>. To refresh the
+	/// list of performance objects, call <c>PdhEnumObjects</c> with a bRefresh flag value of <c>TRUE</c> before calling
+	/// <c>PdhEnumObjectItems</c> again.
+	/// </para>
+	/// <para>The order of the instance and counter names is undetermined.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Enumerating Process Objects.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectitemsa PDH_FUNCTION PdhEnumObjectItemsA( LPCSTR
+	// szDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PZZSTR mszCounterList, LPDWORD pcchCounterListLength, PZZSTR mszInstanceList,
+	// LPDWORD pcchInstanceListLength, DWORD dwDetailLevel, DWORD dwFlags );
+	[PInvokeData("pdh.h", MSDNShortId = "b3efdd31-44e6-47ff-bd0e-d31451c32818")]
+	public static Win32Error PdhEnumObjectItems([Optional] string? szDataSource, [Optional] string? szMachineName, string szObjectName, PERF_DETAIL dwDetailLevel, out string[]? mszCounterList, out string[]? mszInstanceList) =>
+		CallMethodWithStrings((IntPtr p1, ref uint sz1, IntPtr p2, ref uint sz2) => PdhEnumObjectItems(szDataSource, szMachineName, szObjectName, p1, ref sz1, p2, ref sz2, dwDetailLevel), out mszCounterList, out mszInstanceList);
+
+	/// <summary>
+	/// <para>Returns the specified object's counter and instance names that exist on the specified computer or in the specified log file.</para>
 	/// <para>This function is identical to the PdhEnumObjectItems function, except that it supports the use of handles to data sources.</para>
 	/// </summary>
 	/// <param name="hDataSource">Handle to a data source returned by the PdhBindInputDataSource function.</param>
 	/// <param name="szMachineName">
 	/// <para>
-	/// <c>Null</c>-terminated string that specifies the name of the computer that contains the counter and instance names that you want
-	/// to enumerate.
+	/// <c>Null</c>-terminated string that specifies the name of the computer that contains the counter and instance names that you want to enumerate.
+	/// </para>
+	/// <para>Include the leading slashes in the computer name, for example, \computername.</para>
+	/// <para>If the szDataSource parameter is <c>NULL</c>, you can set szMachineName to <c>NULL</c> to specify the local computer.</para>
+	/// </param>
+	/// <param name="szObjectName">
+	/// <c>Null</c>-terminated string that specifies the name of the object whose counter and instance names you want to enumerate.
+	/// </param>
+	/// <param name="dwDetailLevel">
+	/// <para>
+	/// Detail level of the performance items to return. All items that are of the specified detail level or less will be returned (the
+	/// levels are listed in increasing order). This parameter can be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PERF_DETAIL_NOVICE</term>
+	/// <term>Novice user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_ADVANCED</term>
+	/// <term>Advanced user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_EXPERT</term>
+	/// <term>Expert user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_WIZARD</term>
+	/// <term>System designer level of detail.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="mszCounterList">
+	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated counter names provided by the specified object. The list
+	/// contains unique counter names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if the pcchCounterListLength
+	/// parameter is zero.
+	/// </param>
+	/// <param name="mszInstanceList">
+	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated instance names provided by the specified object. The list
+	/// contains unique instance names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if the
+	/// pcchInstanceListLength parameter is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// One of the buffers is too small to contain the list of names. This return value is expected if pcchCounterListLength or
+	/// pcchInstanceListLength is zero on input. If the specified size on input is greater than zero but less than the required size, you
+	/// should not rely on the returned size to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_MEMORY_ALLOCATION_FAILURE</term>
+	/// <term>Unable to allocate memory to support this function.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_MACHINE</term>
+	/// <term>The specified computer is offline or unavailable.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_OBJECT</term>
+	/// <term>The specified object could not be found on the specified computer or in the specified log file.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// You should call this function twice, the first time to get the required buffer size (set the buffers to <c>NULL</c> and the sizes to
+	/// 0), and the second time to get the data.
+	/// </para>
+	/// <para>
+	/// Consecutive calls to this function will return identical lists of counters and instances, because <c>PdhEnumObjectItemsH</c> will
+	/// always query the list of performance objects defined by the last call to PdhEnumObjectsH or <c>PdhEnumObjectItemsH</c>. To refresh
+	/// the list of performance objects, call <c>PdhEnumObjectsH</c> with a bRefresh flag value of <c>TRUE</c> before calling
+	/// <c>PdhEnumObjectItemsH</c> again.
+	/// </para>
+	/// <para>The order of the instance and counter names is undetermined.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectitemsha PDH_FUNCTION PdhEnumObjectItemsHA( PDH_HLOG
+	// hDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PZZSTR mszCounterList, LPDWORD pcchCounterListLength, PZZSTR mszInstanceList,
+	// LPDWORD pcchInstanceListLength, DWORD dwDetailLevel, DWORD dwFlags );
+	[PInvokeData("pdh.h", MSDNShortId = "2cea7d0a-cea2-4fee-a087-37663de254e9")]
+	public static Win32Error PdhEnumObjectItemsH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, string szObjectName, PERF_DETAIL dwDetailLevel, out string[]? mszCounterList, out string[]? mszInstanceList) =>
+		CallMethodWithStrings((IntPtr p1, ref uint sz1, IntPtr p2, ref uint sz2) => PdhEnumObjectItemsH(hDataSource, szMachineName, szObjectName, p1, ref sz1, p2, ref sz2, dwDetailLevel), out mszCounterList, out mszInstanceList);
+
+	/// <summary>
+	/// <para>Returns the specified object's counter and instance names that exist on the specified computer or in the specified log file.</para>
+	/// <para>This function is identical to the PdhEnumObjectItems function, except that it supports the use of handles to data sources.</para>
+	/// </summary>
+	/// <param name="hDataSource">Handle to a data source returned by the PdhBindInputDataSource function.</param>
+	/// <param name="szMachineName">
+	/// <para>
+	/// <c>Null</c>-terminated string that specifies the name of the computer that contains the counter and instance names that you want to enumerate.
 	/// </para>
 	/// <para>Include the leading slashes in the computer name, for example, \computername.</para>
 	/// <para>If the szDataSource parameter is <c>NULL</c>, you can set szMachineName to <c>NULL</c> to specify the local computer.</para>
@@ -1707,14 +2072,14 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="mszCounterList">
 	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated counter names provided by the specified object. The list
-	/// contains unique counter names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if the
-	/// pcchCounterListLength parameter is zero.
+	/// contains unique counter names. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if the pcchCounterListLength
+	/// parameter is zero.
 	/// </param>
 	/// <param name="pcchCounterListLength">
-	/// Size of the mszCounterList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA
-	/// and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this
-	/// parameter to the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the
-	/// required size, you should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszCounterList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA and
+	/// sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to
+	/// the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
+	/// should not rely on the returned size to reallocate the buffer.
 	/// </param>
 	/// <param name="mszInstanceList">
 	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated instance names provided by the specified object. The list
@@ -1723,15 +2088,15 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="pcchInstanceListLength">
 	/// <para>
-	/// Size of the mszInstanceList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA
-	/// and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this
-	/// parameter to the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the
-	/// required size, you should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszInstanceList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA and
+	/// sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to
+	/// the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
+	/// should not rely on the returned size to reallocate the buffer.
 	/// </para>
 	/// <para>
 	/// If the specified object does not support variable instances, then the returned value will be zero. If the specified object does
-	/// support variable instances, but does not currently have any instances, then the value returned is 2, which is the size of an
-	/// empty MULTI_SZ list string.
+	/// support variable instances, but does not currently have any instances, then the value returned is 2, which is the size of an empty
+	/// MULTI_SZ list string.
 	/// </para>
 	/// </param>
 	/// <param name="dwDetailLevel">
@@ -1782,8 +2147,8 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1802,23 +2167,24 @@ public static partial class Pdh
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// You should call this function twice, the first time to get the required buffer size (set the buffers to <c>NULL</c> and the sizes
-	/// to 0), and the second time to get the data.
+	/// You should call this function twice, the first time to get the required buffer size (set the buffers to <c>NULL</c> and the sizes to
+	/// 0), and the second time to get the data.
 	/// </para>
 	/// <para>
 	/// Consecutive calls to this function will return identical lists of counters and instances, because <c>PdhEnumObjectItemsH</c> will
-	/// always query the list of performance objects defined by the last call to PdhEnumObjectsH or <c>PdhEnumObjectItemsH</c>. To
-	/// refresh the list of performance objects, call <c>PdhEnumObjectsH</c> with a bRefresh flag value of <c>TRUE</c> before calling
+	/// always query the list of performance objects defined by the last call to PdhEnumObjectsH or <c>PdhEnumObjectItemsH</c>. To refresh
+	/// the list of performance objects, call <c>PdhEnumObjectsH</c> with a bRefresh flag value of <c>TRUE</c> before calling
 	/// <c>PdhEnumObjectItemsH</c> again.
 	/// </para>
 	/// <para>The order of the instance and counter names is undetermined.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectitemsha PDH_FUNCTION PdhEnumObjectItemsHA( PDH_HLOG
-	// hDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PZZSTR mszCounterList, LPDWORD pcchCounterListLength, PZZSTR
-	// mszInstanceList, LPDWORD pcchInstanceListLength, DWORD dwDetailLevel, DWORD dwFlags );
+	// hDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PZZSTR mszCounterList, LPDWORD pcchCounterListLength, PZZSTR mszInstanceList,
+	// LPDWORD pcchInstanceListLength, DWORD dwDetailLevel, DWORD dwFlags );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "2cea7d0a-cea2-4fee-a087-37663de254e9")]
-	public static extern Win32Error PdhEnumObjectItemsH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] IntPtr mszCounterList, ref uint pcchCounterListLength, [Optional] IntPtr mszInstanceList, ref uint pcchInstanceListLength, PERF_DETAIL dwDetailLevel, uint dwFlags = 0);
+	public static extern Win32Error PdhEnumObjectItemsH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, string szObjectName,
+		[Optional] IntPtr mszCounterList, ref uint pcchCounterListLength, [Optional] IntPtr mszInstanceList, ref uint pcchInstanceListLength, PERF_DETAIL dwDetailLevel, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>Returns a list of objects available on the specified computer or in the specified log file.</para>
@@ -1826,8 +2192,8 @@ public static partial class Pdh
 	/// </summary>
 	/// <param name="szDataSource">
 	/// <para>
-	/// <c>Null</c>-terminated string that specifies the name of the log file used to enumerate the performance objects. If <c>NULL</c>,
-	/// the function uses the computer specified in
+	/// <c>Null</c>-terminated string that specifies the name of the log file used to enumerate the performance objects. If <c>NULL</c>, the
+	/// function uses the computer specified in
 	/// </para>
 	/// <para>the szMachineName parameter to enumerate the names.</para>
 	/// </param>
@@ -1838,15 +2204,14 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="mszObjectList">
 	/// Caller-allocated buffer that receives the list of object names. Each object name in this list is terminated by a <c>null</c>
-	/// character. The list is terminated with two <c>null</c>-terminator characters. Set to <c>NULL</c> if the pcchBufferLength
-	/// parameter is zero.
+	/// character. The list is terminated with two <c>null</c>-terminator characters. Set to <c>NULL</c> if the pcchBufferLength parameter is zero.
 	/// </param>
 	/// <param name="pcchBufferSize">
 	/// <para>
-	/// Size of the mszObjectList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this parameter
-	/// to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual size
-	/// of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not
-	/// rely on the returned size to reallocate the buffer.
+	/// Size of the mszObjectList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this parameter to
+	/// the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual size of the
+	/// buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// returned size to reallocate the buffer.
 	/// </para>
 	/// <para><c>Windows XP:</c> Add one to the required buffer size.</para>
 	/// </param>
@@ -1912,8 +2277,8 @@ public static partial class Pdh
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
 	/// The mszObjectList buffer is too small to hold the list of objects. This return value is expected if pcchBufferLength is zero on
-	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned
-	/// size to reallocate the buffer.
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1927,8 +2292,8 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -1942,6 +2307,97 @@ public static partial class Pdh
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "dfa4b10f-5134-4620-a6b0-0fa2c13a33ec")]
 	public static extern Win32Error PdhEnumObjects([Optional] string? szDataSource, [Optional] string? szMachineName, [Optional] IntPtr mszObjectList, ref uint pcchBufferSize, PERF_DETAIL dwDetailLevel, [MarshalAs(UnmanagedType.Bool)] bool bRefresh);
+
+	/// <summary>
+	/// <para>Returns a list of objects available on the specified computer or in the specified log file.</para>
+	/// <para>To use handles to data sources, use the PdhEnumObjectsH function.</para>
+	/// </summary>
+	/// <param name="szDataSource">
+	/// <para>
+	/// <c>Null</c>-terminated string that specifies the name of the log file used to enumerate the performance objects. If <c>NULL</c>, the
+	/// function uses the computer specified in
+	/// </para>
+	/// <para>the szMachineName parameter to enumerate the names.</para>
+	/// </param>
+	/// <param name="szMachineName">
+	/// <para><c>Null</c>-terminated string that specifies the name of the computer used to enumerate the performance objects.</para>
+	/// <para>Include the leading slashes in the computer name, for example, \computername.</para>
+	/// <para>If the szDataSource parameter is <c>NULL</c>, you can set szMachineName to <c>NULL</c> to specify the local computer.</para>
+	/// </param>
+	/// <param name="dwDetailLevel">
+	/// <para>
+	/// Detail level of the performance items to return. All items that are of the specified detail level or less will be returned (the
+	/// levels are listed in increasing order). This parameter can be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PERF_DETAIL_NOVICE</term>
+	/// <term>Novice user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_ADVANCED</term>
+	/// <term>Advanced user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_EXPERT</term>
+	/// <term>Expert user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_WIZARD</term>
+	/// <term>System designer level of detail.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="mszObjectList">
+	/// Caller-allocated buffer that receives the list of object names. Each object name in this list is terminated by a <c>null</c>
+	/// character. The list is terminated with two <c>null</c>-terminator characters. Set to <c>NULL</c> if the pcchBufferLength parameter is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The mszObjectList buffer is too small to hold the list of objects. This return value is expected if pcchBufferLength is zero on
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_MACHINE</term>
+	/// <term>The specified computer is offline or unavailable.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_OBJECT</term>
+	/// <term>The specified object could not be found.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// You should call this function twice, the first time to get the required buffer size (set mszObjectList to <c>NULL</c> and
+	/// pcchBufferLength to 0), and the second time to get the data.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectsa PDH_FUNCTION PdhEnumObjectsA( LPCSTR szDataSource,
+	// LPCSTR szMachineName, PZZSTR mszObjectList, LPDWORD pcchBufferSize, DWORD dwDetailLevel, BOOL bRefresh );
+	[PInvokeData("pdh.h", MSDNShortId = "dfa4b10f-5134-4620-a6b0-0fa2c13a33ec")]
+	public static Win32Error PdhEnumObjects([Optional] string? szDataSource, [Optional] string? szMachineName, PERF_DETAIL dwDetailLevel, out string[]? mszObjectList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz, bool ft) => PdhEnumObjects(szDataSource, szMachineName, p, ref sz, dwDetailLevel, ft), out mszObjectList);
 
 	/// <summary>
 	/// <para>Returns a list of objects available on the specified computer or in the specified log file.</para>
@@ -1959,10 +2415,10 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="pcchBufferSize">
 	/// <para>
-	/// Size of the mszObjectList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this parameter
-	/// to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual size
-	/// of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not
-	/// rely on the returned size to reallocate the buffer.
+	/// Size of the mszObjectList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this parameter to
+	/// the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual size of the
+	/// buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// returned size to reallocate the buffer.
 	/// </para>
 	/// <para><c>Windows XP:</c> Add one to the required buffer size.</para>
 	/// </param>
@@ -2028,8 +2484,8 @@ public static partial class Pdh
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
 	/// The mszObjectList buffer is too small to hold the list of objects. This return value is expected if pcchBufferLength is zero on
-	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned
-	/// size to reallocate the buffer.
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2043,8 +2499,8 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -2053,11 +2509,96 @@ public static partial class Pdh
 	/// You should call this function twice, the first time to get the required buffer size (set mszObjectList to <c>NULL</c> and
 	/// pcchBufferLength to 0), and the second time to get the data.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectsha PDH_FUNCTION PdhEnumObjectsHA( PDH_HLOG
-	// hDataSource, LPCSTR szMachineName, PZZSTR mszObjectList, LPDWORD pcchBufferSize, DWORD dwDetailLevel, BOOL bRefresh );
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectsha PDH_FUNCTION PdhEnumObjectsHA( PDH_HLOG hDataSource,
+	// LPCSTR szMachineName, PZZSTR mszObjectList, LPDWORD pcchBufferSize, DWORD dwDetailLevel, BOOL bRefresh );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "8f68a7a8-cc56-4f7f-a86f-4b439738808d")]
 	public static extern Win32Error PdhEnumObjectsH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, [Optional] IntPtr mszObjectList, ref uint pcchBufferSize, PERF_DETAIL dwDetailLevel, [MarshalAs(UnmanagedType.Bool)] bool bRefresh);
+
+	/// <summary>
+	/// <para>Returns a list of objects available on the specified computer or in the specified log file.</para>
+	/// <para>This function is identical to PdhEnumObjects, except that it supports the use of handles to data sources.</para>
+	/// </summary>
+	/// <param name="hDataSource">Handle to a data source returned by the PdhBindInputDataSource function.</param>
+	/// <param name="szMachineName">
+	/// <para><c>Null</c>-terminated string that specifies the name of the computer used to enumerate the performance objects.</para>
+	/// <para>Include the leading slashes in the computer name, for example, \computername.</para>
+	/// <para>If szDataSource is <c>NULL</c>, you can set szMachineName to <c>NULL</c> to specify the local computer.</para>
+	/// </param>
+	/// <param name="dwDetailLevel">
+	/// <para>
+	/// Detail level of the performance items to return. All items that are of the specified detail level or less will be returned (the
+	/// levels are listed in increasing order). This parameter can be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PERF_DETAIL_NOVICE</term>
+	/// <term>Novice user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_ADVANCED</term>
+	/// <term>Advanced user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_EXPERT</term>
+	/// <term>Expert user level of detail.</term>
+	/// </item>
+	/// <item>
+	/// <term>PERF_DETAIL_WIZARD</term>
+	/// <term>System designer level of detail.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="mszObjectList">
+	/// Caller-allocated buffer that receives the list of object names. Each object name in this list is terminated by a <c>null</c>
+	/// character. The list is terminated with two <c>null</c>-terminator characters. Set to <c>NULL</c> if pcchBufferLength is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The mszObjectList buffer is too small to hold the list of objects. This return value is expected if pcchBufferLength is zero on
+	/// input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned size
+	/// to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_MACHINE</term>
+	/// <term>The specified computer is offline or unavailable.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_OBJECT</term>
+	/// <term>The specified object could not be found.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// You should call this function twice, the first time to get the required buffer size (set mszObjectList to <c>NULL</c> and
+	/// pcchBufferLength to 0), and the second time to get the data.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhenumobjectsha PDH_FUNCTION PdhEnumObjectsHA( PDH_HLOG hDataSource,
+	// LPCSTR szMachineName, PZZSTR mszObjectList, LPDWORD pcchBufferSize, DWORD dwDetailLevel, BOOL bRefresh );
+	[PInvokeData("pdh.h", MSDNShortId = "8f68a7a8-cc56-4f7f-a86f-4b439738808d")]
+	public static Win32Error PdhEnumObjectsH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, PERF_DETAIL dwDetailLevel, [Optional] out string[]? mszObjectList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz, bool ft) => PdhEnumObjectsH(hDataSource, szMachineName, p, ref sz, dwDetailLevel, ft), out mszObjectList);
 
 	/// <summary>
 	/// <para>
@@ -2067,21 +2608,20 @@ public static partial class Pdh
 	/// <para><c>Note</c> This function is superseded by the PdhExpandWildCardPath function.</para>
 	/// </summary>
 	/// <param name="szWildCardPath">
-	/// <c>Null</c>-terminated string that contains the counter path to expand. The function searches the computer specified in the path
-	/// for matches. If the path does not specify a computer, the function searches the local computer. The maximum length of a counter
-	/// path is PDH_MAX_COUNTER_PATH.
+	/// <c>Null</c>-terminated string that contains the counter path to expand. The function searches the computer specified in the path for
+	/// matches. If the path does not specify a computer, the function searches the local computer. The maximum length of a counter path is PDH_MAX_COUNTER_PATH.
 	/// </param>
 	/// <param name="mszExpandedPathList">
 	/// Caller-allocated buffer that receives the list of expanded counter paths that match the wildcard specification in szWildCardPath.
-	/// Each counter path in this list is terminated by a <c>null</c> character. The list is terminated with two <c>NULL</c> characters.
-	/// Set to <c>NULL</c> if pcchPathListLength is zero.
+	/// Each counter path in this list is terminated by a <c>null</c> character. The list is terminated with two <c>NULL</c> characters. Set
+	/// to <c>NULL</c> if pcchPathListLength is zero.
 	/// </param>
 	/// <param name="pcchPathListLength">
 	/// <para>
 	/// Size of the mszExpandedPathList buffer, in <c>TCHARs</c>. If zero on input, the function returns PDH_MORE_DATA and sets this
-	/// parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the
-	/// actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you
-	/// should not rely on the returned size to reallocate the buffer.
+	/// parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter to the actual
+	/// size of the buffer that was used. If the specified size on input is greater than zero but less than the required size, you should not
+	/// rely on the returned size to reallocate the buffer.
 	/// </para>
 	/// <para><c>Note</c> You must add one to the required size on Windows XP.</para>
 	/// </param>
@@ -2096,16 +2636,16 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
-	/// The mszExpandedPathList buffer is too small to contain the list of paths. This return value is expected if pcchPathListLength is
-	/// zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
-	/// returned size to reallocate the buffer.
+	/// The mszExpandedPathList buffer is too small to contain the list of paths. This return value is expected if pcchPathListLength is zero
+	/// on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned
+	/// size to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2122,12 +2662,12 @@ public static partial class Pdh
 	/// <para>The general counter path format is as follows:</para>
 	/// <para>\computer\object(parent/instance#index)\counter</para>
 	/// <para>
-	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character.
-	/// The computer, parent, instance, and index components are not necessary for all counters.
+	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character. The
+	/// computer, parent, instance, and index components are not necessary for all counters.
 	/// </para>
 	/// <para>
-	/// The counter paths that you must use is determined by the counter itself. For example, the LogicalDisk object has an instance
-	/// index, so you must provide the #index, or a wildcard. Therefore, you could use the following format:
+	/// The counter paths that you must use is determined by the counter itself. For example, the LogicalDisk object has an instance index,
+	/// so you must provide the #index, or a wildcard. Therefore, you could use the following format:
 	/// </para>
 	/// <para>\LogicalDisk(/#*)*</para>
 	/// <para>In comparison, the Process object does not require an instance index. Therefore, you could use the following format:</para>
@@ -2166,12 +2706,12 @@ public static partial class Pdh
 	/// </item>
 	/// </list>
 	/// <para>
-	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance
-	/// and counter fields will be returned.
+	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance and
+	/// counter fields will be returned.
 	/// </para>
 	/// <para>
-	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be
-	/// returned if all instance names corresponding to the specified index match the wildcard character.
+	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be returned
+	/// if all instance names corresponding to the specified index match the wildcard character.
 	/// </para>
 	/// <para>If a wildcard character is specified in the counter name, all counters of the specified object are returned.</para>
 	/// <para>Partial counter path string matches (for example, "pro*") are not supported.</para>
@@ -2186,23 +2726,137 @@ public static partial class Pdh
 
 	/// <summary>
 	/// <para>
-	/// Examines the specified computer or log file and returns those counter paths that match the given counter path which contains
-	/// wildcard characters.
+	/// Examines the specified computer (or local computer if none is specified) for counters and instances of counters that match the
+	/// wildcard strings in the counter path.
+	/// </para>
+	/// <para><c>Note</c> This function is superseded by the PdhExpandWildCardPath function.</para>
+	/// </summary>
+	/// <param name="szWildCardPath">
+	/// <c>Null</c>-terminated string that contains the counter path to expand. The function searches the computer specified in the path for
+	/// matches. If the path does not specify a computer, the function searches the local computer. The maximum length of a counter path is PDH_MAX_COUNTER_PATH.
+	/// </param>
+	/// <param name="mszExpandedPathList">
+	/// Caller-allocated buffer that receives the list of expanded counter paths that match the wildcard specification in szWildCardPath.
+	/// Each counter path in this list is terminated by a <c>null</c> character. The list is terminated with two <c>NULL</c> characters. Set
+	/// to <c>NULL</c> if pcchPathListLength is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The mszExpandedPathList buffer is too small to contain the list of paths. This return value is expected if pcchPathListLength is zero
+	/// on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the returned
+	/// size to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_MEMORY_ALLOCATION_FAILURE</term>
+	/// <term>Unable to allocate memory to support this function.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// You should call this function twice, the first time to get the required buffer size (set mszExpandedPathList to <c>NULL</c> and
+	/// pcchPathListLength to 0), and the second time to get the data.
+	/// </para>
+	/// <para>The general counter path format is as follows:</para>
+	/// <para>\computer\object(parent/instance#index)\counter</para>
+	/// <para>
+	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character. The
+	/// computer, parent, instance, and index components are not necessary for all counters.
+	/// </para>
+	/// <para>
+	/// The counter paths that you must use is determined by the counter itself. For example, the LogicalDisk object has an instance index,
+	/// so you must provide the #index, or a wildcard. Therefore, you could use the following format:
+	/// </para>
+	/// <para>\LogicalDisk(/#*)*</para>
+	/// <para>In comparison, the Process object does not require an instance index. Therefore, you could use the following format:</para>
+	/// <para>\Process(*)\ID Process</para>
+	/// <para>The following is a list of the possible formats:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>\\computer\object(parent/instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(parent/instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(parent/instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(parent/instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object\counter</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance and
+	/// counter fields will be returned.
+	/// </para>
+	/// <para>
+	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be returned
+	/// if all instance names corresponding to the specified index match the wildcard character.
+	/// </para>
+	/// <para>If a wildcard character is specified in the counter name, all counters of the specified object are returned.</para>
+	/// <para>Partial counter path string matches (for example, "pro*") are not supported.</para>
+	/// <para>Examples</para>
+	/// <para>The following example demonstrates how to this function.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhexpandcounterpatha PDH_FUNCTION PdhExpandCounterPathA( LPCSTR
+	// szWildCardPath, PZZSTR mszExpandedPathList, LPDWORD pcchPathListLength );
+	[PInvokeData("pdh.h", MSDNShortId = "d90954ab-ec2f-42fd-90b7-66f59f3d1115")]
+	public static Win32Error PdhExpandCounterPath(string szWildCardPath, [Optional] out string[]? mszExpandedPathList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz, bool ft) => PdhExpandCounterPath(szWildCardPath, p, ref sz), out mszExpandedPathList);
+
+	/// <summary>
+	/// <para>
+	/// Examines the specified computer or log file and returns those counter paths that match the given counter path which contains wildcard characters.
 	/// </para>
 	/// <para>To use handles to data sources, use the PdhExpandWildCardPathH function.</para>
 	/// </summary>
 	/// <param name="szDataSource">
 	/// <para>
-	/// <c>Null</c>-terminated string that contains the name of a log file. The function uses the performance objects and counters
-	/// defined in the log file to expand the path specified in the szWildCardPath parameter.
+	/// <c>Null</c>-terminated string that contains the name of a log file. The function uses the performance objects and counters defined in
+	/// the log file to expand the path specified in the szWildCardPath parameter.
 	/// </para>
 	/// <para>If <c>NULL</c>, the function searches the computer specified in szWildCardPath.</para>
 	/// </param>
 	/// <param name="szWildCardPath">
 	/// <para><c>Null</c>-terminated string that specifies the counter path to expand. The maximum length of a counter path is PDH_MAX_COUNTER_PATH.</para>
 	/// <para>
-	/// If the szDataSource parameter is <c>NULL</c>, the function searches the computer specified in the path for matches. If the path
-	/// does not specify a computer, the function searches the local computer.
+	/// If the szDataSource parameter is <c>NULL</c>, the function searches the computer specified in the path for matches. If the path does
+	/// not specify a computer, the function searches the local computer.
 	/// </para>
 	/// </param>
 	/// <param name="mszExpandedPathList">
@@ -2211,10 +2865,10 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="pcchPathListLength">
 	/// <para>
-	/// Size of the mszExpandedPathList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns
-	/// PDH_MORE_DATA and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function
-	/// sets this parameter to the actual size of the buffer that was used. If the specified size on input is greater than zero but less
-	/// than the required size, you should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszExpandedPathList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA
+	/// and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter
+	/// to the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size,
+	/// you should not rely on the returned size to reallocate the buffer.
 	/// </para>
 	/// <para><c>Note</c> You must add one to the required size on Windows XP.</para>
 	/// </param>
@@ -2231,9 +2885,7 @@ public static partial class Pdh
 	/// </item>
 	/// <item>
 	/// <term>PDH_NOEXPANDINSTANCES</term>
-	/// <term>
-	/// Do not expand the instance name if the path contains a wildcard character for parent instance, instance name, or instance index.
-	/// </term>
+	/// <term>Do not expand the instance name if the path contains a wildcard character for parent instance, instance name, or instance index.</term>
 	/// </item>
 	/// </list>
 	/// </param>
@@ -2248,16 +2900,16 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
-	/// The mszExpandedPathList buffer is not large enough to contain the list of paths. This return value is expected if
-	/// pcchPathListLength is zero on input. If the specified size on input is greater than zero but less than the required size, you
-	/// should not rely on the returned size to reallocate the buffer.
+	/// The mszExpandedPathList buffer is not large enough to contain the list of paths. This return value is expected if pcchPathListLength
+	/// is zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// returned size to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2291,8 +2943,8 @@ public static partial class Pdh
 	/// <para>The general counter path format is as follows:</para>
 	/// <para>\computer\object(parent/instance#index)\counter</para>
 	/// <para>
-	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character.
-	/// The computer, parent, instance, and index components are not necessary for all counters.
+	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character. The
+	/// computer, parent, instance, and index components are not necessary for all counters.
 	/// </para>
 	/// <para>The following is a list of the possible formats:</para>
 	/// <list type="bullet">
@@ -2329,13 +2981,13 @@ public static partial class Pdh
 	/// </list>
 	/// <para>Use an asterisk (*) as the wildcard character, for example, \object(*)\counter.</para>
 	/// <para>
-	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance
-	/// and counter fields will be returned. For example, \object(*/instance)\counter.
+	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance and
+	/// counter fields will be returned. For example, \object(*/instance)\counter.
 	/// </para>
 	/// <para>
-	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be
-	/// returned if all instance names corresponding to the specified index match the wildcard character. For example,
-	/// \object(parent/*)\counter. If the object does not contain an instance, an error occurs.
+	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be returned
+	/// if all instance names corresponding to the specified index match the wildcard character. For example, \object(parent/*)\counter. If
+	/// the object does not contain an instance, an error occurs.
 	/// </para>
 	/// <para>If a wildcard character is specified in the counter name, all counters of the specified object are returned.</para>
 	/// <para>Partial counter path string matches (for example, "pro*") are supported.</para>
@@ -2349,8 +3001,158 @@ public static partial class Pdh
 
 	/// <summary>
 	/// <para>
-	/// Examines the specified computer or log file and returns those counter paths that match the given counter path which contains
-	/// wildcard characters.
+	/// Examines the specified computer or log file and returns those counter paths that match the given counter path which contains wildcard characters.
+	/// </para>
+	/// <para>To use handles to data sources, use the PdhExpandWildCardPathH function.</para>
+	/// </summary>
+	/// <param name="szDataSource">
+	/// <para>
+	/// <c>Null</c>-terminated string that contains the name of a log file. The function uses the performance objects and counters defined in
+	/// the log file to expand the path specified in the szWildCardPath parameter.
+	/// </para>
+	/// <para>If <c>NULL</c>, the function searches the computer specified in szWildCardPath.</para>
+	/// </param>
+	/// <param name="szWildCardPath">
+	/// <para><c>Null</c>-terminated string that specifies the counter path to expand. The maximum length of a counter path is PDH_MAX_COUNTER_PATH.</para>
+	/// <para>
+	/// If the szDataSource parameter is <c>NULL</c>, the function searches the computer specified in the path for matches. If the path does
+	/// not specify a computer, the function searches the local computer.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>Flags that indicate which wildcard characters not to expand. You can specify one or more flags.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_NOEXPANDCOUNTERS</term>
+	/// <term>Do not expand the counter name if the path contains a wildcard character for counter name.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_NOEXPANDINSTANCES</term>
+	/// <term>Do not expand the instance name if the path contains a wildcard character for parent instance, instance name, or instance index.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="mszExpandedPathList">
+	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated counter paths that match the wildcard specification in the
+	/// szWildCardPath. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if pcchPathListLength is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The mszExpandedPathList buffer is not large enough to contain the list of paths. This return value is expected if pcchPathListLength
+	/// is zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// returned size to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_PATH</term>
+	/// <term>The specified object does not contain an instance.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_MEMORY_ALLOCATION_FAILURE</term>
+	/// <term>Unable to allocate memory to support this function.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_OBJECT</term>
+	/// <term>Unable to find the specified object on the computer or in the log file.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// You should call this function twice, the first time to get the required buffer size (set mszExpandedPathList to <c>NULL</c> and
+	/// pcchPathListLength to 0), and the second time to get the data.
+	/// </para>
+	/// <para><c>PdhExpandWildCardPath</c> differs from PdhExpandCounterPath in the following ways:</para>
+	/// <list type="number">
+	/// <item>
+	/// <term>Lets you control which wildcard characters are expanded.</term>
+	/// </item>
+	/// <item>
+	/// <term>The contents of a log file can be used as the source of counter names.</term>
+	/// </item>
+	/// </list>
+	/// <para>The general counter path format is as follows:</para>
+	/// <para>\computer\object(parent/instance#index)\counter</para>
+	/// <para>
+	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character. The
+	/// computer, parent, instance, and index components are not necessary for all counters.
+	/// </para>
+	/// <para>The following is a list of the possible formats:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>\\computer\object(parent/instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(parent/instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(parent/instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(parent/instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object\counter</term>
+	/// </item>
+	/// </list>
+	/// <para>Use an asterisk (*) as the wildcard character, for example, \object(*)\counter.</para>
+	/// <para>
+	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance and
+	/// counter fields will be returned. For example, \object(*/instance)\counter.
+	/// </para>
+	/// <para>
+	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be returned
+	/// if all instance names corresponding to the specified index match the wildcard character. For example, \object(parent/*)\counter. If
+	/// the object does not contain an instance, an error occurs.
+	/// </para>
+	/// <para>If a wildcard character is specified in the counter name, all counters of the specified object are returned.</para>
+	/// <para>Partial counter path string matches (for example, "pro*") are supported.</para>
+	/// <para><c>Prior to Windows Vista:</c> Partial wildcard matches are not supprted.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhexpandwildcardpatha PDH_FUNCTION PdhExpandWildCardPathA( LPCSTR
+	// szDataSource, LPCSTR szWildCardPath, PZZSTR mszExpandedPathList, LPDWORD pcchPathListLength, DWORD dwFlags );
+	[PInvokeData("pdh.h", MSDNShortId = "415da310-de56-4d58-8959-231426867526")]
+	public static Win32Error PdhExpandWildCardPath([Optional] string? szDataSource, string szWildCardPath, PdhExpandFlags dwFlags, [Optional] out string[]? mszExpandedPathList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz, bool ft) => PdhExpandWildCardPath(szDataSource, szWildCardPath, p, ref sz, dwFlags), out mszExpandedPathList);
+
+	/// <summary>
+	/// <para>
+	/// Examines the specified computer or log file and returns those counter paths that match the given counter path which contains wildcard characters.
 	/// </para>
 	/// <para>This function is identical to the PdhExpandWildCardPath function, except that it supports the use of handles to data sources.</para>
 	/// </summary>
@@ -2358,8 +3160,8 @@ public static partial class Pdh
 	/// <param name="szWildCardPath">
 	/// <para><c>Null</c>-terminated string that specifies the counter path to expand. The maximum length of a counter path is PDH_MAX_COUNTER_PATH.</para>
 	/// <para>
-	/// If hDataSource is a real time data source, the function searches the computer specified in the path for matches. If the path does
-	/// not specify a computer, the function searches the local computer.
+	/// If hDataSource is a real time data source, the function searches the computer specified in the path for matches. If the path does not
+	/// specify a computer, the function searches the local computer.
 	/// </para>
 	/// </param>
 	/// <param name="mszExpandedPathList">
@@ -2368,10 +3170,10 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="pcchPathListLength">
 	/// <para>
-	/// Size of the mszExpandedPathList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns
-	/// PDH_MORE_DATA and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function
-	/// sets this parameter to the actual size of the buffer that was used. If the specified size on input is greater than zero but less
-	/// than the required size, you should not rely on the returned size to reallocate the buffer.
+	/// Size of the mszExpandedPathList buffer, in <c>TCHARs</c>. If zero on input and the object exists, the function returns PDH_MORE_DATA
+	/// and sets this parameter to the required buffer size. If the buffer is larger than the required size, the function sets this parameter
+	/// to the actual size of the buffer that was used. If the specified size on input is greater than zero but less than the required size,
+	/// you should not rely on the returned size to reallocate the buffer.
 	/// </para>
 	/// <para><c>Note</c> You must add one to the required size on Windows XP.</para>
 	/// </param>
@@ -2388,9 +3190,7 @@ public static partial class Pdh
 	/// </item>
 	/// <item>
 	/// <term>PDH_NOEXPANDINSTANCES</term>
-	/// <term>
-	/// Do not expand the instance name if the path contains a wildcard character for parent instance, instance name, or instance index.
-	/// </term>
+	/// <term>Do not expand the instance name if the path contains a wildcard character for parent instance, instance name, or instance index.</term>
 	/// </item>
 	/// </list>
 	/// </param>
@@ -2405,16 +3205,16 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_MORE_DATA</term>
 	/// <term>
-	/// The mszExpandedPathList buffer is not large enough to contain the list of paths. This return value is expected if
-	/// pcchPathListLength is zero on input. If the specified size on input is greater than zero but less than the required size, you
-	/// should not rely on the returned size to reallocate the buffer.
+	/// The mszExpandedPathList buffer is not large enough to contain the list of paths. This return value is expected if pcchPathListLength
+	/// is zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// returned size to reallocate the buffer.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>PDH_INVALID_ARGUMENT</term>
 	/// <term>
-	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater
-	/// than zero but less than the required size.
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2444,8 +3244,8 @@ public static partial class Pdh
 	/// <para>The general counter path format is as follows:</para>
 	/// <para>\computer\object(parent/instance#index)\counter</para>
 	/// <para>
-	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character.
-	/// The computer, parent, instance, and index components are not necessary for all counters.
+	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character. The
+	/// computer, parent, instance, and index components are not necessary for all counters.
 	/// </para>
 	/// <para>The following is a list of the possible formats:</para>
 	/// <list type="bullet">
@@ -2482,22 +3282,162 @@ public static partial class Pdh
 	/// </list>
 	/// <para>Use an asterisk (*) as the wildcard character, for example, \object(*)\counter.</para>
 	/// <para>
-	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance
-	/// and counter fields will be returned. For example, \object(*/instance)\counter.
+	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance and
+	/// counter fields will be returned. For example, \object(*/instance)\counter.
 	/// </para>
 	/// <para>
-	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be
-	/// returned if all instance names corresponding to the specified index match the wildcard character. For example, \object(parent/*)\counter.
+	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be returned
+	/// if all instance names corresponding to the specified index match the wildcard character. For example, \object(parent/*)\counter.
 	/// </para>
 	/// <para>If a wildcard character is specified in the counter name, all counters of the specified object are returned.</para>
 	/// <para>Partial counter path string matches (for example, "pro*") are supported.</para>
 	/// <para><c>Prior to Windows Vista:</c> Partial wildcard matches are not supprted.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhexpandwildcardpathha PDH_FUNCTION PdhExpandWildCardPathHA(
-	// PDH_HLOG hDataSource, LPCSTR szWildCardPath, PZZSTR mszExpandedPathList, LPDWORD pcchPathListLength, DWORD dwFlags );
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhexpandwildcardpathha PDH_FUNCTION PdhExpandWildCardPathHA( PDH_HLOG
+	// hDataSource, LPCSTR szWildCardPath, PZZSTR mszExpandedPathList, LPDWORD pcchPathListLength, DWORD dwFlags );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "d7d13beb-02ab-4204-808e-d395197f09e1")]
 	public static extern Win32Error PdhExpandWildCardPathH([Optional] PDH_HLOG hDataSource, string szWildCardPath, [Optional] IntPtr mszExpandedPathList, ref uint pcchPathListLength, PdhExpandFlags dwFlags);
+
+	/// <summary>
+	/// <para>
+	/// Examines the specified computer or log file and returns those counter paths that match the given counter path which contains wildcard characters.
+	/// </para>
+	/// <para>This function is identical to the PdhExpandWildCardPath function, except that it supports the use of handles to data sources.</para>
+	/// </summary>
+	/// <param name="hDataSource">Handle to a data source returned by the PdhBindInputDataSource function.</param>
+	/// <param name="szWildCardPath">
+	/// <para><c>Null</c>-terminated string that specifies the counter path to expand. The maximum length of a counter path is PDH_MAX_COUNTER_PATH.</para>
+	/// <para>
+	/// If hDataSource is a real time data source, the function searches the computer specified in the path for matches. If the path does not
+	/// specify a computer, the function searches the local computer.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>Flags that indicate which wildcard characters not to expand. You can specify one or more flags.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_NOEXPANDCOUNTERS</term>
+	/// <term>Do not expand the counter name if the path contains a wildcard character for counter name.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_NOEXPANDINSTANCES</term>
+	/// <term>Do not expand the instance name if the path contains a wildcard character for parent instance, instance name, or instance index.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="mszExpandedPathList">
+	/// Caller-allocated buffer that receives a list of <c>null</c>-terminated counter paths that match the wildcard specification in the
+	/// szWildCardPath. The list is terminated by two <c>NULL</c> characters. Set to <c>NULL</c> if pcchPathListLength is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The mszExpandedPathList buffer is not large enough to contain the list of paths. This return value is expected if pcchPathListLength
+	/// is zero on input. If the specified size on input is greater than zero but less than the required size, you should not rely on the
+	/// returned size to reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid. For example, on some releases you could receive this error if the specified size on input is greater than
+	/// zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_MEMORY_ALLOCATION_FAILURE</term>
+	/// <term>Unable to allocate memory to support this function.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_CSTATUS_NO_OBJECT</term>
+	/// <term>Unable to find the specified object on the computer or in the log file.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// You should call this function twice, the first time to get the required buffer size (set mszExpandedPathList to <c>NULL</c> and
+	/// pcchPathListLength to 0), and the second time to get the data.
+	/// </para>
+	/// <para><c>PdhExpandWildCardPathH</c> differs from PdhExpandCounterPath in the following ways:</para>
+	/// <list type="number">
+	/// <item>
+	/// <term>Lets you control which wildcard characters are expanded.</term>
+	/// </item>
+	/// <item>
+	/// <term>The contents of a log file can be used as the source of counter names.</term>
+	/// </item>
+	/// </list>
+	/// <para>The general counter path format is as follows:</para>
+	/// <para>\computer\object(parent/instance#index)\counter</para>
+	/// <para>
+	/// The parent, instance, index, and counter components of the counter path may contain either a valid name or a wildcard character. The
+	/// computer, parent, instance, and index components are not necessary for all counters.
+	/// </para>
+	/// <para>The following is a list of the possible formats:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>\\computer\object(parent/instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(parent/instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object(instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\\computer\object\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(parent/instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(parent/instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(instance#index)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object(instance)\counter</term>
+	/// </item>
+	/// <item>
+	/// <term>\object\counter</term>
+	/// </item>
+	/// </list>
+	/// <para>Use an asterisk (*) as the wildcard character, for example, \object(*)\counter.</para>
+	/// <para>
+	/// If a wildcard character is specified in the parent name, all instances of the specified object that match the specified instance and
+	/// counter fields will be returned. For example, \object(*/instance)\counter.
+	/// </para>
+	/// <para>
+	/// If a wildcard character is specified in the instance name, all instances of the specified object and parent object will be returned
+	/// if all instance names corresponding to the specified index match the wildcard character. For example, \object(parent/*)\counter.
+	/// </para>
+	/// <para>If a wildcard character is specified in the counter name, all counters of the specified object are returned.</para>
+	/// <para>Partial counter path string matches (for example, "pro*") are supported.</para>
+	/// <para><c>Prior to Windows Vista:</c> Partial wildcard matches are not supprted.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhexpandwildcardpathha PDH_FUNCTION PdhExpandWildCardPathHA( PDH_HLOG
+	// hDataSource, LPCSTR szWildCardPath, PZZSTR mszExpandedPathList, LPDWORD pcchPathListLength, DWORD dwFlags );
+	[PInvokeData("pdh.h", MSDNShortId = "d7d13beb-02ab-4204-808e-d395197f09e1")]
+	public static Win32Error PdhExpandWildCardPathH([Optional] PDH_HLOG hDataSource, string szWildCardPath, PdhExpandFlags dwFlags, [Optional] out string[]? mszExpandedPathList) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz, bool ft) => PdhExpandWildCardPathH(hDataSource, szWildCardPath, p, ref sz, dwFlags), out mszExpandedPathList);
 
 	/// <summary>Computes a displayable value for the given raw counter values.</summary>
 	/// <param name="dwCounterType">
@@ -2544,8 +3484,8 @@ public static partial class Pdh
 	/// <item>
 	/// <term>PDH_FMT_NOCAP100</term>
 	/// <term>
-	/// Counter values greater than 100 (for example, counter values measuring the processor load on multiprocessor computers) will not
-	/// be reset to 100. The default behavior is that counter values are capped at a value of 100.
+	/// Counter values greater than 100 (for example, counter values measuring the processor load on multiprocessor computers) will not be
+	/// reset to 100. The default behavior is that counter values are capped at a value of 100.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2560,9 +3500,9 @@ public static partial class Pdh
 	/// </param>
 	/// <param name="pRawValue1">Raw counter value used to compute the displayable counter value. For details, see PDH_RAW_COUNTER.</param>
 	/// <param name="pRawValue2">
-	/// Raw counter value used to compute the displayable counter value. For details, see PDH_RAW_COUNTER. Some counters, for example,
-	/// rate counters, require two raw values to calculate a displayable value. If the counter type does not require a second value, set
-	/// this parameter to <c>NULL</c>. This value must be the older of the two raw values.
+	/// Raw counter value used to compute the displayable counter value. For details, see PDH_RAW_COUNTER. Some counters, for example, rate
+	/// counters, require two raw values to calculate a displayable value. If the counter type does not require a second value, set this
+	/// parameter to <c>NULL</c>. This value must be the older of the two raw values.
 	/// </param>
 	/// <param name="pFmtValue">A PDH_FMT_COUNTERVALUE structure that receives the calculated counter value.</param>
 	/// <returns>
@@ -2574,7 +3514,84 @@ public static partial class Pdh
 	// PPDH_FMT_COUNTERVALUE pFmtValue );
 	[DllImport(Lib.Pdh, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("pdh.h", MSDNShortId = "13027af4-2e76-4c2f-88e8-a2554a16fae3")]
-	public static extern Win32Error PdhFormatFromRawValue(CounterType dwCounterType, PDH_FMT dwFormat, in FILETIME pTimeBase, in PDH_RAW_COUNTER pRawValue1, in PDH_RAW_COUNTER pRawValue2, out PDH_FMT_COUNTERVALUE pFmtValue);
+	public static extern Win32Error PdhFormatFromRawValue(CounterType dwCounterType, PDH_FMT dwFormat, [In, Optional] PFILETIME? pTimeBase, in PDH_RAW_COUNTER pRawValue1, in PDH_RAW_COUNTER pRawValue2, out PDH_FMT_COUNTERVALUE pFmtValue);
+
+	/// <summary>Computes a displayable value for the given raw counter values.</summary>
+	/// <param name="dwCounterType">
+	/// <para>
+	/// Type of counter. Typically, you call PdhGetCounterInfo to retrieve the counter type at the time you call PdhGetRawCounterValue to
+	/// retrieve the raw counter value.
+	/// </para>
+	/// <para>
+	/// For a list of counter types, see the Counter Types section of the Windows Server 2003 Deployment Kit. (The constant values are
+	/// defined in Winperf.h.)
+	/// </para>
+	/// <para>Note that you cannot specify base types, for example, PERF_LARGE_RAW_BASE.</para>
+	/// </param>
+	/// <param name="dwFormat">
+	/// <para>Determines the data type of the calculated value. Specify one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_FMT_DOUBLE</term>
+	/// <term>Return the calculated value as a double-precision floating point real.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_FMT_LARGE</term>
+	/// <term>Return the calculated value as a 64-bit integer.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_FMT_LONG</term>
+	/// <term>Return the calculated value as a long integer.</term>
+	/// </item>
+	/// </list>
+	/// <para>You can use the bitwise inclusive OR operator (|) to combine the data type with one of the following scaling factors.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_FMT_NOSCALE</term>
+	/// <term>Do not apply the counter's scaling factor in the calculation.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_FMT_NOCAP100</term>
+	/// <term>
+	/// Counter values greater than 100 (for example, counter values measuring the processor load on multiprocessor computers) will not be
+	/// reset to 100. The default behavior is that counter values are capped at a value of 100.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_FMT_1000</term>
+	/// <term>Multiply the final value by 1,000.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pTimeBase">
+	/// Pointer to the time base, if necessary for the format conversion. If time base information is not necessary for the format
+	/// conversion, the value of this parameter is ignored. To retrieve the time base of the counter, call PdhGetCounterTimeBase.
+	/// </param>
+	/// <param name="pRawValue1">Raw counter value used to compute the displayable counter value. For details, see PDH_RAW_COUNTER.</param>
+	/// <param name="pRawValue2">
+	/// Raw counter value used to compute the displayable counter value. For details, see PDH_RAW_COUNTER. Some counters, for example, rate
+	/// counters, require two raw values to calculate a displayable value. If the counter type does not require a second value, set this
+	/// parameter to <c>NULL</c>. This value must be the older of the two raw values.
+	/// </param>
+	/// <param name="pFmtValue">A PDH_FMT_COUNTERVALUE structure that receives the calculated counter value.</param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhformatfromrawvalue PDH_FUNCTION PdhFormatFromRawValue( DWORD
+	// dwCounterType, DWORD dwFormat, LONGLONG *pTimeBase, PPDH_RAW_COUNTER pRawValue1, PPDH_RAW_COUNTER pRawValue2,
+	// PPDH_FMT_COUNTERVALUE pFmtValue );
+	[DllImport(Lib.Pdh, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("pdh.h", MSDNShortId = "13027af4-2e76-4c2f-88e8-a2554a16fae3")]
+	public static extern Win32Error PdhFormatFromRawValue(CounterType dwCounterType, PDH_FMT dwFormat, [In, Optional] PFILETIME? pTimeBase, in PDH_RAW_COUNTER pRawValue1, [In, Optional] IntPtr pRawValue2, out PDH_FMT_COUNTERVALUE pFmtValue);
 
 	/// <summary>Retrieves information about a counter, such as data size, counter type, path, and user-supplied data values.</summary>
 	/// <param name="hCounter">
@@ -2632,7 +3649,69 @@ public static partial class Pdh
 	// hCounter, BOOLEAN bRetrieveExplainText, LPDWORD pdwBufferSize, PPDH_COUNTER_INFO_A lpBuffer );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "12e1a194-5418-4c2a-9853-ef2d2c666893")]
-	public static extern Win32Error PdhGetCounterInfo(PDH_HCOUNTER hCounter, [MarshalAs(UnmanagedType.U1)] bool bRetrieveExplainText, ref uint pdwBufferSize, IntPtr lpBuffer);
+	public static extern Win32Error PdhGetCounterInfo(PDH_HCOUNTER hCounter, [MarshalAs(UnmanagedType.U1)] bool bRetrieveExplainText, ref uint pdwBufferSize, [Optional] IntPtr lpBuffer);
+
+	/// <summary>Retrieves information about a counter, such as data size, counter type, path, and user-supplied data values.</summary>
+	/// <param name="hCounter">
+	/// Handle of the counter from which you want to retrieve information. The PdhAddCounter function returns this handle.
+	/// </param>
+	/// <param name="bRetrieveExplainText">
+	/// Determines whether explain text is retrieved. If you set this parameter to <c>TRUE</c>, the explain text for the counter is
+	/// retrieved. If you set this parameter to <c>FALSE</c>, the field in the returned buffer is <c>NULL</c>.
+	/// </param>
+	/// <param name="lpBuffer">
+	/// Caller-allocated buffer that receives a <see cref="PDH_COUNTER_INFO"/> structure. The structure is variable-length, because the
+	/// string data is appended to the end of the fixed-format portion of the structure. This is done so that all data is returned in a
+	/// single buffer allocated by the caller. Set to <c>NULL</c> if pdwBufferSize is zero.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code or a PDH error code. The following are possible values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PDH_INVALID_ARGUMENT</term>
+	/// <term>
+	/// A parameter is not valid or is incorrectly formatted. For example, on some releases you could receive this error if the specified
+	/// size on input is greater than zero but less than the required size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_INVALID_HANDLE</term>
+	/// <term>The counter handle is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>PDH_MORE_DATA</term>
+	/// <term>
+	/// The lpBuffer buffer is too small to hold the counter information. This return value is expected if pdwBufferSize is zero on input. If
+	/// the specified size on input is greater than zero but less than the required size, you should not rely on the returned size to
+	/// reallocate the buffer.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// You should call this function twice, the first time to get the required buffer size (set lpBuffer to <c>NULL</c> and pdwBufferSize to
+	/// 0), and the second time to get the data.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhgetcounterinfoa PDH_FUNCTION PdhGetCounterInfoA( PDH_HCOUNTER
+	// hCounter, BOOLEAN bRetrieveExplainText, LPDWORD pdwBufferSize, PPDH_COUNTER_INFO_A lpBuffer );
+	[PInvokeData("pdh.h", MSDNShortId = "12e1a194-5418-4c2a-9853-ef2d2c666893")]
+	public static Win32Error PdhGetCounterInfo(PDH_HCOUNTER hCounter, [MarshalAs(UnmanagedType.U1)] bool bRetrieveExplainText, out PDH_COUNTER_INFO_MGD? lpBuffer)
+	{
+		uint sz = 0;
+		lpBuffer = null;
+		var ret = PdhGetCounterInfo(hCounter, bRetrieveExplainText, ref sz);
+		if (ret != Win32Error.PDH_MORE_DATA)
+			return ret;
+		using SafeCoTaskMemStruct<PDH_COUNTER_INFO> mem = new(sz);
+		if ((ret = PdhGetCounterInfo(hCounter, bRetrieveExplainText, ref sz, mem)) == Win32Error.ERROR_SUCCESS)
+			lpBuffer = new(mem);
+		return ret;
+	}
 
 	/// <summary>Returns the time base of the specified counter.</summary>
 	/// <param name="hCounter">Handle to the counter. The PdhAddCounter function returns this handle.</param>
@@ -2836,7 +3915,7 @@ public static partial class Pdh
 	// LPCSTR szDataSource, LPCSTR szMachineName, LPCSTR szObjectName, LPSTR szDefaultCounterName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "0eb78071-3496-40e9-91b0-3c06547c88d5")]
-	public static extern Win32Error PdhGetDefaultPerfCounter([Optional] string? szDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] StringBuilder szDefaultCounterName, ref uint pcchBufferSize);
+	public static extern Win32Error PdhGetDefaultPerfCounter([Optional] string? szDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] StringBuilder? szDefaultCounterName, ref uint pcchBufferSize);
 
 	/// <summary>
 	/// <para>
@@ -2915,7 +3994,7 @@ public static partial class Pdh
 	// PDH_HLOG hDataSource, LPCSTR szMachineName, LPCSTR szObjectName, LPSTR szDefaultCounterName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "d1b3de9a-99ab-4339-8e9f-906f5a5d291d")]
-	public static extern Win32Error PdhGetDefaultPerfCounterH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] StringBuilder szDefaultCounterName, ref uint pcchBufferSize);
+	public static extern Win32Error PdhGetDefaultPerfCounterH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] StringBuilder? szDefaultCounterName, ref uint pcchBufferSize);
 
 	/// <summary>
 	/// <para>
@@ -2982,7 +4061,7 @@ public static partial class Pdh
 	// LPCSTR szDataSource, LPCSTR szMachineName, LPSTR szDefaultObjectName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "7c6d4d82-8b60-4422-8108-8ac10f254278")]
-	public static extern Win32Error PdhGetDefaultPerfObject([Optional] string? szDataSource, [Optional] string? szMachineName, [Optional] StringBuilder szDefaultObjectName, ref uint pcchBufferSize);
+	public static extern Win32Error PdhGetDefaultPerfObject([Optional] string? szDataSource, [Optional] string? szMachineName, [Optional] StringBuilder? szDefaultObjectName, ref uint pcchBufferSize);
 
 	/// <summary>
 	/// <para>
@@ -3054,7 +4133,7 @@ public static partial class Pdh
 	// PDH_HLOG hDataSource, LPCSTR szMachineName, LPSTR szDefaultObjectName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "4950d5b7-3a6f-410d-830f-7868aa84f6d5")]
-	public static extern Win32Error PdhGetDefaultPerfObjectH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, [Optional] StringBuilder szDefaultObjectName, ref uint pcchBufferSize);
+	public static extern Win32Error PdhGetDefaultPerfObjectH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, [Optional] StringBuilder? szDefaultObjectName, ref uint pcchBufferSize);
 
 	/// <summary>
 	/// <para>Returns the version of the currently installed Pdh.dll file.</para>
@@ -3392,7 +4471,7 @@ public static partial class Pdh
 	// PDH_HCOUNTER hCounter, LPDWORD lpdwBufferSize, LPDWORD lpdwItemCount, PPDH_RAW_COUNTER_ITEM_A ItemBuffer );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "03b30d08-6901-45cd-bd6d-d2672eb0f914")]
-	public static extern Win32Error PdhGetRawCounterArray(PDH_HCOUNTER hCounter, ref uint lpdwBufferSize, out uint lpdwItemCount, IntPtr ItemBuffer);
+	public static extern Win32Error PdhGetRawCounterArray(PDH_HCOUNTER hCounter, ref uint lpdwBufferSize, out uint lpdwItemCount, [Optional] IntPtr ItemBuffer);
 
 	/// <summary>Returns the current raw value of the counter.</summary>
 	/// <param name="hCounter">
@@ -3541,7 +4620,7 @@ public static partial class Pdh
 	// LPCSTR szMachineName, DWORD dwNameIndex, LPSTR szNameBuffer, LPDWORD pcchNameBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "6d5e1465-296b-4d8c-b0cb-aefdffb8539e")]
-	public static extern Win32Error PdhLookupPerfNameByIndex([Optional] string? szMachineName, uint dwNameIndex, [Optional] StringBuilder szNameBuffer, ref uint pcchNameBufferSize);
+	public static extern Win32Error PdhLookupPerfNameByIndex([Optional] string? szMachineName, uint dwNameIndex, [Optional] StringBuilder? szNameBuffer, ref uint pcchNameBufferSize);
 
 	/// <summary>Creates a full counter path using the members specified in the PDH_COUNTER_PATH_ELEMENTS structure.</summary>
 	/// <param name="pCounterPathElements">
@@ -3618,7 +4697,7 @@ public static partial class Pdh
 	// PPDH_COUNTER_PATH_ELEMENTS_A pCounterPathElements, LPSTR szFullPathBuffer, LPDWORD pcchBufferSize, DWORD dwFlags );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "f2dc5f77-9f9e-4290-95fa-ce2f1e81fc69")]
-	public static extern Win32Error PdhMakeCounterPath(in PDH_COUNTER_PATH_ELEMENTS pCounterPathElements, [Optional] StringBuilder szFullPathBuffer, ref uint pcchBufferSize, [Optional] PDH_PATH dwFlags);
+	public static extern Win32Error PdhMakeCounterPath(in PDH_COUNTER_PATH_ELEMENTS pCounterPathElements, [Optional] StringBuilder? szFullPathBuffer, ref uint pcchBufferSize, [Optional] PDH_PATH dwFlags);
 
 	/// <summary>Creates a full counter path using the members specified in the PDH_COUNTER_PATH_ELEMENTS structure.</summary>
 	/// <param name="pCounterPathElements">
@@ -3695,7 +4774,7 @@ public static partial class Pdh
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhmakecounterpatha PDH_FUNCTION PdhMakeCounterPathA(
 	// PPDH_COUNTER_PATH_ELEMENTS_A pCounterPathElements, LPSTR szFullPathBuffer, LPDWORD pcchBufferSize, DWORD dwFlags );
 	[PInvokeData("pdh.h", MSDNShortId = "f2dc5f77-9f9e-4290-95fa-ce2f1e81fc69")]
-	public static Win32Error PdhMakeCounterPath(in PDH_COUNTER_PATH_ELEMENTS pCounterPathElements, [Optional] StringBuilder szFullPathBuffer, ref uint pcchBufferSize, PDH_PATH dwFlags, ushort langId) =>
+	public static Win32Error PdhMakeCounterPath(in PDH_COUNTER_PATH_ELEMENTS pCounterPathElements, [Optional] StringBuilder? szFullPathBuffer, ref uint pcchBufferSize, PDH_PATH dwFlags, ushort langId) =>
 		PdhMakeCounterPath(pCounterPathElements, szFullPathBuffer, ref pcchBufferSize, PDH_PATH_LANG_FLAGS(langId, dwFlags));
 
 	/// <summary>Opens the specified log file for reading or writing.</summary>
@@ -4050,7 +5129,7 @@ public static partial class Pdh
 	// lpIndex );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "8304ecee-5141-450a-be11-838b9f52413b")]
-	public static extern Win32Error PdhParseInstanceName(string szInstanceString, [Optional] StringBuilder szInstanceName, ref uint pcchInstanceNameLength, [Optional] StringBuilder szParentName, ref uint pcchParentNameLength, out uint lpIndex);
+	public static extern Win32Error PdhParseInstanceName(string szInstanceString, [Optional] StringBuilder? szInstanceName, ref uint pcchInstanceNameLength, [Optional] StringBuilder? szParentName, ref uint pcchParentNameLength, out uint lpIndex);
 
 	/// <summary>Reads the information in the specified binary trace log file.</summary>
 	/// <param name="hLog">Handle to the log file. The PdhOpenLog or PdhBindInputDataSource function returns this handle.</param>
@@ -4338,7 +5417,7 @@ public static partial class Pdh
 	// szUserString );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "b2052275-6944-41f4-92ac-38967ed270f3")]
-	public static extern Win32Error PdhUpdateLog(PDH_HLOG hLog, string szUserString);
+	public static extern Win32Error PdhUpdateLog(PDH_HLOG hLog, string? szUserString);
 
 	/// <summary>
 	/// <para>Synchronizes the information in the log file catalog with the performance data in the log file.</para>
@@ -4510,7 +5589,8 @@ public static partial class Pdh
 		/// Pointer to a <c>null</c>-terminated string that specifies the name of the log file from which the list of counters is
 		/// retrieved. If <c>NULL</c>, the list of counters is retrieved from the local computer (or remote computer if specified).
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szDataSource;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? szDataSource;
 
 		/// <summary>
 		/// <para>Pointer to a MULTI_SZ that contains the selected counter paths.</para>
@@ -4585,7 +5665,8 @@ public static partial class Pdh
 		/// Pointer to a <c>null</c>-terminated string that specifies the optional caption to display in the caption bar of the dialog
 		/// box. If this member is <c>NULL</c>, the caption will be <c>Browse Performance Counters</c>.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szDialogBoxCaption;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? szDialogBoxCaption;
 
 		/// <summary>On return, gets the selected counter paths.</summary>
 		public string[] CounterPaths => szReturnPathBuffer.ToStringEnum(CharSet.Auto, 0, cchReturnPathLength).ToArray();
@@ -4691,7 +5772,8 @@ public static partial class Pdh
 		/// Pointer to a <c>null</c>-terminated string that specifies the optional caption to display in the caption bar of the dialog
 		/// box. If this member is <c>NULL</c>, the caption will be <c>Browse Performance Counters</c>.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szDialogBoxCaption;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? szDialogBoxCaption;
 	}
 
 	/// <summary>
@@ -4733,10 +5815,10 @@ public static partial class Pdh
 		/// of this parameter is PDH_MIN_SCALE (–7) (the returned value is the actual value times 10⁷) to PDH_MAX_SCALE (+7) (the
 		/// returned value is the actual value times 10⁺⁷). A value of zero will set the scale to one, so that the actual value is returned
 		/// </summary>
-		public long lScale;
+		public int lScale;
 
 		/// <summary>Default scale factor as suggested by the counter's provider.</summary>
-		public long lDefaultScale;
+		public int lDefaultScale;
 
 		/// <summary>The value passed in the dwUserData parameter when calling PdhAddCounter.</summary>
 		public IntPtr dwUserData;
@@ -4781,8 +5863,112 @@ public static partial class Pdh
 		public StrPtrAuto szExplainText;
 
 		/// <summary>Start of the string data that is appended to the structure.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public uint[] DataBuffer;
+		public uint DataBuffer;
+	}
+
+	/// <summary>
+	/// The <c>PDH_COUNTER_INFO</c> structure contains information describing the properties of a counter. This information also includes
+	/// the counter path.
+	/// </summary>
+	/// <remarks>
+	/// When you allocate memory for this structure, allocate enough memory for the member strings, such as <c>szCounterName</c>, that
+	/// are appended to the end of this structure.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_counter_info_a typedef struct _PDH_COUNTER_INFO_A { DWORD
+	// dwLength; DWORD dwType; DWORD CVersion; DWORD CStatus; LONG lScale; LONG lDefaultScale; DWORD_PTR dwUserData; DWORD_PTR
+	// dwQueryUserData; LPSTR szFullPath; union { PDH_DATA_ITEM_PATH_ELEMENTS_A DataItemPath; PDH_COUNTER_PATH_ELEMENTS_A CounterPath;
+	// struct { LPSTR szMachineName; LPSTR szObjectName; LPSTR szInstanceName; LPSTR szParentInstance; DWORD dwInstanceIndex; LPSTR
+	// szCounterName; }; }; LPSTR szExplainText; DWORD DataBuffer[1]; } PDH_COUNTER_INFO_A, *PPDH_COUNTER_INFO_A;
+	[PInvokeData("pdh.h", MSDNShortId = "c9ede50e-85de-4a68-b539-54285c2599cb")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	public struct PDH_COUNTER_INFO_MGD
+	{
+		/// <summary>
+		/// Counter type. For a list of counter types, see the Counter Types section of the Windows Server 2003 Deployment Kit. The
+		/// counter type constants are defined in Winperf.h.
+		/// </summary>
+		public CounterType dwType;
+
+		/// <summary>Counter version information. Not used.</summary>
+		public uint CVersion;
+
+		/// <summary>
+		/// Counter status that indicates if the counter value is valid. For a list of possible values, see Checking PDH Interface Return Values.
+		/// </summary>
+		public uint CStatus;
+
+		/// <summary>
+		/// Scale factor to use when computing the displayable value of the counter. The scale factor is a power of ten. The valid range
+		/// of this parameter is PDH_MIN_SCALE (–7) (the returned value is the actual value times 10⁷) to PDH_MAX_SCALE (+7) (the
+		/// returned value is the actual value times 10⁺⁷). A value of zero will set the scale to one, so that the actual value is returned
+		/// </summary>
+		public int lScale;
+
+		/// <summary>Default scale factor as suggested by the counter's provider.</summary>
+		public int lDefaultScale;
+
+		/// <summary>The value passed in the dwUserData parameter when calling PdhAddCounter.</summary>
+		public IntPtr dwUserData;
+
+		/// <summary>The value passed in the dwUserData parameter when calling PdhOpenQuery.</summary>
+		public IntPtr dwQueryUserData;
+
+		/// <summary>String that specifies the full counter path. The string follows this structure in memory.</summary>
+		public string szFullPath;
+
+		/// <summary>
+		/// String that contains the name of the computer specified in the counter path. Is <c>NULL</c>, if the
+		/// path does not specify a computer. The string follows this structure in memory.
+		/// </summary>
+		public string? szMachineName;
+
+		/// <summary>
+		/// String that contains the name of the performance object specified in the counter path. The string
+		/// follows this structure in memory.
+		/// </summary>
+		public string szObjectName;
+
+		/// <summary>
+		/// String that contains the name of the object instance specified in the counter path. Is <c>NULL</c>, if
+		/// the path does not specify an instance. The string follows this structure in memory.
+		/// </summary>
+		public string? szInstanceName;
+
+		/// <summary>
+		/// String that contains the name of the parent instance specified in the counter path. Is <c>NULL</c>, if
+		/// the path does not specify a parent instance. The string follows this structure in memory.
+		/// </summary>
+		public string? szParentInstance;
+
+		/// <summary>Instance index specified in the counter path. Is 0, if the path does not specify an instance index.</summary>
+		public uint dwInstanceIndex;
+
+		/// <summary>String that contains the counter name. The string follows this structure in memory.</summary>
+		public string szCounterName;
+
+		/// <summary>Help text that describes the counter. Is <c>NULL</c> if the source is a log file.</summary>
+		public string? szExplainText;
+
+		/// <summary>Initializes a new instance of the <see cref="PDH_COUNTER_INFO_MGD"/> struct from a <see cref="PDH_COUNTER_INFO"/> instance.</summary>
+		/// <param name="i">The <see cref="PDH_COUNTER_INFO"/> instance.</param>
+		public PDH_COUNTER_INFO_MGD(in PDH_COUNTER_INFO i)
+		{
+			dwType = i.dwType;
+			CVersion = i.CVersion;
+			CStatus = i.CStatus;
+			lScale = i.lScale;
+			lDefaultScale = i.lDefaultScale;
+			dwUserData = i.dwUserData;
+			dwQueryUserData = i.dwQueryUserData;
+			szFullPath = ((string?)i.szFullPath) ?? "";
+			szMachineName = (string?)i.szMachineName;
+			szObjectName = ((string?)i.szObjectName) ?? "";
+			szInstanceName = (string?)i.szInstanceName;
+			szParentInstance = (string?)i.szParentInstance;
+			dwInstanceIndex = i.dwInstanceIndex;
+			szCounterName = ((string?)i.szCounterName) ?? "";
+			szExplainText = (string?)i.szExplainText;
+		}
 	}
 
 	/// <summary>The <c>PDH_COUNTER_PATH_ELEMENTS</c> structure contains the components of a counter path.</summary>
@@ -4801,22 +5987,27 @@ public static partial class Pdh
 	public struct PDH_COUNTER_PATH_ELEMENTS
 	{
 		/// <summary>Pointer to a null-terminated string that specifies the computer name.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szMachineName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? szMachineName;
 
 		/// <summary>Pointer to a null-terminated string that specifies the object name.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szObjectName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szObjectName;
 
 		/// <summary>Pointer to a null-terminated string that specifies the instance name. Can contain a wildcard character.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szInstanceName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? szInstanceName;
 
 		/// <summary>Pointer to a null-terminated string that specifies the parent instance name. Can contain a wildcard character.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szParentInstance;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? szParentInstance;
 
 		/// <summary>Index used to uniquely identify duplicate instance names.</summary>
 		public uint dwInstanceIndex;
 
 		/// <summary>Pointer to a null-terminated string that specifies the counter name.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szCounterName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szCounterName;
 	}
 
 	/// <summary>The <c>PDH_DATA_ITEM_PATH_ELEMENTS</c> structure contains the path elements of a specific data item.</summary>
@@ -4828,7 +6019,8 @@ public static partial class Pdh
 	public struct PDH_DATA_ITEM_PATH_ELEMENTS
 	{
 		/// <summary>Pointer to a null-terminated string that specifies the name of the computer where the data item resides.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szMachineName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szMachineName;
 
 		/// <summary>GUID of the object where the data item resides.</summary>
 		public Guid ObjectGUID;
@@ -4837,7 +6029,8 @@ public static partial class Pdh
 		public uint dwItemId;
 
 		/// <summary>Pointer to a null-terminated string that specifies the name of the data item instance.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szInstanceName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szInstanceName;
 	}
 
 	/// <summary>The <c>PDH_FMT_COUNTERVALUE</c> structure contains the computed value of the counter and its status.</summary>
@@ -4891,7 +6084,8 @@ public static partial class Pdh
 		/// Pointer to a null-terminated string that specifies the instance name of the counter. The string is appended to the end of
 		/// this structure.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szName;
 
 		/// <summary>A PDH_FMT_COUNTERVALUE structure that contains the counter value of the instance.</summary>
 		public PDH_FMT_COUNTERVALUE FmtValue;
@@ -4937,7 +6131,7 @@ public static partial class Pdh
 		public static bool operator ==(PDH_HCOUNTER h1, PDH_HCOUNTER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PDH_HCOUNTER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PDH_HCOUNTER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -4986,7 +6180,7 @@ public static partial class Pdh
 		public static bool operator ==(PDH_HLOG h1, PDH_HLOG h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PDH_HLOG h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PDH_HLOG h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -5035,7 +6229,7 @@ public static partial class Pdh
 		public static bool operator ==(PDH_HQUERY h1, PDH_HQUERY h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PDH_HQUERY h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PDH_HQUERY h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -5259,5 +6453,49 @@ public static partial class Pdh
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => PdhCloseQuery(handle).Succeeded;
+	}
+
+	private delegate Win32Error PtrFuncFTO<TSize>(IntPtr ptr, ref TSize sz, bool firstTime) where TSize : struct, IConvertible;
+	private delegate Win32Error PtrFunc2<TSize>(IntPtr ptr, ref TSize sz, IntPtr ptr2, ref TSize sz2) where TSize : struct, IConvertible;
+
+	private static Win32Error CallMethodWithStrings(FunctionHelper.PtrFunc<uint> method, out string[]? result) =>
+		CallMethodWithStrings((IntPtr p, ref uint sz, bool b) => method(p, ref sz), out result);
+
+	private static Win32Error CallMethodWithStrings(PtrFuncFTO<uint> method, out string[]? result)
+	{
+		var sz = 0U;
+		var err = method(IntPtr.Zero, ref sz, true);
+		if (err == Win32Error.PDH_MORE_DATA)
+		{
+			using SafeCoTaskMemHandle mem = new(sz * StringHelper.GetCharSize());
+			err = method(mem, ref sz, false);
+			if (err.Succeeded)
+			{
+				result = mem.ToStringEnum().ToArray();
+				return err;
+			}
+		}
+		result = null;
+		return err;
+	}
+
+	private static Win32Error CallMethodWithStrings(PtrFunc2<uint> method, out string[]? r1, out string[]? r2)
+	{
+		uint sz = 0U, sz2 = 0U;
+		var err = method(IntPtr.Zero, ref sz, IntPtr.Zero, ref sz2);
+		if (err == Win32Error.PDH_MORE_DATA)
+		{
+			using SafeCoTaskMemHandle mem = new(sz * StringHelper.GetCharSize());
+			using SafeCoTaskMemHandle mem2 = new(sz2 * StringHelper.GetCharSize());
+			err = method(mem, ref sz, mem2, ref sz2);
+			if (err.Succeeded)
+			{
+				r1 = mem.ToStringEnum().ToArray();
+				r2 = mem2.ToStringEnum().ToArray();
+				return err;
+			}
+		}
+		r1 = r2 = null;
+		return err;
 	}
 }
