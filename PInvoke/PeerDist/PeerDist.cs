@@ -337,7 +337,7 @@ public static partial class PeerDist
 	[DllImport(Lib_PeerDist, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("peerdist.h", MSDNShortId = "NF:peerdist.PeerDistClientBlockRead")]
 	public static unsafe extern Win32Error PeerDistClientBlockRead(PEERDIST_INSTANCE_HANDLE hPeerDist, PEERDIST_CONTENT_HANDLE hContentHandle, uint cbMaxNumberOfBytes,
-		[Out] IntPtr pBuffer, uint dwTimeoutInMilliseconds, [In] NativeOverlapped* lpOverlapped);
+		[Out, Optional] IntPtr pBuffer, uint dwTimeoutInMilliseconds, [In] NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// The <c>PeerDistClientCancelAsyncOperation</c> function cancels asynchronous operation associated with an OVERLAPPED structure
