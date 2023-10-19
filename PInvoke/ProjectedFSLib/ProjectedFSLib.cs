@@ -144,7 +144,7 @@ public static partial class ProjectedFSLib
 	// PRJ_GET_DIRECTORY_ENUMERATION_CB PrjGetDirectoryEnumerationCb; HRESULT PrjGetDirectoryEnumerationCb( const PRJ_CALLBACK_DATA
 	// *callbackData, const GUID *enumerationId, PCWSTR searchExpression, PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle ) {...}
 	[PInvokeData("projectedfslib.h", MSDNShortId = "45E7E7F9-9E54-44C8-9915-43CCECF85DB6")]
-	public delegate HRESULT PRJ_GET_DIRECTORY_ENUMERATION_CB(in PRJ_CALLBACK_DATA callbackData, in Guid enumerationId, [MarshalAs(UnmanagedType.LPWStr)] string searchExpression, PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle);
+	public delegate HRESULT PRJ_GET_DIRECTORY_ENUMERATION_CB(in PRJ_CALLBACK_DATA callbackData, in Guid enumerationId, [MarshalAs(UnmanagedType.LPWStr), Optional] string? searchExpression, PRJ_DIR_ENTRY_BUFFER_HANDLE dirEntryBufferHandle);
 
 	/// <summary>Requests the contents of a file's primary data stream.</summary>
 	/// <param name="callbackData">
@@ -1874,7 +1874,8 @@ public static partial class ProjectedFSLib
 		/// The path to the target file. This is a null-terminated string of Unicode characters. This path is always specified relative
 		/// to the virtualization root.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string FilePathName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string FilePathName;
 
 		/// <summary>Version information if the target of the callback is a placeholder or partial file.</summary>
 		public IntPtr VersionInfo;
@@ -1889,7 +1890,8 @@ public static partial class ProjectedFSLib
 		/// A null-terminated Unicode string specifying the image file name corresponding to TriggeringProcessId. If TriggeringProcessId
 		/// is 0 this will be NULL.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string TriggeringProcessImageFileName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? TriggeringProcessImageFileName;
 
 		/// <summary>
 		/// <para>
@@ -2042,7 +2044,7 @@ public static partial class ProjectedFSLib
 		public static bool operator ==(PRJ_DIR_ENTRY_BUFFER_HANDLE h1, PRJ_DIR_ENTRY_BUFFER_HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PRJ_DIR_ENTRY_BUFFER_HANDLE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PRJ_DIR_ENTRY_BUFFER_HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2154,7 +2156,7 @@ public static partial class ProjectedFSLib
 		public static bool operator ==(PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h1, PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
