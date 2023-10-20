@@ -501,7 +501,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Represents a trigger that starts a task when the system is started.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("2A9C35DA-D357-41F4-BBC1-207AC1B1F3CB"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380607")]
 	public interface IBootTrigger : ITrigger
@@ -578,7 +578,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Represents an action that fires a handler.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
+	/// <seealso cref="IAction"/>
 	[ComImport, Guid("6D2FD252-75C5-4F66-90BA-2A7D8CC3039F"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380613")]
 	public interface IComHandlerAction : IAction
@@ -604,7 +604,7 @@ public static class TaskSchd
 	/// Represents a trigger that starts a task based on a daily schedule. For example, the task starts at a specific time every day,
 	/// every other day, every third day, and so on.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsDual), Guid("126C5CD8-B288-41D5-8DBF-E491446ADC5C"), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380656")]
 	public interface IDailyTrigger : ITrigger
@@ -691,7 +691,7 @@ public static class TaskSchd
 	/// Represents an action that sends an email message. <note>This interface is no longer supported. Please use IExecAction with the
 	/// powershell Send-MailMessage cmdlet as a workaround.</note>
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
+	/// <seealso cref="IAction"/>
 	[ComImport, Guid("10F62C64-7E16-4314-A0C2-0C3683F99D40"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380693")]
 	public interface IEmailAction : IAction
@@ -767,7 +767,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Represents a trigger that starts a task when a system event occurs.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("D45B0167-9653-4EEF-B94F-0732CA7AF251"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380711")]
 	public interface IEventTrigger : ITrigger
@@ -857,7 +857,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Represents an action that executes a command-line operation.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
+	/// <seealso cref="IAction"/>
 	[ComImport, Guid("4C3D624D-FD6B-49A3-B9B7-09CB3CD3F047"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380715")]
 	public interface IExecAction : IAction
@@ -948,7 +948,7 @@ public static class TaskSchd
 	/// Represents a trigger that starts a task when the computer goes into an idle state. For information about idle conditions, see
 	/// Task Idle Conditions.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("D537D2B0-9FB3-4D34-9739-1FF5CE7B1EF3"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380724")]
 	public interface IIdleTrigger : ITrigger
@@ -1017,7 +1017,7 @@ public static class TaskSchd
 	/// Represents a trigger that starts a task when a user logs on. When the Task Scheduler service starts, all logged-on users are
 	/// enumerated and any tasks registered with logon triggers that match the logged on user are run.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("72DADE38-FAE4-4B3E-BAF4-5D009AF02B1C"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380725")]
 	public interface ILogonTrigger : ITrigger
@@ -1106,7 +1106,7 @@ public static class TaskSchd
 		/// </item>
 		/// </list>
 		/// </value>
-		string UserId { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+		string? UserId { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 	}
 
 	/// <summary>Provides the settings that the Task Scheduler uses to perform task during Automatic maintenance.</summary>
@@ -1167,7 +1167,7 @@ public static class TaskSchd
 	/// Represents a trigger that starts a task on a monthly day-of-week schedule. For example, the task starts on every first Thursday,
 	/// May through October.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("77D025A3-90FA-43AA-B52E-CDA5499B946A"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380728")]
 	public interface IMonthlyDOWTrigger : ITrigger
@@ -1265,7 +1265,7 @@ public static class TaskSchd
 	/// <summary>
 	/// Represents a trigger that starts a job based on a monthly schedule. For example, the task starts on specific days of specific months.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("97C45EF1-6B02-4A1A-9C0E-1EBFBA1500AC"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa380734")]
 	public interface IMonthlyTrigger : ITrigger
@@ -1607,7 +1607,22 @@ public static class TaskSchd
 		/// array contains pCount run times. You must free this array by a calling the CoTaskMemFree function.
 		/// </returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020011)]
-		SafeCoTaskMemHandle GetRunTimes(in SYSTEMTIME pstStart, in SYSTEMTIME pstEnd, [In, Out] ref uint pCount);
+		SafeCoTaskMemHandle GetRunTimes(in SYSTEMTIME pstStart, [In, Optional] IntPtr pstEnd, [In, Out] ref uint pCount);
+	}
+
+	/// <summary>Gets the times that the registered task is scheduled to run during a specified time.</summary>
+	/// <param name="task">The <see cref="IRegisteredTask"/> instance.</param>
+	/// <param name="pstStart">The starting time for the query.</param>
+	/// <param name="pstEnd">The ending time for the query.</param>
+	/// <param name="count">The requested number of runs on input and the returned number of runs on output.</param>
+	/// <returns>
+	/// The scheduled times that the task will run. A NULL LPSYSTEMTIME object should be passed into this parameter. On return, this array
+	/// contains pCount run times. You must free this array by a calling the CoTaskMemFree function.
+	/// </returns>
+	public static SYSTEMTIME[] GetRunTimes(this IRegisteredTask task, in SYSTEMTIME pstStart, [In, Optional] SYSTEMTIME? pstEnd, uint count = MSTask.TASK_MAX_RUN_TIMES)
+	{
+		uint c = count;
+		return task.GetRunTimes(pstStart, (SafeCoTaskMemStruct<SYSTEMTIME>)pstEnd, ref c).ToArray<SYSTEMTIME>((int)c);
 	}
 
 	/// <summary>Contains all the tasks that are registered.</summary>
@@ -1653,7 +1668,7 @@ public static class TaskSchd
 
 		/// <summary>Gets or sets the date and time when the task is registered.</summary>
 		/// <value>The registration date of the task.</value>
-		string Date { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+		DateTimeBSTR Date { get; set; }
 
 		/// <summary>Gets or sets any additional documentation for the task.</summary>
 		/// <value>Any additional documentation that is associated with the task.</value>
@@ -1691,7 +1706,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Represents a trigger that starts a task when the task is registered or updated.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("4C8FEC3A-C218-4E0C-B23D-629024DB91A2"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa381104")]
 	public interface IRegistrationTrigger : ITrigger
@@ -1860,7 +1875,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Triggers tasks for console connect or disconnect, remote connect or disconnect, or workstation lock or unlock notifications.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, InterfaceType(ComInterfaceType.InterfaceIsDual), Guid("754DA71B-4385-4475-9DD9-598294FA3641"), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa381292")]
 	public interface ISessionStateChangeTrigger : ITrigger
@@ -1949,7 +1964,7 @@ public static class TaskSchd
 	/// Represents an action that shows a message box when a task is activated. <note>This interface is no longer supported. You can use
 	/// IExecAction with the Windows scripting MsgBox function to show a message in the user session.</note>
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
+	/// <seealso cref="IAction"/>
 	[ComImport, Guid("505E9E68-AF89-46B8-A30F-56162A83D537"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa381302")]
 	public interface IShowMessageAction : IAction
@@ -2083,8 +2098,7 @@ public static class TaskSchd
 		/// <param name="sddl">The security descriptor associated with the folder, in the form of a VT_BSTR in SDDL_REVISION_1 format.</param>
 		/// <returns>An ITaskFolder interface that represents the new subfolder.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
-		ITaskFolder CreateFolder([In, MarshalAs(UnmanagedType.BStr)] string subFolderName,
-			[In, Optional, MarshalAs(UnmanagedType.Struct)] object sddl);
+		ITaskFolder CreateFolder([In, MarshalAs(UnmanagedType.BStr)] string subFolderName, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? sddl);
 
 		/// <summary>Deletes a subfolder from the parent folder.</summary>
 		/// <param name="subFolderName">
@@ -2151,10 +2165,10 @@ public static class TaskSchd
 		/// </param>
 		/// <returns>An IRegisteredTask interface that represents the new task.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IRegisteredTask RegisterTask([In, MarshalAs(UnmanagedType.BStr)] string path,
+		IRegisteredTask RegisterTask([In, MarshalAs(UnmanagedType.BStr)] string? path,
 			[In, MarshalAs(UnmanagedType.BStr)] string xmlText, [In] TASK_CREATION flags,
 			[In, MarshalAs(UnmanagedType.Struct)] object userId, [In, MarshalAs(UnmanagedType.Struct)] object password,
-			[In] TASK_LOGON_TYPE logonType, [In, Optional, MarshalAs(UnmanagedType.Struct)] object sddl);
+			[In] TASK_LOGON_TYPE logonType, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? sddl);
 
 		/// <summary>Registers the task definition.</summary>
 		/// <param name="path">
@@ -2184,10 +2198,10 @@ public static class TaskSchd
 		/// </param>
 		/// <returns>An IRegisteredTask interface that represents the new task.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IRegisteredTask RegisterTaskDefinition([In, MarshalAs(UnmanagedType.BStr)] string path,
+		IRegisteredTask RegisterTaskDefinition([In, MarshalAs(UnmanagedType.BStr)] string? path,
 			[In, MarshalAs(UnmanagedType.Interface)] ITaskDefinition pDefinition, [In] TASK_CREATION flags,
-			[In, Optional, MarshalAs(UnmanagedType.Struct)] object userId, [In, Optional, MarshalAs(UnmanagedType.Struct)] object password,
-			[In] TASK_LOGON_TYPE logonType, [In, Optional, MarshalAs(UnmanagedType.Struct)] object sddl);
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? userId, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? password,
+			[In] TASK_LOGON_TYPE logonType, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? sddl);
 
 		/// <summary>Gets the security descriptor for the folder.</summary>
 		/// <param name="securityInformation">The security information from SECURITY_INFORMATION.</param>
@@ -2396,10 +2410,10 @@ public static class TaskSchd
 		/// is used.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(4)]
-		void Connect([In, Optional, MarshalAs(UnmanagedType.Struct)] object serverName,
-			[In, Optional, MarshalAs(UnmanagedType.Struct)] object user,
-			[In, Optional, MarshalAs(UnmanagedType.Struct)] object domain,
-			[In, Optional, MarshalAs(UnmanagedType.Struct)] object password);
+		void Connect([In, Optional, MarshalAs(UnmanagedType.Struct)] object? serverName,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? user,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? domain,
+			[In, Optional, MarshalAs(UnmanagedType.Struct)] object? password);
 
 		/// <summary>Gets a Boolean value that indicates if you are connected to the Task Scheduler service.</summary>
 		/// <value>A Boolean value that indicates if you are connected to the Task Scheduler service.</value>
@@ -2750,7 +2764,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Provides the extended settings that the Task Scheduler uses to run the task.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITaskSettings"/>
+	/// <seealso cref="ITaskSettings"/>
 	[ComImport, Guid("0AD9D0D7-0C7F-4EBB-9A5F-D1C648DCA528"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "hh832148")]
 	public interface ITaskSettings3 : ITaskSettings
@@ -3118,7 +3132,7 @@ public static class TaskSchd
 	}
 
 	/// <summary>Represents a trigger that starts a task at a specific date and time.</summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("B45747E0-EBA7-4276-9F29-85C5BB300006"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa381885")]
 	public interface ITimeTrigger : ITrigger
@@ -3304,7 +3318,7 @@ public static class TaskSchd
 	/// Represents a trigger that starts a task based on a weekly schedule. For example, the task starts at 8:00 A.M. on a specific day
 	/// of the week every week or every other week.
 	/// </summary>
-	/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
+	/// <seealso cref="ITrigger"/>
 	[ComImport, Guid("5038FC98-82FF-436D-8728-A512A57C9DC1"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 	[PInvokeData("taskschd.h", MSDNShortId = "aa381904")]
 	public interface IWeeklyTrigger : ITrigger
@@ -3400,7 +3414,8 @@ public static class TaskSchd
 		internal const string DateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFK";
 		internal static readonly System.Globalization.CultureInfo DefaultDateCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
 
-		internal DateTimeBSTR() : this(IntPtr.Zero)
+		/// <summary>Initializes a new instance of the <see cref="DateTimeBSTR"/> class.</summary>
+		public DateTimeBSTR() : this(IntPtr.Zero)
 		{
 		}
 
@@ -3420,7 +3435,7 @@ public static class TaskSchd
 		/// is set on the local computer will be used. When an offset is specified (using hours and minutes or Z), then the time and
 		/// offset are always used regardless of the time zone and daylight saving settings on the local computer.
 		/// </value>
-		public string StringValue
+		public string? StringValue
 		{
 			get => handle == IntPtr.Zero ? null : Marshal.PtrToStringBSTR(handle);
 			set
@@ -3438,7 +3453,7 @@ public static class TaskSchd
 		/// </value>
 		public DateTime? Value
 		{
-			get => TryParse(StringValue, out var ret) ? ret : (DateTime?)null;
+			get => TryParse(StringValue, out var ret) ? ret : null;
 			set
 			{
 				if (value.HasValue)
@@ -3448,7 +3463,7 @@ public static class TaskSchd
 			}
 		}
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{DateTime}"/> to <see cref="DateTimeBSTR"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{DateTime}"/> to <see cref="DateTimeBSTR"/>.</summary>
 		/// <param name="dt">The <see cref="DateTime"/> value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator DateTimeBSTR(DateTime? dt) => new(dt);
@@ -3457,7 +3472,7 @@ public static class TaskSchd
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => StringValue ?? string.Empty;
 
-		private static bool TryParse(string value, out DateTime dt) => DateTime.TryParse(value, DefaultDateCulture, System.Globalization.DateTimeStyles.AssumeLocal, out dt);
+		private static bool TryParse(string? value, out DateTime dt) => DateTime.TryParse(value, DefaultDateCulture, System.Globalization.DateTimeStyles.AssumeLocal, out dt);
 	}
 
 	/// <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
@@ -3468,7 +3483,8 @@ public static class TaskSchd
 	/// <summary>Class that encapsulates the BSTR values that actually hold formatted duration strings.</summary>
 	public class TimeSpanBSTR : GenericSafeHandle
 	{
-		internal TimeSpanBSTR() : this(IntPtr.Zero)
+		/// <summary>Initializes a new instance of the <see cref="TimeSpanBSTR"/> class.</summary>
+		public TimeSpanBSTR() : this(IntPtr.Zero)
 		{
 		}
 
@@ -3485,7 +3501,7 @@ public static class TaskSchd
 		/// minutes, and nS is the number of seconds (for example, PT5M specifies 5 minutes and P1M4DT2H5M specifies one month, four
 		/// days, two hours, and five minutes).
 		/// </value>
-		public string StringValue
+		public string? StringValue
 		{
 			get => handle == IntPtr.Zero ? null : Marshal.PtrToStringBSTR(handle);
 			set
@@ -3503,7 +3519,7 @@ public static class TaskSchd
 		/// </value>
 		public TimeSpan? Value
 		{
-			get => TryParse(StringValue, out var ret) ? ret : (TimeSpan?)null;
+			get => TryParse(StringValue, out var ret) ? ret : null;
 			set
 			{
 				if (value.HasValue)
@@ -3513,7 +3529,7 @@ public static class TaskSchd
 			}
 		}
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TimeSpan}"/> to <see cref="TimeSpanBSTR"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{TimeSpan}"/> to <see cref="TimeSpanBSTR"/>.</summary>
 		/// <param name="ts">The ts.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator TimeSpanBSTR(TimeSpan? ts) => new(ts);
@@ -3522,10 +3538,12 @@ public static class TaskSchd
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => StringValue ?? string.Empty;
 
-		private static bool TryParse(string value, out TimeSpan ts)
+		private static bool TryParse(string? value, out TimeSpan ts)
 		{
-			try { ts = System.Xml.XmlConvert.ToTimeSpan(value); return true; }
-			catch { ts = TimeSpan.Zero; return false; }
+			if (value != null)
+				try { ts = System.Xml.XmlConvert.ToTimeSpan(value); return true; } catch { }
+			ts = TimeSpan.Zero;
+			return false;
 		}
 	}
 }

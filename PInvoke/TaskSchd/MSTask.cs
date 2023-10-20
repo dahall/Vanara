@@ -5,6 +5,9 @@ namespace Vanara.PInvoke;
 /// <summary>Exposes interfaces for Task Scheduler 1.0.</summary>
 public static class MSTask
 {
+	/// <summary>The maximum number of run times that can be requested by <see cref="ITask.GetRunTimes"/>.</summary>
+	public const ushort TASK_MAX_RUN_TIMES = 1440;
+
 	/// <summary>Valid types of triggers</summary>
 	public enum TASK_TRIGGER_TYPE
 	{
@@ -402,7 +405,7 @@ public static class MSTask
 		/// A pointer to an array of SYSTEMTIME structures. A NULL LPSYSTEMTIME object should be passed into this parameter. On return,
 		/// this array contains pCount run times. You must free this array by a calling the CoTaskMemFree function.
 		/// </returns>
-		SafeCoTaskMemHandle GetRunTimes(in SYSTEMTIME pstBegin, in SYSTEMTIME pstEnd, ref ushort pCount);
+		SafeCoTaskMemHandle GetRunTimes(in SYSTEMTIME pstBegin, [In, Optional] IntPtr pstEnd, ref ushort pCount);
 
 		/// <summary>Retrieves the next time the work item will run.</summary>
 		/// <returns>A pointer to a SYSTEMTIME structure that contains the next time the work item will run.</returns>
@@ -437,7 +440,7 @@ public static class MSTask
 		/// </summary>
 		/// <param name="hParent">Reserved for future use. Set this parameter to NULL.</param>
 		/// <param name="dwReserved">Reserved for internal use; this parameter must be set to zero.</param>
-		void EditWorkItem([In] HWND hParent, [In] uint dwReserved);
+		void EditWorkItem([In, Optional] HWND hParent, [In] uint dwReserved);
 
 		/// <summary>Retrieves the most recent time the work item began running.</summary>
 		/// <returns>A pointer to a SYSTEMTIME structure that contains the most recent time the current work item ran.</returns>
@@ -547,7 +550,7 @@ public static class MSTask
 		/// information about protecting passwords, see Handling Passwords.
 		/// </para>
 		/// </param>
-		void SetAccountInformation([In, MarshalAs(UnmanagedType.LPWStr)] string pwszAccountName, [In] IntPtr pwszPassword);
+		void SetAccountInformation([In, MarshalAs(UnmanagedType.LPWStr)] string pwszAccountName, [In, MarshalAs(UnmanagedType.LPWStr)] string? pwszPassword);
 
 		/// <summary>Retrieves the account name for the work item.</summary>
 		/// <returns>
@@ -676,6 +679,23 @@ public static class MSTask
 		uint GetMaxRunTime();
 	}
 
+	/// <summary>Retrieves the work item run times for a specified time period.</summary>
+	/// <param name="task">The <see cref="ITask"/> instance.</param>
+	/// <param name="pstBegin">A SYSTEMTIME structure that contains the starting time of the time period to check. This value is inclusive.</param>
+	/// <param name="pstEnd">
+	/// An optional SYSTEMTIME structure that contains the ending time of the time period to check. This value is exclusive. If NULL is
+	/// passed for this value, the end time is infinite.
+	/// </param>
+	/// <param name="count">
+	/// A pointer to a value that specifies the number of run times to retrieve. This can be a number of between 1 and TASK_MAX_RUN_TIMES.
+	/// </param>
+	/// <returns>An array of SYSTEMTIME structures.</returns>
+	public static SYSTEMTIME[] GetRunTimes(this ITask task, in SYSTEMTIME pstBegin, [In, Optional] SYSTEMTIME? pstEnd, ushort count = TASK_MAX_RUN_TIMES)
+	{
+		ushort c = count;
+		return task.GetRunTimes(pstBegin, (SafeCoTaskMemStruct<SYSTEMTIME>)pstEnd, ref c).ToArray<SYSTEMTIME>(c);
+	}
+
 	/// <summary>Provides the methods for scheduling tasks.</summary>
 	[ComImport, Guid("148BD527-A2AB-11CE-B11F-00AA00530503"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), System.Security.SuppressUnmanagedCodeSecurity, CoClass(typeof(CTaskScheduler))]
 	[PInvokeData("mstask.h", MSDNShortId = "aa381811")]
@@ -691,7 +711,7 @@ public static class MSTask
 		/// local computer, set this value to NULL or to the local computer's UNC name. <note>When specifying a remote computer name, use
 		/// two backslash (\\) characters before the computer name. For example, use "\\ComputerName" instead of "ComputerName".</note>
 		/// </param>
-		void SetTargetComputer([In, MarshalAs(UnmanagedType.LPWStr)] string pwszComputer);
+		void SetTargetComputer([In, MarshalAs(UnmanagedType.LPWStr)] string? pwszComputer);
 
 		/// <summary>The GetTargetComputer method returns the name of the computer on which ITaskScheduler is currently targeted.</summary>
 		/// <returns>
@@ -819,7 +839,7 @@ public static class MSTask
 	// HRESULT GetNetScheduleAccountInformation( _In_ LPCWSTR pwszServerName, _In_ DWORD ccAccount, _Out_ WCHAR wszAccount[]); https://msdn.microsoft.com/en-us/library/windows/desktop/aa370264(v=vs.85).aspx
 	[DllImport(Lib.Mstask, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("AtAcct.h", MSDNShortId = "aa370264")]
-	public static extern HRESULT GetNetScheduleAccountInformation(string pwszServerName, uint ccAccount, System.Text.StringBuilder wszAccount);
+	public static extern HRESULT GetNetScheduleAccountInformation(string pwszServerName, uint ccAccount, StringBuilder wszAccount);
 
 	/// <summary>
 	/// <para>Retrieves the next specified number of tasks in the enumeration sequence.</para>
@@ -939,7 +959,7 @@ public static class MSTask
 	// HRESULT SetNetScheduleAccountInformation( _In_ LPCWSTR pwszServerName, _In_ LPCWSTR pwszAccount, _In_ LPCWSTR pwszPassword); https://msdn.microsoft.com/en-us/library/windows/desktop/aa370955(v=vs.85).aspx
 	[DllImport(Lib.Mstask, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("AtAcct.h", MSDNShortId = "aa370955")]
-	public static extern HRESULT SetNetScheduleAccountInformation(string pwszServerName, string pwszAccount, string pwszPassword);
+	public static extern HRESULT SetNetScheduleAccountInformation(string pwszServerName, string? pwszAccount, string pwszPassword);
 
 	/// <summary>Defines the interval, in days, at which a task is run.</summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -1104,7 +1124,7 @@ public static class MSTask
 		{
 			get
 			{
-				try { return wEndYear == 0 ? (DateTime?)null : new DateTime(wEndYear, wEndMonth, wEndDay); }
+				try { return wEndYear == 0 ? null : new DateTime(wEndYear, wEndMonth, wEndDay); }
 				catch { return DateTime.MaxValue; }
 			}
 			set
