@@ -849,7 +849,7 @@ public static class RstrtMgr
 	// dwSessionHandle, DWORD dwRestartFlags, RM_WRITE_STATUS_CALLBACK fnStatus );
 	[DllImport(Lib_Rstrtmgr, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("restartmanager.h", MSDNShortId = "NF:restartmanager.RmRestart")]
-	public static extern Win32Error RmRestart(uint dwSessionHandle, [Optional] uint dwRestartFlags, [In, Optional] RM_WRITE_STATUS_CALLBACK fnStatus);
+	public static extern Win32Error RmRestart(uint dwSessionHandle, [Optional] uint dwRestartFlags, [In, Optional] RM_WRITE_STATUS_CALLBACK? fnStatus);
 
 	/// <summary>
 	/// Initiates the shutdown of applications. This function can only be called from the installer that started the Restart Manager
@@ -967,7 +967,7 @@ public static class RstrtMgr
 	// dwSessionHandle, ULONG lActionFlags, RM_WRITE_STATUS_CALLBACK fnStatus );
 	[DllImport(Lib_Rstrtmgr, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("restartmanager.h", MSDNShortId = "NF:restartmanager.RmShutdown")]
-	public static extern Win32Error RmShutdown(uint dwSessionHandle, [Optional] RM_SHUTDOWN_TYPE lActionFlags, [In, Optional] RM_WRITE_STATUS_CALLBACK fnStatus);
+	public static extern Win32Error RmShutdown(uint dwSessionHandle, [Optional] RM_SHUTDOWN_TYPE lActionFlags, [In, Optional] RM_WRITE_STATUS_CALLBACK? fnStatus);
 
 	/// <summary>
 	/// Starts a new Restart Manager session. A maximum of 64 Restart Manager sessions per user session can be open on the system at the
@@ -1086,7 +1086,7 @@ public static class RstrtMgr
 		/// If the value of <c>FilterTrigger</c> is <c>RmFilterTriggerFile</c>, this member contains a pointer to a string value that
 		/// contains the application filename.
 		/// </summary>
-		public string strFilename => union.str;
+		public string? strFilename => union.str;
 
 		/// <summary>
 		/// If the value of <c>FilterTrigger</c> is <c>RmFilterTriggerProcess</c>, this member is a RM_PROCESS_INFO structure for the application.
@@ -1097,7 +1097,7 @@ public static class RstrtMgr
 		/// If the value of <c>FilterTrigger</c> is <c>RmFilterTriggerService</c> this member is a pointer to a string value that
 		/// contains the short service name.
 		/// </summary>
-		public string strServiceShortName => union.str;
+		public string? strServiceShortName => union.str;
 	}
 
 	/// <summary>Describes an application that is to be registered with the Restart Manager.</summary>
