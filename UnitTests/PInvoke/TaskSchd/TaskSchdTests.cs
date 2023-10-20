@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Vanara.Extensions;
 using Vanara.Extensions.Reflection;
 using static Vanara.PInvoke.TaskSchd;
 
@@ -25,11 +24,6 @@ public class TaskSchdTests
 		tr.StartBoundary = DateTime.Today;
 		Assert.That(tr.StartBoundary.Value, Is.EqualTo(DateTime.Today));
 		Assert.That(tr.EndBoundary.Value, Is.Null);
-		Marshal.ReleaseComObject(tr);
-		Marshal.ReleaseComObject(triggers);
-		Marshal.ReleaseComObject(settings);
-		Marshal.ReleaseComObject(td);
-		Marshal.ReleaseComObject(ts);
 	}
 
 	[Test]
