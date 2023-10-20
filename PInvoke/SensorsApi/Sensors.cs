@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+namespace Vanara.PInvoke;
 
 public static partial class SensorsApi
 {
@@ -11,7 +13,7 @@ public static partial class SensorsApi
 
 		// {C317C286-C468-4288-9975-D4C4587C442C}
 		public static Guid SENSOR_CATEGORY_ALL => new(0XC317C286, 0XC468, 0X4288, 0X99, 0X75, 0XD4, 0XC4, 0X58, 0X7C, 0X44, 0X2C);
-							  // {BFA794E4-F964-4FDB-90F6-51056BFE4B44}
+		// {BFA794E4-F964-4FDB-90F6-51056BFE4B44}
 		public static Guid SENSOR_CATEGORY_LOCATION => new(0XBFA794E4, 0XF964, 0X4FDB, 0X90, 0XF6, 0X51, 0X05, 0X6B, 0XFE, 0X4B, 0X44);
 		// {323439AA-7F66-492B-BA0C-73E9AA0A65D5}
 		public static Guid SENSOR_CATEGORY_ENVIRONMENTAL => new(0X323439AA, 0X7F66, 0X492B, 0XBA, 0X0C, 0X73, 0XE9, 0XAA, 0X0A, 0X65, 0XD5);

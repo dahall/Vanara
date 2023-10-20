@@ -1,6 +1,4 @@
-global using System;
 global using System.Collections.Generic;
-global using System.Runtime.InteropServices;
 global using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PortableDeviceApi;
 
@@ -278,7 +276,7 @@ public static partial class SensorsApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensor-getproperties HRESULT GetProperties( [in]
 		// IPortableDeviceKeyCollection *pKeys, [out] IPortableDeviceValues **ppProperties );
-		public IPortableDeviceValues GetProperties([In, Optional] IPortableDeviceKeyCollection pKeys);
+		public IPortableDeviceValues GetProperties([In, Optional] IPortableDeviceKeyCollection? pKeys);
 
 		/// <summary>Retrieves a set of <c>PROPERTYKEY</c> s that represent the data fields the sensor can provide.</summary>
 		/// <returns>Address of the IPortableDeviceKeyCollection pointer that receives the list of supported data fields.</returns>
@@ -393,7 +391,7 @@ public static partial class SensorsApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensor-seteventinterest HRESULT SetEventInterest(
 		// [in] GUID *pValues, [in] ULONG count );
-		public void SetEventInterest([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] pValues, uint count);
+		public void SetEventInterest([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[]? pValues, uint count);
 
 		/// <summary>Specifies the interface through which to receive sensor event notifications.</summary>
 		/// <param name="pEvents">
@@ -513,7 +511,7 @@ public static partial class SensorsApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensordatareport-getsensorvalues HRESULT
 		// GetSensorValues( [in] IPortableDeviceKeyCollection *pKeys, [out] IPortableDeviceValues **ppValues );
-		public IPortableDeviceValues GetSensorValues(IPortableDeviceKeyCollection pKeys);
+		public IPortableDeviceValues GetSensorValues(IPortableDeviceKeyCollection? pKeys);
 	}
 
 	/// <summary>
@@ -652,7 +650,7 @@ public static partial class SensorsApi
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensormanager-getsensorbyid HRESULT GetSensorByID(
 		// [in] REFSENSOR_ID sensorID, [out] ISensor **ppSensor );
-		public ISensor GetSensorByID(in Guid sensorID);
+		public ISensor? GetSensorByID(in Guid sensorID);
 
 		/// <summary>Specifies the interface through which to receive sensor manager event notifications.</summary>
 		/// <param name="pEvents">
@@ -674,7 +672,7 @@ public static partial class SensorsApi
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensormanager-seteventsink HRESULT SetEventSink( [in]
 		// ISensorManagerEvents *pEvents );
-		public void SetEventSink(ISensorManagerEvents pEvents);
+		public void SetEventSink(ISensorManagerEvents? pEvents);
 
 		/// <summary>Opens a system dialog box to request user permission to access sensor data.</summary>
 		/// <param name="hParent">
@@ -800,7 +798,7 @@ public static partial class SensorsApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensormanager-requestpermissions HRESULT
 		// RequestPermissions( [in] HWND hParent, [in] ISensorCollection *pSensors, [in] BOOL fModal );
 		[PreserveSig]
-		public HRESULT RequestPermissions(HWND hParent, ISensorCollection pSensors, [MarshalAs(UnmanagedType.Bool)] bool fModal);
+		public HRESULT RequestPermissions([In, Optional] HWND hParent, ISensorCollection pSensors, [MarshalAs(UnmanagedType.Bool)] bool fModal);
 	}
 
 	/// <summary>

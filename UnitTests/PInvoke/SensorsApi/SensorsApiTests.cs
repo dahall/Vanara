@@ -3,6 +3,7 @@ using NUnit.Framework.Internal;
 using static Vanara.PInvoke.SensorsApi;
 
 namespace Vanara.PInvoke.Tests;
+
 [TestFixture]
 public class SensorsApiTests
 {
