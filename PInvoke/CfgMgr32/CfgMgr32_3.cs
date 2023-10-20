@@ -24,7 +24,7 @@ namespace Vanara.PInvoke
 		/// cref="Win32Error.ERROR_SUCCESS"/>. The callback should not return any other values.
 		/// </returns>
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate Win32Error CM_NOTIFY_CALLBACK(HCMNOTIFICATION notify, [Optional] IntPtr context, CM_NOTIFY_ACTION action, in CM_NOTIFY_EVENT_DATA eventData, uint eventDataSize);
+		public delegate Win32Error CM_NOTIFY_CALLBACK(HCMNOTIFICATION notify, [Optional] IntPtr context, CM_NOTIFY_ACTION action, [In] IntPtr eventData, uint eventDataSize);
 
 		/// <summary>
 		/// A variable of ULONG type that supplies one of the following flag values that apply if the caller supplies a device instance identifier
@@ -1982,7 +1982,7 @@ namespace Vanara.PInvoke
 		// pNotifyContext );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Register_Notification")]
-		public static extern CONFIGRET CM_Register_Notification(in CM_NOTIFY_FILTER pFilter, [In, Optional] IntPtr pContext, CM_NOTIFY_CALLBACK pCallback, out SafeHCMNOTIFICATION pNotifyContext);
+		public static extern CONFIGRET CM_Register_Notification(in CM_NOTIFY_FILTER pFilter, [In, Optional] IntPtr pContext, [MarshalAs(UnmanagedType.FunctionPtr)] CM_NOTIFY_CALLBACK pCallback, out SafeHCMNOTIFICATION pNotifyContext);
 
 		/// <summary>
 		/// The <c>CM_Request_Device_Eject</c> function prepares a local device instance for safe removal, if the device is removable. If
