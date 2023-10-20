@@ -1404,7 +1404,7 @@ public static partial class UrlMon
 	[PInvokeData("Urlmon.h")]
 	public static extern HRESULT CoGetClassObjectFromURL(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string szCodeURL, uint dwFileVersionMS,
 		uint dwFileVersionLS, [MarshalAs(UnmanagedType.LPWStr)] string szContentType, IBindCtx pBindCtx, CLSCTX dwClsContext,
-		[Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		[Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
 
 	/// <summary>Combines a base Uniform Resource Identifier (URI) and a relative URI into a full URI.</summary>
 	/// <param name="pBaseUri">A pointer to the <c>IUri</c> interface of the base URI.</param>
@@ -2020,7 +2020,7 @@ public static partial class UrlMon
 	// reserved, IBindStatusCallback *pBSCb, IEnumFORMATETC *pEFetc, IBindCtx **ppBC );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("urlmon.h", MSDNShortId = "0c79b61b-d3d6-48fd-aaee-21cddad09208")]
-	public static extern HRESULT CreateAsyncBindCtx([Optional] uint reserved, IBindStatusCallback pBSCb, [In, Optional] IEnumFORMATETC pEFetc, out IBindCtx ppBC);
+	public static extern HRESULT CreateAsyncBindCtx([Optional] uint reserved, IBindStatusCallback pBSCb, [In, Optional] IEnumFORMATETC? pEFetc, out IBindCtx ppBC);
 
 	/// <summary>Creates an asynchronous bind context for use with asynchronous monikers.</summary>
 	/// <param name="pbc">A pointer to the IBindCtx interface.</param>
@@ -2081,7 +2081,7 @@ public static partial class UrlMon
 	// CreateIUriBuilder( _In_opt_ IUri *pIUri, _In_ DWORD dwFlags, _Reserved_ DWORD_PTR dwReserved, _Out_ IUriBuilder **ppIUriBuilder );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT CreateIUriBuilder([Optional] IUri pIUri, [Optional] uint dwFlags, [Optional] IntPtr dwReserved, out IUriBuilder ppIUriBuilder);
+	public static extern HRESULT CreateIUriBuilder([Optional] IUri? pIUri, [Optional] uint dwFlags, [Optional] IntPtr dwReserved, out IUriBuilder ppIUriBuilder);
 
 	/// <summary>
 	/// Creates a new <c>IUri</c> instance, and initializes it from a Uniform Resource Identifier (URI) string. <c>CreateUri</c> also
@@ -2424,7 +2424,7 @@ public static partial class UrlMon
 	// IUri **ppURI );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT CreateUriWithFragment([MarshalAs(UnmanagedType.LPWStr)] string pwzURI, [MarshalAs(UnmanagedType.LPWStr)] string pwzFragment, Uri_CREATE dwFlags, [Optional] IntPtr dwReserved, out IUri ppURI);
+	public static extern HRESULT CreateUriWithFragment([MarshalAs(UnmanagedType.LPWStr)] string pwzURI, [MarshalAs(UnmanagedType.LPWStr)] string? pwzFragment, Uri_CREATE dwFlags, [Optional] IntPtr dwReserved, out IUri ppURI);
 
 	/// <summary>Deprecated in Windows Internet Explorer 7. Use <c>CreateURLMonikerEx</c> instead.</summary>
 	/// <param name="pMkCtx">
@@ -2478,7 +2478,7 @@ public static partial class UrlMon
 	// CreateURLMoniker( _In_ IMoniker *pMkCtx, _In_ LPCWSTR szURL, _Out_ IMoniker **ppmk );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h"), Obsolete("Use CreateURLMonikerEx.")]
-	public static extern HRESULT CreateURLMoniker([In, Optional] IMoniker pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk);
+	public static extern HRESULT CreateURLMoniker([In, Optional] IMoniker? pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk);
 
 	/// <summary>Creates a URL moniker from a full URL, or from a base context URL moniker and a partial URL.</summary>
 	/// <param name="pMkCtx">
@@ -2510,7 +2510,7 @@ public static partial class UrlMon
 	// CreateURLMonikerEx( IMoniker *pMkCtx, LPCWSTR szURL, IMoniker **ppmk, DWORD dwFlags );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT CreateURLMonikerEx([In, Optional] IMoniker pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk, URL_MK dwFlags);
+	public static extern HRESULT CreateURLMonikerEx([In, Optional] IMoniker? pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk, URL_MK dwFlags);
 
 	/// <summary>
 	/// Creates a new URL moniker from a full Uniform Resource Identifier (URI), or from a base context URL moniker and a relative URI.
@@ -2538,7 +2538,7 @@ public static partial class UrlMon
 	// CreateURLMonikerEx2( IMoniker *pMkCtx, IUri *pUri, IMoniker **ppmk, DWORD dwFlags );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT CreateURLMonikerEx2([In, Optional] IMoniker pMkCtx, IUri pUri, out IMoniker ppmk, URL_MK dwFlags);
+	public static extern HRESULT CreateURLMonikerEx2([In, Optional] IMoniker? pMkCtx, IUri pUri, out IMoniker ppmk, URL_MK dwFlags);
 
 	/// <summary>
 	/// This synchronous function is invoked by the client of a Windows Internet Explorer feature before the client accesses the feature.
@@ -2731,8 +2731,8 @@ public static partial class UrlMon
 	// *ppwzMimeOut, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT FindMimeFromData([In, Optional] IBindCtx pBC, [MarshalAs(UnmanagedType.LPWStr)] string pwzUrl, IntPtr pBuffer, uint cbSize,
-		[MarshalAs(UnmanagedType.LPWStr)] string pwzMimeProposed, FMFD dwMimeFlags, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzMimeOut, uint dwReserved = 0);
+	public static extern HRESULT FindMimeFromData([In, Optional] IBindCtx? pBC, [MarshalAs(UnmanagedType.LPWStr)] string? pwzUrl, [Optional] IntPtr pBuffer, uint cbSize,
+		[MarshalAs(UnmanagedType.LPWStr)] string? pwzMimeProposed, FMFD dwMimeFlags, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzMimeOut, uint dwReserved = 0);
 
 	/// <summary>Gets the <c>CLSID</c> of the object to instantiate for the specified file.</summary>
 	/// <param name="pBC">
@@ -2758,7 +2758,7 @@ public static partial class UrlMon
 	// CLSID *pclsid );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT GetClassFileOrMime([In, Optional] IBindCtx pBC, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? szFilename, IntPtr pBuffer, uint cbSize,
+	public static extern HRESULT GetClassFileOrMime([In, Optional] IBindCtx? pBC, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? szFilename, [In, Optional] IntPtr pBuffer, uint cbSize,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? szMime, [Optional] uint dwReserved, out Guid pclsid);
 
 	/// <summary>Gets a string component ID from information contained in a union .</summary>
@@ -2922,7 +2922,7 @@ public static partial class UrlMon
 	// IsValidURL( _In_ LPBC pBC, _In_ LPCWSTR szURL, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT IsValidURL([Optional] IBindCtx pBC, [MarshalAs(UnmanagedType.LPWStr)] string szURL, uint dwReserved = 0);
+	public static extern HRESULT IsValidURL([Optional] IBindCtx? pBC, [MarshalAs(UnmanagedType.LPWStr)] string szURL, uint dwReserved = 0);
 
 	/// <summary>Creates a moniker to the object that is specified by the given string.</summary>
 	/// <param name="pbc">[in]The address of the IBindCtx interface of the bind context in which to accumulate bound objects.</param>
@@ -3080,7 +3080,7 @@ public static partial class UrlMon
 	// _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT RegisterBindStatusCallback(IBindCtx pbc, IBindStatusCallback pbsc, out IBindStatusCallback ppbscPrevious, uint dwReserved = 0);
+	public static extern HRESULT RegisterBindStatusCallback(IBindCtx pbc, IBindStatusCallback pbsc, out IBindStatusCallback? ppbscPrevious, uint dwReserved = 0);
 
 	/// <summary>Registers a FORMATETC enumerator object on the given bind context.</summary>
 	/// <param name="pBC">[in]A pointer to the IBindCtx interface for the bind context on which to register the enumerator.</param>
@@ -3272,7 +3272,8 @@ public static partial class UrlMon
 	// _Reserved_ DWORD dwReserved, _In_opt_ IBindStatusCallback *pBSC );
 	[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT URLDownloadToCacheFile([Optional, MarshalAs(UnmanagedType.IUnknown)] object lpUnkcaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, StringBuilder szFileName, uint cchFileName, [Optional] uint dwReserved, [Optional] IBindStatusCallback pBSC);
+	public static extern HRESULT URLDownloadToCacheFile([Optional, MarshalAs(UnmanagedType.IUnknown)] object? lpUnkcaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL,
+		StringBuilder szFileName, uint cchFileName, [Optional] uint dwReserved, [Optional] IBindStatusCallback? pBSC);
 
 	/// <summary>Downloads bits from the Internet and saves them to a file.</summary>
 	/// <param name="pCaller">
@@ -3340,7 +3341,7 @@ public static partial class UrlMon
 	// URLDownloadToFile( LPUNKNOWN pCaller, LPCTSTR szURL, LPCTSTR szFileName, _Reserved_ DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB );
 	[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT URLDownloadToFile([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, string szURL, StringBuilder szFileName, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+	public static extern HRESULT URLDownloadToFile([Optional, MarshalAs(UnmanagedType.IUnknown)] object? pCaller, string szURL, StringBuilder szFileName, [Optional] uint dwReserved, [Optional] IBindStatusCallback? lpfnCB);
 
 	/// <summary>Gets options for the current Internet session.</summary>
 	/// <param name="dwOption">
@@ -3482,7 +3483,7 @@ public static partial class UrlMon
 	// lpfnCB );
 	[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT URLOpenBlockingStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, out IStream ppStream, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+	public static extern HRESULT URLOpenBlockingStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object? pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, out IStream ppStream, [Optional] uint dwReserved, [Optional] IBindStatusCallback? lpfnCB);
 
 	/// <summary>Creates a pull type stream object from a URL.</summary>
 	/// <param name="pCaller">
@@ -3514,7 +3515,7 @@ public static partial class UrlMon
 	// URLOpenPullStream( LPUNKNOWN pCaller, LPCSTR szURL, _Reserved_ DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB );
 	[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT URLOpenPullStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+	public static extern HRESULT URLOpenPullStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object? pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, [Optional] uint dwReserved, [Optional] IBindStatusCallback? lpfnCB);
 
 	/// <summary>Creates a push type stream object from a URL.</summary>
 	/// <param name="pCaller">
@@ -3540,7 +3541,7 @@ public static partial class UrlMon
 	// URLOpenStream( LPUNKNOWN pCaller, LPCSTR szURL, _Reserved_ DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB );
 	[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT URLOpenStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, [Optional] uint dwReserved, [Optional] IBindStatusCallback lpfnCB);
+	public static extern HRESULT URLOpenStream([Optional, MarshalAs(UnmanagedType.IUnknown)] object? pCaller, [MarshalAs(UnmanagedType.LPTStr)] string szURL, [Optional] uint dwReserved, [Optional] IBindStatusCallback? lpfnCB);
 
 	/// <summary>
 	/// Contains additional information on the requested binding operation. The meaning of this structure is specific to the type of

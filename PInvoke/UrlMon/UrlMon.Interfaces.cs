@@ -287,7 +287,7 @@ public static partial class UrlMon
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775075(v=vs.85)
 		// HRESULT CreateMoniker( [in] LPOLESTR szName, [in] IBindCtx *pBC, [out] IMoniker **ppmk, [in] DWORD dwReserved );
 		[PreserveSig]
-		HRESULT CreateMoniker([MarshalAs(UnmanagedType.LPWStr)] string szName, [In, Optional] IBindCtx pBC, out IMoniker ppmk, uint dwReserved = 0);
+		HRESULT CreateMoniker([MarshalAs(UnmanagedType.LPWStr)] string szName, [In, Optional] IBindCtx? pBC, out IMoniker ppmk, uint dwReserved = 0);
 
 		/// <summary>Binds a moniker to storage.</summary>
 		/// <param name="pMk">[in] The address of the IMoniker interface.</param>
@@ -340,7 +340,7 @@ public static partial class UrlMon
 		// void **ppvObj );
 		[PreserveSig]
 		HRESULT MonikerBindToStorage(IMoniker pMk, IBindCtx pBC, IBindStatusCallback pBSC, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+			[MarshalAs(UnmanagedType.IUnknown)] out object? ppvObj);
 
 		/// <summary>Binds a moniker to an object.</summary>
 		/// <param name="pMk">[in] The address of the IMoniker interface of the moniker.</param>
@@ -393,7 +393,7 @@ public static partial class UrlMon
 		// void **ppvObj );
 		[PreserveSig]
 		HRESULT MonikerBindToObject(IMoniker pMk, IBindCtx pBC, IBindStatusCallback pBSC, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+			[MarshalAs(UnmanagedType.IUnknown)] out object? ppvObj);
 	}
 
 	/// <summary>
@@ -915,7 +915,7 @@ public static partial class UrlMon
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775045(v=vs.85)
 		// HRESULT Save( [in] IMoniker *pimkName, [in] LPBC pbc, [in] BOOL fRemember );
 		[PreserveSig]
-		HRESULT Save(IMoniker pimkName, IBindCtx pbc, [MarshalAs(UnmanagedType.Bool)] bool fRemember);
+		HRESULT Save(IMoniker? pimkName, IBindCtx pbc, [MarshalAs(UnmanagedType.Bool)] bool fRemember);
 
 		/// <summary>
 		/// Notifies the client application that its persisted state has been completely saved, and points the client to its new
@@ -932,7 +932,7 @@ public static partial class UrlMon
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775046(v=vs.85)
 		// HRESULT SaveCompleted( [in] IMoniker *pimkName, [in] LPBC pibc );
 		[PreserveSig]
-		HRESULT SaveCompleted([In, Optional] IMoniker pimkName, IBindCtx pibc);
+		HRESULT SaveCompleted([In, Optional] IMoniker? pimkName, IBindCtx pibc);
 
 		/// <summary>Gets the moniker that refers to the object's persistent state.</summary>
 		/// <returns>
@@ -1147,7 +1147,7 @@ public static partial class UrlMon
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775016(v=vs.85)
 		// HRESULT GetDomain( [out] BSTR *pbstrDomain );
 		[return: MarshalAs(UnmanagedType.BStr)]
-		string GetDomain();
+		string? GetDomain();
 
 		/// <summary>Returns the file name extension of the resource.</summary>
 		/// <returns>Address of a string that receives the property value.</returns>

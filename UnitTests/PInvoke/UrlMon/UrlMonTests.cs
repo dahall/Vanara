@@ -18,14 +18,14 @@ public class UrlMonTests
 			try
 			{
 				var obj = mi.Invoke(iUri, null);
-				if (!(obj is null))
+				if (obj is not null)
 					sb.Append($"{mi.Name.Substring(3)}={obj}; ");
 			}
 			catch { }
 		}
 		TestContext.WriteLine(sb.ToString());
 		Assert.IsTrue(iUri.HasProperty(Uri_PROPERTY.Uri_PROPERTY_DOMAIN));
-		string str = null;
+		string? str = null;
 		Assert.That(() => iUri.GetPropertyBSTR(Uri_PROPERTY.Uri_PROPERTY_DOMAIN, out str), Throws.Nothing);
 		Assert.That(str, Is.EqualTo("microsoft.com"));
 		uint i = 0;
@@ -48,6 +48,6 @@ public class UrlMonTests
 
 		StrPtrUni sch = default;
 		Assert.That(() => iBld.GetSchemeName(out _, out sch), Throws.Nothing);
-		Assert.That((string)sch, Is.EqualTo("https"));
+		Assert.That((string?)sch, Is.EqualTo("https"));
 	}
 }
