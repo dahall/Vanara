@@ -118,7 +118,7 @@ public static partial class Qwave
 	// QOS_OBJECT_HDR, *LPQOS_OBJECT_HDR;
 	[PInvokeData("qos.h", MSDNShortId = "NS:qos.__unnamed_struct_0")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct QOS_OBJECT_HDR
+	public struct QOS_OBJECT_HDR : IQoSObjectHdr
 	{
 		/// <summary>
 		/// <para>Specifies the type of object to which <c>QOS_OBJECT_HDR</c> is attached. The following values are valid for <c>QOS_OBJECT_HDR</c>:</para>
@@ -145,6 +145,9 @@ public static partial class Qwave
 			var ot = CorrespondingTypeAttribute.CanGet<QOS_OBJ_TYPE>(typeof(T), out var e) ? e : throw new ArgumentException();
 			return new() { ObjectType = ot, ObjectLength = (uint)Marshal.SizeOf(typeof(T)) };
 		}
+
+		/// <summary>An instance of <see cref="QOS_OBJECT_HDR"/> used for the end of a list.</summary>
+		public static readonly QOS_OBJECT_HDR EndOfList = Init<QOS_OBJECT_HDR>();
 	}
 
 	/// <summary>The QOS object <c>QOS_SD_MODE</c> defines the behavior of the traffic control-packet shaper component.</summary>

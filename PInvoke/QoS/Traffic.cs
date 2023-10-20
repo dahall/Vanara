@@ -1973,6 +1973,25 @@ public static partial class Traffic
 		/// criteria). Note that the <c>Mask</c> member must be of the same type as the <c>Pattern</c> member.
 		/// </summary>
 		public IntPtr Mask;
+
+		/// <summary>Creates a <see cref="TC_GEN_FILTER"/> instance.</summary>
+		/// <typeparam name="T">The type of the pattern.</typeparam>
+		/// <param name="AddressType">The filter type to be applied with the filter.</param>
+		/// <param name="Pattern">Indicates the specific format of the pattern to be applied to the filter, such as IP_PATTERN.</param>
+		/// <param name="Mask">A bitmask applied to the bits designated in the <c>Pattern</c> member.</param>
+		/// <param name="memAlloc">The memory allocated too the <paramref name="Pattern"/> and <paramref name="Mask"/> fields.</param>
+		/// <returns>
+		/// A complete <see cref="TC_GEN_FILTER"/> instance. Do not dispose the value returned in <paramref name="memAlloc"/> until this
+		/// structure is no longer needed.
+		/// </returns>
+		public static TC_GEN_FILTER Create<T>(NDIS_PROTOCOL_ID AddressType, in T Pattern, in T Mask, out SafeHandle memAlloc) where T : struct
+		{
+			var sz = Marshal.SizeOf(typeof(T));
+			SafeNativeArray<T> parts = new(new T[] { Pattern, Mask });
+			memAlloc = parts;
+			var ptrs = parts.GetPointers();
+			return new TC_GEN_FILTER { AddressType = AddressType, PatternSize = (uint)sz, Pattern = ptrs[0], Mask = ptrs[1] };
+		}
 	}
 
 	/// <summary>
@@ -2086,14 +2105,15 @@ public static partial class Traffic
 			if (managedObject is not TC_GEN_FLOW f)
 				throw new ArgumentException("Only objects of type TC_GEN_FLOW can be marshaled.");
 			int objLen = f.TcObjects?.Length ?? 0;
-			SafeCoTaskMemStruct<INT_TC_GEN_FLOW> pFlow = new(new INT_TC_GEN_FLOW() { SendingFlowspec = f.SendingFlowspec, ReceivingFlowspec = f.ReceivingFlowspec, TcObjectsLength = objLen });
-			pFlow.Size += f.TcObjects?.Sum(o => Marshal.SizeOf(o.GetType())) ?? 0;
+			int objByteLen = f.TcObjects?.Sum(o => Marshal.SizeOf(o.GetType())) ?? 0;
+			SafeCoTaskMemStruct<INT_TC_GEN_FLOW> pFlow = new(new INT_TC_GEN_FLOW() { SendingFlowspec = f.SendingFlowspec, ReceivingFlowspec = f.ReceivingFlowspec, TcObjectsLength = objByteLen });
+			pFlow.Size += objByteLen;
 			if (objLen > 0)
 			{
 				var oPtr = pFlow.GetFieldAddress(nameof(TcObjects));
 				for (int i = 0; i < objLen; i++)
 				{
-					oPtr.Write(f.TcObjects[i]);
+					oPtr.Write(f.TcObjects![i]);
 					oPtr = oPtr.Offset(Marshal.SizeOf(f.TcObjects[i].GetType()));
 				}
 			}

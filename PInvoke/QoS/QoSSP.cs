@@ -228,7 +228,7 @@ public static partial class Qwave
 			}
 
 			ret.Write(native);
-			if (bufLen > 0)
+			if (bufLen > 0 && ParamBuffer.HasValue)
 			{
 				ret.Write(ParamBuffer.Value.Buffer, false, bufOffset);
 			}

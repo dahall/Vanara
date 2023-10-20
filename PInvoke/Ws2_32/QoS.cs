@@ -171,9 +171,30 @@ public static partial class Ws2_32
 	public struct FLOWSPEC
 	{
 		/// <summary>Represents a FLOWSPEC with all unspecified values.</summary>
-		public static readonly FLOWSPEC NotSpecified = new() { DelayVariation = QOS_NOT_SPECIFIED, Latency = QOS_NOT_SPECIFIED, MaxSduSize = QOS_NOT_SPECIFIED,
-			MinimumPolicedSize = QOS_NOT_SPECIFIED, PeakBandwidth = QOS_NOT_SPECIFIED, TokenBucketSize = QOS_NOT_SPECIFIED, TokenRate = QOS_NOT_SPECIFIED,
-			ServiceType = SERVICETYPE.SERVICETYPE_BESTEFFORT };
+		public static readonly FLOWSPEC NotSpecified = new(SERVICETYPE.SERVICETYPE_BESTEFFORT);
+
+		/// <summary>Initializes a new instance of the <see cref="FLOWSPEC"/> struct.</summary>
+		/// <param name="delayVariation">The delay variation.</param>
+		/// <param name="latency">The latency.</param>
+		/// <param name="maxSduSize">Maximum size of the sdu.</param>
+		/// <param name="minimumPolicedSize">Minimum size of the policed.</param>
+		/// <param name="peakBandwidth">The peak bandwidth.</param>
+		/// <param name="tokenBucketSize">Size of the token bucket.</param>
+		/// <param name="tokenRate">The token rate.</param>
+		/// <param name="serviceType">Type of the service.</param>
+		public FLOWSPEC(SERVICETYPE serviceType, uint tokenRate = QOS_NOT_SPECIFIED, uint delayVariation = QOS_NOT_SPECIFIED,
+			uint latency = QOS_NOT_SPECIFIED, uint maxSduSize = QOS_NOT_SPECIFIED, uint minimumPolicedSize = QOS_NOT_SPECIFIED,
+			uint peakBandwidth = QOS_NOT_SPECIFIED, uint tokenBucketSize = QOS_NOT_SPECIFIED)
+		{
+			DelayVariation = delayVariation;
+			Latency = latency;
+			MaxSduSize = maxSduSize;
+			MinimumPolicedSize = minimumPolicedSize;
+			PeakBandwidth = peakBandwidth;
+			TokenBucketSize = tokenBucketSize;
+			TokenRate = tokenRate;
+			ServiceType = serviceType;
+		}
 
 		/// <summary>
 		/// <para>
