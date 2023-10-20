@@ -503,10 +503,11 @@ public class CfgMgr32Tests
 	public void RegisterAllInterfacesTest()
 	{
 		CM_NOTIFY_CALLBACK callback = Notification;
-		CM_NOTIFY_FILTER allDev = CM_NOTIFY_FILTER.AllDevices;
-		Assert.That(CM_Register_Notification(allDev, default, callback, out SafeHCMNOTIFICATION context), Is.EqualTo(CONFIGRET.CR_SUCCESS));
-		context.Dispose();
 		GC.KeepAlive(callback);
+		Assert.That(CM_Register_Notification(CM_NOTIFY_FILTER.AllDevices, default, callback, out SafeHCMNOTIFICATION context), Is.EqualTo(CONFIGRET.CR_SUCCESS));
+		for (int i = 0; i < 200; i++)
+			System.Threading.Thread.Sleep(100);
+		context.Dispose();
 	}
 
 	[Test]
@@ -574,38 +575,29 @@ public class CfgMgr32Tests
 			}
 	};
 
-	private Win32Error Notification(HCMNOTIFICATION notify, IntPtr context, CM_NOTIFY_ACTION action, in CM_NOTIFY_EVENT_DATA eventData, uint eventDataSize)
+	private Win32Error Notification(HCMNOTIFICATION notify, IntPtr context, CM_NOTIFY_ACTION action, IntPtr ed, uint eventDataSize)
 	{
-		switch (eventData.FilterType)
+		unsafe
 		{
-			case CM_NOTIFY_FILTER_TYPE.CM_NOTIFY_FILTER_TYPE_DEVICEHANDLE:
-				if (action == CM_NOTIFY_ACTION.CM_NOTIFY_ACTION_DEVICECUSTOMEVENT)
-					Debug.WriteLine($"Custom event {eventData.u.DeviceHandle.EventGuid}.");
-				break;
+			CM_NOTIFY_EVENT_DATA* eventData = (CM_NOTIFY_EVENT_DATA*)ed;
+			switch (eventData->FilterType)
+			{
+				case CM_NOTIFY_FILTER_TYPE.CM_NOTIFY_FILTER_TYPE_DEVICEHANDLE:
+					if (action == CM_NOTIFY_ACTION.CM_NOTIFY_ACTION_DEVICECUSTOMEVENT)
+						Debug.WriteLine($"Custom event {eventData->u.DeviceHandle.EventGuid}.");
+					break;
 
-			case CM_NOTIFY_FILTER_TYPE.CM_NOTIFY_FILTER_TYPE_DEVICEINSTANCE:
-				unsafe
-				{
-					fixed (char* p = eventData.u.DeviceInstance.InstanceId)
-					{
-						var instanceId = new string(p);
-						Debug.WriteLine($"Notification for {instanceId}: {action}");
-					}
-				}
-				break;
+				case CM_NOTIFY_FILTER_TYPE.CM_NOTIFY_FILTER_TYPE_DEVICEINSTANCE:
+					var instanceId = new string(eventData->u.DeviceInstance.InstanceId);
+					Debug.WriteLine($"Notification for {instanceId}: {action}");
+					break;
 
-			case CM_NOTIFY_FILTER_TYPE.CM_NOTIFY_FILTER_TYPE_DEVICEINTERFACE:
-				unsafe
-				{
-					fixed (char* p = eventData.u.DeviceInterface.SymbolicLink)
-					{
-						var symbolicLink = new string(p);
-						Debug.WriteLine($"Notification for {eventData.u.DeviceInterface.ClassGuid} linked {symbolicLink}: {action}");
-					}
-				}
-				break;
+				case CM_NOTIFY_FILTER_TYPE.CM_NOTIFY_FILTER_TYPE_DEVICEINTERFACE:
+					var symbolicLink = new string(eventData->u.DeviceInterface.SymbolicLink);
+					Debug.WriteLine($"Notification for {eventData->u.DeviceInterface.ClassGuid} linked {symbolicLink}: {action}");
+					break;
+			}
 		}
-
 		return Win32Error.ERROR_SUCCESS;
 	}
 }

@@ -20,7 +20,7 @@ public static partial class CfgMgr32
 	/// cref="Win32Error.ERROR_SUCCESS"/>. The callback should not return any other values.
 	/// </returns>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate Win32Error CM_NOTIFY_CALLBACK(HCMNOTIFICATION notify, [Optional] IntPtr context, CM_NOTIFY_ACTION action, in CM_NOTIFY_EVENT_DATA eventData, uint eventDataSize);
+	public delegate Win32Error CM_NOTIFY_CALLBACK(HCMNOTIFICATION notify, [Optional] IntPtr context, CM_NOTIFY_ACTION action, [In] IntPtr eventData, uint eventDataSize);
 
 	/// <summary>
 	/// A variable of ULONG type that supplies one of the following flag values that apply if the caller supplies a device instance identifier
