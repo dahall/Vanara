@@ -58,10 +58,10 @@ public partial class UserEnvTests
 		Assert.That(CreateProfile(curSid.ToString("D"), curSid.ToString("N"), sb, (uint)sb.Length), ResultIs.Failure);
 
 		Assert.That(LogonUser(localAcct, ".", localAcctPwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok), ResultIs.Successful);
-		using var id = new System.Security.Principal.WindowsIdentity(hTok.DangerousGetHandle());
+		using System.Security.Principal.WindowsIdentity id = new(hTok.DangerousGetHandle());
 		try
 		{
-			Assert.That(CreateProfile(id.User.Value, localAcct, sb, (uint)sb.Capacity), ResultIs.Successful);
+			Assert.That(CreateProfile(id.User!.Value, localAcct, sb, (uint)sb.Capacity), ResultIs.Successful);
 
 			var pi = new PROFILEINFO(localAcct);
 			Assert.That(LoadUserProfile(hTok, ref pi), ResultIs.Successful);
@@ -69,7 +69,7 @@ public partial class UserEnvTests
 		}
 		finally
 		{
-			Assert.That(DeleteProfile(id.User.Value), ResultIs.Successful);
+			Assert.That(DeleteProfile(id.User!.Value), ResultIs.Successful);
 			hTok.Dispose();
 		}
 	}
@@ -110,7 +110,7 @@ public partial class UserEnvTests
 	[Test]
 	public void GetAppContainerRegistryLocationTest()
 	{
-		Assert.That(GetAppContainerRegistryLocation(REGSAM.KEY_ALL_ACCESS, out var hKey), ResultIs.Successful);
+		Assert.That(GetAppContainerRegistryLocation(REGSAM.KEY_READ, out var hKey), ResultIs.Successful);
 		Assert.That(hKey, ResultIs.ValidHandle);
 	}
 	[Test]
@@ -118,14 +118,14 @@ public partial class UserEnvTests
 	{
 		var guid = new Guid("{35378EAC-683F-11D2-A89A-00C04FBBCFA2}");
 		Assert.That(GetAppliedGPOList(0, default, default, guid, out GROUP_POLICY_OBJECT[] gpos), ResultIs.Successful);
-		Assert.That(gpos, Is.Not.Empty);
+		Assert.That(gpos, Has.Length.GreaterThan(0));
 	}
 
 	[Test]
 	public void GetAppliedGPOListTest2()
 	{
-		var guid = new Guid("{35378EAC-683F-11D2-A89A-00C04FBBCFA2}");
-		Assert.That(GetAppliedGPOList(0, default, default, guid, out IntPtr ptr), ResultIs.Successful);
+		var guid = new Guid("{e437bc1c-aa7d-11d2-a382-00c04f991e27}"); // {35378EAC-683F-11D2-A89A-00C04FBBCFA2}");
+		Assert.That(GetAppliedGPOList(GPO_LIST_FLAG.GPO_LIST_FLAG_MACHINE, default, default, guid, out IntPtr ptr), ResultIs.Successful);
 		Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
 		Assert.That(FreeGPOList(ptr), ResultIs.Successful);
 	}

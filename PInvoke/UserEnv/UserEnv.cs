@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.Win32.SafeHandles;
+using System.Linq;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
@@ -144,7 +145,7 @@ public static partial class UserEnv
 	[DllImport(Lib.Userenv, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("userenv.h", MSDNShortId = "73F5F30F-4083-4D33-B181-31B782AD40D6")]
 	public static extern HRESULT CreateAppContainerProfile([MarshalAs(UnmanagedType.LPWStr)] string pszAppContainerName, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName,
-		[MarshalAs(UnmanagedType.LPWStr)] string pszDescription, [In] SID_AND_ATTRIBUTES[] pCapabilities, uint dwCapabilityCount, out SafeAllocatedSID ppSidAppContainerSid);
+		[MarshalAs(UnmanagedType.LPWStr)] string pszDescription, [In] SID_AND_ATTRIBUTES[]? pCapabilities, uint dwCapabilityCount, out SafeAllocatedSID ppSidAppContainerSid);
 
 	/// <summary>
 	/// Retrieves the environment variables for the specified user. This block can then be passed to the CreateProcessAsUser function.
@@ -189,7 +190,7 @@ public static partial class UserEnv
 	[PInvokeData("userenv.h", MSDNShortId = "bda8879d-d33a-48f4-8b08-e3a279126a07")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CreateEnvironmentBlock([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(EnvBlockMarshaler))] out string[] lpEnvironment,
-		HTOKEN hToken, [MarshalAs(UnmanagedType.Bool)] bool bInherit);
+		[Optional] HTOKEN hToken, [MarshalAs(UnmanagedType.Bool)] bool bInherit);
 
 	/// <summary>
 	/// Retrieves the environment variables for the specified user. This block can then be passed to the CreateProcessAsUser function.
@@ -238,7 +239,7 @@ public static partial class UserEnv
 	[DllImport(Lib.Userenv, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("userenv.h", MSDNShortId = "bda8879d-d33a-48f4-8b08-e3a279126a07")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateEnvironmentBlock(out IntPtr lpEnvironment, HTOKEN hToken, [MarshalAs(UnmanagedType.Bool)] bool bInherit);
+	public static extern bool CreateEnvironmentBlock(out IntPtr lpEnvironment, [Optional] HTOKEN hToken, [MarshalAs(UnmanagedType.Bool)] bool bInherit);
 
 	/// <summary>Creates a new user profile.</summary>
 	/// <param name="pszUserSid">
@@ -481,7 +482,7 @@ public static partial class UserEnv
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "d32fa6c8-035a-4c84-b210-5366f21b6c17")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ExpandEnvironmentStringsForUser(HTOKEN hToken, string lpSrc, StringBuilder lpDest, uint dwSize);
+	public static extern bool ExpandEnvironmentStringsForUser([Optional] HTOKEN hToken, string lpSrc, StringBuilder lpDest, uint dwSize);
 
 	/// <summary>The <c>FreeGPOList</c> function frees the specified list of GPOs.</summary>
 	/// <param name="pGPOList">
@@ -532,7 +533,7 @@ public static partial class UserEnv
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "bd08947a-df57-4dd9-b9ba-a01b315bfdf1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAllUsersProfileDirectory(StringBuilder lpProfileDir, ref uint lpcchSize);
+	public static extern bool GetAllUsersProfileDirectory(StringBuilder? lpProfileDir, ref uint lpcchSize);
 
 	/// <summary>Gets the path of the local app data folder for the specified app container.</summary>
 	/// <param name="pszAppContainerSid">A pointer to the SID of the app container.</param>
@@ -608,7 +609,7 @@ public static partial class UserEnv
 	// GetAppContainerRegistryLocation( REGSAM desiredAccess, PHKEY phAppContainerKey );
 	[DllImport(Lib.Userenv, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("userenv.h", MSDNShortId = "DAD7EC07-D57D-40F5-AA99-AD7579910294")]
-	public static extern HRESULT GetAppContainerRegistryLocation(REGSAM desiredAccess, out HKEY phAppContainerKey);
+	public static extern HRESULT GetAppContainerRegistryLocation(REGSAM desiredAccess, out SafeRegistryHandle phAppContainerKey);
 
 	/// <summary>The <c>GetAppliedGPOList</c> function retrieves the list of GPOs applied for the specified user or computer.</summary>
 	/// <param name="dwFlags">
@@ -714,7 +715,7 @@ public static partial class UserEnv
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "14ff99cb-838a-442b-9f51-414bd7c0a2ef")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetDefaultUserProfileDirectory(StringBuilder lpProfileDir, ref uint lpcchSize);
+	public static extern bool GetDefaultUserProfileDirectory(StringBuilder? lpProfileDir, ref uint lpcchSize);
 
 	/// <summary>
 	/// The <c>GetGPOList</c> function retrieves the list of GPOs for the specified user or computer. This function can be called in two
@@ -912,7 +913,7 @@ public static partial class UserEnv
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "e21411fa-f7e1-4944-93ce-7d9314d79fbf")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProfilesDirectory(StringBuilder lpProfileDir, ref uint lpcchSize);
+	public static extern bool GetProfilesDirectory(StringBuilder? lpProfileDir, ref uint lpcchSize);
 
 	/// <summary>Retrieves the type of profile loaded for the current user.</summary>
 	/// <param name="dwFlags">
@@ -990,7 +991,7 @@ public static partial class UserEnv
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "b5de762d-c9ee-42b0-bce0-e74bcc9c78f0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUserProfileDirectory(HTOKEN hToken, StringBuilder lpProfileDir, ref uint lpcchSize);
+	public static extern bool GetUserProfileDirectory(HTOKEN hToken, StringBuilder? lpProfileDir, ref uint lpcchSize);
 
 	/// <summary>
 	/// The <c>LeaveCriticalPolicySection</c> function resumes the background application of policy. This function closes the handle to
@@ -1560,7 +1561,7 @@ public static partial class UserEnv
 		/// <para>A pointer to the name of the user. This member is used as the base name of the directory in which to store a new profile.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpUserName;
+		public string? lpUserName;
 
 		/// <summary>
 		/// <para>Type: <c>LPTSTR</c></para>
@@ -1571,14 +1572,14 @@ public static partial class UserEnv
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpProfilePath;
+		public string? lpProfilePath;
 
 		/// <summary>
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A pointer to the default user profile path. This member can be <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpDefaultPath;
+		public string? lpDefaultPath;
 
 		/// <summary>
 		/// <para>Type: <c>LPTSTR</c></para>
@@ -1592,7 +1593,7 @@ public static partial class UserEnv
 		/// <para>Not used, set to <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpPolicyPath;
+		public string? lpPolicyPath;
 
 		/// <summary>
 		/// <para>Type: <c>HANDLE</c></para>
@@ -1603,12 +1604,13 @@ public static partial class UserEnv
 		/// <summary>Initializes a new instance of the <see cref="PROFILEINFO"/> struct.</summary>
 		/// <param name="userName">Name of the user.</param>
 		/// <param name="allowUI">If set to <see langword="false"/>, prevents the display of profile error messages..</param>
-		public PROFILEINFO(string userName, bool allowUI = true)
+		public PROFILEINFO(string? userName, bool allowUI = true)
 		{
 			dwSize = Default.dwSize;
 			dwFlags = allowUI ? 0 : ProfileInfoFlags.PI_NOUI;
 			lpUserName = userName;
-			lpProfilePath = lpDefaultPath = lpServerName = lpPolicyPath = null;
+			lpProfilePath = lpDefaultPath = lpPolicyPath = null;
+			lpServerName = "";
 			hProfile = HKEY.NULL;
 		}
 
