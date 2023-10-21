@@ -309,7 +309,7 @@ public static partial class WcmApi
 	// *pInterface, LPCWSTR strProfileName, WCM_PROPERTY Property, PVOID pReserved, PDWORD pdwDataSize, PBYTE *ppData );
 	[DllImport(Lib.Wcmapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wcmapi.h", MSDNShortId = "07c0993e-2892-4908-be3f-d24210ccc300")]
-	public static extern Win32Error WcmQueryProperty([Optional] IntPtr pInterface, [Optional] IntPtr strProfileName,
+	public static extern Win32Error WcmQueryProperty([Optional] IntPtr pInterface, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? strProfileName,
 		WCM_PROPERTY Property, [Optional] IntPtr pReserved, out uint pdwDataSize, out SafeWcmMemory ppData);
 
 	/// <summary>The <c>WcmQueryProperty</c> function retrieves the value of a specified WCM property.</summary>
@@ -375,30 +375,22 @@ public static partial class WcmApi
 	/// </list>
 	/// </remarks>
 	[PInvokeData("wcmapi.h", MSDNShortId = "07c0993e-2892-4908-be3f-d24210ccc300")]
-	public static Win32Error WcmQueryProperty<T>(WCM_PROPERTY Property, [Optional] Guid? pInterface, [Optional] string? strProfileName, out T ppData)
+	public static Win32Error WcmQueryProperty<T>(WCM_PROPERTY Property, [Optional] Guid? pInterface, [Optional] string? strProfileName, out T? ppData)
 	{
 		ppData = default;
 		if (!CorrespondingTypeAttribute.CanGet(Property, typeof(T)))
 			return Win32Error.ERROR_DATATYPE_MISMATCH;
 
-		SafeWcmMemory mem;
-		uint sz;
-		Win32Error res;
-		if (pInterface.HasValue)
-			res = WcmQueryProperty(pInterface.Value, strProfileName, Property, default, out sz, out mem);
-		else
-			res = WcmQueryProperty(IntPtr.Zero, IntPtr.Zero, Property, default, out sz, out mem);
-		using (mem)
+		SafeCoTaskMemStruct<Guid> pi = pInterface;
+		var res = WcmQueryProperty(pi, strProfileName, Property, default, out var sz, out var mem);
+		if (res.Succeeded)
 		{
-			if (res.Succeeded)
-			{
-				if (typeof(T).IsValueType)
-					ppData = mem.ToStructure<T>(sz);
-				else if (typeof(T) == typeof(string))
-					ppData = (T)(object)mem.ToString(sz);
-				else
-					return Win32Error.ERROR_DATATYPE_MISMATCH;
-			}
+			if (typeof(T).IsValueType)
+				ppData = mem.ToStructure<T>(sz);
+			else if (typeof(T) == typeof(string))
+				ppData = (T?)(object?)mem.ToString(sz);
+			else
+				return Win32Error.ERROR_DATATYPE_MISMATCH;
 		}
 		return res;
 	}
@@ -868,7 +860,7 @@ public static partial class WcmApi
 		/// <para>Information about each profile.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public WCM_PROFILE_INFO[] ProfileInfo;
+		public WCM_PROFILE_INFO[] ProfileInfo = new WCM_PROFILE_INFO[1];
 	}
 
 	/// <summary>The <c>WCM_TIME_INTERVAL</c> structure defines a time interval.</summary>
@@ -957,7 +949,7 @@ public static partial class WcmApi
 		/// <summary>Converts this memory to a string value.</summary>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public string ToString(SizeT allocatedBytes) => StringHelper.GetString(handle, CharSet.Unicode, allocatedBytes);
+		public string? ToString(SizeT allocatedBytes) => StringHelper.GetString(handle, CharSet.Unicode, allocatedBytes);
 
 		/// <summary>
 		/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -965,7 +957,7 @@ public static partial class WcmApi
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>A managed object that contains the requested data.</returns>
-		public T ToStructure<T>(SizeT allocatedBytes = default) => handle.ToStructure<T>(allocatedBytes);
+		public T? ToStructure<T>(SizeT allocatedBytes = default) => handle.ToStructure<T>(allocatedBytes);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeWcmMemory"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="mem">The memory.</param>
@@ -995,6 +987,6 @@ public static partial class WcmApi
 
 		IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => throw new NotImplementedException();
 
-		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => typeof(T) == typeof(string) ? StringHelper.GetString(pNativeData, CharSet.Unicode) : (object)pNativeData.ToStructure<T>();
+		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => (typeof(T) == typeof(string) ? (object?)StringHelper.GetString(pNativeData, CharSet.Unicode) : pNativeData.ToStructure<T>()) ?? new object();
 	}
 }

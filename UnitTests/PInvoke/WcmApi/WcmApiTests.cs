@@ -8,10 +8,12 @@ namespace WcmApi;
 
 public class Tests
 {
-	private bool? conn;
-	private SafeHWLANSESSION hWlan = null;
+	private bool? conn = null;
 	private Guid? intf;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	private SafeHWLANSESSION hWlan;
 	private string profName;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	private Guid PrimaryInterface
 	{
@@ -50,9 +52,9 @@ public class Tests
 		{
 			if (!conn.HasValue)
 			{
-				var g = PrimaryInterface;
+				_ = PrimaryInterface;
 			}
-			return conn.Value;
+			return conn.GetValueOrDefault();
 		}
 	}
 
@@ -77,15 +79,15 @@ public class Tests
 		if (t is null) Assert.Pass($"{e} ignored.");
 		TestContext.WriteLine($"{e}");
 		uint sz;
-		SafeWcmMemory data;
+		SafeWcmMemory? data;
 		var global = e.ToString().Contains("_global_");
 		if (global)
-			Assert.That(WcmQueryProperty(IntPtr.Zero, IntPtr.Zero, e, default, out sz, out data), ResultIs.Successful);
+			Assert.That(WcmQueryProperty(IntPtr.Zero, default, e, default, out sz, out data), ResultIs.Successful);
 		else
 			Assert.That(WcmQueryProperty(PrimaryInterface, ProfileName, e, default, out sz, out data), ResultIs.Successful);
-		if (data != null && !data.IsInvalid)
+		if (data is not null && !data.IsInvalid)
 		{
-			data.DangerousGetHandle().Convert(sz, t).WriteValues();
+			data.DangerousGetHandle().Convert(sz, t)?.WriteValues();
 			//t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Set).FirstOrDefault();
 			//if (t is null) Assert.Pass($"Set {e} ignored.");
 			//if (global)
