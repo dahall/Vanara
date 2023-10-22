@@ -468,7 +468,7 @@ public interface IVssBackupComponents
 	/// </param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vsbackup/nf-vsbackup-ivssbackupcomponentsex3-addsnapshottorecoveryset HRESULT
 	// AddSnapshotToRecoverySet( [in] VSS_ID snapshotId, [in] DWORD dwFlags, [in, optional] VSS_PWSZ pwszDestinationVolume );
-	void AddSnapshotToRecoverySet(Guid snapshotId, [Optional] uint dwFlags, string pwszDestinationVolume = default);
+	void AddSnapshotToRecoverySet(Guid snapshotId, [Optional] uint dwFlags, string? pwszDestinationVolume = default);
 
 	/// <summary>The <c>AddToSnapshotSet</c> method adds an original volume or original remote file share to the shadow copy set.</summary>
 	/// <param name="pwszVolumeName">
@@ -528,7 +528,7 @@ public interface IVssBackupComponents
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vsbackup/nf-vsbackup-ivssbackupcomponents-addtosnapshotset HRESULT
 	// AddToSnapshotSet( [in] VSS_PWSZ pwszVolumeName, [in] VSS_ID ProviderId, [out] VSS_ID *pidSnapshot );
-	Guid AddToSnapshotSet(string pwszVolumeName, Guid ProviderId);
+	Guid AddToSnapshotSet(string pwszVolumeName, [Optional] Guid ProviderId);
 
 	/// <summary>
 	/// The <c>BackupComplete</c> method causes VSS to generate a <c>BackupComplete</c> event, which signals writers that the backup
@@ -1049,7 +1049,7 @@ public interface IVssBackupComponents
 	/// <para>This method cannot be called for a virtual hard disk (VHD) that is nested inside another VHD.</para>
 	/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> VHDs are not supported.</para>
 	/// </remarks>
-	bool IsVolumeSupported(Guid ProviderId, string pwszVolumeName);
+	bool IsVolumeSupported([Optional] Guid ProviderId, string pwszVolumeName);
 
 	/// <summary>
 	/// The <c>PostRestore</c> method will cause VSS to generate a <c>PostRestore</c> event, signaling writers that the current restore
@@ -1158,7 +1158,7 @@ public interface IVssBackupComponents
 	// https://docs.microsoft.com/en-us/windows/win32/api/vsbackup/nf-vsbackup-ivssbackupcomponents-query HRESULT Query( [in] VSS_ID
 	// QueriedObjectId, [in] VSS_OBJECT_TYPE eQueriedObjectType, [in] VSS_OBJECT_TYPE eReturnedObjectsType, [out] IVssEnumObject
 	// **ppEnum );
-	IVssEnumObject Query(Guid QueriedObjectId, VSS_OBJECT_TYPE eQueriedObjectType, VSS_OBJECT_TYPE eReturnedObjectsType);
+	IVssEnumObject Query([Optional] Guid QueriedObjectId, VSS_OBJECT_TYPE eQueriedObjectType, VSS_OBJECT_TYPE eReturnedObjectsType);
 
 	/// <summary>
 	/// The <c>QueryRevertStatus</c> method returns an IVssAsync interface pointer that can be used to determine the status of the
@@ -2085,7 +2085,7 @@ public interface IVssExamineWriterMetadata
 	// https://docs.microsoft.com/en-us/windows/win32/api/vsbackup/nf-vsbackup-ivssexaminewritermetadata-getrestoremethod HRESULT
 	// GetRestoreMethod( [out] VSS_RESTOREMETHOD_ENUM *pMethod, [out] BSTR *pbstrService, [out] BSTR *pbstrUserProcedure, [out]
 	// VSS_WRITERRESTORE_ENUM *pwriterRestore, [out] bool *pbRebootRequired, [out] UINT *pcMappings );
-	void GetRestoreMethod(out VSS_RESTOREMETHOD_ENUM pMethod, out string pbstrService, out string pbstrUserProcedure,
+	void GetRestoreMethod(out VSS_RESTOREMETHOD_ENUM pMethod, out string? pbstrService, out string? pbstrUserProcedure,
 		out VSS_WRITERRESTORE_ENUM pwriterRestore, out bool pbRebootRequired, out uint pcMappings);
 
 	/// <summary>
@@ -2213,13 +2213,13 @@ public struct VSS_COMPONENTINFO
 	/// <para>A logical path can be <see langword="null"/>.</para>
 	/// <para>There are no restrictions on the characters that can appear in a non- <see langword="null"/> logical path.</para>
 	/// </summary>
-	public string bstrLogicalPath;
+	public string? bstrLogicalPath;
 
 	/// <summary>A string containing the name of the component. A component name string cannot be <see langword="null"/>.</summary>
 	public string bstrComponentName;
 
 	/// <summary>A string containing the description of the component. A caption string can be <see langword="null"/>.</summary>
-	public string bstrCaption;
+	public string? bstrCaption;
 
 	/// <summary>
 	/// <para>
@@ -2228,7 +2228,7 @@ public struct VSS_COMPONENTINFO
 	/// </para>
 	/// <para>If the writer that created the component did not choose to specify an icon, <c>pbIcon</c> is <see langword="null"/>.</para>
 	/// </summary>
-	public byte[] pbIcon;
+	public byte[]? pbIcon;
 
 	/// <summary>
 	/// <para>
@@ -2365,7 +2365,7 @@ public struct VssWriterStatus
 	/// The address of a variable that receives the application failure message that the writer passed for the wszApplicationMessage
 	/// parameter of the SetWriterFailureEx method. This parameter is optional and can be NULL.
 	/// </summary>
-	public string pbstrApplicationMessage;
+	public string? pbstrApplicationMessage;
 
 	/// <summary>The address of a caller-allocated variable that receives a string containing the name of the specified writer.</summary>
 	public string pbstrWriter;

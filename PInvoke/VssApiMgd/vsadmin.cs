@@ -144,5 +144,4 @@ public interface IVssAdminEx : IVssAdmin
 
 /// <summary>CLSID_VSSCoordinator.</summary>
 [ComImport, Guid("E579AB5F-1CC4-44b4-BED9-DE0991FF0623"), ClassInterface(ClassInterfaceType.None)]
-public class VSSCoordinator
-{ }
+public class VSSCoordinator { }

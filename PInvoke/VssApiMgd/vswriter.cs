@@ -1548,7 +1548,7 @@ public interface IVssComponent
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-ivsscomponentex2-setfailure HRESULT SetFailure( [in]
 	// HRESULT hr, [in] HRESULT hrApplication, [in] LPCWSTR wszApplicationMessage, [in] DWORD dwReserved );
-	void SetFailure(HRESULT hr, HRESULT hrApplication, [Optional] string? wszApplicationMessage);
+	void SetFailure(HRESULT hr, [Optional] HRESULT hrApplication, [Optional] string? wszApplicationMessage);
 }
 
 /// <summary>
@@ -1678,9 +1678,9 @@ public interface IVssCreateExpressWriterMetadata
 	// AddComponent( [in] VSS_COMPONENT_TYPE ct, [in] LPCWSTR wszLogicalPath, [in] LPCWSTR wszComponentName, [in] LPCWSTR wszCaption,
 	// [in] const BYTE *pbIcon, [in] UINT cbIcon, [in] bool bRestoreMetadata, [in] bool bNotifyOnBackupComplete, [in] bool bSelectable,
 	// [in] bool bSelectableForRestore, [in] DWORD dwComponentFlags );
-	void AddComponent(VSS_COMPONENT_TYPE ct, [MarshalAs(UnmanagedType.LPWStr)] string wszLogicalPath,
-		[MarshalAs(UnmanagedType.LPWStr)] string wszComponentName, [MarshalAs(UnmanagedType.LPWStr)] string wszCaption,
-		IntPtr pbIcon, uint cbIcon, bool bRestoreMetadata, bool bNotifyOnBackupComplete, bool bSelectable, bool bSelectableForRestore = false,
+	void AddComponent(VSS_COMPONENT_TYPE ct, [MarshalAs(UnmanagedType.LPWStr)] string? wszLogicalPath,
+		[MarshalAs(UnmanagedType.LPWStr)] string wszComponentName, [MarshalAs(UnmanagedType.LPWStr)] string? wszCaption,
+		[Optional] IntPtr pbIcon, uint cbIcon, bool bRestoreMetadata, bool bNotifyOnBackupComplete, bool bSelectable, bool bSelectableForRestore = false,
 		VSS_COMPONENT_FLAGS dwComponentFlags = 0);
 
 	/// <summary>Adds a file set (a specified file or files) to a specified file group component for an express writer.</summary>
@@ -1727,9 +1727,9 @@ public interface IVssCreateExpressWriterMetadata
 	// https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-ivsscreateexpresswritermetadata-addfilestofilegroup
 	// HRESULT AddFilesToFileGroup( [in] LPCWSTR wszLogicalPath, [in] LPCWSTR wszGroupName, [in] LPCWSTR wszPath, [in] LPCWSTR
 	// wszFilespec, [in] bool bRecursive, [in] LPCWSTR wszAlternateLocation, [in] DWORD dwBackupTypeMask );
-	void AddFilesToFileGroup([MarshalAs(UnmanagedType.LPWStr)] string wszLogicalPath, [MarshalAs(UnmanagedType.LPWStr)] string wszGroupName,
+	void AddFilesToFileGroup([MarshalAs(UnmanagedType.LPWStr)] string? wszLogicalPath, [MarshalAs(UnmanagedType.LPWStr)] string wszGroupName,
 		[MarshalAs(UnmanagedType.LPWStr)] string wszPath, [MarshalAs(UnmanagedType.LPWStr)] string wszFilespec, bool bRecursive,
-		[MarshalAs(UnmanagedType.LPWStr)] string wszAlternateLocation,
+		[MarshalAs(UnmanagedType.LPWStr)] string? wszAlternateLocation = null,
 		VSS_FILE_SPEC_BACKUP_TYPE dwBackupTypeMask = VSS_FILE_SPEC_BACKUP_TYPE.VSS_FSBT_ALL_BACKUP_REQUIRED | VSS_FILE_SPEC_BACKUP_TYPE.VSS_FSBT_ALL_SNAPSHOT_REQUIRED);
 
 	/// <summary>Specifies how an express writer's data is to be restored.</summary>
@@ -1790,8 +1790,8 @@ public interface IVssCreateExpressWriterMetadata
 	// https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-ivsscreateexpresswritermetadata-setrestoremethod HRESULT
 	// SetRestoreMethod( [in] VSS_RESTOREMETHOD_ENUM method, [in] LPCWSTR wszService, [in] LPCWSTR wszUserProcedure, [in]
 	// VSS_WRITERRESTORE_ENUM writerRestore, [in] bool bRebootRequired );
-	void SetRestoreMethod(VSS_RESTOREMETHOD_ENUM method, [MarshalAs(UnmanagedType.LPWStr)] string wszService,
-		[MarshalAs(UnmanagedType.LPWStr)] string wszUserProcedure, VSS_WRITERRESTORE_ENUM writerRestore, bool bRebootRequired);
+	void SetRestoreMethod(VSS_RESTOREMETHOD_ENUM method, [MarshalAs(UnmanagedType.LPWStr)] string? wszService,
+		[MarshalAs(UnmanagedType.LPWStr)] string? wszUserProcedure, VSS_WRITERRESTORE_ENUM writerRestore, bool bRebootRequired);
 
 	/// <summary>
 	/// Allows an express writer to indicate that a component it manages has an explicit writer-component dependency; that is, another
@@ -2070,7 +2070,7 @@ public interface IVssCreateWriterMetadata
 	// AddComponent( [in] VSS_COMPONENT_TYPE ct, [in] LPCWSTR wszLogicalPath, [in] LPCWSTR wszComponentName, [in] LPCWSTR wszCaption,
 	// [in] const BYTE *pbIcon, [in] UINT cbIcon, [in] bool bRestoreMetadata, [in] bool bNotifyOnBackupComplete, [in] bool bSelectable,
 	// [in] bool bSelectableForRestore, [in] DWORD dwComponentFlags );
-	void AddComponent(VSS_COMPONENT_TYPE ct, [Optional] string? wszLogicalPath, string wszComponentName, [Optional] string? wszCaption, byte[] pbIcon,
+	void AddComponent(VSS_COMPONENT_TYPE ct, [Optional] string? wszLogicalPath, string wszComponentName, [Optional] string? wszCaption, byte[]? pbIcon,
 		bool bRestoreMetadata, bool bNotifyOnBackupComplete, bool bSelectable, bool bSelectableForRestore = false,
 		VSS_COMPONENT_FLAGS dwComponentFlags = 0);
 
@@ -2822,7 +2822,7 @@ public interface IVssWMFiledesc
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-ivsswmfiledesc-getalternatelocation HRESULT
 	// GetAlternateLocation( [out] BSTR *pbstrAlternateLocation );
-	string AlternateLocation { get; }
+	string? AlternateLocation { get; }
 
 	/// <summary>
 	/// The <c>GetBackupTypeMask</c> method returns the file backup specification for the files specified by the current file descriptor
@@ -3219,7 +3219,7 @@ public struct VssPartialFile
 	/// </para>
 	/// <para>If additional metadata is not required, this value can be <c>NULL</c>.</para>
 	/// </summary>
-	public string Metadata;
+	public string? Metadata;
 
 	/// <summary>
 	/// <para>String containing the path of the file involved in partial file operations.</para>
@@ -3241,7 +3241,7 @@ public struct VssPartialFile
 	/// </para>
 	/// <para>Specifying the partial file support range is required, and this value cannot be <c>NULL</c>.</para>
 	/// </summary>
-	public string Ranges;
+	public string? Ranges;
 }
 
 /// <summary>

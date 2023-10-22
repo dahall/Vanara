@@ -960,9 +960,9 @@ public struct VSS_MGMT_OBJECT_PROP : IDisposable
 [StructLayout(LayoutKind.Sequential)]
 public struct VSS_MGMT_OBJECT_UNION
 {
-	internal InteropServices.StrPtrUni szOne;
+	internal StrPtrUni szOne;
 
-	internal InteropServices.StrPtrUni szTwo;
+	internal StrPtrUni szTwo;
 
 	internal long lOne;
 
@@ -971,13 +971,13 @@ public struct VSS_MGMT_OBJECT_UNION
 	internal long lThree;
 
 	/// <summary>The structure specifies an original volume object as a VSS_VOLUME_PROP structure (section 2.2.3.7).</summary>
-	public VSS_VOLUME_PROP Vol =>  new() { m_pwszVolumeName = szOne, m_pwszVolumeDisplayName = szTwo };
+	public VSS_VOLUME_PROP Vol =>  new() { m_pwszVolumeName = (string?)szOne ?? "", m_pwszVolumeDisplayName = (string?)szTwo ?? ""};
 
 	/// <summary>The structure specifies a shadow copy storage volume as a VSS_DIFF_VOLUME_PROP structure.</summary>
-	public VSS_DIFF_VOLUME_PROP DiffVol => new() { m_pwszVolumeName = szOne, m_pwszVolumeDisplayName = szTwo, m_llVolumeFreeSpace = lOne, m_llVolumeTotalSpace = lTwo };
+	public VSS_DIFF_VOLUME_PROP DiffVol => new() { m_pwszVolumeName = (string?)szOne ?? "", m_pwszVolumeDisplayName = (string?)szTwo ?? "", m_llVolumeFreeSpace = lOne, m_llVolumeTotalSpace = lTwo };
 
 	/// <summary>The structure specifies a shadow copy storage object as a VSS_DIFF_AREA_PROP.</summary>
-	public VSS_DIFF_AREA_PROP DiffArea => new() { m_pwszVolumeName = szOne, m_pwszDiffAreaVolumeName = szTwo, m_llMaximumDiffSpace = lOne, m_llAllocatedDiffSpace = lTwo, m_llUsedDiffSpace = lThree };
+	public VSS_DIFF_AREA_PROP DiffArea => new() { m_pwszVolumeName = (string?)szOne ?? "", m_pwszDiffAreaVolumeName = (string?)szTwo ?? "", m_llMaximumDiffSpace = lOne, m_llAllocatedDiffSpace = lTwo, m_llUsedDiffSpace = lThree };
 }
 
 /// <summary>The <c>VSS_VOLUME_PROP</c> structure contains the properties of a shadow copy source volume.</summary>

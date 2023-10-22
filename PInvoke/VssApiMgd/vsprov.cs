@@ -1537,7 +1537,7 @@ public interface IVssProviderNotifications
 	// https://docs.microsoft.com/en-us/windows/win32/api/vsprov/nf-vsprov-ivssprovidernotifications-onload HRESULT OnLoad( [in]
 	// IUnknown *pCallback );
 	[PreserveSig]
-	HRESULT OnLoad([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pCallback);
+	HRESULT OnLoad([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pCallback);
 
 	/// <summary>The <c>OnUnload</c> method notifies the provider to prepare to be unloaded.</summary>
 	/// <param name="bForceUnload">If <c>TRUE</c>, the provider must prepare to be released.</param>

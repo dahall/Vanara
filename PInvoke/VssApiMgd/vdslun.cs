@@ -336,27 +336,27 @@ public struct VDS_LUN_INFORMATION
 	/// value is zero.
 	/// </summary>
 	[MarshalAs(UnmanagedType.LPStr)]
-	public string m_szVendorId;
+	public string? m_szVendorId;
 
 	/// <summary>
 	/// Pointer to the LUN product identifier, typically a model number; a zero-terminated, human-readable string. For devices that have
 	/// no product identifier, the value is zero.
 	/// </summary>
 	[MarshalAs(UnmanagedType.LPStr)]
-	public string m_szProductId;
+	public string? m_szProductId;
 
 	/// <summary>
 	/// Pointer to the LUN product revision; a zero-terminated, human-readable string. For devices that have no product revision, the
 	/// value is zero.
 	/// </summary>
 	[MarshalAs(UnmanagedType.LPStr)]
-	public string m_szProductRevision;
+	public string? m_szProductRevision;
 
 	/// <summary>
 	/// Pointer to the LUN serial number; a zero-terminated, human-readable string. For devices that have no serial number, the value is zero.
 	/// </summary>
 	[MarshalAs(UnmanagedType.LPStr)]
-	public string m_szSerialNumber;
+	public string? m_szSerialNumber;
 
 	/// <summary>
 	/// The signature of the LUN. For disks that use the Master Boot Record (MBR) partitioning structure, the first 32 bits of the GUID
