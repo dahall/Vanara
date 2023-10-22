@@ -158,7 +158,7 @@ public static partial class WcnApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/wcndevice/nf-wcndevice-iwcndevice-setpassword HRESULT SetPassword(
 		// WCN_PASSWORD_TYPE Type, DWORD dwPasswordLength, const BYTE [] pbPassword );
 		[PreserveSig]
-		HRESULT SetPassword(WCN_PASSWORD_TYPE Type, uint dwPasswordLength, [MarshalAs(UnmanagedType.LPStr)] string pbPassword);
+		HRESULT SetPassword(WCN_PASSWORD_TYPE Type, uint dwPasswordLength, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbPassword);
 
 		/// <summary>The <c>IWCNDevice::Connect</c> method initiates the session.</summary>
 		/// <param name="pNotify">
@@ -198,7 +198,7 @@ public static partial class WcnApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/wcndevice/nf-wcndevice-iwcndevice-connect HRESULT Connect(
 		// IWCNConnectNotify *pNotify );
 		[PreserveSig]
-		HRESULT Connect([In, Optional] IWCNConnectNotify pNotify);
+		HRESULT Connect([In, Optional] IWCNConnectNotify? pNotify);
 
 		/// <summary>The <c>IWCNDevice::GetAttribute</c> method gets a cached attribute from the device.</summary>
 		/// <param name="AttributeType">
@@ -235,7 +235,7 @@ public static partial class WcnApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/wcndevice/nf-wcndevice-iwcndevice-getattribute HRESULT GetAttribute(
 		// WCN_ATTRIBUTE_TYPE AttributeType, DWORD dwMaxBufferSize, BYTE [] pbBuffer, DWORD *pdwBufferUsed );
 		[PreserveSig]
-		HRESULT GetAttribute(WCN_ATTRIBUTE_TYPE AttributeType, uint dwMaxBufferSize, [Out] IntPtr pbBuffer, out uint pdwBufferUsed);
+		HRESULT GetAttribute(WCN_ATTRIBUTE_TYPE AttributeType, [In, Optional] uint dwMaxBufferSize, [Out, Optional] IntPtr pbBuffer, out uint pdwBufferUsed);
 
 		/// <summary>The GetIntegerAttribute method gets a cached attribute from the device as an integer.</summary>
 		/// <param name="AttributeType">
@@ -498,7 +498,7 @@ public static partial class WcnApi
 	public static T GetIntegerAttribute<T>(this IWCNDevice iDev, WCN_ATTRIBUTE_TYPE AttributeType) where T : struct, IConvertible
 	{
 		var hr = iDev.GetIntegerAttribute(AttributeType, out var u);
-		return hr.Succeeded ? (T)Convert.ChangeType(u, typeof(T)) : throw hr.GetException();
+		return hr.Succeeded ? (T)Convert.ChangeType(u, typeof(T)) : throw hr.GetException()!;
 	}
 
 	/// <summary>The <c>WCN_VENDOR_EXTENSION_SPEC</c> structure contains data that defines a vendor extension.</summary>
