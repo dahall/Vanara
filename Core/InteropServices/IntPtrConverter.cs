@@ -45,7 +45,7 @@ public static class IntPtrConverter
 		// Handle array and string as special cases
 		if (destType.IsArray)
 		{
-			Type elemType = destType.GetElementType();
+			Type elemType = destType.GetElementType()!;
 			if (elemType == typeof(byte))
 				return ptr.ToByteArray((int)sz, 0, sz);
 			int elemSz = Marshal.SizeOf(elemType);

@@ -458,10 +458,146 @@ public static partial class WebSocket
 	// *pulAdditionalHeaderCount );
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketBeginClientHandshake")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT WebSocketBeginClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pszSubprotocols,
-		[Optional] uint ulSubprotocolCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string? pszExtensions, [Optional] uint ulExtensionCount,
+	public static extern HRESULT WebSocketBeginClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[]? pszSubprotocols,
+		[Optional] uint ulSubprotocolCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[]? pszExtensions, [Optional] uint ulExtensionCount,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[]? pInitialHeaders, [Optional] uint ulInitialHeaderCount,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 8)] out WEB_SOCKET_HTTP_HEADER[] pAdditionalHeaders, out uint pulAdditionalHeaderCount);
+		out IntPtr pAdditionalHeaders, out uint pulAdditionalHeaderCount);
+
+	/// <summary>The <c>WebSocketBeginClientHandshake</c> function begins the client-side handshake.</summary>
+	/// <param name="hWebSocket">
+	/// <para>Type: <c>WEB_SOCKET_HANDLE</c></para>
+	/// <para>WebSocket session handle returned by a previous call to WebSocketCreateClientHandle.</para>
+	/// </param>
+	/// <param name="pszSubprotocols">
+	/// <para>Type: <c>PCSTR*</c></para>
+	/// <para>
+	/// Pointer to an array of sub-protocols chosen by the application. Once the client-server handshake is complete, the application must
+	/// use the sub-protocol returned by WebSocketEndClientHandshake. Must contain one subprotocol per entry.
+	/// </para>
+	/// </param>
+	/// <param name="ulSubprotocolCount">
+	/// <para>Type: <c>ULONG</c></para>
+	/// <para>Number of sub-protocols in <c>pszSubprotocols</c>.</para>
+	/// </param>
+	/// <param name="pszExtensions">
+	/// <para>Type: <c>PCSTR*</c></para>
+	/// <para>
+	/// Pointer to an array of extensions chosen by the application. Once the client-server handshake is complete, the application must use
+	/// the extension returned by WebSocketEndClientHandshake. Must contain one extension per entry.
+	/// </para>
+	/// </param>
+	/// <param name="ulExtensionCount">
+	/// <para>Type: <c>ULONG</c></para>
+	/// <para>Number of extensions in <c>pszExtensions</c>.</para>
+	/// </param>
+	/// <param name="pInitialHeaders">
+	/// <para>Type: <c>const PWEB_SOCKET_HTTP_HEADER</c></para>
+	/// <para>
+	/// Pointer to an array of WEB_SOCKET_HTTP_HEADER structures that contain the request headers to be sent by the application. The array
+	/// must include the <c>Host HTTP</c> header as defined in RFC 2616.
+	/// </para>
+	/// </param>
+	/// <param name="ulInitialHeaderCount">
+	/// <para>Type: <c>ULONG</c></para>
+	/// <para>Number of request headers in <c>pInitialHeaders</c>.</para>
+	/// </param>
+	/// <param name="pAdditionalHeaders">
+	/// <para>Type: <c>PWEB_SOCKET_HTTP_HEADER</c></para>
+	/// <para>
+	/// On successful output, an array of WEB_SOCKET_HTTP_HEADER structures that contain the request headers to be sent by the
+	/// application. If any of these headers were specified in <c>pInitialHeaders</c>, the header must be replaced.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If the function succeeds, it returns <c>S_OK</c>.</para>
+	/// <para>If the function fails, it returns a system error code defined in WinError.h.</para>
+	/// </returns>
+	/// <remarks>
+	/// To complete the client-side handshake, applications must call WebSocketEndClientHandshake. Once the client-server handshake is
+	/// complete, the application may use the session functions.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/websocket/nf-websocket-websocketbeginclienthandshake HRESULT
+	// WebSocketBeginClientHandshake( [in] WEB_SOCKET_HANDLE hWebSocket, [in, optional] PCSTR *pszSubprotocols, [in] ULONG
+	// ulSubprotocolCount, [in, optional] PCSTR *pszExtensions, [in] ULONG ulExtensionCount, [in, optional] const PWEB_SOCKET_HTTP_HEADER
+	// pInitialHeaders, [in] ULONG ulInitialHeaderCount, [out] PWEB_SOCKET_HTTP_HEADER *pAdditionalHeaders, [out] ULONG
+	// *pulAdditionalHeaderCount );
+	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketBeginClientHandshake")]
+	public static HRESULT WebSocketBeginClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[]? pszSubprotocols,
+		[Optional] uint ulSubprotocolCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[]? pszExtensions, [Optional] uint ulExtensionCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[]? pInitialHeaders, [Optional] uint ulInitialHeaderCount,
+		out WEB_SOCKET_HTTP_HEADER[]? pAdditionalHeaders)
+	{
+		var ret = WebSocketBeginClientHandshake(hWebSocket, pszSubprotocols, ulSubprotocolCount, pszExtensions, ulExtensionCount, pInitialHeaders, ulInitialHeaderCount, out var pHeaders, out var count);
+		pAdditionalHeaders = ret.Succeeded ? pHeaders.ToArray<WEB_SOCKET_HTTP_HEADER>((int)count) : null;
+		return ret;
+	}
+
+	/// <summary>The <c>WebSocketBeginServerHandshake</c> function begins the server-side handshake.</summary>
+	/// <param name="hWebSocket">
+	/// <para>Type: <c>WEB_SOCKET_HANDLE</c></para>
+	/// <para>WebSocket session handle returned by a previous call to WebSocketCreateServerHandle.</para>
+	/// </param>
+	/// <param name="pszSubprotocolSelected">
+	/// <para>Type: <c>PCSTR</c></para>
+	/// <para>A pointer to a sub-protocol value chosen by the application. Must contain one subprotocol.</para>
+	/// </param>
+	/// <param name="pszExtensionSelected">
+	/// <para>Type: <c>PCSTR*</c></para>
+	/// <para>A pointer to a list of extensions chosen by the application. Must contain one extension per entry.</para>
+	/// </param>
+	/// <param name="ulExtensionSelectedCount">
+	/// <para>Type: <c>ULONG</c></para>
+	/// <para>Number of extensions in <c>pszExtensionSelected</c>.</para>
+	/// </param>
+	/// <param name="pRequestHeaders">
+	/// <para>Type: <c>const PWEB_SOCKET_HTTP_HEADER</c></para>
+	/// <para>Pointer to an array of WEB_SOCKET_HTTP_HEADER structures that contain the request headers received by the application.</para>
+	/// </param>
+	/// <param name="ulRequestHeaderCount">
+	/// <para>Type: <c>ULONG</c></para>
+	/// <para>Number of request headers in <c>pRequestHeaders</c>.</para>
+	/// </param>
+	/// <param name="pResponseHeaders">
+	/// <para>Type: <c>PWEB_SOCKET_HTTP_HEADER*</c></para>
+	/// <para>
+	/// On successful output, a pointer to an array or WEB_SOCKET_HTTP_HEADER structures that contain the response headers to be sent by the application.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If the function succeeds, it returns <c>S_OK</c>.</para>
+	/// <para>If the function fails, it returns one of the following or a system error code defined in WinError.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>E_INVALID_PROTOCOL_FORMAT</c></term>
+	/// <term>Protocol data had an invalid format.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// To complete the server-side handshake, applications must call WebSocketEndServerHandshake or any of the session functions. Once the
+	/// client-server handshake is complete, the application may use the session functions.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/websocket/nf-websocket-websocketbeginserverhandshake HRESULT
+	// WebSocketBeginServerHandshake( [in] WEB_SOCKET_HANDLE hWebSocket, [in, optional] PCSTR pszSubprotocolSelected, [in, optional] PCSTR
+	// *pszExtensionSelected, [in] ULONG ulExtensionSelectedCount, [in] const PWEB_SOCKET_HTTP_HEADER pRequestHeaders, [in] ULONG
+	// ulRequestHeaderCount, [out] PWEB_SOCKET_HTTP_HEADER *pResponseHeaders, [out] ULONG *pulResponseHeaderCount );
+	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketBeginServerHandshake")]
+	public static HRESULT WebSocketBeginServerHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
+		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pszSubprotocolSelected,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[]? pszExtensionSelected, [Optional] uint ulExtensionSelectedCount,
+		[In, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[] pRequestHeaders, uint ulRequestHeaderCount,
+		out WEB_SOCKET_HTTP_HEADER[]? pResponseHeaders)
+	{
+		var ret = WebSocketBeginServerHandshake(hWebSocket, pszSubprotocolSelected, pszExtensionSelected, ulExtensionSelectedCount, pRequestHeaders, ulRequestHeaderCount, out var pHeaders, out var count);
+		pResponseHeaders = ret.Succeeded ? pHeaders.ToArray<WEB_SOCKET_HTTP_HEADER>((int)count) : null;
+		return ret;
+	}
 
 	/// <summary>The <c>WebSocketBeginServerHandshake</c> function begins the server-side handshake.</summary>
 	/// <param name="hWebSocket">
@@ -525,9 +661,9 @@ public static partial class WebSocket
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketBeginServerHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
 		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pszSubprotocolSelected,
-		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pszExtensionSelected, [Optional] uint ulExtensionSelectedCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[]? pszExtensionSelected, [Optional] uint ulExtensionSelectedCount,
 		[In, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[] pRequestHeaders, uint ulRequestHeaderCount,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out WEB_SOCKET_HTTP_HEADER[] pResponseHeaders, out uint pulResponseHeaderCount);
+		out IntPtr pResponseHeaders, out uint pulResponseHeaderCount);
 
 	/// <summary>The <c>WebSocketCompleteAction</c> function completes an action started by WebSocketGetAction.</summary>
 	/// <param name="hWebSocket">
@@ -556,19 +692,19 @@ public static partial class WebSocket
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
-	/// <term>
-	/// WEB_SOCKET_SEND_TO_NETWORK_ACTION: if <c>ulBytesTransferred</c> is different than the sum all buffer lengths returned from
-	///                                    WebSocketGetAction the current send action is canceled and the next call to
-	///                                    <c>WebSocketGetAction</c> will return <c>WEB_SOCKET_INDICATE_SEND_COMPLETE_ACTION</c> even if not
-	///                                    all buffers passed to WebSocketSend were processed.
-	/// </term>
+	/// <term>WEB_SOCKET_SEND_TO_NETWORK_ACTION:</term>
+	/// <description>
+	/// if <c>ulBytesTransferred</c> is different than the sum all buffer lengths returned from WebSocketGetAction the current send action is
+	/// canceled and the next call to <c>WebSocketGetAction</c> will return <c>WEB_SOCKET_INDICATE_SEND_COMPLETE_ACTION</c> even if not all
+	/// buffers passed to WebSocketSend were processed.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>
-	/// WEB_SOCKET_RECEIVE_FROM_NETWORK_ACTION: if <c>ulBytesTransferred</c> is 0, the current receive action is canceled and the next call
-	///                                         to WebSocketGetAction will return <c>WEB_SOCKET_INDICATE_RECEIVE_COMPLETE_ACTION</c> even if
-	///                                         not all buffers passed to WebSocketReceive were processed.
-	/// </term>
+	/// <term>WEB_SOCKET_RECEIVE_FROM_NETWORK_ACTION:</term>
+	/// <description>
+	/// if <c>ulBytesTransferred</c> is 0, the current receive action is canceled and the next call to WebSocketGetAction will return
+	/// <c>WEB_SOCKET_INDICATE_RECEIVE_COMPLETE_ACTION</c> even if not all buffers passed to WebSocketReceive were processed.
+	/// </description>
 	/// </item>
 	/// </list>
 	/// </remarks>
@@ -603,8 +739,8 @@ public static partial class WebSocket
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketCreateClientHandle")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketCreateClientHandle(
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WEB_SOCKET_PROPERTY[] pProperties,
-		uint ulPropertyCount, out SafeWEB_SOCKET_HANDLE phWebSocket);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WEB_SOCKET_PROPERTY[]? pProperties,
+		[Optional] uint ulPropertyCount, out SafeWEB_SOCKET_HANDLE phWebSocket);
 
 	/// <summary>The <c>WebSocketCreateServerHandle</c> function creates a server-side WebSocket session handle.</summary>
 	/// <param name="pProperties">
@@ -630,8 +766,8 @@ public static partial class WebSocket
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketCreateServerHandle")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketCreateServerHandle(
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WEB_SOCKET_PROPERTY[] pProperties,
-		uint ulPropertyCount, out SafeWEB_SOCKET_HANDLE phWebSocket);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WEB_SOCKET_PROPERTY[]? pProperties,
+		[In, Optional] uint ulPropertyCount, out SafeWEB_SOCKET_HANDLE phWebSocket);
 
 	/// <summary>
 	/// The <c>WebSocketDeleteHandle</c> function deletes a WebSocket session handle created by WebSocketCreateClientHandle or WebSocketCreateServerHandle.
@@ -964,26 +1100,18 @@ public static partial class WebSocket
 	/// <para>If the function fails, it returns a system error code defined in WinError.h.</para>
 	/// </returns>
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketGetGlobalProperty")]
-	public static HRESULT WebSocketGetGlobalProperty<T>([In] WEB_SOCKET_PROPERTY_TYPE eType, out T pvValue)
+	public static HRESULT WebSocketGetGlobalProperty<T>([In] WEB_SOCKET_PROPERTY_TYPE eType, out T? pvValue)
 	{
-		if (typeof(T).IsArray)
+		using SafeCoTaskMemHandle mem = typeof(T).IsArray ? new(1024) : SafeCoTaskMemHandle.CreateFromStructure<T>();
+		uint sz = mem.Size;
+		HRESULT ret = WebSocketGetGlobalProperty(eType, mem, ref sz);
+		if (ret.Failed && sz > mem.Size)
 		{
-			using SafeCoTaskMemHandle mem = new(1024);
-			uint sz = mem.Size;
-			HRESULT ret = WebSocketGetGlobalProperty(eType, mem, ref sz);
-			Type elemType = typeof(T).GetElementType();
-			int elemSz = Marshal.SizeOf(elemType);
-			pvValue = ret.Succeeded ? (T)(object)mem.DangerousGetHandle().ToArray(elemType, mem.Size / elemSz, 0, sz) : default;
-			return ret;
+			mem.Size = sz;
+			ret = WebSocketGetGlobalProperty(eType, mem, ref sz);
 		}
-		else
-		{
-			using SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.CreateFromStructure<T>();
-			uint sz = mem.Size;
-			HRESULT ret = WebSocketGetGlobalProperty(eType, mem, ref sz);
-			pvValue = ret.Succeeded ? mem.ToStructure<T>() : default;
-			return ret;
-		}
+		pvValue = mem.ToType<T>();
+		return ret;
 	}
 
 	/// <summary>The <c>WebSocketReceive</c> function adds a receive operation to the protocol component operation queue.</summary>
