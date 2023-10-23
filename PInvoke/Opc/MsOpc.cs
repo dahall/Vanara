@@ -6833,9 +6833,8 @@ public static partial class Opc
 		public OpcEnumerator(TEnum opcEnumerator)
 		{
 			opcEnum = opcEnumerator ?? throw new ArgumentNullException(nameof(opcEnumerator));
-			moveNext = typeof(TEnum).GetMethod("MoveNext");
-			getCurrent = typeof(TEnum).GetMethod("GetCurrent");
-			if (moveNext is null || getCurrent is null) throw new ArgumentException("The type specified for TEnum is not a valid Opc Enumerator instance.");
+			moveNext = typeof(TEnum).GetMethod("MoveNext") ?? throw new ArgumentException("Unable to find MoveNext method in TEnum type.", nameof(TEnum));
+			getCurrent = typeof(TEnum).GetMethod("GetCurrent") ?? throw new ArgumentException("Unable to find GetCurrent method in TEnum type.", nameof(TEnum));
 		}
 
 		/// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
@@ -6844,7 +6843,7 @@ public static partial class Opc
 			get
 			{
 				var p = new object?[] { null };
-				((HRESULT)getCurrent.Invoke(opcEnum, p)).ThrowIfFailed();
+				((HRESULT)getCurrent.Invoke(opcEnum, p)!).ThrowIfFailed();
 				return (TElem)p[0]!;
 			}
 		}
@@ -6863,7 +6862,7 @@ public static partial class Opc
 		public bool MoveNext()
 		{
 			var p = new object[] { false };
-			((HRESULT)moveNext.Invoke(opcEnum, p)).ThrowIfFailed();
+			((HRESULT)moveNext.Invoke(opcEnum, p)!).ThrowIfFailed();
 			return (bool)p[0];
 		}
 

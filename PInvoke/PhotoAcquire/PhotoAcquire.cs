@@ -1,4 +1,3 @@
-#nullable enable
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
@@ -11,6 +10,7 @@ namespace Vanara.PInvoke;
 /// <summary>Enums and interfaces from the Windows Photo Acquisition API.</summary>
 public static partial class PhotoAcquisition
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static readonly HRESULT PAQ_ERR = HRESULT.Make(true, HRESULT.FacilityCode.FACILITY_ITF, 0xA001);
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_CameraSequenceNumber = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 7);    // VT_LPWSTR
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_DuplicateDetectionID = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 10);    // VT_I4
@@ -21,6 +21,7 @@ public static partial class PhotoAcquisition
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_RelativePathname = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 2); // VT_LPWSTR
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_SkipImport = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 9);    // VT_BOOL
 	public static readonly PROPERTYKEY PKEY_PhotoAcquire_TransferResult = new(new(0x00f23377, 0x7ac6, 0x4b7a, 0x84, 0x43, 0x34, 0x5e, 0x73, 0x1f, 0xa5, 0x7a), 5);    // VT_SCODE
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 	/// <summary>The enumeration type indicates the type of a selected device.</summary>
 	/// <remarks>This enumeration type is pointed to by the <c>pnDeviceType</c> parameter of IPhotoAcquireDeviceSelectionDialog::DoModal.</remarks>
@@ -453,8 +454,8 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquire-acquire HRESULT Acquire( [in]
 		// IPhotoAcquireSource *pPhotoAcquireSource, [in] BOOL fShowProgress, [in] HWND hWndParent, [in] LPCWSTR pszApplicationName, [in]
 		// IPhotoAcquireProgressCB *pPhotoAcquireProgressCB );
-		void Acquire([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource pPhotoAcquireSource, [In, MarshalAs(UnmanagedType.Bool)] bool fShowProgress,
-			[In, Optional] HWND hWndParent, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszApplicationName, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireProgressCB pPhotoAcquireProgressCB);
+		void Acquire([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource? pPhotoAcquireSource, [In, MarshalAs(UnmanagedType.Bool)] bool fShowProgress,
+			[In, Optional] HWND hWndParent, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszApplicationName, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireProgressCB? pPhotoAcquireProgressCB);
 
 		/// <summary>
 		/// The method retrieves an enumeration containing the paths of all files successfully transferred during the most recent call to Acquire.
@@ -747,7 +748,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireplugin-initialize HRESULT
 		// Initialize( [in] IPhotoAcquireSource *pPhotoAcquireSource, [in] IPhotoAcquireProgressCB *pPhotoAcquireProgressCB );
 		[PreserveSig]
-		HRESULT Initialize([In, Optional] IPhotoAcquireSource pPhotoAcquireSource, [In, Optional] IPhotoAcquireProgressCB pPhotoAcquireProgressCB);
+		HRESULT Initialize([In, Optional] IPhotoAcquireSource? pPhotoAcquireSource, [In, Optional] IPhotoAcquireProgressCB? pPhotoAcquireProgressCB);
 
 		/// <summary>
 		/// The method provides additional functionality each time an item is processed. The application provides the implementation of the method.
@@ -806,8 +807,8 @@ public static partial class PhotoAcquisition
 		// ProcessItem( [in] DWORD dwAcquireStage, [in] IPhotoAcquireItem *pPhotoAcquireItem, [in] IStream *pOriginalItemStream, [in] LPCWSTR
 		// pszFinalFilename, [in] IPropertyStore *pPropertyStore );
 		[PreserveSig]
-		HRESULT ProcessItem(PAPS dwAcquireStage, [In, Optional] IPhotoAcquireItem pPhotoAcquireItem, [In, Optional] IStream pOriginalItemStream,
-			string pszFinalFilename, [In, Optional] IPropertyStore pPropertyStore);
+		HRESULT ProcessItem(PAPS dwAcquireStage, [In, Optional] IPhotoAcquireItem? pPhotoAcquireItem, [In, Optional] IStream? pOriginalItemStream,
+			string? pszFinalFilename, [In, Optional] IPropertyStore? pPropertyStore);
 
 		/// <summary>
 		/// Provides extended functionality when a transfer session is completed. The application provides the implementation of the
@@ -928,7 +929,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireprogresscb-startenumeration HRESULT
 		// StartEnumeration( [in] IPhotoAcquireSource *pPhotoAcquireSource );
 		[PreserveSig]
-		HRESULT StartEnumeration([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource pPhotoAcquireSource);
+		HRESULT StartEnumeration([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource? pPhotoAcquireSource);
 
 		/// <summary>
 		/// The method provides extended functionality each time an item is found during enumeration of items from the device. This method
@@ -1023,7 +1024,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireprogresscb-starttransfer HRESULT
 		// StartTransfer( [in] IPhotoAcquireSource *pPhotoAcquireSource );
 		[PreserveSig]
-		HRESULT StartTransfer([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource pPhotoAcquireSource);
+		HRESULT StartTransfer([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource? pPhotoAcquireSource);
 
 		/// <summary>
 		/// The method provides extended functionality each time the transfer of an item begins. The application provides the implementation
@@ -1054,7 +1055,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireprogresscb-startitemtransfer HRESULT
 		// StartItemTransfer( [in] UINT nItemIndex, [in] IPhotoAcquireItem *pPhotoAcquireItem );
 		[PreserveSig]
-		HRESULT StartItemTransfer([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem pPhotoAcquireItem);
+		HRESULT StartItemTransfer([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem? pPhotoAcquireItem);
 
 		/// <summary>
 		/// The method provides extended functionality when a destination directory is created during the acquisition process. The
@@ -1150,7 +1151,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireprogresscb-enditemtransfer HRESULT
 		// EndItemTransfer( [in] UINT nItemIndex, [in] IPhotoAcquireItem *pPhotoAcquireItem, [in] HRESULT hr );
 		[PreserveSig]
-		HRESULT EndItemTransfer([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem pPhotoAcquireItem, HRESULT hr);
+		HRESULT EndItemTransfer([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem? pPhotoAcquireItem, HRESULT hr);
 
 		/// <summary>
 		/// The method provides extended functionality when the transfer of all files is complete. The application provides the
@@ -1210,7 +1211,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireprogresscb-startdelete HRESULT
 		// StartDelete( [in] IPhotoAcquireSource *pPhotoAcquireSource );
 		[PreserveSig]
-		HRESULT StartDelete([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource pPhotoAcquireSource);
+		HRESULT StartDelete([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireSource? pPhotoAcquireSource);
 
 		/// <summary>
 		/// The method provides extended functionality each time the deletion of an individual item from the device begins. The application
@@ -1241,7 +1242,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireprogresscb-startitemdelete HRESULT
 		// StartItemDelete( [in] UINT nItemIndex, [in] IPhotoAcquireItem *pPhotoAcquireItem );
 		[PreserveSig]
-		HRESULT StartItemDelete([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem pPhotoAcquireItem);
+		HRESULT StartItemDelete([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem? pPhotoAcquireItem);
 
 		/// <summary>
 		/// The method provides extended functionality when the percentage of items deleted changes. The application provides the
@@ -1303,7 +1304,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireprogresscb-enditemdelete HRESULT
 		// EndItemDelete( [in] UINT nItemIndex, [in] IPhotoAcquireItem *pPhotoAcquireItem, [in] HRESULT hr );
 		[PreserveSig]
-		HRESULT EndItemDelete([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem pPhotoAcquireItem, HRESULT hr);
+		HRESULT EndItemDelete([In] uint nItemIndex, [In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireItem? pPhotoAcquireItem, HRESULT hr);
 
 		/// <summary>
 		/// The method provides extended functionality when deletion of files from the image source is complete. The application provides the
@@ -1561,8 +1562,8 @@ public static partial class PhotoAcquisition
 		// GetUserInput( [in] REFIID riidType, [in] IUnknown *pUnknown, [out] PROPVARIANT *pPropVarResult, [in] const PROPVARIANT
 		// *pPropVarDefault );
 		[PreserveSig]
-		HRESULT GetUserInput(in Guid riidType, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object pUnknown,
-			[Out] PROPVARIANT pPropVarResult, [In, Optional] PROPVARIANT pPropVarDefault);
+		HRESULT GetUserInput(in Guid riidType, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pUnknown,
+			[Out] PROPVARIANT pPropVarResult, [In, Optional] PROPVARIANT? pPropVarDefault);
 	}
 
 	/// <summary>The interface is used to work with image acquisition settings, such as file name format.</summary>
@@ -1783,7 +1784,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquiresource-initializeitemlist HRESULT
 		// InitializeItemList( [in] BOOL fForceEnumeration, [in] IPhotoAcquireProgressCB *pPhotoAcquireProgressCB, [out] UINT *pnItemCount );
 		void InitializeItemList([In, MarshalAs(UnmanagedType.Bool)] bool fForceEnumeration,
-			[In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireProgressCB pPhotoAcquireProgressCB, out uint pnItemCount);
+			[In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoAcquireProgressCB? pPhotoAcquireProgressCB, out uint pnItemCount);
 
 		/// <summary>The method retrieves the number of items found by the InitializeItemList method.</summary>
 		/// <returns>Pointer to an integer value containing the item count.</returns>
@@ -1976,7 +1977,7 @@ public static partial class PhotoAcquisition
 		/// <param name="pPhotoProgressActionCB">
 		/// A reference to a <see cref="IPhotoProgressActionCB"/> derived class that responds to the action link click.
 		/// </param>
-		void SetActionLinkCallback([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoProgressActionCB pPhotoProgressActionCB);
+		void SetActionLinkCallback([In, Optional, MarshalAs(UnmanagedType.Interface)] IPhotoProgressActionCB? pPhotoProgressActionCB);
 
 		/// <summary>The method sets the text for the action link in the progress dialog box.</summary>
 		/// <param name="pszCaption">A string containing the action link text.</param>
@@ -2007,8 +2008,8 @@ public static partial class PhotoAcquisition
 		// GetUserInput( [in] REFIID riidType, [in] IUnknown *pUnknown, [out] PROPVARIANT *pPropVarResult, [in] const PROPVARIANT
 		// *pPropVarDefault );
 		[PreserveSig]
-		HRESULT GetUserInput(in Guid riidType, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object pUnknown,
-			[Out] PROPVARIANT pPropVarResult, [In, Optional] PROPVARIANT pPropVarDefault);
+		HRESULT GetUserInput(in Guid riidType, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pUnknown,
+			[Out] PROPVARIANT pPropVarResult, [In, Optional] PROPVARIANT? pPropVarDefault);
 	}
 
 	/// <summary>Retrieves descriptive information entered by the user, such as the tag name of the images to store.</summary>
@@ -2026,7 +2027,7 @@ public static partial class PhotoAcquisition
 	// GetUserInput( [in] REFIID riidType, [in] IUnknown *pUnknown, [out] PROPVARIANT *pPropVarResult, [in] const PROPVARIANT
 	// *pPropVarDefault );
 	[PreserveSig]
-	public static string? GetUserInput(this IPhotoProgressDialog dlg, [In, Optional] IUserInputString pUnknown, [In, Optional] string? pPropVarDefault)
+	public static string? GetUserInput(this IPhotoProgressDialog dlg, [In, Optional] IUserInputString? pUnknown, [In, Optional] string? pPropVarDefault)
 	{
 		if (dlg == null) throw new ArgumentNullException(nameof(dlg));
 		using PROPVARIANT res = new();
