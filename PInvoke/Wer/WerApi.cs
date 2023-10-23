@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System.Collections.Generic;
 using static Vanara.PInvoke.DbgHelp;
 using static Vanara.PInvoke.Kernel32;
 
@@ -44,7 +45,7 @@ public static partial class Wer
 		WerConsentAlwaysPrompt = 4,
 	}
 
-	/// <summary>Flags used by <see cref="WerReportAddDump"/>.</summary>
+	/// <summary>Flags used by <see cref="WerReportAddDump(HREPORT, HPROCESS, HTHREAD, WER_DUMP_TYPE, in WER_EXCEPTION_INFORMATION, in WER_DUMP_CUSTOM_OPTIONS, WER_DUMP)"/>.</summary>
 	[PInvokeData("werapi.h", MSDNShortId = "b40dac44-f7c5-43f0-876d-6f97c26bf461")]
 	[Flags]
 	public enum WER_DUMP
@@ -214,7 +215,7 @@ public static partial class Wer
 	// https://docs.microsoft.com/en-us/windows/win32/api/werapi/nf-werapi-werfreestring void WerFreeString( PCWSTR pwszStr );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "748AEFD4-3310-4BC1-A3DA-CFACBA31F2FC")]
-	public static extern void WerFreeString([MarshalAs(UnmanagedType.LPWStr)] string pwszStr);
+	public static extern void WerFreeString(StrPtrUni pwszStr);
 
 	/// <summary>Removes the specified application from the list of applications that are to be excluded from error reporting.</summary>
 	/// <param name="pwzExeName">
@@ -327,7 +328,79 @@ public static partial class Wer
 	// PWER_DUMP_CUSTOM_OPTIONS pDumpCustomOptions, DWORD dwFlags );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "b40dac44-f7c5-43f0-876d-6f97c26bf461")]
-	public static extern HRESULT WerReportAddDump(HREPORT hReportHandle, HPROCESS hProcess, HTHREAD hThread, WER_DUMP_TYPE dumpType, in WER_EXCEPTION_INFORMATION pExceptionParam, in WER_DUMP_CUSTOM_OPTIONS pDumpCustomOptions, WER_DUMP dwFlags);
+	public static extern HRESULT WerReportAddDump(HREPORT hReportHandle, HPROCESS hProcess, [Optional] HTHREAD hThread,
+		WER_DUMP_TYPE dumpType, in WER_EXCEPTION_INFORMATION pExceptionParam, in WER_DUMP_CUSTOM_OPTIONS pDumpCustomOptions, WER_DUMP dwFlags);
+
+	/// <summary>Adds a dump of the specified type to the specified report.</summary>
+	/// <param name="hReportHandle">A handle to the report. This handle is returned by the WerReportCreate function.</param>
+	/// <param name="hProcess">
+	/// A handle to the process for which the report is being generated. This handle must have the STANDARD_RIGHTS_READ and
+	/// PROCESS_QUERY_INFORMATION access rights.
+	/// </param>
+	/// <param name="hThread">
+	/// A handle to the thread of hProcess for which the report is being generated. If dumpType is WerDumpTypeMicro, this parameter is
+	/// required. For other dump types, this parameter may be <c>NULL</c>.
+	/// </param>
+	/// <param name="dumpType">
+	/// <para>The type of minidump. This parameter can be one of the following values from the <c>WER_DUMP_TYPE</c> enumeration type.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>WerDumpTypeHeapDump</term>
+	/// <term>
+	/// An extended minidump that contains additional data such as the process memory. This type is equivalent to creating a minidump
+	/// with the following options:
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WerDumpTypeMicroDump</term>
+	/// <term>
+	/// A limited minidump that contains only a stack trace. This type is equivalent to creating a minidump with the following options:
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WerDumpTypeMiniDump</term>
+	/// <term>A minidump. This type is equivalent to creating a minidump with the following options:</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pExceptionParam">A pointer to a WER_EXCEPTION_INFORMATION structure that specifies exception information.</param>
+	/// <param name="pDumpCustomOptions">
+	/// A pointer to a WER_DUMP_CUSTOM_OPTIONS structure that specifies custom minidump options. If this parameter is <c>NULL</c>, the
+	/// standard minidump information is collected.
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>This parameter can be 0 or the following value.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>WER_DUMP_NOHEAP_ONQUEUE</term>
+	/// <term>If the report is being queued, do not include a heap dump. Using this flag saves disk space.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>This function returns <c>S_OK</c> on success or an error code on failure.</returns>
+	/// <remarks>
+	/// <para>Use this function only for generic reporting—it has no effect on operating system crash or no-response reporting.</para>
+	/// <para>
+	/// If the server asks for a mini dump and you specify <c>WerDumpTypeHeapDump</c> for the dumpType parameter, WER will not send the
+	/// heap dump to the Watson server. However, if the server asks for a heap dump and the dumpType is <c>WerDumpTypeMiniDump</c>, WER
+	/// will send the mini dump to the server. Thus, it is recommended that you set dumpType to <c>WerDumpTypeMiniDump</c>.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/werapi/nf-werapi-werreportadddump HRESULT WerReportAddDump( HREPORT
+	// hReportHandle, HANDLE hProcess, HANDLE hThread, WER_DUMP_TYPE dumpType, PWER_EXCEPTION_INFORMATION pExceptionParam,
+	// PWER_DUMP_CUSTOM_OPTIONS pDumpCustomOptions, DWORD dwFlags );
+	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("werapi.h", MSDNShortId = "b40dac44-f7c5-43f0-876d-6f97c26bf461")]
+	public static extern HRESULT WerReportAddDump(HREPORT hReportHandle, HPROCESS hProcess, [Optional] HTHREAD hThread,
+		WER_DUMP_TYPE dumpType, in WER_EXCEPTION_INFORMATION pExceptionParam, [In, Optional] IntPtr pDumpCustomOptions, WER_DUMP dwFlags);
 
 	/// <summary>Adds a file to the specified report.</summary>
 	/// <param name="hReportHandle">A handle to the report. This handle is returned by the WerReportCreate function.</param>
@@ -528,7 +601,7 @@ public static partial class Wer
 	// hReportHandle, DWORD dwparamID, PCWSTR pwzName, PCWSTR pwzValue );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "accf423d-6f03-41e2-b5e9-4a0b630bc918")]
-	public static extern HRESULT WerReportSetParameter(HREPORT hReportHandle, WER_P dwparamID, [MarshalAs(UnmanagedType.LPWStr)] string pwzName, [MarshalAs(UnmanagedType.LPWStr)] string pwzValue);
+	public static extern HRESULT WerReportSetParameter(HREPORT hReportHandle, WER_P dwparamID, [MarshalAs(UnmanagedType.LPWStr)] string? pwzName, [MarshalAs(UnmanagedType.LPWStr)] string? pwzValue);
 
 	/// <summary>Sets the user interface options for the specified report.</summary>
 	/// <param name="hReportHandle">A handle to the report. This handle is returned by the WerReportCreate function.</param>
@@ -816,7 +889,7 @@ public static partial class Wer
 	// HREPORTSTORE hReportStore, PCWSTR *ppszReportKey );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "E4732B60-BFBE-4916-83A6-5F031D267913")]
-	public static extern HRESULT WerStoreGetFirstReportKey(HREPORTSTORE hReportStore, [MarshalAs(UnmanagedType.LPWStr)] out string ppszReportKey);
+	public static extern HRESULT WerStoreGetFirstReportKey(HREPORTSTORE hReportStore, out StrPtrUni ppszReportKey);
 
 	/// <summary>Gets a reference to the next report in the error report store.</summary>
 	/// <param name="hReportStore">The error report store (previously retrieved with WerStoreOpen).</param>
@@ -844,7 +917,7 @@ public static partial class Wer
 	// HREPORTSTORE hReportStore, PCWSTR *ppszReportKey );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "781D54A9-6F51-445E-89A8-A0C944081B81")]
-	public static extern HRESULT WerStoreGetNextReportKey(HREPORTSTORE hReportStore, [MarshalAs(UnmanagedType.LPWStr)] out string ppszReportKey);
+	public static extern HRESULT WerStoreGetNextReportKey(HREPORTSTORE hReportStore, out StrPtrUni ppszReportKey);
 
 	/// <summary>Opens the collection of stored error reports.</summary>
 	/// <param name="repStoreType">The type of report store to open. See Remarks for details.</param>
@@ -955,7 +1028,7 @@ public static partial class Wer
 		public static bool operator ==(HREPORT h1, HREPORT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HREPORT h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HREPORT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1003,7 +1076,7 @@ public static partial class Wer
 		public static bool operator ==(HREPORTSTORE h1, HREPORTSTORE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HREPORTSTORE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HREPORTSTORE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1120,7 +1193,7 @@ public static partial class Wer
 		/// <para>This member is valid only if <c>dwMask</c> contains WER_DUMP_MASK_PREFERRED_MODULE_LIST.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-		public string wzPreferredModuleList;
+		public string? wzPreferredModuleList;
 
 		/// <summary>A default instance with the size field set.</summary>
 		public static readonly WER_DUMP_CUSTOM_OPTIONS Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(WER_DUMP_CUSTOM_OPTIONS)) };
@@ -1190,13 +1263,6 @@ public static partial class Wer
 		public HWND hwndParent;
 
 		/// <summary>A default instance with the size field set.</summary>
-
-/* Unmerged change from project 'Vanara.PInvoke.Wer (netcoreapp3.1)'
-Before:
-		public static readonly WER_REPORT_INFORMATION Default = new WER_REPORT_INFORMATION { dwSize = (uint)Marshal.SizeOf(typeof(WER_REPORT_INFORMATION)) };
-After:
-		public static readonly WER_REPORT_INFORMATION Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(WER_REPORT_INFORMATION)) };
-*/
 		public static readonly WER_REPORT_INFORMATION Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(WER_REPORT_INFORMATION)) };
 	}
 
