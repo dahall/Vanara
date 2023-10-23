@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using static Vanara.PInvoke.Crypt32;
 
 namespace Vanara.PInvoke;
@@ -312,7 +313,8 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "B089217A-5C12-4C51-8E46-3A9243347B21")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptCATAdminAcquireContext2(out SafeHCATADMIN phCatAdmin, in Guid pgSubsystem, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszHashAlgorithm, in CERT_STRONG_SIGN_PARA pStrongHashPolicy, uint dwFlags = 0);
+	public static extern bool CryptCATAdminAcquireContext2(out SafeHCATADMIN phCatAdmin, in Guid pgSubsystem,
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszHashAlgorithm, in CERT_STRONG_SIGN_PARA pStrongHashPolicy, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -389,7 +391,8 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "B089217A-5C12-4C51-8E46-3A9243347B21")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptCATAdminAcquireContext2(out SafeHCATADMIN phCatAdmin, [Optional] IntPtr pgSubsystem, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszHashAlgorithm, [Optional] IntPtr pStrongHashPolicy, uint dwFlags = 0);
+	public static extern bool CryptCATAdminAcquireContext2(out SafeHCATADMIN phCatAdmin, [Optional] IntPtr pgSubsystem,
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszHashAlgorithm, [Optional] IntPtr pStrongHashPolicy, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -430,7 +433,8 @@ public static partial class WinTrust
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatadminaddcatalog HCATINFO CryptCATAdminAddCatalog(
 	// HCATADMIN hCatAdmin, PWSTR pwszCatalogFile, PWSTR pwszSelectBaseName, DWORD dwFlags );
 	[PInvokeData("mscat.h", MSDNShortId = "a227597c-a0af-4b86-bd29-03f478aef244")]
-	public static SafeHCATINFO CryptCATAdminAddCatalog(SafeHCATADMIN hCatAdmin, [MarshalAs(UnmanagedType.LPWStr)] string pwszCatalogFile, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszSelectBaseName, uint dwFlags) =>
+	public static SafeHCATINFO CryptCATAdminAddCatalog(SafeHCATADMIN hCatAdmin, [MarshalAs(UnmanagedType.LPWStr)] string pwszCatalogFile,
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszSelectBaseName, uint dwFlags) =>
 		new(InternalCryptCATAdminAddCatalog(hCatAdmin, pwszCatalogFile, pwszSelectBaseName, dwFlags), hCatAdmin, true);
 
 	/// <summary>
@@ -466,7 +470,7 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "4dc5688f-4b7a-4baf-9671-868cac7f1896")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptCATAdminCalcHashFromFileHandle(HFILE hFile, ref uint pcbHash, IntPtr pbHash, uint dwFlags = 0);
+	public static extern bool CryptCATAdminCalcHashFromFileHandle(HFILE hFile, ref uint pcbHash, [Optional] IntPtr pbHash, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>The <c>CryptCATAdminCalcHashFromFileHandle2</c> function calculates the hash for a file by using the specified algorithm.</para>
@@ -526,7 +530,7 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "CBFA60A8-5E5A-4FAD-8AD3-26539802CD53")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptCATAdminCalcHashFromFileHandle2(HCATADMIN hCatAdmin, HFILE hFile, ref uint pcbHash, IntPtr pbHash = default, uint dwFlags = 0);
+	public static extern bool CryptCATAdminCalcHashFromFileHandle2(HCATADMIN hCatAdmin, HFILE hFile, ref uint pcbHash, [Optional] IntPtr pbHash, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -597,9 +601,9 @@ public static partial class WinTrust
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatadminenumcatalogfromhash HCATINFO
 	// CryptCATAdminEnumCatalogFromHash( HCATADMIN hCatAdmin, BYTE *pbHash, DWORD cbHash, DWORD dwFlags, HCATINFO *phPrevCatInfo );
 	[PInvokeData("mscat.h", MSDNShortId = "33ab2d01-94ab-4d23-a054-9da0731485d6")]
-	public static SafeHCATINFO CryptCATAdminEnumCatalogFromHash(SafeHCATADMIN hCatAdmin, IntPtr pbHash, uint cbHash, [Optional] uint dwFlags, SafeHCATINFO phPrevCatInfo = null)
+	public static SafeHCATINFO CryptCATAdminEnumCatalogFromHash(SafeHCATADMIN hCatAdmin, IntPtr pbHash, uint cbHash, [Optional] uint dwFlags, SafeHCATINFO? phPrevCatInfo = null)
 	{
-		HCATINFO hPrev = phPrevCatInfo ?? default;
+		HCATINFO hPrev = phPrevCatInfo is null ? default : (HCATINFO)phPrevCatInfo;
 		return new SafeHCATINFO(InternalCryptCATAdminEnumCatalogFromHash(hCatAdmin, pbHash, cbHash, dwFlags, ref hPrev), hCatAdmin, true);
 	}
 
@@ -798,7 +802,35 @@ public static partial class WinTrust
 	// CryptCATCDFEnumCatAttributes( CRYPTCATCDF *pCDF, CRYPTCATATTRIBUTE *pPrevAttr, PFN_CDF_PARSE_ERROR_CALLBACK pfnParseError );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "01889cb9-7bf4-4591-9bb2-b263c4effe0c")]
-	public static extern IntPtr CryptCATCDFEnumCatAttributes(SafeCRYPTCATCDF pCDF, IntPtr pPrevAttr, PfnCdfParseErrorCallback pfnParseError);
+	public static extern IntPtr CryptCATCDFEnumCatAttributes(SafeCRYPTCATCDF pCDF, IntPtr pPrevAttr, PfnCdfParseErrorCallback? pfnParseError);
+
+	/// <summary>
+	/// <para>
+	/// [The <c>CryptCATCDFEnumCatAttributes</c> function is available for use in the operating systems specified in the Requirements
+	/// section. It may be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>
+	/// The <c>CryptCATCDFEnumCatAttributes</c> function enumerates catalog-level attributes within the <c>CatalogHeader</c> section of
+	/// a catalog definition file (CDF). <c>CryptCATCDFEnumCatAttributes</c> is called by MakeCat.
+	/// </para>
+	/// </summary>
+	/// <param name="pCDF">A pointer to a CRYPTCATCDF structure.</param>
+	/// <param name="pfnParseError">A pointer to a user-defined function to handle file parse errors.</param>
+	/// <returns>
+	/// A sequence of CRYPTCATATTRIBUTE structures.
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatcdfenumcatattributes CRYPTCATATTRIBUTE *
+	// CryptCATCDFEnumCatAttributes( CRYPTCATCDF *pCDF, CRYPTCATATTRIBUTE *pPrevAttr, PFN_CDF_PARSE_ERROR_CALLBACK pfnParseError );
+	[PInvokeData("mscat.h", MSDNShortId = "01889cb9-7bf4-4591-9bb2-b263c4effe0c")]
+	public static IEnumerable<CRYPTCATATTRIBUTE> CryptCATCDFEnumCatAttributes(SafeCRYPTCATCDF pCDF, PfnCdfParseErrorCallback? pfnParseError) =>
+		EnumPrev<CRYPTCATATTRIBUTE>(p => CryptCATCDFEnumCatAttributes(pCDF, p, pfnParseError));
+
+	private static IEnumerable<T> EnumPrev<T>(Func<IntPtr, IntPtr> f) where T : struct
+	{
+		IntPtr pPrevAttr = IntPtr.Zero;
+		while ((pPrevAttr = f(pPrevAttr)) != IntPtr.Zero)
+			yield return pPrevAttr.ToStructure<T>();
+	}
 
 	/// <summary>
 	/// <para>
@@ -882,7 +914,7 @@ public static partial class WinTrust
 	// pwszFilePath, PFN_CDF_PARSE_ERROR_CALLBACK pfnParseError );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "d400d8bd-c0a0-41dc-9093-8e4fc758d82f")]
-	public static extern SafeCRYPTCATCDF CryptCATCDFOpen([MarshalAs(UnmanagedType.LPWStr)] string pwszFilePath, PfnCdfParseErrorCallback pfnParseError);
+	public static extern SafeCRYPTCATCDF CryptCATCDFOpen([MarshalAs(UnmanagedType.LPWStr)] string pwszFilePath, PfnCdfParseErrorCallback? pfnParseError);
 
 	/// <summary>
 	/// <para>
@@ -931,6 +963,25 @@ public static partial class WinTrust
 
 	/// <summary>
 	/// <para>
+	/// [The <c>CryptCATEnumerateAttr</c> function is available for use in the operating systems specified in the Requirements section. It
+	/// may be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>
+	/// The <c>CryptCATEnumerateAttr</c> function enumerates the attributes associated with a member of a catalog. This function has no
+	/// associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+	/// </para>
+	/// </summary>
+	/// <param name="hCatalog">Handle for the catalog that contains the member identified by pCatMember. This value cannot be <c>NULL</c>.</param>
+	/// <param name="pCatMember">A pointer to the CRYPTCATMEMBER structure that identifies which member of the catalog is being enumerated.</param>
+	/// <returns>The return value is a sequence of CRYPTCATATTRIBUTE structures that contains the attribute information.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatenumerateattr CRYPTCATATTRIBUTE *
+	// CryptCATEnumerateAttr( IN HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, IN CRYPTCATATTRIBUTE *pPrevAttr );
+	[PInvokeData("mscat.h", MSDNShortId = "064e87db-4330-4b8b-9865-ba8b9714f6e4")]
+	public static IEnumerable<CRYPTCATATTRIBUTE> CryptCATEnumerateAttr(HCATALOG hCatalog, CRYPTCATMEMBER pCatMember) =>
+		EnumPrev<CRYPTCATATTRIBUTE>(p => CryptCATEnumerateAttr(hCatalog, pCatMember, p));
+
+	/// <summary>
+	/// <para>
 	/// [The <c>CryptCATEnumerateCatAttr</c> function is available for use in the operating systems specified in the Requirements
 	/// section. It may be altered or unavailable in subsequent versions.]
 	/// </para>
@@ -958,6 +1009,24 @@ public static partial class WinTrust
 
 	/// <summary>
 	/// <para>
+	/// [The <c>CryptCATEnumerateCatAttr</c> function is available for use in the operating systems specified in the Requirements section. It
+	/// may be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>
+	/// The <c>CryptCATEnumerateCatAttr</c> function enumerates the attributes associated with a catalog. This function has no associated
+	/// import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+	/// </para>
+	/// </summary>
+	/// <param name="hCatalog">Handle for the catalog whose attributes are being enumerated. This value cannot be <c>NULL</c>.</param>
+	/// <returns>The return value is a sequence of CRYPTCATATTRIBUTE structures that contains the attribute information.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatenumeratecatattr CRYPTCATATTRIBUTE *
+	// CryptCATEnumerateCatAttr( IN HANDLE hCatalog, IN CRYPTCATATTRIBUTE *pPrevAttr );
+	[PInvokeData("mscat.h", MSDNShortId = "57b6ff5c-e47e-41ac-8ec8-01a47ea77acf")]
+	public static IEnumerable<CRYPTCATATTRIBUTE> CryptCATEnumerateCatAttr(HCATALOG hCatalog) =>
+		EnumPrev<CRYPTCATATTRIBUTE>(p => CryptCATEnumerateCatAttr(hCatalog, p));
+
+	/// <summary>
+	/// <para>
 	/// [The <c>CryptCATEnumerateMember</c> function is available for use in the operating systems specified in the Requirements
 	/// section. It may be altered or unavailable in subsequent versions.]
 	/// </para>
@@ -982,6 +1051,21 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "6bbfef11-a150-4255-8620-27c1b1587b48")]
 	public static extern IntPtr CryptCATEnumerateMember(HCATALOG hCatalog, IntPtr pPrevMember);
+
+	/// <summary>
+	/// <para>
+	/// [The <c>CryptCATEnumerateMember</c> function is available for use in the operating systems specified in the Requirements section. It
+	/// may be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>The <c>CryptCATEnumerateMember</c> function enumerates the members of a catalog.</para>
+	/// </summary>
+	/// <param name="hCatalog">The handle of the catalog that contains the members to enumerate. This value cannot be <c>NULL</c>.</param>
+	/// <returns>This function returns a sequence of CRYPTCATMEMBER structures that represents the next member of the catalog.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatenumeratemember CRYPTCATMEMBER *
+	// CryptCATEnumerateMember( IN HANDLE hCatalog, IN CRYPTCATMEMBER *pPrevMember );
+	[PInvokeData("mscat.h", MSDNShortId = "6bbfef11-a150-4255-8620-27c1b1587b48")]
+	public static IEnumerable<CRYPTCATMEMBER> CryptCATEnumerateMember(HCATALOG hCatalog) =>
+		EnumPrev<CRYPTCATMEMBER>(p => CryptCATEnumerateMember(hCatalog, p));
 
 	/// <summary>
 	/// <para>
@@ -1443,7 +1527,7 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "eeba34d4-08aa-456a-8fdc-16795cbce36a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsCatalogFile([In] HFILE hFile, [MarshalAs(UnmanagedType.LPWStr)] string pwszFileName);
+	public static extern bool IsCatalogFile([In, Optional] HFILE hFile, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszFileName);
 
 	[DllImport(Lib.Wintrust, SetLastError = true, EntryPoint = "CryptCATAdminAddCatalog")]
 	private static extern IntPtr InternalCryptCATAdminAddCatalog(HCATADMIN hCatAdmin, [MarshalAs(UnmanagedType.LPWStr)] string pwszCatalogFile, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszSelectBaseName, uint dwFlags);
@@ -1923,7 +2007,7 @@ public static partial class WinTrust
 			hAdmin = hCatAdmin ?? throw new ArgumentNullException(nameof(hCatAdmin));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeHCATINFO"/> class.</summary>
-		private SafeHCATINFO() : base() { }
+		private SafeHCATINFO() : base() => hAdmin = new(IntPtr.Zero, false);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeHCATINFO"/> to <see cref="HCATINFO"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
