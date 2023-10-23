@@ -42,9 +42,15 @@ public static class IntPtrConverter
 		}
 		if (sz == 0) throw new ArgumentException("Cannot convert a pointer with no Size.", nameof(sz));
 
-		// Handle byte array and string as special cases
-		if (destType.IsArray && destType.GetElementType() == typeof(byte))
-			return ptr.ToByteArray((int)sz);
+		// Handle array and string as special cases
+		if (destType.IsArray)
+		{
+			Type elemType = destType.GetElementType();
+			if (elemType == typeof(byte))
+				return ptr.ToByteArray((int)sz, 0, sz);
+			int elemSz = Marshal.SizeOf(elemType);
+			return ptr.ToArray(elemType, (int)sz / elemSz, 0, sz);
+		}
 		if (destType == typeof(string))
 			return StringHelper.GetString(ptr, charSet, sz);
 		return ptr.ToStructure(destType, sz, 0, out _);
