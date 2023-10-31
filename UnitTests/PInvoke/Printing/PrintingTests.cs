@@ -11,13 +11,24 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class PrintingTests
 {
-	private const string connPtrName = "Foobar";
+	private string connPtrName = "";
+	private (string un, string pw, string sv) creds = ("", "", "");
 	private const string defKey = "PrinterDriverData";
 	private static readonly string defaultPrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	private SafeHPRINTER hprnt;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
-	public void _Setup() => Assert.That(OpenPrinter(defaultPrinterName, out hprnt), ResultIs.Successful);
+	public void _Setup()
+	{
+		Assert.That(OpenPrinter(defaultPrinterName, out hprnt, new() { DesiredAccess = (uint)AccessRights.PRINTER_ACCESS_USE, pDatatype = "RAW", pDevMode = new DEVMODE() { dmDeviceName = defaultPrinterName } }), ResultIs.Successful);
+		var auth = (object[])TestCaseSources.GetAuthCasesFromFile(true, true)[0];
+		connPtrName = string.Concat(auth[5], '\\', auth[9]);
+		if (!connPtrName.StartsWith('\\'))
+			connPtrName = @"\\" + connPtrName;
+		creds = ((string)auth[6], (string)auth[7], (string)auth[5]);
+	}
 
 	[OneTimeTearDown]
 	public void _TearDown() => hprnt?.Dispose();
@@ -79,10 +90,10 @@ public class PrintingTests
 			pPrintProcessor = pi.pPrintProcessor,
 			Attributes = PRINTER_ATTRIBUTE.PRINTER_ATTRIBUTE_LOCAL
 		};
-		var p2 = new SafeHPRINTER(default, false);
+		SafeHPRINTER p2 = new(default, false);
+		Assert.That(p2 = AddPrinter(null, 2, pi2), ResultIs.ValidHandle);
 		try
 		{
-			Assert.That(p2 = AddPrinter(null, 2, pi2), ResultIs.ValidHandle);
 			GetSet("Test", 123, 123U);
 			GetSet("Test", 123L, 123UL);
 			GetSet("Test", "123");
@@ -102,9 +113,9 @@ public class PrintingTests
 			Assert.That(DeletePrinter(p2), ResultIs.Successful);
 		}
 
-		void GetSet(string vn, object v, object r = null, REG_VALUE_TYPE t = REG_VALUE_TYPE.REG_NONE)
+		void GetSet(string vn, object v, object? r = null, REG_VALUE_TYPE t = REG_VALUE_TYPE.REG_NONE)
 		{
-			if (r is null) r = v;
+			r ??= v;
 			Assert.That(SetPrinterData(p2, vn, v, t), ResultIs.Successful);
 			Assert.That(GetPrinterData(p2, vn), v.GetType().IsArray ? (IResolveConstraint)Is.EquivalentTo((IEnumerable)r) : Is.EqualTo(r));
 			Assert.That(DeletePrinterData(p2, vn), ResultIs.Successful);
@@ -248,20 +259,17 @@ public class PrintingTests
 	[Test]
 	public void EnumPrintersTest()
 	{
-		PRINTER_INFO_1[] res1;
-		Assert.That(res1 = EnumPrinters<PRINTER_INFO_1>().ToArray(), Is.Not.Empty);
-		TestContext.WriteLine(string.Join(",", res1.Select(v => v.pName)));
 		PRINTER_INFO_2[] res2;
 		Assert.That(res2 = EnumPrinters<PRINTER_INFO_2>().ToArray(), Is.Not.Empty);
-		TestContext.WriteLine(string.Join(",", res2.Select(v => v.Status)));
+		res2.WriteValues();
+		PRINTER_INFO_1[] res1;
+		Assert.That(res1 = EnumPrinters<PRINTER_INFO_1>().ToArray(), Is.Not.Empty);
 		//PRINTER_INFO_3[] res3;
 		//Assert.That(res3 = EnumPrinters<PRINTER_INFO_3>().ToArray(), Is.Not.Empty);
 		PRINTER_INFO_4[] res4;
 		Assert.That(res4 = EnumPrinters<PRINTER_INFO_4>().ToArray(), Is.Not.Empty);
-		TestContext.WriteLine(string.Join(",", res4.Select(v => v.Attributes)));
 		PRINTER_INFO_5[] res5;
 		Assert.That(res5 = EnumPrinters<PRINTER_INFO_5>().ToArray(), Is.Not.Empty);
-		TestContext.WriteLine(string.Join(",", res5.Select(v => v.pPortName)));
 		//PRINTER_INFO_6[] res6;
 		//Assert.That(res6 = EnumPrinters<PRINTER_INFO_6>().ToArray(), Is.Not.Empty);
 		//PRINTER_INFO_7[] res7;
@@ -381,14 +389,15 @@ public class PrintingTests
 		Assert.That(AddJob(hprnt, out var path, out var id), ResultIs.Successful);
 		try
 		{
-			System.IO.File.WriteAllText(path, "Test page.");
+			System.IO.File.WriteAllText(path!, "Test page.");
 
 			JOB_INFO_2 ji2 = default;
 			Assert.That(() => ji2 = GetJob<JOB_INFO_2>(hprnt, id), Throws.Nothing);
 			Assert.That(ji2.JobId, Is.EqualTo(id));
+			Assert.NotNull(ji2.pDatatype);
 			TestHelper.WriteValues(ji2);
 
-			var jobInfo = new JOB_INFO_1 { JobId = id, Priority = JOB_PRIORITY.MAX_PRIORITY, Status = ji2.Status, pDatatype = ji2.pDatatype };
+			var jobInfo = new JOB_INFO_1 { JobId = id, Priority = JOB_PRIORITY.MAX_PRIORITY, Status = ji2.Status, pDatatype = ji2.pDatatype! };
 			Assert.That(SetJob(hprnt, id, jobInfo), ResultIs.Successful);
 
 			Assert.That(ScheduleJob(hprnt, id), ResultIs.Successful);
@@ -432,7 +441,7 @@ public class PrintingTests
 		var bytes = new byte[] { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
 		Kernel32.WriteFile(hspf, bytes, (uint)bytes.Length, out _);
 		Assert.That(CommitSpoolData(hprnt, hspf, (uint)bytes.Length), ResultIs.Successful);
-		Assert.That(() => hspf.Dispose(), Throws.Nothing);
+		Assert.That(hspf.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -474,7 +483,8 @@ public class PrintingTests
 					if (FindNextPrinterChangeNotification(hChange, out var chg, default, out var ppi) && !ppi.IsInvalid)
 					{
 						PRINTER_NOTIFY_INFO pi = ppi;
-						log.Add($"{chg}: {string.Join(",", pi.aData?.Select(d => d.Field))}");
+						if (pi.aData is not null)
+							log.Add($"{chg}: {string.Join(",", pi.aData.Select(d => d.Field))}");
 					}
 				}
 			}

@@ -950,11 +950,11 @@ public static partial class WinSpool
 		const string subKey64 = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Print\PackageInstallation\Windows x64\CorePrinterDrivers";
 
 		var is64bit = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"));
-		using var baseKey = string.IsNullOrEmpty(pszServer) ? null : RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, pszServer);
+		using var baseKey = string.IsNullOrEmpty(pszServer) ? null : RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, pszServer!);
 		using var reg = (baseKey ?? Registry.LocalMachine).OpenSubKey(is64bit ? subKey64 : subKey32, false);// RegistryKeyPermissionCheck.ReadSubTree, RegistryRights.EnumerateSubKeys);
 		var keys = reg?.GetSubKeyNames();
 		if (keys?.Length == 0) return new CORE_PRINTER_DRIVER[0];
-		var drvs = new CORE_PRINTER_DRIVER[keys.Length];
+		var drvs = new CORE_PRINTER_DRIVER[keys!.Length];
 		GetCorePrinterDrivers(pszServer, pszEnvironment, keys, (uint)keys.Length, drvs).ThrowIfFailed();
 		return drvs;
 	}
@@ -1011,19 +1011,8 @@ public static partial class WinSpool
 	/// <returns>A sequence of <c>MONITOR_INFO_1</c> structures or <c>MONITOR_INFO_2</c> structures.</returns>
 	/// <exception cref="System.ArgumentException"></exception>
 	[PInvokeData("winspool.h", MSDNShortId = "4d4fbed2-193f-426c-8463-eeb6b1eaf316")]
-	public static IEnumerable<T> EnumMonitors<T>([Optional] string? pName) where T : struct
-	{
-		if (!TryGetLevel<T>("MONITOR_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(EnumMonitors)} cannot process a structure of type {typeof(T).Name}.");
-		if (!EnumMonitors(pName, lvl, default, 0, out var bytes, out var count))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (bytes == 0)
-			return new T[0];
-		using var mem = new SafeCoTaskMemHandle(bytes);
-		if (!EnumMonitors(pName, lvl, mem, mem.Size, out bytes, out count))
-			Win32Error.ThrowLastError();
-		return mem.ToArray<T>((int)count);
-	}
+	public static IEnumerable<T> EnumMonitors<T>([Optional] string? pName) where T : struct =>
+		WSEnum<T>("MONITOR_INFO_", (uint l, IntPtr p, uint cb, out uint pcb, out uint c) => EnumMonitors(pName, l, p, cb, out pcb, out c));
 
 	/// <summary>The <c>EnumPorts</c> function enumerates the ports that are available for printing on a specified server.</summary>
 	/// <param name="pName">
@@ -1075,19 +1064,8 @@ public static partial class WinSpool
 	/// <returns>A sequence of <c>PORT_INFO_1</c> structures or <c>PORT_INFO_2</c> structures.</returns>
 	/// <remarks>The <c>EnumPorts</c> function can succeed even if the server specified by pName does not have a printer defined.</remarks>
 	[PInvokeData("winspool.h", MSDNShortId = "72ea0e35-bf26-4c12-9451-8f6941990d82")]
-	public static IEnumerable<T> EnumPorts<T>([Optional] string? pName) where T : struct
-	{
-		if (!TryGetLevel<T>("PORT_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(EnumPorts)} cannot process a structure of type {typeof(T).Name}.");
-		if (!EnumPorts(pName, lvl, default, 0, out var bytes, out var count))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (bytes == 0)
-			return new T[0];
-		using var mem = new SafeCoTaskMemHandle(bytes);
-		if (!EnumPorts(pName, lvl, mem, mem.Size, out bytes, out count))
-			Win32Error.ThrowLastError();
-		return mem.ToArray<T>((int)count);
-	}
+	public static IEnumerable<T> EnumPorts<T>([Optional] string? pName) where T : struct =>
+		WSEnum<T>("PORT_INFO_", (uint l, IntPtr p, uint cb, out uint pcb, out uint c) => EnumPorts(pName, l, p, cb, out pcb, out c));
 
 	/// <summary>The <c>EnumPrinterDrivers</c> function enumerates the printer drivers installed on a specified printer server.</summary>
 	/// <param name="pName">
@@ -1199,19 +1177,8 @@ public static partial class WinSpool
 	/// <c>DRIVER_INFO_6</c>, or <c>DRIVER_INFO_8</c> structures.
 	/// </returns>
 	[PInvokeData("winspool.h", MSDNShortId = "fa3d8cf4-70bc-4362-833e-e4217ed5d43b")]
-	public static IEnumerable<T> EnumPrinterDrivers<T>([Optional] string? pName, [Optional] string? pEnvironment) where T : struct
-	{
-		if (!TryGetLevel<T>("DRIVER_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(EnumPrinterDrivers)} cannot process a structure of type {typeof(T).Name}.");
-		if (!EnumPrinterDrivers(pName, pEnvironment, lvl, default, 0, out var bytes, out var count))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (bytes == 0)
-			return new T[0];
-		using var mem = new SafeCoTaskMemHandle(bytes);
-		if (!EnumPrinterDrivers(pName, pEnvironment, lvl, mem, mem.Size, out bytes, out count))
-			Win32Error.ThrowLastError();
-		return mem.ToArray<T>((int)count);
-	}
+	public static IEnumerable<T> EnumPrinterDrivers<T>([Optional] string? pName, [Optional] string? pEnvironment) where T : struct =>
+		WSEnum<T>("DRIVER_INFO_", (uint l, IntPtr p, uint cb, out uint pcb, out uint c) => EnumPrinterDrivers(pName, pEnvironment, l, p, cb, out pcb, out c));
 
 	/// <summary>The <c>EnumPrintProcessorDatatypes</c> function enumerates the data types that a specified print processor supports.</summary>
 	/// <param name="pName">
@@ -1271,19 +1238,8 @@ public static partial class WinSpool
 	/// <returns>A sequence of <c>DATATYPES_INFO_1</c> structures.</returns>
 	/// <remarks>Starting with Windows Vista, the data type information from remote print servers is retrieved from a local cache.</remarks>
 	[PInvokeData("winspool.h", MSDNShortId = "27b6e074-d303-446b-9e5f-6cfa55c30d26")]
-	public static IEnumerable<T> EnumPrintProcessorDatatypes<T>(string pPrintProcessorName, [Optional] string? pName) where T : struct
-	{
-		if (!TryGetLevel<T>("DATATYPES_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(EnumPrintProcessorDatatypes)} cannot process a structure of type {typeof(T).Name}.");
-		if (!EnumPrintProcessorDatatypes(pName, pPrintProcessorName, lvl, default, 0, out var bytes, out var count))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (bytes == 0)
-			return new T[0];
-		using var mem = new SafeCoTaskMemHandle(bytes);
-		if (!EnumPrintProcessorDatatypes(pName, pPrintProcessorName, lvl, mem, mem.Size, out bytes, out count))
-			Win32Error.ThrowLastError();
-		return mem.ToArray<T>((int)count);
-	}
+	public static IEnumerable<T> EnumPrintProcessorDatatypes<T>(string pPrintProcessorName, [Optional] string? pName) where T : struct =>
+		WSEnum<T>("DATATYPES_INFO_", (uint l, IntPtr p, uint cb, out uint pcb, out uint c) => EnumPrintProcessorDatatypes(pName, pPrintProcessorName, l, p, cb, out pcb, out c));
 
 	/// <summary>The <c>EnumPrintProcessors</c> function enumerates the print processors installed on the specified server.</summary>
 	/// <param name="pName">
@@ -1597,7 +1553,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "0d482d28-7668-4734-ba71-5b355c18ddec")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPrinterDriver2([Optional] HWND hWnd, HPRINTER hPrinter, [Optional] string? pEnvironment, uint Level, IntPtr pDriverInfo, uint cbBuf, out uint pcbNeeded);
+	public static extern bool GetPrinterDriver2([Optional] HWND hWnd, HPRINTER hPrinter, [Optional] string? pEnvironment, uint Level, [Optional] IntPtr pDriverInfo, [Optional] uint cbBuf, out uint pcbNeeded);
 
 	/// <summary>
 	/// The <c>GetPrinterDriver2</c> function retrieves driver data for the specified printer. If the driver is not installed on the
@@ -1672,7 +1628,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "69c9cc87-d7e3-496a-b631-b3ae30cdb3fd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPrinterDriverDirectory([Optional] string? pName, [Optional] string? pEnvironment, uint Level, StringBuilder pDriverDirectory, int cbBuf, out int pcbNeeded);
+	public static extern bool GetPrinterDriverDirectory([Optional] string? pName, [Optional] string? pEnvironment, uint Level, StringBuilder? pDriverDirectory, int cbBuf, out int pcbNeeded);
 
 	/// <summary>Retrieves the path to the specified printer driver package on a print server.</summary>
 	/// <param name="pszServer">
@@ -1709,7 +1665,8 @@ public static partial class WinSpool
 	// pszDriverPackageCab, _In_ DWORD cchDriverPackageCab, _Out_ LPDWORD pcchRequiredSize );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "e88e984b-d2c0-43b4-8f70-b05ec202ab14")]
-	public static extern HRESULT GetPrinterDriverPackagePath([Optional] string? pszServer, [Optional] string? pszEnvironment, [Optional] string? pszLanguage, string pszPackageID, StringBuilder pszDriverPackageCab, int cchDriverPackageCab, out int pcchRequiredSize);
+	public static extern HRESULT GetPrinterDriverPackagePath([Optional] string? pszServer, [Optional] string? pszEnvironment, [Optional] string? pszLanguage,
+		string pszPackageID, StringBuilder? pszDriverPackageCab, int cchDriverPackageCab, out int pcchRequiredSize);
 
 	/// <summary>
 	/// The <c>GetPrintProcessorDirectory</c> function retrieves the path to the print processor directory on the specified server.
@@ -1744,7 +1701,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "a2443cfd-e5ba-41c6-aaf4-45051a3d0e26")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPrintProcessorDirectory([Optional] string? pName, [Optional] string? pEnvironment, uint Level, StringBuilder pPrintProcessorInfo, int cbBuf, out int pcbNeeded);
+	public static extern bool GetPrintProcessorDirectory([Optional] string? pName, [Optional] string? pEnvironment, uint Level, StringBuilder? pPrintProcessorInfo, int cbBuf, out int pcbNeeded);
 
 	/// <summary>Installs a printer driver from a driver package that is in the print server's driver store.</summary>
 	/// <param name="pszServer">

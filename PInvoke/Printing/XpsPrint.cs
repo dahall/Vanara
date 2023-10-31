@@ -313,7 +313,7 @@ public static partial class XpsPrint
 	[DllImport(Lib.XpsPrint, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("xpsprint.h", MSDNShortId = "d982ae2e-c68f-4197-b419-22a63e61db8a")]
 	public static extern HRESULT StartXpsPrintJob([MarshalAs(UnmanagedType.LPWStr)] string printerName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? jobName,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? outputFileName, [Optional] IntPtr progressEvent, [Optional] IntPtr completionEvent, [Optional] byte[]? printablePagesOn,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? outputFileName, [Optional] HEVENT progressEvent, [Optional] HEVENT completionEvent, [Optional] byte[]? printablePagesOn,
 		uint printablePagesOnCount, out IXpsPrintJob xpsPrintJob, out IXpsPrintJobStream documentStream, out IXpsPrintJobStream printTicketStream);
 
 	/// <summary>
@@ -439,7 +439,7 @@ public static partial class XpsPrint
 	[DllImport(Lib.XpsPrint, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("xpsprint.h", MSDNShortId = "91D0BA4D-60A6-43F8-8BD3-9183DC6CD50D")]
 	public static extern HRESULT StartXpsPrintJob1([MarshalAs(UnmanagedType.LPWStr)] string printerName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? jobName,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? outputFileName, [Optional] IntPtr progressEvent, [Optional] IntPtr completionEvent,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? outputFileName, [Optional] HEVENT progressEvent, [Optional] HEVENT completionEvent,
 		out IXpsPrintJob xpsPrintJob, out IntPtr printContentReceiver);
 
 	/// <summary>

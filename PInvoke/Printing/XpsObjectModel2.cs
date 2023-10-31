@@ -98,7 +98,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomimageresourcecollection-getbypartname
 		// HRESULT GetByPartName( IOpcPartUri *partName, IXpsOMImageResource **part );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMImageResource GetByPartName([In] IOpcPartUri partName);
+		IXpsOMImageResource? GetByPartName([In] IOpcPartUri partName);
 	}
 
 	/// <summary>Specifies a linear gradient, which is the color gradient along a vector.</summary>
@@ -214,7 +214,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransform HRESULT
 		// GetTransform( IXpsOMMatrixTransform **transform );
-		new IXpsOMMatrixTransform GetTransform();
+		new IXpsOMMatrixTransform? GetTransform();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMMatrixTransform interface that contains the local, unshared, resolved matrix transform for the brush.
@@ -250,7 +250,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlocal
 		// HRESULT GetTransformLocal( IXpsOMMatrixTransform **transform );
-		new IXpsOMMatrixTransform GetTransformLocal();
+		new IXpsOMMatrixTransform? GetTransformLocal();
 
 		/// <summary>
 		/// Sets the IXpsOMMatrixTransform interface pointer to a local, unshared matrix transform that is to be used for the brush.
@@ -300,7 +300,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-settransformlocal
 		// HRESULT SetTransformLocal( IXpsOMMatrixTransform *transform );
-		new void SetTransformLocal([In] IXpsOMMatrixTransform transform);
+		new void SetTransformLocal([In] IXpsOMMatrixTransform? transform);
 
 		/// <summary>
 		/// <para>Gets the name of the lookup key of the shared matrix transform interface that is to be used for the brush.</para>
@@ -346,7 +346,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlookup
 		// HRESULT GetTransformLookup( LPWSTR *key );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetTransformLookup();
+		new string? GetTransformLookup();
 
 		/// <summary>
 		/// <para>Sets the name of the lookup key of a shared matrix transform that is to be used for the brush.</para>
@@ -394,7 +394,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-settransformlookup
 		// HRESULT SetTransformLookup( LPCWSTR key );
-		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the XPS_SPREAD_METHOD value, which describes how the area outside of the gradient region will be rendered.</summary>
 		/// <returns>
@@ -531,7 +531,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomnamecollection-getat HRESULT GetAt(
 		// UINT32 index, LPWSTR *name );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetAt([In] uint index);
+		string? GetAt([In] uint index);
 	}
 
 	/// <summary>Describes a non-text visual item.</summary>
@@ -586,7 +586,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransform HRESULT
 		// GetTransform( IXpsOMMatrixTransform **matrixTransform );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IXpsOMMatrixTransform GetTransform();
+		new IXpsOMMatrixTransform? GetTransform();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMMatrixTransform interface that contains the local, unshared, resolved matrix transform for the visual.
@@ -619,7 +619,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlocal HRESULT
 		// GetTransformLocal( IXpsOMMatrixTransform **matrixTransform );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IXpsOMMatrixTransform GetTransformLocal();
+		new IXpsOMMatrixTransform? GetTransformLocal();
 
 		/// <summary>Sets the local, unshared matrix transform.</summary>
 		/// <param name="matrixTransform">
@@ -664,7 +664,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-settransformlocal HRESULT
 		// SetTransformLocal( IXpsOMMatrixTransform *matrixTransform );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetTransformLocal([In] IXpsOMMatrixTransform matrixTransform);
+		new void SetTransformLocal([In] IXpsOMMatrixTransform? matrixTransform);
 
 		/// <summary>
 		/// Gets the lookup key name of the IXpsOMMatrixTransform interface in a resource dictionary that contains the resolved matrix
@@ -699,7 +699,7 @@ public static partial class XpsObjectModel
 		// GetTransformLookup( LPWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetTransformLookup();
+		new string? GetTransformLookup();
 
 		/// <summary>Sets the lookup key name of a shared matrix transform in a resource dictionary.</summary>
 		/// <param name="key">The lookup key name of the matrix transform in the dictionary.</param>
@@ -742,7 +742,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-settransformlookup HRESULT
 		// SetTransformLookup( LPCWSTR key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMGeometry interface that contains the resolved geometry of the visual's clipping region.
@@ -778,7 +778,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometry HRESULT
 		// GetClipGeometry( IXpsOMGeometry **clipGeometry );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IXpsOMGeometry GetClipGeometry();
+		new IXpsOMGeometry? GetClipGeometry();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMGeometry interface that contains the local, unshared geometry of the visual's clipping region.
@@ -810,7 +810,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylocal HRESULT
 		// GetClipGeometryLocal( IXpsOMGeometry **clipGeometry );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IXpsOMGeometry GetClipGeometryLocal();
+		new IXpsOMGeometry? GetClipGeometryLocal();
 
 		/// <summary>Sets the local, unshared clipping region for the visual.</summary>
 		/// <param name="clipGeometry">
@@ -856,7 +856,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setclipgeometrylocal HRESULT
 		// SetClipGeometryLocal( IXpsOMGeometry *clipGeometry );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetClipGeometryLocal([In] IXpsOMGeometry clipGeometry);
+		new void SetClipGeometryLocal([In] IXpsOMGeometry? clipGeometry);
 
 		/// <summary>
 		/// Gets the lookup key for the IXpsOMGeometry interface in a resource dictionary that contains the visual's clipping region.
@@ -889,7 +889,7 @@ public static partial class XpsObjectModel
 		// HRESULT GetClipGeometryLookup( LPWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetClipGeometryLookup();
+		new string? GetClipGeometryLookup();
 
 		/// <summary>Sets the lookup key name of a shared clip geometry in a resource dictionary.</summary>
 		/// <param name="key">
@@ -934,7 +934,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setclipgeometrylookup
 		// HRESULT SetClipGeometryLookup( LPCWSTR key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetClipGeometryLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		new void SetClipGeometryLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the opacity value of this visual.</summary>
 		/// <returns>The opacity value.</returns>
@@ -988,7 +988,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrush HRESULT
 		// GetOpacityMaskBrush( IXpsOMBrush **opacityMaskBrush );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IXpsOMBrush GetOpacityMaskBrush();
+		new IXpsOMBrush? GetOpacityMaskBrush();
 
 		/// <summary>Gets the local, unshared opacity mask brush for the visual.</summary>
 		/// <returns>
@@ -1018,7 +1018,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlocal
 		// HRESULT GetOpacityMaskBrushLocal( IXpsOMBrush **opacityMaskBrush );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IXpsOMBrush GetOpacityMaskBrushLocal();
+		new IXpsOMBrush? GetOpacityMaskBrushLocal();
 
 		/// <summary>Sets the IXpsOMBrush interface pointer as the local, unshared opacity mask brush.</summary>
 		/// <param name="opacityMaskBrush">
@@ -1064,7 +1064,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setopacitymaskbrushlocal
 		// HRESULT SetOpacityMaskBrushLocal( IXpsOMBrush *opacityMaskBrush );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetOpacityMaskBrushLocal([In] IXpsOMBrush opacityMaskBrush);
+		new void SetOpacityMaskBrushLocal([In] IXpsOMBrush? opacityMaskBrush);
 
 		/// <summary>Gets the name of the lookup key of the shared opacity mask brush in a resource dictionary.</summary>
 		/// <returns>
@@ -1095,7 +1095,7 @@ public static partial class XpsObjectModel
 		// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetOpacityMaskBrushLookup();
+		new string? GetOpacityMaskBrushLookup();
 
 		/// <summary>Sets the lookup key name of a shared opacity mask brush in a resource dictionary.</summary>
 		/// <param name="key">
@@ -1140,7 +1140,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setopacitymaskbrushlookup
 		// HRESULT SetOpacityMaskBrushLookup( LPCWSTR key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetOpacityMaskBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		new void SetOpacityMaskBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the <c>Name</c> property of the visual.</summary>
 		/// <returns>The <c>Name</c> property string. If the <c>Name</c> property has not been set, a <c>NULL</c> pointer is returned.</returns>
@@ -1148,7 +1148,7 @@ public static partial class XpsObjectModel
 		// LPWSTR *name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetName();
+		new string? GetName();
 
 		/// <summary>Sets the <c>Name</c> property of the visual.</summary>
 		/// <param name="name">The name of the visual. A <c>NULL</c> pointer clears the <c>Name</c> property.</param>
@@ -1161,7 +1161,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setname HRESULT SetName(
 		// LPCWSTR name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetName([In, MarshalAs(UnmanagedType.LPWStr)] string name);
+		new void SetName([In, MarshalAs(UnmanagedType.LPWStr)] string? name);
 
 		/// <summary>Gets a value that indicates whether the visual is the target of a hyperlink.</summary>
 		/// <returns>
@@ -1219,7 +1219,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gethyperlinknavigateuri
 		// HRESULT GetHyperlinkNavigateUri( IUri **hyperlinkUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IUri GetHyperlinkNavigateUri();
+		new IUri? GetHyperlinkNavigateUri();
 
 		/// <summary>Sets the destination URI of the visual's hyperlink.</summary>
 		/// <param name="hyperlinkUri">The IUri interface that contains the destination URI of the visual's hyperlink.</param>
@@ -1244,7 +1244,7 @@ public static partial class XpsObjectModel
 		// GetLanguage( LPWSTR *language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetLanguage();
+		new string? GetLanguage();
 
 		/// <summary>Sets the <c>Language</c> property of the visual.</summary>
 		/// <param name="language">
@@ -1257,7 +1257,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setlanguage HRESULT
 		// SetLanguage( LPCWSTR language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string language);
+		new void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string? language);
 
 		/// <summary>Gets a pointer to the path's IXpsOMGeometry interface, which describes the resolved fill area for this path.</summary>
 		/// <returns>
@@ -1289,7 +1289,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getgeometry HRESULT
 		// GetGeometry( IXpsOMGeometry **geometry );
-		IXpsOMGeometry GetGeometry();
+		IXpsOMGeometry? GetGeometry();
 
 		/// <summary>Gets the local, unshared geometry of the resolved fill area for this path.</summary>
 		/// <returns>
@@ -1318,7 +1318,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getgeometrylocal HRESULT
 		// GetGeometryLocal( IXpsOMGeometry **geometry );
-		IXpsOMGeometry GetGeometryLocal();
+		IXpsOMGeometry? GetGeometryLocal();
 
 		/// <summary>
 		/// Sets the pointer to the local, unshared IXpsOMGeometry interface that contains the geometry of the resolved fill area to be
@@ -1365,7 +1365,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-setgeometrylocal HRESULT
 		// SetGeometryLocal( IXpsOMGeometry *geometry );
-		void SetGeometryLocal([In] IXpsOMGeometry geometry);
+		void SetGeometryLocal([In] IXpsOMGeometry? geometry);
 
 		/// <summary>
 		/// Gets the lookup key of a shared geometry object that is stored in a resource dictionary and that describes the resolved fill
@@ -1398,7 +1398,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getgeometrylookup HRESULT
 		// GetGeometryLookup( LPWSTR *lookup );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetGeometryLookup();
+		string? GetGeometryLookup();
 
 		/// <summary>
 		/// <para>Sets the lookup key name of a shared geometry in a resource dictionary.</para>
@@ -1441,7 +1441,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-setgeometrylookup HRESULT
 		// SetGeometryLookup( LPCWSTR lookup );
-		void SetGeometryLookup([In, MarshalAs(UnmanagedType.LPWStr)] string lookup);
+		void SetGeometryLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? lookup);
 
 		/// <summary>
 		/// Gets the short textual description of the object's contents. This description is used by accessibility clients to describe
@@ -1459,7 +1459,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getaccessibilityshortdescription
 		// HRESULT GetAccessibilityShortDescription( LPWSTR *shortDescription );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetAccessibilityShortDescription();
+		string? GetAccessibilityShortDescription();
 
 		/// <summary>
 		/// Sets the short textual description of the object's contents. This description is used by accessibility clients to describe
@@ -1490,7 +1490,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getaccessibilitylongdescription
 		// HRESULT GetAccessibilityLongDescription( LPWSTR *longDescription );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetAccessibilityLongDescription();
+		string? GetAccessibilityLongDescription();
 
 		/// <summary>
 		/// Sets the long (detailed) textual description of the object's contents. This description is used by accessibility clients to
@@ -1590,7 +1590,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getstrokebrush HRESULT
 		// GetStrokeBrush( IXpsOMBrush **brush );
-		IXpsOMBrush GetStrokeBrush();
+		IXpsOMBrush? GetStrokeBrush();
 
 		/// <summary>Gets a pointer to the local, unshared IXpsOMBrush interface that contains the stroke brush for the path.</summary>
 		/// <returns>
@@ -1619,7 +1619,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getstrokebrushlocal HRESULT
 		// GetStrokeBrushLocal( IXpsOMBrush **brush );
-		IXpsOMBrush GetStrokeBrushLocal();
+		IXpsOMBrush? GetStrokeBrushLocal();
 
 		/// <summary>Sets a pointer to a local, unshared IXpsOMBrush interface to be used as a stroke brush.</summary>
 		/// <param name="brush">A pointer to a local, unshared IXpsOMBrush interface to be used as a stroke brush.</param>
@@ -1660,7 +1660,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-setstrokebrushlocal HRESULT
 		// SetStrokeBrushLocal( IXpsOMBrush *brush );
-		void SetStrokeBrushLocal([In] IXpsOMBrush brush);
+		void SetStrokeBrushLocal([In] IXpsOMBrush? brush);
 
 		/// <summary>
 		/// Gets the lookup key of the brush that is stored in a resource dictionary and is to be used as the stroke brush for the path.
@@ -1692,7 +1692,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getstrokebrushlookup HRESULT
 		// GetStrokeBrushLookup( LPWSTR *lookup );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetStrokeBrushLookup();
+		string? GetStrokeBrushLookup();
 
 		/// <summary>
 		/// Sets the lookup key name of a shared brush to be used as the stroke brush.The shared brush is stored in a resource dictionary.
@@ -1734,7 +1734,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-setstrokebrushlookup HRESULT
 		// SetStrokeBrushLookup( LPCWSTR lookup );
-		void SetStrokeBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string lookup);
+		void SetStrokeBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? lookup);
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMDashCollection interface that contains the XPS_DASH structures that define the dash pattern of
@@ -1905,7 +1905,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getfillbrush HRESULT
 		// GetFillBrush( IXpsOMBrush **brush );
-		IXpsOMBrush GetFillBrush();
+		IXpsOMBrush? GetFillBrush();
 
 		/// <summary>Gets a pointer to the local, unshared IXpsOMBrush interface that contains the fill brush for the path.</summary>
 		/// <returns>
@@ -1935,7 +1935,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getfillbrushlocal HRESULT
 		// GetFillBrushLocal( IXpsOMBrush **brush );
-		IXpsOMBrush GetFillBrushLocal();
+		IXpsOMBrush? GetFillBrushLocal();
 
 		/// <summary>Sets the pointer to the local, unshared IXpsOMBrush interface to be used as the fill brush.</summary>
 		/// <param name="brush">A pointer to the local, unshared IXpsOMBrush interface to be used as the fill brush.</param>
@@ -1976,7 +1976,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-setfillbrushlocal HRESULT
 		// SetFillBrushLocal( IXpsOMBrush *brush );
-		void SetFillBrushLocal([In] IXpsOMBrush brush);
+		void SetFillBrushLocal([In] IXpsOMBrush? brush);
 
 		/// <summary>
 		/// Gets the lookup key of the brush that is stored in a resource dictionary and used as the fill brush for the path.
@@ -2008,7 +2008,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getfillbrushlookup HRESULT
 		// GetFillBrushLookup( LPWSTR *lookup );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetFillBrushLookup();
+		string? GetFillBrushLookup();
 
 		/// <summary>Sets the lookup key name of a shared brush in a resource dictionary, to be used as the fill brush.</summary>
 		/// <param name="lookup">The key name of the brush in a resource dictionary, to be used as the fill brush.</param>
@@ -2048,7 +2048,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-setfillbrushlookup HRESULT
 		// SetFillBrushLookup( LPCWSTR lookup );
-		void SetFillBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string lookup);
+		void SetFillBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? lookup);
 
 		/// <summary>Makes a deep copy of the interface.</summary>
 		/// <returns>A pointer to the copy of the interface.</returns>
@@ -2071,7 +2071,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-getpartname HRESULT
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -2084,7 +2084,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a new, read-only copy of the stream that is associated with this resource.</summary>
 		/// <returns>A new, read-only copy of the stream that is associated with this resource.</returns>
@@ -2228,7 +2228,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransform HRESULT
 		// GetTransform( IXpsOMMatrixTransform **transform );
-		new IXpsOMMatrixTransform GetTransform();
+		new IXpsOMMatrixTransform? GetTransform();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMMatrixTransform interface that contains the local, unshared, resolved matrix transform for the brush.
@@ -2264,7 +2264,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlocal
 		// HRESULT GetTransformLocal( IXpsOMMatrixTransform **transform );
-		new IXpsOMMatrixTransform GetTransformLocal();
+		new IXpsOMMatrixTransform? GetTransformLocal();
 
 		/// <summary>
 		/// Sets the IXpsOMMatrixTransform interface pointer to a local, unshared matrix transform that is to be used for the brush.
@@ -2314,7 +2314,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-settransformlocal
 		// HRESULT SetTransformLocal( IXpsOMMatrixTransform *transform );
-		new void SetTransformLocal([In] IXpsOMMatrixTransform transform);
+		new void SetTransformLocal([In] IXpsOMMatrixTransform? transform);
 
 		/// <summary>
 		/// <para>Gets the name of the lookup key of the shared matrix transform interface that is to be used for the brush.</para>
@@ -2360,7 +2360,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlookup
 		// HRESULT GetTransformLookup( LPWSTR *key );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetTransformLookup();
+		new string? GetTransformLookup();
 
 		/// <summary>
 		/// <para>Sets the name of the lookup key of a shared matrix transform that is to be used for the brush.</para>
@@ -2408,7 +2408,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-settransformlookup
 		// HRESULT SetTransformLookup( LPCWSTR key );
-		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the XPS_SPREAD_METHOD value, which describes how the area outside of the gradient region will be rendered.</summary>
 		/// <returns>
@@ -2587,7 +2587,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-getpartname HRESULT
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -2600,7 +2600,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a pointer to the IXpsOMDictionary interface of the remote dictionary that is associated with this resource.</summary>
 		/// <returns>A pointer to the IXpsOMDictionary interface of the dictionary that is associated with this resource.</returns>
@@ -2711,7 +2711,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomremotedictionaryresourcecollection-getbypartname
 		// HRESULT GetByPartName( IOpcPartUri *partName, IXpsOMRemoteDictionaryResource **remoteDictionaryResource );
-		IXpsOMRemoteDictionaryResource GetByPartName([In] IOpcPartUri partName);
+		IXpsOMRemoteDictionaryResource? GetByPartName([In] IOpcPartUri partName);
 	}
 
 	/// <summary>Used as the base interface for the resource interfaces of the XPS object model.</summary>
@@ -2728,7 +2728,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-getpartname HRESULT
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -2741,7 +2741,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 	}
 
 	/// <summary>The base interface for sharable interfaces.</summary>
@@ -2778,7 +2778,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-getpartname HRESULT
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -2791,7 +2791,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a pointer to the IXpsOMDocument interface that contains the resource.</summary>
 		/// <returns>
@@ -2801,7 +2801,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomsignatureblockresource-getowner
 		// HRESULT GetOwner( IXpsOMDocument **owner );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMDocument GetOwner();
+		IXpsOMDocument? GetOwner();
 
 		/// <summary>Gets a new, read-only copy of the stream that is associated with this resource.</summary>
 		/// <returns>A new, read-only copy of the stream that is associated with this resource.</returns>
@@ -2931,7 +2931,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomsignatureblockresourcecollection-getbypartname
 		// HRESULT GetByPartName( IOpcPartUri *partName, IXpsOMSignatureBlockResource **signatureBlockResource );
-		IXpsOMSignatureBlockResource GetByPartName([In] IOpcPartUri partName);
+		IXpsOMSignatureBlockResource? GetByPartName([In] IOpcPartUri partName);
 	}
 
 	/// <summary>A single-color brush.</summary>
@@ -2985,7 +2985,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomsolidcolorbrush-getcolor HRESULT
 		// GetColor( XPS_COLOR *color, IXpsOMColorProfileResource **colorProfile );
-		IXpsOMColorProfileResource GetColor(out XPS_COLOR color);
+		IXpsOMColorProfileResource? GetColor(out XPS_COLOR color);
 
 		/// <summary>Sets the color value and color profile of the brush.</summary>
 		/// <param name="color">
@@ -3005,7 +3005,7 @@ public static partial class XpsObjectModel
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomsolidcolorbrush-setcolor HRESULT
 		// SetColor( const XPS_COLOR *color, IXpsOMColorProfileResource *colorProfile );
-		void SetColor(in XPS_COLOR color, [In] IXpsOMColorProfileResource colorProfile);
+		void SetColor(in XPS_COLOR color, [In] IXpsOMColorProfileResource? colorProfile);
 
 		/// <summary>Makes a deep copy of the interface.</summary>
 		/// <returns>A pointer to the copy of the interface.</returns>
@@ -3037,7 +3037,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-getpartname HRESULT
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -3050,7 +3050,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a pointer to the IXpsOMPage interface that contains this resource.</summary>
 		/// <returns>
@@ -3060,7 +3060,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomstoryfragmentsresource-getowner
 		// HRESULT GetOwner( IXpsOMPageReference **owner );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMPageReference GetOwner();
+		IXpsOMPageReference? GetOwner();
 
 		/// <summary>Gets a new, read-only copy of the stream that is associated with this resource.</summary>
 		/// <returns>A new, read-only copy of the stream that is associated with this resource.</returns>
@@ -3231,7 +3231,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransform HRESULT
 		// GetTransform( IXpsOMMatrixTransform **transform );
-		IXpsOMMatrixTransform GetTransform();
+		IXpsOMMatrixTransform? GetTransform();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMMatrixTransform interface that contains the local, unshared resolved matrix transform for the brush.
@@ -3266,7 +3266,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlocal HRESULT
 		// GetTransformLocal( IXpsOMMatrixTransform **transform );
-		IXpsOMMatrixTransform GetTransformLocal();
+		IXpsOMMatrixTransform? GetTransformLocal();
 
 		/// <summary>Sets the IXpsOMMatrixTransform interface pointer to a local, unshared matrix transform.</summary>
 		/// <param name="transform">
@@ -3314,7 +3314,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-settransformlocal HRESULT
 		// SetTransformLocal( IXpsOMMatrixTransform *transform );
-		void SetTransformLocal([In] IXpsOMMatrixTransform transform);
+		void SetTransformLocal([In] IXpsOMMatrixTransform? transform);
 
 		/// <summary>
 		/// Gets the lookup key that identifies the IXpsOMMatrixTransform interface in a resource dictionary that contains the resolved
@@ -3354,7 +3354,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlookup
 		// HRESULT GetTransformLookup( LPWSTR *key );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetTransformLookup();
+		string? GetTransformLookup();
 
 		/// <summary>
 		/// Sets the lookup key name of a shared matrix transform that will be used as the transform for this brush.The shared matrix
@@ -3406,7 +3406,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-settransformlookup
 		// HRESULT SetTransformLookup( LPCWSTR key );
-		void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the portion of the source image to be used by the tile.</summary>
 		/// <returns>The XPS_RECT structure that describes the area of the source content to be used by the tile.</returns>
@@ -3553,7 +3553,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransform HRESULT
 		// GetTransform( IXpsOMMatrixTransform **matrixTransform );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMMatrixTransform GetTransform();
+		IXpsOMMatrixTransform? GetTransform();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMMatrixTransform interface that contains the local, unshared, resolved matrix transform for the visual.
@@ -3586,7 +3586,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlocal HRESULT
 		// GetTransformLocal( IXpsOMMatrixTransform **matrixTransform );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMMatrixTransform GetTransformLocal();
+		IXpsOMMatrixTransform? GetTransformLocal();
 
 		/// <summary>Sets the local, unshared matrix transform.</summary>
 		/// <param name="matrixTransform">
@@ -3631,7 +3631,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-settransformlocal HRESULT
 		// SetTransformLocal( IXpsOMMatrixTransform *matrixTransform );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetTransformLocal([In] IXpsOMMatrixTransform matrixTransform);
+		void SetTransformLocal([In] IXpsOMMatrixTransform? matrixTransform);
 
 		/// <summary>
 		/// Gets the lookup key name of the IXpsOMMatrixTransform interface in a resource dictionary that contains the resolved matrix
@@ -3666,7 +3666,7 @@ public static partial class XpsObjectModel
 		// GetTransformLookup( LPWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetTransformLookup();
+		string? GetTransformLookup();
 
 		/// <summary>Sets the lookup key name of a shared matrix transform in a resource dictionary.</summary>
 		/// <param name="key">The lookup key name of the matrix transform in the dictionary.</param>
@@ -3709,7 +3709,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-settransformlookup HRESULT
 		// SetTransformLookup( LPCWSTR key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMGeometry interface that contains the resolved geometry of the visual's clipping region.
@@ -3745,7 +3745,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometry HRESULT
 		// GetClipGeometry( IXpsOMGeometry **clipGeometry );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMGeometry GetClipGeometry();
+		IXpsOMGeometry? GetClipGeometry();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMGeometry interface that contains the local, unshared geometry of the visual's clipping region.
@@ -3777,7 +3777,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylocal HRESULT
 		// GetClipGeometryLocal( IXpsOMGeometry **clipGeometry );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMGeometry GetClipGeometryLocal();
+		IXpsOMGeometry? GetClipGeometryLocal();
 
 		/// <summary>Sets the local, unshared clipping region for the visual.</summary>
 		/// <param name="clipGeometry">
@@ -3823,7 +3823,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setclipgeometrylocal HRESULT
 		// SetClipGeometryLocal( IXpsOMGeometry *clipGeometry );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetClipGeometryLocal([In] IXpsOMGeometry clipGeometry);
+		void SetClipGeometryLocal([In] IXpsOMGeometry? clipGeometry);
 
 		/// <summary>
 		/// Gets the lookup key for the IXpsOMGeometry interface in a resource dictionary that contains the visual's clipping region.
@@ -3856,7 +3856,7 @@ public static partial class XpsObjectModel
 		// HRESULT GetClipGeometryLookup( LPWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetClipGeometryLookup();
+		string? GetClipGeometryLookup();
 
 		/// <summary>Sets the lookup key name of a shared clip geometry in a resource dictionary.</summary>
 		/// <param name="key">
@@ -3901,7 +3901,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setclipgeometrylookup
 		// HRESULT SetClipGeometryLookup( LPCWSTR key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetClipGeometryLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		void SetClipGeometryLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the opacity value of this visual.</summary>
 		/// <returns>The opacity value.</returns>
@@ -3955,7 +3955,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrush HRESULT
 		// GetOpacityMaskBrush( IXpsOMBrush **opacityMaskBrush );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMBrush GetOpacityMaskBrush();
+		IXpsOMBrush? GetOpacityMaskBrush();
 
 		/// <summary>Gets the local, unshared opacity mask brush for the visual.</summary>
 		/// <returns>
@@ -3985,7 +3985,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlocal
 		// HRESULT GetOpacityMaskBrushLocal( IXpsOMBrush **opacityMaskBrush );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMBrush GetOpacityMaskBrushLocal();
+		IXpsOMBrush? GetOpacityMaskBrushLocal();
 
 		/// <summary>Sets the IXpsOMBrush interface pointer as the local, unshared opacity mask brush.</summary>
 		/// <param name="opacityMaskBrush">
@@ -4031,7 +4031,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setopacitymaskbrushlocal
 		// HRESULT SetOpacityMaskBrushLocal( IXpsOMBrush *opacityMaskBrush );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetOpacityMaskBrushLocal([In] IXpsOMBrush opacityMaskBrush);
+		void SetOpacityMaskBrushLocal([In] IXpsOMBrush? opacityMaskBrush);
 
 		/// <summary>Gets the name of the lookup key of the shared opacity mask brush in a resource dictionary.</summary>
 		/// <returns>
@@ -4062,7 +4062,7 @@ public static partial class XpsObjectModel
 		// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetOpacityMaskBrushLookup();
+		string? GetOpacityMaskBrushLookup();
 
 		/// <summary>Sets the lookup key name of a shared opacity mask brush in a resource dictionary.</summary>
 		/// <param name="key">
@@ -4107,7 +4107,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setopacitymaskbrushlookup
 		// HRESULT SetOpacityMaskBrushLookup( LPCWSTR key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetOpacityMaskBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		void SetOpacityMaskBrushLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the <c>Name</c> property of the visual.</summary>
 		/// <returns>The <c>Name</c> property string. If the <c>Name</c> property has not been set, a <c>NULL</c> pointer is returned.</returns>
@@ -4115,7 +4115,7 @@ public static partial class XpsObjectModel
 		// LPWSTR *name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetName();
+		string? GetName();
 
 		/// <summary>Sets the <c>Name</c> property of the visual.</summary>
 		/// <param name="name">The name of the visual. A <c>NULL</c> pointer clears the <c>Name</c> property.</param>
@@ -4128,7 +4128,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setname HRESULT SetName(
 		// LPCWSTR name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetName([In, MarshalAs(UnmanagedType.LPWStr)] string name);
+		void SetName([In, MarshalAs(UnmanagedType.LPWStr)] string? name);
 
 		/// <summary>Gets a value that indicates whether the visual is the target of a hyperlink.</summary>
 		/// <returns>
@@ -4186,7 +4186,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gethyperlinknavigateuri
 		// HRESULT GetHyperlinkNavigateUri( IUri **hyperlinkUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IUri GetHyperlinkNavigateUri();
+		IUri? GetHyperlinkNavigateUri();
 
 		/// <summary>Sets the destination URI of the visual's hyperlink.</summary>
 		/// <param name="hyperlinkUri">The IUri interface that contains the destination URI of the visual's hyperlink.</param>
@@ -4211,7 +4211,7 @@ public static partial class XpsObjectModel
 		// GetLanguage( LPWSTR *language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetLanguage();
+		string? GetLanguage();
 
 		/// <summary>Sets the <c>Language</c> property of the visual.</summary>
 		/// <param name="language">
@@ -4224,7 +4224,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-setlanguage HRESULT
 		// SetLanguage( LPCWSTR language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string language);
+		void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string? language);
 	}
 
 	/// <summary>A brush that uses a visual element as a source.</summary>
@@ -4305,7 +4305,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransform HRESULT
 		// GetTransform( IXpsOMMatrixTransform **transform );
-		new IXpsOMMatrixTransform GetTransform();
+		new IXpsOMMatrixTransform? GetTransform();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMMatrixTransform interface that contains the local, unshared resolved matrix transform for the brush.
@@ -4340,7 +4340,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlocal HRESULT
 		// GetTransformLocal( IXpsOMMatrixTransform **transform );
-		new IXpsOMMatrixTransform GetTransformLocal();
+		new IXpsOMMatrixTransform? GetTransformLocal();
 
 		/// <summary>Sets the IXpsOMMatrixTransform interface pointer to a local, unshared matrix transform.</summary>
 		/// <param name="transform">
@@ -4388,7 +4388,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-settransformlocal HRESULT
 		// SetTransformLocal( IXpsOMMatrixTransform *transform );
-		new void SetTransformLocal([In] IXpsOMMatrixTransform transform);
+		new void SetTransformLocal([In] IXpsOMMatrixTransform? transform);
 
 		/// <summary>
 		/// Gets the lookup key that identifies the IXpsOMMatrixTransform interface in a resource dictionary that contains the resolved
@@ -4428,7 +4428,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlookup
 		// HRESULT GetTransformLookup( LPWSTR *key );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string GetTransformLookup();
+		new string? GetTransformLookup();
 
 		/// <summary>
 		/// Sets the lookup key name of a shared matrix transform that will be used as the transform for this brush.The shared matrix
@@ -4480,7 +4480,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-settransformlookup
 		// HRESULT SetTransformLookup( LPCWSTR key );
-		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string key);
+		new void SetTransformLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? key);
 
 		/// <summary>Gets the portion of the source image to be used by the tile.</summary>
 		/// <returns>The XPS_RECT structure that describes the area of the source content to be used by the tile.</returns>
@@ -4611,7 +4611,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisualbrush-getvisual HRESULT
 		// GetVisual( IXpsOMVisual **visual );
-		IXpsOMVisual GetVisual();
+		IXpsOMVisual? GetVisual();
 
 		/// <summary>Gets a pointer to the interface of the local, unshared visual used as the source for the brush.</summary>
 		/// <returns>
@@ -4644,7 +4644,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisualbrush-getvisuallocal HRESULT
 		// GetVisualLocal( IXpsOMVisual **visual );
-		IXpsOMVisual GetVisualLocal();
+		IXpsOMVisual? GetVisualLocal();
 
 		/// <summary>Sets the interface pointer of the local, unshared visual used as the source for the brush.</summary>
 		/// <param name="visual">
@@ -4687,7 +4687,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisualbrush-setvisuallocal HRESULT
 		// SetVisualLocal( IXpsOMVisual *visual );
-		void SetVisualLocal([In] IXpsOMVisual visual);
+		void SetVisualLocal([In] IXpsOMVisual? visual);
 
 		/// <summary>
 		/// Gets the lookup key name of a visual in a resource dictionary; the visual is to be used as the source for the brush.
@@ -4719,7 +4719,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisualbrush-getvisuallookup HRESULT
 		// GetVisualLookup( LPWSTR *lookup );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetVisualLookup();
+		string? GetVisualLookup();
 
 		/// <summary>
 		/// Sets the lookup key name of the shared visual, which is stored in a resource dictionary, to be used as the source for the brush.
@@ -4762,7 +4762,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisualbrush-setvisuallookup HRESULT
 		// SetVisualLookup( LPCWSTR lookup );
-		void SetVisualLookup([In, MarshalAs(UnmanagedType.LPWStr)] string lookup);
+		void SetVisualLookup([In, MarshalAs(UnmanagedType.LPWStr)] string? lookup);
 
 		/// <summary>Makes a deep copy of the interface.</summary>
 		/// <returns>A pointer to the copy of the interface.</returns>

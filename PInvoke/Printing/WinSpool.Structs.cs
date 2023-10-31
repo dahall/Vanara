@@ -71,7 +71,7 @@ public static partial class WinSpool
 		/// Pointer to a null-terminated string that specifies the name of an output file. To print to a printer, set this to <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pOutputFile;
+		public string? pOutputFile;
 
 		/// <summary>Pointer to a null-terminated string that identifies the type of data used to record the document.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -273,7 +273,7 @@ public static partial class WinSpool
 		/// <c>NULL</c> and should be specified only for printers capable of bidirectional communication.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pMonitorName;
+		public string? pMonitorName;
 
 		/// <summary>A pointer to a null-terminated string that specifies the default data type of the print job (for example, "EMF").</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -343,7 +343,7 @@ public static partial class WinSpool
 		/// <c>NULL</c> and should be specified only for printers capable of bidirectional communication.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pMonitorName;
+		public string? pMonitorName;
 
 		/// <summary>A pointer to a null-terminated string that specifies the default data type of the print job (for example, EMF).</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -486,7 +486,7 @@ public static partial class WinSpool
 		/// <c>NULL</c> and should be specified only for printers capable of bidirectional communication.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pMonitorName;
+		public string? pMonitorName;
 
 		/// <summary>A pointer to a null-terminated string that specifies the default data type of the print job (for example, "EMF").</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -507,21 +507,21 @@ public static partial class WinSpool
 
 		/// <summary>Pointer to a null-terminated string that specifies the manufacturer's name.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszMfgName;
+		public string? pszMfgName;
 
 		/// <summary>Pointer to a null-terminated string that specifies the URL for the manufacturer.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszOEMUrl;
+		public string? pszOEMUrl;
 
 		/// <summary>Pointer to a null-terminated string that specifies the hardware ID for the printer driver.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszHardwareID;
+		public string? pszHardwareID;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the provider of the printer driver (for example, "Microsoft Windows 2000")
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszProvider;
+		public string? pszProvider;
 	}
 
 	/// <summary>Contains printer driver information.</summary>
@@ -591,7 +591,7 @@ public static partial class WinSpool
 		/// <c>NULL</c> and should be specified only for printers capable of bidirectional communication.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pMonitorName;
+		public string? pMonitorName;
 
 		/// <summary>A pointer to a null-terminated string that specifies the default data type of the print job (for example, "EMF").</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -612,21 +612,21 @@ public static partial class WinSpool
 
 		/// <summary>A pointer to a null-terminated string that specifies the manufacturer's name.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszMfgName;
+		public string? pszMfgName;
 
 		/// <summary>A pointer to a null-terminated string that specifies the URL for the manufacturer.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszOEMUrl;
+		public string? pszOEMUrl;
 
 		/// <summary>A pointer to a null-terminated string that specifies the hardware ID for the printer driver.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszHardwareID;
+		public string? pszHardwareID;
 
 		/// <summary>
 		/// A pointer to a null-terminated string that specifies the provider of the printer driver (for example, "Microsoft Windows 2000").
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszProvider;
+		public string? pszProvider;
 
 		/// <summary>A pointer to a null-terminated string that specifies the print processor (for example, "WinPrint").</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -645,7 +645,7 @@ public static partial class WinSpool
 		/// This must be <c>NULL</c> if the DRIVER_INFO_8 is being passed to <c>AddPrinterDriver</c> or <c>AddPrinterDriverEx</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszInfPath;
+		public string? pszInfPath;
 
 		/// <summary>
 		/// <para>
@@ -730,7 +730,7 @@ public static partial class WinSpool
 		/// must be <c>NULL</c> if the <c>DRIVER_INFO_8</c> is being passed to <c>AddPrinterDriver</c> or <c>AddPrinterDriverEx</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszzCoreDriverDependencies;
+		public string? pszzCoreDriverDependencies;
 
 		/// <summary>The earliest allowed date of any drivers that shipped with Windows and on which this driver depends.</summary>
 		public FILETIME ftMinInboxDriverVerDate;
@@ -909,14 +909,14 @@ public static partial class WinSpool
 
 		/// <summary>The Multilingual User Interface localized resource DLL that contains the localized display name.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pMuiDll;
+		public string? pMuiDll;
 
 		/// <summary>The resource ID of the form's display name in <c>pMuiDll</c>.</summary>
 		public uint dwResourceId;
 
 		/// <summary>The form's display name in the language specified by <c>wLangId</c>.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pDisplayName;
+		public string? pDisplayName;
 
 		/// <summary>The language of the <c>pDisplayName</c>.</summary>
 		public ushort wLangId;
@@ -961,7 +961,7 @@ public static partial class WinSpool
 		public static bool operator ==(HPRINTER h1, HPRINTER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HPRINTER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPRINTER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1009,7 +1009,7 @@ public static partial class WinSpool
 		public static bool operator ==(HPRINTERCHANGENOTIFICATION h1, HPRINTERCHANGENOTIFICATION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HPRINTERCHANGENOTIFICATION h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPRINTERCHANGENOTIFICATION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1057,7 +1057,7 @@ public static partial class WinSpool
 		public static bool operator ==(HSPOOLFILE h1, HSPOOLFILE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HSPOOLFILE h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HSPOOLFILE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1109,7 +1109,7 @@ public static partial class WinSpool
 		/// Status and, if pStatus is <c>NULL</c>, the status is defined by the contents of the Status member.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pStatus;
+		public string? pStatus;
 
 		/// <summary>
 		/// <para>
@@ -1304,7 +1304,7 @@ public static partial class WinSpool
 		/// <c>Status</c> and, if <c>pStatus</c> is <c>NULL</c>, the status is defined by the contents of the Status member.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pStatus;
+		public string? pStatus;
 
 		/// <summary>
 		/// The value of this member is <c>NULL</c>. Retrieval and setting of document security descriptors is not supported in this release.
@@ -1537,7 +1537,7 @@ public static partial class WinSpool
 		/// <c>Status</c> and, if <c>pStatus</c> is <c>NULL</c>, the status is defined by the contents of the Status member.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pStatus;
+		public string? pStatus;
 
 		/// <summary>
 		/// The value of this member is <c>NULL</c>. Retrieval and setting of document security descriptors is not supported in this release.
@@ -1762,7 +1762,7 @@ public static partial class WinSpool
 		/// <c>pDescription</c> is "printer port"). This can be <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pDescription;
+		public string? pDescription;
 
 		/// <summary>Bitmask describing the type of port. This member can be a combination of the following values:</summary>
 		public PORT_TYPE fPortType;
@@ -1932,7 +1932,7 @@ public static partial class WinSpool
 
 		/// <summary>A pointer to the name of the driver.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszDriverName;
+		public string? pszDriverName;
 	}
 
 	/// <summary>
@@ -2041,7 +2041,7 @@ public static partial class WinSpool
 
 		/// <summary>Pointer to a null-terminated string that contains additional data describing the structure.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pComment;
+		public string? pComment;
 	}
 
 	/// <summary>The <c>PRINTER_INFO_2</c> structure specifies detailed printer information.</summary>
@@ -2059,7 +2059,7 @@ public static partial class WinSpool
 		/// printer is controlled locally.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pServerName;
+		public string? pServerName;
 
 		/// <summary>A pointer to a null-terminated string that specifies the name of the printer.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -2070,7 +2070,7 @@ public static partial class WinSpool
 		/// PRINTER_ATTRIBUTE_SHARED constant was set for the <c>Attributes</c> member.)
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pShareName;
+		public string? pShareName;
 
 		/// <summary>
 		/// A pointer to a null-terminated string that identifies the port(s) used to transmit data to the printer. If a printer is
@@ -2085,13 +2085,13 @@ public static partial class WinSpool
 
 		/// <summary>A pointer to a null-terminated string that provides a brief description of the printer.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pComment;
+		public string? pComment;
 
 		/// <summary>
 		/// A pointer to a null-terminated string that specifies the physical location of the printer (for example, "Bldg. 38, Room 1164").
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pLocation;
+		public string? pLocation;
 
 		/// <summary>
 		/// A pointer to a <c>DEVMODE</c> structure that defines default printer data such as the paper orientation and the resolution.
@@ -2103,7 +2103,7 @@ public static partial class WinSpool
 		/// used to separate print jobs sent to the printer.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pSepFile;
+		public string? pSepFile;
 
 		/// <summary>
 		/// A pointer to a null-terminated string that specifies the name of the print processor used by the printer. You can use the
@@ -2117,11 +2117,11 @@ public static partial class WinSpool
 		/// <c>EnumPrintProcessorDatatypes</c> function to obtain a list of data types supported by a specific print processor.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pDatatype;
+		public string? pDatatype;
 
 		/// <summary>A pointer to a null-terminated string that specifies the default print-processor parameters.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pParameters;
+		public string? pParameters;
 
 		/// <summary>A pointer to a <c>SECURITY_DESCRIPTOR</c> structure for the printer. This member may be <c>NULL</c>.</summary>
 		public PSECURITY_DESCRIPTOR pSecurityDescriptor;
@@ -2431,7 +2431,7 @@ public static partial class WinSpool
 
 		/// <summary>Pointer to a null-terminated string that is the name of the server.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pServerName;
+		public string? pServerName;
 
 		/// <summary>
 		/// <para>Specifies information about the returned data.</para>
@@ -2730,7 +2730,7 @@ public static partial class WinSpool
 		/// <para>Before calling <c>SetPrinter</c>, set <c>pszObjectGUID</c> to <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string pszObjectGUID;
+		public string? pszObjectGUID;
 
 		/// <summary>
 		/// <para>
@@ -3612,7 +3612,7 @@ public static partial class WinSpool
 		public ACCESS_MASK DesiredAccess;
 
 		/// <summary>Pointer to a null-terminated string that specifies the default data type for a printer.</summary>
-		public string pDatatype;
+		public string? pDatatype;
 
 		/// <summary>A <c>DEVMODE</c> structure that identifies the default environment and initialization data for a printer.</summary>
 		public DEVMODE? pDevMode;
@@ -3733,14 +3733,14 @@ public static partial class WinSpool
 
 		public IntPtr MarshalManagedToNative(object ManagedObj)
 		{
-			if (!(ManagedObj is PRINTER_DEFAULTS pd)) throw new ArgumentException("Type of managed object must be PRINTER_DEFAULTS.");
+			if (ManagedObj is not PRINTER_DEFAULTS pd) throw new ArgumentException("Type of managed object must be PRINTER_DEFAULTS.");
 
 			var sz = IntPtr.Size * 2 + 4 + StringHelper.GetByteCount(pd.pDatatype) + (pd.pDevMode?.dmSize ?? 0);
 			var mem = new SafeCoTaskMemHandle(sz);
 			using (var str = new NativeMemoryStream(mem))
 			{
 				str.WriteReference(pd.pDatatype);
-				str.WriteReferenceObject(pd.pDevMode.HasValue ? (object)pd.pDevMode.Value : null);
+				str.WriteReferenceObject(pd.pDevMode.HasValue ? pd.pDevMode.Value : null);
 				str.Write((uint)pd.DesiredAccess);
 			}
 

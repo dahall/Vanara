@@ -28,7 +28,7 @@ public static partial class XpsObjectModel
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -41,7 +41,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a pointer to the IXpsOMPackage interface that contains the core properties.</summary>
 		/// <returns>
@@ -50,7 +50,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getowner HRESULT
 		// GetOwner( IXpsOMPackage **package );
-		IXpsOMPackage GetOwner();
+		IXpsOMPackage? GetOwner();
 
 		/// <summary>Gets the <c>category</c> property.</summary>
 		/// <returns>The string that is read from the <c>category</c> property.</returns>
@@ -60,7 +60,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcategory HRESULT
 		// GetCategory( LPWSTR *category );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetCategory();
+		string? GetCategory();
 
 		/// <summary>Sets the <c>category</c> property.</summary>
 		/// <param name="category">
@@ -69,7 +69,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>category</c> property contains a categorization of the content.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setcategory HRESULT
 		// SetCategory( LPCWSTR category );
-		void SetCategory([In, MarshalAs(UnmanagedType.LPWStr)] string category);
+		void SetCategory([In, MarshalAs(UnmanagedType.LPWStr)] string? category);
 
 		/// <summary>Gets the <c>contentStatus</c> property.</summary>
 		/// <returns>The string that is read from the <c>contentStatus</c> property.</returns>
@@ -82,7 +82,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontentstatus
 		// HRESULT GetContentStatus( LPWSTR *contentStatus );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetContentStatus();
+		string? GetContentStatus();
 
 		/// <summary>Sets the <c>contentStatus</c> property.</summary>
 		/// <param name="contentStatus">
@@ -94,7 +94,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setcontentstatus
 		// HRESULT SetContentStatus( LPCWSTR contentStatus );
-		void SetContentStatus([In, MarshalAs(UnmanagedType.LPWStr)] string contentStatus);
+		void SetContentStatus([In, MarshalAs(UnmanagedType.LPWStr)] string? contentStatus);
 
 		/// <summary>Gets the <c>contentType</c> property.</summary>
 		/// <returns>The string that is read from the <c>contentType</c> property.</returns>
@@ -108,7 +108,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontenttype
 		// HRESULT GetContentType( LPWSTR *contentType );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetContentType();
+		string? GetContentType();
 
 		/// <summary>Sets the <c>contentType</c> property.</summary>
 		/// <param name="contentType">
@@ -121,7 +121,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setcontenttype
 		// HRESULT SetContentType( LPCWSTR contentType );
-		void SetContentType([In, MarshalAs(UnmanagedType.LPWStr)] string contentType);
+		void SetContentType([In, MarshalAs(UnmanagedType.LPWStr)] string? contentType);
 
 		/// <summary>Gets the <c>created</c> property.</summary>
 		/// <returns>The date and time that are read from the <c>created</c> property.</returns>
@@ -145,7 +145,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcreator HRESULT
 		// GetCreator( LPWSTR *creator );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetCreator();
+		string? GetCreator();
 
 		/// <summary>Sets the <c>creator</c> property.</summary>
 		/// <param name="creator">
@@ -156,7 +156,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setcreator HRESULT
 		// SetCreator( LPCWSTR creator );
-		void SetCreator([In, MarshalAs(UnmanagedType.LPWStr)] string creator);
+		void SetCreator([In, MarshalAs(UnmanagedType.LPWStr)] string? creator);
 
 		/// <summary>Gets the <c>description</c> property.</summary>
 		/// <returns>The string that is read from the <c>description</c> property.</returns>
@@ -166,7 +166,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getdescription
 		// HRESULT GetDescription( LPWSTR *description );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetDescription();
+		string? GetDescription();
 
 		/// <summary>Sets the <c>description</c> property.</summary>
 		/// <param name="description">
@@ -175,7 +175,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>description</c> property explains the content.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setdescription
 		// HRESULT SetDescription( LPCWSTR description );
-		void SetDescription([In, MarshalAs(UnmanagedType.LPWStr)] string description);
+		void SetDescription([In, MarshalAs(UnmanagedType.LPWStr)] string? description);
 
 		/// <summary>Gets the <c>identifier</c> property.</summary>
 		/// <returns>The string that is read from the <c>identifier</c> property.</returns>
@@ -187,7 +187,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getidentifier
 		// HRESULT GetIdentifier( LPWSTR *identifier );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetIdentifier();
+		string? GetIdentifier();
 
 		/// <summary>Sets the <c>identifier</c> property.</summary>
 		/// <param name="identifier">
@@ -198,7 +198,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setidentifier
 		// HRESULT SetIdentifier( LPCWSTR identifier );
-		void SetIdentifier([In, MarshalAs(UnmanagedType.LPWStr)] string identifier);
+		void SetIdentifier([In, MarshalAs(UnmanagedType.LPWStr)] string? identifier);
 
 		/// <summary>Gets the <c>keywords</c> property.</summary>
 		/// <returns>The string that is read from the <c>keywords</c> property.</returns>
@@ -211,7 +211,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getkeywords HRESULT
 		// GetKeywords( LPWSTR *keywords );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetKeywords();
+		string? GetKeywords();
 
 		/// <summary>Sets the <c>keywords</c> property.</summary>
 		/// <param name="keywords">
@@ -224,7 +224,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setkeywords HRESULT
 		// SetKeywords( LPCWSTR keywords );
-		void SetKeywords([In, MarshalAs(UnmanagedType.LPWStr)] string keywords);
+		void SetKeywords([In, MarshalAs(UnmanagedType.LPWStr)] string? keywords);
 
 		/// <summary>Gets the <c>language</c> property.</summary>
 		/// <returns>The value that is read from the <c>language</c> property.</returns>
@@ -235,7 +235,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlanguage HRESULT
 		// GetLanguage( LPWSTR *language );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetLanguage();
+		string? GetLanguage();
 
 		/// <summary>Sets the <c>language</c> property.</summary>
 		/// <param name="language">
@@ -248,7 +248,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setlanguage HRESULT
 		// SetLanguage( LPCWSTR language );
-		void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string language);
+		void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string? language);
 
 		/// <summary>Gets the <c>lastModifiedBy</c> property.</summary>
 		/// <returns>The value that is read from the <c>lastModifiedBy</c> property.</returns>
@@ -258,7 +258,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlastmodifiedby
 		// HRESULT GetLastModifiedBy( LPWSTR *lastModifiedBy );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetLastModifiedBy();
+		string? GetLastModifiedBy();
 
 		/// <summary>Sets the <c>lastModifiedBy</c> property.</summary>
 		/// <param name="lastModifiedBy">
@@ -268,7 +268,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>lastModifiedBy</c> property describes the user who performs the last modification.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setlastmodifiedby
 		// HRESULT SetLastModifiedBy( LPCWSTR lastModifiedBy );
-		void SetLastModifiedBy([In, MarshalAs(UnmanagedType.LPWStr)] string lastModifiedBy);
+		void SetLastModifiedBy([In, MarshalAs(UnmanagedType.LPWStr)] string? lastModifiedBy);
 
 		/// <summary>Gets the <c>lastPrinted</c> property.</summary>
 		/// <returns>The date and time that are read from the <c>lastPrinted</c> property.</returns>
@@ -284,7 +284,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>lastPrinted</c> property contains the date and time the package was last printed.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setlastprinted
 		// HRESULT SetLastPrinted( const SYSTEMTIME *lastPrinted );
-		void SetLastPrinted(in SYSTEMTIME lastPrinted);
+		void SetLastPrinted([In, Optional] PSYSTEMTIME? lastPrinted);
 
 		/// <summary>Gets the <c>modified</c> property.</summary>
 		/// <returns>The date and time that are read from the <c>modified</c> property.</returns>
@@ -300,7 +300,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>modified</c> property contains the date and time the package was last changed.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setmodified HRESULT
 		// SetModified( const SYSTEMTIME *modified );
-		void SetModified(in SYSTEMTIME modified);
+		void SetModified([In, Optional] PSYSTEMTIME? modified);
 
 		/// <summary>Gets the <c>revision</c> property.</summary>
 		/// <returns>The string that is read from the <c>revision</c> property.</returns>
@@ -310,7 +310,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getrevision HRESULT
 		// GetRevision( LPWSTR *revision );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetRevision();
+		string? GetRevision();
 
 		/// <summary>Sets the <c>revision</c> property.</summary>
 		/// <param name="revision">
@@ -319,7 +319,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>revision</c> property contains the revision number of the resource.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setrevision HRESULT
 		// SetRevision( LPCWSTR revision );
-		void SetRevision([In, MarshalAs(UnmanagedType.LPWStr)] string revision);
+		void SetRevision([In, MarshalAs(UnmanagedType.LPWStr)] string? revision);
 
 		/// <summary>Gets the <c>subject</c> property.</summary>
 		/// <returns>The string that is read from the <c>subject</c> property.</returns>
@@ -327,7 +327,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getsubject HRESULT
 		// GetSubject( LPWSTR *subject );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetSubject();
+		string? GetSubject();
 
 		/// <summary>Sets the <c>subject</c> property.</summary>
 		/// <param name="subject">
@@ -336,7 +336,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>subject</c> property contains the topic of the resource content.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setsubject HRESULT
 		// SetSubject( LPCWSTR subject );
-		void SetSubject([In, MarshalAs(UnmanagedType.LPWStr)] string subject);
+		void SetSubject([In, MarshalAs(UnmanagedType.LPWStr)] string? subject);
 
 		/// <summary>Gets the <c>title</c> property.</summary>
 		/// <returns>The string that is read from the <c>title</c> property.</returns>
@@ -344,7 +344,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-gettitle HRESULT
 		// GetTitle( LPWSTR *title );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetTitle();
+		string? GetTitle();
 
 		/// <summary>Sets the <c>title</c> property.</summary>
 		/// <param name="title">
@@ -353,7 +353,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>title</c> property contains the name given to the resource.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-settitle HRESULT
 		// SetTitle( LPCWSTR title );
-		void SetTitle([In, MarshalAs(UnmanagedType.LPWStr)] string title);
+		void SetTitle([In, MarshalAs(UnmanagedType.LPWStr)] string? title);
 
 		/// <summary>Gets the <c>version</c> property.</summary>
 		/// <returns>The string that is read from the <c>version</c> property.</returns>
@@ -361,7 +361,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getversion HRESULT
 		// GetVersion( LPWSTR *version );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetVersion();
+		string? GetVersion();
 
 		/// <summary>Sets the <c>version</c> property.</summary>
 		/// <param name="version">
@@ -370,7 +370,7 @@ public static partial class XpsObjectModel
 		/// <remarks>The <c>version</c> property contains the version number of the resource.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-setversion HRESULT
 		// SetVersion( LPCWSTR version );
-		void SetVersion([In, MarshalAs(UnmanagedType.LPWStr)] string version);
+		void SetVersion([In, MarshalAs(UnmanagedType.LPWStr)] string? version);
 
 		/// <summary>Makes a deep copy of the interface.</summary>
 		/// <returns>A pointer to the copy of the interface.</returns>
@@ -397,7 +397,7 @@ public static partial class XpsObjectModel
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -410,7 +410,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a pointer to the IXpsOMDocumentSequence interface that contains the document.</summary>
 		/// <returns>
@@ -606,7 +606,7 @@ public static partial class XpsObjectModel
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -619,7 +619,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a pointer to the IXpsOMPackage interface that contains the document sequence.</summary>
 		/// <returns>
@@ -628,7 +628,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomdocumentsequence-getowner HRESULT
 		// GetOwner( IXpsOMPackage **package );
-		IXpsOMPackage GetOwner();
+		IXpsOMPackage? GetOwner();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMDocumentCollection interface, which contains the documents specified in the document sequence.
@@ -659,7 +659,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomdocumentsequence-getprintticketresource
 		// HRESULT GetPrintTicketResource( IXpsOMPrintTicketResource **printTicketResource );
-		IXpsOMPrintTicketResource GetPrintTicketResource();
+		IXpsOMPrintTicketResource? GetPrintTicketResource();
 
 		/// <summary>Sets the job-level print ticket resource for the document sequence.</summary>
 		/// <param name="printTicketResource">
@@ -672,7 +672,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomdocumentsequence-setprintticketresource
 		// HRESULT SetPrintTicketResource( IXpsOMPrintTicketResource *printTicketResource );
-		void SetPrintTicketResource([In] IXpsOMPrintTicketResource printTicketResource);
+		void SetPrintTicketResource([In] IXpsOMPrintTicketResource? printTicketResource);
 	}
 
 	/// <summary>
@@ -698,7 +698,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-getdocumentsequence HRESULT
 		// GetDocumentSequence( IXpsOMDocumentSequence **documentSequence );
-		IXpsOMDocumentSequence GetDocumentSequence();
+		IXpsOMDocumentSequence? GetDocumentSequence();
 
 		/// <summary>Sets the IXpsOMDocumentSequence interface of the XPS package.</summary>
 		/// <param name="documentSequence">
@@ -706,7 +706,7 @@ public static partial class XpsObjectModel
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-setdocumentsequence HRESULT
 		// SetDocumentSequence( IXpsOMDocumentSequence *documentSequence );
-		void SetDocumentSequence([In] IXpsOMDocumentSequence documentSequence);
+		void SetDocumentSequence([In] IXpsOMDocumentSequence? documentSequence);
 
 		/// <summary>Gets a pointer to the IXpsOMCoreProperties interface of the XPS package.</summary>
 		/// <returns>
@@ -715,7 +715,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-getcoreproperties HRESULT
 		// GetCoreProperties( IXpsOMCoreProperties **coreProperties );
-		IXpsOMCoreProperties GetCoreProperties();
+		IXpsOMCoreProperties? GetCoreProperties();
 
 		/// <summary>Sets the IXpsOMCoreProperties interface of the XPS package.</summary>
 		/// <param name="coreProperties">
@@ -724,7 +724,7 @@ public static partial class XpsObjectModel
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-setcoreproperties HRESULT
 		// SetCoreProperties( IXpsOMCoreProperties *coreProperties );
-		void SetCoreProperties([In] IXpsOMCoreProperties coreProperties);
+		void SetCoreProperties([In] IXpsOMCoreProperties? coreProperties);
 
 		/// <summary>Gets the name of the discard control part in the XPS package.</summary>
 		/// <returns>
@@ -733,7 +733,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-getdiscardcontrolpartname
 		// HRESULT GetDiscardControlPartName( IOpcPartUri **discardControlPartUri );
-		IOpcPartUri GetDiscardControlPartName();
+		IOpcPartUri? GetDiscardControlPartName();
 
 		/// <summary>Sets the name of the discard control part in the XPS package.</summary>
 		/// <param name="discardControlPartUri">
@@ -742,7 +742,7 @@ public static partial class XpsObjectModel
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-setdiscardcontrolpartname
 		// HRESULT SetDiscardControlPartName( IOpcPartUri *discardControlPartUri );
-		void SetDiscardControlPartName([In] IOpcPartUri discardControlPartUri);
+		void SetDiscardControlPartName([In] IOpcPartUri? discardControlPartUri);
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMImageResource interface of the thumbnail resource that is associated with the XPS package.
@@ -757,7 +757,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-getthumbnailresource
 		// HRESULT GetThumbnailResource( IXpsOMImageResource **imageResource );
-		IXpsOMImageResource GetThumbnailResource();
+		IXpsOMImageResource? GetThumbnailResource();
 
 		/// <summary>Sets the thumbnail image of the XPS document.</summary>
 		/// <param name="imageResource">
@@ -770,7 +770,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-setthumbnailresource
 		// HRESULT SetThumbnailResource( IXpsOMImageResource *imageResource );
-		void SetThumbnailResource([In] IXpsOMImageResource imageResource);
+		void SetThumbnailResource([In] IXpsOMImageResource? imageResource);
 
 		/// <summary>Writes the XPS package to a specified file.</summary>
 		/// <param name="fileName">The name of the file to be created. This parameter must not be <c>NULL</c>.</param>
@@ -827,7 +827,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompackage-writetofile HRESULT
 		// WriteToFile( LPCWSTR fileName, LPSECURITY_ATTRIBUTES securityAttributes, DWORD flagsAndAttributes, BOOL optimizeMarkupSize );
-		void WriteToFile([In, MarshalAs(UnmanagedType.LPWStr)] string fileName, [In] SECURITY_ATTRIBUTES securityAttributes, [In] FileFlagsAndAttributes flagsAndAttributes, [In, MarshalAs(UnmanagedType.Bool)] bool optimizeMarkupSize);
+		void WriteToFile([In, MarshalAs(UnmanagedType.LPWStr)] string fileName, [In] SECURITY_ATTRIBUTES? securityAttributes, [In] FileFlagsAndAttributes flagsAndAttributes, [In, MarshalAs(UnmanagedType.Bool)] bool optimizeMarkupSize);
 
 		/// <summary>Writes the XPS package to a specified stream.</summary>
 		/// <param name="stream">The stream that receives the serialized contents of the package. This parameter must not be <c>NULL</c>.</param>
@@ -931,8 +931,9 @@ public static partial class XpsObjectModel
 		// IXpsOMDocumentStructureResource *documentStructure, IXpsOMSignatureBlockResourceCollection *signatureBlockResources,
 		// IXpsOMPartUriCollection *restrictedFonts );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void StartNewDocument([In] IOpcPartUri documentPartName, [In] IXpsOMPrintTicketResource documentPrintTicket, [In] IXpsOMDocumentStructureResource documentStructure,
-			[In] IXpsOMSignatureBlockResourceCollection signatureBlockResources, [In] IXpsOMPartUriCollection restrictedFonts);
+		void StartNewDocument([In] IOpcPartUri documentPartName, [In, Optional] IXpsOMPrintTicketResource? documentPrintTicket,
+			[In, Optional] IXpsOMDocumentStructureResource? documentStructure,
+			[In, Optional] IXpsOMSignatureBlockResourceCollection? signatureBlockResources, [In, Optional] IXpsOMPartUriCollection? restrictedFonts);
 
 		/// <summary>Writes a new FixedPage part to the currently open FixedDocument part in the package.</summary>
 		/// <param name="page">
@@ -974,8 +975,8 @@ public static partial class XpsObjectModel
 		// AddPage( IXpsOMPage *page, const XPS_SIZE *advisoryPageDimensions, IXpsOMPartUriCollection *discardableResourceParts,
 		// IXpsOMStoryFragmentsResource *storyFragments, IXpsOMPrintTicketResource *pagePrintTicket, IXpsOMImageResource *pageThumbnail );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void AddPage([In] IXpsOMPage page, in XPS_SIZE advisoryPageDimensions, [In] IXpsOMPartUriCollection discardableResourceParts,
-			[In] IXpsOMStoryFragmentsResource storyFragments, [In] IXpsOMPrintTicketResource pagePrintTicket, [In] IXpsOMImageResource pageThumbnail);
+		void AddPage([In] IXpsOMPage page, in XPS_SIZE advisoryPageDimensions, [In, Optional] IXpsOMPartUriCollection? discardableResourceParts,
+			[In, Optional] IXpsOMStoryFragmentsResource? storyFragments, [In] IXpsOMPrintTicketResource? pagePrintTicket, [In, Optional] IXpsOMImageResource? pageThumbnail);
 
 		/// <summary>Creates a new part resource in the package.</summary>
 		/// <param name="resource">
@@ -1104,7 +1105,7 @@ public static partial class XpsObjectModel
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		new IOpcPartUri GetPartName();
+		new IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -1117,7 +1118,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		new void SetPartName([In] IOpcPartUri partUri);
+		new void SetPartName([In] IOpcPartUri? partUri);
 
 		/// <summary>Gets a pointer to the IXpsOMPageReference interface that contains the page.</summary>
 		/// <returns>A pointer to the IXpsOMPageReference interface that contains the page.</returns>
@@ -1125,7 +1126,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getowner HRESULT GetOwner(
 		// IXpsOMPageReference **pageReference );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMPageReference GetOwner();
+		IXpsOMPageReference? GetOwner();
 
 		/// <summary>Gets a pointer to an IXpsOMVisualCollection interface that contains a collection of the page's visual objects.</summary>
 		/// <returns>A pointer to the IXpsOMVisualCollection interface that contains a collection of the page's visual objects.</returns>
@@ -1295,7 +1296,7 @@ public static partial class XpsObjectModel
 		// GetLanguage( LPWSTR *language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetLanguage();
+		string? GetLanguage();
 
 		/// <summary>Sets the <c>Language</c> property of the page.</summary>
 		/// <param name="language">
@@ -1308,7 +1309,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-setlanguage HRESULT
 		// SetLanguage( LPCWSTR language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string language);
+		void SetLanguage([In, MarshalAs(UnmanagedType.LPWStr)] string? language);
 
 		/// <summary>Gets the <c>Name</c> property of the page.</summary>
 		/// <returns>
@@ -1318,7 +1319,7 @@ public static partial class XpsObjectModel
 		// LPWSTR *name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string GetName();
+		string? GetName();
 
 		/// <summary>Sets the <c>Name</c> property of this page.</summary>
 		/// <param name="name">
@@ -1332,7 +1333,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-setname HRESULT SetName(
 		// LPCWSTR name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetName([In, MarshalAs(UnmanagedType.LPWStr)] string name);
+		void SetName([In, MarshalAs(UnmanagedType.LPWStr)] string? name);
 
 		/// <summary>Gets a Boolean value that indicates whether the page is the target of a hyperlink.</summary>
 		/// <returns>
@@ -1424,7 +1425,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getdictionary HRESULT
 		// GetDictionary( IXpsOMDictionary **resourceDictionary );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMDictionary GetDictionary();
+		IXpsOMDictionary? GetDictionary();
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMDictionary interface of the local, unshared dictionary that is associated with this page.
@@ -1457,7 +1458,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getdictionarylocal HRESULT
 		// GetDictionaryLocal( IXpsOMDictionary **resourceDictionary );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMDictionary GetDictionaryLocal();
+		IXpsOMDictionary? GetDictionaryLocal();
 
 		/// <summary>Sets the IXpsOMDictionary interface pointer of the page's local dictionary resource.</summary>
 		/// <param name="resourceDictionary">
@@ -1499,7 +1500,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-setdictionarylocal HRESULT
 		// SetDictionaryLocal( IXpsOMDictionary *resourceDictionary );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetDictionaryLocal([In] IXpsOMDictionary resourceDictionary);
+		void SetDictionaryLocal([In] IXpsOMDictionary? resourceDictionary);
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMRemoteDictionaryResource interface of the shared dictionary resource that is used by this page.
@@ -1535,7 +1536,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getdictionaryresource HRESULT
 		// GetDictionaryResource( IXpsOMRemoteDictionaryResource **remoteDictionaryResource );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMRemoteDictionaryResource GetDictionaryResource();
+		IXpsOMRemoteDictionaryResource? GetDictionaryResource();
 
 		/// <summary>Sets the IXpsOMRemoteDictionaryResource interface pointer of the page's remote dictionary resource.</summary>
 		/// <param name="remoteDictionaryResource">
@@ -1574,7 +1575,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-setdictionaryresource HRESULT
 		// SetDictionaryResource( IXpsOMRemoteDictionaryResource *remoteDictionaryResource );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetDictionaryResource([In] IXpsOMRemoteDictionaryResource remoteDictionaryResource);
+		void SetDictionaryResource([In] IXpsOMRemoteDictionaryResource? remoteDictionaryResource);
 
 		/// <summary>Writes the page to the specified stream.</summary>
 		/// <param name="stream">The stream that receives the serialized contents of the page.</param>
@@ -1712,7 +1713,7 @@ public static partial class XpsObjectModel
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-getowner HRESULT
 		// GetOwner( IXpsOMDocument **document );
-		IXpsOMDocument GetOwner();
+		IXpsOMDocument? GetOwner();
 
 		/// <summary>Gets a pointer to the IXpsOMPage interface that contains the page.</summary>
 		/// <returns>A pointer to the IXpsOMPage interface of the page. If a page has not been set, a <c>NULL</c> pointer is returned.</returns>
@@ -1730,7 +1731,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-getpage HRESULT
 		// GetPage( IXpsOMPage **page );
-		IXpsOMPage GetPage();
+		IXpsOMPage? GetPage();
 
 		/// <summary>Sets the IXpsOMPage interface of the page reference.</summary>
 		/// <param name="page">The IXpsOMPage interface pointer of the page.</param>
@@ -1849,7 +1850,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-getstoryfragmentsresource
 		// HRESULT GetStoryFragmentsResource( IXpsOMStoryFragmentsResource **storyFragmentsResource );
-		IXpsOMStoryFragmentsResource GetStoryFragmentsResource();
+		IXpsOMStoryFragmentsResource? GetStoryFragmentsResource();
 
 		/// <summary>
 		/// Sets the IXpsOMStoryFragmentsResource interface pointer of the StoryFragments resource to be assigned to the page.
@@ -1868,7 +1869,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-setstoryfragmentsresource
 		// HRESULT SetStoryFragmentsResource( IXpsOMStoryFragmentsResource *storyFragmentsResource );
-		void SetStoryFragmentsResource([In] IXpsOMStoryFragmentsResource storyFragmentsResource);
+		void SetStoryFragmentsResource([In] IXpsOMStoryFragmentsResource? storyFragmentsResource);
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMPrintTicketResource interface of the page-level print ticket resource that is associated with
@@ -1884,7 +1885,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-getprintticketresource
 		// HRESULT GetPrintTicketResource( IXpsOMPrintTicketResource **printTicketResource );
-		IXpsOMPrintTicketResource GetPrintTicketResource();
+		IXpsOMPrintTicketResource? GetPrintTicketResource();
 
 		/// <summary>
 		/// Sets the IXpsOMPrintTicketResource interface pointer of the page-level print ticket resource that is to be assigned to the page.
@@ -1895,7 +1896,7 @@ public static partial class XpsObjectModel
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-setprintticketresource
 		// HRESULT SetPrintTicketResource( IXpsOMPrintTicketResource *printTicketResource );
-		void SetPrintTicketResource([In] IXpsOMPrintTicketResource printTicketResource);
+		void SetPrintTicketResource([In] IXpsOMPrintTicketResource? printTicketResource);
 
 		/// <summary>
 		/// Gets a pointer to the IXpsOMImageResource interface of the thumbnail image resource that is associated with the page.
@@ -1913,7 +1914,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-getthumbnailresource
 		// HRESULT GetThumbnailResource( IXpsOMImageResource **imageResource );
-		IXpsOMImageResource GetThumbnailResource();
+		IXpsOMImageResource? GetThumbnailResource();
 
 		/// <summary>
 		/// Sets the pointer to the IXpsOMImageResource interface of the thumbnail image resource to be assigned to the page.
@@ -1928,7 +1929,7 @@ public static partial class XpsObjectModel
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompagereference-setthumbnailresource
 		// HRESULT SetThumbnailResource( IXpsOMImageResource *imageResource );
-		void SetThumbnailResource([In] IXpsOMImageResource imageResource);
+		void SetThumbnailResource([In] IXpsOMImageResource? imageResource);
 
 		/// <summary>
 		/// Gets an IXpsOMNameCollection interface that contains the names of all the document subtree objects whose
@@ -2124,7 +2125,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-getpartname HRESULT
 		// GetPartName( IOpcPartUri **partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IOpcPartUri GetPartName();
+		IOpcPartUri? GetPartName();
 
 		/// <summary>Sets the name that will be used when the part is serialized.</summary>
 		/// <param name="partUri">
@@ -2137,7 +2138,7 @@ public static partial class XpsObjectModel
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompart-setpartname HRESULT
 		// SetPartName( IOpcPartUri *partUri );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		void SetPartName([In] IOpcPartUri partUri);
+		void SetPartName([In] IOpcPartUri? partUri);
 	}
 
 	/// <summary>Provides access to all shared, part-based resources of the XPS document.</summary>

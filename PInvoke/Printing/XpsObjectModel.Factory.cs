@@ -460,7 +460,7 @@ public static partial class XpsObjectModel
 		// HRESULT CreateSolidColorBrush( const XPS_COLOR *color, IXpsOMColorProfileResource *colorProfile, IXpsOMSolidColorBrush
 		// **solidColorBrush );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMSolidColorBrush CreateSolidColorBrush(in XPS_COLOR color, [In] IXpsOMColorProfileResource colorProfile);
+		IXpsOMSolidColorBrush CreateSolidColorBrush(in XPS_COLOR color, [In] IXpsOMColorProfileResource? colorProfile);
 
 		/// <summary>Creates an IXpsOMColorProfileResource interface, which is used to access a color profile resource stream.</summary>
 		/// <param name="acquiredStream">
@@ -643,7 +643,7 @@ public static partial class XpsObjectModel
 		// HRESULT CreateGradientStop( const XPS_COLOR *color, IXpsOMColorProfileResource *colorProfile, FLOAT offset,
 		// IXpsOMGradientStop **gradientStop );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMGradientStop CreateGradientStop(in XPS_COLOR color, [In] IXpsOMColorProfileResource colorProfile, [In] float offset);
+		IXpsOMGradientStop CreateGradientStop(in XPS_COLOR color, [In] IXpsOMColorProfileResource? colorProfile, [In] float offset);
 
 		/// <summary>Creates an IXpsOMLinearGradientBrush interface.</summary>
 		/// <param name="gradStop1">
@@ -765,24 +765,21 @@ public static partial class XpsObjectModel
 		/// <term><c>bInheritHandle</c>: a Boolean value that determines whether the returned handle can be inherited by child processes</term>
 		/// </item>
 		/// </list>
-		/// <para>If</para>
-		/// <para>lpSecurityDescriptor</para>
-		/// <para>is</para>
-		/// <para>NULL</para>
-		/// <para>, the file or device associated with the returned handle is assigned a default security descriptor.</para>
+		/// <para>
+		/// If lpSecurityDescriptor is NULL, the file or device associated with the returned handle is assigned a default security descriptor.
+		/// </para>
 		/// <para>For more information about securityAttributes, see CreateFile.</para>
 		/// </param>
 		/// <param name="flagsAndAttributes">
 		/// <para>
-		/// Specifies the settings and attributes of the file to be created. For most files, the <c>FILE_ATTRIBUTE_NORMAL</c> value can
-		/// be used.
+		/// Specifies the settings and attributes of the file to be created. For most files, the <c>FILE_ATTRIBUTE_NORMAL</c> value can be used.
 		/// </para>
 		/// <para>See CreateFile for more information about this parameter.</para>
 		/// </param>
 		/// <param name="optimizeMarkupSize">
 		/// <para>
-		/// A Boolean value that indicates whether the document markup will be optimized for size when the contents of the XPS OM are
-		/// written to the XPS package.
+		/// A Boolean value that indicates whether the document markup will be optimized for size when the contents of the XPS OM are written
+		/// to the XPS package.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -804,12 +801,11 @@ public static partial class XpsObjectModel
 		/// The IOpcPartUri interface that contains the part name of the document sequence in the new file.
 		/// </param>
 		/// <param name="coreProperties">
-		/// The IXpsOMCoreProperties interface that contains the core document properties to be given to the new file. This parameter
-		/// can be set to <c>NULL</c>.
+		/// The IXpsOMCoreProperties interface that contains the core document properties to be given to the new file. This parameter can be
+		/// set to <c>NULL</c>.
 		/// </param>
 		/// <param name="packageThumbnail">
-		/// The IXpsOMImageResource interface that contains the thumbnail image to be assigned to the new file. This parameter can be
-		/// set to <c>NULL</c>.
+		/// The IXpsOMImageResource interface that contains the thumbnail image to be assigned to the new file. This parameter can be set to <c>NULL</c>.
 		/// </param>
 		/// <param name="documentSequencePrintTicket">
 		/// The IXpsOMPrintTicketResource interface that contains the package-level print ticket to be assigned to the new file. This
@@ -821,17 +817,17 @@ public static partial class XpsObjectModel
 		/// <returns>A pointer to the new IXpsOMPackageWriter interface created by this method.</returns>
 		/// <remarks>
 		/// <para>
-		/// The file is opened and initialized and the IXpsOMPackageWriter interface that is returned is then used to write content
-		/// types, package relationships, core properties, document sequence resources, and document sequence relationships.
+		/// The file is opened and initialized and the IXpsOMPackageWriter interface that is returned is then used to write content types,
+		/// package relationships, core properties, document sequence resources, and document sequence relationships.
 		/// </para>
 		/// <para>
-		/// If documentSequencePrintTicket is set to <c>NULL</c> and the value of interleaving is <c>XPS_INTERLEAVING_ON</c>, this
-		/// method creates a blank job-level print ticket and adds a relationship to the blank print ticket. This is done to provide
-		/// more efficient streaming consumption of the package.
+		/// If documentSequencePrintTicket is set to <c>NULL</c> and the value of interleaving is <c>XPS_INTERLEAVING_ON</c>, this method
+		/// creates a blank job-level print ticket and adds a relationship to the blank print ticket. This is done to provide more efficient
+		/// streaming consumption of the package.
 		/// </para>
 		/// <para>
-		/// If documentSequencePrintTicket is set to <c>NULL</c> and the value of interleaving is <c>XPS_INTERLEAVING_OFF</c>, no blank
-		/// print ticket is created.
+		/// If documentSequencePrintTicket is set to <c>NULL</c> and the value of interleaving is <c>XPS_INTERLEAVING_OFF</c>, no blank print
+		/// ticket is created.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomobjectfactory-createpackagewriteronfile
@@ -840,7 +836,10 @@ public static partial class XpsObjectModel
 		// *coreProperties, IXpsOMImageResource *packageThumbnail, IXpsOMPrintTicketResource *documentSequencePrintTicket, IOpcPartUri
 		// *discardControlPartName, IXpsOMPackageWriter **packageWriter );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMPackageWriter CreatePackageWriterOnFile([In, MarshalAs(UnmanagedType.LPWStr)] string fileName, [In] IntPtr securityAttributes, [In] uint flagsAndAttributes, [In] int optimizeMarkupSize, [In] XPS_INTERLEAVING interleaving, [In] IOpcPartUri documentSequencePartName, [In] IXpsOMCoreProperties coreProperties, [In] IXpsOMImageResource packageThumbnail, [In] IXpsOMPrintTicketResource documentSequencePrintTicket, [In] IOpcPartUri discardControlPartName);
+		IXpsOMPackageWriter CreatePackageWriterOnFile([In, MarshalAs(UnmanagedType.LPWStr)] string fileName, [In] SECURITY_ATTRIBUTES? securityAttributes,
+			[In] uint flagsAndAttributes, [In] int optimizeMarkupSize, [In] XPS_INTERLEAVING interleaving, [In] IOpcPartUri documentSequencePartName,
+			[In, Optional] IXpsOMCoreProperties? coreProperties, [In, Optional] IXpsOMImageResource? packageThumbnail,
+			[In, Optional] IXpsOMPrintTicketResource? documentSequencePrintTicket, [In, Optional] IOpcPartUri? discardControlPartName);
 
 		/// <summary>Opens a stream for writing the contents of an XPS OM to an XPS package.</summary>
 		/// <param name="outputStream">The stream to be used for writing.</param>
@@ -904,7 +903,9 @@ public static partial class XpsObjectModel
 		// IXpsOMPrintTicketResource *documentSequencePrintTicket, IOpcPartUri *discardControlPartName, IXpsOMPackageWriter
 		// **packageWriter );
 		[MethodImpl(MethodImplOptions.InternalCall)]
-		IXpsOMPackageWriter CreatePackageWriterOnStream([In] ISequentialStream outputStream, [In] int optimizeMarkupSize, [In] XPS_INTERLEAVING interleaving, [In] IOpcPartUri documentSequencePartName, [In] IXpsOMCoreProperties coreProperties, [In] IXpsOMImageResource packageThumbnail, [In] IXpsOMPrintTicketResource documentSequencePrintTicket, [In] IOpcPartUri discardControlPartName);
+		IXpsOMPackageWriter CreatePackageWriterOnStream([In] ISequentialStream outputStream, [In] int optimizeMarkupSize, [In] XPS_INTERLEAVING interleaving,
+			[In] IOpcPartUri documentSequencePartName, [In, Optional] IXpsOMCoreProperties? coreProperties, [In, Optional] IXpsOMImageResource? packageThumbnail,
+			[In, Optional] IXpsOMPrintTicketResource? documentSequencePrintTicket, [In, Optional] IOpcPartUri? discardControlPartName);
 
 		/// <summary>Creates an IOpcPartUri interface that uses the specified URI.</summary>
 		/// <param name="uri">The URI string.</param>

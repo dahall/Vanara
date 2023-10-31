@@ -134,7 +134,7 @@ public static partial class PrntvPt
 	[PInvokeData("prntvpt.h", MSDNShortId = "3b0a6afd-fa9d-434e-a95f-b051296d4567")]
 	public static extern HRESULT ConvertPrintTicketToDevModeThunk2(HPTPROVIDER hProvider, [In] IntPtr pPrintTicket, uint cbSize,
 		EDefaultDevmodeType baseType, EPrintTicketScope scope, out SafeCoTaskMemHandle ppDevmode, out uint pcbDevModeLength,
-		[MarshalAs(UnmanagedType.BStr)] out string errMsg);
+		[MarshalAs(UnmanagedType.BStr)] out string? errMsg);
 
 	/// <summary>
 	/// <para>
@@ -168,7 +168,7 @@ public static partial class PrntvPt
 	[DllImport(Lib.PrntvPt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winspool.h", MSDNShortId = "15219c19-b64c-4c51-9357-15a797557693")]
 	public static extern HRESULT GetPrintCapabilitiesThunk2(HPTPROVIDER hProvider, [In] IntPtr pPrintTicket, int cbPrintTicket, out IntPtr ppbPrintCapabilities,
-		out int pcbPrintCapabilitiesLength, [MarshalAs(UnmanagedType.BStr)] out string pbstrErrorMessage);
+		out int pcbPrintCapabilitiesLength, [MarshalAs(UnmanagedType.BStr)] out string? pbstrErrorMessage);
 
 	/// <summary>
 	/// <para>
@@ -215,8 +215,8 @@ public static partial class PrntvPt
 	[DllImport(Lib.PrntvPt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("prntvpt.h", MSDNShortId = "4aa7b9de-abf2-4781-942e-0b992a6bffed")]
 	public static extern HRESULT MergeAndValidatePrintTicketThunk2(HPTPROVIDER hProvider, [In] IntPtr pBasePrintTicket, int basePrintTicketLength,
-		[In] IntPtr pDeltaPrintTicket, int deltaPrintTicketLength, EPrintTicketScope scope, out SafeCoTaskMemHandle ppValidatedPrintTicket,
-		out int pValidatedPrintTicketLength, [MarshalAs(UnmanagedType.BStr)] out string pbstrErrorMessage);
+		[In, Optional] IntPtr pDeltaPrintTicket, int deltaPrintTicketLength, EPrintTicketScope scope, out SafeCoTaskMemHandle ppValidatedPrintTicket,
+		out int pValidatedPrintTicketLength, [MarshalAs(UnmanagedType.BStr)] out string? pbstrErrorMessage);
 
 	/// <summary>Closes a print ticket provider handle.</summary>
 	/// <param name="hProvider">A handle to the provider. This handle is returned by the PTOpenProvider or PTOpenProviderEx function.</param>
@@ -344,7 +344,7 @@ public static partial class PrntvPt
 	[DllImport(Lib.PrntvPt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("prntvpt.h", MSDNShortId = "5eec91b9-d554-4440-bc9e-6a26af34994b")]
 	public static extern HRESULT PTConvertPrintTicketToDevMode(HPTPROVIDER hProvider, IStream pPrintTicket, EDefaultDevmodeType baseDevmodeType,
-		EPrintTicketScope scope, out uint pcbDevmode, out SafePTMemory ppDevmode, [MarshalAs(UnmanagedType.BStr)] out string pbstrErrorMessage);
+		EPrintTicketScope scope, out uint pcbDevmode, out SafePTMemory ppDevmode, [MarshalAs(UnmanagedType.BStr)] out string? pbstrErrorMessage);
 
 	/// <summary>Retrieves the printer's capabilities formatted in compliance with the XML Print Schema.</summary>
 	/// <param name="hProvider">
@@ -393,8 +393,8 @@ public static partial class PrntvPt
 	// HPTPROVIDER hProvider, IStream *pPrintTicket, IStream *pCapabilities, BSTR *pbstrErrorMessage );
 	[DllImport(Lib.PrntvPt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("prntvpt.h", MSDNShortId = "925e314c-85ff-4c1b-b3c9-f36aa4b55e01")]
-	public static extern HRESULT PTGetPrintCapabilities(HPTPROVIDER hProvider, [Optional] IStream pPrintTicket, IStream pCapabilities,
-		[MarshalAs(UnmanagedType.BStr)] out string pbstrErrorMessage);
+	public static extern HRESULT PTGetPrintCapabilities(HPTPROVIDER hProvider, [Optional] IStream? pPrintTicket, IStream pCapabilities,
+		[MarshalAs(UnmanagedType.BStr)] out string? pbstrErrorMessage);
 
 	/// <summary>Retrieves the device printer's capabilities formatted in compliance with the XML Print Schema.</summary>
 	/// <param name="hProvider">
@@ -416,8 +416,8 @@ public static partial class PrntvPt
 	// PTGetPrintDeviceCapabilities( HPTPROVIDER hProvider, IStream *pPrintTicket, IStream *pDeviceCapabilities, BSTR *pbstrErrorMessage );
 	[DllImport(Lib.PrntvPt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("prntvpt.h", MSDNShortId = "DB9D63B1-2703-47F7-8F31-30FA0110E1E9")]
-	public static extern HRESULT PTGetPrintDeviceCapabilities(HPTPROVIDER hProvider, [Optional] IStream pPrintTicket, IStream pDeviceCapabilities,
-		[MarshalAs(UnmanagedType.BStr)] out string pbstrErrorMessage);
+	public static extern HRESULT PTGetPrintDeviceCapabilities(HPTPROVIDER hProvider, [Optional] IStream? pPrintTicket, IStream pDeviceCapabilities,
+		[MarshalAs(UnmanagedType.BStr)] out string? pbstrErrorMessage);
 
 	/// <summary>It retrieves the print devices resources for a printer formatted in compliance with the XML Print Schema.</summary>
 	/// <param name="hProvider">
@@ -440,8 +440,8 @@ public static partial class PrntvPt
 	// *pbstrErrorMessage );
 	[DllImport(Lib.PrntvPt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("prntvpt.h", MSDNShortId = "39F17562-B8EB-41AF-BA55-42FE35B4560F")]
-	public static extern HRESULT PTGetPrintDeviceResources(HPTPROVIDER hProvider, [MarshalAs(UnmanagedType.LPWStr)] string pszLocaleName,
-		[Optional] IStream pPrintTicket, IStream pDeviceResources, [MarshalAs(UnmanagedType.BStr)] out string pbstrErrorMessage);
+	public static extern HRESULT PTGetPrintDeviceResources(HPTPROVIDER hProvider, [MarshalAs(UnmanagedType.LPWStr)] string? pszLocaleName,
+		[Optional] IStream? pPrintTicket, IStream pDeviceResources, [MarshalAs(UnmanagedType.BStr)] out string? pbstrErrorMessage);
 
 	/// <summary>Merges two print tickets and returns a valid, viable print ticket.</summary>
 	/// <param name="hProvider">
@@ -530,8 +530,8 @@ public static partial class PrntvPt
 	// IStream *pResultTicket, BSTR *pbstrErrorMessage );
 	[DllImport(Lib.PrntvPt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("prntvpt.h", MSDNShortId = "97691930-d76a-48c9-80b9-8413d96322a9")]
-	public static extern HRESULT PTMergeAndValidatePrintTicket(HPTPROVIDER hProvider, IStream pBaseTicket, [Optional] IStream pDeltaTicket,
-		EPrintTicketScope scope, IStream pResultTicket, [MarshalAs(UnmanagedType.BStr)] out string pbstrErrorMessage);
+	public static extern HRESULT PTMergeAndValidatePrintTicket(HPTPROVIDER hProvider, IStream pBaseTicket, [Optional] IStream? pDeltaTicket,
+		EPrintTicketScope scope, IStream pResultTicket, [MarshalAs(UnmanagedType.BStr)] out string? pbstrErrorMessage);
 
 	/// <summary>Opens an instance of a print ticket provider.</summary>
 	/// <param name="pszPrinterName">A pointer to the full name of a print queue.</param>
@@ -694,7 +694,7 @@ public static partial class PrntvPt
 		public static bool operator ==(HPTPROVIDER h1, HPTPROVIDER h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HPTPROVIDER h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HPTPROVIDER h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -741,7 +741,7 @@ public static partial class PrntvPt
 		/// <summary>Converts the memory held by this object to a structure.</summary>
 		/// <typeparam name="T">The type of the structure.</typeparam>
 		/// <returns>A structure marshaled from this memory.</returns>
-		public T ToStructure<T>() => IsInvalid ? default : handle.ToStructure<T>();
+		public T? ToStructure<T>() => IsInvalid ? default : handle.ToStructure<T>();
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => PTReleaseMemory(handle).Succeeded;

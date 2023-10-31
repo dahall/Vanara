@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace Vanara.PInvoke;
 
@@ -163,7 +166,7 @@ public static partial class WinSpool
 	/// print spooler that the print job can now be scheduled by the spooler for printing.
 	/// </remarks>
 	[PInvokeData("winspool.h", MSDNShortId = "cfafa874-6022-4bf4-bf3d-096213eb0c98")]
-	public static bool AddJob(HPRINTER hPrinter, out string path, out uint jobId)
+	public static bool AddJob(HPRINTER hPrinter, out string? path, out uint jobId)
 	{
 		path = null; jobId = 0;
 		AddJob(hPrinter, 1, default, 0, out var sz);
@@ -451,7 +454,7 @@ public static partial class WinSpool
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinterconnection2 BOOL AddPrinterConnection2( _In_ HWND hWnd, _In_
 	// LPCTSTR pszName, DWORD dwLevel, _In_ PVOID pConnectionInfo );
 	[PInvokeData("winspool.h", MSDNShortId = "5ae98157-5978-449e-beb1-4787110925fa")]
-	public static bool AddPrinterConnection2([Optional] HWND hWnd, string pszName, PRINTER_CONNECTION_FLAGS flags, string driverName = null) =>
+	public static bool AddPrinterConnection2([Optional] HWND hWnd, string pszName, PRINTER_CONNECTION_FLAGS flags, string? driverName = null) =>
 		AddPrinterConnection2(hWnd, pszName, 1, new PRINTER_CONNECTION_INFO_1 { dwFlags = flags, pszDriverName = driverName });
 
 	/// <summary>
@@ -1909,7 +1912,7 @@ public static partial class WinSpool
 	// hPrinter, _In_ LPTSTR pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput, _In_ DWORD fMode );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "e89a2f6f-2bac-4369-b526-f8e15028698b")]
-	public static extern int DocumentProperties(HWND hWnd, HPRINTER hPrinter, string pDeviceName, IntPtr pDevModeOutput, in DEVMODE pDevModeInput, DM fMode);
+	public static extern int DocumentProperties(HWND hWnd, HPRINTER hPrinter, string pDeviceName, IntPtr pDevModeOutput, in DEVMODE pDevModeInput, [Optional] DM fMode);
 
 	/// <summary>
 	/// The <c>DocumentProperties</c> function retrieves or modifies printer initialization information or displays a
@@ -2034,7 +2037,7 @@ public static partial class WinSpool
 	// hPrinter, _In_ LPTSTR pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput, _In_ DWORD fMode );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "e89a2f6f-2bac-4369-b526-f8e15028698b")]
-	public static extern int DocumentProperties(HWND hWnd, HPRINTER hPrinter, string pDeviceName, IntPtr pDevModeOutput, [Optional] IntPtr pDevModeInput, DM fMode);
+	public static extern int DocumentProperties(HWND hWnd, HPRINTER hPrinter, string pDeviceName, IntPtr pDevModeOutput, [Optional] IntPtr pDevModeInput, [Optional] DM fMode);
 
 	/// <summary>The <c>EndDocPrinter</c> function ends a print job for the specified printer.</summary>
 	/// <param name="hPrinter">
@@ -2175,18 +2178,36 @@ public static partial class WinSpool
 	/// </param>
 	/// <returns>A sequence of <c>FORM_INFO_1</c> or <c>FORM_INFO_2</c> structures. All the structures will be of <typeparamref name="T"/>.</returns>
 	[PInvokeData("winspool.h", MSDNShortId = "b13b515a-c764-4a80-ab85-95fb4abb2a6b")]
-	public static IEnumerable<T> EnumForms<T>(HPRINTER hPrinter) where T : struct
+	public static IEnumerable<T> EnumForms<T>(HPRINTER hPrinter) where T : struct =>
+		WSEnum<T>("FORM_INFO_", (uint l, IntPtr p, uint cb, out uint pcb, out uint c) => EnumForms(hPrinter, l, p, cb, out pcb, out c));
+
+	private delegate bool F1(uint l, IntPtr p, uint cb, out uint pcb, out uint pcr);
+	private delegate bool T1(uint l, IntPtr p, uint cb, out uint pcb);
+
+	private static IEnumerable<T> WSEnum<T>(string prefix, F1 f, [CallerMemberName] string? caller = null) where T : struct
 	{
-		if (!TryGetLevel<T>("FORM_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(EnumForms)} cannot process a structure of type {typeof(T).Name}.");
-		if (!EnumForms(hPrinter, lvl, default, 0, out var bytes, out var count))
+		if (!TryGetLevel<T>(prefix, out var lvl))
+			throw new ArgumentException($"{caller} cannot process a structure of type {typeof(T).Name}.");
+		if (!f(lvl, default, 0, out var bytes, out var count))
 			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		if (bytes == 0)
 			return new T[0];
-		using var mem = new SafeCoTaskMemHandle(bytes);
-		if (!EnumForms(hPrinter, lvl, mem, mem.Size, out bytes, out count))
+		using SafeCoTaskMemHandle mem = new(bytes);
+		if (!f(lvl, mem, mem.Size, out bytes, out count))
 			Win32Error.ThrowLastError();
 		return mem.ToArray<T>((int)count);
+	}
+
+	private static T WSGet<T>(string prefix, T1 f, [CallerMemberName] string? caller = null) where T : struct
+	{
+		if (!TryGetLevel<T>(prefix, out var lvl))
+			throw new ArgumentException($"{caller} cannot process a structure of type {typeof(T).Name}.");
+		if (!f(lvl, default, 0, out var bytes))
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+		using SafeCoTaskMemStruct<T> mem = new(bytes);
+		if (!f(lvl, mem, mem.Size, out bytes))
+			Win32Error.ThrowLastError();
+		return mem.Value;
 	}
 
 	/// <summary>The <c>EnumJobs</c> function retrieves information about a specified set of print jobs for a specified printer.</summary>
@@ -2279,19 +2300,8 @@ public static partial class WinSpool
 	/// A sequence of <c>JOB_INFO_1</c>, <c>JOB_INFO_2</c>, or <c>JOB_INFO_3</c> structures. All the structures will be of <typeparamref name="T"/>.
 	/// </returns>
 	[PInvokeData("winspool.h", MSDNShortId = "1cf429ea-b40e-4063-b6de-c43b7b87f3d3")]
-	public static IEnumerable<T> EnumJobs<T>(HPRINTER hPrinter, uint FirstJob = 0, uint NoJobs = uint.MaxValue) where T : struct
-	{
-		if (!TryGetLevel<T>("JOB_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(EnumJobs)} cannot process a structure of type {typeof(T).Name}.");
-		if (!EnumJobs(hPrinter, FirstJob, NoJobs, lvl, default, 0, out var bytes, out var count))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (bytes == 0)
-			return new T[0];
-		using var mem = new SafeCoTaskMemHandle(bytes);
-		if (!EnumJobs(hPrinter, FirstJob, NoJobs, lvl, mem, mem.Size, out bytes, out count))
-			Win32Error.ThrowLastError();
-		return mem.ToArray<T>((int)count);
-	}
+	public static IEnumerable<T> EnumJobs<T>(HPRINTER hPrinter, uint FirstJob = 0, uint NoJobs = uint.MaxValue) where T : struct =>
+		WSEnum<T>("JOB_INFO_", (uint l, IntPtr p, uint cb, out uint pcb, out uint c) => EnumJobs(hPrinter, FirstJob, NoJobs, l, p, cb, out pcb, out c));
 
 	/// <summary>
 	/// <para>The <c>EnumPrinterData</c> function enumerates configuration data for a specified printer.</para>
@@ -2385,8 +2395,8 @@ public static partial class WinSpool
 	// _In_ DWORD cbData, _Out_ LPDWORD pcbData );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "0a4c8436-46fe-4e21-8d55-c5031a3d1b38")]
-	public static extern Win32Error EnumPrinterData(HPRINTER hPrinter, uint dwIndex, StringBuilder pValueName, uint cbValueName,
-		out uint pcbValueName, out REG_VALUE_TYPE pType, IntPtr pData, uint cbData, out uint pcbData);
+	public static extern Win32Error EnumPrinterData(HPRINTER hPrinter, uint dwIndex, StringBuilder? pValueName, uint cbValueName,
+		out uint pcbValueName, out REG_VALUE_TYPE pType, [Optional] IntPtr pData, uint cbData, out uint pcbData);
 
 	/// <summary>
 	/// <para>The <c>EnumPrinterData</c> function enumerates configuration data for a specified printer.</para>
@@ -2414,7 +2424,7 @@ public static partial class WinSpool
 	/// </list>
 	/// </returns>
 	[PInvokeData("winspool.h", MSDNShortId = "0a4c8436-46fe-4e21-8d55-c5031a3d1b38")]
-	public static IEnumerable<(string valueName, REG_VALUE_TYPE valueType, object value)> EnumPrinterData(HPRINTER hPrinter)
+	public static IEnumerable<(string valueName, REG_VALUE_TYPE valueType, object? value)> EnumPrinterData(HPRINTER hPrinter)
 	{
 		var idx = 0U;
 		EnumPrinterData(hPrinter, idx, null, 0, out var valueNameSz, out _, default, 0, out var dataSz).ThrowIfFailed();
@@ -2517,7 +2527,7 @@ public static partial class WinSpool
 	/// </list>
 	/// </returns>
 	[PInvokeData("winspool.h", MSDNShortId = "bc5ecc46-24a4-4b54-9431-0eaf6446e2d6")]
-	public static IEnumerable<(string valueName, REG_VALUE_TYPE valueType, object value)> EnumPrinterDataEx(HPRINTER hPrinter, string pKeyName = "PrinterDriverData")
+	public static IEnumerable<(string valueName, REG_VALUE_TYPE valueType, object? value)> EnumPrinterDataEx(HPRINTER hPrinter, string pKeyName = "PrinterDriverData")
 	{
 		EnumPrinterDataEx(hPrinter, pKeyName, default, 0, out var sz, out var cnt).ThrowUnless(Win32Error.ERROR_MORE_DATA);
 		using var mem = new SafeCoTaskMemHandle(sz);
@@ -2828,7 +2838,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "0d0cc726-c515-4146-9273-cdf1db3c76b7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumPrinters(PRINTER_ENUM Flags, string Name, uint Level, IntPtr pPrinterEnum, uint cbBuf, out uint pcbNeeded, out uint pcReturned);
+	public static extern bool EnumPrinters(PRINTER_ENUM Flags, string? Name, uint Level, IntPtr pPrinterEnum, uint cbBuf, out uint pcbNeeded, out uint pcReturned);
 
 	/// <summary>The <c>EnumPrinters</c> function enumerates available printers, print servers, domains, or print providers.</summary>
 	/// <typeparam name="T">
@@ -2921,19 +2931,8 @@ public static partial class WinSpool
 	/// </para>
 	/// </returns>
 	[PInvokeData("winspool.h", MSDNShortId = "0d0cc726-c515-4146-9273-cdf1db3c76b7")]
-	public static IEnumerable<T> EnumPrinters<T>(PRINTER_ENUM Flags = PRINTER_ENUM.PRINTER_ENUM_LOCAL, string Name = null) where T : struct
-	{
-		if (!TryGetLevel<T>("PRINTER_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(EnumPrinters)} cannot process a structure of type {typeof(T).Name}.");
-		if (!EnumPrinters(Flags, Name, lvl, default, 0, out var bytes, out var count))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (bytes == 0)
-			return new T[0];
-		using var mem = new SafeCoTaskMemHandle(bytes);
-		if (!EnumPrinters(Flags, Name, lvl, mem, mem.Size, out bytes, out count))
-			Win32Error.ThrowLastError();
-		return mem.ToArray<T>((int)count);
-	}
+	public static IEnumerable<T> EnumPrinters<T>(PRINTER_ENUM Flags = PRINTER_ENUM.PRINTER_ENUM_LOCAL, string? Name = null) where T : struct =>
+		WSEnum<T>("PRINTER_INFO_", (uint l, IntPtr p, uint cb, out uint pcb, out uint c) => EnumPrinters(Flags, Name, l, p, cb, out pcb, out c));
 
 	/// <summary>
 	/// The <c>FindClosePrinterChangeNotification</c> function closes a change notification object created by calling the
@@ -3777,7 +3776,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "8ec06743-43ce-4fac-83c4-f09eac7ee333")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetDefaultPrinter(StringBuilder pszBuffer, ref int pcchBuffer);
+	public static extern bool GetDefaultPrinter(StringBuilder? pszBuffer, ref int pcchBuffer);
 
 	/// <summary>The <c>GetForm</c> function retrieves information about a specified form.</summary>
 	/// <param name="hPrinter">
@@ -3823,17 +3822,8 @@ public static partial class WinSpool
 	/// If the caller is remote, and the Level is 2, the <c>StringType</c> value of the returned <c>FORM_INFO_2</c> will always be STRING_LANGPAIR.
 	/// </remarks>
 	[PInvokeData("winspool.h", MSDNShortId = "10b25748-6d7c-46ab-bd2c-9b6126a1d7d1")]
-	public static T GetForm<T>(HPRINTER hPrinter, string pFormName) where T : struct
-	{
-		if (!TryGetLevel<T>("FORM_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(GetForm)} cannot process a structure of type {typeof(T).Name}.");
-		if (!GetForm(hPrinter, pFormName, lvl, default, 0, out var sz))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		using var mem = new SafeCoTaskMemHandle(sz);
-		if (!GetForm(hPrinter, pFormName, lvl, mem, mem.Size, out sz))
-			Win32Error.ThrowLastError();
-		return mem.ToStructure<T>();
-	}
+	public static T GetForm<T>(HPRINTER hPrinter, string pFormName) where T : struct =>
+		WSGet<T>("FORM_INFO_", (uint l, IntPtr p, uint cb, out uint pcb) => GetForm(hPrinter, pFormName, l, p, cb, out pcb));
 
 	/// <summary>The <c>GetJob</c> function retrieves information about a specified print job.</summary>
 	/// <param name="hPrinter">
@@ -3889,17 +3879,8 @@ public static partial class WinSpool
 	/// <returns>A <c>JOB_INFO_1</c> or a <c>JOB_INFO_2</c> structure containing information about the job as specified by <typeparamref name="T"/>.</returns>
 	/// <exception cref="ArgumentException"></exception>
 	[PInvokeData("winspool.h", MSDNShortId = "57e59f84-d2a0-4722-b0fc-6673f7bb5c57")]
-	public static T GetJob<T>(HPRINTER hPrinter, uint JobId) where T : struct
-	{
-		if (!TryGetLevel<T>("JOB_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(GetJob)} cannot process a structure of type {typeof(T).Name}.");
-		if (!GetJob(hPrinter, JobId, lvl, default, 0, out var sz))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		using var mem = new SafeCoTaskMemHandle(sz);
-		if (!GetJob(hPrinter, JobId, lvl, mem, mem.Size, out sz))
-			Win32Error.ThrowLastError();
-		return mem.ToStructure<T>();
-	}
+	public static T GetJob<T>(HPRINTER hPrinter, uint JobId) where T : struct =>
+		WSGet<T>("JOB_INFO_", (uint l, IntPtr p, uint cb, out uint pcb) => GetJob(hPrinter, JobId, l, p, cb, out pcb));
 
 	/// <summary>The <c>GetPrinter</c> function retrieves information about a specified printer.</summary>
 	/// <param name="hPrinter">
@@ -4112,17 +4093,8 @@ public static partial class WinSpool
 	/// configurations, the printer data is queried from the print server.
 	/// </para>
 	/// </remarks>
-	public static T GetPrinter<T>(HPRINTER hPrinter) where T : struct
-	{
-		if (!TryGetLevel<T>("PRINTER_INFO_", out var lvl))
-			throw new ArgumentException($"{nameof(GetPrinter)} cannot process a structure of type {typeof(T).Name}.");
-		if (!GetPrinter(hPrinter, lvl, default, 0, out var sz))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		using var mem = new SafeCoTaskMemHandle(sz);
-		if (!GetPrinter(hPrinter, lvl, mem, mem.Size, out sz))
-			Win32Error.ThrowLastError();
-		return mem.ToStructure<T>();
-	}
+	public static T GetPrinter<T>(HPRINTER hPrinter) where T : struct =>
+		WSGet<T>("PRINTER_INFO_", (uint l, IntPtr p, uint cb, out uint pcb) => GetPrinter(hPrinter, l, p, cb, out pcb));
 
 	/// <summary>
 	/// <para>The <c>GetPrinterData</c> function retrieves configuration data for the specified printer or print server.</para>
@@ -4578,7 +4550,7 @@ public static partial class WinSpool
 	/// </list>
 	/// </remarks>
 	[PInvokeData("winspool.h", MSDNShortId = "b5a44b27-a4aa-4e58-9a64-05be87d12ab5")]
-	public static object GetPrinterData(HPRINTER hPrinter, string pValueName)
+	public static object? GetPrinterData(HPRINTER hPrinter, string pValueName)
 	{
 		GetPrinterData(hPrinter, pValueName, out _, default, 0, out var sz).ThrowUnless(Win32Error.ERROR_MORE_DATA);
 		using var mem = new SafeCoTaskMemHandle(sz);
@@ -5068,7 +5040,7 @@ public static partial class WinSpool
 	/// </list>
 	/// </remarks>
 	[PInvokeData("winspool.h", MSDNShortId = "5d9183a7-97cc-46de-848e-e37ce51396eb")]
-	public static object GetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName)
+	public static object? GetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName)
 	{
 		GetPrinterDataEx(hPrinter, pKeyName, pValueName, out _, default, 0, out var sz).ThrowUnless(Win32Error.ERROR_MORE_DATA);
 		using var mem = new SafeCoTaskMemHandle(sz);
@@ -5252,8 +5224,8 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "96763220-d851-46f0-8be8-403f3356edb9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OpenPrinter(string pPrinterName, out SafeHPRINTER phPrinter,
-		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault);
+	public static extern bool OpenPrinter(string? pPrinterName, out SafeHPRINTER phPrinter,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS? pDefault);
 
 	/// <summary>
 	/// Retrieves a handle to the specified printer, print server, or other types of handles in the print subsystem, while setting some
@@ -5345,8 +5317,101 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "e2370ae4-4475-4ccc-a6f9-3d33d1370054")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OpenPrinter2(string pPrinterName, out SafeHPRINTER phPrinter,
-		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS pDefault, in PRINTER_OPTIONS pOptions);
+	public static extern bool OpenPrinter2(string? pPrinterName, out SafeHPRINTER phPrinter,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS? pDefault, in PRINTER_OPTIONS pOptions);
+
+	/// <summary>
+	/// Retrieves a handle to the specified printer, print server, or other types of handles in the print subsystem, while setting some
+	/// of the printer options.
+	/// </summary>
+	/// <param name="pPrinterName">
+	/// <para>
+	/// A pointer to a constant null-terminated string that specifies the name of the printer or print server, the printer object, the
+	/// XcvMonitor, or the XcvPort.
+	/// </para>
+	/// <para>
+	/// For a printer object, use: PrinterName,Job xxxx. For an XcvMonitor, use: ServerName,XcvMonitor MonitorName. For an XcvPort, use:
+	/// ServerName,XcvPort PortName.
+	/// </para>
+	/// <para><c>Windows Vista:</c> If <c>NULL</c>, it indicates the local print server.</para>
+	/// </param>
+	/// <param name="phPrinter">A pointer to a variable that receives a handle to the open printer or print server object.</param>
+	/// <param name="pDefault">A pointer to a <c>PRINTER_DEFAULTS</c> structure. This value can be <c>NULL</c>.</param>
+	/// <param name="pOptions">A pointer to a <c>PRINTER_OPTIONS</c> structure. This value can be <c>NULL</c>.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is a nonzero value.</para>
+	/// <para>If the function fails, the return value is zero. For extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Do not call this method in <c>DllMain</c>.</para>
+	/// <para>The ANSI version of this function is not implemented and returns ERROR_NOT_SUPPORTED.</para>
+	/// <para>
+	/// The pDefault parameter enables you to specify the data type and device mode values that are used for printing documents
+	/// submitted by the <c>StartDocPrinter</c> function. However, you can override these values by using the <c>SetJob</c> function
+	/// after a document has been started.
+	/// </para>
+	/// <para>
+	/// You can call the <c>OpenPrinter2</c> function to open a handle to a print server or to determine client access rights to a print
+	/// server. To do this, specify the name of the print server in the pPrinterName parameter, set the <c>pDatatype</c> and
+	/// <c>pDevMode</c> members of the <c>PRINTER_DEFAULTS</c> structure to <c>NULL</c>, and set the <c>DesiredAccess</c> member to
+	/// specify a server access mask value such as SERVER_ALL_ACCESS. When you are finished with the handle, pass it to the
+	/// <c>ClosePrinter</c> function to close it.
+	/// </para>
+	/// <para>
+	/// Use the <c>DesiredAccess</c> member of the <c>PRINTER_DEFAULTS</c> structure to specify the necessary access rights. The access
+	/// rights can be one of the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Desired Access value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PRINTER_ACCESS_ADMINISTER</term>
+	/// <term>To perform administrative tasks, such as those provided by SetPrinter.</term>
+	/// </item>
+	/// <item>
+	/// <term>PRINTER_ACCESS_USE</term>
+	/// <term>To perform basic printing operations.</term>
+	/// </item>
+	/// <item>
+	/// <term>PRINTER_ALL_ACCESS</term>
+	/// <term>To perform all administrative tasks and basic printing operations except SYNCHRONIZE. See Standard Access Rights.</term>
+	/// </item>
+	/// <item>
+	/// <term>PRINTER_ACCESS_MANAGE_LIMITED</term>
+	/// <term>
+	/// To perform administrative tasks, such as those provided by SetPrinter and SetPrinterData. This value is available starting from
+	/// Windows 8.1.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>generic security values, such as WRITE_DAC</term>
+	/// <term>To allow specific control access rights. See Standard Access Rights.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If a user does not have permission to open a specified printer or print server with the desired access, the <c>OpenPrinter2</c>
+	/// call will fail, and <c>GetLastError</c> will return the value ERROR_ACCESS_DENIED.
+	/// </para>
+	/// <para>
+	/// When pPrinterName is a local printer, then <c>OpenPrinter2</c> ignores all values of the <c>dwFlags</c> that the
+	/// <c>PRINTER_OPTIONS</c> structure pointed to using pOptions, except PRINTER_OPTION_CLIENT_CHANGE. If the latter is passed, then
+	/// <c>OpenPrinter2</c> will return ERROR_ACCESS_DENIED. Accordingly, when opening a local printer, <c>OpenPrinter2</c> provides no
+	/// advantage over <c>OpenPrinter</c>.
+	/// </para>
+	/// <para>
+	/// <c>Windows Vista:</c> The printer data returned by <c>OpenPrinter2</c> is retrieved from a local cache unless the
+	/// <c>PRINTER_OPTION_NO_CACHE</c> flag is set in the <c>dwFlags</c> field of the <c>PRINTER_OPTIONS</c> structure referenced by pOptions.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/openprinter2 BOOL OpenPrinter2( _In_ LPCTSTR pPrinterName, _Out_
+	// LPHANDLE phPrinter, _In_ LPPRINTER_DEFAULTS pDefault, _In_ PPRINTER_OPTIONS pOptions );
+	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("winspool.h", MSDNShortId = "e2370ae4-4475-4ccc-a6f9-3d33d1370054")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool OpenPrinter2(string? pPrinterName, out SafeHPRINTER phPrinter,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRINTER_DEFAULTS_Marshaler))] PRINTER_DEFAULTS? pDefault, [In, Optional] IntPtr pOptions);
 
 	/// <summary>The <c>PrinterProperties</c> function displays a printer-properties property sheet for the specified printer.</summary>
 	/// <param name="hWnd">A handle to the parent window of the property sheet.</param>
@@ -5499,7 +5564,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "55eec548-577f-422b-80e3-8b23aa4d2159")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDefaultPrinter(string pszPrinter);
+	public static extern bool SetDefaultPrinter(string? pszPrinter);
 
 	/// <summary>The <c>SetForm</c> function sets the form information for the specified printer.</summary>
 	/// <param name="hPrinter">
@@ -5976,7 +6041,7 @@ public static partial class WinSpool
 	[PInvokeData("winspool.h", MSDNShortId = "1b80ad93-aaa1-41ed-a668-a944fa62c3eb")]
 	public static bool SetPort([Optional] string? pName, string pPortName, PORT_STATUS status, PORT_STATUS_TYPE severity)
 	{
-		using var mem = SafeCoTaskMemHandle.CreateFromStructure(new PORT_INFO_3 { dwStatus = status, dwSeverity = severity });
+		using SafeCoTaskMemStruct<PORT_INFO_3> mem = new PORT_INFO_3 { dwStatus = status, dwSeverity = severity };
 		return SetPort(pName, pPortName, 3, mem);
 	}
 
@@ -6008,7 +6073,7 @@ public static partial class WinSpool
 	[PInvokeData("winspool.h", MSDNShortId = "1b80ad93-aaa1-41ed-a668-a944fa62c3eb")]
 	public static bool SetPort([Optional] string? pName, string pPortName, string status, PORT_STATUS_TYPE severity)
 	{
-		using var mem = SafeCoTaskMemHandle.CreateFromStructure(new PORT_INFO_3 { pszStatus = status, dwSeverity = severity });
+		using SafeCoTaskMemStruct<PORT_INFO_3> mem = new PORT_INFO_3 { pszStatus = status, dwSeverity = severity };
 		return SetPort(pName, pPortName, 3, mem);
 	}
 
@@ -6988,7 +7053,7 @@ public static partial class WinSpool
 	{
 		return InlineSetPrinterData(SetData, hPrinter, null, pValueName, pData, type);
 
-		static Win32Error SetData(HPRINTER p1, string p2, string p3, REG_VALUE_TYPE p4, IntPtr p5, uint p6) =>
+		static Win32Error SetData(HPRINTER p1, string? p2, string p3, REG_VALUE_TYPE p4, IntPtr p5, uint p6) =>
 			SetPrinterData(p1, p3, p4, p5, p6);
 	}
 
@@ -7226,7 +7291,7 @@ public static partial class WinSpool
 	// LPCTSTR pKeyName, _In_ LPCTSTR pValueName, _In_ DWORD Type, _In_ LPBYTE pData, _In_ DWORD cbData );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "b7faadfc-1c81-4ddf-8fe5-68f4cc0376f1")]
-	public static extern Win32Error SetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName, REG_VALUE_TYPE Type, IntPtr pData, uint cbData);
+	public static extern Win32Error SetPrinterDataEx(HPRINTER hPrinter, string? pKeyName, string pValueName, REG_VALUE_TYPE Type, IntPtr pData, uint cbData);
 
 	/// <summary>
 	/// The <c>SetPrinterDataEx</c> function sets the configuration data for a printer or print server. The function stores the
@@ -7462,7 +7527,7 @@ public static partial class WinSpool
 	// LPCTSTR pKeyName, _In_ LPCTSTR pValueName, _In_ DWORD Type, _In_ LPBYTE pData, _In_ DWORD cbData );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "b7faadfc-1c81-4ddf-8fe5-68f4cc0376f1")]
-	public static extern Win32Error SetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName, REG_VALUE_TYPE Type, byte[] pData, uint cbData);
+	public static extern Win32Error SetPrinterDataEx(HPRINTER hPrinter, string? pKeyName, string pValueName, REG_VALUE_TYPE Type, byte[] pData, uint cbData);
 
 	/// <summary>
 	/// The <c>SetPrinterDataEx</c> function sets the configuration data for a printer or print server. The function stores the
@@ -7694,7 +7759,7 @@ public static partial class WinSpool
 	/// </list>
 	/// </remarks>
 	[PInvokeData("winspool.h", MSDNShortId = "b7faadfc-1c81-4ddf-8fe5-68f4cc0376f1")]
-	public static Win32Error SetPrinterDataEx(HPRINTER hPrinter, string pKeyName, string pValueName, object pData, REG_VALUE_TYPE type = 0) =>
+	public static Win32Error SetPrinterDataEx(HPRINTER hPrinter, string? pKeyName, string pValueName, object pData, REG_VALUE_TYPE type = 0) =>
 		InlineSetPrinterData(SetPrinterDataEx, hPrinter, pKeyName, pValueName, pData, type);
 
 	/// <summary>The <c>StartDocPrinter</c> function notifies the print spooler that a document is to be spooled for printing.</summary>
@@ -7903,7 +7968,7 @@ public static partial class WinSpool
 	[return: MarshalAs(UnmanagedType.Bool)]
 	private static extern bool AddPrinterConnection2([Optional] HWND hWnd, string pszName, uint dwLevel, in PRINTER_CONNECTION_INFO_1 pConnectionInfo);
 
-	private static Win32Error InlineSetPrinterData(Func<HPRINTER, string, string, REG_VALUE_TYPE, IntPtr, uint, Win32Error> f, HPRINTER hPrinter, string pKeyName, string pValueName, object pData, REG_VALUE_TYPE type)
+	private static Win32Error InlineSetPrinterData(Func<HPRINTER, string?, string, REG_VALUE_TYPE, IntPtr, uint, Win32Error> f, HPRINTER hPrinter, string? pKeyName, string pValueName, object pData, REG_VALUE_TYPE type)
 	{
 		var pDataType = pData.GetType();
 		if (type == 0) type = RegistryTypeExt.GetFromType(pDataType);

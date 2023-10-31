@@ -3,6 +3,9 @@
     <AssemblyName>UnitTest.PInvoke.Printing</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\Printing\Vanara.PInvoke.Printing.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
