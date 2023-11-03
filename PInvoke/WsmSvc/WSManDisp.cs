@@ -303,7 +303,7 @@ public static partial class WsmSvc
 		// connection, long flags, IDispatch *connectionOptions, IDispatch **session );
 		[PreserveSig, DispId(1)]
 		HRESULT CreateSession([MarshalAs(UnmanagedType.BStr)] string connection, [Optional] WSManSessionFlags flags,
-			IWSManConnectionOptions connectionOptions, out IWSManSession session);
+			IWSManConnectionOptions? connectionOptions, out IWSManSession session);
 
 		/// <summary>Creates an IWSManConnectionOptions object that specifies the user name and password used when creating a session.</summary>
 		/// <param name="connectionOptions">A pointer to a new IWSManConnectionOptions object.</param>
@@ -809,7 +809,7 @@ public static partial class WsmSvc
 		// connection, long flags, IDispatch *connectionOptions, IDispatch **session );
 		[PreserveSig, DispId(1)]
 		new HRESULT CreateSession([MarshalAs(UnmanagedType.BStr)] string connection, [Optional] WSManSessionFlags flags,
-			IWSManConnectionOptions connectionOptions, out IWSManSession session);
+			IWSManConnectionOptions? connectionOptions, out IWSManSession session);
 
 		/// <summary>Creates an IWSManConnectionOptions object that specifies the user name and password used when creating a session.</summary>
 		/// <param name="connectionOptions">A pointer to a new IWSManConnectionOptions object.</param>
@@ -1247,7 +1247,7 @@ public static partial class WsmSvc
 		// connection, long flags, IDispatch *connectionOptions, IDispatch **session );
 		[PreserveSig, DispId(1)]
 		new HRESULT CreateSession([MarshalAs(UnmanagedType.BStr)] string connection, [Optional] WSManSessionFlags flags,
-			IWSManConnectionOptions connectionOptions, out IWSManSession session);
+			IWSManConnectionOptions? connectionOptions, out IWSManSession session);
 
 		/// <summary>Creates an IWSManConnectionOptions object that specifies the user name and password used when creating a session.</summary>
 		/// <param name="connectionOptions">A pointer to a new IWSManConnectionOptions object.</param>
@@ -1700,7 +1700,7 @@ public static partial class WsmSvc
 		// connection, long flags, IDispatch *connectionOptions, IDispatch **session );
 		[PreserveSig, DispId(1)]
 		new HRESULT CreateSession([MarshalAs(UnmanagedType.BStr)] string connection, [Optional] WSManSessionFlags flags,
-			IWSManConnectionOptions connectionOptions, out IWSManSession session);
+			IWSManConnectionOptions? connectionOptions, out IWSManSession session);
 
 		/// <summary>Creates an IWSManConnectionOptions object that specifies the user name and password used when creating a session.</summary>
 		/// <param name="connectionOptions">A pointer to a new IWSManConnectionOptions object.</param>
@@ -2572,7 +2572,7 @@ public static partial class WsmSvc
 		// resourceUri, BSTR filter, BSTR dialect, long flags, IDispatch **resultSet );
 		[PreserveSig, DispId(6)]
 		HRESULT Enumerate([In, MarshalAs(UnmanagedType.Struct)] object resourceUri, [MarshalAs(UnmanagedType.BStr)] string filter,
-			[MarshalAs(UnmanagedType.BStr)] string dialect, WSManEnumFlags flags, out IWSManEnumerator resultSet);
+			[MarshalAs(UnmanagedType.BStr)] string? dialect, WSManEnumFlags flags, out IWSManEnumerator resultSet);
 
 		/// <summary>
 		/// The <c>IWSManSession::Identify</c> method queries a remote computer to determine if it supports the WS-Management protocol.

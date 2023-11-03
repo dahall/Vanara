@@ -7,8 +7,7 @@ public static partial class WsmSvc
 	public const string WSMAN_CMDSHELL_OPTION_CODEPAGE = "WINRS_CODEPAGE";
 
 	/// <summary>
-	/// Option name used with WSManRunShellCommand API to indicate that the client side mode of standard input is Console; default
-	/// implies Pipe.
+	/// Option name used with WSManRunShellCommand API to indicate that the client side mode of standard input is Console; default implies Pipe.
 	/// </summary>
 	public const string WSMAN_CMDSHELL_OPTION_CONSOLEMODE_STDIN = "WINRS_CONSOLEMODE_STDIN";
 
@@ -46,69 +45,62 @@ public static partial class WsmSvc
 	/// Specifies the context that was returned by a call to WSManPluginStartup. This parameter represents a specific application
 	/// initialization of a WinRM plug-in.
 	/// </param>
-	/// <param name="senderDetails"/>
+	/// <param name="senderDetails">
+	/// A pointer to the WSMAN_SENDER_DETAILS structure that specifies the identification information of the user.
+	/// </param>
 	/// <param name="flags">Reserved for future use. Must be set to zero.</param>
 	/// <param name="operation">
 	/// <para>Represents the operation that is being performed. This parameter can be one of the following values:</para>
-	/// <para>Get</para>
+	/// <para><strong>Get</strong></para>
 	/// <para>WSManOperationGet</para>
-	/// <para>Put</para>
+	/// <para><strong>Put</strong></para>
 	/// <para>WSManOperationPut</para>
-	/// <para>Create</para>
+	/// <para><strong>Create</strong></para>
 	/// <para>WSManOperationCreate</para>
-	/// <para>Delete</para>
+	/// <para><strong>Delete</strong></para>
 	/// <para>WSManOperationDelete</para>
-	/// <para>Enumerate</para>
+	/// <para><strong>Enumerate</strong></para>
 	/// <para>WSManOperationEnumerate</para>
-	/// <para>Subscribe</para>
+	/// <para><strong>Subscribe</strong></para>
 	/// <para>WSManOperationSubscribe</para>
-	/// <para>Shell</para>
+	/// <para><strong>Shell</strong></para>
 	/// <para>WSManOperationShell</para>
-	/// <para>Command</para>
+	/// <para><strong>Command</strong></para>
 	/// <para>WSManOperationCommand</para>
-	/// <para>Invoke</para>
+	/// <para><strong>Invoke</strong></para>
 	/// <para>WSManOperationInvoke</para>
 	/// </param>
 	/// <param name="action">
 	/// <para>Specifies the action of the request received. This parameter can be one of the following values:</para>
-	/// <para>Get</para>
-	/// <para>http://schemas.xmlsoap.org/ws/2004/09/transfer/Get</para>
-	/// <para>Put</para>
-	/// <para>http://schemas.xmlsoap.org/ws/2004/09/transfer/Put</para>
-	/// <para>Create</para>
-	/// <para>http://schemas.xmlsoap.org/ws/2004/09/transfer/Create</para>
-	/// <para><c>Note</c> Shell creation will appear as Create.</para>
-	/// <para>Delete</para>
-	/// <para>http://schemas.xmlsoap.org/ws/2004/09/transfer/Delete</para>
-	/// <para>Enumerate</para>
-	/// <para>http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate</para>
-	/// <para>Subscribe</para>
-	/// <para>http://schemas.xmlsoap.org/ws/2004/08/eventing/Subscribe</para>
-	/// <para>Command</para>
-	/// <para>http://schemas.microsoft.com/wbem/wsman/1/windows/shell/Command</para>
-	/// <para>Invoke</para>
-	/// <para>This operation will have a custom string.</para>
+	/// <para><strong>Get</strong><br/><a href="http://schemas.xmlsoap.org/ws/2004/09/transfer/Get">http://schemas.xmlsoap.org/ws/2004/09/transfer/Get</a></para>
+	/// <para><strong>Put</strong><br/><a href="http://schemas.xmlsoap.org/ws/2004/09/transfer/Put">http://schemas.xmlsoap.org/ws/2004/09/transfer/Put</a></para>
+	/// <para><strong>Create</strong><br/><a href="http://schemas.xmlsoap.org/ws/2004/09/transfer/Create">http://schemas.xmlsoap.org/ws/2004/09/transfer/Create</a></para>
+	/// <para>Note Shell creation will appear as Create. <br/><br/><strong>Delete</strong><br/><a href="http://schemas.xmlsoap.org/ws/2004/09/transfer/Delete">http://schemas.xmlsoap.org/ws/2004/09/transfer/Delete</a></para>
+	/// <para><strong>Enumerate</strong><br/><a href="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate">http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate</a></para>
+	/// <para><strong>Subscribe</strong><br/><a href="http://schemas.xmlsoap.org/ws/2004/08/eventing/Subscribe">http://schemas.xmlsoap.org/ws/2004/08/eventing/Subscribe</a></para>
+	/// <para><strong>Command</strong><br/><a href="http://schemas.microsoft.com/wbem/wsman/1/windows/shell/Command">http://schemas.microsoft.com/wbem/wsman/1/windows/shell/Command</a></para>
+	/// <para><strong>Invoke</strong><br/> This operation will have a custom string.</para>
 	/// </param>
 	/// <param name="resourceUri">Specifies the resource URI of the inbound operation.</param>
 	/// <returns>None</returns>
 	/// <remarks>
-	/// The plug-in must call WSManPluginAuthzOperationComplete to report either that the user was successfully authorized to perform
-	/// the operation with <c>NO_ERROR</c> or that the user was not authorized with <c>ERROR_ACCESS_DENIED</c>. All other errors report
-	/// a failure to the client, but no specific information is reported.
+	/// The plug-in must call WSManPluginAuthzOperationComplete to report either that the user was successfully authorized to perform the
+	/// operation with <c>NO_ERROR</c> or that the user was not authorized with <c>ERROR_ACCESS_DENIED</c>. All other errors report a failure
+	/// to the client, but no specific information is reported.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_operation
-	// WSMAN_PLUGIN_AUTHORIZE_OPERATION WsmanPluginAuthorizeOperation; void WsmanPluginAuthorizeOperation( PVOID pluginContext,
-	// WSMAN_SENDER_DETAILS *senderDetails, DWORD flags, DWORD operation, PCWSTR action, PCWSTR resourceUri ) {...}
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_operation WSMAN_PLUGIN_AUTHORIZE_OPERATION
+	// WsmanPluginAuthorizeOperation; void WsmanPluginAuthorizeOperation( [in] PVOID pluginContext, [in] WSMAN_SENDER_DETAILS *senderDetails,
+	// [in] DWORD flags, [in] DWORD operation, [in] PCWSTR action, [in] PCWSTR resourceUri ) {...}
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_AUTHORIZE_OPERATION")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
 	public delegate void WSMAN_PLUGIN_AUTHORIZE_OPERATION([In] IntPtr pluginContext, in WSMAN_SENDER_DETAILS senderDetails,
 		[Optional] uint flags, uint operation, [MarshalAs(UnmanagedType.LPWStr)] string action,
 		[MarshalAs(UnmanagedType.LPWStr)] string resourceUri);
 
 	/// <summary>
 	/// <para>
-	/// Retrieves quota information for the user after a connection has been authorized. This method will be called only if the
-	/// configuration specifies that quotas are enabled within the authorization plug-in.
+	/// Retrieves quota information for the user after a connection has been authorized. This method will be called only if the configuration
+	/// specifies that quotas are enabled within the authorization plug-in.
 	/// </para>
 	/// <para>The DLL entry point name for this method must be <c>WSManPluginAuthzQueryQuota</c>.</para>
 	/// </summary>
@@ -116,25 +108,27 @@ public static partial class WsmSvc
 	/// Specifies the context that was returned by a call to WSManPluginStartup. This parameter represents a specific application
 	/// initialization of a WinRM plug-in.
 	/// </param>
-	/// <param name="senderDetails"/>
+	/// <param name="senderDetails">
+	/// A pointer to the WSMAN_SENDER_DETAILS structure that specifies the identification information of the user.
+	/// </param>
 	/// <param name="flags">Reserved for future use. Must be zero.</param>
 	/// <returns>None</returns>
 	/// <remarks>
 	/// <para>
-	/// The quota is queried on the first call by a particular user and will not be requeried until after the user record times out due
-	/// to an idle time-out of activity or until a system-wide configuration period is exceeded.
+	/// The quota is queried on the first call by a particular user and will not be requeried until after the user record times out due to an
+	/// idle time-out of activity or until a system-wide configuration period is exceeded.
 	/// </para>
 	/// <para>
-	/// The plug-in must call the WSManPluginAuthzQueryQuotaComplete function to terminate the operation whether or not the plug-in can
-	/// carry out the request. If successful, the plug-in should give a set of quota information that is relevant for this particular
-	/// user. If the plug-in fails to process the request for any reason, an appropriate error should be recorded through the callback
-	/// method and the error will get propagated back to the client as a Simple Object Access Protocol (SOAP) fault if possible;
-	/// otherwise, the error will be an empty HTTP 500 status error.
+	/// The plug-in must call the WSManPluginAuthzQueryQuotaComplete function to terminate the operation whether or not the plug-in can carry
+	/// out the request. If successful, the plug-in should give a set of quota information that is relevant for this particular user. If the
+	/// plug-in fails to process the request for any reason, an appropriate error should be recorded through the callback method and the
+	/// error will get propagated back to the client as a Simple Object Access Protocol (SOAP) fault if possible; otherwise, the error will
+	/// be an empty HTTP 500 status error.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_query_quota
-	// WSMAN_PLUGIN_AUTHORIZE_QUERY_QUOTA WsmanPluginAuthorizeQueryQuota; void WsmanPluginAuthorizeQueryQuota( PVOID pluginContext,
-	// WSMAN_SENDER_DETAILS *senderDetails, DWORD flags ) {...}
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_query_quota
+	// WSMAN_PLUGIN_AUTHORIZE_QUERY_QUOTA WsmanPluginAuthorizeQueryQuota; void WsmanPluginAuthorizeQueryQuota( [in] PVOID pluginContext, [in]
+	// WSMAN_SENDER_DETAILS *senderDetails, [in] DWORD flags ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_AUTHORIZE_QUERY_QUOTA")]
 	public delegate void WSMAN_PLUGIN_AUTHORIZE_QUERY_QUOTA(IntPtr pluginContext, in WSMAN_SENDER_DETAILS senderDetails, uint flags);
@@ -142,40 +136,40 @@ public static partial class WsmSvc
 	/// <summary>
 	/// <para>
 	/// Releases the context that a plug-in reports from either WSManPluginAuthzUserComplete or WSManPluginAuthzOperationComplete. For a
-	/// particular user, the context reported for both calls is allowed to be the same, as long as the plug-in infrastructure handles
-	/// the scenario appropriately. This method is synchronous, and there are no callbacks that are called as a result.
+	/// particular user, the context reported for both calls is allowed to be the same, as long as the plug-in infrastructure handles the
+	/// scenario appropriately. This method is synchronous, and there are no callbacks that are called as a result.
 	/// </para>
 	/// <para>This method will be called under the following scenarios:</para>
 	/// <list type="bullet">
 	/// <item>
-	/// <term>
-	/// After the operation is complete, the WSManPluginAuthzOperationComplete context is released. For some operations, such as get,
-	/// the context will be released after the response is sent for the get operation. For more complex operations, such as enumeration,
-	/// the context will not be released until the enumeration has completed.
-	/// </term>
+	/// <description>
+	/// After the operation is complete, the WSManPluginAuthzOperationComplete context is released. For some operations, such as get, the
+	/// context will be released after the response is sent for the get operation. For more complex operations, such as enumeration, the
+	/// context will not be released until the enumeration has completed.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>
-	/// When the user record times out due to inactivity, the WSManPluginAuthzUser method will be called again the next time a request
-	/// comes in for that user.
-	/// </term>
+	/// <description>
+	/// When the user record times out due to inactivity, the WSManPluginAuthzUser method will be called again the next time a request comes
+	/// in for that user.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>
-	/// If re-authorization needs to occur, the old context will be released after the new one is acquired. The old context will always
-	/// be released regardless of whether the authorization succeeds.
-	/// </term>
+	/// <description>
+	/// If re-authorization needs to occur, the old context will be released after the new one is acquired. The old context will always be
+	/// released regardless of whether the authorization succeeds.
+	/// </description>
 	/// </item>
 	/// </list>
 	/// <para>The DLL entry point name for this method must be <c>WSManPluginAuthzReleaseContext</c>.</para>
 	/// </summary>
 	/// <param name="userAuthorizationContext">
-	/// Specifies the context that was returned by either WSManPluginAuthzUserComplete or WSManPluginAuthzOperationComplete. If these
-	/// methods return no context, this method will not be called.
+	/// Specifies the context that was returned by either WSManPluginAuthzUserComplete or WSManPluginAuthzOperationComplete. If these methods
+	/// return no context, this method will not be called.
 	/// </param>
 	/// <returns>None</returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_release_context
-	// WSMAN_PLUGIN_AUTHORIZE_RELEASE_CONTEXT WsmanPluginAuthorizeReleaseContext; void WsmanPluginAuthorizeReleaseContext( PVOID
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_release_context
+	// WSMAN_PLUGIN_AUTHORIZE_RELEASE_CONTEXT WsmanPluginAuthorizeReleaseContext; void WsmanPluginAuthorizeReleaseContext( [in] PVOID
 	// userAuthorizationContext ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_AUTHORIZE_RELEASE_CONTEXT")]
@@ -183,14 +177,14 @@ public static partial class WsmSvc
 
 	/// <summary>
 	/// <para>
-	/// Authorizes a connection. The plug-in should verify that this user is allowed to perform any operations. If the user is allowed
-	/// to perform operations, the plug-in must report a success. If the user is not allowed to carry out any type of operation, a
-	/// failure must be returned.
+	/// Authorizes a connection. The plug-in should verify that this user is allowed to perform any operations. If the user is allowed to
+	/// perform operations, the plug-in must report a success. If the user is not allowed to carry out any type of operation, a failure must
+	/// be returned.
 	/// </para>
 	/// <para>
-	/// Every new connection does not need to be authorized. After a user has been authorized to connect, a user record is created to
-	/// track the activities of the user. While that record exists, all new connections will automatically be authorized. The user
-	/// record will time-out after a configurable amount of time after no activity is detected.
+	/// Every new connection does not need to be authorized. After a user has been authorized to connect, a user record is created to track
+	/// the activities of the user. While that record exists, all new connections will automatically be authorized. The user record will
+	/// time-out after a configurable amount of time after no activity is detected.
 	/// </para>
 	/// <para>The DLL entry point name for this method must be <c>WSManPluginAuthzUser</c>.</para>
 	/// </summary>
@@ -198,21 +192,23 @@ public static partial class WsmSvc
 	/// Specifies the context that was returned by a call to WSManPluginStartup. This parameter represents a specific application
 	/// initialization of a WinRM plug-in.
 	/// </param>
-	/// <param name="senderDetails"/>
+	/// <param name="senderDetails">
+	/// A pointer to the WSMAN_SENDER_DETAILS structure that specifies the identification information of the user to be authorized.
+	/// </param>
 	/// <param name="flags">Reserved for future use. Must be set to zero.</param>
 	/// <returns>None</returns>
 	/// <remarks>
-	/// The plug-in must call WSManPluginAuthzUserComplete to report either that the user was successfully authorized with
-	/// <c>NO_ERROR</c> or that the user was not authorized with <c>ERROR_ACCESS_DENIED</c>. An <c>ERROR_WSMAN_REDIRECT_REQUIRED</c>
-	/// error should be reported if an HTTP redirect is required for this user, and the new HTTP URI should be recorded in
-	/// extendedErrorInformation of the <c>WSManPluginAuthzUserComplete</c> method. All other errors report a failure to the client, but
-	/// no specific information is reported.
+	/// The plug-in must call WSManPluginAuthzUserComplete to report either that the user was successfully authorized with <c>NO_ERROR</c> or
+	/// that the user was not authorized with <c>ERROR_ACCESS_DENIED</c>. An <c>ERROR_WSMAN_REDIRECT_REQUIRED</c> error should be reported if
+	/// an HTTP redirect is required for this user, and the new HTTP URI should be recorded in <c>extendedErrorInformation</c> of the
+	/// <c>WSManPluginAuthzUserComplete</c> method. All other errors report a failure to the client, but no specific information is reported.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_user WSMAN_PLUGIN_AUTHORIZE_USER
-	// WsmanPluginAuthorizeUser; void WsmanPluginAuthorizeUser( PVOID pluginContext, WSMAN_SENDER_DETAILS *senderDetails, DWORD flags ) {...}
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_authorize_user WSMAN_PLUGIN_AUTHORIZE_USER
+	// WsmanPluginAuthorizeUser; void WsmanPluginAuthorizeUser( [in] PVOID pluginContext, [in] WSMAN_SENDER_DETAILS *senderDetails, [in]
+	// DWORD flags ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_AUTHORIZE_USER")]
-	public delegate void WSMAN_PLUGIN_AUTHORIZE_USER(IntPtr pluginContext, in WSMAN_SENDER_DETAILS senderDetails, uint flags);
+	public delegate void WSMAN_PLUGIN_AUTHORIZE_USER(IntPtr pluginContext, in WSMAN_SENDER_DETAILS senderDetails, uint flags = 0);
 
 	/// <summary>
 	/// <para>
@@ -221,31 +217,37 @@ public static partial class WsmSvc
 	/// </para>
 	/// <para>The DLL entry point name must be <c>WSManPluginCommand</c>.</para>
 	/// </summary>
-	/// <param name="requestDetails"/>
+	/// <param name="requestDetails">
+	/// A pointer to a WSMAN_PLUGIN_REQUEST structure that specifies the resource URI, options, locale, shutdown flag, and handle for the request.
+	/// </param>
 	/// <param name="flags">Reserved for future use. Must be set to zero.</param>
 	/// <param name="shellContext">Specifies the context returned from creating the shell for which this command needs to be associated.</param>
 	/// <param name="commandLine">Specifies the command line to be run.</param>
-	/// <param name="arguments"/>
+	/// <param name="arguments">
+	/// A pointer to a WSMAN_COMMAND_ARG_SET structure that specifies the command-line arguments to be passed to the command.
+	/// </param>
 	/// <returns>None</returns>
 	/// <remarks>
-	/// The WinRM (WinRM) plug-in will call the WSManPluginReportContext method to register a command context for the command. All
-	/// operations on this command are passed into this context. The context must be valid until the WSManPluginOperationComplete method
-	/// is called by the plug-in to indicate that either the command is complete or the shell was shut down. All parameters passed in
-	/// are valid until the WinRM plug-in calls <c>WSManPluginOperationComplete</c>.
+	/// The WinRM (WinRM) plug-in will call the WSManPluginReportContext method to register a command context for the command. All operations
+	/// on this command are passed into this context. The context must be valid until the WSManPluginOperationComplete method is called by
+	/// the plug-in to indicate that either the command is complete or the shell was shut down. All parameters passed in are valid until the
+	/// WinRM plug-in calls <c>WSManPluginOperationComplete</c>.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_command WSMAN_PLUGIN_COMMAND WsmanPluginCommand;
-	// void WsmanPluginCommand( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID shellContext, PCWSTR commandLine,
-	// WSMAN_COMMAND_ARG_SET *arguments ) {...}
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_command WSMAN_PLUGIN_COMMAND WsmanPluginCommand; void
+	// WsmanPluginCommand( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID shellContext, PCWSTR commandLine, WSMAN_COMMAND_ARG_SET
+	// *arguments ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_COMMAND")]
-	public delegate void WSMAN_PLUGIN_COMMAND(in WSMAN_PLUGIN_REQUEST requestDetails, uint flags, IntPtr shellContext,
+	public delegate void WSMAN_PLUGIN_COMMAND(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags, IntPtr shellContext,
 		[MarshalAs(UnmanagedType.LPWStr)] string commandLine, IntPtr arguments);
 
 	/// <summary>
 	/// <para>Defines the connect callback for a plug-in.</para>
 	/// <para>The DLL entry point name must be <c>WSManPluginConnect</c>.</para>
 	/// </summary>
-	/// <param name="requestDetails"/>
+	/// <param name="requestDetails">
+	/// A pointer to a WSMAN_PLUGIN_REQUEST structure that specifies the resource URI, options, locale, shutdown flag, and handle for the request.
+	/// </param>
 	/// <param name="flags">Reserved for future use. Must be set to zero.</param>
 	/// <param name="shellContext">
 	/// Specifies the context returned from creating the shell for which this connection request needs to be associated.
@@ -254,42 +256,49 @@ public static partial class WsmSvc
 	/// If this request is aimed at a command and not a shell, this is the context returned from the <c>winrm create</c> operation;
 	/// otherwise, this parameter is <c>NULL</c>.
 	/// </param>
-	/// <param name="inboundConnectInformation"/>
+	/// <param name="inboundConnectInformation">
+	/// A pointer to a WSMAN_DATA structure that specifies an optional inbound object that contains extra data for the connection.
+	/// </param>
 	/// <returns>None</returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_connect WSMAN_PLUGIN_CONNECT WsmanPluginConnect;
-	// void WsmanPluginConnect( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID shellContext, PVOID commandContext, WSMAN_DATA
-	// *inboundConnectInformation ) {...}
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_connect WSMAN_PLUGIN_CONNECT WsmanPluginConnect; void
+	// WsmanPluginConnect( [in] WSMAN_PLUGIN_REQUEST *requestDetails, [in] DWORD flags, [in] PVOID shellContext, [in, optional] PVOID
+	// commandContext, [in, optional] WSMAN_DATA *inboundConnectInformation ) {...}
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_CONNECT")]
-	public delegate void WSMAN_PLUGIN_CONNECT(in WSMAN_PLUGIN_REQUEST requestDetails, uint flags, IntPtr shellContext,
-		IntPtr commandContext, IntPtr inboundConnectInformation);
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	public delegate void WSMAN_PLUGIN_CONNECT(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags, IntPtr shellContext,
+		[Optional] IntPtr commandContext, [Optional] IntPtr inboundConnectInformation);
 
 	/// <summary>
 	/// <para>Defines the receive callback for a plug-in. This function is called when an inbound request to receive data is received.</para>
 	/// <para>The DLL entry point name must be <c>WSManPluginReceive</c>.</para>
 	/// </summary>
-	/// <param name="requestDetails"/>
+	/// <param name="requestDetails">
+	/// A pointer to a WSMAN_PLUGIN_REQUEST structure that specifies the resource URI, options, locale, shutdown flag, and handle for the request.
+	/// </param>
 	/// <param name="flags">Reserved for future use. Must be zero.</param>
 	/// <param name="shellContext">Specifies the context that was received when the shell was created.</param>
 	/// <param name="commandContext">
 	/// If this request is aimed at a command and not a shell, this is the context returned from the <c>winrm create</c> operation;
 	/// otherwise, this parameter is <c>NULL</c>.
 	/// </param>
-	/// <param name="streamSet"/>
+	/// <param name="streamSet">
+	/// A WSMAN_STREAM_ID_SET structure that contains a list of streams for which data is to be received. If this list is empty, all streams
+	/// that were configured in the shell are implied, which means that all streams are available.
+	/// </param>
 	/// <returns>None</returns>
 	/// <remarks>
-	/// Based on the client request, the <c>WSMAN_PLUGIN_RECEIVE</c> callback function can be called against the shell and/or the
-	/// command. The plug-in calls the WSManPluginReceiveResult method for each piece of data that needs to be sent back to the client.
-	/// After all of the data has been sent, the plug-in calls WSManPluginOperationComplete to end the stream. All parameters passed in
-	/// are valid until the Windows Remote Management (WinRM) plug-in calls <c>WSManPluginOperationComplete</c>.
+	/// Based on the client request, the <c>WSMAN_PLUGIN_RECEIVE</c> callback function can be called against the shell and/or the command.
+	/// The plug-in calls the WSManPluginReceiveResult method for each piece of data that needs to be sent back to the client. After all of
+	/// the data has been sent, the plug-in calls WSManPluginOperationComplete to end the stream. All parameters passed in are valid until
+	/// the Windows Remote Management (WinRM) plug-in calls <c>WSManPluginOperationComplete</c>.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_receive WSMAN_PLUGIN_RECEIVE WsmanPluginReceive;
-	// void WsmanPluginReceive( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID shellContext, PVOID commandContext,
-	// WSMAN_STREAM_ID_SET *streamSet ) {...}
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_receive WSMAN_PLUGIN_RECEIVE WsmanPluginReceive; void
+	// WsmanPluginReceive( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID shellContext, PVOID commandContext, WSMAN_STREAM_ID_SET
+	// *streamSet ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_RECEIVE")]
-	public delegate void WSMAN_PLUGIN_RECEIVE(in WSMAN_PLUGIN_REQUEST requestDetails, uint flags, IntPtr shellContext,
-		IntPtr commandContext, IntPtr streamSet);
+	public delegate void WSMAN_PLUGIN_RECEIVE(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags, IntPtr shellContext,
+		[Optional] IntPtr commandContext, IntPtr streamSet);
 
 	/// <summary>
 	/// <para>Defines the release command callback for the plug-in. This function is called to delete the plug-in command context.</para>
@@ -306,7 +315,7 @@ public static partial class WsmSvc
 	// PVOID commandContext ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_RELEASE_COMMAND_CONTEXT")]
-	public delegate void WSMAN_PLUGIN_RELEASE_COMMAND_CONTEXT(IntPtr shellContext, IntPtr commandContext);
+	public delegate void WSMAN_PLUGIN_RELEASE_COMMAND_CONTEXT(IntPtr shellContext, [Optional] IntPtr commandContext);
 
 	/// <summary>
 	/// <para>Defines the release shell callback for the plug-in. This function is called to delete the plug-in shell context.</para>
@@ -322,13 +331,15 @@ public static partial class WsmSvc
 
 	/// <summary>
 	/// <para>
-	/// Defines the send callback for a plug-in. This function is called for each object that is received from a client. Each object
-	/// received causes the callback to be called once. After the data is processed, the Windows Remote Management (WinRM) plug-in calls
+	/// Defines the send callback for a plug-in. This function is called for each object that is received from a client. Each object received
+	/// causes the callback to be called once. After the data is processed, the Windows Remote Management (WinRM) plug-in calls
 	/// WSManPluginOperationComplete to acknowledge receipt and to allow the next object to be delivered.
 	/// </para>
 	/// <para>The DLL entry point name must be <c>WSManPluginSend</c>.</para>
 	/// </summary>
-	/// <param name="requestDetails"/>
+	/// <param name="requestDetails">
+	/// A pointer to a WSMAN_PLUGIN_REQUEST structure that specifies the resource URI, options, locale, shutdown flag, and handle for the request.
+	/// </param>
 	/// <param name="flags">
 	/// If this is the last object for the stream, this parameter is set to <c>WSMAN_FLAG_NO_MORE_DATA</c>. Otherwise, it is set to zero.
 	/// </param>
@@ -338,15 +349,17 @@ public static partial class WsmSvc
 	/// otherwise, this parameter is <c>NULL</c>.
 	/// </param>
 	/// <param name="stream">Specifies the stream that is associated with the inbound object.</param>
-	/// <param name="inboundData"/>
+	/// <param name="inboundData">
+	/// A pointer to a WSMAN_DATA structure that contains data being sent to the specified stream. It is in the form of binary data.
+	/// </param>
 	/// <returns>None</returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_send WSMAN_PLUGIN_SEND WsmanPluginSend; void
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_send WSMAN_PLUGIN_SEND WsmanPluginSend; void
 	// WsmanPluginSend( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID shellContext, PVOID commandContext, PCWSTR stream,
 	// WSMAN_DATA *inboundData ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_SEND")]
-	public delegate void WSMAN_PLUGIN_SEND(in WSMAN_PLUGIN_REQUEST requestDetails, uint flags, IntPtr shellContext,
-		IntPtr commandContext, [MarshalAs(UnmanagedType.LPWStr)] string stream, in WSMAN_DATA inboundData);
+	public delegate void WSMAN_PLUGIN_SEND(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags, IntPtr shellContext,
+		[Optional] IntPtr commandContext, [MarshalAs(UnmanagedType.LPWStr)] string stream, in WSMAN_DATA inboundData);
 
 	/// <summary>
 	/// <para>
@@ -356,38 +369,42 @@ public static partial class WsmSvc
 	/// <para>The DLL entry point name must be <c>WSManPluginShell</c>.</para>
 	/// </summary>
 	/// <param name="pluginContext">
-	/// Specifies the context that was returned by a call to the WSManPluginStartup method. This parameter represents a specific
-	/// application initialization of a WinRM plug-in.
+	/// Specifies the context that was returned by a call to the WSManPluginStartup method. This parameter represents a specific application
+	/// initialization of a WinRM plug-in.
 	/// </param>
-	/// <param name="requestDetails"/>
+	/// <param name="requestDetails">
+	/// A pointer to a WSMAN_PLUGIN_REQUEST structure that specifies the resource URI, options, locale, shutdown flag, and handle for the request.
+	/// </param>
 	/// <param name="flags">Reserved for future use. Must be set to zero.</param>
-	/// <param name="startupInfo"/>
-	/// <param name="inboundShellInformation"/>
+	/// <param name="startupInfo">A pointer to a WSMAN_SHELL_STARTUP_INFO structure that contains startup information for the shell.</param>
+	/// <param name="inboundShellInformation">
+	/// A pointer to a WSMAN_DATA structure that specifies an optional inbound object that contains extra data for the shell.
+	/// </param>
 	/// <returns>None</returns>
 	/// <remarks>
-	/// The WinRM (WinRM) plug-in calls WSManPluginReportContext to register a shell context for the shell. All operations on this shell
-	/// pass into this context. If the shell has shut down or the plug-in checks the requestDetails parameter and reports that the
+	/// The WinRM (WinRM) plug-in calls WSManPluginReportContext to register a shell context for the shell. All operations on this shell pass
+	/// into this context. If the shell has shut down or the plug-in checks the <c>requestDetails</c> parameter and reports that the
 	/// operation was canceled, the plug-in should call WSManPluginOperationComplete. All parameters passed in are valid until the WinRM
 	/// plug-in calls <c>WSManPluginOperationComplete</c>.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_shell WSMAN_PLUGIN_SHELL WsmanPluginShell; void
+	// https://learn.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_shell WSMAN_PLUGIN_SHELL WsmanPluginShell; void
 	// WsmanPluginShell( PVOID pluginContext, WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, WSMAN_SHELL_STARTUP_INFO *startupInfo,
 	// WSMAN_DATA *inboundShellInformation ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_SHELL")]
-	public delegate void WSMAN_PLUGIN_SHELL(IntPtr pluginContext, in WSMAN_PLUGIN_REQUEST requestDetails, uint flags,
-		IntPtr startupInfo, IntPtr inboundShellInformation);
+	public delegate void WSMAN_PLUGIN_SHELL(IntPtr pluginContext, in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags,
+		IntPtr startupInfo, [Optional] IntPtr inboundShellInformation);
 
 	/// <summary>
 	/// <para>
-	/// Defines the shutdown callback for the plug-in. This function is called after all operations have been canceled and before the
-	/// Windows Remote Management plug-in DLL is unloaded. All WinRM plug-ins must implement this callback function.
+	/// Defines the shutdown callback for the plug-in. This function is called after all operations have been canceled and before the Windows
+	/// Remote Management plug-in DLL is unloaded. All WinRM plug-ins must implement this callback function.
 	/// </para>
 	/// <para>The DLL entry point name must be <c>WSManPluginShutdown</c>.</para>
 	/// </summary>
 	/// <param name="pluginContext">
-	/// Specifies the context that was returned by a call to the WSManPluginStartup method. This parameter represents a specific
-	/// application initialization of a WinRM plug-in. The shutdown entry point will be called for each application that initialized it.
+	/// Specifies the context that was returned by a call to the WSManPluginStartup method. This parameter represents a specific application
+	/// initialization of a WinRM plug-in. The shutdown entry point will be called for each application that initialized it.
 	/// </param>
 	/// <param name="flags">Reserved for future use. Must be set to zero.</param>
 	/// <param name="reason">
@@ -405,20 +422,20 @@ public static partial class WsmSvc
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Each successful call to WSManPluginStartup will result in a call to this function before the WinRM plug-in DLL is unloaded. It
-	/// is important to ensure that the WinRM plug-in tracks the number of times that this startup entry point is called so that the
-	/// plug-in is not shut down prematurely.
+	/// Each successful call to WSManPluginStartup will result in a call to this function before the WinRM plug-in DLL is unloaded. It is
+	/// important to ensure that the WinRM plug-in tracks the number of times that this startup entry point is called so that the plug-in is
+	/// not shut down prematurely.
 	/// </para>
 	/// <para>
 	/// This function must ensure that all plug-in threads are shut down before it returns. If the plug-in handles only synchronous
-	/// operations and all threads report a cancellation result before they return, this function performs only plug-in cleanup.
-	/// However, for an asynchronous plug-in, any threads that are used to process the plug-in threads, including the ones that just
-	/// reported the cancellation for all operations, need to be completely shut down. If all of the threads are not shut down, crashes
-	/// in the DLL might occur because code might be executed after the DLL is unloaded.
+	/// operations and all threads report a cancellation result before they return, this function performs only plug-in cleanup. However, for
+	/// an asynchronous plug-in, any threads that are used to process the plug-in threads, including the ones that just reported the
+	/// cancellation for all operations, need to be completely shut down. If all of the threads are not shut down, crashes in the DLL might
+	/// occur because code might be executed after the DLL is unloaded.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_shutdown WSMAN_PLUGIN_SHUTDOWN
-	// WsmanPluginShutdown; DWORD WsmanPluginShutdown( PVOID pluginContext, DWORD flags, DWORD reason ) {...}
+	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_shutdown WSMAN_PLUGIN_SHUTDOWN WsmanPluginShutdown;
+	// DWORD WsmanPluginShutdown( PVOID pluginContext, DWORD flags, DWORD reason ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_SHUTDOWN")]
 	public delegate uint WSMAN_PLUGIN_SHUTDOWN(IntPtr pluginContext, uint flags, WSMAN_SHUTDOWN reason);
@@ -439,9 +456,7 @@ public static partial class WsmSvc
 	/// <para>WSMAN_SIGNAL_SHELL_CODE_TERMINATE</para>
 	/// <para>The shell or Command Prompt window was closed. The plug-in should call the WSManPluginOperationComplete function.</para>
 	/// <para>WSMAN_SIGNAL_SHELL_CODE_CTRL_C</para>
-	/// <para>
-	/// The signal for CTRL+C was received, and the process was halted. The plug-in should call the WSManPluginOperationComplete function.
-	/// </para>
+	/// <para>The signal for CTRL+C was received, and the process was halted. The plug-in should call the WSManPluginOperationComplete function.</para>
 	/// <para>WSMAN_SIGNAL_SHELL_CODE_CTRL_BREAK</para>
 	/// <para>
 	/// The signal for CTRL+BREAK was received, and the process was halted. The plug-in should call the WSManPluginOperationComplete function.
@@ -449,51 +464,50 @@ public static partial class WsmSvc
 	/// </param>
 	/// <returns>None</returns>
 	/// <remarks>
-	/// A signal can be received for processing a CTRL+C sequence or one of many other types of custom signals. The callback is called
-	/// once for each signal that is received. The plug-in determines which signals cause commands and/or shells to be shut down.
-	/// Because signals are shell-specific, the plug-in must initiate the shutdown by calling the WSManPluginOperationComplete method.
-	/// For each call, the plug-in should call <c>WSManPluginOperationComplete</c> to acknowledge receipt and to allow the next signal
-	/// to be received.
+	/// A signal can be received for processing a CTRL+C sequence or one of many other types of custom signals. The callback is called once
+	/// for each signal that is received. The plug-in determines which signals cause commands and/or shells to be shut down. Because signals
+	/// are shell-specific, the plug-in must initiate the shutdown by calling the WSManPluginOperationComplete method. For each call, the
+	/// plug-in should call <c>WSManPluginOperationComplete</c> to acknowledge receipt and to allow the next signal to be received.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_signal WSMAN_PLUGIN_SIGNAL WsmanPluginSignal; void
 	// WsmanPluginSignal( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID shellContext, PVOID commandContext, PCWSTR code ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_SIGNAL")]
-	public delegate void WSMAN_PLUGIN_SIGNAL(in WSMAN_PLUGIN_REQUEST requestDetails, uint flags, IntPtr shellContext,
-		IntPtr commandContext, [MarshalAs(UnmanagedType.LPWStr)] string code);
+	public delegate void WSMAN_PLUGIN_SIGNAL(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags, IntPtr shellContext,
+		[Optional] IntPtr commandContext, [MarshalAs(UnmanagedType.LPWStr)] string code);
 
 	/// <summary>
 	/// <para>
-	/// Defines the startup callback for the plug-in. Because multiple applications can be hosted in the same process, this method can
-	/// be called multiple times, but only once for each application initialization. A plug-in can be initialized more than once within
-	/// the same process but only once for each applicationIdentification value. The context that is returned from this method should be
-	/// application specific. The returned context will be passed into all future plug-in calls that are specific to the application.
-	/// All Windows Remote Management (WinRM) plug-ins must implement this callback function.
+	/// Defines the startup callback for the plug-in. Because multiple applications can be hosted in the same process, this method can be
+	/// called multiple times, but only once for each application initialization. A plug-in can be initialized more than once within the same
+	/// process but only once for each applicationIdentification value. The context that is returned from this method should be application
+	/// specific. The returned context will be passed into all future plug-in calls that are specific to the application. All Windows Remote
+	/// Management (WinRM) plug-ins must implement this callback function.
 	/// </para>
 	/// <para>The DLL entry point name for this method must be <c>WSManPluginStartup</c>.</para>
 	/// </summary>
 	/// <param name="flags">Reserved for future use. Must be zero.</param>
 	/// <param name="applicationIdentification">
-	/// A unique identifier for the hosted application. For the main WinRM service, the default is <c>wsman</c>. For an Internet
-	/// Information Services (IIS) host, this identifier is related to the application endpoint for that host. For example, <c>wsman/MyCompany/MyApplication</c>.
+	/// A unique identifier for the hosted application. For the main WinRM service, the default is <c>wsman</c>. For an Internet Information
+	/// Services (IIS) host, this identifier is related to the application endpoint for that host. For example, <c>wsman/MyCompany/MyApplication</c>.
 	/// </param>
 	/// <param name="extraInfo">
-	/// A string that contains configuration information, if any information was stored when the plug-in was registered. When the
-	/// plug-in is registered using the WinRM configuration, the plug-in can add extra configuration parameters that are useful during
-	/// initialization to an optional node. This information can be especially useful if a plug-in is used in different IIS hosting
-	/// scenarios and requires slightly different run-time semantics during initialization. This string is a copy of the XML from the
-	/// configuration, if one is present. Otherwise, this parameter is set to <c>NULL</c>.
+	/// A string that contains configuration information, if any information was stored when the plug-in was registered. When the plug-in is
+	/// registered using the WinRM configuration, the plug-in can add extra configuration parameters that are useful during initialization to
+	/// an optional node. This information can be especially useful if a plug-in is used in different IIS hosting scenarios and requires
+	/// slightly different run-time semantics during initialization. This string is a copy of the XML from the configuration, if one is
+	/// present. Otherwise, this parameter is set to <c>NULL</c>.
 	/// </param>
 	/// <param name="pluginContext"/>
 	/// <returns>
 	/// The method returns <c>NO_ERROR</c> if it succeeded; otherwise, it returns an error code. If this method returns an error, the
 	/// WSManPluginShutdown entry point will not be called.
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_startup WSMAN_PLUGIN_STARTUP WsmanPluginStartup;
-	// DWORD WsmanPluginStartup( DWORD flags, PCWSTR applicationIdentification, PCWSTR extraInfo, PVOID *pluginContext ) {...}
+	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nc-wsman-wsman_plugin_startup WSMAN_PLUGIN_STARTUP WsmanPluginStartup; DWORD
+	// WsmanPluginStartup( DWORD flags, PCWSTR applicationIdentification, PCWSTR extraInfo, PVOID *pluginContext ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("wsman.h", MSDNShortId = "NC:wsman.WSMAN_PLUGIN_STARTUP")]
-	public delegate uint WSMAN_PLUGIN_STARTUP(uint flags, [MarshalAs(UnmanagedType.LPWStr)] string applicationIdentification,
+	public delegate uint WSMAN_PLUGIN_STARTUP([Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string applicationIdentification,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? extraInfo, out IntPtr pluginContext);
 
 	/// <summary>The callback function that is called for shell operations, which result in a remote request.</summary>
@@ -506,13 +520,12 @@ public static partial class WsmSvc
 	/// Specifies the shell handle associated with the user context. The shell handle must be closed by calling the WSManCloseShell method.
 	/// </param>
 	/// <param name="command">
-	/// Specifies the command handle associated with the user context. The command handle must be closed by calling the
-	/// WSManCloseCommand API method.
+	/// Specifies the command handle associated with the user context. The command handle must be closed by calling the WSManCloseCommand API method.
 	/// </param>
 	/// <param name="operationHandle">
-	/// Defines the operation handle associated with the user context. The operation handle is valid only for callbacks that are
-	/// associated with WSManReceiveShellOutput, WSManSendShellInput, and WSManSignalShell calls. This handle must be closed by calling
-	/// the WSManCloseOperation method.
+	/// Defines the operation handle associated with the user context. The operation handle is valid only for callbacks that are associated
+	/// with WSManReceiveShellOutput, WSManSendShellInput, and WSManSignalShell calls. This handle must be closed by calling the
+	/// WSManCloseOperation method.
 	/// </param>
 	/// <param name="data"/>
 	/// <returns>None</returns>
@@ -1008,7 +1021,7 @@ public static partial class WsmSvc
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManConnectShell")]
 	public static extern void WSManConnectShell(WSMAN_SESSION_HANDLE session, uint flags, [MarshalAs(UnmanagedType.LPWStr)] string resourceUri,
 		[MarshalAs(UnmanagedType.LPWStr)] string shellID, in WSMAN_OPTION_SET options, in WSMAN_DATA connectXml, in WSMAN_SHELL_ASYNC async,
-		out WSMAN_SHELL_HANDLE shell);
+		out SafeWSMAN_SHELL_HANDLE shell);
 
 	/// <summary>Connects to an existing server session.</summary>
 	/// <param name="session">Specifies the session handle returned by a WSManCreateSession function. This parameter cannot be NULL.</param>
@@ -1051,7 +1064,7 @@ public static partial class WsmSvc
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManConnectShell")]
 	public static extern void WSManConnectShell(WSMAN_SESSION_HANDLE session, uint flags, [MarshalAs(UnmanagedType.LPWStr)] string resourceUri,
 		[MarshalAs(UnmanagedType.LPWStr)] string shellID, [In, Optional] IntPtr options, [In, Optional] IntPtr connectXml,
-		in WSMAN_SHELL_ASYNC async, out WSMAN_SHELL_HANDLE shell);
+		in WSMAN_SHELL_ASYNC async, out SafeWSMAN_SHELL_HANDLE shell);
 
 	/// <summary>Connects to an existing command running in a shell.</summary>
 	/// <param name="shell">Specifies the shell handle returned by the WSManCreateShell call. This parameter cannot be <c>NULL</c>.</param>
@@ -1174,7 +1187,7 @@ public static partial class WsmSvc
 	// *proxyInfo, WSMAN_SESSION_HANDLE *session );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManCreateSession")]
-	public static extern uint WSManCreateSession(WSMAN_API_HANDLE apiHandle, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? connection,
+	public static extern Win32Error WSManCreateSession(WSMAN_API_HANDLE apiHandle, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? connection,
 		[Optional] uint flags, IntPtr serverAuthenticationCredentials, [In, Optional] IntPtr proxyInfo, out SafeWSMAN_SESSION_HANDLE session);
 
 	/// <summary>
@@ -1184,7 +1197,6 @@ public static partial class WsmSvc
 	/// parameter and authenticated by using the credentials parameter.
 	/// </summary>
 	/// <param name="session">Specifies the session handle returned by a WSManCreateSession call. This parameter cannot be <c>NULL</c>.</param>
-	/// <param name="flags">Reserved for future use. Must be zero.</param>
 	/// <param name="resourceUri">
 	/// Defines the shell type to create. The shell type is defined by a unique URI. The actual shell object returned by the call is
 	/// dependent on the URI specified. This parameter cannot be <c>NULL</c>. To create a Windows cmd.exe shell, use the
@@ -1216,10 +1228,11 @@ public static partial class WsmSvc
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmancreateshell void WSManCreateShell( WSMAN_SESSION_HANDLE
 	// session, DWORD flags, PCWSTR resourceUri, WSMAN_SHELL_STARTUP_INFO *startupInfo, WSMAN_OPTION_SET *options, WSMAN_DATA
 	// *createXml, WSMAN_SHELL_ASYNC *async, WSMAN_SHELL_HANDLE *shell );
-	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManCreateShell")]
-	public static extern void WSManCreateShell(WSMAN_SESSION_HANDLE session, [Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string resourceUri,
-		[In, Optional] IntPtr startupInfo, in WSMAN_OPTION_SET options, in WSMAN_DATA createXml, in WSMAN_SHELL_ASYNC async, out WSMAN_SHELL_HANDLE shell);
+	public static void WSManCreateShell(WSMAN_SESSION_HANDLE session, string resourceUri, [In, Optional] WSMAN_SHELL_STARTUP_INFO? startupInfo,
+		[In, Optional] WSMAN_OPTION_SET? options, [In, Optional] WSMAN_DATA? createXml, in WSMAN_SHELL_ASYNC async, out WSMAN_SHELL_HANDLE shell) =>
+		WSManCreateShell(session, 0, resourceUri, (SafeCoTaskMemStruct<WSMAN_SHELL_STARTUP_INFO>)startupInfo,
+			(SafeCoTaskMemStruct<WSMAN_OPTION_SET>)options, (SafeCoTaskMemStruct<WSMAN_DATA>)createXml, async, out shell);
 
 	/// <summary>
 	/// Creates a shell object. The returned shell handle identifies an object that defines the context in which commands can be run.
@@ -1260,8 +1273,8 @@ public static partial class WsmSvc
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmancreateshell void WSManCreateShell( WSMAN_SESSION_HANDLE
 	// session, DWORD flags, PCWSTR resourceUri, WSMAN_SHELL_STARTUP_INFO *startupInfo, WSMAN_OPTION_SET *options, WSMAN_DATA
 	// *createXml, WSMAN_SHELL_ASYNC *async, WSMAN_SHELL_HANDLE *shell );
-	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManCreateShell")]
+	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	public static extern void WSManCreateShell(WSMAN_SESSION_HANDLE session, [Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string resourceUri,
 		[In, Optional] IntPtr startupInfo, [In, Optional] IntPtr options, [In, Optional] IntPtr createXml, in WSMAN_SHELL_ASYNC async, out WSMAN_SHELL_HANDLE shell);
 
@@ -1303,11 +1316,12 @@ public static partial class WsmSvc
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmancreateshellex void WSManCreateShellEx(
 	// WSMAN_SESSION_HANDLE session, DWORD flags, PCWSTR resourceUri, PCWSTR shellId, WSMAN_SHELL_STARTUP_INFO *startupInfo,
 	// WSMAN_OPTION_SET *options, WSMAN_DATA *createXml, WSMAN_SHELL_ASYNC *async, WSMAN_SHELL_HANDLE *shell );
-	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManCreateShellEx")]
-	public static extern void WSManCreateShellEx(WSMAN_SESSION_HANDLE session, uint flags, [MarshalAs(UnmanagedType.LPWStr)] string resourceUri,
-		[MarshalAs(UnmanagedType.LPWStr)] string shellId, in WSMAN_SHELL_STARTUP_INFO_V11 startupInfo, in WSMAN_OPTION_SET options,
-		in WSMAN_DATA createXml, in WSMAN_SHELL_ASYNC async, out WSMAN_SHELL_HANDLE shell);
+	public static void WSManCreateShellEx(WSMAN_SESSION_HANDLE session, uint flags, string resourceUri,
+		string shellId, [In, Optional] WSMAN_SHELL_STARTUP_INFO? startupInfo, [In, Optional] WSMAN_OPTION_SET? options,
+		[In, Optional] WSMAN_DATA? createXml, in WSMAN_SHELL_ASYNC async, out WSMAN_SHELL_HANDLE shell) =>
+		WSManCreateShellEx(session, flags, resourceUri, shellId, (IntPtr)(SafeCoTaskMemStruct<WSMAN_SHELL_STARTUP_INFO>)startupInfo,
+			 (SafeCoTaskMemStruct<WSMAN_OPTION_SET>)options, (SafeCoTaskMemStruct<WSMAN_DATA>)createXml, async, out shell);
 
 	/// <summary>
 	/// Creates a shell object by using the same functionality as the WSManCreateShell function, with the addition of a client-specified
@@ -1415,6 +1429,54 @@ public static partial class WsmSvc
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManDisconnectShell")]
 	public static extern void WSManDisconnectShell(WSMAN_SHELL_HANDLE shell, WSMAN_FLAG_SERVER_BUFFERING_MODE flags, ref WSMAN_SHELL_DISCONNECT_INFO disconnectInfo, ref WSMAN_SHELL_ASYNC async);
 
+	/// <summary>Disconnects the network connection of an active shell and its associated commands.</summary>
+	/// <param name="shell">Specifies the handle returned by a call to the WSManCreateShell function. This parameter cannot be <c>NULL</c>.</param>
+	/// <param name="flags">
+	/// Can be a <c>WSMAN_FLAG_SERVER_BUFFERING_MODE_DROP</c> flag or a <c>WSMAN_FLAG_SERVER_BUFFERING_MODE_BLOCK</c> flag.
+	/// </param>
+	/// <param name="disconnectInfo">
+	/// A pointer to a WSMAN_SHELL_DISCONNECT_INFO structure that specifies an idle time-out that the server session may enforce. If
+	/// this parameter is <c>NULL</c>, the server session idle time-out will not be changed.
+	/// </param>
+	/// <param name="async">
+	/// Defines an asynchronous structure to contain an optional user context and a mandatory callback function. For more information,
+	/// see WSMAN_SHELL_ASYNC. This parameter cannot be <c>NULL</c>.
+	/// </param>
+	/// <returns>None</returns>
+	/// <remarks>
+	/// <para>
+	/// This function suspends network connection to an actively connected server session. Any operations performed on the shell
+	/// instance, like WSManRunShellCommand, WSManSendShellInput, or WSManSignalShell, are bound to complete before disconnection. This
+	/// ensures that any data sent through <c>WSManSendShellInput</c> is received by the server session before the shell disconnects.
+	/// The client can optionally modify the server buffering mode by using flags. The following behavior is observed:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// <c>WSMAN_FLAG_SERVER_BUFFERING_MODE_DROP</c>–When buffers are full, the server drops earlier data in response stream buffers to
+	/// ensure the corresponding command operation continues to run.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// <c>WSMAN_FLAG_SERVER_BUFFERING_MODE_BLOCK</c>–When response stream buffers are full, the server blocks command execution. If no
+	/// flag is specified, the server continues to use either the configured mode or the mode specified when the shell was created. In
+	/// case of a network failure, if the client is unable to contact the session to disconnect the shell, the following error is returned:
+	/// <para><c>ERROR_WINRS_SHELL_DISCONNECT_OPERATION_NOT_GRACEFUL</c></para>
+	/// <para>
+	/// The client session still goes into a disconnected state, but it is not guaranteed that any prior operations have completed
+	/// before the session is disconnected.
+	/// </para>
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmandisconnectshell void WSManDisconnectShell(
+	// WSMAN_SHELL_HANDLE shell, DWORD flags, WSMAN_SHELL_DISCONNECT_INFO *disconnectInfo, WSMAN_SHELL_ASYNC *async );
+	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManDisconnectShell")]
+	public static extern void WSManDisconnectShell(WSMAN_SHELL_HANDLE shell, WSMAN_FLAG_SERVER_BUFFERING_MODE flags, [In, Optional] IntPtr disconnectInfo, ref WSMAN_SHELL_ASYNC async);
+
 	/// <summary>Retrieves the error messages associated with a particular error and language codes.</summary>
 	/// <param name="apiHandle">Specifies the API handle returned by a WSManInitialize call. This parameter cannot be <c>NULL</c>.</param>
 	/// <param name="flags">Reserved for future use. Must be zero.</param>
@@ -1448,9 +1510,9 @@ public static partial class WsmSvc
 	// *messageLengthUsed );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManGetErrorMessage")]
-	public static extern uint WSManGetErrorMessage(WSMAN_API_HANDLE apiHandle, [Optional] uint flags,
+	public static extern Win32Error WSManGetErrorMessage(WSMAN_API_HANDLE apiHandle, [Optional] uint flags,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? languageCode, uint errorCode, uint messageLength,
-		[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder message, out uint messageLengthUsed);
+		[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? message, out uint messageLengthUsed);
 
 	/// <summary>Gets the value of a session option.</summary>
 	/// <param name="session">Specifies the handle returned by a WSManCreateSession call. This parameter cannot be <c>NULL</c>.</param>
@@ -1463,7 +1525,7 @@ public static partial class WsmSvc
 	// WSManGetSessionOptionAsDword( WSMAN_SESSION_HANDLE session, WSManSessionOption option, DWORD *value );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManGetSessionOptionAsDword")]
-	public static extern uint WSManGetSessionOptionAsDword(WSMAN_SESSION_HANDLE session, WSManSessionOption option, ref uint value);
+	public static extern Win32Error WSManGetSessionOptionAsDword(WSMAN_SESSION_HANDLE session, WSManSessionOption option, out uint value);
 
 	/// <summary>Gets the value of a session option.</summary>
 	/// <param name="session">Specifies the session handle returned by a WSManCreateSession call. This parameter cannot be <c>NULL</c>.</param>
@@ -1480,8 +1542,8 @@ public static partial class WsmSvc
 	// *stringLengthUsed );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManGetSessionOptionAsString")]
-	public static extern uint WSManGetSessionOptionAsString(WSMAN_SESSION_HANDLE session, WSManSessionOption option, uint stringLength,
-		[MarshalAs(UnmanagedType.LPWStr)] StringBuilder @string, out uint stringLengthUsed);
+	public static extern Win32Error WSManGetSessionOptionAsString(WSMAN_SESSION_HANDLE session, WSManSessionOption option, uint stringLength,
+		[MarshalAs(UnmanagedType.LPWStr)] StringBuilder? @string, out uint stringLengthUsed);
 
 	/// <summary>
 	/// Initializes the Windows Remote Management Client API. <c>WSManInitialize</c> can be used by different clients on the same process.
@@ -1532,7 +1594,7 @@ public static partial class WsmSvc
 	// errorCode, PCWSTR extendedErrorInformation );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginAuthzOperationComplete")]
-	public static extern uint WSManPluginAuthzOperationComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
+	public static extern Win32Error WSManPluginAuthzOperationComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
 		[In, Optional] IntPtr userAuthorizationContext, uint errorCode, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? extendedErrorInformation);
 
 	/// <summary>
@@ -1567,7 +1629,7 @@ public static partial class WsmSvc
 	// PCWSTR extendedErrorInformation );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginAuthzQueryQuotaComplete")]
-	public static extern uint WSManPluginAuthzQueryQuotaComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
+	public static extern Win32Error WSManPluginAuthzQueryQuotaComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
 		in WSMAN_AUTHZ_QUOTA quota, uint errorCode, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? extendedErrorInformation);
 
 	/// <summary>
@@ -1602,7 +1664,7 @@ public static partial class WsmSvc
 	// PCWSTR extendedErrorInformation );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginAuthzQueryQuotaComplete")]
-	public static extern uint WSManPluginAuthzQueryQuotaComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
+	public static extern Win32Error WSManPluginAuthzQueryQuotaComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
 		[In, Optional] IntPtr quota, uint errorCode, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? extendedErrorInformation);
 
 	/// <summary>
@@ -1659,7 +1721,7 @@ public static partial class WsmSvc
 	// impersonationToken, BOOL userIsAdministrator, DWORD errorCode, PCWSTR extendedErrorInformation );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginAuthzUserComplete")]
-	public static extern uint WSManPluginAuthzUserComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
+	public static extern Win32Error WSManPluginAuthzUserComplete(in WSMAN_SENDER_DETAILS senderDetails, [Optional] uint flags,
 		[In, Optional] IntPtr userAuthorizationContext, [In, Optional] HTOKEN impersonationToken,
 		[MarshalAs(UnmanagedType.Bool)] bool userIsAdministrator, uint errorCode,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? extendedErrorInformation);
@@ -1679,7 +1741,7 @@ public static partial class WsmSvc
 	// WSManPluginFreeRequestDetails( WSMAN_PLUGIN_REQUEST *requestDetails );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginFreeRequestDetails")]
-	public static extern uint WSManPluginFreeRequestDetails(in WSMAN_PLUGIN_REQUEST requestDetails);
+	public static extern Win32Error WSManPluginFreeRequestDetails(in WSMAN_PLUGIN_REQUEST requestDetails);
 
 	/// <summary>
 	/// Gets operational information for items such as time-outs and data restrictions that are associated with the operation. A plug-in
@@ -1735,7 +1797,7 @@ public static partial class WsmSvc
 	// WSManPluginGetOperationParameters( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, WSMAN_DATA *data );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginGetOperationParameters")]
-	public static extern uint WSManPluginGetOperationParameters(in WSMAN_PLUGIN_REQUEST requestDetails, WSMAN_PLUGIN_PARAMS_OP flags,
+	public static extern Win32Error WSManPluginGetOperationParameters(in WSMAN_PLUGIN_REQUEST requestDetails, WSMAN_PLUGIN_PARAMS_OP flags,
 		out WSMAN_DATA data);
 
 	/// <summary>
@@ -1767,7 +1829,7 @@ public static partial class WsmSvc
 	// WSManPluginOperationComplete( WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, DWORD errorCode, PCWSTR extendedInformation );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginOperationComplete")]
-	public static extern uint WSManPluginOperationComplete(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags,
+	public static extern Win32Error WSManPluginOperationComplete(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags,
 		uint errorCode, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? extendedInformation);
 
 	/// <summary>
@@ -1812,7 +1874,7 @@ public static partial class WsmSvc
 	// WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PCWSTR stream, WSMAN_DATA *streamResult, PCWSTR commandState, DWORD exitCode );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginReceiveResult")]
-	public static extern uint WSManPluginReceiveResult(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags,
+	public static extern Win32Error WSManPluginReceiveResult(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? stream, in WSMAN_DATA streamResult,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? commandState, uint exitCode);
 
@@ -1858,7 +1920,7 @@ public static partial class WsmSvc
 	// WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PCWSTR stream, WSMAN_DATA *streamResult, PCWSTR commandState, DWORD exitCode );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginReceiveResult")]
-	public static extern uint WSManPluginReceiveResult(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags,
+	public static extern Win32Error WSManPluginReceiveResult(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? stream, [In, Optional] IntPtr streamResult,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? commandState, uint exitCode);
 
@@ -1883,7 +1945,7 @@ public static partial class WsmSvc
 	// WSMAN_PLUGIN_REQUEST *requestDetails, DWORD flags, PVOID context );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManPluginReportContext")]
-	public static extern uint WSManPluginReportContext(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags, [In, Optional] IntPtr context);
+	public static extern Win32Error WSManPluginReportContext(in WSMAN_PLUGIN_REQUEST requestDetails, [Optional] uint flags, [In, Optional] IntPtr context);
 
 	/// <summary>Retrieves output from a running command or from the shell.</summary>
 	/// <param name="shell">Specifies the shell handle returned by a WSManCreateShell call. This parameter cannot be <c>NULL</c>.</param>
@@ -1996,7 +2058,7 @@ public static partial class WsmSvc
 	// WSMAN_SHELL_ASYNC *async, WSMAN_COMMAND_HANDLE *command );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManRunShellCommand")]
-	public static extern void WSManRunShellCommand(WSMAN_SHELL_HANDLE shell, [Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string commandLine,
+	public static extern void WSManRunShellCommand(WSMAN_SHELL_HANDLE shell, [Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string? commandLine,
 		in WSMAN_COMMAND_ARG_SET args, in WSMAN_OPTION_SET options, in WSMAN_SHELL_ASYNC async, out WSMAN_COMMAND_HANDLE command);
 
 	/// <summary>Starts the execution of a command within an existing shell and does not wait for the completion of the command.</summary>
@@ -2073,7 +2135,7 @@ public static partial class WsmSvc
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManRunShellCommandEx")]
 	public static extern void WSManRunShellCommandEx([In, Out] WSMAN_SHELL_HANDLE shell, [Optional] uint flags,
-		[MarshalAs(UnmanagedType.LPWStr)] string commandId, [MarshalAs(UnmanagedType.LPWStr)] string commandLine,
+		[MarshalAs(UnmanagedType.LPWStr)] string commandId, [MarshalAs(UnmanagedType.LPWStr)] string? commandLine,
 		in WSMAN_COMMAND_ARG_SET args, in WSMAN_OPTION_SET options, in WSMAN_SHELL_ASYNC async, out WSMAN_COMMAND_HANDLE command);
 
 	/// <summary>
@@ -2115,7 +2177,7 @@ public static partial class WsmSvc
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManRunShellCommandEx")]
 	public static extern void WSManRunShellCommandEx([In, Out] WSMAN_SHELL_HANDLE shell, [Optional] uint flags,
-		[MarshalAs(UnmanagedType.LPWStr)] string commandId, [MarshalAs(UnmanagedType.LPWStr)] string commandLine,
+		[MarshalAs(UnmanagedType.LPWStr)] string commandId, [MarshalAs(UnmanagedType.LPWStr)] string? commandLine,
 		[In, Optional] IntPtr args, [In, Optional] IntPtr options, in WSMAN_SHELL_ASYNC async, out WSMAN_COMMAND_HANDLE command);
 
 	/// <summary>Pipes the input stream to a running command or to the shell.</summary>
@@ -2491,7 +2553,7 @@ public static partial class WsmSvc
 
 		/// <summary>Defines the environment variable value. <c>NULL</c> or empty string values are permitted.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string value;
+		public string? value;
 	}
 
 	/// <summary>Defines an array of environment variables.</summary>
@@ -2528,22 +2590,22 @@ public static partial class WsmSvc
 		/// present in the fault. If there is no fault detail, this field contains the fault reason text. This field can be set to <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string errorDetail;
+		public string? errorDetail;
 
 		/// <summary>
 		/// Specifies the language for the error description. This field can be set to <c>NULL</c>. For more information about the
 		/// language format, see the RFC 3066 specification from the Internet Engineering Task Force at http://www.ietf.org/rfc/rfc3066.txt.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string language;
+		public string? language;
 
 		/// <summary>Specifies the name of the computer. This field can be set to <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string machineName;
+		public string? machineName;
 
 		/// <summary>Specifies the name of the plug-in that generated the error. This field can be set to <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pluginName;
+		public string? pluginName;
 	}
 
 	/// <summary>
@@ -2558,11 +2620,11 @@ public static partial class WsmSvc
 	{
 		/// <summary>Reserved for future use. This parameter must be <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string filter;
+		public string? filter;
 
 		/// <summary>Reserved for future use. This parameter must be <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string dialect;
+		public string? dialect;
 	}
 
 	/// <summary>
@@ -2577,11 +2639,11 @@ public static partial class WsmSvc
 	{
 		/// <summary>Reserved for future use. This parameter must be <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string path;
+		public string? path;
 
 		/// <summary>Reserved for future use. This parameter must be <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string dialect;
+		public string? dialect;
 	}
 
 	/// <summary>Represents a key and value pair within a selector set and is used to identify a particular resource.</summary>
@@ -3100,74 +3162,11 @@ public static partial class WsmSvc
 	/// streams, <c>STDOUT</c> for the default output stream, and <c>STDERR</c> for the error or status output stream.
 	/// </para>
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/ns-wsman-wsman_shell_startup_info_v10 typedef struct
-	// _WSMAN_SHELL_STARTUP_INFO_V10 { WSMAN_STREAM_ID_SET *inputStreamSet; WSMAN_STREAM_ID_SET *outputStreamSet; DWORD idleTimeoutMs;
-	// PCWSTR workingDirectory; WSMAN_ENVIRONMENT_VARIABLE_SET *variableSet; } WSMAN_SHELL_STARTUP_INFO_V10;
-	[PInvokeData("wsman.h", MSDNShortId = "NS:wsman._WSMAN_SHELL_STARTUP_INFO_V10")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WSMAN_SHELL_STARTUP_INFO_V10
-	{
-		/// <summary>
-		/// A pointer to a WSMAN_STREAM_ID_SET structure that specifies a set of input streams for the shell. Streams not present in the
-		/// filter can be ignored by the shell implementation. For the Windows Cmd.exe shell, this value should be L"stdin". If the
-		/// value is <c>NULL</c>, the implementation uses an array with L"stdin" as the default value.
-		/// </summary>
-		public IntPtr inputStreamSet;
-
-		/// <summary>
-		/// A pointer to a WSMAN_STREAM_ID_SET structure that specifies a set of output streams for the shell. Streams not present in
-		/// the filter can be ignored by the shell implementation. For the Windows cmd.exe shell, this value should be L"stdout stderr".
-		/// If the value is <c>NULL</c>, the implementation uses an array with L"stdout" and L"stderr" as the default value.
-		/// </summary>
-		public IntPtr outputStreamSet;
-
-		/// <summary>
-		/// Specifies the maximum duration, in milliseconds, the shell will stay open without any client request. When the maximum
-		/// duration is exceeded, the shell is automatically deleted. Any value from 0 to 0xFFFFFFFF can be set. This duration has a
-		/// maximum value specified by the Idle time-out GPO setting, if enabled, or by the IdleTimeout local configuration. The default
-		/// value of the maximum duration in the GPO/local configuration is 15 minutes. However, a system administrator can change this
-		/// value. To use the maximum value from the GPO/local configuration, the client should specify 0 (zero) in this field. If an
-		/// explicit value between 0 to 0xFFFFFFFF is used, the minimum value between the explicit API value and the value from the
-		/// GPO/local configuration is used.
-		/// </summary>
-		public uint idleTimeoutMs;
-
-		/// <summary>
-		/// Specifies the starting directory for a shell. It is used with any execution command. If this member is a <c>NULL</c> value,
-		/// a default directory will be used by the remote machine when executing the command. An empty value is treated by the
-		/// underlying protocol as an omitted value.
-		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string workingDirectory;
-
-		/// <summary>
-		/// A pointer to a WSMAN_ENVIRONMENT_VARIABLE_SET structure that specifies an array of variable name and value pairs, which
-		/// describe the starting environment for the shell. The content of these elements is shell specific and can be defined in terms
-		/// of other environment variables. If a <c>NULL</c> value is passed, the default environment is used on the server side.
-		/// </summary>
-		public IntPtr variableSet;
-	}
-
-	/// <summary>
-	/// <para>
-	/// Defines the shell startup parameters to be used with the WSManCreateShell function. The structure must be allocated by the
-	/// client and passed to the <c>WSManCreateShell</c> function.
-	/// </para>
-	/// <para>
-	/// The configuration passed to the WSManCreateShell function can directly affect the behavior of a command executed within the
-	/// shell. A typical example is the workingDirectory argument that describes the working directory associated with each process,
-	/// which the operating system uses when attempting to locate files specified by using a relative path.
-	/// </para>
-	/// <para>
-	/// In the absence of specific requirements for stream naming, clients and services should attempt to use <c>STDIN</c> for input
-	/// streams, <c>STDOUT</c> for the default output stream, and <c>STDERR</c> for the error or status output stream.
-	/// </para>
-	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/ns-wsman-wsman_shell_startup_info_v11 typedef struct
 	// _WSMAN_SHELL_STARTUP_INFO_V11 : _WSMAN_SHELL_STARTUP_INFO_V10 { PCWSTR name; } WSMAN_SHELL_STARTUP_INFO_V11;
 	[PInvokeData("wsman.h", MSDNShortId = "NS:wsman._WSMAN_SHELL_STARTUP_INFO_V11")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct WSMAN_SHELL_STARTUP_INFO_V11
+	public struct WSMAN_SHELL_STARTUP_INFO
 	{
 		/// <summary>
 		/// A pointer to a WSMAN_STREAM_ID_SET structure that specifies a set of input streams for the shell. Streams not present in the
@@ -3200,7 +3199,7 @@ public static partial class WsmSvc
 		/// underlying protocol as an omitted value.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string workingDirectory;
+		public string? workingDirectory;
 
 		/// <summary>
 		/// A pointer to a WSMAN_ENVIRONMENT_VARIABLE_SET structure that specifies an array of variable name and value pairs, which
@@ -3214,7 +3213,7 @@ public static partial class WsmSvc
 		/// passes the flag <c>WSMAN_FLAG_REQUESTED_API_VERSION_1_1</c> to WSManInitialize.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string name;
+		public string? name;
 	}
 
 	/// <summary>Lists all the streams that are used for either input or output for the shell and commands.</summary>
@@ -3251,11 +3250,11 @@ public static partial class WsmSvc
 	{
 		/// <summary>Defines the user name for a local or domain account. It cannot be <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string username;
+		public string? username;
 
 		/// <summary>Defines the password for a local or domain account. It cannot be <c>NULL</c>.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string password;
+		public string? password;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_API_HANDLE"/> that is disposed using <see cref="WSManDeinitialize"/>.</summary>
@@ -3325,5 +3324,36 @@ public static partial class WsmSvc
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => WSManCloseSession(handle).Succeeded;
+	}
+
+	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_SHELL_HANDLE"/> that is disposed using <see cref="WSManCloseShell"/>.</summary>
+	public class SafeWSMAN_SHELL_HANDLE : SafeHANDLE
+	{
+		private WSMAN_SHELL_ASYNC async;
+
+		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_SHELL_HANDLE"/> class and assigns an existing handle.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		/// <param name="async">The asynchronous information used in the WSManCreateShell method.</param>
+		/// <param name="ownsHandle">
+		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+		/// </param>
+		public SafeWSMAN_SHELL_HANDLE(IntPtr preexistingHandle, in WSMAN_SHELL_ASYNC async, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => this.async = async;
+
+		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_SHELL_HANDLE"/> class.</summary>
+		private SafeWSMAN_SHELL_HANDLE() : base() { }
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeWSMAN_SHELL_HANDLE"/> to <see cref="WSMAN_SHELL_HANDLE"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator WSMAN_SHELL_HANDLE(SafeWSMAN_SHELL_HANDLE h) => h.handle;
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle()
+		{
+			if (async.completionFunction is null)
+				return false;
+			WSManCloseShell(handle, 0, async);
+			return true;
+		}
 	}
 }

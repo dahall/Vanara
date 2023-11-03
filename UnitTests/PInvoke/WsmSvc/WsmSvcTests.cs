@@ -7,17 +7,17 @@ namespace Vanara.PInvoke.Tests;
 
 public class ShellClient : IDisposable
 {
-	private SafeWSMAN_API_HANDLE m_apiHandle;
+	private SafeWSMAN_API_HANDLE? m_apiHandle;
 	private WSMAN_SHELL_ASYNC m_async;
 	private bool m_bExecute;
 	private bool m_bSetup;
 	private WSMAN_COMMAND_HANDLE m_command;
 	private Win32Error m_errorCode;
-	private SafeEventHandle m_event;
+	private SafeEventHandle? m_event;
 	private WSMAN_SHELL_ASYNC m_ReceiveAsync;
 	private Win32Error m_ReceiveErrorCode;
-	private SafeEventHandle m_ReceiveEvent;
-	private SafeWSMAN_SESSION_HANDLE m_session;
+	private SafeEventHandle? m_ReceiveEvent;
+	private SafeWSMAN_SESSION_HANDLE? m_session;
 	private WSMAN_SHELL_HANDLE m_shell;
 
 	// Constructor.
@@ -26,12 +26,13 @@ public class ShellClient : IDisposable
 	}
 
 	// Clean up the used resources
-	public void Dispose()
+	void IDisposable.Dispose()
 	{
 		if (!m_command.IsNull)
 		{
 			WSManCloseCommand(m_command, 0, m_async);
-			WaitForSingleObject(m_event, INFINITE);
+			if (m_event is not null && !m_event.IsClosed)
+				WaitForSingleObject(m_event, INFINITE);
 			if (Win32Error.NO_ERROR != m_errorCode)
 			{
 				wprintf("WSManCloseCommand failed: {0}\n", m_errorCode);
@@ -45,7 +46,8 @@ public class ShellClient : IDisposable
 		if (!m_shell.IsNull)
 		{
 			WSManCloseShell(m_shell, 0, m_async);
-			WaitForSingleObject(m_event, INFINITE);
+			if (m_event is not null && !m_event.IsClosed)
+				WaitForSingleObject(m_event, INFINITE);
 			if (Win32Error.NO_ERROR != m_errorCode)
 			{
 				wprintf("WSManCloseShell failed: {0}\n", m_errorCode);
@@ -67,10 +69,12 @@ public class ShellClient : IDisposable
 
 		m_bSetup = false;
 		m_bExecute = false;
+
+		GC.SuppressFinalize(this);
 	}
 
 	// Execute shell-related operations
-	public bool Execute(string resourceUri, string commandLine, byte[] sendData, uint count)
+	public bool Execute(string resourceUri, string commandLine, byte[]? sendData, uint count)
 	{
 		if (!m_bSetup)
 		{
@@ -85,8 +89,9 @@ public class ShellClient : IDisposable
 		m_bExecute = true;
 
 		// WSManCreateShell
-		WSManCreateShell(m_session, 0, resourceUri, default, default, default, m_async, out m_shell);
-		WaitForSingleObject(m_event, INFINITE);
+		WSManCreateShell(m_session!, 0, resourceUri, default, default, default, m_async, out m_shell);
+		if (m_event is not null && !m_event.IsClosed)
+			WaitForSingleObject(m_event, INFINITE);
 		if (Win32Error.NO_ERROR != m_errorCode)
 		{
 			wprintf("WSManCreateShell failed: {0}\n", m_errorCode);
@@ -95,7 +100,8 @@ public class ShellClient : IDisposable
 
 		// WSManRunShellCommand
 		WSManRunShellCommand(m_shell, 0, commandLine, default, default, m_async, out m_command);
-		WaitForSingleObject(m_event, INFINITE);
+		if (m_event is not null && !m_event.IsClosed)
+			WaitForSingleObject(m_event, INFINITE);
 		if (Win32Error.NO_ERROR != m_errorCode)
 		{
 			wprintf("WSManRunShellCommand failed: {0}\n", m_errorCode);
@@ -119,7 +125,8 @@ public class ShellClient : IDisposable
 		}
 
 		// Receive operation is finished
-		WaitForSingleObject(m_ReceiveEvent, INFINITE);
+		if (m_ReceiveEvent is not null && !m_ReceiveEvent.IsClosed)
+			WaitForSingleObject(m_ReceiveEvent, INFINITE);
 		if (Win32Error.NO_ERROR != m_ReceiveErrorCode)
 		{
 			wprintf("WSManReceiveShellOutput failed: {0}\n", m_ReceiveErrorCode);
@@ -131,7 +138,7 @@ public class ShellClient : IDisposable
 	}
 
 	// Initialize session for subsequent operations
-	public bool Setup(string connection, WSManAuthenticationFlags authenticationMechanism, string username, string password)
+	public bool Setup(string connection, WSManAuthenticationFlags authenticationMechanism, string? username, string? password)
 	{
 		if (m_bSetup) return true;
 
@@ -216,7 +223,7 @@ public class ShellClient : IDisposable
 			m_ReceiveErrorCode = error.code;
 			// NOTE: if the errorDetail needs to be used outside of the callback, then need to allocate memory, copy the content to that
 			// memory as error.errorDetail itself is owned by WSMan client stack and will be deallocated and invalid when the callback exits
-			wprintf(error.errorDetail);
+			wprintf(error.errorDetail ?? "");
 		}
 
 		// Output the received data to the console
@@ -233,7 +240,7 @@ public class ShellClient : IDisposable
 		// for WSManReceiveShellOutput, needs to wait for state to be done before signalliing the end of the operation
 		if ((0 != error.code) || (pdata != default && !data.commandState.IsNull && string.Compare(data.commandState, WSMAN_COMMAND_STATE_DONE) == 0))
 		{
-			SetEvent(m_ReceiveEvent);
+			m_ReceiveEvent?.Set();
 		}
 	}
 
@@ -246,14 +253,14 @@ public class ShellClient : IDisposable
 			m_errorCode = error.code;
 			// NOTE: if the errorDetail needs to be used outside of the callback, then need to allocate memory, copy the content to that
 			// memory as error->errorDetail itself is owned by WSMan client stack and will be deallocated and invalid when the callback exits
-			wprintf(error.errorDetail);
+			wprintf(error.errorDetail ?? "");
 		}
 
 		// for non-receieve operation, the callback simply signals the async operation is finished
-		SetEvent(m_event);
+		m_event?.Set();
 	}
 
-	private bool Send(byte[] sendData, bool endOfStream)
+	private bool Send(byte[]? sendData, bool endOfStream)
 	{
 		// WSManSendShellInput
 		var streamData = new WSMAN_DATA
@@ -268,7 +275,8 @@ public class ShellClient : IDisposable
 			streamData.union.binaryData.data = pSendData;
 		}
 		WSManSendShellInput(m_shell, m_command, 0, WSMAN_STREAM_ID_STDIN, streamData, endOfStream, m_async, out SafeWSMAN_OPERATION_HANDLE sendOperation);
-		WaitForSingleObject(m_event, INFINITE);
+		if (m_event is not null && !m_event.IsClosed)
+			WaitForSingleObject(m_event, INFINITE);
 		if (Win32Error.NO_ERROR != m_errorCode)
 		{
 			wprintf("WSManSendShellInput failed: {0}\n", m_errorCode);
@@ -279,7 +287,7 @@ public class ShellClient : IDisposable
 		return true;
 	}
 
-	private void wprintf(string fmt, params object[] p) => TestContext.Write(fmt, p);
+	private static void wprintf(string fmt, params object[] p) => TestContext.Write(fmt, p);
 }
 
 [TestFixture]
