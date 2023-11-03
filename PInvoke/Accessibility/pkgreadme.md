@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations
 --- | ---
-AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint AccessibleObjectFromWindow AccNotifyTouchInteraction AccSetRunningUtilityState CreateStdAccessibleObject CreateStdAccessibleProxy GetOleaccVersionInfo GetProcessHandleFromHwnd GetRoleText GetStateText LresultFromObject ObjectFromLresult WindowFromAccessibleObject  | AccessibilityRole AccessibilityState ANRUS             
+AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint AccessibleObjectFromWindow AccNotifyTouchInteraction AccSetRunningUtilityState CreateStdAccessibleObject CreateStdAccessibleProxy GetOleaccVersionInfo GetProcessHandleFromHwnd GetRoleText GetStateText LresultFromObject ObjectFromLresult WindowFromAccessibleObject  | AccessibilityRole AccessibilityState ANRUS NAVDIR SELFLAG           

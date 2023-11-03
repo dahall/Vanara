@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (35 of 628 functions)  
+### Methods - 6% API coverage (38 of 631 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
@@ -12,6 +12,7 @@ Native Method | Header | Managed Method
 [DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrint)  
 [DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrintEx](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrintEx)  
 [DbgPrompt](https://www.google.com/search?num=5&q=DbgPrompt+site%3Alearn.microsoft.com) | ntddk.h | [Vanara.PInvoke.NtDll.DbgPrompt](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrompt)  
+[DbgUiSetThreadDebugObject](https://www.google.com/search?num=5&q=DbgUiSetThreadDebugObject+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.NtDll.DbgUiSetThreadDebugObject](https://github.com/dahall/Vanara/search?l=C%23&q=DbgUiSetThreadDebugObject)  
 [EtwCheckCoverage](https://www.google.com/search?num=5&q=EtwCheckCoverage+site%3Alearn.microsoft.com) |  |   
 [LdrCallEnclave](https://www.google.com/search?num=5&q=LdrCallEnclave+site%3Alearn.microsoft.com) |  |   
 [LdrControlFlowGuardEnforced](https://www.google.com/search?num=5&q=LdrControlFlowGuardEnforced+site%3Alearn.microsoft.com) |  |   
@@ -127,6 +128,7 @@ Native Method | Header | Managed Method
 [NtRecoverEnlistment](https://www.google.com/search?num=5&q=NtRecoverEnlistment+site%3Alearn.microsoft.com) |  |   
 [NtRecoverResourceManager](https://www.google.com/search?num=5&q=NtRecoverResourceManager+site%3Alearn.microsoft.com) |  |   
 [NtRecoverTransactionManager](https://www.google.com/search?num=5&q=NtRecoverTransactionManager+site%3Alearn.microsoft.com) |  |   
+[NtRemoveProcessDebug](https://www.google.com/search?num=5&q=NtRemoveProcessDebug+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtRemoveProcessDebug](https://github.com/dahall/Vanara/search?l=C%23&q=NtRemoveProcessDebug)  
 [NtRenameKey](https://www.google.com/search?num=5&q=NtRenameKey+site%3Alearn.microsoft.com) |  |   
 [NtRenameTransactionManager](https://www.google.com/search?num=5&q=NtRenameTransactionManager+site%3Alearn.microsoft.com) |  |   
 [NtRollbackComplete](https://www.google.com/search?num=5&q=NtRollbackComplete+site%3Alearn.microsoft.com) |  |   
@@ -291,7 +293,7 @@ Native Method | Header | Managed Method
 [RtlGetSystemTimeAndBias](https://www.google.com/search?num=5&q=RtlGetSystemTimeAndBias+site%3Alearn.microsoft.com) |  |   
 [RtlGetUnloadEventTrace](https://www.google.com/search?num=5&q=RtlGetUnloadEventTrace+site%3Alearn.microsoft.com) |  |   
 [RtlGetUnloadEventTraceEx](https://www.google.com/search?num=5&q=RtlGetUnloadEventTraceEx+site%3Alearn.microsoft.com) |  |   
-[RtlGetVersion](https://www.google.com/search?num=5&q=RtlGetVersion+site%3Alearn.microsoft.com) |  |   
+[RtlGetVersion](https://www.google.com/search?num=5&q=RtlGetVersion+site%3Alearn.microsoft.com) | Ntddk.h | [Vanara.PInvoke.NtDll.RtlGetVersion](https://github.com/dahall/Vanara/search?l=C%23&q=RtlGetVersion)  
 [RtlGrowFunctionTable](https://www.google.com/search?num=5&q=RtlGrowFunctionTable+site%3Alearn.microsoft.com) |  |   
 [RtlGUIDFromString](https://www.google.com/search?num=5&q=RtlGUIDFromString+site%3Alearn.microsoft.com) |  |   
 [RtlHashUnicodeString](https://www.google.com/search?num=5&q=RtlHashUnicodeString+site%3Alearn.microsoft.com) |  |   
@@ -337,6 +339,7 @@ Native Method | Header | Managed Method
 [RtlIsCurrentThread](https://www.google.com/search?num=5&q=RtlIsCurrentThread+site%3Alearn.microsoft.com) |  |   
 [RtlIsEcCode](https://www.google.com/search?num=5&q=RtlIsEcCode+site%3Alearn.microsoft.com) |  |   
 [RtlIsEnclaveFeaturePresent](https://www.google.com/search?num=5&q=RtlIsEnclaveFeaturePresent+site%3Alearn.microsoft.com) |  |   
+[RtlIsFeatureEnabledForEnterprise](https://www.google.com/search?num=5&q=RtlIsFeatureEnabledForEnterprise+site%3Alearn.microsoft.com) |  |   
 [RtlIsGenericTableEmpty](https://www.google.com/search?num=5&q=RtlIsGenericTableEmpty+site%3Alearn.microsoft.com) |  |   
 [RtlIsGenericTableEmptyAvl](https://www.google.com/search?num=5&q=RtlIsGenericTableEmptyAvl+site%3Alearn.microsoft.com) |  |   
 [RtlIsNameInExpression](https://www.google.com/search?num=5&q=RtlIsNameInExpression+site%3Alearn.microsoft.com) |  |   
@@ -658,6 +661,7 @@ Native Structure | Header | Managed Structure
 [KEY_NODE_INFORMATION](https://www.google.com/search?num=5&q=KEY_NODE_INFORMATION+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.KEY_NODE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_NODE_INFORMATION)  
 [LDR_DLL_NOTIFICATION_DATA](https://www.google.com/search?num=5&q=LDR_DLL_NOTIFICATION_DATA+site%3Alearn.microsoft.com) | ntldr.h | [Vanara.PInvoke.NtDll.LDR_DLL_NOTIFICATION_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=LDR_DLL_NOTIFICATION_DATA)  
 [OBJECT_ATTRIBUTES](https://www.google.com/search?num=5&q=OBJECT_ATTRIBUTES+site%3Alearn.microsoft.com) | wudfwdm.h | [Vanara.PInvoke.NtDll.OBJECT_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=OBJECT_ATTRIBUTES)  
+[OSVERSIONINFOW](https://www.google.com/search?num=5&q=OSVERSIONINFOW+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.NtDll.OSVERSIONINFOW](https://github.com/dahall/Vanara/search?l=C%23&q=OSVERSIONINFOW)  
 [PEB](https://www.google.com/search?num=5&q=PEB+site%3Alearn.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.PEB](https://github.com/dahall/Vanara/search?l=C%23&q=PEB)  
 [PEB_WOW64](https://www.google.com/search?num=5&q=PEB_WOW64+site%3Alearn.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.PEB_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=PEB_WOW64)  
 [PROCESS_BASIC_INFORMATION](https://www.google.com/search?num=5&q=PROCESS_BASIC_INFORMATION+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.NtDll.PROCESS_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_BASIC_INFORMATION)  

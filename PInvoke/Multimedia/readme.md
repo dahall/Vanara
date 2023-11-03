@@ -282,6 +282,7 @@ Native Enum | Header | Managed Enum
 [ACMSTREAMHEADER_STATUSF](https://www.google.com/search?num=5&q=ACMSTREAMHEADER_STATUSF+site%3Alearn.microsoft.com) | msacm.h | [Vanara.PInvoke.MsAcm32.ACMSTREAMHEADER_STATUSF](https://github.com/dahall/Vanara/search?l=C%23&q=ACMSTREAMHEADER_STATUSF)  
 [AUX_CAPS](https://www.google.com/search?num=5&q=AUX_CAPS+site%3Alearn.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.AUX_CAPS](https://github.com/dahall/Vanara/search?l=C%23&q=AUX_CAPS)  
 [AVICOMPRESSF](https://www.google.com/search?num=5&q=AVICOMPRESSF+site%3Alearn.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVICOMPRESSF](https://github.com/dahall/Vanara/search?l=C%23&q=AVICOMPRESSF)  
+[AVIERR](https://www.google.com/search?num=5&q=AVIERR+site%3Alearn.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVIERR](https://github.com/dahall/Vanara/search?l=C%23&q=AVIERR)  
 [AVIFILECAPS](https://www.google.com/search?num=5&q=AVIFILECAPS+site%3Alearn.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVIFILECAPS](https://github.com/dahall/Vanara/search?l=C%23&q=AVIFILECAPS)  
 [AVIFILEINFOF](https://www.google.com/search?num=5&q=AVIFILEINFOF+site%3Alearn.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVIFILEINFOF](https://github.com/dahall/Vanara/search?l=C%23&q=AVIFILEINFOF)  
 [AVIIF](https://www.google.com/search?num=5&q=AVIIF+site%3Alearn.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVIIF](https://github.com/dahall/Vanara/search?l=C%23&q=AVIIF)  

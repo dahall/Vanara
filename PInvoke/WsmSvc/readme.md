@@ -53,6 +53,7 @@ Native Enum | Header | Managed Enum
 [WSManProxyAuthenticationFlags](https://www.google.com/search?num=5&q=WSManProxyAuthenticationFlags+site%3Alearn.microsoft.com) | wsmandisp.h | [Vanara.PInvoke.WsmSvc.WSManProxyAuthenticationFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManProxyAuthenticationFlags)  
 [WSManSessionFlags](https://www.google.com/search?num=5&q=WSManSessionFlags+site%3Alearn.microsoft.com) | wsmandisp.h | [Vanara.PInvoke.WsmSvc.WSManSessionFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSessionFlags)  
 [WSManSessionOption](https://www.google.com/search?num=5&q=WSManSessionOption+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManSessionOption](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSessionOption)  
+[WsmError](https://www.google.com/search?num=5&q=WsmError+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.WsmError](https://github.com/dahall/Vanara/search?l=C%23&q=WsmError)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -86,8 +87,7 @@ Native Structure | Header | Managed Structure
 [WSMAN_SHELL_ASYNC](https://www.google.com/search?num=5&q=WSMAN_SHELL_ASYNC+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_SHELL_ASYNC](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_SHELL_ASYNC)  
 [WSMAN_SHELL_DISCONNECT_INFO](https://www.google.com/search?num=5&q=WSMAN_SHELL_DISCONNECT_INFO+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_SHELL_DISCONNECT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_SHELL_DISCONNECT_INFO)  
 [WSMAN_SHELL_HANDLE](https://www.google.com/search?num=5&q=WSMAN_SHELL_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.WSMAN_SHELL_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_SHELL_HANDLE)  
-[WSMAN_SHELL_STARTUP_INFO_V10](https://www.google.com/search?num=5&q=WSMAN_SHELL_STARTUP_INFO_V10+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_SHELL_STARTUP_INFO_V10](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_SHELL_STARTUP_INFO_V10)  
-[WSMAN_SHELL_STARTUP_INFO_V11](https://www.google.com/search?num=5&q=WSMAN_SHELL_STARTUP_INFO_V11+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_SHELL_STARTUP_INFO_V11](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_SHELL_STARTUP_INFO_V11)  
+[WSMAN_SHELL_STARTUP_INFO](https://www.google.com/search?num=5&q=WSMAN_SHELL_STARTUP_INFO+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_SHELL_STARTUP_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_SHELL_STARTUP_INFO)  
 [WSMAN_STREAM_ID_SET](https://www.google.com/search?num=5&q=WSMAN_STREAM_ID_SET+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_STREAM_ID_SET](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_STREAM_ID_SET)  
 [WSMAN_USERNAME_PASSWORD_CREDS](https://www.google.com/search?num=5&q=WSMAN_USERNAME_PASSWORD_CREDS+site%3Alearn.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_USERNAME_PASSWORD_CREDS](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_USERNAME_PASSWORD_CREDS)  
 ### Interfaces  
@@ -109,4 +109,5 @@ Native Class | Header | Managed Class
 [SafeWSMAN_API_HANDLE](https://www.google.com/search?num=5&q=SafeWSMAN_API_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.SafeWSMAN_API_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSMAN_API_HANDLE)  
 [SafeWSMAN_OPERATION_HANDLE](https://www.google.com/search?num=5&q=SafeWSMAN_OPERATION_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.SafeWSMAN_OPERATION_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSMAN_OPERATION_HANDLE)  
 [SafeWSMAN_SESSION_HANDLE](https://www.google.com/search?num=5&q=SafeWSMAN_SESSION_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.SafeWSMAN_SESSION_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSMAN_SESSION_HANDLE)  
+[SafeWSMAN_SHELL_HANDLE](https://www.google.com/search?num=5&q=SafeWSMAN_SHELL_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.SafeWSMAN_SHELL_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSMAN_SHELL_HANDLE)  
 [WSMan](https://www.google.com/search?num=5&q=WSMan+site%3Alearn.microsoft.com) | wsmandisp.h | [Vanara.PInvoke.WsmSvc.WSMan](https://github.com/dahall/Vanara/search?l=C%23&q=WSMan)  

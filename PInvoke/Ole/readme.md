@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Ole32.dll,
 
 - Includes methods from ole32.dll, oleaut32.dll, propsys.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ole?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ole?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ole)  
-### Methods - 100% API coverage (834 of 834 functions)  
+### Methods - 99% API coverage (834 of 836 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Alearn.microsoft.com) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.BindMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=BindMoniker)  
@@ -213,7 +213,9 @@ Native Method | Native DLL | Header | Managed Method
 [OleConvertIStorageToOLESTREAM](https://www.google.com/search?num=5&q=OleConvertIStorageToOLESTREAM+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertIStorageToOLESTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertIStorageToOLESTREAM)  
 [OleConvertIStorageToOLESTREAMEx](https://www.google.com/search?num=5&q=OleConvertIStorageToOLESTREAMEx+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertIStorageToOLESTREAMEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertIStorageToOLESTREAMEx)  
 [OleConvertOLESTREAMToIStorage](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorage+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertOLESTREAMToIStorage](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertOLESTREAMToIStorage)  
+[OleConvertOLESTREAMToIStorage2](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorage2+site%3Alearn.microsoft.com) | ole32.dll |  |   
 [OleConvertOLESTREAMToIStorageEx](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorageEx+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertOLESTREAMToIStorageEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertOLESTREAMToIStorageEx)  
+[OleConvertOLESTREAMToIStorageEx2](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorageEx2+site%3Alearn.microsoft.com) | ole32.dll |  |   
 [OleCreate](https://www.google.com/search?num=5&q=OleCreate+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreate](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreate)  
 [OleCreateDefaultHandler](https://www.google.com/search?num=5&q=OleCreateDefaultHandler+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateDefaultHandler](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateDefaultHandler)  
 [OleCreateEmbeddingHelper](https://www.google.com/search?num=5&q=OleCreateEmbeddingHelper+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateEmbeddingHelper](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateEmbeddingHelper)  
@@ -857,6 +859,7 @@ Native Enum | Header | Managed Enum
 [CLSCTX](https://www.google.com/search?num=5&q=CLSCTX+site%3Alearn.microsoft.com) | wtypesbase.h | [Vanara.PInvoke.Ole32.CLSCTX](https://github.com/dahall/Vanara/search?l=C%23&q=CLSCTX)  
 [CO_MARSHALING_CONTEXT_ATTRIBUTES](https://www.google.com/search?num=5&q=CO_MARSHALING_CONTEXT_ATTRIBUTES+site%3Alearn.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.CO_MARSHALING_CONTEXT_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=CO_MARSHALING_CONTEXT_ATTRIBUTES)  
 [COINIT](https://www.google.com/search?num=5&q=COINIT+site%3Alearn.microsoft.com) | Objbase.h | [Vanara.PInvoke.Ole32.COINIT](https://github.com/dahall/Vanara/search?l=C%23&q=COINIT)  
+[COM_RIGHTS](https://www.google.com/search?num=5&q=COM_RIGHTS+site%3Alearn.microsoft.com) | combaseapi.h | [Vanara.PInvoke.Ole32.COM_RIGHTS](https://github.com/dahall/Vanara/search?l=C%23&q=COM_RIGHTS)  
 [COMSD](https://www.google.com/search?num=5&q=COMSD+site%3Alearn.microsoft.com) | objbase.h | [Vanara.PInvoke.Ole32.COMSD](https://github.com/dahall/Vanara/search?l=C%23&q=COMSD)  
 [CONDITION_OPERATION](https://www.google.com/search?num=5&q=CONDITION_OPERATION+site%3Alearn.microsoft.com) | Propsys.h | [Vanara.PInvoke.PropSys.CONDITION_OPERATION](https://github.com/dahall/Vanara/search?l=C%23&q=CONDITION_OPERATION)  
 [COWAIT_FLAGS](https://www.google.com/search?num=5&q=COWAIT_FLAGS+site%3Alearn.microsoft.com) | combaseapi.h | [Vanara.PInvoke.Ole32.COWAIT_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=COWAIT_FLAGS)  
@@ -995,7 +998,6 @@ Native Structure | Header | Managed Structure
 [CUSTDATAITEM](https://www.google.com/search?num=5&q=CUSTDATAITEM+site%3Alearn.microsoft.com) | oaidl.h | [Vanara.PInvoke.OleAut32.CUSTDATAITEM](https://github.com/dahall/Vanara/search?l=C%23&q=CUSTDATAITEM)  
 [DVASPECTINFO](https://www.google.com/search?num=5&q=DVASPECTINFO+site%3Alearn.microsoft.com) | ocidl.h | [Vanara.PInvoke.Ole32.DVASPECTINFO](https://github.com/dahall/Vanara/search?l=C%23&q=DVASPECTINFO)  
 [DVEXTENTINFO](https://www.google.com/search?num=5&q=DVEXTENTINFO+site%3Alearn.microsoft.com) | ocidl.h | [Vanara.PInvoke.Ole32.DVEXTENTINFO](https://github.com/dahall/Vanara/search?l=C%23&q=DVEXTENTINFO)  
-[DVTARGETDEVICE](https://www.google.com/search?num=5&q=DVTARGETDEVICE+site%3Alearn.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.DVTARGETDEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=DVTARGETDEVICE)  
 [EMF](https://www.google.com/search?num=5&q=EMF+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION.EMF](https://github.com/dahall/Vanara/search?l=C%23&q=EMF)  
 [FONTDESC](https://www.google.com/search?num=5&q=FONTDESC+site%3Alearn.microsoft.com) | olectl.h | [Vanara.PInvoke.OleAut32.FONTDESC](https://github.com/dahall/Vanara/search?l=C%23&q=FONTDESC)  
 [HOLEMENU](https://www.google.com/search?num=5&q=HOLEMENU+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.HOLEMENU](https://github.com/dahall/Vanara/search?l=C%23&q=HOLEMENU)  
@@ -1116,7 +1118,7 @@ Native Interface | Header | Managed Interface
 [IFont](https://www.google.com/search?num=5&q=IFont+site%3Alearn.microsoft.com) | ocidl.h | [Vanara.PInvoke.Ole32.IFont](https://github.com/dahall/Vanara/search?l=C%23&q=IFont)  
 [IForegroundTransfer](https://www.google.com/search?num=5&q=IForegroundTransfer+site%3Alearn.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.IForegroundTransfer](https://github.com/dahall/Vanara/search?l=C%23&q=IForegroundTransfer)  
 [IGlobalInterfaceTable](https://www.google.com/search?num=5&q=IGlobalInterfaceTable+site%3Alearn.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.IGlobalInterfaceTable](https://github.com/dahall/Vanara/search?l=C%23&q=IGlobalInterfaceTable)  
-[IGlobalOptions](https://www.google.com/search?num=5&q=IGlobalOptions+site%3Alearn.microsoft.com) | objidlbase.h | [Vanara.PInvoke.Ole32.IGlobalOptions](https://github.com/dahall/Vanara/search?l=C%23&q=IGlobalOptions)  
+[IGlobalOptions](https://www.google.com/search?num=5&q=IGlobalOptions+site%3Alearn.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.IGlobalOptions](https://github.com/dahall/Vanara/search?l=C%23&q=IGlobalOptions)  
 [IInitializeSpy](https://www.google.com/search?num=5&q=IInitializeSpy+site%3Alearn.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.IInitializeSpy](https://github.com/dahall/Vanara/search?l=C%23&q=IInitializeSpy)  
 [IInitializeWithStream](https://www.google.com/search?num=5&q=IInitializeWithStream+site%3Alearn.microsoft.com) | Propsys.h | [Vanara.PInvoke.PropSys.IInitializeWithStream](https://github.com/dahall/Vanara/search?l=C%23&q=IInitializeWithStream)  
 [IInspectable](https://www.google.com/search?num=5&q=IInspectable+site%3Alearn.microsoft.com) | inspectable.h | [Vanara.PInvoke.Ole32.IInspectable](https://github.com/dahall/Vanara/search?l=C%23&q=IInspectable)  
@@ -1257,6 +1259,7 @@ Native Class | Header | Managed Class
 [Devices](https://www.google.com/search?num=5&q=Devices+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Devices](https://github.com/dahall/Vanara/search?l=C%23&q=Devices)  
 [Document](https://www.google.com/search?num=5&q=Document+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Document](https://github.com/dahall/Vanara/search?l=C%23&q=Document)  
 [DRM](https://www.google.com/search?num=5&q=DRM+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.DRM](https://github.com/dahall/Vanara/search?l=C%23&q=DRM)  
+[DVASPECTINFO](https://www.google.com/search?num=5&q=DVASPECTINFO+site%3Alearn.microsoft.com) | ocidl.h | [Vanara.PInvoke.Ole32.DVASPECTINFO](https://github.com/dahall/Vanara/search?l=C%23&q=DVASPECTINFO)  
 [GPS](https://www.google.com/search?num=5&q=GPS+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.GPS](https://github.com/dahall/Vanara/search?l=C%23&q=GPS)  
 [Identity](https://www.google.com/search?num=5&q=Identity+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Identity](https://github.com/dahall/Vanara/search?l=C%23&q=Identity)  
 [IdentityProvider](https://www.google.com/search?num=5&q=IdentityProvider+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.IdentityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IdentityProvider)  
@@ -1288,6 +1291,7 @@ Native Class | Header | Managed Class
 [SimpleFileBasedLog](https://www.google.com/search?num=5&q=SimpleFileBasedLog+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.SimpleFileBasedLog](https://github.com/dahall/Vanara/search?l=C%23&q=SimpleFileBasedLog)  
 [SNB](https://www.google.com/search?num=5&q=SNB+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.SNB](https://github.com/dahall/Vanara/search?l=C%23&q=SNB)  
 [Software](https://www.google.com/search?num=5&q=Software+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Software](https://github.com/dahall/Vanara/search?l=C%23&q=Software)  
+[SOLE_AUTHENTICATION_LIST](https://www.google.com/search?num=5&q=SOLE_AUTHENTICATION_LIST+site%3Alearn.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.SOLE_AUTHENTICATION_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=SOLE_AUTHENTICATION_LIST)  
 [StdComponentCategoriesMgr](https://www.google.com/search?num=5&q=StdComponentCategoriesMgr+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.StdComponentCategoriesMgr](https://github.com/dahall/Vanara/search?l=C%23&q=StdComponentCategoriesMgr)  
 [Sync](https://www.google.com/search?num=5&q=Sync+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Sync](https://github.com/dahall/Vanara/search?l=C%23&q=Sync)  
 [System](https://www.google.com/search?num=5&q=System+site%3Alearn.microsoft.com) | Propkey.h | [Vanara.PInvoke.Ole32.PROPERTYKEY.System](https://github.com/dahall/Vanara/search?l=C%23&q=System)  

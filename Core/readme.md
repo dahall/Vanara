@@ -9,6 +9,7 @@ This library includes shared methods, structures and constants for use throughou
 Enum | Description | Values
 ---- | ---- | ----
 [Vanara.InteropServices.CorrespondingAction](https://github.com/dahall/Vanara/search?l=C%23&q=CorrespondingAction) | Actions that can be taken with a corresponding type. | None, Get, Set, GetSet, Exception
+[System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes](https://github.com/dahall/Vanara/search?l=C%23&q=DynamicallyAccessedMemberTypes) | Specifies the types of members that are dynamically accessed. This enumeration has a System.FlagsAttribute attribute that allows a bitwise combination of its member values. | None, PublicParameterlessConstructor, PublicConstructors, NonPublicConstructors, PublicMethods, NonPublicMethods, PublicFields, NonPublicFields, PublicNestedTypes, NonPublicNestedTypes, PublicProperties, NonPublicProperties, PublicEvents, NonPublicEvents, Interfaces, All
 [Vanara.RunTimeLib.FileAttributeConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FileAttributeConstant) | These constants specify the current attributes of the file or directory specified by the function. | _A_NORMAL, _A_RDONLY, _A_HIDDEN, _A_SYSTEM, _A_SUBDIR, _A_ARCH
 [Vanara.RunTimeLib.FileOpConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FileOpConstant) | The integer expression formed from one or more of these constants determines the type of reading or writing operations permitted. It is formed by combining one or more constants with a translation-mode constant. | _O_RDONLY, _O_WRONLY, _O_RDWR, _O_APPEND, _O_RANDOM, _O_SEQUENTIAL, _O_TEMPORARY, _O_NOINHERIT, _O_CREAT, _O_TRUNC, _O_EXCL, _O_SHORT_LIVED, _O_OBTAIN_DIR, _O_TEXT, _O_RAW, _O_BINARY, _O_WTEXT, _O_U16TEXT, _O_U8TEXT
 [Vanara.RunTimeLib.FilePermissionConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FilePermissionConstant) | These constants are used to indicate file type in the st_mode field of the _stat structure. | _S_IEXEC, _S_IWRITE, _S_IREAD, _S_IFIFO, _S_IFCHR, _S_IFDIR, _S_IFREG, _S_IFMT
@@ -30,20 +31,25 @@ Struct | Description
 Interface | Description
 ---- | ----
 [Vanara.PInvoke.IArrayStruct<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IArrayStruct<T>) | Interface that identifies a structure containing only a 4-byte size field followed by a pointer to an array of <typeparamref name="T" />.
+[Vanara.PInvoke.IHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IHandle) | Signals that a structure or class holds a HANDLE.
 [Vanara.Collections.IHistory<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IHistory<T>) | Provides an interface for a history of items.
 [Vanara.InteropServices.IMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=IMemoryMethods) | Interface to capture unmanaged memory methods.
 [Vanara.InteropServices.ISafeMemoryHandle](https://github.com/dahall/Vanara/search?l=C%23&q=ISafeMemoryHandle) | Interface for classes that support safe memory pointers.
 [Vanara.InteropServices.ISimpleMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=ISimpleMemoryMethods) | Interface to capture unmanaged simple (alloc/free) memory methods.
 [Vanara.ISupportIndexer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ISupportIndexer<T>) | Interface representing a class that holds an indexer.
 [Vanara.InteropServices.IVanaraMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=IVanaraMarshaler) | Smarter custom marshaler.
+[Vanara.Collections.IVirtualListMethods<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IVirtualListMethods<T>) | Interface that defines the methods for a virtual list. This interface is used by the `Vanara.Collections.VirtualList`1` class.
+[Vanara.Collections.IVirtualReadOnlyListMethods<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IVirtualReadOnlyListMethods<T>) | Interface that defines the methods for a virtual read-only list. This interface is used by the `Vanara.Collections.VirtualReadOnlyList`1` class.
 ### Classes
 Class | Description
 ---- | ----
 [Vanara.InteropServices.AlignedMemory<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AlignedMemory<T>) | A memory block aligned on a specific byte boundary.
+[System.Diagnostics.CodeAnalysis.AllowNullAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AllowNullAttribute) | Specifies that null is allowed as an input even if the corresponding type disallows it.
 [Vanara.PInvoke.BeginEndEventContext](https://github.com/dahall/Vanara/search?l=C%23&q=BeginEndEventContext) | A disposable context for which a delegate is called at entry and exit.
 [Vanara.Extensions.BitHelper](https://github.com/dahall/Vanara/search?l=C%23&q=BitHelper) | Static methods to help with bit manipulation.
 [Vanara.ByteSizeFormatter](https://github.com/dahall/Vanara/search?l=C%23&q=ByteSizeFormatter) | A custom formatter for byte sizes (things like files, network bandwidth, etc.) that will automatically determine the best abbreviation.
 [Vanara.InteropServices.ComConnectionPoint](https://github.com/dahall/Vanara/search?l=C%23&q=ComConnectionPoint) | Helper class to create an advised COM sink. When this class is constructed, the source is queried for an `System.Runtime.InteropServices.ComTypes.IConnectionPointContainer` reference.
+[Vanara.PInvoke.InteropServices.ComEnumString](https://github.com/dahall/Vanara/search?l=C%23&q=ComEnumString) | A COM enumerator for `System.String` values. This is used to enumerate the values of a `System.Runtime.InteropServices.ComTypes.IEnumString` interface.
 [Vanara.InteropServices.ComReleaser<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ComReleaser<T>) | A safe variable to hold an instance of a COM class that automatically releases the instance on disposal.
 [Vanara.InteropServices.ComReleaserFactory](https://github.com/dahall/Vanara/search?l=C%23&q=ComReleaserFactory) | Factory for creating `Vanara.InteropServices.ComReleaser`1` objects.
 [Vanara.InteropServices.ComStream](https://github.com/dahall/Vanara/search?l=C%23&q=ComStream) | Implements a .NET stream derivation and a COM IStream instance.
@@ -51,6 +57,8 @@ Class | Description
 [Vanara.RunTimeLib.ConstantConversionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ConstantConversionExtensions) | Extension methods for CRT enumerations to convert to .NET enumerations.
 [Vanara.InteropServices.CorrespondingTypeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=CorrespondingTypeAttribute) | Attribute for enum values that provides information about corresponding types and related actions. Useful for Get/Set methods that use an enumeration value to determine the type to get or set.
 [Vanara.InteropServices.CoTaskMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=CoTaskMemoryMethods) | Unmanaged memory methods for COM.
+[System.Diagnostics.CodeAnalysis.DisallowNullAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DisallowNullAttribute) | Specifies that null is disallowed as an input even if the corresponding type allows it.
+[System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DynamicDependencyAttribute) | States a dependency that one member has on another.
 [Vanara.Collections.EnumerableEqualityComparer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=EnumerableEqualityComparer<T>) | Checks the linear equality of two enumerated lists. For lists to be equal, they must have the same number of elements and each index must hold the same value in each list.
 [Vanara.Extensions.EnumExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=EnumExtensions) | Extensions for enumerated types.
 [Vanara.Collections.EventedList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=EventedList<T>) | A generic list that provides event for changes to the list. This is an alternative to ObservableCollection that provides distinct events for each action (add, insert, remove, changed).
@@ -68,11 +76,18 @@ Class | Description
 [Vanara.InteropServices.IntPtrConverter](https://github.com/dahall/Vanara/search?l=C%23&q=IntPtrConverter) | Functions to safely convert a memory pointer to a type.
 [Vanara.Extensions.IOExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=IOExtensions) | Extensions for classes in System.IO.
 [Vanara.InteropServices.LibHelper](https://github.com/dahall/Vanara/search?l=C%23&q=LibHelper) | General functions to support library calls.
+[Vanara.LinqHelpers](https://github.com/dahall/Vanara/search?l=C%23&q=LinqHelpers) | Helper methods for LINQ
 [Vanara.Collections.EventedList<T>.ListChangedEventArgs<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ListChangedEventArgs<T>) | An `System.EventArgs` structure passed to events generated by an `Vanara.Collections.EventedList`1`.
 [Vanara.InteropServices.MarshalingStream](https://github.com/dahall/Vanara/search?l=C%23&q=MarshalingStream) | A `System.IO.Stream` derivative for working with unmanaged memory.
+[System.Diagnostics.CodeAnalysis.MaybeNullAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=MaybeNullAttribute) | Specifies that an output may be <see langword="null" /> even if the corresponding type disallows it.
+[System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=MaybeNullWhenAttribute) | Specifies that when a method returns ReturnValue, the parameter may be null even if the corresponding type disallows it.
+[System.Diagnostics.CodeAnalysis.MemberNotNullAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=MemberNotNullAttribute) | Specifies that the method or property will ensure that the listed field and property members have values that aren't <see langword="null" />.
 [Vanara.InteropServices.MemoryMethodsBase](https://github.com/dahall/Vanara/search?l=C%23&q=MemoryMethodsBase) | Implementation of `Vanara.InteropServices.IMemoryMethods` using just the methods from `Vanara.InteropServices.ISimpleMemoryMethods`.
 [Vanara.PInvoke.Collections.NativeMemoryEnumerator<T>](https://github.com/dahall/Vanara/search?l=C%23&q=NativeMemoryEnumerator<T>) | Provides a generic enumerator over native memory.
 [Vanara.InteropServices.NativeMemoryStream](https://github.com/dahall/Vanara/search?l=C%23&q=NativeMemoryStream) | A `System.IO.Stream` derivative for working with unmanaged memory.
+[System.Diagnostics.CodeAnalysis.NotNullAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=NotNullAttribute) | Specifies that an output may be null even if the corresponding type disallows it. Specifies that an input argument was not null when the call returns.
+[System.Diagnostics.CodeAnalysis.NotNullWhenAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=NotNullWhenAttribute) | Specifies that when a method returns ReturnValue, the parameter will not be null even if the corresponding type allows it.
+[System.Runtime.Versioning.OSPlatformAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=OSPlatformAttribute) | Some information relates to prerelease product that may be substantially modified before it’s released. Microsoft makes no warranties, express or implied, with respect to the information provided here.
 [Vanara.InteropServices.PinnedObject](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedObject) | A safe class that represents an object that is pinned in memory.
 [Vanara.Extensions.ReflectionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ReflectionExtensions) | Extensions related to <c>System.Reflection</c>
 [Vanara.Extensions.Reflection.ReflectionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ReflectionExtensions) | Extensions for `System.Object` related to <c>System.Reflection</c>
@@ -96,10 +111,15 @@ Class | Description
 [Vanara.InteropServices.SafeMemStruct<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemStruct<T>) | Base abstract class for a structure handler based on `Vanara.InteropServices.SafeMemoryHandle`1`.
 [Vanara.Collections.SparseArray<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SparseArray<T>) | A sparse array based on a dictionary.
 [Vanara.Extensions.StringHelper](https://github.com/dahall/Vanara/search?l=C%23&q=StringHelper) | A safe class that represents an object that is pinned in memory.
+[System.Runtime.Versioning.SupportedOSPlatformAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SupportedOSPlatformAttribute) | Some information relates to prerelease product that may be substantially modified before it’s released. Microsoft makes no warranties, express or implied, with respect to the information provided here.
+[Vanara.Collections.VirtualReadOnlyList<T>.TryGetDelegate](https://github.com/dahall/Vanara/search?l=C%23&q=TryGetDelegate) | Delegate for a method that tries to get the element at the specified index.
 [Vanara.Collections.GenericVirtualReadOnlyDictionary<T>.TryGetValueDelegate](https://github.com/dahall/Vanara/search?l=C%23&q=TryGetValueDelegate) | Delegate for the implementation of the `Vanara.Collections.GenericVirtualReadOnlyDictionary`2.TryGetValue(`0,`1@)` method.
 [Vanara.PInvoke.Collections.UntypedNativeMemoryEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=UntypedNativeMemoryEnumerator) | Provides an enumerator over native memory.
 [Vanara.InteropServices.VanaraCustomMarshaler<T>](https://github.com/dahall/Vanara/search?l=C%23&q=VanaraCustomMarshaler<T>) | Provides an `System.Runtime.InteropServices.ICustomMarshaler` instance that utilizes an `Vanara.InteropServices.IVanaraMarshaler` implementation.
 [Vanara.InteropServices.VanaraMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=VanaraMarshaler) | Provides methods to assist with custom marshaling.
 [Vanara.InteropServices.VanaraMarshalerAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=VanaraMarshalerAttribute) | Apply this attribute to a class or structure to have all Vanara interop function process via the marshaler.
 [Vanara.Collections.VirtualDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualDictionary<T>) | A generic base class for providing a dictionary that gets and sets its values using virtual method calls. Useful for exposing lookups into existing list environments like the file system, registry, service controller, etc.
+[Vanara.Collections.VirtualList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualList<T>) | A virtual list that implements a lot of the scaffolding.
+[Vanara.Collections.VirtualListMethodCarrier<T>](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualListMethodCarrier<T>) | Wrapper for `Vanara.Collections.IVirtualListMethods`1` that allows for the use of delegates instead of implementing the interface.
 [Vanara.Collections.VirtualReadOnlyDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualReadOnlyDictionary<T>) | A generic base class for providing a read-only dictionary that gets its values using virtual method calls. Useful for exposing lookups into existing list environments like the file system, registry, service controller, etc.
+[Vanara.Collections.VirtualReadOnlyList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualReadOnlyList<T>) | A virtual read-only list that implements a lot of the scaffolding.

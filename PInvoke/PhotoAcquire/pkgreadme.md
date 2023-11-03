@@ -16,6 +16,6 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 ### **Included in Vanara.PInvoke.PhotoAcquire**
 
-Classes | Enumerations | Interfaces
---- | --- | ---
-PhotoAcquire PhotoAcquireDeviceSelectionDialog PhotoAcquireOptionsDialog PhotoAcquisition PhotoProgressDialog        | DEVICE_SELECTION_DEVICE_TYPE DSF ERROR_ADVISE_MESSAGE_TYPE ERROR_ADVISE_RESULT PAPS PHOTOACQ PROGRESS_DIALOG_CHECKBOX_ID PROGRESS_DIALOG_IMAGE_TYPE USER_INPUT_STRING_TYPE    | IPhotoAcquire IPhotoAcquireDeviceSelectionDialog IPhotoAcquireItem IPhotoAcquireOptionsDialog IPhotoAcquirePlugin IPhotoAcquireProgressCB IPhotoAcquireSettings IPhotoAcquireSource IPhotoProgressActionCB IPhotoProgressDialog IUserInputString 
+Enumerations | Interfaces
+--- | ---
+DEVICE_SELECTION_DEVICE_TYPE DSF ERROR_ADVISE_MESSAGE_TYPE ERROR_ADVISE_RESULT PAPS PHOTOACQ PROGRESS_DIALOG_CHECKBOX_ID PROGRESS_DIALOG_IMAGE_TYPE USER_INPUT_STRING_TYPE    | IPhotoAcquire IPhotoAcquireDeviceSelectionDialog IPhotoAcquireItem IPhotoAcquireOptionsDialog IPhotoAcquirePlugin IPhotoAcquireProgressCB IPhotoAcquireSettings IPhotoAcquireSource IPhotoProgressActionCB IPhotoProgressDialog IUserInputString 

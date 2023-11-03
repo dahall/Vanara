@@ -3,11 +3,13 @@ PInvoke API (methods, structures and constants) imported from Windows Volume Sha
 
 - Includes methods from vssapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.VssApiMgd?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.VssApiMgd?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.VssApiMgd)  
-### Methods - 100% API coverage (2 of 2 functions)  
+### Methods - 50% API coverage (2 of 4 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[IsVolumeSnapshotted](https://www.google.com/search?num=5&q=IsVolumeSnapshottedInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.IsVolumeSnapshotted](https://github.com/dahall/Vanara/search?l=C%23&q=IsVolumeSnapshotted)  
-[ShouldBlockRevert](https://www.google.com/search?num=5&q=ShouldBlockRevertInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.ShouldBlockRevert](https://github.com/dahall/Vanara/search?l=C%23&q=ShouldBlockRevert)  
+[IsVolumeSnapshotted](https://www.google.com/search?num=5&q=IsVolumeSnapshotted+site%3Alearn.microsoft.com) |  |   
+[IsVolumeSnapshottedInternal](https://www.google.com/search?num=5&q=IsVolumeSnapshottedInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.IsVolumeSnapshotted](https://github.com/dahall/Vanara/search?l=C%23&q=IsVolumeSnapshotted)  
+[ShouldBlockRevert](https://www.google.com/search?num=5&q=ShouldBlockRevert+site%3Alearn.microsoft.com) |  |   
+[ShouldBlockRevertInternal](https://www.google.com/search?num=5&q=ShouldBlockRevertInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.ShouldBlockRevert](https://github.com/dahall/Vanara/search?l=C%23&q=ShouldBlockRevert)  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
@@ -92,7 +94,6 @@ Native Interface | Header | Managed Interface
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [Extensions](https://www.google.com/search?num=5&q=Extensions+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.Extensions](https://github.com/dahall/Vanara/search?l=C%23&q=Extensions)  
-[VSS_MGMT_OBJECT_PROP](https://www.google.com/search?num=5&q=VSS_MGMT_OBJECT_PROP+site%3Alearn.microsoft.com) | vsmgmt.h | [Vanara.PInvoke.VssApi.VSS_MGMT_OBJECT_PROP](https://github.com/dahall/Vanara/search?l=C%23&q=VSS_MGMT_OBJECT_PROP)  
 [VSSCoordinator](https://www.google.com/search?num=5&q=VSSCoordinator+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.VSSCoordinator](https://github.com/dahall/Vanara/search?l=C%23&q=VSSCoordinator)  
 [VssInfo](https://www.google.com/search?num=5&q=VssInfo+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.VssInfo](https://github.com/dahall/Vanara/search?l=C%23&q=VssInfo)  
 [VssSnapshotMgmt](https://www.google.com/search?num=5&q=VssSnapshotMgmt+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.VssSnapshotMgmt](https://github.com/dahall/Vanara/search?l=C%23&q=VssSnapshotMgmt)  

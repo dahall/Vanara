@@ -9,7 +9,18 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;MsftEdit;rich edit</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+CreateTextServices GetMathAlphanumeric GetMathAlphanumericCode MathBuildDown MathBuildUp MathTranslate REExtendedRegisterClass ShutdownTextServices
+
+Structures
+BIDIOPTIONS CHANGENOTIFY CHARFORMAT CHARFORMAT2 CHARRANGE CLIPBOARDFORMAT COMPCOLOR EDITSTREAM ENCORRECTTEXT ENDCOMPOSITIONNOTIFY ENDROPFILES ENLINK ENLOWFIRTF ENOLEOPFAILED ENPROTECTED ENSAVECLIPBOARD FINDTEXT FINDTEXTEX FORMATRANGE GETCONTEXTMENUEX GETTEXTEX GETTEXTLENGTHEX HYPHENATEINFO HYPHRESULT IMECOMPTEXT MSGFILTER OBJECTPOSITIONS PARAFORMAT PARAFORMAT2 PUNCTUATION REOBJECT REPASTESPECIAL REQRESIZE RICHEDIT_IMAGE_PARAMETERS SELCHANGE SETTEXTEX TABLECELLPARMS TABLEROWPARMS TEXTRANGE
+
+Interfaces
+IRichEditOle IRichEditOleCallback IRicheditUiaOverrides IRicheditWindowlessAccessibility ITextDisplays ITextDocument ITextDocument2 ITextFont ITextFont2 ITextPara ITextPara2 ITextRange ITextRange2 ITextRow ITextSelection ITextSelection2 ITextStory ITextStoryRanges ITextStoryRanges2 ITextStrings
+
+</PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>

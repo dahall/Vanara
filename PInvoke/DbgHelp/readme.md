@@ -275,6 +275,7 @@ Native Enum | Header | Managed Enum
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [&lt;_DataDirectory&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<_DataDirectory>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_OPTIONAL_HEADER.&lt;_DataDirectory&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;_DataDirectory&gt;e__FixedBuffer)  
+[&lt;Name&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<Name>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_SECTION_HEADER.&lt;Name&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;Name&gt;e__FixedBuffer)  
 [ADDRESS](https://www.google.com/search?num=5&q=ADDRESS+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRESS)  
 [ADDRESS64](https://www.google.com/search?num=5&q=ADDRESS64+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.ADDRESS64](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRESS64)  
 [API_VERSION](https://www.google.com/search?num=5&q=API_VERSION+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.API_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=API_VERSION)  
@@ -315,6 +316,7 @@ Native Structure | Header | Managed Structure
 [KDHELP64](https://www.google.com/search?num=5&q=KDHELP64+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.KDHELP64](https://github.com/dahall/Vanara/search?l=C%23&q=KDHELP64)  
 [LIST_ENTRY](https://www.google.com/search?num=5&q=LIST_ENTRY+site%3Alearn.microsoft.com) | ntdef.h | [Vanara.PInvoke.DbgHelp.LIST_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=LIST_ENTRY)  
 [LOADED_IMAGE](https://www.google.com/search?num=5&q=LOADED_IMAGE+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.LOADED_IMAGE](https://github.com/dahall/Vanara/search?l=C%23&q=LOADED_IMAGE)  
+[LOADED_IMAGE_UNSAFE](https://www.google.com/search?num=5&q=LOADED_IMAGE_UNSAFE+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.LOADED_IMAGE_UNSAFE](https://github.com/dahall/Vanara/search?l=C%23&q=LOADED_IMAGE_UNSAFE)  
 [MINIDUMP_CALLBACK_INFORMATION](https://www.google.com/search?num=5&q=MINIDUMP_CALLBACK_INFORMATION+site%3Alearn.microsoft.com) | minidumpapiset.h | [Vanara.PInvoke.DbgHelp.MINIDUMP_CALLBACK_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=MINIDUMP_CALLBACK_INFORMATION)  
 [MINIDUMP_CALLBACK_INPUT](https://www.google.com/search?num=5&q=MINIDUMP_CALLBACK_INPUT+site%3Alearn.microsoft.com) | minidumpapiset.h | [Vanara.PInvoke.DbgHelp.MINIDUMP_CALLBACK_INPUT](https://github.com/dahall/Vanara/search?l=C%23&q=MINIDUMP_CALLBACK_INPUT)  
 [MINIDUMP_CALLBACK_OUTPUT](https://www.google.com/search?num=5&q=MINIDUMP_CALLBACK_OUTPUT+site%3Alearn.microsoft.com) | minidumpapiset.h | [Vanara.PInvoke.DbgHelp.MINIDUMP_CALLBACK_OUTPUT](https://github.com/dahall/Vanara/search?l=C%23&q=MINIDUMP_CALLBACK_OUTPUT)  

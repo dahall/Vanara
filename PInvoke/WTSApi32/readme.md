@@ -67,6 +67,7 @@ Native Enum | Header | Managed Enum
 [WTS_TYPE_CLASS](https://www.google.com/search?num=5&q=WTS_TYPE_CLASS+site%3Alearn.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_TYPE_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_TYPE_CLASS)  
 [WTS_VIRTUAL_CLASS](https://www.google.com/search?num=5&q=WTS_VIRTUAL_CLASS+site%3Alearn.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_VIRTUAL_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_VIRTUAL_CLASS)  
 [WTS_WSD](https://www.google.com/search?num=5&q=WTS_WSD+site%3Alearn.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_WSD](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_WSD)  
+[WTSNotification](https://www.google.com/search?num=5&q=WTSNotification+site%3Alearn.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSNotification](https://github.com/dahall/Vanara/search?l=C%23&q=WTSNotification)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

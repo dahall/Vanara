@@ -24,6 +24,7 @@ Native Enum | Header | Managed Enum
 [FH_STATE](https://www.google.com/search?num=5&q=FH_STATE+site%3Alearn.microsoft.com) | fhstatus.h | [Vanara.PInvoke.FhSvcCtl.FH_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=FH_STATE)  
 [FH_TARGET_DRIVE_TYPES](https://www.google.com/search?num=5&q=FH_TARGET_DRIVE_TYPES+site%3Alearn.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_TARGET_DRIVE_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=FH_TARGET_DRIVE_TYPES)  
 [FH_TARGET_PROPERTY_TYPE](https://www.google.com/search?num=5&q=FH_TARGET_PROPERTY_TYPE+site%3Alearn.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_TARGET_PROPERTY_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=FH_TARGET_PROPERTY_TYPE)  
+[FHERR](https://www.google.com/search?num=5&q=FHERR+site%3Alearn.microsoft.com) | fherrors.h | [Vanara.PInvoke.FhSvcCtl.FHERR](https://github.com/dahall/Vanara/search?l=C%23&q=FHERR)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

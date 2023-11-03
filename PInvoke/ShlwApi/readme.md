@@ -243,6 +243,8 @@ Native Enum | Header | Managed Enum
 [SRRF](https://www.google.com/search?num=5&q=SRRF+site%3Alearn.microsoft.com) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.SRRF](https://github.com/dahall/Vanara/search?l=C%23&q=SRRF)  
 [STIF_FLAGS](https://www.google.com/search?num=5&q=STIF_FLAGS+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.STIF_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=STIF_FLAGS)  
 [URL_APPLY](https://www.google.com/search?num=5&q=URL_APPLY+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URL_APPLY](https://github.com/dahall/Vanara/search?l=C%23&q=URL_APPLY)  
+[URL_PART](https://www.google.com/search?num=5&q=URL_PART+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URL_PART](https://github.com/dahall/Vanara/search?l=C%23&q=URL_PART)  
+[URL_PARTFLAG](https://www.google.com/search?num=5&q=URL_PARTFLAG+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URL_PARTFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=URL_PARTFLAG)  
 [URL_SCHEME](https://www.google.com/search?num=5&q=URL_SCHEME+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URL_SCHEME](https://github.com/dahall/Vanara/search?l=C%23&q=URL_SCHEME)  
 [URLFLAGS](https://www.google.com/search?num=5&q=URLFLAGS+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URLFLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=URLFLAGS)  
 [URLIS](https://www.google.com/search?num=5&q=URLIS+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URLIS](https://github.com/dahall/Vanara/search?l=C%23&q=URLIS)  

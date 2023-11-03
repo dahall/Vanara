@@ -3,18 +3,20 @@ PInvoke API (methods, structures and constants) imported from Windows Text Servi
 
 - Includes methods from msctf.dll, input.dll, msimtf.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.TextServicesFramework?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.TextServicesFramework?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.TextServicesFramework)  
-### Methods - 100% API coverage (26 of 26 functions)  
+### Methods - 92% API coverage (26 of 28 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DoMsCtfMonitor](https://www.google.com/search?num=5&q=DoMsCtfMonitor+site%3Alearn.microsoft.com) | msctf.dll | msctfmonitorapi.h | [Vanara.PInvoke.MSCTF.DoMsCtfMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=DoMsCtfMonitor)  
 [EnumEnabledLayoutOrTip](https://www.google.com/search?num=5&q=EnumEnabledLayoutOrTip+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.EnumEnabledLayoutOrTip](https://github.com/dahall/Vanara/search?l=C%23&q=EnumEnabledLayoutOrTip)  
 [EnumLayoutOrTipForSetup](https://www.google.com/search?num=5&q=EnumLayoutOrTipForSetup+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.EnumLayoutOrTipForSetup](https://github.com/dahall/Vanara/search?l=C%23&q=EnumLayoutOrTipForSetup)  
+[GetHandwritingStrokeIdForPointer](https://www.google.com/search?num=5&q=GetHandwritingStrokeIdForPointer+site%3Alearn.microsoft.com) | msctf.dll |  |   
 [InitLocalMsCtfMonitor](https://www.google.com/search?num=5&q=InitLocalMsCtfMonitor+site%3Alearn.microsoft.com) | msctf.dll | msctfmonitorapi.h | [Vanara.PInvoke.MSCTF.InitLocalMsCtfMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=InitLocalMsCtfMonitor)  
 [InstallLayoutOrTip](https://www.google.com/search?num=5&q=InstallLayoutOrTip+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.InstallLayoutOrTip](https://github.com/dahall/Vanara/search?l=C%23&q=InstallLayoutOrTip)  
 [InstallLayoutOrTipUserReg](https://www.google.com/search?num=5&q=InstallLayoutOrTipUserReg+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.InstallLayoutOrTipUserReg](https://github.com/dahall/Vanara/search?l=C%23&q=InstallLayoutOrTipUserReg)  
 [MsimtfIsWindowFiltered](https://www.google.com/search?num=5&q=MsimtfIsWindowFiltered+site%3Alearn.microsoft.com) | msimtf.dll |  | [Vanara.PInvoke.MSCTF.MsimtfIsWindowFiltered](https://github.com/dahall/Vanara/search?l=C%23&q=MsimtfIsWindowFiltered)  
 [QueryLayoutOrTipString](https://www.google.com/search?num=5&q=QueryLayoutOrTipString+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.QueryLayoutOrTipString](https://github.com/dahall/Vanara/search?l=C%23&q=QueryLayoutOrTipString)  
 [QueryLayoutOrTipStringUserReg](https://www.google.com/search?num=5&q=QueryLayoutOrTipStringUserReg+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.QueryLayoutOrTipStringUserReg](https://github.com/dahall/Vanara/search?l=C%23&q=QueryLayoutOrTipStringUserReg)  
+[RegisterHandwritingInputRoutingCallback](https://www.google.com/search?num=5&q=RegisterHandwritingInputRoutingCallback+site%3Alearn.microsoft.com) | msctf.dll |  |   
 [SaveDefaultUserInputSettings](https://www.google.com/search?num=5&q=SaveDefaultUserInputSettings+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.SaveDefaultUserInputSettings](https://github.com/dahall/Vanara/search?l=C%23&q=SaveDefaultUserInputSettings)  
 [SaveSystemAcctInputSettings](https://www.google.com/search?num=5&q=SaveSystemAcctInputSettings+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.SaveSystemAcctInputSettings](https://github.com/dahall/Vanara/search?l=C%23&q=SaveSystemAcctInputSettings)  
 [SetDefaultLayoutOrTip](https://www.google.com/search?num=5&q=SetDefaultLayoutOrTip+site%3Alearn.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.SetDefaultLayoutOrTip](https://github.com/dahall/Vanara/search?l=C%23&q=SetDefaultLayoutOrTip)  

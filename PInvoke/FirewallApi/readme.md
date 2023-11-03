@@ -3,9 +3,20 @@ PInvoke API (methods, structures and constants) imported from FirewallApi.dll fo
 
 - Includes methods from firewallapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FirewallApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FirewallApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FirewallApi)  
-### Methods - 100% API coverage (11 of 11 functions)  
+### Methods - 50% API coverage (11 of 22 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
+[FWAddHyperVRule1](https://www.google.com/search?num=5&q=FWAddHyperVRule1+site%3Alearn.microsoft.com) |  |   
+[FWCreateHyperVPort1](https://www.google.com/search?num=5&q=FWCreateHyperVPort1+site%3Alearn.microsoft.com) |  |   
+[FWEnumHyperVPorts1](https://www.google.com/search?num=5&q=FWEnumHyperVPorts1+site%3Alearn.microsoft.com) |  |   
+[FWEnumHyperVRules1](https://www.google.com/search?num=5&q=FWEnumHyperVRules1+site%3Alearn.microsoft.com) |  |   
+[FWFreeHyperVPorts1](https://www.google.com/search?num=5&q=FWFreeHyperVPorts1+site%3Alearn.microsoft.com) |  |   
+[FWFreeHyperVRules1](https://www.google.com/search?num=5&q=FWFreeHyperVRules1+site%3Alearn.microsoft.com) |  |   
+[FWGetHyperVProfileConfig0](https://www.google.com/search?num=5&q=FWGetHyperVProfileConfig0+site%3Alearn.microsoft.com) |  |   
+[FWRefreshHyperVPorts0](https://www.google.com/search?num=5&q=FWRefreshHyperVPorts0+site%3Alearn.microsoft.com) |  |   
+[FWSetHyperVPort1](https://www.google.com/search?num=5&q=FWSetHyperVPort1+site%3Alearn.microsoft.com) |  |   
+[FWSetHyperVProfileConfig0](https://www.google.com/search?num=5&q=FWSetHyperVProfileConfig0+site%3Alearn.microsoft.com) |  |   
+[FWSetHyperVRule1](https://www.google.com/search?num=5&q=FWSetHyperVRule1+site%3Alearn.microsoft.com) |  |   
 [NetworkIsolationDiagnoseConnectFailureAndGetInfo](https://www.google.com/search?num=5&q=NetworkIsolationDiagnoseConnectFailureAndGetInfo+site%3Alearn.microsoft.com) | networkisolation.h | [Vanara.PInvoke.FirewallApi.NetworkIsolationDiagnoseConnectFailureAndGetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkIsolationDiagnoseConnectFailureAndGetInfo)  
 [NetworkIsolationEnumAppContainers](https://www.google.com/search?num=5&q=NetworkIsolationEnumAppContainers+site%3Alearn.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetworkIsolationEnumAppContainers](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkIsolationEnumAppContainers)  
 [NetworkIsolationEnumerateAppContainerRules](https://www.google.com/search?num=5&q=NetworkIsolationEnumerateAppContainerRules+site%3Alearn.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetworkIsolationEnumerateAppContainerRules](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkIsolationEnumerateAppContainerRules)  

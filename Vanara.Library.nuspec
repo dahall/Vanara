@@ -59,6 +59,7 @@
       <dependency id="Vanara.PInvoke.Lz32" version="4.0.0" />
       <dependency id="Vanara.PInvoke.Magnification" version="4.0.0" />
       <dependency id="Vanara.PInvoke.Mpr" version="4.0.0" />
+      <dependency id="Vanara.PInvoke.MsftEdit" version="4.0.0" />
       <dependency id="Vanara.PInvoke.Msi" version="4.0.0" />
       <dependency id="Vanara.PInvoke.MsRdc" version="4.0.0" />
       <dependency id="Vanara.PInvoke.Multimedia" version="4.0.0" />
@@ -92,6 +93,7 @@
       <dependency id="Vanara.PInvoke.ShlwApi" version="4.0.0" />
       <dependency id="Vanara.PInvoke.TaskSchd" version="4.0.0" />
       <dependency id="Vanara.PInvoke.TextServicesFramework" version="4.0.0" />
+      <dependency id="Vanara.PInvoke.UIAutomation" version="4.0.0" />
       <dependency id="Vanara.PInvoke.UrlMon" version="4.0.0" />
       <dependency id="Vanara.PInvoke.User32" version="4.0.0" />
       <dependency id="Vanara.PInvoke.UserEnv" version="4.0.0" />

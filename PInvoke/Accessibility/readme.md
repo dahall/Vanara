@@ -27,6 +27,8 @@ Native Enum | Header | Managed Enum
 [AccessibilityRole](https://www.google.com/search?num=5&q=AccessibilityRole+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Oleacc.AccessibilityRole](https://github.com/dahall/Vanara/search?l=C%23&q=AccessibilityRole)  
 [AccessibilityState](https://www.google.com/search?num=5&q=AccessibilityState+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Oleacc.AccessibilityState](https://github.com/dahall/Vanara/search?l=C%23&q=AccessibilityState)  
 [ANRUS](https://www.google.com/search?num=5&q=ANRUS+site%3Alearn.microsoft.com) | oleacc.h | [Vanara.PInvoke.Oleacc.ANRUS](https://github.com/dahall/Vanara/search?l=C%23&q=ANRUS)  
+[NAVDIR](https://www.google.com/search?num=5&q=NAVDIR+site%3Alearn.microsoft.com) | Oleacc.h | [Vanara.PInvoke.Oleacc.NAVDIR](https://github.com/dahall/Vanara/search?l=C%23&q=NAVDIR)  
+[SELFLAG](https://www.google.com/search?num=5&q=SELFLAG+site%3Alearn.microsoft.com) | Oleacc.h | [Vanara.PInvoke.Oleacc.SELFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=SELFLAG)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

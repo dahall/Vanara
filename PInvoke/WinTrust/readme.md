@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows WinTrust.d
 
 - Includes methods from wintrust.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinTrust?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinTrust?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinTrust)  
-### Methods - 100% API coverage (59 of 59 functions)  
+### Methods - 88% API coverage (48 of 54 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CryptCATAdminAcquireContext](https://www.google.com/search?num=5&q=CryptCATAdminAcquireContext+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminAcquireContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminAcquireContext)  
@@ -33,17 +33,12 @@ Native Method | Header | Managed Method
 [CryptCATPutCatAttrInfo](https://www.google.com/search?num=5&q=CryptCATPutCatAttrInfo+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATPutCatAttrInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATPutCatAttrInfo)  
 [CryptCATPutMemberInfo](https://www.google.com/search?num=5&q=CryptCATPutMemberInfo+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATPutMemberInfo](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATPutMemberInfo)  
 [CryptCATStoreFromHandle](https://www.google.com/search?num=5&q=CryptCATStoreFromHandle+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATStoreFromHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATStoreFromHandle)  
-[CryptSIPAddProvider](https://www.google.com/search?num=5&q=CryptSIPAddProvider+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPAddProvider](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPAddProvider)  
-[CryptSIPCreateIndirectData](https://www.google.com/search?num=5&q=CryptSIPCreateIndirectData+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPCreateIndirectData](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPCreateIndirectData)  
-[CryptSIPGetCaps](https://www.google.com/search?num=5&q=CryptSIPGetCaps+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPGetCaps](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPGetCaps)  
-[CryptSIPGetSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPGetSignedDataMsg+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPGetSignedDataMsg](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPGetSignedDataMsg)  
-[CryptSIPLoad](https://www.google.com/search?num=5&q=CryptSIPLoad+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPLoad](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPLoad)  
-[CryptSIPPutSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPPutSignedDataMsg+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPPutSignedDataMsg](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPPutSignedDataMsg)  
-[CryptSIPRemoveProvider](https://www.google.com/search?num=5&q=CryptSIPRemoveProvider+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRemoveProvider](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRemoveProvider)  
-[CryptSIPRemoveSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPRemoveSignedDataMsg+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRemoveSignedDataMsg](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRemoveSignedDataMsg)  
-[CryptSIPRetrieveSubjectGuid](https://www.google.com/search?num=5&q=CryptSIPRetrieveSubjectGuid+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRetrieveSubjectGuid](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRetrieveSubjectGuid)  
-[CryptSIPRetrieveSubjectGuidForCatalogFile](https://www.google.com/search?num=5&q=CryptSIPRetrieveSubjectGuidForCatalogFile+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPRetrieveSubjectGuidForCatalogFile](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPRetrieveSubjectGuidForCatalogFile)  
-[CryptSIPVerifyIndirectData](https://www.google.com/search?num=5&q=CryptSIPVerifyIndirectData+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.CryptSIPVerifyIndirectData](https://github.com/dahall/Vanara/search?l=C%23&q=CryptSIPVerifyIndirectData)  
+[CryptSIPCreateIndirectData](https://www.google.com/search?num=5&q=CryptSIPCreateIndirectData+site%3Alearn.microsoft.com) |  |   
+[CryptSIPGetCaps](https://www.google.com/search?num=5&q=CryptSIPGetCaps+site%3Alearn.microsoft.com) |  |   
+[CryptSIPGetSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPGetSignedDataMsg+site%3Alearn.microsoft.com) |  |   
+[CryptSIPPutSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPPutSignedDataMsg+site%3Alearn.microsoft.com) |  |   
+[CryptSIPRemoveSignedDataMsg](https://www.google.com/search?num=5&q=CryptSIPRemoveSignedDataMsg+site%3Alearn.microsoft.com) |  |   
+[CryptSIPVerifyIndirectData](https://www.google.com/search?num=5&q=CryptSIPVerifyIndirectData+site%3Alearn.microsoft.com) |  |   
 [IsCatalogFile](https://www.google.com/search?num=5&q=IsCatalogFile+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.IsCatalogFile](https://github.com/dahall/Vanara/search?l=C%23&q=IsCatalogFile)  
 [OpenPersonalTrustDBDialog](https://www.google.com/search?num=5&q=OpenPersonalTrustDBDialog+site%3Alearn.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.OpenPersonalTrustDBDialog](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPersonalTrustDBDialog)  
 [OpenPersonalTrustDBDialogEx](https://www.google.com/search?num=5&q=OpenPersonalTrustDBDialogEx+site%3Alearn.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.OpenPersonalTrustDBDialogEx](https://github.com/dahall/Vanara/search?l=C%23&q=OpenPersonalTrustDBDialogEx)  
@@ -114,15 +109,6 @@ Native Structure | Header | Managed Structure
 [HCATALOG](https://www.google.com/search?num=5&q=HCATALOG+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinTrust.HCATALOG](https://github.com/dahall/Vanara/search?l=C%23&q=HCATALOG)  
 [HCATINFO](https://www.google.com/search?num=5&q=HCATINFO+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinTrust.HCATINFO](https://github.com/dahall/Vanara/search?l=C%23&q=HCATINFO)  
 [HCRYPTMSG](https://www.google.com/search?num=5&q=HCRYPTMSG+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinTrust.HCRYPTMSG](https://github.com/dahall/Vanara/search?l=C%23&q=HCRYPTMSG)  
-[MS_ADDINFO_BLOB](https://www.google.com/search?num=5&q=MS_ADDINFO_BLOB+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.MS_ADDINFO_BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=MS_ADDINFO_BLOB)  
-[MS_ADDINFO_CATALOGMEMBER](https://www.google.com/search?num=5&q=MS_ADDINFO_CATALOGMEMBER+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.MS_ADDINFO_CATALOGMEMBER](https://github.com/dahall/Vanara/search?l=C%23&q=MS_ADDINFO_CATALOGMEMBER)  
-[MS_ADDINFO_FLAT](https://www.google.com/search?num=5&q=MS_ADDINFO_FLAT+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.MS_ADDINFO_FLAT](https://github.com/dahall/Vanara/search?l=C%23&q=MS_ADDINFO_FLAT)  
-[SIP_ADD_NEWPROVIDER](https://www.google.com/search?num=5&q=SIP_ADD_NEWPROVIDER+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_ADD_NEWPROVIDER](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_ADD_NEWPROVIDER)  
-[SIP_CAP_SET_V2](https://www.google.com/search?num=5&q=SIP_CAP_SET_V2+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_CAP_SET_V2](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_CAP_SET_V2)  
-[SIP_CAP_SET_V3](https://www.google.com/search?num=5&q=SIP_CAP_SET_V3+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_CAP_SET_V3](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_CAP_SET_V3)  
-[SIP_DISPATCH_INFO](https://www.google.com/search?num=5&q=SIP_DISPATCH_INFO+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_DISPATCH_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_DISPATCH_INFO)  
-[SIP_INDIRECT_DATA](https://www.google.com/search?num=5&q=SIP_INDIRECT_DATA+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_INDIRECT_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_INDIRECT_DATA)  
-[SIP_SUBJECTINFO](https://www.google.com/search?num=5&q=SIP_SUBJECTINFO+site%3Alearn.microsoft.com) | mssip.h | [Vanara.PInvoke.WinTrust.SIP_SUBJECTINFO](https://github.com/dahall/Vanara/search?l=C%23&q=SIP_SUBJECTINFO)  
 [SPC_INDIRECT_DATA_CONTENT](https://www.google.com/search?num=5&q=SPC_INDIRECT_DATA_CONTENT+site%3Alearn.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.SPC_INDIRECT_DATA_CONTENT](https://github.com/dahall/Vanara/search?l=C%23&q=SPC_INDIRECT_DATA_CONTENT)  
 [WIN_CERTIFICATE](https://www.google.com/search?num=5&q=WIN_CERTIFICATE+site%3Alearn.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WIN_CERTIFICATE](https://github.com/dahall/Vanara/search?l=C%23&q=WIN_CERTIFICATE)  
 [WINTRUST_BLOB_INFO](https://www.google.com/search?num=5&q=WINTRUST_BLOB_INFO+site%3Alearn.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_BLOB_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_BLOB_INFO)  

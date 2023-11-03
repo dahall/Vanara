@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures | Interfaces
 --- | --- | --- | ---
-FhServiceBlockBackup FhServiceClosePipe FhServiceOpenPipe FhServiceReloadConfiguration FhServiceStartBackup FhServiceStopBackup FhServiceUnblockBackup   | FH_BACKUP_STATUS FH_DEVICE_VALIDATION_RESULT FH_LOCAL_POLICY_TYPE FH_PROTECTED_ITEM_CATEGORY FH_RETENTION_TYPES FH_STATE FH_TARGET_DRIVE_TYPES FH_TARGET_PROPERTY_TYPE  | FH_SERVICE_PIPE_HANDLE         | IFhConfigMgr IFhReassociation IFhScopeIterator IFhTarget     
+FhServiceBlockBackup FhServiceClosePipe FhServiceOpenPipe FhServiceReloadConfiguration FhServiceStartBackup FhServiceStopBackup FhServiceUnblockBackup    | FH_BACKUP_STATUS FH_DEVICE_VALIDATION_RESULT FH_LOCAL_POLICY_TYPE FH_PROTECTED_ITEM_CATEGORY FH_RETENTION_TYPES FH_STATE FH_TARGET_DRIVE_TYPES FH_TARGET_PROPERTY_TYPE FHERR  | FH_SERVICE_PIPE_HANDLE          | IFhConfigMgr IFhReassociation IFhScopeIterator IFhTarget      

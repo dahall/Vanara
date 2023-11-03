@@ -7,7 +7,7 @@ PInvoke API (methods, structures and constants) imported from Windows NTDSApi.dl
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DsAddSidHistory](https://www.google.com/search?num=5&q=DsAddSidHistoryA+site%3Alearn.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsAddSidHistory](https://github.com/dahall/Vanara/search?l=C%23&q=DsAddSidHistory)  
-[DsBind](https://www.google.com/search?num=5&q=DsBindA+site%3Alearn.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.DsBind](https://github.com/dahall/Vanara/search?l=C%23&q=DsBind)  
+[DsBind](https://www.google.com/search?num=5&q=DsBindA+site%3Alearn.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsBind](https://github.com/dahall/Vanara/search?l=C%23&q=DsBind)  
 [DsBindByInstance](https://www.google.com/search?num=5&q=DsBindByInstanceA+site%3Alearn.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsBindByInstance](https://github.com/dahall/Vanara/search?l=C%23&q=DsBindByInstance)  
 [DsBindingSetTimeout](https://www.google.com/search?num=5&q=DsBindingSetTimeout+site%3Alearn.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsBindingSetTimeout](https://github.com/dahall/Vanara/search?l=C%23&q=DsBindingSetTimeout)  
 [DsBindToISTG](https://www.google.com/search?num=5&q=DsBindToISTGA+site%3Alearn.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsBindToISTG](https://github.com/dahall/Vanara/search?l=C%23&q=DsBindToISTG)  
