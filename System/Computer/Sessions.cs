@@ -439,12 +439,19 @@ public class Sessions : IReadOnlyDictionary<uint, Session>
 	/// <see langword="true"/> if the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the key; otherwise,
 	/// <see langword="false"/>.
 	/// </returns>
-	public bool TryGetValue(uint key, [NotNullWhen(true)] out Session? value)
+	public bool TryGetValue(uint key,
+#if NETFRAMEWORK || NETSTANDARD
+		out Session value)
+#else
+		[NotNullWhen(true)] out Session? value)
+#endif
 	{
 		var si = EnumSessions().FirstOrDefault(s => Equals(key, s.SessionId));
 		if (si.SessionId == 0)
 		{
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 			value = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 			return false;
 		}
 		value = new Session(target, si);

@@ -13,7 +13,7 @@ public class Ws2tcpipTests
 	const string saddr4 = "192.168.0.1";
 	const string saddr6 = "2001:db8:aaaa:1::100";
 
-	public static IPAddress localIP4 => Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+	public static IPAddress? localIP4 => Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
 
 	[Test]
 	public void _StructSizeTest()
@@ -39,7 +39,7 @@ public class Ws2tcpipTests
 	public void GetAddrInfoWTest()
 	{
 		var hints = new ADDRINFOW { ai_flags = ADDRINFO_FLAGS.AI_CANONNAME, ai_family = ADDRESS_FAMILY.AF_UNSPEC };
-		Assert.That(GetAddrInfoW(localIP4.ToString(), null, hints, out var res), ResultIs.Successful);
+		Assert.That(GetAddrInfoW(localIP4?.ToString(), null, hints, out var res), ResultIs.Successful);
 		TestContext.Write(string.Join(", ", res));
 	}
 
@@ -48,10 +48,10 @@ public class Ws2tcpipTests
 	{
 		var hints = new ADDRINFOEXW { ai_flags = ADDRINFO_FLAGS.AI_CANONNAME, ai_family = ADDRESS_FAMILY.AF_INET };
 		var ovl = new NativeOverlapped();
-		Assert.That(GetAddrInfoExW(localIP4.ToString(), null, NS.NS_ALL, default, &hints, out var res,
+		Assert.That(GetAddrInfoExW(localIP4?.ToString(), null, NS.NS_ALL, default, &hints, out var res,
 			default, &ovl, GAIExCompl, null), ResultIs.Successful);
 		TestContext.Write(string.Join(", ", res));
-		Assert.That(GetAddrInfoExW(localIP4.ToString(), ppResult: out res), ResultIs.Successful);
+		Assert.That(GetAddrInfoExW(localIP4?.ToString(), ppResult: out res), ResultIs.Successful);
 		TestContext.Write(string.Join(", ", res));
 
 		static unsafe void GAIExCompl(uint error, uint bytes, NativeOverlapped* overlapped) { }

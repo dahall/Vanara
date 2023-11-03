@@ -12,7 +12,7 @@ public class Winsock2Tests
 	const string saddr4 = "192.168.0.1";
 	const string saddr6 = "2001:db8:aaaa:1::100";
 
-	public static readonly IPAddress localIP4 = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+	public static readonly IPAddress? localIP4 = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
 	public static SafeSOCKET GetTcpSocket() => socket(ADDRESS_FAMILY.AF_INET, SOCK.SOCK_STREAM, IPPROTO.IPPROTO_TCP);
 
 	[Test]

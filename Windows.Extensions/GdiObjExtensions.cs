@@ -87,7 +87,7 @@ public static class GdiObjExtensions2
 	/// <returns>The Pen instance.</returns>
 	public static Pen? ToPen(this in HPEN hpen)
 	{
-		using InteropServices.ISafeMemoryHandle ptr = GetObject(hpen);
+		using ISafeMemoryHandle ptr = GetObject(hpen);
 		EXTLOGPEN lpen = ptr.ToStructure<EXTLOGPEN>();
 		Pen? pen = null;
 		switch (lpen.elpBrushStyle)

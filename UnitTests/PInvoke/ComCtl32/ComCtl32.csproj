@@ -5,9 +5,6 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>

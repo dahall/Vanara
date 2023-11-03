@@ -296,7 +296,7 @@ public class WinRegTests
 			new Thread(o =>
 			{
 				Thread.Sleep(100);
-				if (RegCreateKey((HKEY)o, tmpRegKey, out var hTmpKey).Succeeded)
+				if (RegCreateKey((HKEY)o!, tmpRegKey, out var hTmpKey).Succeeded)
 				{
 					hTmpKey.Dispose();
 					RegDeleteKey((HKEY)o, tmpRegKey);
@@ -372,7 +372,7 @@ public class WinRegTests
 			IReadOnlyDictionary<string, object?>? results = null;
 			Assert.That(() => results = RegQueryMultipleValues(hKey, values), Throws.Nothing);
 			Assert.That(results!, Has.Count.EqualTo(values.Length));
-			results.WriteValues();
+			results!.WriteValues();
 		}
 	}
 

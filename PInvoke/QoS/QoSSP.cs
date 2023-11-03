@@ -246,7 +246,7 @@ public static partial class Qwave
 				return null;
 			}
 
-			ACTUAL actual = (ACTUAL)Marshal.PtrToStructure(pNativeData, typeof(ACTUAL));
+			ACTUAL actual = (ACTUAL)Marshal.PtrToStructure(pNativeData, typeof(ACTUAL))!;
 			CONTROL_SERVICE ret = new() { Service = actual.Service, Overrides = actual.Overrides };
 			if (actual.Service == SERVICETYPE.SERVICETYPE_GUARANTEED)
 			{

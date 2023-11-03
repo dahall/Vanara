@@ -4,11 +4,11 @@
     <TargetFramework>$(TargetFramework)-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Design" />
     <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj" />
     <ProjectReference Include="..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />

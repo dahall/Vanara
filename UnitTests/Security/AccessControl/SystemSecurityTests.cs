@@ -30,7 +30,7 @@ public class SystemSecurityTests
 		SystemSecurity ss;
 		using (ss = new SystemSecurity(SystemSecurity.DesiredAccess.LookupNames))
 		{
-			SystemSecurity.SystemAccountInfo sai = null;
+			SystemSecurity.SystemAccountInfo? sai = null;
 			Assert.That(() => sai = ss.GetAccountInfo(acctName), valid ? (IResolveConstraint)Throws.Nothing : Throws.Exception);
 			TestContext.WriteLine($"{sai?.SidType ?? SID_NAME_USE.SidTypeUnknown}:{sai?.Name}");
 		}
@@ -42,9 +42,9 @@ public class SystemSecurityTests
 		SystemSecurity ss;
 		using (ss = new SystemSecurity(SystemSecurity.DesiredAccess.LookupNames))
 		{
-			IList<SystemSecurity.SystemAccountInfo> sa = null;
+			IList<SystemSecurity.SystemAccountInfo>? sa = null;
 			Assert.That(() => sa = ss.GetAccountInfo(false, "SYSTEM", "Administrator", "Everyone", "dahall", "AMERICAS\\dahall", "AAADELETE", "DAHALL17", "DAHALL12"), Throws.Nothing);
-			foreach (var sai in sa)
+			foreach (var sai in sa!)
 				TestContext.WriteLine($"{sai.SidType}:{sai.Name}");
 		}
 	}
@@ -55,13 +55,13 @@ public class SystemSecurityTests
 		SystemSecurity ss;
 		using (ss = new SystemSecurity(SystemSecurity.DesiredAccess.LookupNames))
 		{
-			IList<SystemSecurity.SystemAccountInfo> sa = null;
+			IList<SystemSecurity.SystemAccountInfo>? sa = null;
 
 			using var identity = WindowsIdentity.GetCurrent();
 
-			Assert.That(() => sa = ss.GetAccountInfo(false, false, identity.User, new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null)), Throws.Nothing);
+			Assert.That(() => sa = ss.GetAccountInfo(false, false, identity.User!, new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null)), Throws.Nothing);
 
-			foreach (var sai in sa)
+			foreach (var sai in sa!)
 				TestContext.WriteLine($"{sai.SidType}:{sai.Name}");
 		}
 	}
@@ -77,7 +77,7 @@ public class SystemSecurityTests
 	public void UserLogonRightsTest()
 	{
 		using var ss = SystemSecurity.Local;
-		SystemSecurity.LogonRights r = null;
+		SystemSecurity.LogonRights? r = null;
 		Assert.That(() => r = ss.UserLogonRights(null), Throws.Nothing);
 		TestContext.WriteLine($"{r}");
 	}
@@ -86,7 +86,7 @@ public class SystemSecurityTests
 	public void UserPrivilegesTest()
 	{
 		using var ss = SystemSecurity.Local;
-		SystemSecurity.AccountPrivileges p = null;
+		SystemSecurity.AccountPrivileges? p = null;
 		Assert.That(() => p = ss.UserPrivileges(null), Throws.Nothing);
 		TestContext.WriteLine($"{p}");
 	}

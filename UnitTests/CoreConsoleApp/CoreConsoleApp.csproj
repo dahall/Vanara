@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <StartupObject>CoreConsoleApp.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

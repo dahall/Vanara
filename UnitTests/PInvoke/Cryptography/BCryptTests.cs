@@ -38,10 +38,10 @@ public class BCryptTests
 			err = BCryptAddContextFunction(ContextConfigTable.CRYPT_LOCAL, ctx, InterfaceId.BCRYPT_HASH_INTERFACE, func, CryptPriority.CRYPT_PRIORITY_TOP);
 			Assert.That((int)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			string[] funcs = null;
+			string?[]? funcs = null;
 			Assert.That(() => funcs = BCryptEnumContextFunctions(ContextConfigTable.CRYPT_LOCAL, ctx, InterfaceId.BCRYPT_HASH_INTERFACE), Throws.Nothing);
-			Assert.That(funcs.Length, Is.EqualTo(1));
-			Assert.That(funcs[0], Is.EqualTo(func));
+			Assert.That(funcs?.Length, Is.EqualTo(1));
+			Assert.That(funcs![0], Is.EqualTo(func));
 
 			err = BCryptQueryContextFunctionConfiguration(ContextConfigTable.CRYPT_LOCAL, ctx, InterfaceId.BCRYPT_HASH_INTERFACE, func, out var _, out buf);
 			Assert.That((int)err, Is.EqualTo(NTStatus.STATUS_NOT_FOUND));
@@ -174,12 +174,12 @@ public class BCryptTests
 		Assert.That(p.Length, Is.Not.Zero);
 		TestContext.WriteLine("Prov: " + string.Join(", ", p));
 
-		var f = BCryptEnumContextFunctions(ContextConfigTable.CRYPT_LOCAL, ctx, InterfaceId.BCRYPT_HASH_INTERFACE);
+		var f = BCryptEnumContextFunctions(ContextConfigTable.CRYPT_LOCAL, ctx!, InterfaceId.BCRYPT_HASH_INTERFACE);
 		Assert.That(p.Length, Is.Not.Zero);
 		TestContext.WriteLine("Func: " + string.Join(", ", f));
 		var func = f[0];
 
-		var fp = BCryptEnumContextFunctionProviders(ContextConfigTable.CRYPT_LOCAL, ctx, InterfaceId.BCRYPT_HASH_INTERFACE, func);
+		var fp = BCryptEnumContextFunctionProviders(ContextConfigTable.CRYPT_LOCAL, ctx!, InterfaceId.BCRYPT_HASH_INTERFACE, func!);
 		Assert.That(fp.Length, Is.Not.Zero);
 		TestContext.WriteLine("FuncProv: " + string.Join(", ", fp));
 

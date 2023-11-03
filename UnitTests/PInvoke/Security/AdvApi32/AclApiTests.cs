@@ -75,7 +75,7 @@ public class AclApiTests
 	{
 		Assert.That(GetSecurityDescriptorDacl(pSd, out var ok, out var pDacl, out _), ResultIs.Successful);
 		Assert.That(GetExplicitEntriesFromAcl(pDacl, out var memList), ResultIs.Successful);
-		Assert.That(memList.WriteValues, Throws.Nothing);
+		Assert.That(() => memList?.WriteValues(), Throws.Nothing);
 	}
 
 	[Test]
@@ -90,7 +90,7 @@ public class AclApiTests
 	public void GetSetSecurityInfoTest()
 	{
 		using var tmp = new TempFile(Kernel32.FileAccess.FILE_ALL_ACCESS, System.IO.FileShare.Read);
-		Assert.That(GetSecurityInfo(tmp.hFile.DangerousGetHandle(), SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, out var owner, out _, out _, out _, out var plsd), ResultIs.Successful);
+		Assert.That(GetSecurityInfo(tmp.hFile!.DangerousGetHandle(), SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, out var owner, out _, out _, out _, out var plsd), ResultIs.Successful);
 		Assert.That(SetSecurityInfo(tmp.hFile.DangerousGetHandle(), SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, owner), ResultIs.Successful);
 	}
 

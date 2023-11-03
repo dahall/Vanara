@@ -25,7 +25,7 @@ public class AuditTests
 				return pCurSid;
 
 			using var identity = WindowsIdentity.GetCurrent();
-			return pCurSid = new SafePSID(identity.User.GetBytes());
+			return pCurSid = new SafePSID(identity.User!.GetBytes());
 		}
 	}
 

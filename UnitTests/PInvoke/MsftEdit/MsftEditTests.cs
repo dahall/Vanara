@@ -1,17 +1,11 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.MsftEdit;
-using System.Threading;
-using System.Collections.Generic;
 using static Vanara.PInvoke.Macros;
-using System.Text;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke.Tests;
+
 [TestFixture]
 public class MsftEditTests
 {
@@ -29,8 +23,8 @@ public class MsftEditTests
 	[Test]
 	public void IRichEditOleTest()
 	{
-		SafeHWND hEdit = null;
-		VisibleWindow.Run(WndProc, System.Reflection.MethodBase.GetCurrentMethod().Name);
+		SafeHWND? hEdit = null;
+		VisibleWindow.Run(WndProc, System.Reflection.MethodBase.GetCurrentMethod()!.Name);
 
 		IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
@@ -45,7 +39,7 @@ public class MsftEditTests
 						IRichEditOle iEdit = RichEdit_GetOleInterface(hEdit);
 						Assert.That(iEdit, Is.Not.Null);
 						Assert.That(iEdit.GetLinkCount(), Is.Zero);
-						ITextDocument2 iDoc = iEdit as ITextDocument2;
+						ITextDocument2 iDoc = (ITextDocument2)iEdit;
 						Assert.That(iDoc, Is.Not.Null);
 						Assert.That(iDoc.GetDefaultTabStop(), Is.Not.Zero);
 						iDoc.Open(TestCaseSources.TempDirWhack + "Test.rtf");

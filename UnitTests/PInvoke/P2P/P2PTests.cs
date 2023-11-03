@@ -27,7 +27,7 @@ public class P2PTests
 		SafePeerList<PEER_APPLICATION>? e = null;
 		Assert.DoesNotThrow(() => e = PeerCollabEnumApplications());
 		Assert.That(e, Is.Not.Null.And.Not.Empty);
-		e.WriteValues();
+		e?.WriteValues();
 	}
 
 	[Test]

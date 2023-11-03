@@ -12,7 +12,7 @@ namespace Vanara.PInvoke.Tests;
 public class PrintingTests
 {
 	private string connPtrName = "";
-	private (string un, string pw, string sv) creds = ("", "", "");
+	//private (string un, string pw, string sv) creds = ("", "", "");
 	private const string defKey = "PrinterDriverData";
 	private static readonly string defaultPrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -27,7 +27,7 @@ public class PrintingTests
 		connPtrName = string.Concat(auth[5], '\\', auth[9]);
 		if (!connPtrName.StartsWith('\\'))
 			connPtrName = @"\\" + connPtrName;
-		creds = ((string)auth[6], (string)auth[7], (string)auth[5]);
+		//creds = ((string)auth[6], (string)auth[7], (string)auth[5]);
 	}
 
 	[OneTimeTearDown]

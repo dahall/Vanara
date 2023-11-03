@@ -229,12 +229,12 @@ public class SystemSecurity : IDisposable
 	/// <summary>Gets the system access for the specified user.</summary>
 	/// <param name="user">The user name of the account for which to manage privileges.</param>
 	/// <returns>A <see cref="LogonRights"/> instance for the specified user.</returns>
-	public LogonRights UserLogonRights(string user) => new(this, user);
+	public LogonRights UserLogonRights(string? user) => new(this, user);
 
 	/// <summary>Gets the account rights for the specified user.</summary>
 	/// <param name="user">The user name of the account for which to manage privileges.</param>
 	/// <returns>A <see cref="AccountPrivileges"/> instance for the specified user.</returns>
-	public AccountPrivileges UserPrivileges(string user) => new(this, user);
+	public AccountPrivileges UserPrivileges(string? user) => new(this, user);
 
 	private static string FromPriv(SystemPrivilege priv) => SystemPrivilegeTypeConverter.PrivLookup[priv];
 

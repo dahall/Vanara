@@ -1,3 +1,4 @@
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Vanara.PInvoke;
 
 /// <summary>Items from Dhcpcsvc6.dll and Dhcpcsvc.dll.</summary>

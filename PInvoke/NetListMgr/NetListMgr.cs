@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System.Collections;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;

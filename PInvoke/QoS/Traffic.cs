@@ -2128,7 +2128,7 @@ public static partial class Traffic
 			{
 				var e = ptr.Convert<QOS_OBJ_TYPE>(4);
 				var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e).First();
-				ret.TcObjects[i] = (IQoSObjectHdr)Marshal.PtrToStructure(ptr, t);
+				ret.TcObjects[i] = (IQoSObjectHdr)Marshal.PtrToStructure(ptr, t)!;
 			}
 			return ret;
 		}

@@ -5,9 +5,6 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
   </ItemGroup>

@@ -893,7 +893,7 @@ public static class MSTask
 		for (var i = 0; i < pceltFetched; i++)
 		{
 			var sptr = Marshal.ReadIntPtr(rgpwszNames, IntPtr.Size * i);
-			names[i] = Marshal.PtrToStringUni(sptr);
+			names[i] = Marshal.PtrToStringUni(sptr)!;
 			Marshal.FreeCoTaskMem(sptr);
 		}
 		Marshal.FreeCoTaskMem(rgpwszNames);

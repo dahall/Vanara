@@ -12,7 +12,7 @@ public class WSATests
 	const string saddr4 = "192.168.0.1";
 	const string saddr6 = "2001:db8:aaaa:1::100";
 
-	public static readonly IPAddress localIP4 = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+	public static readonly IPAddress? localIP4 = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
 	public static readonly SOCKET tcpSocket = socket(ADDRESS_FAMILY.AF_INET, SOCK.SOCK_STREAM, IPPROTO.IPPROTO_TCP);
 
 	//[OneTimeTearDown]
@@ -24,12 +24,12 @@ public class WSATests
 	[Test]
 	public void WSAAddressToStringTest()
 	{
-		var addr = new SOCKADDR(localIP4);
+		var addr = new SOCKADDR(localIP4!);
 		var len = 256U;
 		var sb = new StringBuilder((int)len);
 		Assert.That(WSAAddressToString(addr, addr.Size, default, sb, ref len), ResultIs.Successful);
 		TestContext.Write(sb);
-		Assert.That(sb.ToString(), Is.EqualTo(localIP4.ToString()));
+		Assert.That(sb.ToString(), Is.EqualTo(localIP4?.ToString()));
 	}
 
 	[Test]

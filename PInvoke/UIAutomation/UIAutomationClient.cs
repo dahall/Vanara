@@ -1,5 +1,8 @@
 ﻿namespace Vanara.PInvoke;
 
+/// <summary>
+/// Constants and functions from the UIAutomationClient.h header file in Windows 8.1. Functions and constants that are new for Windows 8.
+/// </summary>
 public static partial class UIAutomationClient
 {
 	/// <summary>Describes the named constants used to identify Microsoft UI Automation events.</summary>

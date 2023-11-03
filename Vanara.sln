@@ -421,7 +421,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lz32", "UnitTests\PInvoke\L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.MsftEdit", "PInvoke\MsftEdit\Vanara.PInvoke.MsftEdit.csproj", "{C62629F4-BA1F-4E21-B253-55864BDA0200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsftEdit", "UnitTests\PInovke\MsftEdit\MsftEdit.csproj", "{BD978D87-063B-461F-9ECB-B67F962F54D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsftEdit", "UnitTests\PInvoke\MsftEdit\MsftEdit.csproj", "{BD978D87-063B-461F-9ECB-B67F962F54D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.UIAutomation", "PInvoke\UIAutomation\Vanara.PInvoke.UIAutomation.csproj", "{7729B4B9-4837-49D5-91CC-5BB66E23A376}"
 EndProject

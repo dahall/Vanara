@@ -15,7 +15,7 @@ public class CryptTests
 		{
 			TestContext.WriteLine($"{oid.encType} {oid.funcName} {oid.oid}");
 			foreach (var (valueName, value) in oid.values)
-				TestContext.WriteLine($"  {valueName} = {(value is string[] a ? string.Join(",", a) : value.ToString())}");
+				TestContext.WriteLine($"  {valueName} = {(value is string[] a ? string.Join(",", a) : value?.ToString())}");
 		}
 	}
 

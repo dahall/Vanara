@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using System.Linq;
-using System.Security.Permissions;
 using System.Threading;
 using static Vanara.PInvoke.AdvApi32;
 
@@ -31,7 +30,6 @@ public class WinSvcTests
 	}
 
 	[Test]
-	[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 	public void ChangeAndQueryServiceConfig2Test()
 	{
 		Assert.That(QueryServiceConfig2(hSvc!, ServiceConfigOption.SERVICE_CONFIG_DESCRIPTION, out SERVICE_DESCRIPTION sd), ResultIs.Successful);
@@ -40,7 +38,6 @@ public class WinSvcTests
 	}
 
 	[Test]
-	[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 	public void ChangeAndQueryServiceConfigTest()
 	{
 		var st = GetStartType();
@@ -181,9 +178,9 @@ public class WinSvcTests
 			cnt++;
 		}
 
-		void ThreadExec(object handle)
+		void ThreadExec(object? handle)
 		{
-			var svc = (SC_HANDLE)handle;
+			var svc = (SC_HANDLE)handle!;
 			System.Diagnostics.Debug.WriteLine("Pausing...");
 			if (!ControlService(svc, ServiceControl.SERVICE_CONTROL_PAUSE, out _))
 				System.Diagnostics.Debug.WriteLine($"Pausing failed: {Win32Error.GetLastError()}");
@@ -213,7 +210,6 @@ public class WinSvcTests
 	}
 
 	[Test()]
-	[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 	public void QueryServiceConfig2Test()
 	{
 		Assert.That(QueryServiceConfig2(hSvc!, ServiceConfigOption.SERVICE_CONFIG_DESCRIPTION, out SERVICE_DESCRIPTION sd), ResultIs.Successful);

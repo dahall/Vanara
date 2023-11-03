@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using System.Linq;
-using System.Security.Permissions;
 using System.Security.Principal;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Schannel;
@@ -272,7 +271,6 @@ public class Secur32Tests
 		Assert.That(LsaUnregisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS.PolicyNotifyDomainKerberosTicketInformation, hEvent), Is.EqualTo((NTStatus)0));
 	}
 
-	[PrincipalPermission(SecurityAction.Assert, Role = "Administrators")]
 	// [Test] TODO: Figure out how to test
 	public void MakeVerifySignatureTest()
 	{

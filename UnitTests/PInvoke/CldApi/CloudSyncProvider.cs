@@ -663,6 +663,7 @@ internal class CloudSyncProvider : IDisposable
 
 	private async Task RegisterWithShell()
 	{
+#pragma warning disable CA1416 // Validate platform compatibility
 		var info = new StorageProviderSyncRootInfo
 		{
 			Context = CryptographicBuffer.ConvertStringToBinary(SyncRootId, BinaryStringEncoding.Utf8),
@@ -679,6 +680,7 @@ internal class CloudSyncProvider : IDisposable
 			ShowSiblingsAsGroup = false,
 			Version = Version.ToString(),
 		};
+#pragma warning restore CA1416 // Validate platform compatibility
 
 		if (PropertyDefinitions != null)
 			foreach (var pd in PropertyDefinitions)

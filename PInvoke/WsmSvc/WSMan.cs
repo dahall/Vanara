@@ -2355,7 +2355,7 @@ public static partial class WsmSvc
 		public WSMAN_USERNAME_PASSWORD_CREDS userAccount;
 
 		/// <summary>Defines the certificate thumbprint.</summary>
-		public string certificateThumbprint { get => userAccount.username; set => userAccount.username = value; }
+		public string? certificateThumbprint { get => userAccount.username; set => userAccount.username = value; }
 	}
 
 	/// <summary>Reports quota information on a per-user basis for authorization plug-ins.</summary>

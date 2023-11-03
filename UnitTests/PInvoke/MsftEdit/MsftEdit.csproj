@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.MsftEdit</AssemblyName>
   </PropertyGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <COMReference Include="UIA">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
@@ -12,7 +12,7 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\MsftEdit\Vanara.PInvoke.MsftEdit.csproj" />
   </ItemGroup>

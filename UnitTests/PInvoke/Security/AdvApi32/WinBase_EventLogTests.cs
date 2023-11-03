@@ -87,9 +87,9 @@ public class WinBase_EventLogTests
 			Assert.That(mem.Strings[0], Is.EqualTo("Testing"));
 		}
 
-		void ThreadProc(object obj)
+		void ThreadProc(object? obj)
 		{
-			var (hLog, hEvent) = ((HEVENTLOG hLog, SafeEventHandle hEvent))obj;
+			var (hLog, hEvent) = ((HEVENTLOG hLog, SafeEventHandle hEvent))obj!;
 			Assert.That(NotifyChangeEventLog(hLog, hEvent), ResultIs.Successful);
 			WaitForSingleObject(hEvent, 0);
 		}

@@ -255,7 +255,7 @@ public class SecurityBaseApiTests
 	{
 		const SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
 		using (new ElevPriv("SeSecurityPrivilege"))
-		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn), si))
+		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)!, si))
 		using (var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, si))
 		{
 			TestContext.WriteLine(ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, si));
@@ -268,7 +268,7 @@ public class SecurityBaseApiTests
 	public void CreateGetSetPrivateObjectSecurityExTest()
 	{
 		using (new ElevPriv("SeSecurityPrivilege"))
-		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)))
+		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)!))
 		using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
 		{
 			Assert.That(CreatePrivateObjectSecurityEx(pParentSD, default, out var spod, IntPtr.Zero, false, SEF.SEF_MACL_NO_READ_UP, hTok, GENERIC_MAPPING.GenericFileMapping), ResultIs.Successful);
@@ -289,7 +289,7 @@ public class SecurityBaseApiTests
 	public void CreatePrivateObjectSecurityTest()
 	{
 		using (new ElevPriv("SeSecurityPrivilege"))
-		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)))
+		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)!))
 		using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
 		{
 			Assert.That(CreatePrivateObjectSecurity(pParentSD, default, out var spod, false, hTok, GENERIC_MAPPING.GenericFileMapping), ResultIs.Successful);
@@ -301,7 +301,7 @@ public class SecurityBaseApiTests
 	public void CreatePrivateObjectSecurityWithMultipleInheritanceTest()
 	{
 		using (new ElevPriv("SeSecurityPrivilege"))
-		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)))
+		using (var pParentSD = AdvApi32Tests.GetSD(System.IO.Path.GetDirectoryName(AdvApi32Tests.fn)!))
 		using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
 		{
 			Assert.That(CreatePrivateObjectSecurityWithMultipleInheritance(pParentSD, default, out var spod, null, 0, false, SEF.SEF_MACL_NO_READ_UP, hTok, GENERIC_MAPPING.GenericFileMapping), ResultIs.Successful);
@@ -536,14 +536,14 @@ public class SecurityBaseApiTests
 					if (cls == TOKEN_INFORMATION_CLASS.TokenLinkedToken || cls == TOKEN_INFORMATION_CLASS.TokenElevation)
 						insz = 4;
 					var param = new object?[] { (HTOKEN)t, cls, (IntPtr)mem, insz, null };
-					var res = getmi.Invoke(null, param);
-					if ((bool)res)
+					var res = getmi!.Invoke(null, param);
+					if ((bool)res!)
 					{
 						sz = (uint)(int)(param[4] ?? 0);
 						TestContext.Write($">> Get =");
 						try
 						{
-							((IntPtr)mem).Convert(mem.Size, gettype).WriteValues();
+							((IntPtr)mem).Convert(mem.Size, gettype)!.WriteValues();
 						}
 						catch
 						{
@@ -562,7 +562,7 @@ public class SecurityBaseApiTests
 						try
 						{
 							var inst = Activator.CreateInstance(settype);
-							mem.Write(inst);
+							mem.Write(inst!);
 						}
 						catch
 						{
@@ -573,8 +573,8 @@ public class SecurityBaseApiTests
 					if (sz == 0) continue;
 					var param = new object[] { (HTOKEN)t, cls, (IntPtr)mem, sz };
 
-					var res = setmi.Invoke(null, param);
-					if ((bool)res)
+					var res = setmi!.Invoke(null, param);
+					if ((bool)res!)
 						TestContext.WriteLine($">> Set = OK");
 					else
 						TestContext.WriteLine($">> Set Error = {Win32Error.GetLastError()}");

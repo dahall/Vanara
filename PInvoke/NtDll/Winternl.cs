@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System.Linq;
 
 namespace Vanara.PInvoke;
 

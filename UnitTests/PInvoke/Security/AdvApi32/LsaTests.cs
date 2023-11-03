@@ -69,10 +69,10 @@ public class LsaTests
 		PSID[]? sids = null;
 		Assert.That(() => sids = LsaEnumerateAccountsWithUserRight(hPol).ToArray(), Throws.Nothing);
 		Assert.That(sids, Is.Not.Empty);
-		TestContext.Write(string.Join("\n", sids.Select(ConvertSidToStringSid)));
+		TestContext.Write(string.Join("\n", sids!.Select(ConvertSidToStringSid)));
 		Assert.That(() => sids = LsaEnumerateAccountsWithUserRight(hPol!, "SeBackupPrivilege").ToArray(), Throws.Nothing);
 		Assert.That(sids, Is.Not.Empty);
-		TestContext.Write(string.Join("\n", sids.Select(ConvertSidToStringSid)));
+		TestContext.Write(string.Join("\n", sids!.Select(ConvertSidToStringSid)));
 	}
 
 	[Test]
@@ -80,7 +80,7 @@ public class LsaTests
 	{
 		LSA_TRUST_INFORMATION[]? tis = null;
 		Assert.That(() => tis = LsaEnumerateTrustedDomains(hPol!).ToArray(), Throws.Nothing);
-		tis.WriteValues();
+		tis!.WriteValues();
 	}
 
 	[Test]
