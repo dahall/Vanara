@@ -475,7 +475,24 @@ public class PrintingTests
 
 		void ChangeThread()
 		{
-			using var hChange = FindFirstPrinterChangeNotification(hprnt, PRINTER_CHANGE.PRINTER_CHANGE_ALL, PRINTER_NOTIFY_CATEGORY.PRINTER_NOTIFY_CATEGORY_2D);
+			using SafeNativeArray<uint> fields = new(Enum.GetValues<JOB_NOTIFY_FIELD>().Select(u => (uint)u).ToArray());
+			using SafeNativeArray<PRINTER_NOTIFY_OPTIONS_TYPE> types = new(
+				[
+					new PRINTER_NOTIFY_OPTIONS_TYPE
+					{
+						Type = NOTIFY_TYPE.JOB_NOTIFY_TYPE,
+						Count = (uint)fields.Count,
+						pFields = fields
+					}
+				]
+			);
+			PRINTER_NOTIFY_OPTIONS nOptions = new()
+			{
+				Version = 2,
+				Count = 1,
+				pTypes = types
+			};
+			using var hChange = FindFirstPrinterChangeNotification(hprnt, PRINTER_CHANGE.PRINTER_CHANGE_ALL, PRINTER_NOTIFY_CATEGORY.PRINTER_NOTIFY_CATEGORY_2D, nOptions);
 			while (!cancel)
 			{
 				if (Kernel32.WaitForSingleObject(hChange, 200) == Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
