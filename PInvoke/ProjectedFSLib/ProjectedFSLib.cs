@@ -972,7 +972,7 @@ public static partial class ProjectedFSLib
 	[DllImport(Lib.ProjectedFSLib, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("projectedfslib.h", MSDNShortId = "2BE57189-0F68-4CCD-8796-964EFDE0A02E")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool PrjFileNameMatch([MarshalAs(UnmanagedType.LPWStr)] string fileNameToCheck, [MarshalAs(UnmanagedType.LPWStr)] string pattern);
+	public static extern bool PrjFileNameMatch([MarshalAs(UnmanagedType.LPWStr)] string fileNameToCheck, [MarshalAs(UnmanagedType.LPWStr)] string? pattern);
 
 	/// <summary>Provides information for one file or directory to an enumeration.</summary>
 	/// <param name="fileName">A pointer to a null-terminated string that contains the name of the entry</param>

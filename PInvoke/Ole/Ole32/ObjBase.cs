@@ -1415,7 +1415,7 @@ public static partial class Ole32
 	// dwCapabilities, _In_opt_ void *pReserved3); https://msdn.microsoft.com/en-us/library/windows/desktop/ms693736(v=vs.85).aspx
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
-	public static extern HRESULT CoInitializeSecurity([Optional] PSECURITY_DESCRIPTOR pSecDesc, int cAuthSvc,
+	public static extern HRESULT CoInitializeSecurity(PSECURITY_DESCRIPTOR pSecDesc, int cAuthSvc,
 		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
 		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities, IntPtr pReserved3 = default);

@@ -3057,7 +3057,7 @@ public static partial class Crypt32
 	// lpszStoreProvider, DWORD dwEncodingType, HCRYPTPROV_LEGACY hCryptProv, DWORD dwFlags, const void *pvPara );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "4edccbfe-c0a8-442b-b6b7-51ef598e7c90")]
-	public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pvPara);
+	public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string? pvPara);
 
 	/// <summary>
 	/// The <c>CertOpenSystemStore</c> function is a simplified function that opens the most common system certificate store. To open

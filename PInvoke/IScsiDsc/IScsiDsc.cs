@@ -1724,7 +1724,7 @@ public static partial class IScsiDsc
 	// RefreshISNSServerA( PSTR Address );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RefreshISNSServerA")]
-	public static extern Win32Error RefreshISNSServer([MarshalAs(UnmanagedType.LPTStr)] string Address);
+	public static extern Win32Error RefreshISNSServer([MarshalAs(UnmanagedType.LPTStr)] string? Address);
 
 	/// <summary>The <c>RemoveIscsiConnection</c> function removes a connection from an active session.</summary>
 	/// <param name="UniqueSessionId">
@@ -1771,7 +1771,7 @@ public static partial class IScsiDsc
 	// RemoveIScsiPersistentTargetA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PSTR TargetName, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiPersistentTargetA")]
-	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string InitiatorInstance, [Optional] uint InitiatorPortNumber,
+	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string? InitiatorInstance, [Optional] uint InitiatorPortNumber,
 		[MarshalAs(UnmanagedType.LPTStr)] string TargetName, in ISCSI_TARGET_PORTAL Portal);
 
 	/// <summary>
@@ -1802,7 +1802,7 @@ public static partial class IScsiDsc
 	// RemoveIScsiPersistentTargetA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PSTR TargetName, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiPersistentTargetA")]
-	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string InitiatorInstance, [Optional] uint InitiatorPortNumber,
+	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string? InitiatorInstance, [Optional] uint InitiatorPortNumber,
 		[MarshalAs(UnmanagedType.LPTStr)] string TargetName, [In, Optional] IntPtr Portal);
 
 	/// <summary>
@@ -2419,7 +2419,7 @@ public static partial class IScsiDsc
 	// SetIScsiGroupPresharedKey( ULONG KeyLength, PUCHAR Key, BOOLEAN Persist );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.SetIScsiGroupPresharedKey")]
-	public static extern Win32Error SetIScsiGroupPresharedKey(uint KeyLength, [In, MarshalAs(UnmanagedType.LPStr)] string Key,
+	public static extern Win32Error SetIScsiGroupPresharedKey(uint KeyLength, [In, MarshalAs(UnmanagedType.LPStr)] string? Key,
 		[MarshalAs(UnmanagedType.U1)] bool Persist);
 
 	/// <summary>

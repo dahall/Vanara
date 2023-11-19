@@ -231,7 +231,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>SOCKET</c></para>
 		/// <para>The identifier of the socket for which to find status. This parameter is ignored if set to a negative value. See Remarks.</para>
 		/// </summary>
-		public SOCKET fd;
+		public SOCKET? fd;
 
 		/// <summary>
 		/// <para>Type: <c>short</c></para>

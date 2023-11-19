@@ -1749,7 +1749,7 @@ public static partial class WinHTTP
 	public static extern SafeHINTERNET WinHttpOpenRequest(HINTERNET hConnect, [MarshalAs(UnmanagedType.LPWStr)] string pwszVerb,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszObjectName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszVersion,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszReferrer,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? ppwszAcceptTypes, [Optional] WINHTTP_OPENREQ_FLAG dwFlags);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string?[]? ppwszAcceptTypes, [Optional] WINHTTP_OPENREQ_FLAG dwFlags);
 
 	/// <summary>The <c>WinHttpQueryAuthSchemes</c> function returns the authorization schemes that are supported by the server.</summary>
 	/// <param name="hRequest">Valid HINTERNET handle returned by WinHttpOpenRequest</param>

@@ -2066,7 +2066,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "20b3fcfb-55df-46ff-80a5-70f31a3d03b2")]
 	public static extern SafePCCERT_CONTEXT CertFindCertificateInStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, CertFindUsageFlags dwFindFlags,
-		CertFindType dwFindType, [In, MarshalAs(UnmanagedType.LPWStr)] string pvFindPara, PCCERT_CONTEXT pPrevCertContext);
+		CertFindType dwFindType, [In, MarshalAs(UnmanagedType.LPWStr)] string? pvFindPara, PCCERT_CONTEXT pPrevCertContext);
 
 	/// <summary>
 	/// The <c>CertFreeServerOcspResponseContext</c> function decrements the reference count for a CERT_SERVER_OCSP_RESPONSE_CONTEXT

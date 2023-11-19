@@ -900,7 +900,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itffunctionprovider-getdescription HRESULT GetDescription(
 		// BSTR *pbstrDesc );
 		[PreserveSig]
-		HRESULT GetDescription([Out, MarshalAs(UnmanagedType.BStr)] out string pbstrDesc);
+		HRESULT GetDescription([Out, MarshalAs(UnmanagedType.BStr)] out string? pbstrDesc);
 
 		/// <summary>Obtains the specified function object.</summary>
 		/// <param name="rguid">
@@ -939,7 +939,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itffunctionprovider-getfunction HRESULT GetFunction(
 		// REFGUID rguid, REFIID riid, IUnknown **ppunk );
 		[PreserveSig]
-		HRESULT GetFunction(in Guid rguid, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppunk);
+		HRESULT GetFunction(in Guid rguid, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppunk);
 	}
 
 	/// <summary>
@@ -2739,7 +2739,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfpersistentpropertyloaderacp-loadproperty HRESULT
 		// LoadProperty( const TF_PERSISTENT_PROPERTY_HEADER_ACP *pHdr, IStream **ppStream );
 		[PreserveSig]
-		HRESULT LoadProperty(in TF_PERSISTENT_PROPERTY_HEADER_ACP pHdr, out IStream ppStream);
+		HRESULT LoadProperty(in TF_PERSISTENT_PROPERTY_HEADER_ACP pHdr, out IStream? ppStream);
 	}
 
 	/// <summary>

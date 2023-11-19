@@ -2694,7 +2694,8 @@ public static partial class Crypt32
 		/// string is passed as the pwszKeyName parameter to the NCryptOpenKey function.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string pwszContainerName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pwszContainerName;
 
 		/// <summary>
 		/// <para>A pointer to a null-terminated Unicode string that contains the name of the CSP.</para>
@@ -2703,7 +2704,8 @@ public static partial class Crypt32
 		/// passed as the pwszProviderName parameter to the NCryptOpenStorageProvider function.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string pwszProvName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pwszProvName;
 
 		/// <summary>
 		/// <para>Specifies the CSP type. This can be zero or one of the Cryptographic Provider Types.</para>

@@ -1040,7 +1040,7 @@ public static partial class AdvApi32
 	// LPCSTR lpSubKey, LPCSTR lpValueName );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "a4a082c2-8cf3-41eb-87c0-a6c453821f8b")]
-	public static extern Win32Error RegDeleteKeyValue(HKEY hKey, string lpSubKey, string lpValueName);
+	public static extern Win32Error RegDeleteKeyValue(HKEY hKey, string? lpSubKey, string? lpValueName);
 
 	/// <summary>
 	/// <para>Deletes the subkeys and values of the specified key recursively.</para>

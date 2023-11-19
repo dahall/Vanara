@@ -318,6 +318,11 @@ public class PRECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator PRECT?(Rectangle? r) => r.HasValue ? new PRECT(r.Value) : null;
 
+	/// <summary>Performs an implicit conversion from <see cref="RECT"/> to <see cref="PRECT"/>.</summary>
+	/// <param name="r">The <see cref="RECT"/> to convert.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator PRECT(RECT r) => new(r);
+
 	/// <summary>Performs an implicit conversion from <see cref="Nullable{RECT}"/> to <see cref="PRECT"/>.</summary>
 	/// <param name="r">The <see cref="RECT"/> to convert.</param>
 	/// <returns>The result of the conversion.</returns>

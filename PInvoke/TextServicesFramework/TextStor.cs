@@ -1283,7 +1283,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/textstor/nf-textstor-itextstoreacp-getformattedtext HRESULT
 		// GetFormattedText( LONG acpStart, LONG acpEnd, IDataObject **ppDataObject );
 		[PreserveSig]
-		HRESULT GetFormattedText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.Interface)] out IDataObject ppDataObject);
+		HRESULT GetFormattedText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.Interface)] out IDataObject? ppDataObject);
 
 		/// <summary>Gets an embedded document.</summary>
 		/// <param name="acpPos">Contains the character position, within the document, from where the object is obtained.</param>
@@ -2632,7 +2632,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/textstor/nf-textstor-itextstoreacp2-getformattedtext HRESULT
 		// GetFormattedText( LONG acpStart, LONG acpEnd, IDataObject **ppDataObject );
 		[PreserveSig]
-		HRESULT GetFormattedText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.Interface)] out IDataObject ppDataObject);
+		HRESULT GetFormattedText([In] int acpStart, [In] int acpEnd, [Out, MarshalAs(UnmanagedType.Interface)] out IDataObject? ppDataObject);
 
 		/// <summary>Gets an embedded document.</summary>
 		/// <param name="acpPos">Contains the character position, within the document, from where the object is obtained.</param>
@@ -6046,7 +6046,7 @@ public static partial class MSCTF
 
 		/// <summary>Value of the attribute.</summary>
 		[MarshalAs(UnmanagedType.Struct)]
-		public object varValue;
+		public object? varValue;
 	}
 
 	/// <summary>The <c>TS_RUNINFO</c> structure specifies the properties of text run data.</summary>
