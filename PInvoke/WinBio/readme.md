@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows WinBio.dll
 
 - Includes methods from winbio.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinBio?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinBio?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinBio)  
-### Methods - 94% API coverage (52 of 55 functions)  
+### Methods - 100% API coverage (52 of 52 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [WinBioAcquireFocus](https://www.google.com/search?num=5&q=WinBioAcquireFocus+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioAcquireFocus](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioAcquireFocus)  
@@ -18,7 +18,6 @@ Native Method | Header | Managed Method
 [WinBioCaptureSampleWithCallback](https://www.google.com/search?num=5&q=WinBioCaptureSampleWithCallback+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioCaptureSampleWithCallback](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioCaptureSampleWithCallback)  
 [WinBioCloseFramework](https://www.google.com/search?num=5&q=WinBioCloseFramework+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioCloseFramework](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioCloseFramework)  
 [WinBioCloseSession](https://www.google.com/search?num=5&q=WinBioCloseSession+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioCloseSession](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioCloseSession)  
-[WinBioConsumeFactorDeletedByService](https://www.google.com/search?num=5&q=WinBioConsumeFactorDeletedByService+site%3Alearn.microsoft.com) |  |   
 [WinBioControlUnit](https://www.google.com/search?num=5&q=WinBioControlUnit+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioControlUnit](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioControlUnit)  
 [WinBioControlUnitPrivileged](https://www.google.com/search?num=5&q=WinBioControlUnitPrivileged+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioControlUnitPrivileged](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioControlUnitPrivileged)  
 [WinBioDeleteTemplate](https://www.google.com/search?num=5&q=WinBioDeleteTemplate+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioDeleteTemplate](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioDeleteTemplate)  
@@ -37,7 +36,6 @@ Native Method | Header | Managed Method
 [WinBioGetDomainLogonSetting](https://www.google.com/search?num=5&q=WinBioGetDomainLogonSetting+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetDomainLogonSetting](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetDomainLogonSetting)  
 [WinBioGetEnabledSetting](https://www.google.com/search?num=5&q=WinBioGetEnabledSetting+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetEnabledSetting](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetEnabledSetting)  
 [WinBioGetEnrolledFactors](https://www.google.com/search?num=5&q=WinBioGetEnrolledFactors+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetEnrolledFactors](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetEnrolledFactors)  
-[WinBioGetFactorsDeletedByService](https://www.google.com/search?num=5&q=WinBioGetFactorsDeletedByService+site%3Alearn.microsoft.com) |  |   
 [WinBioGetLogonSetting](https://www.google.com/search?num=5&q=WinBioGetLogonSetting+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetLogonSetting](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetLogonSetting)  
 [WinBioGetProperty](https://www.google.com/search?num=5&q=WinBioGetProperty+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetProperty)  
 [WinBioIdentify](https://www.google.com/search?num=5&q=WinBioIdentify+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioIdentify](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioIdentify)  
@@ -53,7 +51,6 @@ Native Method | Header | Managed Method
 [WinBioRemoveAllCredentials](https://www.google.com/search?num=5&q=WinBioRemoveAllCredentials+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioRemoveAllCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioRemoveAllCredentials)  
 [WinBioRemoveAllDomainCredentials](https://www.google.com/search?num=5&q=WinBioRemoveAllDomainCredentials+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioRemoveAllDomainCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioRemoveAllDomainCredentials)  
 [WinBioRemoveCredential](https://www.google.com/search?num=5&q=WinBioRemoveCredential+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioRemoveCredential](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioRemoveCredential)  
-[WinBioSendTelemetry](https://www.google.com/search?num=5&q=WinBioSendTelemetry+site%3Alearn.microsoft.com) |  |   
 [WinBioSetCredential](https://www.google.com/search?num=5&q=WinBioSetCredential+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioSetCredential](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioSetCredential)  
 [WinBioSetProperty](https://www.google.com/search?num=5&q=WinBioSetProperty+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioSetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioSetProperty)  
 [WinBioUnlockUnit](https://www.google.com/search?num=5&q=WinBioUnlockUnit+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioUnlockUnit](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioUnlockUnit)  

@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Kernel32.d
 
 - Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Kernel32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)  
-### Methods - 99% API coverage (1151 of 1152 functions)  
+### Methods - 100% API coverage (1152 of 1152 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -369,7 +369,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetDateFormat](https://www.google.com/search?num=5&q=GetDateFormatA+site%3Alearn.microsoft.com) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetDateFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetDateFormat)  
 [GetDateFormatEx](https://www.google.com/search?num=5&q=GetDateFormatEx+site%3Alearn.microsoft.com) | kernel32.dll | datetimeapi.h | [Vanara.PInvoke.Kernel32.GetDateFormatEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetDateFormatEx)  
 [GetDefaultCommConfig](https://www.google.com/search?num=5&q=GetDefaultCommConfigA+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDefaultCommConfig](https://github.com/dahall/Vanara/search?l=C%23&q=GetDefaultCommConfig)  
-[GetDeveloperDriveEnablementState](https://www.google.com/search?num=5&q=GetDeveloperDriveEnablementState+site%3Alearn.microsoft.com) | kernelbase.dll |  |   
+[GetDeveloperDriveEnablementState](https://www.google.com/search?num=5&q=GetDeveloperDriveEnablementState+site%3Alearn.microsoft.com) | kernelbase.dll | sysinfoapi.h | [Vanara.PInvoke.Kernel32.GetDeveloperDriveEnablementState](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeveloperDriveEnablementState)  
 [GetDeviceDriverBaseName](https://www.google.com/search?num=5&q=GetDeviceDriverBaseNameA+site%3Alearn.microsoft.com) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetDeviceDriverBaseName](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceDriverBaseName)  
 [GetDeviceDriverFileName](https://www.google.com/search?num=5&q=GetDeviceDriverFileNameA+site%3Alearn.microsoft.com) | kernelbase.dll | psapi.h | [Vanara.PInvoke.Kernel32.GetDeviceDriverFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceDriverFileName)  
 [GetDevicePowerState](https://www.google.com/search?num=5&q=GetDevicePowerState+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.GetDevicePowerState](https://github.com/dahall/Vanara/search?l=C%23&q=GetDevicePowerState)  
@@ -1236,6 +1236,7 @@ Native Enum | Header | Managed Enum
 [DEBUG_EVENT_CODE](https://www.google.com/search?num=5&q=DEBUG_EVENT_CODE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.DEBUG_EVENT_CODE](https://github.com/dahall/Vanara/search?l=C%23&q=DEBUG_EVENT_CODE)  
 [DEP_SYSTEM_POLICY_TYPE](https://www.google.com/search?num=5&q=DEP_SYSTEM_POLICY_TYPE+site%3Alearn.microsoft.com) | winbase.h | [Vanara.PInvoke.Kernel32.DEP_SYSTEM_POLICY_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DEP_SYSTEM_POLICY_TYPE)  
 [DETECTION_TYPE](https://www.google.com/search?num=5&q=DETECTION_TYPE+site%3Alearn.microsoft.com) | winioctl.h | [Vanara.PInvoke.Kernel32.DETECTION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DETECTION_TYPE)  
+[DEVELOPER_DRIVE_ENABLEMENT_STATE](https://www.google.com/search?num=5&q=DEVELOPER_DRIVE_ENABLEMENT_STATE+site%3Alearn.microsoft.com) | sysinfoapi.h | [Vanara.PInvoke.Kernel32.DEVELOPER_DRIVE_ENABLEMENT_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=DEVELOPER_DRIVE_ENABLEMENT_STATE)  
 [DEVICE_DSM_ACTION](https://www.google.com/search?num=5&q=DEVICE_DSM_ACTION+site%3Alearn.microsoft.com) | winioctl.h | [Vanara.PInvoke.Kernel32.DEVICE_DSM_ACTION](https://github.com/dahall/Vanara/search?l=C%23&q=DEVICE_DSM_ACTION)  
 [DEVICE_DSM_FLAG](https://www.google.com/search?num=5&q=DEVICE_DSM_FLAG+site%3Alearn.microsoft.com) | winioctl.h | [Vanara.PInvoke.Kernel32.DEVICE_DSM_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DEVICE_DSM_FLAG)  
 [DEVICE_DSM_NOTIFY_FLAG](https://www.google.com/search?num=5&q=DEVICE_DSM_NOTIFY_FLAG+site%3Alearn.microsoft.com) | winioctl.h | [Vanara.PInvoke.Kernel32.DEVICE_DSM_NOTIFY_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DEVICE_DSM_NOTIFY_FLAG)  

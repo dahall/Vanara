@@ -20,6 +20,39 @@ public static partial class DnsApi
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	public delegate void DNS_QUERY_COMPLETION_ROUTINE([In] IntPtr pQueryContext, ref DNS_QUERY_RESULT pQueryResults);
 
+	/// <summary>
+	/// <note type="important">Some information relates to a prerelease product which may be substantially modified before it's commercially
+	/// released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// <para>
+	/// DNS_QUERY_RAW_COMPLETION_ROUTINE is the function signature of an asynchronous callback function that you implement. The system calls
+	/// your implementation with the results of a query that you initiated by calling DnsQueryRaw. The results contain both the parsed
+	/// records and the raw result packet, to be passed on to later systems as desired. The result provides information about the server that
+	/// provided the results.
+	/// </para>
+	/// <para>
+	/// The system calls this callback on query completion if DnsQueryRaw returns DNS_REQUEST_PENDING; and it will indicate the results of
+	/// the query if successful, or any failures or cancellations.
+	/// </para>
+	/// </summary>
+	/// <param name="queryContext">
+	/// <para>Type: _In_ <c>VOID*</c></para>
+	/// <para>A pointer to the query context that was passed into DnsQueryRaw through the queryContext field of DNS_QUERY_RAW_REQUEST.</para>
+	/// </param>
+	/// <param name="queryResults">
+	/// <para>Type: _Inout_ <c>DNS_QUERY_RAW_RESULT*</c></para>
+	/// <para>
+	/// A pointer to the results of the query. If this callback is made because of a query cancellation through DnsCancelQueryRaw, then the
+	/// queryStatus field in queryResults will be set to <c>ERROR_CANCELLED</c>.
+	/// </para>
+	/// <para>If it's not NULL, then you must free the queryResults pointer by using DnsQueryRawResultFree.</para>
+	/// </param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/windns/nc-windns-dns_query_raw_completion_routine
+	// DNS_QUERY_RAW_COMPLETION_ROUTINE DnsQueryRawCompletionRoutine; void DnsQueryRawCompletionRoutine( VOID *queryContext, DNS_QUERY_RAW_RESULT *queryResults ) {...}
+	[PInvokeData("windns.h", MSDNShortId = "NC:windns.DNS_QUERY_RAW_COMPLETION_ROUTINE")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	public delegate void DNS_QUERY_RAW_COMPLETION_ROUTINE([In] IntPtr queryContext, [In, Out] IntPtr /*DNS_QUERY_RAW_RESULT*/ queryResults);
+
 	/// <summary>Used to asynchronously return the results of a DNS-SD query.</summary>
 	/// <param name="Status">A value that contains the status associated with this particular set of results.</param>
 	/// <param name="pQueryContext">A pointer to the user context that was passed to DnsServiceBrowse.</param>
@@ -147,6 +180,26 @@ public static partial class DnsApi
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "E5F422AA-D4E6-4F9F-A57C-608CE9317658")]
 	public static extern DNS_STATUS DnsCancelQuery(ref DNS_QUERY_CANCEL pCancelHandle);
+
+	/// <summary>
+	/// <note type="important"> Some information relates to a prerelease product which may be substantially modified before it's commercially
+	/// released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// <para>Cancels a query that was initiated by calling DnsQueryRaw.</para>
+	/// <para>
+	/// If the query completion callback (see DNS_QUERY_RAW_COMPLETION_ROUTINE) hasn't been called by the time DnsCancelQueryRaw returns,
+	/// then the query completion callback will lead to the callback being made with a queryStatus of ERROR_CANCELLED in the queryResults parameter.
+	/// </para>
+	/// </summary>
+	/// <param name="cancelHandle">
+	/// <para>Type: _In_ <c>DNS_QUERY_RAW_CANCEL*</c></para>
+	/// <para>The cancel handle that you obtained by calling DnsQueryRaw.</para>
+	/// </param>
+	/// <returns>A <c>DNS_STATUS</c> value indicating success or failure.</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnscancelqueryraw
+	// DNS_STATUS DnsCancelQueryRaw( DNS_QUERY_RAW_CANCEL *cancelHandle );
+	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsCancelQueryRaw")]
+	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
+	public static extern DNS_STATUS DnsCancelQueryRaw(in DNS_QUERY_RAW_CANCEL cancelHandle);
 
 	/// <summary>
 	/// The <c>DnsExtractRecordsFromMessage</c> function type extracts resource records (RR) from a DNS message, and stores those
@@ -876,6 +929,66 @@ public static partial class DnsApi
 	[PInvokeData("windns.h", MSDNShortId = "22664B9A-5010-42E7-880B-8D5B16A9F2DC")]
 	public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST3 pQueryRequest, ref DNS_QUERY_RESULT pQueryResults,
 		ref DNS_QUERY_CANCEL pCancelHandle);
+
+	/// <summary>
+	/// <note type="important">Some information relates to a prerelease product which may be substantially modified before it's commercially
+	/// released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// <para>
+	/// Enables you to perform a DNS query that accepts either a raw packet containing a DNS query, or a query name and type. You can augment
+	/// the query with settings and configuration from the host system.
+	/// </para>
+	/// <list type="bullet">
+	/// <item>You can apply new query options and custom servers to an already-formatted raw DNS query packet.</item>
+	/// <item>
+	/// Or you can instead provide a query name and type, and receive both the parsed records and raw result packet (allowing clients to
+	/// interact with all information received from the server).
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Queries are performed asynchronously; and results are passed to a DNS_QUERY_RAW_COMPLETION_ROUTINE asynchronous callback function
+	/// that you implement. To cancel a query, call DnsCancelQueryRaw.
+	/// </para>
+	/// </summary>
+	/// <param name="queryRequest">
+	/// <para>Type: _In_ <c>DNS_QUERY_RAW_REQUEST*</c></para>
+	/// <para>The query request.</para>
+	/// </param>
+	/// <param name="cancelHandle">
+	/// <para>Type: _Inout_ <c>DNS_QUERY_RAW_CANCEL*</c></para>
+	/// <para>Used to obtain a cancel handle, which you can pass to DnsCancelQueryRaw should you need to cancel the query.</para>
+	/// </param>
+	/// <returns>
+	/// A <c>DNS_STATUS</c> value indicating success or failure. If <c>DNS_REQUEST_PENDING</c> is returned, then when the query completes,
+	/// the system calls the DNS_QUERY_RAW_COMPLETION_ROUTINE implementation that you passed in the queryCompletionCallback member of
+	/// queryRequest. That callback will received the results of the query if successful, or any failures or cancellations.
+	/// </returns>
+	/// <remarks>
+	/// The structure of a raw packet is the wire representation of the DNS query and response as documented by RFC 1035. A 12-byte DNS
+	/// header is followed by either a question section for the query, or by a variable number (can be 0) of records for the response. If TCP
+	/// is used, then the raw packet must be prefixed with a 2-byte length field. You can use this API to apply host NRPT rules, or to
+	/// perform encrypted DNS queries, among other things.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsqueryraw DNS_STATUS DnsQueryRaw( DNS_QUERY_RAW_REQUEST
+	// *queryRequest, DNS_QUERY_RAW_CANCEL *cancelHandle );
+	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsQueryRaw")]
+	[DllImport(Lib.Dnsapi, SetLastError = true, ExactSpelling = true)]
+	public static extern DNS_STATUS DnsQueryRaw(in DNS_QUERY_RAW_REQUEST queryRequest, ref DNS_QUERY_RAW_CANCEL cancelHandle);
+
+	/// <summary>
+	/// <note type="important">Some information relates to a prerelease product which may be substantially modified before it's commercially
+	/// released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// <para>Frees the memory allocated to a DNS_QUERY_RAW_RESULT structure object. Also see DNS_QUERY_RAW_COMPLETION_ROUTINE.</para>
+	/// </summary>
+	/// <param name="queryResults">
+	/// <para>Type: _In_ <c>DNS_QUERY_RAW_RESULT*</c></para>
+	/// <para>The object whose memory should be freed.</para>
+	/// </param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsqueryrawresultfree
+	// void DnsQueryRawResultFree( _Frees_ptr_opt_ DNS_QUERY_RAW_RESULT *queryResults );
+	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsQueryRawResultFree")]
+	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
+	public static extern void DnsQueryRawResultFree([In, Out] IntPtr queryResults);
 
 	/// <summary>The <c>DnsRecordCompare</c> function compares two DNS resource records (RR).</summary>
 	/// <param name="pRecord1">A pointer to a DNS_RECORD structure that contains the first DNS RR of the comparison pair.</param>

@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Ole32.dll,
 
 - Includes methods from ole32.dll, oleaut32.dll, propsys.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ole?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ole?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ole)  
-### Methods - 99% API coverage (834 of 836 functions)  
+### Methods - 100% API coverage (836 of 836 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Alearn.microsoft.com) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.BindMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=BindMoniker)  
@@ -213,9 +213,9 @@ Native Method | Native DLL | Header | Managed Method
 [OleConvertIStorageToOLESTREAM](https://www.google.com/search?num=5&q=OleConvertIStorageToOLESTREAM+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertIStorageToOLESTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertIStorageToOLESTREAM)  
 [OleConvertIStorageToOLESTREAMEx](https://www.google.com/search?num=5&q=OleConvertIStorageToOLESTREAMEx+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertIStorageToOLESTREAMEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertIStorageToOLESTREAMEx)  
 [OleConvertOLESTREAMToIStorage](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorage+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertOLESTREAMToIStorage](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertOLESTREAMToIStorage)  
-[OleConvertOLESTREAMToIStorage2](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorage2+site%3Alearn.microsoft.com) | ole32.dll |  |   
+[OleConvertOLESTREAMToIStorage2](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorage2+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertOLESTREAMToIStorage2](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertOLESTREAMToIStorage2)  
 [OleConvertOLESTREAMToIStorageEx](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorageEx+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertOLESTREAMToIStorageEx](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertOLESTREAMToIStorageEx)  
-[OleConvertOLESTREAMToIStorageEx2](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorageEx2+site%3Alearn.microsoft.com) | ole32.dll |  |   
+[OleConvertOLESTREAMToIStorageEx2](https://www.google.com/search?num=5&q=OleConvertOLESTREAMToIStorageEx2+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleConvertOLESTREAMToIStorageEx2](https://github.com/dahall/Vanara/search?l=C%23&q=OleConvertOLESTREAMToIStorageEx2)  
 [OleCreate](https://www.google.com/search?num=5&q=OleCreate+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreate](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreate)  
 [OleCreateDefaultHandler](https://www.google.com/search?num=5&q=OleCreateDefaultHandler+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateDefaultHandler](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateDefaultHandler)  
 [OleCreateEmbeddingHelper](https://www.google.com/search?num=5&q=OleCreateEmbeddingHelper+site%3Alearn.microsoft.com) | ole32.dll | ole2.h | [Vanara.PInvoke.Ole32.OleCreateEmbeddingHelper](https://github.com/dahall/Vanara/search?l=C%23&q=OleCreateEmbeddingHelper)  

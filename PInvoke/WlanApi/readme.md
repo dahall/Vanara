@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants imported from Windows WlanApi.dll
 
 - Includes methods from wlanapi.dll, wlanui.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WlanApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WlanApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WlanApi)  
-### Methods - 98% API coverage (58 of 59 functions)  
+### Methods - 100% API coverage (58 of 58 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [WFDCancelOpenSession](https://www.google.com/search?num=5&q=WFDCancelOpenSession+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WFDCancelOpenSession](https://github.com/dahall/Vanara/search?l=C%23&q=WFDCancelOpenSession)  
@@ -43,7 +43,6 @@ Native Method | Native DLL | Header | Managed Method
 [WlanHostedNetworkStopUsing](https://www.google.com/search?num=5&q=WlanHostedNetworkStopUsing+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WlanHostedNetworkStopUsing](https://github.com/dahall/Vanara/search?l=C%23&q=WlanHostedNetworkStopUsing)  
 [WlanIhvControl](https://www.google.com/search?num=5&q=WlanIhvControl+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WlanIhvControl](https://github.com/dahall/Vanara/search?l=C%23&q=WlanIhvControl)  
 [WlanOpenHandle](https://www.google.com/search?num=5&q=WlanOpenHandle+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WlanOpenHandle](https://github.com/dahall/Vanara/search?l=C%23&q=WlanOpenHandle)  
-[WlanPrivateGetAnqpVenueUrl](https://www.google.com/search?num=5&q=WlanPrivateGetAnqpVenueUrl+site%3Alearn.microsoft.com) | wlanapi.dll |  |   
 [WlanQueryAutoConfigParameter](https://www.google.com/search?num=5&q=WlanQueryAutoConfigParameter+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WlanQueryAutoConfigParameter](https://github.com/dahall/Vanara/search?l=C%23&q=WlanQueryAutoConfigParameter)  
 [WlanQueryInterface](https://www.google.com/search?num=5&q=WlanQueryInterface+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WlanQueryInterface](https://github.com/dahall/Vanara/search?l=C%23&q=WlanQueryInterface)  
 [WlanReasonCodeToString](https://www.google.com/search?num=5&q=WlanReasonCodeToString+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WlanReasonCodeToString](https://github.com/dahall/Vanara/search?l=C%23&q=WlanReasonCodeToString)  

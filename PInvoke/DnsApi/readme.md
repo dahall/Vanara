@@ -3,12 +3,12 @@ PInvoke API (methods, structures and constants imported from Windows DnsApi.dll.
 
 - Includes methods from dnsapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DnsApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DnsApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DnsApi)  
-### Methods - 92% API coverage (37 of 40 functions)  
+### Methods - 100% API coverage (40 of 40 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DnsAcquireContextHandle_](https://www.google.com/search?num=5&q=DnsAcquireContextHandle_A+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsAcquireContextHandle](https://github.com/dahall/Vanara/search?l=C%23&q=DnsAcquireContextHandle)  
 [DnsCancelQuery](https://www.google.com/search?num=5&q=DnsCancelQuery+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsCancelQuery](https://github.com/dahall/Vanara/search?l=C%23&q=DnsCancelQuery)  
-[DnsCancelQueryRaw](https://www.google.com/search?num=5&q=DnsCancelQueryRaw+site%3Alearn.microsoft.com) |  |   
+[DnsCancelQueryRaw](https://www.google.com/search?num=5&q=DnsCancelQueryRaw+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsCancelQueryRaw](https://github.com/dahall/Vanara/search?l=C%23&q=DnsCancelQueryRaw)  
 [DnsExtractRecordsFromMessage_W](https://www.google.com/search?num=5&q=DnsExtractRecordsFromMessage_W+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsExtractRecordsFromMessage](https://github.com/dahall/Vanara/search?l=C%23&q=DnsExtractRecordsFromMessage)  
 [DnsFree](https://www.google.com/search?num=5&q=DnsFree+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsFree](https://github.com/dahall/Vanara/search?l=C%23&q=DnsFree)  
 [DnsFreeCustomServers](https://www.google.com/search?num=5&q=DnsFreeCustomServers+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsFreeCustomServers](https://github.com/dahall/Vanara/search?l=C%23&q=DnsFreeCustomServers)  
@@ -21,8 +21,8 @@ Native Method | Header | Managed Method
 [DnsQuery_](https://www.google.com/search?num=5&q=DnsQuery_A+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsQuery](https://github.com/dahall/Vanara/search?l=C%23&q=DnsQuery)  
 [DnsQueryConfig](https://www.google.com/search?num=5&q=DnsQueryConfig+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsQueryConfig](https://github.com/dahall/Vanara/search?l=C%23&q=DnsQueryConfig)  
 [DnsQueryEx](https://www.google.com/search?num=5&q=DnsQueryEx+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsQueryEx](https://github.com/dahall/Vanara/search?l=C%23&q=DnsQueryEx)  
-[DnsQueryRaw](https://www.google.com/search?num=5&q=DnsQueryRaw+site%3Alearn.microsoft.com) |  |   
-[DnsQueryRawResultFree](https://www.google.com/search?num=5&q=DnsQueryRawResultFree+site%3Alearn.microsoft.com) |  |   
+[DnsQueryRaw](https://www.google.com/search?num=5&q=DnsQueryRaw+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsQueryRaw](https://github.com/dahall/Vanara/search?l=C%23&q=DnsQueryRaw)  
+[DnsQueryRawResultFree](https://www.google.com/search?num=5&q=DnsQueryRawResultFree+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsQueryRawResultFree](https://github.com/dahall/Vanara/search?l=C%23&q=DnsQueryRawResultFree)  
 [DnsRecordCompare](https://www.google.com/search?num=5&q=DnsRecordCompare+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsRecordCompare](https://github.com/dahall/Vanara/search?l=C%23&q=DnsRecordCompare)  
 [DnsRecordCopyEx](https://www.google.com/search?num=5&q=DnsRecordCopyEx+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsRecordCopyEx](https://github.com/dahall/Vanara/search?l=C%23&q=DnsRecordCopyEx)  
 [DnsRecordSetCompare](https://www.google.com/search?num=5&q=DnsRecordSetCompare+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsRecordSetCompare](https://github.com/dahall/Vanara/search?l=C%23&q=DnsRecordSetCompare)  
@@ -60,6 +60,7 @@ Native Enum | Header | Managed Enum
 [DNS_FREE_TYPE](https://www.google.com/search?num=5&q=DNS_FREE_TYPE+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_FREE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_FREE_TYPE)  
 [DNS_NAME_FORMAT](https://www.google.com/search?num=5&q=DNS_NAME_FORMAT+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_NAME_FORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_NAME_FORMAT)  
 [DNS_OPCODE](https://www.google.com/search?num=5&q=DNS_OPCODE+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_OPCODE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_OPCODE)  
+[DNS_PROTOCOL](https://www.google.com/search?num=5&q=DNS_PROTOCOL+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_PROTOCOL](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_PROTOCOL)  
 [DNS_PROXY_INFORMATION_TYPE](https://www.google.com/search?num=5&q=DNS_PROXY_INFORMATION_TYPE+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_PROXY_INFORMATION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_PROXY_INFORMATION_TYPE)  
 [DNS_QUERY_OPTIONS](https://www.google.com/search?num=5&q=DNS_QUERY_OPTIONS+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_OPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_OPTIONS)  
 [DNS_RCODE](https://www.google.com/search?num=5&q=DNS_RCODE+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_RCODE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_RCODE)  
@@ -98,6 +99,9 @@ Native Structure | Header | Managed Structure
 [DNS_PROXY_INFORMATION](https://www.google.com/search?num=5&q=DNS_PROXY_INFORMATION+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_PROXY_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_PROXY_INFORMATION)  
 [DNS_PTR_DATA](https://www.google.com/search?num=5&q=DNS_PTR_DATA+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_PTR_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_PTR_DATA)  
 [DNS_QUERY_CANCEL](https://www.google.com/search?num=5&q=DNS_QUERY_CANCEL+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_CANCEL](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_CANCEL)  
+[DNS_QUERY_RAW_CANCEL](https://www.google.com/search?num=5&q=DNS_QUERY_RAW_CANCEL+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_RAW_CANCEL](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_RAW_CANCEL)  
+[DNS_QUERY_RAW_REQUEST](https://www.google.com/search?num=5&q=DNS_QUERY_RAW_REQUEST+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_RAW_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_RAW_REQUEST)  
+[DNS_QUERY_RAW_RESULT](https://www.google.com/search?num=5&q=DNS_QUERY_RAW_RESULT+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_RAW_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_RAW_RESULT)  
 [DNS_QUERY_REQUEST](https://www.google.com/search?num=5&q=DNS_QUERY_REQUEST+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_REQUEST)  
 [DNS_QUERY_REQUEST3](https://www.google.com/search?num=5&q=DNS_QUERY_REQUEST3+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_REQUEST3](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_REQUEST3)  
 [DNS_QUERY_RESULT](https://www.google.com/search?num=5&q=DNS_QUERY_RESULT+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_RESULT)  

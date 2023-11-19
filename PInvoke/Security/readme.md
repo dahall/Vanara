@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows AdvApi32.d
 
 - Includes methods from advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll, tdh.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Security?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Security?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Security)  
-### Methods - 99% API coverage (585 of 586 functions)  
+### Methods - 100% API coverage (586 of 586 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  
@@ -542,7 +542,7 @@ Native Method | Native DLL | Header | Managed Method
 [SspiMarshalAuthIdentity](https://www.google.com/search?num=5&q=SspiMarshalAuthIdentity+site%3Alearn.microsoft.com) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiMarshalAuthIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SspiMarshalAuthIdentity)  
 [SspiPrepareForCredRead](https://www.google.com/search?num=5&q=SspiPrepareForCredRead+site%3Alearn.microsoft.com) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiPrepareForCredRead](https://github.com/dahall/Vanara/search?l=C%23&q=SspiPrepareForCredRead)  
 [SspiPrepareForCredWrite](https://www.google.com/search?num=5&q=SspiPrepareForCredWrite+site%3Alearn.microsoft.com) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiPrepareForCredWrite](https://github.com/dahall/Vanara/search?l=C%23&q=SspiPrepareForCredWrite)  
-[SspiSetChannelBindingFlags](https://www.google.com/search?num=5&q=SspiSetChannelBindingFlags+site%3Alearn.microsoft.com) | sspicli.dll |  |   
+[SspiSetChannelBindingFlags](https://www.google.com/search?num=5&q=SspiSetChannelBindingFlags+site%3Alearn.microsoft.com) | sspicli.dll | Sspi.h | [Vanara.PInvoke.Secur32.SspiSetChannelBindingFlags](https://github.com/dahall/Vanara/search?l=C%23&q=SspiSetChannelBindingFlags)  
 [SspiUnmarshalAuthIdentity](https://www.google.com/search?num=5&q=SspiUnmarshalAuthIdentity+site%3Alearn.microsoft.com) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiUnmarshalAuthIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SspiUnmarshalAuthIdentity)  
 [SspiValidateAuthIdentity](https://www.google.com/search?num=5&q=SspiValidateAuthIdentity+site%3Alearn.microsoft.com) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiValidateAuthIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SspiValidateAuthIdentity)  
 [SspiZeroAuthIdentity](https://www.google.com/search?num=5&q=SspiZeroAuthIdentity+site%3Alearn.microsoft.com) | secur32.dll | sspi.h | [Vanara.PInvoke.Secur32.SspiZeroAuthIdentity](https://github.com/dahall/Vanara/search?l=C%23&q=SspiZeroAuthIdentity)  

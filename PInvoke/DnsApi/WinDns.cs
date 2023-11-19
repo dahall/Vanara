@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using static Vanara.PInvoke.Ws2_32;
@@ -23,6 +24,14 @@ public static partial class DnsApi
 
 	/// <summary/>
 	public const int DNS_MAX_NAME_BUFFER_LENGTH = 256;
+
+	/// <summary>
+	/// Specifies that the raw query should be parsed in a best-effort fashion. That means that DnsQueryRaw won't fail in case of an input
+	/// raw query that is formatted differently from expected (such as including new record types or header bits that the implementation
+	/// isn't aware of) if it can extract out the necessary information including the query name and type. This will cause the query sent to
+	/// the server to effectively be a subset of the caller's query with respect to the configuration.
+	/// </summary>
+	public const ulong DNS_QUERY_RAW_OPTION_BEST_EFFORT_PARSE = 0x1;
 
 	/// <summary/>
 	public const uint DNS_QUERY_REQUEST_VERSION1 = 0x1;
@@ -306,6 +315,29 @@ public static partial class DnsApi
 
 		/// <summary/>
 		DNS_OPCODE_UPDATE = 5,
+	}
+
+	/// <summary>The DNS protocol used for the source query in dnsQueryRaw, and what the caller expects the response to be in.</summary>
+	[PInvokeData("windns.h")]
+	public enum DNS_PROTOCOL
+	{
+		/// <summary>The query completed without receiving a response; such as in a cancellation.</summary>
+		DNS_PROTOCOL_UNSPECIFIED = 0,
+
+		/// <summary>The DNS protocol UDP</summary>
+		DNS_PROTOCOL_UDP,
+
+		/// <summary>The DNS protocol TCP</summary>
+		DNS_PROTOCOL_TCP,
+
+		/// <summary>The DNS protocol DOH</summary>
+		DNS_PROTOCOL_DOH,
+
+		/// <summary>The DNS protocol DOT</summary>
+		DNS_PROTOCOL_DOT,
+
+		/// <summary>The query completed inline; such as with records from the cache.</summary>
+		DNS_PROTOCOL_NO_WIRE
 	}
 
 	/// <summary>
@@ -871,7 +903,6 @@ public static partial class DnsApi
 		/// <summary>An unknown error occurred.</summary>
 		DNS_VALSVR_ERROR_UNKNOWN = 0xFF,
 	}
-
 	/// <summary>The <c>DNS_A_DATA</c> structure represents a DNS address (A) record as specified in section 3.4.1 of RFC 1035.</summary>
 	/// <remarks>
 	/// The <c>DNS_A_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
@@ -1903,7 +1934,327 @@ public static partial class DnsApi
 	{
 		/// <summary>Contains a handle to the asynchronous query to cancel. Applications must not modify this value.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-		public byte[] Reserved;
+		public readonly byte[] Reserved;
+	}
+
+	/// <summary>
+	/// <note type="important">Some information relates to a prerelease product which may be substantially modified before it's commercially
+	/// released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// <para>Represents a DNS raw query cancel handle (see DnsQueryRaw and DnsCancelQueryRaw).</para>
+	/// <para>
+	/// This structure must persist until the query completion callback is made(see DNS_QUERY_RAW_COMPLETION_ROUTINE), and it can't be copied
+	/// elsewhere after it's been passed into DnsQueryRaw.If the query completion callback hasn't been called by the time DnsCancelQueryRaw
+	/// returns, then the query completion callback will lead to the callback being made with a queryStatus of ERROR_CANCELLED in the
+	/// queryResults parameter. No special cleanup is required for this structure once the query is complete. Similar to the cancel structure
+	/// used for DnsQueryEx; for more details, see DNS_QUERY_CANCEL.
+	/// </para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_query_raw_cancel typedef struct _DNS_QUERY_RAW_CANCEL { CHAR
+	// reserved[32]; } DNS_QUERY_RAW_CANCEL;
+	[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_QUERY_RAW_CANCEL")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Size = 32)]
+	public struct DNS_QUERY_RAW_CANCEL
+	{
+		/// <summary>Opaque handle structure used for cancel.</summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+		public readonly byte[] Reserved;
+	}
+
+	/// <summary>
+	/// <note type="important">Some information relates to a prerelease product which may be substantially modified before it's commercially
+	/// released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// <para>Represents a DNS raw query request (see DnsQueryRaw).</para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_query_raw_request typedef struct _DNS_QUERY_RAW_REQUEST {
+	// ULONG version; ULONG resultsVersion; ULONG dnsQueryRawSize; BYTE *dnsQueryRaw; PWSTR dnsQueryName; USHORT dnsQueryType; ULONG64
+	// queryOptions; ULONG interfaceIndex; DNS_QUERY_RAW_COMPLETION_ROUTINE queryCompletionCallback; VOID *queryContext; ULONG64
+	// queryRawOptions; ULONG customServersSize; DNS_CUSTOM_SERVER *customServers; ULONG protocol; union { SOCKADDR_INET sourceAddr; CHAR
+	// maxSa[DNS_ADDR_MAX_SOCKADDR_LENGTH]; }; } DNS_QUERY_RAW_REQUEST;
+	[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_QUERY_RAW_REQUEST")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct DNS_QUERY_RAW_REQUEST
+	{
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The version of this structure. Currently only <c>DNS_QUERY_RAW_REQUEST_VERSION1</c> (0x1) exists.</para>
+		/// </summary>
+		public uint version;
+
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>
+		/// The requested version of the <c>DNS_QUERY_RAW_RESULT</c> structure returned in the completion callback. Currently only
+		/// <c>DNS_QUERY_RAW_RESULT_VERSION1</c> (0x1) exists.
+		/// </para>
+		/// </summary>
+		public uint resultsVersion;
+
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Size of the DNS raw query buffer, in bytes, pointed to by dnsQueryRaw.</para>
+		/// </summary>
+		public uint dnsQueryRawSize;
+
+		/// <summary>
+		/// <para>Type: <c>BYTE*</c></para>
+		/// <para>
+		/// Pointer to the buffer containing the DNS raw query. This buffer contains the wire representation of a DNS queryâa 12-byte
+		/// header followed by the question section. This buffer is owned by the caller, and needs to persist only until DnsQueryRaw returns.
+		/// </para>
+		/// </summary>
+		public IntPtr dnsQueryRaw;
+
+		/// <summary>
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// Pointer to a string that represents the DNS name to query, used in conjunction with dnsQueryType. If this value is present, then
+		/// it will be used instead of dnsQueryRaw.
+		/// </para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? dnsQueryName;
+
+		/// <summary>
+		/// <para>Type: <c>USHORT</c></para>
+		/// <para>
+		/// Value that represents the DNS record type of the query, used in conjunction with dnsQueryName. These values are documented in DNS
+		/// record types.
+		/// </para>
+		/// </summary>
+		public DNS_TYPE dnsQueryType;
+
+		/// <summary>
+		/// <para>Type: <c>ULONG64</c></para>
+		/// <para>Query options to be used. Makes use of the same query options from DnsQueryEx, as documented in <see cref="DNS_QUERY_OPTIONS"/>.</para>
+		/// </summary>
+		public ulong queryOptions;
+
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The interface index to send the query over. If 0, then all interfaces will be used.</para>
+		/// </summary>
+		public uint interfaceIndex;
+
+		/// <summary>
+		/// <para>Type: <c>DNS_QUERY_RAW_COMPLETION_ROUTINE</c></para>
+		/// <para>Pointer to a callback function that will be called when the query finishes. This field is required.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public DNS_QUERY_RAW_COMPLETION_ROUTINE queryCompletionCallback;
+
+		/// <summary>
+		/// <para>Type: <c>VOID*</c></para>
+		/// <para>Pointer to a user context. This will be provided as a parameter in the queryCompletionCallback call. This field is required.</para>
+		/// </summary>
+		public IntPtr queryContext;
+
+		/// <summary>
+		/// <para>Type: <c>ULONG64</c></para>
+		/// <para>Additional options to modify the raw query.</para>
+		/// <para>
+		/// <c>DNS_QUERY_RAW_OPTION_BEST_EFFORT_PARSE</c> (0x1). Specifies that the raw query should be parsed in a best-effort fashion. That
+		/// means that DnsQueryRaw won't fail in case of an input raw query that is formatted differently from expected (such as including
+		/// new record types or header bits that the implementation isn't aware of) if it can extract out the necessary information including
+		/// the query name and type. This will cause the query sent to the server to effectively be a subset of the caller's query with
+		/// respect to the configuration.
+		/// </para>
+		/// </summary>
+		public ulong queryRawOptions;
+
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of custom servers pointed to by customServers.</para>
+		/// </summary>
+		public uint customServersSize;
+
+		/// <summary>
+		/// <para>Type: <c>DNS_CUSTOM_SERVER*</c></para>
+		/// <para>
+		/// Pointer to an array of custom servers of size customServersSize. This pointer can be NULL, in which case customServersSize must
+		/// be 0. If not NULL, then this pointer must persist until the DnsQueryRaw call returns.
+		/// </para>
+		/// </summary>
+		public IntPtr /*DNS_CUSTOM_SERVER*/ customServers;
+
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>
+		/// The DNS protocol used for the source query in dnsQueryRaw, and what the caller expects the response to be in. You can use this to
+		/// change a DNS query response to match the original query, regardless of what protocol is used by the DNS system underneath. For
+		/// example, if the caller specifies UDP, and the DNS systems decides to use DNS over HTTPS (DoH), and gets a response larger than
+		/// UDP allows, then the API will truncate the packet as appropriate to match the behavior of what a UDP server responds with if the
+		/// result is too large. If TCP is requested by the caller, then the packet must be prefixed with the 2-byte length, as specified in
+		/// section 4.2.2 of RFC 1035.
+		/// </para>
+		/// <para>The allowed values are <c>DNS_PROTOCOL_UDP</c> (0x1) and <c>DNS_PROTOCOL_TCP</c> (0x2).</para>
+		/// </summary>
+		public DNS_PROTOCOL protocol;
+
+		/// <summary>
+		/// <para>Type: <c>SOCKADDR_INET</c></para>
+		/// <para>The address of the source of the DNS raw query.</para>
+		/// </summary>
+		public SOCKADDR_INET sourceAddr;
+	}
+
+	/// <summary>
+	/// <note type="important">Some information relates to a prerelease product which may be substantially modified before it's commercially
+	/// released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// <para>Represents a DNS raw query result (see DNS_QUERY_RAW_COMPLETION_ROUTINE).</para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_query_raw_result typedef struct _DNS_QUERY_RAW_RESULT { ULONG
+	// version; DNS_STATUS queryStatus; ULONG64 queryOptions; ULONG64 queryRawOptions; ULONG64 responseFlags; ULONG queryRawResponseSize;
+	// BYTE *queryRawResponse; PDNS_RECORD queryRecords; ULONG protocol; union { SOCKADDR_INET sourceAddr; CHAR
+	// maxSa[DNS_ADDR_MAX_SOCKADDR_LENGTH]; }; } DNS_QUERY_RAW_RESULT;
+	[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_QUERY_RAW_RESULT")]
+	public struct DNS_QUERY_RAW_RESULT : IVanaraMarshaler
+	{
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>
+		/// The version of this structure. This matches what was set in DNS_QUERY_RAW_REQUEST::resultsVersion. Currently only
+		/// <c>DNS_QUERY_RAW_RESULT_VERSION1</c> (0x1) exists.
+		/// </para>
+		/// </summary>
+		public uint version { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>DNS_STATUS</c></para>
+		/// <para>The status of the query.</para>
+		/// </summary>
+		public DNS_STATUS queryStatus { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>ULONG64</c></para>
+		/// <para>
+		/// Query options that were used in this query. Due to system configuration, these might be different from the query options that you
+		/// provided in the request. The current options are defined in <see cref="DNS_QUERY_OPTIONS"/>.
+		/// </para>
+		/// </summary>
+		public DNS_QUERY_OPTIONS queryOptions { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>ULONG64</c></para>
+		/// <para>Additional options that were applied to the raw query. Also see DNS_QUERY_RAW_REQUEST::queryRawOptions.</para>
+		/// </summary>
+		public ulong queryRawOptions { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>ULONG64</c></para>
+		/// <para>Additional flags about the query response. Currently none are specified.</para>
+		/// </summary>
+		public ulong responseFlags { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Count of bytes in the DNS raw response buffer pointed to by queryRawResponse.</para>
+		/// </summary>
+		public uint queryRawResponseSize { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>BYTE*</c></para>
+		/// <para>
+		/// Pointer to a buffer containing the wire representation of the DNS query responseâa 12-byte header followed by a variable number
+		/// of records. This buffer is of size queryRawResponseSize bytes.
+		/// </para>
+		/// <para>
+		/// The pointer might or might not be valid depending on queryStatus. Internal DNS errors would produce an error status and a
+		/// pointer, but negative responses from the server could produce error status and a valid pointer. If the queryStatus is
+		/// <c>ERROR_SUCCESS</c>, then the pointer is valid.
+		/// </para>
+		/// </summary>
+		public byte[] queryRawResponse { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>PDNS_RECORD</c></para>
+		/// <para>
+		/// Pointer to a DNS_RECORD structure. This contains the same records as in queryRawResponse, but parsed out into a structure format.
+		/// </para>
+		/// <para>This pointer is valid in the same ways as queryRawResponse, where it's dependent on the queryStatus value.</para>
+		/// <para>
+		/// queryRecords contains the same records as in queryRawResponse, but parsed out into a structure format. However, if there's a new
+		/// type of DNS record in the response that's not known by the implementation, then that won't be present in queryRecords; but it
+		/// will be present in queryRawResponse.
+		/// </para>
+		/// </summary>
+		public DNS_RECORD queryRecords { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>
+		/// The DNS protocol used for the query response. This doesn't necessarily match the protocol in DNS_QUERY_RAW_REQUEST because the
+		/// DNS system might have changed the outgoing query protocol based on configuration. The query response will be modified, if needed,
+		/// to match the protocol in the request so that the behavior seen by the caller is seamless. A value of <c>DNS_PROTOCOL_NO_WIRE</c>
+		/// indicates that the result records and data were produced internally and the DNS system didn't send a query on the wire.
+		/// </para>
+		/// <para>Possible values include:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>DNS_PROTOCOL_UNSPECIFIED</c> (0x0). The query completed without receiving a response; such as in a cancellation.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>DNS_PROTOCOL_UDP</c> (0x1).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>DNS_PROTOCOL_TCP</c> (0x2).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>DNS_PROTOCOL_DOH</c> (0x3).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>DNS_PROTOCOL_DOT</c> (0x4).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>DNS_PROTOCOL_NO_WIRE</c> (0x5). The query completed inline; such as with records from the cache.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public DNS_PROTOCOL protocol { get; private set; }
+
+		/// <summary>
+		/// <para>Type: <c>SOCKADDR_INET</c></para>
+		/// <para>The address of the source of the DNS raw response.</para>
+		/// </summary>
+		public SOCKADDR_INET sourceAddr { get; private set; }
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(_DNS_QUERY_RAW_RESULT));
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => throw new NotImplementedException();
+
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
+				return null;
+			var r = (_DNS_QUERY_RAW_RESULT)Marshal.PtrToStructure(pNativeData, typeof(_DNS_QUERY_RAW_RESULT))!;
+			return new DNS_QUERY_RAW_RESULT
+			{
+				version = r.version,
+				queryStatus = r.queryStatus,
+				queryOptions = (DNS_QUERY_OPTIONS)r.queryOptions,
+				queryRawOptions = r.queryRawOptions,
+				responseFlags = r.responseFlags,
+				queryRawResponseSize = r.queryRawResponseSize,
+				queryRawResponse = r.queryRawResponse.ToArray<byte>((int)r.queryRawResponseSize) ?? new byte[0],
+				queryRecords = r.queryRecords.ToStructure<DNS_RECORD>(),
+				protocol = r.protocol,
+				sourceAddr = r.sourceAddr,
+			};
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		struct _DNS_QUERY_RAW_RESULT
+		{
+			public uint version;
+			public DNS_STATUS queryStatus;
+			public ulong queryOptions;
+			public ulong queryRawOptions;
+			public ulong responseFlags;
+			public uint queryRawResponseSize;
+			public IntPtr queryRawResponse;
+			public IntPtr queryRecords;
+			public DNS_PROTOCOL protocol;
+			public SOCKADDR_INET sourceAddr;
+		}
 	}
 
 	/// <summary>The <c>DNS_QUERY_REQUEST</c> structure contains the DNS query parameters used in a call to DnsQueryEx.</summary>

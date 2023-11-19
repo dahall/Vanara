@@ -3,13 +3,11 @@ PInvoke API (methods, structures and constants) imported from Windows Volume Sha
 
 - Includes methods from vssapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.VssApiMgd?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.VssApiMgd?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.VssApiMgd)  
-### Methods - 50% API coverage (2 of 4 functions)  
+### Methods - 100% API coverage (2 of 2 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[IsVolumeSnapshotted](https://www.google.com/search?num=5&q=IsVolumeSnapshotted+site%3Alearn.microsoft.com) |  |   
-[IsVolumeSnapshottedInternal](https://www.google.com/search?num=5&q=IsVolumeSnapshottedInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.IsVolumeSnapshotted](https://github.com/dahall/Vanara/search?l=C%23&q=IsVolumeSnapshotted)  
-[ShouldBlockRevert](https://www.google.com/search?num=5&q=ShouldBlockRevert+site%3Alearn.microsoft.com) |  |   
-[ShouldBlockRevertInternal](https://www.google.com/search?num=5&q=ShouldBlockRevertInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.ShouldBlockRevert](https://github.com/dahall/Vanara/search?l=C%23&q=ShouldBlockRevert)  
+[IsVolumeSnapshotted](https://www.google.com/search?num=5&q=IsVolumeSnapshottedInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.IsVolumeSnapshotted](https://github.com/dahall/Vanara/search?l=C%23&q=IsVolumeSnapshotted)  
+[ShouldBlockRevert](https://www.google.com/search?num=5&q=ShouldBlockRevertInternal+site%3Alearn.microsoft.com) | vsbackup.h | [Vanara.PInvoke.VssApi.VssInfo.ShouldBlockRevert](https://github.com/dahall/Vanara/search?l=C%23&q=ShouldBlockRevert)  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

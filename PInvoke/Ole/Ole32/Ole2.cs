@@ -4,6 +4,9 @@ namespace Vanara.PInvoke;
 
 public static partial class Ole32
 {
+	/// <summary>Linked object will be disabled during conversion.</summary>
+	public const uint OLESTREAM_CONVERSION_DISABLEOLELINK = 0x00000001;
+
 	/// <summary>Specify the role and creation context for the embedding helper.</summary>
 	[PInvokeData("ole2.h", MSDNShortId = "5c67b513-0692-4e0a-beab-8b514089699c")]
 	[Flags]
@@ -36,6 +39,31 @@ public static partial class Ole32
 		/// <summary/>
 		OLECREATE_LEAVERUNNING = 1
 	}
+
+	/// <summary>
+	/// Points to a function that queries the application if the linked object in OLESTREAM should be disabled or not while converting
+	/// OLESTREAM to IStorage.
+	/// </summary>
+	/// <param name="pClsid">
+	/// The CLSID for the linked object. If the ProgID(specified in szClass) is "OLE2Link", it's CLSID_StdOleLink; Otherwise it's the CLSID
+	/// mapped to the ProgID in the registry.
+	/// </param>
+	/// <param name="szClass">The ProgID of the linked object.</param>
+	/// <param name="szTopicName">Path name of the linked file. May be NULL.</param>
+	/// <param name="szItemName">The name of item within the linked file to which is being linked. May be NULL.</param>
+	/// <param name="szUNCName">The network path name of the linked file in UNC format. May be NULL.</param>
+	/// <param name="linkUpdatingOption">Implementation-specific hint supplied by the application or higher-level protocol.</param>
+	/// <param name="pvContext">The context of the user passed to this callback function. May be NULL.</param>
+	/// <returns>
+	/// If the return value is S_OK, the linked object will be converted. If the return value is other than S_OK, the linked object will be disabled.
+	/// </returns>
+	// https://learn.microsoft.com/en-us/windows/win32/controls/olestreamqueryconvertolelinkcallback
+	// typedef HRESULT(STDAPICALLTYPE* OLESTREAMQUERYCONVERTOLELINKCALLBACK) (_In_ LPCLSID pClsid, _In_ LPOLESTR szClass, _In_opt_ LPOLESTR szTopicName, _In_opt_ LPOLESTR szItemName, _In_opt_ LPOLESTR szUNCName, _In_opt_ ULONG linkUpdatingOption, _In_opt_ PVOID pvContext);
+	[PInvokeData("ole2.h")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	public delegate HRESULT OLESTREAMQUERYCONVERTOLELINKCALLBACK(in Guid pClsid, [In, MarshalAs(UnmanagedType.LPWStr)] string szClass,
+		[In, Optional,MarshalAs(UnmanagedType.LPWStr)] string? szTopicName, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? szItemName,
+		[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? szUNCName, [In, Optional] uint linkUpdatingOption, [In, Optional] IntPtr pvContext);
 
 	/// <summary>Retrieves a pointer to the OLE implementation of IDataAdviseHolder on the data advise holder object.</summary>
 	/// <param name="ppDAHolder">
@@ -342,7 +370,61 @@ public static partial class Ole32
 	// OleConvertOLESTREAMToIStorage( IN LPOLESTREAM lpolestream, OUT LPSTORAGE pstg, IN const DVTARGETDEVICE *ptd );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "8fed879c-5f97-4450-8259-da9643dd828c")]
-	public static extern HRESULT OleConvertOLESTREAMToIStorage(in OLESTREAM lpolestream, out IStorage pstg, [In] DVTARGETDEVICE ptd);
+	public static extern HRESULT OleConvertOLESTREAMToIStorage(in OLESTREAM lpolestream, [Out] IStorage pstg, [In, Optional] DVTARGETDEVICE? ptd);
+
+	/// <summary>
+	/// <para>
+	/// Converts the specified object from the OLE 1 storage model to an OLE 2 structured storage object without specifying presentation data.
+	/// </para>
+	/// <note title="note">This is one of several compatibility functions.</note>
+	/// </summary>
+	/// <param name="lpolestream">A pointer to a stream that contains the persistent representation of the object in the OLE 1 storage format.</param>
+	/// <param name="pstg">A pointer to the IStorage interface on the OLE 2 structured storage object.</param>
+	/// <param name="ptd">A pointer to the DVTARGETDEVICE structure that specifies the target device for which the OLE 1 object is rendered.</param>
+	/// <param name="opt">
+	/// This value can be 0 or OLESTREAM_CONVERSION_DISABLEOLELINK(0x00000001). If the value is OLESTREAM_CONVERSION_DISABLEOLELINK, linked
+	/// object will be disabled during conversion.
+	/// </param>
+	/// <param name="pvCallbackContext">
+	/// The context of the user to be passed to the callback function pQueryConvertOLELinkCallback. May be NULL.
+	/// </param>
+	/// <param name="pQueryConvertOLELinkCallback">The p query convert OLE link callback.</param>
+	/// <returns>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>S_OK</description>
+	/// <description>Success.</description>
+	/// </item>
+	/// <item>
+	/// <description>E_INVALIDARG</description>
+	/// <description>Invalid argument.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This function converts an OLE 1 object to an OLE 2 structured storage object. Use this function to update OLE 1 objects to OLE 2
+	/// objects when a new version of the object application supports OLE 2. This function differs from the OleConvertOLESTREAMToIStorage
+	/// function in that the application can pass in an optional value to disable linked object during conversion or a callback function that
+	/// queries the application if linked object should be converted or not.
+	/// </para>
+	/// <para>
+	/// This function has no associated import library or header file; you must call it using the <c>LoadLibrary</c> and
+	/// <c>GetProcAddress</c> functions. The API is exported from Ole32.dll.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/stg/oleconvertolestreamtoistorage2 HRESULT OleConvertOLESTREAMToIStorage2( [in]
+	// LPOLESTREAM lpolestream, [out] LPSTORAGE pstg, [in] const DVTARGETDEVICE *ptd, [in] DWORD opt, [in] PVOID pvCallbackContext, [in]
+	// OLESTREAMQUERYCONVERTOLELINKCALLBACK pQueryConvertOLELinkCallback );
+	[PInvokeData("ole2.h")]
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT OleConvertOLESTREAMToIStorage2(in OLESTREAM lpolestream, [Out] IStorage pstg,
+		[In, Optional] DVTARGETDEVICE? ptd, [Optional] uint opt, [In, Optional] IntPtr pvCallbackContext,
+		[In, Optional] OLESTREAMQUERYCONVERTOLELINKCALLBACK? pQueryConvertOLELinkCallback);
 
 	/// <summary>
 	/// The <c>OleConvertOLESTREAMToIStorageEx</c> function converts the specified object from the OLE 1 storage model to an OLE 2
@@ -384,8 +466,70 @@ public static partial class Ole32
 	// LONG *plHeight, OUT DWORD *pdwSize, OUT LPSTGMEDIUM pmedium );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ole2.h", MSDNShortId = "2e77fa0e-1d98-4c59-8d3c-65bd7235ec8f")]
-	public static extern HRESULT OleConvertOLESTREAMToIStorageEx(in OLESTREAM polestm, out IStorage pstg, out CLIPFORMAT pcfFormat,
+	public static extern HRESULT OleConvertOLESTREAMToIStorageEx(in OLESTREAM polestm, [Out] IStorage pstg, out CLIPFORMAT pcfFormat,
 		out int plwWidth, out int plHeight, out uint pdwSize, out STGMEDIUM pmedium);
+
+	/// <summary>
+	/// <para>Converts the specified object from the OLE 1 storage model to an OLE 2 structured storage object including presentation data.</para>
+	/// <note title="note">This is one of several compatibility functions.</note>
+	/// </summary>
+	/// <param name="polestm">A pointer to a stream that contains the persistent representation of the object in the OLE 1 storage format.</param>
+	/// <param name="pstg">Pointer to the OLE 2 structured storage object.</param>
+	/// <param name="pcfFormat">
+	/// Pointer to where the format of the presentation data is returned. May be NULL, indicating the absence of presentation data.
+	/// </param>
+	/// <param name="plwWidth">Pointer to where the width value, in HIMETRIC, of the presentation data is returned.</param>
+	/// <param name="plHeight">Pointer to where the height value, in HIMETRIC, of the presentation data is returned.</param>
+	/// <param name="pdwSize">Pointer to where the size in bytes of the converted data is returned.</param>
+	/// <param name="pmedium">Pointer to where the STGMEDIUM structure for the converted serialized data is returned.</param>
+	/// <param name="opt">
+	/// This value can be 0 or OLESTREAM_CONVERSION_DISABLEOLELINK(0x00000001). If the value is OLESTREAM_CONVERSION_DISABLEOLELINK, linked
+	/// object will be disabled during conversion.
+	/// </param>
+	/// <param name="pvCallbackContext">
+	/// The context of the user to be passed to the callback function pQueryConvertOLELinkCallback. May be NULL.
+	/// </param>
+	/// <param name="pQueryConvertOLELinkCallback">
+	/// A pointer to an OLESTREAMQUERYCONVERTOLELINKCALLBACK callback function that queries the application if linked object should be
+	/// converted or not. May be NULL.
+	/// </param>
+	/// <returns>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>S_OK</description>
+	/// <description>Success.</description>
+	/// </item>
+	/// <item>
+	/// <description>E_INVALIDARG</description>
+	/// <description>Invalid argument.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This function converts an OLE 1 object to an OLE 2 structured storage object. You can use this function to update OLE 1 objects to
+	/// OLE 2 objects when a new version of the object application supports OLE 2. This function differs from the
+	/// OleConvertOLESTREAMToIStorageEx function in that the application can pass in an optional value to disable linked object during
+	/// conversion or a callback function that queries the application if linked object should be converted or not.
+	/// </para>
+	/// <para>
+	/// This function has no associated import library or header file; you must call it using the <c>LoadLibrary</c> and
+	/// <c>GetProcAddress</c> functions. The API is exported from Ole32.dll.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/stg/oleconvertolestreamtoistorageex2 HRESULT OleConvertOLESTREAMToIStorageEx2( [in]
+	// LPOLESTREAM polestm, [out] LPSTORAGE pstg, [out] CLIPFORMAT *pcfFormat, [out] LONG *plwWidth, [out] LONG *plHeight, [out] DWORD
+	// *pdwSize, [out] LPSTGMEDIUM pmedium, [in] DWORD opt, [in] PVOID pvCallbackContext, [in] OLESTREAMQUERYCONVERTOLELINKCALLBACK
+	// pQueryConvertOLELinkCallback );
+	[PInvokeData("ole2.h")]
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT OleConvertOLESTREAMToIStorageEx2([In] in OLESTREAM polestm, [Out] IStorage pstg,
+		out CLIPFORMAT pcfFormat, out int plwWidth, out int plHeight, out uint pdwSize, out STGMEDIUM pmedium, [Optional] uint opt,
+		[In, Optional] IntPtr pvCallbackContext, [In, Optional] OLESTREAMQUERYCONVERTOLELINKCALLBACK? pQueryConvertOLELinkCallback);
 
 	/// <summary>
 	/// Creates an embedded object identified by a CLSID. You use it typically to implement the menu item that allows the end user to

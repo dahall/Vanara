@@ -6016,6 +6016,20 @@ public static partial class Secur32
 		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] out byte[] ppCredentialBlob, out uint pCredentialBlobSize);
 
 	/// <summary>
+	/// The <c>SspiSetChannelBindingFlags</c> function is exposed in both kernel and user mode drivers of SspiCli. This helps the server side
+	/// to fetch the channel bindings from query attributes and convert it to the <c>ChannelBindingsEX</c> buffer format and set the Audit
+	/// flags before passing it to the <c>SSPCommon</c> for validation during the ASC Call. Thus, EPA Audit can be enabled/disabled.
+	/// </summary>
+	/// <param name="pBindings">The channel bindings to be set.</param>
+	/// <param name="flags">The flags to be set, indicating your desired configuration.</param>
+	/// <returns>Returns <c>SEC_E_OK</c> if the function succeeds; otherwise, returns a nonzero error code.</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/secauthn/sspi-sspisetchannelbindingflags
+	// SECURITY_STATUS SEC_ENTRY SspiSetChannelBindingFlags( Inout_ SecPkgContext_Bindings *pBindings, unsigned long flags );
+	[PInvokeData("Sspi.h")]
+	[DllImport("sspicli.dll", SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT SspiSetChannelBindingFlags([In, Out] ref SecPkgContext_Bindings pBindings, uint flags);
+
+	/// <summary>
 	/// <para>Deserializes the specified array of byte values into an identity structure.</para>
 	/// </summary>
 	/// <param name="AuthIdentityLength">

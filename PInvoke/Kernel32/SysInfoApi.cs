@@ -62,6 +62,30 @@ public static partial class Kernel32
 		ComputerNameMax,
 	}
 
+	/// <summary>An enum of possible values for the developer drive enablement state.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/ne-sysinfoapi-developer_drive_enablement_state typedef enum
+	// DEVELOPER_DRIVE_ENABLEMENT_STATE { DeveloperDriveEnablementStateError, DeveloperDriveEnabled, DeveloperDriveDisabledBySystemPolicy,
+	// DeveloperDriveDisabledByGroupPolicy } ;
+	[PInvokeData("sysinfoapi.h", MSDNShortId = "NE:sysinfoapi.DEVELOPER_DRIVE_ENABLEMENT_STATE")]
+	public enum DEVELOPER_DRIVE_ENABLEMENT_STATE
+	{
+		/// <summary>
+		/// <para>Indicates that there was an error determining the developer drive enablement state. After this is returned, call</para>
+		/// <para>GetLastError</para>
+		/// <para>to get the error value.</para>
+		/// </summary>
+		DeveloperDriveEnablementStateError,
+
+		/// <summary>Indicates that the developer drive is enabled.</summary>
+		DeveloperDriveEnabled,
+
+		/// <summary>Indicates that the developer drive is disabled by system policy.</summary>
+		DeveloperDriveDisabledBySystemPolicy,
+
+		/// <summary>Indicates that the developer drive is disabled by group policy.</summary>
+		DeveloperDriveDisabledByGroupPolicy,
+	}
+
 	/// <summary>Identifier of a firmware table provider for calls to <c>EnumSystemFirmwareTables</c>.</summary>
 	public enum FirmwareTableProviderId : uint
 	{
@@ -1012,6 +1036,26 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	public static bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, out string? name) => CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetComputerNameEx(NameType, sb, ref sz), out name);
+
+	/// <summary>Gets a value indicating whether the developer drive is enabled.</summary>
+	/// <returns>Returns a DEVELOPER_DRIVE_ENABLEMENT_STATE value indicating the developer drive enablement state.</returns>
+	/// <remarks>
+	/// <para>
+	/// <c>GetDeveloperDriveEnablementState</c> returns information indicating whether the developer drive feature is enabled. If the
+	/// developer drive feature is disabled, the <c>DEVELOPER_DRIVE_ENABLEMENT_STATE</c> returned indicates whether developer drive is
+	/// disabled via group policy or via local policy.
+	/// </para>
+	/// <para>If <c>GetDeveloperDriveEnablementState</c> fails, it returns <c>DeveloperDriveEnablementStateError</c> and sets the last error.</para>
+	/// <para>Examples</para>
+	/// <para>
+	/// The following example shows how to use <c>GetDeveloperDriveEnablementState</c> to determine whether the developer drive is enabled.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getdeveloperdriveenablementstate
+	// DEVELOPER_DRIVE_ENABLEMENT_STATE GetDeveloperDriveEnablementState();
+	[PInvokeData("sysinfoapi.h", MSDNShortId = "NF:sysinfoapi.GetDeveloperDriveEnablementState")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	public static extern DEVELOPER_DRIVE_ENABLEMENT_STATE GetDeveloperDriveEnablementState();
 
 	/// <summary>Retrieves the value of the specified firmware environment variable.</summary>
 	/// <param name="lpName">The name of the firmware environment variable. The pointer must not be <c>NULL</c>.</param>
