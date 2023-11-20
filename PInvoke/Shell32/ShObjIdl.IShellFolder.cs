@@ -472,7 +472,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategoryprovider-createcategory HRESULT
 		// CreateCategory( const GUID *pguid, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT CreateCategory(in Guid pguid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+		HRESULT CreateCategory(in Guid pguid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 	}
 
 	/// <summary>Creates a category object.</summary>
@@ -1093,7 +1093,7 @@ public static partial class Shell32
 		// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
 		[PreserveSig]
 		HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
-			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
+			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
 
 		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 		/// <param name="pidl">
@@ -1604,7 +1604,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
 		[PreserveSig]
-		new HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppv);
+		new HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 		/// <param name="cidl">
@@ -1744,7 +1744,7 @@ public static partial class Shell32
 		// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
 		[PreserveSig]
 		new HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
-			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
+			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
 
 		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 		/// <param name="pidl">
@@ -1889,7 +1889,7 @@ public static partial class Shell32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-enumsearches
 		[PreserveSig]
-		HRESULT EnumSearches(out IEnumExtraSearch ppenum);
+		HRESULT EnumSearches(out IEnumExtraSearch? ppenum);
 
 		/// <summary>Gets the default sorting and display columns.</summary>
 		/// <param name="dwRes">
@@ -2012,7 +2012,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-getdetailsex
 		[PreserveSig]
-		HRESULT GetDetailsEx([In] PIDL pidl, in PROPERTYKEY pscid, [MarshalAs(UnmanagedType.Struct)] out object pv);
+		HRESULT GetDetailsEx([In] PIDL pidl, in PROPERTYKEY pscid, [MarshalAs(UnmanagedType.Struct)] out object? pv);
 
 		/// <summary>Gets detailed information, identified by a column index, on an item in a Shell folder.</summary>
 		/// <param name="pidl">

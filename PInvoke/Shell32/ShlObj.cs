@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using static Vanara.Extensions.BitHelper;
@@ -5268,7 +5269,7 @@ public static partial class Shell32
 	// PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psfParent, PCUITEMID_CHILD pidl, IShellItem **ppsi );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "d4371cdf-a8f4-4a39-ba66-97fd40ed46ae")]
-	public static extern HRESULT SHCreateShellItem(PIDL pidlParent, IShellFolder? psfParent, PIDL pidl, out IShellItem ppsi);
+	public static extern HRESULT SHCreateShellItem([Optional] PIDL pidlParent, [Optional] IShellFolder? psfParent, PIDL pidl, out IShellItem? ppsi);
 
 	/// <summary>
 	/// <para>

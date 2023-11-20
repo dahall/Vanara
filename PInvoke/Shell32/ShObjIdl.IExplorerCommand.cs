@@ -167,7 +167,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommand-gettitle HRESULT GetTitle(
 		// IShellItemArray *psiItemArray, LPWSTR *ppszName );
 		[PreserveSig]
-		HRESULT GetTitle(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
+		HRESULT GetTitle(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszName);
 
 		/// <summary>Gets an icon resource string of the icon associated with the specified Windows Explorer command item.</summary>
 		/// <param name="psiItemArray">
@@ -188,7 +188,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommand-geticon HRESULT GetIcon(
 		// IShellItemArray *psiItemArray, LPWSTR *ppszIcon );
 		[PreserveSig]
-		HRESULT GetIcon(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string ppszIcon);
+		HRESULT GetIcon(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszIcon);
 
 		/// <summary>Gets the tooltip string associated with a specified Windows Explorer command item.</summary>
 		/// <param name="psiItemArray">
@@ -206,7 +206,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommand-gettooltip HRESULT
 		// GetToolTip( IShellItemArray *psiItemArray, LPWSTR *ppszInfotip );
 		[PreserveSig]
-		HRESULT GetToolTip(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string ppszInfotip);
+		HRESULT GetToolTip(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszInfotip);
 
 		/// <summary>Gets the GUID of an Windows Explorer command.</summary>
 		/// <param name="pguidCommandName">
@@ -340,7 +340,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommand-enumsubcommands HRESULT
 		// EnumSubCommands( IEnumExplorerCommand **ppEnum );
 		[PreserveSig]
-		HRESULT EnumSubCommands(out IEnumExplorerCommand ppEnum);
+		HRESULT EnumSubCommands(out IEnumExplorerCommand? ppEnum);
 	}
 
 	/// <summary>Exposes methods to create Explorer commands and command enumerators.</summary>
@@ -378,7 +378,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommandprovider-getcommands
 		// HRESULT GetCommands( IUnknown *punkSite, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetCommands([MarshalAs(UnmanagedType.IUnknown)] object punkSite, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		HRESULT GetCommands([MarshalAs(UnmanagedType.IUnknown)] object punkSite, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 
 		// IExplorerCommand
 		/// <summary>Gets a specified Explorer command instance.</summary>
@@ -401,7 +401,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommandprovider-getcommand HRESULT
 		// GetCommand( REFGUID rguidCommandId, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetCommand(in Guid rguidCommandId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		HRESULT GetCommand(in Guid rguidCommandId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 	}
 
 	/// <summary>Exposes a single method that allows retrieval of the command state.</summary>

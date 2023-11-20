@@ -322,7 +322,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-initializeprogressdialog
 		// HRESULT InitializeProgressDialog( LPWSTR *ppszTitle, LPWSTR *ppszCancel );
 		[PreserveSig]
-		HRESULT InitializeProgressDialog([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszTitle, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszCancel);
+		HRESULT InitializeProgressDialog([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszTitle, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszCancel);
 	}
 
 	/// <summary>
@@ -421,7 +421,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-initializeprogressdialog
 		// HRESULT InitializeProgressDialog( LPWSTR *ppszTitle, LPWSTR *ppszCancel );
 		[PreserveSig]
-		new HRESULT InitializeProgressDialog([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszTitle, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszCancel);
+		new HRESULT InitializeProgressDialog([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszTitle, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszCancel);
 
 		/// <summary>Removes data collected during a namespace walk.</summary>
 		/// <param name="hr">

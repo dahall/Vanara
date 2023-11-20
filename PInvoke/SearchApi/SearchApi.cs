@@ -895,7 +895,7 @@ public static partial class SearchApi
 		// origPos, REFIID riid, void **ppunk );
 		[PInvokeData("filter.h")]
 		[PreserveSig]
-		HRESULT BindRegion([In] FILTERREGION origPos, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppunk);
+		HRESULT BindRegion([In] FILTERREGION origPos, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppunk);
 	}
 
 	/// <summary>
@@ -944,7 +944,7 @@ public static partial class SearchApi
 		[PInvokeData("filtereg.h", MSDNShortId = "920c976e-4dde-4e53-85b7-7547291736a0")]
 		[PreserveSig]
 		HRESULT LoadIFilter([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsPath, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter,
-			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
+			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter? ppIFilt);
 
 		/// <summary>
 		/// <para>Not implemented.</para>
@@ -965,7 +965,7 @@ public static partial class SearchApi
 		[PInvokeData("filtereg.h", MSDNShortId = "b4eff132-9022-4091-a2a3-1d8e11a35b39")]
 		[Obsolete, PreserveSig]
 		HRESULT LoadIFilterFromStorage([In] IStorage pStg, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, MarshalAs(UnmanagedType.LPWStr)] string pwcsOverride,
-			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
+			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter? ppIFilt);
 
 		/// <summary>
 		/// <para>Not implemented.</para>
@@ -986,7 +986,7 @@ public static partial class SearchApi
 		[PInvokeData("filtereg.h", MSDNShortId = "6a577306-d5ff-43c1-ab9f-3a7437661d2a")]
 		[Obsolete, PreserveSig]
 		HRESULT LoadIFilterFromStream([In] IStream pStm, in FILTERED_DATA_SOURCES pFilteredSources, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter,
-			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter ppIFilt);
+			[In, MarshalAs(UnmanagedType.Bool)] bool fUseDefault, out Guid pFilterClsid, [Optional] IntPtr SearchDecSize, [Optional] IntPtr pwcsSearchDesc, out IFilter? ppIFilt);
 	}
 
 	/// <summary>

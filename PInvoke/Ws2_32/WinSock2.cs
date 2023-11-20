@@ -2511,6 +2511,11 @@ public static partial class Ws2_32
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SOCKET(SafeSOCKET h) => h.handle;
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeSOCKET"/> to <see cref="SOCKET"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SOCKET?(SafeSOCKET? h) => h?.handle;
+
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => closesocket(this) == 0;
 	}

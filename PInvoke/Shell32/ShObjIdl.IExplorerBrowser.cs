@@ -244,7 +244,7 @@ public static partial class Shell32
 		/// </param>
 		/// <param name="dwFlags">One of the EXPLORER_BROWSER_FILL_FLAGS values.</param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		void FillFromObject([In, MarshalAs(UnmanagedType.IUnknown)] object punk, [In] EXPLORER_BROWSER_FILL_FLAGS dwFlags);
+		void FillFromObject([In, MarshalAs(UnmanagedType.IUnknown)] object? punk, [In] EXPLORER_BROWSER_FILL_FLAGS dwFlags);
 
 		/// <summary>Removes all items from the results folder.</summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

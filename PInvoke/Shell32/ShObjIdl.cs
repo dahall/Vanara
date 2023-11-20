@@ -1221,7 +1221,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getappname HRESULT
 		// GetAppName( LPWSTR *ppszName );
 		[PreserveSig]
-		HRESULT GetAppName([MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
+		HRESULT GetAppName([MarshalAs(UnmanagedType.LPWStr)] out string? ppszName);
 
 		/// <summary>Gets a value that indicates how the file in use is being used.</summary>
 		/// <param name="pfut">
