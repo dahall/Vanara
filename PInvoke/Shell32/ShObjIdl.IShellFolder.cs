@@ -482,7 +482,7 @@ public static partial class Shell32
 	public static ICategorizer CreateCategory(this ICategoryProvider prov, in Guid pguid)
 	{
 		prov.CreateCategory(pguid, typeof(ICategorizer).GUID, out var ppv).ThrowIfFailed();
-		return (ICategorizer)ppv;
+		return (ICategorizer)ppv!;
 	}
 
 	/// <summary>A standard OLE enumerator used by a client to determine the available search objects for a folder.</summary>
@@ -2359,7 +2359,7 @@ public static partial class Shell32
 	public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, params IntPtr[] apidl) where T : class
 	{
 		sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, apidl, typeof(T).GUID, default, out var o).ThrowIfFailed();
-		return (T)o;
+		return (T)o!;
 	}
 
 	/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
@@ -2377,7 +2377,7 @@ public static partial class Shell32
 	public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr[] apidl, out T? ppv, HWND hwndOwner = default) where T : class
 	{
 		var hr = sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, apidl, typeof(T).GUID, default, out var o);
-		ppv = hr.Succeeded ? (T)o : default;
+		ppv = hr.Succeeded ? (T)o! : default;
 		return hr;
 	}
 
