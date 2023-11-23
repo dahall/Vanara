@@ -1,0 +1,16 @@
+﻿<Project>
+  <PropertyGroup Label="VanaraPackage">
+    <Version>4.0.0-beta</Version>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
+    <Authors>David Hall</Authors>
+    <Company>GitHub Community</Company>
+    <Copyright>Copyright © 2017-2023</Copyright>
+    <PackageIcon>Vanara64x64.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
+    <Product>Vanara</Product>
+    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
+    <RootNamespace>Vanara.PInvoke</RootNamespace>
+  </PropertyGroup>
+</Project>
