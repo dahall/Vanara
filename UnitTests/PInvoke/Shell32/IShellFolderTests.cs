@@ -35,8 +35,8 @@ public class IShellFolderTests
 			{
 				pFolder.Item.GetDefaultSearchGUID(out var defGuid).ThrowIfFailed();
 				pFolder.Item.EnumSearches(out var exSrc).ThrowIfFailed();
-				using var pExSrc = ComReleaserFactory.Create(exSrc);
-				var cenum = new IEnumFromCom<EXTRASEARCH>(exSrc.Next, exSrc.Reset);
+				using var pExSrc = ComReleaserFactory.Create(exSrc!);
+				var cenum = new IEnumFromCom<EXTRASEARCH>(exSrc!.Next, exSrc!.Reset);
 				//TestContext.WriteLine(kf);
 				foreach (var item in cenum)
 					TestContext.WriteLine($"{(item.guidSearch == defGuid ? "*" : "")}{item.wszFriendlyName}: {item.wszUrl}");
