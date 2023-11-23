@@ -203,11 +203,6 @@ public readonly struct HBRUSH : IGraphicsObjectHandle
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator HBRUSH(HGDIOBJ h) => new((IntPtr)h);
 
-	/// <summary>Performs an implicit conversion from <see cref="SystemColorIndex"/> to <see cref="HBRUSH"/>.</summary>
-	/// <param name="i">The color index.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HBRUSH(SystemColorIndex i) => new((IntPtr)i);
-
 	/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
 	/// <param name="hMem">The <see cref="HBRUSH"/> instance.</param>
 	/// <returns>The result of the operator.</returns>
@@ -2124,7 +2119,7 @@ public readonly struct HWINSTA : IKernelHandle
 
 /// <summary>Provides a handle to a window or dialog.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
-public struct HWND : IUserHandle
+public readonly struct HWND : IUserHandle
 {
 	private readonly IntPtr handle;
 

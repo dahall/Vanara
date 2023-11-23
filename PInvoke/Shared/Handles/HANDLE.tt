@@ -54,16 +54,14 @@
 	{ "HPROCESS", ("HPROCESS", "Process", "h.Handle" ) },
 }; #>
 using Microsoft.Win32.SafeHandles;
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke;
 
 <# foreach (var (name, inheritance, summaryText) in classes) { #>
 /// <summary><#= summaryText #></summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
-public struct <#= name #> : <#= inheritance #>
+public readonly struct <#= name #> : <#= inheritance #>
 {
 	private readonly IntPtr handle;
 
