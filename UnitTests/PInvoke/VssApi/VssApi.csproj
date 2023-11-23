@@ -7,10 +7,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic">
       <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.24\ref\net6.0\Microsoft.VisualBasic.dll</HintPath>
-	</Reference>
+    </Reference>
     <Reference Include="System.Drawing">
       <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.24\ref\net6.0\System.Drawing.dll</HintPath>
-	</Reference>
+    </Reference>
     <Reference Include="WindowsBase">
       <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.24\ref\net6.0\WindowsBase.dll</HintPath>
     </Reference>

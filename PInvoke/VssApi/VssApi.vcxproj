@@ -132,12 +132,6 @@
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
     </Link>
-    <!--<CustomBuildStep>
-      <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
-      <Outputs>bin\$(Configuration)\$(AssemblyName).$(Version).nupkg</Outputs>
-      <Inputs>$(MSBuildThisFileDirectory)VssApi.nuspec</Inputs>
-      <TreatOutputAsContent>false</TreatOutputAsContent>
-    </CustomBuildStep>-->
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -152,12 +146,6 @@
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
     </Link>
-    <!--<CustomBuildStep>
-      <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
-      <Outputs>bin\$(Configuration)\$(AssemblyName).$(Version).nupkg</Outputs>
-      <Inputs>$(MSBuildThisFileDirectory)VssApi.nuspec</Inputs>
-      <TreatOutputAsContent>false</TreatOutputAsContent>
-    </CustomBuildStep>-->
   </ItemDefinitionGroup>
   <ItemGroup>
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.7.0">
@@ -203,7 +191,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="VssApi.nuspec" />
+    <None Include="Vanara.PInvoke.VssApi.nuspec" />
   </ItemGroup>
   <!--<ItemGroup>
     <None Include="..\VssApiMgd\bin\Debug\net6.0\Vanara.PInvoke.VssApiMgd.dll" />
