@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package >
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <description>$description$</description>
-    <copyright>$copyright$</copyright>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <id>Vanara.PInvoke.VssApi</id>
+    <version>4.0.0-beta</version>
+    <description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</description>
+    <copyright>Copyright © 2017-2023</copyright>
+    <authors>David Hall</authors>
     <tags>pinvoke,vanara,net-extensions,interop,VSS,VssApi,volume shadow copy service</tags>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/dahall/vanara</projectUrl>
-    <icon>Vanara48x48.png</icon>
+    <icon>Vanara64x64.png</icon>
     <readme>pkgreadme.md</readme>
     <repository type="git" url="https://github.com/dahall/Vanara.git" />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <language>en-US</language>
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="Vanara.Core" version="$version$" exclude="Build,Analyzers" />
-        <dependency id="Vanara.PInvoke.Shared" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Vanara.Core" version="4.0.0-beta" exclude="Build,Analyzers" />
+        <dependency id="Vanara.PInvoke.Shared" version="4.0.0-beta" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
@@ -27,10 +25,10 @@
     <file src="bin\Release\net6.0\Vanara.PInvoke.VssApi.dll" target="lib\net6.0" />
     <file src="bin\Release\net6.0\Vanara.PInvoke.VssApi.xml" target="lib\net6.0" />
     <file src="bin\Release\net6.0\Vanara.PInvoke.VssApi.pdb" target="lib\net6.0" />
-    <file src="bin\Release\net6.0\Vanara.PInvoke.VssApiMgd.dll" target="lib\net6.0" />
+    <file src="..\VssApiMgd\bin\Release\net6.0\Vanara.PInvoke.VssApiMgd.dll" target="lib\net6.0" />
     <file src="..\VssApiMgd\bin\Release\net6.0\Vanara.PInvoke.VssApiMgd.xml" target="lib\net6.0" />
     <file src="..\VssApiMgd\bin\Release\net6.0\Vanara.PInvoke.VssApiMgd.pdb" target="lib\net6.0" />
-    <file src="..\..\docs\icons\Vanara48x48.png" target="" />
-    <file src="..\VssApiMgd\pkgreadme.md" target="" />
+    <file src="..\..\docs\icons\Vanara64x64.png" target="Vanara64x64.png" />
+    <file src="..\VssApiMgd\pkgreadme.md" target="pkgreadme.md" />
   </files>
 </package>

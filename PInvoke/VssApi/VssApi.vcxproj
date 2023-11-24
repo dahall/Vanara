@@ -18,6 +18,27 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ProjectExtensions>
+    <SupportedDlls>vssapi.dll</SupportedDlls>
+    <IncludeAssembly>Vanara.PInvoke.VssApiMgd.dll</IncludeAssembly>
+	<UpdateFiles PackageSource="..\..\Package.targets" UpdateProjectFile="false" >
+	  <File Path="AssemblyInfo.cpp">
+	    <Version>VersionAttribute</Version>
+		<Copyright>AssemblyCopyrightAttribute</Copyright>
+		<Product>AssemblyProductAttribute</Product>
+	  </File>
+	  <File Path="Vanara.PInvoke.VssApi.nuspec">
+	    <Version>version</Version>
+		<Copyright>copyright</Copyright>
+		<Authors>authors</Authors>
+		<PackageLicenseExpression>license</PackageLicenseExpression>
+        <PackageIcon>icon</PackageIcon>
+        <PackageProjectUrl>projectUrl</PackageProjectUrl>
+        <RepositoryType>repository|type</RepositoryType>
+        <RepositoryUrl>repository|url</RepositoryUrl>
+	  </File>
+	</UpdateFiles>
+  </ProjectExtensions>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <EnableManagedPackageReferenceSupport>true</EnableManagedPackageReferenceSupport>
@@ -185,6 +206,7 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+	  <PrivateAssets>all</PrivateAssets>
       <!--<CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>-->

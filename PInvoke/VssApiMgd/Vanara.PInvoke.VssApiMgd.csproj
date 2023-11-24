@@ -1,28 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>vssapi.dll</SupportedDlls>
+    <Exclude>true</Exclude>
   </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</Description>
-    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.VssApiMgd</AssemblyName>
-    <PackageId>$(AssemblyName)</PackageId>
-    <PackageTags>pinvoke;vanara;net-extensions;interop;VSS;VssApi;volume shadow copy service</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>Currently implements:
-
-Functions
-IsVolumeSnapshotted ShouldBlockRevert
-
-Structures
-VDS_INTERCONNECT VDS_LUN_INFORMATION VDS_STORAGE_DEVICE_ID_DESCRIPTOR VDS_STORAGE_IDENTIFIER VssDifferencedFile VssDirectedTarget VssPartialFile VssRestoreSubcomponent VssWriterStatus VSS_COMPONENTINFO VSS_DIFF_AREA_PROP VSS_DIFF_VOLUME_PROP VSS_MGMT_OBJECT_PROP VSS_MGMT_OBJECT_UNION VSS_OBJECT_PROP VSS_OBJECT_UNION VSS_PROVIDER_PROP VSS_SNAPSHOT_PROP VSS_VOLUME_PROP VSS_VOLUME_PROTECTION_INFO
-
-Interfaces
-IVssAdmin IVssAdminEx IVssAsync IVssCreateExpressWriterMetadata IVssDifferentialSoftwareSnapshotMgmt IVssDifferentialSoftwareSnapshotMgmt2 IVssDifferentialSoftwareSnapshotMgmt3 IVssEnumMgmtObject IVssEnumObject IVssFileShareSnapshotProvider IVssHardwareSnapshotProvider IVssHardwareSnapshotProviderEx IVssProviderCreateSnapshotSet IVssProviderNotifications IVssSnapshotMgmt IVssSnapshotMgmt2 IVssSoftwareSnapshotProvider
-
-</PackageReleaseNotes>
-    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
