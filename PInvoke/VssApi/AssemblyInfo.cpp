@@ -11,6 +11,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyProductAttribute(L"Vanara")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright © 2017-2023")];
 [assembly:AssemblyKeyFileAttribute(L"..\\..\\Vanara.snk")]
-[assembly:VersionAttribute("4.0.0-beta")];
+[assembly:AssemblyVersionAttribute("4.0.0")];
+[assembly:AssemblyInformationalVersionAttribute("4.0.0-beta")];
 
 [assembly:ComVisible(false)];

@@ -198,7 +198,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Version", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.VirtDisk", "PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj", "{5CE784D4-42B7-4AA7-B2D0-E175C7FB40C8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vanara.PInvoke.VssApi", "PInvoke\VssApi\VssApi.vcxproj", "{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vanara.PInvoke.VssApi", "PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj", "{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{39AEDD51-C627-41B9-96D3-44F481ED4E7C} = {39AEDD51-C627-41B9-96D3-44F481ED4E7C}
 	EndProjectSection

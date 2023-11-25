@@ -18,6 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\VssApiMgd\Vanara.PInvoke.VssApiMgd.csproj" />
-    <ProjectReference Include="..\..\..\PInvoke\VssApi\VssApi.vcxproj" />
+    <ProjectReference Include="..\..\..\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj" />
   </ItemGroup>
 </Project>
