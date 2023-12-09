@@ -1069,6 +1069,7 @@ namespace Vanara.PInvoke
 		/// <summary>Flags for SHGetStockIconInfo.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shgetstockiconinfo
 		[PInvokeData("shellapi.h", MSDNShortId = "c08b1a53-e67c-4ed0-a9c6-d000c448e182")]
+		[Flags]
 		public enum SHGSI : uint
 		{
 			/// <summary>
