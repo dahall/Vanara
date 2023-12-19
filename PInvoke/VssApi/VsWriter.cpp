@@ -22,26 +22,26 @@ DEFINE_COMP_ROLIST(AlternateLocationMappings, GetAlternateLocationMappingCount, 
 
 DEFINE_COMP_ROLIST(NewTargets, GetNewTargetCount, IVssWMFiledesc, GetNewTarget, CVssWMFiledesc)
 
+void CVssComponent::AddDifferencedFile(VssDifferencedFile item)
+{
+    auto llft = item.LastModifyTime.ToFileTime();
+    ::FILETIME ft = *(::FILETIME*)&llft;
+    Utils::ThrowIfFailed(pNative->AddDifferencedFilesByLastModifyTime(SafeWString(item.Path), SafeWString(item.FileSpec), item.Recursive, ft));
+}
+
 VssDifferencedFile CVssComponent::GetDifferencedFilesItem(int i)
 {
     SafeBSTR path, filespec, lsn;
     ::BOOL recur;
     ::FILETIME ft;
     Utils::ThrowIfFailed(pNative->GetDifferencedFile(i, &path, &filespec, &recur, &lsn, &ft));
-    VssDifferencedFile e;
+    VssDifferencedFile e {};
     e.Path = path;
     e.FileSpec = filespec;
     e.Recursive = recur;
     ::Int64 nFT = static_cast<::Int64>(*(long long*)&ft);
     e.LastModifyTime = DateTime::FromFileTime(nFT);
     return e;
-}
-
-void CVssComponent::AddDifferencedFile(VssDifferencedFile item)
-{
-    auto llft = item.LastModifyTime.ToFileTime();
-    ::FILETIME ft = *(::FILETIME*)&llft;
-    Utils::ThrowIfFailed(pNative->AddDifferencedFilesByLastModifyTime(SafeWString(item.Path), SafeWString(item.FileSpec), item.Recursive, ft));
 }
 
 IAppendOnlyList<VssDifferencedFile>^ CVssComponent::DifferencedFiles::get()
@@ -128,7 +128,7 @@ void CVssComponent::GetFailure(Vanara::PInvoke::HRESULT% phr, Vanara::PInvoke::H
 void CVssComponent::GetRollForward(VSS_ROLLFORWARD_TYPE% pRollType, System::String^% pbstrPoint)
 {
     SafeComPtr<::IVssComponentEx*> p = pNative;
-    ::VSS_ROLLFORWARD_TYPE type;
+    ::VSS_ROLLFORWARD_TYPE type{};
     SafeBSTR pt;
     Utils::ThrowIfFailed(p->GetRollForward(&type, &pt));
     pRollType = static_cast<VSS_ROLLFORWARD_TYPE>(type);

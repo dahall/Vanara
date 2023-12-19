@@ -9,7 +9,15 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class VssApiTests
 {
-	static readonly Guid ProviderId = new("{b5946137-7b9f-4925-af80-51abd60b20d5}");
+	static readonly Lazy<Guid> ProviderId = new(() =>
+	{
+		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);
+		backup.InitializeForBackup();
+		VSS_OBJECT_PROP prop = backup.Query(default, VSS_OBJECT_TYPE.VSS_OBJECT_NONE, VSS_OBJECT_TYPE.VSS_OBJECT_PROVIDER).Enumerate().FirstOrDefault();
+		Assert.That(prop.Obj.Prov.m_ProviderId, Is.Not.EqualTo(Guid.Empty));
+		return prop.Obj.Prov.m_ProviderId;
+	});
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	string[] vols;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -26,12 +34,38 @@ public class VssApiTests
 	}
 
 	[Test]
+	public void OpenStreamOnVSSCopy()
+	{
+		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);
+		backup.InitializeForBackup();
+		backup.GatherWriterMetadata();
+		backup.FreeWriterMetadata();
+		backup.SetBackupState(false, true, VSS_BACKUP_TYPE.VSS_BT_FULL, false);
+		var setId = backup.StartSnapshotSet();
+		try
+		{
+			Assert.True(backup.IsVolumeSupported(default, "C:\\"));
+			var snapId = backup.AddToSnapshotSet("C:\\");
+			var props = backup.GetSnapshotProperties(snapId);
+			TestContext.WriteLine(props.m_pwszSnapshotDeviceObject);
+			props.Dispose();
+		}
+		finally
+		{
+			HRESULT hr = backup.DeleteSnapshots(setId, VSS_OBJECT_TYPE.VSS_OBJECT_SNAPSHOT_SET, true, out _, out var badId);
+			if (hr.Failed)
+				TestContext.WriteLine($"Failed to delete snapshot {badId}");
+		}
+		_ = backup.PrepareForBackup();
+	}
+
+	[Test]
 	public void QueryDiffAreasForVolumeTest()
 	{
 		Assert.That(vols, Has.Length.GreaterThan(0));
 
 		IVssSnapshotMgmt imgr = new();
-		var diffmgr = imgr.GetProviderMgmtInterface<IVssDifferentialSoftwareSnapshotMgmt>(ProviderId);
+		var diffmgr = imgr.GetProviderMgmtInterface<IVssDifferentialSoftwareSnapshotMgmt>(ProviderId.Value);
 		foreach (var vol in vols)
 		{
 			TestContext.WriteLine($"Volume: {vol}");
@@ -65,9 +99,14 @@ public class VssApiTests
 	}
 
 	[Test]
-	public void Test()
+	public void TestBackupSnapshots()
 	{
-		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents vss), ResultIs.Successful);
-		vss.InitializeForBackup();
+		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);
+		backup.InitializeForBackup();
+		foreach (VSS_OBJECT_PROP prop in backup.Query(default, VSS_OBJECT_TYPE.VSS_OBJECT_NONE, VSS_OBJECT_TYPE.VSS_OBJECT_SNAPSHOT).Enumerate())
+		{
+			TestContext.WriteLine($"Snapshot: {prop.Obj.Snap.m_pwszOriginalVolumeName} ({prop.Obj.Snap.m_SnapshotId})");
+			prop.Obj.Snap.Dispose();
+		}
 	}
 }

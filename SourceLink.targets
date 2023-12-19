@@ -12,7 +12,7 @@
     <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);NETSDK1105;NETSDK1138</MSBuildWarningsAsMessages>
   </PropertyGroup>
   <ItemGroup Condition="!$(MSBuildProjectDirectory.Contains('UnitTests'))" >
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
   </ItemGroup>
 </Project>

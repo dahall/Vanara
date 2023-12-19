@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Vanara.PInvoke.VssApi</id>
-    <version>4.0.0-beta</version>
+    <version>$version$</version>
     <description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</description>
     <copyright>Copyright © 2017-2023</copyright>
     <authors>David Hall</authors>
@@ -15,20 +15,51 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <language>en-US</language>
     <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Vanara.Core" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Vanara.PInvoke.Shared" version="$version$" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net48">
+        <dependency id="Vanara.Core" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Vanara.PInvoke.Shared" version="$version$" exclude="Build,Analyzers" />
+      </group>
       <group targetFramework="net6.0">
-        <dependency id="Vanara.Core" version="4.0.0-beta" exclude="Build,Analyzers" />
-        <dependency id="Vanara.PInvoke.Shared" version="4.0.0-beta" exclude="Build,Analyzers" />
+        <dependency id="Vanara.Core" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Vanara.PInvoke.Shared" version="$version$" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0">
+        <dependency id="Vanara.Core" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Vanara.PInvoke.Shared" version="$version$" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="Vanara.Core" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Vanara.PInvoke.Shared" version="$version$" exclude="Build,Analyzers" />
       </group>
     </dependencies>
+    <releaseNotes></releaseNotes>
   </metadata>
   <files>
-    <file src="bin\Release\net6.0\Vanara.PInvoke.VssApi.dll" target="lib\net6.0" />
-    <file src="bin\Release\net6.0\Vanara.PInvoke.VssApi.xml" target="lib\net6.0" />
-    <file src="bin\Release\net6.0\Vanara.PInvoke.VssApi.pdb" target="lib\net6.0" />
-    <file src="..\VssApiMgd\bin\Release\net6.0\Vanara.PInvoke.VssApiMgd.dll" target="lib\net6.0" />
-    <file src="..\VssApiMgd\bin\Release\net6.0\Vanara.PInvoke.VssApiMgd.xml" target="lib\net6.0" />
-    <file src="..\VssApiMgd\bin\Release\net6.0\Vanara.PInvoke.VssApiMgd.pdb" target="lib\net6.0" />
+    <file src="bin\Release\net45\Win32\Vanara.PInvoke.VssApi*.???" target="lib\net45" />
+    <file src="bin\Release\net45\Win32\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x86\lib\net45" />
+    <file src="bin\Release\net45\x64\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x64\lib\net45" />
+
+    <file src="bin\Release\net48\Win32\Vanara.PInvoke.VssApi*.???" target="lib\net48" />
+    <file src="bin\Release\net48\Win32\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x86\lib\net48" />
+    <file src="bin\Release\net48\x64\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x64\lib\net48" />
+
+    <file src="bin\Release\net6.0\Win32\Vanara.PInvoke.VssApi*.???" target="lib\net6.0" />
+    <file src="bin\Release\net6.0\Win32\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x86\lib\net6.0" />
+    <file src="bin\Release\net6.0\x64\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x64\lib\net6.0" />
+
+    <file src="bin\Release\net7.0\Win32\Vanara.PInvoke.VssApi*.???" target="lib\net7.0" />
+    <file src="bin\Release\net7.0\Win32\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x86\lib\net7.0" />
+    <file src="bin\Release\net7.0\x64\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x64\lib\net7.0" />
+
+    <file src="bin\Release\netcoreapp3.1\Win32\Vanara.PInvoke.VssApi*.???" target="lib\netcoreapp3.1" />
+    <file src="bin\Release\netcoreapp3.1\Win32\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x86\lib\netcoreapp3.1" />
+    <file src="bin\Release\netcoreapp3.1\x64\Vanara.PInvoke.VssApi*.???" target="runtimes\win10-x64\lib\netcoreapp3.1" />
+
     <file src="..\..\docs\icons\Vanara64x64.png" target="Vanara64x64.png" />
-    <file src="..\VssApiMgd\pkgreadme.md" target="pkgreadme.md" />
+    <file src="pkgreadme.md" target="pkgreadme.md" />
   </files>
 </package>

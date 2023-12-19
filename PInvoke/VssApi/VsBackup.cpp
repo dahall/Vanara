@@ -6,7 +6,7 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
 
     Vanara::PInvoke::VssApi::VSS_COMPONENTINFO CVssWMComponent::GetComponentInfo() {
         RefreshInfo();
-        return Marshal::PtrToStructure<Vanara::PInvoke::VssApi::VSS_COMPONENTINFO>(IntPtr((void*)pInfo));
+        return (Vanara::PInvoke::VssApi::VSS_COMPONENTINFO)Marshal::PtrToStructure(IntPtr((void*)pInfo), Vanara::PInvoke::VssApi::VSS_COMPONENTINFO::typeid);
     }
 
     void CVssExamineWriterMetadata::RefreshRestoreMethod()
@@ -41,12 +41,21 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
         Vanara::PInvoke::VssApi::VSS_SOURCE_TYPE% pSource)
     {
         ::VSS_ID inst, writer;
-        SafeBSTR name;
+        SafeBSTR name, wrName;
         ::VSS_USAGE_TYPE use;
         ::VSS_SOURCE_TYPE src;
-        Utils::ThrowIfFailed(pNative->GetIdentity(&inst, &writer, &name, &use, &src));
+        ::IVssExamineWriterMetadataEx* pNativeEx = nullptr;
+        if (pNative->QueryInterface(::IID_IVssExamineWriterMetadataEx, (void**)&pNativeEx) >= 0)
+        {
+            Utils::ThrowIfFailed(pNativeEx->GetIdentityEx(&inst, &writer, &wrName, &name, &use, &src));
+        }
+        else
+        {
+            Utils::ThrowIfFailed(pNative->GetIdentity(&inst, &writer, &name, &use, &src));
+        }
         pidInstance = Utils::FromGUID(inst);
         pidWriter = Utils::FromGUID(writer);
+        pbstrWriterName = wrName;
         pbstrInstanceName = name;
         pUsage = static_cast<Vanara::PInvoke::VssApi::VSS_USAGE_TYPE>(use);
         pSource = static_cast<Vanara::PInvoke::VssApi::VSS_SOURCE_TYPE>(src);

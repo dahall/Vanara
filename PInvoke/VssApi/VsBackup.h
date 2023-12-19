@@ -31,9 +31,9 @@ namespace Vanara {
 					return f##prop; } }
 
 				DEFINE_WM_COMP_ROLIST(DatabaseFiles, IVssWMFiledesc, cDatabases, GetDatabaseFile, CVssWMFiledesc)
-					DEFINE_WM_COMP_ROLIST(Files, IVssWMFiledesc, cFileCount, GetFile, CVssWMFiledesc)
-					DEFINE_WM_COMP_ROLIST(DatabaseLogFiles, IVssWMFiledesc, cLogFiles, GetDatabaseLogFile, CVssWMFiledesc)
-					DEFINE_WM_COMP_ROLIST(Dependencies, IVssWMDependency, cDependencies, GetDependency, CVssWMDependency)
+				DEFINE_WM_COMP_ROLIST(Files, IVssWMFiledesc, cFileCount, GetFile, CVssWMFiledesc)
+				DEFINE_WM_COMP_ROLIST(DatabaseLogFiles, IVssWMFiledesc, cLogFiles, GetDatabaseLogFile, CVssWMFiledesc)
+				DEFINE_WM_COMP_ROLIST(Dependencies, IVssWMDependency, cDependencies, GetDependency, CVssWMDependency)
 
 			private:
 				::VSS_COMPONENTINFO* pInfo;
@@ -80,7 +80,7 @@ namespace Vanara {
 					SafeComPtr<::IVssBackupComponentsEx3*> p = pNative;
 					Utils::ThrowIfFailed(p->AddSnapshotToRecoverySet(SmartGuid(snapshotId), dwFlags, SafeWString(pwszDestinationVolume)));
 				}
-				virtual Guid AddToSnapshotSet(String^ pwszVolumeName, Guid ProviderId)
+				virtual Guid AddToSnapshotSet(String^ pwszVolumeName, [System::Runtime::InteropServices::Optional] Guid ProviderId)
 				{
 					VSS_ID id;
 					Utils::ThrowIfFailed(pNative->AddToSnapshotSet(SafeWString(pwszVolumeName), SmartGuid(ProviderId), &id));
@@ -100,13 +100,14 @@ namespace Vanara {
 					Utils::ThrowIfFailed(p->BreakSnapshotSetEx(SmartGuid(SnapshotSetID), static_cast<::VSS_HARDWARE_OPTIONS>(dwBreakFlags), &pa));
 					return mgd_cast(IVssAsync, pa);
 				}
-				virtual void DeleteSnapshots(Guid SourceObjectId, VSS_OBJECT_TYPE eSourceObjectType, Boolean bForceDelete, [System::Runtime::InteropServices::Out] Int32% plDeletedSnapshots, [System::Runtime::InteropServices::Out] Guid% pNondeletedSnapshotID)
+				virtual HRESULT DeleteSnapshots(Guid SourceObjectId, VSS_OBJECT_TYPE eSourceObjectType, Boolean bForceDelete, [System::Runtime::InteropServices::Out] Int32% plDeletedSnapshots, [System::Runtime::InteropServices::Out] Guid% pNondeletedSnapshotID)
 				{
-					LONG dSnap;
-					GUID sId;
-					Utils::ThrowIfFailed(pNative->DeleteSnapshots(SmartGuid(SourceObjectId), static_cast<::VSS_OBJECT_TYPE>(eSourceObjectType), bForceDelete, &dSnap, &sId));
+					LONG dSnap = 0;
+					GUID sId = { };
+					auto hr = pNative->DeleteSnapshots(SmartGuid(SourceObjectId), static_cast<::VSS_OBJECT_TYPE>(eSourceObjectType), bForceDelete, &dSnap, &sId);
 					plDeletedSnapshots = dSnap;
 					pNondeletedSnapshotID = Utils::FromGUID(sId);
+					return hr;
 				}
 				virtual void DisableWriterClasses([In] array<Guid>^ rgWriterClassId)
 				{
@@ -173,11 +174,14 @@ namespace Vanara {
 					Utils::ThrowIfFailed(pNative->GatherWriterStatus(&pa));
 					return mgd_cast(IVssAsync, pa);
 				}
-				virtual void GetRootAndLogicalPrefixPaths(String^ pwszFilePath, [System::Runtime::InteropServices::Out] String^% ppwszRootPath, [System::Runtime::InteropServices::Out] String^% ppwszLogicalPrefix, [System::Runtime::InteropServices::Optional] Boolean bNormalizeFQDNforRootPath)
+				virtual void GetRootAndLogicalPrefixPaths(String^ pwszFilePath, [System::Runtime::InteropServices::Out] String^% ppwszRootPath,
+					[System::Runtime::InteropServices::Out] String^% ppwszLogicalPrefix, [System::Runtime::InteropServices::Optional] Boolean bNormalizeFQDNforRootPath)
 				{
 					SafeComPtr<::IVssBackupComponentsEx4*> p = pNative;
 					VSS_PWSZ rPath, lPref;
 					Utils::ThrowIfFailed(p->GetRootAndLogicalPrefixPaths(SafeWString(pwszFilePath), &rPath, &lPref, bNormalizeFQDNforRootPath));
+					ppwszRootPath = Marshal::PtrToStringUni(IntPtr(rPath));
+					ppwszLogicalPrefix = Marshal::PtrToStringUni(IntPtr(lPref));
 				}
 				virtual Guid GetSessionId()
 				{
@@ -190,7 +194,7 @@ namespace Vanara {
 				{
 					::VSS_SNAPSHOT_PROP prop;
 					Utils::ThrowIfFailed(pNative->GetSnapshotProperties(SmartGuid(SnapshotId), &prop));
-					return Marshal::PtrToStructure<VSS_SNAPSHOT_PROP>(IntPtr(&prop));
+					return (VSS_SNAPSHOT_PROP)Marshal::PtrToStructure(IntPtr(&prop), VSS_SNAPSHOT_PROP::typeid);
 				}
 				virtual IVssAsync^ ImportSnapshots()
 				{
@@ -208,7 +212,7 @@ namespace Vanara {
 				}
 				virtual Boolean IsVolumeSupported(Guid ProviderId, String^ pwszVolumeName)
 				{
-					::BOOL b;
+					::BOOL b = 0;
 					Utils::ThrowIfFailed(pNative->IsVolumeSupported(SmartGuid(ProviderId), SafeWString(pwszVolumeName), &b));
 					return b;
 				}
@@ -357,8 +361,8 @@ namespace Vanara {
 					return f##prop; } }
 
 				DEFINE_BC_ROLIST(WriterComponents, IVssWriterComponentsExt^, GetWriterComponentsCount)
-					DEFINE_BC_ROLIST(WriterMetadata, IVssExamineWriterMetadata^, GetWriterMetadataCount)
-					DEFINE_BC_ROLIST(WriterStatus, VssWriterStatus, GetWriterStatusCount)
+				DEFINE_BC_ROLIST(WriterMetadata, IVssExamineWriterMetadata^, GetWriterMetadataCount)
+				DEFINE_BC_ROLIST(WriterStatus, VssWriterStatus, GetWriterStatusCount)
 			};
 
 			value struct VSS_RESTORE_METHOD

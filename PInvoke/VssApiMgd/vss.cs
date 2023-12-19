@@ -1966,6 +1966,13 @@ public struct VSS_PROVIDER_PROP
 
 	/// <summary>Class identifier of the component registered in the local machine's COM catalog.</summary>
 	public Guid m_ClassId;
+
+	/// <summary>Releases unmanaged resources.</summary>
+	public void Dispose()
+	{
+		m_pwszProviderName.Free();
+		m_pwszProviderVersion.Free();
+	}
 }
 
 /// <summary>The <c>VSS_SNAPSHOT_PROP</c> structure contains the properties of a shadow copy or shadow copy set.</summary>
@@ -2066,4 +2073,15 @@ public struct VSS_SNAPSHOT_PROP
 
 	/// <summary>Current shadow copy creation status. See VSS_SNAPSHOT_STATE.</summary>
 	public VSS_SNAPSHOT_STATE m_eStatus;
+
+	/// <summary>Releases unmanaged resources.</summary>
+	public void Dispose()
+	{
+		m_pwszSnapshotDeviceObject.Free();
+		m_pwszOriginalVolumeName.Free();
+		m_pwszOriginatingMachine.Free();
+		m_pwszServiceMachine.Free();
+		m_pwszExposedName.Free();
+		m_pwszExposedPath.Free();
+	}
 }

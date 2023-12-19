@@ -635,7 +635,7 @@ public interface IVssBackupComponents
 	// https://docs.microsoft.com/en-us/windows/win32/api/vsbackup/nf-vsbackup-ivssbackupcomponents-deletesnapshots HRESULT
 	// DeleteSnapshots( [in] VSS_ID SourceObjectId, [in] VSS_OBJECT_TYPE eSourceObjectType, [in] BOOL bForceDelete, [out] LONG
 	// *plDeletedSnapshots, [out] VSS_ID *pNondeletedSnapshotID );
-	void DeleteSnapshots(Guid SourceObjectId, VSS_OBJECT_TYPE eSourceObjectType, bool bForceDelete,
+	HRESULT DeleteSnapshots(Guid SourceObjectId, VSS_OBJECT_TYPE eSourceObjectType, bool bForceDelete,
 		out int plDeletedSnapshots, out Guid pNondeletedSnapshotID);
 
 	/// <summary>The <c>DisableWriterClasses</c> method prevents a specific class of writers from receiving any events.</summary>
