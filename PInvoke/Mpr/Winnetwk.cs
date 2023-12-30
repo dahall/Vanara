@@ -3150,7 +3150,9 @@ public static partial class Mpr
 		/// <param name="context">
 		/// The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.
 		/// </param>
+#pragma warning disable SYSLIB0051 // Type or member is obsolete
 		protected NetworkProviderException(SerializationInfo info, StreamingContext context) : base(info, context)
+#pragma warning restore SYSLIB0051 // Type or member is obsolete
 		{
 			Description = info.GetString("Description") ?? string.Empty;
 			Provider = info.GetString("Provider") ?? string.Empty;
@@ -3190,6 +3192,9 @@ public static partial class Mpr
 		///   <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*" />
 		///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter" />
 		/// </PermissionSet>
+#if NET8_0_OR_GREATER
+		[Obsolete]
+#endif
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			if (info is null) throw new ArgumentNullException(nameof(info));

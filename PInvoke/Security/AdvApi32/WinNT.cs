@@ -3925,7 +3925,7 @@ public static partial class AdvApi32
 		public uint GroupCount;
 
 		/// <summary>Specifies an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
-		[MarshalAs(UnmanagedType.ByValArray)]
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 		public SID_AND_ATTRIBUTES[] Groups;
 
 		/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct.</summary>
@@ -4141,7 +4141,7 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray)]
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 		public LUID_AND_ATTRIBUTES[] Privileges;
 
 		/// <summary>Initializes a new instance of the <see cref="TOKEN_PRIVILEGES"/> structure with a single LUID_AND_ATTRIBUTES value.</summary>

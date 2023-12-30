@@ -43,7 +43,9 @@ public class BadValueException : Exception
 	/// <param name="context">
 	/// The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.
 	/// </param>
+#pragma warning disable SYSLIB0051 // Type or member is obsolete
 	protected BadValueException(SerializationInfo info, StreamingContext context) : base(info, context)
+#pragma warning restore SYSLIB0051 // Type or member is obsolete
 	{
 	}
 }
@@ -113,7 +115,9 @@ internal class ClaimValueDictionary : Dictionary<string, ClaimValue>
 	/// serialized stream associated with the <see cref="T:System.Collections.Generic.Dictionary`2"/>.
 	/// </param>
 	protected ClaimValueDictionary(SerializationInfo info, StreamingContext context)
+#pragma warning disable SYSLIB0051 // Type or member is obsolete
 				: base(info, context)
+#pragma warning restore SYSLIB0051 // Type or member is obsolete
 	{
 	}
 
@@ -135,7 +139,7 @@ internal class ClaimValueDictionary : Dictionary<string, ClaimValue>
 			i++;
 		}
 
-		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] claimOps = new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[0];
+		AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] claimOps = [];
 		if (claimInfo.AttributeCount != 0)
 		{
 			claimOps = new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[claimInfo.AttributeCount];
@@ -165,13 +169,13 @@ internal class ClaimValueDictionary : Dictionary<string, ClaimValue>
 	/// A <see cref="T:System.Runtime.Serialization.StreamingContext"/> structure that contains the source and destination of the
 	/// serialized stream associated with the <see cref="T:System.Collections.Generic.Dictionary`2"/> instance.
 	/// </param>
+#if NET8_0_OR_GREATER
+	[Obsolete]
+#endif
 	public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	{
 		base.GetObjectData(info, context);
 
-		if (info != null)
-		{
-			info.AddValue("claimDefnType", claimDefnType);
-		}
+		info?.AddValue("claimDefnType", claimDefnType);
 	}
 }

@@ -189,7 +189,9 @@ public static partial class InteropExtensions
 	public static bool IsMarshalable(this Type type)
 	{
 		Type t = type.IsNullable() ? type.GetGenericArguments()[0] : type;
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
 		return t.IsSerializable || VanaraMarshaler.CanMarshal(t, out _) || t.IsBlittable();
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 	}
 
 	/// <summary>Determines whether this type is nullable (derived from <see cref="Nullable{T}"/>).</summary>
@@ -827,6 +829,7 @@ public static partial class InteropExtensions
 					{
 						return GetBlittable(Nullable.GetUnderlyingType(destType)!, out bytesRead);
 					}
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
 					if (destType.IsSerializable)
 					{
 						using var mem = new MemoryStream(ptr.ToByteArray((int)allocatedBytes - offset, offset, allocatedBytes)!);
@@ -834,6 +837,7 @@ public static partial class InteropExtensions
 						bytesRead = (int)mem.Position;
 						return ret;
 					}
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 				}
 				catch (ArgumentOutOfRangeException)
 				{
@@ -1190,6 +1194,7 @@ public static partial class InteropExtensions
 		}
 
 		// Handle binary serialization
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
 		if (valType.IsSerializable)
 		{
 			using var str = new NativeMemoryStream();
@@ -1201,6 +1206,7 @@ public static partial class InteropExtensions
 			str.Pointer.CopyTo(ptr.Offset(offset), str.Length);
 			return (int)str.Length;
 		}
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 
 		throw new ArgumentException("Unable to convert object to its binary format.");
 

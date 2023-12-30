@@ -1852,7 +1852,9 @@ public static partial class Shell32
 			}
 
 			using MemoryStream mem = new(bytes, false) { Position = guidBytes.Length };
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
 			return new BinaryFormatter() { AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple }.Deserialize(mem);
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 
 			static bool Equals(byte[] bytes, byte[] guid, int length)
 			{

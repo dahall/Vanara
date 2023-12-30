@@ -24,7 +24,7 @@ AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint Accessibl
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="Accessibility" />
   </ItemGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) ">
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) Or $(TargetFramework.StartsWith('net8')) ">
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
