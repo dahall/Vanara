@@ -125,7 +125,7 @@ public class WindowClass
 
 	/// <summary>Gets a handle to the brush representing the standard MDI window background (COLOR_APPWORKSPACE).</summary>
 	/// <value>The standard MDI window background brush handle.</value>
-	public static HBRUSH MdiWindowBrush => (HBRUSH)(SystemColorIndex.COLOR_APPWORKSPACE + 1);
+	public static HBRUSH MdiWindowBrush => (HBRUSH)(IntPtr)(SystemColorIndex.COLOR_APPWORKSPACE + 1);
 
 	/// <summary>
 	/// Gets a handle to a null brush (GetStockObject(NULL_BRUSH)). Use this for the background of non-displayable windows or to prevent
@@ -144,7 +144,7 @@ public class WindowClass
 
 	/// <summary>Gets a handle to the brush representing the standard window background (COLOR_WINDOW).</summary>
 	/// <value>The standard window background brush handle.</value>
-	public static HBRUSH WindowBrush => (HBRUSH)(SystemColorIndex.COLOR_WINDOW + 1);
+	public static HBRUSH WindowBrush => (HBRUSH)(IntPtr)(SystemColorIndex.COLOR_WINDOW + 1);
 
 	/// <summary>Gets the windows class name.</summary>
 	public string ClassName => wc.lpszClassName;

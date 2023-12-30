@@ -299,7 +299,7 @@ public sealed class TemporaryDirectory : IDisposable
 				CreateTreeCore(folder, level, false, randomizedDates, readOnly, hidden);
 		}
 
-		Assert.AreEqual(level, folderCount, "The number of folders does not equal level argument, but is expected to.");
+		Assert.That(level, Is.EqualTo(folderCount), "The number of folders does not equal level argument, but is expected to.");
 
 		return dirInfo;
 	}

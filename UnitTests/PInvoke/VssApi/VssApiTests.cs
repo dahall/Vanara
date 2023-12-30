@@ -44,7 +44,7 @@ public class VssApiTests
 		var setId = backup.StartSnapshotSet();
 		try
 		{
-			Assert.True(backup.IsVolumeSupported(default, "C:\\"));
+			Assert.That(backup.IsVolumeSupported(default, "C:\\"), Is.True);
 			var snapId = backup.AddToSnapshotSet("C:\\");
 			var props = backup.GetSnapshotProperties(snapId);
 			TestContext.WriteLine(props.m_pwszSnapshotDeviceObject);

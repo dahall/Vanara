@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
-    <TargetFrameworks>net45;net48;net6.0;net7.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <Version>4.0.0-beta2</Version>
+    <TargetFrameworks>net45;net48;net6.0;net7.0;net8.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -20,9 +21,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <Import Project="Package.targets" />
-  <Import Condition="('$(MSBuildProjectExtension)'=='.csproj' Or '$(MSBuildProjectExtension)'=='.vbproj') And !$(MSBuildProjectDirectory.Contains('UnitTests'))" Project="$(MSBuildThisFileDirectory)SourceLink.targets"/>
+  <Import Condition="('$(MSBuildProjectExtension)'=='.csproj' Or '$(MSBuildProjectExtension)'=='.vbproj') And !$(MSBuildProjectDirectory.Contains('UnitTests'))" Project="$(MSBuildThisFileDirectory)SourceLink.targets" />
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-    <Compile Include="$(MSBuildThisFileDirectory)AsmDef.cs" Link="AsmDef.cs" Condition="'$(MSBuildProjectExtension)'=='.csproj'"/>
+    <Compile Include="$(MSBuildThisFileDirectory)AsmDef.cs" Link="AsmDef.cs" Condition="'$(MSBuildProjectExtension)'=='.csproj'" />
   </ItemGroup>
 </Project>
