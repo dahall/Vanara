@@ -80,11 +80,12 @@ public static partial class ControlExtension
 	/// <returns>Culture defined direction of text for this control.</returns>
 	public static RightToLeft GetRightToLeftProperty(this Control ctrl)
 	{
-		while (ctrl != null)
+		Control? c = ctrl;
+		while (c != null)
 		{
-			if (ctrl.RightToLeft != RightToLeft.Inherit)
-				return ctrl.RightToLeft;
-			ctrl = ctrl.Parent;
+			if (c.RightToLeft != RightToLeft.Inherit)
+				return c.RightToLeft;
+			c = c.Parent;
 		}
 		return RightToLeft.No;
 	}

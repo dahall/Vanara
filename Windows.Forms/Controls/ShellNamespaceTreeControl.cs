@@ -872,7 +872,7 @@ public class ShellNamespaceTreeControl : Control, Shell32.IServiceProvider, INam
 
 		// Initialize and capture child window handles
 		var rect = BorderStyle == BorderStyle.None ? Bounds : Rectangle.Inflate(Bounds, -1, -1);
-		pCtrl.Initialize(Parent.Handle, rect, style).ThrowIfFailed();
+		pCtrl.Initialize(Parent!.Handle, rect, style).ThrowIfFailed();
 		var sb = new StringBuilder(512);
 		var srect = (RECT)RectangleToScreen(rect);
 		hWndNsTreeCtrl = User32.EnumChildWindows(Parent.Handle).First(h => IsClass(h, "NamespaceTreeControl"));

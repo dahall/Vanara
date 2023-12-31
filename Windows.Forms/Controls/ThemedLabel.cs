@@ -227,7 +227,7 @@ public class ThemedLabel : Label
 							else
 							{
 								// If we get here, then "Show accent color on title bars" has been disabled in Settings.
-								if (Form.ActiveForm.Equals(FindForm())) textColor = SystemColors.ControlText;
+								if (Form.ActiveForm!.Equals(FindForm())) textColor = SystemColors.ControlText;
 								else textColor = SystemColors.GrayText;
 							}
 						}

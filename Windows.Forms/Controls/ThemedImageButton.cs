@@ -99,13 +99,15 @@ public class ThemedImageDraw : CustomDrawBase
 	public override string Text
 	{
 		get => base.Text;
+#pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
 		set => base.Text = value;
+#pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
 	}
 
 	/// <summary>Gets or sets the tool tip text.</summary>
 	/// <value>The tool tip text.</value>
 	[DefaultValue(defaultToolTip), Category("Appearance")]
-	public string ToolTipText
+	public string? ToolTipText
 	{
 		get => toolTip.GetToolTip(this);
 		set => toolTip.SetToolTip(this, value);
@@ -217,13 +219,13 @@ public class ThemedImageDraw : CustomDrawBase
 						var translateRect = bounds;
 						graphics.TranslateTransform(-bounds.Left, -bounds.Top);
 						var pe = new PaintEventArgs(graphics, translateRect);
-						InvokePaintBackground(Parent, pe);
-						InvokePaint(Parent, pe);
+						InvokePaintBackground(Parent!, pe);
+						InvokePaint(Parent!, pe);
 						graphics.ResetTransform();
 						graphics.EndContainer(g);
 					}
 					else
-						graphics.Clear(Parent.BackColor);
+						graphics.Clear(Parent!.BackColor);
 					if (forceDisabled)
 						ControlPaint.DrawImageDisabled(graphics, ImageList.Images[idx], 0, 0, Color.Transparent);
 					else

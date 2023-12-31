@@ -420,7 +420,7 @@ public class CollapsiblePanel : Control, ISupportInitialize
 		public override void Layout(PaintEventArgs e)
 		{
 			headerImages.Images.Clear();
-			headerImages.Images.AddRange(Control.CustomStyle.ExpandoImages);
+			headerImages.Images.AddRange(Control.CustomStyle.ExpandoImages!);
 		}
 
 		public override void Paint(PaintEventArgs e)

@@ -315,7 +315,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	/// </PermissionSet>
 	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	[Browsable(false), ReadOnly(true)]
-	public new object SelectedItem { get => base.SelectedItem; set { } }
+	public new object SelectedItem { get => base.SelectedItem!; set { } }
 
 	/// <summary>Gets or sets the text that is selected in the editable portion of a <see cref="T:System.Windows.Forms.ComboBox"/>.</summary>
 	/// <value></value>
@@ -347,7 +347,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	/// <exception cref="T:System.InvalidOperationException">The assigned value is null or the empty string ("").</exception>
 	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	[Browsable(false), ReadOnly(true)]
-	public new object SelectedValue { get => base.SelectedValue; set { } }
+	public new object SelectedValue { get => base.SelectedValue!; set { } }
 
 	/// <summary>Gets or sets the number of characters selected in the editable portion of the combo box.</summary>
 	/// <value></value>
@@ -416,7 +416,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	/// </PermissionSet>
 	public new string Text
 	{
-		get => base.Items.Count == 0 ? string.Empty : base.Items[0].ToString()!;
+		get => base.Items.Count == 0 ? string.Empty : base.Items[0]!.ToString()!;
 		set
 		{
 			// Get toolTip value

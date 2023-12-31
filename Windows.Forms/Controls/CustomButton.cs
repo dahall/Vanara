@@ -86,8 +86,8 @@ public class CustomButton : CustomDrawBase
 		var translateRect = Bounds;
 		pevent.Graphics.TranslateTransform(-Left, -Top);
 		var pe = new PaintEventArgs(pevent.Graphics, translateRect);
-		InvokePaintBackground(Parent, pe);
-		InvokePaint(Parent, pe);
+		InvokePaintBackground(Parent!, pe);
+		InvokePaint(Parent!, pe);
 		pevent.Graphics.ResetTransform();
 		pevent.Graphics.EndContainer(g);
 
@@ -213,9 +213,9 @@ public class CustomButton : CustomDrawBase
 
 internal class RoundCornersEditor : UITypeEditor
 {
-	public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	public override object? EditValue(ITypeDescriptorContext? context, IServiceProvider provider, object? value)
 	{
-		if (!(value is Corners) || provider == null)
+		if (value is not Corners || provider == null)
 			return value;
 
 		var edSvc = (IWindowsFormsEditorService?)provider.GetService(typeof(IWindowsFormsEditorService));
@@ -224,7 +224,7 @@ internal class RoundCornersEditor : UITypeEditor
 		var cornerFlags = Corners.None;
 		using (var lb = new CheckedListBox { BorderStyle = BorderStyle.None, CheckOnClick = true })
 		{
-			lb.Items.Add("TopLeft", (((CustomButton)context.Instance).RoundCorners & Corners.TopLeft) == Corners.TopLeft);
+			lb.Items.Add("TopLeft", (((CustomButton)context.Instance!).RoundCorners & Corners.TopLeft) == Corners.TopLeft);
 			lb.Items.Add("TopRight", (((CustomButton)context.Instance).RoundCorners & Corners.TopRight) == Corners.TopRight);
 			lb.Items.Add("BottomLeft", (((CustomButton)context.Instance).RoundCorners & Corners.BottomLeft) == Corners.BottomLeft);
 			lb.Items.Add("BottomRight", (((CustomButton)context.Instance).RoundCorners & Corners.BottomRight) == Corners.BottomRight);
@@ -237,5 +237,5 @@ internal class RoundCornersEditor : UITypeEditor
 		return cornerFlags;
 	}
 
-	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) => UITypeEditorEditStyle.DropDown;
+	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext? context) => UITypeEditorEditStyle.DropDown;
 }

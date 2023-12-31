@@ -26,7 +26,7 @@ public class EnumComboBox : CustomComboBox
 
 	/// <summary>Gets or sets the data source for this <see cref="T:System.Windows.Forms.ComboBox"/>.</summary>
 	[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public new object DataSource { get => base.DataSource; set => base.DataSource = value; }
+	public new object DataSource { get => base.DataSource!; set => base.DataSource = value; }
 
 	/// <summary>Gets or sets the property to display for this <see cref="T:System.Windows.Forms.ListControl"/>.</summary>
 	[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -162,7 +162,7 @@ public class EnumComboBox : CustomComboBox
 		var c = checkListBox?.CheckedItems.Count ?? 0;
 		var items = new string?[c];
 		for (var i = 0; i < c; i++)
-			items[i] = checkListBox?.CheckedItems[i].ToString();
+			items[i] = checkListBox?.CheckedItems[i]!.ToString();
 		return string.Join(", ", items);
 	}
 

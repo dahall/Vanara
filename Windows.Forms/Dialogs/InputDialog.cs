@@ -341,7 +341,7 @@ public class InputDialog : CommonDialog
 				// Get value from control
 				var c = table.Controls[$"input{i}"];
 				var box = c as CheckBox;
-				var val = box?.Checked ?? ConvertFromStr(c.Text, itemType);
+				var val = box?.Checked ?? ConvertFromStr(c!.Text, itemType);
 
 				// Apply value to dataObj
 				if (item == null)
@@ -435,7 +435,7 @@ public class InputDialog : CommonDialog
 			if (Image != null)
 			{
 				table.Controls.Add(new PictureBox { Image = Image, Size = Image.Size, Margin = new Padding(0, 0, 7, 0), TabStop = false }, 0, 0);
-				table.SetRowSpan(table.GetControlFromPosition(0, 0), table.RowCount);
+				table.SetRowSpan(table.GetControlFromPosition(0, 0)!, table.RowCount);
 			}
 
 			var hrow = 0;

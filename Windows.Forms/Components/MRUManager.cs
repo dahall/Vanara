@@ -119,7 +119,7 @@ public class MenuStripMRUManager : MRUManager
 			fileMenuItemClickAction = fileMenuItemClick;
 			foreach (var f in files)
 			{
-				RecentFileMenuItem.DropDownItems.Add(new ToolStripMenuItem(CompactPath(RecentFileMenuItem.GetCurrentParent().CreateGraphics(), f, RecentFileMenuItem.Font, RecentFileMenuItem.Width), menuImageCallback?.Invoke(f) as Image, OnFileMenuItemClick) { Tag = f });
+				RecentFileMenuItem.DropDownItems.Add(new ToolStripMenuItem(CompactPath(RecentFileMenuItem.GetCurrentParent()!.CreateGraphics(), f, RecentFileMenuItem.Font, RecentFileMenuItem.Width), menuImageCallback?.Invoke(f) as Image, OnFileMenuItemClick) { Tag = f });
 			}
 
 			if (!clearListMenuItemOnTop && !string.IsNullOrEmpty(clearListMenuItemText))
@@ -146,7 +146,7 @@ public class MenuStripMRUManager : MRUManager
 		private void OnFileMenuItemClick(object? sender, EventArgs e)
 		{
 			if (sender is ToolStripMenuItem item)
-				fileMenuItemClickAction?.Invoke(item.Tag.ToString()!);
+				fileMenuItemClickAction?.Invoke(item.Tag?.ToString()!);
 		}
 	}
 }

@@ -106,7 +106,9 @@ public partial class IPAddressBox : Control
 	public override string Text
 	{
 		get => base.Text;
+#pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
 		set
+#pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
 		{
 			if (value == Name) return;
 			if (!string.IsNullOrEmpty(value) && !System.Text.RegularExpressions.Regex.Match(value, @"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$").Success)

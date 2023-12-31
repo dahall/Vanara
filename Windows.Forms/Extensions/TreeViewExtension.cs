@@ -63,7 +63,7 @@ public static partial class TreeViewExtension
 		{
 			try
 			{
-				tv.ImageList.Images.Add(ext, IconExtension.GetFileIcon(ext, GetIconSizeFromSize(tv.ImageList.ImageSize)));
+				tv.ImageList.Images.Add(ext, IconExtension.GetFileIcon(ext, GetIconSizeFromSize(tv.ImageList.ImageSize))!);
 			}
 			catch (ArgumentException ex)
 			{

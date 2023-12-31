@@ -149,7 +149,7 @@ public class ProgressDialog : CommonDialog
 		{
 			if (BackgroundTask is null)
 				throw new InvalidOperationException($"{nameof(BackgroundTask)} must be set before calling {nameof(RunDialog)}.");
-			ShowDialog(NativeWindow.FromHandle(hwndOwner), BackgroundTask).Wait();
+			ShowDialog(NativeWindow.FromHandle(hwndOwner)!, BackgroundTask).Wait();
 			return true;
 		}
 		catch
@@ -191,7 +191,7 @@ public class ProgressDialog : CommonDialog
 		public InternalProgressDialog()
 		{
 			InitializeComponent();
-			MaximumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+			MaximumSize = new Size(Screen.PrimaryScreen!.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 		}
 
 		/// <summary>Occurs when the Cancel button is pressed.</summary>

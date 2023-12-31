@@ -428,7 +428,7 @@ public abstract class AttributedDesignerActionList : DesignerActionList
 	/// <param name="value">The value.</param>
 	protected void SetComponentProperty<T>(string propName, T value) => ComponentProp(propName, typeof(T))?.SetValue(Component, value, null);
 
-	private PropertyInfo? ComponentProp(string propName, Type retType) => Component.GetType().GetProperty(propName, InternalComponentDesignerExtension.allInstBind, null, retType, Type.EmptyTypes, null);
+	private PropertyInfo? ComponentProp(string propName, Type retType) => Component!.GetType().GetProperty(propName, InternalComponentDesignerExtension.allInstBind, null, retType, Type.EmptyTypes, null);
 }
 
 /// <summary>A designer for parent controls supported by attributes.</summary>
@@ -748,7 +748,7 @@ public class EditorServiceContext : IWindowsFormsEditorService, ITypeDescriptorC
 	{
 	}
 
-	void IWindowsFormsEditorService.DropDownControl(Control control)
+	void IWindowsFormsEditorService.DropDownControl(Control? control)
 	{
 	}
 
@@ -832,7 +832,7 @@ public abstract class TypedDesignerActionList<TComponentDesigner, TComponent> : 
 	public new TComponentDesigner ParentDesigner { get; }
 
 	/// <summary>Gets the component related to <see cref="T:System.ComponentModel.Design.DesignerActionList"/>.</summary>
-	public new TComponent Component => (TComponent)base.Component;
+	public new TComponent Component => (TComponent)base.Component!;
 }
 
 /// <summary>A glyph associated with a designer.</summary>
@@ -936,7 +936,7 @@ internal static class InternalComponentDesignerExtension
 			var curCat = col[i].Category;
 			if (string.Compare(curCat, cat, true) != 0)
 			{
-				col.Insert(i++, new DesignerActionHeaderItem(curCat));
+				col.Insert(i++, new DesignerActionHeaderItem(curCat!));
 				cat = curCat;
 			}
 		}

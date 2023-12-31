@@ -28,13 +28,13 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, Enum
 	/// <returns>
 	/// The new value of the object. If the value of the object has not changed, this should return the same object it was passed.
 	/// </returns>
-	public override object? EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	public override object? EditValue(ITypeDescriptorContext? context, IServiceProvider provider, object? value)
 	{
-		if (context?.Instance != null && provider != null)
+		if (context?.Instance != null && provider != null && value != null)
 		{
 			var edSvc = provider.GetService<IWindowsFormsEditorService>();
-			if (edSvc == null) return null;
-			var e = (TE)Convert.ChangeType(value, context.PropertyDescriptor.PropertyType);
+			if (edSvc is null) return null;
+			var e = (TE)Convert.ChangeType(value, context.PropertyDescriptor?.PropertyType ?? throw new ArgumentNullException(nameof(context)));
 			listBox.Value = e;
 			edSvc.DropDownControl(listBox);
 			return listBox.Value;
@@ -55,7 +55,7 @@ public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, Enum
 	/// cref="T:System.Drawing.Design.UITypeEditor"/> does not support this method, then <see
 	/// cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> will return <see cref="F:System.Drawing.Design.UITypeEditorEditStyle.None"/>.
 	/// </returns>
-	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) => UITypeEditorEditStyle.DropDown;
+	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext? context) => UITypeEditorEditStyle.DropDown;
 
 	/// <summary>A checked list box to use as the editor.</summary>
 	/// <seealso cref="UITypeEditor"/>

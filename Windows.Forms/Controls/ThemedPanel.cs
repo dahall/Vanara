@@ -106,7 +106,7 @@ public class ThemedPanel : Panel
 				try { e.Graphics.Clear(Color.Black); } catch { }
 			else
 			{
-				var state = UnfocusedStyleState == -1 || FindForm().Focused ? styleState : UnfocusedStyleState;
+				var state = UnfocusedStyleState == -1 || FindForm()!.Focused ? styleState : UnfocusedStyleState;
 				if (theme != null && ThemingSupported)
 				{
 					if (theme.IsBackgroundPartiallyTransparent(stylePart, state))

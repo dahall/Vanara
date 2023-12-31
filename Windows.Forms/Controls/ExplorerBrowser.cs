@@ -1107,7 +1107,7 @@ public class ExplorerBrowser : Control, ICommDlgBrowser3, IExplorerBrowserEvents
 			pe.Graphics.DrawString(nameof(ExplorerBrowser), font, SystemBrushes.GrayText, Rectangle.Inflate(cr, -3, -3), sf);
 		}
 
-		base.OnPaint(pe);
+		base.OnPaint(pe!);
 	}
 
 	/// <summary>Sizes the native control to match the WinForms control wrapper.</summary>

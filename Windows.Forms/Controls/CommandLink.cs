@@ -208,7 +208,7 @@ internal class VistaCustomDrawingStyle : IDrawingStyle<CommandLink, PushButtonSt
 	{
 		var m = new Measurements(ctrl, state, e.Graphics);
 
-		e.Graphics.Clear(ctrl.Parent.BackColor);
+		e.Graphics.Clear(ctrl.Parent!.BackColor);
 		var gp = new GraphicsPath();
 		gp.AddRoundedRectangle(m.client, new Size(rndRectRadius, rndRectRadius));
 		e.Graphics.FillPath(m.dp.Fill, gp);
