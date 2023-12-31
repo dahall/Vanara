@@ -9,7 +9,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-AccessControlHelper, AccessExtension, AccountPrivileges, AccountUtils, ActiveDirectoryExtension, BadValueException, CentralAccessPolicy, CentralAccessPolicyEntry, ClaimValue, LogonRights, PinnedAcl, PinnedSecurityDescriptor, PinnedSid, PrivilegeAndAttributes, PrivilegedCodeBlock, PrivilegeExtension, SystemAccountInfo, SystemSecurity, UAC, WindowsImpersonatedIdentity, WindowsLoggedInIdentity
+AccessControlHelper, AccessExtension, AccountPrivileges, AccountUtils, ActiveDirectoryExtension, BadValueException, CentralAccessPolicy, CentralAccessPolicyEntry, ClaimValue, LogonRights, PinnedAcl, PinnedSecurityDescriptor, PinnedSid, PrivilegeAndAttributes, PrivilegedCodeBlock, PrivilegeExtension, SystemAccountInfo, SystemSecurity, UAC, WindowsLoggedInIdentity
 
 Enumerations
 AccountLogonRights, DesiredAccess, SystemPrivilege
