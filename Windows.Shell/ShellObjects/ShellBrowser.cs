@@ -242,7 +242,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// </summary>
 	[Bindable(false), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
 	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	public override Image BackgroundImage => base.BackgroundImage;
+	public override Image BackgroundImage => base.BackgroundImage!;
 
 	/// <inheritdoc/>
 	protected override Size DefaultSize => new(200, 150);
@@ -614,7 +614,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 		{
 			var forward = (keyData & Keys.Shift) != Keys.Shift;
 
-			Parent.SelectNextControl(ActiveControl, forward: forward, tabStopOnly: true, nested: true, wrap: true);
+			Parent!.SelectNextControl(ActiveControl, forward: forward, tabStopOnly: true, nested: true, wrap: true);
 
 			return true;
 		}

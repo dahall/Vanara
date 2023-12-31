@@ -659,7 +659,9 @@ public static partial class Gdi32
 			throw new ArgumentException($"The supplied type cannot be enumerated by this function.");
 		var l = new List<IntPtr>();
 		EnumObjects(hdc, ev, EnumProc);
+#pragma warning disable CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
 		return l.Cast<T>();
+#pragma warning restore CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
 
 		int EnumProc(IntPtr Arg1, IntPtr Arg2)
 		{

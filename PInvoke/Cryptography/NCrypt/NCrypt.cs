@@ -5084,7 +5084,9 @@ public static partial class NCrypt
 		/// </summary>
 		public NCryptBuffer[] pBuffers
 		{
+#pragma warning disable CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
 			get => _pBuffers.ToIEnum<_NCryptBuffer>((int)cBuffers).Cast<NCryptBuffer>().ToArray();
+#pragma warning restore CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
 			set
 			{
 				((IDisposable)this).Dispose();

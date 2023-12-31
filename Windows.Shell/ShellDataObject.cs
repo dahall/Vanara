@@ -35,7 +35,7 @@ public class ShellDataObject : DataObject
 
 	/// <summary>Initializes a new instance of the <see cref="ShellDataObject"/> class.</summary>
 	/// <param name="items">A list of ShellItem instances.</param>
-	public ShellDataObject(IEnumerable<ShellItem> items) : base((items as ShellItemArray ?? new ShellItemArray(items)).ToDataObject())
+	public ShellDataObject(IEnumerable<ShellItem> items) : base((items as ShellItemArray ?? new ShellItemArray(items)).ToDataObject()!)
 	{
 	}
 
@@ -58,7 +58,7 @@ public class ShellDataObject : DataObject
 	/// </summary>
 	public System.Globalization.CultureInfo Culture
 	{
-		get => base.GetDataPresent(DataFormats.Locale) ? new((int)base.GetData(DataFormats.Locale, false)) : System.Globalization.CultureInfo.CurrentCulture;
+		get => base.GetDataPresent(DataFormats.Locale) ? new((int)base.GetData(DataFormats.Locale, false)!) : System.Globalization.CultureInfo.CurrentCulture;
 		set => base.SetData(DataFormats.Locale, false, value.LCID);
 	}
 
@@ -74,7 +74,7 @@ public class ShellDataObject : DataObject
 	/// <value><see langword="true"/> if the data object is within a drag-and-drop loop; otherwise, <see langword="false"/>.</value>
 	public bool InDragLoop
 	{
-		get => base.GetDataPresent(ShellClipboardFormat.CFSTR_INDRAGLOOP) && (int)base.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, false) != 0;
+		get => base.GetDataPresent(ShellClipboardFormat.CFSTR_INDRAGLOOP) && (int)base.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, false)! != 0;
 		set => base.SetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, false, value ? 1 : 0);
 	}
 
@@ -109,7 +109,7 @@ public class ShellDataObject : DataObject
 	/// <value>Specifies whether its preferred method of data transfer is move or copy.</value>
 	public DragDropEffects PreferredDropEffect
 	{
-		get => base.GetDataPresent(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT) ? (DragDropEffects)(int)base.GetData(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT, false) : 0;
+		get => base.GetDataPresent(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT) ? (DragDropEffects)(int)base.GetData(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT, false)! : 0;
 		set => base.SetData(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT, false, (int)value);
 	}
 
@@ -124,7 +124,7 @@ public class ShellDataObject : DataObject
 	/// <value>The CLSID.</value>
 	public Guid TargetClsid
 	{
-		get => base.GetDataPresent(ShellClipboardFormat.CFSTR_TARGETCLSID) ? (Guid)base.GetData(ShellClipboardFormat.CFSTR_TARGETCLSID, false) : default;
+		get => base.GetDataPresent(ShellClipboardFormat.CFSTR_TARGETCLSID) ? (Guid)base.GetData(ShellClipboardFormat.CFSTR_TARGETCLSID, false)! : default;
 		set => base.SetData(ShellClipboardFormat.CFSTR_TARGETCLSID, false, value);
 	}
 
@@ -187,7 +187,7 @@ public class ShellDataObject : DataObject
 			case ShellClipboardFormat.CFSTR_SHELLIDLIST:
 				return GetShellIdList() ?? new ShellItemArray();
 		}
-		return base.GetData(format, autoConvert);
+		return base.GetData(format, autoConvert)!;
 	}
 
 	/// <summary>Retrieves the data associated with the specified data format at the specified index.</summary>
@@ -272,7 +272,7 @@ public class ShellDataObject : DataObject
 	/// <param name="data">The data.</param>
 	/// <returns></returns>
 	/// <exception cref="ArgumentException">Data value must be of type DROPDESCRIPTION., nameof(data)</exception>
-	public override void SetData(string format, object data)
+	public override void SetData(string format, object? data)
 	{
 		if (format == ShellClipboardFormat.CFSTR_DROPDESCRIPTION)
 		{

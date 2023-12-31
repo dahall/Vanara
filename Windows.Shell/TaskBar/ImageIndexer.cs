@@ -10,7 +10,7 @@ public partial class ThumbnailToolbarButton
 		private string key = string.Empty;
 		private bool useIntegerIndex = true;
 
-		public virtual int ActualIndex => useIntegerIndex ? Index : (ImageList is null ? -1 : ImageList.Images.IndexOfKey(Key));
+		public virtual int ActualIndex => useIntegerIndex ? Index : (ImageList is null ? -1 : ImageList.Images.IndexOfKey(Key ?? ""));
 
 		public virtual ImageList? ImageList { get; set; }
 
