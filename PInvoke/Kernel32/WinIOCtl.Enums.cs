@@ -2117,176 +2117,217 @@ namespace Vanara.PInvoke
 		// StorageAdapterSerialNumberProperty, StorageDeviceLocationProperty, StorageDeviceNumaProperty, StorageDeviceZonedDeviceProperty,
 		// StorageDeviceUnsafeShutdownCount, StorageDeviceEnduranceProperty } STORAGE_PROPERTY_ID, *PSTORAGE_PROPERTY_ID;
 		[PInvokeData("winioctl.h", MSDNShortId = "9747be01-7c70-4697-97f7-e3830b54ba0a")]
-		public enum STORAGE_PROPERTY_ID
-		{
-			/// <summary>Indicates that the caller is querying for the device descriptor, STORAGE_DEVICE_DESCRIPTOR.</summary>
-			[CorrespondingType(typeof(STORAGE_DEVICE_DESCRIPTOR_MGD))]
-			StorageDeviceProperty = 0,
+	public enum STORAGE_PROPERTY_ID
+	{
+		/// <summary>Indicates that the caller is querying for the device descriptor, STORAGE_DEVICE_DESCRIPTOR.</summary>
+		[CorrespondingType(typeof(STORAGE_DEVICE_DESCRIPTOR_MGD))]
+		StorageDeviceProperty = 0,
 
-			/// <summary>Indicates that the caller is querying for the adapter descriptor, STORAGE_ADAPTER_DESCRIPTOR.</summary>
-			[CorrespondingType(typeof(STORAGE_ADAPTER_DESCRIPTOR))]
-			StorageAdapterProperty,
+		/// <summary>Indicates that the caller is querying for the adapter descriptor, STORAGE_ADAPTER_DESCRIPTOR.</summary>
+		[CorrespondingType(typeof(STORAGE_ADAPTER_DESCRIPTOR))]
+		StorageAdapterProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the device identifiers provided with the SCSI vital product data pages. Data is
-			/// returned using the STORAGE_DEVICE_ID_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_DEVICE_ID_DESCRIPTOR))]
-			StorageDeviceIdProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the device identifiers provided with the SCSI vital product data pages. Data is
+		/// returned using the STORAGE_DEVICE_ID_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_DEVICE_ID_DESCRIPTOR))]
+		StorageDeviceIdProperty,
 
-			/// <summary>
-			/// Intended for driver usage. Indicates that the caller is querying for the unique device identifiers. Data is returned using
-			/// the STORAGE_DEVICE_UNIQUE_IDENTIFIER structure (see the storduid.h header in the DDK). Windows Server 2003 and Windows XP:
-			/// This value is not supported before Windows Vista and Windows Server 2008.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER_MGD))]
-			StorageDeviceUniqueIdProperty,
+		/// <summary>
+		/// Intended for driver usage. Indicates that the caller is querying for the unique device identifiers. Data is returned using
+		/// the STORAGE_DEVICE_UNIQUE_IDENTIFIER structure (see the storduid.h header in the DDK). Windows Server 2003 and Windows XP:
+		/// This value is not supported before Windows Vista and Windows Server 2008.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER_MGD))]
+		StorageDeviceUniqueIdProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the write cache property. Data is returned using the STORAGE_WRITE_CACHE_PROPERTY
-			/// structure. Windows Server 2003 and Windows XP: This value is not supported before Windows Vista and Windows Server 2008.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_WRITE_CACHE_PROPERTY))]
-			StorageDeviceWriteCacheProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the write cache property. Data is returned using the STORAGE_WRITE_CACHE_PROPERTY
+		/// structure. Windows Server 2003 and Windows XP: This value is not supported before Windows Vista and Windows Server 2008.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_WRITE_CACHE_PROPERTY))]
+		StorageDeviceWriteCacheProperty,
 
-			/// <summary>Reserved for system use.</summary>
-			StorageMiniportProperty,
+		/// <summary>Reserved for system use.</summary>
+		StorageMiniportProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the access alignment descriptor, STORAGE_ACCESS_ALIGNMENT_DESCRIPTOR. Windows
-			/// Server 2003 and Windows XP: This value is not supported before Windows Vista and Windows Server 2008.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_ACCESS_ALIGNMENT_DESCRIPTOR))]
-			StorageAccessAlignmentProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the access alignment descriptor, STORAGE_ACCESS_ALIGNMENT_DESCRIPTOR. Windows
+		/// Server 2003 and Windows XP: This value is not supported before Windows Vista and Windows Server 2008.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_ACCESS_ALIGNMENT_DESCRIPTOR))]
+		StorageAccessAlignmentProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the trim descriptor, DEVICE_TRIM_DESCRIPTOR. Windows Server 2008, Windows Vista,
-			/// Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows Server 2008 R2.
-			/// </summary>
-			[CorrespondingType(typeof(DEVICE_TRIM_DESCRIPTOR))]
-			StorageDeviceTrimProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the seek penalty descriptor, DEVICE_SEEK_PENALTY_DESCRIPTOR.
+		/// <para>
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows
+		/// Server 2008 R2.
+		/// </para>
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_SEEK_PENALTY_DESCRIPTOR))]
+		StorageDeviceSeekPenaltyProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the device power descriptor. Data is returned using the DEVICE_POWER_DESCRIPTOR
-			/// structure. Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This
-			/// value is not supported before Windows 8 and Windows Server 2012.
-			/// </summary>
-			[CorrespondingType(typeof(DEVICE_POWER_DESCRIPTOR))]
-			StorageDevicePowerProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the trim descriptor, DEVICE_TRIM_DESCRIPTOR. Windows Server 2008, Windows Vista,
+		/// Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows Server 2008 R2.
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_TRIM_DESCRIPTOR))]
+		StorageDeviceTrimProperty,
 
-			/// <summary>Reserved for system use.</summary>
-			StorageDeviceResiliencyProperty,
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceWriteAggregationProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the medium product type. Data is returned using the
-			/// STORAGE_MEDIUM_PRODUCT_TYPE_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_MEDIUM_PRODUCT_TYPE_DESCRIPTOR))]
-			StorageDeviceMediumProductType,
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceDeviceTelemetryProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for RPMB support and properties. Data is returned using the STORAGE_RPMB_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_RPMB_DESCRIPTOR))]
-			StorageAdapterRpmbProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the logical block provisioning property. Data is returned using the
+		/// DEVICE_LB_PROVISIONING_DESCRIPTOR structure.
+		/// <para>
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows
+		/// Server 2008 R2.
+		/// </para>
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_LB_PROVISIONING_DESCRIPTOR))]
+		StorageDeviceLBProvisioningProperty,
 
-			/// <summary>
-			/// Provides info on the storage adapter encryption capabilities. This is currently supported on UFS (Universal Flash Storage) adapters.
-			/// </summary>
-			StorageAdapterCryptoProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the device power descriptor. Data is returned using the DEVICE_POWER_DESCRIPTOR
+		/// structure. Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This
+		/// value is not supported before Windows 8 and Windows Server 2012.
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_POWER_DESCRIPTOR))]
+		StorageDevicePowerProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the device I/O capability property. Data is returned using the
-			/// DEVICE_IO_CAPABILITY_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_DEVICE_IO_CAPABILITY_DESCRIPTOR))]
-			StorageDeviceIoCapabilityProperty = 48,
+		/// <summary>
+		/// Indicates that the caller is querying for the copy offload parameters property. Data is returned using the
+		/// DEVICE_COPY_OFFLOAD_DESCRIPTOR structure.
+		/// <para>
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows
+		/// Server 2008 R2.
+		/// </para>
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_COPY_OFFLOAD_DESCRIPTOR))]
+		StorageDeviceCopyOffloadProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for protocol-specific data from the adapter. Data is returned using the
-			/// STORAGE_PROTOCOL_DATA_DESCRIPTOR structure. See the remarks for more info.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_PROTOCOL_DATA_DESCRIPTOR))]
-			StorageAdapterProtocolSpecificProperty,
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceResiliencyProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for protocol-specific data from the device. Data is returned using the
-			/// STORAGE_PROTOCOL_DATA_DESCRIPTOR structure. See the remarks for more info.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_PROTOCOL_DATA_DESCRIPTOR))]
-			StorageDeviceProtocolSpecificProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the medium product type. Data is returned using the
+		/// STORAGE_MEDIUM_PRODUCT_TYPE_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_MEDIUM_PRODUCT_TYPE_DESCRIPTOR))]
+		StorageDeviceMediumProductType,
 
-			/// <summary>
-			/// Indicates that the caller is querying temperature data from the adapter. Data is returned using the
-			/// STORAGE_TEMPERATURE_DATA_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_TEMPERATURE_DATA_DESCRIPTOR))]
-			StorageAdapterTemperatureProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for RPMB support and properties. Data is returned using the STORAGE_RPMB_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_RPMB_DESCRIPTOR))]
+		StorageAdapterRpmbProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for temperature data from the device. Data is returned using the
-			/// STORAGE_TEMPERATURE_DATA_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_TEMPERATURE_DATA_DESCRIPTOR))]
-			StorageDeviceTemperatureProperty,
+		/// <summary>
+		/// Provides info on the storage adapter encryption capabilities. This is currently supported on UFS (Universal Flash Storage) adapters.
+		/// </summary>
+		StorageAdapterCryptoProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for topology information from the adapter. Data is returned using the
-			/// STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR))]
-			StorageAdapterPhysicalTopologyProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the device I/O capability property. Data is returned using the
+		/// DEVICE_IO_CAPABILITY_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_DEVICE_IO_CAPABILITY_DESCRIPTOR))]
+		StorageDeviceIoCapabilityProperty = 48,
 
-			/// <summary>
-			/// Indicates that the caller is querying for topology information from the device. Data is returned using the
-			/// STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR))]
-			StorageDevicePhysicalTopologyProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for protocol-specific data from the adapter. Data is returned using the
+		/// STORAGE_PROTOCOL_DATA_DESCRIPTOR structure. See the remarks for more info.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_PROTOCOL_DATA_DESCRIPTOR))]
+		StorageAdapterProtocolSpecificProperty,
 
-			/// <summary>Reserved for future use.</summary>
-			StorageDeviceAttributesProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for protocol-specific data from the device. Data is returned using the
+		/// STORAGE_PROTOCOL_DATA_DESCRIPTOR structure. See the remarks for more info.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_PROTOCOL_DATA_DESCRIPTOR))]
+		StorageDeviceProtocolSpecificProperty,
 
-			/// <summary>Provides health information about the storage device (specifically for the persistent memory stack).</summary>
-			[CorrespondingType(typeof(STORAGE_DEVICE_MANAGEMENT_STATUS))]
-			StorageDeviceManagementStatus,
+		/// <summary>
+		/// Indicates that the caller is querying temperature data from the adapter. Data is returned using the
+		/// STORAGE_TEMPERATURE_DATA_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_TEMPERATURE_DATA_DESCRIPTOR))]
+		StorageAdapterTemperatureProperty,
 
-			/// <summary>
-			/// Indicates that the caller is querying for the adapter serial number. Data is returned using the STORAGE_ADAPTER_SERIAL_NUMBER structure.
-			/// </summary>
-			[CorrespondingType(typeof(STORAGE_ADAPTER_SERIAL_NUMBER))]
-			StorageAdapterSerialNumberProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for temperature data from the device. Data is returned using the
+		/// STORAGE_TEMPERATURE_DATA_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_TEMPERATURE_DATA_DESCRIPTOR))]
+		StorageDeviceTemperatureProperty,
 
-			/// <summary>Reserved for system use.</summary>
-			StorageDeviceLocationProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for topology information from the adapter. Data is returned using the
+		/// STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR))]
+		StorageAdapterPhysicalTopologyProperty,
 
-			/// <summary>Provides the non-uniform memory access (NUMA) node of the storage device.</summary>
-			StorageDeviceNumaProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for topology information from the device. Data is returned using the
+		/// STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR))]
+		StorageDevicePhysicalTopologyProperty,
 
-			/// <summary>Reserved for system use.</summary>
-			StorageDeviceZonedDeviceProperty,
+		/// <summary>Reserved for future use.</summary>
+		StorageDeviceAttributesProperty,
 
-			/// <summary>
-			/// Provides the unsafe shutdown count value used to determine if the device data might have been lost during a power loss event
-			/// (specifically for the persistent memory stack).
-			/// </summary>
-			StorageDeviceUnsafeShutdownCount,
+		/// <summary>Provides health information about the storage device (specifically for the persistent memory stack).</summary>
+		[CorrespondingType(typeof(STORAGE_DEVICE_MANAGEMENT_STATUS))]
+		StorageDeviceManagementStatus,
 
-			/// <summary>
-			/// Provides info on how many bytes have been read/write from a solid-state drive (SSD). This property is supported only for
-			/// Non-Volatile Memory Express (NVMe) devices that implement a certain NVMe feature.
-			/// </summary>
-			StorageDeviceEnduranceProperty,
+		/// <summary>
+		/// Indicates that the caller is querying for the adapter serial number. Data is returned using the STORAGE_ADAPTER_SERIAL_NUMBER structure.
+		/// </summary>
+		[CorrespondingType(typeof(STORAGE_ADAPTER_SERIAL_NUMBER))]
+		StorageAdapterSerialNumberProperty,
 
-			/// <summary>Provides info on the state of the LED associated with a storage device. This is a server-oriented feature.</summary>
-			StorageDeviceLedStateProperty,
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceLocationProperty,
 
-			/// <summary>Reserved for system use.</summary>
-			StorageDeviceSelfEncryptionProperty = 64,
+		/// <summary>Provides the non-uniform memory access (NUMA) node of the storage device.</summary>
+		StorageDeviceNumaProperty,
 
-			/// <summary>Provides identification info for a storage device that can be physically replaced with a Field Replacement Unit (FRU).</summary>
-			StorageFruIdProperty
-		}
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceZonedDeviceProperty,
+
+		/// <summary>
+		/// Provides the unsafe shutdown count value used to determine if the device data might have been lost during a power loss event
+		/// (specifically for the persistent memory stack).
+		/// </summary>
+		StorageDeviceUnsafeShutdownCount,
+
+		/// <summary>
+		/// Provides info on how many bytes have been read/write from a solid-state drive (SSD). This property is supported only for
+		/// Non-Volatile Memory Express (NVMe) devices that implement a certain NVMe feature.
+		/// </summary>
+		StorageDeviceEnduranceProperty,
+
+		/// <summary>Provides info on the state of the LED associated with a storage device. This is a server-oriented feature.</summary>
+		StorageDeviceLedStateProperty,
+
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceSelfEncryptionProperty = 64,
+
+		/// <summary>Provides identification info for a storage device that can be physically replaced with a Field Replacement Unit (FRU).</summary>
+		StorageFruIdProperty,
+
+		/// <summary/>
+		StorageStackProperty
+	}
 
 		/// <summary>
 		/// <para>
