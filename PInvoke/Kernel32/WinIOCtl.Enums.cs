@@ -2157,11 +2157,38 @@ public static partial class Kernel32
 		StorageAccessAlignmentProperty,
 
 		/// <summary>
+		/// Indicates that the caller is querying for the seek penalty descriptor, DEVICE_SEEK_PENALTY_DESCRIPTOR.
+		/// <para>
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows
+		/// Server 2008 R2.
+		/// </para>
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_SEEK_PENALTY_DESCRIPTOR))]
+		StorageDeviceSeekPenaltyProperty,
+
+		/// <summary>
 		/// Indicates that the caller is querying for the trim descriptor, DEVICE_TRIM_DESCRIPTOR. Windows Server 2008, Windows Vista,
 		/// Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows Server 2008 R2.
 		/// </summary>
 		[CorrespondingType(typeof(DEVICE_TRIM_DESCRIPTOR))]
 		StorageDeviceTrimProperty,
+
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceWriteAggregationProperty,
+
+		/// <summary>Reserved for system use.</summary>
+		StorageDeviceDeviceTelemetryProperty,
+
+		/// <summary>
+		/// Indicates that the caller is querying for the logical block provisioning property. Data is returned using the
+		/// DEVICE_LB_PROVISIONING_DESCRIPTOR structure.
+		/// <para>
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows
+		/// Server 2008 R2.
+		/// </para>
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_LB_PROVISIONING_DESCRIPTOR))]
+		StorageDeviceLBProvisioningProperty,
 
 		/// <summary>
 		/// Indicates that the caller is querying for the device power descriptor. Data is returned using the DEVICE_POWER_DESCRIPTOR
@@ -2170,6 +2197,17 @@ public static partial class Kernel32
 		/// </summary>
 		[CorrespondingType(typeof(DEVICE_POWER_DESCRIPTOR))]
 		StorageDevicePowerProperty,
+
+		/// <summary>
+		/// Indicates that the caller is querying for the copy offload parameters property. Data is returned using the
+		/// DEVICE_COPY_OFFLOAD_DESCRIPTOR structure.
+		/// <para>
+		/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported before Windows 7 and Windows
+		/// Server 2008 R2.
+		/// </para>
+		/// </summary>
+		[CorrespondingType(typeof(DEVICE_COPY_OFFLOAD_DESCRIPTOR))]
+		StorageDeviceCopyOffloadProperty,
 
 		/// <summary>Reserved for system use.</summary>
 		StorageDeviceResiliencyProperty,
@@ -2282,7 +2320,10 @@ public static partial class Kernel32
 		StorageDeviceSelfEncryptionProperty = 64,
 
 		/// <summary>Provides identification info for a storage device that can be physically replaced with a Field Replacement Unit (FRU).</summary>
-		StorageFruIdProperty
+		StorageFruIdProperty,
+
+		/// <summary/>
+		StorageStackProperty
 	}
 
 	/// <summary>
