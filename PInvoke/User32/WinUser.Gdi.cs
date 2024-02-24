@@ -2107,21 +2107,47 @@ public static partial class User32
 	public static extern int DrawTextEx(HDC hdc, StringBuilder lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS? lpdtp);
 
 	/// <summary>
-	/// The GetDC function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire
+	/// <para>
+	/// The <c>GetDC</c> function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire
 	/// screen. You can use the returned handle in subsequent GDI functions to draw in the DC. The device context is an opaque data
 	/// structure, whose values are used internally by GDI.
+	/// </para>
+	/// <para>
+	/// The GetDCEx function is an extension to <c>GetDC</c>, which gives an application more control over how and whether clipping occurs in
+	/// the client area.
+	/// </para>
 	/// </summary>
-	/// <param name="ptr">
-	/// A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.
+	/// <param name="hWnd">
+	/// A handle to the window whose DC is to be retrieved. If this value is <c>NULL</c>, <c>GetDC</c> retrieves the DC for the entire screen.
 	/// </param>
 	/// <returns>
-	/// If the function succeeds, the return value is a handle to the DC for the specified window's client area. If the function fails,
-	/// the return value is NULL.
+	/// <para>If the function succeeds, the return value is a handle to the DC for the specified window's client area.</para>
+	/// <para>If the function fails, the return value is <c>NULL</c>.</para>
 	/// </returns>
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/dd144871(v=vs.85).aspx
-	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("Winuser.h", MSDNShortId = "dd144871")]
-	public static extern SafeHDC GetDC([In, Optional] HWND ptr);
+	/// <remarks>
+	/// <para>
+	/// The <c>GetDC</c> function retrieves a common, class, or private DC depending on the class style of the specified window. For class
+	/// and private DCs, <c>GetDC</c> leaves the previously assigned attributes unchanged. However, for common DCs, <c>GetDC</c> assigns
+	/// default attributes to the DC each time it is retrieved. For example, the default font is System, which is a bitmap font. Because of
+	/// this, the handle to a common DC returned by <c>GetDC</c> does not tell you what font, color, or brush was used when the window was
+	/// drawn. To determine the font, call GetTextFace.
+	/// </para>
+	/// <para>Note that the handle to the DC can only be used by a single thread at any one time.</para>
+	/// <para>
+	/// After painting with a common DC, the ReleaseDC function must be called to release the DC. Class and private DCs do not have to be
+	/// released. <c>ReleaseDC</c> must be called from the same thread that called <c>GetDC</c>. The number of DCs is limited only by
+	/// available memory.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Drawing with the Mouse.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdc
+	// HDC GetDC( [in] HWND hWnd );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetDC")]
+	public static SafeReleaseHDC GetDC([In, Optional] HWND hWnd) => new(GetDCInternal(hWnd), hWnd);
+
+	[DllImport(Lib.User32, SetLastError = false, EntryPoint = "GetDC")]
+	private static extern IntPtr GetDCInternal([In, Optional] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -3158,5 +3184,37 @@ After:
 		/// entire string if the DT_NOCLIP formatting flag is specified.
 		/// </summary>
 		public uint uiLengthDrawn;
+	}
+
+	/// <summary>A SafeHandle to track DC handles retrieved via <see cref="GetDC"/>.</summary>
+	public class SafeReleaseHDC : SafeHANDLE
+	{
+		private readonly HWND hWnd;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SafeReleaseHDC" /> class and assigns an existing handle.
+		/// </summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr" /> object that represents the pre-existing handle to use.</param>
+		/// <param name="hwnd">A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.</param>
+		/// <param name="ownsHandle"><see langword="true" /> to reliably release the handle during the finalization phase; otherwise, <see langword="false" /> (not recommended).</param>
+		public SafeReleaseHDC(IntPtr preexistingHandle, HWND hwnd = default, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => hWnd = hwnd;
+
+		private SafeReleaseHDC(HWND hwnd = default) : base() => hWnd = hwnd;
+
+		/// <summary>A NULL value for this handle.</summary>
+		public static readonly SafeReleaseHDC Null = new(IntPtr.Zero, default, false);
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeReleaseHDC"/> to <see cref="HDC"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HDC(SafeReleaseHDC h) => h.handle;
+
+		/// <summary>Creates a context into which a graphics object is selected.</summary>
+		/// <param name="hObject">The graphics object to select.</param>
+		/// <returns>A selection context for the graphics object.</returns>
+		public GdiObjectContext SelectObject(HGDIOBJ hObject) => new(handle, hObject);
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle() => ReleaseDC(hWnd, handle);
 	}
 }
