@@ -22,6 +22,26 @@ public partial class User32Tests
 	}
 
 	[Test]
+	public void GetRawInputDeviceInfoTest()
+	{
+		uint nDev = 0;
+		Assert.That(GetRawInputDeviceList(null, ref nDev, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST))), ResultIs.Not.Value(uint.MaxValue));
+		Assert.That(nDev, Is.GreaterThan(0));
+		RAWINPUTDEVICELIST[] devs = new RAWINPUTDEVICELIST[(int)nDev];
+		Assert.That(nDev = GetRawInputDeviceList(devs, ref nDev, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST))), ResultIs.Not.Value(uint.MaxValue));
+		Assert.That(nDev, Is.GreaterThan(0));
+
+		for (int i = 0; i < nDev; i++)
+		{
+			uint sz = 0;
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, default, ref sz), ResultIs.Value(0));
+			SafeLPTSTR data = new((int)sz + 1);
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, data, ref sz), Is.GreaterThan(0));
+			TestContext.WriteLine($"{data}");
+		}
+	}
+
+	[Test]
 	public void WinTest()
 	{
 		var timer = System.Diagnostics.Stopwatch.StartNew();

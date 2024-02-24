@@ -254,6 +254,30 @@ public static partial class User32
 		RIDEV_REMOVE = 0x00000001,
 	}
 
+	/// <summary>
+	/// Specifies what data will be returned in <c>pData</c> with <see cref="GetRawInputDeviceInfo(HANDLE, RIDI, IntPtr, ref uint)"/>.
+	/// </summary>
+	[PInvokeData("winuser.h")]
+	public enum RIDI
+	{
+		/// <summary>pData is a PHIDP_PREPARSED_DATA pointer to a buffer for a top-level collection's preparsed data.</summary>
+		RIDI_PREPARSEDDATA = 0x20000005,
+
+		/// <summary>
+		/// pData points to a string that contains the device interface name.
+		/// <para>
+		/// If this device is opened with Shared Access Mode then you can call CreateFile with this name to open a HID collection and use
+		/// returned handle for calling ReadFile to read input reports and WriteFile to send output reports.
+		/// </para>
+		/// <para>For more information, see Opening HID Collections and Handling HID Reports.</para>
+		/// <para>For this uiCommand only, the value in pcbSize is the character count (not the byte count).</para>
+		/// </summary>
+		RIDI_DEVICENAME = 0x20000007,
+
+		/// <summary>pData points to an <see cref="RID_DEVICE_INFO"/> structure.</summary>
+		RIDI_DEVICEINFO = 0x2000000b,
+	}
+
 	/// <summary>The type of raw input.</summary>
 	[PInvokeData("winuser.h")]
 	public enum RIM_TYPE
@@ -448,54 +472,128 @@ public static partial class User32
 	/// </param>
 	/// <param name="uiCommand">
 	/// <para>Type: <c>UINT</c></para>
-	/// <para>Specifies what data will be returned in pData. This parameter can be one of the following values.</para>
+	/// <para>Specifies what data will be returned in <c>pData</c>. This parameter can be one of the following values.</para>
 	/// <list type="table">
 	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
 	/// </listheader>
 	/// <item>
-	/// <term>RIDI_DEVICENAME 0x20000007</term>
-	/// <term>
-	/// pData points to a string that contains the device name. For this uiCommand only, the value in pcbSize is the character count
-	/// (not the byte count).
-	/// </term>
+	/// <description><c>RIDI_PREPARSEDDATA</c> 0x20000005</description>
+	/// <description><c>pData</c> is a PHIDP_PREPARSED_DATA pointer to a buffer for a top-level collection's preparsed data.</description>
 	/// </item>
 	/// <item>
-	/// <term>RIDI_DEVICEINFO 0x2000000b</term>
-	/// <term>pData points to an RID_DEVICE_INFO structure.</term>
+	/// <description><c>RIDI_DEVICENAME</c> 0x20000007</description>
+	/// <description>
+	/// <c>pData</c> points to a string that contains the device interface name. If this device is opened with Shared Access Mode then you
+	/// can call CreateFile with this name to open a HID collection and use returned handle for calling ReadFile to read input reports and
+	/// WriteFile to send output reports. For more information, see Opening HID Collections and Handling HID Reports. For this
+	/// <c>uiCommand</c> only, the value in <c>pcbSize</c> is the character count (not the byte count).
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>RIDI_PREPARSEDDATA 0x20000005</term>
-	/// <term>pData points to the previously parsed data.</term>
+	/// <description><c>RIDI_DEVICEINFO</c> 0x2000000b</description>
+	/// <description><c>pData</c> points to an RID_DEVICE_INFO structure.</description>
 	/// </item>
 	/// </list>
 	/// </param>
 	/// <param name="pData">
 	/// <para>Type: <c>LPVOID</c></para>
-	/// <para>
-	/// A pointer to a buffer that contains the information specified by uiCommand. If uiCommand is <c>RIDI_DEVICEINFO</c>, set the
-	/// <c>cbSize</c> member of RID_DEVICE_INFO to before calling <c>GetRawInputDeviceInfo</c>.
-	/// </para>
+	/// <para>A pointer to a buffer that contains the information specified by <c>uiCommand</c>.</para>
+	/// <para>If <c>uiCommand</c> is <c>RIDI_DEVICEINFO</c>, set the <c>cbSize</c> member of RID_DEVICE_INFO to before calling <c>GetRawInputDeviceInfo</c>.</para>
 	/// </param>
 	/// <param name="pcbSize">
 	/// <para>Type: <c>PUINT</c></para>
-	/// <para>The size, in bytes, of the data in pData.</para>
+	/// <para>The size, in bytes, of the data in <c>pData</c>.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>UINT</c></para>
-	/// <para>If successful, this function returns a non-negative number indicating the number of bytes copied to pData.</para>
+	/// <para>If successful, this function returns a non-negative number indicating the number of bytes copied to <c>pData</c>.</para>
 	/// <para>
-	/// If pData is not large enough for the data, the function returns -1. If pData is <c>NULL</c>, the function returns a value of
-	/// zero. In both of these cases, pcbSize is set to the minimum size required for the pData buffer.
+	/// If <c>pData</c> is not large enough for the data, the function returns -1. If <c>pData</c> is <c>NULL</c>, the function returns a
+	/// value of zero. In both of these cases, <c>pcbSize</c> is set to the minimum size required for the <c>pData</c> buffer.
 	/// </para>
 	/// <para>Call GetLastError to identify any other errors.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawinputdeviceinfoa UINT GetRawInputDeviceInfoA(
-	// HANDLE hDevice, UINT uiCommand, LPVOID pData, PUINT pcbSize );
+	/// <remarks>
+	/// <para>Note</para>
+	/// <para>
+	/// The winuser.h header defines GetRawInputDeviceInfo as an alias which automatically selects the ANSI or Unicode version of this
+	/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdeviceinfoa
+	// UINT GetRawInputDeviceInfoA( [in, optional] HANDLE hDevice, [in] UINT uiCommand, [in, out, optional] LPVOID pData, [in, out] PUINT pcbSize );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetRawInputDeviceInfoA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("winuser.h", MSDNShortId = "")]
 	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, uint uiCommand, [Optional] IntPtr pData, ref uint pcbSize);
+
+	/// <summary>Retrieves information about the raw input device.</summary>
+	/// <param name="hDevice">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>A handle to the raw input device. This comes from the <c>hDevice</c> member of RAWINPUTHEADER or from GetRawInputDeviceList.</para>
+	/// </param>
+	/// <param name="uiCommand">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>Specifies what data will be returned in <c>pData</c>. This parameter can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>RIDI_PREPARSEDDATA</c> 0x20000005</description>
+	/// <description><c>pData</c> is a PHIDP_PREPARSED_DATA pointer to a buffer for a top-level collection's preparsed data.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>RIDI_DEVICENAME</c> 0x20000007</description>
+	/// <description>
+	/// <c>pData</c> points to a string that contains the device interface name. If this device is opened with Shared Access Mode then you
+	/// can call CreateFile with this name to open a HID collection and use returned handle for calling ReadFile to read input reports and
+	/// WriteFile to send output reports. For more information, see Opening HID Collections and Handling HID Reports. For this
+	/// <c>uiCommand</c> only, the value in <c>pcbSize</c> is the character count (not the byte count).
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>RIDI_DEVICEINFO</c> 0x2000000b</description>
+	/// <description><c>pData</c> points to an RID_DEVICE_INFO structure.</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pData">
+	/// <para>Type: <c>LPVOID</c></para>
+	/// <para>A pointer to a buffer that contains the information specified by <c>uiCommand</c>.</para>
+	/// <para>If <c>uiCommand</c> is <c>RIDI_DEVICEINFO</c>, set the <c>cbSize</c> member of RID_DEVICE_INFO to before calling <c>GetRawInputDeviceInfo</c>.</para>
+	/// </param>
+	/// <param name="pcbSize">
+	/// <para>Type: <c>PUINT</c></para>
+	/// <para>The size, in bytes, of the data in <c>pData</c>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>If successful, this function returns a non-negative number indicating the number of bytes copied to <c>pData</c>.</para>
+	/// <para>
+	/// If <c>pData</c> is not large enough for the data, the function returns -1. If <c>pData</c> is <c>NULL</c>, the function returns a
+	/// value of zero. In both of these cases, <c>pcbSize</c> is set to the minimum size required for the <c>pData</c> buffer.
+	/// </para>
+	/// <para>Call GetLastError to identify any other errors.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Note</para>
+	/// <para>
+	/// The winuser.h header defines GetRawInputDeviceInfo as an alias which automatically selects the ANSI or Unicode version of this
+	/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdeviceinfoa
+	// UINT GetRawInputDeviceInfoA( [in, optional] HANDLE hDevice, [in] UINT uiCommand, [in, out, optional] LPVOID pData, [in, out] PUINT pcbSize );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetRawInputDeviceInfoA")]
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, RIDI uiCommand, [Optional] IntPtr pData, ref uint pcbSize);
 
 	/// <summary>Enumerates the raw input devices attached to the system.</summary>
 	/// <param name="pRawInputDeviceList">
