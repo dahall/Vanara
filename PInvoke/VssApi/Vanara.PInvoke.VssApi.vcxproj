@@ -27,7 +27,7 @@
     <UpdateFiles PackageSource="..\..\Package.targets" UpdateProjectFile="false">
       <File Path="AssemblyInfo.cpp">
         <Version>AssemblyInformationalVersionAttribute</Version>
-        <Version type="sem">AssemblyVersionAttribute</Version>
+        <Version type="v4">AssemblyVersionAttribute</Version>
         <Copyright>AssemblyCopyrightAttribute</Copyright>
         <Product>AssemblyProductAttribute</Product>
       </File>
@@ -206,6 +206,8 @@
   <ItemGroup>
     <None Include="cpp.hint" />
     <None Include="packages.config" />
+    <None Include="pkgreadme.md" />
+    <None Include="readme.md" />
     <None Include="Vanara.PInvoke.VssApi.nuspec" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

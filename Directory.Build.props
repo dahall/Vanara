@@ -1,9 +1,10 @@
 <Project>
   <PropertyGroup>
-    <Version>4.0.0-beta2</Version>
     <TargetFrameworks>net45;net48;net6.0;net7.0;net8.0-windows;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <Version>4.0.0-beta2</Version>
+    <PackageVersion>4.0.0-beta2</PackageVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>

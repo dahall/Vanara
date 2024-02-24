@@ -7,14 +7,12 @@
     <AssemblyName>Vanara.PInvoke.VssApiMgd</AssemblyName>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>false</IsPackable>
-    <!--<TargetFrameworks>net6.0</TargetFrameworks>-->
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
-  <Target Name="WipeObj" BeforeTargets="Clean;CoreClean">
-    <!-- obj -->
+  <!--<Target Name="WipeObj" BeforeTargets="Clean;CoreClean">
     <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" ContinueOnError="true" />
-  </Target>
+  </Target>-->
 </Project>
