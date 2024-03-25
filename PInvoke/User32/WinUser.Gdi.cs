@@ -2494,7 +2494,7 @@ public static partial class User32
 	public static IntPtr GetWindowLongAuto(HWND hWnd, WindowLongFlags nIndex)
 	{
 		SetLastErrorEx(0, 0);
-		IntPtr ret = IntPtr.Size == 4 ? GetWindowLong(hWnd, nIndex) : GetWindowLongPtr(hWnd, nIndex);
+		IntPtr ret = IntPtr.Size == 4 ? (IntPtr)GetWindowLong(hWnd, nIndex) : GetWindowLongPtr(hWnd, nIndex);
 		if (ret == IntPtr.Zero)
 			Win32Error.GetLastError().ThrowIfFailed();
 		return ret;
