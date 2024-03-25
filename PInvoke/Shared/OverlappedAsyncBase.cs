@@ -76,7 +76,7 @@ public static class OverlappedAsync
 			if (asyncResult.IsCompleted) return;
 			asyncResult.FreeOverlapped();
 			if (code == 0x217) code = 0;
-			asyncResult.Complete(true, (int)code);
+			asyncResult.Complete(true, (int)code, bytes);
 		}, userState);
 		return ar;
 	}
@@ -98,7 +98,7 @@ public static class OverlappedAsync
 			if (asyncResult.IsCompleted) return;
 			asyncResult.FreeOverlapped();
 			if (code == 0x217) code = 0;
-			asyncResult.Complete(true, (int)code);
+			asyncResult.Complete(true, (int)code, bytes);
 		}, userState);
 		return ar;
 	}
@@ -157,6 +157,10 @@ public static class OverlappedAsync
 		/// <summary>Gets a value that indicates whether the asynchronous operation completed synchronously.</summary>
 		public bool CompletedSynchronously { get; internal set; } = true;
 
+		/// <summary>Gets the error code associated with an I/O operation completion on a thread pool.</summary>
+		/// <value>The error code.</value>
+		public int ErrorCode => errorCode;
+
 		/// <summary>Gets the handle to which this operation is bound.</summary>
 		/// <value>The handle.</value>
 		public HFILE Handle => handle;
@@ -172,13 +176,19 @@ public static class OverlappedAsync
 			internal set => overlapped = value;
 		}
 
+		/// <summary>Gets the number of bytes that are transferred with an I/O operation completion on a thread pool.</summary>
+		/// <value>The number of bytes that are transferred.</value>
+		public uint ProcessedBytes { get; internal set; }
+
 		/// <summary>Completes the specified synch.</summary>
 		/// <param name="synch">The value for the <see cref="CompletedSynchronously"/> property.</param>
 		/// <param name="error">The error code, if necessary.</param>
-		internal void Complete(bool synch = false, int error = 0)
+		/// <param name="bytes">The number of bytes that have been transferred, if supplied.</param>
+		internal void Complete(bool synch = false, int error = 0, uint bytes = 0)
 		{
 			CompletedSynchronously = synch;
 			errorCode = error;
+			ProcessedBytes = bytes;
 			if (IsCompleted) return;
 			IsCompleted = true;
 			lock (lockObj)
