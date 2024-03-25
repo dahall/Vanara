@@ -2493,13 +2493,10 @@ public static partial class User32
 	/// </returns>
 	public static IntPtr GetWindowLongAuto(HWND hWnd, WindowLongFlags nIndex)
 	{
-		IntPtr ret;
-		if (IntPtr.Size == 4)
-			ret = (IntPtr)GetWindowLong(hWnd, nIndex);
-		else
-			ret = GetWindowLongPtr(hWnd, nIndex);
+		SetLastErrorEx(0, 0);
+		IntPtr ret = IntPtr.Size == 4 ? GetWindowLong(hWnd, nIndex) : GetWindowLongPtr(hWnd, nIndex);
 		if (ret == IntPtr.Zero)
-			throw new System.ComponentModel.Win32Exception();
+			Win32Error.GetLastError().ThrowIfFailed();
 		return ret;
 	}
 
