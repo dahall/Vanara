@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Vanara.Extensions.Reflection;
 
 namespace Vanara.PInvoke;
 
@@ -780,7 +781,7 @@ public static partial class FwpUClnt
 		/// <para>The GUID for a valid callout in the layer.</para>
 		/// <para>Available when the action invokes a callout, that is, <c>type</c> contains <c>FWP_ACTION_FLAG_CALLOUT</c>.</para>
 		/// </summary>
-		public Guid calloutKey;
+		public Guid calloutKey { get => filterType; set => filterType = value; }
 	}
 
 	/// <summary>The <c>FWPM_CALLOUT_CHANGE0</c> structure specifies a change notification dispatched to subscribers.</summary>
@@ -1547,7 +1548,11 @@ public static partial class FwpUClnt
 		/// documented in the WDK.
 		/// </para>
 		/// </summary>
-		public ulong rawContext;
+		public ulong rawContext
+		{
+			get => BitConverter.ToUInt64(providerContextKey.ToByteArray(), 0);
+			set { var bytes = BitConverter.GetBytes(value); Array.Resize(ref bytes, 16); providerContextKey = new Guid(bytes); }
+		}
 
 		/// <summary>
 		/// <para>
