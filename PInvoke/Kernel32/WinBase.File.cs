@@ -638,13 +638,19 @@ public static partial class Kernel32
 		/// The ReadDirectoryChangesExW function should provide information that describes the changes within the specified directory,
 		/// and return this information in the output buffer in the form of FILE_NOTIFY_INFORMATION structures.
 		/// </summary>
-		ReadDirectoryNotifyInformation,
+		ReadDirectoryNotifyInformation = 1,
 
 		/// <summary>
 		/// The ReadDirectoryChangesExW function should provide extended information that describes the changes within the specified
 		/// directory, and return this information in the output buffer in the form of FILE_NOTIFY_EXTENDED_INFORMATION structures.
 		/// </summary>
 		ReadDirectoryNotifyExtendedInformation,
+
+		/// <summary/>
+		ReadDirectoryNotifyFullInformation,
+
+		/// <summary/>
+		ReadDirectoryNotifyMaximumInformation
 	}
 
 	/// <summary>Flags used by <see cref="FILE_REMOTE_PROTOCOL_INFO"/>.</summary>
