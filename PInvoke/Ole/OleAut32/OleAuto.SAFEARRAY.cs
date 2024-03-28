@@ -1369,7 +1369,7 @@ public static partial class OleAut32
 	// *psa, LONG *rgIndices, void *pv );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "7c837b4f-d319-4d98-934a-b585fe521bf8")]
-	public static extern HRESULT SafeArrayPutElement(SafeSAFEARRAY psa, [MarshalAs(UnmanagedType.LPArray)] int[] rgIndices, [In, MarshalAs(UnmanagedType.Struct)] object pv);
+	public static extern HRESULT SafeArrayPutElement(SafeSAFEARRAY psa, [MarshalAs(UnmanagedType.LPArray)] int[] rgIndices, [In, MarshalAs(UnmanagedType.Struct)] object? pv);
 
 	/// <summary>
 	/// <para>Stores the data element at the specified location in the array.</para>
@@ -1430,7 +1430,7 @@ public static partial class OleAut32
 	// *psa, LONG *rgIndices, void *pv );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "7c837b4f-d319-4d98-934a-b585fe521bf8")]
-	public static extern HRESULT SafeArrayPutElement(SafeSAFEARRAY psa, in int rgIndices, [In, MarshalAs(UnmanagedType.Struct)] object pv);
+	public static extern HRESULT SafeArrayPutElement(SafeSAFEARRAY psa, in int rgIndices, [In, MarshalAs(UnmanagedType.Struct)] object? pv);
 
 	/// <summary>
 	/// <para>Stores the data element at the specified location in the array.</para>
@@ -1935,6 +1935,15 @@ public static partial class OleAut32
 		/// </remarks>
 		public VARTYPE VarType { get { SafeArrayGetVartype(this, out VARTYPE vt).ThrowIfFailed(); return vt; } }
 
+		/// <summary>Gets or sets the <see cref="object"/> at the specified index.</summary>
+		/// <value>The <see cref="object"/>.</value>
+		/// <param name="index">The index.</param>
+		public object? this[int index]
+		{
+			get => GetValue(index);
+			set => SetValue(value, index);
+		}
+
 		/// <summary>Creates a SAFEARRAY from a .NET array.</summary>
 		/// <param name="array">
 		/// The array used to initialize the SAFEARRAY. This can be a single or multi-dimensional array, but cannot be a jagged array
@@ -1946,6 +1955,8 @@ public static partial class OleAut32
 		{
 			Type elemType = array.GetType().GetElementType()!;
 			if (elemType.IsArray) throw new ArgumentException("Input array cannot be jagged.", nameof(array));
+			if (elemType.IsCOMObject || elemType.IsImport && elemType.IsInterface) elementVarType = VARTYPE.VT_UNKNOWN;
+
 			// Create list of bounds in reverse
 			SAFEARRAYBOUND[] bounds = new SAFEARRAYBOUND[array.Rank];
 			for (int d = 0; d < bounds.Length; d++)
@@ -1953,7 +1964,7 @@ public static partial class OleAut32
 			// Create safe array
 			SafeSAFEARRAY sa = SafeArrayCreate(elementVarType, (uint)array.Rank, bounds);
 			// Copy values
-			if (elemType == typeof(object))
+			if (elemType == typeof(object) || elementVarType == VARTYPE.VT_UNKNOWN)
 			{
 				switch (elementVarType)
 				{
@@ -2175,7 +2186,7 @@ public static partial class OleAut32
 		/// <param name="value">The new value for the specified element.</param>
 		/// <param name="index">A 32-bit integer that represents the position of the Array element to set.</param>
 		/// <exception cref="ArgumentException">To take objects, the SAFEARRAY must be for VARIANTS.</exception>
-		public void SetValue(object value, int index)
+		public void SetValue(object? value, int index)
 		{
 			if (VarType != VARTYPE.VT_VARIANT)
 				throw new ArgumentException("To take objects, the SAFEARRAY must be for VARIANTS.");
@@ -2192,7 +2203,7 @@ public static partial class OleAut32
 		/// <para>The order of the indices follows .NET <see cref="Array"/> order and not the backwards ordering imposed by <c>SafeArrayGetElement</c>.</para>
 		/// </param>
 		/// <exception cref="ArgumentException">To take objects, the SAFEARRAY must be for VARIANTS.</exception>
-		public void SetValue(object value, params int[] indices)
+		public void SetValue(object? value, params int[] indices)
 		{
 			if (VarType != VARTYPE.VT_VARIANT)
 				throw new ArgumentException("To take objects, the SAFEARRAY must be for VARIANTS.");
@@ -2244,14 +2255,7 @@ public static partial class OleAut32
 			object eTypeVal = Activator.CreateInstance(eType)!;
 
 			// Get details and build Array instance
-			int dims = Rank;
-			SAFEARRAYBOUND[] bounds = new SAFEARRAYBOUND[dims];
-			for (int i = 1; i <= dims; i++)
-			{
-				_ = SafeArrayGetLBound(this, (uint)i, out int lb);
-				_ = SafeArrayGetUBound(this, (uint)i, out int ub);
-				bounds[dims - i] = new SAFEARRAYBOUND(ub, lb);
-			}
+			SAFEARRAYBOUND[] bounds = GetBounds();
 			Array ret = Array.CreateInstance(eType, Array.ConvertAll(bounds, b => (int)b.cElements), Array.ConvertAll(bounds, b => b.lLbound));
 
 			// Fill in values
@@ -2310,7 +2314,21 @@ public static partial class OleAut32
 		public HRESULT Unlock() => SafeArrayUnlock(this);
 
 		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => SafeArrayDestroy(handle).Succeeded;
+		protected override bool InternalReleaseHandle()
+		{
+			// Release all conversions from COM objects to pointers
+			if (VarType is VARTYPE.VT_UNKNOWN or VARTYPE.VT_DISPATCH)
+			{
+				using SafeCoTaskMemHandle mem = new(SafeArrayGetElemsize(this));
+				foreach ((int[] from, int[] _) in BuildIndexList(GetBounds()))
+				{
+					SafeArrayGetElement(this, from, mem).ThrowIfFailed();
+					unsafe { VARIANT* pVar = (VARIANT*)mem.DangerousGetHandle(); Marshal.Release(pVar->byref); }
+				}
+			}
+			// Release the array
+			return SafeArrayDestroy(handle).Succeeded;
+		}
 
 		private static IEnumerable<(int[] from, int[] to)> BuildIndexList(SAFEARRAYBOUND[] bounds)
 		{
@@ -2336,7 +2354,59 @@ public static partial class OleAut32
 			}
 		}
 
+		private SAFEARRAYBOUND[] GetBounds()
+		{
+			int dims = Rank;
+			SAFEARRAYBOUND[] bounds = new SAFEARRAYBOUND[dims];
+			for (int i = 1; i <= dims; i++)
+			{
+				_ = SafeArrayGetLBound(this, (uint)i, out int lb);
+				_ = SafeArrayGetUBound(this, (uint)i, out int ub);
+				bounds[dims - i] = new SAFEARRAYBOUND(ub, lb);
+			}
+			return bounds;
+		}
+
 		/// <inheritdoc/>
 		IEnumerator IEnumerable.GetEnumerator() => ToArray().GetEnumerator();
+	}
+
+	/// <summary>Custom marshaler for SAFEARRAY types. This marshaler is used to marshal SAFEARRAY types to and from managed code.</summary>
+	/// <typeparam name="T">The type of the array element.</typeparam>
+	public class SafeArrayMarshaler<T> : ICustomMarshaler
+	{
+		/// <inheritdoc/>
+		public static ICustomMarshaler GetInstance(string cookie) => new SafeArrayMarshaler<T>();
+
+		private static readonly Dictionary<object, SafeSAFEARRAY> store = [];
+
+		/// <inheritdoc/>
+		void ICustomMarshaler.CleanUpManagedData(object ManagedObj) { if (ManagedObj is not null) store.Remove(ManagedObj); }
+
+		/// <inheritdoc/>
+		void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) => SafeArrayDestroy(pNativeData);
+
+		/// <inheritdoc/>
+		int ICustomMarshaler.GetNativeDataSize() => -1;
+
+		/// <inheritdoc/>
+		IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj)
+		{
+			if (ManagedObj is null) return IntPtr.Zero;
+			if (ManagedObj.GetType().IsArray)
+			{
+				var sa = SafeSAFEARRAY.CreateFromArray((Array)ManagedObj, Ole32.PROPVARIANT.GetVarType(ManagedObj.GetType().GetElementType()));
+				store.Add(ManagedObj, sa);
+				return sa.DangerousGetHandle();
+			}
+			throw new ArgumentException("ManagedObj must be an array or null.", nameof(ManagedObj));
+		}
+
+		/// <inheritdoc/>
+		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData)
+		{
+			var sa = new SafeSAFEARRAY(pNativeData, false);
+			return sa.ToArray().Cast<T>().ToArray();
+		}
 	}
 }
