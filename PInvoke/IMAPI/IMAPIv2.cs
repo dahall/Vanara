@@ -2,6 +2,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.InteropServices.CustomMarshalers;
+using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke;
 
@@ -913,7 +914,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscformat2data-get_multisessioninterfaces HRESULT
 		// get_MultisessionInterfaces( SAFEARRAY **value );
 		[DispId(280)]
-		IMultisession[] MultisessionInterfaces { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMultisession>))] get; }
+		object[] MultisessionInterfaces { get; }
 
 		/// <summary>Writes the data stream to the device.</summary>
 		/// <param name="data">An <c>IStream</c> interface of the data stream to write.</param>

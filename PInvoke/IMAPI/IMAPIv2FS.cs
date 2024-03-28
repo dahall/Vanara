@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.InteropServices.CustomMarshalers;
 using Vanara.Collections;
+using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke;
 
@@ -1122,7 +1123,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_multisessioninterfaces HRESULT
 		// get_MultisessionInterfaces( SAFEARRAY **pVal );
 		[DispId(40)]
-		IMultisession[] MultisessionInterfaces { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMultisession>))] get; set;  }
+		object[] MultisessionInterfaces { get; set; }
 	}
 
 	/// <summary>
@@ -1639,7 +1640,8 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_multisessioninterfaces HRESULT
 		// get_MultisessionInterfaces( SAFEARRAY **pVal );
 		[DispId(40)]
-		new IMultisession[] MultisessionInterfaces { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMultisession>))] get; set; }
+		//new IMultisession[] MultisessionInterfaces { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMultisession>))] get; set; }
+		new object[] MultisessionInterfaces { get; set; }
 
 		/// <summary>Retrieves the boot option array that will be utilized to generate the file system image.</summary>
 		/// <value>
@@ -1652,7 +1654,8 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage2-get_bootimageoptionsarray HRESULT
 		// get_BootImageOptionsArray( SAFEARRAY **pVal );
 		[DispId(60)]
-		IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; set; }
+		//IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; set; }
+		object[] BootImageOptionsArray { get; set; }
 	}
 
 	/// <summary>
@@ -2175,7 +2178,8 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_multisessioninterfaces HRESULT
 		// get_MultisessionInterfaces( SAFEARRAY **pVal );
 		[DispId(40)]
-		new IMultisession[] MultisessionInterfaces { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMultisession>))] get; set; }
+		//new IMultisession[] MultisessionInterfaces { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMultisession>))] get; set; }
+		new object[] MultisessionInterfaces { get; set; }
 
 		/// <summary>Retrieves the boot option array that will be utilized to generate the file system image.</summary>
 		/// <value>
@@ -2188,7 +2192,8 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage2-get_bootimageoptionsarray HRESULT
 		// get_BootImageOptionsArray( SAFEARRAY **pVal );
 		[DispId(60)]
-		new IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; set; }
+		//new IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; set; }
+		new object[] BootImageOptionsArray { get; set; }
 
 		/// <summary>Retrieves a property value that specifies if the UDF Metadata will be redundant in the file system image.</summary>
 		/// <value>

@@ -1013,19 +1013,4 @@ public static partial class IMAPI
 		/// </summary>
 		IMAPI_READ_TRACK_ADDRESS_TYPE_SESSION,
 	}
-
-	internal class SafeArrayMarshaler<T> : ICustomMarshaler
-	{
-		public static ICustomMarshaler GetInstance(string cookie) => new SafeArrayMarshaler<T>();
-
-		void ICustomMarshaler.CleanUpManagedData(object ManagedObj) { }
-		void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) => SafeArrayDestroy(pNativeData);
-		int ICustomMarshaler.GetNativeDataSize() => -1;
-		IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => throw new NotImplementedException();
-		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData)
-		{
-			var sa = new SafeSAFEARRAY(pNativeData, false);
-			return sa.ToArray().Cast<T>().ToArray();
-		}
-	}
 }
