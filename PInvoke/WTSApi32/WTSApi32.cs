@@ -3080,7 +3080,7 @@ public static partial class WTSApi32
 		public long LastInputTimeUTC;
 		
 		/// <summary>The time of the last user input in the session.</summary>
-		public DateTime LastInputTime => DateTime.FromFileTimeUtc(LogonTimeUTC);
+		public DateTime LastInputTime => DateTime.FromFileTimeUtc(LastInputTimeUTC);
 
 		/// <summary>The time that the user logged on to the session.</summary>
 		public long LogonTimeUTC;
