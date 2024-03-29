@@ -1111,7 +1111,7 @@ public static partial class Ws2_32
 	/// <summary>The IN_ADDR structure represents an IPv4 address.</summary>
 	[PInvokeData("winsock2.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct IN_ADDR : IEquatable<IN_ADDR>
+	public struct IN_ADDR : IEquatable<IN_ADDR>, IComparable, IComparable<IN_ADDR>
 	{
 		/// <summary>An IPv4 address formatted as a u_long.</summary>
 		public uint S_addr;
@@ -1216,12 +1216,27 @@ public static partial class Ws2_32
 			byte[] b = S_un_b;
 			return $"{b[0]}.{b[1]}.{b[2]}.{b[3]}";
 		}
+
+		/// <inheritdoc/>
+		readonly int IComparable.CompareTo(object? obj) => obj is IN_ADDR i ? S_addr.CompareTo(i.S_addr) : (obj is null ? 1 : throw new ArgumentException("Invalid type for comparison.", nameof(obj)));
+
+		/// <inheritdoc/>
+		readonly int IComparable<IN_ADDR>.CompareTo(IN_ADDR other)
+		{
+			var b = S_un_b; var o = other.S_un_b;
+			for (int i = 0; i < 4; i++)
+			{
+				if (b[i] < o[i]) return -1;
+				if (b[i] > o[i]) return 1;
+			}
+			return 0;
+		}
 	}
 
 	/// <summary>The IN6_ADDR structure represents an IPv6 address.</summary>
 	[PInvokeData("winsock2.h")]
 	[StructLayout(LayoutKind.Sequential, Size = IN6_ADDR_SIZE)]
-	public struct IN6_ADDR : IEquatable<IN6_ADDR>
+	public struct IN6_ADDR : IEquatable<IN6_ADDR>, IComparable, IComparable<IN6_ADDR>
 	{
 		private const int IN6_ADDR_SIZE = 16;
 
@@ -1229,7 +1244,7 @@ public static partial class Ws2_32
 		private ulong upper;
 
 		/// <summary>The IPv6 standard loopback address (<c>IN6ADDR_LOOPBACK_INIT</c>).</summary>
-		public static readonly IN6_ADDR Loopback = new(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+		public static readonly IN6_ADDR Loopback = new([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
 
 		/// <summary>The IPv6 standard unspecified address (<c>IN6ADDR_ANY_INIT</c>).</summary>
 		public static readonly IN6_ADDR Unspecified = new();
@@ -1464,7 +1479,23 @@ public static partial class Ws2_32
 		/// <param name="other">The value to compare with this instance.</param>
 		/// <returns><see langword="true"/> if the specified value is equal to this instance; otherwise, <see langword="false"/>.</returns>
 		public readonly bool Equals(IN6_ADDR other) => lower == other.lower && upper == other.upper;
+
+		/// <inheritdoc/>
+		readonly int IComparable.CompareTo(object? obj) => obj is IN6_ADDR i ? ((IComparable<IN6_ADDR>)this).CompareTo(i) : (obj is null ? 1 : throw new ArgumentException("Invalid type for comparison.", nameof(obj)));
+
+		/// <inheritdoc/>
+		readonly int IComparable<IN6_ADDR>.CompareTo(IN6_ADDR other)
+		{
+			var b = bytes; var o = other.bytes;
+			for (int i = 0; i < IN6_ADDR_SIZE; i++)
+			{
+				if (b[i] < o[i]) return -1;
+				if (b[i] > o[i]) return 1;
+			}
+			return 0;
+		}
 	}
+}
 
 	/// <summary>
 	/// The <c>linger</c> structure maintains information about a specific socket that specifies how that socket should behave when data
