@@ -280,7 +280,7 @@ public partial class IpHlpApiTests
 			Assert.That(t5.dwNumEntries, Is.GreaterThan(0));
 			MIB_UDPTABLE_OWNER_PID t10 = GetExtendedUdpTable<MIB_UDPTABLE_OWNER_PID>(UDP_TABLE_CLASS.UDP_TABLE_OWNER_PID);
 			Assert.That(t10.dwNumEntries, Is.GreaterThan(0));
-			TestContext.WriteLine("UDP PID: " + string.Join(",", t10.Select(t => t.dwOwningPid)));
+			TestContext.WriteLine("UDP PID:\n" + string.Join("\n", t10.OrderBy(t => t).Select(t => $"{t.dwLocalAddr}:{t.dwHostLocalPort}\t{t.dwOwningPid}")));
 			MIB_UDP6TABLE_OWNER_PID t11 = GetExtendedUdpTable<MIB_UDP6TABLE_OWNER_PID>(UDP_TABLE_CLASS.UDP_TABLE_OWNER_PID, ADDRESS_FAMILY.AF_INET6);
 			Assert.That(t11.dwNumEntries, Is.GreaterThan(0));
 			TestContext.WriteLine("UDP6 PID: " + string.Join(",", t11.Select(t => t.dwOwningPid)));
