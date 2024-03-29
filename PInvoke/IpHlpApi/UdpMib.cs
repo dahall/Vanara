@@ -422,28 +422,39 @@ public static partial class IpHlpApi
 	// _MIB_UDPROW_OWNER_PID { DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwOwningPid; } MIB_UDPROW_OWNER_PID, *PMIB_UDPROW_OWNER_PID;
 	[PInvokeData("udpmib.h", MSDNShortId = "b914b6eb-adf9-4a61-ae8f-05d3ff90ce90")]
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
-	public struct MIB_UDPROW_OWNER_PID
+	public struct MIB_UDPROW_OWNER_PID : IComparable, IComparable<MIB_UDPROW_OWNER_PID>
 	{
 		/// <summary>
 		/// <para>The IPv4 address of the UDP endpoint on the local computer.</para>
-		/// <para>
-		/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
-		/// </para>
+		/// <para>A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.</para>
 		/// </summary>
 		public IN_ADDR dwLocalAddr;
 
-		/// <summary>
-		/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
-		/// </summary>
+		/// <summary>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</summary>
 		public uint dwLocalPort;
 
 		/// <summary>
-		/// <para>
-		/// The PID of the process that issued the call to the bind function for the UDP endpoint. This member is set to 0 when the PID
-		/// is unavailable.
-		/// </para>
+		/// The PID of the process that issued the call to the bind function for the UDP endpoint. This member is set to 0 when the PID is unavailable.
 		/// </summary>
 		public uint dwOwningPid;
+
+		/// <summary>The port number of the UDP endpoint on the local computer. This member is in host byte order.</summary>
+		public ushort dwHostLocalPort { readonly get => ntohs((ushort)dwLocalPort); set => dwLocalPort = htons(value); }
+
+		/// <inheritdoc/>
+		readonly int IComparable<MIB_UDPROW_OWNER_PID>.CompareTo(MIB_UDPROW_OWNER_PID p)
+		{
+			var cmp = ((IComparable<IN_ADDR>)dwLocalAddr).CompareTo(p.dwLocalAddr);
+			if (cmp == 0)
+				cmp = dwHostLocalPort.CompareTo(p.dwHostLocalPort);
+			if (cmp == 0)
+				cmp = dwOwningPid.CompareTo(p.dwOwningPid);
+			return cmp;
+		}
+
+		/// <inheritdoc/>
+		readonly int IComparable.CompareTo(object? obj) => obj is MIB_UDPROW_OWNER_PID i ? ((IComparable<MIB_UDPROW_OWNER_PID>)this).CompareTo(i) :
+			(obj is null ? 1 : throw new ArgumentException("Invalid type for comparison.", nameof(obj)));
 	}
 
 	/// <summary>
