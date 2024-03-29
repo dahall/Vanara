@@ -1495,7 +1495,6 @@ public static partial class Ws2_32
 			return 0;
 		}
 	}
-}
 
 	/// <summary>
 	/// The <c>linger</c> structure maintains information about a specific socket that specifies how that socket should behave when data
