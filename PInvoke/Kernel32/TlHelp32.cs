@@ -349,7 +349,7 @@ public static partial class Kernel32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/nf-tlhelp32-module32first BOOL Module32First( HANDLE hSnapshot,
 	// LPMODULEENTRY32 lpme );
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("tlhelp32.h", MSDNShortId = "bb41cab9-13a1-469d-bf76-68c172e982f6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool Module32First(HSNAPSHOT hSnapshot, ref MODULEENTRY32 lpme);
@@ -376,7 +376,7 @@ public static partial class Kernel32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/nf-tlhelp32-module32next BOOL Module32Next( HANDLE hSnapshot,
 	// LPMODULEENTRY32 lpme );
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("tlhelp32.h", MSDNShortId = "88ec1af4-bae7-4cd7-b830-97a98fb337f4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool Module32Next(HSNAPSHOT hSnapshot, ref MODULEENTRY32 lpme);
@@ -734,7 +734,7 @@ public static partial class Kernel32
 	// dwSize; DWORD th32ModuleID; DWORD th32ProcessID; DWORD GlblcntUsage; DWORD ProccntUsage; BYTE *modBaseAddr; DWORD modBaseSize;
 	// HMODULE hModule; char szModule[MAX_MODULE_NAME32 + 1]; char szExePath[MAX_PATH]; } MODULEENTRY32;
 	[PInvokeData("tlhelp32.h", MSDNShortId = "305fab35-625c-42e3-a434-e2513e4c8870")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct MODULEENTRY32
 	{
 		private const int MAX_MODULE_NAME32 = 255;
