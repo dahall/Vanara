@@ -461,7 +461,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
 		// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
-		unsafe ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In, Optional] SYSTEMTIME* pstReferenceTime);
+		ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In, Optional] PSYSTEMTIME? pstReferenceTime);
 	}
 
 	/// <summary>
@@ -647,7 +647,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
 		// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
-		new unsafe ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In, Optional] SYSTEMTIME* pstReferenceTime);
+		new ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In, Optional] PSYSTEMTIME? pstReferenceTime);
 
 		/// <summary>
 		/// Creates a search condition that is either <c>TRUE</c> or <c>FALSE</c>. The returned object supports ICondition and ICondition2
@@ -1554,7 +1554,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
 		// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
-		new unsafe ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In] SYSTEMTIME* pstReferenceTime);
+		new ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, [In] PSYSTEMTIME? pstReferenceTime);
 
 		/// <summary>Retrieves the condition tree and the semantic type of the solution.</summary>
 		/// <param name="ppQueryNode">
