@@ -9,9 +9,9 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyTitleAttribute(L"Vanara.PInvoke.VssApi")];
 [assembly:AssemblyDescriptionAttribute(L"PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).")];
 [assembly:AssemblyProductAttribute(L"Vanara")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright © 2017-2023")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright © 2017-2024")];
 [assembly:AssemblyKeyFileAttribute(L"..\\..\\Vanara.snk")]
-[assembly:AssemblyVersionAttribute("4.0.0.0")];
+[assembly:AssemblyVersionAttribute("4.0.1.0")];
 [assembly:AssemblyInformationalVersionAttribute("4.0.0-beta")];
 
 [assembly:ComVisible(false)];

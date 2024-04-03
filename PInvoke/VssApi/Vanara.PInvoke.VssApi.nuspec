@@ -2,9 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Vanara.PInvoke.VssApi</id>
-    <version>4.0.0-beta2</version>
+    <version>4.0.1</version>
     <description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</description>
-    <copyright>Copyright © 2017-2023</copyright>
+    <copyright>Copyright © 2017-2024</copyright>
     <authors>David Hall</authors>
     <tags>pinvoke,vanara,net-extensions,interop,VSS,VssApi,volume shadow copy service</tags>
     <license type="expression">MIT</license>

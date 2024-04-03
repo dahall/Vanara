@@ -1,10 +1,10 @@
 ﻿<Project>
   <PropertyGroup Label="VanaraPackage">
-    <Version>4.0.0-beta</Version>
+    <Version>4.0.1</Version>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
     <Authors>David Hall</Authors>
     <Company>GitHub Community</Company>
-    <Copyright>Copyright © 2017-2023</Copyright>
+    <Copyright>Copyright © 2017-2024</Copyright>
     <PackageIcon>Vanara64x64.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
