@@ -126,34 +126,77 @@ public static partial class Shell32
 	}
 
 	/// <summary>Contains strings returned from the IShellFolder interface methods.</summary>
-	[StructLayout(LayoutKind.Explicit, Size = 264)]
+	[StructLayout(LayoutKind.Sequential)]
 	[PInvokeData("Shtypes.h", MSDNShortId = "bb759820")]
 	public struct STRRET
 	{
+		const int strlenbuf = 260;
+
 		/// <summary>A value that specifies the desired format of the string.</summary>
-		[FieldOffset(0)]
 		public STRRET_TYPE uType;
+
+		private DUMMYUNIONNAME union;
 
 		/// <summary>
 		/// A pointer to the string. This memory must be allocated with CoTaskMemAlloc. It is the calling application's responsibility to
 		/// free this memory with CoTaskMemFree when it is no longer needed.
 		/// </summary>
-		[FieldOffset(4)]
-		public StrPtrUni pOleStr; // must be freed by caller of GetDisplayNameOf
+		public StrPtrUni pOleStr => union.pOleStr; // must be freed by caller of GetDisplayNameOf
 
 		/// <summary>The offset into the item identifier list.</summary>
-		[FieldOffset(4)]
-		public uint uOffset; // Offset into SHITEMID
+		public uint uOffset => union.uOffset; // Offset into SHITEMID
 
 		/// <summary>The buffer to receive the display name. CHAR[MAX_PATH]</summary>
-		[FieldOffset(4)]
-		public StrPtrAnsi cStr;
+		public string? cStr { get => uType == STRRET_TYPE.STRRET_CSTR ? union.cStr : null; set => StringHelper.Write(value, (IntPtr)union.cStr, out _, true, CharSet.Ansi, strlenbuf); }
+
+		/// <summary>Initializes a new instance of the <see cref="STRRET"/> struct.</summary>
+		/// <param name="lpstr">The initial string.</param>
+		public STRRET(string? lpstr)
+		{
+			if (lpstr is not null && lpstr.Length < strlenbuf)
+			{
+				uType = STRRET_TYPE.STRRET_CSTR;
+				cStr = lpstr;
+			}
+			else
+			{
+				uType = STRRET_TYPE.STRRET_WSTR;
+				union.pOleStr = Marshal.StringToCoTaskMemUni(lpstr);
+			}
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="STRRET" /> struct.</summary>
+		/// <param name="offset">The offset into the item identifier list.</param>
+		public STRRET(uint offset)
+		{
+			uType = STRRET_TYPE.STRRET_OFFSET;
+			union.uOffset = offset;
+		}
+
+		[StructLayout(LayoutKind.Explicit, Size = strlenbuf)]
+		private struct DUMMYUNIONNAME
+		{
+			[FieldOffset(0)]
+			public StrPtrUni pOleStr;
+			[FieldOffset(0)]
+			public uint uOffset;
+			[FieldOffset(0)]
+			public StrPtrAnsi cStr;
+		}
 
 		/// <summary>Performs an implicit conversion from <see cref="STRRET"/> to <see cref="System.String"/>.</summary>
 		/// <param name="s">The <see cref="STRRET"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator string?(in STRRET s) =>
-			ShlwApi.StrRetToBSTR(new PinnedObject(s), default, out var ret).Succeeded ? ret : null;
+		public static implicit operator string?(in STRRET s) => s.uType switch
+		{
+			STRRET_TYPE.STRRET_OFFSET => ShlwApi.StrRetToBSTR(new PinnedObject(s), default, out var ret).Succeeded ? ret : null,
+			STRRET_TYPE.STRRET_WSTR => s.pOleStr.ToString(),
+			STRRET_TYPE.STRRET_CSTR => s.cStr,
+			_ => throw new ArgumentException("Invalid STRRET type", nameof(s)),
+		};
+
+		/// <summary>Frees any memory associated with this instance.</summary>
+		public void Free() { if (uType == STRRET_TYPE.STRRET_WSTR) pOleStr.Free(); }
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -180,8 +223,7 @@ public static partial class Shell32
 		public IntPtr MarshalManagedToNative(object ManagedObj)
 		{
 			if (ManagedObj is not string s) throw new InvalidCastException();
-			var sr = new STRRET { uType = STRRET_TYPE.STRRET_WSTR };
-			sr.pOleStr.Assign(s);
+			var sr = new STRRET(s);
 			return sr.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 		}
 

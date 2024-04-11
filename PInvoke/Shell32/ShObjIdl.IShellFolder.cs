@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
+using System.Windows;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -2330,7 +2331,11 @@ public static partial class Shell32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getdisplaynameof HRESULT
 	// GetDisplayNameOf( PCUITEMID_CHILD pidl, SHGDNF uFlags, STRRET *pName );
-	public static string? GetDisplayNameOf(this IShellFolder sf, SHGDNF uFlags, PIDL pidl) { sf.GetDisplayNameOf(pidl ?? PIDL.Null, uFlags, out var p); return p; }
+	public static string? GetDisplayNameOf(this IShellFolder sf, SHGDNF uFlags, PIDL pidl)
+	{
+		sf.GetDisplayNameOf(pidl ?? PIDL.Null, uFlags, out var p);
+		return ShlwApi.StrRetToBSTR(new PinnedObject(p), default, out var str).Succeeded ? str : null;
+	}
 
 	/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
