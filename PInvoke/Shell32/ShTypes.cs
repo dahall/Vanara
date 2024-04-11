@@ -147,22 +147,14 @@ public static partial class Shell32
 		public uint uOffset => union.uOffset; // Offset into SHITEMID
 
 		/// <summary>The buffer to receive the display name. CHAR[MAX_PATH]</summary>
-		public string? cStr { get => uType == STRRET_TYPE.STRRET_CSTR ? union.cStr : null; set => StringHelper.Write(value, (IntPtr)union.cStr, out _, true, CharSet.Ansi, strlenbuf); }
+		public string? cStr => uType == STRRET_TYPE.STRRET_CSTR ? union.cStr : null;
 
 		/// <summary>Initializes a new instance of the <see cref="STRRET"/> struct.</summary>
 		/// <param name="lpstr">The initial string.</param>
 		public STRRET(string? lpstr)
 		{
-			if (lpstr is not null && lpstr.Length < strlenbuf)
-			{
-				uType = STRRET_TYPE.STRRET_CSTR;
-				cStr = lpstr;
-			}
-			else
-			{
-				uType = STRRET_TYPE.STRRET_WSTR;
-				union.pOleStr = Marshal.StringToCoTaskMemUni(lpstr);
-			}
+			uType = STRRET_TYPE.STRRET_WSTR;
+			union.pOleStr = Marshal.StringToCoTaskMemUni(lpstr);
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="STRRET" /> struct.</summary>
@@ -196,7 +188,7 @@ public static partial class Shell32
 		};
 
 		/// <summary>Frees any memory associated with this instance.</summary>
-		public void Free() { if (uType == STRRET_TYPE.STRRET_WSTR) pOleStr.Free(); }
+		public void Free() { if (uType == STRRET_TYPE.STRRET_WSTR) { Marshal.FreeCoTaskMem((IntPtr)union.pOleStr); union.pOleStr = IntPtr.Zero; } }
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
