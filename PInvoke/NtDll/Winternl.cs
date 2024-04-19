@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
@@ -896,31 +896,31 @@ namespace Vanara.PInvoke
 
 		/// <summary>Contains information for basic process information.</summary>
 		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280(v=vs.85).aspx</remarks>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PROCESS_BASIC_INFORMATION
-		{
-			/// <summary>Reserved for internal use by the operating system.</summary>
-			private readonly IntPtr Reserved1;
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PROCESS_BASIC_INFORMATION
+        {
+            /// <summary>Contains the same value that GetExitCodeProcess returns. However the use of GetExitCodeProcess is preferable for clarity and safety.</summary>
+            public NTStatus ExitStatus;
 
-			/// <summary>Pointer to a PEB structure.</summary>
-			public IntPtr PebBaseAddress;
+            /// <summary>PEB structure.</summary>
+            public PEB PebBaseAddress;
 
-			/// <summary>Reserved for internal use by the operating system.</summary>
-			private readonly IntPtr Reserved2_1;
+            /// <summary>Contains the same value that GetProcessAffinityMask returns for the lpProcessAffinityMask parameter.</summary>
+            public uint AffinityMask;
 
-			/// <summary>Reserved for internal use by the operating system.</summary>
-			private readonly IntPtr Reserved2_2;
+            /// <summary>Contains the process priority as described in Scheduling Priorities.</summary>
+            public uint BasePriority;
 
-			/// <summary>System's unique identifier for this process.</summary>
-			public IntPtr UniqueProcessId;
+            /// <summary>System's unique identifier for this process.</summary>
+            public IntPtr UniqueProcessId;
 
-			/// <summary>Reserved for internal use by the operating system.</summary>
-			private readonly IntPtr Reserved3;
-		}
+            /// <summary>Contains a unique identifier for the parent process.</summary>
+            public uint InheritedFromUniqueProcessId;
+        }
 
-		/// <summary>Contains information for basic process information.</summary>
-		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280(v=vs.85).aspx</remarks>
-		[StructLayout(LayoutKind.Sequential)]
+        /// <summary>Contains information for basic process information.</summary>
+        /// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280(v=vs.85).aspx</remarks>
+        [StructLayout(LayoutKind.Sequential)]
 		public struct PROCESS_BASIC_INFORMATION_WOW64
 		{
 			/// <summary>Reserved for internal use by the operating system.</summary>
