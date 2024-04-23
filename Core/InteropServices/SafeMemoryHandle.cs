@@ -261,6 +261,9 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <seealso cref="SafeHandle"/>
 public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IEquatable<SafeAllocatedMemoryHandleBase>
 {
+	/// <summary>Occurs when the handle has changed.</summary>
+	public event EventHandler<IntPtr>? HandleChanged;
+
 	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</summary>
 	/// <param name="handle">The handle.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
@@ -400,6 +403,14 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 		try { Lock(); return action.Invoke(handle); }
 		finally { Unlock(); }
 	}
+
+	/// <summary>Sets the handle to the specified pre-existing handle.</summary>
+	/// <param name="h">The pre-existing handle to use.</param>
+	/// <remarks>
+	/// Use the SetHandle method only if you need to support a pre-existing handle (for example, if the handle is returned in a structure)
+	/// because the .NET Framework COM interop infrastructure does not support marshaling output handles in a structure.
+	/// </remarks>
+	new protected void SetHandle(IntPtr h) { base.SetHandle(h); HandleChanged?.Invoke(this, h); }
 
 	private class SafeBufferImpl : SafeBuffer
 	{
