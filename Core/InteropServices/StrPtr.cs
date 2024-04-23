@@ -250,7 +250,7 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 	/// <returns>
 	/// <see langword="true"/> if the value parameter is <see langword="null"/> or an empty string (""); otherwise, <see langword="false"/>.
 	/// </returns>
-	public bool IsNullOrEmpty => ptr == IntPtr.Zero || StringHelper.GetString(ptr, CharSet.Auto, 1) == string.Empty;
+	public bool IsNullOrEmpty => ptr == IntPtr.Zero || Marshal.SystemDefaultCharSize == 2 ? Marshal.ReadInt16(ptr) == 0 : Marshal.ReadByte(ptr) == 0;
 
 	/// <summary>Performs an implicit conversion from <see cref="StrPtrAuto"/> to <see cref="string"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrAuto"/> instance.</param>
