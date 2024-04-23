@@ -912,6 +912,24 @@ public static partial class NtDll
 
 		/// <summary>Reserved for internal use by the operating system.</summary>
 		private readonly IntPtr Reserved3;
+
+		/// <summary>
+		/// Contains the same value that GetExitCodeProcess returns. However the use of GetExitCodeProcess is preferable for clarity and
+		/// safety. Cast to <see cref="NTStatus"/>.
+		/// </summary>
+		public readonly NTStatus ExitStatus => (NTStatus)Reserved1.ToInt32();
+
+		/// <summary>Points to a <see cref="PEB"/> structure.</summary>
+		public readonly ref PEB Peb => ref PebBaseAddress.AsRef<PEB>();
+
+		/// <summary>Contains the same value that GetProcessAffinityMask returns for the lpProcessAffinityMask parameter.</summary>
+		public readonly nuint AffinityMask => Reserved2_1.ToUIntPtr();
+
+		/// <summary>Contains the process priority as described in Scheduling Priorities.</summary>
+		public readonly nint BasePriority => Reserved2_2;
+
+		/// <summary>Contains a unique identifier for the parent process.</summary>
+		public readonly nuint InheritedFromUniqueProcessId => Reserved3.ToUIntPtr();
 	}
 
 	/// <summary>Contains information for basic process information.</summary>
@@ -920,22 +938,22 @@ public static partial class NtDll
 	public struct PROCESS_BASIC_INFORMATION_WOW64
 	{
 		/// <summary>Reserved for internal use by the operating system.</summary>
-		private readonly long Reserved1;
+		public long Reserved1;
 
 		/// <summary>Pointer to a PEB structure.</summary>
 		public long PebBaseAddress;
 
 		/// <summary>Reserved for internal use by the operating system.</summary>
-		private readonly long Reserved2_1;
+		public long Reserved2_1;
 
 		/// <summary>Reserved for internal use by the operating system.</summary>
-		private readonly long Reserved2_2;
+		public long Reserved2_2;
 
 		/// <summary>System's unique identifier for this process.</summary>
 		public long UniqueProcessId;
 
 		/// <summary>Reserved for internal use by the operating system.</summary>
-		private readonly long Reserved3;
+		public long Reserved3;
 	}
 
 	/// <summary>
