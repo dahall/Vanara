@@ -789,7 +789,7 @@ public static partial class Shell32
 		/// <remarks>If pszVerb is <c>NULL</c>, then the default verb is invoked on the selection.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-invokeverbonselection
 		// HRESULT InvokeVerbOnSelection( LPCSTR pszVerb );
-		void InvokeVerbOnSelection([In, MarshalAs(UnmanagedType.LPWStr)] string? pszVerb);
+		void InvokeVerbOnSelection([In, MarshalAs(UnmanagedType.LPStr)] string? pszVerb);
 
 		/// <summary>Sets and applies the view mode and image size.</summary>
 		/// <param name="uViewMode">
