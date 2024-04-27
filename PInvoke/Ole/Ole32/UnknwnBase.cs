@@ -2,6 +2,9 @@
 
 public static partial class Ole32
 {
+	/// <summary>IID_IUnknown</summary>
+	public static readonly Guid IID_IUnknown = new("00000000-0000-0000-C000-000000000046");
+
 	/// <summary>Enables a class of objects to be created.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/unknwnbase/nn-unknwnbase-iclassfactory
 	[PInvokeData("unknwnbase.h", MSDNShortId = "f624f833-2b69-43bc-92cd-c4ecbe6051c5")]
