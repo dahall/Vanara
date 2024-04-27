@@ -36,7 +36,7 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <param name="h1">The first handle.</param>
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(SafeHANDLE h1, IHandle h2) => !(h1 == h2);
+	public static bool operator !=(SafeHANDLE h1, IHandle? h2) => !(h1 == h2);
 
 	/// <summary>Implements the operator !=.</summary>
 	/// <param name="h1">The first handle.</param>
@@ -48,7 +48,7 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <param name="h1">The first handle.</param>
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator ==(SafeHANDLE h1, IHandle h2) => h1?.Equals(h2) ?? h2 is null;
+	public static bool operator ==(SafeHANDLE h1, IHandle? h2) => h1?.Equals(h2) ?? h2 is null;
 
 	/// <summary>Implements the operator ==.</summary>
 	/// <param name="h1">The first handle.</param>
