@@ -1,4 +1,8 @@
-﻿using System.Runtime.InteropServices.ComTypes;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Rpc;
 using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
@@ -4075,5 +4079,117 @@ public static partial class Ole32
 		/// When used in CoInitializeSecurity, set on return to indicate the status of the call to register the authentication services.
 		/// </summary>
 		public HRESULT hr;
+	}
+
+	/// <summary>Unmanaged memory methods for IMalloc.</summary>
+	/// <seealso cref="IMemoryMethods"/>
+	public sealed class IMallocMemoryMethods : MemoryMethodsBase
+	{
+		[ThreadStatic]
+		internal static Lazy<IMalloc> malloc = new(() => GetMalloc());
+
+		/// <summary>Gets a static instance of this class.</summary>
+		/// <value>The instance.</value>
+		public static IMemoryMethods Instance { get; } = new IMallocMemoryMethods();
+
+		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public override IntPtr AllocMem(int size) => (malloc?.Value ?? GetMalloc()).Alloc(size);
+
+		/// <summary>Frees the memory associated with a handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public override void FreeMem(IntPtr hMem) => (malloc?.Value ?? GetMalloc()).Free(hMem);
+
+		/// <summary>Retrieves the size of a previously allocated block of memory.</summary>
+		/// <param name="hMem">A pointer to the block of memory.</param>
+		/// <returns>The size of the allocated memory block in bytes or, if <paramref name="hMem"/> is a NULL pointer, -1.</returns>
+		public SizeT GetSize(IntPtr hMem) => (malloc?.Value ?? GetMalloc()).GetSize(hMem);
+
+		/// <summary>Gets the reallocation method.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public override IntPtr ReAllocMem(IntPtr hMem, int size) => (malloc?.Value ?? GetMalloc()).Realloc(hMem, size);
+
+		private static IMalloc GetMalloc(uint dwMemContext = 1) { CoGetMalloc(dwMemContext, out var m).ThrowIfFailed(); return m; }
+	}
+
+	/// <summary>Safe handle to IMalloc memory.</summary>
+	public class SafeIMallocHandle : SafeMemoryHandleExt<IMallocMemoryMethods>
+	{
+		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
+		/// <param name="size">The size of memory to allocate, in bytes.</param>
+		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+		public SafeIMallocHandle(SizeT size = default) : base(size) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
+		/// <param name="handle">The handle.</param>
+		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
+		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+		public SafeIMallocHandle(IntPtr handle, SizeT size = default, bool ownsHandle = true) : base(handle, size <= 0 ? mm.GetSize(handle) : size, ownsHandle) { }
+
+		/// <summary>
+		/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
+		/// array equivalent.
+		/// </summary>
+		/// <param name="bytes">Array of unmanaged pointers</param>
+		/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+		public SafeIMallocHandle(byte[] bytes) : base(bytes) { }
+
+		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+		/// <param name="s">The string value.</param>
+		/// <param name="charSet">The character set of the string.</param>
+		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
+		public SafeIMallocHandle(string s, CharSet charSet = CharSet.Unicode) : base(s, charSet) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeIMallocHandle"/> class.</summary>
+		[ExcludeFromCodeCoverage]
+		internal SafeIMallocHandle() : base(0) { }
+
+		/// <summary>Represents a NULL memory pointer.</summary>
+		public static SafeIMallocHandle Null => new(IntPtr.Zero, 0, false);
+
+		/// <inheritdoc/>
+		public override SizeT Size { get => sz = mm.GetSize(handle); set => base.Size = value; }
+
+		/// <summary>
+		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
+		/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
+		/// structures with attribute StructLayout of LayoutKind.Sequential are supported.
+		/// </summary>
+		/// <typeparam name="T">Type of the trailing array of structures</typeparam>
+		/// <param name="values">Collection of structure objects</param>
+		/// <param name="count">
+		/// Number of items in <paramref name="values"/>. Setting this value to -1 will cause the method to get the count by iterating
+		/// through <paramref name="values"/>.
+		/// </param>
+		/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
+		/// <returns><see cref="SafeIMallocHandle"/> object to an native (unmanaged) structure with a trail array of structures</returns>
+		public static SafeIMallocHandle CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) =>
+			new(InteropExtensions.MarshalToPtr(count < 0 ? values : values.Take(count), mm.AllocMem, out int s, prefixBytes), s);
+
+		/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
+		/// <param name="values">The list of strings.</param>
+		/// <param name="packing">The packing type for the strings.</param>
+		/// <param name="charSet">The character set to use for the strings.</param>
+		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+		/// <returns>
+		/// <see cref="SafeIMallocHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/>
+		/// model and the character set defined by <paramref name="charSet"/>.
+		/// </returns>
+		public static SafeIMallocHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
+			CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
+
+		/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
+		/// <typeparam name="T">Native type</typeparam>
+		/// <param name="value">The value.</param>
+		/// <returns><see cref="SafeIMallocHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
+		public static SafeIMallocHandle CreateFromStructure<T>(in T? value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
+
+		/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeIMallocHandle"/> where it owns the reference.</summary>
+		/// <param name="ptr">The <see cref="IntPtr"/>.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SafeIMallocHandle(IntPtr ptr) => new(ptr, 0, true);
 	}
 }
