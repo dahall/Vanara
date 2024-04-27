@@ -86,12 +86,12 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <summary>Throws if failed.</summary>
 	/// <param name="err">The error.</param>
 	/// <param name="message">The message.</param>
-	[System.Diagnostics.DebuggerStepThrough]
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static void ThrowIfFailed(Win32Error err, string? message = null) => err.ThrowIfFailed(message);
 
 	/// <summary>Throws the last error.</summary>
 	/// <param name="message">The message to associate with the exception.</param>
-	[System.Diagnostics.DebuggerStepThrough]
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static void ThrowLastError(string? message = null) => GetLastError().ThrowIfFailed(message);
 
 	/// <summary>Throws the last error if the predicate delegate returns <see langword="true"/>.</summary>
@@ -100,6 +100,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <param name="valueIsFailure">The delegate which returns <see langword="true"/> on failure.</param>
 	/// <param name="message">The message.</param>
 	/// <returns>The <paramref name="value"/> passed in on success.</returns>
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string? message = null)
 	{
 		if (valueIsFailure(value))
@@ -110,22 +111,25 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <summary>Throws the last error if the function returns <see langword="false"/>.</summary>
 	/// <param name="value">The value to check.</param>
 	/// <param name="message">The message.</param>
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static bool ThrowLastErrorIfFalse(bool value, string? message = null) => ThrowLastErrorIf(value, v => !v, message);
 
 	/// <summary>Throws the last error if the value is an invalid handle.</summary>
 	/// <param name="value">The SafeHandle to check.</param>
 	/// <param name="message">The message.</param>
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static T ThrowLastErrorIfInvalid<T>(T value, string? message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
 
 	/// <summary>Throws the last error if the value is a NULL pointer (IntPtr.Zero).</summary>
 	/// <param name="value">The pointer to check.</param>
 	/// <param name="message">The message.</param>
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static IntPtr ThrowLastErrorIfNull(IntPtr value, string? message = null) => ThrowLastErrorIf(value, v => v == IntPtr.Zero, message);
 
 	/// <summary>Throws if the last error failed, unless the error is the specified value.</summary>
 	/// <param name="exception">The failure code to ignore.</param>
 	/// <param name="message">The message to associate with the exception.</param>
-	[System.Diagnostics.DebuggerStepThrough]
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static void ThrowLastErrorUnless(Win32Error exception, string? message = null) => GetLastError().ThrowUnless(exception, message);
 
 	/// <summary>Compares the current object with another object of the same type.</summary>
@@ -187,7 +191,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <summary>Throws if failed.</summary>
 	/// <param name="message">The message.</param>
 	/// <exception cref="Win32Exception"></exception>
-	[System.Diagnostics.DebuggerStepThrough]
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public void ThrowIfFailed(string? message = null)
 	{
 		if (value != ERROR_SUCCESS) throw GetException(message)!;
@@ -211,7 +215,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	public override string ToString()
 	{
 		_ = StaticFieldValueHash.TryGetFieldName<Win32Error, uint>(value, out var err);
-		var msg = HRESULT.FormatMessage(value);
+		var msg = ErrorHelper.GetErrorMessage<Win32Error, uint>(value);
 		return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", value)) + (msg == null ? "" : ": " + msg);
 	}
 

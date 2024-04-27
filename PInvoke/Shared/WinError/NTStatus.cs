@@ -388,6 +388,7 @@ public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<
 	/// </summary>
 	/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 	/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static void ThrowIfFailed(int ntstatus, string? message = null) => new NTStatus(ntstatus).ThrowIfFailed(message);
 
 	/// <summary>Compares the current object with another object of the same type.</summary>
@@ -461,6 +462,7 @@ public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<
 	/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 	[SecurityCritical]
 	[SecuritySafeCritical]
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public void ThrowIfFailed(string? message = null)
 	{
 		var exception = GetException(message);
@@ -482,7 +484,7 @@ public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<
 	{
 		// Check for defined NTStatus value
 		StaticFieldValueHash.TryGetFieldName<NTStatus, int>(_value, out var err);
-		var msg = HRESULT.FormatMessage(unchecked((uint)_value));
+		var msg = ErrorHelper.GetErrorMessage<NTStatus, int>(_value);
 		return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 	}
 
