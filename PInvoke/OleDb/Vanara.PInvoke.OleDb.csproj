@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>oledb.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows OLE DB.</Description>
+    <AssemblyName>Vanara.PInvoke.OleDb</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;OleDb</PackageTags>
+    <PackageReleaseNotes />
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Odbc32\Vanara.PInvoke.Odbc32.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>
