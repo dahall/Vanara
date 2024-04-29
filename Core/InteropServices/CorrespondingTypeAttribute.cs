@@ -173,7 +173,7 @@ public class CorrespondingTypeAttribute : Attribute
 	public static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action = (CorrespondingAction)0xf) where TEnum : Enum
 	{
 		System.Reflection.FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());
-		IEnumerable<CorrespondingTypeAttribute> attr = fieldInfo?.GetCustomAttributes<CorrespondingTypeAttribute>(false, a => (a.Action & action) > 0) ?? Enumerable.Empty<CorrespondingTypeAttribute>();
+		IEnumerable<CorrespondingTypeAttribute> attr = fieldInfo?.GetCustomAttributes<CorrespondingTypeAttribute>(false, a => (a.Action & action) > 0) ?? [];
 		if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 		//if (!attr.Any()) return Enumerable.Empty<CorrespondingTypeAttribute>();
 		return attr;
@@ -182,23 +182,23 @@ public class CorrespondingTypeAttribute : Attribute
 	/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
 	/// <param name="enumValue">The class or structure instance.</param>
 	/// <returns>The types defined by the attribute.</returns>
-	public static IEnumerable<Type> GetCorrespondingTypes(object enumValue) => GetAttrForObj(enumValue).Select(a => a.TypeRef).WhereNotNull();
+	public static IEnumerable<Type?> GetCorrespondingTypes(object enumValue) => GetAttrForObj(enumValue).Select(a => a.TypeRef);
 
 	/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
 	/// <param name="enumValue">The enumeration value.</param>
 	/// <returns>The types defined by the attribute.</returns>
-	public static IEnumerable<Type> GetCorrespondingTypes<TEnum>(TEnum enumValue) where TEnum : Enum => GetAttrForEnum(enumValue).Select(a => a.TypeRef).WhereNotNull();
+	public static IEnumerable<Type?> GetCorrespondingTypes<TEnum>(TEnum enumValue) where TEnum : Enum => GetAttrForEnum(enumValue).Select(a => a.TypeRef);
 
 	/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
 	/// <param name="enumValue">The enumeration value.</param>
 	/// <param name="action">The action to filter for.</param>
 	/// <returns>The types defined by the attribute.</returns>
-	public static IEnumerable<Type> GetCorrespondingTypes<TEnum>(TEnum enumValue, CorrespondingAction action) where TEnum : Enum => GetAttrForEnum(enumValue, action).Select(a => a.TypeRef).WhereNotNull();
+	public static IEnumerable<Type?> GetCorrespondingTypes<TEnum>(TEnum enumValue, CorrespondingAction action) where TEnum : Enum => GetAttrForEnum(enumValue, action).Select(a => a.TypeRef);
 
 	/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
 	/// <param name="type">The class type.</param>
 	/// <returns>The types defined by the attribute.</returns>
-	public static IEnumerable<Type> GetCorrespondingTypes(Type type) => GetAttrForType(type).Select(a => a.TypeRef).WhereNotNull();
+	public static IEnumerable<Type?> GetCorrespondingTypes(Type type) => GetAttrForType(type).Select(a => a.TypeRef);
 
 	/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value or class instance.</summary>
 	/// <param name="value">The enum value or class instance.</param>
@@ -209,8 +209,8 @@ public class CorrespondingTypeAttribute : Attribute
 		if (!valueType.IsEnum && !valueType.IsClass) throw new ArgumentException("Value must be an enumeration or class value.", nameof(value));
 		string? valueStr = value.ToString();
 		System.Reflection.FieldInfo? fieldInfo = valueStr is not null ? valueType.GetField(valueStr) : null;
-		IEnumerable<CorrespondingTypeAttribute> attr = valueType.IsEnum ? fieldInfo?.GetCustomAttributes<CorrespondingTypeAttribute>() ?? Enumerable.Empty<CorrespondingTypeAttribute>() : valueType.GetCustomAttributes<CorrespondingTypeAttribute>();
-		if (!attr.Any()) return Enumerable.Empty<CorrespondingTypeAttribute>();
+		IEnumerable<CorrespondingTypeAttribute> attr = valueType.IsEnum ? fieldInfo?.GetCustomAttributes<CorrespondingTypeAttribute>() ?? [] : valueType.GetCustomAttributes<CorrespondingTypeAttribute>();
+		if (!attr.Any()) return [];
 		if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 		return attr;
 	}
@@ -221,7 +221,7 @@ public class CorrespondingTypeAttribute : Attribute
 	protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForType(Type type)
 	{
 		IEnumerable<CorrespondingTypeAttribute> attr = type.GetCustomAttributes<CorrespondingTypeAttribute>();
-		if (!attr.Any()) return Enumerable.Empty<CorrespondingTypeAttribute>();
+		if (!attr.Any()) return [];
 		if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 		return attr;
 	}
