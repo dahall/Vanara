@@ -69,7 +69,9 @@
       <dependency id="Vanara.PInvoke.NewDev" version="4.0.1" />
       <dependency id="Vanara.PInvoke.NtDll" version="4.0.1" />
       <dependency id="Vanara.PInvoke.NTDSApi" version="4.0.1" />
+      <dependency id="Vanara.PInvoke.Odbc32" version="4.0.1" />
       <dependency id="Vanara.PInvoke.Ole" version="4.0.1" />
+      <dependency id="Vanara.PInvoke.OleDb" version="4.0.1" />
       <dependency id="Vanara.PInvoke.OleDlg" version="4.0.1" />
       <dependency id="Vanara.PInvoke.Opc" version="4.0.1" />
       <dependency id="Vanara.PInvoke.P2P" version="4.0.1" />
@@ -101,6 +103,7 @@
       <dependency id="Vanara.PInvoke.UxTheme" version="4.0.1" />
       <dependency id="Vanara.PInvoke.Version" version="4.0.1" />
       <dependency id="Vanara.PInvoke.VirtDisk" version="4.0.1" />
+      <dependency id="" version="4.0.1" />
       <dependency id="Vanara.PInvoke.WcmApi" version="4.0.1" />
       <dependency id="Vanara.PInvoke.WcnApi" version="4.0.1" />
       <dependency id="Vanara.PInvoke.WebSocket" version="4.0.1" />

@@ -9,7 +9,16 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;OleDb</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Structures
+CIPROPERTYDEF CI_STATE DBBINDEXT DBBINDING DBCOLUMNACCESS DBCOLUMNDESC DBCOLUMNINFO DBCONSTRAINTDESC DBFAILUREINFO DBID DBIMPLICITSESSION DBINDEXCOLUMNDESC DBOBJECT DBPARAMINFO DBPARAMS DBPROP DBPROPINFO DBVECTOR DB_VARNUMERIC ERRORINFO MDAXISINFO RMTPACK SEC_OBJECT SEC_OBJECT_ELEMENT UGUID UNAME
+
+Interfaces
+IAccessor IColumnsInfo IColumnsInfo2 ICommand ICommandProperties ICommandText IDataInitialize IDBAsynchNotify IDBAsynchStatus IDBCreateCommand IDBCreateSession IDBInitialize IDBPromptInitialize IDBProperties IDBSchemaRowset IErrorLookup IErrorRecords IGetRow IOpenRowset IRowset IRowsetInfo ISessionProperties ISourcesRowset ISQLErrorInfo
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

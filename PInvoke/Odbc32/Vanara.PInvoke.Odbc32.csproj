@@ -9,7 +9,15 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;odbc32;odbc</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+SQLAllocHandle SQLBindCol SQLBindParameter SQLBrowseConnect SQLBulkOperations SQLCancel SQLCancelHandle SQLCloseCursor SQLColAttribute SQLColumnPrivileges SQLColumns SQLConnect SQLCopyDesc SQLDataSources SQLDescribeCol SQLDescribeParam SQLDisconnect SQLDriverConnect SQLDrivers SQLEndTran SQLExecDirect SQLExecute SQLFetch SQLFetchScroll SQLForeignKeys SQLFreeHandle SQLFreeStmt SQLGetConnectAttr SQLGetCursorName SQLGetData SQLGetDescField SQLGetDescRec SQLGetDiagField SQLGetDiagRec SQLGetEnvAttr SQLGetFunctions SQLGetInfo SQLGetStmtAttr SQLGetTypeInfo SQLMoreResults SQLNativeSql SQLNumParams SQLNumResultCols SQLParamData SQLPrepare SQLPrimaryKeys SQLProcedureColumns SQLProcedures SQLPutData SQLRowCount SQLSetConnectAttr SQLSetCursorName SQLSetDescField SQLSetDescRec SQLSetEnvAttr SQLSetPos SQLSetStmtAttr SQLSpecialColumns SQLStatistics SQLTablePrivileges SQLTables
+
+Structures
+DATE_STRUCT INTVAL SQLHDBC SQLHDESC SQLHENV SQLHSTMT SQL_DAY_SECOND SQL_INTERVAL_STRUCT SQL_NUMERIC_STRUCT SQL_YEAR_MONTH TIMESTAMP_STRUCT TIME_STRUCT
+
+</PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

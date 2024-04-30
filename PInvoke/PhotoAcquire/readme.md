@@ -33,6 +33,8 @@ Native Interface | Header | Managed Interface
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [PhotoAcquire](https://www.google.com/search?num=5&q=PhotoAcquire+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PhotoAcquisition.PhotoAcquire](https://github.com/dahall/Vanara/search?l=C%23&q=PhotoAcquire)  
+[PhotoAcquireAutoPlayDropTarget](https://www.google.com/search?num=5&q=PhotoAcquireAutoPlayDropTarget+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PhotoAcquisition.PhotoAcquireAutoPlayDropTarget](https://github.com/dahall/Vanara/search?l=C%23&q=PhotoAcquireAutoPlayDropTarget)  
+[PhotoAcquireAutoPlayHWEventHandler](https://www.google.com/search?num=5&q=PhotoAcquireAutoPlayHWEventHandler+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PhotoAcquisition.PhotoAcquireAutoPlayHWEventHandler](https://github.com/dahall/Vanara/search?l=C%23&q=PhotoAcquireAutoPlayHWEventHandler)  
 [PhotoAcquireDeviceSelectionDialog](https://www.google.com/search?num=5&q=PhotoAcquireDeviceSelectionDialog+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PhotoAcquisition.PhotoAcquireDeviceSelectionDialog](https://github.com/dahall/Vanara/search?l=C%23&q=PhotoAcquireDeviceSelectionDialog)  
 [PhotoAcquireOptionsDialog](https://www.google.com/search?num=5&q=PhotoAcquireOptionsDialog+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PhotoAcquisition.PhotoAcquireOptionsDialog](https://github.com/dahall/Vanara/search?l=C%23&q=PhotoAcquireOptionsDialog)  
 [PhotoAcquisition](https://www.google.com/search?num=5&q=PhotoAcquisition+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PhotoAcquisition](https://github.com/dahall/Vanara/search?l=C%23&q=PhotoAcquisition)  
