@@ -5506,10 +5506,10 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "291aabe7-a4e7-4cc7-9cf3-4a4bc021e15e")]
 	public static Win32Error GetPerTcp6ConnectionEStats(in MIB_TCP6ROW Row, TCP_ESTATS_TYPE EstatsType, out object? Rw, out object? Ros, out object? Rod)
 	{
-		IEnumerable<Type> types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
-		Type? trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
-		Type? tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
-		Type? trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
+		IEnumerable<Type?> types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
+		Type? trw = types.FirstOrDefault(t => t is not null && t.Name.Contains("_RW_"));
+		Type? tros = types.FirstOrDefault(t => t is not null && t.Name.Contains("_ROS_"));
+		Type? trod = types.FirstOrDefault(t => t is not null && t.Name.Contains("_ROD_"));
 		uint srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
 		uint sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
 		uint srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;
@@ -5962,10 +5962,10 @@ public static partial class IpHlpApi
 	[PInvokeData("iphlpapi.h", MSDNShortId = "291aabe7-a4e7-4cc7-9cf3-4a4bc021e15e")]
 	public static Win32Error GetPerTcpConnectionEStats(in MIB_TCPROW Row, TCP_ESTATS_TYPE EstatsType, out object? Rw, out object? Ros, out object? Rod)
 	{
-		IEnumerable<Type> types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
-		Type? trw = types.FirstOrDefault(t => t.Name.Contains("_RW_"));
-		Type? tros = types.FirstOrDefault(t => t.Name.Contains("_ROS_"));
-		Type? trod = types.FirstOrDefault(t => t.Name.Contains("_ROD_"));
+		IEnumerable<Type?> types = CorrespondingTypeAttribute.GetCorrespondingTypes(EstatsType);
+		Type? trw = types.FirstOrDefault(t => t is not null && t.Name.Contains("_RW_"));
+		Type? tros = types.FirstOrDefault(t => t is not null && t.Name.Contains("_ROS_"));
+		Type? trod = types.FirstOrDefault(t => t is not null && t.Name.Contains("_ROD_"));
 		uint srw = trw != null ? (uint)Marshal.SizeOf(trw) : 0;
 		uint sros = tros != null ? (uint)Marshal.SizeOf(tros) : 0;
 		uint srod = trod != null ? (uint)Marshal.SizeOf(trod) : 0;

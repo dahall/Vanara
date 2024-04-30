@@ -14,7 +14,7 @@ public class BitmapTests
 		var bits = new byte[128 * 4];
 		byte[] rlebits = { 2, 0, 0, 0, 2, 1, 0, 1 };
 
-		using SafeHDC hdc = GetDC();
+		using SafeReleaseHDC hdc = GetDC();
 
 		BITMAPINFO bmi = new();
 		bmi.bmiHeader.biSize = (uint)Marshal.SizeOf<BITMAPINFOHEADER>();

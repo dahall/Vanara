@@ -203,7 +203,7 @@ public class WlanApiTests
 		if (err == Win32Error.ERROR_BAD_CONFIGURATION) return;
 		Assert.That(err, ResultIs.Successful);
 		TestContext.WriteLine($"{e} = {type}");
-		var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).First();
+		var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).First()!;
 		data.DangerousGetHandle().Convert(sz, t)!.WriteValues();
 	}
 

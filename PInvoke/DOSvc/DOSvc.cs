@@ -613,7 +613,7 @@ public static partial class DOSvc
 		{
 			case DODownloadProperty.DODownloadProperty_CallbackInterface:
 			case DODownloadProperty.DODownloadProperty_StreamInterface:
-				var intf = CorrespondingTypeAttribute.GetCorrespondingTypes(propId, CorrespondingAction.Get).Where(propVal.GetType().InheritsFrom).FirstOrDefault() ??
+				var intf = CorrespondingTypeAttribute.GetCorrespondingTypes(propId, CorrespondingAction.Get).WhereNotNull().Where(propVal.GetType().InheritsFrom).FirstOrDefault() ??
 					throw new ArgumentException($"Property {propId} requires a valid corresponding COM interface pointer.", nameof(propVal));
 				var ptr = Marshal.GetComInterfaceForObject(propVal, intf);
 				VARIANT v = new() { vt = VARTYPE.VT_UNKNOWN, byref = ptr };

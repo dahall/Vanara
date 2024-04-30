@@ -114,7 +114,7 @@ public class SearchCondition : ICloneable, IDisposable
 			unsafe
 			{
 				Kernel32.GetLocalTime(out var st);
-				return new SearchCondition(qs.Item.Resolve(pc!, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, &st));
+				return new SearchCondition(qs.Item.Resolve(pc!, STRUCTURED_QUERY_RESOLVE_OPTION.SQRO_DONT_SPLIT_WORDS, st));
 			}
 		}
 	}

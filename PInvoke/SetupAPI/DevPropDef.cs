@@ -694,7 +694,7 @@ public static partial class SetupAPI
 			case DEVPROPTYPE.DEVPROP_TYPE_NTSTATUS:
 			case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING:
 			case DEVPROPTYPE.DEVPROP_TYPE_BINARY:
-				return mem.Convert(memSize, CorrespondingTypeAttribute.GetCorrespondingTypes(pType).First());
+				return mem.Convert(memSize, CorrespondingTypeAttribute.GetCorrespondingTypes(pType).WhereNotNull().First());
 
 			case DEVPROPTYPE.DEVPROP_TYPE_STRING_LIST:
 			case DEVPROPTYPE.DEVPROP_TYPEMOD_LIST | DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING:
@@ -712,7 +712,7 @@ public static partial class SetupAPI
 			default:
 				if (pType.IsFlagSet(DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY))
 				{
-					var elemtype = CorrespondingTypeAttribute.GetCorrespondingTypes(pType.ClearFlags(DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY)).First();
+					var elemtype = CorrespondingTypeAttribute.GetCorrespondingTypes(pType.ClearFlags(DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY)).WhereNotNull().First();
 					var elemsz = Marshal.SizeOf(elemtype);
 					return mem.ToArray(elemtype, memSize / elemsz, 0, memSize);
 				}
