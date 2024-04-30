@@ -4,7 +4,7 @@
     <SupportedDlls>FirewallApi.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <!--<TargetFrameworks>net45;net48;net6.0-windows;net7.0-windows;netstandard2.0;netcoreapp3.1</TargetFrameworks>-->
+    <TargetFrameworks>net45;net48;net6.0-windows;net7.0-windows;net8.0-windows;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Description>PInvoke API (methods, structures and constants) imported from FirewallApi.dll for Windows Firewall with Advanced Security.</Description>
     <AssemblyName>Vanara.PInvoke.FirewallApi</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
