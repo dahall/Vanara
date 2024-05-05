@@ -32,6 +32,33 @@ public static partial class WinTrust
 		CERT_CONFIDENCE_HIGHEST = 0x11111000,
 	}
 
+	/// <summary>Flags for <see cref="CRYPT_PROVIDER_DATA"/>.</summary>
+	[PInvokeData("wintrust.h")]
+	[Flags]
+	public enum CPD : uint
+	{
+		/// <summary>Use Windows 2000 chaining.</summary>
+		CPD_USE_NT5_CHAIN_FLAG = 0x80000000,
+
+		/// <summary>No revocation checking is performed.</summary>
+		CPD_REVOCATION_CHECK_NONE = 0x00010000,
+
+		/// <summary>Revocation checking for the end certificate is performed.</summary>
+		CPD_REVOCATION_CHECK_END_CERT = 0x00020000,
+
+		/// <summary>Revocation checking for the certificate chain is performed.</summary>
+		CPD_REVOCATION_CHECK_CHAIN = 0x00040000,
+
+		/// <summary>Revocation checking for the certificate chain, excluding the root certificate, is performed.</summary>
+		CPD_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT = 0x00080000,
+
+		/// <summary/>
+		CPD_RETURN_LOWER_QUALITY_CHAINS = 0x00100000,
+
+		/// <summary/>
+		CPD_RFC3161v21 = 0x00200000,
+	}
+
 	/// <summary>Action to perform.</summary>
 	[PInvokeData("wintrust.h", MSDNShortId = "B2ED5489-792F-4B00-A21E-EE1B1462D1C8")]
 	public enum DWACTION
@@ -1495,61 +1522,156 @@ public static partial class WinTrust
 		public IntPtr pChainElement;
 	}
 
-	/// <summary>
-	/// [The CRYPT_PROVUI_DATA structure is available for use in the operating systems specified in the Requirements section. It may be
-	/// altered or unavailable in subsequent versions.]
-	/// <para>
-	/// The CRYPT_PROVUI_DATA structure provides user interface (UI) data for a provider.This structure is used by the
-	/// CRYPT_PROVUI_FUNCS structure.
-	/// </para>
-	/// </summary>
-	[PInvokeData("wintrust.h", MSDNShortId = "86f819f0-c243-45ba-8b7b-97ed906e6e8a")]
-	[StructLayout(LayoutKind.Sequential)]
+	/// <summary>The <c>CRYPT_PROVIDER_DATA</c> structure is used to pass data between WinVerifyTrust and trust providers.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wintrust/ns-wintrust-crypt_provider_data typedef struct _CRYPT_PROVIDER_DATA {
+	// DWORD cbStruct; WINTRUST_DATA *pWintrustData; BOOL fOpenedFile; HWND hWndParent; GUID *pgActionID; HCRYPTPROV hProv; DWORD dwError;
+	// DWORD dwRegSecuritySettings; DWORD dwRegPolicySettings; struct _CRYPT_PROVIDER_FUNCTIONS *psPfns; DWORD cdwTrustStepErrors; DWORD
+	// *padwTrustStepErrors; DWORD chStores; HCERTSTORE *pahStores; DWORD dwEncoding; HCRYPTMSG hMsg; DWORD csSigners; struct
+	// _CRYPT_PROVIDER_SGNR *pasSigners; DWORD csProvPrivData; struct _CRYPT_PROVIDER_PRIVDATA *pasProvPrivData; DWORD dwSubjectChoice; union
+	// { #if ... _PROVDATA_SIP *pPDSip; #else struct _PROVDATA_SIP *pPDSip; #endif }; char *pszUsageOID; BOOL fRecallWithState; FILETIME
+	// sftSystemTime; char *pszCTLSignerUsageOID; DWORD dwProvFlags; DWORD dwFinalError; PCERT_USAGE_MATCH pRequestUsage; DWORD
+	// dwTrustPubSettings; DWORD dwUIStateFlags; struct _CRYPT_PROVIDER_SIGSTATE *pSigState; struct WINTRUST_SIGNATURE_SETTINGS_
+	// *pSigSettings; } CRYPT_PROVIDER_DATA, *PCRYPT_PROVIDER_DATA;
+	[PInvokeData("wintrust.h", MSDNShortId = "NS:wintrust._CRYPT_PROVIDER_DATA")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct CRYPT_PROVIDER_DATA
 	{
 		/// <summary>The size, in bytes, of this structure.</summary>
 		public uint cbStruct;
 
-		/// <summary>Error code, if applicable.</summary>
+		/// <summary>A pointer to a WINTRUST_DATA structure that contains the information to verify.</summary>
+		public IntPtr pWintrustData;
+
+		/// <summary>A Boolean value that indicates whether the trust provider opened the file handle, if applicable.</summary>
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool fOpenedFile;
+
+		/// <summary>A handle to the parent window. If not specified, a handle to the desktop window is used.</summary>
+		public HWND hWndParent;
+
+		/// <summary>A pointer to a <c>GUID</c> structure that identifies an action and the trust provider that supports that action.</summary>
+		public GuidPtr pgActionID;
+
+		/// <summary>
+		/// A handle to the cryptographic service provider (CSP). If this parameter is <c>NULL</c>, then the operating system will provide a
+		/// default CSP.
+		/// </summary>
+		public HCRYPTPROV hProv;
+
+		/// <summary>An error level if a low-level system error was encountered.</summary>
+		public uint dwError;
+
+		/// <summary>The registry security settings.</summary>
+		public uint dwRegSecuritySettings;
+
+		/// <summary>The registry policy settings.</summary>
+		public uint dwRegPolicySettings;
+
+		/// <summary>A pointer to a CRYPT_PROVIDER_FUNCTIONS structure.</summary>
+		public IntPtr psPfns;
+
+		/// <summary>The number of elements in the <c>padwTrustStepErrors</c> array.</summary>
+		public uint cdwTrustStepErrors;
+
+		/// <summary>An array of <c>DWORD</c> values that specify trust step errors.</summary>
+		public IntPtr padwTrustStepErrors;
+
+		/// <summary>The number of elements in the <c>pahStores</c> array.</summary>
+		public uint chStores;
+
+		/// <summary>An array of certificate store handles.</summary>
+		public IntPtr pahStores;
+
+		/// <summary>A value that specifies the encoding type.</summary>
+		public uint dwEncoding;
+
+		/// <summary>A handle to the cryptographic message.</summary>
+		public HCRYPTMSG hMsg;
+
+		/// <summary>The number of elements in the <c>pasSigners</c> array.</summary>
+		public uint csSigners;
+
+		/// <summary>A pointer to an array of CRYPT_PROVIDER_SGNR structures.</summary>
+		public IntPtr pasSigners;
+
+		/// <summary>The number of elements in the <c>pasProvPrivData</c> array.</summary>
+		public uint csProvPrivData;
+
+		/// <summary>A pointer to an array of CRYPT_PROVIDER_PRIVDATA structures.</summary>
+		public IntPtr pasProvPrivData;
+
+		/// <summary>A value that specifies the subject choice.</summary>
+		public uint dwSubjectChoice;
+
+		/// <summary>A pointer to a <c>_PROVDATA_SIP</c> structure.</summary>
+		public IntPtr pPDSip;
+
+		/// <summary>A pointer to a null-terminated string that contains the usage object identifier (OID).</summary>
+		[MarshalAs(UnmanagedType.LPStr)]
+		public string pszUsageOID;
+
+		/// <summary>A Boolean value that indicates whether state was maintained for catalog files.</summary>
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool fRecallWithState;
+
+		/// <summary>The system time.</summary>
+		public FILETIME sftSystemTime;
+
+		/// <summary>A pointer to a null-terminated string that represents the certificate trust list (CTL) signer usage OID.</summary>
+		[MarshalAs(UnmanagedType.LPStr)]
+		public string pszCTLSignerUsageOID;
+
+		/// <summary>
+		/// <para>A bitwise combination of one or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>CPD_USE_NT5_CHAIN_FLAG</c> 0x80000000</description>
+		/// <description>Use Windows 2000 chaining.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CPD_REVOCATION_CHECK_NONE</c> 0x00010000</description>
+		/// <description>No revocation checking is performed.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CPD_REVOCATION_CHECK_END_CERT</c> 0x00020000</description>
+		/// <description>Revocation checking for the end certificate is performed.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CPD_REVOCATION_CHECK_CHAIN</c> 0x00040000</description>
+		/// <description>Revocation checking for the certificate chain is performed.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>CPD_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT</c> 0x00080000</description>
+		/// <description>Revocation checking for the certificate chain, excluding the root certificate, is performed.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public CPD dwProvFlags;
+
+		/// <summary>A value for the final error.</summary>
 		public uint dwFinalError;
 
-		/// <summary> A pointer to a null-terminated string for the Yes button text. If this parameter is NULL, then "&amp;Yes" is used. </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pYesButtonText;
+		/// <summary>A pointer to a CERT_USAGE_MATCH structure.</summary>
+		public IntPtr pRequestUsage;
 
-		/// <summary> A pointer to a null-terminated string for the No button text. If this parameter is NULL, then "&amp;No" is used. </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pNoButtonText;
-
-		/// <summary> A pointer to a null-terminated string for the More Info button text. If this parameter is NULL, then "&amp;More Info"
-		/// is used. </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pMoreInfoButtonText;
-
-		/// <summary>A pointer to a null-terminated string for the Advanced button text.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pAdvancedLinkText;
+		/// <summary>A value for the trust publisher settings.</summary>
+		public uint dwTrustPubSettings;
 
 		/// <summary>
-		/// A pointer to a null-terminated string for the text used when the trust is valid and a time stamp is used. If this parameter
-		/// is NULL, then "Do you want to install and run ""%1"" signed on %2 and distributed by:" is used.
+		/// <para>A <c>DWORD</c> value that specifies state data that is passed between a trust provider and the user interface.</para>
+		/// <para><c>Windows XP with SP1 and Windows XP:  </c> This member is ignored.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pCopyActionText;
+		public uint dwUIStateFlags;
 
-		/// <summary>
-		/// A pointer to a null-terminated string for the text used when the trust is valid but a time stamp is not used. If this
-		/// parameter is NULL, then "Do you want to install and run ""%1"" signed on an unknown date/time and distributed by:" is used.
-		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pCopyActionTextNoTS;
+		/// <summary/>
+		public IntPtr pSigState;
 
-		/// <summary>
-		/// A pointer to a null-terminated string for the text used when a signature is not provided. If this parameter is NULL, then
-		/// "Do you want to install and run ""%1""?" is used.
-		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pCopyActionTextNotSigned;
+		/// <summary/>
+		public IntPtr pSigSettings;
 	}
 
 	/// <summary>
