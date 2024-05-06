@@ -158,7 +158,7 @@ namespace Vanara.PInvoke
 		/// <summary>Validates an access control list (ACL).</summary>
 		/// <param name="pAcl">The pointer to the ACL structure to query.</param>
 		/// <returns><c>true</c> if the ACL is valid; otherwise, <c>false</c>.</returns>
-		public static bool IsValidAcl(this PACL pAcl) => IsValidAcl(pAcl);
+		public static bool IsValidAcl(this PACL pAcl) => AdvApi32.IsValidAcl(pAcl);
 
 		/// <summary>Determines whether the components of a security descriptor are valid.</summary>
 		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
