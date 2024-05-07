@@ -706,29 +706,60 @@ public static partial class OleDb
 		DBCOLUMNFLAGS_ROWSPECIFICCOLUMN = 0x400000
 	}
 
+	/// <summary>Options for persisting command definition.</summary>
 	[Flags]
 	public enum DBCOMMANDPERSISTFLAG
 	{
+		/// <summary>The behavior of DBCOMMANDPERSISTFLAGS_DEFAULT is provider specific.</summary>
 		DBCOMMANDPERSISTFLAG_DEFAULT = 0,
+		/// <summary>You can use DBCOMMANDPERSISTFLAG_NOSAVE to associate or obtain a new DBID for the command without actually persisting the definition.</summary>
 		DBCOMMANDPERSISTFLAG_NOSAVE = 0x1,
+		/// <summary>The command is to be persisted as a view. Views are row-returning objects that do not contain parameters or return values and can generally be used anywhere a base table is used. Views can be enumerated through the DBSCHEMA_VIEWS schema rowset.</summary>
 		DBCOMMANDPERSISTFLAG_PERSISTVIEW = 0x2,
+		/// <summary>The command is to be persisted as a procedure. Procedures may or may not return rows and may or may not contain parameters or return values. Procedures can be enumerated through the DBSCHEMA_PROCEDURES schema rowset.</summary>
 		DBCOMMANDPERSISTFLAG_PERSISTPROCEDURE = 0x4
 	}
 
+	/// <summary>
+	/// Operation to use in comparing the row values.
+	/// </summary>
+	[PInvokeData("oledb.h")]
 	public enum DBCOMPAREOPS
 	{
+		/// <summary>Match the first value that is less than the search value.</summary>
 		DBCOMPAREOPS_LT,
+		/// <summary>Match the first value that is less than or equal to the search value.</summary>
 		DBCOMPAREOPS_LE = 1,
+		/// <summary>Match the first value that is equal to the search value.</summary>
 		DBCOMPAREOPS_EQ = 2,
+		/// <summary>Match the first value that is greater than or equal to the search value.</summary>
 		DBCOMPAREOPS_GE = 3,
+		/// <summary>Match the first value that is greater than the search value.</summary>
 		DBCOMPAREOPS_GT = 4,
+		/// <summary>Match the first value that has the search value as its first characters. This is valid only for values bound as string data types.</summary>
 		DBCOMPAREOPS_BEGINSWITH = 5,
+		/// <summary>Match the first value that contains the search value. This is valid only for values bound as string data types.</summary>
 		DBCOMPAREOPS_CONTAINS = 6,
+		/// <summary>Match the first value that is not equal to the search value. If the search value is NULL, this matches the first non-NULL value. If the search value is non-NULL, this matches the first non-NULL value that is not equal to the search value.</summary>
 		DBCOMPAREOPS_NE = 7,
+		/// <summary>
+		///   <para>Ignore the corresponding value.</para>
+		///   <para>The provider ignores <em>pFindValue</em> and returns the next <em>cRows</em> rows starting from the row indicated by <em>pBookmark</em>, skipping the number of rows indicated by <em>lRowsOffset</em>.</para>
+		/// </summary>
 		DBCOMPAREOPS_IGNORE = 8,
+		/// <summary>
+		///   <para>Specify whether the search is case-sensitive or case-insensitive.</para>
+		///   <para>You can join DBCOMPAREOPS_CASESENSITIVE or DBCOMPAREOPS_CASEINSENSITIVE with any of the other DBCOMPAREOPS values in a bitwise OR operation. If neither is used, the search is handled according to the provider's implementation. Both DBCOMPAREOPS_CASESENSITIVE and DBCOMPAREOPS_CASEINSENSITIVE are ignored when searching for nonstring values.</para>
+		/// </summary>
 		DBCOMPAREOPS_CASESENSITIVE = 0x1000,
+		/// <summary>
+		///   <para>Specify whether the search is case-sensitive or case-insensitive.</para>
+		///   <para>You can join DBCOMPAREOPS_CASESENSITIVE or DBCOMPAREOPS_CASEINSENSITIVE with any of the other DBCOMPAREOPS values in a bitwise OR operation. If neither is used, the search is handled according to the provider's implementation. Both DBCOMPAREOPS_CASESENSITIVE and DBCOMPAREOPS_CASEINSENSITIVE are ignored when searching for nonstring values.</para>
+		/// </summary>
 		DBCOMPAREOPS_CASEINSENSITIVE = 0x2000,
+		/// <summary>Match the first value that does not have the search value as its first characters. This is valid only for values bound as string data types.</summary>
 		DBCOMPAREOPS_NOTBEGINSWITH = 9,
+		/// <summary>Match the first value that does not contain the search value. This is valid only for values bound as string data types.</summary>
 		DBCOMPAREOPS_NOTCONTAINS = 10
 	}
 
@@ -4201,17 +4232,35 @@ public static partial class OleDb
 		public byte bScale;
 	}
 
+	/// <summary>Gets or sets the value of the specified column in the rowset.</summary>
+	[PInvokeData("oledb.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct DBCOLUMNACCESS
 	{
+		/// <summary>
+		///   <para>Pointer of type wType to caller-allocated storage. On return, the area of storage contains the value stored in the column specified by columnid. The provider should attempt to coerce the column value to type wType. If wType is DBTYPE_VARIANT, the provider is responsible for allocating any variable-length storage pointed to by the VARIANT. If the caller passes a null pointer, the provider returns only the untruncated length (cbDataLen) and status (dwStatus) and does not return a data value.</para>
+		///   <para>If the row is in immediate mode and a row-specific columns has been deleted, the provider returns DBSTATUS_E_DOESNOTEXIST. If the row is in deferred mode and a row-specific column has been deleted, the provider returns a null value and DBSTATUS_S_ISNULL.</para>
+		///   <para>For more information, see Getting and Setting Data.</para>
+		/// </summary>
 		public IntPtr pData;
+		/// <summary>columnid is a DBID that identifies the column to be accessed. columnid values must be unique within a row.</summary>
 		public DBID columnid;
+		/// <summary>The returned length of the value contained in *pData. If the length of the column value is greater than cbMaxLen, the provider truncates the data to fit the buffer, returns the full data size in cbDataLen, and sets dwStatus to DBSTATUS_S_TRUNCATED.</summary>
 		public DBLENGTH cbDataLen;
+		/// <summary>A DBSTATUS status field set by the provider on return, indicating whether pData or some other value should be used. On return, dwStatus indicates whether the field was successfully retrieved and provides other information about this column. For more information about status values, see Status in Getting and Setting Data.</summary>
 		public DBSTATUS dwStatus;
+		/// <summary>The maximum length of the caller-initialized memory pointed to by pData. For more information on cbMaxLen in the binding structure, see DBBINDING Structures in Getting and Setting Data.</summary>
 		public DBLENGTH cbMaxLen;
+		/// <summary>Reserved. Consumers should set this parameter to zero.</summary>
 		public DB_DWRESERVE dwReserved;
+		/// <summary>
+		///   <para>On input, wType identifies the data type requested by the consumer. The provider attempts to convert the value from the type of the column to this type.</para>
+		///   <para>wType should not change on return; if the provider could not convert, a status of DBSTATUS_E_CANTCONVERTVALUE would be returned.</para>
+		/// </summary>
 		public DBTYPE wType;
+		/// <summary>The maximum precision to use when getting data and wType is DBTYPE_NUMERIC. bPrecision is ignored when setting data or if wType is not DBTYPE_NUMERIC. For more information, see Conversions Involving DBTYPE_NUMERIC or DBTYPE_DECIMAL in Appendix A: Data Types.</summary>
 		public byte bPrecision;
+		/// <summary>The scale to use when getting data and wType is DBTYPE_NUMERIC or DBTYPE_DECIMAL. This is ignored when setting data. It is also ignored if wType is not DBTYPE_NUMERIC or DBTYPE_DECIMAL. For more information, see Conversions Involving DBTYPE_NUMERIC or DBTYPE_DECIMAL in Appendix A: Data Types.</summary>
 		public byte bScale;
 	}
 
@@ -4230,17 +4279,34 @@ public static partial class OleDb
 		public byte bScale;
 	}
 
-	[StructLayout(LayoutKind.Sequential)]
+	/// <summary>
+	/// Defines the columns of a row object.
+	/// </summary>
+	[PInvokeData("oledb.h")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DBCOLUMNINFO
 	{
-		public StrPtrUni pwszName;
+		/// <summary>
+		///   <para>Pointer to the name of the column; this might not be unique. If this cannot be determined, a null pointer is returned.</para>
+		///   <para>The name can be different from the string part of the column ID if the column has been renamed by the command text. This name always reflects the most recent renaming of the column in the current view or command text.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pwszName;
+		/// <summary>Reserved for future use. Providers should return a null pointer in pTypeInfo.</summary>
 		public IntPtr pTypeInfo;
+		/// <summary>The ordinal of the column. This is zero for the bookmark column of the row, if any. Other columns are numbered starting from one.</summary>
 		public DBORDINAL iOrdinal;
+		/// <summary>A bitmask that describes consumer-specified row column characteristics. The DBCOLUMNFLAGS enumerated type specifies the bits in the bitmask, which are described in the reference entry for IColumnsInfo::GetColumnInfo.</summary>
 		public DBCOLUMNFLAGS dwFlags;
+		/// <summary>Minimum size required to store the consumer's largest data for this column. For fixed-length data types, this is the size of the data type in bytes. For variable-length data types, this is the maximum number of bytes (for DBTYPE_BYTES) or characters (for DBTYPE_STR or DBTYPE_WSTR). For more information, see the description of DBCOLUMNINFO in the reference entry for IColumnsInfo::GetColumnInfo.</summary>
 		public DBLENGTH ulColumnSize;
+		/// <summary>Requested DBTYPE data type for this column.</summary>
 		public DBTYPE wType;
+		/// <summary>Maximum precision of the column.</summary>
 		public byte bPrecision;
+		/// <summary>Number of digits to the right of the decimal point.</summary>
 		public byte bScale;
+		/// <summary>Unique DBID used to name this row column. For example, if columns are named (eKind is DBKIND_NAME), uName.pwszName points to the column name.</summary>
 		public DBID columnid;
 	}
 
@@ -4314,11 +4380,25 @@ public static partial class OleDb
 		public IntPtr pSession;
 	}
 
+	/// <summary>Describes how to construct the index.</summary>
+	[PInvokeData("dbs.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct DBINDEXCOLUMNDESC
 	{
+		/// <summary>A pointer to the ID of the base table column.</summary>
 		public IntPtr pColumnID;
+
+		/// <summary>
+		///   <para>Whether the index is ascending or descending in this column.</para>
+		///   <list type="bullet">
+		///     <item>DBINDEX_COL_ORDER_ASC ? Ascending</item>
+		///     <item>DBINDEX_COL_ORDER_DESC ? Descending</item>
+		///   </list>
+		/// </summary>
 		public DBINDEX_COL_ORDER eIndexColOrder;
+
+		/// <summary>The ID of the base table column.</summary>
+		public readonly DBID? ColumnId => pColumnID.ToNullableStructure<DBID>();
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -4331,13 +4411,66 @@ public static partial class OleDb
 	[StructLayout(LayoutKind.Sequential)]
 	public struct DBPARAMINFO
 	{
+		/// <summary>
+		/// <para>A bitmask describing parameter characteristics; these values have the following meaning:</para>
+		/// <list type="bullet">
+		/// <item>DBPARAMFLAGS_ISINPUT ? Whether a parameter accepts values on input. Not set if this is unknown.</item>
+		/// <item>
+		/// DBPARAMFLAGS_ISOUTPUT ? Whether a parameter returns values on output. Not set if this is unknown. Providers support only those
+		/// parameter types that make sense for their data store.
+		/// </item>
+		/// <item>
+		/// DBPARAMFLAGS_ISSIGNED ? Whether a parameter is signed. This is ignored if the type is inherently signed, such as DBTYPE_I2 or if
+		/// the sign does not apply to the type, such as DBTYPE_BSTR. It is generally used in ICommandWithParameters::SetParameterInfo so
+		/// that the consumer can tell the provider if a provider-specific type name refers to a signed or unsigned type.
+		/// </item>
+		/// <item>DBPARAMFLAGS_ISNULLABLE ? Whether a parameter accepts NULLs. If nullability is unknown, this flag is set.</item>
+		/// <item>
+		/// <para>
+		/// DBPARAMFLAGS_ISLONG ? Whether a parameter contains a BLOB that contains very long data. The definition of very long data is
+		/// provider specific. The flag setting corresponds to the value of the IS_LONG column in the PROVIDER_TYPES schema rowset for the
+		/// data type.
+		/// </para>
+		/// <para>
+		/// When this flag is set, the BLOB is best manipulated through one of the storage interfaces. Although such BLOBs can be sent in a
+		/// single piece with ICommand::Execute, there can be provider-specific problems in doing so. For example, the BLOB might be
+		/// truncated due to machine limits on memory. Furthermore, when this flag is set, the provider might not be able to accurately
+		/// return the maximum length of the BLOB data in ulParamSize in ICommandWithParameters::GetParameterInfo.
+		/// </para>
+		/// <para>When this flag is not set, the BLOB can be accessed either through ICommand::Execute or through a storage interface.</para>
+		/// <para>For more information, see Accessing BLOB Data.</para>
+		/// </item>
+		/// <item>
+		/// DBPARAMFLAGS_SCALEISNEGATIVE ? Set if the parameter type is DBTYPE_VARNUMERIC and bScale represents the absolute value of the
+		/// negative scale of the parameter. This flag is used when setting data in a DBTYPE_VARNUMERIC parameter. For more information,
+		/// refer to Conversions Involving DBTYPE_NUMERIC or DBTYPE_DECIMAL in Appendix A.
+		/// </item>
+		/// </list>
+		/// </summary>
 		public DBPARAMFLAGS dwFlags;
+		/// <summary>The ordinal of the parameter. Parameters are numbered from left to right as they appear in the command, with the first parameter in the command having an iOrdinal value of 1.</summary>
 		public DBORDINAL iOrdinal;
-		public StrPtrUni pwszName;
-		public IntPtr pTypeInfo;
+		/// <summary>The name of the parameter; it is a null pointer if there is no name. Names are normal names. The colon prefix (where used within SQL text) is stripped.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pwszName;
+		/// <summary>ITypeInfo describes the type, if pTypeInfo is not a null pointer.</summary>
+		[MarshalAs(UnmanagedType.IUnknown)]
+		public ITypeInfo? pTypeInfo;
+		/// <summary>
+		///   <para>The maximum possible length of a value in the parameter. For parameters that use a fixed-length data type, this is the size of the data type. For parameters that use a variable-length data type, this is one of the following:</para>
+		///   <list type="bullet">
+		///     <item>The maximum length of the parameters in characters (for DBTYPE_STR and DBTYPE_WSTR) or in bytes (for DBTYPE_BYTES and DBTYPE_VARNUMERIC), if one is defined. For example, a parameter for a CHAR(5) column in an SQL table has a maximum length of 5.</item>
+		///     <item>The maximum length of the data type in characters (for DBTYPE_STR and DBTYPE_WSTR) or in bytes (for DBTYPE_BYTES and DBTYPE_VARNUMERIC), if the parameter does not have a defined length.</item>
+		///     <item>~0 (bitwise, the value is not 0; all bits are set to 1) if neither the parameter nor the data type has a defined maximum length.</item>
+		///   </list>
+		///   <para>For data types that do not have a length, this is set to ~0 (bitwise, the value is not 0; all bits are set to 1).</para>
+		/// </summary>
 		public DBLENGTH ulParamSize;
+		/// <summary>The indicator of the parameter's data type, or a type from which the data can be converted for the parameter if the provider cannot determine the exact data type of the parameter.</summary>
 		public DBTYPE wType;
+		/// <summary>If wType is a numeric type or DBTYPE_DBTIMESTAMP, bPrecision is the maximum number of digits, expressed in base 10. Otherwise, this is ~0 (bitwise, the value is not 0; all bits are set to 1).</summary>
 		public byte bPrecision;
+		/// <summary>If wType is a numeric type with a fixed scale or if wType is DBTYPE_DBTIMESTAMP, bScale is the number of digits to the right (if bScale is positive) or left (if bScale is negative) of the decimal point. Otherwise, this is ~0 (bitwise, the value is not 0; all bits are set to 1).</summary>
 		public byte bScale;
 	}
 

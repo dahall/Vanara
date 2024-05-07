@@ -375,6 +375,38 @@ public static partial class OleDb
 	}
 
 	/// <summary>
+	/// <para>Created for reference use in Visual Basic. Provides implementation for the <c>promptNew</c> and <c>promptEdit</c> methods.</para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms722628(v=vs.85)
+	[ComImport, Guid("2206CCB2-19C1-11D1-89E0-00C04FD7A829"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
+	public interface IDataSourceLocator
+	{
+		/// <summary>The parent window handle for dialog boxes to be displayed. The dialog box will always be centered within this window. Returns the currently assigned window handle.</summary>
+		/// <value>A HWND value. The handle of the parent window where the dialog will be displayed.</value>
+		public HWND hWnd { get; set; }
+
+		/// <summary>
+		/// Opens the <c>Data Link Properties</c> window. Allows the user to select the properties for a new connection. The properties are returned in a connection string.
+		/// </summary>
+		/// <returns>An ADO connection object. Contains preset connection properties that will be displayed in the Data Link Properties window.</returns>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms725384(v=vs.85)
+		[return: MarshalAs(UnmanagedType.IDispatch)]
+		object? PromptNew();
+
+		/// <summary>
+		/// Opens the <c>Data Link Properties</c> window. Allows the user to change the properties for an existing ADO connection object. The
+		/// properties for the connection object are changed directly at the connection object.
+		/// </summary>
+		/// <param name="ppADOConnection">
+		/// An ADO connection object. Contains preset connection properties that will be displayed in the Data Link Properties window.
+		/// </param>
+		/// <returns>A Boolean value. True if user pressed <c>OK</c> in the Data Link Properties window; False if <c>Cancel</c> was pressed.</returns>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms709747(v=vs.85)
+		[return: MarshalAs(UnmanagedType.Bool)]
+		bool PromptEdit([MarshalAs(UnmanagedType.IDispatch)] ref object? ppADOConnection);
+	}
+
+	/// <summary>
 	/// <para>
 	/// The <c>IDBPromptInitialize</c> interface allows the display of the data link dialog boxes programmatically. Using the data link user
 	/// interface, users can build a connection string dynamically or select an existing data link (.udl) file.
@@ -616,6 +648,18 @@ public static partial class OleDb
 			[In, MarshalAs(UnmanagedType.LPWStr)] string pwszInitialFile, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszSelectedFile);
 	}
 
+	/// <summary/>
+	[PInvokeData("msdasc.h")]
+	[ComImport, Guid("06210E88-01F5-11D1-B512-0080C781C384"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IService
+	{
+		/// <summary/>
+		/// <param name="pUnkInner"/>
+		/// <returns/>
+		[PreserveSig]
+		HRESULT InvokeService([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkInner);
+	}
+
 	/// <summary>Creates a data source object; analogous to <c>CoCreateInstance</c>.</summary>
 	/// <typeparam name="T">The interface type to create.</typeparam>
 	/// <param name="dataInit">The <see cref="IDataInitialize"/> instance.</param>
@@ -809,9 +853,4 @@ public static partial class OleDb
 	/// <summary>CLSID_RootBinder</summary>
 	[ComImport, Guid("FF151822-B0BF-11D1-A80D-000000000000"), ClassInterface(ClassInterfaceType.None)]
 	public class RootBinder { }
-
-	/*
-	IService
-	IDataSourceLocator
-	*/
 }
