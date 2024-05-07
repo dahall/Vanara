@@ -61,6 +61,9 @@ public static partial class IpHlpApi
 		/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
 		/// </summary>
 		public uint dwLocalPort;
+
+		/// <summary>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</summary>
+		public ushort dwHostLocalPort { readonly get => ntohs((ushort)dwLocalPort); set => dwLocalPort = htons(value); }
 	}
 
 	/// <summary>
@@ -109,7 +112,7 @@ public static partial class IpHlpApi
 	// OwningModuleInfo[TCPIP_OWNING_MODULE_SIZE]; } MIB_UDP6ROW_OWNER_MODULE, *PMIB_UDP6ROW_OWNER_MODULE;
 	[PInvokeData("udpmib.h", MSDNShortId = "dcc80b3c-d4d5-44f4-9c7f-df6be2e21889")]
 	[StructLayout(LayoutKind.Sequential, Pack = 8)]
-	public struct MIB_UDP6ROW_OWNER_MODULE
+	public struct MIB_UDP6ROW_OWNER_MODULE : IComparable, IComparable<MIB_UDP6ROW_OWNER_MODULE>
 	{
 		/// <summary>
 		/// <para>Type: <c>UCHAR[16]</c></para>
@@ -161,6 +164,24 @@ public static partial class IpHlpApi
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = TCPIP_OWNING_MODULE_SIZE)]
 		public ulong[] OwningModuleInfo;
+
+		/// <summary>The port number for the local UDP endpoint. This member is stored in network byte order.</summary>
+		public ushort dwHostLocalPort { readonly get => ntohs((ushort)dwLocalPort); set => dwLocalPort = htons(value); }
+
+		/// <inheritdoc/>
+		readonly int IComparable<MIB_UDP6ROW_OWNER_MODULE>.CompareTo(MIB_UDP6ROW_OWNER_MODULE p)
+		{
+			var cmp = ((IComparable<IN6_ADDR>)ucLocalAddr).CompareTo(p.ucLocalAddr);
+			if (cmp == 0)
+				cmp = dwHostLocalPort.CompareTo(p.dwHostLocalPort);
+			if (cmp == 0)
+				cmp = dwOwningPid.CompareTo(p.dwOwningPid);
+			return cmp;
+		}
+
+		/// <inheritdoc/>
+		readonly int IComparable.CompareTo(object? obj) => obj is MIB_UDP6ROW_OWNER_MODULE i ? ((IComparable<MIB_UDP6ROW_OWNER_MODULE>)this).CompareTo(i) :
+			(obj is null ? 1 : throw new ArgumentException("Invalid type for comparison.", nameof(obj)));
 	}
 
 	/// <summary>
@@ -207,7 +228,7 @@ public static partial class IpHlpApi
 	// MIB_UDP6ROW_OWNER_PID, *PMIB_UDP6ROW_OWNER_PID;
 	[PInvokeData("udpmib.h", MSDNShortId = "d3d02485-381b-4058-b4b9-0a2c9c365f43")]
 	[StructLayout(LayoutKind.Sequential, Size = 28, Pack = 4)]
-	public struct MIB_UDP6ROW_OWNER_PID
+	public struct MIB_UDP6ROW_OWNER_PID : IComparable, IComparable<MIB_UDP6ROW_OWNER_PID>
 	{
 		/// <summary>
 		/// <para>The IPv6 address for the local UDP endpoint. This member is stored in a character array in network byte order.</para>
@@ -236,6 +257,24 @@ public static partial class IpHlpApi
 		/// </para>
 		/// </summary>
 		public uint dwOwningPid;
+
+		/// <summary>The port number of the UDP endpoint on the local computer. This member is in host byte order.</summary>
+		public ushort dwHostLocalPort { readonly get => ntohs((ushort)dwLocalPort); set => dwLocalPort = htons(value); }
+
+		/// <inheritdoc/>
+		readonly int IComparable<MIB_UDP6ROW_OWNER_PID>.CompareTo(MIB_UDP6ROW_OWNER_PID p)
+		{
+			var cmp = ((IComparable<IN6_ADDR>)ucLocalAddr).CompareTo(p.ucLocalAddr);
+			if (cmp == 0)
+				cmp = dwHostLocalPort.CompareTo(p.dwHostLocalPort);
+			if (cmp == 0)
+				cmp = dwOwningPid.CompareTo(p.dwOwningPid);
+			return cmp;
+		}
+
+		/// <inheritdoc/>
+		readonly int IComparable.CompareTo(object? obj) => obj is MIB_UDP6ROW_OWNER_PID i ? ((IComparable<MIB_UDP6ROW_OWNER_PID>)this).CompareTo(i) :
+			(obj is null ? 1 : throw new ArgumentException("Invalid type for comparison.", nameof(obj)));
 	}
 
 	/// <summary>
@@ -291,6 +330,9 @@ public static partial class IpHlpApi
 		/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
 		/// </summary>
 		public uint dwLocalPort;
+
+		/// <summary>The port number of the UDP endpoint on the local computer. This member is in host byte order.</summary>
+		public ushort dwHostLocalPort { readonly get => ntohs((ushort)dwLocalPort); set => dwLocalPort = htons(value); }
 	}
 
 	/// <summary>
@@ -380,6 +422,9 @@ public static partial class IpHlpApi
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = TCPIP_OWNING_MODULE_SIZE)]
 		public ulong[] OwningModuleInfo;
+
+		/// <summary>The port number of the UDP endpoint on the local computer. This member is in host byte order.</summary>
+		public ushort dwHostLocalPort { readonly get => ntohs((ushort)dwLocalPort); set => dwLocalPort = htons(value); }
 	}
 
 	/// <summary>
