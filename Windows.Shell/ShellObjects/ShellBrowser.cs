@@ -140,6 +140,7 @@ namespace Vanara.Windows.Shell
 	/// - TODO: Check getting / losing Focus! again
 	/// - TODO: Context-Menu -&gt; "Open File Location" doesn't work on folder "Quick Access"
 	/// - TODO: When columns get reordered in details mode, then navigate to another folder, then back =&gt; column content gets messed
+	/// - TODO: https://github.com/dahall/Vanara/issues/319
 	///
 	/// NOTE: https://stackoverflow.com/questions/7698602/how-to-get-embedded-explorer-ishellview-to-be-browsable-i-e-trigger-browseobje
 	/// NOTE: https://stackoverflow.com/questions/54390268/getting-the-current-ishellview-user-is-interacting-with
