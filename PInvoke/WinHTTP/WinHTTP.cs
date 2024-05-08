@@ -6,6 +6,9 @@ namespace Vanara.PInvoke;
 /// <summary>Items from the WinHTTP.dll.</summary>
 public static partial class WinHTTP
 {
+	/// <summary/>
+	public const string[] WINHTTP_DEFAULT_ACCEPT_TYPES = null;
+
 	/// <summary>The default internet HTTP port.</summary>
 	public const ushort INTERNET_DEFAULT_HTTP_PORT = 80;
 
@@ -39,8 +42,11 @@ public static partial class WinHTTP
 	/// <summary/>
 	public const string WINHTTP_NO_PROXY_NAME = null;
 
+	/// <summary/>
+	public const string WINHTTP_NO_REFERER = null;
+
 	/// <summary>Default value.</summary>
-	public const string WINHTTP_NO_REQUEST_DATA = null;
+	public static readonly IntPtr WINHTTP_NO_REQUEST_DATA = IntPtr.Zero;
 
 	/// <summary>The size of a string buffer to recieve a formatted time.</summary>
 	public const uint WINHTTP_TIME_FORMAT_BUFSIZE = 62;
