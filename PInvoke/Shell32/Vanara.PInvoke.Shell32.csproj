@@ -25,7 +25,7 @@ DFConstraint DShellFolderViewEvents Folder Folder2 Folder3 FolderItem FolderItem
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <NoWarn>0618;1591</NoWarn>
+    <NoWarn>$(NoWarn);SYSLIB0011;0618;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

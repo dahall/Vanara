@@ -9,7 +9,13 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;WslApi;wsl;windows subsystem for linux</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DllMain WslConfigureDistribution WslGetDistributionConfiguration WslIsDistributionRegistered WslLaunch WslLaunchInteractive WslRegisterDistribution WslUnregisterDistribution
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
