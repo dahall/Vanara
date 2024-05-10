@@ -11,14 +11,18 @@
     <PackageTags>pinvoke;vanara;net-extensions;interop;OleDb</PackageTags>
     <PackageReleaseNotes>Currently implements:
 
+Functions
+DtcGetTransactionManagerExA DtcGetTransactionManagerExW
+
 Structures
-CIPROPERTYDEF CI_STATE DBBINDEXT DBBINDING DBCOLUMNACCESS DBCOLUMNDESC DBCOLUMNINFO DBCONSTRAINTDESC DBFAILUREINFO DBID DBIMPLICITSESSION DBINDEXCOLUMNDESC DBOBJECT DBPARAMINFO DBPARAMS DBPROP DBPROPINFO DBVECTOR DB_VARNUMERIC ERRORINFO MDAXISINFO RMTPACK SEC_OBJECT SEC_OBJECT_ELEMENT UGUID UNAME
+BOID CIPROPERTYDEF CI_STATE DBBINDEXT DBBINDING DBCOLUMNACCESS DBCOLUMNDESC DBCOLUMNINFO DBCONSTRAINTDESC DBFAILUREINFO DBID DBIMPLICITSESSION DBINDEXCOLUMNDESC DBLITERALINFO DBOBJECT DBPARAMBINDINFO DBPARAMINFO DBPARAMS DBPROP DBPROPINFO DBVECTOR DB_VARNUMERIC ERRORINFO MDAXISINFO RMTPACK SEC_OBJECT SEC_OBJECT_ELEMENT UGUID UNAME XACTOPT XACTTRANSINFO
 
 Interfaces
-IAccessor IColumnsInfo IColumnsInfo2 ICommand ICommandProperties ICommandText IDataInitialize IDBAsynchNotify IDBAsynchStatus IDBCreateCommand IDBCreateSession IDBInitialize IDBPromptInitialize IDBProperties IDBSchemaRowset IErrorLookup IErrorRecords IGetRow IOpenRowset IRowset IRowsetInfo ISessionProperties ISourcesRowset ISQLErrorInfo
+IAccessor IADOConnectionConstruction IAlterIndex IAlterTable IBindResource IChapteredRowset IColumnsInfo IColumnsInfo2 IColumnsRowset ICommand ICommandPersist ICommandPrepare ICommandProperties ICommandStream ICommandText ICommandWithParameters IConvertType ICreateRow IDataInitialize IDataSourceLocator IDBAsynchNotify IDBAsynchStatus IDBBinderProperties IDBCreateCommand IDBCreateSession IDBDataSourceAdmin IDBInfo IDBInitialize IDBPromptInitialize IDBProperties IDBSchemaRowset IErrorLookup IErrorRecords IGetDataSource IGetRow IGetSession IGetSourceRow IIndexDefinition IMultipleResults IOpenRowset IParentRowset IRegisterProvider IRow IRowChange IRowSchemaChange IRowset IRowsetBookmark IRowsetChange IRowsetChapterMember IRowsetCurrentIndex IRowsetExactScroll IRowsetFind IRowsetIdentity IRowsetIndex IRowsetInfo IRowsetLocate IRowsetNotify IRowsetRefresh IRowsetResynch IRowsetScroll IRowsetUpdate IRowsetView IScopedOperations IService ISessionProperties ISourcesRowset ISQLErrorInfo ITableCreation ITableDefinition ITableDefinitionWithConstraints ITransaction ITransactionDispenser ITransactionJoin ITransactionLocal ITransactionObject ITransactionOptions ITransactionOutcomeEvents IViewChapter IViewFilter IViewRowset IViewSort
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <NoWarn>$(NoWarn);CS8785</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

@@ -59,6 +59,7 @@ Native Enum | Header | Managed Enum
 --- | --- | ---  
 [CCPI](https://www.google.com/search?num=5&q=CCPI+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinTrust.CCPI](https://github.com/dahall/Vanara/search?l=C%23&q=CCPI)  
 [CertConfidence](https://www.google.com/search?num=5&q=CertConfidence+site%3Alearn.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.CertConfidence](https://github.com/dahall/Vanara/search?l=C%23&q=CertConfidence)  
+[CPD](https://www.google.com/search?num=5&q=CPD+site%3Alearn.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.CPD](https://github.com/dahall/Vanara/search?l=C%23&q=CPD)  
 [CRYPTCAT_ATTR](https://www.google.com/search?num=5&q=CRYPTCAT_ATTR+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_ATTR](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_ATTR)  
 [CRYPTCAT_E](https://www.google.com/search?num=5&q=CRYPTCAT_E+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_E](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_E)  
 [CRYPTCAT_OPEN](https://www.google.com/search?num=5&q=CRYPTCAT_OPEN+site%3Alearn.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_OPEN](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_OPEN)  

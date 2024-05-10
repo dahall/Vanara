@@ -1,8 +1,6 @@
-## Vanara.PInvoke.VssApiMgd  
-PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).
-
+## Vanara.PInvoke.VssApi, Vanara.PInvoke.VssApiMgd  
 - Includes methods from vssapi.dll  
-- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.VssApiMgd?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.VssApiMgd?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.VssApiMgd)  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.VssApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.VssApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.VssApi)  
 ### Methods - 100% API coverage (2 of 2 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
@@ -91,7 +89,9 @@ Native Interface | Header | Managed Interface
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[CVssWriter](https://www.google.com/search?num=5&q=CVssWriter+site%3Alearn.microsoft.com) | vswriter.h | [Vanara.PInvoke.VssApi.CVssWriter](https://github.com/dahall/Vanara/search?l=C%23&q=CVssWriter)  
 [Extensions](https://www.google.com/search?num=5&q=Extensions+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.Extensions](https://github.com/dahall/Vanara/search?l=C%23&q=Extensions)  
 [VSSCoordinator](https://www.google.com/search?num=5&q=VSSCoordinator+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.VSSCoordinator](https://github.com/dahall/Vanara/search?l=C%23&q=VSSCoordinator)  
+[VssFactory](https://www.google.com/search?num=5&q=VssFactory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.VssFactory](https://github.com/dahall/Vanara/search?l=C%23&q=VssFactory)  
 [VssInfo](https://www.google.com/search?num=5&q=VssInfo+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.VssInfo](https://github.com/dahall/Vanara/search?l=C%23&q=VssInfo)  
 [VssSnapshotMgmt](https://www.google.com/search?num=5&q=VssSnapshotMgmt+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.VssApi.VssSnapshotMgmt](https://github.com/dahall/Vanara/search?l=C%23&q=VssSnapshotMgmt)  

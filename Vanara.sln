@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		AsmDef.cs = AsmDef.cs
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		GetProjVer.exe = GetProjVer.exe
 		LICENSE = LICENSE
 		NugetPkgReadme.md = NugetPkgReadme.md
 		Package.targets = Package.targets
@@ -437,13 +438,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Odbc32", "PI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odbc32", "UnitTests\PInvoke\Odbc32\Odbc32.csproj", "{94724746-9D66-45E5-8EF1-419E29C6DF12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.OleDb", "PInvoke\OleDb\Vanara.PInvoke.OleDb.csproj", "{2DCB4898-C95C-4529-9655-E087171B44DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.OleDb", "PInvoke\OleDb\Vanara.PInvoke.OleDb.csproj", "{2DCB4898-C95C-4529-9655-E087171B44DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WslApi", "PInvoke\WslApi\Vanara.PInvoke.WslApi.csproj", "{9E2D6D4B-69D0-46A0-A18A-186E3FA269BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WslApi", "PInvoke\WslApi\Vanara.PInvoke.WslApi.csproj", "{9E2D6D4B-69D0-46A0-A18A-186E3FA269BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WUApi", "PInvoke\WUApi\Vanara.PInvoke.WUApi.csproj", "{7A2BF2BB-B565-4F0F-8EBD-5C0A57A0773B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WUApi", "PInvoke\WUApi\Vanara.PInvoke.WUApi.csproj", "{7A2BF2BB-B565-4F0F-8EBD-5C0A57A0773B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WUApi", "UnitTests\PInvoke\WUApi\WUApi.csproj", "{4E84A8EA-A180-4897-9542-C529A91702AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WUApi", "UnitTests\PInvoke\WUApi\WUApi.csproj", "{4E84A8EA-A180-4897-9542-C529A91702AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
