@@ -1,10 +1,11 @@
 ﻿using Microsoft.Win32.SafeHandles;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace Vanara.PInvoke;
 
 /// <summary>Provides a handle to an accelerator table.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HACCEL : IUserHandle
 {
 	private readonly IntPtr handle;
@@ -57,7 +58,7 @@ public readonly struct HACCEL : IUserHandle
 }
 
 /// <summary>Provides a generic handle.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HANDLE : IHandle
 {
 	private readonly IntPtr handle;
@@ -115,7 +116,7 @@ public readonly struct HANDLE : IHandle
 }
 
 /// <summary>Provides a handle to a bitmap.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HBITMAP : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -173,7 +174,7 @@ public readonly struct HBITMAP : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to drawing brush.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HBRUSH : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -231,7 +232,7 @@ public readonly struct HBRUSH : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to a color space.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HCOLORSPACE : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -289,7 +290,7 @@ public readonly struct HCOLORSPACE : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to cursor.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HCURSOR : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -347,7 +348,7 @@ public readonly struct HCURSOR : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to a graphic device context.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HDC : IHandle
 {
 	private readonly IntPtr handle;
@@ -400,7 +401,7 @@ public readonly struct HDC : IHandle
 }
 
 /// <summary>Provides a handle to a desktop.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HDESK : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -453,7 +454,7 @@ public readonly struct HDESK : IKernelHandle
 }
 
 /// <summary>Provides a handle to a DPA.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HDPA : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -506,7 +507,7 @@ public readonly struct HDPA : IKernelHandle
 }
 
 /// <summary>Provides a handle to a Windows drop operation.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HDROP : IShellHandle
 {
 	private readonly IntPtr handle;
@@ -559,7 +560,7 @@ public readonly struct HDROP : IShellHandle
 }
 
 /// <summary>Provides a handle to a DSA.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HDSA : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -612,7 +613,7 @@ public readonly struct HDSA : IKernelHandle
 }
 
 /// <summary>Provides a handle to a deferred windows position.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HDWP : IUserHandle
 {
 	private readonly IntPtr handle;
@@ -665,7 +666,7 @@ public readonly struct HDWP : IUserHandle
 }
 
 /// <summary>Provides a handle to an enhanced metafile.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HENHMETAFILE : IHandle
 {
 	private readonly IntPtr handle;
@@ -718,7 +719,7 @@ public readonly struct HENHMETAFILE : IHandle
 }
 
 /// <summary>Provides a handle to a sync event.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HEVENT : ISyncHandle
 {
 	private readonly IntPtr handle;
@@ -771,7 +772,7 @@ public readonly struct HEVENT : ISyncHandle
 }
 
 /// <summary>Provides a handle to a file.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HFILE : ISyncHandle
 {
 	private readonly IntPtr handle;
@@ -835,7 +836,7 @@ public readonly struct HFILE : ISyncHandle
 }
 
 /// <summary>Provides a handle to a font.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HFONT : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -893,7 +894,7 @@ public readonly struct HFONT : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to a graphic device object.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HGDIOBJ : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -986,7 +987,7 @@ public readonly struct HGDIOBJ : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to an icon.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HICON : IUserHandle
 {
 	private readonly IntPtr handle;
@@ -1039,7 +1040,7 @@ public readonly struct HICON : IUserHandle
 }
 
 /// <summary>Provides a handle to a Windows image list.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HIMAGELIST : IShellHandle
 {
 	private readonly IntPtr handle;
@@ -1092,7 +1093,7 @@ public readonly struct HIMAGELIST : IShellHandle
 }
 
 /// <summary>Provides a handle to a module or library instance.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HINSTANCE : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -1145,7 +1146,7 @@ public readonly struct HINSTANCE : IKernelHandle
 }
 
 /// <summary>Provides a handle to a Windows registry key.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HKEY : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -1250,7 +1251,7 @@ public readonly struct HKEY : IKernelHandle
 }
 
 /// <summary>Provides a handle to a menu.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HMENU : IUserHandle
 {
 	private readonly IntPtr handle;
@@ -1303,7 +1304,7 @@ public readonly struct HMENU : IUserHandle
 }
 
 /// <summary>Provides a handle to a metafile.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HMETAFILE : IHandle
 {
 	private readonly IntPtr handle;
@@ -1356,7 +1357,7 @@ public readonly struct HMETAFILE : IHandle
 }
 
 /// <summary>Provides a handle to a monitor.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HMONITOR : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -1409,7 +1410,7 @@ public readonly struct HMONITOR : IKernelHandle
 }
 
 /// <summary>Provides a handle to a palette.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HPALETTE : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -1467,7 +1468,7 @@ public readonly struct HPALETTE : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to a drawing pen.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HPEN : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -1525,7 +1526,7 @@ public readonly struct HPEN : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to a process.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HPROCESS : ISyncHandle
 {
 	private readonly IntPtr handle;
@@ -1583,7 +1584,7 @@ public readonly struct HPROCESS : ISyncHandle
 }
 
 /// <summary>Provides a handle to a Windows property sheet.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HPROPSHEET : IUserHandle
 {
 	private readonly IntPtr handle;
@@ -1636,7 +1637,7 @@ public readonly struct HPROPSHEET : IUserHandle
 }
 
 /// <summary>Provides a handle to a property sheet page.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HPROPSHEETPAGE : IUserHandle
 {
 	private readonly IntPtr handle;
@@ -1689,7 +1690,7 @@ public readonly struct HPROPSHEETPAGE : IUserHandle
 }
 
 /// <summary>Provides a handle to a drawing region.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HRGN : IGraphicsObjectHandle
 {
 	private readonly IntPtr handle;
@@ -1747,7 +1748,7 @@ public readonly struct HRGN : IGraphicsObjectHandle
 }
 
 /// <summary>Provides a handle to a file mapping object.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HSECTION : IHandle
 {
 	private readonly IntPtr handle;
@@ -1800,7 +1801,7 @@ public readonly struct HSECTION : IHandle
 }
 
 /// <summary>Provides a handle to a blocking task.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HTASK : IHandle
 {
 	private readonly IntPtr handle;
@@ -1853,7 +1854,7 @@ public readonly struct HTASK : IHandle
 }
 
 /// <summary>Provides a handle to a Windows theme.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HTHEME : IHandle
 {
 	private readonly IntPtr handle;
@@ -1906,7 +1907,7 @@ public readonly struct HTHEME : IHandle
 }
 
 /// <summary>Provides a handle to a thread.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HTHREAD : ISyncHandle
 {
 	private readonly IntPtr handle;
@@ -1959,7 +1960,7 @@ public readonly struct HTHREAD : ISyncHandle
 }
 
 /// <summary>Provides a handle to a Windows thumbnail.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HTHUMBNAIL : IShellHandle
 {
 	private readonly IntPtr handle;
@@ -2012,7 +2013,7 @@ public readonly struct HTHUMBNAIL : IShellHandle
 }
 
 /// <summary>Provides a handle to an access token.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HTOKEN : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -2065,7 +2066,7 @@ public readonly struct HTOKEN : IKernelHandle
 }
 
 /// <summary>Provides a handle to a windows station.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HWINSTA : IKernelHandle
 {
 	private readonly IntPtr handle;
@@ -2118,7 +2119,7 @@ public readonly struct HWINSTA : IKernelHandle
 }
 
 /// <summary>Provides a handle to a window or dialog.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct HWND : IUserHandle
 {
 	private readonly IntPtr handle;
@@ -2198,7 +2199,7 @@ public readonly struct HWND : IUserHandle
 }
 
 /// <summary>Provides a pointer to an access control entry.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct PACE : ISecurityObject
 {
 	private readonly IntPtr handle;
@@ -2251,7 +2252,7 @@ public readonly struct PACE : ISecurityObject
 }
 
 /// <summary>Provides a handle to an access control list.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct PACL : ISecurityObject
 {
 	private readonly IntPtr handle;
@@ -2304,7 +2305,7 @@ public readonly struct PACL : ISecurityObject
 }
 
 /// <summary>Provides a handle to a security descriptor.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct PSECURITY_DESCRIPTOR : ISecurityObject
 {
 	private readonly IntPtr handle;
@@ -2357,7 +2358,7 @@ public readonly struct PSECURITY_DESCRIPTOR : ISecurityObject
 }
 
 /// <summary>Provides a handle to a security identifier.</summary>
-[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
 public readonly struct PSID : ISecurityObject
 {
 	private readonly IntPtr handle;
