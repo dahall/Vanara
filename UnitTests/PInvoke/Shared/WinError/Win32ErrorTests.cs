@@ -122,6 +122,12 @@ public class Win32ErrorTests
 	public void ToStringTest(uint c, string val) => Assert.That(new Win32Error(c).ToString(), Does.StartWith(val));
 
 	[Test]
+	public void ToStringHRESULTTest()
+	{
+		Assert.That(new Win32Error(Win32Error.ERROR_CLOUD_FILE_NOT_UNDER_SYNC_ROOT).ToHRESULT().ToString(), Does.StartWith("HRESULT_FROM_WIN32(ERROR_CLOUD_FILE_NOT_UNDER_SYNC_ROOT"));
+	}
+
+	[Test]
 	public void TypeConverterTest()
 	{
 		Win32Error hr = Win32Error.ERROR_ACCESS_DENIED;

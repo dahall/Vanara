@@ -27,7 +27,7 @@ public static class ErrorHelper
 	{
 		if (!lookupHelpers.TryGetValue(typeof(TType), out var lookupFunc))
 			lookupFunc = FormatMessage;
-		return lookupFunc(id.ToUInt32(null), lib ?? StaticFieldValueHash.GetFieldLib<TType, TFieldType>(id));
+		return lookupFunc(unchecked((uint)id.ToInt64(null)), lib ?? StaticFieldValueHash.GetFieldLib<TType, TFieldType>(id));
 	}
 
 	/// <summary>Formats the message.</summary>
