@@ -3,6 +3,9 @@
     <AssemblyName>UnitTest.Windows.Shell</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.5" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
     <ProjectReference Include="..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />

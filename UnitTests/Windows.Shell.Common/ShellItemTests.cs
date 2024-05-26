@@ -273,6 +273,7 @@ public class ShellItemTests
 		td.FileSystemPath!.WriteValues();
 	}
 
+	/*
 	private static Bitmap? HToBitmap(in HBITMAP hbmp)
 	{
 		const System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
@@ -351,4 +352,5 @@ public class ShellItemTests
 			}
 		}
 	}
+	*/
 }

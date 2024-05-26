@@ -446,6 +446,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WUApi", "PIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WUApi", "UnitTests\PInvoke\WUApi\WUApi.csproj", "{4E84A8EA-A180-4897-9542-C529A91702AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.WindowsUpdate", "WindowsUpdate\Vanara.WindowsUpdate.csproj", "{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -3909,6 +3911,24 @@ Global
 		{4E84A8EA-A180-4897-9542-C529A91702AC}.Release|x64.Build.0 = Release|x64
 		{4E84A8EA-A180-4897-9542-C529A91702AC}.Release|x86.ActiveCfg = Release|x86
 		{4E84A8EA-A180-4897-9542-C529A91702AC}.Release|x86.Build.0 = Release|x86
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Debug|x64.ActiveCfg = Debug|x64
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Debug|x64.Build.0 = Debug|x64
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Debug|x86.ActiveCfg = Debug|x86
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Debug|x86.Build.0 = Debug|x86
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.DebugNoTests|x64.ActiveCfg = Debug|x64
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.DebugNoTests|x64.Build.0 = Debug|x64
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.DebugNoTests|x86.ActiveCfg = Debug|x86
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.DebugNoTests|x86.Build.0 = Debug|x86
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Release|x64.ActiveCfg = Release|x64
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Release|x64.Build.0 = Release|x64
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Release|x86.ActiveCfg = Release|x86
+		{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

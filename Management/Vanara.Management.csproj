@@ -18,8 +18,8 @@ DynamicMgmtObject, ManagementExtensions
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'net45' ">
-    <PackageReference Include="System.Management" Version="6.0.2" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
-    <PackageReference Include="System.Management" Version="7.0.2" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " />
+    <PackageReference Include="System.Management" Version="6.0.2" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' " />
+    <PackageReference Include="System.Management" Version="8.0.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' And '$(TargetFramework)' != 'net5.0' " />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System.Management" />
