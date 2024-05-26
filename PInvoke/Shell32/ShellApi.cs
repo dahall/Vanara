@@ -4539,7 +4539,7 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ns-shellapi-_shqueryrbinfo typedef struct _SHQUERYRBINFO { DWORD
 	// cbSize; __int64 i64Size; __int64 i64NumItems; DWORDLONG i64Size; DWORDLONG i64NumItems; } SHQUERYRBINFO, *LPSHQUERYRBINFO;
 	[PInvokeData("shellapi.h", MSDNShortId = "7e9bc7e9-5712-45e7-a424-0afb62f26450")]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 0)]
 	public struct SHQUERYRBINFO
 	{
 		/// <summary>The size of the structure, in bytes. This member must be filled in prior to calling the function.</summary>
