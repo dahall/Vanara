@@ -262,7 +262,7 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-get_handlerid HRESULT get_HandlerID( BSTR *retval );
 		[DispId(1610743819)]
-		string HandlerID
+		string? HandlerID
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743819)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -868,7 +868,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -1154,7 +1154,7 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-get_handlerid HRESULT get_HandlerID( BSTR *retval );
 		[DispId(1610743819)]
-		new string HandlerID
+		new string? HandlerID
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743819)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -1760,7 +1760,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -1874,7 +1874,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate2-copytocache HRESULT CopyToCache( [in]
 		// IStringCollection *pFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610809346)]
-		void CopyToCache([In][MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
+		void CopyToCache([In, MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
 	}
 
 	/// <summary>Contains the properties and methods that are available to an update.</summary>
@@ -2132,7 +2132,7 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-get_handlerid HRESULT get_HandlerID( BSTR *retval );
 		[DispId(1610743819)]
-		new string HandlerID
+		new string? HandlerID
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743819)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -2738,7 +2738,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -2852,7 +2852,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate2-copytocache HRESULT CopyToCache( [in]
 		// IStringCollection *pFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610809346)]
-		new void CopyToCache([In][MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
+		new void CopyToCache([In, MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
 
 		/// <summary>
 		/// <para>Gets a Boolean value that indicates whether an update can be discovered only by browsing through the available updates.</para>
@@ -3123,7 +3123,7 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-get_handlerid HRESULT get_HandlerID( BSTR *retval );
 		[DispId(1610743819)]
-		new string HandlerID
+		new string? HandlerID
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743819)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -3729,7 +3729,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -3843,7 +3843,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate2-copytocache HRESULT CopyToCache( [in]
 		// IStringCollection *pFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610809346)]
-		new void CopyToCache([In][MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
+		new void CopyToCache([In, MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
 
 		/// <summary>
 		/// <para>Gets a Boolean value that indicates whether an update can be discovered only by browsing through the available updates.</para>
@@ -4135,7 +4135,7 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-get_handlerid HRESULT get_HandlerID( BSTR *retval );
 		[DispId(1610743819)]
-		new string HandlerID
+		new string? HandlerID
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743819)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -4741,7 +4741,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -4855,7 +4855,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate2-copytocache HRESULT CopyToCache( [in]
 		// IStringCollection *pFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610809346)]
-		new void CopyToCache([In][MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
+		new void CopyToCache([In, MarshalAs(UnmanagedType.Interface)] IStringCollection pFiles);
 
 		/// <summary>
 		/// <para>Gets a Boolean value that indicates whether an update can be discovered only by browsing through the available updates.</para>
@@ -4932,7 +4932,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdatecollection
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IUpdateCollection")]
-	[ComImport, Guid("07F7438C-7709-4CA5-B518-91279288134E"), CoClass(typeof(UpdateCollection))]
+	[ComImport, Guid("07f7438c-7709-4ca5-b518-91279288134e"), CoClass(typeof(UpdateCollectionClass))/*, TypeLibType(TypeLibTypeFlags.FDispatchable | TypeLibTypeFlags.FHidden | TypeLibTypeFlags.FDual | TypeLibTypeFlags.FNonExtensible)*/]
 	public interface IUpdateCollection : IEnumerable
 	{
 		/// <summary>
@@ -4968,10 +4968,10 @@ public static partial class WUApi
 		/// <para>This property is read-only.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatecollection-get_count HRESULT get_Count( LONG *retval );
-		[DispId(1610743809)]
+		[DispId(0x60020001)]
 		int Count
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
 		}
 
@@ -4981,10 +4981,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatecollection-get_readonly HRESULT get_ReadOnly(
 		// VARIANT_BOOL *retval );
-		[DispId(1610743810)]
+		[DispId(0x60020002)]
 		bool ReadOnly
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
 			get;
 		}
 
@@ -4993,19 +4993,19 @@ public static partial class WUApi
 		/// <returns>The index of the added interface in the collection.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatecollection-add HRESULT Add( [in] IUpdate *value, [out]
 		// LONG *retval );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
-		int Add([In][MarshalAs(UnmanagedType.Interface)] IUpdate value);
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
+		int Add([In, MarshalAs(UnmanagedType.Interface)] IUpdate value);
 
 		/// <summary>Removes all the elements from the collection.</summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatecollection-clear HRESULT Clear();
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743812)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)]
 		void Clear();
 
 		/// <summary>Creates a shallow read/write copy of the collection.</summary>
 		/// <returns>A shallow read/write copy of the collection.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatecollection-copy HRESULT Copy( [out] IUpdateCollection
 		// **retval );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743813)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IUpdateCollection Copy();
 
@@ -5014,13 +5014,13 @@ public static partial class WUApi
 		/// <param name="value">The IUpdate interface that will be inserted.</param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatecollection-insert HRESULT Insert( [in] LONG index, [in]
 		// IUpdate *value );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743814)]
-		void Insert([In] int index, [In][MarshalAs(UnmanagedType.Interface)] IUpdate value);
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
+		void Insert([In] int index, [In, MarshalAs(UnmanagedType.Interface)] IUpdate value);
 
 		/// <summary>Removes the item at the specified index from the collection.</summary>
 		/// <param name="index">The index of the interface to be removed.</param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatecollection-removeat HRESULT RemoveAt( [in] LONG index );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743815)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)]
 		void RemoveAt([In] int index);
 	}
 }

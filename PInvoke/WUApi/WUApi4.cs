@@ -10,7 +10,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdateservicemanager
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IUpdateServiceManager")]
-	[ComImport, Guid("23857E3C-02BA-44A3-9423-B1C900805F37"), CoClass(typeof(UpdateServiceManager))]
+	[ComImport, Guid("23857E3C-02BA-44A3-9423-B1C900805F37"), CoClass(typeof(UpdateServiceManagerClass))]
 	public interface IUpdateServiceManager
 	{
 		/// <summary>
@@ -41,7 +41,7 @@ public static partial class WUApi
 		// serviceID, [in] BSTR authorizationCabPath, [out] IUpdateService **retval );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IUpdateService AddService([In, MarshalAs(UnmanagedType.BStr)] string serviceID, [In, MarshalAs(UnmanagedType.BStr)] string authorizationCabPath);
+		IUpdateService AddService([In, MarshalAs(UnmanagedType.BStr)] string serviceID, [In, MarshalAs(UnmanagedType.BStr)] string authorizationCabPath = "");
 
 		/// <summary>Registers a service with Automatic Updates.</summary>
 		/// <param name="serviceID">An identifier for the service to be registered.</param>
@@ -146,7 +146,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdateservicemanager2
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IUpdateServiceManager2")]
-	[ComImport, Guid("0BB8531D-7E8D-424F-986C-A0B8F60A3E7B"), CoClass(typeof(UpdateServiceManager))]
+	[ComImport, Guid("0BB8531D-7E8D-424F-986C-A0B8F60A3E7B"), CoClass(typeof(UpdateServiceManagerClass))]
 	public interface IUpdateServiceManager2 : IUpdateServiceManager
 	{
 		/// <summary>
@@ -177,7 +177,7 @@ public static partial class WUApi
 		// serviceID, [in] BSTR authorizationCabPath, [out] IUpdateService **retval );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		new IUpdateService AddService([In, MarshalAs(UnmanagedType.BStr)] string serviceID, [In, MarshalAs(UnmanagedType.BStr)] string authorizationCabPath);
+		new IUpdateService AddService([In, MarshalAs(UnmanagedType.BStr)] string serviceID, [In, MarshalAs(UnmanagedType.BStr)] string authorizationCabPath = "");
 
 		/// <summary>Registers a service with Automatic Updates.</summary>
 		/// <param name="serviceID">An identifier for the service to be registered.</param>
@@ -382,12 +382,12 @@ public static partial class WUApi
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdateservicemanager2-addservice2 HRESULT AddService2( [in]
-		// BSTR serviceID, [in] LONG flags, [in] BSTR authorizationCabPath, [out] IUpdateServiceRegistration **retval );
+		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdateservicemanager2-addservice2
+		// HRESULT AddService2( [in] BSTR serviceID, [in] LONG flags, [in] BSTR authorizationCabPath, [out] IUpdateServiceRegistration **retval );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610809347)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IUpdateServiceRegistration AddService2([In, MarshalAs(UnmanagedType.BStr)] string serviceID, [In] AddServiceFlag flags,
-			[In, MarshalAs(UnmanagedType.BStr)] string authorizationCabPath);
+		IUpdateServiceRegistration AddService2([In, MarshalAs(UnmanagedType.BStr)] string serviceID,
+			[In] AddServiceFlag flags, [In, MarshalAs(UnmanagedType.BStr)] string authorizationCabPath);
 	}
 
 	/// <summary>Contains information about the registration state of a service.</summary>
@@ -470,7 +470,7 @@ public static partial class WUApi
 	/// to create the object.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdatesession
-	[ComImport, Guid("816858A4-260D-4260-933A-2585F1ABC76B"), CoClass(typeof(UpdateSession))]
+	[ComImport, Guid("816858A4-260D-4260-933A-2585F1ABC76B"), CoClass(typeof(UpdateSessionClass))]
 	public interface IUpdateSession
 	{
 		/// <summary>
@@ -559,7 +559,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdatesession2
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IUpdateSession2")]
-	[ComImport, Guid("91CAF7B0-EB23-49ED-9937-C52D817F46F7"), CoClass(typeof(UpdateSession))]
+	[ComImport, Guid("91CAF7B0-EB23-49ED-9937-C52D817F46F7"), CoClass(typeof(UpdateSessionClass))]
 	public interface IUpdateSession2 : IUpdateSession
 	{
 		/// <summary>
@@ -679,7 +679,7 @@ public static partial class WUApi
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdatesession3
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IUpdateSession3")]
-	[ComImport, Guid("918EFD1E-B5D8-4C90-8540-AEB9BDC56F9D"), CoClass(typeof(UpdateSession))]
+	[ComImport, Guid("918EFD1E-B5D8-4C90-8540-AEB9BDC56F9D"), CoClass(typeof(UpdateSessionClass))]
 	public interface IUpdateSession3 : IUpdateSession2
 	{
 		/// <summary>
@@ -868,7 +868,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iwebproxy
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IWebProxy")]
-	[ComImport, Guid("174C81FE-AECD-4DAE-B8A0-2C6318DD86A8"), CoClass(typeof(WebProxy))]
+	[ComImport, Guid("174C81FE-AECD-4DAE-B8A0-2C6318DD86A8"), CoClass(typeof(WebProxyClass))]
 	public interface IWebProxy
 	{
 		/// <summary>
@@ -1880,7 +1880,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -2882,7 +2882,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -3931,7 +3931,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -4993,7 +4993,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>
@@ -6082,7 +6082,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdate-copyfromcache HRESULT CopyFromCache( [in] BSTR path,
 		// [in] VARIANT_BOOL toExtractCabFiles );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743850)]
-		new void CopyFromCache([In][MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
+		new void CopyFromCache([In, MarshalAs(UnmanagedType.BStr)] string path, [In] bool toExtractCabFiles);
 
 		/// <summary>
 		/// <para>Gets the suggested download priority of the update.</para>

@@ -1,7 +1,6 @@
 global using System.Collections;
 global using System.Reflection;
 global using System.Runtime.CompilerServices;
-using System.Net;
 
 namespace Vanara.PInvoke;
 
@@ -899,7 +898,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iautomaticupdates
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IAutomaticUpdates")]
-	[ComImport, Guid("673425BF-C082-4C7C-BDFD-569464B8E0CE"), CoClass(typeof(AutomaticUpdates))]
+	[ComImport, Guid("673425BF-C082-4C7C-BDFD-569464B8E0CE"), CoClass(typeof(AutomaticUpdatesClass))]
 	public interface IAutomaticUpdates
 	{
 		/// <summary>
@@ -992,7 +991,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iautomaticupdates2
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IAutomaticUpdates2")]
-	[ComImport, Guid("4A2F5C31-CFD9-410E-B7FB-29A653973A0F"), CoClass(typeof(AutomaticUpdates))]
+	[ComImport, Guid("4A2F5C31-CFD9-410E-B7FB-29A653973A0F"), CoClass(typeof(AutomaticUpdatesClass))]
 	public interface IAutomaticUpdates2 : IAutomaticUpdates
 	{
 		/// <summary>
@@ -1104,7 +1103,7 @@ public static partial class WUApi
 		/// </value>
 		// https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-uamg/edb37e74-f222-4983-b1fc-4d9694386619
 		[DispId(1610743809)]
-		object LastSearchSuccessDate
+		object? LastSearchSuccessDate
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -1121,7 +1120,7 @@ public static partial class WUApi
 		/// this property.
 		/// </remarks>
 		[DispId(1610743810)]
-		object LastInstallationSuccessDate
+		object? LastInstallationSuccessDate
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -1663,7 +1662,7 @@ public static partial class WUApi
 		// CheckPermission( [in] AutomaticUpdatesUserType userType, [in] AutomaticUpdatesPermissionType permissionType, VARIANT_BOOL
 		// *userHasPermission );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610809346)]
-		bool CheckPermission([In][ComAliasName("WUApiLib.AutomaticUpdatesUserType")] AutomaticUpdatesUserType userType, [In][ComAliasName("WUApiLib.AutomaticUpdatesPermissionType")] AutomaticUpdatesPermissionType permissionType);
+		bool CheckPermission([In, ComAliasName("WUApiLib.AutomaticUpdatesUserType")] AutomaticUpdatesUserType userType, [In, ComAliasName("WUApiLib.AutomaticUpdatesPermissionType")] AutomaticUpdatesPermissionType permissionType);
 	}
 
 	/// <summary>Contains the settings that are available in Automatic Updates.</summary>
@@ -1946,7 +1945,7 @@ public static partial class WUApi
 		// CheckPermission( [in] AutomaticUpdatesUserType userType, [in] AutomaticUpdatesPermissionType permissionType, VARIANT_BOOL
 		// *userHasPermission );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610809346)]
-		new bool CheckPermission([In][ComAliasName("WUApiLib.AutomaticUpdatesUserType")] AutomaticUpdatesUserType userType, [In][ComAliasName("WUApiLib.AutomaticUpdatesPermissionType")] AutomaticUpdatesPermissionType permissionType);
+		new bool CheckPermission([In, ComAliasName("WUApiLib.AutomaticUpdatesUserType")] AutomaticUpdatesUserType userType, [In, ComAliasName("WUApiLib.AutomaticUpdatesPermissionType")] AutomaticUpdatesPermissionType permissionType);
 
 		/// <summary>
 		/// <para>
@@ -2041,7 +2040,7 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-icategory-get_categoryid HRESULT get_CategoryID( BSTR *retval );
 		[DispId(1610743809)]
-		string CategoryID
+		string? CategoryID
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -2055,7 +2054,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-icategory-get_children HRESULT get_Children(
 		// ICategoryCollection **retval );
 		[DispId(1610743810)]
-		ICategoryCollection Children
+		ICategoryCollection? Children
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -2095,7 +2094,7 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-icategory-get_description HRESULT get_Description( BSTR *retval );
 		[DispId(1610743811)]
-		string Description
+		string? Description
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -2136,7 +2135,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-icategory-get_image HRESULT get_Image( IImageInformation
 		// **retval );
 		[DispId(1610743812)]
-		IImageInformation Image
+		IImageInformation? Image
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743812)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -2161,7 +2160,7 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-icategory-get_parent HRESULT get_Parent( ICategory **retval );
 		[DispId(1610743814)]
-		ICategory Parent
+		ICategory? Parent
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743814)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -2190,7 +2189,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-icategory-get_updates HRESULT get_Updates( IUpdateCollection
 		// **retval );
 		[DispId(1610743816)]
-		IUpdateCollection Updates
+		IUpdateCollection? Updates
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743816)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -2259,7 +2258,7 @@ public static partial class WUApi
 		// HRESULT Invoke( [in] IDownloadJob *downloadJob, [in] IDownloadCompletedCallbackArgs *callbackArgs );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
-		HRESULT Invoke([In][MarshalAs(UnmanagedType.Interface)] IDownloadJob downloadJob, [In][MarshalAs(UnmanagedType.Interface)] IDownloadCompletedCallbackArgs callbackArgs);
+		HRESULT Invoke([In, MarshalAs(UnmanagedType.Interface)] IDownloadJob downloadJob, [In, MarshalAs(UnmanagedType.Interface)] IDownloadCompletedCallbackArgs callbackArgs);
 	}
 
 	/// <summary>
@@ -2504,7 +2503,7 @@ public static partial class WUApi
 		// HRESULT Invoke( [in] IDownloadJob *downloadJob, [in] IDownloadProgressChangedCallbackArgs *callbackArgs );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
-		HRESULT Invoke([In][MarshalAs(UnmanagedType.Interface)] IDownloadJob downloadJob, [In][MarshalAs(UnmanagedType.Interface)] IDownloadProgressChangedCallbackArgs callbackArgs);
+		HRESULT Invoke([In, MarshalAs(UnmanagedType.Interface)] IDownloadJob downloadJob, [In, MarshalAs(UnmanagedType.Interface)] IDownloadProgressChangedCallbackArgs callbackArgs);
 	}
 
 	/// <summary>Contains information about the change in the progress of an asynchronous download operation.</summary>
@@ -2531,7 +2530,7 @@ public static partial class WUApi
 	/// <summary>The <c>IDownloadResult</c> interface represents the result of a download operation.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-idownloadresult
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IDownloadResult")]
-	[ComImport, Guid("DAA4FDD0-4727-4DBE-A1E7-745DCA317144")]
+	[ComImport, Guid("daa4fdd0-4727-4dbe-a1e7-745dca317144")]
 	public interface IDownloadResult
 	{
 		/// <summary>
@@ -2539,10 +2538,10 @@ public static partial class WUApi
 		/// <para>This property is read-only.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-idownloadresult-get_hresult HRESULT get_HResult( LONG *retval );
-		[DispId(1610743809)]
-		HRESULT HResult
+		[DispId(0x60020001)]
+		int HResult
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
 		}
 
@@ -2552,10 +2551,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-idownloadresult-get_resultcode HRESULT get_ResultCode(
 		// OperationResultCode *retval );
-		[ComAliasName("WUApiLib.OperationResultCode"), DispId(1610743810)]
+		[ComAliasName("WUApiLib.OperationResultCode"), DispId(0x60020002)]
 		OperationResultCode ResultCode
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
 			[return: ComAliasName("WUApiLib.OperationResultCode")]
 			get;
 		}
@@ -2565,7 +2564,7 @@ public static partial class WUApi
 		/// <returns>An IUpdateDownloadResult interface that contains the results for the specified update.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-idownloadresult-getupdateresult HRESULT GetUpdateResult( [in]
 		// LONG updateIndex, [out] IUpdateDownloadResult **retval );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IUpdateDownloadResult GetUpdateResult([In] int updateIndex);
 	}
@@ -2630,7 +2629,7 @@ public static partial class WUApi
 	/// <summary>Records the result for an update.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iinstallationagent
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IInstallationAgent")]
-	[ComImport, Guid("925CBC18-A2EA-4648-BF1C-EC8BADCFE20A"), CoClass(typeof(InstallationAgent))]
+	[ComImport, Guid("925CBC18-A2EA-4648-BF1C-EC8BADCFE20A"), CoClass(typeof(InstallationAgentClass))]
 	public interface IInstallationAgent
 	{
 		/// <summary>Records the result for an update. The result is specified by an IStringCollection object.</summary>
@@ -2642,7 +2641,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationagent-recordinstallationresult HRESULT
 		// RecordInstallationResult( [in] BSTR installationResultCookie, [in] LONG hresult, [in] IStringCollection *extendedReportingData );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
-		void RecordInstallationResult([In][MarshalAs(UnmanagedType.BStr)] string installationResultCookie, [In] HRESULT hresult, [In][MarshalAs(UnmanagedType.Interface)] IStringCollection extendedReportingData);
+		void RecordInstallationResult([In, MarshalAs(UnmanagedType.BStr)] string installationResultCookie, [In] HRESULT hresult, [In, MarshalAs(UnmanagedType.Interface)] IStringCollection extendedReportingData);
 	}
 
 	/// <summary>Represents the installation and uninstallation options of an update.</summary>
@@ -2730,7 +2729,7 @@ public static partial class WUApi
 		// IInstallationJob *installationJob, [in] IInstallationCompletedCallbackArgs *callbackArgs );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
-		HRESULT Invoke([In][MarshalAs(UnmanagedType.Interface)] IInstallationJob installationJob, [In][MarshalAs(UnmanagedType.Interface)] IInstallationCompletedCallbackArgs? callbackArgs);
+		HRESULT Invoke([In, MarshalAs(UnmanagedType.Interface)] IInstallationJob installationJob, [In, MarshalAs(UnmanagedType.Interface)] IInstallationCompletedCallbackArgs? callbackArgs);
 	}
 
 	/// <summary>
@@ -2766,10 +2765,10 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationjob-get_asyncstate HRESULT get_AsyncState( VARIANT
 		// *retval );
-		[DispId(1610743809)]
-		object AsyncState
+		[DispId(0x60020001)]
+		object? AsyncState
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			[return: MarshalAs(UnmanagedType.Struct)]
 			get;
 		}
@@ -2783,10 +2782,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationjob-get_iscompleted HRESULT get_IsCompleted(
 		// VARIANT_BOOL *retval );
-		[DispId(1610743810)]
+		[DispId(0x60020002)]
 		bool IsCompleted
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
 			get;
 		}
 
@@ -2796,10 +2795,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationjob-get_updates HRESULT get_Updates(
 		// IUpdateCollection **retval );
-		[DispId(1610743811)]
+		[DispId(0x60020003)]
 		IUpdateCollection Updates
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
 			[return: MarshalAs(UnmanagedType.Interface)]
 			get;
 		}
@@ -2810,7 +2809,7 @@ public static partial class WUApi
 		/// perform asynchronous WUA operations, see Guidelines for Asynchronous WUA Operations.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationjob-cleanup HRESULT CleanUp();
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743812)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)]
 		void CleanUp();
 
 		/// <summary>Returns an IInstallationProgress interface that describes the current progress of an installation or uninstallation.</summary>
@@ -2821,13 +2820,13 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationjob-getprogress HRESULT GetProgress( [out]
 		// IInstallationProgress **retval );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743813)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IInstallationProgress GetProgress();
 
 		/// <summary>Makes a request to cancel the installation or uninstallation.</summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationjob-requestabort HRESULT RequestAbort();
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743814)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
 		void RequestAbort();
 	}
 
@@ -2846,10 +2845,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationprogress-get_currentupdateindex HRESULT
 		// get_CurrentUpdateIndex( LONG *retval );
-		[DispId(1610743809)]
+		[DispId(0x60020001)]
 		int CurrentUpdateIndex
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
 		}
 
@@ -2859,10 +2858,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationprogress-get_currentupdatepercentcomplete HRESULT
 		// get_CurrentUpdatePercentComplete( LONG *retval );
-		[DispId(1610743810)]
+		[DispId(0x60020002)]
 		int CurrentUpdatePercentComplete
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
 			get;
 		}
 
@@ -2872,10 +2871,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationprogress-get_percentcomplete HRESULT
 		// get_PercentComplete( LONG *retval );
-		[DispId(1610743811)]
+		[DispId(0x60020003)]
 		int PercentComplete
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
 			get;
 		}
 
@@ -2888,7 +2887,7 @@ public static partial class WUApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationprogress-getupdateresult HRESULT GetUpdateResult(
 		// [in] LONG updateIndex, [out] IUpdateInstallationResult **retval );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743812)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IUpdateInstallationResult GetUpdateResult([In] int updateIndex);
 	}
@@ -2913,7 +2912,7 @@ public static partial class WUApi
 		// [in] IInstallationJob *installationJob, [in] IInstallationProgressChangedCallbackArgs *callbackArgs );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
-		HRESULT Invoke([In][MarshalAs(UnmanagedType.Interface)] IInstallationJob installationJob, [In][MarshalAs(UnmanagedType.Interface)] IInstallationProgressChangedCallbackArgs callbackArgs);
+		HRESULT Invoke([In, MarshalAs(UnmanagedType.Interface)] IInstallationJob installationJob, [In, MarshalAs(UnmanagedType.Interface)] IInstallationProgressChangedCallbackArgs callbackArgs);
 	}
 
 	/// <summary>
@@ -2932,10 +2931,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationprogresschangedcallbackargs-get_progress HRESULT
 		// get_Progress( IInstallationProgress **retval );
-		[DispId(1610743809)]
+		[DispId(0x60020001)]
 		IInstallationProgress Progress
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			[return: MarshalAs(UnmanagedType.Interface)]
 			get;
 		}
@@ -2953,10 +2952,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationresult-get_hresult HRESULT get_HResult( LONG
 		// *retval );
-		[DispId(1610743809)]
-		HRESULT HResult
+		[DispId(0x60020001)]
+		int HResult
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
 		}
 
@@ -2968,10 +2967,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationresult-get_rebootrequired HRESULT
 		// get_RebootRequired( VARIANT_BOOL *retval );
-		[DispId(1610743810)]
+		[DispId(0x60020002)]
 		bool RebootRequired
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743810)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020002)]
 			get;
 		}
 
@@ -2981,10 +2980,10 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationresult-get_resultcode HRESULT get_ResultCode(
 		// OperationResultCode *retval );
-		[DispId(1610743811), ComAliasName("WUApiLib.OperationResultCode")]
+		[DispId(0x60020003), ComAliasName("WUApiLib.OperationResultCode")]
 		OperationResultCode ResultCode
 		{
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
 			[return: ComAliasName("WUApiLib.OperationResultCode")]
 			get;
 		}
@@ -2994,7 +2993,7 @@ public static partial class WUApi
 		/// <returns>An interface that contains results for a specified update.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationresult-getupdateresult HRESULT GetUpdateResult(
 		// [in] LONG updateIndex, [out] IUpdateInstallationResult **retval );
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743812)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IUpdateInstallationResult GetUpdateResult([In] int updateIndex);
 	}
@@ -3024,7 +3023,7 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdateexception-get_hresult HRESULT get_HResult( LONG *retval );
 		[DispId(1610743809)]
-		new HRESULT HResult
+		new int HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
 			get;
@@ -3080,7 +3079,7 @@ public static partial class WUApi
 		// *searchJob, [in] ISearchCompletedCallbackArgs *callbackArgs );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
-		HRESULT Invoke([In][MarshalAs(UnmanagedType.Interface)] ISearchJob searchJob, [In][MarshalAs(UnmanagedType.Interface)] ISearchCompletedCallbackArgs callbackArgs);
+		HRESULT Invoke([In] ISearchJob searchJob, [In] ISearchCompletedCallbackArgs callbackArgs);
 	}
 
 	/// <summary>
@@ -3107,7 +3106,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-isearchjob-get_asyncstate HRESULT get_AsyncState( VARIANT
 		// *retval );
 		[DispId(1610743809)]
-		object AsyncState
+		object? AsyncState
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -3212,7 +3211,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-istringcollection
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IStringCollection")]
-	[ComImport, Guid("EFF90582-2DDC-480F-A06D-60F3FBC362C3"), CoClass(typeof(StringCollection))]
+	[ComImport, Guid("EFF90582-2DDC-480F-A06D-60F3FBC362C3"), CoClass(typeof(StringCollectionClass))]
 	public interface IStringCollection : IEnumerable
 	{
 		/// <summary>
@@ -3274,7 +3273,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-istringcollection-add HRESULT Add( [in] BSTR value, [out] LONG
 		// *retval );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
-		int Add([In][MarshalAs(UnmanagedType.BStr)] string value);
+		int Add([In, MarshalAs(UnmanagedType.BStr)] string value);
 
 		/// <summary>Removes all the elements from the collection.</summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-istringcollection-clear HRESULT Clear();
@@ -3295,7 +3294,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-istringcollection-insert HRESULT Insert( [in] LONG index, [in]
 		// BSTR value );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743814)]
-		void Insert([In] int index, [In][MarshalAs(UnmanagedType.BStr)] string value);
+		void Insert([In] int index, [In, MarshalAs(UnmanagedType.BStr)] string value);
 
 		/// <summary>Removes the item at the specified index from the collection.</summary>
 		/// <param name="index">The index of the string to be removed.</param>
@@ -3311,7 +3310,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-isysteminformation
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.ISystemInformation")]
-	[ComImport, Guid("ADE87BF7-7B56-4275-8FAB-B9B0E591844B"), CoClass(typeof(SystemInformation))]
+	[ComImport, Guid("ADE87BF7-7B56-4275-8FAB-B9B0E591844B"), CoClass(typeof(SystemInformationClass))]
 	public interface ISystemInformation
 	{
 		/// <summary>

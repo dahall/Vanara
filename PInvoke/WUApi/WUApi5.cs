@@ -172,7 +172,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iwindowsupdateagentinfo
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IWindowsUpdateAgentInfo")]
-	[ComImport, Guid("85713FA1-7796-4FA2-BE3B-E2D6124DD373"), CoClass(typeof(WindowsUpdateAgentInfo))]
+	[ComImport, Guid("85713FA1-7796-4FA2-BE3B-E2D6124DD373"), CoClass(typeof(WindowsUpdateAgentInfoClass))]
 	public interface IWindowsUpdateAgentInfo
 	{
 		/// <summary>Retrieves version information about Windows Update Agent (WUA).</summary>
@@ -222,71 +222,71 @@ public static partial class WUApi
 	/// CLSID_AutomaticUpdates
 	/// </summary>
 	[ComImport, Guid("BFE18E9C-6D87-4450-B37C-E02F0B373803"), ClassInterface(ClassInterfaceType.None)]
-	public class AutomaticUpdates { }
+	public class AutomaticUpdatesClass { }
 
 	/// <summary>
 	/// CLSID_InstallationAgent
 	/// </summary>
 	[ComImport, Guid("317E92FC-1679-46FD-A0B5-F08914DD8623"), ClassInterface(ClassInterfaceType.None)]
-	public class InstallationAgent { }
+	public class InstallationAgentClass { }
 
 	/// <summary>
 	/// CLSID_StringCollection
 	/// </summary>
 	[ComImport, Guid("72C97D74-7C3B-40AE-B77D-ABDB22EBA6FB"), ClassInterface(ClassInterfaceType.None)]
-	public class StringCollection { }
+	public class StringCollectionClass { }
 
 	/// <summary>
 	/// CLSID_SystemInformation
 	/// </summary>
 	[ComImport, Guid("C01B9BA0-BEA7-41BA-B604-D0A36F469133"), ClassInterface(ClassInterfaceType.None)]
-	public class SystemInformation { }
+	public class SystemInformationClass { }
 
 	/// <summary>
 	/// CLSID_UpdateCollection
 	/// </summary>
 	[ComImport, Guid("13639463-00DB-4646-803D-528026140D88"), ClassInterface(ClassInterfaceType.None)]
-	public class UpdateCollection { }
+	public class UpdateCollectionClass { }
 
 	/// <summary>
 	/// CLSID_UpdateDownloader
 	/// </summary>
 	[ComImport, Guid("5BAF654A-5A07-4264-A255-9FF54C7151E7"), ClassInterface(ClassInterfaceType.None)]
-	public class UpdateDownloader { }
+	public class UpdateDownloaderClass { }
 
 	/// <summary>
 	/// CLSID_UpdateInstaller
 	/// </summary>
 	[ComImport, Guid("D2E0FE7F-D23E-48E1-93C0-6FA8CC346474"), ClassInterface(ClassInterfaceType.None)]
-	public class UpdateInstaller { }
+	public class UpdateInstallerClass { }
 
 	/// <summary>
 	/// CLSID_UpdateSearcher
 	/// </summary>
 	[ComImport, Guid("B699E5E8-67FF-4177-88B0-3684A3388BFB"), ClassInterface(ClassInterfaceType.None)]
-	public class UpdateSearcher { }
+	public class UpdateSearcherClass { }
 
 	/// <summary>
 	/// CLSID_UpdateServiceManager
 	/// </summary>
 	[ComImport, Guid("F8D253D9-89A4-4DAA-87B6-1168369F0B21"), ClassInterface(ClassInterfaceType.None)]
-	public class UpdateServiceManager { }
+	public class UpdateServiceManagerClass { }
 
 	/// <summary>
 	/// CLSID_UpdateSession
 	/// </summary>
 	[ComImport, Guid("4CB43D7F-7EEE-4906-8698-60DA1C38F2FE"), ClassInterface(ClassInterfaceType.None)]
-	public class UpdateSession { }
+	public class UpdateSessionClass { }
 
 	/// <summary>
 	/// CLSID_WebProxy
 	/// </summary>
 	[ComImport, Guid("650503CF-9108-4DDC-A2CE-6C2341E1C582"), ClassInterface(ClassInterfaceType.None)]
-	public class WebProxy { }
+	public class WebProxyClass { }
 
 	/// <summary>
 	/// CLSID_WindowsUpdateAgentInfo
 	/// </summary>
 	[ComImport, Guid("C2E88C2F-6F5B-4AAA-894B-55C847AD3A2D"), ClassInterface(ClassInterfaceType.None)]
-	public class WindowsUpdateAgentInfo { }
+	public class WindowsUpdateAgentInfoClass { }
 }
