@@ -775,5 +775,83 @@ public static partial class Shell32
 			cbSize = (uint)Marshal.SizeOf(this);
 			lpVerb = commandId;
 		}
+
+		/// <summary>Initializes a new instance of the <see cref="CMINVOKECOMMANDINFOEX"/> struct with its fields.</summary>
+		/// <param name="verb">
+		/// The address of a null-terminated string that specifies the language-independent name of the command to carry out. This member is
+		/// typically a string when a command is being activated by an application. The system provides predefined constant values for the
+		/// following command strings.
+		/// <para>
+		/// If a canonical verb exists and a menu handler does not implement the canonical verb, it must return a failure code to enable the
+		/// next handler to be able to handle this verb.Failing to do this will break functionality in the system including ShellExecute.
+		/// </para>
+		/// <para>
+		/// Alternatively, rather than a pointer, this parameter can be MAKEINTRESOURCE(offset) where offset is the menu-identifier offset of
+		/// the command to carry out. Implementations can use the IS_INTRESOURCE macro to detect that this alternative is being employed. The
+		/// Shell uses this alternative when the user chooses a menu command.
+		/// </para>
+		/// </param>
+		/// <param name="show">A set of values to pass to the ShowWindow function if the command displays a window or starts an application.</param>
+		/// <param name="parent">
+		/// A handle to the window that is the owner of the shortcut menu. An extension can also use this handle as the owner of any message
+		/// boxes or dialog boxes it displays. Callers must specify a legitimate HWND that can be used as the owner window for any UI that
+		/// may be displayed. Failing to specify an HWND when calling from a UI thread (one with windows already created) will result in
+		/// reentrancy and possible bugs in the implementation of this call.
+		/// </param>
+		/// <param name="location">If supplied, the point where the command is invoked.</param>
+		/// <param name="allowAsync">
+		/// The implementation can spin off a new thread or process to handle the call and does not need to block on completion of the
+		/// function being invoked. For example, if the verb is "delete" the call may return before all of the items have been deleted. Since
+		/// this is advisory, calling applications that specify this flag cannot guarantee that this request will be honored if they are not
+		/// familiar with the implementation of the verb that they are invoking.
+		/// </param>
+		/// <param name="shiftDown">
+		/// If <see langword="true"/>, the SHIFT key is pressed. Use this instead of polling the current state of the keyboard that may have
+		/// changed since the verb was invoked.
+		/// </param>
+		/// <param name="ctrlDown">
+		/// If <see langword="true"/>, the CTRL key is pressed. Use this instead of polling the current state of the keyboard that may have
+		/// changed since the verb was invoked..
+		/// </param>
+		/// <param name="hotkey">An optional keyboard shortcut to assign to any application activated by the command.</param>
+		/// <param name="logUsage">
+		/// If <see langword="true"/>, indicates that the method might want to keep track of the item being invoked for features like the
+		/// "Recent documents" menu.
+		/// </param>
+		/// <param name="noZoneChecks">
+		/// Do not perform a zone check. This flag allows ShellExecuteEx to bypass zone checking put into place by IAttachmentExecute.
+		/// </param>
+		/// <param name="parameters">Optional parameters.</param>
+		public CMINVOKECOMMANDINFOEX(ResourceId verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default,
+			POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
+			bool logUsage = false, bool noZoneChecks = false, string? parameters = null)
+		{
+			cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX));
+			hwnd = parent;
+			fMask = (parent.IsNull ? CMIC.CMIC_MASK_FLAG_NO_UI : 0) | (hotkey != 0 ? CMIC.CMIC_MASK_HOTKEY : 0);
+			lpVerb = verb;
+			nShow = show;
+			dwHotKey = hotkey;
+			if (allowAsync) fMask |= CMIC.CMIC_MASK_ASYNCOK;
+			if (shiftDown) fMask |= CMIC.CMIC_MASK_SHIFT_DOWN;
+			if (ctrlDown) fMask |= CMIC.CMIC_MASK_CONTROL_DOWN;
+			if (logUsage) fMask |= CMIC.CMIC_MASK_FLAG_LOG_USAGE;
+			if (noZoneChecks) fMask |= CMIC.CMIC_MASK_NOZONECHECKS;
+			if (location.HasValue)
+			{
+				ptInvoke = location.Value;
+				fMask |= CMIC.CMIC_MASK_PTINVOKE;
+			}
+			if (!verb.IsIntResource)
+			{
+				lpVerbW = (string)verb;
+				fMask |= CMIC.CMIC_MASK_UNICODE;
+			}
+			if (parameters != null)
+			{
+				lpParameters = lpParametersW = parameters;
+				fMask |= CMIC.CMIC_MASK_UNICODE;
+			}
+		}
 	}
 }
