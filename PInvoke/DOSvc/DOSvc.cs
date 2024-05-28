@@ -132,17 +132,15 @@ public static partial class DOSvc
 		DODownloadProperty_Id,
 
 		/// <summary>
-		/// <para>Use this property to set or get the remote URI path of the resource to download. This property is required only if</para>
-		/// <para>DODownloadProperty_ContentId</para>
-		/// <para>isn't provided. VARIANT type is VT_BSTR.</para>
+		/// Use this property to set or get the remote URI path of the resource to download. This property is required only if
+		/// DODownloadProperty_ContentId isn't provided. VARIANT type is VT_BSTR.
 		/// </summary>
 		[CorrespondingType(typeof(string), CorrespondingAction.GetSet)]
 		DODownloadProperty_Uri,
 
 		/// <summary>
-		/// <para>Use this property to set or get the download unique content ID. This property is required only if</para>
-		/// <para>DODownloadProperty_Uri</para>
-		/// <para>isn't provided. VARIANT type is VT_BSTR.</para>
+		/// Use this property to set or get the download unique content ID. This property is required only if DODownloadProperty_Uri isn't
+		/// provided. VARIANT type is VT_BSTR.
 		/// </summary>
 		[CorrespondingType(typeof(string), CorrespondingAction.GetSet)]
 		DODownloadProperty_ContentId,
@@ -152,12 +150,9 @@ public static partial class DOSvc
 		DODownloadProperty_DisplayName,
 
 		/// <summary>
-		/// <para>
 		/// Use this property to set or get the local path name to save the download file. If the path does not exist, Delivery Optimization
 		/// will attempt to create it under the caller's privileges. This property is required only if
-		/// </para>
-		/// <para>DODownloadProperty_StreamInterface</para>
-		/// <para>wasn’t provided. VARIANT type is VT_BSTR.</para>
+		/// <c>DODownloadProperty_StreamInterface</c> wasn’t provided. VARIANT type is VT_BSTR.
 		/// </summary>
 		[CorrespondingType(typeof(string), CorrespondingAction.GetSet)]
 		DODownloadProperty_LocalPath,
@@ -170,33 +165,18 @@ public static partial class DOSvc
 		DODownloadProperty_HttpCustomHeaders,
 
 		/// <summary>
-		/// <para>Optional. Use this property to set or get one of the</para>
-		/// <para>DODownloadCostPolicy</para>
-		/// <para>enumeration values. VARIANT type is VT_UI4.</para>
+		/// Optional. Use this property to set or get one of the <c>DODownloadCostPolicy</c> enumeration values. VARIANT type is VT_UI4.
 		/// </summary>
 		[CorrespondingType(typeof(DODownloadCostPolicy), CorrespondingAction.GetSet)]
 		DODownloadProperty_CostPolicy,
 
 		/// <summary>
-		/// <para>Optional write-only. Use this property to set or get the standard WinHTTP security flags (</para>
-		/// <para>WINHTTP_OPTION_SECURITY_FLAGS</para>
-		/// <para>). VARIANT type is VT_UI4.</para>
-		/// <para>The following flags are supported:</para>
-		/// <para>*</para>
-		/// <para>SECURITY_FLAG_IGNORE_CERT_CN_INVALID</para>
-		/// <para>. Allows an invalid common name in a certificate.</para>
-		/// <para>*</para>
-		/// <para>SECURITY_FLAG_IGNORE_CERT_DATE_INVALID</para>
-		/// <para>. Allows an invalid certificate date.</para>
-		/// <para>*</para>
-		/// <para>SECURITY_FLAG_IGNORE_UNKNOWN_CA</para>
-		/// <para>. Allows an invalid certificate authority.</para>
-		/// <para>*</para>
-		/// <para>SECURITY_FLAG_IGNORE_CERT_WRONG_USAGE</para>
-		/// <para>. Allows the identity of a server to be established with a non-server certificate.</para>
-		/// <para>*</para>
-		/// <para>WINHTTP_ENABLE_SSL_REVOCATION</para>
-		/// <para>. Allows SSL revocation. If this flag is set, the above flags will be ignored.</para>
+		/// Optional write-only. Use this property to set or get the standard WinHTTP security flags ( WINHTTP_OPTION_SECURITY_FLAGS ).
+		/// VARIANT type is VT_UI4. The following flags are supported: * SECURITY_FLAG_IGNORE_CERT_CN_INVALID . Allows an invalid common name
+		/// in a certificate. * SECURITY_FLAG_IGNORE_CERT_DATE_INVALID . Allows an invalid certificate date. *
+		/// SECURITY_FLAG_IGNORE_UNKNOWN_CA . Allows an invalid certificate authority. * SECURITY_FLAG_IGNORE_CERT_WRONG_USAGE . Allows the
+		/// identity of a server to be established with a non-server certificate. * WINHTTP_ENABLE_SSL_REVOCATION . Allows SSL revocation. If
+		/// this flag is set, the above flags will be ignored.
 		/// </summary>
 		[CorrespondingType(typeof(uint), CorrespondingAction.Set)]
 		DODownloadProperty_SecurityFlags,
@@ -227,17 +207,16 @@ public static partial class DOSvc
 		DODownloadProperty_ForegroundPriority,
 
 		/// <summary>
-		/// <para>Optional. Use this property to set or get the current download blocking mode. VARIANT_TRUE value will cause</para>
-		/// <para>IDODownload::Start</para>
-		/// <para>to block until download is complete or error has occurred. The default is nonblocking mode. VARIANT type is VT_BOOL.</para>
+		/// Optional. Use this property to set or get the current download blocking mode. VARIANT_TRUE value will cause
+		/// <c>IDODownload::Start</c> to block until download is complete or error has occurred. The default is nonblocking mode. VARIANT
+		/// type is VT_BOOL.
 		/// </summary>
 		[CorrespondingType(typeof(bool), CorrespondingAction.GetSet)]
 		DODownloadProperty_BlockingMode,
 
 		/// <summary>
-		/// <para>Optional. Use this property to set or get the pointer to</para>
-		/// <para>IDODownloadStatusCallback</para>
-		/// <para>interface used for download callbacks. VARIANT type is VT_UNKNOWN.</para>
+		/// Optional. Use this property to set or get the pointer to <c>IDODownloadStatusCallback</c> interface used for download callbacks.
+		/// VARIANT type is VT_UNKNOWN.
 		/// </summary>
 		[CorrespondingType(typeof(IDODownloadStatusCallback), CorrespondingAction.GetSet)]
 		DODownloadProperty_CallbackInterface,
@@ -298,20 +277,12 @@ public static partial class DOSvc
 		[CorrespondingType(typeof(bool), CorrespondingAction.GetSet)]
 		DODownloadProperty_HttpCustomAuthHeaders,
 
-		/// <summary>
-		/// <para>Https-to-http redirection. Default is</para>
-		/// <para>FALSE</para>
-		/// <para>.</para>
-		/// </summary>
+		/// <summary>Https-to-http redirection. Default is FALSE.</summary>
 		[CorrespondingType(typeof(bool), CorrespondingAction.GetSet)]
 		DODownloadProperty_HttpAllowSecureToNonSecureRedirect,
 
 		/// <summary>
-		/// <para>Save download info to the Windows Registry. Default is</para>
-		/// <para>FALSE</para>
-		/// <para>for Delivery Optimization download jobs;</para>
-		/// <para>TRUE</para>
-		/// <para>for BITS-style jobs.</para>
+		/// Save download info to the Windows Registry. Default is FALSE for Delivery Optimization download jobs; TRUE for BITS-style jobs.
 		/// </summary>
 		[CorrespondingType(typeof(bool), CorrespondingAction.GetSet)]
 		DODownloadProperty_NonVolatile,
@@ -329,7 +300,7 @@ public static partial class DOSvc
 	// DODownloadPropertyEx_DecryptionInfo, DODownloadPropertyEx_IntegrityCheckInfo, DODownloadPropertyEx_IntegrityCheckMandatory,
 	// DODownloadPropertyEx_TotalSizeBytes, DODownloadPropertyEx_TempLocalFileUsage } DODownloadPropertyEx;
 	[PInvokeData("DODownloadInternal.h")]
-	[Obsolete]
+	[Obsolete("The <c>DODownloadPropertyEx</c> enumeration is deprecated. Instead, use the DODownloadProperty enumeration with IDODownload::GetProperty and IDODownload::SetProperty.")]
 	public enum DODownloadPropertyEx
 	{
 		/// <summary>Reserved. Do not use.</summary>
@@ -607,17 +578,28 @@ public static partial class DOSvc
 	/// <param name="download">The <see cref="IDODownload"/> instance.</param>
 	/// <param name="propId">The required property ID to set (of type <c>DODownloadProperty</c>).</param>
 	/// <param name="propVal">The property value to set, stored in a <c>VARIANT</c>.</param>
-	public static void SetProperty(this IDODownload download, [In] DODownloadProperty propId, [In] object propVal)
+	public static void SetProperty(this IDODownload download, [In] DODownloadProperty propId, [In] object? propVal)
 	{
+		if (propVal is null)
+		{
+			download.SetProperty(propId, null);
+			return;
+		}
+
 		switch (propId)
 		{
 			case DODownloadProperty.DODownloadProperty_CallbackInterface:
 			case DODownloadProperty.DODownloadProperty_StreamInterface:
-				var intf = CorrespondingTypeAttribute.GetCorrespondingTypes(propId, CorrespondingAction.Get).WhereNotNull().Where(propVal.GetType().InheritsFrom).FirstOrDefault() ??
-					throw new ArgumentException($"Property {propId} requires a valid corresponding COM interface pointer.", nameof(propVal));
-				var ptr = Marshal.GetComInterfaceForObject(propVal, intf);
-				VARIANT v = new() { vt = VARTYPE.VT_UNKNOWN, byref = ptr };
-				download.SetProperty(propId, v);
+				if (propVal is null)
+					download.SetProperty(propId, null);
+				else
+				{
+					var intf = CorrespondingTypeAttribute.GetCorrespondingTypes(propId, CorrespondingAction.Get).WhereNotNull().Where(propVal.GetType().InheritsFrom).FirstOrDefault() ??
+						throw new ArgumentException($"Property {propId} requires a valid corresponding COM interface pointer.", nameof(propVal));
+					var ptr = Marshal.GetComInterfaceForObject(propVal, intf);
+					VARIANT v = new() { vt = VARTYPE.VT_UNKNOWN, byref = ptr };
+					download.SetProperty(propId, v);
+				}
 				break;
 			default:
 				download.SetProperty(propId, new VARIANT(propVal));
