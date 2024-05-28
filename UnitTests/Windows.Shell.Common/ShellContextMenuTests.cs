@@ -39,6 +39,14 @@ public class ShellContextMenuTests
 		}
 	}
 
+	[Test]
+	public void InvokeVerbTest()
+	{
+		using var shi = ShellItem.Open(TestCaseSources.ImageFile);
+		using var menu = shi.ContextMenu;
+		menu.InvokeVerb("open");
+	}
+
 	static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)
 	{
 		TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");

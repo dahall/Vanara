@@ -193,36 +193,12 @@ public class ShellContextMenu : IDisposable
 		POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
 		bool logUsage = false, bool noZoneChecks = false, string? parameters = null)
 	{
-		var invoke = new CMINVOKECOMMANDINFOEX
-		{
-			cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX)),
-			hwnd = parent,
-			fMask = (parent.IsNull ? CMIC.CMIC_MASK_FLAG_NO_UI : 0) | (hotkey != 0 ? CMIC.CMIC_MASK_HOTKEY : 0),
-			lpVerb = verb,
-			nShow = show,
-			dwHotKey = hotkey,
-		};
-		if (allowAsync) invoke.fMask |= CMIC.CMIC_MASK_ASYNCOK;
-		if (shiftDown) invoke.fMask |= CMIC.CMIC_MASK_SHIFT_DOWN;
-		if (ctrlDown) invoke.fMask |= CMIC.CMIC_MASK_CONTROL_DOWN;
-		if (logUsage) invoke.fMask |= CMIC.CMIC_MASK_FLAG_LOG_USAGE;
-		if (noZoneChecks) invoke.fMask |= CMIC.CMIC_MASK_NOZONECHECKS;
-		if (location.HasValue)
-		{
-			invoke.ptInvoke = location.Value;
-			invoke.fMask |= CMIC.CMIC_MASK_PTINVOKE;
-		}
-		if (!verb.IsIntResource)
-		{
-			invoke.lpVerbW = (string)verb;
-			invoke.fMask |= CMIC.CMIC_MASK_UNICODE;
-		}
-		if (parameters != null)
-		{
-			invoke.lpParameters = invoke.lpParametersW = parameters;
-			invoke.fMask |= CMIC.CMIC_MASK_UNICODE;
-		}
-		ComInterface.InvokeCommand(invoke);
+		CMINVOKECOMMANDINFOEX invoke = new(verb, show, parent, location, allowAsync, shiftDown, ctrlDown, hotkey, logUsage, noZoneChecks, parameters);
+		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
+		using var hmenu = CreatePopupMenu();
+		ComInterface.QueryContextMenu(hmenu, 0, m_CmdFirst, int.MaxValue, CMF.CMF_OPTIMIZEFORINVOKE);
+		// End hack
+		ComInterface.InvokeCommand(invoke).ThrowIfFailed();
 	}
 
 	/// <summary>Invokes the Copy command on the shell item(s).</summary>
