@@ -2863,7 +2863,8 @@ public static partial class SearchApi
 		// OnItemsChanged( DWORD dwNumberOfChanges, SEARCH_ITEM_CHANGE [] rgDataChangeEntries, DWORD [] rgdwDocIds, HRESULT []
 		// rghrCompletionCodes );
 		[PInvokeData("searchapi.h")]
-		void OnItemsChanged(uint dwNumberOfChanges, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SEARCH_ITEM_CHANGE[] rgDataChangeEntries, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgdwDocIds, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HRESULT[] rghrCompletionCodes);
+		void OnItemsChanged(uint dwNumberOfChanges, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SEARCH_ITEM_CHANGE[] rgDataChangeEntries,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgdwDocIds, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HRESULT[] rghrCompletionCodes);
 	}
 
 	/// <summary>Provides methods for accessing thesaurus information.</summary>
@@ -2929,7 +2930,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchlanguagesupport-loadwordbreaker HRESULT
 		// LoadWordBreaker( LCID lcid, REFIID riid, void **ppWordBreaker, LCID *pLcidUsed );
 		[PInvokeData("searchapi.h")]
-		void LoadWordBreaker(uint lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppWordBreaker, out uint pLcidUsed);
+		void LoadWordBreaker(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppWordBreaker, out LCID pLcidUsed);
 
 		/// <summary>Retrieves an interface to the word stemmer registered for the specified language code identifier (LCID).</summary>
 		/// <param name="lcid">
@@ -2951,7 +2952,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchlanguagesupport-loadstemmer HRESULT
 		// LoadStemmer( LCID lcid, REFIID riid, void **ppStemmer, LCID *pLcidUsed );
 		[PInvokeData("searchapi.h")]
-		void LoadStemmer(uint lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStemmer, out uint pLcidUsed);
+		void LoadStemmer(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStemmer, out LCID pLcidUsed);
 
 		/// <summary>
 		/// Determines whether the query token is a prefix of the document token, disregarding case, width, and (optionally) diacritics.
@@ -4086,7 +4087,7 @@ public static partial class SearchApi
 		// put_QueryContentLocale( LCID lcid );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010001)]
-		uint QueryContentLocale { [param: In] set; get; }
+		LCID QueryContentLocale { [param: In] set; get; }
 
 		/// <summary>
 		/// Gets or sets the language code identifier (LCID) for the locale to use when parsing Advanced Query Syntax (AQS) keywords.
@@ -4100,7 +4101,7 @@ public static partial class SearchApi
 		// put_QueryKeywordLocale( LCID lcid );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010003)]
-		uint QueryKeywordLocale { [param: In] set; get; }
+		LCID QueryKeywordLocale { [param: In] set; get; }
 
 		/// <summary>Gets or sets a value that specifies how query terms are to be expanded.</summary>
 		/// <value>
@@ -6065,6 +6066,26 @@ public static partial class SearchApi
 		HRESULT LoadIFilterWithPrivateComActivation(in FILTERED_DATA_SOURCES filteredSources, [In, MarshalAs(UnmanagedType.Bool)] bool useDefault, out Guid filterClsid, [MarshalAs(UnmanagedType.Bool)] out bool isFilterPrivateComActivated, out IFilter filterObj);
 	}
 
+	/// <summary>Gets the change notification sink interface.</summary>
+	/// <param name="mgr">The <see cref="ISearchCatalogManager"/> instance.</param>
+	/// <param name="pISearchNotifyInlineSite"><para>Type: <c>ISearchNotifyInlineSite*</c></para>
+	/// <para>A pointer to your ISearchNotifyInlineSite interface.</para></param>
+	/// <param name="pGUIDCatalogResetSignature"><para>Type: <c>GUID*</c></para>
+	/// <para>Receives a pointer to the GUID representing the catalog reset. If this GUID changes, all notifications must be resent.</para></param>
+	/// <param name="pGUIDCheckPointSignature"><para>Type: <c>GUID*</c></para>
+	/// <para>Receives a pointer to the GUID representing a checkpoint.</para></param>
+	/// <param name="pdwLastCheckPointNumber"><para>Type: <c>DWORD*</c></para>
+	/// <para>Receives a pointer to the number indicating the last checkpoint to be saved.</para></param>
+	/// <returns>Receives a pointer to the <see cref="ISearchItemsChangedSink"/> interface.</returns>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-getitemschangedsink HRESULT
+	// GetItemsChangedSink( ISearchNotifyInlineSite *pISearchNotifyInlineSite, REFIID riid, void **ppv, GUID
+	// *pGUIDCatalogResetSignature, GUID *pGUIDCheckPointSignature, DWORD *pdwLastCheckPointNumber );
+	public static ISearchItemsChangedSink GetItemsChangedSink(this ISearchCatalogManager mgr, ISearchNotifyInlineSite pISearchNotifyInlineSite, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber)
+	{
+		mgr.GetItemsChangedSink(pISearchNotifyInlineSite, typeof(ISearchItemsChangedSink).GUID, out var ppv, out pGUIDCatalogResetSignature, out pGUIDCheckPointSignature, out pdwLastCheckPointNumber);
+		return (ISearchItemsChangedSink)ppv;
+	}
+
 	/// <summary>Describes security authentication information for content access.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/ns-searchapi-authentication_info typedef struct
 	// _AUTHENTICATION_INFO { DWORD dwSize; AUTH_TYPE atAuthenticationType; LPCWSTR pcwszUser; LPCWSTR pcwszPassword; } AUTHENTICATION_INFO;
@@ -6307,7 +6328,7 @@ public static partial class SearchApi
 		/// <para>Type: <c>LCID</c></para>
 		/// <para>The LCID of the column.</para>
 		/// </summary>
-		public uint lcid;
+		public LCID lcid;
 	}
 
 	/// <summary>Specifies the changes to an indexed item.</summary>
@@ -6344,7 +6365,8 @@ public static partial class SearchApi
 		/// or SEARCH_CHANGE_MODIFY notification. In the case of a move, this member contains the new URL of the item.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string lpwszURL;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? lpwszURL;
 
 		/// <summary>
 		/// <para>Type: <c>LPWSTR</c></para>
@@ -6353,7 +6375,8 @@ public static partial class SearchApi
 		/// SEARCH_CHANGE_DELETE notification.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string lpwszOldURL;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? lpwszOldURL;
 	}
 
 	/// <summary>Describes the status of a document to be indexed.</summary>
@@ -6542,7 +6565,7 @@ public static partial class SearchApi
 		/// word breaking of text. If the chunk is neither text-type nor a value-type with data type VT_LPWSTR, VT_LPSTR or VT_BSTR, this
 		/// field is ignored.
 		/// </summary>
-		public uint locale;
+		public LCID locale;
 
 		/// <summary>
 		/// The property to be applied to the chunk. See FULLPROPSPEC. If a filter requires that the same text have more than one
