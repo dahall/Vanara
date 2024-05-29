@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
 using static Vanara.PInvoke.Ws2_32;
 using DNS_STATUS = Vanara.PInvoke.Win32Error;
 using IP4_ADDRESS = Vanara.PInvoke.Ws2_32.IN_ADDR;
@@ -915,6 +917,9 @@ public static partial class DnsApi
 	{
 		/// <summary>An IP4_ADDRESS data type that contains an IPv4 address.</summary>
 		public IP4_ADDRESS IpAddress;
+
+		/// <inheritdoc/>
+		public override string ToString() => IpAddress.ToString();
 	}
 
 	/// <summary>The <c>DNS_AAAA_DATA</c> structure represents a DNS IPv6 (AAAA) record as specified in RFC 3596.</summary>
@@ -929,6 +934,9 @@ public static partial class DnsApi
 	{
 		/// <summary>An IP6_ADDRESS data type that contains an IPv6 address.</summary>
 		public IP6_ADDRESS Ip6Address;
+
+		/// <inheritdoc/>
+		public override string ToString() => Ip6Address.ToString();
 	}
 
 	/// <summary>A <c>DNS_ADDR</c> structure stores an IPv4 or IPv6 address.</summary>
@@ -949,10 +957,13 @@ public static partial class DnsApi
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
 		public uint[] DnsAddrUserDword;
 
-		/// <summary>Performs an explicit conversion from <see cref="DNS_ADDR"/> to <see cref="System.Net.IPAddress"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="DNS_ADDR"/> to <see cref="IPAddress"/>.</summary>
 		/// <param name="dnsAddr">The DNS address.</param>
-		/// <returns>The resulting <see cref="System.Net.IPAddress"/> instance from the conversion.</returns>
-		public static explicit operator System.Net.IPAddress(DNS_ADDR dnsAddr) => new(dnsAddr.MaxSa);
+		/// <returns>The resulting <see cref="IPAddress"/> instance from the conversion.</returns>
+		public static explicit operator IPAddress(DNS_ADDR dnsAddr) => new(dnsAddr.MaxSa);
+
+		/// <inheritdoc/>
+		public override string ToString() => ((IPAddress)this).ToString();
 	}
 
 	/// <summary>The <c>DNS_ADDR_ARRAY</c> structure stores an array of IPv4 or IPv6 addresses.</summary>
@@ -2234,7 +2245,7 @@ public static partial class DnsApi
 				queryRawOptions = r.queryRawOptions,
 				responseFlags = r.responseFlags,
 				queryRawResponseSize = r.queryRawResponseSize,
-				queryRawResponse = r.queryRawResponse.ToArray<byte>((int)r.queryRawResponseSize) ?? new byte[0],
+				queryRawResponse = r.queryRawResponse.ToArray<byte>((int)r.queryRawResponseSize) ?? [],
 				queryRecords = r.queryRecords.ToStructure<DNS_RECORD>(),
 				protocol = r.protocol,
 				sourceAddr = r.sourceAddr,
@@ -2542,6 +2553,7 @@ public static partial class DnsApi
 	public struct DNS_RECORD
 	{
 		/// <summary>A pointer to the next <c>DNS_RECORD</c> structure.</summary>
+		[DefaultValue(typeof(IntPtr), "0"), IgnoreDataMember]
 		public IntPtr pNext;
 
 		/// <summary>
@@ -2571,6 +2583,7 @@ public static partial class DnsApi
 		public uint dwTtl;
 
 		/// <summary>Reserved. Do not use.</summary>
+		[IgnoreDataMember]
 		public uint dwReserved;
 
 		// The next entries are contrived so that the structure works on either 32 or 64 systems. The total size of the variable is 40
@@ -2602,6 +2615,7 @@ public static partial class DnsApi
 
 		/// <summary>Gets the pointer to the 'Data' union.</summary>
 		/// <value>The 'Data' union pointer.</value>
+		[IgnoreDataMember]
 		public readonly IntPtr DataPtr
 		{
 			get
@@ -2619,11 +2633,11 @@ public static partial class DnsApi
 		/// <summary>Gets the data as a strongly-typed structure.</summary>
 		/// <typeparam name="T">The type of the structure to extract.</typeparam>
 		/// <returns>The resulting type.</returns>
-		/// <exception cref="System.ArgumentException">The current record does not support retrieving the supplied type param.</exception>
+		/// <exception cref="ArgumentException">The current record does not support retrieving the supplied type param.</exception>
 		public T GetDataAsType<T>() where T : struct
 		{
 			if (wType == 0 || wDataLength == 0) return default;
-			if (!CorrespondingTypeAttribute.CanGet<DNS_TYPE>(typeof(T), out DNS_TYPE tType) || tType != wType)
+			if (!CorrespondingTypeAttribute.CanGet(typeof(T), out DNS_TYPE tType) || tType != wType)
 				throw new ArgumentException("The current record does not support retrieving the supplied type param.");
 
 			IntPtr ptr = DataPtr;
@@ -3051,8 +3065,7 @@ public static partial class DnsApi
 
 		/// <summary>Gets the properties exposed by this structure.</summary>
 		/// <value>The DNS service properties.</value>
-		public readonly IReadOnlyDictionary<string, string?> Properties => dwPropertyCount == 0 ?
-			new Dictionary<string, string?>(0) :
+		public readonly IReadOnlyDictionary<string, string?> Properties => dwPropertyCount == 0 ? [] :
 			keys.ToStringEnum((int)dwPropertyCount, CharSet.Unicode)!.WhereNotNull().
 				Zip(values.ToStringEnum((int)dwPropertyCount, CharSet.Unicode), (k, v) => new { k, v }).
 				ToDictionary(x => x.k, x => x.v);
@@ -3541,19 +3554,24 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_TXT_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="DNS_TXT_DATA" /> struct.</remarks>
+	/// <param name="values">The values representing the descriptive text of the TXT resource record.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_txt_dataa typedef struct { DWORD dwStringCount; #if ...
 	// PSTR pStringArray[]; #else PSTR pStringArray[1]; #endif } DNS_TXT_DATAA, *PDNS_TXT_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "3ff643e2-d736-45d5-8cf8-ab5e63caf44b")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DNS_TXT_DATA>), nameof(dwStringCount))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct DNS_TXT_DATA
+	public struct DNS_TXT_DATA(params string[] values)
 	{
 		/// <summary>The number of strings represented in <c>pStringArray</c>.</summary>
-		public uint dwStringCount;
+		public uint dwStringCount = (uint)values.Length;
 
 		/// <summary>An array of strings representing the descriptive text of the TXT resource record.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.LPTStr, SizeConst = 1)]
-		public string[] pStringArray;
+		public string[] pStringArray = values;
+
+		/// <inheritdoc/>
+		public override string ToString() => string.Join(", ", pStringArray);
 	}
 
 	/// <summary>Undocumented.</summary>
@@ -3741,27 +3759,21 @@ public static partial class DnsApi
 	}
 
 	/// <summary>The <c>IP4_ARRAY</c> structure stores an array of IPv4 addresses.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="IP4_ARRAY"/> struct.</remarks>
+	/// <param name="addrs">The list of IPv4 address.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-ip4_array typedef struct _IP4_ARRAY { DWORD AddrCount; #if
 	// ... IP4_ADDRESS AddrArray[]; #else IP4_ADDRESS AddrArray[1]; #endif } IP4_ARRAY, *PIP4_ARRAY;
 	[PInvokeData("windns.h", MSDNShortId = "4273a739-129c-4951-b6df-aef4332ce0cb")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<IP4_ARRAY>), nameof(AddrCount))]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct IP4_ARRAY
+	public struct IP4_ARRAY(params IP4_ADDRESS[] addrs)
 	{
 		/// <summary>The number of IPv4 addresses in <c>AddrArray</c>.</summary>
-		public uint AddrCount;
+		public uint AddrCount = (uint)addrs.Length;
 
 		/// <summary>An array of IP4_ADDRESS data types that contains a list of IPv4 address.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public IP4_ADDRESS[] AddrArray;
-
-		/// <summary>Initializes a new instance of the <see cref="IP4_ARRAY"/> struct.</summary>
-		/// <param name="addrs">The list of IPv4 address.</param>
-		public IP4_ARRAY(params IP4_ADDRESS[] addrs)
-		{
-			AddrCount = (uint)addrs.Length;
-			AddrArray = addrs;
-		}
+		public IP4_ADDRESS[] AddrArray = addrs;
 	}
 
 	/// <summary>Contains information related to an ongoing MDNS query. Your application must not modify its contents.</summary>
@@ -3938,12 +3950,8 @@ public static partial class DnsApi
 		}
 	}
 
-	internal class PDNS_MESSAGE_BUFFER : SafeAnysizeStructBase<DNS_MESSAGE_BUFFER>
+	internal class PDNS_MESSAGE_BUFFER(IntPtr allocatedMemory, SizeT size) : SafeAnysizeStructBase<DNS_MESSAGE_BUFFER>(allocatedMemory, size, false)
 	{
-		public PDNS_MESSAGE_BUFFER(IntPtr allocatedMemory, SizeT size) : base(allocatedMemory, size, false)
-		{
-		}
-
 		protected override int GetArrayLength(in DNS_MESSAGE_BUFFER local) => Size - 12;
 	}
 
@@ -3960,10 +3968,9 @@ public static partial class DnsApi
 		protected override int GetArrayLength(in DNS_NSEC3_DATA local) => local.bSaltLength + local.bHashLength + local.wTypeBitMapsLength;
 	}
 
+	/// <summary>Initializes a new instance of the <see cref="SafeDNS_NSEC3_DATAMarshaler"/> class.</summary>
 	internal class SafeDNS_NSEC3_DATAMarshaler : IVanaraMarshaler
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeDNS_NSEC3_DATAMarshaler"/> class.</summary>
-		/// <param name="_">The .</param>
 		public SafeDNS_NSEC3_DATAMarshaler(string _) { }
 
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_NSEC3_DATA));

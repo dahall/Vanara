@@ -69,7 +69,7 @@ public class DnsApiTests
 		var type = CorrespondingTypeAttribute.GetCorrespondingTypes(ctype, CorrespondingAction.GetSet).FirstOrDefault();
 		if (type is null || type == typeof(StrPtrAnsi)) Assert.Pass($"{ctype} Ignored");
 		var sz = 0U;
-		var err = DnsQueryConfig(ctype, 0, null, default, default, ref sz);
+		_ = DnsQueryConfig(ctype, 0, null, default, default, ref sz);
 		if (ctype == DNS_CONFIG_TYPE.DnsConfigPrimaryDomainName_W) return;
 		Assert.That(sz, Is.GreaterThan(0U));
 		using var mem = new SafeCoTaskMemHandle(sz);
@@ -80,7 +80,7 @@ public class DnsApiTests
 	[Test]
 	public void DnsQueryExTest()
 	{
-		using var evt = new System.Threading.AutoResetEvent(false);
+		using var evt = new AutoResetEvent(false);
 		var cancel = new DNS_QUERY_CANCEL();
 		var req = new DNS_QUERY_REQUEST
 		{
@@ -102,8 +102,7 @@ public class DnsApiTests
 		if (res.pQueryRecords != default)
 		{
 			using var rlist = new SafeDnsRecordList(res.pQueryRecords);
-			foreach (var r in rlist)
-				r.WriteValues();
+			rlist.ToList().WriteValues();
 		}
 
 		void Callback(IntPtr pQueryContext, ref DNS_QUERY_RESULT pQueryResults)
@@ -128,10 +127,17 @@ public class DnsApiTests
 	}
 
 	[Test]
+	public void DnsRecordCompareTest2()
+	{
+		var r1 = new DNS_RECORD { pName = dnsSvr, wType = DNS_TYPE.DNS_TYPE_TEXT, Data = new DNS_TXT_DATA("Test") };
+		Assert.That(DnsRecordCompare(r1, r1), Is.True);
+	}
+
+	[Test]
 	public void DnsRecordSetCompareTest()
 	{
 		Assert.That(DnsQuery(dnsSvr, DNS_TYPE.DNS_TYPE_ALL, 0, default, out var results), ResultIs.Successful);
-		Assert.That(DnsRecordSetCompare(results, results, out var p1, out var p2), ResultIs.Successful);
+		Assert.That(DnsRecordSetCompare(results, results, out _, out _), ResultIs.Successful);
 	}
 
 	[Test]
@@ -141,13 +147,14 @@ public class DnsApiTests
 		const string query = "_http._tcp.local";
 
 		using var evt = Kernel32.CreateEvent(null, false, false);
+		var tw = TestContext.Out;
 
 		var br = new DNS_SERVICE_BROWSE_REQUEST
 		{
 			Version = DNS_QUERY_REQUEST_VERSION1,
 			QueryName = query,
 			pQueryContext = (IntPtr)evt,
-			Callback = new() { pBrowseCallback = (DNS_SERVICE_BROWSE_CALLBACK)Callback }
+			Callback = new() { pBrowseCallback = Callback }
 		};
 		Assert.That(DnsServiceBrowse(br, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
 		if (Kernel32.WaitForSingleObject(evt, timeout) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
@@ -175,24 +182,25 @@ public class DnsApiTests
 		void Callback(Win32Error Status, IntPtr pQueryContext, IntPtr pDnsRecord)
 		{
 			using var recs = new SafeDnsRecordList(pDnsRecord);
-			System.Diagnostics.Debug.WriteLine($"Stat:{(Win32Error)Status}; Name:{recs.FirstOrDefault().pName}");
+			tw.WriteLine($"Stat:{Status}; Name:{recs.FirstOrDefault().pName}");
 			Kernel32.SetEvent(pQueryContext);
 		}
 
 		void QueryCallback(IntPtr pQueryContext, IntPtr pQueryHandle, IntPtr pQueryResults)
 		{
 			ref DNS_QUERY_RESULT pQR = ref pQueryResults.AsRef<DNS_QUERY_RESULT>();
-			System.Diagnostics.Debug.WriteLine($"Stat:{pQR.QueryStatus}; Opt:{pQR.QueryOptions}");
+			tw.WriteLine($"Stat:{pQR.QueryStatus}; Opt:{pQR.QueryOptions}");
 			using var recs = new SafeDnsRecordList(pQR.pQueryRecords);
 			using var qevt = Kernel32.CreateEvent(null, false, true);
 			var rec = recs.FirstOrDefault();
 			if (rec.wDataLength == 0)
 				return;
+			recs.ToList().WriteValues();
 			var resolveRequest = new DNS_SERVICE_RESOLVE_REQUEST
 			{
 				Version = DNS_QUERY_REQUEST_VERSION1,
 				QueryName = rec.Data is DNS_PTR_DATA d ? d.pNameHost : null,
-				pResolveCompletionCallback = (DNS_SERVICE_RESOLVE_COMPLETE)ResolveCallback,
+				pResolveCompletionCallback = ResolveCallback,
 				pQueryContext = (IntPtr)qevt
 			};
 			Assert.That(DnsServiceResolve(resolveRequest, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
@@ -207,7 +215,7 @@ public class DnsApiTests
 		void ResolveCallback(Win32Error Status, IntPtr pQueryContext, IntPtr pInstance)
 		{
 			using var inst = new SafePDNS_SERVICE_INSTANCE(pInstance);
-			System.Diagnostics.Debug.WriteLine($"Stat:{(Win32Error)Status}; Name:{inst.pszInstanceName}");
+			tw.WriteLine($"Stat:{Status}; Name:{inst.pszInstanceName}");
 			Kernel32.SetEvent(pQueryContext);
 		}
 	}
@@ -287,6 +295,7 @@ public class DnsApiTests
 
 			// Iterate using raw DNS_RECORD structure
 			var cacheUsingRawStruct = DnsIterateDnsCache(DnsIterateRecords(dnsRecords)).ToList();
+			cacheUsingRawStruct.WriteValues();
 
 			Assert.That(cacheUsingStruct, Is.EquivalentTo(cacheUsingPointer));
 			Assert.That(cacheUsingPointer, Is.EquivalentTo(cacheUsingRawStruct));

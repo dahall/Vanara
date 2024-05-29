@@ -304,7 +304,7 @@ public static partial class DnsApi
 	// DWORD DnsGetApplicationSettings( DWORD *pcServers, DNS_CUSTOM_SERVER **ppDefaultServers, DNS_APPLICATION_SETTINGS *pSettings );
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsGetApplicationSettings", MinClient = PInvokeClient.Windows11)]
-	public static extern Win32Error DnsGetApplicationSettings(out uint pcServers, out IntPtr ppDefaultServers,
+	public static extern DNS_STATUS DnsGetApplicationSettings(out uint pcServers, out IntPtr ppDefaultServers,
 		out DNS_APPLICATION_SETTINGS pSettings);
 
 	/// <summary>Retrieves the per-application DNS settings.</summary>
@@ -317,7 +317,7 @@ public static partial class DnsApi
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsgetapplicationsettings
 	// DWORD DnsGetApplicationSettings( DWORD *pcServers, DNS_CUSTOM_SERVER **ppDefaultServers, DNS_APPLICATION_SETTINGS *pSettings );
 	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsGetApplicationSettings", MinClient = PInvokeClient.Windows11)]
-	public static Win32Error DnsGetApplicationSettings(out DNS_CUSTOM_SERVER[]? ppDefaultServers, out DNS_APPLICATION_SETTINGS pSettings)
+	public static DNS_STATUS DnsGetApplicationSettings(out DNS_CUSTOM_SERVER[]? ppDefaultServers, out DNS_APPLICATION_SETTINGS pSettings)
 	{
 		var err = DnsGetApplicationSettings(out var c, out var p, out pSettings);
 		if (err.Failed) { ppDefaultServers = null; return err; }
@@ -362,7 +362,7 @@ public static partial class DnsApi
 	// completionRoutine, void *completionContext );
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "fdc8eb09-e071-4f03-974a-2b11a657ab18")]
-	public static extern Win32Error DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName,
+	public static extern DNS_STATUS DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName,
 		ref DNS_PROXY_INFORMATION proxyInformation, ref DNS_PROXY_INFORMATION defaultProxyInformation,
 		IntPtr completionRoutine = default, IntPtr completionContext = default);
 
@@ -386,7 +386,7 @@ public static partial class DnsApi
 	// completionRoutine, void *completionContext );
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "fdc8eb09-e071-4f03-974a-2b11a657ab18")]
-	public static extern Win32Error DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName,
+	public static extern DNS_STATUS DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName,
 		ref DNS_PROXY_INFORMATION proxyInformation, IntPtr defaultProxyInformation = default,
 		IntPtr completionRoutine = default, IntPtr completionContext = default);
 
@@ -1469,7 +1469,7 @@ public static partial class DnsApi
 	// DWORD DnsSetApplicationSettings( DWORD cServers, const DNS_CUSTOM_SERVER *pServers, const DNS_APPLICATION_SETTINGS *pSettings );
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings", MinClient = PInvokeClient.Windows11)]
-	public static extern Win32Error DnsSetApplicationSettings(uint cServers,
+	public static extern DNS_STATUS DnsSetApplicationSettings(uint cServers,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[]? pServers, in DNS_APPLICATION_SETTINGS pSettings);
 
 	/// <summary>
@@ -1500,7 +1500,7 @@ public static partial class DnsApi
 	// DWORD DnsSetApplicationSettings( DWORD cServers, const DNS_CUSTOM_SERVER *pServers, const DNS_APPLICATION_SETTINGS *pSettings );
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings", MinClient = PInvokeClient.Windows11)]
-	public static extern Win32Error DnsSetApplicationSettings(uint cServers,
+	public static extern DNS_STATUS DnsSetApplicationSettings(uint cServers,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[]? pServers, [In, Optional] IntPtr pSettings);
 
 	/// <summary>Used to register a discoverable service on this device.</summary>
