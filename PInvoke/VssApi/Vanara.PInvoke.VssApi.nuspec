@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <language>en-US</language>
     <dependencies>
-      <group targetFramework="net8.0">
+      <group targetFramework="net7.0">
         <dependency id="Vanara.Core" version="4.0.2" exclude="Build,Analyzers" />
         <dependency id="Vanara.PInvoke.Shared" version="4.0.2" exclude="Build,Analyzers" />
       </group>
@@ -23,7 +23,7 @@
     <releaseNotes></releaseNotes>
   </metadata>
   <files>
-    <file src="bin\Release\net8.0\x64\Vanara.PInvoke.VssApi*.???" target="lib\net8.0" />
+    <file src="bin\Release\net7.0\x64\Vanara.PInvoke.VssApi*.???" target="lib\net7.0" />
     <file src="..\..\docs\icons\Vanara64x64.png" target="Vanara64x64.png" />
     <file src="pkgreadme.md" target="pkgreadme.md" />
   </files>
