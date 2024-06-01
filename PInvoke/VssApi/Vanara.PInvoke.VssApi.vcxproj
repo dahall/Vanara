@@ -41,7 +41,7 @@
     </UpdateFiles>
   </ProjectExtensions>
   <PropertyGroup>
-    <TargetFramework Condition="'$(TargetFramework)'==''">net6.0</TargetFramework>
+    <TargetFramework Condition="'$(TargetFramework)'==''">net8.0</TargetFramework>
     <TargetFrameworks>$(TargetFramework)</TargetFrameworks>
     <CoreBuild Condition="!$(TargetFramework.StartsWith('net4'))">true</CoreBuild>
     <IncludeSymbols>true</IncludeSymbols>
@@ -65,6 +65,7 @@
     <AssemblyName>Vanara.PInvoke.VssApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;VSS;VssApi;volume shadow copy service</PackageTags>
+    <WindowsTargetPlatformMinVersion>7.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
@@ -183,22 +184,11 @@
     <ClCompile Include="VssFactory.cpp" />
     <ClCompile Include="VsWriter.cpp" />
   </ItemGroup>
-  <!--<ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
-    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.8.0" PrivateAssets="All" />
-  </ItemGroup>-->
   <ItemGroup>
     <ProjectReference Include="..\VssApiMgd\Vanara.PInvoke.VssApiMgd.csproj">
       <Project>{39aedd51-c627-41b9-96d3-44f481ed4e7c}</Project>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
-    <!--<ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj">
-      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj">
-      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
-    </ProjectReference>-->
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

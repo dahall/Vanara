@@ -76,5 +76,7 @@
     <None Include="Vanara.PInvoke.VssApi.nuspec" />
     <None Include="packages.config" />
     <None Include="cpp.hint" />
+    <None Include="pkgreadme.md" />
+    <None Include="readme.md" />
   </ItemGroup>
 </Project>
