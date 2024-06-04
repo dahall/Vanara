@@ -41,7 +41,7 @@
     </UpdateFiles>
   </ProjectExtensions>
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <TargetFrameworks>$(TargetFramework)</TargetFrameworks>
     <CoreBuild Condition="!$(TargetFramework.StartsWith('net4'))">true</CoreBuild>
     <IncludeSymbols>true</IncludeSymbols>
