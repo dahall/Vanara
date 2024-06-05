@@ -6175,6 +6175,12 @@ public static partial class Shell32
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
 	public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
+	/// <summary>Retrieves an image list.</summary>
+	/// <param name="iImageList">The image type contained in the list.</param>
+	/// <returns>When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</returns>
+	[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
+	public static IImageList SHGetImageList(SHIL iImageList) => IidGetObj<IImageList>((in Guid iid, out object? ppv) => SHGetImageList(iImageList, iid, out ppv))!;
+
 	/// <summary>
 	/// <para>
 	/// Retrieves an interface that allows hosted Shell extensions and other components to prevent their host process from closing
