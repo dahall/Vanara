@@ -10,11 +10,7 @@ namespace Vanara.Windows.Shell;
 public class MemoryPropertyStore : PropertyStore
 {
 	/// <summary>Initializes a new instance of the <see cref="MemoryPropertyStore"/> class.</summary>
-	public MemoryPropertyStore()
-	{
-		PSCreateMemoryPropertyStore(typeof(IPropertyStore).GUID, out var ppv).ThrowIfFailed();
-		iPropertyStore = (IPropertyStore)(ppv ?? throw new InsufficientMemoryException());
-	}
+	public MemoryPropertyStore() { }
 
 	/// <summary>Initializes a new instance of the <see cref="MemoryPropertyStore"/> class from a stream.</summary>
 	/// <param name="stream">The stream.</param>
@@ -26,7 +22,7 @@ public class MemoryPropertyStore : PropertyStore
 		if (stat.cbSize > 128 * 1024)
 			throw Marshal.GetExceptionForHR(HRESULT.STG_E_MEDIUMFULL)!;
 		else if (stat.cbSize > 0)
-			((IPersistStream)iPropertyStore!).Load(stream);
+			Run(ps => ((IPersistStream)ps!).Load(stream));
 	}
 
 	/// <summary>Clones a property store to a memory property store.</summary>
@@ -52,8 +48,18 @@ public class MemoryPropertyStore : PropertyStore
 	public void SaveToStream(IStream stream)
 	{
 		if (stream is null) throw new ArgumentNullException(nameof(stream));
-		var psps = (IPersistSerializedPropStorage)iPropertyStore!;
-		var pPersistStream = (IPersistStream)psps;
-		pPersistStream.Save(stream, true);
+		Run(ps =>
+		{
+			var psps = (IPersistSerializedPropStorage)ps!;
+			var pPersistStream = (IPersistStream)psps;
+			pPersistStream.Save(stream, true);
+		});
+	}
+
+	/// <inheritdoc/>
+	protected override IPropertyStore? GetIPropertyStore()
+	{
+		PSCreateMemoryPropertyStore(typeof(IPropertyStore).GUID, out var ppv).ThrowIfFailed();
+		return (IPropertyStore)(ppv ?? throw new InsufficientMemoryException());
 	}
 }

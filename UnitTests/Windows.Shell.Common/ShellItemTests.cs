@@ -161,7 +161,7 @@ public class ShellItemTests
 			Assert.That(i.Properties.Count, Is.GreaterThan(0));
 			Assert.That(i.Properties[PROPERTYKEY.System.Author], Has.Member("TestAuthor"));
 			Assert.That(i.Properties[PROPERTYKEY.System.ItemTypeText], Does.StartWith("Microsoft Word"));
-			Assert.That(i.Properties[PROPERTYKEY.System.DateAccessed], Is.TypeOf<FILETIME>());
+			Assert.That(i.Properties[PROPERTYKEY.System.DateCreated], Is.TypeOf<FILETIME>());
 			Assert.That((ulong)i.Properties[PROPERTYKEY.System.FileFRN]!, Is.GreaterThan((ulong)0));
 			Assert.That(i.Properties[new PROPERTYKEY()], Is.Null);
 			Assert.That(i.Properties[new PROPERTYKEY(Guid.NewGuid(), 2)], Is.Null);

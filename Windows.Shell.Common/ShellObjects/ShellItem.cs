@@ -516,7 +516,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <para>Gets the property store for the item.</para>
 	/// <note>Initially, this property store is the read-only store (change from R/W in v3.2.9) and should always have properties.
 	/// However, setting any of the properties of this value change the function of all subsequent uses. For example, if you set the
-	/// <see cref="ReadOnlyPropertyStore.ReadOnly"/> value to <see langword="false"/>, all subsequent calls to <see
+	/// <see cref="PropertyStore.ReadOnly"/> value to <see langword="false"/>, all subsequent calls to <see
 	/// cref="Properties"/> will access the read-write property store. If this <see cref="ShellItem"/> does not support
 	/// properties directly, your use of this property will fail. It is important that you check for exceptions when changing the
 	/// properties of this value to prevent unexpected failures.</note>

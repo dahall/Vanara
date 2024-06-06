@@ -153,8 +153,8 @@ public class PropertyDescription : IDisposable
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public virtual void Dispose()
 	{
-		// typeList?.Dispose();
 		iDesc2 = null;
+		Marshal.FinalReleaseComObject(iDesc);
 		GC.SuppressFinalize(this);
 	}
 

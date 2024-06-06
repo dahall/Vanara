@@ -39,13 +39,6 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	[DefaultValue(null)]
 	public PROPERTYKEY[]? PropertyFilter { get; set; }
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public override void Dispose()
-	{
-		base.Dispose();
-		GC.SuppressFinalize(this);
-	}
-
 	/// <summary>Gets the CLSID of a supplied property key.</summary>
 	/// <param name="propertyKey">The property key.</param>
 	/// <returns>The CLSID related to the property key.</returns>
