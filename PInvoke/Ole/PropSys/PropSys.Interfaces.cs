@@ -2181,6 +2181,7 @@ public static class PSExtensions
 	public static void SetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey, object? value, bool commit = true)
 	{
 		using var pv = new PROPVARIANT(value);
+		pkey.CoerceToCanonicalValue(pv);
 		ps.SetValue(pkey, pv);
 		if (commit) ps.Commit();
 	}
