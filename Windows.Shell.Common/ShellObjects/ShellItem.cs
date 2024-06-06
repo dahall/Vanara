@@ -516,7 +516,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <para>Gets the property store for the item.</para>
 	/// <note>Initially, this property store is the read-only store (change from R/W in v3.2.9) and should always have properties.
 	/// However, setting any of the properties of this value change the function of all subsequent uses. For example, if you set the
-	/// <see cref="ShellItemPropertyStore.ReadOnly"/> value to <see langword="false"/>, all subsequent calls to <see
+	/// <see cref="ReadOnlyPropertyStore.ReadOnly"/> value to <see langword="false"/>, all subsequent calls to <see
 	/// cref="Properties"/> will access the read-write property store. If this <see cref="ShellItem"/> does not support
 	/// properties directly, your use of this property will fail. It is important that you check for exceptions when changing the
 	/// properties of this value to prevent unexpected failures.</note>
@@ -785,7 +785,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		if (IsFolder)
 			SHOpenFolderAndSelectItems(PIDL, 0, null, OFASI.OFASI_NONE);
 		else
-			SHOpenFolderAndSelectItems(Parent!.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
+			SHOpenFolderAndSelectItems(Parent!.PIDL, 1, [(IntPtr)PIDL], OFASI.OFASI_NONE);
 	}
 
 	/// <summary>
@@ -877,14 +877,12 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <summary>Local implementation of IShellItem.</summary>
 	/// <seealso cref="IDisposable"/>
 	/// <seealso cref="Shell32.IShellItem"/>
-	protected class ShellItemImpl : IDisposable, IShellItem
+	/// <remarks>Initializes a new instance of the <see cref="ShellItemImpl"/> class.</remarks>
+	/// <param name="pidl">The pidl.</param>
+	/// <param name="owner">if set to <see langword="true"/> [owner].</param>
+	protected class ShellItemImpl(Shell32.PIDL pidl, bool owner) : IDisposable, IShellItem
 	{
-		/// <summary>Initializes a new instance of the <see cref="ShellItemImpl"/> class.</summary>
-		/// <param name="pidl">The pidl.</param>
-		/// <param name="owner">if set to <see langword="true"/> [owner].</param>
-		public ShellItemImpl(PIDL pidl, bool owner) => PIDL = owner ? pidl : new PIDL(pidl);
-
-		private PIDL PIDL { get; set; }
+		private PIDL PIDL { get; set; } = owner ? pidl : new PIDL(pidl);
 
 		/// <summary>Binds to a handler for an item as specified by the handler ID value (BHID).</summary>
 		/// <param name="pbc">
@@ -941,7 +939,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		{
 			var parentFolder = InternalGetParent().GetIShellFolder();
 			var result = sfgaoMask;
-			parentFolder.GetAttributesOf(1, new[] { (IntPtr)PIDL.LastId }, ref result).ThrowIfFailed();
+			parentFolder.GetAttributesOf(1, [(IntPtr)PIDL.LastId], ref result).ThrowIfFailed();
 			return result & sfgaoMask;
 		}
 
@@ -1013,7 +1011,7 @@ internal class ShellItemTypeConverter : TypeConverter
 			}
 			else if (destinationType == typeof(InstanceDescriptor))
 			{
-				return new InstanceDescriptor(typeof(ShellItem).GetMethod("Open", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null), new object[] { uri.ToString() });
+				return new InstanceDescriptor(typeof(ShellItem).GetMethod("Open", BindingFlags.Public | BindingFlags.Static, null, [typeof(string)], null), new object[] { uri.ToString() });
 			}
 		}
 		return base.ConvertTo(context, culture, value, destinationType);

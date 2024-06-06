@@ -71,7 +71,7 @@ internal class IconLocationTypeConverter : ExpandableObjectConverter
 	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? info, object? value, Type destType)
 	{
 		if (destType == typeof(InstanceDescriptor))
-			return new InstanceDescriptor(typeof(IconLocation).GetConstructor(new Type[0]), null, false);
+			return new InstanceDescriptor(typeof(IconLocation).GetConstructor([]), null, false);
 		if (destType == typeof(string) && value is IconLocation s)
 			return s.ToString();
 		return base.ConvertTo(context, info, value, destType);

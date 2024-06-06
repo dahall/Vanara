@@ -8,14 +8,12 @@ namespace Vanara.Windows.Shell;
 /// <seealso cref="IEquatable{T}"/>
 /// <seealso cref="IEquatable{T}"/>
 /// <seealso cref="INotifyPropertyChanged"/>
-public abstract class ComObjWrapper<TObj, TComType> : IDisposable, IEquatable<TComType>, INotifyPropertyChanged where TObj : ComObjWrapper<TObj, TComType> where TComType : class
+/// <remarks>Initializes a new instance of the <see cref="ComObjWrapper{TObj, TComType}"/> class.</remarks>
+/// <param name="baseInterface">The base interface.</param>
+public abstract class ComObjWrapper<TObj, TComType>(TComType baseInterface) : IDisposable, IEquatable<TComType>, INotifyPropertyChanged where TObj : ComObjWrapper<TObj, TComType> where TComType : class
 {
 	/// <summary>The internal reference to the COM object.</summary>
-	protected TComType iObj;
-
-	/// <summary>Initializes a new instance of the <see cref="ComObjWrapper{TObj, TComType}"/> class.</summary>
-	/// <param name="baseInterface">The base interface.</param>
-	protected ComObjWrapper(TComType baseInterface) => iObj = baseInterface ?? throw new ArgumentNullException(nameof(baseInterface));
+	protected TComType iObj = baseInterface ?? throw new ArgumentNullException(nameof(baseInterface));
 
 	/// <summary>Occurs when a property value changes.</summary>
 	public virtual event PropertyChangedEventHandler? PropertyChanged;

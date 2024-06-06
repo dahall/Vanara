@@ -99,7 +99,7 @@ public class ShellLibrary : ShellFolder
 
 	/// <summary>Gets the set of child folders that are contained in the library.</summary>
 	/// <value>A <see cref="ShellItemArray"/> containing the child folders.</value>
-	public ShellLibraryFolders Folders => folders ?? (folders = GetFilteredFolders());
+	public ShellLibraryFolders Folders => folders ??= GetFilteredFolders();
 
 	/// <summary>
 	/// Gets or sets a string that describes the location of the default icon. The string must be formatted as

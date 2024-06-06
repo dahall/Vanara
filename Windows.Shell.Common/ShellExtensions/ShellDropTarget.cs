@@ -14,42 +14,33 @@ namespace Vanara.Windows.Shell;
 /// A DragEventArgs object specifies any data associated with drag/drop events; the current state of the SHIFT, CTRL, and ALT keys; the
 /// location of the mouse pointer; and the drag-and-drop effects allowed by the source and target of the drag event.
 /// </remarks>
-public class DragEventArgs : EventArgs
+/// <remarks>Initializes a new instance of the <see cref="DragEventArgs"/> class.</remarks>
+/// <param name="data">The data associated with this event.</param>
+/// <param name="keyState">The current state of the SHIFT, CTRL, and ALT keys.</param>
+/// <param name="x">The x-coordinate of the mouse cursor in pixels.</param>
+/// <param name="y">The y-coordinate of the mouse cursor in pixels.</param>
+/// <param name="allowedEffect">One of the DROPEFFECT values.</param>
+/// <param name="lastEffect">One of the DROPEFFECT values.</param>
+public class DragEventArgs(IDataObject? data, MouseButtonState keyState, int x, int y, Ole32.DROPEFFECT allowedEffect, Ole32.DROPEFFECT lastEffect) : EventArgs
 {
-	/// <summary>Initializes a new instance of the <see cref="DragEventArgs"/> class.</summary>
-	/// <param name="data">The data associated with this event.</param>
-	/// <param name="keyState">The current state of the SHIFT, CTRL, and ALT keys.</param>
-	/// <param name="x">The x-coordinate of the mouse cursor in pixels.</param>
-	/// <param name="y">The y-coordinate of the mouse cursor in pixels.</param>
-	/// <param name="allowedEffect">One of the DROPEFFECT values.</param>
-	/// <param name="lastEffect">One of the DROPEFFECT values.</param>
-	public DragEventArgs(IDataObject? data, MouseButtonState keyState, int x, int y, DROPEFFECT allowedEffect, DROPEFFECT lastEffect)
-	{
-		Data = data;
-		KeyState = keyState;
-		X = x;
-		Y = y;
-		AllowedEffect = allowedEffect;
-		Effect = lastEffect;
-	}
 
 	/// <summary>Gets which drag-and-drop operations are allowed by the originator (or source) of the drag event.</summary>
-	public DROPEFFECT AllowedEffect { get; }
+	public DROPEFFECT AllowedEffect { get; } = allowedEffect;
 
 	/// <summary>Gets the IDataObject that contains the data associated with this event.</summary>
-	public IDataObject? Data { get; }
+	public IDataObject? Data { get; } = data;
 
 	/// <summary>Gets or sets the target drop effect in a drag-and-drop operation.</summary>
-	public DROPEFFECT Effect { get; set; }
+	public DROPEFFECT Effect { get; set; } = lastEffect;
 
 	/// <summary>Gets the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.</summary>
-	public MouseButtonState KeyState { get; }
+	public MouseButtonState KeyState { get; } = keyState;
 
 	/// <summary>Gets the x-coordinate of the mouse pointer, in screen coordinates.</summary>
-	public int X { get; }
+	public int X { get; } = x;
 
 	/// <summary>Gets the y-coordinate of the mouse pointer, in screen coordinates.</summary>
-	public int Y { get; }
+	public int Y { get; } = y;
 }
 
 /// <summary>

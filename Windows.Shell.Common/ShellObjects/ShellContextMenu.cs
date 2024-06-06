@@ -462,7 +462,7 @@ public class ShellContextMenu : IDisposable
 		internal static MenuItemInfo[] GetMenuItems(HMENU hMenu, ShellContextMenu? scm)
 		{
 			if (hMenu.IsNull)
-				return new MenuItemInfo[0];
+				return [];
 
 			var SubMenus = new MenuItemInfo[GetMenuItemCount(hMenu)];
 			for (uint i = 0; i < SubMenus.Length; i++)

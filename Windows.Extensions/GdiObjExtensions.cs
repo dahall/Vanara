@@ -115,7 +115,7 @@ public static class GdiObjExtensions2
 				pen = new Pen(lpen.elpColor) { DashStyle = (DashStyle)lpen.Style };
 				if (pen.DashStyle == DashStyle.Custom && lpen.elpNumEntries > 0)
 				{
-					uint[] styleArray = lpen.elpStyleEntry.ToArray<uint>((int)lpen.elpNumEntries) ?? new uint[0];
+					uint[] styleArray = lpen.elpStyleEntry.ToArray<uint>((int)lpen.elpNumEntries) ?? [];
 					pen.DashPattern = Array.ConvertAll(styleArray, i => (float)i);
 				}
 				break;
@@ -213,18 +213,11 @@ public static class GdiObjExtensions2
 
 /// <summary>A self-releasing pattern for IDeviceContext.GetHdc and ReleaseHdc.</summary>
 /// <seealso cref="System.IDisposable"/>
-public class SafeTempHDC : IDisposable, IGraphicsObjectHandle
+/// <remarks>Initializes a new instance of the <see cref="SafeTempHDC"/> class with an <see cref="IDeviceContext"/>.</remarks>
+/// <param name="dc">The <see cref="IDeviceContext"/> instance.</param>
+public class SafeTempHDC(IDeviceContext? dc) : IDisposable, IGraphicsObjectHandle
 {
-	private readonly IDeviceContext? dc;
-	private readonly IntPtr hdc;
-
-	/// <summary>Initializes a new instance of the <see cref="SafeTempHDC"/> class with an <see cref="IDeviceContext"/>.</summary>
-	/// <param name="dc">The <see cref="IDeviceContext"/> instance.</param>
-	public SafeTempHDC(IDeviceContext? dc)
-	{
-		this.dc = dc;
-		hdc = dc?.GetHdc() ?? default;
-	}
+	private readonly IntPtr hdc = dc?.GetHdc() ?? default;
 
 	/// <summary>Gets a value indicating whether this instance has a NULL handle.</summary>
 	/// <value><see langword="true"/> if this has a NULL handle; otherwise, <see langword="false"/>.</value>
@@ -239,5 +232,9 @@ public class SafeTempHDC : IDisposable, IGraphicsObjectHandle
 	public IntPtr DangerousGetHandle() => hdc;
 
 	/// <summary>Releases claimed HDC.</summary>
-	public void Dispose() => dc?.ReleaseHdc();
+	public void Dispose()
+	{
+		dc?.ReleaseHdc();
+		GC.SuppressFinalize(this);
+	}
 }

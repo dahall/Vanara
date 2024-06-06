@@ -161,7 +161,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// in a return value of E_NOTIMPL.
 	/// </para>
 	/// </remarks>
-	public IEnumerable<string> EnumObjectParam() => ((IBindCtxV)this).EnumObjectParam(out var ppenum).Succeeded ? ppenum.Enum().ToArray() : new string[0];
+	public IEnumerable<string> EnumObjectParam() => ((IBindCtxV)this).EnumObjectParam(out var ppenum).Succeeded ? ppenum.Enum().ToArray() : [];
 
 	/// <summary>
 	/// Retrieves an interface pointer to the object associated with the specified key in the bind context's string-keyed table of pointers.
@@ -892,13 +892,9 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	}
 
 	[ComVisible(true)]
-	private class CDummyUnknown : IPersist
+	private class CDummyUnknown(Guid clsid) : IPersist
 	{
-		private readonly Guid _clsid;
-
-		public CDummyUnknown(in Guid clsid) => _clsid = clsid;
-
-		public Guid GetClassID() => _clsid;
+		public Guid GetClassID() => clsid;
 	}
 
 	[ComVisible(true)]

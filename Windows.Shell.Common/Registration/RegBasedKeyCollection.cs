@@ -51,7 +51,7 @@ internal class RegBasedKeyCollection : ICollection<string>, IDisposable
 
 	/// <summary>Gets the enumerator.</summary>
 	/// <returns></returns>
-	public IEnumerator<string> GetEnumerator() => (key?.GetValueNames().Cast<string>() ?? new string[0]).GetEnumerator();
+	public IEnumerator<string> GetEnumerator() => (key?.GetValueNames().Cast<string>() ?? []).GetEnumerator();
 
 	/// <summary>Removes the specified item.</summary>
 	/// <param name="item">The item.</param>

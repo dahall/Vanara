@@ -25,7 +25,7 @@ public class CommandVerbDictionary : RegBasedDictionary<CommandVerb>
 
 	/// <summary>Get the filtered list of keys under the base.</summary>
 	[Browsable(false)]
-	public override IEnumerable<string> Keys => key?.GetSubKeyNames() ?? new string[0];
+	public override IEnumerable<string> Keys => key?.GetSubKeyNames() ?? [];
 
 	/// <summary>Gets or sets the order of the command verbs.</summary>
 	/// <value>The ordered list of command verbs.</value>

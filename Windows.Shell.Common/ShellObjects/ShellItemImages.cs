@@ -8,13 +8,10 @@ using static Vanara.PInvoke.User32;
 namespace Vanara.Windows.Shell;
 
 /// <summary>Exposes methods that get images related to shell items.</summary>
-public class ShellItemImages
+/// <remarks>Initializes a new instance of the <see cref="ShellItemImages"/> class.</remarks>
+/// <param name="shellItem">The <see cref="ShellItem"/> instance.</param>
+public class ShellItemImages(ShellItem shellItem)
 {
-	private readonly ShellItem shellItem;
-
-	/// <summary>Initializes a new instance of the <see cref="ShellItemImages"/> class.</summary>
-	/// <param name="shellItem">The <see cref="ShellItem"/> instance.</param>
-	public ShellItemImages(ShellItem shellItem) => this.shellItem = shellItem;
 
 	/// <summary>
 	/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current

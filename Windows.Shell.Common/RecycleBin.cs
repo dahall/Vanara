@@ -62,7 +62,7 @@ public static class RecycleBin
 	/// The <see cref="ShellItem"/> of the deleted item in the Recycle Bin. This cannot be a reference to an undeleted shell item.
 	/// </param>
 	/// <param name="hideUI"><see langword="true"/> to hide all user interface interactions; <see langword="false"/> to allow them.</param>
-	public static void Restore(ShellItem deletedItem, bool hideUI = false) => Restore(new[] { deletedItem }, hideUI);
+	public static void Restore(ShellItem deletedItem, bool hideUI = false) => Restore([deletedItem], hideUI);
 
 	/// <summary>Restores the specified deleted items to their original location.</summary>
 	/// <param name="deletedItems">

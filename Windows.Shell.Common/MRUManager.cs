@@ -450,11 +450,9 @@ public class MRUManager : Component
 
 		private SafeRegKey GetKey() => new(Registry.CurrentUser, SubKeyName ?? throw new InvalidOperationException("Invalid assembly name."), RegistryKeyPermissionCheck.ReadWriteSubTree);
 
-		private class SafeRegKey : IDisposable
+		private class SafeRegKey(RegistryKey root, string subKeyName, RegistryKeyPermissionCheck opt) : IDisposable
 		{
-			public readonly RegistryKey Key;
-
-			public SafeRegKey(RegistryKey root, string subKeyName, RegistryKeyPermissionCheck opt) => Key = root.CreateSubKey(subKeyName, opt);
+			public readonly RegistryKey Key = root.CreateSubKey(subKeyName, opt);
 
 			public static implicit operator RegistryKey(SafeRegKey k) => k.Key;
 

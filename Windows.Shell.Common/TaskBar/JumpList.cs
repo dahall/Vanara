@@ -266,18 +266,11 @@ public class JumpListSeparator : JumpListItem, IJumpListItem
 
 /// <summary>A task for a jumplist.</summary>
 /// <seealso cref="JumpListItem"/>
-public class JumpListTask : JumpListItem, IJumpListItem
+/// <remarks>Initializes a new instance of the <see cref="JumpListTask"/> class.</remarks>
+public class JumpListTask(string? title, string applicationPath) : JumpListItem, IJumpListItem
 {
 	private int iconResIdx = -1;
-	private string path;
-	private string? title, description, args, dir, iconPath, appUserModelID;
-
-	/// <summary>Initializes a new instance of the <see cref="JumpListTask"/> class.</summary>
-	public JumpListTask(string? title, string applicationPath)
-	{
-		this.title = title;
-		path = applicationPath;
-	}
+	private string? description, args, dir, iconPath, appUserModelID;
 
 	/// <summary>Gets or sets the application path.</summary>
 	/// <value>The application path.</value>
@@ -286,12 +279,12 @@ public class JumpListTask : JumpListItem, IJumpListItem
 	[Editor("System.Windows.Forms.Design.FileNameEditor, System.Design", "System.Drawing.Design.UITypeEditor, System.Drawing")]
 	public string ApplicationPath
 	{
-		get => path;
+		get => applicationPath;
 		set
 		{
 			if (value is null) throw new ArgumentNullException(nameof(ApplicationPath));
-			if (path == value) return;
-			path = value;
+			if (applicationPath == value) return;
+			applicationPath = value;
 			OnPropertyChanged();
 		}
 	}
@@ -460,7 +453,7 @@ internal class GenericExpandableObjectConverter<T> : ExpandableObjectConverter
 	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? info, object? value, Type destType)
 	{
 		if (destType == typeof(InstanceDescriptor))
-			return new InstanceDescriptor(typeof(T).GetConstructor(new Type[0]), null, false);
+			return new InstanceDescriptor(typeof(T).GetConstructor([]), null, false);
 		if (destType == typeof(string))
 			return "";
 		return base.ConvertTo(context, info, value, destType);

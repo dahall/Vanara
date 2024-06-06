@@ -87,7 +87,7 @@ public static partial class GdiExtension
 			throw new ArgumentNullException(nameof(destination));
 		if (source.IsEmpty)
 			throw new ArgumentNullException(nameof(source));
-		if (transparency < 0 || transparency > 1.0f)
+		if (transparency is < 0 or > 1.0f)
 			throw new ArgumentNullException(nameof(transparency));
 
 		var imageRectangle = GetRectangleFromAlignment(alignment, destination, source.Size);
@@ -333,7 +333,7 @@ public static partial class GdiExtension
 
 		private class Enumertor : IEnumerator<Color>
 		{
-			private SmartBitmapLock bmpLock;
+			private readonly SmartBitmapLock bmpLock;
 			private int idx = -1;
 
 			internal Enumertor(SmartBitmapLock bmp) => bmpLock = bmp;

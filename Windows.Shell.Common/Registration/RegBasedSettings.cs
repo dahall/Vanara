@@ -3,26 +3,20 @@
 namespace Vanara.Windows.Shell;
 
 /// <summary>Base class for registry based settings.</summary>
-public abstract class RegBasedSettings : IDisposable, IEquatable<RegBasedSettings>, IComparable<RegBasedSettings>
+/// <remarks>Initializes a new instance of the <see cref="RegBasedSettings"/> class.</remarks>
+/// <param name="key">The key to use as the base key for queries.</param>
+/// <param name="readOnly">if set to <c>true</c> the supplied <paramref name="key"/> was opened read-only.</param>
+public abstract class RegBasedSettings(RegistryKey key, bool readOnly) : IDisposable, IEquatable<RegBasedSettings>, IComparable<RegBasedSettings>
 {
 	/// <summary>The base key from which to perform all queries.</summary>
-	protected internal RegistryKey key;
-
-	/// <summary>Initializes a new instance of the <see cref="RegBasedSettings"/> class.</summary>
-	/// <param name="key">The key to use as the base key for queries.</param>
-	/// <param name="readOnly">if set to <c>true</c> the supplied <paramref name="key"/> was opened read-only.</param>
-	protected RegBasedSettings(RegistryKey key, bool readOnly)
-	{
-		this.key = key ?? throw new ArgumentNullException(nameof(key));
-		ReadOnly = readOnly;
-	}
+	protected internal RegistryKey key = key ?? throw new ArgumentNullException(nameof(key));
 
 	/// <summary>Gets a value indicating whether this instance is system wide.</summary>
 	/// <value><see langword="true"/> if this instance is system wide; otherwise, <see langword="false"/>.</value>
 	public bool IsSystemWide => !key.Name.StartsWith("HKEY_CURRENT_USER");
 
 	/// <summary>Gets or sets a value indicating whether these settings are read-only.</summary>
-	public bool ReadOnly { get; }
+	public bool ReadOnly { get; } = readOnly;
 
 	/// <summary>Gets the absolute (qualified) name of the key.</summary>
 	public string RegPath => key.Name;

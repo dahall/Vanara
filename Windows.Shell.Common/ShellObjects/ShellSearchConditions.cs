@@ -97,7 +97,7 @@ public class SearchCondition : ICloneable, IDisposable
 	/// <returns>The new <see cref="SearchCondition"/> node.</returns>
 	public static SearchCondition CreateFromStructuredQuery(string query, CultureInfo? cultureInfo = null)
 	{
-		if (cultureInfo is null) cultureInfo = CultureInfo.CurrentUICulture;
+		cultureInfo ??= CultureInfo.CurrentUICulture;
 		using var qm = ComReleaserFactory.Create(new IQueryParserManager());
 		using var qp = ComReleaserFactory.Create(qm.Item.CreateLoadedParser<IQueryParser>(systemCatalog, (uint)cultureInfo.LCID));
 		qm.Item.InitializeOptions(false, true, qp.Item);

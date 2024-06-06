@@ -315,7 +315,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 		enabled = true;
 		if (IsSuspended) return;
 		SHGetIDListFromObject(Item.IShellItem, out PIDL pidlWatch).ThrowIfFailed();
-		SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = pidlWatch.DangerousGetHandle(), fRecursive = IncludeChildren } };
+		SHChangeNotifyEntry[] entries = [new SHChangeNotifyEntry { pidl = pidlWatch.DangerousGetHandle(), fRecursive = IncludeChildren }];
 		ulRegister = SHChangeNotifyRegister(hPump.MessageWindowHandle, sources, (SHCNE)NotifyFilter, hPump.MessageId, entries.Length, entries);
 		if (ulRegister == 0) throw new InvalidOperationException("Unable to register shell notifications.");
 	}
@@ -349,28 +349,20 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 		public ChangeFilters ChangeType { get; }
 	}
 
-	private class WatcherNativeWindow : SystemEventHandler
+	private class WatcherNativeWindow(ShellItemChangeWatcher parent) : SystemEventHandler()
 	{
-		private readonly ShellItemChangeWatcher p;
-
-		public WatcherNativeWindow(ShellItemChangeWatcher parent) : base()
-		{
-			MessageId = RegisterWindowMessage($"{parent.GetType()}{DateTime.Now.Ticks}");
-			p = parent;
-		}
-
-		public uint MessageId { get; set; }
+		public uint MessageId { get; set; } = RegisterWindowMessage($"{parent.GetType()}{DateTime.Now.Ticks}");
 
 		protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 		{
 			lReturn = default;
-			if (msg == MessageId && p.enabled && !p.IsSuspended)
+			if (msg == MessageId && parent.enabled && !parent.IsSuspended)
 			{
 				HLOCK hNotifyLock = default;
 				try
 				{
 					hNotifyLock = SHChangeNotification_Lock(wParam, (uint)lParam.ToInt32(), out IntPtr rgpidl, out SHCNE lEvent);
-					if (hNotifyLock != IntPtr.Zero && rgpidl != IntPtr.Zero && p.NotifyFilter.IsFlagSet((ChangeFilters)lEvent))
+					if (hNotifyLock != IntPtr.Zero && rgpidl != IntPtr.Zero && parent.NotifyFilter.IsFlagSet((ChangeFilters)lEvent))
 					{
 						ShellItemChangeEventArgs args;
 						if (NoParamEvent.IsFlagSet(lEvent))
@@ -379,7 +371,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 							args = new ShellItemChangeEventArgs(lEvent, Marshal.ReadIntPtr(rgpidl, 0), Marshal.ReadIntPtr(rgpidl, IntPtr.Size));
 						else
 							args = new ShellItemChangeEventArgs(lEvent, Marshal.ReadIntPtr(rgpidl, 0));
-						p.OnChanged(args);
+						parent.OnChanged(args);
 					}
 				}
 				finally

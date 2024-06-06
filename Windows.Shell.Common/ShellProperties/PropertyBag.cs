@@ -3,14 +3,12 @@
 namespace Vanara.Windows.Shell;
 
 /// <summary>Encapsulates an <see cref="IPropertyBag"/> instance.</summary>
-public class PropertyBag
+/// <remarks>Initializes a new instance of the <see cref="PropertyBag"/> class.</remarks>
+/// <param name="ppb">The property bag.</param>
+public class PropertyBag(PInvoke.OleAut32.IPropertyBag ppb)
 {
 	/// <summary>The IPropertyBag instance.</summary>
-	protected readonly IPropertyBag ibag;
-
-	/// <summary>Initializes a new instance of the <see cref="PropertyBag"/> class.</summary>
-	/// <param name="ppb">The property bag.</param>
-	public PropertyBag(IPropertyBag ppb) => ibag = ppb;
+	protected readonly IPropertyBag ibag = ppb;
 
 	/// <summary>Gets or sets the <see cref="object"/> with the specified property name.</summary>
 	/// <value>The <see cref="object"/>.</value>

@@ -5,7 +5,12 @@ using static Vanara.PInvoke.User32;
 namespace Vanara.Windows.Shell;
 
 /// <summary>Represents a standard system icon.</summary>
-public class StockIcon : IDisposable
+/// <remarks>Creates a new StockIcon instance with the specified identifer and options.</remarks>
+/// <param name="id">A value that identifies the icon represented by this instance.</param>
+/// <param name="size">A value that indicates the size of the stock icon.</param>
+/// <param name="isLinkOverlay">A bool value that indicates whether the icon has a link overlay.</param>
+/// <param name="isSelected">A bool value that indicates whether the icon is in a selected state.</param>
+public class StockIcon(Shell32.SHSTOCKICONID id, ShellIconType size = ShellIconType.Large, bool isLinkOverlay = false, bool isSelected = false) : IDisposable
 {
 	private SHGSI curFlags;
 	private SHSTOCKICONID curId;
@@ -14,19 +19,6 @@ public class StockIcon : IDisposable
 	private int systemImageIndex;
 
 	static StockIcon() => FileIconInit(false);
-
-	/// <summary>Creates a new StockIcon instance with the specified identifer and options.</summary>
-	/// <param name="id">A value that identifies the icon represented by this instance.</param>
-	/// <param name="size">A value that indicates the size of the stock icon.</param>
-	/// <param name="isLinkOverlay">A bool value that indicates whether the icon has a link overlay.</param>
-	/// <param name="isSelected">A bool value that indicates whether the icon is in a selected state.</param>
-	public StockIcon(SHSTOCKICONID id, ShellIconType size = ShellIconType.Large, bool isLinkOverlay = false, bool isSelected = false)
-	{
-		Identifier = id;
-		LinkOverlay = isLinkOverlay;
-		Selected = isSelected;
-		Size = size;
-	}
 
 	/// <summary>Finalizes an instance of the <see cref="StockIcon"/> class.</summary>
 	~StockIcon()
@@ -39,11 +31,11 @@ public class StockIcon : IDisposable
 	public HICON IconHandle => hIcon;
 
 	/// <summary>Gets or sets the Stock Icon identifier associated with this icon.</summary>
-	public SHSTOCKICONID Identifier { get; set; }
+	public SHSTOCKICONID Identifier { get; set; } = id;
 
 	/// <summary>Gets or sets a value that cotrols whether to put a link overlay on the icon.</summary>
 	/// <value>A <see cref="bool"/> value.</value>
-	public bool LinkOverlay { get; set; }
+	public bool LinkOverlay { get; set; } = isLinkOverlay;
 
 	/// <summary>Gets the icon location, composed of a resource path and the icon's index.</summary>
 	/// <value>The icon location.</value>
@@ -51,11 +43,11 @@ public class StockIcon : IDisposable
 
 	/// <summary>Gets or sets a value indicating whether the icon appears selected.</summary>
 	/// <value>A <see cref="bool"/> value.</value>
-	public bool Selected { get; set; }
+	public bool Selected { get; set; } = isSelected;
 
 	/// <summary>Gets or sets a value that controls the size of the Stock Icon.</summary>
 	/// <value>A <see cref="ShellIconType"/> value.</value>
-	public ShellIconType Size { get; set; }
+	public ShellIconType Size { get; set; } = size;
 
 	/// <summary>Gets the index of the image in the system icon cache.</summary>
 	/// <value>The index of the system image.</value>

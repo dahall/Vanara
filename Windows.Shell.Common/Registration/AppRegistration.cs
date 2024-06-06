@@ -347,10 +347,7 @@ public class AppRegistration : RegBasedSettings
 		return new AppRegistration(ska, sk, readOnly);
 	}
 
-	private class PathSubKey : RegBasedSettings
+	private class PathSubKey(RegistryKey key, bool readOnly) : RegBasedSettings(key, readOnly)
 	{
-		public PathSubKey(RegistryKey key, bool readOnly) : base(key, readOnly)
-		{
-		}
 	}
 }
