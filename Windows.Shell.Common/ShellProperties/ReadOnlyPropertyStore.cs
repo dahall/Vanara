@@ -1,25 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
+using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell;
 
 /// <summary>Encapsulates the IPropertyStore object.</summary>
 /// <seealso cref="IDictionary{PROPERTYKEY, Object}"/>
 /// <seealso cref="IDisposable"/>
-public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, object?>, IDisposable
+public class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, object?>, IDisposable
 {
+	/// <summary>The flags.</summary>
+	protected GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_BESTEFFORT;
+
+	/// <summary>An optional IBindCtx object, which provides access to a bind context.</summary>
+	protected System.Runtime.InteropServices.ComTypes.IBindCtx? iBindCtx = null;
+
 	/// <summary>The IPropertyStore instance.</summary>
 	protected IPropertyStore? iPropertyStore;
 
+	/// <summary>If specified, the path to the file system item.</summary>
+	protected string? itemPath = null;
+
 	private PropertyDescriptionDictionary? descriptions;
 
-	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
+	/// <summary>Initializes a new instance of the <see cref="ReadOnlyPropertyStore"/> class.</summary>
 	protected ReadOnlyPropertyStore() { }
+
+	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
+	/// <param name="path">A string that specifies the item path.</param>
+	/// <param name="flags">One or more values from the GETPROPERTYSTOREFLAGS constants.</param>
+	/// <param name="pbc">An optional IBindCtx object, which provides access to a bind context.</param>
+	protected ReadOnlyPropertyStore(string path, GETPROPERTYSTOREFLAGS? flags = null, System.Runtime.InteropServices.ComTypes.IBindCtx? pbc = null)
+	{
+		itemPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(path));
+		if (flags.HasValue) this.flags = flags.Value;
+		iBindCtx = pbc;
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="ReadOnlyPropertyStore"/> class from a file system path.</summary>
+	/// <param name="path">A string that specifies the item path.</param>
+	public ReadOnlyPropertyStore(string path) : this(path, GETPROPERTYSTOREFLAGS.GPS_DEFAULT) { }
 
 	/// <summary>Gets the number of properties in the current property store.</summary>
 	public int Count => Run(ps => (int)(ps?.GetCount() ?? 0));
@@ -28,8 +55,77 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <value>The property descriptions.</value>
 	public virtual IReadOnlyDictionary<PROPERTYKEY, PropertyDescription> Descriptions => descriptions ??= new PropertyDescriptionDictionary(this);
 
-	/// <summary>Gets a value indicating whether the <see cref="ICollection{T}"/> is read-only.</summary>
-	public virtual bool IsReadOnly => true;
+	/// <summary>Gets or sets a value indicating whether to include slow properties.</summary>
+	/// <value><c>true</c> if including slow properties; otherwise, <c>false</c>.</value>
+	[DefaultValue(false)]
+	public bool IncludeSlow
+	{
+		get => flags.IsFlagSet(GETPROPERTYSTOREFLAGS.GPS_OPENSLOWITEM);
+		set
+		{
+			if (IncludeSlow == value) return;
+			flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_OPENSLOWITEM, value);
+			if (value)
+				flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY | GETPROPERTYSTOREFLAGS.GPS_FASTPROPERTIESONLY, false);
+		}
+	}
+
+	/// <summary>Gets or sets a value indicating whether to include only properties directly from the property handler.</summary>
+	/// <value><c>true</c> if no inherited properties; otherwise, <c>false</c>.</value>
+	[DefaultValue(false)]
+	public bool NoInheritedProperties
+	{
+		get => flags.IsFlagSet(GETPROPERTYSTOREFLAGS.GPS_HANDLERPROPERTIESONLY);
+		set
+		{
+			if (NoInheritedProperties == value) return;
+			flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_HANDLERPROPERTIESONLY, value);
+			if (value)
+				flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY | GETPROPERTYSTOREFLAGS.GPS_BESTEFFORT | GETPROPERTYSTOREFLAGS.GPS_FASTPROPERTIESONLY, false);
+		}
+	}
+
+	/// <summary>Gets or sets a value indicating whether properties can be read and written.</summary>
+	/// <value><c>true</c> if properties are read/write; otherwise, <c>false</c>.</value>
+	[DefaultValue(true)]
+	public bool ReadOnly
+	{
+		get => !flags.IsFlagSet(GETPROPERTYSTOREFLAGS.GPS_READWRITE);
+		set
+		{
+			if (ReadOnly == value) return;
+			flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_READWRITE, !value);
+			if (!value)
+				flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_DELAYCREATION | GETPROPERTYSTOREFLAGS.GPS_TEMPORARY | GETPROPERTYSTOREFLAGS.GPS_BESTEFFORT | GETPROPERTYSTOREFLAGS.GPS_FASTPROPERTIESONLY, false);
+			else
+				flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_HANDLERPROPERTIESONLY);
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets a value indicating whether this <see cref="ShellItemPropertyStore"/> provides a writable store, with no initial
+	/// properties, that exists for the lifetime of the Shell item instance; basically, a property bag attached to the item instance.
+	/// </summary>
+	/// <value><c>true</c> if temporary; otherwise, <c>false</c>.</value>
+	[DefaultValue(false)]
+	public bool Temporary
+	{
+		get => flags.IsFlagSet(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY);
+		set
+		{
+			if (Temporary == value) return;
+			flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY, value);
+			if (value)
+			{
+				flags = GETPROPERTYSTOREFLAGS.GPS_TEMPORARY;
+				ReadOnly = false;
+			}
+			else
+			{
+				flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY, false);
+			}
+		}
+	}
 
 	/// <summary>Gets an <see cref="IEnumerable{T}"/> containing the keys of the <see cref="IReadOnlyDictionary{PROPERTYKEY, Object}"/>.</summary>
 	public IEnumerable<PROPERTYKEY> Keys => Run(ps => GetKeyEnum(ps).ToList())!;
@@ -170,7 +266,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
 	IEnumerator<KeyValuePair<PROPERTYKEY, object?>> IEnumerable<KeyValuePair<PROPERTYKEY, object?>>.GetEnumerator() =>
-		(Run(ps => GetKeyEnum(ps).Select(k => new KeyValuePair<PROPERTYKEY, object?>(k, TryGetValue(ps, k, out object? pv) ? pv : null))) ?? new KeyValuePair<PROPERTYKEY, object?>[0]).GetEnumerator();
+		(Run(ps => GetKeyEnum(ps).Select(k => new KeyValuePair<PROPERTYKEY, object?>(k, TryGetValue(ps, k, out object? pv) ? pv : null))) ?? []).GetEnumerator();
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
@@ -191,7 +287,12 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 	}
 
 	/// <summary>The IPropertyStore instance. This can be null.</summary>
-	protected virtual IPropertyStore? GetIPropertyStore() => iPropertyStore;
+	protected virtual IPropertyStore? GetIPropertyStore()
+	{
+		if (iPropertyStore is null && itemPath is not null)
+			SHGetPropertyStoreFromParsingName(itemPath, iBindCtx, flags, typeof(IPropertyStore).GUID, out iPropertyStore).ThrowIfFailed();
+		return iPropertyStore;
+	}
 
 	/// <summary>Gets an enumeration of the keys in the property store.</summary>
 	/// <returns>Keys in the property store.</returns>
@@ -221,24 +322,20 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 		return iPropertyStore is null ? default : action.Invoke(iPropertyStore);
 	}
 
-	private class PropertyDescriptionDictionary : IReadOnlyDictionary<PROPERTYKEY, PropertyDescription>
+	private class PropertyDescriptionDictionary(ReadOnlyPropertyStore ps) : IReadOnlyDictionary<PROPERTYKEY, PropertyDescription>
 	{
-		private readonly ReadOnlyPropertyStore store;
+		public IEnumerable<PropertyDescription> Values => ps.Keys.Select(GetPropertyDescription).ToList();
 
-		public PropertyDescriptionDictionary(ReadOnlyPropertyStore ps) => store = ps;
+		public int Count => ps.Count;
 
-		public IEnumerable<PropertyDescription> Values => store.Keys.Select(GetPropertyDescription).ToList();
-
-		public int Count => store.Count;
-
-		public IEnumerable<PROPERTYKEY> Keys => store.Keys;
+		public IEnumerable<PROPERTYKEY> Keys => ps.Keys;
 
 		public PropertyDescription this[PROPERTYKEY key] => GetPropertyDescription(key);
 
-		public bool ContainsKey(PROPERTYKEY key) => store.ContainsKey(key);
+		public bool ContainsKey(PROPERTYKEY key) => ps.ContainsKey(key);
 
 		public IEnumerator<KeyValuePair<PROPERTYKEY, PropertyDescription>> GetEnumerator() =>
-			store.Keys.Select(k => new KeyValuePair<PROPERTYKEY, PropertyDescription>(k, GetPropertyDescription(k))).ToList().GetEnumerator();
+			ps.Keys.Select(k => new KeyValuePair<PROPERTYKEY, PropertyDescription>(k, GetPropertyDescription(k))).ToList().GetEnumerator();
 
 #if NET40_OR_GREATER || NETSTANDARD2_0_OR_GREATER && !NET5_0_OR_GREATER
 #nullable disable
@@ -247,7 +344,7 @@ public abstract class ReadOnlyPropertyStore : IReadOnlyDictionary<PROPERTYKEY, o
 		public bool TryGetValue(PROPERTYKEY key, [MaybeNullWhen(false)] out PropertyDescription value)
 #endif
 		{
-			if (store.ContainsKey(key))
+			if (ps.ContainsKey(key))
 			{
 				value = this[key];
 				return true;

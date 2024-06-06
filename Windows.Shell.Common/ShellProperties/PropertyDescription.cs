@@ -29,10 +29,33 @@ public class PropertyDescription : IDisposable
 		key = pkey ?? iDesc.GetPropertyKey();
 	}
 
+	/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class from a specified property key.</summary>
+	/// <param name="propkey">The property key.</param>
+	public PropertyDescription(PROPERTYKEY propkey)
+	{
+		PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).ThrowIfFailed();
+		iDesc = (IPropertyDescription)ppv;
+		key = propkey;
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class from a property name.</summary>
+	/// <param name="name">A string that identifies the property.</param>
+	public PropertyDescription(string name)
+	{
+		PSGetPropertyDescriptionByName(name, typeof(IPropertyDescription).GUID, out var ppv).ThrowIfFailed();
+		iDesc = (IPropertyDescription)ppv;
+		key = iDesc.GetPropertyKey();
+	}
+
 	/// <summary>Creates a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
 	/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
 	public static PropertyDescription? Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv, propkey) : null;
+
+	/// <summary>Creates a <see cref="PropertyDescription"/> instance from a property key name.</summary>
+	/// <param name="name">A string that identifies the property.</param>
+	/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
+	public static PropertyDescription? Create(string name) => PSGetPropertyDescriptionByName(name, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv) : null;
 
 	/// <summary>Tries to create a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
@@ -152,7 +175,7 @@ public class PropertyDescription : IDisposable
 	/// <returns>An IconLocation for the image associated with the property value.</returns>
 	public IconLocation GetImageLocationForValue(object obj)
 	{
-		if (iDesc2 == null) iDesc2 = iDesc as IPropertyDescription2;
+		iDesc2 ??= iDesc as IPropertyDescription2;
 		return iDesc2 != null && IconLocation.TryParse(iDesc2.GetImageReferenceForValue(new PROPVARIANT(obj), out var img).Succeeded ? img : null, out var loc) ? loc : new IconLocation();
 	}
 

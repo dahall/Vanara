@@ -10,13 +10,23 @@ namespace Vanara.Windows.Shell;
 /// <summary>Encapsulates the IPropertyStore object.</summary>
 /// <seealso cref="IDictionary{PROPERTYKEY, Object}"/>
 /// <seealso cref="IDisposable"/>
-public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERTYKEY, object?>, IDisposable, INotifyPropertyChanged
+public class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERTYKEY, object?>, IDisposable, INotifyPropertyChanged
 {
 	private bool noICapabilities = false;
 	private IPropertyStoreCapabilities? pCapabilities;
 
 	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
-	protected PropertyStore() { }
+	protected PropertyStore() => flags |= GETPROPERTYSTOREFLAGS.GPS_READWRITE;
+
+	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class from a file system path.</summary>
+	/// <param name="path">A string that specifies the item path.</param>
+	/// <param name="propChangedHandler">The optional property changed handler.</param>
+	public PropertyStore(string path, PropertyChangedEventHandler? propChangedHandler = null) : base(path)
+	{
+		flags |= GETPROPERTYSTOREFLAGS.GPS_READWRITE;
+		if (propChangedHandler != null)
+			PropertyChanged += propChangedHandler;
+	}
 
 	/// <summary>Occurs when a property value changes.</summary>
 	public event PropertyChangedEventHandler? PropertyChanged;
@@ -25,14 +35,13 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	/// <value><c>true</c> if this instance is dirty; otherwise, <c>false</c>.</value>
 	public bool IsDirty { get; protected set; }
 
-	/// <inheritdoc/>
-	public override bool IsReadOnly => false;
-
 	/// <summary>Gets an <see cref="ICollection{T}"/> containing the keys of the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
 	public new ICollection<PROPERTYKEY> Keys => base.Keys.ToList();
 
 	/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
 	public new ICollection<object?> Values => base.Values.ToList();
+
+	bool ICollection<KeyValuePair<PROPERTYKEY, object?>>.IsReadOnly => ReadOnly;
 
 	/// <summary>Gets or sets the value of the property with the specified known key.</summary>
 	/// <value>The value.</value>
@@ -61,7 +70,7 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	{
 		if (ps is null)
 			throw new InvalidOperationException("Property store does not exist.");
-		if (IsReadOnly)
+		if (ReadOnly)
 			throw new InvalidOperationException("Property store is read-only.");
 		ps.SetValue(key, value, false);
 		OnPropertyChanged(key.ToString());
@@ -94,7 +103,7 @@ public abstract class PropertyStore : ReadOnlyPropertyStore, IDictionary<PROPERT
 	/// </remarks>
 	public bool IsPropertyWritable(in PROPERTYKEY key)
 	{
-		if (IsReadOnly) return false;
+		if (ReadOnly) return false;
 
 		// Check for an IPropertyStoreCapabilities if possible
 		if (pCapabilities is null && !noICapabilities)
