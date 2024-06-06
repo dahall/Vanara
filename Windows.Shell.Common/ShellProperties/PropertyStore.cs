@@ -19,34 +19,31 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <summary>The flags.</summary>
 	protected GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT;
 
-	/// <summary>An optional IBindCtx object, which provides access to a bind context.</summary>
-	protected System.Runtime.InteropServices.ComTypes.IBindCtx? iBindCtx = null;
-
 	/// <summary>If specified, the path to the file system item.</summary>
-	protected string? itemPath = null;
-
-	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class from a file system path.</summary>
-	/// <param name="path">A string that specifies the item path.</param>
-	/// <param name="propChangedHandler">The optional property changed handler.</param>
-	public PropertyStore(string path, PropertyChangedEventHandler? propChangedHandler = null) : this(path, GETPROPERTYSTOREFLAGS.GPS_DEFAULT)
-	{
-		if (propChangedHandler != null)
-			PropertyChanged += propChangedHandler;
-	}
-
-	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
-	protected PropertyStore() { }
+	protected PIDL? item = null;
 
 	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
 	/// <param name="path">A string that specifies the item path.</param>
 	/// <param name="flags">One or more values from the GETPROPERTYSTOREFLAGS constants.</param>
 	/// <param name="pbc">An optional IBindCtx object, which provides access to a bind context.</param>
-	protected PropertyStore(string path, GETPROPERTYSTOREFLAGS? flags = null, System.Runtime.InteropServices.ComTypes.IBindCtx? pbc = null)
+	public PropertyStore(string path, GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT, System.Runtime.InteropServices.ComTypes.IBindCtx? pbc = null)
 	{
-		itemPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(path));
-		if (flags.HasValue) this.flags = flags.Value;
-		iBindCtx = pbc;
+		IntPtr bc = pbc != null ? Marshal.GetIUnknownForObject(pbc!) : default;
+		SHParseDisplayName(Path.GetFullPath(Environment.ExpandEnvironmentVariables(path)), bc, out item, 0, out _).ThrowIfFailed();
+		this.flags = flags;
 	}
+
+	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
+	/// <param name="id">The item ID List representing the object.</param>
+	/// <param name="flags">One or more values from the GETPROPERTYSTOREFLAGS constants.</param>
+	public PropertyStore(PIDL id, GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT)
+	{
+		item = id;
+		this.flags = flags;
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
+	protected PropertyStore() { }
 
 	/// <summary>Occurs when a property value changes.</summary>
 	public event PropertyChangedEventHandler? PropertyChanged;
@@ -394,15 +391,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	}
 
 	/// <summary>The IPropertyStore instance. This can be null.</summary>
-	protected virtual IPropertyStore? GetIPropertyStore()
-	{
-		if (itemPath is not null)
-		{
-			SHGetPropertyStoreFromParsingName(itemPath, iBindCtx, flags, typeof(IPropertyStore).GUID, out var iPropertyStore).ThrowIfFailed();
-			return iPropertyStore;
-		}
-		return null;
-	}
+	protected virtual IPropertyStore? GetIPropertyStore() => item is not null ? SHGetPropertyStoreFromIDList<IPropertyStore>(item, flags) : null;
 
 	/// <summary>Gets an enumeration of the keys in the property store.</summary>
 	/// <returns>Keys in the property store.</returns>
