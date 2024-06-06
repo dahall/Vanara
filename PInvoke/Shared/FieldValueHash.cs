@@ -8,6 +8,7 @@ namespace Vanara.PInvoke;
 /// <summary>Gets a static field's name from its value and caches the list for faster lookups.</summary>
 public static class StaticFieldValueHash
 {
+	private static readonly object cacheLock = new();
 	private static readonly Dictionary<(Type, Type), IDictionary<int, (string, string?)>> cache = [];
 
 	/// <summary>Adds the seqence of field values to the associated cache.</summary>
@@ -63,7 +64,12 @@ public static class StaticFieldValueHash
 			hash = typeof(TType).GetFields(BindingFlags.Public | BindingFlags.Static).
 				Where(fi => fi.FieldType == typeof(TFieldType)).Distinct(FIValueComp<TFieldType>.Default).
 				ToDictionary<FieldInfo, int, (string, string?)>(fi => fi.GetValue(null)!.GetHashCode(), fi => (fi.Name, null));
-			cache.Add(tt, hash);
+			lock (cacheLock)
+#if NET5_0_OR_GREATER || NETCOREAPP
+				cache.TryAdd(tt, hash);
+#else
+				{ if (!cache.ContainsKey(tt)) cache.Add(tt, hash); }
+#endif
 		}
 		var ret = hash.TryGetValue(value.GetHashCode(), out var t);
 		fieldName = t.Item1;
