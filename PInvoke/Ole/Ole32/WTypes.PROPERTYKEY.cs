@@ -85,6 +85,14 @@ public static partial class Ole32
 			pid = id;
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="PROPERTYKEY"/> struct using a canonical property name.</summary>
+		/// <param name="canonicalName">Name of the canonical.</param>
+		public PROPERTYKEY(string canonicalName)
+		{
+			PropSys.PSGetPropertyKeyFromName(canonicalName, out var pk).ThrowIfFailed();
+			this = pk;
+		}
+
 		/// <summary>A unique GUID for the property.</summary>
 		public readonly Guid Key => fmtid;
 
@@ -99,6 +107,13 @@ public static partial class Ole32
 
 		/// <inheritdoc/>
 		public override string ToString() => GetCanonicalName() ?? ReverseLookup(this) ?? $"{Key:B} {Id}";
+
+		/// <summary>Converts the value to the canonical value, according to the property description.</summary>
+		/// <param name="value">
+		/// On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this function returns
+		/// successfully, contains the canonical value.
+		/// </param>
+		public void CoerceToCanonicalValue(PROPVARIANT value) => PropSys.PSCoerceToCanonicalValue(this, value).ThrowIfFailed();
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is PROPERTYKEY other && Equals(other);
