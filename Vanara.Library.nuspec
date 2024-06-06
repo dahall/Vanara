@@ -128,6 +128,7 @@
       <dependency id="Vanara.Windows.Forms" version="4.0.2" />
       <dependency id="Vanara.Windows.Shell.Common" version="4.0.2" />
       <dependency id="Vanara.Windows.Shell" version="4.0.2" />
+      <dependency id="Vanara.PInvoke.WindowsUpdate" version="4.0.2" />
       <dependency id="Vanara.WinUI.Extensions" version="4.0.2" />
       <dependency id="Vanara.WPF.Extensions" version="4.0.2" />
     </dependencies>

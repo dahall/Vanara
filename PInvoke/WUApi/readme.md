@@ -29,6 +29,7 @@ Native Enum | Header | Managed Enum
 [UpdateServiceOption](https://www.google.com/search?num=5&q=UpdateServiceOption+site%3Alearn.microsoft.com) | wuapi.h | [Vanara.PInvoke.WUApi.UpdateServiceOption](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateServiceOption)  
 [UpdateServiceRegistrationState](https://www.google.com/search?num=5&q=UpdateServiceRegistrationState+site%3Alearn.microsoft.com) | wuapi.h | [Vanara.PInvoke.WUApi.UpdateServiceRegistrationState](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateServiceRegistrationState)  
 [UpdateType](https://www.google.com/search?num=5&q=UpdateType+site%3Alearn.microsoft.com) | wuapi.h | [Vanara.PInvoke.WUApi.UpdateType](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateType)  
+[WUError](https://www.google.com/search?num=5&q=WUError+site%3Alearn.microsoft.com) | wuerror.h | [Vanara.PInvoke.WUApi.WUError](https://github.com/dahall/Vanara/search?l=C%23&q=WUError)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
@@ -111,15 +112,15 @@ Native Interface | Header | Managed Interface
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
-[AutomaticUpdates](https://www.google.com/search?num=5&q=AutomaticUpdates+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.AutomaticUpdates](https://github.com/dahall/Vanara/search?l=C%23&q=AutomaticUpdates)  
-[InstallationAgent](https://www.google.com/search?num=5&q=InstallationAgent+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.InstallationAgent](https://github.com/dahall/Vanara/search?l=C%23&q=InstallationAgent)  
-[StringCollection](https://www.google.com/search?num=5&q=StringCollection+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.StringCollection](https://github.com/dahall/Vanara/search?l=C%23&q=StringCollection)  
-[SystemInformation](https://www.google.com/search?num=5&q=SystemInformation+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.SystemInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SystemInformation)  
-[UpdateCollection](https://www.google.com/search?num=5&q=UpdateCollection+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateCollection](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateCollection)  
-[UpdateDownloader](https://www.google.com/search?num=5&q=UpdateDownloader+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateDownloader](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateDownloader)  
-[UpdateInstaller](https://www.google.com/search?num=5&q=UpdateInstaller+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateInstaller](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateInstaller)  
-[UpdateSearcher](https://www.google.com/search?num=5&q=UpdateSearcher+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateSearcher](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateSearcher)  
-[UpdateServiceManager](https://www.google.com/search?num=5&q=UpdateServiceManager+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateServiceManager](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateServiceManager)  
-[UpdateSession](https://www.google.com/search?num=5&q=UpdateSession+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateSession](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateSession)  
-[WebProxy](https://www.google.com/search?num=5&q=WebProxy+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.WebProxy](https://github.com/dahall/Vanara/search?l=C%23&q=WebProxy)  
-[WindowsUpdateAgentInfo](https://www.google.com/search?num=5&q=WindowsUpdateAgentInfo+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.WindowsUpdateAgentInfo](https://github.com/dahall/Vanara/search?l=C%23&q=WindowsUpdateAgentInfo)  
+[AutomaticUpdatesClass](https://www.google.com/search?num=5&q=AutomaticUpdatesClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.AutomaticUpdatesClass](https://github.com/dahall/Vanara/search?l=C%23&q=AutomaticUpdatesClass)  
+[InstallationAgentClass](https://www.google.com/search?num=5&q=InstallationAgentClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.InstallationAgentClass](https://github.com/dahall/Vanara/search?l=C%23&q=InstallationAgentClass)  
+[StringCollectionClass](https://www.google.com/search?num=5&q=StringCollectionClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.StringCollectionClass](https://github.com/dahall/Vanara/search?l=C%23&q=StringCollectionClass)  
+[SystemInformationClass](https://www.google.com/search?num=5&q=SystemInformationClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.SystemInformationClass](https://github.com/dahall/Vanara/search?l=C%23&q=SystemInformationClass)  
+[UpdateCollectionClass](https://www.google.com/search?num=5&q=UpdateCollectionClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateCollectionClass](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateCollectionClass)  
+[UpdateDownloaderClass](https://www.google.com/search?num=5&q=UpdateDownloaderClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateDownloaderClass](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateDownloaderClass)  
+[UpdateInstallerClass](https://www.google.com/search?num=5&q=UpdateInstallerClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateInstallerClass](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateInstallerClass)  
+[UpdateSearcherClass](https://www.google.com/search?num=5&q=UpdateSearcherClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateSearcherClass](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateSearcherClass)  
+[UpdateServiceManagerClass](https://www.google.com/search?num=5&q=UpdateServiceManagerClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateServiceManagerClass](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateServiceManagerClass)  
+[UpdateSessionClass](https://www.google.com/search?num=5&q=UpdateSessionClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.UpdateSessionClass](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateSessionClass)  
+[WebProxyClass](https://www.google.com/search?num=5&q=WebProxyClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.WebProxyClass](https://github.com/dahall/Vanara/search?l=C%23&q=WebProxyClass)  
+[WindowsUpdateAgentInfoClass](https://www.google.com/search?num=5&q=WindowsUpdateAgentInfoClass+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WUApi.WindowsUpdateAgentInfoClass](https://github.com/dahall/Vanara/search?l=C%23&q=WindowsUpdateAgentInfoClass)  

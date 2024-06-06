@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 6% API coverage (38 of 631 functions)  
+### Methods - 5% API coverage (38 of 634 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
@@ -278,6 +278,8 @@ Native Method | Header | Managed Method
 [RtlGetElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlGetElementGenericTableAvl+site%3Alearn.microsoft.com) |  |   
 [RtlGetEnabledExtendedFeatures](https://www.google.com/search?num=5&q=RtlGetEnabledExtendedFeatures+site%3Alearn.microsoft.com) |  |   
 [RtlGetExtendedContextLength2](https://www.google.com/search?num=5&q=RtlGetExtendedContextLength2+site%3Alearn.microsoft.com) |  |   
+[RtlGetFeatureToggleConfiguration](https://www.google.com/search?num=5&q=RtlGetFeatureToggleConfiguration+site%3Alearn.microsoft.com) |  |   
+[RtlGetFeatureTogglesChangeToken](https://www.google.com/search?num=5&q=RtlGetFeatureTogglesChangeToken+site%3Alearn.microsoft.com) |  |   
 [RtlGetFunctionTableListHead](https://www.google.com/search?num=5&q=RtlGetFunctionTableListHead+site%3Alearn.microsoft.com) |  |   
 [RtlGetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetGroupSecurityDescriptor+site%3Alearn.microsoft.com) |  |   
 [RtlGetImageFileMachines](https://www.google.com/search?num=5&q=RtlGetImageFileMachines+site%3Alearn.microsoft.com) |  |   
@@ -366,6 +368,7 @@ Native Method | Header | Managed Method
 [RtlMultiByteToUnicodeN](https://www.google.com/search?num=5&q=RtlMultiByteToUnicodeN+site%3Alearn.microsoft.com) |  |   
 [RtlMultiByteToUnicodeSize](https://www.google.com/search?num=5&q=RtlMultiByteToUnicodeSize+site%3Alearn.microsoft.com) |  |   
 [RtlNormalizeSecurityDescriptor](https://www.google.com/search?num=5&q=RtlNormalizeSecurityDescriptor+site%3Alearn.microsoft.com) |  |   
+[RtlNotifyFeatureToggleUsage](https://www.google.com/search?num=5&q=RtlNotifyFeatureToggleUsage+site%3Alearn.microsoft.com) |  |   
 [RtlNotifyFeatureUsage](https://www.google.com/search?num=5&q=RtlNotifyFeatureUsage+site%3Alearn.microsoft.com) |  |   
 [RtlNtStatusToDosError](https://www.google.com/search?num=5&q=RtlNtStatusToDosError+site%3Alearn.microsoft.com) |  |   
 [RtlNumberGenericTableElements](https://www.google.com/search?num=5&q=RtlNumberGenericTableElements+site%3Alearn.microsoft.com) |  |   
