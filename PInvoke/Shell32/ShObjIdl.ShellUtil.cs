@@ -140,6 +140,20 @@ public static partial class Shell32
 			return (IShellItem)unk!;
 		}
 
+		/// <summary>Gets the size of a bitmap handle.</summary>
+		/// <param name="hbmp">The bitmap handle.</param>
+		/// <returns>The width of the image referenced by <paramref name="hbmp"/>.</returns>
+		public static SIZE GetSize(HBITMAP hbmp)
+		{
+			var bi = GetObject<BITMAP>(hbmp);
+			return new(bi.bmWidth, bi.bmHeight);
+		}
+
+		/// <summary>Gets the width of a bitmap handle.</summary>
+		/// <param name="hbmp">The bitmap handle.</param>
+		/// <returns>The width of the image referenced by <paramref name="hbmp"/>.</returns>
+		public static uint GetWidth(HBITMAP hbmp) => (uint)GetObject<BITMAP>(hbmp).bmWidth;
+
 		/// <summary>Gets the icon for the item using the specified characteristics.</summary>
 		/// <param name="psf">The IShellFolder from which to request the IExtractIcon instance.</param>
 		/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
@@ -248,7 +262,7 @@ public static partial class Shell32
 					using ICONINFO icoInfo = new();
 					if (GetIconInfo(hico, icoInfo))
 					{
-						imgSz = (uint)GetObject<BITMAP>(icoInfo.hbmColor).bmWidth;
+						imgSz = GetWidth(icoInfo.hbmColor);
 					}
 				}
 				catch (COMException e)
@@ -304,6 +318,50 @@ public static partial class Shell32
 		}
 
 		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
+		/// <param name="path">A display name.</param>
+		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
+		/// <param name="flags">One or more of the SIIGBF flags.</param>
+		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
+		/// <returns>The result of function.</returns>
+		public static HRESULT LoadImageFromImageFactory(string path, ref SIZE imgSz, SIIGBF flags, out SafeHBITMAP hbmp)
+		{
+			var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItemImageFactory).GUID, out var ppv);
+			if (hr.Succeeded)
+				return LoadImageFromImageFactory((IShellItemImageFactory)ppv!, ref imgSz, flags, out hbmp);
+			hbmp = SafeHBITMAP.Null;
+			return hr;
+		}
+
+		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
+		/// <param name="pidl">The source PIDL.</param>
+		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
+		/// <param name="flags">One or more of the SIIGBF flags.</param>
+		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
+		/// <returns>The result of function.</returns>
+		public static HRESULT LoadImageFromImageFactory(PIDL pidl, ref SIZE imgSz, SIIGBF flags, out SafeHBITMAP hbmp)
+		{
+			var hr = SHCreateItemFromIDList(pidl, typeof(IShellItemImageFactory).GUID, out var ppv);
+			if (hr.Succeeded)
+				return LoadImageFromImageFactory((IShellItemImageFactory)ppv!, ref imgSz, flags, out hbmp);
+			hbmp = SafeHBITMAP.Null;
+			return hr;
+		}
+
+		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
+		/// <param name="pshiif">The IShellItemImageFactory instance.</param>
+		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
+		/// <param name="flags">One or more of the SIIGBF flags.</param>
+		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
+		/// <returns>The result of function.</returns>
+		public static HRESULT LoadImageFromImageFactory(IShellItemImageFactory pshiif, ref SIZE imgSz, SIIGBF flags, out SafeHBITMAP hbmp)
+		{
+			var hr = pshiif.GetImage(imgSz, flags, out hbmp);
+			if (hr.Succeeded)
+				imgSz = GetSize(hbmp);
+			return hr;
+		}
+
+		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
 		/// <param name="psi">The IShellItem from which to request the IThumbnailProvider instance.</param>
 		/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
 		/// <param name="hbmp">The resulting Bitmap, on success, or <c>SafeHBITMAP.Null</c> on failure.</param>
@@ -355,7 +413,7 @@ public static partial class Shell32
 				HRESULT hr = itp.GetThumbnail(imgSz, out hbmp, out _);
 				if (hr.Succeeded)
 				{
-					imgSz = (uint)GetObject<BITMAP>(hbmp).bmWidth;
+					imgSz = GetWidth(hbmp);
 				}
 
 				return hr;

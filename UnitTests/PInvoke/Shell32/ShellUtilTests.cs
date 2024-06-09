@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Win32;
+using NUnit.Framework;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.Shell32.ShellUtil;
 
@@ -83,7 +84,7 @@ public class ShellUtilTests
 	public void LoadImageFromExtractImageTest()
 	{
 		IShellItem? shi = null;
-		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.ImageFile), Throws.Nothing);
+		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.WordDoc), Throws.Nothing);
 		try
 		{
 			var pi = GetParentAndItem(shi!);
@@ -99,6 +100,42 @@ public class ShellUtilTests
 			Marshal.ReleaseComObject(shi!);
 		}
 	}
+
+	public static readonly int[] sizes = { 16, 32, 48, 96, 256 };
+	public static readonly SIIGBF[] flagOp = { SIIGBF.SIIGBF_INCACHEONLY, 0 };
+
+	[Test]
+	public void LoadImageFromImageFactoryTest()
+	{
+		var t = new System.Diagnostics.Stopwatch();
+		Assert.That(SHParseDisplayName(TestCaseSources.LargeFile, default, out var pChild, 0, out _), ResultIs.Successful);
+		foreach (var w in sizes)
+		{
+			ClearIconCache();
+			foreach (var f in flagOp)
+			{
+				SIZE sz = new(w, w);
+				t.Restart();
+				try
+				{
+					HRESULT hr1 = LoadImageFromImageFactory(pChild, ref sz, f, out var hBmp);
+					var ticks = t.ElapsedMilliseconds;
+
+					HRESULT hr2 = LoadImageFromImageFactory(pChild, ref sz, f, out hBmp);
+					var ticks2 = t.ElapsedMilliseconds - ticks;
+
+					TestContext.Write($"1\t{ticks}\t{w}\t{f}\t{hr1}");
+					TestContext.Write($"2\t{ticks2}\t{w}\t{f}\t{hr2}");
+				}
+				catch (Exception ex)
+				{
+					TestContext.WriteLine(ex.Message);
+				}
+			}
+		}
+	}
+
+	private static void ClearIconCache() => Assert.That(SystemVolumeCache.CreateInitializedInstance().Purge(), ResultIs.Successful);
 
 	[Test]
 	public void LoadImageFromThumbnailProviderTest()
