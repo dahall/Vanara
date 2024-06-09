@@ -71,7 +71,6 @@ Class | Description
 [Vanara.Windows.Shell.PropertyStore](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyStore) | Encapsulates the IPropertyStore object.
 [Vanara.Windows.Shell.PropertyType](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyType) | Exposes methods that extract data from enumeration information.
 [Vanara.Windows.Shell.PropertyTypeList](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyTypeList) | Exposes methods that enumerate the possible values for a property.
-[Vanara.Windows.Shell.ReadOnlyPropertyStore](https://github.com/dahall/Vanara/search?l=C%23&q=ReadOnlyPropertyStore) | Encapsulates the IPropertyStore object.
 [Vanara.Windows.Shell.RecycleBin](https://github.com/dahall/Vanara/search?l=C%23&q=RecycleBin) | A static object that represents the system Recycle Bin.
 [Vanara.Windows.Shell.RegBasedDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedDictionary<T>) | A virtual dictionary that is based on values in the Windows Registry.
 [Vanara.Windows.Shell.RegBasedSettings](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedSettings) | Base class for registry based settings.
@@ -92,6 +91,8 @@ Class | Description
 [Vanara.Windows.Shell.ShellFolder](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFolder) | A folder or container of `Vanara.Windows.Shell.ShellItem` instances.
 [Vanara.Windows.Shell.ShellFolderCategorizer](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFolderCategorizer) | Exposes a list of categorizers registered on an IShellFolder.
 [Vanara.Windows.Shell.ShellFolderCategory](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFolderCategory) | A shell folder category object.
+[Vanara.Windows.Shell.ShellIconExtractedEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=ShellIconExtractedEventArgs) | Event arguments that expose an ID list and associated image.
+[Vanara.Windows.Shell.ShellIconExtractor](https://github.com/dahall/Vanara/search?l=C%23&q=ShellIconExtractor) | Class that simplifies extracting icons from items in a Shell Folder.
 [Vanara.Windows.Shell.ShellImageList](https://github.com/dahall/Vanara/search?l=C%23&q=ShellImageList) | Represents the System Image List holding images for all shell icons.
 [Vanara.Windows.Shell.ShellItem](https://github.com/dahall/Vanara/search?l=C%23&q=ShellItem) | Encapsulates an item in the Windows Shell.
 [Vanara.Windows.Shell.ShellItemArray](https://github.com/dahall/Vanara/search?l=C%23&q=ShellItemArray) | A folder or container of `Vanara.Windows.Shell.ShellItem` instances.
