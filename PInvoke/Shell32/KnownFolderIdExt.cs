@@ -42,6 +42,14 @@ public static class KnownFolderIdExt
 	/// <returns>The <see cref="IShellItem"/> instance.</returns>
 	public static IShellItem? GetIShellItem(this KNOWNFOLDERID id) => SHGetKnownFolderItem<IShellItem>(id);
 
+	/// <summary>Returns the <see cref="KNOWNFOLDERID"/> corresponding to the provided <paramref name="guid"/> value.</summary>
+	/// <param name="guid">The unique identifier representing a known folder.</param>
+	/// <returns>A corresponding <see cref="KNOWNFOLDERID"/>, if found. If not, an exception is thrown.</returns>
+	/// <exception cref="ArgumentOutOfRangeException">guid - Provided GUID value does not correspond to a known folder.</exception>
+	public static KNOWNFOLDERID KnownFolderId(this Guid guid) => 
+		AssociateAttribute.TryEnumLookup<KNOWNFOLDERID>(guid, out var kf) ? kf :
+		throw new ArgumentOutOfRangeException(nameof(guid), "Provided GUID value does not correspond to a known folder.");
+
 	/// <summary>Gets a registry property associated with this known folder.</summary>
 	/// <typeparam name="T">Return type.</typeparam>
 	/// <param name="id">The known folder.</param>

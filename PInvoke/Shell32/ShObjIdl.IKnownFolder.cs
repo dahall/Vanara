@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vanara.PInvoke;
@@ -1773,11 +1774,12 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields void
 	// FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "0ad17dd3-e612-403a-b8c3-e93d5f259c1f")]
-	public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD)
-	{
-		foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(StrPtrUni)))
-			Marshal.FreeCoTaskMem((IntPtr)(StrPtrUni)fi.GetValue(pKFD)!);
-	}
+	[Obsolete("Unnecessary when using PInvoke since values are freed when converting to System.String. This method does nothing.")]
+	public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD) { }
+	//{
+	//	foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(StrPtrUni)))
+	//		Marshal.FreeCoTaskMem((IntPtr)(StrPtrUni)fi.GetValue(pKFD)!);
+	//}
 
 	/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>
 	/// <param name="mgr">The <see cref="IKnownFolderManager"/> instance.</param>
@@ -1826,13 +1828,15 @@ public static partial class Shell32
 		/// settings. This name is meant to be a unique, human-readable name. Third parties are recommended to follow the format
 		/// Company.Application.Name. The name given here should not be confused with the display name.
 		/// </summary>
-		public StrPtrUni pszName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszName;
 
 		/// <summary>
 		/// A pointer to a short description of the known folder, stored as a null-terminated Unicode string. This description should
 		/// include the folder's purpose and usage.
 		/// </summary>
-		public StrPtrUni pszDescription;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszDescription;
 
 		/// <summary>
 		/// A KNOWNFOLDERID value that names another known folder to serve as the parent folder. Applies to common and per-user folders
@@ -1842,17 +1846,31 @@ public static partial class Shell32
 		public Guid fidParent;
 
 		/// <summary>
+		/// A KNOWNFOLDERID enumeration value that names another known folder to serve as the parent folder. Applies to common and per-user
+		/// folders only. This value is used in conjunction with pszRelativePath. See Remarks for more details. This value is optional if no
+		/// value is provided for pszRelativePath. On retrieval, if the value does not map to an enuumeration value, a <see langword="null"/>
+		/// is returned. If a <see langword="null"/> is provided when setting, it maps to <see cref="Guid.Empty"/>.
+		/// </summary>
+		public KNOWNFOLDERID? fidParentEnum
+		{
+			readonly get => AssociateAttribute.TryEnumLookup(fidParent, out KNOWNFOLDERID kf) ? kf : null;
+			set => fidParent = value.HasValue ? value.Value.Guid() : Guid.Empty;
+		}
+
+		/// <summary>
 		/// Optional. A pointer to a path relative to the parent folder specified in fidParent. This is a null-terminated Unicode
 		/// string, refers to the physical file system path, and is not localized. Applies to common and per-user folders only. See
 		/// Remarks for more details.
 		/// </summary>
-		public StrPtrUni pszRelativePath;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pszRelativePath;
 
 		/// <summary>
 		/// A pointer to the Shell namespace folder path of the folder, stored as a null-terminated Unicode string. Applies to virtual
 		/// folders only. For example, Control Panel has a parsing name of ::%CLSID_MyComputer%\::%CLSID_ControlPanel%.
 		/// </summary>
-		public StrPtrUni pszParsingName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszParsingName;
 
 		/// <summary>
 		/// Optional. A pointer to the default tooltip resource used for this known folder when it is created. This is a null-terminated
@@ -1864,7 +1882,8 @@ public static partial class Shell32
 		/// </para>
 		/// <para>This information is not required for virtual folders.</para>
 		/// </summary>
-		public StrPtrUni pszTooltip;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pszTooltip;
 
 		/// <summary>
 		/// Optional. A pointer to the default localized name resource used when the folder is created. This is a null-terminated
@@ -1876,7 +1895,8 @@ public static partial class Shell32
 		/// </para>
 		/// <para>This information is not required for virtual folders.</para>
 		/// </summary>
-		public StrPtrUni pszLocalizedName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pszLocalizedName;
 
 		/// <summary>
 		/// Optional. A pointer to the default icon resource used when the folder is created. This is a null-terminated Unicode string
@@ -1888,7 +1908,8 @@ public static partial class Shell32
 		/// </para>
 		/// <para>This information is not required for virtual folders.</para>
 		/// </summary>
-		public StrPtrUni pszIcon;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pszIcon;
 
 		/// <summary>
 		/// Optional. A pointer to a Security Descriptor Definition Language format string. This is a null-terminated Unicode string
@@ -1896,7 +1917,8 @@ public static partial class Shell32
 		/// new folder inherits the security descriptor of its parent. This is particularly useful for common folders that are accessed
 		/// by all users.
 		/// </summary>
-		public StrPtrUni pszSecurity;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string? pszSecurity;
 
 		/// <summary>
 		/// Optional. Default file system attributes given to the folder when it is created. For example, the file could be hidden and
@@ -1917,24 +1939,15 @@ public static partial class Shell32
 		/// </summary>
 		public Guid ftidType;
 
-		/// <summary>Frees the allocated fields in the result from IKnownFolder::GetFolderDefinition.</summary>
-		/// <remarks>
-		/// This is an inline helper function that calls CoTaskMemFree on the fields in the structure that need to be freed. Its
-		/// implementation can be seen in the header file.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields void
-		// FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
-		[PInvokeData("shobjidl_core.h", MSDNShortId = "NF:shobjidl_core.FreeKnownFolderDefinitionFields")]
-		public void FreeKnownFolderDefinitionFields()
+		/// <summary>
+		/// One of the FOLDERTYPEID enumeration values that identifies the known folder type based on its contents (such as documents, music,
+		/// or photographs). On retrieval, if the value does not map to an enuumeration value, a <see langword="null"/> is returned. If a
+		/// <see langword="null"/> is provided when setting, it maps to <see cref="Guid.Empty"/>.
+		/// </summary>
+		public FOLDERTYPEID? ftidTypeEnum
 		{
-			Marshal.FreeCoTaskMem((IntPtr)pszName);
-			Marshal.FreeCoTaskMem((IntPtr)pszDescription);
-			Marshal.FreeCoTaskMem((IntPtr)pszRelativePath);
-			Marshal.FreeCoTaskMem((IntPtr)pszParsingName);
-			Marshal.FreeCoTaskMem((IntPtr)pszTooltip);
-			Marshal.FreeCoTaskMem((IntPtr)pszLocalizedName);
-			Marshal.FreeCoTaskMem((IntPtr)pszIcon);
-			Marshal.FreeCoTaskMem((IntPtr)pszSecurity);
+			readonly get => AssociateAttribute.TryEnumLookup(ftidType, out FOLDERTYPEID kf) ? kf : null;
+			set => ftidType = value.HasValue ? value.Value.Guid() : Guid.Empty;
 		}
 	}
 
@@ -1951,6 +1964,14 @@ public static partial class Shell32
 
 		/// <summary>Initializes a new instance of the <see cref="KnownFolderDetailAttribute"/> class with a GUID for the <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="knownFolderGuid">The GUID for the <see cref="KNOWNFOLDERID"/>.</param>
-		public KnownFolderDetailAttribute(string knownFolderGuid) : base(knownFolderGuid) { }
+		public KnownFolderDetailAttribute(string knownFolderGuid) : base(knownFolderGuid)
+		{
+			if (TryEnumLookup<KNOWNFOLDERID>(Guid, out var kf))
+			{
+				var sf = kf.SpecialFolder();
+				if (sf.HasValue)
+					Equivalent = sf.Value;
+			}
+		}
 	}
 }
