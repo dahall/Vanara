@@ -1956,22 +1956,12 @@ public static partial class Shell32
 	public class CKnownFolderManager { }
 
 	/// <summary>Provides information about a <see cref="KNOWNFOLDERID"/>.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="KnownFolderDetailAttribute"/> class with a GUID for the <see cref="KNOWNFOLDERID"/>.</remarks>
+	/// <param name="knownFolderGuid">The GUID for the <see cref="KNOWNFOLDERID"/>.</param>
 	[AttributeUsage(AttributeTargets.Field)]
-	internal class KnownFolderDetailAttribute : AssociateAttribute
+	internal class KnownFolderDetailAttribute(string knownFolderGuid) : AssociateAttribute(knownFolderGuid)
 	{
 		/// <summary>The equivalent SpecialFolder.</summary>
-		public Environment.SpecialFolder Equivalent = (Environment.SpecialFolder)0XFFFF;
-
-		/// <summary>Initializes a new instance of the <see cref="KnownFolderDetailAttribute"/> class with a GUID for the <see cref="KNOWNFOLDERID"/>.</summary>
-		/// <param name="knownFolderGuid">The GUID for the <see cref="KNOWNFOLDERID"/>.</param>
-		public KnownFolderDetailAttribute(string knownFolderGuid) : base(knownFolderGuid)
-		{
-			if (TryEnumLookup<KNOWNFOLDERID>(Guid, out var kf))
-			{
-				var sf = kf.SpecialFolder();
-				if (sf.HasValue)
-					Equivalent = sf.Value;
-			}
-		}
+		public Environment.SpecialFolder Equivalent { get; set; } = (Environment.SpecialFolder)0xFFFF;
 	}
 }

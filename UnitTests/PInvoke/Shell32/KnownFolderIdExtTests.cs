@@ -41,4 +41,10 @@ public class KnownFolderIdExtTests
 	{
 		Assert.That(KNOWNFOLDERID.FOLDERID_Documents.SpecialFolder(), Is.EqualTo(Environment.SpecialFolder.MyDocuments));
 	}
+
+	[Test]
+	public void LookupTest()
+	{
+		Assert.That(() => KNOWNFOLDERID.FOLDERID_Documents.Guid().KnownFolderId(), Is.EqualTo(KNOWNFOLDERID.FOLDERID_Documents));
+	}
 }
