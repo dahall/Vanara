@@ -46,9 +46,8 @@ public static class KnownFolderIdExt
 	/// <param name="guid">The unique identifier representing a known folder.</param>
 	/// <returns>A corresponding <see cref="KNOWNFOLDERID"/>, if found. If not, an exception is thrown.</returns>
 	/// <exception cref="ArgumentOutOfRangeException">guid - Provided GUID value does not correspond to a known folder.</exception>
-	public static KNOWNFOLDERID KnownFolderId(this Guid guid) => 
-		AssociateAttribute.TryEnumLookup<KNOWNFOLDERID>(guid, out var kf) ? kf :
-		throw new ArgumentOutOfRangeException(nameof(guid), "Provided GUID value does not correspond to a known folder.");
+	public static KNOWNFOLDERID? KnownFolderId(this Guid guid) =>
+		AssociateAttribute.TryEnumLookup<KNOWNFOLDERID>(guid, out var kf) ? kf : null;
 
 	/// <summary>Gets a registry property associated with this known folder.</summary>
 	/// <typeparam name="T">Return type.</typeparam>
@@ -66,13 +65,13 @@ public static class KnownFolderIdExt
 	/// <summary>Retrieves the <see cref="KNOWNFOLDERID"/> associated with the <see cref="Environment.SpecialFolder"/>.</summary>
 	/// <param name="spFolder">The <see cref="Environment.SpecialFolder"/>.</param>
 	/// <returns>Matching <see cref="KNOWNFOLDERID"/>.</returns>
-	public static KNOWNFOLDERID KnownFolderId(this Environment.SpecialFolder spFolder)
+	public static KNOWNFOLDERID? KnownFolderId(this Environment.SpecialFolder spFolder)
 	{
 		if (spFolder == Environment.SpecialFolder.Personal) return KNOWNFOLDERID.FOLDERID_Documents;
 		if (spFolder == Environment.SpecialFolder.DesktopDirectory) return KNOWNFOLDERID.FOLDERID_Desktop;
 		foreach (KNOWNFOLDERID val in Enum.GetValues(typeof(KNOWNFOLDERID)).Cast<KNOWNFOLDERID>())
 			if (val.SpecialFolder() == spFolder) return val;
-		throw new InvalidCastException(@"There is not a Known Folder equivalent to this SpecialFolder.");
+		return null;
 	}
 
 	/// <summary>Retrieves the name associated with a <see cref="KNOWNFOLDERID"/>.</summary>
