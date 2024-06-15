@@ -448,7 +448,7 @@ public static partial class InteropExtensions
 	/// <param name="iid">The interface identifier (IID) of the requested interface.</param>
 	/// <param name="ppv">When this method returns, contains a reference to the returned interface.</param>
 	/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
-	public static int QueryInterface(object iUnk, Guid iid, out object? ppv)
+	public static int QueryInterface(this object iUnk, Guid iid, out object? ppv)
 	{
 		var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref iid, out IntPtr ippv);
 		ppv = hr == 0 ? Marshal.GetObjectForIUnknown(ippv) : null;
