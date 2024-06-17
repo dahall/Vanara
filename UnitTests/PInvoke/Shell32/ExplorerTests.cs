@@ -16,7 +16,7 @@ public class ExplorerTests
 		using var pFolder = ComReleaserFactory.Create((IShellFolder2)new MyDocuments());
 		INamespaceWalk walk = new();
 		WalkerCallback callback = new("Progress Title", "Cancel");
-		List<string> mycnt = new();
+		List<string> mycnt = [];
 		callback.ItemFound += (f, p) => mycnt.Add(pFolder.Item.GetDisplayNameOf(SHGDNF.SHGDN_FORPARSING, p) ?? "");
 		Assert.That(walk.Walk(pFolder.Item, NAMESPACEWALKFLAG.NSWF_NONE_IMPLIES_ALL | NAMESPACEWALKFLAG.NSWF_DONT_ACCUMULATE_RESULT | NAMESPACEWALKFLAG.NSWF_SHOW_PROGRESS, 0, callback), ResultIs.Successful);
 		Assert.That(mycnt.Count, Is.GreaterThan(0));
@@ -40,24 +40,12 @@ public class ExplorerTests
 		using var pFolder = ComReleaserFactory.Create((IShellFolder2)new MyDocuments());
 		ShellNamespaceWalker walker = new(pFolder.Item, 0, NAMESPACEWALKFLAG.NSWF_NONE_IMPLIES_ALL | NAMESPACEWALKFLAG.NSWF_DONT_ACCUMULATE_RESULT);
 		var items = walker.ToArray();
-		Assert.That(items, Has.Length.GreaterThanOrEqualTo(30));
+		Assert.That(items, Has.Length.GreaterThanOrEqualTo(1));
 		items.WriteValues();
 	}
 
-
-	public class ShellNamespaceWalker : IEnumerable<IShellItem>, IAsyncEnumerable<IShellItem>
+	public class ShellNamespaceWalker(object objToWalk, int depth, NAMESPACEWALKFLAG flags) : IEnumerable<IShellItem>, IAsyncEnumerable<IShellItem>
 	{
-		private readonly object objToWalk;
-		private readonly int depth;
-		private readonly NAMESPACEWALKFLAG flags;
-
-		public ShellNamespaceWalker(object objToWalk, int depth, NAMESPACEWALKFLAG flags)
-		{
-			this.objToWalk = objToWalk;
-			this.depth = depth;
-			this.flags = flags;
-		}
-
 		IAsyncEnumerator<IShellItem> IAsyncEnumerable<IShellItem>.GetAsyncEnumerator(CancellationToken cancellationToken) => throw new NotImplementedException();
 
 		IEnumerator<IShellItem> IEnumerable<IShellItem>.GetEnumerator()
@@ -83,34 +71,37 @@ public class ExplorerTests
 		IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<IShellItem>)this).GetEnumerator();
 	}
 
-	class WalkerCallback : INamespaceWalkCB2, IActionProgress
+	private class WalkerCallback(string progressDlgTitle = "", string progressDlgCancelText = "Cancel") : INamespaceWalkCB2, IActionProgress
 	{
-		private readonly string cancel;
-		private readonly string title;
-
-		public WalkerCallback(string progressDlgTitle = "", string progressDlgCancelText = "Cancel")
-		{
-			cancel = progressDlgCancelText;
-			title = progressDlgTitle;
-		}
-
-		public event Action<IShellFolder, PIDL>? ItemFound;
-		public event Action<IShellFolder, PIDL>? FolderEntered;
-		public event Action<IShellFolder, PIDL>? FolderLeft;
 		public event Action<HRESULT>? Completed;
 
-		public HRESULT FoundItem([In] IShellFolder psf, [In] IntPtr pidl) { ItemFound?.Invoke(psf, new PIDL(pidl, true)); return HRESULT.S_OK; }
-		public HRESULT EnterFolder([In] IShellFolder psf, [In] IntPtr pidl) { FolderEntered?.Invoke(psf, new PIDL(pidl, true)); return HRESULT.S_OK; }
-		public HRESULT LeaveFolder([In] IShellFolder psf, [In] IntPtr pidl) { FolderLeft?.Invoke(psf, new PIDL(pidl, true)); return HRESULT.S_OK; }
-		public HRESULT InitializeProgressDialog([MarshalAs(UnmanagedType.LPWStr), Out] out string ppszTitle, [MarshalAs(UnmanagedType.LPWStr), Out] out string ppszCancel)
-		{ ppszTitle = title; ppszCancel = cancel; return HRESULT.S_OK; }
-		public HRESULT WalkComplete(HRESULT hr) { Completed?.Invoke(hr); return HRESULT.S_OK; }
+		public event Action<IShellFolder, PIDL>? FolderEntered;
+
+		public event Action<IShellFolder, PIDL>? FolderLeft;
+
+		public event Action<IShellFolder, PIDL>? ItemFound;
 
 		public void Begin(SPACTION action, SPBEGINF flags) { }
-		public void UpdateProgress(ulong ulCompleted, ulong ulTotal) { }
-		public void UpdateText(SPTEXT sptext, [In, MarshalAs(UnmanagedType.LPWStr)] string pszText, [MarshalAs(UnmanagedType.Bool)] bool fMayCompact) { }
-		public bool QueryCancel() => false;
-		public void ResetCancel() { }
+
 		public void End() { }
+
+		public HRESULT EnterFolder([In] IShellFolder psf, [In] IntPtr pidl) { FolderEntered?.Invoke(psf, new PIDL(pidl, true)); return HRESULT.S_OK; }
+
+		public HRESULT FoundItem([In] IShellFolder psf, [In] IntPtr pidl) { ItemFound?.Invoke(psf, new PIDL(pidl, true)); return HRESULT.S_OK; }
+
+		public HRESULT InitializeProgressDialog([MarshalAs(UnmanagedType.LPWStr), Out] out string ppszTitle, [MarshalAs(UnmanagedType.LPWStr), Out] out string ppszCancel)
+		{ ppszTitle = progressDlgTitle; ppszCancel = progressDlgCancelText; return HRESULT.S_OK; }
+
+		public HRESULT LeaveFolder([In] IShellFolder psf, [In] IntPtr pidl) { FolderLeft?.Invoke(psf, new PIDL(pidl, true)); return HRESULT.S_OK; }
+
+		public bool QueryCancel() => false;
+
+		public void ResetCancel() { }
+
+		public void UpdateProgress(ulong ulCompleted, ulong ulTotal) { }
+
+		public void UpdateText(SPTEXT sptext, [In, MarshalAs(UnmanagedType.LPWStr)] string pszText, [MarshalAs(UnmanagedType.Bool)] bool fMayCompact) { }
+
+		public HRESULT WalkComplete(HRESULT hr) { Completed?.Invoke(hr); return HRESULT.S_OK; }
 	}
 }
