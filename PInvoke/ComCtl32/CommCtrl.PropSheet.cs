@@ -506,6 +506,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-showwizbuttons
+		[MsgParams(typeof(PSWIZB), typeof(PSWIZB))]
 		PSM_SHOWWIZBUTTONS = WM_USER + 138,
 
 		/// <summary>
@@ -556,6 +557,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-pressbutton
+		[MsgParams(typeof(PSBTN), null)]
 		PSM_PRESSBUTTON = WM_USER + 113,
 
 		/// <summary>
@@ -580,6 +582,7 @@ public static partial class ComCtl32
 		/// activation receives the PSN_SETACTIVE notification code.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setcursel
+		[MsgParams(typeof(uint), typeof(HPROPSHEETPAGE), LResultType = typeof(BOOL))]
 		PSM_SETCURSEL = WM_USER + 101,
 
 		/// <summary>
@@ -644,6 +647,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-removepage
+		[MsgParams(typeof(uint), typeof(HPROPSHEETPAGE))]
 		PSM_REMOVEPAGE = WM_USER + 102,
 
 		/// <summary>
@@ -696,6 +700,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-addpage
+		[MsgParams(null, typeof(HPROPSHEETPAGE), LResultType = typeof(BOOL))]
 		PSM_ADDPAGE = WM_USER + 103,
 
 		/// <summary>
@@ -719,6 +724,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-changed
+		[MsgParams(typeof(HPROPSHEETPAGE), null)]
 		PSM_CHANGED = WM_USER + 104,
 
 		/// <summary>
@@ -747,6 +753,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-restartwindows
+		[MsgParams(null, null)]
 		PSM_RESTARTWINDOWS = WM_USER + 105,
 
 		/// <summary>
@@ -776,6 +783,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-rebootsystem
+		[MsgParams(null, null)]
 		PSM_REBOOTSYSTEM = WM_USER + 106,
 
 		/// <summary>
@@ -828,6 +836,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-canceltoclose
+		[MsgParams(null, null)]
 		PSM_CANCELTOCLOSE = WM_USER + 107,
 
 		/// <summary>
@@ -845,6 +854,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>If a page returns a nonzero value, the property sheet does not send the message to subsequent pages.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-querysiblings
+		[MsgParams(typeof(IntPtr), typeof(IntPtr), LResultType = typeof(IntPtr))]
 		PSM_QUERYSIBLINGS = WM_USER + 108,
 
 		/// <summary>
@@ -868,6 +878,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-unchanged
+		[MsgParams(typeof(HPROPSHEETPAGE), null)]
 		PSM_UNCHANGED = WM_USER + 109,
 
 		/// <summary>
@@ -895,6 +906,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-apply
+		[MsgParams(null, null, LResultType = typeof(BOOL))]
 		PSM_APPLY = WM_USER + 110,
 
 		/// <summary>
@@ -918,6 +930,7 @@ public static partial class ComCtl32
 		/// PSN_SETACTIVE notification.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-settitle
+		[MsgParams(typeof(PropSheetHeaderFlags), typeof(ResourceId))]
 		PSM_SETTITLEA = WM_USER + 111,
 
 		/// <summary>
@@ -941,6 +954,7 @@ public static partial class ComCtl32
 		/// PSN_SETACTIVE notification.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-settitle
+		[MsgParams(typeof(PropSheetHeaderFlags), typeof(ResourceId))]
 		PSM_SETTITLEW = WM_USER + 120,
 
 		/// <summary>
@@ -1011,6 +1025,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setwizbuttons
+		[MsgParams(typeof(int), typeof(PSWIZB))]
 		PSM_SETWIZBUTTONS = WM_USER + 112,
 
 		/// <summary>
@@ -1031,6 +1046,7 @@ public static partial class ComCtl32
 		/// activation receives the PSN_SETACTIVE notification code.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setcurselid
+		[MsgParams(null, typeof(ResourceId), LResultType = typeof(BOOL))]
 		PSM_SETCURSELID = WM_USER + 114,
 
 		/// <summary>
@@ -1052,6 +1068,7 @@ public static partial class ComCtl32
 		/// the accelerator key.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setfinishtext
+		[MsgParams(null, typeof(string))]
 		PSM_SETFINISHTEXTA = WM_USER + 115,
 
 		/// <summary>
@@ -1073,6 +1090,7 @@ public static partial class ComCtl32
 		/// the accelerator key.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setfinishtext
+		[MsgParams(null, typeof(string))]
 		PSM_SETFINISHTEXTW = WM_USER + 121,
 
 		/// <summary>
@@ -1093,6 +1111,7 @@ public static partial class ComCtl32
 		/// <para>This message is not supported when using the Aero wizard style ( <c>PSH_AEROWIZARD</c>).</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-gettabcontrol
+		[MsgParams(null, null, LResultType = typeof(HWND))]
 		PSM_GETTABCONTROL = WM_USER + 116,
 
 		/// <summary>
@@ -1124,6 +1143,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-isdialogmessage
+		[MsgParams(null, typeof(MSG), LResultType = typeof(BOOL))]
 		PSM_ISDIALOGMESSAGE = WM_USER + 117,
 
 		/// <summary>
@@ -1151,6 +1171,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-getcurrentpagehwnd
+		[MsgParams(null, null, LResultType = typeof(HWND))]
 		PSM_GETCURRENTPAGEHWND = WM_USER + 118,
 
 		/// <summary>
@@ -1245,6 +1266,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-insertpage
+		[MsgParams(typeof(IntPtr), typeof(HPROPSHEETPAGE), LResultType = typeof(BOOL))]
 		PSM_INSERTPAGE = WM_USER + 119,
 
 		/// <summary>
@@ -1262,6 +1284,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>If you specify the current page, it will immediately be repainted to display the new title.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setheadertitle
+		[MsgParams(typeof(uint), typeof(string))]
 		PSM_SETHEADERTITLEA = WM_USER + 125,
 
 		/// <summary>
@@ -1279,6 +1302,7 @@ public static partial class ComCtl32
 		/// </summary>
 		/// <remarks>If you specify the current page, it will immediately be repainted to display the new title.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setheadertitle
+		[MsgParams(typeof(uint), typeof(string))]
 		PSM_SETHEADERTITLEW = WM_USER + 126,
 
 		/// <summary>
@@ -1302,6 +1326,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setheadersubtitle
+		[MsgParams(typeof(uint), typeof(string))]
 		PSM_SETHEADERSUBTITLEA = WM_USER + 127,
 
 		/// <summary>
@@ -1325,6 +1350,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setheadersubtitle
+		[MsgParams(typeof(uint), typeof(string))]
 		PSM_SETHEADERSUBTITLEW = WM_USER + 128,
 
 		/// <summary>
@@ -1341,6 +1367,7 @@ public static partial class ComCtl32
 		/// <para>Returns the zero-based index of the property sheet page specified by wParam if successful. Otherwise, it returns -1.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-hwndtoindex
+		[MsgParams(typeof(HWND), null, LResultType = typeof(int))]
 		PSM_HWNDTOINDEX = WM_USER + 129,
 
 		/// <summary>
@@ -1357,6 +1384,7 @@ public static partial class ComCtl32
 		/// <para>Returns the handle to the window of the property sheet page specified by wParam if successful. Otherwise, it returns zero.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-indextohwnd
+		[MsgParams(typeof(uint), null, LResultType = typeof(HWND))]
 		PSM_INDEXTOHWND = WM_USER + 130,
 
 		/// <summary>
@@ -1373,6 +1401,7 @@ public static partial class ComCtl32
 		/// <para>Returns the zero-based index of the property sheet page specified by lParam if successful. Otherwise, it returns -1.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-pagetoindex
+		[MsgParams(null, typeof(HPROPSHEETPAGE), LResultType = typeof(int))]
 		PSM_PAGETOINDEX = WM_USER + 131,
 
 		/// <summary>
@@ -1389,6 +1418,7 @@ public static partial class ComCtl32
 		/// <para>Returns the HPROPSHEETPAGE handle of the property sheet page specified by wParam if successful. Otherwise, it returns zero.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-indextopage
+		[MsgParams(typeof(uint), null, LResultType = typeof(HPROPSHEETPAGE))]
 		PSM_INDEXTOPAGE = WM_USER + 132,
 
 		/// <summary>
@@ -1405,6 +1435,7 @@ public static partial class ComCtl32
 		/// <para>Returns the zero-based index of the property sheet page specified by lParam if successful. Otherwise, it returns -1.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-idtoindex
+		[MsgParams(null, typeof(ResourceId), LResultType = typeof(int))]
 		PSM_IDTOINDEX = WM_USER + 133,
 
 		/// <summary>
@@ -1421,6 +1452,7 @@ public static partial class ComCtl32
 		/// <para>Returns the resource ID of the property sheet page specified by wParam if successful. Otherwise, it returns zero.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-indextoid
+		[MsgParams(typeof(uint), null, LResultType = typeof(ResourceId))]
 		PSM_INDEXTOID = WM_USER + 134,
 
 		/// <summary>
@@ -1475,6 +1507,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-getresult
+		[MsgParams(null, null, LResultType = typeof(int))]
 		PSM_GETRESULT = WM_USER + 135,
 
 		/// <summary>
@@ -1505,6 +1538,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-recalcpagesizes
+		[MsgParams(null, null, LResultType = typeof(BOOL))]
 		PSM_RECALCPAGESIZES = WM_USER + 136,
 
 		/// <summary>
@@ -1521,6 +1555,7 @@ public static partial class ComCtl32
 		/// <para>No meaningful return value.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setnexttext
+		[MsgParams(null, typeof(string))]
 		PSM_SETNEXTTEXT = WM_USER + 137,
 
 		/// <summary>
@@ -1569,6 +1604,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-enablewizbuttons
+		[MsgParams(typeof(PSWIZB), typeof(PSWIZB))]
 		PSM_ENABLEWIZBUTTONS = WM_USER + 139,
 
 		/// <summary>
@@ -1610,6 +1646,7 @@ public static partial class ComCtl32
 		/// <para>No return value.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psm-setbuttontext
+		[MsgParams(typeof(PSWIZB), typeof(string))]
 		PSM_SETBUTTONTEXT = WM_USER + 140,
 	}
 
@@ -1650,6 +1687,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-setactive
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(int))]
 		PSN_SETACTIVE = PSN_FIRST - 0,
 
 		/// <summary>
@@ -1685,6 +1723,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-killactive
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(BOOL))]
 		PSN_KILLACTIVE = PSN_FIRST - 1,
 
 		/// <summary>
@@ -1757,6 +1796,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-apply
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(PSNRET))]
 		PSN_APPLY = PSN_FIRST - 2,
 
 		/// <summary>
@@ -1792,6 +1832,7 @@ public static partial class ComCtl32
 		/// <para>Do not call the <c>EndDialog</c> function when processing this notification code.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-reset
+		[MsgParams(LParamType = typeof(PSHNOTIFY))]
 		PSN_RESET = PSN_FIRST - 3,
 
 		/// <summary>
@@ -1816,6 +1857,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-help
+		[MsgParams(LParamType = typeof(PSHNOTIFY))]
 		PSN_HELP = PSN_FIRST - 5,
 
 		/// <summary>
@@ -1894,6 +1936,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-wizback
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(int))]
 		PSN_WIZBACK = PSN_FIRST - 6,
 
 		/// <summary>
@@ -1972,6 +2015,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-wiznext
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(int))]
 		PSN_WIZNEXT = PSN_FIRST - 7,
 
 		/// <summary>
@@ -2014,6 +2058,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-wizfinish
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(BOOL))]
 		PSN_WIZFINISH = PSN_FIRST - 8,
 
 		/// <summary>
@@ -2042,6 +2087,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-querycancel
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(BOOL))]
 		PSN_QUERYCANCEL = PSN_FIRST - 9,
 
 		/// <summary>
@@ -2073,6 +2119,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-getobject
+		[MsgParams(LParamType = typeof(NMOBJECTNOTIFY), LResultType = typeof(int))]
 		PSN_GETOBJECT = PSN_FIRST - 10,
 
 		/// <summary>
@@ -2098,6 +2145,7 @@ public static partial class ComCtl32
 		/// value. The dialog box procedure must return <c>TRUE</c>.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-translateaccelerator
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(PSNRET))]
 		PSN_TRANSLATEACCELERATOR = PSN_FIRST - 12,
 
 		/// <summary>
@@ -2138,6 +2186,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/psn-queryinitialfocus
+		[MsgParams(LParamType = typeof(PSHNOTIFY), LResultType = typeof(BOOL))]
 		PSN_QUERYINITIALFOCUS = PSN_FIRST - 13,
 	}
 
@@ -2179,6 +2228,28 @@ public static partial class ComCtl32
 
 		/// <summary>Selects the <c>Help</c> button. This value is not valid when using the Aero wizard style ( <c>PSH_AEROWIZARD</c>).</summary>
 		PSBTN_HELP = 6,
+	}
+
+	/// <summary>Return codes for some <see cref="PropSheetNotification"/> states.</summary>
+	[PInvokeData("prsht.h")]
+	public enum PSNRET
+	{
+		/// <summary>
+		/// Indicates that the changes made to this page are valid and have been applied. If all pages set PSNRET_NOERROR, the property sheet
+		/// can be destroyed.
+		/// </summary>
+		PSNRET_NOERROR = 0,
+
+		/// <summary>The property sheet will not be destroyed, and focus will be returned to this page.</summary>
+		PSNRET_INVALID = 1,
+
+		/// <summary>
+		/// The property sheet will not be destroyed, and focus will be returned to the page that had focus when the button was pressed.
+		/// </summary>
+		PSNRET_INVALID_NOCHANGEPAGE = 2,
+
+		/// <summary>Indicates that no further processing is necessary.</summary>
+		PSNRET_MESSAGEHANDLED = 3,
 	}
 
 	/// <summary>Values that specify which property sheet buttons are to be shown.</summary>
@@ -3426,6 +3497,29 @@ public static partial class ComCtl32
 		public ResourceIdOrHandle<HBITMAP> hbmHeader;
 	}
 
+	/// <summary>Contains information for the property sheet notification messages.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/prsht/ns-prsht-pshnotify typedef struct _PSHNOTIFY { NMHDR hdr; LPARAM lParam; }
+	// PSHNOTIFY, *LPPSHNOTIFY;
+	[PInvokeData("prsht.h", MSDNShortId = "NS:prsht._PSHNOTIFY")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct PSHNOTIFY
+	{
+		/// <summary>
+		/// <para>Type: <c>NMHDR</c></para>
+		/// <para>Address of an NMHDR structure that contains additional information about the notification.</para>
+		/// </summary>
+		public NMHDR hdr;
+
+		/// <summary>
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>
+		/// Additional information about this notification. To determine what, if any, information is contained in this member, see the
+		/// description of the particular notification message.
+		/// </para>
+		/// </summary>
+		public IntPtr lParam;
+	}
+	
 	/// <summary>Defines a page in a property sheet.</summary>
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb774548")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
