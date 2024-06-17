@@ -61,6 +61,11 @@ public struct BOOL : IComparable, IComparable<BOOL>, IComparable<bool>, IConvert
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator IntPtr(BOOL value) => (IntPtr)(int)value;
 
+	/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="BOOL"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator BOOL(IntPtr value) => value != IntPtr.Zero;
+
 	/// <summary>Indicates whether two <see cref="BOOL"/> instances are not equal.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
 	/// <param name="s2">The second integral size to compare.</param>
