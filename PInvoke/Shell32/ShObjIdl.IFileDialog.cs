@@ -1358,7 +1358,7 @@ public static partial class Shell32
 		/// Pointer to an optional IFileOperationProgressSink that the calling application can use if they want to be notified of the
 		/// progress of the property stamping. This value may be NULL.
 		/// </param>
-		void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, HWND hwnd, IFileOperationProgressSink? pSink);
+		void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, [Optional] HWND hwnd, [Optional] IFileOperationProgressSink? pSink);
 	}
 
 	/// <summary>Exposed methods to handle file sync operations between a local copy and a server copy of a file.</summary>
@@ -1429,6 +1429,15 @@ public static partial class Shell32
 
 		/// <summary>A pointer to a buffer that contains the filter pattern.</summary>
 		public string pszSpec;
+
+		/// <summary>Initializes a new instance of the <see cref="COMDLG_FILTERSPEC"/> struct.</summary>
+		/// <param name="name">The friendly name of the filter.</param>
+		/// <param name="spec">The filter pattern.</param>
+		public COMDLG_FILTERSPEC(string name = "All Files (*.*)", string spec = "*.*")
+		{
+			pszName = name;
+			pszSpec = spec;
+		}
 	}
 
 	/// <summary>Class interface for ITaskbarList and derivatives.</summary>
