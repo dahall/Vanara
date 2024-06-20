@@ -7,6 +7,12 @@ public static class FunctionHelper
 {
 	private static readonly List<Win32Error> buffErrs = new() { Win32Error.ERROR_MORE_DATA, Win32Error.ERROR_INSUFFICIENT_BUFFER, Win32Error.ERROR_BUFFER_OVERFLOW };
 
+	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
+	/// <param name="riid">The IID of the requested interface.</param>
+	/// <param name="ppv">The resulting interface.</param>
+	/// <returns>The error code for the function.</returns>
+	public delegate HRESULT IidFunc(in Guid riid, out object? ppv);
+
 	/// <summary>Delegate to get the size of memory allocated to a pointer.</summary>
 	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
 	/// <param name="ptr">The pointer to the memory in question.</param>
@@ -213,6 +219,24 @@ public static class FunctionHelper
 	/// <returns><c>true</c> if buffer size is good; otherwise <c>false</c>.</returns>
 	public static bool ChkGoodBuf<TSize, TRet>(TSize sz, TRet err) where TSize : struct where TRet : IErrorProvider, IConvertible =>
 		!sz.Equals(default(TSize)) && buffErrs.ConvertAll(e => (HRESULT)e).Contains(err.ToHRESULT());
+
+	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
+	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
+	/// <param name="f">The function.</param>
+	/// <param name="throwOnError">If set to <see langword="true"/>, throw an exception on error. Otherwise, just return <see langword="null"/>.</param>
+	/// <returns>
+	/// The returned object case to <typeparamref name="T"/>, or <see langword="null"/> on failure and <paramref name="throwOnError"/> is
+	/// <see langword="true"/>.
+	/// </returns>
+	public static T? IidGetObj<T>(IidFunc f, bool throwOnError = true) where T : class
+	{
+		var hr = f(typeof(T).GUID, out var ppv);
+		if (hr.Succeeded)
+			return (T?)ppv;
+		if (throwOnError)
+			throw hr.GetException()!;
+		return default;
+	}
 
 	private static bool IsNotDef<TSize, TRet>(TSize _sz, TRet _ret) where TSize : struct, IConvertible => !_sz.Equals(default(TSize));
 
