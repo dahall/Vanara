@@ -1161,8 +1161,7 @@ public static partial class Kernel32
 		/// lpSource. If the resource name is an integer, set this member using MAKEINTRESOURCE. This member is required if lpSource
 		/// refers to an EXE or DLL.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string? lpResourceName;
+		public ResourceId lpResourceName;
 
 		/// <summary>
 		/// The name of the current application. If the value of this member is set to null, the name of the executable that launched the
