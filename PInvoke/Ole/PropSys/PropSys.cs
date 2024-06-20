@@ -1,3 +1,4 @@
+using System.Drawing;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -433,6 +434,30 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
 	public static extern HRESULT PSCreateMemoryPropertyStore(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+	/// <summary>Creates an in-memory property store.</summary>
+	/// <typeparam name="TIntf">The type of the interface.</typeparam>
+	/// <returns>The requested interface from <typeparamref name="TIntf"/>, or <see langword="null"/> on failure.</returns>
+	/// <remarks>
+	/// <para>
+	/// This function creates an in-memory property store object that implements IPropertyStore, INamedPropertyStore,
+	/// IPropertyStoreCache, IPersistStream, IPropertyBag, and IPersistSerializedPropStorage.
+	/// </para>
+	/// <para>
+	/// The memory property store does not correspond to a file and is designed for use as a cache. IPropertyStore::Commit is a no-op,
+	/// and the data stored in the object persists only as long as the object does.
+	/// </para>
+	/// <para>
+	/// The memory property store is thread safe. It aggregates the free-threaded marshaller and uses critical sections to protect its
+	/// data members.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>The following example, to be included as part of a larger program, demonstrates how to use PSCreateMemoryPropertyStore.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatememorypropertystore PSSTDAPI
+	// PSCreateMemoryPropertyStore( REFIID riid, void **ppv );
+	[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
+	public static TIntf? PSCreateMemoryPropertyStore<TIntf>() where TIntf : class => FunctionHelper.IidGetObj<TIntf>(PSCreateMemoryPropertyStore);
 
 	/// <summary>
 	/// <para>
