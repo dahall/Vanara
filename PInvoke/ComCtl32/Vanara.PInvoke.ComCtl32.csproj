@@ -22,7 +22,7 @@ Interfaces
 IImageList IImageList2
 
 </PackageReleaseNotes>
-    <ApplicationManifest>Library.manifest</ApplicationManifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

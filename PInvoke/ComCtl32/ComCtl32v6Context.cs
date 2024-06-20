@@ -31,7 +31,7 @@ public class ComCtl32v6Context : IDisposable
 		var actctx = new ACTCTX(GetType().Assembly.Location)
 		{
 			dwFlags = ActCtxFlags.ACTCTX_FLAG_RESOURCE_NAME_VALID,
-			lpResourceName = "#2"
+			lpResourceName = 2
 		};
 		Create(actctx);
 		Activate();
@@ -47,6 +47,7 @@ public class ComCtl32v6Context : IDisposable
 			hActCtx = SafeHACTCTX.Null;
 		}
 		catch { }
+		GC.SuppressFinalize(this);
 	}
 
 	private void Activate()
