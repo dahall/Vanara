@@ -350,8 +350,6 @@ public static partial class Shell32
 	/// <summary>Not used.</summary>
 	public const string STR_TRACK_CLSID = "Track the CLSID";
 
-	private delegate HRESULT IidFunc(in Guid riid, out object? ppv);
-
 	/// <summary>Values that specify from which category the list of destinations should be retrieved.</summary>
 	[PInvokeData("Shobjidl.h", MSDNShortId = "dd378410")]
 	public enum APPDOCLISTTYPE
@@ -2464,7 +2462,16 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762197")]
 	public static extern HRESULT SHGetPropertyStoreFromParsingName([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath, [In, Optional] IBindCtx? pbc,
-		GETPROPERTYSTOREFLAGS flags, in Guid riid, out IPropertyStore propertyStore);
+		[Optional] GETPROPERTYSTOREFLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? propertyStore);
+
+	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
+	/// <param name="pszPath">A pointer to a null-terminated Unicode string that specifies the item path.</param>
+	/// <param name="pbc">A pointer to a IBindCtx object, which provides access to a bind context. This value can be NULL.</param>
+	/// <param name="flags">One or more values from the GETPROPERTYSTOREFLAGS constants. This parameter can also be NULL.</param>
+	/// <returns>When this function returns, contains the interface pointer requested in riid. This is typically IPropertyStore or a related interface.</returns>
+	[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762197")]
+	public static TIntf? SHGetPropertyStoreFromParsingName<TIntf>(string pszPath, [Optional] GETPROPERTYSTOREFLAGS flags, [In, Optional] IBindCtx? pbc) where TIntf : class =>
+		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetPropertyStoreFromParsingName(pszPath, pbc, flags, g, out o));
 
 	/// <summary>
 	/// <para>
@@ -2628,11 +2635,7 @@ public static partial class Shell32
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb776437")]
 	internal static extern IntPtr IntILCombine(IntPtr pidl1, IntPtr pidl2);
 
-	private static T? IidGetObj<T>(IidFunc f) where T : class
-	{
-		f(typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T?)ppv;
-	}
+	private static T? IidGetObj<T>(FunctionHelper.IidFunc f) where T : class => FunctionHelper.IidGetObj<T>(f, true);
 
 	/// <summary>Implements CLSID_ApplicationAssociationRegistration to create IApplicationAssociationRegistration.</summary>
 	[PInvokeData("shobjidl_core.h")]
