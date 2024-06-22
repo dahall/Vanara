@@ -391,6 +391,61 @@ public static partial class Shell32
 	[PInvokeData("Shobjidl.h", MSDNShortId = "dd378439")]
 	public static extern HRESULT SHResolveLibrary([MarshalAs(UnmanagedType.Interface)] IShellItem psiLibrary);
 
+	/// <summary>Saves an IShellLibrary object to disk.</summary>
+	/// <param name="plib">
+	/// <para>Type: <c>IShellLibrary*</c></para>
+	/// <para>A pointer to the IShellLibrary object to save.</para>
+	/// </param>
+	/// <param name="pszFolderPath">
+	/// <para>Type: <c>PCWSTR</c></para>
+	/// <para>A pointer to the path to the folder in which to save the library.</para>
+	/// </param>
+	/// <param name="pszLibraryName">
+	/// <para>Type: <c>PCWSTR</c></para>
+	/// <para>
+	/// A pointer to a file name under which to save the library. The file name must not include the file name extension. The file name
+	/// extension is added automatically.
+	/// </para>
+	/// </param>
+	/// <param name="lsf">
+	/// <para>Type: <c>LIBRARYSAVEFLAGS</c></para>
+	/// <para>A value from the LIBRARYSAVEFLAGS enumeration that specifies how to handle a library name collision.</para>
+	/// </param>
+	/// <param name="ppszSavedToPath">
+	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>
+	/// A pointer to a string that, when this function returns successfully, receives the path to the library description file into which
+	/// the library was saved. If this path is not required, the value of this parameter can be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	/// <remarks>This is an inline helper function that wraps the IShellLibrary::Save method.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-shsavelibraryinfolderpath HRESULT
+	// SHSaveLibraryInFolderPath( [in] IShellLibrary *plib, [in] PCWSTR pszFolderPath, [in] PCWSTR pszLibraryName, [in] LIBRARYSAVEFLAGS
+	// lsf, [out, optional] PWSTR *ppszSavedToPath );
+	[PInvokeData("shobjidl_core.h", MSDNShortId = "NF:shobjidl_core.SHSaveLibraryInFolderPath")]
+	public static HRESULT SHSaveLibraryInFolderPath([In] IShellLibrary plib, string pszFolderPath, string pszLibraryName,
+		LIBRARYSAVEFLAGS lsf, out string? ppszSavedToPath)
+	{
+		ppszSavedToPath = null;
+		HRESULT hr = SHCreateItemFromParsingName(pszFolderPath, null, typeof(IShellItem).GUID, out var psiFolder);
+		if (hr.Succeeded)
+		{
+			try
+			{
+				IShellItem psiSavedTo = plib.Save((IShellItem)psiFolder!, pszLibraryName, lsf);
+				ppszSavedToPath = psiSavedTo.GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING);
+				Marshal.ReleaseComObject(psiSavedTo);
+			}
+			catch (Exception ex) { hr = ex.HResult; }
+			Marshal.ReleaseComObject(psiFolder!);
+		}
+		return hr;
+	}
+
 	/// <summary>Shows the library management dialog box, which enables users to manage the library folders and default save location.</summary>
 	/// <param name="psiLibrary">A pointer to an IShellItem object that represents the library that is to be managed.</param>
 	/// <param name="hwndOwner">
