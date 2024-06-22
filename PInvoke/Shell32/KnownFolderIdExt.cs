@@ -13,6 +13,13 @@ public static class KnownFolderIdExt
 		KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT_PATH | KNOWN_FOLDER_FLAG.KF_FLAG_NOT_PARENT_RELATIVE |
 		KNOWN_FOLDER_FLAG.KF_FLAG_NO_ALIAS | KNOWN_FOLDER_FLAG.KF_FLAG_DONT_VERIFY;
 
+	/// <summary>Returns the <see cref="FOLDERTYPEID"/> corresponding to the provided <paramref name="guid"/> value.</summary>
+	/// <param name="guid">The unique identifier representing a folder type.</param>
+	/// <returns>A corresponding <see cref="FOLDERTYPEID"/>, if found. If not, an exception is thrown.</returns>
+	/// <exception cref="ArgumentOutOfRangeException">guid - Provided GUID value does not correspond to a folder id.</exception>
+	public static FOLDERTYPEID? FolderTypeId(this Guid guid) =>
+		AssociateAttribute.TryEnumLookup<FOLDERTYPEID>(guid, out var id) ? id : null;
+
 	/// <summary>Retrieves the full path associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 	/// <param name="id">The known folder.</param>
 	/// <returns>The path.</returns>

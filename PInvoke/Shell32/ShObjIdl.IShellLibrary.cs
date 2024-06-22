@@ -151,7 +151,6 @@ public static partial class Shell32
 
 		/// <summary>Gets the library's folder type.</summary>
 		/// <returns>The view template that is applied to a folder, usually based on its intended use and contents.</returns>
-		[return: MarshalAs(UnmanagedType.LPStruct)]
 		Guid GetFolderType();
 
 		/// <summary>Sets the library's folder type.</summary>
@@ -217,6 +216,13 @@ public static partial class Shell32
 	/// <param name="lff">One of the following LIBRARYFOLDERFILTER values that determines the folders to get.</param>
 	/// <returns>A pointer to the interface requested. If this call fails, this value is NULL.</returns>
 	public static T? GetFolders<T>(this IShellLibrary sl, [In] LIBRARYFOLDERFILTER lff) where T : class => (T?)sl.GetFolders(lff, typeof(T).GUID);
+
+	/// <summary>Gets the library's folder type identifier.</summary>
+	/// <param name="sl">The <see cref="IShellLibrary"/> instance.</param>
+	/// <returns>
+	/// The view template that is applied to a folder, usually based on its intended use and contents.
+	/// </returns>
+	public static FOLDERTYPEID? GetFolderTypeId(this IShellLibrary sl) => sl.GetFolderType().FolderTypeId();
 
 	/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 	/// <typeparam name="T">The type of the interface to get.</typeparam>
