@@ -905,22 +905,34 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		/// <summary>Compares two IShellItem objects.</summary>
 		/// <param name="psi">A pointer to an IShellItem object to compare with the existing IShellItem object.</param>
 		/// <param name="hint">
-		/// One of the SICHINTF values that determines how to perform the comparison. See SICHINTF for the list of possible values for
-		/// this parameter.
+		/// One of the SICHINTF values that determines how to perform the comparison. See SICHINTF for the list of possible values for this parameter.
 		/// </param>
-		/// <returns>
+		/// <param name="piOrder">
 		/// This parameter receives the result of the comparison. If the two items are the same this parameter equals zero; if they are
 		/// different the parameter is nonzero.
-		/// </returns>
-		public int Compare(IShellItem? psi, SICHINTF hint)
+		/// </param>
+		/// <returns>Returns S_OK if the items are the same, S_FALSE if they are different, or an error value otherwise.</returns>
+		public HRESULT Compare(IShellItem? psi, SICHINTF hint, out int piOrder)
 		{
-			if (psi is null) return 1;
-			var other = (ShellItemImpl)psi;
-			var p1 = InternalGetParent();
-			var p2 = other.InternalGetParent();
-			if (p1.PIDL.Equals(p2.PIDL))
-				return p1.GetIShellFolder().CompareIDs((IntPtr)(int)hint, PIDL.LastId, other.PIDL.LastId).Code;
-			return 1;
+			HRESULT hr = HRESULT.S_OK;
+			if (psi is null)
+				piOrder = 1;
+			else
+			{
+				piOrder = 0;
+				var other = (ShellItemImpl)psi;
+				var p1 = InternalGetParent();
+				var p2 = other.InternalGetParent();
+				if (p1.PIDL.Equals(p2.PIDL))
+				{
+					hr = p1.GetIShellFolder().CompareIDs((IntPtr)(int)hint, PIDL.LastId, other.PIDL.LastId);
+					if (hr.Severity == HRESULT.SeverityLevel.Success)
+						piOrder = hr.Code;
+				}
+				else
+					piOrder = 1;
+			}
+			return hr.Failed ? hr : (piOrder == 0 ? HRESULT.S_OK : HRESULT.S_FALSE);
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>

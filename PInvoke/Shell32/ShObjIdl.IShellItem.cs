@@ -478,16 +478,33 @@ public static partial class Shell32
 		SFGAO GetAttributes(SFGAO sfgaoMask);
 
 		/// <summary>Compares two IShellItem objects.</summary>
-		/// <param name="psi">A pointer to an IShellItem object to compare with the existing IShellItem object.</param>
-		/// <param name="hint">
-		/// One of the SICHINTF values that determines how to perform the comparison. See SICHINTF for the list of possible values for
-		/// this parameter.
+		/// <param name="psi">
+		/// <para>Type: <c>IShellItem*</c></para>
+		/// <para>A pointer to an IShellItem object to compare with the existing <c>IShellItem</c> object.</para>
 		/// </param>
-		/// <returns>
+		/// <param name="hint">
+		/// <para>Type: <c>SICHINTF</c></para>
+		/// <para>
+		/// One of the SICHINTF values that determines how to perform the comparison. See <c>SICHINTF</c> for the list of possible values for
+		/// this parameter.
+		/// </para>
+		/// </param>
+		/// <param name="piOrder">
+		/// <para>Type: <c>int*</c></para>
+		/// <para>
 		/// This parameter receives the result of the comparison. If the two items are the same this parameter equals zero; if they are
 		/// different the parameter is nonzero.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns S_OK if the items are the same, S_FALSE if they are different, or an error value otherwise.</para>
 		/// </returns>
-		int Compare(IShellItem? psi, SICHINTF hint);
+		/// <remarks>The data type used in the second parameter, SICHINTF, is defined as:</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitem-compare
+		// HRESULT Compare( IShellItem *psi, SICHINTF hint, int *piOrder );
+		[PreserveSig]
+		HRESULT Compare(IShellItem? psi, SICHINTF hint, out int piOrder);
 	}
 
 	/// <summary>
@@ -535,16 +552,33 @@ public static partial class Shell32
 		new SFGAO GetAttributes(SFGAO sfgaoMask);
 
 		/// <summary>Compares two IShellItem objects.</summary>
-		/// <param name="psi">A pointer to an IShellItem object to compare with the existing IShellItem object.</param>
-		/// <param name="hint">
-		/// One of the SICHINTF values that determines how to perform the comparison. See SICHINTF for the list of possible values for
-		/// this parameter.
+		/// <param name="psi">
+		/// <para>Type: <c>IShellItem*</c></para>
+		/// <para>A pointer to an IShellItem object to compare with the existing <c>IShellItem</c> object.</para>
 		/// </param>
-		/// <returns>
+		/// <param name="hint">
+		/// <para>Type: <c>SICHINTF</c></para>
+		/// <para>
+		/// One of the SICHINTF values that determines how to perform the comparison. See <c>SICHINTF</c> for the list of possible values for
+		/// this parameter.
+		/// </para>
+		/// </param>
+		/// <param name="piOrder">
+		/// <para>Type: <c>int*</c></para>
+		/// <para>
 		/// This parameter receives the result of the comparison. If the two items are the same this parameter equals zero; if they are
 		/// different the parameter is nonzero.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns S_OK if the items are the same, S_FALSE if they are different, or an error value otherwise.</para>
 		/// </returns>
-		new int Compare(IShellItem? psi, SICHINTF hint);
+		/// <remarks>The data type used in the second parameter, SICHINTF, is defined as:</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitem-compare
+		// HRESULT Compare( IShellItem *psi, SICHINTF hint, int *piOrder );
+		[PreserveSig]
+		new HRESULT Compare(IShellItem? psi, SICHINTF hint, out int piOrder);
 
 		/// <summary>Gets a property store object for specified property store flags.</summary>
 		/// <param name="flags">The GETPROPERTYSTOREFLAGS constants that modify the property store object.</param>
