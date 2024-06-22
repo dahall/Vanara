@@ -119,7 +119,7 @@ public class ActivationContext : IDisposable
 	{
 		if (resourceName != null)
 		{
-			actctx.lpResourceName = resourceName;
+			actctx.lpResourceName = new SafeResourceId(resourceName);
 			actctx.dwFlags |= ActCtxFlags.ACTCTX_FLAG_RESOURCE_NAME_VALID;
 		}
 		if (assemblyDirectory != null)

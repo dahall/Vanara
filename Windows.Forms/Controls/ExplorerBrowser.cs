@@ -1340,7 +1340,7 @@ public class ExplorerBrowser : Control, ICommDlgBrowser3, IExplorerBrowserEvents
 				// navigation log traversal in progress
 
 				// determine if new location is the same as the traversal request
-				var shellItemsEqual = pendingNavigation.Location.IShellItem.Compare(args.NewLocation?.IShellItem, SICHINTF.SICHINT_ALLFIELDS) == 0;
+				var shellItemsEqual = pendingNavigation.Location.IShellItem.Compare(args.NewLocation?.IShellItem, SICHINTF.SICHINT_ALLFIELDS, out var i).Succeeded && i == 0;
 				if (!shellItemsEqual)
 				{
 					// new location is different than traversal request, behave is if it never happened! remove history following
