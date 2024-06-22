@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Kernel32.d
 
 - Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Kernel32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)  
-### Methods - 100% API coverage (1151 of 1151 functions)  
+### Methods - 99% API coverage (1151 of 1152 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -1048,6 +1048,7 @@ Native Method | Native DLL | Header | Managed Method
 [TerminateProcessOnMemoryExhaustion](https://www.google.com/search?num=5&q=TerminateProcessOnMemoryExhaustion+site%3Alearn.microsoft.com) | kernelbase.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateProcessOnMemoryExhaustion](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateProcessOnMemoryExhaustion)  
 [TerminateThread](https://www.google.com/search?num=5&q=TerminateThread+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateThread](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateThread)  
 [TermsrvAppInstallMode](https://www.google.com/search?num=5&q=TermsrvAppInstallMode+site%3Alearn.microsoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.TermsrvAppInstallMode](https://github.com/dahall/Vanara/search?l=C%23&q=TermsrvAppInstallMode)  
+[TestRecoverResults](https://www.google.com/search?num=5&q=TestRecoverResults+site%3Alearn.microsoft.com) | kernelbase.dll |  |   
 [Thread32First](https://www.google.com/search?num=5&q=Thread32First+site%3Alearn.microsoft.com) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Thread32First](https://github.com/dahall/Vanara/search?l=C%23&q=Thread32First)  
 [Thread32Next](https://www.google.com/search?num=5&q=Thread32Next+site%3Alearn.microsoft.com) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Thread32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Thread32Next)  
 [TlsAlloc](https://www.google.com/search?num=5&q=TlsAlloc+site%3Alearn.microsoft.com) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.TlsAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=TlsAlloc)  
