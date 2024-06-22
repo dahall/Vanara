@@ -608,7 +608,11 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals
 	/// zero; if they are different the parameter is nonzero.
 	/// </returns>
-	public int CompareTo(ShellItem? other, ShellItemComparison hint = ShellItemComparison.SecondaryFileSystemPath) => iShellItem.Compare(other?.iShellItem, (SICHINTF)hint);
+	public int CompareTo(ShellItem? other, ShellItemComparison hint = ShellItemComparison.SecondaryFileSystemPath)
+	{
+		iShellItem.Compare(other?.iShellItem, (SICHINTF)hint, out var order).ThrowIfFailed();
+		return order;
+	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public virtual void Dispose()
@@ -871,7 +875,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		if (ReferenceEquals(left, right)) return true;
 		if (left is null || right is null) return false;
-		return left.Compare(right, SICHINTF.SICHINT_CANONICAL | SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL) == 0;
+		return left.Compare(right, SICHINTF.SICHINT_CANONICAL | SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL, out var order).Succeeded && order == 0;
 	}
 
 	/// <summary>Local implementation of IShellItem.</summary>
