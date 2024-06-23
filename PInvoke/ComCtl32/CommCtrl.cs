@@ -27,6 +27,18 @@ public static partial class ComCtl32
 	public const int INFOTIPSIZE = 1024;
 
 	/// <summary/>
+	public const int MSGF_COMMCTRL_BEGINDRAG = 0x4200;
+
+	/// <summary/>
+	public const int MSGF_COMMCTRL_SIZEHEADER = 0x4201;
+
+	/// <summary/>
+	public const int MSGF_COMMCTRL_DRAGSELECT = 0x4202;
+
+	/// <summary/>
+	public const int MSGF_COMMCTRL_TOOLBARCUST = 0x4203;
+
+	/// <summary/>
 	public const int NM_FIRST = 0;
 
 	/// <summary/>
