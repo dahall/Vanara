@@ -1414,7 +1414,7 @@ public static partial class Ole32
 		// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-enumformatetc HRESULT EnumFormatEtc( [in]
 		// DWORD dwDirection, [out] IEnumFORMATETC **ppenumFormatEtc );
 		[PreserveSig]
-		HRESULT EnumFormatEtc(DATADIR dwDirection, [MarshalAs(UnmanagedType.Interface)] out IEnumFORMATETC ppenumFormatEtc);
+		HRESULT EnumFormatEtc(DATADIR dwDirection, [MarshalAs(UnmanagedType.Interface)] out IEnumFORMATETC? ppenumFormatEtc);
 
 		/// <summary>
 		/// Called by an object supporting an advise sink to create a connection between a data object and the advise sink. This enables
