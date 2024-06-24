@@ -2635,7 +2635,7 @@ public static partial class Shell32
 	[PInvokeData("Shobjidl.h", MSDNShortId = "bb776437")]
 	internal static extern IntPtr IntILCombine(IntPtr pidl1, IntPtr pidl2);
 
-	private static T? IidGetObj<T>(FunctionHelper.IidFunc f) where T : class => FunctionHelper.IidGetObj<T>(f, true);
+	private static T? IidGetObj<T>(FunctionHelper.IidFunc<HRESULT> f) where T : class => FunctionHelper.IidGetObj<T, HRESULT>(f, true);
 
 	/// <summary>Implements CLSID_ApplicationAssociationRegistration to create IApplicationAssociationRegistration.</summary>
 	[PInvokeData("shobjidl_core.h")]
