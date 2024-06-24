@@ -62,6 +62,6 @@ public struct MSG
 	/// <param name="pt_x">The horizontal cursor position, in screen coordinates, when the message was posted.</param>
 	/// <param name="pt_y">The vertical cursor position, in screen coordinates, when the message was posted.</param>
 	/// <param name="time">The time at which the message was posted.</param>
-	public MSG(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, int pt_x = default, int pt_y = default, uint time = default) :
+	public MSG(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, int pt_x, int pt_y, uint time = default) :
 		this(hwnd, msg, wParam, lParam, new POINT(pt_x, pt_y), time) { }
 }
