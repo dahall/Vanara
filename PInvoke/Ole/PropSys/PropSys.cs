@@ -457,7 +457,7 @@ public static partial class PropSys
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatememorypropertystore PSSTDAPI
 	// PSCreateMemoryPropertyStore( REFIID riid, void **ppv );
 	[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
-	public static TIntf? PSCreateMemoryPropertyStore<TIntf>() where TIntf : class => FunctionHelper.IidGetObj<TIntf>(PSCreateMemoryPropertyStore);
+	public static TIntf? PSCreateMemoryPropertyStore<TIntf>() where TIntf : class => FunctionHelper.IidGetObj<TIntf, HRESULT>(PSCreateMemoryPropertyStore);
 
 	/// <summary>
 	/// <para>
