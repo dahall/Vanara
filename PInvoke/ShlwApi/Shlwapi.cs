@@ -1827,7 +1827,7 @@ public static partial class ShlwApi
 	// *punk, REFIID riid, void **ppv );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "95e83078-ab74-40d6-8e31-653e578770f2")]
-	public static extern HRESULT IUnknown_GetSite([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+	public static extern HRESULT IUnknown_GetSite([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -2020,7 +2020,7 @@ public static partial class ShlwApi
 	// *punk, IUnknown *punkSite );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "66175435-f85b-4e26-b148-f4edb74cb41d")]
-	public static extern HRESULT IUnknown_SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object punk, [In, MarshalAs(UnmanagedType.IUnknown)] object punkSite);
+	public static extern HRESULT IUnknown_SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object punk, [In, MarshalAs(UnmanagedType.IUnknown)] object? punkSite);
 
 	/// <summary>
 	/// <para>[This function is not available for use as of Windows 7.]</para>
