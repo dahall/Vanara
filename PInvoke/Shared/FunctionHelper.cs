@@ -8,10 +8,11 @@ public static class FunctionHelper
 	private static readonly List<Win32Error> buffErrs = new() { Win32Error.ERROR_MORE_DATA, Win32Error.ERROR_INSUFFICIENT_BUFFER, Win32Error.ERROR_BUFFER_OVERFLOW };
 
 	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
 	/// <param name="riid">The IID of the requested interface.</param>
 	/// <param name="ppv">The resulting interface.</param>
 	/// <returns>The error code for the function.</returns>
-	public delegate HRESULT IidFunc(in Guid riid, out object? ppv);
+	public delegate TErr IidFunc<TErr>(in Guid riid, out object? ppv) where TErr : IErrorProvider;
 
 	/// <summary>Delegate to get the size of memory allocated to a pointer.</summary>
 	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
@@ -222,13 +223,14 @@ public static class FunctionHelper
 
 	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
 	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
 	/// <param name="f">The function.</param>
 	/// <param name="throwOnError">If set to <see langword="true"/>, throw an exception on error. Otherwise, just return <see langword="null"/>.</param>
 	/// <returns>
 	/// The returned object case to <typeparamref name="T"/>, or <see langword="null"/> on failure and <paramref name="throwOnError"/> is
 	/// <see langword="true"/>.
 	/// </returns>
-	public static T? IidGetObj<T>(IidFunc f, bool throwOnError = true) where T : class
+	public static T? IidGetObj<T, TErr>(IidFunc<TErr> f, bool throwOnError = true) where T : class where TErr : IErrorProvider
 	{
 		var hr = f(typeof(T).GUID, out var ppv);
 		if (hr.Succeeded)
@@ -236,6 +238,19 @@ public static class FunctionHelper
 		if (throwOnError)
 			throw hr.GetException()!;
 		return default;
+	}
+
+	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
+	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="f">The function.</param>
+	/// <param name="ppv">The returned object case to <typeparamref name="T" />, or <see langword="null" /> on failure.</param>
+	/// <returns>The error returned by <paramref name="f"/>.</returns>
+	public static TErr IidGetObj<T, TErr>(IidFunc<TErr> f, out T? ppv) where T : class where TErr : IErrorProvider
+	{
+		var hr = f(typeof(T).GUID, out var pv);
+		ppv = hr.Succeeded ? (T?)pv : default;
+		return hr;
 	}
 
 	private static bool IsNotDef<TSize, TRet>(TSize _sz, TRet _ret) where TSize : struct, IConvertible => !_sz.Equals(default(TSize));
