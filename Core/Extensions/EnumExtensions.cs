@@ -215,6 +215,23 @@ public static class EnumExtensions
 	/// <returns>The converted value.</returns>
 	public static TEnum ToEnum<TEnum>(this int value) where TEnum : unmanaged, Enum => ToEnum<int, TEnum>(value);
 
+	/// <summary>Converts a byte array to an enumerated value.</summary>
+	/// <typeparam name="TEnum">The enumerated type.</typeparam>
+	/// <param name="value">The value to convert.</param>
+	/// <returns>The converted value.</returns>
+	public static TEnum ToEnum<TEnum>(this byte[] value) where TEnum : unmanaged, Enum
+	{
+		int size = Marshal.SizeOf(Enum.GetUnderlyingType(typeof(TEnum)));
+		return size switch
+		{
+			1 => ToEnum<byte, TEnum>(value[0]),
+			2 => ToEnum<short, TEnum>(BitConverter.ToInt16(value, 0)),
+			4 => ToEnum<int, TEnum>(BitConverter.ToInt32(value, 0)),
+			8 => ToEnum<long, TEnum>(BitConverter.ToInt64(value, 0)),
+			_ => throw new ArgumentException("Unable to convert bytes to enumerated type.", nameof(value)),
+		};
+	}
+
 	/// <summary>Checks if <typeparamref name="T"/> represents an enumeration and throws an exception if not.</summary>
 	/// <typeparam name="T">The <see cref="Type"/> to validate.</typeparam>
 	/// <exception cref="ArgumentException"></exception>
