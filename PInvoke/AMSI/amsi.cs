@@ -13,28 +13,27 @@ public static partial class AMSI
 	[PInvokeData("amsi.h", MSDNShortId = "NE:amsi.AMSI_ATTRIBUTE")]
 	public enum AMSI_ATTRIBUTE
 	{
-		/// <summary>
-		/// Return the name, version, or GUID string of the calling application, copied from a <c>LPWSTR</c>.
-		/// </summary>
+		/// <summary>Return the name, version, or GUID string of the calling application, copied from a <c>LPWSTR</c>.</summary>
+		[CorrespondingType(typeof(string))]
 		AMSI_ATTRIBUTE_APP_NAME = 0,
 
-		/// <summary>
-		/// Return the filename, URL, unique script ID, or similar of the content, copied from a <c>LPWSTR</c>.
-		/// </summary>
+		/// <summary>Return the filename, URL, unique script ID, or similar of the content, copied from a <c>LPWSTR</c>.</summary>
+		[CorrespondingType(typeof(string))]
 		AMSI_ATTRIBUTE_CONTENT_NAME,
 
-		/// <summary>
-		/// Return the size of the input, as a <c>ULONGLONG</c>.
-		/// </summary>
+		/// <summary>Return the size of the input, as a <c>ULONGLONG</c>.</summary>
+		[CorrespondingType(typeof(ulong))]
 		AMSI_ATTRIBUTE_CONTENT_SIZE,
 
 		/// <summary>Return the memory address if the content is fully loaded into memory.</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		AMSI_ATTRIBUTE_CONTENT_ADDRESS,
 
 		/// <summary>
-		/// Session is used to associate different scan calls, such as if the contents to be scanned belong to the sample original
-		/// script. Return a <c>PVOID</c> to the next portion of the content to be scanned. Return NULL if the content is self-contained.
+		/// Session is used to associate different scan calls, such as if the contents to be scanned belong to the sample original script.
+		/// Return a <c>PVOID</c> to the next portion of the content to be scanned. Return NULL if the content is self-contained.
 		/// </summary>
+		[CorrespondingType(typeof(HAMSISESSION))]
 		AMSI_ATTRIBUTE_SESSION,
 
 		/// <summary/>
