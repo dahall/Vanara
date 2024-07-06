@@ -66,7 +66,8 @@ public class AMSITests
 		var fn = TestCaseSources.BmpFile;
 		var app = "MyTestApp";
 		AmsiStream? str = null;
-		Assert.That(() => str = new(new FileInfo(fn), false) { AppName = app }, Throws.Nothing);
+		Assert.That(() => str = new(File.ReadAllBytes(fn), false) { AppName = app, ContentName = fn }, Throws.Nothing);
+		Assert.That(str!.ContentSize, Is.EqualTo(new FileInfo(fn).Length));
 
 		var istr = (IAmsiStream)str!;
 		using var mem = new SafeCoTaskMemHandle(2048);
@@ -79,11 +80,11 @@ public class AMSITests
 
 		Assert.That(istr.GetAttribute(AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_SIZE, mem.Size, mem, out sz), ResultIs.Successful);
 		Assert.That(sz, Is.EqualTo(sizeof(ulong)));
-		Assert.That(mem.ToStructure<ulong>(), Is.EqualTo((ulong)str!.Length));
+		Assert.That(mem.ToStructure<ulong>(), Is.EqualTo(str!.ContentSize));
 
 		Assert.That(istr.GetAttribute(AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_CONTENT_ADDRESS, mem.Size, mem, out sz), ResultIs.Successful);
 		Assert.That(sz, Is.EqualTo(IntPtr.Size));
-		Assert.That(mem.ToStructure<IntPtr>(), Is.EqualTo(str.Pointer));
+		Assert.That(mem.ToStructure<IntPtr>(), Is.Not.EqualTo(IntPtr.Zero));
 
 		Assert.That(istr.GetAttribute(AMSI_ATTRIBUTE.AMSI_ATTRIBUTE_SESSION, mem.Size, mem, out sz), ResultIs.Successful);
 		Assert.That(sz, Is.EqualTo(IntPtr.Size));
@@ -93,14 +94,19 @@ public class AMSITests
 	[Test]
 	public void InterfaceTest()
 	{
-		var fn = TestCaseSources.BmpFile;
+		var fn = TestCaseSources.LargeFile;
 		var app = "MyTestApp";
 		AmsiStream? str = null;
+		// This should fail on a large file over 16MB
+		Assert.That(() => str = new(new FileInfo(fn), false) { AppName = app }, Throws.Exception);
+		// ... but succeed for smaller files
+		fn = TestCaseSources.WordDoc;
 		Assert.That(() => str = new(new FileInfo(fn), false) { AppName = app }, Throws.Nothing);
 
 		IAntimalware2 iam = new();
-		Assert.That(iam.Scan(str!, out var res, out var prov), ResultIs.Successful);
+		var hr = iam.Scan(str!, out var res, out var prov);
 		TestContext.WriteLine(res);
+		Assert.That(hr, ResultIs.Successful);
 		Assert.That(prov.DisplayName(out var pname), ResultIs.Successful);
 		TestContext.WriteLine(pname);
 
