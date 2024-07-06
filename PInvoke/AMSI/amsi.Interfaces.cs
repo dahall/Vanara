@@ -528,7 +528,7 @@ public static partial class AMSI
 
 	/// <summary>Versitile implementation of IAmsiStream.</summary>
 	/// <seealso cref="Vanara.PInvoke.AMSI.IAmsiStream"/>
-	public class AmsiStream : IAmsiStream
+	public class AmsiStream : IAmsiStream, IDisposable
 	{
 		/// <summary>The underlying stream.</summary>
 		protected readonly Stream stream;
@@ -709,6 +709,12 @@ public static partial class AMSI
 			if (position >= ContentSize)
 				return HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_HANDLE_EOF);
 			return buffer != IntPtr.Zero ? ReadStream(position, (uint)Math.Min(ContentSize - position, size), buffer, out readSize) : (HRESULT)HRESULT.E_INVALIDARG;
+		}
+
+		void IDisposable.Dispose()
+		{
+			GC.SuppressFinalize(this);
+			stream.Close();
 		}
 	}
 
