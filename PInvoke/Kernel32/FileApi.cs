@@ -5058,6 +5058,47 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
+	public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
+
+	/// <summary>
+	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
+	/// supported by the device.
+	/// </summary>
+	/// <param name="hFile">
+	/// A handle to the device (for example, a file, file stream, physical disk, volume, console buffer, tape drive, socket,
+	/// communications resource, mailslot, or pipe). The hFile parameter must have been created with read access.
+	/// </param>
+	/// <param name="lpBuffer">A pointer to the buffer that receives the data read from a file or device.</param>
+	/// <param name="nNumberOfBytesToRead">The maximum number of bytes to be read.</param>
+	/// <param name="lpNumberOfBytesRead">
+	/// A pointer to the variable that receives the number of bytes read when using a synchronous hFile parameter. ReadFile sets this
+	/// value to zero before doing any work or error checking. Use NULL for this parameter if this is an asynchronous operation to avoid
+	/// potentially erroneous results.
+	/// <para>This parameter can be NULL only when the lpOverlapped parameter is not NULL.</para>
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// A pointer to an OVERLAPPED structure is required if the hFile parameter was opened with FILE_FLAG_OVERLAPPED, otherwise it can be NULL.
+	/// <para>
+	/// If hFile is opened with FILE_FLAG_OVERLAPPED, the lpOverlapped parameter must point to a valid and unique OVERLAPPED structure,
+	/// otherwise the function can incorrectly report that the read operation is complete.
+	/// </para>
+	/// <para>
+	/// For an hFile that supports byte offsets, if you use this parameter you must specify a byte offset at which to start reading from
+	/// the file or device. This offset is specified by setting the Offset and OffsetHigh members of the OVERLAPPED structure. For an
+	/// hFile that does not support byte offsets, Offset and OffsetHigh are ignored.
+	/// </para>
+	/// <para>
+	/// For more information about different combinations of lpOverlapped and FILE_FLAG_OVERLAPPED, see the Remarks section and the
+	/// Synchronization and File Position section.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// If the function succeeds, the return value is nonzero (TRUE). If the function fails, or is completing asynchronously, the return
+	/// value is zero(FALSE). To get extended error information, call the GetLastError function.
+	/// </returns>
+	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
 	public static extern unsafe bool ReadFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, [Optional] uint* lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
