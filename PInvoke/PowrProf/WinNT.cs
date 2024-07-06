@@ -150,6 +150,9 @@ public static partial class PowrProf
 	/// <summary>Defines a guid to specify the Energy Saver policy</summary>
 	public static readonly Guid GUID_ENERGY_SAVER_POLICY = new("{5C5BB349-AD29-4ee2-9D0B-2B25270F7A81}");
 
+	/// <summary>Defines a guid that notifies when the Energy saver status has changed.</summary>
+	public static readonly Guid GUID_ENERGY_SAVER_STATUS = new("550E8400-E29B-41D4-A716-446655440000");
+
 	#endregion
 
 	#region Graphics configuration
@@ -226,27 +229,50 @@ public static partial class PowrProf
 	public static readonly Guid NO_SUBGROUP_GUID = new("{FEA3413E-7E05-4911-9A71-700331F1C294}");
 
 	/// <summary>
-	/// This is a special GUID that represents a 'personality' that each power scheme will have. In other words, each power scheme will
-	/// have this key indicating "I'm most like *this* base power scheme." This individual setting will have one of three settings:
-	/// GUID_MAX_POWER_SAVINGS GUID_MIN_POWER_SAVINGS GUID_TYPICAL_POWER_SAVINGS
-	///
-	/// This allows several features:
-	/// 1. Drivers and applications can register for notification of this GUID. So when this power scheme is activated, this GUID's
-	/// setting will be sent across the system and drivers/applications can see "GUID_MAX_POWER_SAVINGS" which will tell them in a
-	/// generic fashion "get real aggressive about conserving power".
-	/// 2. UserB may install a driver or application which creates power settings, and UserB may modify those power settings. Now UserA
-	/// logs in. How does he see those settings? They simply don't exist in his private power key. Well they do exist over in the system
-	/// power key. When we enumerate all the power settings in this system power key and don't find a corresponding entry in the user's
-	/// private power key, then we can go look at this "personality" key in the users power scheme. We can then go get a default value
-	/// for the power setting, depending on which "personality" power scheme is being operated on. Here's an example: A. UserB installs
-	/// an application that creates a power setting Seetting1 B. UserB changes Setting1 to have a value of 50 because that's one of the
-	/// possible settings available for setting1. C. UserB logs out D. UserA logs in and his active power scheme is some custom scheme
-	/// that was derived from the GUID_TYPICAL_POWER_SAVINGS. But remember that UserA has no setting1 in his private power key. E. When
-	/// activating UserA's selected power scheme, all power settings in the system power key will be enumerated (including Setting1). F.
-	/// The power manager will see that UserA has no Setting1 power setting in his private power scheme. G. The power manager will query
-	/// UserA's power scheme for its personality and retrieve GUID_TYPICAL_POWER_SAVINGS. H. The power manager then looks in Setting1 in
-	/// the system power key and looks in its set of default values for the corresponding value for GUID_TYPICAL_POWER_SAVINGS power
-	/// schemes. I. This derived power setting is applied.
+	/// <para>
+	/// This is a special GUID that represents a 'personality' that each power scheme will have. In other words, each power scheme will have
+	/// this key indicating "I'm most like *this* base power scheme." This individual setting will have one of three settings:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>GUID_MAX_POWER_SAVINGS</item>
+	/// <item>GUID_MIN_POWER_SAVINGS</item>
+	/// <item>GUID_TYPICAL_POWER_SAVINGS</item>
+	/// </list>
+	/// <para>This allows several features:</para>
+	/// <list type="number">
+	/// <item>
+	/// Drivers and applications can register for notification of this GUID. So when this power scheme is activated, this GUID's setting will
+	/// be sent across the system and drivers/applications can see "GUID_MAX_POWER_SAVINGS" which will tell them in a generic fashion "get
+	/// real aggressive about conserving power".
+	/// </item>
+	/// <item>
+	/// <para>
+	/// UserB may install a driver or application which creates power settings, and UserB may modify those power settings. Now UserA logs in.
+	/// How does he see those settings? They simply don't exist in his private power key. Well they do exist over in the system power key.
+	/// When we enumerate all the power settings in this system power key and don't find a corresponding entry in the user's private power
+	/// key, then we can go look at this "personality" key in the users power scheme. We can then go get a default value for the power
+	/// setting, depending on which "personality" power scheme is being operated on.
+	/// </para>
+	/// <para>Here's an example:</para>
+	/// <list type="number">
+	/// <item>UserB installs an application that creates a power setting Seetting1</item>
+	/// <item>UserB changes Setting1 to have a value of 50 because that's one of the possible settings available for setting1.</item>
+	/// <item>UserB logs out</item>
+	/// <item>
+	/// UserA logs in and his active power scheme is some custom scheme that was derived from the GUID_TYPICAL_POWER_SAVINGS. But remember
+	/// that UserA has no setting1 in his private power key.
+	/// </item>
+	/// <item>When activating UserA's selected power scheme, all power settings in the system power key will be enumerated (including Setting1).</item>
+	/// <item>The power manager will see that UserA has no Setting1 power setting in his private power scheme.</item>
+	/// <item>The power manager will query UserA's power scheme for its personality and retrieve GUID_TYPICAL_POWER_SAVINGS.</item>
+	/// <item>
+	/// The power manager then looks in Setting1 in the system power key and looks in its set of default values for the corresponding value
+	/// for GUID_TYPICAL_POWER_SAVINGS power schemes.
+	/// </item>
+	/// <item>This derived power setting is applied.</item>
+	/// </list>
+	/// </item>
+	/// </list>
 	/// </summary>
 	[CorrespondingType(typeof(Guid))]
 	public static readonly Guid GUID_POWERSCHEME_PERSONALITY = new("{245D8541-3943-4422-B025-13A784F679B7}");
@@ -937,6 +963,20 @@ public static partial class PowrProf
 	public static readonly Guid GUID_MIXED_REALITY_MODE = new("{1E626B4E-CF04-4f8d-9CC7-C97C5B0F2391}");
 
 	#endregion
+
+	/// <summary>Indicate the current energy saver status.</summary>
+	[PInvokeData("winnt.h")]
+	public enum ENERGY_SAVER_STATUS
+	{
+		/// <summary>Energy saver is off.</summary>
+		ENERGY_SAVER_OFF = 0,
+
+		/// <summary>Energy saver is in standard mode. Save energy if the user experience impact is minimal.</summary>
+		ENERGY_SAVER_STANDARD,
+
+		/// <summary>Energy saver is in high savings mode. Save energy where possible.</summary>
+		ENERGY_SAVER_HIGH_SAVINGS
+	}
 
 	/// <summary>The level of user notification.</summary>
 	[PInvokeData("winnt.h", MSDNShortId = "70739f46-54be-4748-8993-ffee3b2a8b6c")]
