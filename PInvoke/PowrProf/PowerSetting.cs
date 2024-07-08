@@ -15,19 +15,6 @@ public static partial class PowrProf
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	public delegate void EFFECTIVE_POWER_MODE_CALLBACK(EFFECTIVE_POWER_MODE Mode, IntPtr Context);
 
-	/// <summary>Flags for <see cref="PowerSettingRegisterNotification"/>.</summary>
-	[PInvokeData("powersetting.h", MSDNShortId = "0fbca717-2367-4407-8094-3eb2b717b59c")]
-	public enum DEVICE_NOTIFY
-	{
-		/// <summary>
-		/// The Recipient parameter is a handle to a service.Use the CreateService or OpenService function to obtain this handle.
-		/// </summary>
-		DEVICE_NOTIFY_SERVICE_HANDLE = 1,
-
-		/// <summary>The Recipient parameter is a pointer to a callback function to call when the power setting changes.</summary>
-		DEVICE_NOTIFY_CALLBACK = 2,
-	}
-
 	/// <summary>Indicates the effective power mode the system is running.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/powersetting/ne-powersetting-effective_power_mode typedef enum
 	// EFFECTIVE_POWER_MODE { EffectivePowerModeBatterySaver, EffectivePowerModeBetterBattery, EffectivePowerModeBalanced,
