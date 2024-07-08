@@ -56,7 +56,7 @@ public class PowrProfTests
 	{
 		uint timeOut = 0;
 		AutoResetEvent evt = new(false);
-		Assert.That(PowerSettingRegisterNotification(GUID_VIDEO_POWERDOWN_TIMEOUT, DEVICE_NOTIFY.DEVICE_NOTIFY_CALLBACK, new DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS { Callback = PowerSettingFunc }, out var powerNotification), ResultIs.Successful);
+		Assert.That(PowerSettingRegisterNotification(GUID_VIDEO_POWERDOWN_TIMEOUT, DEVICE_PWR_NOTIFY.DEVICE_NOTIFY_CALLBACK, new DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS { Callback = PowerSettingFunc }, out var powerNotification), ResultIs.Successful);
 		evt.WaitOne(1000);
 		Assert.That(PowerSettingUnregisterNotification(powerNotification), ResultIs.Successful);
 		Assert.That(timeOut, Is.Not.Zero);
