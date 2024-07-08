@@ -1385,7 +1385,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdialogbaseunits long GetDialogBaseUnits( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getdialogbaseunits")]
-	public static extern long GetDialogBaseUnits();
+	public static extern int GetDialogBaseUnits();
 
 	/// <summary>
 	/// <para>Retrieves the identifier of the specified control.</para>
@@ -1735,7 +1735,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "mapdialogrect")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MapDialogRect(HWND hDlg, in RECT lpRect);
+	public static extern bool MapDialogRect(HWND hDlg, ref RECT lpRect);
 
 	/// <summary>
 	/// <para>Sends a message to the specified control in a dialog box.</para>
