@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke.Tests;
@@ -8,10 +10,114 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public partial class User32Tests
 {
+	private const ushort ID_HELP = 150;
+	private const ushort ID_TEXT = 200;
+
+	public enum ICONSZ
+	{
+		ICON_BIG,
+		ICON_SMALL
+	}
+
+	[Test]
+	public void CreateDialogTest()
+	{
+		//-----------------------
+		// Define a dialog box.
+		//-----------------------
+		DLGTEMPLATE dt = new()
+		{
+			style = (uint)(WindowStyles.WS_POPUP | WindowStyles.WS_BORDER | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION) | (uint)DialogBoxStyles.DS_MODALFRAME,
+			cdit = 3,
+			x = 10,
+			y = 10,
+			cx = 100,
+			cy = 100,
+		};
+		using SafeCoTaskMemStruct<DLGTEMPLATE> lpdt = new(dt, 256);
+		int lpw = Marshal.SizeOf<DLGTEMPLATE>();
+		lpw += Write((ushort)0); // No menu
+		lpw += Write((ushort)0); // Predefined dialog box class (by default)
+		lpw += WriteStr("My Dialog");
+
+		//-----------------------
+		// Define an OK button.
+		//-----------------------
+		lpw = (int)Macros.ALIGN_TO_MULTIPLE(lpw, 4);    // Align DLGITEMTEMPLATE on DWORD boundary
+		DLGITEMTEMPLATE lpdit = new()
+		{
+			x = 10,
+			y = 70,
+			cx = 80,
+			cy = 20,
+			id = (ushort)MB_RESULT.IDOK, // OK button identifier
+			style = (uint)WindowStyles.WS_CHILD | (uint)WindowStyles.WS_VISIBLE | (uint)ButtonStyle.BS_DEFPUSHBUTTON
+		};
+		lpw += Write(lpdit);
+		lpw += Write((ushort)0xFFFF); // Use id
+		lpw += Write((ushort)0x0080); // Button class
+		lpw += WriteStr("OK");
+		lpw += Write((ushort)0); // No creation data
+
+		//-----------------------
+		// Define a Help button.
+		//-----------------------
+		lpw = (int)Macros.ALIGN_TO_MULTIPLE(lpw, 4);    // Align DLGITEMTEMPLATE on DWORD boundary
+		lpdit = new()
+		{
+			x = 55,
+			y = 10,
+			cx = 40,
+			cy = 20,
+			id = ID_HELP, // Help button identifier
+			style = (uint)WindowStyles.WS_CHILD | (uint)WindowStyles.WS_VISIBLE | (uint)ButtonStyle.BS_PUSHBUTTON
+		};
+		lpw += Write(lpdit);
+		lpw += Write((ushort)0xFFFF); // Use id
+		lpw += Write((ushort)0x0080); // Button class
+		lpw += WriteStr("Help");
+		lpw += Write((ushort)0); // No creation data
+
+		//-----------------------
+		// Define a static text control.
+		//-----------------------
+		lpw = (int)Macros.ALIGN_TO_MULTIPLE(lpw, 4);    // Align DLGITEMTEMPLATE on DWORD boundary
+		lpdit = new()
+		{
+			x = 10,
+			y = 10,
+			cx = 40,
+			cy = 20,
+			id = ID_TEXT, // Text identifier
+			style = (uint)WindowStyles.WS_CHILD | (uint)WindowStyles.WS_VISIBLE | (uint)StaticStyle.SS_LEFT
+		};
+		lpw += Write(lpdit);
+		lpw += Write((ushort)0xFFFF); // Use id
+		lpw += Write((ushort)0x0082); // Static class
+		lpw += WriteStr("Test text");
+		lpw += Write((ushort)0); // No creation data
+
+		TestContext.WriteLine(lpw);
+		TestContext.Write(lpdt.Dump);
+		Assert.That(DialogBoxIndirectParam(hDialogTemplate: lpdt, hWndParent: GetDesktopWindow(), lpDialogFunc: DlgProc), ResultIs.Not.Value((IntPtr)(-1)));
+
+		int Write<T>(in T o) where T : unmanaged => lpdt.DangerousGetHandle().Write(o, lpw, lpdt.Size);
+		int WriteStr(string o) { StringHelper.Write(o + '\0', lpdt.DangerousGetHandle().Offset(lpw), out var nchar, true, CharSet.Unicode, lpdt.Size - lpw); return nchar; }
+	}
+
+	[Test()]
+	public void DrawTextTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void ExitWindowsExTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void GetClientRectTest() => throw new NotImplementedException();
+
 	[Test]
 	public void GetGestureConfigTest()
 	{
-		var array = new GESTURECONFIG[] { new GESTURECONFIG(GID.GID_ZOOM), new GESTURECONFIG(GID.GID_ROTATE), new GESTURECONFIG(GID.GID_PAN) };
+		var array = new GESTURECONFIG[] { new(GID.GID_ZOOM), new(GID.GID_ROTATE), new(GID.GID_PAN) };
 		var aLen = (uint)array.Length;
 		var b = GetGestureConfig(FindWindow(null, null), 0, 0, ref aLen, array, (uint)Marshal.SizeOf(typeof(GESTURECONFIG)));
 		if (!b) Win32Error.ThrowLastError();
@@ -41,31 +147,6 @@ public partial class User32Tests
 		}
 	}
 
-	[Test]
-	public void WinTest()
-	{
-		var timer = System.Diagnostics.Stopwatch.StartNew();
-		var gotMsg = false;
-		using (var win = new BasicMessageWindow(meth))
-		{
-			for (int i = 0; i < 100; i++)
-				System.Threading.Thread.Sleep(20);
-		}
-		timer.Stop();
-		Assert.True(gotMsg);
-
-		bool meth(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
-		{
-			lReturn = default;
-			TestContext.WriteLine($"{timer.ElapsedMilliseconds} Message: {(WindowMessage)uMsg} ({uMsg})");
-			gotMsg = true;
-			return false;
-		}
-	}
-
-	[Test()]
-	public void GetWindowLongTest() => throw new NotImplementedException();
-
 	[Test()]
 	public void GetWindowLong32Test() => throw new NotImplementedException();
 
@@ -73,13 +154,83 @@ public partial class User32Tests
 	public void GetWindowLongPtrTest() => throw new NotImplementedException();
 
 	[Test()]
+	public void GetWindowLongTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void GetWindowRectTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void InvalidateRectTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void LoadImageTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void LoadStringTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void LoadStringTest1() => throw new NotImplementedException();
+
+	[Test()]
 	public void LockWorkStationTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void MapWindowPointsTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void MapWindowPointsTest1() => throw new NotImplementedException();
+
+	[Test()]
+	public void MapWindowPointsTest2() => throw new NotImplementedException();
 
 	[Test()]
 	public void MB_GetStringTest()
 	{
 		Assert.NotNull((string?)MB_GetString(1));
 		TestContext.WriteLine((string?)MB_GetString(1));
+	}
+
+	[Test]
+	public void MgdCreateDialogTest()
+	{
+		DLGTEMPLATE_MGD dlg = new()
+		{
+			style = WindowStyles.WS_POPUP | WindowStyles.WS_BORDER | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | (WindowStyles)DialogBoxStyles.DS_MODALFRAME | (WindowStyles)DialogBoxStyles.DS_SETFONT,
+			x = 10,
+			y = 10,
+			cx = 100,
+			cy = 100,
+			font = new() { pointSz = 8, typeface = "MS Sans Serif" },
+			title = "My Dialog",
+			controls = [
+				DLGTEMPLATE_MGD.MakeButton("OK", (ushort)MB_RESULT.IDOK, 10, 70, 80, 20, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
+				DLGTEMPLATE_MGD.MakeButton("Help", ID_HELP, 55, 10, 40, 20),
+				DLGTEMPLATE_MGD.MakeStatic("Test text", ID_TEXT, 10, 10, 40, 20),
+			]
+		};
+		Assert.That(DialogBoxIndirectParam(hDialogTemplate: dlg, hWndParent: GetDesktopWindow(), lpDialogFunc: DlgProc), ResultIs.Not.Value((IntPtr)(-1)));
+	}
+
+	[Test]
+	public void MgdCreateDialogExTest()
+	{
+		DLGTEMPLATEEX_MGD dlg = new()
+		{
+			style = WindowStyles.WS_POPUP | WindowStyles.WS_BORDER | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | (WindowStyles)DialogBoxStyles.DS_MODALFRAME | (WindowStyles)DialogBoxStyles.DS_SETFONT,
+			x = 10,
+			y = 10,
+			cx = 100,
+			cy = 100,
+			pointsize = 8,
+			typeface = "MS Sans Serif",
+			title = "My Dialog",
+			controls = [
+				DLGTEMPLATEEX_MGD.MakeButton("OK", (ushort)MB_RESULT.IDOK, 10, 70, 80, 20, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
+				DLGTEMPLATEEX_MGD.MakeButton("Help", ID_HELP, 55, 10, 40, 20),
+				DLGTEMPLATEEX_MGD.MakeStatic("Test text", ID_TEXT, 10, 10, 40, 20),
+			]
+		};
+		Assert.That(DialogBoxIndirectParam(hDialogTemplate: dlg, hWndParent: GetDesktopWindow(), lpDialogFunc: DlgProc), ResultIs.Not.Value((IntPtr)(-1)));
 	}
 
 	[Test()]
@@ -129,20 +280,9 @@ public partial class User32Tests
 		SendMessage(default, ButtonMessage.BCM_SETSPLITINFO, true, ref dis);
 		SendMessage(default, ButtonMessage.BCM_SETSPLITINFO, 4, ref dis);
 
-
 		// BCM_SETSPLITINFO
 		SendMessage(default, ButtonMessage.BCM_SETDROPDOWNSTATE, true);
-
 	}
-
-	public enum ICONSZ
-	{
-		ICON_BIG,
-		ICON_SMALL
-	}
-
-	//public static IntPtr SendMessage<TMsg, THandle>(HWND hwnd, TMsg msg, THandle wParam) where TMsg : struct, IConvertible where THandle : IHandle
-	//	=> SendMessage(hwnd, Convert.ToUInt32(msg), (IntPtr)wParam, IntPtr.Zero);
 
 	[Test()]
 	public void SendMessageTest1()
@@ -153,6 +293,8 @@ public partial class User32Tests
 		TestContext.WriteLine(sb);
 	}
 
+	//public static IntPtr SendMessage<TMsg, THandle>(HWND hwnd, TMsg msg, THandle wParam) where TMsg : struct, IConvertible where THandle : IHandle
+	//	=> SendMessage(hwnd, Convert.ToUInt32(msg), (IntPtr)wParam, IntPtr.Zero);
 	[Test()]
 	public void SendMessageTest2() => throw new NotImplementedException();
 
@@ -166,10 +308,16 @@ public partial class User32Tests
 	public void SendMessageTest5() => throw new NotImplementedException();
 
 	[Test()]
+	public void SendMessageTest6() => throw new NotImplementedException();
+
+	[Test()]
 	public void SetWindowLongTest() => throw new NotImplementedException();
 
 	[Test()]
 	public void SetWindowPosTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void SetWindowsHookExTest() => throw new NotImplementedException();
 
 	[Test()]
 	public void SetWindowTextTest() => throw new NotImplementedException();
@@ -185,101 +333,6 @@ public partial class User32Tests
 
 	[Test()]
 	public void ShutdownBlockReasonQueryTest1() => throw new NotImplementedException();
-
-	[Test()]
-	public void UnhookWindowsHookExTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void UnregisterHotKeyTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void WindowFromPointTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void ExitWindowsExTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void DrawTextTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void GetClientRectTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void GetWindowRectTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void InvalidateRectTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void MapWindowPointsTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void MapWindowPointsTest1() => throw new NotImplementedException();
-
-	[Test()]
-	public void MapWindowPointsTest2() => throw new NotImplementedException();
-
-	[Test()]
-	public void SendMessageTest6() => throw new NotImplementedException();
-
-	[Test()]
-	public void LoadImageTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void LoadStringTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void LoadStringTest1() => throw new NotImplementedException();
-
-	[Test()]
-	public void SetWindowsHookExTest() => throw new NotImplementedException();
-
-	[Test]
-	public void SystemParametersInfoGetTest()
-	{
-		// Try get integral value
-		var ptr = new SafeHGlobalHandle(4);
-		Assert.That(SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, 0, (IntPtr)ptr, 0));
-		var uval1 = ptr.ToStructure<uint>();
-		Assert.That(uval1, Is.Not.Zero);
-
-		// Try get generic integral value
-		Assert.That(SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, out uint uval2));
-		Assert.That(uval2, Is.EqualTo(uval1));
-
-		// Try get bool value
-		ptr = new SafeHGlobalHandle(4);
-		Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, 0, (IntPtr)ptr, 0));
-		bool bval1 = ptr.ToStructure<BOOL>();
-
-		// Try get generic bool value
-		Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, out bool bval2));
-		Assert.That(bval2, Is.EqualTo(bval1));
-
-		// Try get enum value
-		ptr = new SafeHGlobalHandle(4);
-		Assert.That(SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, 0, (IntPtr)ptr, 0));
-		var eval1 = ptr.ToStructure<ContactVisualization>();
-		Assert.That(eval1, Is.Not.Zero);
-
-		// Try get generic enum value
-		Assert.That(SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, out ContactVisualization eval2));
-		Assert.That(eval2, Is.EqualTo(eval1));
-
-		// Try get struct value
-		ptr = SafeHGlobalHandle.CreateFromStructure<RECT>();
-		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, 0, (IntPtr)ptr, 0));
-		var rval1 = ptr.ToStructure<RECT>();
-		Assert.That(rval1.IsEmpty, Is.False);
-
-		// Try get generic struct value
-		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT rval2));
-		Assert.That(rval2, Is.EqualTo(rval1));
-
-		// Try get string value
-		var sb = new StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
-		Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0));
-	}
 
 	[Test]
 	public void SystemParametersInfoEnumTest()
@@ -330,6 +383,53 @@ public partial class User32Tests
 	}
 
 	[Test]
+	public void SystemParametersInfoGetTest()
+	{
+		// Try get integral value
+		var ptr = new SafeHGlobalHandle(4);
+		Assert.That(SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, 0, (IntPtr)ptr, 0));
+		var uval1 = ptr.ToStructure<uint>();
+		Assert.That(uval1, Is.Not.Zero);
+
+		// Try get generic integral value
+		Assert.That(SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, out uint uval2));
+		Assert.That(uval2, Is.EqualTo(uval1));
+
+		// Try get bool value
+		ptr = new SafeHGlobalHandle(4);
+		Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, 0, (IntPtr)ptr, 0));
+		bool bval1 = ptr.ToStructure<BOOL>();
+
+		// Try get generic bool value
+		Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, out bool bval2));
+		Assert.That(bval2, Is.EqualTo(bval1));
+
+		// Try get enum value
+		ptr = new SafeHGlobalHandle(4);
+		Assert.That(SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, 0, (IntPtr)ptr, 0));
+		var eval1 = ptr.ToStructure<ContactVisualization>();
+		Assert.That(eval1, Is.Not.Zero);
+
+		// Try get generic enum value
+		Assert.That(SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, out ContactVisualization eval2));
+		Assert.That(eval2, Is.EqualTo(eval1));
+
+		// Try get struct value
+		ptr = SafeHGlobalHandle.CreateFromStructure<RECT>();
+		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, 0, (IntPtr)ptr, 0));
+		var rval1 = ptr.ToStructure<RECT>();
+		Assert.That(rval1.IsEmpty, Is.False);
+
+		// Try get generic struct value
+		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT rval2));
+		Assert.That(rval2, Is.EqualTo(rval1));
+
+		// Try get string value
+		var sb = new StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
+		Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0));
+	}
+
+	[Test]
 	public void SystemParametersInfoSetTest()
 	{
 		// Try set bool value
@@ -371,5 +471,45 @@ public partial class User32Tests
 		var wp = TestCaseSources.ImageFile;
 		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)wp.Length, wp, SPIF.SPIF_SENDCHANGE));
 		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE));
+	}
+
+	[Test()]
+	public void UnhookWindowsHookExTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void UnregisterHotKeyTest() => throw new NotImplementedException();
+
+	[Test()]
+	public void WindowFromPointTest() => throw new NotImplementedException();
+
+	[Test]
+	public void WinTest()
+	{
+		var timer = System.Diagnostics.Stopwatch.StartNew();
+		var gotMsg = false;
+		using (var win = new BasicMessageWindow(meth))
+		{
+			for (int i = 0; i < 100; i++)
+				System.Threading.Thread.Sleep(20);
+		}
+		timer.Stop();
+		Assert.True(gotMsg);
+
+		bool meth(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
+		{
+			lReturn = default;
+			TestContext.WriteLine($"{timer.ElapsedMilliseconds} Message: {(WindowMessage)uMsg} ({uMsg})");
+			gotMsg = true;
+			return false;
+		}
+	}
+
+	private IntPtr DlgProc(HWND hwndDlg, uint uMsg, IntPtr wParam, IntPtr lParam)
+	{
+		if (uMsg == (uint)WindowMessage.WM_COMMAND && wParam.ToInt32() == (int)MB_RESULT.IDOK || uMsg == (uint)WindowMessage.WM_CLOSE)
+		{
+			EndDialog(hwndDlg, (IntPtr)(int)MB_RESULT.IDOK);
+		}
+		return IntPtr.Zero;
 	}
 }
