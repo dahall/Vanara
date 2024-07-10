@@ -781,19 +781,19 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="items"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
-	public void Write<T>(IEnumerable<T> items, bool autoExtend = true, int offset = 0)
+	public int Write<T>(IEnumerable<T> items, bool autoExtend = true, int offset = 0)
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (autoExtend)
 		{
 			var count = items.Count();
-			if (count == 0) return;
+			if (count == 0) return 0;
 			InteropExtensions.TrueType(typeof(T), out var iSz);
 			var reqSz = iSz * count + offset;
 			if (sz < reqSz)
 				Size = reqSz;
 		}
-		CallLocked(p => p.Write(items, offset, sz));
+		return CallLocked(p => p.Write(items, offset, sz));
 	}
 
 	/// <summary>Writes the specified value to an offset within this allocated memory.</summary>
@@ -803,7 +803,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
-	public void Write<T>(in T value, bool autoExtend = true, int offset = 0) where T : struct
+	public int Write<T>(in T value, bool autoExtend = true, int offset = 0) where T : struct
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (autoExtend)
@@ -813,7 +813,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 			if (sz < reqSz)
 				Size = reqSz;
 		}
-		try { Lock(); handle.Write(value, offset, sz); }
+		try { Lock(); return handle.Write(value, offset, sz); }
 		finally { Unlock(); }
 	}
 
@@ -823,10 +823,10 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
-	public void Write(object value, bool autoExtend = true, int offset = 0)
+	public int Write(object value, bool autoExtend = true, int offset = 0)
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
-		if (value is null) return;
+		if (value is null) return 0;
 		if (autoExtend)
 		{
 			InteropExtensions.TrueType(value.GetType(), out var iSz);
@@ -834,7 +834,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 			if (sz < reqSz)
 				Size = reqSz;
 		}
-		CallLocked(p => p.Write(value, offset, sz));
+		return CallLocked(p => p.Write(value, offset, sz));
 	}
 
 	/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
