@@ -24,7 +24,7 @@ public class WlanApiTests
 				if (list.dwNumberOfItems < 1)
 					throw new InvalidOperationException("No WLAN interfaces.");
 				var i = list.InterfaceInfo.FirstOrDefault(i => i.isState == WLAN_INTERFACE_STATE.wlan_interface_state_connected);
-				if (i.InterfaceGuid == default) i = list.InterfaceInfo[0];
+				if (i.InterfaceGuid == default) throw new InvalidOperationException("No WLAN devices are connected");
 				intf = i.InterfaceGuid;
 				conn = i.isState == WLAN_INTERFACE_STATE.wlan_interface_state_connected;
 			}
@@ -138,6 +138,20 @@ public class WlanApiTests
 	public void WlanGetNetworkBssListTest()
 	{
 		Assert.That(WlanGetNetworkBssList(hWlan, PrimaryInterface, IntPtr.Zero, DOT11_BSS_TYPE.dot11_BSS_type_any, true, default, out var mem), ResultIs.Successful);
+		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>()!;
+		TestContext.WriteLine($"Size: {list.dwTotalSize}");
+		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
+		Assert.That(list.wlanBssEntries.Length, Is.EqualTo(list.dwNumberOfItems));
+		TestContext.Write(string.Join("\n", list.wlanBssEntries.Select(e => $"{e.uPhyId}\t{e.dot11Bssid}\t{e.dot11BssType}\t{e.dot11BssPhyType}\tstr={e.lRssi}\tper={e.usBeaconPeriod}\tfrq={e.ulChCenterFrequency}\t{e.ulIeOffset}:{e.ulIeSize}")));
+	}
+
+	[Test]
+	public void WlanGetNetworkBssListTest2()
+	{
+		Assert.That(WlanQueryInterface(hWlan, PrimaryInterface, WLAN_INTF_OPCODE.wlan_intf_opcode_current_connection, default, out _, out SafeHWLANMEM? data, out _), ResultIs.Successful);
+		var connectionAttributes = data.DangerousGetHandle().ToStructure<WLAN_CONNECTION_ATTRIBUTES>();
+		Assert.That(WlanGetNetworkBssList(hWlan, PrimaryInterface, connectionAttributes.wlanAssociationAttributes.dot11Ssid, connectionAttributes.wlanAssociationAttributes.dot11BssType,
+			connectionAttributes.wlanSecurityAttributes.bSecurityEnabled, default, out var mem), ResultIs.Successful);
 		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>()!;
 		TestContext.WriteLine($"Size: {list.dwTotalSize}");
 		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
