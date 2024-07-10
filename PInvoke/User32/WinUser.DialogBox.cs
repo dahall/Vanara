@@ -235,24 +235,6 @@ public static partial class User32
 		DLGC_BUTTON = 0x2000,
 	}
 
-	/// <summary>Defines methods to serialize a class.</summary>
-	public interface ISerializer
-	{
-		/// <summary>Gets the size.</summary>
-		int Size { get; }
-
-		/// <summary>Reads the contents of a class from memory.</summary>
-		/// <param name="ptr">The pointer to the memory which contains the contents of the class.</param>
-		/// <param name="allocatedBytes">The allocated bytes behind <paramref name="ptr"/>.</param>
-		/// <returns>The number bytes read.</returns>
-		int Read(IntPtr ptr, SizeT allocatedBytes);
-
-		/// <summary>Writes the contents of the class to memory.</summary>
-		/// <param name="ptr">The pointer to the memory into which to write the contents of the class.</param>
-		/// <returns>Bytes written.</returns>
-		int Write(IntPtr ptr);
-	}
-
 	/// <summary>
 	/// <para>
 	/// Creates a modeless dialog box from a dialog box template resource. The <c>CreateDialog</c> macro uses the CreateDialogParam function.
@@ -2053,11 +2035,6 @@ public static partial class User32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetDlgItemText(HWND hDlg, int nIDDlgItem, string lpString);
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal static int Align(int v) => (int)Macros.ALIGN_TO_MULTIPLE(v, 2);
-
-	internal static int WriteStr(string s, IntPtr p, int offset = 0) { StringHelper.Write(s + '\0', p.Offset(offset), out var nchar, true, CharSet.Unicode); return nchar; }
-
 	/// <summary>
 	/// <para>
 	/// Defines the dimensions and style of a control in a dialog box. One or more of these structures are combined with a DLGTEMPLATE
@@ -2335,14 +2312,11 @@ public static partial class User32
 		/// </summary>
 		public WindowStylesEx dwExtendedStyle;
 
-		/// <summary>
-		/// The point size value and the typeface name, but only if the style member specifies the DS_SETFONT style. The <see
-		/// cref="FontDetail.pointSz"/> field specifies the point size of the font to use for the text in the dialog box and its controls.
-		/// The <see cref="FontDetail.typeface"/> field specifies the name of the typeface for the font. When these values are specified, the
-		/// system creates a font having the specified size and typeface (if possible) and sends a WM_SETFONT message to the dialog box
-		/// procedure and the control window procedures as it creates the dialog box and controls.
-		/// </summary>
-		public FontDetail? font;
+		/// <summary>The point size of the font to use for the text in the dialog box and its controls.</summary>
+		public ushort? pointSz;
+
+		/// <summary>Specifies the name of the typeface for the font.</summary>
+		public string? typeface;
 
 		/// <summary>
 		/// Identifies a menu resource for the dialog box. If <see langword="null"/>, the dialog box has no menu. If the <see
@@ -2383,12 +2357,6 @@ public static partial class User32
 
 		/// <summary>The y-coordinate, in dialog box units, of the upper-left corner of the dialog box.</summary>
 		public short y;
-
-		private int Size => Marshal.SizeOf(typeof(DLGTEMPLATE)) + (menu is not null ? ((ISerializer)menu).Size : sizeof(ushort)) +
-					(wclass is not null ? ((ISerializer)wclass).Size : sizeof(ushort)) +
-					(title is not null ? StringHelper.GetByteCount(title + '\0', true, CharSet.Unicode) : sizeof(ushort)) +
-					((((uint)style & (uint)DialogBoxStyles.DS_SETFONT) != 0) ? (font is not null ? ((ISerializer)font).Size : sizeof(ushort)) : 0) +
-					controls.Sum(c => ((ISerializer)c).Size);
 
 		/// <summary>Makes a button template.</summary>
 		/// <param name="text">Contains the initial text of the control.</param>
@@ -2514,7 +2482,8 @@ public static partial class User32
 		{
 			if (managedObject is not DLGTEMPLATE_MGD dt)
 				throw new ArgumentException("Invalid type", nameof(managedObject));
-			SafeHGlobalHandle h = new(dt.Size);
+			SafeHGlobalHandle h = new(256);
+			NativeMemoryStream buffer = new(h);
 			DLGTEMPLATE dlg = new()
 			{
 				cdit = (ushort)dt.controls.Count,
@@ -2525,43 +2494,150 @@ public static partial class User32
 				cx = dt.cx,
 				cy = dt.cy
 			};
-			int len = Align(h.Write(dlg));
-			len += Align(dt.menu is not null ? ((ISerializer)dt.menu).Write(h.DangerousGetHandle().Offset(len)) : h.Write((ushort)0, false, len));
-			len += Align(dt.wclass is not null ? ((ISerializer)dt.wclass).Write(h.DangerousGetHandle().Offset(len)) : h.Write((ushort)0, false, len));
-			len += Align(dt.title is not null ? WriteStr(dt.title, h.DangerousGetHandle(), len) : h.Write((ushort)0, false, len));
+			buffer.Write(dlg);
+			WriteId(dt.menu);
+			WriteId(dt.wclass);
+			WriteString(dt.title);
+			// write font
 			if (((uint)dt.style & (uint)DialogBoxStyles.DS_SETFONT) != 0)
 			{
-				len += Align(dt.font is not null ? ((ISerializer)dt.font).Write(h.DangerousGetHandle().Offset(len)) : h.Write((ushort)0, false, len));
+				buffer.Write(dt.pointSz.GetValueOrDefault());
+				WriteString(dt.typeface);
 			}
 			foreach (var c in dt.controls)
-				len += Align(((ISerializer)c).Write(h.DangerousGetHandle().Offset(len)));
-			h.Size = len;
+				WriteControl(c);
+			buffer.Flush();
+			System.Diagnostics.Debug.Write(h.DangerousGetHandle().ToHexDumpString(h.Size));
 			return h;
+
+			void WriteControl(DlgItemTemplate item)
+			{
+				DLGITEMTEMPLATE dit = new()
+				{
+					style = (uint)item.style,
+					dwExtendedStyle = (uint)item.dwExtendedStyle,
+					x = item.x,
+					y = item.y,
+					cx = item.cx,
+					cy = item.cy,
+					id = item.id,
+				};
+				buffer.Write(dit);
+				WriteId(item.wclass);
+				WriteId(item.title);
+				buffer.Write((ushort)(item.creationData?.Length ?? 0));
+				if (item.creationData is not null)
+					buffer.Write(item.creationData);
+			}
+			void WriteId(DlgTemplateId? tid)
+			{
+				if (tid is null)
+					buffer.Write((ushort)0);
+				else
+				{
+					if (tid.id.HasValue)
+					{
+						buffer.Write((ushort)0xFFFF);
+						buffer.Write(tid.id.Value);
+					}
+					else if (tid.name is not null)
+						buffer.Write(tid.name + '\0', CharSet.Unicode);
+					else
+						throw new InvalidOperationException();
+				}
+			}
+			void WriteString(string? s)
+			{
+				if (s is null)
+					buffer.Write((ushort)0);
+				else
+					buffer.Write(s + '\0', CharSet.Unicode);
+			}
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => throw new NotImplementedException();
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero)
+				return null;
+			if (allocatedBytes < ((IVanaraMarshaler)this).GetNativeSize())
+				throw new ArgumentException("Invalid data", nameof(pNativeData));
+			NativeMemoryStream buffer = new(pNativeData, allocatedBytes);
+			DLGTEMPLATE_MGD dt = new();
+			dt.style = buffer.Read<WindowStyles>();
+			dt.dwExtendedStyle = buffer.Read<WindowStylesEx>();
+			var cc = buffer.Read<ushort>();
+			dt.x = buffer.Read<short>();
+			dt.y = buffer.Read<short>();
+			dt.cx = buffer.Read<short>();
+			dt.cy = buffer.Read<short>();
+			dt.menu = ReadId();
+			dt.wclass = ReadId();
+			dt.title = ReadString();
+			if (((uint)dt.style & (uint)DialogBoxStyles.DS_SETFONT) != 0)
+			{
+				dt.pointSz = buffer.Read<ushort>();
+				dt.typeface = ReadString();
+			}
+			for (int i = 0; i < cc; i++)
+				dt.controls.Add(ReadControl());
+			return dt;
+
+			DlgItemTemplate ReadControl()
+			{
+				DlgItemTemplate item = new();
+				item.style = buffer.Read<WindowStyles>();
+				item.dwExtendedStyle = buffer.Read<WindowStylesEx>();
+				item.x = buffer.Read<short>();
+				item.y = buffer.Read<short>();
+				item.cx = buffer.Read<short>();
+				item.cy = buffer.Read<short>();
+				item.id = buffer.Read<ushort>();
+				item.wclass = ReadId() ?? new();
+				item.title = ReadId() ?? new();
+				var c = buffer.Read<ushort>();
+				if (c > 0)
+					item.creationData = buffer.ReadArray<byte>(c, false).ToArray();
+				return item;
+			}
+			DlgTemplateId? ReadId()
+			{
+				var flag = Peek<ushort>();
+				if (flag == 0)
+				{
+					buffer.Read<ushort>();
+					return null;
+				}
+				if (flag == 0xFFFF)
+				{
+					buffer.Read<ushort>();
+					return new() { id = buffer.Read<ushort>() };
+				}
+				var name = buffer.Read<string>(CharSet.Unicode);
+				if (buffer.Read<ushort>() != 0) throw new InvalidOperationException();
+				return new() { name = name };
+			}
+			string? ReadString()
+			{
+				// Peek at first word
+				var l = Peek<ushort>();
+				if (l == 0) return null;
+				var s = buffer.Read<string>(CharSet.Unicode);
+				if (buffer.Read<ushort>() != 0) throw new InvalidOperationException();
+				return s;
+			}
+			T Peek<T>() where T : struct => buffer.Pointer.Offset(buffer.Position).ToStructure<T>();
+		}
 
 		/// <summary>Identifies details about a font used by the dialog.</summary>
-		public class FontDetail : ISerializer
+		public class FontDetail
 		{
-			/// <summary>The point size of the font to use for the text in the dialog box and its controls.</summary>
-			public ushort pointSz;
-
-			/// <summary>Specifies the name of the typeface for the font.</summary>
-			public string typeface = "";
-
-			int ISerializer.Size => sizeof(ushort) + StringHelper.GetByteCount(typeface + '\0', true, CharSet.Unicode);
-
-			int ISerializer.Read(IntPtr ptr, SizeT allocatedBytes) => throw new NotImplementedException();
-
-			int ISerializer.Write(IntPtr ptr) => ptr.Write(pointSz) + WriteStr(typeface, ptr, sizeof(ushort));
 		}
 
 		/// <summary>
 		/// Defines the dimensions and style of a control in a dialog box. One or more of these instances are added to form a standard
 		/// template for a dialog box.
 		/// </summary>
-		public class DlgItemTemplate : ISerializer
+		public class DlgItemTemplate
 		{
 			/// <summary>
 			/// This creation data can be of any size and format or <see langword="null"/>. The control's window procedure must be able to
@@ -2642,32 +2718,6 @@ public static partial class User32
 			/// upper-left corner of the dialog box's client area.
 			/// </summary>
 			public short y;
-
-			// Values at https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-dlgitemtemplate
-			int ISerializer.Size => Marshal.SizeOf(typeof(DLGITEMTEMPLATE)) + ((ISerializer)wclass).Size + ((ISerializer)title).Size + sizeof(ushort) + (creationData?.Length ?? 0);
-
-			int ISerializer.Read(IntPtr ptr, SizeT allocatedBytes) => throw new NotImplementedException();
-
-			int ISerializer.Write(IntPtr ptr)
-			{
-				DLGITEMTEMPLATE item = new()
-				{
-					style = (uint)style,
-					dwExtendedStyle = (uint)dwExtendedStyle,
-					x = x,
-					y = y,
-					cx = cx,
-					cy = cy,
-					id = id,
-				};
-				int len = Align(ptr.Write(item));
-				len += Align(((ISerializer)wclass).Write(ptr.Offset(len)));
-				len += Align(((ISerializer)title).Write(ptr.Offset(len)));
-				len += Align(ptr.Write((ushort)(creationData?.Length ?? 0), len));
-				if (creationData != null)
-					len += ptr.Write(creationData, len);
-				return len;
-			}
 		}
 	}
 
@@ -2675,24 +2725,13 @@ public static partial class User32
 	/// Identifies a dialog detail that can either hold an ordinal of a resource as the <see cref="id"/> or a string that specifies a
 	/// resource name.
 	/// </summary>
-	public class DlgTemplateId : ISerializer
+	public class DlgTemplateId
 	{
 		/// <summary>An ordinal of another resource.</summary>
 		public ushort? id;
 
 		/// <summary>The name of a resource or the text for the detail.</summary>
 		public string? name;
-
-		int ISerializer.Size => id.HasValue ? sizeof(uint) : (name != null ? StringHelper.GetByteCount(name + '\0', true, CharSet.Unicode) : throw new InvalidOperationException());
-
-		int ISerializer.Read(IntPtr ptr, SizeT allocatedBytes) => throw new NotImplementedException();
-
-		int ISerializer.Write(IntPtr ptr)
-		{
-			if (id.HasValue)
-				return ptr.Write((ushort)0xFFFF) + ptr.Write(id.Value, sizeof(ushort));
-			return name != null ? WriteStr(name, ptr) : throw new InvalidOperationException();
-		}
 	}
 
 	/// <summary>
@@ -3049,8 +3088,77 @@ public static partial class User32
 					buffer.Write(s, CharSet.Unicode);
 			}
 		}
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => throw new NotImplementedException();
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero)
+				return null;
+			if (allocatedBytes < ((IVanaraMarshaler)this).GetNativeSize())
+				throw new ArgumentException("Invalid data", nameof(pNativeData));
+			NativeMemoryStream buffer = new(pNativeData, allocatedBytes);
+			DLGTEMPLATEEX_MGD dt = new();
+			buffer.Read<ushort>(); // dlgVer
+			dt.signature = buffer.Read<ushort>();
+			dt.helpID = buffer.Read<uint>();
+			dt.exStyle = buffer.Read<WindowStylesEx>();
+			dt.style = buffer.Read<WindowStyles>();
+			var cc = buffer.Read<ushort>();
+			dt.x = buffer.Read<short>();
+			dt.y = buffer.Read<short>();
+			dt.cx = buffer.Read<short>();
+			dt.cy = buffer.Read<short>();
+			dt.menu = ReadId();
+			dt.windowClass = ReadId();
+			dt.title = ReadString();
+			dt.pointsize = buffer.Read<ushort>();
+			dt.weight = buffer.Read<ushort>();
+			dt.italic = buffer.Read<BOOLEAN>();
+			dt.charset = buffer.Read<CharacterSet>();
+			dt.typeface = ReadString();
+			for (int i = 0; i < cc; i++)
+				dt.controls.Add(ReadControl());
+			return dt;
 
+			DlgItemTemplateEx ReadControl()
+			{
+				DlgItemTemplateEx item = new();
+				item.helpID = buffer.Read<uint>();
+				item.exStyle = buffer.Read<WindowStylesEx>();
+				item.style = buffer.Read<WindowStyles>();
+				item.x = buffer.Read<short>();
+				item.y = buffer.Read<short>();
+				item.cx = buffer.Read<short>();
+				item.cy = buffer.Read<short>();
+				item.id = buffer.Read<uint>();
+				item.windowClass = ReadId()!;
+				item.title = ReadId()!;
+				var c = buffer.Read<ushort>();
+				if (c > 0)
+					item.creationData = buffer.ReadArray<byte>(c, false).ToArray();
+				return item;
+			}
+			DlgTemplateId? ReadId()
+			{
+				var flag = Peek<ushort>();
+				if (flag == 0)
+				{
+					buffer.Read<ushort>();
+					return null;
+				}
+				if (flag == 0xFFFF)
+				{
+					buffer.Read<ushort>();
+					return new() { id = buffer.Read<ushort>() };
+				}
+				return new() { name = buffer.Read<string>(CharSet.Unicode) };
+			}
+			string? ReadString()
+			{
+				var l = Peek<ushort>();
+				if (l == 0) return null;
+				return buffer.Read<string>(CharSet.Unicode);
+			}
+			T Peek<T>() where T : struct => buffer.Pointer.Offset(buffer.Position).ToStructure<T>();
+		}
 		/// <summary>
 		/// Defines the dimensions and style of a control in a dialog box. One or more of these items are added to <see
 		/// cref="DLGTEMPLATEEX_MGD.controls"/> to form a standard template for a dialog box.

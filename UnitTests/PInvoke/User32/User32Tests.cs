@@ -200,7 +200,8 @@ public partial class User32Tests
 			y = 10,
 			cx = 100,
 			cy = 100,
-			font = new() { pointSz = 8, typeface = "MS Sans Serif" },
+			pointSz = 8,
+			typeface = "MS Sans Serif",
 			title = "My Dialog",
 			controls = [
 				DLGTEMPLATE_MGD.MakeButton("OK", (ushort)MB_RESULT.IDOK, 10, 70, 80, 20, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
@@ -231,6 +232,64 @@ public partial class User32Tests
 			]
 		};
 		Assert.That(DialogBoxIndirectParam(hDialogTemplate: dlg, hWndParent: GetDesktopWindow(), lpDialogFunc: DlgProc), ResultIs.Not.Value((IntPtr)(-1)));
+	}
+
+	[Test]
+	public void MgdDlgTemplateReadWriteTest()
+	{
+		DLGTEMPLATE_MGD dlg = new()
+		{
+			style = WindowStyles.WS_POPUP | WindowStyles.WS_BORDER | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | (WindowStyles)DialogBoxStyles.DS_MODALFRAME | (WindowStyles)DialogBoxStyles.DS_SETFONT,
+			x = 10,
+			y = 10,
+			cx = 100,
+			cy = 100,
+			pointSz = 8,
+			typeface = "MS Sans Serif",
+			title = "My Dialog",
+			controls = [
+				DLGTEMPLATE_MGD.MakeButton("OK", (ushort)MB_RESULT.IDOK, 10, 70, 80, 20, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
+				DLGTEMPLATE_MGD.MakeButton("Help", ID_HELP, 55, 10, 40, 20),
+				DLGTEMPLATE_MGD.MakeStatic("Test text", ID_TEXT, 10, 10, 40, 20),
+			]
+		};
+		using var mem = ((IVanaraMarshaler)dlg).MarshalManagedToNative(dlg);
+		Assert.That(mem.Size, Is.GreaterThan(100));
+		var dlg2 = (DLGTEMPLATE_MGD?)((IVanaraMarshaler)dlg).MarshalNativeToManaged(mem, mem.Size);
+		Assert.That(dlg2, Is.Not.Null);
+		Assert.That(dlg.typeface, Is.EqualTo(dlg2!.typeface));
+		Assert.That(dlg.title, Is.EqualTo(dlg2!.title));
+		Assert.That(dlg.controls.Count, Is.EqualTo(dlg2!.controls.Count));
+		Assert.That(dlg.controls[1].title.name, Is.EqualTo(dlg2!.controls[1].title.name));
+	}
+
+	[Test]
+	public void MgdDlgTemplateExReadWriteTest()
+	{
+		DLGTEMPLATEEX_MGD dlg = new()
+		{
+			style = WindowStyles.WS_POPUP | WindowStyles.WS_BORDER | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | (WindowStyles)DialogBoxStyles.DS_MODALFRAME | (WindowStyles)DialogBoxStyles.DS_SETFONT,
+			x = 10,
+			y = 10,
+			cx = 100,
+			cy = 100,
+			pointsize = 8,
+			typeface = "MS Sans Serif",
+			title = "My Dialog",
+			controls = [
+				DLGTEMPLATEEX_MGD.MakeButton("OK", (ushort)MB_RESULT.IDOK, 10, 70, 80, 20, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
+				DLGTEMPLATEEX_MGD.MakeButton("Help", ID_HELP, 55, 10, 40, 20),
+				DLGTEMPLATEEX_MGD.MakeStatic("Test text", ID_TEXT, 10, 10, 40, 20),
+			]
+		};
+		using var mem = ((IVanaraMarshaler)dlg).MarshalManagedToNative(dlg);
+		Assert.That(mem.Size, Is.GreaterThan(100));
+		var dlg2 = (DLGTEMPLATEEX_MGD?)((IVanaraMarshaler)dlg).MarshalNativeToManaged(mem, mem.Size);
+		Assert.That(dlg2, Is.Not.Null);
+		Assert.That(dlg.typeface, Is.EqualTo(dlg2!.typeface));
+		Assert.That(dlg.title, Is.EqualTo(dlg2!.title));
+		Assert.That(dlg.controls.Count, Is.EqualTo(dlg2!.controls.Count));
+		Assert.That(dlg.controls[1].title.name, Is.EqualTo(dlg2!.controls[1].title.name));
 	}
 
 	[Test()]
