@@ -82,6 +82,15 @@ public class Shell32Methods
 		}
 	}
 
+	[Test]
+	public void SHFileOperationTest()
+	{
+		using var from = SafeCoTaskMemHandle.CreateFromStringList([TestCaseSources.WordDoc, TestCaseSources.SmallFile]);
+		using var to = SafeCoTaskMemHandle.CreateFromStringList([TestCaseSources.TempChildDir]);
+		SHFILEOPSTRUCT shop = new() { wFunc = ShellFileOperation.FO_COPY, pFrom = from, pTo = to, fFlags = FILEOP_FLAGS.FOF_NOCONFIRMATION };
+		Assert.That(SHFileOperation(ref shop), ResultIs.Value(0));
+	}
+
 	//[Test]
 	// Always fails
 	public void IShellMenuTest()
@@ -183,7 +192,6 @@ public class Shell32Methods
 	SHEnumerateUnreadMailAccountsA
 	SHEnumerateUnreadMailAccountsW
 	SHEvaluateSystemCommandTemplate
-	SHFileOperation
 	SHFind_InitMenuPopup
 	SHFindFiles
 	SHFlushSFCache
