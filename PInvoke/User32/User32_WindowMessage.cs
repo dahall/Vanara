@@ -11742,16 +11742,26 @@ public static partial class User32
 		public static implicit operator MOUSEWHEEL(IntPtr p) => new(p);
 	}
 
-	/// <summary>lParam value for WM_SIZE.</summary>
+	/// <summary>lParam value for <see cref="WindowMessage.WM_SIZE"/>.</summary>
 	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SIZES
+	public struct SIZES(ushort width, ushort height)
 	{
 		/// <summary>The width</summary>
-		public ushort Width;
+		public ushort Width = width;
 
 		/// <summary>The height</summary>
-		public ushort Height;
+		public ushort Height = height;
+
+		/// <summary>Performs an explicit conversion from <see cref="System.IntPtr"/> to <see cref="Vanara.PInvoke.User32.SIZES"/>.</summary>
+		/// <param name="p">The pointer value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator SIZES(IntPtr p) => new(Macros.LOWORD(p), Macros.HIWORD(p));
+
+		/// <summary>Performs an implicit conversion from <see cref="Vanara.PInvoke.User32.SIZES"/> to <see cref="System.IntPtr"/>.</summary>
+		/// <param name="s">The size.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(SIZES s) => Macros.MAKELPARAM(s.Width, s.Height);
 	}
 
 	/// <summary>Contains the styles for a window.</summary>
