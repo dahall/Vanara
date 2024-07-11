@@ -251,11 +251,11 @@ public static partial class SensorsApi
 
 		/// <summary>Retrieves a property value.</summary>
 		/// <param name="key"><c>REFPROPERTYKEY</c> specifying the property value to be retrieved.</param>
-		/// <returns><c>PROPVARIANT</c> pointer that receives the property value.</returns>
+		/// <param name="pProperty"><c>PROPVARIANT</c> pointer that receives the property value.</param>
 		/// <remarks>To retrieve multiple property values as a collection, call ISensor::GetProperties.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensor-getproperty HRESULT GetProperty( [in]
-		// REFPROPERTYKEY key, [out] PROPVARIANT *pProperty );
-		public PROPVARIANT GetProperty([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY key);
+		// https://learn.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensor-getproperty
+		// HRESULT GetProperty( [in] REFPROPERTYKEY key, [out] PROPVARIANT *pProperty );
+		public void GetProperty(in PROPERTYKEY key, [Out] PROPVARIANT pProperty);
 
 		/// <summary>Retrieves multiple sensor properties.</summary>
 		/// <param name="pKeys">
@@ -484,15 +484,15 @@ public static partial class SensorsApi
 
 		/// <summary>Retrieves a single data field value from the data report.</summary>
 		/// <param name="pKey"><c>REFPROPERTYKEY</c> indicating the data field to retrieve.</param>
-		/// <returns>Address of a <c>PROPVARIANT</c> that receives the data field value.</returns>
+		/// <param name="pValue">Address of a <c>PROPVARIANT</c> that receives the data field value.</param>
 		/// <remarks>
-		/// <para>Platform-defined data field <c>PROPERTYKEY</c> s are defined in Sensors.h.</para>
+		/// <para>Platform-defined data field <c>PROPERTYKEY</c>s are defined in Sensors.h.</para>
 		/// <para>Examples</para>
 		/// <para>For an example of how to retrieve a sensor data field value, see Retrieving Sensor Data Values.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensordatareport-getsensorvalue HRESULT
-		// GetSensorValue( [in] REFPROPERTYKEY pKey, [out] PROPVARIANT *pValue );
-		public PROPVARIANT GetSensorValue(in PROPERTYKEY pKey);
+		// https://learn.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensordatareport-getsensorvalue
+		// HRESULT GetSensorValue( [in] REFPROPERTYKEY pKey, [out] PROPVARIANT *pValue );
+		public void GetSensorValue(in PROPERTYKEY pKey, [Out] PROPVARIANT pValue);
 
 		/// <summary>Retrieves a collection of data field values.</summary>
 		/// <param name="pKeys">
@@ -840,6 +840,38 @@ public static partial class SensorsApi
 	{
 		for (uint i = 0; i < collection.GetCount(); i++)
 			yield return collection.GetAt(i);
+	}
+
+	/// <summary>Retrieves a property value.</summary>
+	/// <param name="s">The <see cref="ISensor"/> instance.</param>
+	/// <param name="key"><c>REFPROPERTYKEY</c> specifying the property value to be retrieved.</param>
+	/// <returns>The property value.</returns>
+	/// <remarks>To retrieve multiple property values as a collection, call ISensor::GetProperties.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensor-getproperty
+	// HRESULT GetProperty( [in] REFPROPERTYKEY key, [out] PROPVARIANT *pProperty );
+	public static object? GetProperty(this ISensor s, in PROPERTYKEY key)
+	{
+		PROPVARIANT pv = new();
+		s.GetProperty(key, pv);
+		return pv.Value;
+	}
+
+	/// <summary>Retrieves a single data field value from the data report.</summary>
+	/// <param name="r">The <see cref="ISensorDataReport"/> instance.</param>
+	/// <param name="pKey"><c>REFPROPERTYKEY</c> indicating the data field to retrieve.</param>
+	/// <returns>The data field value.</returns>
+	/// <remarks>
+	/// <para>Platform-defined data field <c>PROPERTYKEY</c>s are defined in Sensors.h.</para>
+	/// <para>Examples</para>
+	/// <para>For an example of how to retrieve a sensor data field value, see Retrieving Sensor Data Values.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensordatareport-getsensorvalue
+	// HRESULT GetSensorValue( [in] REFPROPERTYKEY pKey, [out] PROPVARIANT *pValue );
+	public static object? GetSensorValue(this ISensorDataReport r, in PROPERTYKEY pKey)
+	{
+		PROPVARIANT pv = new();
+		r.GetSensorValue(pKey, pv);
+		return pv.Value;
 	}
 
 	/// <summary>CLSID_Sensor</summary>
