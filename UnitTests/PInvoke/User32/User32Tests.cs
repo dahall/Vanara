@@ -217,18 +217,31 @@ public partial class User32Tests
 	{
 		DLGTEMPLATEEX_MGD dlg = new()
 		{
-			style = WindowStyles.WS_POPUP | WindowStyles.WS_BORDER | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | (WindowStyles)DialogBoxStyles.DS_MODALFRAME | (WindowStyles)DialogBoxStyles.DS_SETFONT,
-			x = 10,
-			y = 10,
-			cx = 100,
-			cy = 100,
+			//style = WindowStyles.WS_POPUP | WindowStyles.WS_BORDER | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | (WindowStyles)DialogBoxStyles.DS_MODALFRAME | (WindowStyles)DialogBoxStyles.DS_SETFONT,
+			//x = 10,
+			//y = 10,
+			//cx = 100,
+			//cy = 100,
+			//pointsize = 8,
+			//typeface = "MS Sans Serif",
+			//title = "My Dialog",
+			//controls = [
+			//	DLGTEMPLATEEX_MGD.MakeButton("OK", (ushort)MB_RESULT.IDOK, 10, 70, 80, 20, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
+			//	DLGTEMPLATEEX_MGD.MakeButton("Help", ID_HELP, 55, 10, 40, 20),
+			//	DLGTEMPLATEEX_MGD.MakeStatic("Test text", ID_TEXT, 10, 10, 40, 20),
+			//]
+			cx = 207,
+			cy = 88,
+			style = (WindowStyles)(DialogBoxStyles.DS_SETFONT | DialogBoxStyles.DS_MODALFRAME | DialogBoxStyles.DS_FIXEDSYS) | WindowStyles.WS_POPUP | WindowStyles.WS_VISIBLE | WindowStyles.WS_CAPTION | WindowStyles.WS_SYSMENU,
+			exStyle = WindowStylesEx.WS_EX_APPWINDOW,
+			title = "Ambient Light Aware SDK Sample",
 			pointsize = 8,
-			typeface = "MS Sans Serif",
-			title = "My Dialog",
+			typeface = "MS Shell Dlg",
 			controls = [
-				DLGTEMPLATEEX_MGD.MakeButton("OK", (ushort)MB_RESULT.IDOK, 10, 70, 80, 20, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
-				DLGTEMPLATEEX_MGD.MakeButton("Help", ID_HELP, 55, 10, 40, 20),
-				DLGTEMPLATEEX_MGD.MakeStatic("Test text", ID_TEXT, 10, 10, 40, 20),
+				DLGTEMPLATEEX_MGD.MakeButton("Done", (ushort)MB_RESULT.IDOK, 7, 65, 50, 16, WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_DEFPUSHBUTTON),
+				DLGTEMPLATEEX_MGD.MakeStatic("Ambient light level: lux", 1001, 7, 7, 193, 12),
+				DLGTEMPLATEEX_MGD.MakeStatic("Sample Optimized Text", 1003, 7, 33, 193, 32),
+				DLGTEMPLATEEX_MGD.MakeStatic("Sensors: 0", 1002, 7, 18, 193, 9),
 			]
 		};
 		Assert.That(DialogBoxIndirectParam(hDialogTemplate: dlg, hWndParent: GetDesktopWindow(), lpDialogFunc: DlgProc), ResultIs.Not.Value((IntPtr)(-1)));
@@ -565,6 +578,11 @@ public partial class User32Tests
 
 	private IntPtr DlgProc(HWND hwndDlg, uint uMsg, IntPtr wParam, IntPtr lParam)
 	{
+		if (EnumExtensions.IsValid((WindowMessage)uMsg))
+			System.Diagnostics.Debug.WriteLine((WindowMessage)uMsg);
+		else
+			System.Diagnostics.Debug.WriteLine($"Msg: 0x{uMsg:X}");
+
 		if (uMsg == (uint)WindowMessage.WM_COMMAND && wParam.ToInt32() == (int)MB_RESULT.IDOK || uMsg == (uint)WindowMessage.WM_CLOSE)
 		{
 			EndDialog(hwndDlg, (IntPtr)(int)MB_RESULT.IDOK);
