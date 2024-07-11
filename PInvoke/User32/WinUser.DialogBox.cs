@@ -2512,6 +2512,7 @@ public static partial class User32
 
 			void WriteControl(DlgItemTemplate item)
 			{
+				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
 				DLGITEMTEMPLATE dit = new()
 				{
 					style = (uint)item.style,
@@ -2584,6 +2585,7 @@ public static partial class User32
 
 			DlgItemTemplate ReadControl()
 			{
+				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
 				DlgItemTemplate item = new();
 				item.style = buffer.Read<WindowStyles>();
 				item.dwExtendedStyle = buffer.Read<WindowStylesEx>();
