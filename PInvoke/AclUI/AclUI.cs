@@ -250,11 +250,42 @@ public static partial class AclUI
 		/// <summary>View Only.</summary>
 		SI_VIEW_ONLY = 0x00400000,
 
-		// ISecurityInformation4
-		//SI_DISABLE_DENY_ACE = 0x80000000,
-		//SI_ENABLE_CENTRAL_POLICY = 0x40000000,
-		//SI_ENABLE_EDIT_ATTRIBUTE_CONDITION = 0x20000000,
-		//SI_SCOPE_ELEVATION_REQUIRED = 0x08000000,
+		/// <summary>
+		/// If this flag is set, an image of a shield is displayed on the Change button of the Scope attribute. For NTFS objects, this flag
+		/// is requested when the user does not have READ_CONTROL or WRITE_DAC access. Clients of the access control editor must implement
+		/// the ISecurityInformation4 interface to set this flag.
+		/// <para>
+		/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </para>
+		/// </summary>
+		SI_SCOPE_ELEVATION_REQUIRED = 0x08000000,
+
+		/// <summary>
+		/// If this flag is set, the system enables editing attributes. Clients of the access control editor must implement the
+		/// ISecurityInformation4 interface to set this flag.
+		/// <para>
+		/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </para>
+		/// </summary>
+		SI_ENABLE_EDIT_ATTRIBUTE_CONDITION = 0x20000000,
+
+		/// <summary>
+		/// If this flag is set, the system enables editing attributes. Clients of the access control editor must implement the
+		/// ISecurityInformation4 interface to set this flag.
+		/// <para>
+		/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </para>
+		/// </summary>
+		SI_ENABLE_CENTRAL_POLICY = 0x40000000,
+
+		/// <summary>
+		/// If this flag is set, the system disables denying an ACE. Clients of the access control editor must implement the
+		/// ISecurityInformation4 interface to set this flag.
+		/// <para>
+		/// Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+		/// </para>
+		/// </summary>
+		SI_DISABLE_DENY_ACE = 0x80000000,
 	}
 
 	/// <summary>Page types used by the new advanced ACL UI</summary>
@@ -465,128 +496,288 @@ public static partial class AclUI
 	public interface ISecurityInformation
 	{
 		/// <summary>
-		/// The GetObjectInformation method requests information that the access control editor uses to initialize its pages and to
+		/// The <c>GetObjectInformation</c> method requests information that the access control editor uses to initialize its pages and to
 		/// determine the editing options available to the user.
 		/// </summary>
-		/// <param name="object_info">
+		/// <param name="pObjectInfo">
 		/// A pointer to an SI_OBJECT_INFO structure. Your implementation must fill this structure to pass information back to the access
 		/// control editor.
 		/// </param>
+		/// <returns>
+		/// <para>Returns S_OK if successful.</para>
+		/// <para>Returns a nonzero error code if an error occurs.</para>
+		/// </returns>
+		/// <remarks>The system does not free the string pointers that you return in the SI_OBJECT_INFO structure.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation-getobjectinformation HRESULT
+		// GetObjectInformation( [out] PSI_OBJECT_INFO pObjectInfo );
 		[PreserveSig]
-		HRESULT GetObjectInformation(ref SI_OBJECT_INFO object_info);
+		HRESULT GetObjectInformation(ref SI_OBJECT_INFO pObjectInfo);
 
 		/// <summary>
-		/// The GetSecurity method requests a security descriptor for the securable object whose security descriptor is being edited. The
-		/// access control editor calls this method to retrieve the object's current or default security descriptor.
+		/// The <c>GetSecurity</c> method requests a security descriptor for the securable object whose security descriptor is being edited.
+		/// The access control editor calls this method to retrieve the object's current or default security descriptor.
 		/// </summary>
-		/// <param name="RequestInformation">
-		/// A set of SECURITY_INFORMATION bit flags that indicate the parts of the security descriptor being requested. This parameter
-		/// can be a combination of the following values.
+		/// <param name="RequestedInformation">
+		/// <para>
+		/// A set of SECURITY_INFORMATION bit flags that indicate the parts of the security descriptor being requested. This parameter can be
+		/// a combination of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>OWNER_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor must include the SID of the object's owner.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GROUP_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor must include the SID of the object's primary group.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>DACL_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor must include the object's DACL.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SACL_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor must include the object's SACL.</description>
+		/// </item>
+		/// </list>
 		/// </param>
-		/// <param name="SecurityDescriptor">
+		/// <param name="ppSecurityDescriptor">
+		/// <para>
 		/// A pointer to a variable that your implementation must set to a pointer to the object's security descriptor. The security
-		/// descriptor must include the components requested by the RequestedInformation parameter.
+		/// descriptor must include the components requested by the <c>RequestedInformation</c> parameter.
+		/// </para>
 		/// <para>The system calls the LocalFree function to free the returned pointer.</para>
 		/// </param>
 		/// <param name="fDefault">
-		/// If this parameter is TRUE, ppSecurityDescriptor should return an application-defined default security descriptor for the
-		/// object. The access control editor uses this default security descriptor to reinitialize the property page.
 		/// <para>
-		/// The access control editor sets this parameter to TRUE only if the user clicks the Default button. The Default button is
-		/// displayed only if you set the SI_RESET flag in the ISecurityInformation::GetObjectInformation method. If no default security
-		/// descriptor is available, do not set the SI_RESET flag.
+		/// If this parameter is <c>TRUE</c>, <c>ppSecurityDescriptor</c> should return an application-defined default security descriptor
+		/// for the object. The access control editor uses this default security descriptor to reinitialize the property page.
 		/// </para>
-		/// <para>If this flag is FALSE, ppSecurityDescriptor should return the object's current security descriptor.</para>
+		/// <para>
+		/// The access control editor sets this parameter to <c>TRUE</c> only if the user clicks the <c>Default</c> button. The
+		/// <c>Default</c> button is displayed only if you set the SI_RESET flag in the ISecurityInformation::GetObjectInformation method. If
+		/// no default security descriptor is available, do not set the SI_RESET flag.
+		/// </para>
+		/// <para>If this flag is <c>FALSE</c>, <c>ppSecurityDescriptor</c> should return the object's current security descriptor.</para>
 		/// </param>
+		/// <returns>
+		/// <para>Returns S_OK if successful.</para>
+		/// <para>
+		/// Returns a nonzero error code if an error occurs. Returns E_ACCESSDENIED if the user does not have permission to read the
+		/// requested security information.
+		/// </para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation-getsecurity HRESULT GetSecurity( [in]
+		// SECURITY_INFORMATION RequestedInformation, [out] PSECURITY_DESCRIPTOR *ppSecurityDescriptor, [in] BOOL fDefault );
 		[PreserveSig]
-		HRESULT GetSecurity([In] SECURITY_INFORMATION RequestInformation, out PSECURITY_DESCRIPTOR SecurityDescriptor, [In, MarshalAs(UnmanagedType.Bool)] bool fDefault);
+		HRESULT GetSecurity([In] SECURITY_INFORMATION RequestedInformation, out PSECURITY_DESCRIPTOR ppSecurityDescriptor, [In, MarshalAs(UnmanagedType.Bool)] bool fDefault);
 
 		/// <summary>
-		/// The SetSecurity method provides a security descriptor containing the security information the user wants to apply to the
-		/// securable object. The access control editor calls this method when the user clicks Okay or Apply.
+		/// The <c>SetSecurity</c> method provides a security descriptor containing the security information the user wants to apply to the
+		/// securable object. The access control editor calls this method when the user clicks <c>Okay</c> or <c>Apply</c>.
 		/// </summary>
-		/// <param name="RequestInformation">
-		/// A set of SECURITY_INFORMATION bit flags that indicate the parts of the security descriptor to set.
+		/// <param name="SecurityInformation">
+		/// <para>
+		/// A set of SECURITY_INFORMATION bit flags that indicate the parts of the security descriptor to set. This parameter can be a
+		/// combination of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>OWNER_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor contains the SID of the object's owner.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GROUP_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor contains the SID of the object's primary group.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>DACL_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor contains the object's DACL.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SACL_SECURITY_INFORMATION</c></description>
+		/// <description>The security descriptor contains the object's SACL.</description>
+		/// </item>
+		/// </list>
 		/// </param>
-		/// <param name="SecurityDescriptor">
+		/// <param name="pSecurityDescriptor">
 		/// A pointer to a security descriptor containing the new security information. Do not assume the security descriptor is in
 		/// self-relative form; it can be either absolute or self-relative.
 		/// </param>
+		/// <returns>
+		/// <para>Returns S_OK if successful.</para>
+		/// <para>Returns a nonzero error code if an error occurs.</para>
+		/// </returns>
+		/// <remarks>
+		/// To build a complete security descriptor for the object, the application must merge the new security descriptor parts, as defined
+		/// by the <c>SecurityInformation</c> parameter, into the object's existing security descriptor.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation-setsecurity HRESULT SetSecurity( [in]
+		// SECURITY_INFORMATION SecurityInformation, [in] PSECURITY_DESCRIPTOR pSecurityDescriptor );
 		[PreserveSig]
-		HRESULT SetSecurity([In] SECURITY_INFORMATION RequestInformation, [In] PSECURITY_DESCRIPTOR SecurityDescriptor);
+		HRESULT SetSecurity([In] SECURITY_INFORMATION SecurityInformation, [In] PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
 		/// <summary>
-		/// The GetAccessRights method requests information about the access rights that can be controlled for a securable object. The
+		/// The <c>GetAccessRights</c> method requests information about the access rights that can be controlled for a securable object. The
 		/// access control editor calls this method to retrieve display strings and other information used to initialize the property pages.
+		/// For more information, see Access Rights and Access Masks.
 		/// </summary>
-		/// <param name="guidObject">
-		/// A pointer to a GUID structure that identifies the type of object for which access rights are being requested. If this
-		/// parameter is NULL or a pointer to GUID_NULL, return the access rights for the object being edited. Otherwise, the GUID
-		/// identifies a child object type returned by the ISecurityInformation::GetInheritTypes method. The GUID corresponds to the
-		/// InheritedObjectType member of an object-specific ACE.
+		/// <param name="pguidObjectType">
+		/// A pointer to a GUID structure that identifies the type of object for which access rights are being requested. If this parameter
+		/// is <c>NULL</c> or a pointer to GUID_NULL, return the access rights for the object being edited. Otherwise, the GUID identifies a
+		/// child object type returned by the ISecurityInformation::GetInheritTypes method. The GUID corresponds to the
+		/// <c>InheritedObjectType</c> member of an object-specific ACE.
 		/// </param>
 		/// <param name="dwFlags">
+		/// <para>
 		/// A set of bit flags that indicate the property page being initialized. This value is zero if the basic security page is being
 		/// initialized. Otherwise, it is a combination of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SI_ADVANCED</c></description>
+		/// <description>The <c>Advanced Security</c> property sheet is being initialized.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SI_EDIT_AUDITS</c></description>
+		/// <description>The <c>Advanced Security</c> property sheet includes the <c>Audit</c> property page.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SI_EDIT_PROPERTIES</c></description>
+		/// <description>
+		/// The <c>Advanced Security</c> property sheet enables editing of ACEs that apply to the properties and property sets of the object.
+		/// </description>
+		/// </item>
+		/// </list>
 		/// </param>
-		/// <param name="access">
+		/// <param name="ppAccess">
 		/// A pointer to an array of SI_ACCESS structures. The array must include one entry for each access right. You can specify access
-		/// rights that apply to the object itself, as well as object-specific access rights that apply only to a property set or
-		/// property on the object.
+		/// rights that apply to the object itself, as well as object-specific access rights that apply only to a property set or property on
+		/// the object.
 		/// </param>
-		/// <param name="access_count">A pointer to ULONG that indicates the number of entries in the ppAccess array.</param>
-		/// <param name="DefaultAccess">
-		/// A pointer to ULONG that indicates the zero-based index of the array entry that contains the default access rights. The access
-		/// control editor uses this entry as the initial access rights in a new ACE.
+		/// <param name="pcAccesses">A pointer to <c>ULONG</c> that indicates the number of entries in the <c>ppAccess</c> array.</param>
+		/// <param name="piDefaultAccess">
+		/// A pointer to <c>ULONG</c> that indicates the zero-based index of the array entry that contains the default access rights. The
+		/// access control editor uses this entry as the initial access rights in a new ACE.
 		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns S_OK.</para>
+		/// <para>
+		/// If the function fails, it returns an <c>HRESULT</c> value that indicates the error. For a list of common error codes, see Common
+		/// HRESULT Values.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>GetAccessRights</c> method is called each time a property page is initialized.</para>
+		/// <para>The access control editor does not free the pointer returned in <c>ppAccess</c>.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation-getaccessrights HRESULT GetAccessRights(
+		// [in] const GUID *pguidObjectType, [in] DWORD dwFlags, [out] PSI_ACCESS *ppAccess, [out] ULONG *pcAccesses, [out] ULONG
+		// *piDefaultAccess );
 		[PreserveSig]
-		HRESULT GetAccessRights([In, Optional] IntPtr guidObject, [In] SI_OBJECT_INFO_Flags dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] access, ref uint access_count, out uint DefaultAccess);
+		HRESULT GetAccessRights([In, Optional] GuidPtr pguidObjectType, [In] SI_OBJECT_INFO_Flags dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] ppAccess, ref uint pcAccesses, out uint piDefaultAccess);
 
 		/// <summary>
-		/// The MapGeneric method requests that the generic access rights in an access mask be mapped to their corresponding standard and
-		/// specific access rights. For more information about generic, standard, and specific access rights, see Access Rights and
+		/// The <c>MapGeneric</c> method requests that the generic access rights in an access mask be mapped to their corresponding standard
+		/// and specific access rights. For more information about generic, standard, and specific access rights, see Access Rights and
 		/// Access Masks.
 		/// </summary>
-		/// <param name="guidObjectType">
-		/// A pointer to a GUID structure that identifies the type of object to which the access mask applies. If this member is NULL or
-		/// a pointer to GUID_NULL, the access mask applies to the object itself.
+		/// <param name="pguidObjectType">
+		/// A pointer to a GUID structure that identifies the type of object to which the access mask applies. If this member is <c>NULL</c>
+		/// or a pointer to GUID_NULL, the access mask applies to the object itself.
 		/// </param>
-		/// <param name="AceFlags">
-		/// A pointer to the AceFlags member of the ACE_HEADER structure from the ACE whose access mask is being mapped.
+		/// <param name="pAceFlags">
+		/// A pointer to the <c>AceFlags</c> member of the ACE_HEADER structure from the ACE whose access mask is being mapped.
 		/// </param>
-		/// <param name="Mask">
+		/// <param name="pMask">
 		/// A pointer to an access mask that contains the generic access rights to map. Your implementation must map the generic access
 		/// rights to the corresponding standard and specific access rights for the specified object type.
 		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns S_OK.</para>
+		/// <para>
+		/// If the function fails, it returns an <c>HRESULT</c> value that indicates the error. For a list of common error codes, see Common
+		/// HRESULT Values.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// Your <c>MapGeneric</c> implementation can call the MapGenericMask function to map the generic access rights in the access mask.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation-mapgeneric HRESULT MapGeneric( [in] const
+		// GUID *pguidObjectType, [in] UCHAR *pAceFlags, [in] ACCESS_MASK *pMask );
 		[PreserveSig]
-		HRESULT MapGeneric([In, Optional] IntPtr guidObjectType, ref System.Security.AccessControl.AceFlags AceFlags, ref ACCESS_MASK Mask);
+		HRESULT MapGeneric([In, Optional] GuidPtr pguidObjectType, ref System.Security.AccessControl.AceFlags pAceFlags, ref ACCESS_MASK pMask);
 
 		/// <summary>
-		/// The GetInheritTypes method requests information about how ACEs can be inherited by child objects. For more information, see
-		/// ACE Inheritance.
+		/// The <c>GetInheritTypes</c> method requests information about how ACEs can be inherited by child objects. For more information,
+		/// see ACE Inheritance.
 		/// </summary>
-		/// <param name="InheritType">
-		/// A pointer to a variable you should set to a pointer to an array of SI_INHERIT_TYPE structures. The array should include one
-		/// entry for each combination of inheritance flags and child object type that you support.
+		/// <param name="ppInheritTypes">
+		/// A pointer to a variable you should set to a pointer to an array of SI_INHERIT_TYPE structures. The array should include one entry
+		/// for each combination of inheritance flags and child object type that you support.
 		/// </param>
-		/// <param name="InheritTypesCount">
-		/// A pointer to a variable that you should set to indicate the number of entries in the ppInheritTypes array.
+		/// <param name="pcInheritTypes">
+		/// A pointer to a variable that you should set to indicate the number of entries in the <c>ppInheritTypes</c> array.
 		/// </param>
+		/// <returns>
+		/// <para>Returns S_OK if successful.</para>
+		/// <para>Returns a nonzero error code if an error occurs.</para>
+		/// </returns>
+		/// <remarks>The access control editor does not free the pointer returned in <c>ppInheritTypes</c>.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation-getinherittypes HRESULT GetInheritTypes(
+		// [out] PSI_INHERIT_TYPE *ppInheritTypes, [out] ULONG *pcInheritTypes );
 		[PreserveSig]
-		HRESULT GetInheritTypes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out SI_INHERIT_TYPE[] InheritType, out uint InheritTypesCount);
+		HRESULT GetInheritTypes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out SI_INHERIT_TYPE[] ppInheritTypes, out uint pcInheritTypes);
 
 		/// <summary>
-		/// The PropertySheetPageCallback method notifies an EditSecurity or CreateSecurityPage caller that an access control editor
+		/// The <c>PropertySheetPageCallback</c> method notifies an EditSecurity or CreateSecurityPage caller that an access control editor
 		/// property page is being created or destroyed.
 		/// </summary>
 		/// <param name="hwnd">
-		/// If uMsg is PSPCB_SI_INITDIALOG, hwnd is a handle to the property page dialog box. Otherwise, hwnd is NULL.
+		/// If <c>uMsg</c> is PSPCB_SI_INITDIALOG, <c>hwnd</c> is a handle to the property page dialog box. Otherwise, <c>hwnd</c> is <c>NULL</c>.
 		/// </param>
-		/// <param name="uMsg">Identifies the message being received.</param>
+		/// <param name="uMsg">
+		/// <para>Identifies the message being received. This parameter is one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>PSPCB_CREATE</c></description>
+		/// <description>Indicates that a property page is being created.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PSPCB_RELEASE</c></description>
+		/// <description>Indicates that a property page is being destroyed.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>PSPCB_SI_INITDIALOG</c></description>
+		/// <description>Indicates that a property page is being initialized.</description>
+		/// </item>
+		/// </list>
+		/// </param>
 		/// <param name="uPage">
-		/// A value from the SI_PAGE_TYPE enumeration type that indicates the type of access control editor property page being created
-		/// or destroyed.
+		/// A value from the SI_PAGE_TYPE enumeration type that indicates the type of access control editor property page being created or destroyed.
 		/// </param>
+		/// <returns>
+		/// <para>Returns S_OK if successful.</para>
+		/// <para>Returns a nonzero error code if an error occurs.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation-propertysheetpagecallback HRESULT
+		// PropertySheetPageCallback( [in] HWND hwnd, [in] UINT uMsg, [in] SI_PAGE_TYPE uPage );
 		[PreserveSig]
 		HRESULT PropertySheetPageCallback([In, Optional] HWND hwnd, [In] PropertySheetCallbackMessage uMsg, [In] SI_PAGE_TYPE uPage);
 	}
@@ -712,8 +903,8 @@ public static partial class AclUI
 	public static uint COMBINE_PAGE_ACTIVATION(SI_PAGE_TYPE pt, SI_PAGE_ACTIVATED pa) => (uint)pt | ((uint)pa << 16);
 
 	/// <summary>
-	/// The CreateSecurityPage function creates a basic security property page that enables the user to view and edit the access rights
-	/// allowed or denied by the access control entries (ACEs) in an object's discretionary access control list (DACL). Use the
+	/// The <c>CreateSecurityPage</c> function creates a basic security property page that enables the user to view and edit the access
+	/// rights allowed or denied by the access control entries (ACEs) in an object's discretionary access control list (DACL). Use the
 	/// PropertySheet function or the PSM_ADDPAGE message to add this page to a property sheet.
 	/// </summary>
 	/// <param name="psi">
@@ -721,12 +912,26 @@ public static partial class AclUI
 	/// information about the object being edited and to return the user's input.
 	/// </param>
 	/// <returns>
-	/// If the function succeeds, the function returns a handle to a basic security property page. If the function fails, it returns
-	/// NULL. To get extended error information, call GetLastError.
+	/// <para>If the function succeeds, the function returns a handle to a basic security property page.</para>
+	/// <para>If the function fails, it returns <c>NULL</c>. To get extended error information, call GetLastError.</para>
 	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// During the property page initialization, the system calls the ISecurityInformation::GetSecurity and ISecurityInformation::SetSecurity
+	/// methods to determine whether the user has permission to edit the object's security descriptor. The system displays an error message
+	/// if the user does not have permission.
+	/// </para>
+	/// <para>
+	/// The basic security property page can include an <c>Advanced</c> button for displaying the advanced security property sheet. This
+	/// advanced security property sheet can contain three additional property pages that enable the user to view and edit the object's DACL,
+	/// system access control list (SACL), and owner.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-createsecuritypage HPROPSHEETPAGE ACLUIAPI CreateSecurityPage( [in]
+	// LPSECURITYINFO psi );
 	[DllImport(Lib.AclUI, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("aclui.h", Dll = "Aclui.dll", MSDNShortId = "aa446584")]
-	public static extern IntPtr CreateSecurityPage([In] ISecurityInformation psi);
+	public static extern HPROPSHEETPAGE CreateSecurityPage([In] ISecurityInformation psi);
 
 	/// <summary>
 	/// The <c>EditSecurity</c> function displays a property sheet that contains a basic security property page. This property page
@@ -818,8 +1023,7 @@ public static partial class AclUI
 	public struct EFFPERM_RESULT_LIST
 	{
 		/// <summary>Indicates if the effective permissions results have been evaluated.</summary>
-		[MarshalAs(UnmanagedType.Bool)]
-		public bool fEvaluated;
+		public BOOLEAN fEvaluated;
 
 		/// <summary>The number of elements in both the pObjectTypeList and pGrantedAccessList members.</summary>
 		public uint cObjectTypeListLength;
@@ -874,8 +1078,7 @@ public static partial class AclUI
 		public uint Id;
 
 		/// <summary>TRUE if the security object represents one of the well-know security objects listed in the Id member.</summary>
-		[MarshalAs(UnmanagedType.Bool)]
-		public bool fWellKnown;
+		public BOOLEAN fWellKnown;
 	}
 
 	/// <summary>
@@ -901,7 +1104,7 @@ public static partial class AclUI
 		/// can be NULL to specify the local computer. The access control editor does not free this pointer.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszServerName;
+		public string? pszServerName;
 
 		/// <summary>
 		/// A pointer to a null-terminated, Unicode string that names the object being edited. This name appears in the title of the
@@ -928,7 +1131,7 @@ public static partial class AclUI
 		/// <param name="serverName">Names the computer on which to look up account names and SIDs.</param>
 		/// <param name="pageTitle">The title of the basic security property page.</param>
 		/// <param name="guidObject">The unique identifier for the object.</param>
-		public SI_OBJECT_INFO(SI_OBJECT_INFO_Flags flags, string objectName, string serverName, string? pageTitle = null, Guid? guidObject = null)
+		public SI_OBJECT_INFO(SI_OBJECT_INFO_Flags flags, string objectName, string? serverName, string? pageTitle = null, Guid? guidObject = null)
 		{
 			dwFlags = flags;
 			hInstance = IntPtr.Zero;
@@ -960,7 +1163,7 @@ public static partial class AclUI
 	public struct SID_INFO
 	{
 		/// <summary>A pointer to a SID structure that identifies one of the SIDs passed into ISecurityInformation2::LookupSids.</summary>
-		public IntPtr pSid;
+		public PSID pSid;
 
 		/// <summary>A pointer to a string containing the common name corresponding to the SID structure specified in pSid.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]

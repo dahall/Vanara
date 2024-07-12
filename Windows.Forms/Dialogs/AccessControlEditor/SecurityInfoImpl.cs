@@ -69,7 +69,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityInformation.GetAccessRights(IntPtr guidObject, SI_OBJECT_INFO_Flags dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
+	HRESULT ISecurityInformation.GetAccessRights(GuidPtr guidObject, SI_OBJECT_INFO_Flags dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
 	{
 		System.Diagnostics.Debug.WriteLine($"GetAccessRight: {guidObject}, {dwFlags}");
 		prov.GetAccessListInfo(dwFlags, out access, out defaultAccess);
@@ -105,7 +105,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityInformation.MapGeneric(IntPtr guidObjectType, ref AceFlags AceFlags, ref ACCESS_MASK Mask)
+	HRESULT ISecurityInformation.MapGeneric(GuidPtr guidObjectType, ref AceFlags AceFlags, ref ACCESS_MASK Mask)
 	{
 		var stMask = Mask;
 		var gm = prov.GetGenericMapping(AceFlags);
