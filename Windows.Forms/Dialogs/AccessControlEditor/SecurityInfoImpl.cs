@@ -184,9 +184,9 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityObjectTypeInfo.GetInheritSource(int si, PACL pAcl, out INHERITED_FROM[] ppInheritArray)
+	HRESULT ISecurityObjectTypeInfo.GetInheritSource(SECURITY_INFORMATION si, PACL pAcl, out INHERITED_FROM[] ppInheritArray)
 	{
-		System.Diagnostics.Debug.WriteLine($"GetInheritSource: {(SECURITY_INFORMATION)si}");
+		System.Diagnostics.Debug.WriteLine($"GetInheritSource: {si}");
 		ppInheritArray = prov.GetInheritSource(fullObjectName, objectInfo.pszServerName, objectInfo.IsContainer, (uint)si, pAcl);
 		return HRESULT.S_OK;
 	}

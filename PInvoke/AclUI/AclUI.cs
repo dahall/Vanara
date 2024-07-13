@@ -890,7 +890,7 @@ public static partial class AclUI
 		/// inheritance information for the corresponding ACE entry in pACL.
 		/// </param>
 		[PreserveSig]
-		HRESULT GetInheritSource([In] int si, [In] PACL pACL, [MarshalAs(UnmanagedType.LPArray)] out INHERITED_FROM[] ppInheritArray);
+		HRESULT GetInheritSource([In] SECURITY_INFORMATION si, [In] PACL pACL, [MarshalAs(UnmanagedType.LPArray)] out INHERITED_FROM[] ppInheritArray);
 	}
 
 	/// <summary>
