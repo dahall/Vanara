@@ -529,6 +529,13 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 		}
 	}
 
+	/// <summary>
+	/// Overrides the stored size of the allocated memory. This should be used with extreme caution only in cases where the the derived class
+	/// is returned from a P/Invoke call and no size has been set in a constructor.
+	/// </summary>
+	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
+	public void DangerousOverrideSize(SizeT newSize) => sz = newSize;
+
 	/// <summary>Locks this instance.</summary>
 	public override void Lock()
 	{
