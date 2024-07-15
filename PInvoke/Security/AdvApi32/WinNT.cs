@@ -4894,9 +4894,8 @@ public static partial class AdvApi32
 		{
 			if (!ConvertStringSecurityDescriptorToSecurityDescriptor(sddl, SDDL_REVISION.SDDL_REVISION_1, out var sd, out var sdsz))
 				Win32Error.ThrowLastError();
-			handle = sd.DangerousGetHandle();
+			handle = sd.TakeOwnership();
 			sz = (int)sdsz;
-			sd.SetHandleAsInvalid();
 		}
 
 		/// <summary>Determines whether the components of this security descriptor are valid.</summary>
