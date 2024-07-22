@@ -52,6 +52,98 @@ public static partial class AdvApi32
 		ACE_INHERITED_OBJECT_TYPE_PRESENT = 0x2
 	}
 
+	/// <summary>Specifies the ACE type.</summary>
+	[PInvokeData("winnt.h")]
+	public enum ACE_TYPE : byte
+	{
+		/// <summary>Access-allowed ACE that uses the ACCESS_ALLOWED_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_ALLOWED_ACE))]
+		ACCESS_ALLOWED_ACE_TYPE = 0x0,
+
+		/// <summary>Access-denied ACE that uses the ACCESS_DENIED_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_DENIED_ACE))]
+		ACCESS_DENIED_ACE_TYPE = 0x1,
+
+		/// <summary>System-audit ACE that uses the SYSTEM_AUDIT_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_AUDIT_ACE))]
+		SYSTEM_AUDIT_ACE_TYPE = 0x2,
+
+		/// <summary>Reserved for future use. System-alarm ACE that uses the SYSTEM_ALARM_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_ALARM_ACE))]
+		SYSTEM_ALARM_ACE_TYPE = 0x3,
+
+		/// <summary>Reserved.</summary>
+		ACCESS_ALLOWED_COMPOUND_ACE_TYPE = 0x4,
+
+		/// <summary>Object-specific access-allowed ACE that uses the ACCESS_ALLOWED_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_ALLOWED_OBJECT_ACE))]
+		ACCESS_ALLOWED_OBJECT_ACE_TYPE = 0x5,
+
+		/// <summary>Object-specific access-denied ACE that uses the ACCESS_DENIED_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_DENIED_OBJECT_ACE))]
+		ACCESS_DENIED_OBJECT_ACE_TYPE = 0x6,
+
+		/// <summary>Object-specific system-audit ACE that uses the SYSTEM_AUDIT_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_AUDIT_OBJECT_ACE))]
+		SYSTEM_AUDIT_OBJECT_ACE_TYPE = 0x7,
+
+		/// <summary>Reserved for future use. Object-specific system-alarm ACE that uses the SYSTEM_ALARM_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_ALARM_OBJECT_ACE))]
+		SYSTEM_ALARM_OBJECT_ACE_TYPE = 0x8,
+
+		/// <summary>Access-allowed callback ACE that uses the ACCESS_ALLOWED_CALLBACK_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_ALLOWED_CALLBACK_ACE))]
+		ACCESS_ALLOWED_CALLBACK_ACE_TYPE = 0x9,
+
+		/// <summary>Access-denied callback ACE that uses the ACCESS_DENIED_CALLBACK_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_DENIED_CALLBACK_ACE))]
+		ACCESS_DENIED_CALLBACK_ACE_TYPE = 0xA,
+
+		/// <summary>Object-specific access-allowed callback ACE that uses the ACCESS_ALLOWED_CALLBACK_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_ALLOWED_CALLBACK_OBJECT_ACE))]
+		ACCESS_ALLOWED_CALLBACK_OBJECT_ACE_TYPE = 0xB,
+
+		/// <summary>Object-specific access-denied callback ACE that uses the ACCESS_DENIED_CALLBACK_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(ACCESS_DENIED_CALLBACK_OBJECT_ACE))]
+		ACCESS_DENIED_CALLBACK_OBJECT_ACE_TYPE = 0xC,
+
+		/// <summary>System-audit callback ACE that uses the SYSTEM_AUDIT_CALLBACK_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_AUDIT_CALLBACK_ACE))]
+		SYSTEM_AUDIT_CALLBACK_ACE_TYPE = 0xD,
+
+		/// <summary>Reserved for future use. System-alarm callback ACE that uses the SYSTEM_ALARM_CALLBACK_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_ALARM_CALLBACK_ACE))]
+		SYSTEM_ALARM_CALLBACK_ACE_TYPE = 0xE,
+
+		/// <summary>Object-specific system-audit callback ACE that uses the SYSTEM_AUDIT_CALLBACK_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_AUDIT_CALLBACK_OBJECT_ACE))]
+		SYSTEM_AUDIT_CALLBACK_OBJECT_ACE_TYPE = 0xF,
+
+		/// <summary>Reserved for future use. Object-specific system-alarm callback ACE that uses the SYSTEM_ALARM_CALLBACK_OBJECT_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_ALARM_CALLBACK_OBJECT_ACE))]
+		SYSTEM_ALARM_CALLBACK_OBJECT_ACE_TYPE = 0x10,
+
+		/// <summary>Mandatory label ACE that uses the SYSTEM_MANDATORY_LABEL_ACE structure.</summary>
+		[CorrespondingType(typeof(SYSTEM_MANDATORY_LABEL_ACE))]
+		SYSTEM_MANDATORY_LABEL_ACE_TYPE = 0x11,
+
+		/// <summary>System resource attributes for a securable object.</summary>
+		[CorrespondingType(typeof(SYSTEM_RESOURCE_ATTRIBUTE_ACE))]
+		SYSTEM_RESOURCE_ATTRIBUTE_ACE_TYPE = 0x12,
+
+		/// <summary>An access control entry (ACE) for the system access control list (SACL) that specifies the scoped policy identifier for a securable object.</summary>
+		[CorrespondingType(typeof(SYSTEM_SCOPED_POLICY_ID_ACE))]
+		SYSTEM_SCOPED_POLICY_ID_ACE_TYPE = 0x13,
+
+		/// <summary></summary>
+		[CorrespondingType(typeof(SYSTEM_PROCESS_TRUST_LABEL_ACE))]
+		SYSTEM_PROCESS_TRUST_LABEL_ACE_TYPE = 0x14,
+
+		/// <summary></summary>
+		[CorrespondingType(typeof(SYSTEM_ACCESS_FILTER_ACE))]
+		SYSTEM_ACCESS_FILTER_ACE_TYPE = 0x15,
+	}
+
 	/// <summary>Used by the <see cref="GetAclInformation(PACL, IntPtr, uint, ACL_INFORMATION_CLASS)"/> function.</summary>
 	[PInvokeData("winnt.h")]
 	public enum ACL_INFORMATION_CLASS : uint
@@ -1452,6 +1544,11 @@ public static partial class AdvApi32
 		WinBuiltinDeviceOwnersSid,
 	}
 
+	/// <summary>Interface to identify the various ACE types.</summary>
+	public interface IAccessControlEntry
+	{
+	}
+
 	/// <summary>
 	/// The <c>ACCESS_ALLOWED_ACE</c> structure defines an access control entry (ACE) for the discretionary access control list (DACL)
 	/// that controls access to an object. An access-allowed ACE allows access to an object for a specific trustee identified by a
@@ -1480,7 +1577,7 @@ public static partial class AdvApi32
 	// ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_ALLOWED_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "002a3fa7-02a3-4832-948e-b048f5f5818f")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_ALLOWED_ACE
+	public struct ACCESS_ALLOWED_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -1530,7 +1627,7 @@ public static partial class AdvApi32
 	// _ACCESS_ALLOWED_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_ALLOWED_CALLBACK_ACE, *PACCESS_ALLOWED_CALLBACK_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "0dbca19b-4b54-4c55-920a-c00335692d68")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_ALLOWED_CALLBACK_ACE
+	public struct ACCESS_ALLOWED_CALLBACK_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -1585,7 +1682,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } ACCESS_ALLOWED_CALLBACK_OBJECT_ACE, *PACCESS_ALLOWED_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "83b00ef3-f7b2-455e-8f3f-01b1da6024b7")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_ALLOWED_CALLBACK_OBJECT_ACE
+	public struct ACCESS_ALLOWED_CALLBACK_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -1731,7 +1828,7 @@ public static partial class AdvApi32
 	// SidStart; } ACCESS_ALLOWED_OBJECT_ACE, *PACCESS_ALLOWED_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "ee91ca50-e81b-4872-95eb-349c2d5be004")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_ALLOWED_OBJECT_ACE
+	public struct ACCESS_ALLOWED_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -1878,7 +1975,7 @@ public static partial class AdvApi32
 	// Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_DENIED_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "d76a92d0-ccd0-4e73-98b6-43bcd661134d")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_DENIED_ACE
+	public struct ACCESS_DENIED_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// An ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE
@@ -1928,7 +2025,7 @@ public static partial class AdvApi32
 	// _ACCESS_DENIED_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } ACCESS_DENIED_CALLBACK_ACE, *PACCESS_DENIED_CALLBACK_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "6df77b27-7aa3-455f-bffe-eeb90ba1bc15")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_DENIED_CALLBACK_ACE
+	public struct ACCESS_DENIED_CALLBACK_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -1985,7 +2082,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } ACCESS_DENIED_CALLBACK_OBJECT_ACE, *PACCESS_DENIED_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "945d9c3b-922f-481d-bb1d-3dca50fb9edb")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_DENIED_CALLBACK_OBJECT_ACE
+	public struct ACCESS_DENIED_CALLBACK_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -2131,7 +2228,7 @@ public static partial class AdvApi32
 	// SidStart; } ACCESS_DENIED_OBJECT_ACE, *PACCESS_DENIED_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "80e00c2b-7c31-428d-96c1-c4e3d22619f3")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_DENIED_OBJECT_ACE
+	public struct ACCESS_DENIED_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -2344,6 +2441,9 @@ public static partial class AdvApi32
 
 		/// <summary>Size, in bytes, of the ACE.</summary>
 		public ushort AceSize;
+
+		/// <summary>ACE type with full native definition.</summary>
+		public ACE_TYPE AceTypeNative { get => (ACE_TYPE)AceType; set => AceType = (AceType)value; }
 
 		/// <summary>Initializes a new instance of the <see cref="ACE_HEADER"/> struct.</summary>
 		/// <param name="aceType">ACE type.</param>
@@ -3271,7 +3371,7 @@ public static partial class AdvApi32
 	// Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_ALARM_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "491cc5c7-abb6-4d03-b3b0-ba5eedb5e2ba")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_ALARM_ACE
+	public struct SYSTEM_ALARM_ACE : IAccessControlEntry
 	{
 		/// <summary/>
 		public ACE_HEADER Header;
@@ -3295,7 +3395,7 @@ public static partial class AdvApi32
 	// _SYSTEM_ALARM_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_ALARM_CALLBACK_ACE, *PSYSTEM_ALARM_CALLBACK_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "8bfb579f-4bee-454e-827b-63a800bccf85")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_ALARM_CALLBACK_ACE
+	public struct SYSTEM_ALARM_CALLBACK_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -3337,7 +3437,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } SYSTEM_ALARM_CALLBACK_OBJECT_ACE, *PSYSTEM_ALARM_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "3fdd0b75-666a-4064-95ed-9e708f34bed6")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_ALARM_CALLBACK_OBJECT_ACE
+	public struct SYSTEM_ALARM_CALLBACK_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -3433,7 +3533,7 @@ public static partial class AdvApi32
 	// SYSTEM_ALARM_OBJECT_ACE, *PSYSTEM_ALARM_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "a55f6039-d1d2-4a7d-a6c9-e8f51b291582")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_ALARM_OBJECT_ACE
+	public struct SYSTEM_ALARM_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary/>
 		public ACE_HEADER Header;
@@ -3477,7 +3577,7 @@ public static partial class AdvApi32
 	// Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_AUDIT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "c26b5856-5447-4606-8110-f24a4d235c64")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_AUDIT_ACE
+	public struct SYSTEM_AUDIT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -3534,7 +3634,7 @@ public static partial class AdvApi32
 	// _SYSTEM_AUDIT_CALLBACK_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_AUDIT_CALLBACK_ACE, *PSYSTEM_AUDIT_CALLBACK_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "4d1799b0-3e55-48d7-94ff-c0094945adea")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_AUDIT_CALLBACK_ACE
+	public struct SYSTEM_AUDIT_CALLBACK_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -3592,7 +3692,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } SYSTEM_AUDIT_CALLBACK_OBJECT_ACE, *PSYSTEM_AUDIT_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "f547c928-4850-4072-be05-76a6c83b79bb")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_AUDIT_CALLBACK_OBJECT_ACE
+	public struct SYSTEM_AUDIT_CALLBACK_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -3722,7 +3822,7 @@ public static partial class AdvApi32
 	// SYSTEM_AUDIT_OBJECT_ACE, *PSYSTEM_AUDIT_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "de37bef6-e6c8-4455-856a-adebebda4cc7")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_AUDIT_OBJECT_ACE
+	public struct SYSTEM_AUDIT_OBJECT_ACE : IAccessControlEntry
 	{
 		/// <summary>
 		/// An ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by
@@ -3824,6 +3924,174 @@ public static partial class AdvApi32
 		/// <c>InheritedObjectType</c> member.
 		/// </para>
 		/// </summary>
+		public uint SidStart;
+	}
+
+	/// <summary>Reserved.</summary>
+	[PInvokeData("winnt.h")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct SYSTEM_ACCESS_FILTER_ACE : IAccessControlEntry
+	{
+		/// <summary>
+		/// An ACE_HEADER structure that specifies the size and type of the ACE. The structure also contains flags that control inheritance
+		/// of the ACE by child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure must be set to
+		/// <c>SYSTEM_PROCESS_TRUST_LABEL_ACE_TYPE</c>, and the <c>AceSize</c> member must be set to the total number of bytes allocated for
+		/// the <c>SYSTEM_PROCESS_TRUST_LABEL_ACE_ACE</c> structure.
+		/// </summary>
+		public ACE_HEADER Header;
+
+		/// <summary>The access policy associated with the SACL that contains this ACE.</summary>
+		public ACCESS_MASK Mask;
+
+		/// <summary>Specifies the first <c>DWORD</c> of a SID.</summary>
+		public uint SidStart;
+	}
+
+	/// <summary>
+	/// The <c>SYSTEM_MANDATORY_LABEL_ACE</c> structure defines an access control entry (ACE) for the system access control list (SACL) that
+	/// specifies the mandatory access level and policy for a securable object.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_mandatory_label_ace typedef struct
+	// _SYSTEM_MANDATORY_LABEL_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_MANDATORY_LABEL_ACE, *PSYSTEM_MANDATORY_LABEL_ACE;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._SYSTEM_MANDATORY_LABEL_ACE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SYSTEM_MANDATORY_LABEL_ACE : IAccessControlEntry
+	{
+		/// <summary>
+		/// An ACE_HEADER structure that specifies the size and type of the ACE. The structure also contains flags that control inheritance
+		/// of the ACE by child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure must be set to
+		/// <c>SYSTEM_MANDATORY_LABEL_ACE_TYPE</c>, and the <c>AceSize</c> member must be set to the total number of bytes allocated for the
+		/// <c>SYSTEM_MANDATORY_LABEL_ACE</c> structure.
+		/// </summary>
+		public ACE_HEADER Header;
+
+		/// <summary>
+		/// <para>
+		/// The access policy for principals with a mandatory integrity level lower than the object associated with the SACL that contains
+		/// this ACE.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>SYSTEM_MANDATORY_LABEL_NO_WRITE_UP</c> 0x1</description>
+		/// <description>A principal with a lower mandatory level than the object cannot write to the object.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SYSTEM_MANDATORY_LABEL_NO_READ_UP</c> 0x2</description>
+		/// <description>A principal with a lower mandatory level than the object cannot read the object.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>SYSTEM_MANDATORY_LABEL_NO_EXECUTE_UP</c> 0x4</description>
+		/// <description>A principal with a lower mandatory level than the object cannot execute the object.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public ACCESS_MASK Mask;
+
+		/// <summary>
+		/// <para>
+		/// Specifies the first <c>DWORD</c> of a SID. The remaining bytes of the <c>SID</c> are stored in contiguous memory after the
+		/// <c>SidStart</c> member. The identifier authority of the <c>SID</c> must be <c>SECURITY_MANDATORY_LABEL_AUTHORITY</c>. The RID of
+		/// the <c>SID</c> specifies the mandatory integrity level of the object associated with the SACL that contains this ACE. The
+		/// <c>RID</c> must be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description>0x1000</description>
+		/// <description>Low integrity level.</description>
+		/// </item>
+		/// <item>
+		/// <description>0x2000</description>
+		/// <description>Medium integrity level.</description>
+		/// </item>
+		/// <item>
+		/// <description>0x3000</description>
+		/// <description>High integrity level.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public uint SidStart;
+	}
+
+	/// <summary>Reserved.</summary>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_system_process_trust_label_ace typedef struct
+	// _SYSTEM_PROCESS_TRUST_LABEL_ACE { ACE_HEADER Header; ACCESS_MASK Mask; ULONG SidStart; } SYSTEM_PROCESS_TRUST_LABEL_ACE, *PSYSTEM_PROCESS_TRUST_LABEL_ACE;
+	[PInvokeData("winnt.h")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct SYSTEM_PROCESS_TRUST_LABEL_ACE : IAccessControlEntry
+	{
+		/// <summary>
+		/// An ACE_HEADER structure that specifies the size and type of the ACE. The structure also contains flags that control inheritance
+		/// of the ACE by child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure must be set to
+		/// <c>SYSTEM_PROCESS_TRUST_LABEL_ACE_TYPE</c>, and the <c>AceSize</c> member must be set to the total number of bytes allocated for
+		/// the <c>SYSTEM_PROCESS_TRUST_LABEL_ACE_ACE</c> structure.
+		/// </summary>
+		public ACE_HEADER Header;
+
+		/// <summary>The access policy associated with the SACL that contains this ACE.</summary>
+		public ACCESS_MASK Mask;
+
+		/// <summary>Specifies the first <c>DWORD</c> of a SID.</summary>
+		public uint SidStart;
+	}
+
+	/// <summary>
+	/// The <c>SYSTEM_RESOURCE_ATTRIBUTE_ACE</c> structure defines an access control entry (ACE) for the system access control list (SACL)
+	/// that specifies the system resource attributes for a securable object.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_resource_attribute_ace typedef struct
+	// _SYSTEM_RESOURCE_ATTRIBUTE_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_RESOURCE_ATTRIBUTE_ACE, *PSYSTEM_RESOURCE_ATTRIBUTE_ACE;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._SYSTEM_RESOURCE_ATTRIBUTE_ACE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SYSTEM_RESOURCE_ATTRIBUTE_ACE : IAccessControlEntry
+	{
+		/// <summary>
+		/// An ACE_HEADER structure that specifies the size and type of the ACE. The structure also contains flags that control inheritance
+		/// of the ACE by child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure must be set to
+		/// <c>SYSTEM_RESOURCE_ATTRIBUTE_ACE</c>, and the <c>AceSize</c> member must be set to the total number of bytes allocated for the
+		/// <c>SYSTEM_RESOURCE_ATTRIBUTE_ACE</c> structure.
+		/// </summary>
+		public ACE_HEADER Header;
+
+		/// <summary>The access policy associated with the SACL that contains this ACE.</summary>
+		public ACCESS_MASK Mask;
+
+		/// <summary>
+		/// Specifies the first <c>DWORD</c> of a SID. The remaining bytes of the <c>SID</c> are stored in contiguous memory after the
+		/// <c>SidStart</c> member in a CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1 structure.
+		/// </summary>
+		public uint SidStart;
+	}
+
+	/// <summary>
+	/// The <c>SYSTEM_SCOPED_POLICY_ID_ACE</c> structure defines an access control entry (ACE) for the system access control list (SACL) that
+	/// specifies the scoped policy identifier for a securable object.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_scoped_policy_id_ace typedef struct
+	// _SYSTEM_SCOPED_POLICY_ID_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD SidStart; } SYSTEM_SCOPED_POLICY_ID_ACE, *PSYSTEM_SCOPED_POLICY_ID_ACE;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._SYSTEM_SCOPED_POLICY_ID_ACE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SYSTEM_SCOPED_POLICY_ID_ACE : IAccessControlEntry
+	{
+		/// <summary>
+		/// An ACE_HEADER structure that specifies the size and type of the ACE. The structure also contains flags that control inheritance
+		/// of the ACE by child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure must be set to
+		/// <c>SYSTEM_SCOPED_POLICY_ID_ACE</c>, and the <c>AceSize</c> member must be set to the total number of bytes allocated for the
+		/// <c>SYSTEM_SCOPED_POLICY_ID_ACE</c> structure.
+		/// </summary>
+		public ACE_HEADER Header;
+
+		/// <summary>The access policy associated with the SACL that contains this ACE.</summary>
+		public ACCESS_MASK Mask;
+
+		/// <summary>Specifies the first <c>DWORD</c> of a SID.</summary>
 		public uint SidStart;
 	}
 
@@ -4612,6 +4880,8 @@ public static partial class AdvApi32
 	[DebuggerDisplay("{DebugString}")]
 	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject
 	{
+		private static readonly int AclStructSize = Marshal.SizeOf(typeof(ACL));
+
 		/// <summary>The null value for a SafePACL.</summary>
 		public static readonly SafePACL Null = new();
 
@@ -4629,7 +4899,7 @@ public static partial class AdvApi32
 		/// <param name="revision">ACL revision.</param>
 		public SafePACL(int size, uint revision = ACL_REVISION) : base(size)
 		{
-			if (size % 4 != 0) throw new ArgumentOutOfRangeException(nameof(size), "ACL structures must be DWORD aligned. This value must be a multiple of 4.");
+			if (size % 4 != 0 || size < AclStructSize) throw new ArgumentOutOfRangeException(nameof(size), $"ACL structures must be DWORD aligned. This value must be a multiple of 4 and larger than {AclStructSize}.");
 			InitializeAcl(handle, (uint)size, revision);
 		}
 
@@ -4654,9 +4924,15 @@ public static partial class AdvApi32
 			get => base.Size;
 			set
 			{
+				if (value == Size) return;
+				if (value < Length)
+					throw new ArgumentException("Current ACL consumes more space that has been specified.", nameof(Size));
 				// Make sure divisible by 4.
-				value = ((value + 3) >> 2) << 2;
-				// Setup newly allocated ACL
+				if (value % 4 != 0)
+					throw new ArgumentOutOfRangeException(nameof(Size), "ACL structures must be DWORD aligned. This value must be a multiple of 4.");
+				// Use base property to copy and expand the underlying memory
+				base.Size = value;
+				/* // Setup newly allocated ACL
 				var newHandle = mm.AllocMem(value);
 				if (!InitializeAcl(newHandle, value, Revision))
 					Win32Error.ThrowLastError();
@@ -4668,7 +4944,7 @@ public static partial class AdvApi32
 				var oldHandle = handle;
 				SetHandle(newHandle);
 				sz = value;
-				mm.FreeMem(oldHandle);
+				mm.FreeMem(oldHandle); */
 			}
 		}
 
@@ -4687,6 +4963,22 @@ public static partial class AdvApi32
 		/// <param name="sd">The safe access control list.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator PACL(SafePACL sd) => sd.DangerousGetHandle();
+
+		/// <summary>Clones this ACL into a new ACL performing a manual copy of each ACE rather than a memory copy.</summary>
+		/// <returns>Newly allocated ACL with all ACEs copied from current ACL.</returns>
+		public SafePACL Clone()
+		{
+			// Copy over new information
+			uint acesLen = 0;
+			PACE[] aces = ((PACL)this).EnumerateAces().Select(a => { acesLen += a.Length(); return a; }).ToArray();
+			// Get bytes used and create new memory and initialize
+			var rev = Revision;
+			SafePACL pAcl = new(AclStructSize + (int)acesLen, Revision);
+			// Copy over all ACEs
+			for (int i = 0; i < aces.Length; i++)
+				Win32Error.ThrowLastErrorIfFalse(AddAce(pAcl, rev, uint.MaxValue, (IntPtr)aces[i], aces[i].Length()));
+			return pAcl;
+		}
 	}
 
 	/// <summary>Contains information about an event record returned by the ReadEventLog function.</summary>
