@@ -40,6 +40,16 @@ public static class WinNTExtensions
 			yield return GetAce(pAcl, i);
 	}
 
+	/// <summary>Gets the ace value as the structure defined by the ACE's type.</summary>
+	/// <param name="pAce">The ACE pointer.</param>
+	/// <returns>The structure pointed to by <paramref name="pAce"/> and defined by the ACE's type.</returns>
+	public static object? GetAceStruct(this PACE pAce)
+	{
+		var hdr = pAce.GetHeader();
+		var type = CorrespondingTypeAttribute.GetCorrespondingTypes(hdr.AceTypeNative).FirstOrDefault();
+		return type is null ? null : ((IntPtr)pAce).ToStructure(type);
+	}
+
 	/// <summary>Gets the Flags for an ACE, if defined.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
 	/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
@@ -47,14 +57,14 @@ public static class WinNTExtensions
 	public static AdvApi32.ObjectAceFlags? GetFlags(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().Flags;
+		return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().AsRef<ACCESS_ALLOWED_OBJECT_ACE>().Flags;
 	}
 
 	/// <summary>Gets the header for an ACE.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
 	/// <returns>The <see cref="ACE_HEADER"/> value.</returns>
 	/// <exception cref="ArgumentNullException">pAce</exception>
-	public static ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
+	public static ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().AsRef<ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
 
 	/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
@@ -63,7 +73,7 @@ public static class WinNTExtensions
 	public static Guid? GetInheritedObjectType(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
+		return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().AsRef<ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
 	}
 
 	/// <summary>
@@ -105,7 +115,7 @@ public static class WinNTExtensions
 	/// <param name="pAce">A pointer to an ACE.</param>
 	/// <returns>The ACCESS_MASK value.</returns>
 	/// <exception cref="ArgumentNullException">pAce</exception>
-	public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
+	public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().AsRef<ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
 
 	/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
@@ -114,7 +124,7 @@ public static class WinNTExtensions
 	public static Guid? GetObjectType(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
+		return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().AsRef<ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
 	}
 
 	/// <summary>Gets the SID for an ACE.</summary>

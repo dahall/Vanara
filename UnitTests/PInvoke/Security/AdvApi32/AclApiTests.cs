@@ -136,6 +136,15 @@ public class AclApiTests
 	}
 
 	[Test]
+	public void CloneAclTest()
+	{
+		Assert.That(GetSecurityDescriptorDacl(pSd, out _, out var pDacl, out _), ResultIs.Successful);
+		using SafePACL dacl = new(pDacl);
+		using SafePACL dacl2 = dacl.Clone();
+		Assert.That(dacl.AceCount, Is.EqualTo(dacl2.AceCount));
+	}
+
+	[Test]
 	public void TreeResetNamedSecurityInfoTest()
 	{
 		var counter = 0;
