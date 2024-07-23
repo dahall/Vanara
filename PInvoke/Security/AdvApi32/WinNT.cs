@@ -4886,7 +4886,7 @@ public static partial class AdvApi32
 
 	/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
 	[DebuggerDisplay("{DebugString}")]
-	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>
+	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>, IEquatable<SafePACL>, IEquatable<PACL>
 	{
 		private static readonly int AclStructSize = Marshal.SizeOf(typeof(ACL));
 
@@ -4900,7 +4900,26 @@ public static partial class AdvApi32
 		/// Initializes a new instance of the <see cref="SafePACL"/> class from an existing pointer, copying its content if owning.
 		/// </summary>
 		/// <param name="pAcl">The access control list pointer.</param>
-		public SafePACL(PACL pAcl) : this(IsValidAcl(pAcl) ? (int)pAcl.BytesAllocated() : throw new ArgumentException("Invalid ACL.", nameof(pAcl))) => ((IntPtr)pAcl).CopyTo(handle, Size);
+		public SafePACL(PACL pAcl) : this(pAcl, true) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class from an existing pointer, copying its content if owning.</summary>
+		/// <param name="pAcl">The access control list pointer.</param>
+		/// <param name="ownsHandle">if set to <see langword="true"/>, this instance will release the memory behind the <paramref name="pAcl"/>.</param>
+		public SafePACL(PACL pAcl, bool ownsHandle) : base(IntPtr.Zero, 0, ownsHandle)
+		{
+			if (!IsValidAcl(pAcl))
+				throw new ArgumentException("Invalid ACL.", nameof(pAcl));
+			if (!ownsHandle)
+			{
+				SetHandle(((IntPtr)pAcl));
+				sz = pAcl.Length();
+			}
+			else
+			{
+				Size = pAcl.Length();
+				((IntPtr)pAcl).CopyTo(handle, sz);
+			}
+		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
 		/// <param name="size">The size of the uninitialized access control list.</param>
@@ -4975,12 +4994,17 @@ public static partial class AdvApi32
 		}
 
 		/// <summary>Performs an explicit conversion from <see cref="SafePACL"/> to <see cref="PACL"/>.</summary>
-		/// <param name="sd">The safe access control list.</param>
+		/// <param name="pAcl">The access control list.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PACL(SafePACL sd) => sd.DangerousGetHandle();
+		public static implicit operator PACL(SafePACL pAcl) => pAcl.DangerousGetHandle();
+
+		/// <summary>Performs an explicit conversion from <see cref="PACL"/> to <see cref="SafePACL"/>.</summary>
+		/// <param name="pAcl">The access control list.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SafePACL(PACL pAcl) => new(pAcl, false);
 
 		/// <inheritdoc/>
-		public void Add(PACE item) => Win32Error.ThrowLastErrorIfFalse(AddAce(this, item));
+		public void Add(PACE item) => Win32Error.ThrowLastErrorIfFalse(EnsureCapacity(item.Length()) && AddAce(this, item));
 
 		/// <inheritdoc/>
 		public void Clear() { for (int i = AceCount - 1; i <= 0; i--) RemoveAt(i); }
@@ -5017,8 +5041,30 @@ public static partial class AdvApi32
 				array[arrayIndex + i] = this[i];
 		}
 
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
+		public bool Equals(PACL other) => WinNTExtensions.Equals((PACL)this, other);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
+		public bool Equals(SafePACL? other) => other is null ? false : Equals((PACL)other);
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj switch
+		{
+			SafePACL p => Equals(p),
+			PACL p => Equals(p),
+			IntPtr p => Equals((PACL)p),
+			_ => base.Equals(obj)
+		};
+
 		/// <inheritdoc/>
 		public IEnumerator<PACE> GetEnumerator() => GetEnum().GetEnumerator();
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => ((PACL)this).GetAclInformation<ACL_SIZE_INFORMATION>().GetHashCode();
 
 		/// <inheritdoc/>
 		public int IndexOf(PACE item) => GetEnum().Select((value, index) => new { value, index })
@@ -5026,7 +5072,7 @@ public static partial class AdvApi32
 						.Select(pair => pair.index + 1).FirstOrDefault() - 1;
 
 		/// <inheritdoc/>
-		public void Insert(int index, PACE item) => Win32Error.ThrowLastErrorIfFalse(AddAce(this, item, (uint)index));
+		public void Insert(int index, PACE item) => Win32Error.ThrowLastErrorIfFalse(EnsureCapacity(item.Length()) && AddAce(this, item, (uint)index));
 
 		/// <summary>Inserts an item to the IList{T} at the specified index.</summary>
 		/// <typeparam name="TAce">The ACE structure.</typeparam>
@@ -5051,6 +5097,13 @@ public static partial class AdvApi32
 
 		/// <inheritdoc/>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		private bool EnsureCapacity(uint addCap)
+		{
+			if (Length + addCap > Size)
+				Size = Length + addCap;
+			return true;
+		}
 
 		private IEnumerable<PACE> GetEnum() => ((PACL)handle).EnumerateAces();
 	}
