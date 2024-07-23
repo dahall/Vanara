@@ -139,9 +139,15 @@ public class AclApiTests
 	public void CloneAclTest()
 	{
 		Assert.That(GetSecurityDescriptorDacl(pSd, out _, out var pDacl, out _), ResultIs.Successful);
-		using SafePACL dacl = new(pDacl);
+		using SafePACL dacl = pDacl;
+		PACE ace0 = dacl[0];
+		var aceCount = dacl.Count;
+		dacl.RemoveAt(0);
+		Assert.That(dacl.Count, Is.EqualTo(aceCount - 1));
 		using SafePACL dacl2 = dacl.Clone();
-		Assert.That(dacl.AceCount, Is.EqualTo(dacl2.AceCount));
+		Assert.That(dacl.Equals(dacl2), Is.True);
+		dacl2.Insert(0, ace0);
+		Assert.That(dacl2.Count, Is.EqualTo(aceCount));
 	}
 
 	[Test]
