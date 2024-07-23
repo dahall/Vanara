@@ -15,20 +15,23 @@ public sealed class LocalMemoryMethods : MemoryMethodsBase
 	/// <inheritdoc/>
 	public override bool AllocZeroes => true;
 
-	/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
-	/// <param name="size">The size, in bytes, of memory to allocate.</param>
-	/// <returns>A memory handle.</returns>
-	public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)LocalAlloc(LMEM.LPTR, size));
+	/// <inheritdoc/>
+	public override bool Lockable => false;
 
-	/// <summary>Frees the memory associated with a handle.</summary>
-	/// <param name="hMem">A memory handle.</param>
+	/// <inheritdoc/>
+	public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)LocalAlloc(Lockable ? LMEM.LHND : LMEM.LPTR, size));
+
+	/// <inheritdoc/>
 	public override void FreeMem(IntPtr hMem) => LocalFree(hMem);
 
-	/// <summary>Gets the reallocation method.</summary>
-	/// <param name="hMem">A memory handle.</param>
-	/// <param name="size">The size, in bytes, of memory to allocate.</param>
-	/// <returns>A memory handle.</returns>
-	public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)LocalReAlloc(hMem, size, LMEM.LMEM_FIXED | LMEM.LMEM_ZEROINIT));
+	/// <inheritdoc/>
+	public override IntPtr LockMem(IntPtr hMem) => LocalLock(hMem);
+
+	/// <inheritdoc/>
+	public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)LocalReAlloc(hMem, size, LMEM.LHND));
+
+	/// <inheritdoc/>
+	public override bool UnlockMem(IntPtr hMem) => LocalUnlock(hMem);
 }
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
