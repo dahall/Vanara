@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.AccessControl;
+using Vanara.Collections;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -1549,6 +1552,11 @@ public static partial class AdvApi32
 	{
 	}
 
+	/// <summary>Interface to identify the various object ACE types.</summary>
+	public interface IObjectAccessControlEntry : IAccessControlEntry
+	{
+	}
+
 	/// <summary>
 	/// The <c>ACCESS_ALLOWED_ACE</c> structure defines an access control entry (ACE) for the discretionary access control list (DACL)
 	/// that controls access to an object. An access-allowed ACE allows access to an object for a specific trustee identified by a
@@ -1682,7 +1690,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } ACCESS_ALLOWED_CALLBACK_OBJECT_ACE, *PACCESS_ALLOWED_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "83b00ef3-f7b2-455e-8f3f-01b1da6024b7")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_ALLOWED_CALLBACK_OBJECT_ACE : IAccessControlEntry
+	public struct ACCESS_ALLOWED_CALLBACK_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -1828,7 +1836,7 @@ public static partial class AdvApi32
 	// SidStart; } ACCESS_ALLOWED_OBJECT_ACE, *PACCESS_ALLOWED_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "ee91ca50-e81b-4872-95eb-349c2d5be004")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_ALLOWED_OBJECT_ACE : IAccessControlEntry
+	public struct ACCESS_ALLOWED_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
@@ -2082,7 +2090,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } ACCESS_DENIED_CALLBACK_OBJECT_ACE, *PACCESS_DENIED_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "945d9c3b-922f-481d-bb1d-3dca50fb9edb")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_DENIED_CALLBACK_OBJECT_ACE : IAccessControlEntry
+	public struct ACCESS_DENIED_CALLBACK_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -2228,7 +2236,7 @@ public static partial class AdvApi32
 	// SidStart; } ACCESS_DENIED_OBJECT_ACE, *PACCESS_DENIED_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "80e00c2b-7c31-428d-96c1-c4e3d22619f3")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCESS_DENIED_OBJECT_ACE : IAccessControlEntry
+	public struct ACCESS_DENIED_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -3437,7 +3445,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } SYSTEM_ALARM_CALLBACK_OBJECT_ACE, *PSYSTEM_ALARM_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "3fdd0b75-666a-4064-95ed-9e708f34bed6")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_ALARM_CALLBACK_OBJECT_ACE : IAccessControlEntry
+	public struct SYSTEM_ALARM_CALLBACK_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -3533,7 +3541,7 @@ public static partial class AdvApi32
 	// SYSTEM_ALARM_OBJECT_ACE, *PSYSTEM_ALARM_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "a55f6039-d1d2-4a7d-a6c9-e8f51b291582")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_ALARM_OBJECT_ACE : IAccessControlEntry
+	public struct SYSTEM_ALARM_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary/>
 		public ACE_HEADER Header;
@@ -3692,7 +3700,7 @@ public static partial class AdvApi32
 	// DWORD SidStart; } SYSTEM_AUDIT_CALLBACK_OBJECT_ACE, *PSYSTEM_AUDIT_CALLBACK_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "f547c928-4850-4072-be05-76a6c83b79bb")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_AUDIT_CALLBACK_OBJECT_ACE : IAccessControlEntry
+	public struct SYSTEM_AUDIT_CALLBACK_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary>
 		/// ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by child
@@ -3822,7 +3830,7 @@ public static partial class AdvApi32
 	// SYSTEM_AUDIT_OBJECT_ACE, *PSYSTEM_AUDIT_OBJECT_ACE;
 	[PInvokeData("winnt.h", MSDNShortId = "de37bef6-e6c8-4455-856a-adebebda4cc7")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SYSTEM_AUDIT_OBJECT_ACE : IAccessControlEntry
+	public struct SYSTEM_AUDIT_OBJECT_ACE : IObjectAccessControlEntry
 	{
 		/// <summary>
 		/// An ACE_HEADER structure that specifies the size and type of ACE. It contains flags that control inheritance of the ACE by
@@ -4878,7 +4886,7 @@ public static partial class AdvApi32
 
 	/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
 	[DebuggerDisplay("{DebugString}")]
-	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject
+	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>
 	{
 		private static readonly int AclStructSize = Marshal.SizeOf(typeof(ACL));
 
@@ -4911,12 +4919,24 @@ public static partial class AdvApi32
 			Marshal.Copy(bytes, 0, handle, bytes.Length);
 		}
 
+		/// <summary>Gets the number of ACEs held by this ACL.</summary>
+		/// <value>The ace count.</value>
+		public int AceCount => (int)((PACL)handle).AceCount();
+
+		/// <inheritdoc/>
+		public int Count => AceCount;
+
 		/// <summary>Determines whether the components of this access control list are valid.</summary>
 		public bool IsValidAcl => IsValidAcl(handle);
 
+		/// <summary>
+		/// Gets the length, in bytes, of a structurally valid access control list. The length includes the length of all associated structures.
+		/// </summary>
+		public uint Length => ((PACL)handle).Length();
+
 		/// <summary>Gets the revision number for the ACL.</summary>
 		/// <value>The revision.</value>
-		public uint Revision => IsValidAcl && GetAclInformation(handle, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0U;
+		public uint Revision => ((PACL)handle).Revision();
 
 		/// <inheritdoc/>
 		public override SizeT Size
@@ -4932,37 +4952,38 @@ public static partial class AdvApi32
 					throw new ArgumentOutOfRangeException(nameof(Size), "ACL structures must be DWORD aligned. This value must be a multiple of 4.");
 				// Use base property to copy and expand the underlying memory
 				base.Size = value;
-				/* // Setup newly allocated ACL
-				var newHandle = mm.AllocMem(value);
-				if (!InitializeAcl(newHandle, value, Revision))
-					Win32Error.ThrowLastError();
-				if (!GetAce(handle, 0, out var pace))
-					Win32Error.ThrowLastError();
-				if (!AddAce(newHandle, Revision, 0, (IntPtr)pace, ((PACL)handle).Length() - (uint)Marshal.SizeOf(typeof(ACL))))
-					Win32Error.ThrowLastError();
-				// Update SafeHandle with new ACL and destroy old
-				var oldHandle = handle;
-				SetHandle(newHandle);
-				sz = value;
-				mm.FreeMem(oldHandle); */
+				handle.AsSpan<ACL>(1)[0].AclSize = (ushort)(ulong)value;
 			}
 		}
 
-		/// <summary>Gets the number of ACEs held by this ACL.</summary>
-		/// <value>The ace count.</value>
-		public int AceCount => (int)((PACL)handle).AceCount();
-
-		/// <summary>
-		/// Gets the length, in bytes, of a structurally valid access control list. The length includes the length of all associated structures.
-		/// </summary>
-		public uint Length => ((PACL)handle).Length();
-
 		internal string DebugString => IsInvalid ? "NULL" : $"Aces:{AceCount}, Size:{Length}";
+
+		/// <inheritdoc/>
+		bool ICollection<PACE>.IsReadOnly => false;
+
+		/// <inheritdoc/>
+		public PACE this[int index]
+		{
+			get => ((PACL)handle).GetAce((uint)index);
+			set
+			{
+				if (index < 0 || index >= Count)
+					throw new ArgumentOutOfRangeException(nameof(index), "index is not a valid item in the list.");
+				Insert(index, value);
+				RemoveAt(index + 1);
+			}
+		}
 
 		/// <summary>Performs an explicit conversion from <see cref="SafePACL"/> to <see cref="PACL"/>.</summary>
 		/// <param name="sd">The safe access control list.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator PACL(SafePACL sd) => sd.DangerousGetHandle();
+
+		/// <inheritdoc/>
+		public void Add(PACE item) => Win32Error.ThrowLastErrorIfFalse(AddAce(this, item));
+
+		/// <inheritdoc/>
+		public void Clear() { for (int i = AceCount - 1; i <= 0; i--) RemoveAt(i); }
 
 		/// <summary>Clones this ACL into a new ACL performing a manual copy of each ACE rather than a memory copy.</summary>
 		/// <returns>Newly allocated ACL with all ACEs copied from current ACL.</returns>
@@ -4979,6 +5000,59 @@ public static partial class AdvApi32
 				Win32Error.ThrowLastErrorIfFalse(AddAce(pAcl, rev, uint.MaxValue, (IntPtr)aces[i], aces[i].Length()));
 			return pAcl;
 		}
+
+		/// <inheritdoc/>
+		public bool Contains(PACE item) => GetEnum().Contains(item, WinNTExtensions.AceEqualityComparer.Instance);
+
+		/// <inheritdoc/>
+		public void CopyTo(PACE[] array, int arrayIndex)
+		{
+			if (array is null)
+				throw new ArgumentNullException(nameof(array));
+			if (arrayIndex < 0 || arrayIndex > array.Length)
+				throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+			if (array.Length - arrayIndex < Count)
+				throw new ArgumentException("The number of elements in the source ICollection<T> is greater than the available space from arrayIndex to the end of the destination array.");
+			for (int i = 0; i < Count; i++)
+				array[arrayIndex + i] = this[i];
+		}
+
+		/// <inheritdoc/>
+		public IEnumerator<PACE> GetEnumerator() => GetEnum().GetEnumerator();
+
+		/// <inheritdoc/>
+		public int IndexOf(PACE item) => GetEnum().Select((value, index) => new { value, index })
+						.Where(pair => item.Equals(pair.value))
+						.Select(pair => pair.index + 1).FirstOrDefault() - 1;
+
+		/// <inheritdoc/>
+		public void Insert(int index, PACE item) => Win32Error.ThrowLastErrorIfFalse(AddAce(this, item, (uint)index));
+
+		/// <summary>Inserts an item to the IList{T} at the specified index.</summary>
+		/// <typeparam name="TAce">The ACE structure.</typeparam>
+		/// <param name="index">The zero-based index at which item should be inserted.</param>
+		/// <param name="ace">The ACE to insert.</param>
+		/// <param name="sid">A pointer to the SID representing a user, group, or logon account attached to the ACE.</param>
+		/// <exception cref="ArgumentException">Alert ACEs cannot be added with just a SID., nameof(ace)</exception>
+		public void Insert<TAce>(int index, in TAce ace, PSID sid) where TAce : struct, IAccessControlEntry
+		{
+			if (typeof(TAce).Name.Contains("ALERT"))
+				throw new ArgumentException("Alert ACEs cannot be added with just a SID.", nameof(ace));
+			using SafeCoTaskMemStruct<TAce> pAce = new(ace, Marshal.SizeOf(typeof(TAce)) + sid.Length() - sizeof(uint));
+			pAce.GetFieldAddress("SidStart").Write(sid.GetBinaryForm());
+			Insert(index, (PACE)pAce.DangerousGetHandle());
+		}
+
+		/// <inheritdoc/>
+		public bool Remove(PACE item) { var idx = IndexOf(item); return idx != -1 && DeleteAce(this, (uint)idx); }
+
+		/// <inheritdoc/>
+		public void RemoveAt(int index) => Win32Error.ThrowLastErrorIfFalse(DeleteAce(this, (uint)index));
+
+		/// <inheritdoc/>
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		private IEnumerable<PACE> GetEnum() => ((PACL)handle).EnumerateAces();
 	}
 
 	/// <summary>Contains information about an event record returned by the ReadEventLog function.</summary>
