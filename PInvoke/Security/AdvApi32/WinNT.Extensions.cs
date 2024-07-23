@@ -112,7 +112,7 @@ public static class WinNTExtensions
 		if (!x.IsValidAcl()) return -1;
 		GetAclInformation(x, out ACL_REVISION_INFORMATION lr);
 		GetAclInformation(y, out ACL_REVISION_INFORMATION rr);
-		var ret = lr.AclRevision.CompareTo(rr);
+		var ret = lr.AclRevision.CompareTo(rr.AclRevision);
 		if (ret != 0) return ret;
 		GetAclInformation(x, out ACL_SIZE_INFORMATION li);
 		GetAclInformation(y, out ACL_SIZE_INFORMATION ri);
