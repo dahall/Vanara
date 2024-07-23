@@ -522,7 +522,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 			{
 				RuntimeHelpers.PrepareConstrainedRegions();
 				handle = IsInvalid ? mm.AllocMem(value) : mm.ReAllocMem(handle, value);
-				if (value > sz)
+				if (!mm.AllocZeroes && value > sz)
 					handle.Offset(sz).FillMemory(0, value - sz);
 				sz = value;
 			}
