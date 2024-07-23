@@ -336,4 +336,11 @@ public static class WinNTExtensions
 	/// <param name="pACL">The pointer to the ACL structure to query.</param>
 	/// <value>The revision.</value>
 	public static uint Revision(this PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0U;
+
+	internal class AceEqualityComparer : IEqualityComparer<PACE>
+	{
+		internal static readonly AceEqualityComparer Instance = new();
+		bool IEqualityComparer<PACE>.Equals(PACE x, PACE y) => x.Equals(y);
+		int IEqualityComparer<PACE>.GetHashCode(PACE obj) => obj.GetAceStruct()?.GetHashCode() ?? 0;
+	}
 }
