@@ -18,6 +18,137 @@ public static class WinNTExtensions
 	/// <returns>The total of the free and used bytes in the ACL.</returns>
 	public static uint BytesAllocated(this PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AclBytesFree + si.AclBytesInUse : 0;
 
+	/// <summary>Compares two Access Control Entries given their pointers.</summary>
+	/// <param name="x">The pointer to the first ACE to compare.</param>
+	/// <param name="y">The pointer to the second ACE to compare.</param>
+	/// <returns>
+	/// <para>
+	/// A signed integer that indicates the relative values of <paramref name="x"/> and <paramref name="y"/>, as shown in the following table.
+	/// </para>
+	/// <list type="table">
+	/// <item>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </item>
+	/// <item>
+	/// <description>Less than zero</description>
+	/// <description><paramref name="x"/> is less than <paramref name="y"/>.</description>
+	/// </item>
+	/// <item>
+	/// <description>Zero</description>
+	/// <description><paramref name="x"/> equals <paramref name="y"/>.</description>
+	/// </item>
+	/// <item>
+	/// <description>Greater than zero</description>
+	/// <description><paramref name="x"/> is greater than <paramref name="y"/>.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	public static int CompareTo(this PACE x, PACE y)
+	{
+		if ((IntPtr)x == (IntPtr)y) return 0;
+		if (x.IsNull && y.IsNull) return 0;
+		if (y.IsNull) return 1;
+		if (x.IsNull) return -1;
+		var lh = x.GetHeader();
+		var rh = y.GetHeader();
+		var ret = lh.AceTypeNative.CompareTo(rh.AceTypeNative);
+		if (ret != 0) return ret;
+		ret = lh.AceFlags.CompareTo(rh.AceFlags);
+		if (ret != 0) return ret;
+		ret = lh.AceSize.CompareTo(rh.AceSize);
+		if (ret != 0) return ret;
+		var lm = x.GetMask();
+		var rm = y.GetMask();
+		ret = lm.CompareTo(rm);
+		if (ret != 0) return ret;
+		if (x.IsObjectAce())
+		{
+			ref ACCESS_ALLOWED_OBJECT_ACE loa = ref ((IntPtr)x).AsRef<ACCESS_ALLOWED_OBJECT_ACE>();
+			ref ACCESS_ALLOWED_OBJECT_ACE roa = ref ((IntPtr)y).AsRef<ACCESS_ALLOWED_OBJECT_ACE>();
+			ret = loa.Flags.CompareTo(roa.Flags);
+			if (ret != 0) return ret;
+			ret = loa.ObjectType.CompareTo(roa.ObjectType);
+			if (ret != 0) return ret;
+			ret = loa.InheritedObjectType.CompareTo(roa.InheritedObjectType);
+			if (ret != 0) return ret;
+		}
+		using var ls = x.GetSid();
+		using var rs = y.GetSid();
+		return ls.ToString("D").CompareTo(rs.ToString("D"));
+	}
+
+	/// <summary>Compares two Access Control Lists given their pointers.</summary>
+	/// <param name="x">The pointer to the first ACL to compare.</param>
+	/// <param name="y">The pointer to the second ACL to compare.</param>
+	/// <returns>
+	/// <para>
+	/// A signed integer that indicates the relative values of <paramref name="x"/> and <paramref name="y"/>, as shown in the following table.
+	/// </para>
+	/// <list type="table">
+	/// <item>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </item>
+	/// <item>
+	/// <description>Less than zero</description>
+	/// <description><paramref name="x"/> is less than <paramref name="y"/>.</description>
+	/// </item>
+	/// <item>
+	/// <description>Zero</description>
+	/// <description><paramref name="x"/> equals <paramref name="y"/>.</description>
+	/// </item>
+	/// <item>
+	/// <description>Greater than zero</description>
+	/// <description><paramref name="x"/> is greater than <paramref name="y"/>.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	public static int CompareTo(this PACL x, PACL y)
+	{
+		if ((IntPtr)x == (IntPtr)y) return 0;
+		if (!x.IsValidAcl() && !y.IsValidAcl()) return 0;
+		if (!y.IsValidAcl()) return 1;
+		if (!x.IsValidAcl()) return -1;
+		GetAclInformation(x, out ACL_REVISION_INFORMATION lr);
+		GetAclInformation(y, out ACL_REVISION_INFORMATION rr);
+		var ret = lr.AclRevision.CompareTo(rr);
+		if (ret != 0) return ret;
+		GetAclInformation(x, out ACL_SIZE_INFORMATION li);
+		GetAclInformation(y, out ACL_SIZE_INFORMATION ri);
+		ret = li.AceCount.CompareTo(ri.AceCount);
+		if (ret != 0) return ret;
+		ret = li.AclBytesInUse.CompareTo(ri.AclBytesInUse);
+		if (ret != 0) return ret;
+		for (uint i = 0; i < li.AceCount; i++)
+		{
+			ret = x.GetAce(i).CompareTo(y.GetAce(i));
+			if (ret != 0) return ret;
+		}
+		return 0;
+	}
+
+	/// <summary>Enumerates the ACEs in an ACL.</summary>
+	/// <param name="pAcl">A pointer to an ACL that contains the ACE to be retrieved.</param>
+	/// <returns>A sequence of PACE values from the ACL.</returns>
+	public static IEnumerable<PACE> EnumerateAces(this PACL pAcl)
+	{
+		for (var i = 0U; i < pAcl.AceCount(); i++)
+			yield return GetAce(pAcl, i);
+	}
+
+	/// <summary>Indicates whether the values of two specified Access Control Entries are equal, given their pointers.</summary>
+	/// <param name="x">The first value to compare.</param>
+	/// <param name="y">The second value to compare.</param>
+	/// <returns><see langword="true"/> if <paramref name="x"/> and <paramref name="y"/> are equal; otherwise, <see langword="false"/>.</returns>
+	public static bool Equals(this PACE x, PACE y) => CompareTo(x, y) == 0;
+
+	/// <summary>Indicates whether the values of two specified Access Control List are equal, given their pointers.</summary>
+	/// <param name="x">The first value to compare.</param>
+	/// <param name="y">The second value to compare.</param>
+	/// <returns><see langword="true"/> if <paramref name="x"/> and <paramref name="y"/> are equal; otherwise, <see langword="false"/>.</returns>
+	public static bool Equals(this PACL x, PACL y) => CompareTo(x, y) == 0;
+
 	/// <summary>The <c>GetAce</c> function obtains a pointer to an access control entry (ACE) in an access control list (ACL).</summary>
 	/// <param name="pAcl">A pointer to an ACL that contains the ACE to be retrieved.</param>
 	/// <param name="aceIndex">
@@ -29,15 +160,6 @@ public static class WinNTExtensions
 	{
 		Win32Error.ThrowLastErrorIfFalse(AdvApi32.GetAce(pAcl, aceIndex, out var acePtr));
 		return acePtr;
-	}
-
-	/// <summary>Enumerates the ACEs in an ACL.</summary>
-	/// <param name="pAcl">A pointer to an ACL that contains the ACE to be retrieved.</param>
-	/// <returns>A sequence of PACE values from the ACL.</returns>
-	public static IEnumerable<PACE> EnumerateAces(this PACL pAcl)
-	{
-		for (var i = 0U; i < pAcl.AceCount(); i++)
-			yield return GetAce(pAcl, i);
 	}
 
 	/// <summary>Gets the ace value as the structure defined by the ACE's type.</summary>
@@ -115,7 +237,12 @@ public static class WinNTExtensions
 	/// <param name="pAce">A pointer to an ACE.</param>
 	/// <returns>The ACCESS_MASK value.</returns>
 	/// <exception cref="ArgumentNullException">pAce</exception>
-	public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().AsRef<ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
+	public static uint GetMask(this PACE pAce)
+	{
+		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+		var offset = Marshal.SizeOf(typeof(ACE_HEADER));
+		return unchecked((uint)Marshal.ReadInt32(((IntPtr)pAce).Offset(offset)));
+	}
 
 	/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
@@ -136,13 +263,28 @@ public static class WinNTExtensions
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
 		var offset = Marshal.SizeOf(typeof(ACE_HEADER)) + sizeof(uint);
 		if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2;
-		return SafePSID.CreateFromPtr(pAce.DangerousGetHandle().Offset(offset));
+		if (pAce.IsAlarmAce())
+			return GetSid((PACE)((IntPtr)pAce).Offset(offset));
+		return SafePSID.CreateFromPtr(((IntPtr)pAce).Offset(offset));
 	}
 
 	/// <summary>Gets the AceType for an ACE, if defined.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
 	/// <returns>The AceType value.</returns>
 	public static AceType GetAceType(this PACE pAce) => GetHeader(pAce).AceType;
+
+	/// <summary>Determines if a ACE is an alarm ACE.</summary>
+	/// <param name="pAce">A pointer to an ACE.</param>
+	/// <returns><see langword="true"/> if is this is an alarm ACE; otherwise, <see langword="false"/>.</returns>
+	/// <exception cref="ArgumentNullException">pAce</exception>
+	/// <exception cref="ArgumentOutOfRangeException">pAce - Unknown ACE type.</exception>
+	public static bool IsAlarmAce(this PACE pAce)
+	{
+		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+		var aceType = (byte)GetHeader(pAce).AceTypeNative;
+		if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
+		return aceType is 0x3 or 0x8 or 0xE or 0x10;
+	}
 
 	/// <summary>Determines if a ACE is an object ACE.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
@@ -152,7 +294,7 @@ public static class WinNTExtensions
 	public static bool IsObjectAce(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		var aceType = (byte)GetHeader(pAce).AceType;
+		var aceType = (byte)GetHeader(pAce).AceTypeNative;
 		if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
 		return aceType is >= 0x5 and <= 0x8 or 0xB or 0xC or 0xF or 0x10;
 	}
@@ -189,4 +331,9 @@ public static class WinNTExtensions
 	/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
 	/// <returns>The size, in bytes, of a security descriptor. If it is not valid, 0 is returned.</returns>
 	public static uint Length(this PSECURITY_DESCRIPTOR pSD) => IsValidSecurityDescriptor(pSD) ? GetSecurityDescriptorLength(pSD) : 0U;
+
+	/// <summary>Gets the revision number for the ACL.</summary>
+	/// <param name="pACL">The pointer to the ACL structure to query.</param>
+	/// <value>The revision.</value>
+	public static uint Revision(this PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0U;
 }
