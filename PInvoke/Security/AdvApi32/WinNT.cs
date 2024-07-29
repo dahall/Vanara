@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.AccessControl;
-using Vanara.Collections;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -43,6 +42,59 @@ public static partial class AdvApi32
 	/// <summary>The maximum characters in a string representation of a SID.</summary>
 	public const int SECURITY_MAX_SID_STRING_CHARACTERS = (2 + 4 + 15 + (11 * SID_MAX_SUB_AUTHORITIES) + 1);
 
+	/// <summary>Specifies a set of ACE type-specific control flags.</summary>
+	[PInvokeData("winnt.h")]
+	[Flags]
+	public enum ACE_FLAG : byte
+	{
+		/// <summary>
+		/// Noncontainer child objects inherit the ACE as an effective ACE.
+		/// <para>
+		/// For child objects that are containers, the ACE is inherited as an inherit-only ACE unless the NO_PROPAGATE_INHERIT_ACE bit flag
+		/// is also set.
+		/// </para>
+		/// </summary>
+		OBJECT_INHERIT_ACE = 0x01,
+
+		/// <summary>
+		/// Child objects that are containers, such as directories, inherit the ACE as an effective ACE. The inherited ACE is inheritable
+		/// unless the NO_PROPAGATE_INHERIT_ACE bit flag is also set.
+		/// </summary>
+		CONTAINER_INHERIT_ACE = 0x02,
+
+		/// <summary>
+		/// If the ACE is inherited by a child object, the system clears the OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE flags in the
+		/// inherited ACE. This prevents the ACE from being inherited by subsequent generations of objects.
+		/// </summary>
+		NO_PROPAGATE_INHERIT_ACE = 0x04,
+
+		/// <summary>
+		/// Indicates an inherit-only ACE, which does not control access to the object to which it is attached. If this flag is not set, the
+		/// ACE is an effective ACE that controls access to the object to which it is attached.
+		/// <para>Both effective and inherit-only ACEs can be inherited depending on the state of the other inheritance flags.</para>
+		/// </summary>
+		[SortOrder(1000)]
+		INHERIT_ONLY_ACE = 0x08,
+
+		/// <summary>Used to indicate that the ACE was inherited. See section 2.5.3.5 for processing rules for setting this flag.</summary>
+		INHERITED_ACE = 0x10,
+
+		/// <summary>Used only with access allowed ACE types to indicate that the ACE is critical and cannot be removed.</summary>
+		CRITICAL_ACE_FLAG = 0x20,
+
+		/// <summary>Used with system-audit ACEs in a SACL to generate audit messages for successful access attempts.</summary>
+		SUCCESSFUL_ACCESS_ACE_FLAG = 0x40,
+
+		/// <summary>
+		/// Used only with SYSTEM_FILTERING_ACE_TYPE ACEs to indicate that this ACE may not be deleted/modified except when the, the current
+		/// Trust Level dominates the one specified in the Ace SID. If this flag is set then the SID in the ACE should be a valid TrustLevelSid.
+		/// </summary>
+		TRUST_PROTECTED_FILTER_ACE_FLAG = 0x40,
+
+		/// <summary>Used with system-audit ACEs in a system access control list (SACL) to generate audit messages for failed access attempts.</summary>
+		FAILED_ACCESS_ACE_FLAG = 0x80,
+	}   
+	
 	/// <summary>Indicates whether the ObjectTypeName and InheritedObjectTypeName members contain strings.</summary>
 	[PInvokeData("winnt.h")]
 	[Flags]
@@ -61,6 +113,7 @@ public static partial class AdvApi32
 	{
 		/// <summary>Access-allowed ACE that uses the ACCESS_ALLOWED_ACE structure.</summary>
 		[CorrespondingType(typeof(ACCESS_ALLOWED_ACE))]
+		[SortOrder(100)]
 		ACCESS_ALLOWED_ACE_TYPE = 0x0,
 
 		/// <summary>Access-denied ACE that uses the ACCESS_DENIED_ACE structure.</summary>
@@ -76,10 +129,12 @@ public static partial class AdvApi32
 		SYSTEM_ALARM_ACE_TYPE = 0x3,
 
 		/// <summary>Reserved.</summary>
+		[SortOrder(100)]
 		ACCESS_ALLOWED_COMPOUND_ACE_TYPE = 0x4,
 
 		/// <summary>Object-specific access-allowed ACE that uses the ACCESS_ALLOWED_OBJECT_ACE structure.</summary>
 		[CorrespondingType(typeof(ACCESS_ALLOWED_OBJECT_ACE))]
+		[SortOrder(100)]
 		ACCESS_ALLOWED_OBJECT_ACE_TYPE = 0x5,
 
 		/// <summary>Object-specific access-denied ACE that uses the ACCESS_DENIED_OBJECT_ACE structure.</summary>
@@ -96,6 +151,7 @@ public static partial class AdvApi32
 
 		/// <summary>Access-allowed callback ACE that uses the ACCESS_ALLOWED_CALLBACK_ACE structure.</summary>
 		[CorrespondingType(typeof(ACCESS_ALLOWED_CALLBACK_ACE))]
+		[SortOrder(100)]
 		ACCESS_ALLOWED_CALLBACK_ACE_TYPE = 0x9,
 
 		/// <summary>Access-denied callback ACE that uses the ACCESS_DENIED_CALLBACK_ACE structure.</summary>
@@ -104,6 +160,7 @@ public static partial class AdvApi32
 
 		/// <summary>Object-specific access-allowed callback ACE that uses the ACCESS_ALLOWED_CALLBACK_OBJECT_ACE structure.</summary>
 		[CorrespondingType(typeof(ACCESS_ALLOWED_CALLBACK_OBJECT_ACE))]
+		[SortOrder(100)]
 		ACCESS_ALLOWED_CALLBACK_OBJECT_ACE_TYPE = 0xB,
 
 		/// <summary>Object-specific access-denied callback ACE that uses the ACCESS_DENIED_CALLBACK_OBJECT_ACE structure.</summary>
@@ -2367,7 +2424,7 @@ public static partial class AdvApi32
 	// UCHAR AceType; UCHAR AceFlags; USHORT AceSize; } ACE_HEADER;
 	[PInvokeData("ntifs.h", MSDNShortId = "f5f39310-8b15-4d6b-a985-3f25522a16b1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACE_HEADER
+	public struct ACE_HEADER : IComparable<ACE_HEADER>
 	{
 		/// <summary>
 		/// <para>ACE type. This member can be one of the following values:</para>
@@ -2450,6 +2507,61 @@ public static partial class AdvApi32
 		/// <summary>Size, in bytes, of the ACE.</summary>
 		public ushort AceSize;
 
+		/// <summary>
+		/// <para>Set of ACE type-specific control flags. This member can be a combination of the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CONTAINER_INHERIT_ACE</term>
+		/// <term>
+		/// Child objects that are containers, such as directories, inherit the ACE as an effective ACE. The inherited ACE is inheritable
+		/// unless the NO_PROPAGATE_INHERIT_ACE bit flag is also set.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FAILED_ACCESS_ACE_FLAG</term>
+		/// <term>Used with system-audit ACEs in a SACL to generate audit messages for failed access attempts.</term>
+		/// </item>
+		/// <item>
+		/// <term>INHERIT_ONLY_ACE</term>
+		/// <term>
+		/// Indicates an inherit-only ACE which does not control access to the object to which it is attached. If this flag is not set,
+		/// the ACE is an effective ACE which controls access to the object to which it is attached. Both effective and inherit-only ACEs
+		/// can be inherited depending on the state of the other inheritance flags.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>INHERITED_ACE</term>
+		/// <term>
+		/// Microsoft Windows 2000 or later: Indicates that the ACE was inherited. The system sets this bit when it propagates an
+		/// inherited ACE to a child object.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NO_PROPAGATE_INHERIT_ACE</term>
+		/// <term>
+		/// If the ACE is inherited by a child object, the system clears the OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE flags in the
+		/// inherited ACE. This prevents the ACE from being inherited by subsequent generations of objects.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>OBJECT_INHERIT_ACE</term>
+		/// <term>
+		/// Noncontainer child objects inherit the ACE as an effective ACE. For child objects that are containers, the ACE is inherited
+		/// as an inherit-only ACE unless the NO_PROPAGATE_INHERIT_ACE bit flag is also set.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SUCCESSFUL_ACCESS_ACE_FLAG</term>
+		/// <term>Used with system-audit ACEs in a SACL to generate audit messages for successful access attempts.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public ACE_FLAG AceFlagsNative { get => (ACE_FLAG)AceFlags; set => AceFlags = (AceFlags)value; }
+
 		/// <summary>ACE type with full native definition.</summary>
 		public ACE_TYPE AceTypeNative { get => (ACE_TYPE)AceType; set => AceType = (AceType)value; }
 
@@ -2462,6 +2574,22 @@ public static partial class AdvApi32
 			AceType = aceType;
 			AceFlags = aceFlags;
 			AceSize = (ushort)aceSize;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="ACE_HEADER"/> struct.</summary>
+		/// <param name="aceType">ACE type.</param>
+		/// <param name="aceFlags">Set of ACE type-specific control flags.</param>
+		/// <param name="aceSize">Size, in bytes, of the ACE.</param>
+		public ACE_HEADER(ACE_TYPE aceType, ACE_FLAG aceFlags, int aceSize) : this((AceType)aceType, (AceFlags)aceFlags, aceSize) { }
+
+		/// <inheritdoc/>
+		public int CompareTo(ACE_HEADER other)
+		{
+			var ba = AceFlags.IsFlagSet(AceFlags.Inherited);
+			var bb = other.AceFlags.IsFlagSet(AceFlags.Inherited);
+			if (ba != bb) return ba ? 1000 : -1000;
+			if (AceType != other.AceType) return AceTypeNative.IsAccessDeniedAceType() ? -500 : 500;
+			return AceSize - other.AceSize;
 		}
 	}
 
@@ -4562,6 +4690,22 @@ public static partial class AdvApi32
 		public static readonly PSID_IDENTIFIER_AUTHORITY SECURITY_WORLD_SID_AUTHORITY = new byte[] { 0, 0, 0, 0, 0, 1 };
 	}
 
+	/// <summary>Implements comparison and equality methods for <see cref="PACE"/> and <see cref="SafePACE"/>.</summary>
+	/// <seealso cref="IComparer{T}"/>
+	/// <seealso cref="IEqualityComparer{T}"/>
+	public class AceComparer : IComparer<PACE>, IComparer<SafePACE>, IEqualityComparer<PACE>, IEqualityComparer<SafePACE>
+	{
+		/// <summary>Gets an instance of <see cref="AceComparer"/>.</summary>
+		public static readonly AceComparer Instance = new();
+
+		bool IEqualityComparer<PACE>.Equals(PACE x, PACE y) => WinNTExtensions.CompareTo(x, y) == 0;
+		bool IEqualityComparer<SafePACE>.Equals(SafePACE? x, SafePACE? y) => WinNTExtensions.CompareTo(x is null ? PACE.NULL : (PACE)x, y is null ? PACE.NULL : (PACE)y) == 0;
+		int IEqualityComparer<PACE>.GetHashCode(PACE obj) => obj.GetAceStruct()?.GetHashCode() ?? 0;
+		int IEqualityComparer<SafePACE>.GetHashCode(SafePACE? obj) => obj is null ? 0 : ((IEqualityComparer<PACE>)this).GetHashCode((PACE)obj);
+		int IComparer<PACE>.Compare(PACE x, PACE y) => WinNTExtensions.CompareTo(x, y);
+		int IComparer<SafePACE>.Compare(SafePACE? x, SafePACE? y) => WinNTExtensions.CompareTo(x is null ? PACE.NULL : (PACE)x, y is null ? PACE.NULL : (PACE)y);
+	}
+
 	/// <summary>Known RIDs</summary>
 	public static class KnownSIDRelativeID
 	{
@@ -4884,9 +5028,328 @@ public static partial class AdvApi32
 		}
 	}
 
+	/// <summary>A SafeHandle for access control entries. If owned, will call LocalFree on the pointer when disposed.</summary>
+	[DebuggerDisplay("{DebugString}")]
+	public class SafePACE : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IComparable<SafePACE>, IComparable<PACE>, IEquatable<SafePACE>, IEquatable<PACE>
+	{
+		private static readonly int hdrSz = Marshal.SizeOf(typeof(ACE_HEADER));
+		private static readonly int structSize = Marshal.SizeOf(typeof(ACCESS_ALLOWED_ACE));
+
+		/// <summary>The null value for a SafePACE.</summary>
+		public static readonly SafePACE Null = new();
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACE"/> class.</summary>
+		public SafePACE() : base(IntPtr.Zero, 0, true) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACE"/> class from an existing pointer, copying its content if owning.</summary>
+		/// <param name="pAce">The access control entry pointer.</param>
+		/// <param name="ownsHandle">if set to <see langword="true"/>, this instance will release the memory behind the <paramref name="pAce"/>.</param>
+		public SafePACE(PACE pAce, bool ownsHandle = false) : base(IntPtr.Zero, 0, ownsHandle)
+		{
+			if (!ownsHandle)
+			{
+				SetHandle(((IntPtr)pAce));
+				sz = pAce.Length();
+			}
+			else
+			{
+				Size = pAce.Length();
+				((IntPtr)pAce).CopyTo(handle, sz);
+			}
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACE"/> class to an empty memory buffer.</summary>
+		/// <param name="size">The size of the uninitialized access control entry.</param>
+		public SafePACE(int size) : base(Macros.ALIGN_TO_MULTIPLE(size, 4))
+		{
+			if (size <= structSize)
+				throw new ArgumentOutOfRangeException(nameof(size), $"The size must be larger than {structSize}.");
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACE"/> class.</summary>
+		/// <param name="bytes">An array of bytes that contain an existing access control entry.</param>
+		public SafePACE(byte[] bytes) : this(bytes?.Length ?? 0)
+		{
+			if (bytes is null) return;
+			Marshal.Copy(bytes, 0, handle, bytes.Length);
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACE"/> class.</summary>
+		/// <param name="type">Specifies the ACE type.</param>
+		/// <param name="accessMask">
+		/// A set of bit flags that use the ACCESS_MASK format. These flags specify the access rights that the new ACE allows for the
+		/// specified security identifier (SID).
+		/// </param>
+		/// <param name="trusteeSid">A pointer to a SID that identifies the user, group, or logon session to which the new ACE allows access.</param>
+		/// <param name="aceFlags">
+		/// A set of bit flags that control ACE inheritance. The function sets these flags in the AceFlags member of the ACE_HEADER structure
+		/// of the new ACE.
+		/// </param>
+		/// <param name="objectTypeGuid">
+		/// An optional GUID structure that identifies the type of object, property set, or property protected by the new ACE. If this
+		/// parameter is <see langword="null"/>, the new ACE protects the object to which the DACL is assigned.
+		/// </param>
+		/// <param name="inheritedObjectTypeGuid">
+		/// An optional GUID structure that identifies the type of object that can inherit the new ACE. If this parameter is non-NULL, only
+		/// the specified object type can inherit the ACE. If <see langword="null"/>, any type of child object can inherit the ACE. In either
+		/// case, inheritance is also controlled by the value of the AceFlags parameter, as well as by any protection against inheritance
+		/// placed on the child objects.
+		/// </param>
+		/// <param name="appData">The optional application data to append to the end of the ACE.</param>
+		public SafePACE(ACE_TYPE type, ACCESS_MASK accessMask, PSID trusteeSid, ACE_FLAG aceFlags = 0, Guid? objectTypeGuid = null, Guid? inheritedObjectTypeGuid = null, byte[]? appData = null)
+		{
+			if (type.IsAlarmAceType()) throw new ArgumentException("Alarm ACEs are not supported.", nameof(type));
+			if (!type.IsValid()) throw new ArgumentException("Invalid ACE type.", nameof(type));
+
+			ACE_HEADER hdr = new() { AceType = (AceType)type, AceFlags = (AceFlags)aceFlags };
+			var xSz = Macros.ALIGN_TO_MULTIPLE(trusteeSid.Length() + appData?.Length ?? 0, 4);
+			if (type.IsObjectAceType() || (objectTypeGuid is null && inheritedObjectTypeGuid is null))
+			{
+				ACCESS_ALLOWED_ACE ace = new() { Header = hdr, Mask = accessMask };
+				ace.Header.AceSize = Convert.ToUInt16(Marshal.SizeOf(ace) - sizeof(uint));
+				Size = Macros.ALIGN_TO_MULTIPLE(ace.Header.AceSize + xSz, 4);
+				handle.Write(ace);
+			}
+			else
+			{
+				ACCESS_ALLOWED_OBJECT_ACE ace = new() { Header = hdr, Mask = accessMask, ObjectType = objectTypeGuid.GetValueOrDefault(), InheritedObjectType = inheritedObjectTypeGuid.GetValueOrDefault() };
+				ace.Header.AceSize = Convert.ToUInt16(Marshal.SizeOf(ace) - sizeof(uint));
+				Size = Macros.ALIGN_TO_MULTIPLE(ace.Header.AceSize + xSz, 4);
+				handle.Write(ace);
+			}
+			TrusteeSid = trusteeSid;
+			if (appData is not null)
+				ApplicationData = appData;
+		}
+
+		/// <summary>Gets the type of the ace.</summary>
+		/// <value>The type of the ace.</value>
+		public ACE_TYPE AceType => IsInvalid ? 0 : (ACE_TYPE)Marshal.ReadByte(handle);
+
+		/// <summary>Gets or sets the SID for an ACE.</summary>
+		/// <returns>A pointer to a SID value in memory.</returns>
+		public byte[] ApplicationData
+		{
+			get
+			{
+				if (IsInvalid) throw new NullReferenceException("No allocated memory.");
+				if (AceType.IsAlarmAceType())
+					throw new InvalidOperationException("For Alarm ACEs, the application data can only be retrieved through the TrusteeAce.");
+				var offset = SidOffset;
+				if (offset + 8 > Size || !IsValidSid((PSID)handle.Offset(offset)))
+					throw new InvalidOperationException("Invalid SID value is preventing the retreival of the data.");
+				offset += GetLengthSid((PSID)handle.Offset(offset));
+				return offset >= Length ? [] : handle.ToByteArray((int)Length - offset, offset, Size)!;
+			}
+			set
+			{
+				if (IsInvalid) throw new NullReferenceException("No allocated memory.");
+				if (AceType.IsAlarmAceType())
+					throw new InvalidOperationException("For Alarm ACEs, the application data must be set by adding a valid ACE with assigned data.");
+				var offset = SidOffset;
+				if (offset + 8 > Size || !IsValidSid((PSID)handle.Offset(offset)))
+					throw new InvalidOperationException("The TrusteeSid value must be set before adding data.");
+				offset += GetLengthSid((PSID)handle.Offset(offset));
+				EnsureCapacity(value.Length);
+				handle.Write(value, offset, Size);
+				Length = Size;
+			}
+		}
+
+		/// <summary>Gets the <see cref="ACE_HEADER"/> of this instance.</summary>
+		/// <value>The header.</value>
+		public ref ACE_HEADER Header => ref handle.AsRef<ACE_HEADER>(0, Size);
+
+		/// <summary>Gets or sets the InheritedObjectType for an ACE, if possible.</summary>
+		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		public Guid? InheritedObjectType
+		{
+			get => ((PACE)handle).GetInheritedObjectType();
+			set
+			{
+				if (!IsObjectAce) throw new InvalidOperationException($"{nameof(InheritedObjectType)} can only be set on an Object ACE.");
+				ref ACCESS_ALLOWED_OBJECT_ACE oa = ref handle.AsRef<ACCESS_ALLOWED_OBJECT_ACE>();
+				oa.InheritedObjectType = value ?? Guid.Empty;
+			}
+		}
+
+		/// <summary>Determines if a ACE is inhertied.</summary>
+		/// <returns><see langword="true"/> if is this is inherited; otherwise, <see langword="false"/>.</returns>
+		public bool IsInherited => IsInvalid ? false : ((AceFlags)Marshal.ReadByte(handle, 1)).IsFlagSet(AceFlags.Inherited);
+
+		/// <summary>Determines if a ACE is an object ACE.</summary>
+		/// <returns><see langword="true"/> if is this is an object ACE; otherwise, <see langword="false"/>.</returns>
+		public bool IsObjectAce => ((PACE)handle).IsObjectAce();
+
+		/// <summary>
+		/// Gets the length, in bytes, of a structurally valid access control list. The length includes the length of all associated structures.
+		/// </summary>
+		public uint Length
+		{
+			get => IsInvalid ? 0U : (uint)unchecked((ushort)Marshal.ReadInt16(handle, 2));
+			private set => Marshal.WriteInt16(handle, sizeof(ushort), unchecked((short)Macros.ALIGN_TO_MULTIPLE(value, 4)));
+		}
+
+		/// <summary>Gets or sets the mask for an ACE.</summary>
+		/// <returns>The ACCESS_MASK value.</returns>
+		public ACCESS_MASK Mask
+		{
+			get => ((PACE)handle).GetMask();
+			set
+			{
+				if (IsInvalid) throw new NullReferenceException("No allocated memory.");
+				Marshal.WriteInt32(handle, hdrSz, unchecked((int)value));
+			}
+		}
+
+		/// <summary>Gets or sets the object flags for an ACE, if possible.</summary>
+		/// <returns>The object flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		public ObjectAceFlags? ObjectAceFlags
+		{
+			get => IsObjectAce ? (ObjectAceFlags)unchecked((uint)Marshal.ReadInt32(handle, hdrSz + sizeof(uint))) : null;
+			set
+			{
+				if (!IsObjectAce) throw new InvalidOperationException($"{nameof(ObjectAceFlags)} can only be set on an Object ACE.");
+				ref ACCESS_ALLOWED_OBJECT_ACE oa = ref handle.AsRef<ACCESS_ALLOWED_OBJECT_ACE>();
+				oa.Flags = value ?? 0;
+			}
+		}
+
+		/// <summary>Gets or sets the ObjectType for an ACE, if possible.</summary>
+		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		public Guid? ObjectType
+		{
+			get => ((PACE)handle).GetObjectType();
+			set
+			{
+				if (!IsObjectAce) throw new InvalidOperationException($"{nameof(ObjectType)} can only be set on an Object ACE.");
+				ref ACCESS_ALLOWED_OBJECT_ACE oa = ref handle.AsRef<ACCESS_ALLOWED_OBJECT_ACE>();
+				oa.ObjectType = value ?? Guid.Empty;
+			}
+		}
+
+		/// <inheritdoc/>
+		public override SizeT Size
+		{
+			get => base.Size;
+			set
+			{
+				if (value == Size) return;
+				if (value < Length)
+					throw new ArgumentException("Current ACE consumes more space that has been specified.", nameof(Size));
+				// Make sure divisible by 4.
+				if (value % 4 != 0)
+					throw new ArgumentOutOfRangeException(nameof(Size), "ACE values must be DWORD aligned. This value must be a multiple of 4.");
+				// Use base property to copy and expand the underlying memory
+				base.Size = value;
+			}
+		}
+
+		/// <summary>Gets or sets the Trustee ACE for an Alarm ACE.</summary>
+		/// <returns>A pointer to an ACE in memory.</returns>
+		public SafePACE? TrusteeAce
+		{
+			get
+			{
+				if (IsInvalid) throw new NullReferenceException("No allocated memory.");
+				if (!AceType.IsAlarmAceType()) return null;
+				var offset = SidOffset;
+				if (offset * 2 > Size)
+					return SafePACE.Null;
+				return new((PACE)handle.Offset(offset), true);
+			}
+			set
+			{
+				if (value is null || value.IsInvalid) throw new ArgumentNullException(nameof(TrusteeAce), "Only non-null values can be used to set TrusteeAce.");
+				if (IsInvalid) throw new NullReferenceException("No allocated memory.");
+				if (!AceType.IsAlarmAceType()) throw new InvalidOperationException("This value can only be set for Alarm ACEs");
+
+				var offset = SidOffset;
+				EnsureCapacity(value.Length);
+				value.DangerousGetHandle().CopyTo(handle.Offset(offset), value.Length);
+				Length = Size;
+			}
+		}
+
+		/// <summary>Gets or sets the SID for an ACE.</summary>
+		/// <returns>A pointer to a SID value in memory.</returns>
+		public SafePSID TrusteeSid
+		{
+			get
+			{
+				if (IsInvalid) throw new NullReferenceException("No allocated memory.");
+				if (AceType.IsAlarmAceType())
+					throw new InvalidOperationException("For Alarm ACEs, the SID can only be retrieved through the TrusteeAce.");
+				var offset = SidOffset;
+				if (offset + 8 > Size)
+					return SafePSID.Null;
+				return SafePSID.CreateFromPtr(handle.Offset(offset));
+			}
+			set
+			{
+				if (IsInvalid) throw new NullReferenceException("No allocated memory.");
+				if (AceType.IsAlarmAceType())
+					throw new InvalidOperationException("For Alarm ACEs, the SID must be set by adding a valid ACE");
+				var offset = SidOffset;
+				EnsureCapacity(value.Length);
+				value.DangerousGetHandle().CopyTo(handle.Offset(offset), value.Length);
+				Length = Size;
+			}
+		}
+
+		/// <summary>Gets an <see cref="IComparer{T}"/> for <see cref="SafePACE"/> values.</summary>
+		/// <value>The comparer.</value>
+		public static IComparer<SafePACE> Comparer => AceComparer.Instance;
+
+		private int SidOffset => hdrSz + sizeof(uint) + (IsObjectAce ? sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2 : 0);
+
+		internal string DebugString => IsInvalid ? "NULL" : $"Principal: {TrusteeSid:N}, Type: {AceType}, Access: {Mask}, Flags: {Header.AceFlags}, Size:{Length}";
+
+		/// <summary>Performs an explicit conversion from <see cref="SafePACE"/> to <see cref="PACE"/>.</summary>
+		/// <param name="pAce">The access control entry.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PACE(SafePACE pAce) => pAce.DangerousGetHandle();
+
+		/// <summary>Performs an explicit conversion from <see cref="PACE"/> to <see cref="SafePACE"/>.</summary>
+		/// <param name="pAce">The access control entry.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SafePACE(PACE pAce) => new(pAce, true);
+
+		/// <inheritdoc/>
+		public int CompareTo(PACE other) => WinNTExtensions.CompareTo((PACE)this, other);
+
+		/// <inheritdoc/>
+		public int CompareTo(SafePACE? other) => other is null ? -1 : CompareTo((PACE)other);
+
+		/// <inheritdoc/>
+		public bool Equals(PACE other) => WinNTExtensions.Equals((PACE)this, other);
+
+		/// <inheritdoc/>
+		public bool Equals(SafePACE? other) => other is null ? false : Equals((PACE)other);
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj switch
+		{
+			SafePACL p => Equals(p),
+			PACL p => Equals(p),
+			IntPtr p => Equals((PACL)p),
+			_ => base.Equals(obj)
+		};
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => Header.GetHashCode();
+
+		private bool EnsureCapacity(SizeT addCap)
+		{
+			if (Length + addCap > Size)
+				Size = Macros.ALIGN_TO_MULTIPLE(Length + addCap, 4);
+			return true;
+		}
+	}
+
 	/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
 	[DebuggerDisplay("{DebugString}")]
-	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>, IEquatable<SafePACL>, IEquatable<PACL>
+	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>, IComparable<SafePACL>, IComparable<PACL>, IEquatable<SafePACL>, IEquatable<PACL>
 	{
 		private static readonly int AclStructSize = Marshal.SizeOf(typeof(ACL));
 
@@ -4930,6 +5393,28 @@ public static partial class AdvApi32
 			InitializeAcl(handle, (uint)size, revision);
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
+		/// <param name="aces">The <see cref="EXPLICIT_ACCESS"/> entries to add to the access control list.</param>
+		/// <param name="revision">ACL revision.</param>
+		public SafePACL(IEnumerable<EXPLICIT_ACCESS> aces, uint revision = ACL_REVISION) : this(AclStructSize, revision) =>
+			AddRange(aces);
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
+		/// <param name="aces">The ACEs to add to the access control list.</param>
+		/// <param name="revision">ACL revision.</param>
+		public SafePACL(IReadOnlyList<PACE> aces, uint revision = ACL_REVISION) : this(AclStructSize + aces.Sum(a => (int)Macros.ALIGN_TO_MULTIPLE((int)a.Length(), 4)), revision)
+		{
+			for (int i = 0; i < aces.Count; i++)
+				Add(aces[i]);
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
+		/// <param name="aces">The ACEs to add to the access control list.</param>
+		/// <param name="revision">ACL revision.</param>
+		public SafePACL(IReadOnlyList<SafePACE> aces, uint revision = ACL_REVISION) : this(aces.Select(a => (PACE)a).ToList(), revision)
+		{
+		}
+
 		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
 		/// <param name="bytes">An array of bytes that contain an existing access control list.</param>
 		public SafePACL(byte[] bytes) : this(bytes?.Length ?? 0)
@@ -4941,6 +5426,15 @@ public static partial class AdvApi32
 		/// <summary>Gets the number of ACEs held by this ACL.</summary>
 		/// <value>The ace count.</value>
 		public int AceCount => (int)((PACL)handle).AceCount();
+
+		/// <summary>The number of unused bytes in the ACL.</summary>
+		public uint BytesFree => ((PACL)handle).GetAclInformation<ACL_SIZE_INFORMATION>().AclBytesFree;
+
+		/// <summary>
+		/// The number of bytes in the ACL actually used to store the ACEs and ACL structure. This may be less than the total number of
+		/// bytes allocated to the ACL.
+		/// </summary>
+		public uint BytesInUse => ((PACL)handle).GetAclInformation<ACL_SIZE_INFORMATION>().AclBytesInUse;
 
 		/// <inheritdoc/>
 		public int Count => AceCount;
@@ -5001,13 +5495,33 @@ public static partial class AdvApi32
 		/// <summary>Performs an explicit conversion from <see cref="PACL"/> to <see cref="SafePACL"/>.</summary>
 		/// <param name="pAcl">The access control list.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafePACL(PACL pAcl) => new(pAcl, false);
+		public static implicit operator SafePACL(PACL pAcl) => new(pAcl, true);
 
 		/// <inheritdoc/>
 		public void Add(PACE item) => Win32Error.ThrowLastErrorIfFalse(EnsureCapacity(item.Length()) && AddAce(this, item));
 
+		/// <summary>Adds a sequence of new ACEs to this ACL.</summary>
+		/// <param name="items">The ACEs to add.</param>
+		public void AddRange(IEnumerable<PACE> items)
+		{
+			Size += items.Sum(a => Macros.ALIGN_TO_MULTIPLE(a.Length(), 4));
+			foreach (var a in items)
+				Add(a);
+		}
+
+		/// <summary>Adds a sequence of new ACEs to this ACL.</summary>
+		/// <param name="items">The ACEs to add.</param>
+		public void AddRange(IEnumerable<EXPLICIT_ACCESS> items)
+		{
+			var ea = items.ToArray();
+			SetEntriesInAcl((uint)ea.Length, ea, this, out var newHandle).ThrowIfFailed();
+			//ReleaseHandle();
+			SetHandle(newHandle.TakeOwnership());
+			sz = newHandle.Length;
+		}
+
 		/// <inheritdoc/>
-		public void Clear() { for (int i = AceCount - 1; i <= 0; i--) RemoveAt(i); }
+		public void Clear() { for (int i = AceCount - 1; i >= 0; i--) RemoveAt(i); }
 
 		/// <summary>Clones this ACL into a new ACL performing a manual copy of each ACE rather than a memory copy.</summary>
 		/// <returns>Newly allocated ACL with all ACEs copied from current ACL.</returns>
@@ -5026,7 +5540,13 @@ public static partial class AdvApi32
 		}
 
 		/// <inheritdoc/>
-		public bool Contains(PACE item) => GetEnum().Contains(item, WinNTExtensions.AceEqualityComparer.Instance);
+		public int CompareTo(PACL other) => WinNTExtensions.CompareTo((PACL)this, other);
+
+		/// <inheritdoc/>
+		public int CompareTo(SafePACL? other) => other is null ? -1 : CompareTo((PACL)other);
+
+		/// <inheritdoc/>
+		public bool Contains(PACE item) => GetEnum().Contains(item, AceComparer.Instance);
 
 		/// <inheritdoc/>
 		public void CopyTo(PACE[] array, int arrayIndex)
@@ -5068,7 +5588,7 @@ public static partial class AdvApi32
 
 		/// <inheritdoc/>
 		public int IndexOf(PACE item) => GetEnum().Select((value, index) => new { value, index })
-						.Where(pair => item.Equals(pair.value))
+						.Where(pair => item.CompareTo(pair.value) == 0)
 						.Select(pair => pair.index + 1).FirstOrDefault() - 1;
 
 		/// <inheritdoc/>
@@ -5101,7 +5621,7 @@ public static partial class AdvApi32
 		private bool EnsureCapacity(uint addCap)
 		{
 			if (Length + addCap > Size)
-				Size = Length + addCap;
+				Size = Length + Macros.ALIGN_TO_MULTIPLE(addCap, 4);
 			return true;
 		}
 
@@ -5493,5 +6013,11 @@ public static partial class AdvApi32
 		/// </param>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public string ToString(SECURITY_INFORMATION secInfo) => ConvertSecurityDescriptorToStringSecurityDescriptor(handle, secInfo);
+	}
+
+	[System.AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+	internal sealed class SortOrderAttribute(int order) : Attribute
+	{
+		public int Order { get; private set; } = order;
 	}
 }

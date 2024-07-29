@@ -46,21 +46,12 @@ public static class WinNTExtensions
 	/// </returns>
 	public static int CompareTo(this PACE x, PACE y)
 	{
-		if ((IntPtr)x == (IntPtr)y) return 0;
-		if (x.IsNull && y.IsNull) return 0;
-		if (y.IsNull) return 1;
+		if ((IntPtr)x == (IntPtr)y || x.IsNull && y.IsNull) return 0;
 		if (x.IsNull) return -1;
-		var lh = x.GetHeader();
-		var rh = y.GetHeader();
-		var ret = lh.AceTypeNative.CompareTo(rh.AceTypeNative);
+		if (y.IsNull) return 1;
+		var ret = x.GetHeader().CompareTo(y.GetHeader());
 		if (ret != 0) return ret;
-		ret = lh.AceFlags.CompareTo(rh.AceFlags);
-		if (ret != 0) return ret;
-		ret = lh.AceSize.CompareTo(rh.AceSize);
-		if (ret != 0) return ret;
-		var lm = x.GetMask();
-		var rm = y.GetMask();
-		ret = lm.CompareTo(rm);
+		ret = x.GetMask().CompareTo(y.GetMask());
 		if (ret != 0) return ret;
 		if (x.IsObjectAce())
 		{
@@ -75,7 +66,7 @@ public static class WinNTExtensions
 		}
 		using var ls = x.GetSid();
 		using var rs = y.GetSid();
-		return ls.ToString("D").CompareTo(rs.ToString("D"));
+		return ls.ToString("N").CompareTo(rs.ToString("N"));
 	}
 
 	/// <summary>Compares two Access Control Lists given their pointers.</summary>
@@ -106,10 +97,9 @@ public static class WinNTExtensions
 	/// </returns>
 	public static int CompareTo(this PACL x, PACL y)
 	{
-		if ((IntPtr)x == (IntPtr)y) return 0;
-		if (!x.IsValidAcl() && !y.IsValidAcl()) return 0;
-		if (!y.IsValidAcl()) return 1;
+		if ((IntPtr)x == (IntPtr)y || !x.IsValidAcl() && !y.IsValidAcl()) return 0;
 		if (!x.IsValidAcl()) return -1;
+		if (!y.IsValidAcl()) return 1;
 		GetAclInformation(x, out ACL_REVISION_INFORMATION lr);
 		GetAclInformation(y, out ACL_REVISION_INFORMATION rr);
 		var ret = lr.AclRevision.CompareTo(rr.AclRevision);
@@ -162,6 +152,11 @@ public static class WinNTExtensions
 		return acePtr;
 	}
 
+	/// <summary>Gets the AceType for an ACE, if defined.</summary>
+	/// <param name="pAce">A pointer to an ACE.</param>
+	/// <returns>The AceType value.</returns>
+	public static AceType GetAceType(this PACE pAce) => pAce.IsNull ? 0 : (AceType)Marshal.ReadByte((IntPtr)pAce);
+
 	/// <summary>Gets the ace value as the structure defined by the ACE's type.</summary>
 	/// <param name="pAce">The ACE pointer.</param>
 	/// <returns>The structure pointed to by <paramref name="pAce"/> and defined by the ACE's type.</returns>
@@ -176,7 +171,7 @@ public static class WinNTExtensions
 	/// <param name="pAce">A pointer to an ACE.</param>
 	/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
 	/// <exception cref="ArgumentNullException">pAce</exception>
-	public static AdvApi32.ObjectAceFlags? GetFlags(this PACE pAce)
+	public static AdvApi32.ObjectAceFlags? GetObjectAceFlags(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
 		return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().AsRef<ACCESS_ALLOWED_OBJECT_ACE>().Flags;
@@ -268,10 +263,18 @@ public static class WinNTExtensions
 		return SafePSID.CreateFromPtr(((IntPtr)pAce).Offset(offset));
 	}
 
-	/// <summary>Gets the AceType for an ACE, if defined.</summary>
+	/// <summary>Determines if a ACE is an access denied ACE.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
-	/// <returns>The AceType value.</returns>
-	public static AceType GetAceType(this PACE pAce) => GetHeader(pAce).AceType;
+	/// <returns><see langword="true"/> if is this is an access denied ACE; otherwise, <see langword="false"/>.</returns>
+	/// <exception cref="ArgumentNullException">pAce</exception>
+	public static bool IsAccessDeniedAce(this PACE pAce)
+	{
+		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+		var aceType = GetHeader(pAce).AceTypeNative;
+		return IsAccessDeniedAceType(aceType);
+	}
+
+	internal static bool IsAccessDeniedAceType(this ACE_TYPE aceType) => (byte)aceType is 0x1 or 0x6 or 0xA or 0xC;
 
 	/// <summary>Determines if a ACE is an alarm ACE.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
@@ -281,10 +284,12 @@ public static class WinNTExtensions
 	public static bool IsAlarmAce(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		var aceType = (byte)GetHeader(pAce).AceTypeNative;
-		if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
-		return aceType is 0x3 or 0x8 or 0xE or 0x10;
+		var aceType = GetHeader(pAce).AceTypeNative;
+		if (!Enum.IsDefined(typeof(ACE_TYPE), aceType)) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
+		return IsAlarmAceType(aceType);
 	}
+
+	internal static bool IsAlarmAceType(this ACE_TYPE aceType) => (byte)aceType is 0x3 or 0x8 or 0xE or 0x10;
 
 	/// <summary>Determines if a ACE is an object ACE.</summary>
 	/// <param name="pAce">A pointer to an ACE.</param>
@@ -294,10 +299,12 @@ public static class WinNTExtensions
 	public static bool IsObjectAce(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		var aceType = (byte)GetHeader(pAce).AceTypeNative;
-		if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
-		return aceType is >= 0x5 and <= 0x8 or 0xB or 0xC or 0xF or 0x10;
+		var aceType = GetHeader(pAce).AceTypeNative;
+		if (!Enum.IsDefined(typeof(ACE_TYPE), aceType)) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
+		return aceType.IsObjectAceType();
 	}
+
+	internal static bool IsObjectAceType(this ACE_TYPE aceType) => (byte)aceType is >= 0x5 and <= 0x8 or 0xB or 0xC or 0xF or 0x10;
 
 	/// <summary>Determines whether the security descriptor is self-relative.</summary>
 	/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
@@ -320,7 +327,7 @@ public static class WinNTExtensions
 	/// <summary>Gets the size, in bytes, of an ACE.</summary>
 	/// <param name="pAce">The pointer to the ACE structure to query.</param>
 	/// <returns>The size, in bytes, of the ACE.</returns>
-	public static uint Length(this PACE pAce) => GetHeader(pAce).AceSize;
+	public static uint Length(this PACE pAce) => pAce.IsNull ? (ushort)0 : unchecked((ushort)Marshal.ReadInt16((IntPtr)pAce, 2));
 
 	/// <summary>Gets the size, in bytes, of an ACL. If the ACL is not valid, 0 is returned.</summary>
 	/// <param name="pACL">The pointer to the ACL structure to query.</param>
@@ -336,11 +343,4 @@ public static class WinNTExtensions
 	/// <param name="pACL">The pointer to the ACL structure to query.</param>
 	/// <value>The revision.</value>
 	public static uint Revision(this PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_REVISION_INFORMATION ri) ? ri.AclRevision : 0U;
-
-	internal class AceEqualityComparer : IEqualityComparer<PACE>
-	{
-		internal static readonly AceEqualityComparer Instance = new();
-		bool IEqualityComparer<PACE>.Equals(PACE x, PACE y) => x.Equals(y);
-		int IEqualityComparer<PACE>.GetHashCode(PACE obj) => obj.GetAceStruct()?.GetHashCode() ?? 0;
-	}
 }
