@@ -22,6 +22,13 @@ public static partial class AdvApi32
 
 	private const int sizeofSID = 12;
 
+	/// <summary>
+	/// A CALLBACK ACE contains a conditional expression if the ApplicationData member is prefixed by ACE_CONDITION_SIGNATURE and the
+	/// remainder of the data in the ApplicationData member immediately following the conditional ACE signature specifies a conditional
+	/// expression.
+	/// </summary>
+	public static readonly byte[] ACE_CONDITION_SIGNATURE = [0x61, 0x72, 0x74, 0x78];
+
 	/// <summary>The maximum size of a SID.</summary>
 	public static readonly int SECURITY_MAX_SID_SIZE = SECURITY_SID_SIZE(SID_MAX_SUB_AUTHORITIES);
 
@@ -5498,7 +5505,7 @@ public static partial class AdvApi32
 		public static implicit operator SafePACL(PACL pAcl) => new(pAcl, true);
 
 		/// <inheritdoc/>
-		public void Add(PACE item) => Win32Error.ThrowLastErrorIfFalse(EnsureCapacity(item.Length()) && AddAce(this, item));
+		public void Add(PACE item) => AddAceInOrder(item);
 
 		/// <summary>Adds a sequence of new ACEs to this ACL.</summary>
 		/// <param name="items">The ACEs to add.</param>
@@ -5592,7 +5599,8 @@ public static partial class AdvApi32
 						.Select(pair => pair.index + 1).FirstOrDefault() - 1;
 
 		/// <inheritdoc/>
-		public void Insert(int index, PACE item) => Win32Error.ThrowLastErrorIfFalse(EnsureCapacity(item.Length()) && AddAce(this, item, (uint)index));
+		public void Insert(int index, PACE item) =>
+			Win32Error.ThrowLastErrorIfFalse(EnsureCapacity(item.Length()) && AddAce(this, item, index == int.MaxValue || index == Count ? uint.MaxValue : (uint)index));
 
 		/// <summary>Inserts an item to the IList{T} at the specified index.</summary>
 		/// <typeparam name="TAce">The ACE structure.</typeparam>
@@ -5617,6 +5625,21 @@ public static partial class AdvApi32
 
 		/// <inheritdoc/>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		/// <summary>Add an ACE into the position it should belong. This method will not order inherited ACES correctly.</summary>
+		/// <param name="ace">The ACE to add.</param>
+		private void AddAceInOrder(PACE ace)
+		{
+			// Find ACE insert position.
+			for (int i = 0; i < AceCount; i++)
+			{
+				var cmp = ace.CompareTo(this[i]);
+				if (cmp < 0) continue;
+				if (cmp > 0)
+					Insert(i, ace);
+				return;
+			}
+		}
 
 		private bool EnsureCapacity(uint addCap)
 		{

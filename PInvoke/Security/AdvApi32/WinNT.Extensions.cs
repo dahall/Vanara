@@ -46,7 +46,7 @@ public static class WinNTExtensions
 	/// </returns>
 	public static int CompareTo(this PACE x, PACE y)
 	{
-		if ((IntPtr)x == (IntPtr)y || x.IsNull && y.IsNull) return 0;
+		if ((IntPtr)x == (IntPtr)y) return 0;
 		if (x.IsNull) return -1;
 		if (y.IsNull) return 1;
 		var ret = x.GetHeader().CompareTo(y.GetHeader());
@@ -66,7 +66,7 @@ public static class WinNTExtensions
 		}
 		using var ls = x.GetSid();
 		using var rs = y.GetSid();
-		return ls.ToString("N").CompareTo(rs.ToString("N"));
+		return ls.Equals((PSID)rs) ? 0 : -1;
 	}
 
 	/// <summary>Compares two Access Control Lists given their pointers.</summary>
