@@ -185,15 +185,32 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	/// <returns>An enumerated list of children matching the filter.</returns>
 	public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter /*= FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden */, HWND parentWindow = default)
 	{
-		if (iShellFolder.EnumObjects(parentWindow, (SHCONTF)filter, out var eo).Failed)
-			Debug.WriteLine($"Unable to enum children in folder.");
-		foreach (var p in eo!.Enumerate(20))
+		foreach (var p in EnumerateChildIds(filter, parentWindow))
 		{
 			ShellItem? i = null;
 			try { i = this[p]; } catch (Exception e) { Debug.WriteLine($"Unable to open folder child: {e.Message}"); }
 			if (i is not null) yield return i;
 		}
-		Marshal.ReleaseComObject(eo!);
+	}
+
+	/// <summary>
+	/// Enumerates all children <see cref="PIDL"/> values of this item. If this item is not a folder/container, this method will return an
+	/// empty enumeration.
+	/// </summary>
+	/// <param name="filter">A filter for the types of children to enumerate.</param>
+	/// <param name="parentWindow">The parent window.</param>
+	/// <param name="fetchSize">Size of the block of PIDL instances to fetch with a single call.</param>
+	/// <returns>An enumerated list of children identifiers matching the filter.</returns>
+	public IEnumerable<PIDL> EnumerateChildIds(FolderItemFilter filter /*= FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden */, HWND parentWindow = default, int fetchSize = 20)
+	{
+		if (iShellFolder.EnumObjects(parentWindow, (SHCONTF)filter, out var eo).Failed)
+			Debug.WriteLine($"Unable to enum children in folder.");
+		try
+		{
+			foreach (PIDL p in eo!.Enumerate(fetchSize))
+				yield return p;
+		}
+		finally { Marshal.ReleaseComObject(eo!); }
 	}
 
 	/// <summary>Gets an object that can be used to carry out actions on the specified file objects or folders.</summary>
