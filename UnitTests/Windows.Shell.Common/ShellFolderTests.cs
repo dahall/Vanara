@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using static Vanara.PInvoke.Shell32;
@@ -91,6 +92,19 @@ public class ShellFolderTests
 			Assert.True(libs["Test.lnk"] is ShellItem);
 		}, Throws.Nothing);
 		Assert.That(() => new ShellFolder(KNOWNFOLDERID.FOLDERID_Windows).EnumerateChildren((FolderItemFilter)0x80000), Is.Empty);
+	}
+
+	[Test]
+	public void EnumerateLibTest()
+	{
+		using ShellFolder ie1 = new(KNOWNFOLDERID.FOLDERID_Desktop);
+		List<ShellItem> ie2 = ie1.EnumerateChildren(FolderItemFilter.NonFolders | FolderItemFilter.Folders).ToList();
+		TestContext.WriteLine(string.Join('\n', ie2.Select(i => $"{i.Name} - {i.GetType().Name}")));
+		Assert.That(ie2, Has.Count.GreaterThan(0));
+		ShellFolder? libs = ie2.Find(i => i.Name == "Libraries") as ShellFolder;
+		Assert.That(libs, Is.Not.Null);
+		List<ShellItem> il = libs!.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden).ToList();
+		TestContext.WriteLine('\n' + string.Join('\n', il.Select(i => i.PIDL.ToString())));
 	}
 
 	[Test]

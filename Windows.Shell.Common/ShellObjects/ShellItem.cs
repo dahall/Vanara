@@ -550,24 +550,20 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
 	public static ShellItem Open(IShellItem iItem)
 	{
-		string? itemType = null;
-		try { itemType = (iItem as IShellItem2)?.GetString(pkItemType)?.ToString().ToLowerInvariant(); } catch { }
-
 		// Try to get specialized folder type from property
+		var attr = iItem.GetAttributes(SFGAO.SFGAO_FOLDER | SFGAO.SFGAO_LINK);
+		var isFolder = attr.IsFlagSet(SFGAO.SFGAO_FOLDER);
 		try
 		{
-			if (itemType == ".lnk")
+			if (attr.IsFlagSet(SFGAO.SFGAO_LINK))
 				return new ShellLink(iItem);
-			if (itemType == ".library-ms")
-				return new ShellLibrary(iItem);
-			// TODO: ".searchconnector-ms" => Return a search connector
-			// TODO: ".search-ms" => Return a saved search connection
+			if (isFolder && SHLoadLibraryFromItem(iItem, STGM.STGM_READWRITE, typeof(IShellLibrary).GUID, out var pil).Succeeded)
+				return new ShellLibrary((IShellLibrary)pil!, iItem);
 		}
 		catch
 		{
 			// If there was an exception, just return the wrapper.
 		}
-		var isFolder = iItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
 		return isFolder ? new ShellFolder(iItem) : new ShellItem(iItem);
 	}
 
