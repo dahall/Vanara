@@ -20,7 +20,7 @@ public static class LinqHelpers
 	/// <param name="comparer">An <see cref="IComparer{T}"/> to use to compare elements.</param>
 	/// <returns>
 	/// <para>
-	/// A signed integer that indicates the relative values of <paramref name="x"/> and <paramref name="y"/>, as shown in the following table.
+	/// A signed integer that indicates the relative values of <paramref name="first"/> and <paramref name="second"/>, as shown in the following table.
 	/// </para>
 	/// <list type="table">
 	/// <item>
