@@ -902,24 +902,24 @@ public static partial class FwpUClnt
 		/// <para>case(FWP_UINT8)</para>
 		/// <para>An unsigned 8-bit integer.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public byte uint8;
 
 		/// <summary>
 		/// <para>case(FWP_UINT16)</para>
 		/// <para>An unsigned 16-bit integer.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public ushort uint16;
 
 		/// <summary>
 		/// <para>case(FWP_UINT32)</para>
 		/// <para>An unsigned 32-bit integer.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public uint uint32;
 
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		private IntPtr ptr;
 
 		/// <summary>
@@ -932,21 +932,21 @@ public static partial class FwpUClnt
 		/// <para>case(FWP_INT8)</para>
 		/// <para>A signed 8-bit integer.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public sbyte int8;
 
 		/// <summary>
 		/// <para>case(FWP_INT16)</para>
 		/// <para>A signed 16-bit integer.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public short int16;
 
 		/// <summary>
 		/// <para>case(FWP_INT32)</para>
 		/// <para>A signed 32-bit integer.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public int int32;
 
 		/// <summary>
@@ -959,7 +959,7 @@ public static partial class FwpUClnt
 		/// <para>case(FWP_FLOAT)</para>
 		/// <para>A single-precision floating-point value.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public float float32;
 
 		/// <summary>
@@ -984,7 +984,7 @@ public static partial class FwpUClnt
 		/// <para>case(FWP_SID)</para>
 		/// <para>A pointer to a SID.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public PSID sid;
 
 		/// <summary>
@@ -1015,14 +1015,43 @@ public static partial class FwpUClnt
 		/// <para>case(FWP_UNICODE_STRING_TYPE)</para>
 		/// <para>A pointer to a null-terminated unicode string.</para>
 		/// </summary>
-		[FieldOffset(0)]
+		[FieldOffset(8)]
 		public StrPtrUni unicodeString;
 
 		/// <summary>
 		/// <para>case(FWP_BYTE_ARRAY6_TYPE)</para>
 		/// <para>Reserved.</para>
 		/// </summary>
-		public SafeCoTaskMemStruct<FWP_BYTE_ARRAY6> byteArray6 { get => new(ptr, false); set => ptr = value; }	}
+		public SafeCoTaskMemStruct<FWP_BYTE_ARRAY6> byteArray6 { get => new(ptr, false); set => ptr = value; }
+
+		/// <summary>Gets the value indicated by <see cref="type"/>.</summary>
+		/// <returns>The translated value.</returns>
+		public object? GetValue() => type switch
+		{
+			FWP_DATA_TYPE.FWP_UINT8 => uint8,
+			FWP_DATA_TYPE.FWP_UINT16 => uint16,
+			FWP_DATA_TYPE.FWP_UINT32 => uint32,
+			FWP_DATA_TYPE.FWP_UINT64 => ptr == IntPtr.Zero ? 0UL : (ulong)uint64,
+			FWP_DATA_TYPE.FWP_INT8 => int8,
+			FWP_DATA_TYPE.FWP_INT16 => int16,
+			FWP_DATA_TYPE.FWP_INT32 => int32,
+			FWP_DATA_TYPE.FWP_INT64 => ptr == IntPtr.Zero ? 0L : (long)int64,
+			FWP_DATA_TYPE.FWP_FLOAT => float32,
+			FWP_DATA_TYPE.FWP_DOUBLE => ptr == IntPtr.Zero ? 0.0 : (double)double64,
+			FWP_DATA_TYPE.FWP_BYTE_ARRAY16_TYPE => ptr == IntPtr.Zero ? null : byteArray16.AsRef().byteArray16,
+			FWP_DATA_TYPE.FWP_BYTE_BLOB_TYPE => ptr == IntPtr.Zero ? null : byteBlob.AsSpan()[0].data.ToByteArray((int)byteBlob.AsSpan()[0].size),
+			FWP_DATA_TYPE.FWP_SID => sid,
+			FWP_DATA_TYPE.FWP_SECURITY_DESCRIPTOR_TYPE => ptr == IntPtr.Zero ? null : new SafePSECURITY_DESCRIPTOR(byteBlob.AsSpan()[0].data.ToByteArray((int)byteBlob.AsSpan()[0].size)!),
+			FWP_DATA_TYPE.FWP_TOKEN_INFORMATION_TYPE => ptr.ToNullableStructure<FWP_TOKEN_INFORMATION>(),
+			FWP_DATA_TYPE.FWP_TOKEN_ACCESS_INFORMATION_TYPE => ptr == IntPtr.Zero ? null : tokenAccessInformation.AsSpan()[0].data.ToStructure<TOKEN_ACCESS_INFORMATION>(),
+			FWP_DATA_TYPE.FWP_UNICODE_STRING_TYPE => unicodeString.ToString(),
+			FWP_DATA_TYPE.FWP_BYTE_ARRAY6_TYPE => ptr == IntPtr.Zero ? null : byteArray6.AsSpan()[0].byteArray6,
+			FWP_DATA_TYPE.FWP_V4_ADDR_MASK => ptr.ToNullableStructure<FWP_V4_ADDR_AND_MASK>(),
+			FWP_DATA_TYPE.FWP_V6_ADDR_MASK => ptr.ToNullableStructure<FWP_V6_ADDR_AND_MASK>(),
+			FWP_DATA_TYPE.FWP_RANGE_TYPE => ptr.ToNullableStructure<FWP_RANGE0>(),
+			_ => null,
+		};
+	}
 
 	/// <summary>The <c>FWPM_DISPLAY_DATA0</c> structure stores an optional friendly name and an optional description for an object.</summary>
 	/// <remarks>

@@ -1570,9 +1570,9 @@ public static partial class FwpUClnt
 		public GuidPtr reserved;
 
 		/// <summary>
-		/// LUID identifying the filter. This is also the LUID of the corresponding <c>FWPS_FILTER0</c> structure, which is documented in the WDK.
+		/// <see cref="LUID"/> identifying the filter. This is also the LUID of the corresponding <c>FWPS_FILTER0</c> structure, which is documented in the WDK.
 		/// </summary>
-		public ulong filterId;
+		public LUID filterId;
 
 		/// <summary>An FWP_VALUE0 structure that contains the weight assigned to <c>FWPS_FILTER0</c>, which is documented in the WDK.</summary>
 		public FWP_VALUE0 effectiveWeight;
