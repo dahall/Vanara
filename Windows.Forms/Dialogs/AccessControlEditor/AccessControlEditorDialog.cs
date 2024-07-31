@@ -439,7 +439,7 @@ public class AccessControlEditorDialog : CommonDialog
 	/// <param name="customProvider">The custom provider.</param>
 	/// <param name="sd">The binary Security Descriptor.</param>
 	/// <param name="targetServer">The target server.</param>
-	public void Initialize(string displayName, string fullObjectName, bool isContainer, IAccessControlEditorDialogProvider customProvider, byte[] sd, string? targetServer = null)
+	public void Initialize(string displayName, string fullObjectName, bool isContainer, IAccessControlEditorDialogProvider customProvider, byte[]? sd = null, string? targetServer = null)
 	{
 		if (isContainer)
 			ObjectIsContainer = true;
@@ -448,12 +448,12 @@ public class AccessControlEditorDialog : CommonDialog
 		if (sd != null)
 		{
 			Result = new RawSecurityDescriptor(sd, 0);
-			iSecInfo.SecurityDescriptor = sd;
+			iSecInfo.SecurityDescriptor = new(sd);
 		}
 		else
 		{
 			Result = new RawSecurityDescriptor("");
-			iSecInfo.SecurityDescriptor = new byte[20];
+			iSecInfo.SecurityDescriptor = new(20);
 		}
 		iSecInfo.SetProvider(customProvider);
 	}
@@ -500,33 +500,14 @@ public class AccessControlEditorDialog : CommonDialog
 
 	private bool HasFlag(SI_OBJECT_INFO_Flags flag) => (Flags & flag) == flag;
 
-	private IAccessControlEditorDialogProvider ProviderFromResourceType(ResourceType resType)
+	private static GenericProvider ProviderFromResourceType(ResourceType resType) => resType switch
 	{
-		IAccessControlEditorDialogProvider prov;
-		switch (resType)
-		{
-			case ResourceType.FileObject:
-				prov = new FileProvider();
-				break;
-
-			case ResourceType.KernelObject:
-				prov = new KernelProvider();
-				break;
-
-			case ResourceType.RegistryKey:
-				prov = new RegistryProvider();
-				break;
-
-			case taskResourceType:
-				prov = new TaskProvider();
-				break;
-
-			default:
-				prov = new GenericProvider();
-				break;
-		}
-		return prov;
-	}
+		ResourceType.FileObject => new FileProvider(),
+		ResourceType.KernelObject => new KernelProvider(),
+		ResourceType.RegistryKey => new RegistryProvider(),
+		taskResourceType => new TaskProvider(),
+		_ => new GenericProvider(),
+	};
 
 	private void SetFlag(SI_OBJECT_INFO_Flags flag, bool set, bool reqAdvanced = false)
 	{

@@ -33,7 +33,7 @@ public interface IAccessControlEditorDialogProvider
 
 	/// <summary>Gets a default Security Descriptor for resetting the security of the object.</summary>
 	/// <returns>Pointer to a Security Descriptor.</returns>
-	IntPtr GetDefaultSecurity();
+	PSECURITY_DESCRIPTOR GetDefaultSecurity();
 
 	/// <summary>
 	/// Gets the effective permissions for the provided Sid within the Security Descriptor.
@@ -94,7 +94,7 @@ public interface IAccessControlEditorDialogProvider
 	/// <param name="hwnd">The HWND.</param>
 	/// <param name="uMsg">The message.</param>
 	/// <param name="uPage">The page type.</param>
-	void PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage);
+	HRESULT PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage);
 }
 
 /// <summary>Base implementation of <see cref="IAccessControlEditorDialogProvider"/>.</summary>
@@ -119,13 +119,13 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 	/// </param>
 	public virtual void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 	{
-		rights = new[] { new SI_ACCESS(0, ResStr("Object"), 0) };
+		rights = [new SI_ACCESS(0, ResStr("Object"), 0)];
 		defaultIndex = 0;
 	}
 
 	/// <summary>Gets a default Security Descriptor for resetting the security of the object.</summary>
 	/// <returns>Pointer to a Security Descriptor.</returns>
-	public virtual IntPtr GetDefaultSecurity() => IntPtr.Zero;
+	public virtual PSECURITY_DESCRIPTOR GetDefaultSecurity() => IntPtr.Zero;
 
 	/// <summary>
 	/// Gets the effective permissions for the provided Sid within the Security Descriptor.
@@ -137,7 +137,7 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 	public virtual ACCESS_MASK[] GetEffectivePermission(PSID pUserSid, string? serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor)
 	{
 		ACCESS_MASK mask = pSecurityDescriptor.GetEffectiveRights(pUserSid);
-		return new[] { mask };
+		return [mask];
 	}
 
 	/// <summary>
@@ -192,7 +192,7 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 	/// An array of <see cref="SI_INHERIT_TYPE"/> that includes one entry for each combination
 	/// of inheritance flags and child object type that you support.
 	/// </returns>
-	public virtual SI_INHERIT_TYPE[] GetInheritTypes() => new[] {
+	public virtual SI_INHERIT_TYPE[] GetInheritTypes() => [
 			new SI_INHERIT_TYPE(0, ResStr("StdInheritance")),
 			new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("StdInheritanceCIOI")),
 			new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("StdInheritanceCI")),
@@ -200,15 +200,13 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 			new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("StdInheritanceIOCIOI")),
 			new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("StdInheritanceIOCI")),
 			new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("StdInheritanceIOOI"))
-		};
+		];
 
 	/// <summary>Callback method for the property pages.</summary>
 	/// <param name="hwnd">The HWND.</param>
 	/// <param name="uMsg">The message.</param>
 	/// <param name="uPage">The page type.</param>
-	public virtual void PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
-	{
-	}
+	public virtual HRESULT PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage) => HRESULT.S_OK;
 
 	/// <summary>Gets a resource string.</summary>
 	/// <param name="id">The string identifier.</param>
@@ -226,7 +224,7 @@ internal class FileProvider : GenericProvider
 
 	public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 	{
-		rights = new SI_ACCESS[] {
+		rights = [
 			new((uint)FileSystemRights.FullControl, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL| INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
 			new((uint)FileSystemRights.Modify, ResStr("FileRightModify"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
 			new((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
@@ -251,17 +249,17 @@ internal class FileProvider : GenericProvider
 			new((uint)(FileSystemRights.Write | FileSystemRights.ExecuteFile), ResStr("FileRightWriteAndExecute"), 0),
 			new((uint)(FileSystemRights.ReadAndExecute | FileSystemRights.Write), ResStr("FileRightReadWriteAndExecute"), 0),
 			new(0, ResStr("File"), 0)
-		};
+		];
 		defaultIndex = 3;
 	}
 
-	public override IntPtr GetDefaultSecurity() => defaultSd.DangerousGetHandle();
+	public override PSECURITY_DESCRIPTOR GetDefaultSecurity() => defaultSd;
 
 	public override GENERIC_MAPPING GetGenericMapping(AceFlags aceFlags) =>
 		new((uint)(FileSystemRights.Read | FileSystemRights.Synchronize),
 			(uint)(FileSystemRights.Write | FileSystemRights.Synchronize), 0x1200A0, (uint)FileSystemRights.FullControl);
 
-	public override SI_INHERIT_TYPE[] GetInheritTypes() => new SI_INHERIT_TYPE[] {
+	public override SI_INHERIT_TYPE[] GetInheritTypes() => [
 			new(0, ResStr("FileInheritance")),
 			new(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceCIOI")),
 			new(INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceCI")),
@@ -269,7 +267,7 @@ internal class FileProvider : GenericProvider
 			new(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOCIOI")),
 			new(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceIOCI")),
 			new(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOOI"))
-		};
+		];
 }
 
 internal class KernelProvider : GenericProvider
@@ -285,7 +283,7 @@ internal class RegistryProvider : GenericProvider
 
 	public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 	{
-		rights = new[] {
+		rights = [
 			new SI_ACCESS((uint)RegistryRights.FullControl, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
 			new SI_ACCESS((uint)RegistryRights.ReadKey, ResStr("FileRightRead"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
 			new SI_ACCESS((uint)RegistryRights.QueryValues, ResStr("RegistryRightQueryValues"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
@@ -299,7 +297,7 @@ internal class RegistryProvider : GenericProvider
 			new SI_ACCESS((uint)RegistryRights.TakeOwnership, ResStr("RegistryRightTakeOwnership"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
 			new SI_ACCESS((uint)RegistryRights.ReadPermissions, ResStr("RegistryRightReadControl"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
 			new SI_ACCESS(0, ResStr("File"), 0)
-		};
+		];
 		defaultIndex = 11;
 	}
 
@@ -323,11 +321,11 @@ internal class RegistryProvider : GenericProvider
 		return ret;
 	}
 
-	public override SI_INHERIT_TYPE[] GetInheritTypes() => new[] {
+	public override SI_INHERIT_TYPE[] GetInheritTypes() => [
 			new SI_INHERIT_TYPE(0, ResStr("RegistryInheritance")),
 			new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("RegistryInheritanceCI")),
 			new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("RegistryInheritanceIOCI")),
-		};
+		];
 }
 
 internal class TaskProvider : GenericProvider
@@ -336,7 +334,7 @@ internal class TaskProvider : GenericProvider
 
 	public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 	{
-		rights = new[] {
+		rights = [
 			new SI_ACCESS(0x1F01FF, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
 			new SI_ACCESS(0x1200A9, ResStr("FileRightListFolderContents"), INHERIT_FLAGS.SI_ACCESS_CONTAINER | INHERIT_FLAGS.CONTAINER_INHERIT_ACE),
 			new SI_ACCESS(0x120089, ResStr("FileRightRead"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
@@ -360,7 +358,7 @@ internal class TaskProvider : GenericProvider
 
 			new SI_ACCESS(0x1F019F, ResStr("FileRightReadWriteAndExecute"), 0),
 			new SI_ACCESS(0, ResStr("File"), 0)
-		};
+		];
 		defaultIndex = 3;
 	}
 
