@@ -15,15 +15,13 @@ namespace Vanara.PInvoke;
 /// <seealso cref="IComparable"/>
 /// <seealso cref="IComparable{CLIPFORMAT}"/>
 /// <seealso cref="IEquatable{CLIPFORMAT}"/>
+/// <remarks>Initializes a new instance of the <see cref="CLIPFORMAT"/> structure.</remarks>
+/// <param name="rawValue">The raw clipboard format value.</param>
 [StructLayout(LayoutKind.Sequential)]
 [PInvokeData("wtypes.h", MSDNShortId = "fe42baec-6b00-4816-b379-7f335da8a197")]
-public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>, IEquatable<CLIPFORMAT>
+public readonly partial struct CLIPFORMAT(ushort rawValue) : IComparable, IComparable<CLIPFORMAT>, IEquatable<CLIPFORMAT>
 {
-	internal readonly ushort _value;
-
-	/// <summary>Initializes a new instance of the <see cref="CLIPFORMAT"/> structure.</summary>
-	/// <param name="rawValue">The raw clipboard format value.</param>
-	public CLIPFORMAT(ushort rawValue) => _value = rawValue;
+	internal readonly ushort _value = rawValue;
 
 	/// <summary>Compares the current object with another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
@@ -303,17 +301,15 @@ public readonly partial struct CLIPFORMAT : IComparable, IComparable<CLIPFORMAT>
 
 /// <summary>Indicates the type, medium and method for getting and setting the payload associated with known clipboard formats.</summary>
 /// <seealso cref="CorrespondingTypeAttribute"/>
+/// <remarks>Initializes a new instance of the <see cref="ClipCorrespondingTypeAttribute"/> class.</remarks>
+/// <param name="typeRef">The type that corresponds to this entity.</param>
+/// <param name="medium">The medium type used to store the payload.</param>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
-public class ClipCorrespondingTypeAttribute : CorrespondingTypeAttribute
+public class ClipCorrespondingTypeAttribute(Type? typeRef, TYMED medium = TYMED.TYMED_HGLOBAL) : CorrespondingTypeAttribute(typeRef)
 {
-	/// <summary>Initializes a new instance of the <see cref="ClipCorrespondingTypeAttribute"/> class.</summary>
-	/// <param name="typeRef">The type that corresponds to this entity.</param>
-	/// <param name="medium">The medium type used to store the payload.</param>
-	public ClipCorrespondingTypeAttribute(Type? typeRef, TYMED medium = TYMED.TYMED_HGLOBAL) : base(typeRef) => Medium = medium;
-
 	/// <summary>Gets the medium type used to store the payload.</summary>
 	/// <value>The medium type.</value>
-	public TYMED Medium { get; }
+	public TYMED Medium { get; } = medium;
 
 	/// <summary>
 	/// Gets or sets the formatter type used to place the contents of the object of <see
