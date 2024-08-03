@@ -804,17 +804,30 @@ public static partial class AclUI
 		bool IsDaclCanonical([In] PACL pDacl);
 
 		/// <summary>
-		/// The LookupSids method returns the common names corresponding to each of the elements in the specified list of SIDs.
+		/// The <c>LookupSids</c> method returns the common names corresponding to each of the elements in the specified list of SIDs.
 		/// </summary>
-		/// <param name="cSids">The number of pointers to SID structures pointed to by rgpSids.</param>
+		/// <param name="cSids">The number of pointers to SID structures pointed to by <c>rgpSids</c>.</param>
 		/// <param name="rgpSids">A pointer to an array of pointers to SID structures.</param>
 		/// <param name="ppdo">
-		/// A pointer to a pointer to a returned data transfer object that contains the common names of the SIDs. Optionally, this
-		/// parameter also returns the user principal name (UPN) of the SIDs in the rgpSids parameter. The data transfer object is a
-		/// SID_INFO structure.
+		/// A pointer to a pointer to a returned data transfer object that contains the common names of the SIDs. Optionally, this parameter
+		/// also returns the user principal name (UPN) of the SIDs in the <c>rgpSids</c> parameter. The data transfer object is a SID_INFO structure.
 		/// </param>
+		/// <returns>
+		/// <para>Returns S_OK if successful.</para>
+		/// <para>Returns a nonzero error code if an error occurs.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Your implementation of <c>LookupSids</c> can return E_NOTIMPL if the access control editor is to determine the common names
+		/// corresponding to the specified SIDs. However, if the access control editor receives any return code other than S_OK, the editor
+		/// determines this information.
+		/// </para>
+		/// <para>The client must return the common names through the data object using the following format.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/aclui/nf-aclui-isecurityinformation2-lookupsids
+		// HRESULT LookupSids( [in] ULONG cSids, [in] PSID *rgpSids, [out] LPDATAOBJECT *ppdo );
 		[PreserveSig]
-		HRESULT LookupSids([In] uint cSids, [In, MarshalAs(UnmanagedType.LPArray)] PSID[] rgpSids, out IntPtr ppdo);
+		HRESULT LookupSids([In] uint cSids, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PSID[] rgpSids, out System.Runtime.InteropServices.ComTypes.IDataObject? ppdo);
 	}
 
 	/// <summary>
@@ -1182,6 +1195,22 @@ public static partial class AclUI
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string? pwzUPN;
+	}
+
+	/// <summary>The <c>SID_INFO_LIST</c> structure contains a list of SID_INFO structures.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/aclui/ns-aclui-sid_info_list
+	// typedef struct _SID_INFO_LIST { ULONG cItems; SID_INFO aSidInfo[ANYSIZE_ARRAY]; } SID_INFO_LIST, *PSID_INFO_LIST;
+	[PInvokeData("aclui.h", MSDNShortId = "NS:aclui._SID_INFO_LIST")]
+	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<SID_INFO_LIST>), nameof(cItems))]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SID_INFO_LIST
+	{
+		/// <summary>The number of SID_INFO structures contained in the <c>aSidInfo</c> member.</summary>
+		public uint cItems;
+
+		/// <summary>A pointer to a list of SID_INFO structures that is returned by the ISecurityInformation2::LookupSids method.</summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+		public SID_INFO[] aSidInfo;
 	}
 
 	/// <summary>
