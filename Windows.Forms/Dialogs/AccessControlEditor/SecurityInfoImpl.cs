@@ -1,4 +1,5 @@
-﻿using System.Security.AccessControl;
+﻿using System.Runtime.InteropServices.ComTypes;
+using System.Security.AccessControl;
 using System.Security.Principal;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AclUI;
@@ -16,7 +17,7 @@ internal class SecurityEventArg(SafePSECURITY_DESCRIPTOR sd, SECURITY_INFORMATIO
 
 /// <summary>Internal implementation of a number of COM interfaces needed for interaction with the Windows ACL Editor.</summary>
 internal class SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, string fullName, string? serverName = null, string? pageTitle = null) :
-	ISecurityInformation, ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo, IEffectivePermission, IEffectivePermission2
+	ISecurityInformation, /*ISecurityInformation2,*/ ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo, IEffectivePermission, IEffectivePermission2
 {
 	internal SI_OBJECT_INFO objectInfo = new(flags, objectName, serverName ?? Environment.MachineName, pageTitle);
 	private SI_OBJECT_INFO_Flags currentElevation = 0;
@@ -84,7 +85,7 @@ internal class SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, s
 		if (prov is null) return HRESULT.E_NOINTERFACE;
 		PSECURITY_DESCRIPTOR sd = fDefault ? prov.GetDefaultSecurity() : SecurityDescriptor;
 		SafePSECURITY_DESCRIPTOR ret = sd.GetPrivateObjectSecurity(requestInformation);
-		System.Diagnostics.Debug.WriteLine($"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
+		//System.Diagnostics.Debug.WriteLine($"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
 		ppSecurityDescriptor = ret.TakeOwnership();
 		return HRESULT.S_OK;
 	}
@@ -274,6 +275,20 @@ internal class SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, s
 		pEffpermResultLists[0].pObjectTypeList = [OBJECT_TYPE_LIST.Self];
 		pEffpermResultLists[0].cObjectTypeListLength = 1;
 
+		return HRESULT.S_OK;
+	}
+
+	public bool IsDaclCanonical(PACL pDacl) => false;
+
+	public HRESULT LookupSids(uint cSids, PSID[] rgpSids, out IDataObject? ppdo)
+	{
+		SID_INFO_LIST sidList = new() { cItems = cSids, aSidInfo = new SID_INFO[(int)cSids] };
+		for (int i = 0; i < cSids; i++)
+			sidList.aSidInfo[i] = new() { pSid = rgpSids[i], pwzClass = "User", pwzCommonName = rgpSids[i].ToString("N"), pwzUPN = rgpSids[i].ToString("P") };
+
+		HRESULT hr = Shell32.SHCreateDataObject(ppv: out ppdo);
+		if (hr.Failed) return hr;
+		ppdo.SetData("CFSTR_ACLUI_SID_INFO_LIST", sidList);
 		return HRESULT.S_OK;
 	}
 }
