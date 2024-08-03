@@ -1,4 +1,8 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
+namespace Vanara.PInvoke;
 
 public static partial class User32
 {
@@ -575,7 +579,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate, hWndParent,
 	// lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-	public static IntPtr DialogBox([Optional] HINSTANCE hInstance, string lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBox([In, Optional] HINSTANCE hInstance, string lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -625,7 +629,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate, hWndParent,
 	// lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-	public static IntPtr DialogBox([Optional] HINSTANCE hInstance, ResourceId lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBox([In, Optional] HINSTANCE hInstance, ResourceId lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -698,7 +702,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxindirecta void DialogBoxIndirectA( hInstance,
 	// lpTemplate, hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirect")]
-	public static IntPtr DialogBoxIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBoxIndirect([In, Optional] HINSTANCE hInstance, IntPtr lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -780,7 +784,191 @@ public static partial class User32
 	// HINSTANCE hInstance, LPCDLGTEMPLATEA hDialogTemplate, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirectparam")]
-	public static extern IntPtr DialogBoxIndirectParam(HINSTANCE hInstance, IntPtr hDialogTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance, IntPtr hDialogTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [In, Optional] IntPtr dwInitParam);
+
+	/// <summary>
+	/// Creates a modal dialog box from a dialog box template in memory. Before displaying the dialog box, the function passes an
+	/// application-defined value to the dialog box procedure as the <c>lParam</c> parameter of the WM_INITDIALOG message. An application can
+	/// use this value to initialize dialog box controls.
+	/// </summary>
+	/// <param name="hInstance">
+	/// <para>Type: <c>HINSTANCE</c></para>
+	/// <para>A handle to the module that creates the dialog box.</para>
+	/// </param>
+	/// <param name="hDialogTemplate">
+	/// <para>Type: <c>LPCDLGTEMPLATE</c></para>
+	/// <para>
+	/// The template that <c>DialogBoxIndirectParam</c> uses to create the dialog box. A dialog box template consists of a header that
+	/// describes the dialog box, followed by one or more additional blocks of data that describe each of the controls in the dialog box. The
+	/// template can use either the standard format or the extended format.
+	/// </para>
+	/// <para>
+	/// In a standard template for a dialog box, the header is a DLGTEMPLATE structure followed by additional variable-length arrays. The
+	/// data for each control consists of a DLGITEMTEMPLATE structure followed by additional variable-length arrays.
+	/// </para>
+	/// <para>
+	/// In an extended template for a dialog box, the header uses the DLGTEMPLATEEX format and the control definitions use the
+	/// DLGITEMTEMPLATEEX format.
+	/// </para>
+	/// </param>
+	/// <param name="hWndParent">
+	/// <para>Type: <c>HWND</c></para>
+	/// <para>A handle to the window that owns the dialog box.</para>
+	/// </param>
+	/// <param name="lpDialogFunc">
+	/// <para>Type: <c>DLGPROC</c></para>
+	/// <para>A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.</para>
+	/// </param>
+	/// <param name="dwInitParam">
+	/// <para>Type: <c>LPARAM</c></para>
+	/// <para>The value to pass to the dialog box in the <c>lParam</c> parameter of the WM_INITDIALOG message.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>INT_PTR</c></para>
+	/// <para>
+	/// If the function succeeds, the return value is the <c>nResult</c> parameter specified in the call to the EndDialog function that was
+	/// used to terminate the dialog box.
+	/// </para>
+	/// <para>
+	/// If the function fails because the <c>hWndParent</c> parameter is invalid, the return value is zero. The function returns zero in this
+	/// case for compatibility with previous versions of Windows. If the function fails for any other reason, the return value is –1. To get
+	/// extended error information, call GetLastError.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>DialogBoxIndirectParam</c> function uses the CreateWindowEx function to create the dialog box. <c>DialogBoxIndirectParam</c>
+	/// then sends a WM_INITDIALOG message to the dialog box procedure. If the template specifies the DS_SETFONT or DS_SHELLFONT style, the
+	/// function also sends a WM_SETFONT message to the dialog box procedure. The function displays the dialog box (regardless of whether the
+	/// template specifies the <c>WS_VISIBLE</c> style), disables the owner window, and starts its own message loop to retrieve and dispatch
+	/// messages for the dialog box.
+	/// </para>
+	/// <para>
+	/// When the dialog box procedure calls the EndDialog function, <c>DialogBoxIndirectParam</c> destroys the dialog box, ends the message
+	/// loop, enables the owner window (if previously enabled), and returns the <c>nResult</c> parameter specified by the dialog box
+	/// procedure when it called <c>EndDialog</c>.
+	/// </para>
+	/// <para>
+	/// In a standard dialog box template, the DLGTEMPLATE structure and each of the DLGITEMTEMPLATE structures must be aligned on
+	/// <c>DWORD</c> boundaries. The creation data array that follows a <c>DLGITEMTEMPLATE</c> structure must also be aligned on a
+	/// <c>DWORD</c> boundary. All of the other variable-length arrays in the template must be aligned on <c>WORD</c> boundaries.
+	/// </para>
+	/// <para>
+	/// In an extended dialog box template, the DLGTEMPLATEEX header and each of the DLGITEMTEMPLATEEX control definitions must be aligned on
+	/// <c>DWORD</c> boundaries. The creation data array, if any, that follows a <c>DLGITEMTEMPLATEEX</c> structure must also be aligned on a
+	/// <c>DWORD</c> boundary. All of the other variable-length arrays in the template must be aligned on <c>WORD</c> boundaries.
+	/// </para>
+	/// <para>All character strings in the dialog box template, such as titles for the dialog box and buttons, must be Unicode strings.</para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The winuser.h header defines DialogBoxIndirectParam as an alias which automatically selects the ANSI or Unicode version of this
+	/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dialogboxindirectparama INT_PTR DialogBoxIndirectParamA( [in,
+	// optional] HINSTANCE hInstance, [in] LPCDLGTEMPLATEA hDialogTemplate, [in, optional] HWND hWndParent, [in, optional] DLGPROC
+	// lpDialogFunc, [in] LPARAM dwInitParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DialogBoxIndirectParamA")]
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<DLGTEMPLATE_MGD>))] DLGTEMPLATE_MGD hDialogTemplate,
+		[In, Optional] HWND hWndParent, [In, Optional] DialogProc lpDialogFunc, [In, Optional] IntPtr dwInitParam);
+
+	/// <summary>
+	/// Creates a modal dialog box from a dialog box template in memory. Before displaying the dialog box, the function passes an
+	/// application-defined value to the dialog box procedure as the <c>lParam</c> parameter of the WM_INITDIALOG message. An application can
+	/// use this value to initialize dialog box controls.
+	/// </summary>
+	/// <param name="hInstance">
+	/// <para>Type: <c>HINSTANCE</c></para>
+	/// <para>A handle to the module that creates the dialog box.</para>
+	/// </param>
+	/// <param name="hDialogTemplate">
+	/// <para>Type: <c>LPCDLGTEMPLATE</c></para>
+	/// <para>
+	/// The template that <c>DialogBoxIndirectParam</c> uses to create the dialog box. A dialog box template consists of a header that
+	/// describes the dialog box, followed by one or more additional blocks of data that describe each of the controls in the dialog box. The
+	/// template can use either the standard format or the extended format.
+	/// </para>
+	/// <para>
+	/// In a standard template for a dialog box, the header is a DLGTEMPLATE structure followed by additional variable-length arrays. The
+	/// data for each control consists of a DLGITEMTEMPLATE structure followed by additional variable-length arrays.
+	/// </para>
+	/// <para>
+	/// In an extended template for a dialog box, the header uses the DLGTEMPLATEEX format and the control definitions use the
+	/// DLGITEMTEMPLATEEX format.
+	/// </para>
+	/// </param>
+	/// <param name="hWndParent">
+	/// <para>Type: <c>HWND</c></para>
+	/// <para>A handle to the window that owns the dialog box.</para>
+	/// </param>
+	/// <param name="lpDialogFunc">
+	/// <para>Type: <c>DLGPROC</c></para>
+	/// <para>A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.</para>
+	/// </param>
+	/// <param name="dwInitParam">
+	/// <para>Type: <c>LPARAM</c></para>
+	/// <para>The value to pass to the dialog box in the <c>lParam</c> parameter of the WM_INITDIALOG message.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>INT_PTR</c></para>
+	/// <para>
+	/// If the function succeeds, the return value is the <c>nResult</c> parameter specified in the call to the EndDialog function that was
+	/// used to terminate the dialog box.
+	/// </para>
+	/// <para>
+	/// If the function fails because the <c>hWndParent</c> parameter is invalid, the return value is zero. The function returns zero in this
+	/// case for compatibility with previous versions of Windows. If the function fails for any other reason, the return value is –1. To get
+	/// extended error information, call GetLastError.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>DialogBoxIndirectParam</c> function uses the CreateWindowEx function to create the dialog box. <c>DialogBoxIndirectParam</c>
+	/// then sends a WM_INITDIALOG message to the dialog box procedure. If the template specifies the DS_SETFONT or DS_SHELLFONT style, the
+	/// function also sends a WM_SETFONT message to the dialog box procedure. The function displays the dialog box (regardless of whether the
+	/// template specifies the <c>WS_VISIBLE</c> style), disables the owner window, and starts its own message loop to retrieve and dispatch
+	/// messages for the dialog box.
+	/// </para>
+	/// <para>
+	/// When the dialog box procedure calls the EndDialog function, <c>DialogBoxIndirectParam</c> destroys the dialog box, ends the message
+	/// loop, enables the owner window (if previously enabled), and returns the <c>nResult</c> parameter specified by the dialog box
+	/// procedure when it called <c>EndDialog</c>.
+	/// </para>
+	/// <para>
+	/// In a standard dialog box template, the DLGTEMPLATE structure and each of the DLGITEMTEMPLATE structures must be aligned on
+	/// <c>DWORD</c> boundaries. The creation data array that follows a <c>DLGITEMTEMPLATE</c> structure must also be aligned on a
+	/// <c>DWORD</c> boundary. All of the other variable-length arrays in the template must be aligned on <c>WORD</c> boundaries.
+	/// </para>
+	/// <para>
+	/// In an extended dialog box template, the DLGTEMPLATEEX header and each of the DLGITEMTEMPLATEEX control definitions must be aligned on
+	/// <c>DWORD</c> boundaries. The creation data array, if any, that follows a <c>DLGITEMTEMPLATEEX</c> structure must also be aligned on a
+	/// <c>DWORD</c> boundary. All of the other variable-length arrays in the template must be aligned on <c>WORD</c> boundaries.
+	/// </para>
+	/// <para>All character strings in the dialog box template, such as titles for the dialog box and buttons, must be Unicode strings.</para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The winuser.h header defines DialogBoxIndirectParam as an alias which automatically selects the ANSI or Unicode version of this
+	/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dialogboxindirectparama INT_PTR DialogBoxIndirectParamA( [in,
+	// optional] HINSTANCE hInstance, [in] LPCDLGTEMPLATEA hDialogTemplate, [in, optional] HWND hWndParent, [in, optional] DLGPROC
+	// lpDialogFunc, [in] LPARAM dwInitParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DialogBoxIndirectParamA")]
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<DLGTEMPLATEEX_MGD>))] DLGTEMPLATEEX_MGD hDialogTemplate,
+		[In, Optional] HWND hWndParent, [In, Optional] DialogProc lpDialogFunc, [In, Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -843,7 +1031,7 @@ public static partial class User32
 	// LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
-	public static extern IntPtr DialogBoxParam([Optional] HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern IntPtr DialogBoxParam([In, Optional] HINSTANCE hInstance, string lpTemplateName, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -906,7 +1094,7 @@ public static partial class User32
 	// LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
-	public static extern IntPtr DialogBoxParam([Optional] HINSTANCE hInstance, ResourceId lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern IntPtr DialogBoxParam([In, Optional] HINSTANCE hInstance, ResourceId lpTemplateName, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// Replaces the contents of a list box with the names of the subdirectories and files in a specified directory. You can filter the list
@@ -1385,7 +1573,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdialogbaseunits long GetDialogBaseUnits( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getdialogbaseunits")]
-	public static extern long GetDialogBaseUnits();
+	public static extern int GetDialogBaseUnits();
 
 	/// <summary>
 	/// <para>Retrieves the identifier of the specified control.</para>
@@ -1735,7 +1923,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "mapdialogrect")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MapDialogRect(HWND hDlg, in RECT lpRect);
+	public static extern bool MapDialogRect(HWND hDlg, ref RECT lpRect);
 
 	/// <summary>
 	/// <para>Sends a message to the specified control in a dialog box.</para>
@@ -1923,7 +2111,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-dlgitemtemplate typedef struct DLGITEMTEMPLATE { DWORD style;
 	// DWORD dwExtendedStyle; short x; short y; short cx; short cy; WORD id; };
 	[PInvokeData("winuser.h", MSDNShortId = "dlgitemtemplate")]
-	[StructLayout(LayoutKind.Sequential, Pack = 4)]
+	[StructLayout(LayoutKind.Sequential, Pack = 2)]
 	public struct DLGITEMTEMPLATE
 	{
 		/// <summary>
@@ -2033,7 +2221,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-dlgtemplate typedef struct DLGTEMPLATE { DWORD style; DWORD
 	// dwExtendedStyle; WORD cdit; short x; short y; short cx; short cy; };
 	[PInvokeData("winuser.h", MSDNShortId = "dlgtemplate")]
-	[StructLayout(LayoutKind.Sequential, Pack = 4)]
+	[StructLayout(LayoutKind.Sequential, Pack = 2)]
 	public struct DLGTEMPLATE
 	{
 		/// <summary>
@@ -2094,7 +2282,460 @@ public static partial class User32
 		public short cy;
 	}
 
-	/*
+	/// <summary>
+	/// Defines the dimensions and style of a dialog box. This structure, always the first in a standard template for a dialog box, also
+	/// specifies the controls in the dialog box.
+	/// </summary>
+	/// <remarks>
+	/// The <c>x</c>, <c>y</c>, <c>cx</c>, and <c>cy</c> members specify values in dialog box units. You can convert these values to screen
+	/// units (pixels) by using the MapDialogRect function.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-dlgtemplate typedef struct { DWORD style; DWORD
+	// dwExtendedStyle; WORD cdit; short x; short y; short cx; short cy; } DLGTEMPLATE;
+	[PInvokeData("winuser.h", MSDNShortId = "NS:winuser.DLGTEMPLATE")]
+	public class DLGTEMPLATE_MGD : IVanaraMarshaler
+	{
+		/// <summary>One or more items that define the dimensions and style of the controls in the dialog box.</summary>
+		public List<DlgItemTemplate> controls = [];
+
+		/// <summary>The width, in dialog box units, of the dialog box.</summary>
+		public short cx;
+
+		/// <summary>The height, in dialog box units, of the dialog box.</summary>
+		public short cy;
+
+		/// <summary>
+		/// <para>
+		/// The extended styles for a window. This member is not used to create dialog boxes, but applications that use dialog box templates
+		/// can use it to create other types of windows. For a list of values, see Extended Window Styles.
+		/// </para>
+		/// </summary>
+		public WindowStylesEx dwExtendedStyle;
+
+		/// <summary>The point size of the font to use for the text in the dialog box and its controls.</summary>
+		public ushort? pointSz;
+
+		/// <summary>Specifies the name of the typeface for the font.</summary>
+		public string? typeface;
+
+		/// <summary>
+		/// Identifies a menu resource for the dialog box. If <see langword="null"/>, the dialog box has no menu. If the <see
+		/// cref="DlgTemplateId.id"/> field is set, it specifies the ordinal value of a menu resource. If the <see cref="DlgTemplateId.name"/> is set, it
+		/// specifies the name of a menu resource.
+		/// </summary>
+		public DlgTemplateId? menu;
+
+		/// <summary>
+		/// <para>
+		/// The style of the dialog box. This member can be a combination of window style values (such as <c>WS_CAPTION</c> and
+		/// <c>WS_SYSMENU</c>) and dialog box style values (such as <c>DS_CENTER</c>).
+		/// </para>
+		/// <para>
+		/// If the style member includes the <c>DS_SETFONT</c> style, the header of the dialog box template contains additional data
+		/// specifying the font to use for text in the client area and controls of the dialog box. The font data begins on the <c>WORD</c>
+		/// boundary that follows the title array. The font data specifies a 16-bit point size value and a Unicode font name string. If
+		/// possible, the system creates a font according to the specified values. Then the system sends a WM_SETFONT message to the dialog
+		/// box and to each control to provide a handle to the font. If <c>DS_SETFONT</c> is not specified, the dialog box template does not
+		/// include the font data.
+		/// </para>
+		/// <para>The <c>DS_SHELLFONT</c> style is not supported in the <c>DLGTEMPLATE</c> header.</para>
+		/// </summary>
+		public WindowStyles style;
+
+		/// <summary>Specifies a string that contains the title of the dialog box. If <see langword="null"/>, the dialog box has no title.</summary>
+		public string? title;
+
+		/// <summary>
+		/// Identifies the window class of the dialog box. If <see langword="null"/>, the system uses the predefined dialog box class for the
+		/// dialog box. If the <see cref="DlgTemplateId.id"/> field is set, it specifies the ordinal value of a predefined system window class. If
+		/// the <see cref="DlgTemplateId.name"/> is set, it specifies the name of a registered window class.
+		/// </summary>
+		public DlgTemplateId? wclass;
+
+		/// <summary>The x-coordinate, in dialog box units, of the upper-left corner of the dialog box.</summary>
+		public short x;
+
+		/// <summary>The y-coordinate, in dialog box units, of the upper-left corner of the dialog box.</summary>
+		public short y;
+
+		/// <summary>Makes a button template.</summary>
+		/// <param name="text">Contains the initial text of the control.</param>
+		/// <param name="id">The control identifier.</param>
+		/// <param name="x">
+		/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="y">
+		/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="cx">The width, in dialog box units, of the control.</param>
+		/// <param name="cy">The height, in dialog box units, of the control.</param>
+		/// <param name="style">
+		/// The style of the control. This member can be a combination of window style values (such as <c>WS_BORDER</c>) and one or more of
+		/// the control style values (such as <c>BS_PUSHBUTTON</c> and <c>ES_LEFT</c>).
+		/// </param>
+		/// <param name="exstyle">
+		/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use dialog
+		/// box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+		/// </param>
+		/// <returns>A dialog control item template.</returns>
+		public static DlgItemTemplate MakeButton(string text, ushort id, short x, short y, short cx = 50, short cy = 14, WindowStyles style = WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_PUSHBUTTON, WindowStylesEx exstyle = 0) =>
+			MakeControl(0x0080, text, id, x, y, cx, cy, style, exstyle);
+
+		/// <summary>Makes a standard control template.</summary>
+		/// <param name="classId">
+		/// <para>The ordinal value of a predefined system class. The ordinal can be one of the following atom values:</para>
+		/// <list type="table">
+		/// <item>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </item>
+		/// <item>
+		/// <description>0x0080</description>
+		/// <description>Button</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0081</description>
+		/// <description>Edit</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0082</description>
+		/// <description>Static</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0083</description>
+		/// <description>List box</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0084</description>
+		/// <description>Scroll bar</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0085</description>
+		/// <description>Combo box</description>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="text">Contains the initial text of the control.</param>
+		/// <param name="id">The control identifier.</param>
+		/// <param name="x">
+		/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="y">
+		/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="cx">The width, in dialog box units, of the control.</param>
+		/// <param name="cy">The height, in dialog box units, of the control.</param>
+		/// <param name="style">
+		/// The style of the control. This member can be a combination of window style values (such as <c>WS_BORDER</c>) and one or more of
+		/// the control style values (such as <c>BS_PUSHBUTTON</c> and <c>ES_LEFT</c>).
+		/// </param>
+		/// <param name="exstyle">
+		/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use dialog
+		/// box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+		/// </param>
+		/// <returns>A dialog control item template.</returns>
+		public static DlgItemTemplate MakeControl(ushort classId, string text, ushort id, short x, short y, short cx, short cy, WindowStyles style, WindowStylesEx exstyle) => new()
+		{
+			x = x,
+			y = y,
+			cx = cx,
+			cy = cy,
+			id = id,
+			style = style,
+			dwExtendedStyle = exstyle,
+			wclass = new() { id = classId },
+			title = new() { name = text },
+		};
+
+		/// <summary>Makes a static control (label) template.</summary>
+		/// <param name="text">Contains the initial text of the control.</param>
+		/// <param name="id">The control identifier.</param>
+		/// <param name="x">
+		/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="y">
+		/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="cx">The width, in dialog box units, of the control.</param>
+		/// <param name="cy">The height, in dialog box units, of the control.</param>
+		/// <param name="style">
+		/// The style of the control. This member can be a combination of window style values (such as <c>WS_BORDER</c>) and one or more of
+		/// the control style values (such as <c>BS_PUSHBUTTON</c> and <c>ES_LEFT</c>).
+		/// </param>
+		/// <param name="exstyle">
+		/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use dialog
+		/// box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+		/// </param>
+		/// <returns>A dialog control item template.</returns>
+		public static DlgItemTemplate MakeStatic(string text, ushort id, short x, short y, short cx = 50, short cy = 14, WindowStyles style = WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | (WindowStyles)StaticStyle.SS_LEFT, WindowStylesEx exstyle = 0) =>
+			MakeControl(0x0082, text, id, x, y, cx, cy, style, exstyle);
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DLGTEMPLATE)) + sizeof(ushort) * 3;
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
+		{
+			if (managedObject is not DLGTEMPLATE_MGD dt)
+				throw new ArgumentException("Invalid type", nameof(managedObject));
+			SafeHGlobalHandle h = new(256);
+			NativeMemoryStream buffer = new(h);
+			DLGTEMPLATE dlg = new()
+			{
+				cdit = (ushort)dt.controls.Count,
+				style = (uint)dt.style,
+				dwExtendedStyle = (uint)dt.dwExtendedStyle,
+				x = dt.x,
+				y = dt.y,
+				cx = dt.cx,
+				cy = dt.cy
+			};
+			buffer.Write(dlg);
+			WriteId(dt.menu);
+			WriteId(dt.wclass);
+			WriteString(dt.title);
+			// write font
+			if (((uint)dt.style & (uint)DialogBoxStyles.DS_SETFONT) != 0)
+			{
+				buffer.Write(dt.pointSz.GetValueOrDefault());
+				WriteString(dt.typeface);
+			}
+			foreach (var c in dt.controls)
+				WriteControl(c);
+			buffer.Flush();
+			System.Diagnostics.Debug.Write(h.DangerousGetHandle().ToHexDumpString(h.Size));
+			return h;
+
+			void WriteControl(DlgItemTemplate item)
+			{
+				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
+				DLGITEMTEMPLATE dit = new()
+				{
+					style = (uint)item.style,
+					dwExtendedStyle = (uint)item.dwExtendedStyle,
+					x = item.x,
+					y = item.y,
+					cx = item.cx,
+					cy = item.cy,
+					id = item.id,
+				};
+				buffer.Write(dit);
+				WriteId(item.wclass);
+				WriteId(item.title);
+				buffer.Write((ushort)(item.creationData?.Length ?? 0));
+				if (item.creationData is not null)
+					buffer.Write(item.creationData);
+			}
+			void WriteId(DlgTemplateId? tid)
+			{
+				if (tid is null)
+					buffer.Write((ushort)0);
+				else
+				{
+					if (tid.id.HasValue)
+					{
+						buffer.Write((ushort)0xFFFF);
+						buffer.Write(tid.id.Value);
+					}
+					else if (tid.name is not null)
+						buffer.Write(tid.name + '\0', CharSet.Unicode);
+					else
+						throw new InvalidOperationException();
+				}
+			}
+			void WriteString(string? s)
+			{
+				if (s is null)
+					buffer.Write((ushort)0);
+				else
+					buffer.Write(s + '\0', CharSet.Unicode);
+			}
+		}
+
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero)
+				return null;
+			if (allocatedBytes < ((IVanaraMarshaler)this).GetNativeSize())
+				throw new ArgumentException("Invalid data", nameof(pNativeData));
+			NativeMemoryStream buffer = new(pNativeData, allocatedBytes);
+			DLGTEMPLATE_MGD dt = new();
+			dt.style = buffer.Read<WindowStyles>();
+			dt.dwExtendedStyle = buffer.Read<WindowStylesEx>();
+			var cc = buffer.Read<ushort>();
+			dt.x = buffer.Read<short>();
+			dt.y = buffer.Read<short>();
+			dt.cx = buffer.Read<short>();
+			dt.cy = buffer.Read<short>();
+			dt.menu = ReadId();
+			dt.wclass = ReadId();
+			dt.title = ReadString();
+			if (((uint)dt.style & (uint)DialogBoxStyles.DS_SETFONT) != 0)
+			{
+				dt.pointSz = buffer.Read<ushort>();
+				dt.typeface = ReadString();
+			}
+			for (int i = 0; i < cc; i++)
+				dt.controls.Add(ReadControl());
+			return dt;
+
+			DlgItemTemplate ReadControl()
+			{
+				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
+				DlgItemTemplate item = new();
+				item.style = buffer.Read<WindowStyles>();
+				item.dwExtendedStyle = buffer.Read<WindowStylesEx>();
+				item.x = buffer.Read<short>();
+				item.y = buffer.Read<short>();
+				item.cx = buffer.Read<short>();
+				item.cy = buffer.Read<short>();
+				item.id = buffer.Read<ushort>();
+				item.wclass = ReadId() ?? new();
+				item.title = ReadId() ?? new();
+				var c = buffer.Read<ushort>();
+				if (c > 0)
+					item.creationData = buffer.ReadArray<byte>(c, false).ToArray();
+				return item;
+			}
+			DlgTemplateId? ReadId()
+			{
+				var flag = Peek<ushort>();
+				if (flag == 0)
+				{
+					buffer.Read<ushort>();
+					return null;
+				}
+				if (flag == 0xFFFF)
+				{
+					buffer.Read<ushort>();
+					return new() { id = buffer.Read<ushort>() };
+				}
+				var name = buffer.Read<string>(CharSet.Unicode);
+				if (buffer.Read<ushort>() != 0) throw new InvalidOperationException();
+				return new() { name = name };
+			}
+			string? ReadString()
+			{
+				// Peek at first word
+				var l = Peek<ushort>();
+				if (l == 0) return null;
+				var s = buffer.Read<string>(CharSet.Unicode);
+				if (buffer.Read<ushort>() != 0) throw new InvalidOperationException();
+				return s;
+			}
+			T Peek<T>() where T : struct => buffer.Pointer.Offset(buffer.Position).ToStructure<T>();
+		}
+
+		/// <summary>Identifies details about a font used by the dialog.</summary>
+		public class FontDetail
+		{
+		}
+
+		/// <summary>
+		/// Defines the dimensions and style of a control in a dialog box. One or more of these instances are added to form a standard
+		/// template for a dialog box.
+		/// </summary>
+		public class DlgItemTemplate
+		{
+			/// <summary>
+			/// This creation data can be of any size and format or <see langword="null"/>. The control's window procedure must be able to
+			/// interpret the data. When the system creates the control, it passes a pointer to this data in the lParam parameter of the
+			/// WM_CREATE message that it sends to the control.
+			/// </summary>
+			public byte[]? creationData;
+
+			/// <summary>The width, in dialog box units, of the control.</summary>
+			public short cx;
+
+			/// <summary>The height, in dialog box units, of the control.</summary>
+			public short cy;
+
+			/// <summary>
+			/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use
+			/// dialog box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+			/// </summary>
+			public WindowStylesEx dwExtendedStyle;
+
+			/// <summary>The control identifier.</summary>
+			public ushort id;
+
+			/// <summary>
+			/// The style of the control. This member can be a combination of window style values (such as <c>WS_BORDER</c>) and one or more
+			/// of the control style values (such as <c>BS_PUSHBUTTON</c> and <c>ES_LEFT</c>).
+			/// </summary>
+			public WindowStyles style;
+
+			/// <summary>Contains the initial text or resource identifier of the control.</summary>
+			public DlgTemplateId title = new();
+
+			/// <summary>
+			/// Identifies the window class of the control. If the <see cref="DlgTemplateId.id"/> field is set, it specifies the ordinal value of a
+			/// predefined system class. If the <see cref="DlgTemplateId.name"/> is set, it specifies the name of a registered window class.
+			/// <para>The ordinal can be one of the following atom values:</para>
+			/// <list type="table">
+			/// <item>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </item>
+			/// <item>
+			/// <description>0x0080</description>
+			/// <description>Button</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0081</description>
+			/// <description>Edit</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0082</description>
+			/// <description>Static</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0083</description>
+			/// <description>List box</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0084</description>
+			/// <description>Scroll bar</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0085</description>
+			/// <description>Combo box</description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DlgTemplateId wclass = new();
+
+			/// <summary>
+			/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+			/// upper-left corner of the dialog box's client area.
+			/// </summary>
+			public short x;
+
+			/// <summary>
+			/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+			/// upper-left corner of the dialog box's client area.
+			/// </summary>
+			public short y;
+		}
+	}
+
+	/// <summary>
+	/// Identifies a dialog detail that can either hold an ordinal of a resource as the <see cref="id"/> or a string that specifies a
+	/// resource name.
+	/// </summary>
+	public class DlgTemplateId
+	{
+		/// <summary>An ordinal of another resource.</summary>
+		public ushort? id;
+
+		/// <summary>The name of a resource or the text for the detail.</summary>
+		public string? name;
+	}
+
 	/// <summary>
 	/// <para>
 	/// An extended dialog box template begins with a <c>DLGTEMPLATEEX</c> header that describes the dialog box and specifies the number of
@@ -2136,18 +2777,17 @@ public static partial class User32
 	// DWORD exStyle; DWORD style; WORD cDlgItems; short x; short y; short cx; short cy; sz_Or_Ord menu; sz_Or_Ord windowClass; WCHAR
 	// title[titleLen]; WORD pointsize; WORD weight; BYTE italic; BYTE charset; WCHAR typeface[stringLen]; } DLGTEMPLATEEX;
 	[PInvokeData("", MSDNShortId = "9f016cc6-56e2-45d3-8773-1b405fc10d29")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct DLGTEMPLATEEX
+	public class DLGTEMPLATEEX_MGD : IVanaraMarshaler
 	{
 		/// <summary>The version number of the extended dialog box template. This member must be set to 1.</summary>
-		public ushort dlgVer;
+		public ushort dlgVer => 1;
 
 		/// <summary>
 		/// Indicates whether a template is an extended dialog box template. If signature is 0xFFFF, this is an extended dialog box template.
 		/// In this case, the dlgVer member specifies the template version number. If signature is any value other than 0xFFFF, this is a
 		/// standard dialog box template that uses the DLGTEMPLATE and DLGITEMTEMPLATE structures.
 		/// </summary>
-		public ushort signature;
+		public ushort signature = 0xFFFF;
 
 		/// <summary>
 		/// The help context identifier for the dialog box window. When the system sends a WM_HELP message, it passes this value in the
@@ -2173,9 +2813,6 @@ public static partial class User32
 		/// </summary>
 		public WindowStyles style;
 
-		/// <summary>The number of controls in the dialog box.</summary>
-		public ushort cDlgItems;
-
 		/// <summary>The x-coordinate, in dialog box units, of the upper-left corner of the dialog box.</summary>
 		public short x;
 
@@ -2195,7 +2832,7 @@ public static partial class User32
 		/// value, the system treats the array as a null-terminated Unicode string that specifies the name of a menu resource in an
 		/// executable file.
 		/// </summary>
-		public IntPtr menu;
+		public DlgTemplateId? menu;
 
 		/// <summary>
 		/// A variable-length array of 16-bit elements that identifies the window class of the dialog box. If the first element of the array
@@ -2204,13 +2841,12 @@ public static partial class User32
 		/// the first element has any other value, the system treats the array as a null-terminated Unicode string that specifies the name of
 		/// a registered window class.
 		/// </summary>
-		public IntPtr windowClass;
+		public DlgTemplateId? windowClass;
 
 		/// <summary>
 		/// The title of the dialog box. If the first element of this array is 0x0000, the dialog box has no title and the array has no other elements.
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = titleLen)]
-		public string title;
+		public string? title;
 
 		/// <summary>
 		/// The point size of the font to use for the text in the dialog box and its controls.
@@ -2219,30 +2855,406 @@ public static partial class User32
 		public ushort pointsize;
 
 		/// <summary>
-		/// The weight of the font. Note that, although this can be any of the values listed for the lfWeight member of the LOGFONT
+		/// The weight of the font. Note that, although this can be any of the values listed for the lfWeight member of the <see cref="LOGFONT"/>
 		/// structure, any value that is used will be automatically changed to FW_NORMAL.
 		/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
 		/// </summary>
-		public ushort weight;
+		public ushort weight = 400;
 
 		/// <summary>
 		/// Indicates whether the font is italic. If this value is TRUE, the font is italic.
 		/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
 		/// </summary>
-		public byte italic;
+		public BOOLEAN italic;
 
 		/// <summary>
-		/// The character set to be used. For more information, see the lfcharset member of LOGFONT.
+		/// The character set to be used. For more information, see the lfcharset member of <see cref="LOGFONT"/>.
 		/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
 		/// </summary>
-		public byte charset;
+		public CharacterSet charset = CharacterSet.DEFAULT_CHARSET;
 
 		/// <summary>
 		/// The name of the typeface for the font.
 		/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = stringLen)]
-		public string typeface;
+		public string? typeface;
+
+		/// <summary>One or more items that define the dimensions and style of the controls in the dialog box.</summary>
+		public List<DlgItemTemplateEx> controls = [];
+
+		/// <summary>Makes a button template.</summary>
+		/// <param name="text">Contains the initial text of the control.</param>
+		/// <param name="id">The control identifier.</param>
+		/// <param name="x">
+		/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="y">
+		/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="cx">The width, in dialog box units, of the control.</param>
+		/// <param name="cy">The height, in dialog box units, of the control.</param>
+		/// <param name="style">
+		/// The style of the control. This member can be a combination of window style values (such as <c>WS_BORDER</c>) and one or more of
+		/// the control style values (such as <c>BS_PUSHBUTTON</c> and <c>ES_LEFT</c>).
+		/// </param>
+		/// <param name="exstyle">
+		/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use dialog
+		/// box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+		/// </param>
+		/// <param name="helpID">
+		/// The help context identifier for the control. When the system sends a WM_HELP message, it passes the helpID value in the
+		/// dwContextId member of the HELPINFO structure.
+		/// </param>
+		/// <returns>A dialog control item template.</returns>
+		public static DlgItemTemplateEx MakeButton(string text, ushort id, short x, short y, short cx = 50, short cy = 14,
+			WindowStyles style = WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | WindowStyles.WS_TABSTOP | (WindowStyles)ButtonStyle.BS_PUSHBUTTON,
+			WindowStylesEx exstyle = 0, uint helpID = 0) =>
+			MakeControl(0x0080, text, id, x, y, cx, cy, style, exstyle, helpID);
+
+		/// <summary>Makes a standard control template.</summary>
+		/// <param name="classId">
+		/// <para>The ordinal value of a predefined system class. The ordinal can be one of the following atom values:</para>
+		/// <list type="table">
+		/// <item>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </item>
+		/// <item>
+		/// <description>0x0080</description>
+		/// <description>Button</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0081</description>
+		/// <description>Edit</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0082</description>
+		/// <description>Static</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0083</description>
+		/// <description>List box</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0084</description>
+		/// <description>Scroll bar</description>
+		/// </item>
+		/// <item>
+		/// <description>0x0085</description>
+		/// <description>Combo box</description>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="text">Contains the initial text of the control.</param>
+		/// <param name="id">The control identifier.</param>
+		/// <param name="x">
+		/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="y">
+		/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="cx">The width, in dialog box units, of the control.</param>
+		/// <param name="cy">The height, in dialog box units, of the control.</param>
+		/// <param name="style">
+		/// The style of the control. This member can be a combination of window style values (such as <c>WS_BORDER</c>) and one or more of
+		/// the control style values (such as <c>BS_PUSHBUTTON</c> and <c>ES_LEFT</c>).
+		/// </param>
+		/// <param name="exstyle">
+		/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use dialog
+		/// box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+		/// </param>
+		/// <param name="helpID">
+		/// The help context identifier for the control. When the system sends a WM_HELP message, it passes the helpID value in the
+		/// dwContextId member of the HELPINFO structure.
+		/// </param>
+		/// <returns>A dialog control item template.</returns>
+		public static DlgItemTemplateEx MakeControl(ushort classId, string text, ushort id, short x, short y, short cx, short cy, WindowStyles style,
+			WindowStylesEx exstyle, uint helpID) => new()
+		{
+			x = x,
+			y = y,
+			cx = cx,
+			cy = cy,
+			id = id,
+			style = style,
+			exStyle = exstyle,
+			windowClass = new() { id = classId },
+			title = new() { name = text },
+			helpID = helpID,
+		};
+
+		/// <summary>Makes a static control (label) template.</summary>
+		/// <param name="text">Contains the initial text of the control.</param>
+		/// <param name="id">The control identifier.</param>
+		/// <param name="x">
+		/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="y">
+		/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+		/// upper-left corner of the dialog box's client area.
+		/// </param>
+		/// <param name="cx">The width, in dialog box units, of the control.</param>
+		/// <param name="cy">The height, in dialog box units, of the control.</param>
+		/// <param name="style">
+		/// The style of the control. This member can be a combination of window style values (such as <c>WS_BORDER</c>) and one or more of
+		/// the control style values (such as <c>BS_PUSHBUTTON</c> and <c>ES_LEFT</c>).
+		/// </param>
+		/// <param name="exstyle">
+		/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use dialog
+		/// box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+		/// </param>
+		/// <param name="helpID">
+		/// The help context identifier for the control. When the system sends a WM_HELP message, it passes the helpID value in the
+		/// dwContextId member of the HELPINFO structure.
+		/// </param>
+		/// <returns>A dialog control item template.</returns>
+		public static DlgItemTemplateEx MakeStatic(string text, ushort id, short x, short y, short cx = 50, short cy = 14,
+			WindowStyles style = WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | (WindowStyles)StaticStyle.SS_LEFT,
+			WindowStylesEx exstyle = 0, uint helpID = 0) =>
+			MakeControl(0x0082, text, id, x, y, cx, cy, style, exstyle, helpID);
+
+		SizeT IVanaraMarshaler.GetNativeSize() => 40;
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
+		{
+			if (managedObject is not DLGTEMPLATEEX_MGD dt)
+				throw new ArgumentException("Invalid type", nameof(managedObject));
+			SafeHGlobalHandle h = new(256);
+			NativeMemoryStream buffer = new(h);
+			buffer.Write(dt.dlgVer);
+			buffer.Write(dt.signature);
+			buffer.Write(dt.helpID);
+			buffer.Write(dt.exStyle);
+			buffer.Write(dt.style);
+			buffer.Write((ushort)dt.controls.Count);
+			buffer.Write(dt.x);
+			buffer.Write(dt.y);
+			buffer.Write(dt.cx);
+			buffer.Write(dt.cy);
+			WriteId(dt.menu);
+			WriteId(dt.windowClass);
+			WriteString(dt.title);
+			buffer.Write(dt.pointsize);
+			buffer.Write(dt.weight);
+			buffer.Write(dt.italic);
+			buffer.Write(dt.charset);
+			WriteString(dt.typeface);
+			foreach (var c in dt.controls)
+				WriteControl(c);
+			buffer.Flush();
+			System.Diagnostics.Debug.Write(h.DangerousGetHandle().ToHexDumpString(h.Size));
+			return h;
+
+			void WriteControl(DlgItemTemplateEx item)
+			{
+				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
+				buffer.Write(item.helpID);
+				buffer.Write(item.exStyle);
+				buffer.Write(item.style);
+				buffer.Write(item.x);
+				buffer.Write(item.y);
+				buffer.Write(item.cx);
+				buffer.Write(item.cy);
+				buffer.Write(item.id);
+				WriteId(item.windowClass);
+				WriteId(item.title);
+				buffer.Write((ushort)(item.creationData?.Length ?? 0));
+				if (item.creationData is not null)
+					buffer.Write(item.creationData);
+			}
+			void WriteId(DlgTemplateId? tid)
+			{
+				if (tid is null)
+					buffer.Write((ushort)0);
+				else
+				{
+					if (tid.id.HasValue)
+					{
+						buffer.Write((ushort)0xFFFF);
+						buffer.Write(tid.id.Value);
+					}
+					else if (tid.name is not null)
+						buffer.Write(tid.name, CharSet.Unicode);
+					else
+						throw new InvalidOperationException();
+				}
+			}
+			void WriteString(string? s)
+			{
+				if (s is null)
+					buffer.Write((ushort)0);
+				else
+					buffer.Write(s, CharSet.Unicode);
+			}
+		}
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero)
+				return null;
+			if (allocatedBytes < ((IVanaraMarshaler)this).GetNativeSize())
+				throw new ArgumentException("Invalid data", nameof(pNativeData));
+			NativeMemoryStream buffer = new(pNativeData, allocatedBytes);
+			DLGTEMPLATEEX_MGD dt = new();
+			buffer.Read<ushort>(); // dlgVer
+			dt.signature = buffer.Read<ushort>();
+			dt.helpID = buffer.Read<uint>();
+			dt.exStyle = buffer.Read<WindowStylesEx>();
+			dt.style = buffer.Read<WindowStyles>();
+			var cc = buffer.Read<ushort>();
+			dt.x = buffer.Read<short>();
+			dt.y = buffer.Read<short>();
+			dt.cx = buffer.Read<short>();
+			dt.cy = buffer.Read<short>();
+			dt.menu = ReadId();
+			dt.windowClass = ReadId();
+			dt.title = ReadString();
+			dt.pointsize = buffer.Read<ushort>();
+			dt.weight = buffer.Read<ushort>();
+			dt.italic = buffer.Read<BOOLEAN>();
+			dt.charset = buffer.Read<CharacterSet>();
+			dt.typeface = ReadString();
+			for (int i = 0; i < cc; i++)
+				dt.controls.Add(ReadControl());
+			return dt;
+
+			DlgItemTemplateEx ReadControl()
+			{
+				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
+				DlgItemTemplateEx item = new();
+				item.helpID = buffer.Read<uint>();
+				item.exStyle = buffer.Read<WindowStylesEx>();
+				item.style = buffer.Read<WindowStyles>();
+				item.x = buffer.Read<short>();
+				item.y = buffer.Read<short>();
+				item.cx = buffer.Read<short>();
+				item.cy = buffer.Read<short>();
+				item.id = buffer.Read<uint>();
+				item.windowClass = ReadId()!;
+				item.title = ReadId()!;
+				var c = buffer.Read<ushort>();
+				if (c > 0)
+					item.creationData = buffer.ReadArray<byte>(c, false).ToArray();
+				return item;
+			}
+			DlgTemplateId? ReadId()
+			{
+				var flag = Peek<ushort>();
+				if (flag == 0)
+				{
+					buffer.Read<ushort>();
+					return null;
+				}
+				if (flag == 0xFFFF)
+				{
+					buffer.Read<ushort>();
+					return new() { id = buffer.Read<ushort>() };
+				}
+				return new() { name = buffer.Read<string>(CharSet.Unicode) };
+			}
+			string? ReadString()
+			{
+				var l = Peek<ushort>();
+				if (l == 0) return null;
+				return buffer.Read<string>(CharSet.Unicode);
+			}
+			T Peek<T>() where T : struct => buffer.Pointer.Offset(buffer.Position).ToStructure<T>();
+		}
+		/// <summary>
+		/// Defines the dimensions and style of a control in a dialog box. One or more of these items are added to <see
+		/// cref="DLGTEMPLATEEX_MGD.controls"/> to form a standard template for a dialog box.
+		/// </summary>
+		public class DlgItemTemplateEx
+		{
+			/// <summary>
+			/// The help context identifier for the control. When the system sends a WM_HELP message, it passes the helpID value in the
+			/// dwContextId member of the HELPINFO structure.
+			/// </summary>
+			public uint helpID;
+
+			/// <summary>
+			/// The extended styles for a window. This member is not used to create controls in dialog boxes, but applications that use
+			/// dialog box templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+			/// </summary>
+			public WindowStylesEx exStyle;
+
+			/// <summary>
+			/// The style of the control. This member can be a combination of window style values (such as WS_BORDER) and one or more of the
+			/// control style values (such as BS_PUSHBUTTON and ES_LEFT).
+			/// </summary>
+			public WindowStyles style;
+
+			/// <summary>
+			/// The x-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+			/// upper-left corner of the dialog box's client area.
+			/// </summary>
+			public short x;
+
+			/// <summary>
+			/// The y-coordinate, in dialog box units, of the upper-left corner of the control. This coordinate is always relative to the
+			/// upper-left corner of the dialog box's client area.
+			/// </summary>
+			public short y;
+
+			/// <summary>The width, in dialog box units, of the control.</summary>
+			public short cx;
+
+			/// <summary>The height, in dialog box units, of the control.</summary>
+			public short cy;
+
+			/// <summary>The control identifier.</summary>
+			public uint id;
+
+			/// <summary>
+			/// Identifies the window class of the control. If the <see cref="DlgTemplateId.id"/> field is set, it specifies the ordinal
+			/// value of a predefined system class. If the <see cref="DlgTemplateId.name"/> is set, it specifies the name of a registered
+			/// window class.
+			/// <para>The ordinal can be one of the following atom values:</para>
+			/// <list type="table">
+			/// <item>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </item>
+			/// <item>
+			/// <description>0x0080</description>
+			/// <description>Button</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0081</description>
+			/// <description>Edit</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0082</description>
+			/// <description>Static</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0083</description>
+			/// <description>List box</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0084</description>
+			/// <description>Scroll bar</description>
+			/// </item>
+			/// <item>
+			/// <description>0x0085</description>
+			/// <description>Combo box</description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DlgTemplateId windowClass = new();
+
+			/// <summary>The initial text or resource identifier of the control.</summary>
+			public DlgTemplateId title = new();
+
+			/// <summary>
+			/// This creation data can be of any size and format or <see langword="null"/>. The control's window procedure must be able to
+			/// interpret the data. When the system creates the control, it passes a pointer to this data in the lParam parameter of the
+			/// WM_CREATE message that it sends to the control.
+			/// </summary>
+			public byte[]? creationData;
+		}
 	}
-	*/
 }

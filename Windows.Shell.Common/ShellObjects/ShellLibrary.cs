@@ -54,7 +54,7 @@ public class ShellLibrary : ShellFolder
 	public ShellLibrary(KNOWNFOLDERID knownFolderId, bool readOnly = false)
 	{
 		lib = new IShellLibrary();
-		lib.LoadLibraryFromKnownFolder(knownFolderId.Guid(), readOnly ? STGM.STGM_READ : STGM.STGM_READWRITE);
+		lib.LoadLibraryFromKnownFolder(knownFolderId.Guid(), readOnly ? STGM.STGM_READ : STGM.STGM_READWRITE).ThrowIfFailed();
 		Init(knownFolderId.GetIShellItem());
 	}
 
@@ -81,13 +81,18 @@ public class ShellLibrary : ShellFolder
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
-	/// <param name="iItem">The i item.</param>
+	/// <param name="iItem">The shell item.</param>
 	/// <param name="readOnly">if set to <c>true</c> [read only].</param>
 	internal ShellLibrary(IShellItem iItem, bool readOnly = false) : base(iItem)
 	{
 		lib = new IShellLibrary();
-		lib.LoadLibraryFromItem(iItem, readOnly ? STGM.STGM_READ : STGM.STGM_READWRITE);
+		lib.LoadLibraryFromItem(iItem, readOnly ? STGM.STGM_READ : STGM.STGM_READWRITE).ThrowIfFailed();
 	}
+
+	/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
+	/// <param name="iLib">The library item.</param>
+	/// <param name="iItem">The shell item.</param>
+	internal ShellLibrary(IShellLibrary iLib, IShellItem iItem) : base(iItem) => lib = iLib;
 
 	/// <summary>Gets or sets the default target folder the library uses for save operations.</summary>
 	/// <value>The default save folder.</value>

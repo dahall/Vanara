@@ -4444,42 +4444,143 @@ public static partial class Shell32
 		public static int Size => Marshal.SizeOf(typeof(SHFILEINFO));
 	}
 
-	/// <summary>Contains information that the SHFileOperation function uses to perform file operations.</summary>
-	[PInvokeData("Shellapi.h")]
+	/// <summary>
+	/// <para>Contains information that the SHFileOperation function uses to perform file operations.</para>
+	/// <para><c>Note</c>  As of Windows Vista, the use of the IFileOperation interface is recommended over this function.</para>
+	/// <para></para>
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// <c>Important</c>  You must ensure that the source and destination paths are double-null terminated. A normal string ends in just a
+	/// single null character. If you pass that value in either the source or destination members, the function will not realize when it has
+	/// reached the end of the string and will continue to read on in memory until it comes to a random double null value. This can at least
+	/// lead to a buffer overrun, and possibly the unintended deletion of unrelated data.
+	/// </para>
+	/// <para></para>
+	/// <para>
+	/// To account for the two terminating null characters, be sure to create buffers large enough to hold MAX_PATH (which normally includes
+	/// the single terminating null character) plus 1.
+	/// </para>
+	/// <para>
+	/// It cannot be overstated that your paths should always be full paths. If the <c>pFrom</c> or <c>pTo</c> members are unqualified names,
+	/// the current directories are taken from the global current drive and directory settings as managed by the GetCurrentDirectory and
+	/// SetCurrentDirectory functions.
+	/// </para>
+	/// <para>If you do not provide a full path, the following facts become pertinent:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// The lack of a path before a file name does not indicate to SHFileOperation that this file resides in the root of the current directory.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>The PATH environment variable is not used by SHFileOperation to determine a valid path.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// SHFileOperation cannot be relied on to use the directory that is the current directory when it begins executing. The directory seen
+	/// as the current directory is process-wide, and it can be changed from another thread while the operation is executing. If that were to
+	/// happen, the results of <c>SHFileOperation</c> would be unpredictable.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If <c>pFrom</c> is set to a file name without a full path, deleting the file with <c>FO_DELETE</c> does not move it to the Recycle
+	/// Bin, even if the <c>FOF_ALLOWUNDO</c> flag is set. You must provide a full path to delete the file to the Recycle Bin.
+	/// </para>
+	/// <para>SHFileOperation fails on any path prefixed with "\?".</para>
+	/// <para>
+	/// There are two versions of this structure, an ANSI version (SHFILEOPSTRUCTA) and a Unicode version (SHFILEOPSTRUCTW). The Unicode
+	/// version is identical to the ANSI version, except that wide character strings ( <c>LPCWSTR</c>) are used in place of ANSI character
+	/// strings ( <c>LPCSTR</c>). On Windows 98 and earlier, only the ANSI version is supported. On Microsoft Windows NT 4.0 and later, both
+	/// the ANSI and Unicode versions of this structure are supported. SHFILEOPSTRUCTW and SHFILEOPTSTRUCTA should never be used directly;
+	/// the appropriate structure is redefined as <c>SHFILEOPSTRUCT</c> by the precompiler depending on whether the application is compiled
+	/// for ANSI or Unicode.
+	/// </para>
+	/// <para>
+	/// SHNAMEMAPPING has similar ANSI and Unicode versions. For ANSI applications, <c>hNameMappings</c> points to an <c>int</c> followed by
+	/// an array of ANSI <c>SHNAMEMAPPING</c> structures. For Unicode applications, <c>hNameMappings</c> points to an <c>int</c> followed by
+	/// an array of Unicode <c>SHNAMEMAPPING</c> structures. However, on Microsoft Windows NT 4.0 and later, SHFileOperation <c>always</c>
+	/// returns a handle to a Unicode set of <c>SHNAMEMAPPING</c> structures. If you want applications to be functional with all versions of
+	/// Windows, the application must employ conditional code to deal with name mappings. For example:
+	/// </para>
+	/// <para>
+	/// Treat <c>hNameMappings</c> as a pointer to a structure whose members are a <c>UINT</c> value followed by a pointer to an array of
+	/// SHNAMEMAPPING structures, as seen in its declaration:
+	/// </para>
+	/// <para>
+	/// The <c>UINT</c> value indicates the number of SHNAMEMAPPING structures in the array. Each <c>SHNAMEMAPPING</c> structure contains the
+	/// old and new path for one of the renamed files.
+	/// </para>
+	/// <para><c>Note</c>  The handle must be freed with SHFreeNameMappings.</para>
+	/// <para></para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The shellapi.h header defines SHFILEOPSTRUCT as an alias which automatically selects the ANSI or Unicode version of this function
+	/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+	/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+	/// Function Prototypes.
+	/// </para>
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-shfileopstructa typedef struct _SHFILEOPSTRUCTA { HWND hwnd;
+	// UINT wFunc; PCZZSTR pFrom; PCZZSTR pTo; FILEOP_FLAGS fFlags; BOOL fAnyOperationsAborted; LPVOID hNameMappings; PCSTR
+	// lpszProgressTitle; } SHFILEOPSTRUCTA, *LPSHFILEOPSTRUCTA;
+	[PInvokeData("shellapi.h", MSDNShortId = "NS:shellapi._SHFILEOPSTRUCTA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct SHFILEOPSTRUCT
 	{
-		/// <summary>A window handle to the dialog box to display information about the status of the file operation.</summary>
+		/// <summary>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A window handle to the dialog box to display information about the status of the file operation.</para>
+		/// </summary>
 		public HWND hwnd;
 
-		/// <summary>A value that indicates which operation to perform.</summary>
+		/// <summary>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>A value that indicates which operation to perform. One of the following values:</para>
+		/// <para>FO_COPY</para>
+		/// <para>Copy the files specified in the <c>pFrom</c> member to the location specified in the <c>pTo</c> member.</para>
+		/// <para>FO_DELETE</para>
+		/// <para>Delete the files specified in <c>pFrom</c>.</para>
+		/// <para>FO_MOVE</para>
+		/// <para>Move the files specified in <c>pFrom</c> to the location specified in <c>pTo</c>.</para>
+		/// <para>FO_RENAME</para>
+		/// <para>
+		/// Rename the file specified in <c>pFrom</c>. You cannot use this flag to rename multiple files with a single function call. Use
+		/// <c>FO_MOVE</c> instead.
+		/// </para>
+		/// </summary>
 		public ShellFileOperation wFunc;
 
 		/// <summary>
-		/// <note type="note">This string must be double-null terminated.</note>
-		/// <para>A pointer to one or more source file names.These names should be fully qualified paths to prevent unexpected results.</para>
+		/// <para>Type: <c>PCZZTSTR</c></para>
+		/// <para><c>Note</c>  This string must be double-null terminated.</para>
+		/// <para></para>
+		/// <para>A pointer to one or more source file names. These names should be fully qualified paths to prevent unexpected results.</para>
 		/// <para>
-		/// Standard MS-DOS wildcard characters, such as "*", are permitted only in the file-name position.Using a wildcard character
+		/// Standard MS-DOS wildcard characters, such as "*", are permitted <c>only</c> in the file-name position. Using a wildcard character
 		/// elsewhere in the string will lead to unpredictable results.
 		/// </para>
 		/// <para>
 		/// Although this member is declared as a single null-terminated string, it is actually a buffer that can hold multiple
-		/// null-delimited file names.Each file name is terminated by a single NULL character. The last file name is terminated with a
-		/// double NULL character ("\0\0") to indicate the end of the buffer.
+		/// null-delimited file names. Each file name is terminated by a single <c>NULL</c> character. The last file name is terminated with
+		/// a double <c>NULL</c> character ("\0\0") to indicate the end of the buffer.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")]
-		public string[] pFrom;
+		public IntPtr pFrom;
 
 		/// <summary>
-		/// <note type="note">This string must be double-null terminated.</note>
+		/// <para>Type: <c>PCZZTSTR</c></para>
+		/// <para><c>Note</c>  This string must be double-null terminated.</para>
+		/// <para></para>
+		/// <para>A pointer to the destination file or directory name. This parameter must be set to</para>
+		/// <para>NULL</para>
+		/// <para>if it is not used. Wildcard characters are not allowed. Their use will lead to unpredictable results.</para>
 		/// <para>
-		/// A pointer to the destination file or directory name. This parameter must be set to NULL if it is not used. Wildcard
-		/// characters are not allowed. Their use will lead to unpredictable results.
-		/// </para>
-		/// <para>
-		/// Like pFrom, the pTo member is also a double-null terminated string and is handled in much the same way. However, pTo must
-		/// meet the following specifications:
+		/// Like <c>pFrom</c>, the <c>pTo</c> member is also a double-null terminated string and is handled in much the same way. However,
+		/// <c>pTo</c> must meet the following specifications:
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
@@ -4488,49 +4589,127 @@ public static partial class Shell32
 		/// <item>
 		/// <description>
 		/// Copy and Move operations can specify destination directories that do not exist. In those cases, the system attempts to create
-		/// them and normally displays a dialog box to ask the user if they want to create the new directory. To suppress this dialog box
-		/// and have the directories created silently, set the FOF_NOCONFIRMMKDIR flag in fFlags.
+		/// them and normally displays a dialog box to ask the user if they want to create the new directory. To suppress this dialog box and
+		/// have the directories created silently, set the <c>FOF_NOCONFIRMMKDIR</c> flag in <c>fFlags</c>.
 		/// </description>
 		/// </item>
 		/// <item>
 		/// <description>
-		/// For Copy and Move operations, the buffer can contain multiple destination file names if the fFlags member specifies FOF_MULTIDESTFILES.
+		/// For Copy and Move operations, the buffer can contain multiple destination file names if the <c>fFlags</c> member specifies <c>FOF_MULTIDESTFILES</c>.
 		/// </description>
 		/// </item>
 		/// <item>
-		/// <description>Pack multiple names into the pTo string in the same way as for pFrom.</description>
+		/// <description>Pack multiple names into the <c>pTo</c> string in the same way as for <c>pFrom</c>.</description>
 		/// </item>
 		/// <item>
 		/// <description>Use fully qualified paths. Using relative paths is not prohibited, but can have unpredictable results.</description>
 		/// </item>
 		/// </list>
 		/// </summary>
-		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")]
-		public string[]? pTo;
+		public IntPtr pTo;
 
-		/// <summary>Flags that control the file operation.</summary>
+		/// <summary>
+		/// <para>Type: <c>FILEOP_FLAGS</c></para>
+		/// <para>Flags that control the file operation. This member can take a combination of the following flags.</para>
+		/// <para>FOF_ALLOWUNDO</para>
+		/// <para>Preserve undo information, if possible.</para>
+		/// <para>Prior to Windows Vista, operations could be undone only from the same process that performed the original operation.</para>
+		/// <para>
+		/// In Windows Vista and later systems, the scope of the undo is a user session. Any process running in the user session can undo
+		/// another operation. The undo state is held in the Explorer.exe process, and as long as that process is running, it can coordinate
+		/// the undo functions.
+		/// </para>
+		/// <para>If the source file parameter does not contain fully qualified path and file names, this flag is ignored.</para>
+		/// <para>FOF_CONFIRMMOUSE</para>
+		/// <para>Not used.</para>
+		/// <para>FOF_FILESONLY</para>
+		/// <para>Perform the operation only on files (not on folders) if a wildcard file name (.) is specified.</para>
+		/// <para>FOF_MULTIDESTFILES</para>
+		/// <para>
+		/// The <c>pTo</c> member specifies multiple destination files (one for each source file in <c>pFrom</c>) rather than one directory
+		/// where all source files are to be deposited.
+		/// </para>
+		/// <para>FOF_NOCONFIRMATION</para>
+		/// <para>Respond with <c>Yes to All</c> for any dialog box that is displayed.</para>
+		/// <para>FOF_NOCONFIRMMKDIR</para>
+		/// <para>Do not ask the user to confirm the creation of a new directory if the operation requires one to be created.</para>
+		/// <para>FOF_NO_CONNECTED_ELEMENTS</para>
+		/// <para>Version 5.0. Do not move connected files as a group. Only move the specified files.</para>
+		/// <para>FOF_NOCOPYSECURITYATTRIBS</para>
+		/// <para>
+		/// Version 4.71. Do not copy the security attributes of the file. The destination file receives the security attributes of its new folder.
+		/// </para>
+		/// <para>FOF_NOERRORUI</para>
+		/// <para>Do not display a dialog to the user if an error occurs.</para>
+		/// <para>FOF_NORECURSEREPARSE</para>
+		/// <para>Not used.</para>
+		/// <para>FOF_NORECURSION</para>
+		/// <para>
+		/// Only perform the operation in the local directory. Do not operate recursively into subdirectories, which is the default behavior.
+		/// </para>
+		/// <para>FOF_NO_UI</para>
+		/// <para>
+		/// Windows Vista. Perform the operation silently, presenting no UI to the user. This is equivalent to FOF_SILENT |
+		/// FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR.
+		/// </para>
+		/// <para>FOF_RENAMEONCOLLISION</para>
+		/// <para>
+		/// Give the file being operated on a new name in a move, copy, or rename operation if a file with the target name already exists at
+		/// the destination.
+		/// </para>
+		/// <para>FOF_SILENT</para>
+		/// <para>Do not display a progress dialog box.</para>
+		/// <para>FOF_SIMPLEPROGRESS</para>
+		/// <para>Display a progress dialog box but do not show individual file names as they are operated on.</para>
+		/// <para>FOF_WANTMAPPINGHANDLE</para>
+		/// <para>
+		/// If <c>FOF_RENAMEONCOLLISION</c> is specified and any files were renamed, assign a name mapping object that contains their old and
+		/// new names to the <c>hNameMappings</c> member. This object must be freed using SHFreeNameMappings when it is no longer needed.
+		/// </para>
+		/// <para>FOF_WANTNUKEWARNING</para>
+		/// <para>
+		/// Version 5.0. Send a warning if a file is being permanently destroyed during a delete operation rather than recycled. This flag
+		/// partially overrides <c>FOF_NOCONFIRMATION</c>.
+		/// </para>
+		/// </summary>
 		public FILEOP_FLAGS fFlags;
 
 		/// <summary>
-		/// When the function returns, this member contains TRUE if any file operations were aborted before they were completed;
-		/// otherwise, FALSE. An operation can be manually aborted by the user through UI or it can be silently aborted by the system if
-		/// the FOF_NOERRORUI or FOF_NOCONFIRMATION flags were set.
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// When the function returns, this member contains <c>TRUE</c> if any file operations were aborted before they were completed;
+		/// otherwise, <c>FALSE</c>. An operation can be manually aborted by the user through UI or it can be silently aborted by the system
+		/// if the FOF_NOERRORUI or FOF_NOCONFIRMATION flags were set.
+		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.Bool)]
 		public bool fAnyOperationsAborted;
 
 		/// <summary>
+		/// <para>Type: <c>LPVOID</c></para>
+		/// <para>
 		/// When the function returns, this member contains a handle to a name mapping object that contains the old and new names of the
-		/// renamed files. This member is used only if the fFlags member includes the FOF_WANTMAPPINGHANDLE flag. See Remarks for more details.
+		/// renamed files. This member is used only if the <c>fFlags</c> member includes the <c>FOF_WANTMAPPINGHANDLE</c> flag. See Remarks
+		/// for more details.
+		/// </para>
 		/// </summary>
 		public IntPtr hNameMappings;
 
 		/// <summary>
-		/// A pointer to the title of a progress dialog box. This is a null-terminated string. This member is used only if fFlags
-		/// includes the FOF_SIMPLEPROGRESS flag.
+		/// <para>Type: <c>PCTSTR</c></para>
+		/// <para>
+		/// A pointer to the title of a progress dialog box. This is a null-terminated string. This member is used only if <c>fFlags</c>
+		/// includes the <c>FOF_SIMPLEPROGRESS</c> flag.
+		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszProgressTitle;
+		public string? lpszProgressTitle;
+
+		/// <summary>An array of source file names pulled from <see cref="pFrom"/></summary>
+		public readonly string[] From => pFrom.ToStringEnum().ToArray();
+
+		/// <summary>An array of destination file names pulled from <see cref="pFrom"/></summary>
+		public readonly string[] To => pTo.ToStringEnum().ToArray();
 	}
 
 	/// <summary>

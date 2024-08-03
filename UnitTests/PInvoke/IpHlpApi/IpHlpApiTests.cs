@@ -178,9 +178,9 @@ public partial class IpHlpApiTests
 	}
 
 	[Test]
-	public void GetAdaptersAddressesTest() => Assert.That(() =>
+	public void GetAdaptersAddressesTest([Values] GetAdaptersAddressesFlags f) => Assert.That(() =>
 	{
-		foreach (IP_ADAPTER_ADDRESSES addrs in GetAdaptersAddresses(GetAdaptersAddressesFlags.GAA_FLAG_INCLUDE_PREFIX, ADDRESS_FAMILY.AF_UNSPEC))
+		foreach (IP_ADAPTER_ADDRESSES addrs in GetAdaptersAddresses(f, ADDRESS_FAMILY.AF_UNSPEC))
 		{
 			TestContext.WriteLine($"{addrs.IfIndex}) {addrs.AdapterName} ({addrs.FriendlyName});{addrs.Description};MAC:{PhysicalAddressToString(addrs.PhysicalAddress)}");
 			TestContext.WriteLine("  Uni:" + string.Join(";", addrs.UnicastAddresses.Select(a => a.Address)));

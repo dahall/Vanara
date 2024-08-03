@@ -3593,7 +3593,7 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <returns>An ordered sequence of child window handles.</returns>
-	public static IList<HWND> EnumChildWindows(this HWND hWndParent)
+	public static IReadOnlyList<HWND> EnumChildWindows(this HWND hWndParent)
 	{
 		var children = new List<HWND>();
 		Win32Error.ThrowLastErrorIfFalse(EnumChildWindows(hWndParent, EnumProc, default));

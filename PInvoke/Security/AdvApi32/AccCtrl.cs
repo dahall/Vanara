@@ -635,6 +635,54 @@ public static partial class AdvApi32
 
 		/// <summary>A TRUSTEE structure that identifies the user, group, or program (such as a Windows service) to which the ACE applies.</summary>
 		public TRUSTEE Trustee;
+
+		/// <summary>Initializes a new instance of the <see cref="EXPLICIT_ACCESS"/> struct.</summary>
+		/// <param name="access">
+		/// A set of bit flags that use the ACCESS_MASK format to specify the access rights that an ACE allows, denies, or audits for the trustee.
+		/// </param>
+		/// <param name="mode">
+		/// For a discretionary access control list (DACL), this flag indicates whether the ACL allows or denies the specified access rights.
+		/// For a system access control list (SACL), this flag indicates whether the ACL generates audit messages for successful attempts to
+		/// use the specified access rights, or failed attempts, or both. When modifying an existing ACL, you can specify the REVOKE_ACCESS
+		/// flag to remove any existing ACEs for the specified trustee.
+		/// </param>
+		/// <param name="inheritance">
+		/// A set of bit flags that determines whether other containers or objects can inherit the ACE from the primary object to which the
+		/// ACL is attached. The value of this member corresponds to the inheritance portion (low-order byte) of the <c>AceFlags</c> member
+		/// of the ACE_HEADER structure. This parameter can be NO_INHERITANCE to indicate that the ACE is not inheritable.
+		/// </param>
+		/// <param name="trustee">
+		/// A TRUSTEE structure that identifies the user, group, or program (such as a Windows service) to which the ACE applies.
+		/// </param>
+		public EXPLICIT_ACCESS(ACCESS_MASK access, ACCESS_MODE mode, INHERIT_FLAGS inheritance, TRUSTEE trustee)
+		{
+			grfAccessPermissions = access;
+			grfAccessMode = mode;
+			grfInheritance = inheritance;
+			Trustee = trustee;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="EXPLICIT_ACCESS"/> struct.</summary>
+		/// <param name="access">
+		/// A set of bit flags that use the ACCESS_MASK format to specify the access rights that an ACE allows, denies, or audits for the trustee.
+		/// </param>
+		/// <param name="mode">
+		/// For a discretionary access control list (DACL), this flag indicates whether the ACL allows or denies the specified access rights.
+		/// For a system access control list (SACL), this flag indicates whether the ACL generates audit messages for successful attempts to
+		/// use the specified access rights, or failed attempts, or both. When modifying an existing ACL, you can specify the REVOKE_ACCESS
+		/// flag to remove any existing ACEs for the specified trustee.
+		/// </param>
+		/// <param name="inheritance">
+		/// A set of bit flags that determines whether other containers or objects can inherit the ACE from the primary object to which the
+		/// ACL is attached. The value of this member corresponds to the inheritance portion (low-order byte) of the <c>AceFlags</c> member
+		/// of the ACE_HEADER structure. This parameter can be NO_INHERITANCE to indicate that the ACE is not inheritable.
+		/// </param>
+		/// <param name="trusteeName">A string that contains the name of the trustee for the <c>ptstrName</c> member of the TRUSTEE structure.</param>
+		public EXPLICIT_ACCESS(ACCESS_MASK access, ACCESS_MODE mode, INHERIT_FLAGS inheritance, string trusteeName)
+		{
+			BuildExplicitAccessWithName(out var ea, trusteeName, access, mode, inheritance);
+			this = ea;
+		}
 	}
 
 	/// <summary>Provides information about an object's inherited access control entry (ACE).</summary>

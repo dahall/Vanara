@@ -59,7 +59,7 @@ public static class TestHelper
 	public static IList<string> GetNestedStructSizes(this Type type, params string[] filters) =>
 		type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic).GetStructSizes(false, filters);
 
-	public static string GetStringVal(this object value, bool showDefVals = true)
+	public static string GetStringVal(this object value, bool showDefVals = true, bool bypassMemDump = false)
 	{
 		switch (value)
 		{
@@ -87,6 +87,7 @@ Simple:
 				return string.Join(" ", Array.ConvertAll(bytes, b => $"{b:X2}"));
 
 			case SafeAllocatedMemoryHandleBase mem:
+				if (bypassMemDump) goto default;
 				return mem.Dump;
 
 			case GenericSecurityDescriptor sd:

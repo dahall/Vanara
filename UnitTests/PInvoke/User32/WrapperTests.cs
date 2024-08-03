@@ -67,7 +67,7 @@ public partial class User32Tests
 	}
 
 	[Test]
-	public void WindowRunTest() => VisibleWindow.Run<MyWin>(null, "Hello");
+	public void WindowRunTest() => VisibleWindow.Run<MyWin>("Hello");
 
 	public class MyWin : VisibleWindow
 	{

@@ -1255,6 +1255,55 @@ public static partial class AdvApi32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AddAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, IntPtr pAceList, uint nAceListLength);
 
+	/// <summary>The <c>AddAce</c> function adds one or more access control entries (ACEs) to a specified access control list (ACL).</summary>
+	/// <param name="pAcl">A pointer to an ACL. This function adds an ACE to this ACL.</param>
+	/// <param name="pAceList">
+	/// A pointer to a list of one or more ACEs to be added to the specified ACL. The ACEs in the list must be stored contiguously.
+	/// </param>
+	/// <param name="dwStartingAceIndex">
+	/// Specifies the position in the ACL's list of ACEs at which to add new ACEs. A value of zero inserts the ACEs at the beginning of
+	/// the list. A value of MAXDWORD appends the ACEs to the end of the list.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+	/// error values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+	/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>The specified ACL is not properly formed.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The ACE was successfully added.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Applications frequently use the FindFirstFreeAce and GetAce functions when using the <c>AddAce</c> function to manipulate an ACL.
+	/// In addition, the ACL_SIZE_INFORMATION structure retrieved by the GetAclInformation function contains the size of the ACL and the
+	/// number of ACEs it contains.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>For an example that uses this function, see Starting an Interactive Client Process.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addace BOOL AddAce( PACL pAcl, DWORD
+	// dwAceRevision, DWORD dwStartingAceIndex, LPVOID pAceList, DWORD nAceListLength );
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "f472d864-a273-49b5-b5e2-98772989971e")]
+	public static bool AddAce(PACL pAcl, PACE pAceList, uint dwStartingAceIndex = uint.MaxValue) =>
+		AddAce(pAcl, pAcl.Revision(), dwStartingAceIndex, (IntPtr)pAceList, pAceList.Length());
+
 	/// <summary>
 	/// <para>
 	/// The <c>AddAuditAccessAce</c> function adds a system-audit access control entry (ACE) to a system access control list (ACL). The

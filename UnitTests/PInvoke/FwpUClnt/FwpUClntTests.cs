@@ -102,9 +102,9 @@ public class FwpUClntTests
 		Assert.That(FwpmFilterEnum0(fwpEngineHandle, out SafeFwpmArray<FWPM_FILTER0> h), ResultIs.Successful);
 		foreach (FWPM_FILTER0 e in h)
 		{
-			TestContext.WriteLine($"{e.filterKey}=({e.flags})=========");
+			TestContext.WriteLine($"{e.filterKey} ({e.filterId})=({e.flags})=========");
 			TestContext.WriteLine($"{e.displayData.name ?? nullStr} ({e.displayData.description ?? nullStr})");
-			TestContext.WriteLine($"Prov={GetNameOf(e.providerKey.Value.GetValueOrDefault()) ?? nullStr}; Layer={GetNameOf(e.layerKey)}");
+			TestContext.WriteLine($"Prov={GetNameOf(e.providerKey.Value.GetValueOrDefault()) ?? nullStr}; Layer={GetNameOf(e.layerKey)}; Weight={e.weight.GetValue()}");
 		}
 	}
 

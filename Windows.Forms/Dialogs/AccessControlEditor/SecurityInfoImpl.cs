@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.AccessControl;
+﻿using System.Security.AccessControl;
 using System.Security.Principal;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AclUI;
@@ -9,54 +8,35 @@ using static Vanara.PInvoke.Macros;
 
 namespace Vanara.Security.AccessControl;
 
-internal class SecurityEventArg : EventArgs
+internal class SecurityEventArg(SafePSECURITY_DESCRIPTOR sd, SECURITY_INFORMATION parts) : EventArgs
 {
-	public SecurityEventArg(SafePSECURITY_DESCRIPTOR sd, SECURITY_INFORMATION parts)
-	{
-		Parts = parts;
-		SecurityDesciptor = sd;
-	}
-
-	public SECURITY_INFORMATION Parts { get; }
-
-	public SafePSECURITY_DESCRIPTOR SecurityDesciptor { get; }
+	public SECURITY_INFORMATION Parts { get; } = parts;
+	public SafePSECURITY_DESCRIPTOR SecurityDesciptor { get; } = sd;
 }
 
 /// <summary>Internal implementation of a number of COM interfaces needed for interaction with the Windows ACL Editor.</summary>
-internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo, IEffectivePermission, IEffectivePermission2
+internal class SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, string fullName, string? serverName = null, string? pageTitle = null) :
+	ISecurityInformation, ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo, IEffectivePermission, IEffectivePermission2
 {
-	internal SI_OBJECT_INFO objectInfo;
-	private SI_OBJECT_INFO_Flags currentElevation;
-	private readonly string fullObjectName;
-	[NotNull] private IAccessControlEditorDialogProvider? prov;
-	private SafeByteArray pSD = new(0);
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-	public SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, string fullName, string? serverName = null, string? pageTitle = null)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-	{
-		objectInfo = new(flags, objectName, serverName ?? Environment.MachineName, pageTitle);
-		currentElevation = 0; // flags & (SI_OBJECT_INFO_Flags.OwnerElevationRequired | SI_OBJECT_INFO_Flags.AuditElevationRequired | SI_OBJECT_INFO_Flags.PermsElevationRequired);
-		fullObjectName = fullName;
-	}
+	internal SI_OBJECT_INFO objectInfo = new(flags, objectName, serverName ?? Environment.MachineName, pageTitle);
+	private SI_OBJECT_INFO_Flags currentElevation = 0;
+	private IAccessControlEditorDialogProvider? prov;
 
 	public event EventHandler<SecurityEventArg>? OnSetSecurity;
 
-	public byte[] SecurityDescriptor
-	{
-		get => pSD.ToArray();
-		set => pSD = new SafeByteArray(value);
-	}
+	public SafePSECURITY_DESCRIPTOR SecurityDescriptor { get; set; } = SafePSECURITY_DESCRIPTOR.Null;
 
 	HRESULT IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string? pszServerName, PSECURITY_DESCRIPTOR pSecDesc,
 		out OBJECT_TYPE_LIST[]? ppObjectTypeList, out uint pcObjectTypeListLength, out ACCESS_MASK[]? ppGrantedAccessList, out uint pcGrantedAccessListLength)
 	{
 		System.Diagnostics.Debug.WriteLine($"GetEffectivePermission: {pguidObjectType}, {pszServerName}");
+		ppObjectTypeList = null; ppGrantedAccessList = null; pcObjectTypeListLength = pcGrantedAccessListLength = 0;
+		if (prov is null) return HRESULT.E_NOINTERFACE;
 		if (pguidObjectType == Guid.Empty)
 		{
 			ppGrantedAccessList = prov.GetEffectivePermission(pUserSid, pszServerName, pSecDesc);
 			pcGrantedAccessListLength = (uint)ppGrantedAccessList.Length;
-			ppObjectTypeList = new[] { OBJECT_TYPE_LIST.Self };
+			ppObjectTypeList = [OBJECT_TYPE_LIST.Self];
 			pcObjectTypeListLength = (uint)ppObjectTypeList.Length;
 		}
 		else
@@ -69,9 +49,11 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityInformation.GetAccessRights(IntPtr guidObject, SI_OBJECT_INFO_Flags dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
+	HRESULT ISecurityInformation.GetAccessRights(GuidPtr guidObject, SI_OBJECT_INFO_Flags dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
 	{
 		System.Diagnostics.Debug.WriteLine($"GetAccessRight: {guidObject}, {dwFlags}");
+		access = []; defaultAccess = 0;
+		if (prov is null) return HRESULT.E_NOINTERFACE;
 		prov.GetAccessListInfo(dwFlags, out access, out defaultAccess);
 		accessCount = (uint)access.Length;
 		return HRESULT.S_OK;
@@ -80,6 +62,8 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 	HRESULT ISecurityInformation.GetInheritTypes(out SI_INHERIT_TYPE[] inheritTypes, out uint inheritTypesCount)
 	{
 		System.Diagnostics.Debug.WriteLine("GetInheritTypes");
+		inheritTypes = []; inheritTypesCount = 0;
+		if (prov is null) return HRESULT.E_NOINTERFACE;
 		inheritTypes = prov.GetInheritTypes();
 		inheritTypesCount = (uint)inheritTypes.Length;
 		return HRESULT.S_OK;
@@ -96,31 +80,32 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 	HRESULT ISecurityInformation.GetSecurity(SECURITY_INFORMATION requestInformation, out PSECURITY_DESCRIPTOR ppSecurityDescriptor, bool fDefault)
 	{
 		System.Diagnostics.Debug.WriteLine($"GetSecurity: {requestInformation}{(fDefault ? " (Def)" : "")}");
-		var sd = new PSECURITY_DESCRIPTOR(fDefault ? prov.GetDefaultSecurity() : (IntPtr)pSD);
-		var ret = sd.GetPrivateObjectSecurity(requestInformation);
-		System.Diagnostics.Debug.WriteLine(
-			$"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
-		ppSecurityDescriptor = ret.DangerousGetHandle();
-		ret.SetHandleAsInvalid();
+		ppSecurityDescriptor = default;
+		if (prov is null) return HRESULT.E_NOINTERFACE;
+		PSECURITY_DESCRIPTOR sd = fDefault ? prov.GetDefaultSecurity() : SecurityDescriptor;
+		SafePSECURITY_DESCRIPTOR ret = sd.GetPrivateObjectSecurity(requestInformation);
+		System.Diagnostics.Debug.WriteLine($"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
+		ppSecurityDescriptor = ret.TakeOwnership();
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityInformation.MapGeneric(IntPtr guidObjectType, ref AceFlags AceFlags, ref ACCESS_MASK Mask)
+	HRESULT ISecurityInformation.MapGeneric(GuidPtr guidObjectType, ref AceFlags AceFlags, ref ACCESS_MASK Mask)
 	{
+		if (prov is null) return HRESULT.E_NOINTERFACE;
 		var stMask = Mask;
 		var gm = prov.GetGenericMapping(AceFlags);
 		MapGenericMask(ref Mask, gm);
 		//if (Mask != gm.GenericAll)
 		//	Mask &= ~(uint)FileSystemRights.Synchronize;
-		System.Diagnostics.Debug.WriteLine($"MapGeneric: {guidObjectType}, {(AceFlags)AceFlags}, 0x{stMask:X}->0x{Mask:X}");
+		System.Diagnostics.Debug.WriteLine($"MapGeneric: {guidObjectType}, {AceFlags}, 0x{stMask:X}->0x{Mask:X}");
 		return HRESULT.S_OK;
 	}
 
 	HRESULT ISecurityInformation.PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
 	{
 		System.Diagnostics.Debug.WriteLine($"PropertySheetPageCallback: {hwnd}, {uMsg}, {uPage}");
-		prov.PropertySheetPageCallback(hwnd, uMsg, uPage);
-		return HRESULT.S_OK;
+		if (prov is null) return HRESULT.E_NOINTERFACE;
+		return prov.PropertySheetPageCallback(hwnd, uMsg, uPage);
 	}
 
 	HRESULT ISecurityInformation.SetSecurity(SECURITY_INFORMATION requestInformation, PSECURITY_DESCRIPTOR sd)
@@ -131,7 +116,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 
 	HRESULT ISecurityInformation3.GetFullResourceName(out string name)
 	{
-		name = fullObjectName;
+		name = fullName;
 		return HRESULT.S_OK;
 	}
 
@@ -163,11 +148,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 				break;
 
 			case SI_PAGE_ACTIVATED.SI_SHOW_EFFECTIVE_ACTIVATED:
-				break;
-
 			case SI_PAGE_ACTIVATED.SI_SHOW_SHARE_ACTIVATED:
-				break;
-
 			case SI_PAGE_ACTIVATED.SI_SHOW_CENTRAL_POLICY_ACTIVATED:
 				break;
 		}
@@ -179,15 +160,17 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 	public HRESULT GetSecondarySecurity(out SECURITY_OBJECT[] securityObjects, out uint securityObjectCount)
 	{
 		System.Diagnostics.Debug.WriteLine("GetSecondarySecurity:");
-		securityObjects = new SECURITY_OBJECT[0];
+		securityObjects = [];
 		securityObjectCount = 0;
 		return HRESULT.S_OK;
 	}
 
-	HRESULT ISecurityObjectTypeInfo.GetInheritSource(int si, PACL pAcl, out INHERITED_FROM[] ppInheritArray)
+	HRESULT ISecurityObjectTypeInfo.GetInheritSource(SECURITY_INFORMATION si, PACL pAcl, out INHERITED_FROM[] ppInheritArray)
 	{
-		System.Diagnostics.Debug.WriteLine($"GetInheritSource: {(SECURITY_INFORMATION)si}");
-		ppInheritArray = prov.GetInheritSource(fullObjectName, objectInfo.pszServerName, objectInfo.IsContainer, (uint)si, pAcl);
+		System.Diagnostics.Debug.WriteLine($"GetInheritSource: {si}");
+		ppInheritArray = [];
+		if (prov is null) return HRESULT.E_NOINTERFACE;
+		ppInheritArray = prov.GetInheritSource(fullName, objectInfo.pszServerName, objectInfo.IsContainer, (uint)si, pAcl);
 		return HRESULT.S_OK;
 	}
 
@@ -203,9 +186,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 			OnSetSecurity += fn;
 			if (Environment.OSVersion.Version.Major == 5 || pageType == SI_PAGE_TYPE.SI_PAGE_PERM && pageAct == SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT)
 			{
-#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 				Win32Error.ThrowLastErrorIfFalse(EditSecurity(hWnd, this));
-#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 			}
 			else
 			{
@@ -242,6 +223,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 			return HRESULT.E_FAIL;
 		if (pSid.IsNull)
 			return HRESULT.E_INVALIDARG;
+		if (prov is null) return HRESULT.E_NOINTERFACE;
 
 		if (!AuthzInitializeResourceManager(AuthzResourceManagerFlags.AUTHZ_RM_FLAG_NO_AUDIT, null, null, null, prov.ToString(), out var hAuthzResourceManager))
 			return HRESULT.S_OK;
@@ -251,9 +233,9 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 		if (!AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzUserContext))
 			return HRESULT.S_OK;
 
-		pAuthzDeviceGroupsOperations ??= new AUTHZ_SID_OPERATION[0];
-		pAuthzUserClaimsOperations ??= new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[0];
-		pAuthzDeviceClaimsOperations ??= new AUTHZ_SECURITY_ATTRIBUTE_OPERATION[0];
+		pAuthzDeviceGroupsOperations ??= [];
+		pAuthzUserClaimsOperations ??= [];
+		pAuthzDeviceClaimsOperations ??= [];
 		if (!pDeviceSid.IsNull)
 		{
 			if (AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pDeviceSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzDeviceContext))
@@ -281,7 +263,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 			if (!AuthzModifySids(hAuthzCompoundContext, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoGroupsSids, pAuthzUserGroupsOperations, pUserGroups))
 				return HRESULT.S_OK;
 
-		var request = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
+		var request = new AUTHZ_ACCESS_REQUEST(ACCESS_MASK.MAXIMUM_ALLOWED);
 		var sd = new SafePSECURITY_DESCRIPTOR(pSecurityObjects[0].pData, false);
 		var reply = new AUTHZ_ACCESS_REPLY(1);
 		if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, request, default, sd, null, 0, reply, out _))
@@ -289,7 +271,7 @@ internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, I
 
 		pEffpermResultLists[0].fEvaluated = true;
 		pEffpermResultLists[0].pGrantedAccessList = reply.GrantedAccessMaskValues;
-		pEffpermResultLists[0].pObjectTypeList = new[] { OBJECT_TYPE_LIST.Self };
+		pEffpermResultLists[0].pObjectTypeList = [OBJECT_TYPE_LIST.Self];
 		pEffpermResultLists[0].cObjectTypeListLength = 1;
 
 		return HRESULT.S_OK;

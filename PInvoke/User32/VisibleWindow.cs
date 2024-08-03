@@ -1,4 +1,6 @@
-﻿using static Vanara.PInvoke.Kernel32;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
@@ -207,6 +209,10 @@ public class VisibleWindow : WindowBase
 		set => SetPosition(value.Location, value.Size);
 	}
 
+	/// <summary>Enumerates the child windows that belong to this window.</summary>
+	/// <returns>An ordered sequence of child window handles.</returns>
+	public IReadOnlyList<HWND> Children => Handle.IsNull ? [] : Handle.EnumChildWindows();
+
 	/// <summary>
 	/// Gets the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client
 	/// area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left
@@ -320,6 +326,62 @@ public class VisibleWindow : WindowBase
 	/// <value><see langword="true"/> if visible; otherwise, <see langword="false"/>.</value>
 	public bool Visible => IsWindowVisible(Handle);
 
+	/// <summary>Adds a child windows or control to this window.</summary>
+	/// <typeparam name="TStyle">The type of the style.</typeparam>
+	/// <param name="className">
+	/// A string that specifies the window class name. The class name can be any name registered with <c>RegisterClass</c> or
+	/// <c>RegisterClassEx</c>, provided that the module that registers the class is also the module that creates the window. The class name
+	/// can also be any of the predefined system class names.
+	/// </param>
+	/// <param name="location">
+	/// The initial position and size of the window relative to the upper-left corner of the parent window's client area.
+	/// </param>
+	/// <param name="id">
+	/// Specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The
+	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
+	/// </param>
+	/// <param name="text">
+	/// Specifies the text of the control. When creating a static control with the <c>SS_ICON</c> style, use <paramref name="text"/> to
+	/// specify the icon name or identifier. To specify an identifier, use the syntax "#num".
+	/// </param>
+	/// <param name="childStyle">The control style. This value will be combined with the values from <paramref name="style"/>.</param>
+	/// <param name="style">The window style of the window being created. This parameter can be a combination of the window style values.</param>
+	/// <returns>The window handle of the child window.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public HWND AddChild<TStyle>(string className, in RECT location, int id = 0, string? text = null, TStyle childStyle = default, 
+		WindowStyles style = WindowStyles.WS_TABSTOP | WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD) where TStyle : unmanaged =>
+		AddChild(className, location.X, location.Y, location.Width, location.Height, id, text, childStyle, style);
+
+	/// <summary>Adds a child windows or control to this window.</summary>
+	/// <typeparam name="TStyle">The type of the style.</typeparam>
+	/// <param name="className">
+	/// A string that specifies the window class name. The class name can be any name registered with <c>RegisterClass</c> or
+	/// <c>RegisterClassEx</c>, provided that the module that registers the class is also the module that creates the window. The class name
+	/// can also be any of the predefined system class names.
+	/// </param>
+	/// <param name="x">
+	/// The x-coordinate of the upper-left corner of the window relative to the upper-left corner of the parent window's client area.
+	/// </param>
+	/// <param name="y">
+	/// The y-coordinate of the upper-left corner of the window relative to the upper-left corner of the parent window's client area.
+	/// </param>
+	/// <param name="width">The width, in device units, of the window.</param>
+	/// <param name="height">The height, in device units, of the window.</param>
+	/// <param name="id">
+	/// Specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The
+	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
+	/// </param>
+	/// <param name="text">
+	/// Specifies the text of the control. When creating a static control with the <c>SS_ICON</c> style, use <paramref name="text"/> to
+	/// specify the icon name or identifier. To specify an identifier, use the syntax "#num".
+	/// </param>
+	/// <param name="childStyle">The control style. This value will be combined with the values from <paramref name="style"/>.</param>
+	/// <param name="style">The window style of the window being created. This parameter can be a combination of the window style values.</param>
+	/// <returns>The window handle of the child window.</returns>
+	public HWND AddChild<TStyle>(string className, int x, int y, int width, int height, int id = 0, string? text = null, TStyle childStyle = default, 
+		WindowStyles style = WindowStyles.WS_TABSTOP | WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD) where TStyle : unmanaged =>
+		CreateWindow(className, text, style | (WindowStyles)Convert.ToUInt32(childStyle), x, y, width, height, Handle, (IntPtr)id).ReleaseOwnership();
+
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
 	/// message pump.
@@ -379,11 +441,12 @@ public class VisibleWindow : WindowBase
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
 	/// </para>
 	/// </param>
-	public static void Run<TWin>(WindowClass? wc = null, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
+	public static void Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default) where TWin : VisibleWindow, new()
 	{
 		using TWin win = new();
-		win.CreateHandle(wc, text, size, position, style, exStyle, parent, hMenu);
+		if (win.Handle.IsNull)
+			win.CreateHandle(wc, text, size, position, style, exStyle, parent, hMenu);
 		win.Show();
 		new MessagePump().Run(win);
 	}
@@ -450,7 +513,8 @@ public class VisibleWindow : WindowBase
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default) where TWin : VisibleWindow, new()
 	{
 		using TWin win = new();
-		win.CreateHandle(null, text, size, position, style, exStyle, parent, hMenu);
+		if (win.Handle.IsNull)
+			win.CreateHandle(null, text, size, position, style, exStyle, parent, hMenu);
 		win.Show();
 		new MessagePump().Run(win);
 	}

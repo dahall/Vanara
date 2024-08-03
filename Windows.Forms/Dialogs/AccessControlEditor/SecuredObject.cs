@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Microsoft.Win32;
+using System.IO;
 using System.Reflection;
 using System.Security.AccessControl;
 using Vanara.Extensions.Reflection;
@@ -8,20 +9,20 @@ namespace Vanara.Security.AccessControl;
 /* Derivatives of NativeObjectSecurity: (default is Group|Owner|Access)
 	Security												Object.GetSecurityControl()						V	Sec	Nm
 	===========												===========================						==	===	===
-	System.IO.Pipes.PipeSecurity							System.IO.Pipes.PipeStream						3.5	N
+	Pipes.PipeSecurity							Pipes.PipeStream						3.5	N
 	EventWaitHandleSecurity									System.Threading.EventWaitHandle				2	N
-	FileSystemSecurity										System.IO.DirectoryInfo, FileInfo				2	Y	Name
-	FileSystemSecurity										System.IO.FileStream							2	N	Name
+	FileSystemSecurity										DirectoryInfo, FileInfo				2	Y	Name
+	FileSystemSecurity										FileStream							2	N	Name
 	MutexSecurity											System.Threading.Mutex							2	N
 	ObjectSecurity<T>																						4	N
 	RegistrySecurity										System.Win32.RegistryKey						2	Y	Name
 	SemaphoreSecurity										System.Threading.Semaphore						2	N
-	System.IO.MemoryMappedFiles.MemoryMappedFileSecurity	System.IO.MemoryMappedFiles.MemoryMappedFile	4	N
+	MemoryMappedFiles.MemoryMappedFileSecurity	MemoryMappedFiles.MemoryMappedFile	4	N
 */
 
 internal class SecuredObject
 {
-	private static readonly string[] nonContainerTypes = new string[] { "FileSecurity", "PipeSecurity", "CryptoKeySecurity", "MemoryMappedFileSecurity", "TaskSecurity" };
+	private static readonly string[] nonContainerTypes = ["FileSecurity", "PipeSecurity", "CryptoKeySecurity", "MemoryMappedFileSecurity", "TaskSecurity"];
 
 	public SecuredObject(CommonObjectSecurity security, string objName, string displayName)
 	{
@@ -37,15 +38,15 @@ internal class SecuredObject
 	/// <remarks>
 	/// Known objects can include:
 	/// <list type="bullet">
-	///   <item><description>System.IO.Pipes.PipeStream</description></item>
+	///   <item><description>Pipes.PipeStream</description></item>
 	///   <item><description><see cref="System.Threading.EventWaitHandle"/></description></item>
-	///   <item><description><see cref="System.IO.DirectoryInfo"/></description></item>
-	///   <item><description><see cref="System.IO.FileInfo"/></description></item>
-	///   <item><description><see cref="System.IO.FileStream"/></description></item>
+	///   <item><description><see cref="DirectoryInfo"/></description></item>
+	///   <item><description><see cref="FileInfo"/></description></item>
+	///   <item><description><see cref="FileStream"/></description></item>
 	///   <item><description><see cref="System.Threading.Mutex"/></description></item>
 	///   <item><description>System.Win32.RegistryKey</description></item>
 	///   <item><description><see cref="System.Threading.Semaphore"/></description></item>
-	///   <item><description>System.IO.MemoryMappedFiles.MemoryMappedFile</description></item>
+	///   <item><description>MemoryMappedFiles.MemoryMappedFile</description></item>
 	///   <item><description><see cref="CommonObjectSecurity"/> or derived class. <c>Note:</c> When using this option, be sure to 
 	///   set the <see cref="IsContainer"/>, <see cref="ResourceType"/>, <see cref="ObjectName"/>, and <see cref="TargetServer"/> properties.</description></item>
 	///   <item><description>Any object that supports the following methods and properties:
@@ -89,26 +90,17 @@ internal class SecuredObject
 		CommonObjectSecurity? objectSecurity = null;
 		if (objectSecurity == null)
 		{
-			try
-			{
-				objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl", AccessControlSections.All);
-			}
+			try { objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl", AccessControlSections.All); }
 			catch (TargetInvocationException)
 			{
-				try
-				{
-					objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl", minACS);
-				}
+				try { objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl", minACS); }
 				catch { }
 			}
 			catch { }
 		}
 		if (objectSecurity == null)
 		{
-			try
-			{
-				objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl");
-			}
+			try { objectSecurity = knownObject.InvokeMethod<CommonObjectSecurity>("GetAccessControl"); }
 			catch { }
 		}
 		ObjectSecurity = objectSecurity ?? throw new ArgumentException("Object must be valid and have a GetAccessControl member."); ;
@@ -118,7 +110,7 @@ internal class SecuredObject
 		{
 			case "RegistryKey":
 				ObjectName = knownObject.GetPropertyValue<string>("Name") ?? throw new ArgumentException("Unable to retrieve an object name.", nameof(knownObject));
-				DisplayName = System.IO.Path.GetFileNameWithoutExtension(ObjectName);
+				DisplayName = Path.GetFileNameWithoutExtension(ObjectName);
 				break;
 
 			case "Task":
@@ -162,8 +154,11 @@ FinalInit:
 	public string DisplayName { get; set; }
 
 	public bool IsContainer { get; set; }
+
 	public SystemMandatoryLabel MandatoryLabel { get; }
+
 	public string ObjectName { get; set; }
+
 	public CommonObjectSecurity ObjectSecurity { get; }
 
 	public ResourceType ResourceType => GetResourceType(ObjectSecurity);
@@ -189,11 +184,11 @@ FinalInit:
 		{
 			case ResourceType.FileObject:
 				if (!string.IsNullOrEmpty(serverName))
-					objName = System.IO.Path.Combine(serverName, objName);
-				if (System.IO.File.Exists(objName))
-					obj = new System.IO.FileInfo(objName);
-				else if (System.IO.Directory.Exists(objName))
-					obj = new System.IO.DirectoryInfo(objName);
+					objName = Path.Combine(serverName, objName);
+				if (File.Exists(objName))
+					obj = new FileInfo(objName);
+				else if (Directory.Exists(objName))
+					obj = new DirectoryInfo(objName);
 				break;
 
 			case ResourceType.RegistryKey:
@@ -204,9 +199,7 @@ FinalInit:
 				obj = GetTaskObj(objName, serverName);
 				break;
 		}
-		if (obj == null)
-			throw new ArgumentException("Unable to create an object from supplied arguments.");
-		return obj;
+		return obj ?? throw new ArgumentException("Unable to create an object from supplied arguments.");
 	}
 
 	public static ResourceType GetResourceType(CommonObjectSecurity sec) => sec.GetType().Name switch
@@ -230,10 +223,10 @@ FinalInit:
 	{
 		var obj = (newBase ?? BaseObject) ?? throw new ArgumentNullException(nameof(newBase), @"Either newBase or BaseObject must not be null.");
 		var mi = obj.GetType().GetMethod("SetAccessControl", BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null) ?? throw new InvalidOperationException("Either newBase or BaseObject must represent a securable object.");
-		mi.Invoke(obj, new object[] { ObjectSecurity });
+		mi.Invoke(obj, [ObjectSecurity]);
 	}
 
-	private static Microsoft.Win32.RegistryKey? GetKeyFromKeyName(string? keyName, string? serverName)
+	private static RegistryKey? GetKeyFromKeyName(string? keyName, string? serverName)
 	{
 		if (keyName == null)
 			return null;
@@ -241,40 +234,20 @@ FinalInit:
 		var index = keyName.IndexOf('\\');
 		var str = index != -1 ? keyName.Substring(0, index).ToUpper(System.Globalization.CultureInfo.InvariantCulture) : keyName.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
 
-		Microsoft.Win32.RegistryHive hive;
-		switch (str)
+		RegistryHive hive = str switch
 		{
-			case "HKEY_CURRENT_USER":
-				hive = Microsoft.Win32.RegistryHive.CurrentUser;
-				break;
-
-			case "HKEY_LOCAL_MACHINE":
-				hive = Microsoft.Win32.RegistryHive.LocalMachine;
-				break;
-
-			case "HKEY_CLASSES_ROOT":
-				hive = Microsoft.Win32.RegistryHive.ClassesRoot;
-				break;
-
-			case "HKEY_USERS":
-				hive = Microsoft.Win32.RegistryHive.Users;
-				break;
-
-			case "HKEY_PERFORMANCE_DATA":
-				hive = Microsoft.Win32.RegistryHive.PerformanceData;
-				break;
-
-			case "HKEY_CURRENT_CONFIG":
-				hive = Microsoft.Win32.RegistryHive.CurrentConfig;
-				break;
-
-			default:
-				return null;
-		}
-
+			"HKEY_CURRENT_USER" => RegistryHive.CurrentUser,
+			"HKEY_LOCAL_MACHINE" => RegistryHive.LocalMachine,
+			"HKEY_CLASSES_ROOT" => RegistryHive.ClassesRoot,
+			"HKEY_USERS" => RegistryHive.Users,
+			"HKEY_PERFORMANCE_DATA" => RegistryHive.PerformanceData,
+			"HKEY_CURRENT_CONFIG" => RegistryHive.CurrentConfig,
+			_ => 0,
+		};
+		if (hive == 0) return null;
 		serverName ??= string.Empty;
 
-		var retVal = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(hive, serverName);
+		using var retVal = RegistryKey.OpenRemoteBaseKey(hive, serverName);
 
 		if (index == -1 || index == keyName.Length)
 			return retVal;
@@ -291,7 +264,7 @@ FinalInit:
 						 Extensions.ReflectionExtensions.LoadType("Microsoft.Win32.TaskScheduler.TaskService", "Microsoft.Win32.TaskScheduler-Merged.dll");
 			if (tsType != null)
 			{
-				var ts = Activator.CreateInstance(tsType, serverName, null, null, null, false);
+				var ts = Activator.CreateInstance(tsType, serverName, null, null, "", false);
 				if (ts != null)
 				{
 					try

@@ -78,12 +78,14 @@ public static partial class Shell32
 		/// An IShellItem object for the library definition file to load. An error is returned if this object is not a library.
 		/// </param>
 		/// <param name="grfMode">One or more STGM storage medium flags that specify access and sharing modes for the library object.</param>
-		void LoadLibraryFromItem([In, MarshalAs(UnmanagedType.Interface)] IShellItem library, [In] STGM grfMode);
+		[PreserveSig]
+		HRESULT LoadLibraryFromItem([In, MarshalAs(UnmanagedType.Interface)] IShellItem library, [In] STGM grfMode);
 
 		/// <summary>Loads the library that is referenced by a KNOWNFOLDERID.</summary>
 		/// <param name="knownfidLibrary">The KNOWNFOLDERID value that identifies the library to load.</param>
 		/// <param name="grfMode">One or more STGM storage medium flags that specify access and sharing modes for the library object.</param>
-		void LoadLibraryFromKnownFolder(in Guid knownfidLibrary, [In] STGM grfMode);
+		[PreserveSig]
+		HRESULT LoadLibraryFromKnownFolder(in Guid knownfidLibrary, [In] STGM grfMode);
 
 		/// <summary>Adds a folder to the library.</summary>
 		/// <param name="location">An IShellItem object that represents the folder to be added to the library.</param>
@@ -473,15 +475,19 @@ public static partial class Shell32
 	public static extern HRESULT SHShowManageLibraryUI(IShellItem psiLibrary, [Optional] HWND hwndOwner, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszTitle,
 		[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszInstruction, LIBRARYMANAGEDIALOGOPTIONS lmdOptions);
 
-	private static HRESULT SHCreateLibrary(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, Action<IShellLibrary>? action)
+	private static HRESULT SHCreateLibrary(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, Func<IShellLibrary, HRESULT>? action)
 	{
 		IShellLibrary l = new();
 		try
 		{
-			action?.Invoke(l);
+			HRESULT hr = action?.Invoke(l) ?? HRESULT.S_OK;
+			if (hr != HRESULT.S_OK)
+			{
+				ppv = null;
+				return hr;
+			}
 			return l.QueryInterface(riid, out ppv);
 		}
-		catch (Exception ex) { ppv = null; return ex.HResult; }
 		finally { Marshal.ReleaseComObject(l); }
 	}
 

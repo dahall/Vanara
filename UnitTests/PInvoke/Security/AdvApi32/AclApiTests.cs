@@ -1,4 +1,7 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.AccessControl;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests;
@@ -131,8 +134,93 @@ public class AclApiTests
 	{
 		Assert.That(GetSecurityDescriptorDacl(pSd, out _, out var pDacl, out _), ResultIs.Successful);
 		BuildExplicitAccessWithName(out var ea, $"{Environment.MachineName}\\Invalid", 0x10000000, ACCESS_MODE.SET_ACCESS, 0);
-		var entries = new[] { ea };
+		EXPLICIT_ACCESS[] entries = [ ea ];
 		Assert.That(SetEntriesInAcl((uint)entries.Length, entries, pDacl, out _), ResultIs.FailureCode(Win32Error.ERROR_NONE_MAPPED));
+	}
+
+	[Test]
+	public void CloneAclTest()
+	{
+		Assert.That(GetSecurityDescriptorDacl(pSd, out _, out var pDacl, out _), ResultIs.Successful);
+		using SafePACL dacl = pDacl;
+		using SafePACE ace0 = dacl[0];
+		var aceCount = dacl.Count;
+		dacl.RemoveAt(0);
+		Assert.That(dacl.Count, Is.EqualTo(aceCount - 1));
+		using SafePACL dacl2 = dacl.Clone();
+		Assert.That(dacl.Equals(dacl2), Is.True);
+		dacl2.Insert(0, ace0);
+		Assert.That(dacl2.Count, Is.EqualTo(aceCount));
+	}
+
+	[Test]
+	public void SafePACETest()
+	{
+		Assert.That(GetSecurityDescriptorDacl(pSd, out _, out var pDacl, out _), ResultIs.Successful);
+		using SafePACL dacl = pDacl;
+		List<SafePACE> aces = [.. dacl];
+		using SafePACE ace = aces[0];
+
+		var c = dacl.Count;
+		var l = dacl.BytesInUse;
+		Assert.That(dacl.BytesInUse, Is.GreaterThan(0));
+		Assert.That(dacl.IndexOf(ace), Is.EqualTo(0));
+		Assert.That(dacl.Remove(ace), Is.True);
+		Assert.That(dacl.Count, Is.LessThan(c));
+		Assert.That(dacl.BytesInUse, Is.LessThan(l));
+
+		dacl.Clear();
+		Assert.That(dacl.AceCount, Is.Zero);
+		Assert.That(dacl.BytesInUse, Is.LessThan(16));
+
+		aces.ForEach(a => dacl.Add(a));
+		Assert.That(dacl.AceCount, Is.EqualTo(aces.Count));
+	}
+
+	[Test]
+	public void SafePACLTest()
+	{
+		EXPLICIT_ACCESS[] ea = [
+			new(ACCESS_MASK.GENERIC_ALL, ACCESS_MODE.GRANT_ACCESS, 0, Environment.UserName),
+			new(ACCESS_MASK.GENERIC_EXECUTE, ACCESS_MODE.DENY_ACCESS, 0, Environment.UserName),
+		];
+		using SafePACL pacl = new(ea);
+		Assert.That(pacl.Count, Is.EqualTo(ea.Length));
+		Assert.That(pacl[0].GetAceType(), Is.EqualTo(AceType.AccessDenied));
+		var bl = pacl.BytesInUse;
+
+		using SafePACE newAce2 = new(ACE_TYPE.ACCESS_DENIED_ACE_TYPE, ACCESS_MASK.GENERIC_EXECUTE, SafePSID.Current);
+		Assert.That(newAce2.CompareTo(pacl[0]), Is.Zero);
+
+		pacl.RemoveAt(1);
+		Assert.That(bl, Is.GreaterThan(pacl.BytesInUse));
+
+		using SafePACL pacl2 = pacl.Clone();
+		Assert.That(pacl.BytesInUse, Is.EqualTo(pacl2.BytesInUse));
+		Assert.That(pacl.BytesInUse, Is.EqualTo(pacl2.Length));
+	}
+
+	[Test]
+	public void SortAclAcesTest()
+	{
+		Assert.That(GetSecurityDescriptorDacl(pSd, out _, out var pDacl, out _), ResultIs.Successful);
+		using SafePACL dacl = pDacl;
+		List<SafePACE> aces = [.. dacl];
+		var icnt = aces.Count(a => a.IsInherited);
+		Assert.That(aces.Count, Is.EqualTo(dacl.AceCount));
+
+		using SafePACE newAce = new(ACE_TYPE.ACCESS_ALLOWED_ACE_TYPE, ACCESS_MASK.GENERIC_ALL, SafePSID.Current, appData: BitConverter.GetBytes(long.MaxValue));
+		aces.Add(newAce);
+		using SafePACE newAce2 = new(ACE_TYPE.ACCESS_DENIED_ACE_TYPE, ACCESS_MASK.GENERIC_EXECUTE, SafePSID.Current);
+		aces.Add(newAce2);
+
+		aces.Sort(SafePACE.Comparer);
+		Assert.That(aces.IndexOf(newAce), Is.GreaterThan(aces.IndexOf(newAce2)));
+		Assert.That(aces.IndexOf(newAce), Is.LessThan(aces.Count - icnt));
+		Assert.That(aces[^1].IsInherited, Is.True);
+
+		using SafePACL newDacl = new(aces);
+		Assert.That(newDacl.IsValidAcl, Is.True);
 	}
 
 	[Test]

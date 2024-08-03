@@ -262,7 +262,7 @@ public static partial class AdvApi32
 		if (!ConvertStringSecurityDescriptorToSecurityDescriptor(StringSecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, out var sd, out var sz))
 			throw new Win32Exception();
 		using (sd)
-			return new SafePSECURITY_DESCRIPTOR(sd.GetBytes(0, (int)sz));
+			return new SafePSECURITY_DESCRIPTOR(sd.TakeOwnership(), true);
 	}
 
 	/// <summary>
