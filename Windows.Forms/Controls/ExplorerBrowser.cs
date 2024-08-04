@@ -367,12 +367,12 @@ public class ExplorerBrowser : Control, ICommDlgBrowser3, IExplorerBrowserEvents
 	[Category("Action"), Description("Items changed.")]
 	public event EventHandler? ItemsChanged;
 
-	/// <summary>Fires when the ExplorerBorwser view has finished enumerating files.</summary>
+	/// <summary>Fires when the ExplorerBrowser view has finished enumerating files.</summary>
 	[Category("Behavior"), Description("View is done enumerating files.")]
 	public event EventHandler? ItemsEnumerated;
 
 	/// <summary>
-	/// Fires when a navigation has been 'completed': no Navigating listener has canceled, and the ExplorerBorwser has created a new
+	/// Fires when a navigation has been 'completed': no Navigating listener has canceled, and the ExplorerBrowser has created a new
 	/// view. The view will be populated with new items asynchronously, and ItemsChanged will be fired to reflect this some time later.
 	/// </summary>
 	[Category("Action"), Description("Navigation complete.")]
