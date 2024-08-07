@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Vanara.PInvoke.VssApi</id>
-    <version>4.0.3</version>
+    <version>4.0.4</version>
     <description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</description>
     <copyright>Copyright © 2017-2024</copyright>
     <authors>David Hall</authors>
@@ -16,8 +16,8 @@
     <language>en-US</language>
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="Vanara.Core" version="4.0.3" exclude="Build,Analyzers" />
-        <dependency id="Vanara.PInvoke.Shared" version="4.0.3" exclude="Build,Analyzers" />
+        <dependency id="Vanara.Core" version="4.0.4" exclude="Build,Analyzers" />
+        <dependency id="Vanara.PInvoke.Shared" version="4.0.4" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <releaseNotes></releaseNotes>
