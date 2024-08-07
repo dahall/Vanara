@@ -5244,11 +5244,8 @@ public static partial class AdvApi32
 				if (value == Size) return;
 				if (value < Length)
 					throw new ArgumentException("Current ACE consumes more space that has been specified.", nameof(Size));
-				// Make sure divisible by 4.
-				if (value % 4 != 0)
-					throw new ArgumentOutOfRangeException(nameof(Size), "ACE values must be DWORD aligned. This value must be a multiple of 4.");
-				// Use base property to copy and expand the underlying memory
-				base.Size = value;
+				// Make sure divisible by 4. Use base property to copy and expand the underlying memory
+				base.Size = Macros.ALIGN_TO_MULTIPLE(value, 4);
 			}
 		}
 
@@ -5394,9 +5391,9 @@ public static partial class AdvApi32
 		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class to an empty memory buffer.</summary>
 		/// <param name="size">The size of the uninitialized access control list.</param>
 		/// <param name="revision">ACL revision.</param>
-		public SafePACL(int size, uint revision = ACL_REVISION) : base(size)
+		public SafePACL(int size, uint revision = ACL_REVISION) : base(Macros.ALIGN_TO_MULTIPLE(size, 4))
 		{
-			if (size % 4 != 0 || size < AclStructSize) throw new ArgumentOutOfRangeException(nameof(size), $"ACL structures must be DWORD aligned. This value must be a multiple of 4 and larger than {AclStructSize}.");
+			if (size < AclStructSize) throw new ArgumentOutOfRangeException(nameof(size), $"This value must be larger than {AclStructSize}.");
 			InitializeAcl(handle, (uint)size, revision);
 		}
 
@@ -5467,11 +5464,8 @@ public static partial class AdvApi32
 				if (value == Size) return;
 				if (value < Length)
 					throw new ArgumentException("Current ACL consumes more space that has been specified.", nameof(Size));
-				// Make sure divisible by 4.
-				if (value % 4 != 0)
-					throw new ArgumentOutOfRangeException(nameof(Size), "ACL structures must be DWORD aligned. This value must be a multiple of 4.");
-				// Use base property to copy and expand the underlying memory
-				base.Size = value;
+				// Make sure divisible by 4. Use base property to copy and expand the underlying memory
+				base.Size = Macros.ALIGN_TO_MULTIPLE(value, 4);
 				handle.AsSpan<ACL>(1)[0].AclSize = (ushort)(ulong)value;
 			}
 		}
