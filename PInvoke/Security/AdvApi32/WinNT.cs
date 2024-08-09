@@ -6006,17 +6006,87 @@ public static partial class AdvApi32
 		public (SafePSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafePACL pDacl, SafePACL pSacl, SafePSID pOwner, SafePSID pPrimaryGroup) MakeAbsolute()
 		{
 			uint cSD = 0, cOwn = 0, cGrp = 0, cDacl = 0, cSacl = 0;
-			if (!MakeAbsoluteSD(this, Null, ref cSD, SafePACL.Null, ref cDacl, SafePACL.Null, ref cSacl, SafePSID.Null, ref cOwn, SafePSID.Null, ref cGrp))
+			if (!MakeAbsoluteSD(this, IntPtr.Zero, ref cSD, IntPtr.Zero, ref cDacl, IntPtr.Zero, ref cSacl, IntPtr.Zero, ref cOwn, IntPtr.Zero, ref cGrp))
 				Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
 
 			var pSD = new SafePSECURITY_DESCRIPTOR((int)cSD);
-			var pDacl = new SafePACL((int)cDacl);
-			var pSacl = new SafePACL((int)cSacl);
-			var pOwn = new SafePSID((SizeT)cOwn);
-			var pGrp = new SafePSID((SizeT)cGrp);
+			var pDacl = cDacl == 0 ? SafePACL.Null : new SafePACL((int)cDacl);
+			var pSacl = cSacl == 0 ? SafePACL.Null : new SafePACL((int)cSacl);
+			var pOwn = cOwn == 0 ? SafePSID.Null : new SafePSID((SizeT)cOwn);
+			var pGrp = cGrp == 0 ? SafePSID.Null : new SafePSID((SizeT)cGrp);
 			if (!MakeAbsoluteSD(this, pSD, ref cSD, pDacl, ref cDacl, pSacl, ref cSacl, pOwn, ref cOwn, pGrp, ref cGrp))
 				Win32Error.ThrowLastError();
 			return (pSD, pDacl, pSacl, pOwn, pGrp);
+		}
+
+		/// <summary>
+		/// The <c>MakeAbsoluteSD</c> function creates a security descriptor in absolute format by using a security descriptor in
+		/// self-relative format as a template and packing all related objects into a single memory allocation.
+		/// </summary>
+		/// <returns>
+		/// An absolute-format security descriptor. This information is formatted as a SECURITY_DESCRIPTOR structure with memory allocated for the
+		/// SACL, DACL, owner SId, and group SID directly following.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A security descriptor in absolute format contains pointers to the information it contains, rather than the information
+		/// itself. A security descriptor in self-relative format contains the information in a contiguous block of memory. In a
+		/// self-relative security descriptor, a SECURITY_DESCRIPTOR structure always starts the information, but the security
+		/// descriptor's other components can follow the structure in any order. Instead of using memory addresses, the components of the
+		/// self-relative security descriptor are identified by offsets from the beginning of the security descriptor. This format is
+		/// useful when a security descriptor must be stored on a floppy disk or transmitted by means of a communications protocol.
+		/// </para>
+		/// <para>
+		/// A server that copies secured objects to various media can use the <c>MakeAbsoluteSD</c> function to create an absolute
+		/// security descriptor from a self-relative security descriptor and the MakeSelfRelativeSD function to create a self-relative
+		/// security descriptor from an absolute security descriptor.
+		/// </para>
+		/// </remarks>
+		public SafePSECURITY_DESCRIPTOR MakePackedAbsolute()
+		{
+			// Get all element sizes
+			uint cSD = 0, cOwn = 0, cGrp = 0, cDacl = 0, cSacl = 0;
+			if (!MakeAbsoluteSD(this, IntPtr.Zero, ref cSD, IntPtr.Zero, ref cDacl, IntPtr.Zero, ref cSacl, IntPtr.Zero, ref cOwn, IntPtr.Zero, ref cGrp))
+				Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+
+			// Allocate enough space for all elements behind the SECURITY_DESCRIPTOR
+			SafePSECURITY_DESCRIPTOR safePSECURITY_DESCRIPTOR = new((int)(cSD + cDacl + cSacl + cOwn + cGrp));
+			IntPtr p = safePSECURITY_DESCRIPTOR.DangerousGetHandle();
+
+			// Retrieve all elements into the allocated memory
+			Win32Error.ThrowLastErrorIfFalse(MakeAbsoluteSD(this, safePSECURITY_DESCRIPTOR, ref cSD, p.Offset(cSD), ref cDacl,
+				p.Offset(cSD + cDacl), ref cSacl, p.Offset(cSD + cDacl + cSacl), ref cOwn, p.Offset(cSD + cDacl + cSacl + cOwn), ref cGrp));
+			return safePSECURITY_DESCRIPTOR;
+		}
+
+		/// <summary>
+		/// The <c>MakeSelfRelativeSD</c> function creates a security descriptor in self-relative format by using the current security
+		/// descriptor in absolute format as a template.
+		/// </summary>
+		/// <returns>A newly allocated security descriptor in self-relative format.</returns>
+		/// <remarks>
+		/// <para>
+		/// A security descriptor in absolute format contains pointers to the information it contains, rather than containing the information
+		/// itself. A security descriptor in self-relative format contains the information in a contiguous block of memory. In a
+		/// self-relative security descriptor, a SECURITY_DESCRIPTOR structure always starts the information, but the security descriptor's
+		/// other components can follow the structure in any order. Instead of using memory addresses, the components of the security
+		/// descriptor are identified by offsets from the beginning of the security descriptor. This format is useful when a security
+		/// descriptor must be stored on a floppy disk or transmitted by means of a communications protocol.
+		/// </para>
+		/// <para>
+		/// A server that copies secured objects to various media can use the <c>MakeSelfRelativeSD</c> function to create a self-relative
+		/// security descriptor from an absolute security descriptor and the MakeAbsoluteSD function to create an absolute security
+		/// descriptor from a self-relative security descriptor.
+		/// </para>
+		/// </remarks>
+		public SafePSECURITY_DESCRIPTOR MakeSelfRelative()
+		{
+			uint cSD = 0;
+			if (!MakeSelfRelativeSD(this, Null, ref cSD))
+				Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+			SafePSECURITY_DESCRIPTOR safePSECURITY_DESCRIPTOR = new((int)cSD);
+			Win32Error.ThrowLastErrorIfFalse(MakeSelfRelativeSD(this, safePSECURITY_DESCRIPTOR, ref cSD));
+			return safePSECURITY_DESCRIPTOR;
 		}
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
