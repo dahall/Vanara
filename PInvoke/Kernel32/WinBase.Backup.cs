@@ -2,6 +2,79 @@
 
 public static partial class Kernel32
 {
+	/// <summary>Type of data in a <see cref="WIN32_STREAM_ID"/>.</summary>
+	[PInvokeData("winbase.h", MSDNShortId = "NS:winbase._WIN32_STREAM_ID")]
+	[Flags]
+	public enum BACKUP_STREAM_ATTR : uint
+	{
+		/// <summary>This backup stream has no special attributes.</summary>
+		STREAM_NORMAL_ATTRIBUTE = 0x00000000,
+
+		/// <summary>
+		/// Attribute set if the stream contains data that is modified when read. Allows the backup application to know that verification of
+		/// data will fail.
+		/// </summary>
+		STREAM_MODIFIED_WHEN_READ = 0x00000001,
+
+		/// <summary>Stream contains security data (general attributes). Allows the stream to be ignored on cross-operations restore.</summary>
+		STREAM_CONTAINS_SECURITY = 0x00000002,
+
+		/// <summary>The stream contains properties.</summary>
+		STREAM_CONTAINS_PROPERTIES = 0x00000004,
+
+		/// <summary>
+		/// The backup stream is part of a sparse file stream. This attribute applies only to backup stream of type DATA, ALTERNATE_DATA, and SPARSE_BLOCK.
+		/// </summary>
+		STREAM_SPARSE_ATTRIBUTE = 0x00000008,
+
+		/// <summary>The backup stream contains ghosted extents. This attribute applies only to backup stream of type DATA.</summary>
+		STREAM_CONTAINS_GHOSTED_FILE_EXTENTS = 0x00000010,
+	}
+
+	/// <summary>Type of data in a <see cref="WIN32_STREAM_ID"/>.</summary>
+	[PInvokeData("winbase.h", MSDNShortId = "NS:winbase._WIN32_STREAM_ID")]
+	public enum BACKUP_STREAM_ID : uint
+	{
+		/// <summary>The backup type is invalid.</summary>
+		BACKUP_INVALID = 0x00000000,
+
+		/// <summary>Standard data. This corresponds to the NTFS $DATA stream type on the default (unnamed) data stream.</summary>
+		BACKUP_DATA = 0x00000001,
+
+		/// <summary>Extended attribute data. This corresponds to the NTFS $EA stream type.</summary>
+		BACKUP_EA_DATA = 0x00000002,
+
+		/// <summary>Security descriptor data.</summary>
+		BACKUP_SECURITY_DATA = 0x00000003,
+
+		/// <summary>Alternative data streams. This corresponds to the NTFS $DATA stream type on a named data stream.</summary>
+		BACKUP_ALTERNATE_DATA = 0x00000004,
+
+		/// <summary>Hard link information. This corresponds to the NTFS $FILE_NAME stream type.</summary>
+		BACKUP_LINK = 0x00000005,
+
+		/// <summary>Property data.</summary>
+		BACKUP_PROPERTY_DATA = 0x00000006,
+
+		/// <summary>Objects identifiers. This corresponds to the NTFS $OBJECT_ID stream type.</summary>
+		BACKUP_OBJECT_ID = 0x00000007,
+
+		/// <summary>Reparse points. This corresponds to the NTFS $REPARSE_POINT stream type.</summary>
+		BACKUP_REPARSE_DATA = 0x00000008,
+
+		/// <summary>Sparse file. This corresponds to the NTFS $DATA stream type for a sparse file.</summary>
+		BACKUP_SPARSE_BLOCK = 0x00000009,
+
+		/// <summary>
+		/// Transactional NTFS (TxF) data stream. This corresponds to the NTFS $TXF_DATA stream type. <c>Windows Server 2003 and
+		/// Windows XP:  </c> This value is not supported.
+		/// </summary>
+		BACKUP_TXFS_DATA = 0x0000000a,
+
+		/// <summary>Ghosted extents.</summary>
+		BACKUP_GHOSTED_FILE_EXTENTS = 0x0000000b,
+	}
+
 	/// <summary>Erasing technique.</summary>
 	public enum TAPE_ERASE_TYPE
 	{
@@ -55,14 +128,10 @@ public static partial class Kernel32
 		/// <summary>The device supports immediate rewind operation.</summary>
 		TAPE_DRIVE_REWIND_IMMEDIATE = 0x80000008,
 
-		/// <summary>
-		/// The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive filemarks.
-		/// </summary>
+		/// <summary>The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive filemarks.</summary>
 		TAPE_DRIVE_SEQUENTIAL_FMKS = 0x80080000,
 
-		/// <summary>
-		/// The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive setmarks.
-		/// </summary>
+		/// <summary>The device moves the tape forward (or backward) to the first occurrence of a specified number of consecutive setmarks.</summary>
 		TAPE_DRIVE_SEQUENTIAL_SMKS = 0x80200000,
 
 		/// <summary>The device supports setting the size of a fixed-length logical block or setting the variable-length block mode.</summary>
@@ -215,8 +284,8 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the
-		/// partitions is determined by the device's default partition size. For more specific information, see the documentation for
-		/// your tape device.
+		/// partitions is determined by the device's default partition size. For more specific information, see the documentation for your
+		/// tape device.
 		/// </summary>
 		TAPE_SELECT_PARTITIONS = 1
 	}
@@ -230,9 +299,7 @@ public static partial class Kernel32
 		/// </summary>
 		TAPE_ABSOLUTE_BLOCK = 1,
 
-		/// <summary>
-		/// Moves the tape to the block address specified by dwOffsetLow and dwOffsetHigh in the partition specified by dwPartition.
-		/// </summary>
+		/// <summary>Moves the tape to the block address specified by dwOffsetLow and dwOffsetHigh in the partition specified by dwPartition.</summary>
 		TAPE_LOGICAL_BLOCK = 2,
 
 		/// <summary>
@@ -244,14 +311,14 @@ public static partial class Kernel32
 		TAPE_SPACE_END_OF_DATA = 4,
 
 		/// <summary>
-		/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current
-		/// partition. The dwPartition parameter is ignored.
+		/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current partition.
+		/// The dwPartition parameter is ignored.
 		/// </summary>
 		TAPE_SPACE_FILEMARKS = 6,
 
 		/// <summary>
-		/// Moves the tape forward (or backward) the number of blocks specified by dwOffsetLow and dwOffsetHigh in the current partition.
-		/// The dwPartition parameter is ignored.
+		/// Moves the tape forward (or backward) the number of blocks specified by dwOffsetLow and dwOffsetHigh in the current partition. The
+		/// dwPartition parameter is ignored.
 		/// </summary>
 		TAPE_SPACE_RELATIVE_BLOCKS = 5,
 
@@ -268,8 +335,8 @@ public static partial class Kernel32
 		TAPE_SPACE_SEQUENTIAL_SMKS = 9,
 
 		/// <summary>
-		/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current
-		/// partition. The dwPartition parameter is ignored.
+		/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current partition.
+		/// The dwPartition parameter is ignored.
 		/// </summary>
 		TAPE_SPACE_SETMARKS = 8,
 	}
@@ -283,8 +350,8 @@ public static partial class Kernel32
 		TAPE_ABSOLUTE_POSITION = 0,
 
 		/// <summary>
-		/// The lpdwOffsetLow and lpdwOffsetHigh parameters receive the logical block address. The dwPartition parameter receives the
-		/// logical tape partition.
+		/// The lpdwOffsetLow and lpdwOffsetHigh parameters receive the logical block address. The dwPartition parameter receives the logical
+		/// tape partition.
 		/// </summary>
 		TAPE_LOGICAL_POSITION = 1
 	}
@@ -308,8 +375,8 @@ public static partial class Kernel32
 		TAPE_TENSION = 2,
 
 		/// <summary>
-		/// Moves the tape to the beginning for removal from the device. After a successful unload operation, the device returns errors
-		/// to applications that attempt to access the tape, until the tape is loaded again.
+		/// Moves the tape to the beginning for removal from the device. After a successful unload operation, the device returns errors to
+		/// applications that attempt to access the tape, until the tape is loaded again.
 		/// </summary>
 		TAPE_UNLOAD = 1,
 
@@ -340,19 +407,18 @@ public static partial class Kernel32
 	/// </summary>
 	/// <param name="hFile">
 	/// <para>
-	/// Handle to the file or directory to be backed up. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not
-	/// read unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. For more information, see File
-	/// Security and Access Rights.
+	/// Handle to the file or directory to be backed up. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not read
+	/// unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. For more information, see File Security and
+	/// Access Rights.
 	/// </para>
 	/// <para>
-	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when
-	/// <c>CreateFile</c> is called. This function does not validate that the handle it receives is synchronous, so it does not return an
-	/// error code for a synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are
-	/// very difficult to debug.
+	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c>
+	/// is called. This function does not validate that the handle it receives is synchronous, so it does not return an error code for a
+	/// synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
 	/// </para>
 	/// <para>
-	/// The <c>BackupRead</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this
-	/// case, the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
+	/// The <c>BackupRead</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this case,
+	/// the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
 	/// </para>
 	/// </param>
 	/// <param name="lpBuffer">Pointer to a buffer that receives the data.</param>
@@ -367,10 +433,9 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="bAbort">
-	/// Indicates whether you have finished using <c>BackupRead</c> on the handle. While you are backing up the file, specify this
-	/// parameter as <c>FALSE</c>. Once you are done using <c>BackupRead</c>, you must call <c>BackupRead</c> one more time specifying
-	/// <c>TRUE</c> for this parameter and passing the appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all
-	/// other parameters are ignored.
+	/// Indicates whether you have finished using <c>BackupRead</c> on the handle. While you are backing up the file, specify this parameter
+	/// as <c>FALSE</c>. Once you are done using <c>BackupRead</c>, you must call <c>BackupRead</c> one more time specifying <c>TRUE</c> for
+	/// this parameter and passing the appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all other parameters are ignored.
 	/// </param>
 	/// <param name="bProcessSecurity">
 	/// <para>Indicates whether the function will restore the access-control list (ACL) data for the file or directory.</para>
@@ -378,17 +443,17 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpContext">
 	/// <para>
-	/// Pointer to a variable that receives a pointer to an internal data structure used by <c>BackupRead</c> to maintain context
-	/// information during a backup operation.
+	/// Pointer to a variable that receives a pointer to an internal data structure used by <c>BackupRead</c> to maintain context information
+	/// during a backup operation.
 	/// </para>
 	/// <para>
-	/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupRead</c> for the specified
-	/// file or directory. The function allocates memory for the data structure, and then sets the variable to point to that structure.
-	/// You must not change lpContext or the variable that it points to between calls to <c>BackupRead</c>.
+	/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupRead</c> for the specified file or
+	/// directory. The function allocates memory for the data structure, and then sets the variable to point to that structure. You must not
+	/// change lpContext or the variable that it points to between calls to <c>BackupRead</c>.
 	/// </para>
 	/// <para>
-	/// To release the memory used by the data structure, call <c>BackupRead</c> with the bAbort parameter set to <c>TRUE</c> when the
-	/// backup operation is complete.
+	/// To release the memory used by the data structure, call <c>BackupRead</c> with the bAbort parameter set to <c>TRUE</c> when the backup
+	/// operation is complete.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -397,8 +462,8 @@ public static partial class Kernel32
 	/// If the function fails, the return value is zero, indicating that an I/O error occurred. To get extended error information, call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// BOOL BackupRead( _In_ HANDLE hFile, _Out_ LPBYTE lpBuffer, _In_ DWORD nNumberOfBytesToRead, _Out_ LPDWORD lpNumberOfBytesRead,
-	// _In_ BOOL bAbort, _In_ BOOL bProcessSecurity, _Out_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362509(v=vs.85).aspx
+	// BOOL BackupRead( _In_ HANDLE hFile, _Out_ LPBYTE lpBuffer, _In_ DWORD nNumberOfBytesToRead, _Out_ LPDWORD lpNumberOfBytesRead, _In_
+	// BOOL bAbort, _In_ BOOL bProcessSecurity, _Out_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362509(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -406,16 +471,14 @@ public static partial class Kernel32
 		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
 
 	/// <summary>
-	/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or
-	/// <c>BackupWrite</c> function.
+	/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or <c>BackupWrite</c> function.
 	/// </summary>
 	/// <param name="hFile">
 	/// <para>Handle to the file or directory. This handle is created by using the <c>CreateFile</c> function.</para>
 	/// <para>
-	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when
-	/// <c>CreateFile</c> is called. This function does not validate that the handle it receives is synchronous, so it does not return an
-	/// error code for a synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are
-	/// very difficult to debug.
+	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c>
+	/// is called. This function does not validate that the handle it receives is synchronous, so it does not return an error code for a
+	/// synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
 	/// </para>
 	/// </param>
 	/// <param name="dwLowBytesToSeek">Low-order part of the number of bytes to seek.</param>
@@ -432,12 +495,10 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>
 	/// <para>If the function could seek the requested amount, the function returns a nonzero value.</para>
-	/// <para>
-	/// If the function could not seek the requested amount, the function returns zero. To get extended error information, call <c>GetLastError</c>.
-	/// </para>
+	/// <para>If the function could not seek the requested amount, the function returns zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL BackupSeek( _In_ HANDLE hFile, _In_ DWORD dwLowBytesToSeek, _In_ DWORD dwHighBytesToSeek, _Out_ LPDWORD lpdwLowByteSeeked,
-	// _Out_ LPDWORD lpdwHighByteSeeked, _In_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362510(v=vs.85).aspx
+	// BOOL BackupSeek( _In_ HANDLE hFile, _In_ DWORD dwLowBytesToSeek, _In_ DWORD dwHighBytesToSeek, _Out_ LPDWORD lpdwLowByteSeeked, _Out_
+	// LPDWORD lpdwHighByteSeeked, _In_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362510(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362510")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -450,21 +511,20 @@ public static partial class Kernel32
 	/// </summary>
 	/// <param name="hFile">
 	/// <para>
-	/// Handle to the file or directory to be restored. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not
-	/// restored unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. To ensure that the integrity
-	/// ACEs are restored correctly, the file handle must also have been created with the WRITE_OWNER access right. For more information,
-	/// see File Security and Access Rights.
+	/// Handle to the file or directory to be restored. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not restored
+	/// unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. To ensure that the integrity ACEs are
+	/// restored correctly, the file handle must also have been created with the WRITE_OWNER access right. For more information, see File
+	/// Security and Access Rights.
 	/// </para>
 	/// <para><c>Windows Server 2003 and Windows XP:</c> The WRITE_OWNER access right is not required.</para>
 	/// <para>
-	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when
-	/// <c>CreateFile</c> is called. This function does not validate that the handle it receives is synchronous, so it does not return an
-	/// error code for a synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are
-	/// very difficult to debug.
+	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c>
+	/// is called. This function does not validate that the handle it receives is synchronous, so it does not return an error code for a
+	/// synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
 	/// </para>
 	/// <para>
-	/// The <c>BackupWrite</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this
-	/// case, the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
+	/// The <c>BackupWrite</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this case,
+	/// the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
 	/// </para>
 	/// </param>
 	/// <param name="lpBuffer">Pointer to a buffer that the function writes data from.</param>
@@ -473,17 +533,17 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpNumberOfBytesWritten">Pointer to a variable that receives the number of bytes written.</param>
 	/// <param name="bAbort">
-	/// Indicates whether you have finished using <c>BackupWrite</c> on the handle. While you are restoring the file, specify this
-	/// parameter as <c>FALSE</c>. After you are done using <c>BackupWrite</c>, you must call <c>BackupWrite</c> one more time specifying
-	/// <c>TRUE</c> for this parameter and passing the appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all
-	/// other parameters are ignored.
+	/// Indicates whether you have finished using <c>BackupWrite</c> on the handle. While you are restoring the file, specify this parameter
+	/// as <c>FALSE</c>. After you are done using <c>BackupWrite</c>, you must call <c>BackupWrite</c> one more time specifying <c>TRUE</c>
+	/// for this parameter and passing the appropriate lpContext. lpContext must be passed when bAbort is <c>TRUE</c>; all other parameters
+	/// are ignored.
 	/// </param>
 	/// <param name="bProcessSecurity">
 	/// <para>Specifies whether the function will restore the access-control list (ACL) data for the file or directory.</para>
 	/// <para>
 	/// If bProcessSecurity is <c>TRUE</c>, you need to specify <c>WRITE_OWNER</c> and <c>WRITE_DAC</c> access when opening the file or
-	/// directory handle. If the handle does not have those access rights, the operating system denies access to the ACL data, and ACL
-	/// data restoration will not occur.
+	/// directory handle. If the handle does not have those access rights, the operating system denies access to the ACL data, and ACL data
+	/// restoration will not occur.
 	/// </para>
 	/// </param>
 	/// <param name="lpContext">
@@ -492,9 +552,9 @@ public static partial class Kernel32
 	/// information during a restore operation.
 	/// </para>
 	/// <para>
-	/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupWrite</c> for the specified
-	/// file or directory. The function allocates memory for the data structure, and then sets the variable to point to that structure.
-	/// You must not change lpContext or the variable that it points to between calls to <c>BackupWrite</c>.
+	/// You must set the variable pointed to by lpContext to <c>NULL</c> before the first call to <c>BackupWrite</c> for the specified file
+	/// or directory. The function allocates memory for the data structure, and then sets the variable to point to that structure. You must
+	/// not change lpContext or the variable that it points to between calls to <c>BackupWrite</c>.
 	/// </para>
 	/// <para>
 	/// To release the memory used by the data structure, call <c>BackupWrite</c> with the bAbort parameter set to <c>TRUE</c> when the
@@ -521,8 +581,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="dwPartitionMethod">
 	/// <para>
-	/// Type of partition to create. To determine what type of partitions your device supports, see the documentation for your hardware.
-	/// This parameter can have one of the following values.
+	/// Type of partition to create. To determine what type of partitions your device supports, see the documentation for your hardware. This
+	/// parameter can have one of the following values.
 	/// </para>
 	/// <para>
 	/// <list type="table">
@@ -544,9 +604,8 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>TAPE_SELECT_PARTITIONS1L</term>
 	/// <term>
-	/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the
-	/// partitions is determined by the device's default partition size. For more specific information, see the documentation for your
-	/// tape device.
+	/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the partitions
+	/// is determined by the device's default partition size. For more specific information, see the documentation for your tape device.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -653,8 +712,8 @@ public static partial class Kernel32
 	/// </list>
 	/// </param>
 	/// <param name="bImmediate">
-	/// If this parameter is <c>TRUE</c>, the function returns immediately; if it is <c>FALSE</c>, the function does not return until
-	/// the erase operation has been completed.
+	/// If this parameter is <c>TRUE</c>, the function returns immediately; if it is <c>FALSE</c>, the function does not return until the
+	/// erase operation has been completed.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is NO_ERROR.</para>
@@ -730,8 +789,8 @@ public static partial class Kernel32
 	/// Some tape devices do not support certain tape operations. To determine your tape device's capabilities, see your tape device
 	/// documentation and use the GetTapeParameters function.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-erasetape
-	// DWORD EraseTape( HANDLE hDevice, DWORD dwEraseType, BOOL bImmediate );
+	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-erasetape DWORD EraseTape( HANDLE hDevice, DWORD dwEraseType,
+	// BOOL bImmediate );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "af262e79-ebdb-4ec5-9b59-ed6725a48bdf")]
 	public static extern Win32Error EraseTape([In] HFILE hDevice, TAPE_ERASE_TYPE dwEraseType, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
@@ -760,8 +819,8 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpdwSize">
-	/// Pointer to a variable that receives the size, in bytes, of the buffer specified by the lpTapeInformation parameter. If the buffer
-	/// is too small, this parameter receives the required size.
+	/// Pointer to a variable that receives the size, in bytes, of the buffer specified by the lpTapeInformation parameter. If the buffer is
+	/// too small, this parameter receives the required size.
 	/// </param>
 	/// <param name="lpTapeInformation">
 	/// <para>
@@ -847,11 +906,11 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362526")]
 	public static extern Win32Error GetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, ref uint lpdwSize, IntPtr lpTapeInformation);
 
-	/// <summary>
-	/// The <c>GetTapeParameters</c> function retrieves information that describes the tape or the tape drive.
-	/// </summary>
+	/// <summary>The <c>GetTapeParameters</c> function retrieves information that describes the tape or the tape drive.</summary>
 	/// <typeparam name="T">Either <see cref="TAPE_GET_MEDIA_PARAMETERS"/> or <see cref="TAPE_GET_DRIVE_PARAMETERS"/>.</typeparam>
-	/// <param name="hDevice">Handle to the device about which information is sought. This handle is created by using the <c>CreateFile</c> function.</param>
+	/// <param name="hDevice">
+	/// Handle to the device about which information is sought. This handle is created by using the <c>CreateFile</c> function.
+	/// </param>
 	/// <returns>
 	/// <para>
 	/// Pointer to a structure that contains the requested information. If the dwOperation parameter is GET_TAPE_MEDIA_INFORMATION,
@@ -980,8 +1039,8 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD GetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionType, _Out_ LPDWORD lpdwPartition, _Out_ LPDWORD lpdwOffsetLow,
-	// _Out_ LPDWORD lpdwOffsetHigh); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362528(v=vs.85).aspx
+	// DWORD GetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionType, _Out_ LPDWORD lpdwPartition, _Out_ LPDWORD lpdwOffsetLow, _Out_
+	// LPDWORD lpdwOffsetHigh); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362528(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362528")]
 	public static extern Win32Error GetTapePosition([In] HFILE hDevice, TAPE_POS_TYPE dwPositionType, out uint lpdwPartition, out uint lpdwOffsetLow, out uint lpdwOffsetHigh);
@@ -1096,8 +1155,8 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>TAPE_TENSION2L</term>
 	/// <term>
-	/// Adjusts the tension by moving the tape to the end of the tape and back to the beginning. This option is not supported by all
-	/// devices. This value is ignored if it is not supported.
+	/// Adjusts the tension by moving the tape to the end of the tape and back to the beginning. This option is not supported by all devices.
+	/// This value is ignored if it is not supported.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1196,7 +1255,9 @@ public static partial class Kernel32
 	public static extern Win32Error PrepareTape([In] HFILE hDevice, TAPE_PREP_OP dwOperation, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 	/// <summary>The <c>SetTapeParameters</c> function either specifies the block size of a tape or configures the tape device.</summary>
-	/// <param name="hDevice">Handle to the device for which to set configuration information. This handle is created by using the CreateFile function.</param>
+	/// <param name="hDevice">
+	/// Handle to the device for which to set configuration information. This handle is created by using the CreateFile function.
+	/// </param>
 	/// <param name="dwOperation">
 	/// <para>Type of information to set. This parameter must be one of the following values.</para>
 	/// <list type="table">
@@ -1215,7 +1276,10 @@ public static partial class Kernel32
 	/// </list>
 	/// </param>
 	/// <param name="lpTapeInformation">
-	/// <para>Pointer to a structure that contains the information to set. If the <c>dwOperation</c> parameter is SET_TAPE_MEDIA_INFORMATION, <c>lpTapeInformation</c> points to a TAPE_SET_MEDIA_PARAMETERS structure.</para>
+	/// <para>
+	/// Pointer to a structure that contains the information to set. If the <c>dwOperation</c> parameter is SET_TAPE_MEDIA_INFORMATION,
+	/// <c>lpTapeInformation</c> points to a TAPE_SET_MEDIA_PARAMETERS structure.
+	/// </para>
 	/// <para>If <c>dwOperation</c> is SET_TAPE_DRIVE_INFORMATION, <c>lpTapeInformation</c> points to a TAPE_SET_DRIVE_PARAMETERS structure.</para>
 	/// </param>
 	/// <returns>
@@ -1288,16 +1352,21 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-settapeparameters
-	// DWORD SetTapeParameters( [in] HANDLE hDevice, [in] DWORD dwOperation, [in] LPVOID lpTapeInformation );
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-settapeparameters DWORD SetTapeParameters( [in] HANDLE hDevice,
+	// [in] DWORD dwOperation, [in] LPVOID lpTapeInformation );
 	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.SetTapeParameters")]
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error SetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, [In] IntPtr lpTapeInformation);
 
 	/// <summary>The <c>SetTapeParameters</c> function either specifies the block size of a tape or configures the tape device.</summary>
-	/// <param name="hDevice">Handle to the device for which to set configuration information. This handle is created by using the CreateFile function.</param>
+	/// <param name="hDevice">
+	/// Handle to the device for which to set configuration information. This handle is created by using the CreateFile function.
+	/// </param>
 	/// <param name="lpTapeInformation">
-	/// <para>Pointer to a structure that contains the information to set. If the <c>dwOperation</c> parameter is SET_TAPE_MEDIA_INFORMATION, <c>lpTapeInformation</c> points to a TAPE_SET_MEDIA_PARAMETERS structure.</para>
+	/// <para>
+	/// Pointer to a structure that contains the information to set. If the <c>dwOperation</c> parameter is SET_TAPE_MEDIA_INFORMATION,
+	/// <c>lpTapeInformation</c> points to a TAPE_SET_MEDIA_PARAMETERS structure.
+	/// </para>
 	/// <para>If <c>dwOperation</c> is SET_TAPE_DRIVE_INFORMATION, <c>lpTapeInformation</c> points to a TAPE_SET_DRIVE_PARAMETERS structure.</para>
 	/// </param>
 	/// <returns>
@@ -1404,9 +1473,7 @@ public static partial class Kernel32
 	/// </item>
 	/// <item>
 	/// <term>TAPE_REWIND0L</term>
-	/// <term>
-	/// Moves the tape to the beginning of the current partition. The dwPartition, dwOffsetLow, and dwOffsetHigh parameters are ignored.
-	/// </term>
+	/// <term>Moves the tape to the beginning of the current partition. The dwPartition, dwOffsetLow, and dwOffsetHigh parameters are ignored.</term>
 	/// </item>
 	/// <item>
 	/// <term>TAPE_SPACE_END_OF_DATA4L</term>
@@ -1415,8 +1482,8 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>TAPE_SPACE_FILEMARKS6L</term>
 	/// <term>
-	/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current partition.
-	/// The dwPartition parameter is ignored.
+	/// Moves the tape forward (or backward) the number of filemarks specified by dwOffsetLow and dwOffsetHigh in the current partition. The
+	/// dwPartition parameter is ignored.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1429,30 +1496,30 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>TAPE_SPACE_SEQUENTIAL_FMKS7L</term>
 	/// <term>
-	/// Moves the tape forward (or backward) to the first occurrence of n filemarks in the current partition, where n is the number
-	/// specified by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
+	/// Moves the tape forward (or backward) to the first occurrence of n filemarks in the current partition, where n is the number specified
+	/// by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>TAPE_SPACE_SEQUENTIAL_SMKS9L</term>
 	/// <term>
-	/// Moves the tape forward (or backward) to the first occurrence of n setmarks in the current partition, where n is the number
-	/// specified by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
+	/// Moves the tape forward (or backward) to the first occurrence of n setmarks in the current partition, where n is the number specified
+	/// by dwOffsetLow and dwOffsetHigh. The dwPartition parameter is ignored.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>TAPE_SPACE_SETMARKS8L</term>
 	/// <term>
-	/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current partition.
-	/// The dwPartition parameter is ignored.
+	/// Moves the tape forward (or backward) the number of setmarks specified by dwOffsetLow and dwOffsetHigh in the current partition. The
+	/// dwPartition parameter is ignored.
 	/// </term>
 	/// </item>
 	/// </list>
 	/// </para>
 	/// </param>
 	/// <param name="dwPartition">
-	/// Partition to position within. If dwPartition is zero, the current partition is used. Partitions are numbered logically from 1
-	/// through n, where 1 is the first partition on the tape and n is the last.
+	/// Partition to position within. If dwPartition is zero, the current partition is used. Partitions are numbered logically from 1 through
+	/// n, where 1 is the first partition on the tape and n is the last.
 	/// </param>
 	/// <param name="dwOffsetLow">
 	/// Low-order bits of the block address or count for the position operation specified by the dwPositionMethod parameter.
@@ -1462,8 +1529,8 @@ public static partial class Kernel32
 	/// high-order bits are not required, this parameter should be zero.
 	/// </param>
 	/// <param name="bImmediate">
-	/// Indicates whether to return as soon as the move operation begins. If this parameter is <c>TRUE</c>, the function returns
-	/// immediately; if <c>FALSE</c>, the function does not return until the move operation has been completed.
+	/// Indicates whether to return as soon as the move operation begins. If this parameter is <c>TRUE</c>, the function returns immediately;
+	/// if <c>FALSE</c>, the function does not return until the move operation has been completed.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is NO_ERROR.</para>
@@ -1537,8 +1604,8 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD SetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionMethod, _In_ DWORD dwPartition, _In_ DWORD dwOffsetLow, _In_
-	// DWORD dwOffsetHigh, _In_ BOOL bImmediate); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362536(v=vs.85).aspx
+	// DWORD SetTapePosition( _In_ HANDLE hDevice, _In_ DWORD dwPositionMethod, _In_ DWORD dwPartition, _In_ DWORD dwOffsetLow, _In_ DWORD
+	// dwOffsetHigh, _In_ BOOL bImmediate); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362536(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362536")]
 	public static extern Win32Error SetTapePosition([In] HFILE hDevice, TAPE_POS_METHOD dwPositionMethod, uint dwPartition, uint dwOffsetLow, uint dwOffsetHigh, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
@@ -1547,9 +1614,7 @@ public static partial class Kernel32
 	/// The <c>WriteTapemark</c> function writes a specified number of filemarks, setmarks, short filemarks, or long filemarks to a tape
 	/// device. These tapemarks divide a tape partition into smaller areas.
 	/// </summary>
-	/// <param name="hDevice">
-	/// Handle to the device on which to write tapemarks. This handle is created by using the <c>CreateFile</c> function.
-	/// </param>
+	/// <param name="hDevice">Handle to the device on which to write tapemarks. This handle is created by using the <c>CreateFile</c> function.</param>
 	/// <param name="dwTapemarkType">
 	/// <para>Type of tapemarks to write. This parameter can be one of the following values.</para>
 	/// <para>
@@ -1672,8 +1737,7 @@ public static partial class Kernel32
 		[MarshalAs(UnmanagedType.U1)] public bool Compression;
 
 		/// <summary>
-		/// If this member is TRUE, data padding is enabled. Otherwise, it is disabled. Data padding keeps the tape streaming at a
-		/// constant speed.
+		/// If this member is TRUE, data padding is enabled. Otherwise, it is disabled. Data padding keeps the tape streaming at a constant speed.
 		/// </summary>
 		[MarshalAs(UnmanagedType.U1)] public bool DataPadding;
 
@@ -1702,9 +1766,7 @@ public static partial class Kernel32
 		public uint EOTWarningZoneSize;
 	}
 
-	/// <summary>
-	/// The TAPE_GET_MEDIA_PARAMETERS structure describes the tape in the tape drive. It is used by the GetTapeParameters function.
-	/// </summary>
+	/// <summary>The TAPE_GET_MEDIA_PARAMETERS structure describes the tape in the tape drive. It is used by the GetTapeParameters function.</summary>
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/aa362564(v=vs.85).aspx
 	[PInvokeData("Winnt.h", MSDNShortId = "aa362564")]
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -1724,5 +1786,100 @@ public static partial class Kernel32
 
 		/// <summary>If this member is TRUE, the tape is write-protected. Otherwise, it is not.</summary>
 		[MarshalAs(UnmanagedType.U1)] public bool WriteProtected;
+	}
+
+	/// <summary>The <c>WIN32_STREAM_ID</c> structure contains stream data.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-win32_stream_id typedef struct _WIN32_STREAM_ID { DWORD
+	// dwStreamId; DWORD dwStreamAttributes; LARGE_INTEGER Size; DWORD dwStreamNameSize; WCHAR cStreamName[ANYSIZE_ARRAY]; } WIN32_STREAM_ID, *LPWIN32_STREAM_ID;
+	[PInvokeData("winbase.h", MSDNShortId = "NS:winbase._WIN32_STREAM_ID")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<WIN32_STREAM_ID>), nameof(dwStreamNameSize))]
+	public struct WIN32_STREAM_ID
+	{
+		/// <summary>
+		/// <para>Type of data. This member can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>BACKUP_ALTERNATE_DATA</c> 0x00000004</description>
+		/// <description>Alternative data streams. This corresponds to the NTFS $DATA stream type on a named data stream.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_DATA</c> 0x00000001</description>
+		/// <description>Standard data. This corresponds to the NTFS $DATA stream type on the default (unnamed) data stream.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_EA_DATA</c> 0x00000002</description>
+		/// <description>Extended attribute data. This corresponds to the NTFS $EA stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_LINK</c> 0x00000005</description>
+		/// <description>Hard link information. This corresponds to the NTFS $FILE_NAME stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_OBJECT_ID</c> 0x00000007</description>
+		/// <description>Objects identifiers. This corresponds to the NTFS $OBJECT_ID stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_PROPERTY_DATA</c> 0x00000006</description>
+		/// <description>Property data.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_REPARSE_DATA</c> 0x00000008</description>
+		/// <description>Reparse points. This corresponds to the NTFS $REPARSE_POINT stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_SECURITY_DATA</c> 0x00000003</description>
+		/// <description>Security descriptor data.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_SPARSE_BLOCK</c> 0x00000009</description>
+		/// <description>Sparse file. This corresponds to the NTFS $DATA stream type for a sparse file.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_TXFS_DATA</c> 0x0000000A</description>
+		/// <description>
+		/// Transactional NTFS (TxF) data stream. This corresponds to the NTFS $TXF_DATA stream type. <c>Windows Server 2003 and
+		/// Windows XP:  </c> This value is not supported.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public BACKUP_STREAM_ID dwStreamId;
+
+		/// <summary>
+		/// <para>Attributes of data to facilitate cross-operating system transfer. This member can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>STREAM_MODIFIED_WHEN_READ</c></description>
+		/// <description>
+		/// Attribute set if the stream contains data that is modified when read. Allows the backup application to know that verification of
+		/// data will fail.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><c>STREAM_CONTAINS_SECURITY</c></description>
+		/// <description>Stream contains security data (general attributes). Allows the stream to be ignored on cross-operations restore.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public BACKUP_STREAM_ATTR dwStreamAttributes;
+
+		/// <summary>Size of data, in bytes.</summary>
+		public long Size;
+
+		/// <summary>Length of the name of the alternative data stream, in bytes.</summary>
+		public uint dwStreamNameSize;
+
+		/// <summary>Unicode string that specifies the name of the alternative data stream.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+		public string cStreamName;
 	}
 }
