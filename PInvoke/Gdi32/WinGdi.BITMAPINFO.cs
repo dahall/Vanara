@@ -280,6 +280,59 @@ public static partial class Gdi32
 		public static BITMAPINFO FromHBITMAP(in HBITMAP hBmp) => new() { bmiHeader = BITMAPINFOHEADER.FromHBITMAP(hBmp) };
 	}
 
+	/// <summary>The BITMAPINFO structure defines the dimensions and color information for a DIB.</summary>
+	/// <remarks>
+	/// A DIB consists of two distinct parts: a BITMAPINFO structure describing the dimensions and colors of the bitmap, and an array of
+	/// bytes defining the pixels of the bitmap. The bits in the array are packed together, but each scan line must be padded with zeros
+	/// to end on a LONG data-type boundary. If the height of the bitmap is positive, the bitmap is a bottom-up DIB and its origin is
+	/// the lower-left corner. If the height is negative, the bitmap is a top-down DIB and its origin is the upper left corner.
+	/// <para>
+	/// A bitmap is packed when the bitmap array immediately follows the BITMAPINFO header. Packed bitmaps are referenced by a single
+	/// pointer. For packed bitmaps, the biClrUsed member must be set to an even number when using the DIB_PAL_COLORS mode so that the
+	/// DIB bitmap array starts on a DWORD boundary.
+	/// </para>
+	/// <para><c>Note</c></para>
+	/// <para>
+	/// The bmiColors member should not contain palette indexes if the bitmap is to be stored in a file or transferred to another application.
+	/// </para>
+	/// <para>
+	/// Unless the application has exclusive use and control of the bitmap, the bitmap color table should contain explicit RGB values.
+	/// </para>
+	/// </remarks>
+	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("Wingdi.h", MSDNShortId = "dd183375")]
+	public unsafe struct BITMAPINFO_UNMGD
+	{
+		/// <summary>A BITMAPINFOHEADER structure that contains information about the dimensions of color format.</summary>
+		public BITMAPINFOHEADER bmiHeader;
+
+		/// <summary>
+		/// The bmiColors member contains one of the following:
+		/// <list type="bullet">
+		/// <item>
+		/// <description>An array of RGBQUAD. The elements of the array that make up the color table.</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// An array of 16-bit unsigned integers that specifies indexes into the currently realized logical palette. This use of bmiColors is
+		/// allowed for functions that use DIBs. When bmiColors elements contain indexes to a realized logical palette, they must also call
+		/// the following bitmap functions: CreateDIBitmap, CreateDIBPatternBrush, CreateDIBSection (The iUsage parameter of CreateDIBSection
+		/// must be set to DIB_PAL_COLORS.)
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The number of entries in the array depends on the values of the biBitCount and biClrUsed members of the BITMAPINFOHEADER structure.
+		/// </para>
+		/// <para>The colors in the bmiColors table appear in order of importance. For more information, see the Remarks section.</para>
+		/// </summary>
+		public fixed uint bmiColors[1];
+
+		/// <summary>Gets an unsafe pointer to the <see cref="bmiColors"/> array.</summary>
+		/// <value>An unsafe pointer to the <see cref="bmiColors"/> array.</value>
+		public RGBQUAD* pbmiColors { get { fixed (uint* p = &bmiColors[0]) return (RGBQUAD*)p; } }
+	}
+
 	/// <summary>
 	/// <para>
 	/// The <c>BITMAPINFOHEADER</c> structure contains information about the dimensions and color format of a device-independent bitmap (DIB).
@@ -1243,7 +1296,15 @@ public static partial class Gdi32
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="ptr">Existing handle.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		protected SafeBITMAPINFO(IntPtr ptr, bool ownsHandle = true) : base(ptr, ownsHandle, 0)
+		public SafeBITMAPINFO(IntPtr ptr, bool ownsHandle = true) : base(ptr, ownsHandle, 0)
+		{
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
+		/// <param name="width">The width.</param>
+		/// <param name="height">The height.</param>
+		/// <param name="bitCount">The bit count.</param>
+		public SafeBITMAPINFO(int width, int height, ushort bitCount = 32) : this(new BITMAPINFO(width, height, bitCount))
 		{
 		}
 

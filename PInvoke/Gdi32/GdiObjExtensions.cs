@@ -34,7 +34,7 @@ public static class GdiObjExtensions
 		// Create a memory DC so we can work off screen
 		using var memoryHdc = CreateCompatibleDC(hdc);
 		// Create a device-independent bitmap and select it into our DC
-		var info = new BITMAPINFO(bounds.Width, -bounds.Height);
+		using var info = new SafeBITMAPINFO(bounds.Width, -bounds.Height);
 		using (memoryHdc.SelectObject(CreateDIBSection(hdc, info, DIBColorMode.DIB_RGB_COLORS, out var pBits)))
 		{
 			// Call method

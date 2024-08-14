@@ -680,6 +680,90 @@ public static partial class Gdi32
 	[PInvokeData("wingdi.h", MSDNShortId = "e9a5b525-a6b6-4309-9e53-69d274b85783")]
 	public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, [In, Optional] IntPtr pbmih, CBM flInit, [In, Optional] byte[]? pjBits, [In, Optional] SafeBITMAPINFO pbmi, DIBColorMode iUsage);
 
+	/// <summary>The <c>CreateDIBitmap</c> function creates a compatible bitmap (DDB) from a DIB and, optionally, sets the bitmap bits.</summary>
+	/// <param name="hdc">A handle to a device context.</param>
+	/// <param name="pbmih">
+	/// <para>A pointer to a bitmap information header structure, BITMAPV5HEADER.</para>
+	/// <para>
+	/// If <c>fdwInit</c> is CBM_INIT, the function uses the bitmap information header structure to obtain the desired width and height of
+	/// the bitmap as well as other information. Note that a positive value for the height indicates a bottom-up DIB while a negative value
+	/// for the height indicates a top-down DIB. Calling <c>CreateDIBitmap</c> with <c>fdwInit</c> as CBM_INIT is equivalent to calling the
+	/// CreateCompatibleBitmap function to create a DDB in the format of the device and then calling the SetDIBits function to translate the
+	/// DIB bits to the DDB.
+	/// </para>
+	/// </param>
+	/// <param name="flInit">
+	/// <para>Specifies how the system initializes the bitmap bits. The following value is defined.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>CBM_INIT</c></description>
+	/// <description>
+	/// If this flag is set, the system uses the data pointed to by the <c>lpbInit</c> and <c>lpbmi</c> parameters to initialize the bitmap
+	/// bits. If this flag is clear, the data pointed to by those parameters is not used.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para></para>
+	/// <para>If <c>fdwInit</c> is zero, the system does not initialize the bitmap bits.</para>
+	/// </param>
+	/// <param name="pjBits">
+	/// A pointer to an array of bytes containing the initial bitmap data. The format of the data depends on the <c>biBitCount</c> member of
+	/// the BITMAPINFO structure to which the <c>lpbmi</c> parameter points.
+	/// </param>
+	/// <param name="pbmi">
+	/// A pointer to a BITMAPINFO structure that describes the dimensions and color format of the array pointed to by the <c>lpbInit</c> parameter.
+	/// </param>
+	/// <param name="iUsage">
+	/// <para>
+	/// Specifies whether the <c>bmiColors</c> member of the BITMAPINFO structure was initialized and, if so, whether <c>bmiColors</c>
+	/// contains explicit red, green, blue (RGB) values or palette indexes. The <c>fuUsage</c> parameter must be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>DIB_PAL_COLORS</c></description>
+	/// <description>
+	/// A color table is provided and consists of an array of 16-bit indexes into the logical palette of the device context into which the
+	/// bitmap is to be selected.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>DIB_RGB_COLORS</c></description>
+	/// <description>A color table is provided and contains literal RGB values.</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is a handle to the compatible bitmap.</para>
+	/// <para>If the function fails, the return value is <c>NULL</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The DDB that is created will be whatever bit depth your reference DC is. To create a bitmap that is of different bit depth, use CreateDIBSection.
+	/// </para>
+	/// <para>
+	/// For a device to reach optimal bitmap-drawing speed, specify <c>fdwInit</c> as CBM_INIT. Then, use the same color depth DIB as the
+	/// video mode. When the video is running 4- or 8-bpp, use DIB_PAL_COLORS.
+	/// </para>
+	/// <para>The CBM_CREATDIB flag for the <c>fdwInit</c> parameter is no longer supported.</para>
+	/// <para>When you no longer need the bitmap, call the DeleteObject function to delete it.</para>
+	/// <para>
+	/// <c>ICM:</c> No color management is performed. The contents of the resulting bitmap are not color matched after the bitmap has been created.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibitmap HBITMAP CreateDIBitmap( [in] HDC hdc, [in] const
+	// BITMAPINFOHEADER *pbmih, [in] DWORD flInit, [in] const VOID *pjBits, [in] const BITMAPINFO *pbmi, [in] UINT iUsage );
+	[PInvokeData("wingdi.h", MSDNShortId = "NF:wingdi.CreateDIBitmap")]
+	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+	public static extern unsafe SafeHBITMAP CreateDIBitmap([In] HDC hdc, [In] BITMAPINFOHEADER* pbmih, CBM flInit, [In] void* pjBits, [In] BITMAPINFO_UNMGD* pbmi, DIBColorMode iUsage);
+
 	/// <summary>
 	/// The <c>CreateDIBSection</c> function creates a DIB that applications can write to directly. The function gives you a pointer to
 	/// the location of the bitmap bit values. You can supply a handle to a file-mapping object that the function will use to create the
