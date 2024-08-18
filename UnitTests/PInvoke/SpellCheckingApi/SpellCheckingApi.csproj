@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.SpellCheckingApi</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\SpellCheckingApi\Vanara.PInvoke.SpellCheckingApi.csproj" />
+  </ItemGroup>
+</Project>
