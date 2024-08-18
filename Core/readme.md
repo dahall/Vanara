@@ -16,6 +16,8 @@ Enum | Description | Values
 ### Structures
 Struct | Description
 ---- | ----
+[Vanara.InteropServices.AnySizeStructFieldArray<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AnySizeStructFieldArray<T>) | For structures that end with an ANYSIZE array field, this structure can be used to represent the value rather than using `System.Runtime.InteropServices.UnmanagedType.ByValArray` but only when using an <c>unmanaged</c> type for <typeparamref name="T" />.
+[Vanara.InteropServices.AnySizeStructUnmanagedFieldArray<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AnySizeStructUnmanagedFieldArray<T>) | For structures that end with an ANYSIZE array field, this structure can be used to represent the value rather than using `System.Runtime.InteropServices.UnmanagedType.ByValArray` but only when using an <c>unmanaged</c> type for <typeparamref name="T" />.
 [Vanara.BOOL](https://github.com/dahall/Vanara/search?l=C%23&q=BOOL) | Managed instance of the four-byte BOOL type.
 [Vanara.BOOLEAN](https://github.com/dahall/Vanara/search?l=C%23&q=BOOLEAN) | Managed instance of the single-byte BOOLEAN type.
 [Vanara.Extensions.EnumFlagIndexer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=EnumFlagIndexer<T>) | Structure to use in place of a enumerated type with the `System.FlagsAttribute` set. Allows for indexer access to flags and simplifies boolean logic.

@@ -409,6 +409,7 @@ Native Enum | Header | Managed Enum
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[&lt;bmiColors&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<bmiColors>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.BITMAPINFO_UNMGD.&lt;bmiColors&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;bmiColors&gt;e__FixedBuffer)  
 [ABC](https://www.google.com/search?num=5&q=ABC+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.ABC](https://github.com/dahall/Vanara/search?l=C%23&q=ABC)  
 [ABCFLOAT](https://www.google.com/search?num=5&q=ABCFLOAT+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.ABCFLOAT](https://github.com/dahall/Vanara/search?l=C%23&q=ABCFLOAT)  
 [AXESLIST](https://www.google.com/search?num=5&q=AXESLIST+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AXESLIST](https://github.com/dahall/Vanara/search?l=C%23&q=AXESLIST)  
@@ -418,6 +419,7 @@ Native Structure | Header | Managed Structure
 [BITMAPCOREINFO](https://www.google.com/search?num=5&q=BITMAPCOREINFO+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.BITMAPCOREINFO](https://github.com/dahall/Vanara/search?l=C%23&q=BITMAPCOREINFO)  
 [BITMAPFILEHEADER](https://www.google.com/search?num=5&q=BITMAPFILEHEADER+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.BITMAPFILEHEADER](https://github.com/dahall/Vanara/search?l=C%23&q=BITMAPFILEHEADER)  
 [BITMAPINFO](https://www.google.com/search?num=5&q=BITMAPINFO+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.BITMAPINFO](https://github.com/dahall/Vanara/search?l=C%23&q=BITMAPINFO)  
+[BITMAPINFO_UNMGD](https://www.google.com/search?num=5&q=BITMAPINFO_UNMGD+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.BITMAPINFO_UNMGD](https://github.com/dahall/Vanara/search?l=C%23&q=BITMAPINFO_UNMGD)  
 [BITMAPINFOHEADER](https://www.google.com/search?num=5&q=BITMAPINFOHEADER+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.BITMAPINFOHEADER](https://github.com/dahall/Vanara/search?l=C%23&q=BITMAPINFOHEADER)  
 [BITMAPV4HEADER](https://www.google.com/search?num=5&q=BITMAPV4HEADER+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.BITMAPV4HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=BITMAPV4HEADER)  
 [BITMAPV5HEADER](https://www.google.com/search?num=5&q=BITMAPV5HEADER+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.BITMAPV5HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=BITMAPV5HEADER)  

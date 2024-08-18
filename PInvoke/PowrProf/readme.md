@@ -89,8 +89,9 @@ Native Method | Header | Managed Method
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
-[DEVICE_NOTIFY](https://www.google.com/search?num=5&q=DEVICE_NOTIFY+site%3Alearn.microsoft.com) | powersetting.h | [Vanara.PInvoke.PowrProf.DEVICE_NOTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=DEVICE_NOTIFY)  
+[DEVICE_PWR_NOTIFY](https://www.google.com/search?num=5&q=DEVICE_PWR_NOTIFY+site%3Alearn.microsoft.com) | powersetting.h | [Vanara.PInvoke.PowrProf.DEVICE_PWR_NOTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=DEVICE_PWR_NOTIFY)  
 [EFFECTIVE_POWER_MODE](https://www.google.com/search?num=5&q=EFFECTIVE_POWER_MODE+site%3Alearn.microsoft.com) | powersetting.h | [Vanara.PInvoke.PowrProf.EFFECTIVE_POWER_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=EFFECTIVE_POWER_MODE)  
+[ENERGY_SAVER_STATUS](https://www.google.com/search?num=5&q=ENERGY_SAVER_STATUS+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.ENERGY_SAVER_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=ENERGY_SAVER_STATUS)  
 [EventCode](https://www.google.com/search?num=5&q=EventCode+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.EventCode](https://github.com/dahall/Vanara/search?l=C%23&q=EventCode)  
 [GlobalFlags](https://www.google.com/search?num=5&q=GlobalFlags+site%3Alearn.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.GlobalFlags](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalFlags)  
 [PDQUERY](https://www.google.com/search?num=5&q=PDQUERY+site%3Alearn.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.PDQUERY](https://github.com/dahall/Vanara/search?l=C%23&q=PDQUERY)  

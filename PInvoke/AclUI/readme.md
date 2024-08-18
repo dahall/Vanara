@@ -26,6 +26,7 @@ Native Structure | Header | Managed Structure
 [SI_INHERIT_TYPE](https://www.google.com/search?num=5&q=SI_INHERIT_TYPE+site%3Alearn.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.SI_INHERIT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=SI_INHERIT_TYPE)  
 [SI_OBJECT_INFO](https://www.google.com/search?num=5&q=SI_OBJECT_INFO+site%3Alearn.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.SI_OBJECT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SI_OBJECT_INFO)  
 [SID_INFO](https://www.google.com/search?num=5&q=SID_INFO+site%3Alearn.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.SID_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SID_INFO)  
+[SID_INFO_LIST](https://www.google.com/search?num=5&q=SID_INFO_LIST+site%3Alearn.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.SID_INFO_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=SID_INFO_LIST)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

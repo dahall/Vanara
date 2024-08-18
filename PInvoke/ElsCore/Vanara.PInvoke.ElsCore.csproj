@@ -9,7 +9,16 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;ElsCore;Extended Linguistic Services</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+MappingDoAction MappingFreePropertyBag MappingFreeServices MappingGetServices MappingRecognizeText
+
+Structures
+MAPPING_DATA_RANGE MAPPING_ENUM_OPTIONS MAPPING_OPTIONS MAPPING_PROPERTY_BAG MAPPING_SERVICE_INFO
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

@@ -43,6 +43,7 @@
       <dependency id="Vanara.PInvoke.DOSvc" version="4.0.4" />
       <dependency id="Vanara.PInvoke.Drt" version="4.0.4" />
       <dependency id="Vanara.PInvoke.DwmApi" version="4.0.4" />
+      <dependency id="Vanara.PInvoke.ElsCore" version="4.0.4" />
       <dependency id="Vanara.PInvoke.EnhancedStorage" version="4.0.4" />
       <dependency id="Vanara.PInvoke.FhSvcCtl" version="4.0.4" />
       <dependency id="Vanara.PInvoke.FirewallApi" version="4.0.4" />
@@ -94,6 +95,7 @@
       <dependency id="Vanara.PInvoke.SHCore" version="4.0.4" />
       <dependency id="Vanara.PInvoke.Shell32" version="4.0.4" />
       <dependency id="Vanara.PInvoke.ShlwApi" version="4.0.4" />
+      <dependency id="Vanara.PInvoke.SpellCheckingApi" version="4.0.4" />
       <dependency id="Vanara.PInvoke.TaskSchd" version="4.0.4" />
       <dependency id="Vanara.PInvoke.TextServicesFramework" version="4.0.4" />
       <dependency id="Vanara.PInvoke.UIAutomation" version="4.0.4" />

@@ -948,9 +948,15 @@ Native Structure | Header | Managed Structure
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [BasicMessageWindow](https://www.google.com/search?num=5&q=BasicMessageWindow+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BasicMessageWindow](https://github.com/dahall/Vanara/search?l=C%23&q=BasicMessageWindow)  
+[DlgItemTemplate](https://www.google.com/search?num=5&q=DlgItemTemplate+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.DLGTEMPLATE_MGD.DlgItemTemplate](https://github.com/dahall/Vanara/search?l=C%23&q=DlgItemTemplate)  
+[DlgItemTemplateEx](https://www.google.com/search?num=5&q=DlgItemTemplateEx+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.DLGTEMPLATEEX_MGD.DlgItemTemplateEx](https://github.com/dahall/Vanara/search?l=C%23&q=DlgItemTemplateEx)  
+[DLGTEMPLATE_MGD](https://www.google.com/search?num=5&q=DLGTEMPLATE_MGD+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DLGTEMPLATE_MGD](https://github.com/dahall/Vanara/search?l=C%23&q=DLGTEMPLATE_MGD)  
+[DLGTEMPLATEEX_MGD](https://www.google.com/search?num=5&q=DLGTEMPLATEEX_MGD+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.DLGTEMPLATEEX_MGD](https://github.com/dahall/Vanara/search?l=C%23&q=DLGTEMPLATEEX_MGD)  
+[DlgTemplateId](https://www.google.com/search?num=5&q=DlgTemplateId+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.DlgTemplateId](https://github.com/dahall/Vanara/search?l=C%23&q=DlgTemplateId)  
 [DRAWTEXTPARAMS](https://www.google.com/search?num=5&q=DRAWTEXTPARAMS+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DRAWTEXTPARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=DRAWTEXTPARAMS)  
 [EventConstants](https://www.google.com/search?num=5&q=EventConstants+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.EventConstants](https://github.com/dahall/Vanara/search?l=C%23&q=EventConstants)  
 [ExaminedMessagePump](https://www.google.com/search?num=5&q=ExaminedMessagePump+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ExaminedMessagePump](https://github.com/dahall/Vanara/search?l=C%23&q=ExaminedMessagePump)  
+[FontDetail](https://www.google.com/search?num=5&q=FontDetail+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.DLGTEMPLATE_MGD.FontDetail](https://github.com/dahall/Vanara/search?l=C%23&q=FontDetail)  
 [ICONINFO](https://www.google.com/search?num=5&q=ICONINFO+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.ICONINFO](https://github.com/dahall/Vanara/search?l=C%23&q=ICONINFO)  
 [LOGFONTExtension](https://www.google.com/search?num=5&q=LOGFONTExtension+site%3Alearn.microsoft.com) |  | [Vanara.Extensions.LOGFONTExtension](https://github.com/dahall/Vanara/search?l=C%23&q=LOGFONTExtension)  
 [MessagePump](https://www.google.com/search?num=5&q=MessagePump+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MessagePump](https://github.com/dahall/Vanara/search?l=C%23&q=MessagePump)  

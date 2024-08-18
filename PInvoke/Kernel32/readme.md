@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Kernel32.d
 
 - Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Kernel32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)  
-### Methods - 99% API coverage (1151 of 1152 functions)  
+### Methods - 100% API coverage (1151 of 1151 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -1048,7 +1048,6 @@ Native Method | Native DLL | Header | Managed Method
 [TerminateProcessOnMemoryExhaustion](https://www.google.com/search?num=5&q=TerminateProcessOnMemoryExhaustion+site%3Alearn.microsoft.com) | kernelbase.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateProcessOnMemoryExhaustion](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateProcessOnMemoryExhaustion)  
 [TerminateThread](https://www.google.com/search?num=5&q=TerminateThread+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.TerminateThread](https://github.com/dahall/Vanara/search?l=C%23&q=TerminateThread)  
 [TermsrvAppInstallMode](https://www.google.com/search?num=5&q=TermsrvAppInstallMode+site%3Alearn.microsoft.com) | kernel32.dll |  | [Vanara.PInvoke.Kernel32.TermsrvAppInstallMode](https://github.com/dahall/Vanara/search?l=C%23&q=TermsrvAppInstallMode)  
-[TestRecoverResults](https://www.google.com/search?num=5&q=TestRecoverResults+site%3Alearn.microsoft.com) | kernelbase.dll |  |   
 [Thread32First](https://www.google.com/search?num=5&q=Thread32First+site%3Alearn.microsoft.com) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Thread32First](https://github.com/dahall/Vanara/search?l=C%23&q=Thread32First)  
 [Thread32Next](https://www.google.com/search?num=5&q=Thread32Next+site%3Alearn.microsoft.com) | kernel32.dll | tlhelp32.h | [Vanara.PInvoke.Kernel32.Thread32Next](https://github.com/dahall/Vanara/search?l=C%23&q=Thread32Next)  
 [TlsAlloc](https://www.google.com/search?num=5&q=TlsAlloc+site%3Alearn.microsoft.com) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.TlsAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=TlsAlloc)  
@@ -1176,6 +1175,8 @@ Native Enum | Header | Managed Enum
 [APPX_PACKAGE_ARCHITECTURE](https://www.google.com/search?num=5&q=APPX_PACKAGE_ARCHITECTURE+site%3Alearn.microsoft.com) | appxpackaging.h | [Vanara.PInvoke.Kernel32.APPX_PACKAGE_ARCHITECTURE](https://github.com/dahall/Vanara/search?l=C%23&q=APPX_PACKAGE_ARCHITECTURE)  
 [ATOM_FLAG](https://www.google.com/search?num=5&q=ATOM_FLAG+site%3Alearn.microsoft.com) | Winbase.h | [Vanara.PInvoke.Kernel32.ATOM_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=ATOM_FLAG)  
 [AttrType](https://www.google.com/search?num=5&q=AttrType+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.PROC_THREAD_ATTRIBUTE.AttrType](https://github.com/dahall/Vanara/search?l=C%23&q=AttrType)  
+[BACKUP_STREAM_ATTR](https://www.google.com/search?num=5&q=BACKUP_STREAM_ATTR+site%3Alearn.microsoft.com) | winbase.h | [Vanara.PInvoke.Kernel32.BACKUP_STREAM_ATTR](https://github.com/dahall/Vanara/search?l=C%23&q=BACKUP_STREAM_ATTR)  
+[BACKUP_STREAM_ID](https://www.google.com/search?num=5&q=BACKUP_STREAM_ID+site%3Alearn.microsoft.com) | winbase.h | [Vanara.PInvoke.Kernel32.BACKUP_STREAM_ID](https://github.com/dahall/Vanara/search?l=C%23&q=BACKUP_STREAM_ID)  
 [BASE_SEARCH_PATH](https://www.google.com/search?num=5&q=BASE_SEARCH_PATH+site%3Alearn.microsoft.com) | winbase.h | [Vanara.PInvoke.Kernel32.BASE_SEARCH_PATH](https://github.com/dahall/Vanara/search?l=C%23&q=BASE_SEARCH_PATH)  
 [BATTERY_STATUS](https://www.google.com/search?num=5&q=BATTERY_STATUS+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.BATTERY_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=BATTERY_STATUS)  
 [CALDATETIME_DATEUNIT](https://www.google.com/search?num=5&q=CALDATETIME_DATEUNIT+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.CALDATETIME_DATEUNIT](https://github.com/dahall/Vanara/search?l=C%23&q=CALDATETIME_DATEUNIT)  
@@ -2034,6 +2035,7 @@ Native Structure | Header | Managed Structure
 [WIN32_FILE_ATTRIBUTE_DATA](https://www.google.com/search?num=5&q=WIN32_FILE_ATTRIBUTE_DATA+site%3Alearn.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.WIN32_FILE_ATTRIBUTE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_FILE_ATTRIBUTE_DATA)  
 [WIN32_FIND_STREAM_DATA](https://www.google.com/search?num=5&q=WIN32_FIND_STREAM_DATA+site%3Alearn.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.WIN32_FIND_STREAM_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_FIND_STREAM_DATA)  
 [WIN32_MEMORY_RANGE_ENTRY](https://www.google.com/search?num=5&q=WIN32_MEMORY_RANGE_ENTRY+site%3Alearn.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.WIN32_MEMORY_RANGE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_MEMORY_RANGE_ENTRY)  
+[WIN32_STREAM_ID](https://www.google.com/search?num=5&q=WIN32_STREAM_ID+site%3Alearn.microsoft.com) | winbase.h | [Vanara.PInvoke.Kernel32.WIN32_STREAM_ID](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_STREAM_ID)  
 [WINDOW_BUFFER_SIZE_RECORD](https://www.google.com/search?num=5&q=WINDOW_BUFFER_SIZE_RECORD+site%3Alearn.microsoft.com) | Wincon.h | [Vanara.PInvoke.Kernel32.WINDOW_BUFFER_SIZE_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=WINDOW_BUFFER_SIZE_RECORD)  
 [WOW64_CONTEXT](https://www.google.com/search?num=5&q=WOW64_CONTEXT+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.WOW64_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=WOW64_CONTEXT)  
 [WOW64_FLOATING_SAVE_AREA](https://www.google.com/search?num=5&q=WOW64_FLOATING_SAVE_AREA+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.WOW64_FLOATING_SAVE_AREA](https://github.com/dahall/Vanara/search?l=C%23&q=WOW64_FLOATING_SAVE_AREA)  
