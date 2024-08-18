@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
+using static Vanara.PInvoke.SpellCheck;
 
 namespace Vanara.PInvoke;
 
