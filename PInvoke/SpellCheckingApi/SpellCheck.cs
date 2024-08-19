@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
@@ -700,7 +702,132 @@ public static partial class SpellCheck
 		void UnregisterUserDictionary([MarshalAs(UnmanagedType.LPWStr)] string dictionaryPath, [MarshalAs(UnmanagedType.LPWStr)] string languageTag);
 	}
 
+	/// <summary>Enumerates the specified <see cref="IEnumSpellingError"/>.</summary>
+	/// <param name="err">The spelling error enumeration interface.</param>
+	/// <returns>A sequence of <see cref="ISpellingError"/> instances.</returns>
+	public static IEnumerable<ISpellingError> Enum(this IEnumSpellingError? err)
+	{
+		if (err is null)
+			yield break;
+		while (err.Next(out ISpellingError? errDetail) == HRESULT.S_OK)
+			yield return errDetail!;
+	}
+
+	/// <summary>Gets information about all the options associated with the specified <see cref="ISpellChecker"/> instance.</summary>
+	/// <param name="checker">The <see cref="ISpellChecker"/> instance.</param>
+	/// <returns>A sequence of <see cref="SpellCheckerOption"/> values.</returns>
+	public static IEnumerable<SpellCheckerOption> GetOptions(this ISpellChecker checker)
+	{
+		if (checker is not null)
+		{
+			var opts = checker.OptionIds;
+			if (opts is not null)
+			{
+				try
+				{
+					return opts.Enum().Select(o => new SpellCheckerOption(checker, o)).ToArray();
+				}
+				finally
+				{
+					Marshal.ReleaseComObject(opts);
+				}
+			}
+		}
+		return [];
+	}
+
 	/// <summary>CLSID_SpellCheckerFactory</summary>
 	[ComImport, Guid("7AB36653-1796-484B-BDFA-E74F1DB7C1DC"), ClassInterface(ClassInterfaceType.None)]
 	public class SpellCheckerFactory { }
+
+	/// <summary>Consolidated class holding information about options for the spell checker.</summary>
+	public class SpellCheckerOption
+	{
+		/// <summary>Initializes a new instance of the <see cref="SpellCheckerOption"/> class.</summary>
+		/// <param name="chk">A <see cref="ISpellChecker"/> instance.</param>
+		/// <param name="id">A declared option identifier.</param>
+		public SpellCheckerOption(ISpellChecker chk, string id)
+		{
+			Id = id;
+			Value = chk.GetOptionValue(id);
+			var od = chk.GetOptionDescription(id);
+			try
+			{
+				Heading = od.Heading;
+				Description = od.Description;
+				var lbl = od.Labels;
+				try
+				{
+					Labels = lbl.Enum().ToArray();
+				}
+				finally
+				{
+					Marshal.ReleaseComObject(lbl);
+				}
+			}
+			finally
+			{
+				Marshal.ReleaseComObject(od);
+			}
+		}
+
+		/// <summary>Get the description of the spell checker option.</summary>
+		/// <remarks>
+		/// The description explains the implications of making the various choices associated with the option. This should be in the
+		/// language of the spell checker or localized to the user's UI language.
+		/// </remarks>
+		public string Description { get; }
+
+		/// <summary>Gets the heading for the spell checker option.</summary>
+		/// <remarks>
+		/// The heading can be used to group sets of options by placing the header on the first item of that group. This should be in the
+		/// language of the spell checker or localized to the user's UI language.
+		/// </remarks>
+		public string Heading { get; }
+
+		/// <summary>Gets the identifier of the spell checker option.</summary>
+		/// <remarks>
+		/// <para>
+		/// Option identifiers all exist in the same area. Spell checker providers should use the engine identifier and the language tag (if
+		/// the option is language-specific) to disambiguate potential collisions.
+		/// </para>
+		/// <para>Specifically, the structure for naming the option identifiers should be:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>For the Microsoft spell checker engine:</c> &lt;language tag&gt;:&lt;option name&gt;. For example, "pt-BR:2009Reform."</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>For spell check provider engines:</c> &lt;engine id&gt;:&lt;language tag&gt;:&lt;option name&gt; (the language tag may be
+		/// omitted if the option is not language specific). For example, "samplespell:fr-FR:AccentedUppercase".
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c>  Spell check providers are allowed to support existing Microsoft option identifiers, but they must not create new
+		/// option identifiers in the Microsoft namespace. That is, spell check providers must use the engine identifier as a prefix.
+		/// </para>
+		/// <para></para>
+		/// <para>
+		/// An option identifier is linked to the set of labels and the semantics associated with them. If any change needs to be made
+		/// between versions to the option (adding a label to the set of labels), a new option with a new identifier must be used. The only
+		/// valid change that does not require a new identifier is to change from a single label to two labels and vice-versa when the
+		/// semantics for values 0 and 1 do not change.
+		/// </para>
+		/// </remarks>
+		public string Id { get; }
+
+		/// <summary>
+		/// <para>Gets the labels for the spell checker option.</para>
+		/// </summary>
+		/// <remarks>
+		/// When there is a single label, the valid values for this option are 0 (not chosen) and 1 (chosen). When there is more than one
+		/// label, the first label is associated with the value 0, the second with 1, and so on, effectively forming an enumeration. The
+		/// labels should be in the language of the spell checker or localized to the user's UI language.
+		/// </remarks>
+		public string[] Labels { get; }
+
+		/// <summary>Gets the value associated with the given option.</summary>
+		public byte Value { get; }
+	}
 }

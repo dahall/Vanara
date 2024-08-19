@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System.Collections.Generic;
 using System.Linq;
 using static Vanara.PInvoke.SpellCheck;
 
@@ -36,7 +35,7 @@ public class SpellCheckingApiTests
 		Assert.That(checker!.LanguageTag, Is.EqualTo(lang));
 		Assert.That(checker.Id, Is.EqualTo("MsSpell"));
 		Assert.That(checker.LocalizedName, Is.EqualTo("Microsoft Windows Spellchecker"));
-		foreach (var o in checker.OptionIds!.Enum().Select(s => new Option(checker, s)))
+		foreach (var o in checker.GetOptions())
 			o.WriteValues();
 	}
 
@@ -158,34 +157,5 @@ internal class Event(System.IO.TextWriter writer) : ISpellCheckerChangedEventHan
 		writer.WriteLine($"Sender: {sender?.Id ?? "null"} changed.");
 		GotEvent = true;
 		return HRESULT.S_OK;
-	}
-}
-
-internal class Option
-{
-	public string? Heading, Description;
-	public string Id;
-	public string[] Labels;
-	public byte Value;
-
-	public Option(ISpellChecker chk, string id)
-	{
-		Id = id;
-		Value = chk.GetOptionValue(id);
-		var od = chk.GetOptionDescription(id);
-		Heading = od?.Heading;
-		Description = od?.Description;
-		Labels = od?.Labels?.Enum().ToArray() ?? [];
-	}
-}
-
-internal static class Ex
-{
-	public static IEnumerable<ISpellingError> Enum(this IEnumSpellingError? err)
-	{
-		if (err is null)
-			yield break;
-		while (err.Next(out ISpellingError? errDetail) == HRESULT.S_OK)
-			yield return errDetail!;
 	}
 }
