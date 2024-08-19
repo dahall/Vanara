@@ -700,7 +700,8 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 		if (!Failed) return null;
 
 		var exceptionForHR = Marshal.GetExceptionForHR(_value, new IntPtr(-1));
-		if (exceptionForHR?.GetType() == typeof(COMException))
+		if (exceptionForHR is null) return null;
+		if (exceptionForHR.GetType() == typeof(COMException))
 		{
 			return Facility == FacilityCode.FACILITY_WIN32
 				? string.IsNullOrEmpty(message) ? new Win32Exception(Code) : new Win32Exception(Code, message)
@@ -708,8 +709,11 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 		}
 		if (!string.IsNullOrEmpty(message))
 		{
-			var constructor = exceptionForHR?.GetType().GetConstructor(new Type[] { typeof(string) });
-			exceptionForHR = constructor?.Invoke(new object[] { message! }) as Exception;
+			var constructor = exceptionForHR.GetType().GetConstructor(new Type[] { typeof(string) })!;
+			exceptionForHR = constructor.Invoke(new object[] { message! }) as Exception;
+			# if NETCOREAPP3_0_OR_GREATER
+			exceptionForHR!.HResult = _value;
+			#endif
 		}
 		return exceptionForHR;
 	}
