@@ -11316,6 +11316,1261 @@ public static partial class User32
 		/// <summary>WM_SYSTIMER is a well-known yet still undocumented message. Windows uses WM_SYSTIMER for internal actions like scrolling.</summary>
 		[MsgParams(typeof(uint), typeof(IntPtr))]
 		WM_SYSTIMER = 0x118,
+
+		/// <summary>
+		/// <para>
+		/// Sent to a window when there is a change in the settings of a monitor that has a digitizer attached to it. This message contains
+		/// information regarding the scaling of the display mode.
+		/// </para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains a value from <c>Pointer Device Change Constants</c>.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Additional message-specific information.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If the application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerdevicechange
+		[MsgParams(typeof(PDC), typeof(IntPtr))]
+		WM_POINTERDEVICECHANGE = 0x238,
+
+		/// <summary>
+		/// <para>
+		/// Sent to a window when a pointer device is detected within range of an input digitizer. This message contains information
+		/// regarding the device and its proximity.
+		/// </para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Additional message-specific information.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Additional message-specific information.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If the application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerdeviceinrange
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERDEVICEINRANGE = 0x239,
+
+		/// <summary>
+		/// <para>
+		/// Sent to a window when a pointer device has departed the range of an input digitizer. This message contains information regarding
+		/// the device and its proximity.
+		/// </para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Additional message-specific information.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Additional message-specific information.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If the application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerdeviceoutofrange
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERDEVICEOUTOFRANGE = 0x23A,
+
+		/// <summary>
+		/// <para>Notifies the window when one or more touch points, such as a finger or pen, touches a touch-sensitive digitizer surface.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>
+		/// The low-order word contains the number of touch points associated with this message. The high-order word is reserved for future use.
+		/// </para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// Contains a touch input handle that can be used in a call to <c>GetTouchInputInfo</c> to retrieve detailed information about the
+		/// touch points associated with this message.
+		/// </para>
+		/// <para>
+		/// This handle is valid only within the current process and should not be passed cross-process except as the <c>LPARAM</c> in a
+		/// <c>SendMessage</c> or <c>PostMessage</c> call.
+		/// </para>
+		/// <para>
+		/// When the application no longer requires this handle, the application must call <c>CloseTouchInputHandle</c> to free the process
+		/// memory associated with this handle. Failing to do so can result in an application memory leak.
+		/// </para>
+		/// <para>
+		/// Note that the touch input handle in this parameter is no longer valid after the message has been passed to DefWindowProc.
+		/// DefWindowProc will close and invalidate this handle.
+		/// </para>
+		/// <para>
+		/// Note also that the touch input handle in this parameter is no longer valid after the message has been forwarded using
+		/// <c>PostMessage</c>, <c>SendMessage</c>, or one of their variants. These functions will close and invalidate this handle.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>
+		/// If the application does not process the message, it must call DefWindowProc. Not doing so causes the application to leak memory
+		/// because the touch input handle is not closed and associated process memory is not freed.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <c>WM_TOUCH</c> messages do not respect <c>HTTRANSPARENT</c> regions of windows. If a window returns <c>HTTRANSPARENT</c> in
+		/// response to a <c>WM_NCHITTEST</c> message, mouse messages go to the parent, and <c>WM_TOUCH</c> messages go directly to the window.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/wintouch/wm-touchdown
+		[MsgParams(typeof(uint), typeof(HTOUCHINPUT))]
+		WM_TOUCH = 0x0240,
+
+		/// <summary>
+		/// <para>
+		/// Posted to provide an update on a pointer that made contact over the non-client area of a window or when a hovering uncaptured
+		/// contact moves over the non-client area of a window. While the pointer is hovering, the message targets whichever window the
+		/// pointer happens to be over. While the pointer is in contact with the surface, the pointer is implicitly captured to the window
+		/// over which the pointer made contact and that window continues to receive input for the pointer until it breaks contact.
+		/// </para>
+		/// <para>
+		/// If a window has captured this pointer, this message is not posted. Instead, a <c>WM_POINTERUPDATE</c> is posted to the window
+		/// that has captured this pointer.
+		/// </para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains the pointer identifier and additional information. Use the following macros to retrieve this information.</para>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): pointer identifier</para>
+		/// <para><c>HIWORD</c>(wParam): hit-test value returned from processing the <c>WM_NCHITTEST</c> message.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><see cref="Macros.GET_X_LPARAM"/>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="Macros.GET_Y_LPARAM"/>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// If the application does not process this message, <c>DefWindowProc</c> may perform one or more system actions depending on the
+		/// hit-test result included in the message. Typically, applications should not need to handle this message.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-ncpointerupdate
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_NCPOINTERUPDATE = 0x0241,
+
+		/// <summary>
+		/// <para>
+		/// Posted when a pointer makes contact over the non-client area of a window. The message targets the window over which the pointer
+		/// makes contact. The pointer is implicitly captured to the window so that the window continues to receive input for the pointer
+		/// until it breaks contact.
+		/// </para>
+		/// <para>
+		/// If a window has captured this pointer, this message is not posted. Instead, a <c>WM_POINTERDOWN</c> is posted to the window that
+		/// has captured this pointer.
+		/// </para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains the pointer identifier and additional information. Use the following macros to retrieve this information.</para>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): pointer identifier.</para>
+		/// <para><c>HIWORD</c>(wParam): hit-test value returned from processing the <c>WM_NCHITTEST</c> message.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// If the application does not process this message, <c>DefWindowProc</c> may perform one or more system actions depending on the
+		/// hit-test result included in the message. Typically, applications should not need to handle this message.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-ncpointerdown
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_NCPOINTERDOWN = 0x0242,
+
+		/// <summary>
+		/// <para>
+		/// Posted when a pointer that made contact over the non-client area of a window breaks contact. The message targets the window over
+		/// which the pointer makes contact and the pointer is, at that point, implicitly captured to the window so that the window continues
+		/// to receive input for the pointer until it breaks contact, including the <c>WM_NCPOINTERUP</c> notification.
+		/// </para>
+		/// <para>
+		/// If a window has captured this pointer, this message is not posted. Instead, a <c>WM_POINTERUP</c> is posted to the window that
+		/// has captured this pointer.
+		/// </para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains the pointer identifier and additional information. Use the following macros to retrieve this information.</para>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): pointer identifier</para>
+		/// <para><c>HIWORD</c>(wParam): hit-test value returned from processing the <c>WM_NCHITTEST</c> message.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// If the application does not process this message, <c>DefWindowProc</c> may perform one or more system actions depending on the
+		/// hit-test result included in the message. Typically, applications should not need to handle this message.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-ncpointerup
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_NCPOINTERUP = 0x0243,
+
+		/// <summary>
+		/// <para>
+		/// Posted to provide an update on a pointer that made contact over the client area of a window or on a hovering uncaptured pointer
+		/// over the client area of a window. While the pointer is hovering, the message targets whichever window the pointer happens to be
+		/// over. While the pointer is in contact with the surface, the pointer is implicitly captured to the window over which the pointer
+		/// made contact and that window continues to receive input for the pointer until it breaks contact.
+		/// </para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains information about the pointer. Use the following macros to retrieve information from the wParam parameter.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): the pointer identifier.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_NEW_WPARAM</c>(wParam): a flag that indicates whether this message represents the first input generated by a new pointer.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_INRANGE_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer during its
+		/// lifetime. This flag is not set on messages that indicate that the pointer has left detection range
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_INCONTACT_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer that is in
+		/// contact with the window surface. This flag is not set on messages that indicate a hovering pointer.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_PRIMARY_WPARAM</c>(wParam): indicates that this pointer has been designated as primary.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_FIRSTBUTTON_WPARAM</c>(wParam): a flag that indicates whether there is a primary action.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_SECONDBUTTON_WPARAM</c>(wParam): a flag that indicates whether there is a secondary action.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_THIRDBUTTON_WPARAM</c>(wParam): a flag that indicates whether there are one or more tertiary actions based on the
+		/// pointer type; applications that wish to respond to tertiary actions must retrieve information specific to the pointer type to
+		/// determine which tertiary buttons are pressed. For example, an application can determine the buttons states of a pen by calling
+		/// <c>GetPointerPenInfo</c> and examining the flags that specify button states.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_FOURTHBUTTON_WPARAM</c>(wParam): a flag that indicates whether the specified pointer took fourth action.
+		/// Applications that wish to respond to fourth actions must retrieve information specific to the pointer type to determine if the
+		/// first extended mouse (XButton1) button is pressed.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_FIFTHBUTTON_WPARAM</c>(wParam): a <c>flag</c> that indicates whether the specified pointer took fifth action.
+		/// Applications that wish to respond to fifth actions must retrieve information specific to the pointer type to determine if the
+		/// second extended mouse (XButton2) button is pressed.
+		/// </para>
+		/// <para>See <c>Pointer Flags</c> for more details.</para>
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>Each pointer has a unique pointer identifier during its lifetime. The lifetime of a pointer begins when it is first detected.</para>
+		/// <para>
+		/// A <c>WM_POINTERENTER</c> message is generated if a hovering pointer is detected. A <c>WM_POINTERDOWN</c> message followed by a
+		/// <c>WM_POINTERENTER</c> message is generated if a non-hovering pointer is detected.
+		/// </para>
+		/// <para>During its lifetime, a pointer may generate a series of <c>WM_POINTERUPDATE</c> messages while it is hovering or in contact.</para>
+		/// <para>The lifetime of a pointer ends when it is no longer detected. This generates a <c>WM_POINTERLEAVE</c> message.</para>
+		/// <para>When a pointer is aborted, <c>POINTER_FLAG_CANCELED</c> is set.</para>
+		/// <para>A <c>WM_POINTERLEAVE</c> message may also be generated when a non-captured pointer moves outside the bounds of a window.</para>
+		/// <para>To obtain the horizontal and vertical position of a pointer, use the following:</para>
+		/// <para>The <c>MAKEPOINTS</c> macro can also be used to convert the lParam parameter to a <c>POINTS</c> structure.</para>
+		/// <para>
+		/// The <c>GetKeyState</c> function can be used to determine the keyboard modifier key states associated with this message. For
+		/// example, to detect that the ALT key was pressed, check whether <c>GetKeyState</c> (VK_MENU) &lt; 0.
+		/// </para>
+		/// <para>
+		/// If the application does not process this message, <c>DefWindowProc</c> may generate one or more <c>WM_GESTURE</c> messages if the
+		/// sequence of input from this and, possibly, other pointers is recognized as a gesture. If a gesture is not recognized,
+		/// <c>DefWindowProc</c> may generate mouse input.
+		/// </para>
+		/// <para>
+		/// If an application selectively consumes some pointer input and passes the rest to <c>DefWindowProc</c>, the resulting behavior is undefined.
+		/// </para>
+		/// <para>Use the <c>GetPointerInfo</c> function to retrieve further information related to this message.</para>
+		/// <para>
+		/// If the application does not process these messages as fast as they are generated, some moves may be coalesced. The history of
+		/// inputs that were coalesced into this message can be retrieved using the <c>GetPointerInfoHistory</c> function.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerupdate
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERUPDATE = 0x0245,
+
+		/// <summary>
+		/// <para>
+		/// Posted when a pointer makes contact over the client area of a window. This input message targets the window over which the
+		/// pointer makes contact, and the pointer is implicitly captured to the window so that the window continues to receive input for the
+		/// pointer until it breaks contact.
+		/// </para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains information about the pointer. Use the following macros to retrieve information from the wParam parameter.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): the pointer identifier.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_NEW_WPARAM</c>(wParam): a flag that indicates whether this message represents the first input generated by a new pointer.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_INRANGE_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer during its
+		/// lifetime. This flag is not set on messages that indicate that the pointer has left detection range
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_INCONTACT_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer that is in
+		/// contact with the window surface. This flag is not set on messages that indicate a hovering pointer.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_PRIMARY_WPARAM</c>(wParam): indicates that this pointer has been designated as primary.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_FIRSTBUTTON_WPARAM</c>(wParam): a flag that indicates whether there is a primary action.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_SECONDBUTTON_WPARAM</c>(wParam): a flag that indicates whether there is a secondary action.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_THIRDBUTTON_WPARAM</c>(wParam): a flag that indicates whether there are one or more tertiary actions based on the
+		/// pointer type; applications that wish to respond to tertiary actions must retrieve information specific to the pointer type to
+		/// determine which tertiary buttons are pressed. For example, an application can determine the buttons states of a pen by calling
+		/// <c>GetPointerPenInfo</c> and examining the flags that specify button states.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_FOURTHBUTTON_WPARAM</c>(wParam): a flag that indicates whether the specified pointer took fourth action.
+		/// Applications that wish to respond to fourth actions must retrieve information specific to the pointer type to determine if the
+		/// first extended mouse (XButton1) button is pressed.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_FIFTHBUTTON_WPARAM</c>(wParam): a <c>flag</c> that indicates whether the specified pointer took fifth action.
+		/// Applications that wish to respond to fifth actions must retrieve information specific to the pointer type to determine if the
+		/// second extended mouse (XButton2) button is pressed.
+		/// </para>
+		/// <para>See <c>Pointer Flags</c> for more details.</para>
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// <para>
+		/// ![Important] When a window loses capture of a pointer and it receives the <c>WM_POINTERCAPTURECHANGED</c> notification, it
+		/// typically will not receive any further notifications. For this reason, it is important that you not make any assumptions based on
+		/// evenly paired <c>WM_POINTERDOWN</c>/ <c>WM_POINTERUP</c> or <c>WM_POINTERENTER</c>/ <c>WM_POINTERLEAVE</c> notifications.
+		/// </para>
+		/// </para>
+		/// <para>Each pointer has a unique pointer identifier during its lifetime. The lifetime of a pointer begins when it is first detected.</para>
+		/// <para>
+		/// A <c>WM_POINTERENTER</c> message is generated if a hovering pointer is detected. A <c>WM_POINTERDOWN</c> message followed by a
+		/// <c>WM_POINTERENTER</c> message is generated if a non-hovering pointer is detected.
+		/// </para>
+		/// <para>During its lifetime, a pointer may generate a series of <c>WM_POINTERUPDATE</c> messages while it is hovering or in contact.</para>
+		/// <para>The lifetime of a pointer ends when it is no longer detected. This generates a <c>WM_POINTERLEAVE</c> message.</para>
+		/// <para>When a pointer is aborted, <c>POINTER_FLAG_CANCELED</c> is set.</para>
+		/// <para>A <c>WM_POINTERLEAVE</c> message may also be generated when a non-captured pointer moves outside the bounds of a window.</para>
+		/// <para>To obtain the horizontal and vertical position of a pointer, use the following:</para>
+		/// <para>To convert the lParam parameter to a <c>POINTS</c>) structure, use the <c>MAKEPOINTS</c> macro.</para>
+		/// <para>To retrieve further information associated with the message, use the <c>GetPointerInfo</c> function.</para>
+		/// <para>
+		/// To determine the keyboard modifier key states associated with this message, use the <c>GetKeyState</c> function. For example, to
+		/// detect that the ALT key was pressed, check whether GetKeyState(VK_MENU) &lt; 0.
+		/// </para>
+		/// <para>
+		/// Note that if the application does not process this message, <c>DefWindowProc</c> may generate one or more <c>WM_GESTURE</c>
+		/// messages if the sequence of input from this and, possibly, other pointers is recognized as a gesture. If a gesture is not
+		/// recognized, <c>DefWindowProc</c> may generate mouse input.
+		/// </para>
+		/// <para>
+		/// If an application selectively consumes some pointer input and passes the rest to <c>DefWindowProc</c>, the resulting behavior is undefined.
+		/// </para>
+		/// <para>
+		/// When a window loses capture of a pointer and receives the <c>WM_POINTERCAPTURECHANGED</c> notification, it will typically not
+		/// receive any further notifications. Therefore, it is important that a window does not make any assumptions of its pointer status,
+		/// regardless of whether it receives evenly paired DOWN / UP or ENTER / LEAVE notifications.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerdown
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERDOWN = 0x0246,
+
+		/// <summary>
+		/// <para>
+		/// Posted when a pointer that made contact over the client area of a window breaks contact. This input message targets the window
+		/// over which the pointer makes contact and the pointer is, at that point, implicitly captured to the window so that the window
+		/// continues to receive input messages including the <c>WM_POINTERUP</c> notification for the pointer until it breaks contact.
+		/// </para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains information about the pointer. Use the following macros to retrieve information from the wParam parameter.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): the pointer identifier.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_NEW_WPARAM</c>(wParam): a flag that indicates whether this message represents the first input generated by a new pointer.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_INRANGE_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer during its
+		/// lifetime. This flag is not set on messages that indicate that the pointer has left detection range
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_INCONTACT_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer that is in
+		/// contact with the window surface. This flag is not set on messages that indicate a hovering pointer.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_PRIMARY_WPARAM</c>(wParam): indicates that this pointer has been designated as primary.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_FIRSTBUTTON_WPARAM</c>(wParam): a flag that indicates whether there is a primary action.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para><c>IS_POINTER_SECONDBUTTON_WPARAM</c>(wParam): a flag that indicates whether there is a secondary action.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_THIRDBUTTON_WPARAM</c>(wParam): a flag that indicates whether there are one or more tertiary actions based on the
+		/// pointer type; applications that wish to respond to tertiary actions must retrieve information specific to the pointer type to
+		/// determine which tertiary buttons are pressed. For example, an application can determine the buttons states of a pen by calling
+		/// <c>GetPointerPenInfo</c> and examining the flags that specify button states.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_FOURTHBUTTON_WPARAM</c>(wParam): a flag that indicates whether the specified pointer took fourth action.
+		/// Applications that wish to respond to fourth actions must retrieve information specific to the pointer type to determine if the
+		/// first extended mouse (XButton1) button is pressed.
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <para>
+		/// <c>IS_POINTER_FIFTHBUTTON_WPARAM</c>(wParam): a <c>flag</c> that indicates whether the specified pointer took fifth action.
+		/// Applications that wish to respond to fifth actions must retrieve information specific to the pointer type to determine if the
+		/// second extended mouse (XButton2) button is pressed.
+		/// </para>
+		/// <para>See <c>Pointer Flags</c> for more details.</para>
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// <para>
+		/// ![Important] When a window loses capture of a pointer and it receives the <c>WM_POINTERCAPTURECHANGED</c> notification, it
+		/// typically will not receive any further notifications. For this reason, it is important that you not make any assumptions based on
+		/// evenly paired <c>WM_POINTERDOWN</c>/ <c>WM_POINTERUP</c> or <c>WM_POINTERENTER</c>/ <c>WM_POINTERLEAVE</c> notifications.
+		/// </para>
+		/// </para>
+		/// <para>Each pointer has a unique pointer identifier during its lifetime. The lifetime of a pointer begins when it is first detected.</para>
+		/// <para>
+		/// A <c>WM_POINTERENTER</c> message is generated if a hovering pointer is detected. A <c>WM_POINTERDOWN</c> message followed by a
+		/// <c>WM_POINTERENTER</c> message is generated if a non-hovering pointer is detected.
+		/// </para>
+		/// <para>During its lifetime, a pointer may generate a series of <c>WM_POINTERUPDATE</c> messages while it is hovering or in contact.</para>
+		/// <para>The lifetime of a pointer ends when it is no longer detected. This generates a <c>WM_POINTERLEAVE</c> message.</para>
+		/// <para>When a pointer is aborted, <c>POINTER_FLAG_CANCELED</c> is set.</para>
+		/// <para>A <c>WM_POINTERLEAVE</c> message may also be generated when a non-captured pointer moves outside the bounds of a window.</para>
+		/// <para>To obtain the horizontal and vertical position of a pointer, use the following:</para>
+		/// <para>Use the following code to obtain the horizontal and vertical position:</para>
+		/// <para>The <c>MAKEPOINTS</c> macro can also be used to convert the lParam parameter to a <c>POINTS</c> structure.</para>
+		/// <para>
+		/// The <c>GetKeyState</c> function can be used to determine the keyboard modifier key states associated with this message. For
+		/// example, to detect that the ALT key was pressed, check whether <c>GetKeyState</c>(VK_MENU) &lt; 0.
+		/// </para>
+		/// <para>
+		/// If the application does not process this message, <c>DefWindowProc</c> may generate one or more <c>WM_GESTURE</c> messages if the
+		/// sequence of input from this and, possibly, other pointers is recognized as a gesture. If a gesture is not recognized,
+		/// <c>DefWindowProc</c> may generate mouse input.
+		/// </para>
+		/// <para>
+		/// If an application selectively consumes some pointer input and passes the rest to <c>DefWindowProc</c>, the resulting behavior is undefined.
+		/// </para>
+		/// <para>Use the <c>GetPointerInfo</c> function to retrieve further information related to this message.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerup
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERUP = 0x0247,
+
+		/// <summary>
+		/// <para>
+		/// Sent to a window when a new pointer enters detection range over the window (hover) or when an existing pointer moves within the
+		/// boundaries of the window.
+		/// </para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>
+		/// Contains the pointer identifier and additonal information. Use the following macros to retrieve specific information in the
+		/// wParam parameter.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_POINTERID_WPARAM</c>(wParam): the pointer identifier.</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>IS_POINTER_NEW_WPARAM</c>(wParam): indicates whether this message is the first message generated by a new pointer entering
+		/// detection range (hover).
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>IS_POINTER_INRANGE_WPARAM</c>(wParam): indicates whether this message was generated by a pointer that has not left detection
+		/// range. This flag is always set for <c>WM_POINTERENTER</c> messages.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>IS_POINTER_INCONTACT_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer that is in
+		/// contact. This flag is not set for a pointer in detection range (hover).
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>WM_POINTERENTER</c> notification can be used by a window to provide feedback to the user while the pointer is over its
+		/// surface or to otherwise react to the presence of a pointer over its surface.
+		/// </para>
+		/// <para>
+		/// This notification is only sent to the window that is receiving input for the pointer. The following table lists some of the
+		/// situations in which this notification is sent.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Action</description>
+		/// <description>Flags Set</description>
+		/// <description>Notifications Sent To</description>
+		/// </listheader>
+		/// <item>
+		/// <description>A new pointer enters detection range (hover).</description>
+		/// <description><c>IS_POINTER_NEW_WPARAM</c><c>IS_POINTER_INRANGE_WPARAM</c></description>
+		/// <description>Window over which the pointer enters detection range.</description>
+		/// </item>
+		/// <item>
+		/// <description>A hovering pointer crosses within the window boundaries.</description>
+		/// <description><c>IS_POINTER_INRANGE_WPARAM</c></description>
+		/// <description>Window within which the pointer has crossed.</description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <para>
+		/// ![Important] When a window loses capture of a pointer and it receives the <c>WM_POINTERCAPTURECHANGED</c> notification, it
+		/// typically will not receive any further notifications. For this reason, it is important that you not make any assumptions based on
+		/// evenly paired <c>WM_POINTERDOWN</c>/ <c>WM_POINTERUP</c> or <c>WM_POINTERENTER</c>/ <c>WM_POINTERLEAVE</c> notifications.
+		/// </para>
+		/// </para>
+		/// <para>When inputs come from the mouse, as a result of mouse and pointer message integration, <c>WM_POINTERENTER</c> is not sent.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerenter
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERENTER = 0x0249,
+
+		/// <summary>
+		/// <para>
+		/// Sent to a window when a pointer leaves detection range over the window (hover) or when a pointer moves outside the boundaries of
+		/// the window.
+		/// </para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains the pointer identifier and additional information. Use the following macros to retrieve this information.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_POINTERID_WPARAM</c>(wParam): the pointer identifier.</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>IS_POINTER_INRANGE_WPARAM</c>(wParam): indicates whether this message was generated by a pointer that has not left detection
+		/// range. This flag is not set when the pointer leaves the detection range of the window.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>IS_POINTER_INCONTACT_WPARAM</c>(wParam): a flag that indicates whether this message was generated by a pointer that is in
+		/// contact. This flag is not set for a pointer in detection range (hover).
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>WM_POINTERLEAVE</c> notification can be used by a window to change mode or stop any feedback to the user while the pointer
+		/// is over the window surface.
+		/// </para>
+		/// <para>
+		/// This notification is only sent to the window that is receiving input for the pointer. The following table lists some of the
+		/// situations in which this notification is sent.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Action</description>
+		/// <description>Flags Set</description>
+		/// <description>Notifications Sent To</description>
+		/// </listheader>
+		/// <item>
+		/// <description>A hovering pointer crosses window boundaries.</description>
+		/// <description><c>IS_POINTER_INRANGE_WPARAM</c></description>
+		/// <description>Window outside of whose boundary the pointer moved.</description>
+		/// </item>
+		/// <item>
+		/// <description>A pointer goes out of detection range.</description>
+		/// <description>N/A</description>
+		/// <description>Window for which the pointer leaves detection range.</description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <para>
+		/// ![Important] When a window loses capture of a pointer and it receives the <c>WM_POINTERCAPTURECHANGED</c> notification, it
+		/// typically will not receive any further notifications. For this reason, it is important that you not make any assumptions based on
+		/// evenly paired <c>WM_POINTERDOWN</c>/ <c>WM_POINTERUP</c> or <c>WM_POINTERENTER</c>/ <c>WM_POINTERLEAVE</c> notifications.
+		/// </para>
+		/// </para>
+		/// <para>
+		/// If contact is maintained with the input digitizer and the pointer moves outside the window, <c>WM_POINTERLEAVE</c> is not
+		/// generated. <c>WM_POINTERLEAVE</c> is generated only when a hovering pointer crosses window boundaries or contact is terminated.
+		/// </para>
+		/// <para><c>WM_POINTERLEAVE</c> is posted to the posted message queue if the input is originated from a mouse device.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerleave
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERLEAVE = 0x024A,
+
+		/// <summary>
+		/// <para>
+		/// Sent to an inactive window when a primary pointer generates a <c>WM_POINTERDOWN</c> over the window. As long as the message
+		/// remains unhandled, it travels up the parent window chain until it is reaches the top-level window. Applications can respond to
+		/// this message to specify whether they wish to be activated.
+		/// </para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains the pointer identifier and additional information. Use the following macros to retrieve this information.</para>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): pointer identifier</para>
+		/// <para><c>HIWORD</c>(wParam): hit-test value returned from processing the <c>WM_NCHITTEST</c> message.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the handle to the top-level window of the window being activated.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return one of the values described in the Remarks section.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// An application can handle this message and return one of the following values to determine how the system processes the
+		/// activation and the activating input:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>PA_ACTIVATE</description>
+		/// </item>
+		/// <item>
+		/// <description>PA_NOACTIVATE</description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// It is important to note that, when the user is interacting with the system with multiple simultaneous pointers, the activation
+		/// opportunity that the <c>WM_POINTERACTIVATE</c> message represents is available to applications only for the first of those
+		/// pointers. Applications should, therefore, be aware that they may still receive input from pointers while they are inactive.
+		/// </para>
+		/// <para>If the application does not handle this message, <c>DefWindowProc</c> passes the message to the parent window.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointeractivate
+		[MsgParams(typeof(IntPtr), typeof(IntPtr), LResultType = typeof(WM_POINTERACTIVATE_RETURN))]
+		WM_POINTERACTIVATE = 0x024B,
+
+		/// <summary>
+		/// <para>Sent to a window that is losing capture of an input pointer.</para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains information about the input pointer that is being lost. Use <c>GET_POINTERID_WPARAM</c> to get the pointer ID.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// Contains a handle to the window that is capturing the input pointer. This value can be NULL if the pointer is no longer being
+		/// captured by the window.
+		/// </para>
+		/// <para>If this message is generated from internal processing, the value can be the handle of the window receiving the message.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If an application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// A window should use this notification to stop processing subsequent messages and initiate any cleanup required for the pointer
+		/// being lost. Processing of gestures associated with the pointer should also be terminated (for example, by calling
+		/// <c>StopInteractionContext</c>) and remaining contacts re-associated with the window.
+		/// </para>
+		/// <para>
+		/// Typically, if a window receives the <c>WM_POINTERCAPTURECHANGED</c> notification, no subsequent notifications related to the
+		/// input pointer are received. Because of this, do not depend on paired notifications such as <c>WM_POINTERENTER</c> and <c>WM_POINTERLEAVE</c>.
+		/// </para>
+		/// <para>
+		/// <c>WM_POINTERCAPTURECHANGED</c> does not include <c>POINTER_INFO</c> data. Other than the <c>POINTER_FLAG_CAPTURECHANGED</c> flag
+		/// being set, the data returned by <c>GetPointerInfo</c> (or any variant) is identical to that returned prior to the notification.
+		/// </para>
+		/// <para>
+		/// If the application does not process this notification, <c>DefWindowProc</c> may generate one or more <c>WM_GESTURE</c> messages
+		/// or, if a gesture is not recognized, <c>DefWindowProc</c> may generate mouse input.
+		/// </para>
+		/// <para>
+		/// If an application selectively consumes some pointer input and passes the rest to <c>DefWindowProc</c>, the resulting behavior is undefined.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointercapturechanged
+		[MsgParams(typeof(IntPtr), typeof(HWND))]
+		WM_POINTERCAPTURECHANGED = 0x024C,
+
+		/// <summary>
+		/// <para>Sent to a window on a touch down in order to determine the most probable touch target.</para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Pointer to the <c>TOUCH_HIT_TESTING_INPUT</c> structure that holds the touch contact area data.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If one or more elements are within the touch contact area, an application should return the result of <c>PackTouchHitTestingProximityEvaluation</c>.</para>
+		/// <para>
+		/// If no elements are within the touch contact area, an application should set the value of <c>score</c> in
+		/// <c>TOUCH_HIT_TESTING_PROXIMITY_EVALUATION</c> to <c>TOUCH_HIT_TESTING_PROXIMITY_FARTHEST</c> and call
+		/// <c>PackTouchHitTestingProximityEvaluation</c> to get the LRESULT return value.
+		/// </para>
+		/// <para>If the application does not process this message, it must call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>This message is sent to windows that register through the <c>RegisterTouchHitTestingWindow</c> function.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-touchhittesting
+		[MsgParams(null, typeof(TOUCH_HIT_TESTING_INPUT))]
+		WM_TOUCHHITTESTING = 0x024D,
+
+		/// <summary>
+		/// <para>Posted to the window with foreground keyboard focus when a scroll wheel is rotated.</para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains the pointer identifier and wheel delta. Use the following macros to retrieve this information.</para>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): pointer identifier.</para>
+		/// <para><c>GET_WHEEL_DELTA_WPARAM</c>(wParam): wheel delta as a signed short value.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If the application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// To retrieve the wheel scroll units, use the <c>inputData</c> filed of the <c>POINTER_INFO</c> structure returned by calling
+		/// <c>GetPointerInfo</c> function. This field contains a signed value and is expressed in a multiple of <c>WHEEL_DELTA</c>. A
+		/// positive value indicates a rotation forward and a negative value indicates a rotation backward.
+		/// </para>
+		/// <para>
+		/// Note that the wheel inputs may be delivered even if the mouse cursor is located outside of application s window. The wheel
+		/// messages are delivered in a way very similar to the keyboard inputs. The focus window of the foregournd message queue receives
+		/// the wheel messages.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerwheel
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERWHEEL = 0x024E,
+
+		/// <summary>
+		/// <para>Posted to the window with foreground keyboard focus when a horizontal scroll wheel is rotated.</para>
+		/// <para>A window receives this message through its <c>WindowProc</c> function.</para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Contains the pointer identifier and wheel delta. Use the following macros to retrieve this information.</para>
+		/// <para><c>GET_POINTERID_WPARAM</c>(wParam): pointer identifier.</para>
+		/// <para><c>GET_WHEEL_DELTA_WPARAM</c>(wParam): wheel delta as signed short value.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Contains the point location of the pointer.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// Because the pointer may make contact with the device over a non-trivial area, this point location may be a simplification of a
+		/// more complex pointer area. Whenever possible, an application should use the complete pointer area information instead of the
+		/// point location.
+		/// </para>
+		/// </para>
+		/// <para>Use the following macros to retrieve the physical screen coordinates of the point.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>GET_X_LPARAM</c>(lParam): the x (horizontal point) coordinate.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>GET_Y_LPARAM</c>(lParam): the y (vertical point) coordinate.</description>
+		/// </item>
+		/// </list>
+		/// <para><strong>Returns</strong></para>
+		/// <para>If the application processes this message, it should return zero.</para>
+		/// <para>If the application does not process this message, it should call <c>DefWindowProc</c>.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// To retrieve the wheel scroll units, use the <c>inputData</c> filed of the <c>POINTER_INFO</c> structure returned by calling
+		/// <c>GetPointerInfo</c> function. This field contains a signed value and is expressed in a multiple of <c>WHEEL_DELTA</c>. A
+		/// positive value indicates a rotation forward and a negative value indicates a rotation backward.
+		/// </para>
+		/// <para>
+		/// Note that the wheel inputs may be delivered even if the mouse cursor is located outside of application s window. The wheel
+		/// messages are delivered in a way very similar to the keyboard inputs. The focus window of the foregournd message queue receives
+		/// the wheel messages.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerhwheel
+		[MsgParams(typeof(IntPtr), typeof(IntPtr))]
+		WM_POINTERHWHEEL = 0x024F,
+
+		/// <summary>
+		/// <para>
+		/// [Some information relates to pre-released product which may be substantially modified before it's commercially released.
+		/// Microsoft makes no warranties, express or implied, with respect to the information provided here.]
+		/// </para>
+		/// <para>
+		/// Sent to a window, when pointer input is first detected, in order to determine the most probable input target for Direct Manipulation.
+		/// </para>
+		/// <para>
+		/// <para>
+		/// ![Important] Desktop apps should be DPI aware. If your app is not DPI aware, screen coordinates contained in pointer messages and
+		/// related structures might appear inaccurate due to DPI virtualization. DPI virtualization provides automatic scaling support to
+		/// applications that are not DPI aware and is active by default (users can turn it off). For more information, see Writing High-DPI
+		/// Win32 Applications.
+		/// </para>
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>NULL</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/dm-pointerhittest
+		[MsgParams(null, null, LResultType = null)]
+		DM_POINTERHITTEST = 0x0250,
+
+		/// <summary>
+		/// <para>
+		/// Sent when ongoing pointer input, for an existing pointer ID, transitions from one process to another across content configured
+		/// for cross-process chaining ( <c>AddContentWithCrossProcessChaining</c>).
+		/// </para>
+		/// <para>This message is sent to the process not currently receiving pointer input.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>NULL</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>This message is not sent when a <c>WM_POINTERDOWN</c> message is posted for a new pointer ID on a different process.</para>
+		/// <para>A <c>WM_POINTERDOWN</c> message is not sent if a <c>WM_POINTERROUTEDTO</c> message is posted first.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerroutedto
+		[MsgParams(null, null, LResultType = null)]
+		WM_POINTERROUTEDTO = 0x0251,
+
+		/// <summary>
+		/// <para>Occurs on the process receiving input when the pointer input is routed to another process.</para>
+		/// <para>
+		/// Sent when pointer input transitions from one process to another across content configured for cross-process chaining ( <c>AddContentWithCrossProcessChaining</c>).
+		/// </para>
+		/// <para>This message is sent to the process currently receiving pointer input.</para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>NULL</para>
+		/// </summary>
+		/// <remarks>This message is not sent with either a <c>WM_POINTERUP</c> message or a <c>WM_POINTERCAPTURECHANGED</c> message.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerroutedaway
+		[MsgParams(null, null, LResultType = null)]
+		WM_POINTERROUTEDAWAY = 0x0252,
+
+		/// <summary>
+		/// <para>
+		/// Sent to all processes (configured for cross-process chaining through <c>AddContentWithCrossProcessChaining</c> and not currently
+		/// handling pointer input) ever associated with a specific pointer ID, when a <c>WM_POINTERUP</c> message is received on the current process.
+		/// </para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>Unused.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>NULL</para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/inputmsg/wm-pointerroutedreleased
+		[MsgParams(null, null, LResultType = null)]
+		WM_POINTERROUTEDRELEASED = 0x0253,
 	}
 
 	/// <summary>wParam value for WM_ACTIVATE.</summary>

@@ -2,6 +2,63 @@
 
 public static partial class User32
 {
+	/// <summary>Specifies the maximum number of simultaneous contacts.</summary>
+	public const int MAX_TOUCH_COUNT = 256;
+
+	/// <summary>Return values for WM_POINTERACTIVATE.</summary>
+	[PInvokeData("winuser.h")]
+	public enum WM_POINTERACTIVATE_RETURN : int
+	{
+		/// <summary>Activates the window, and does not discard the pointer message.</summary>
+		PA_ACTIVATE = MouseActivateCode.MA_ACTIVATE,
+
+		/// <summary>Does not activate the window, and does not discard the pointer message.</summary>
+		PA_NOACTIVATE = MouseActivateCode.MA_NOACTIVATE,
+	}
+
+	/// <summary>Values that can be passed in the wParam parameter of the <c>WM_POINTERDEVICECHANGE</c> message.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/inputmsg/pointer-device-change-constants
+	[PInvokeData("Winuser.h")]
+	[Flags]
+	public enum PDC : uint
+	{
+		/// <summary>A new device is attached.</summary>
+		PDC_ARRIVAL = 0x001,
+
+		/// <summary>A device has been detached.</summary>
+		PDC_REMOVAL = 0x002,
+
+		/// <summary>Orientation of the device.</summary>
+		PDC_ORIENTATION_0 = 0x004,
+
+		/// <summary>Orientation of the device.</summary>
+		PDC_ORIENTATION_90 = 0x008,
+
+		/// <summary>Orientation of the device.</summary>
+		PDC_ORIENTATION_180 = 0x010,
+
+		/// <summary>Orientation of the device.</summary>
+		PDC_ORIENTATION_270 = 0x020,
+
+		/// <summary>The default display mode.</summary>
+		PDC_MODE_DEFAULT = 0x040,
+
+		/// <summary>Centered display mode.</summary>
+		PDC_MODE_CENTERED = 0x080,
+
+		/// <summary>The change in display to digitizer mapping.</summary>
+		PDC_MAPPING_CHANGE = 0x100,
+
+		/// <summary>Display resolution.</summary>
+		PDC_RESOLUTION = 0x200,
+
+		/// <summary>The display origin.</summary>
+		PDC_ORIGIN = 0x400,
+
+		/// <summary>The display aspect ratio.</summary>
+		PDC_MODE_ASPECTRATIOPRESERVED = 0x800,
+	}
+
 	/// <summary>Lists the flags that may appear in the <c>penFlags</c> field of the <c>POINTER_PEN_INFO</c> structure.</summary>
 	// https://docs.microsoft.com/en-us/previous-versions/hh454905(v%3dvs.85) typedef enum tagPEN_FLAGS { PEN_FLAGS_NONE = 0x00000000,
 	// PEN_FLAGS_BARREL = 0x00000001, PEN_FLAGS_INVERTED = 0x00000002, PEN_FLAGS_ERASER = 0x00000004 } PEN_FLAGS;
@@ -297,6 +354,101 @@ public static partial class User32
 		PT_TOUCHPAD = 5,
 	}
 
+	/// <summary>Values that are used in various pointer macros (see Macros).</summary>
+	/// <remarks>
+	/// XBUTTON1 and XBUTTON2 are additional buttons used on many mouse devices. They return the same data as standard mouse buttons.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/inputmsg/pointer-message-flags
+	[PInvokeData("winuser.h")]
+	[Flags]
+	public enum POINTER_MESSAGE_FLAG : uint
+	{
+		/// <summary>Indicates the arrival of a new pointer.</summary>
+		POINTER_MESSAGE_FLAG_NEW = 0x00000001,
+
+		/// <summary>
+		/// Indicates that this pointer continues to exist. When this flag is not set, it indicates the pointer has left detection range.
+		/// <para>
+		/// This flag is typically not set only when a hovering pointer leaves detection range (POINTER_FLAG_UPDATE is set) or when a pointer
+		/// in contact with a window surface leaves detection range (POINTER_FLAG_UP is set).
+		/// </para>
+		/// </summary>
+		POINTER_MESSAGE_FLAG_INRANGE = 0x00000002,
+
+		/// <summary>
+		/// Indicates that this pointer is in contact with the digitizer surface. When this flag is not set, it indicates a hovering pointer.
+		/// </summary>
+		POINTER_MESSAGE_FLAG_INCONTACT = 0x00000004,
+
+		/// <summary>
+		/// Indicates a primary action, analogous to a left mouse button down.
+		/// <para>A touch pointer has this flag set when it is in contact with the digitizer surface.</para>
+		/// <para>A pen pointer has this flag set when it is in contact with the digitizer surface with no buttons pressed.</para>
+		/// <para>A mouse pointer has this flag set when the left mouse button is down.</para>
+		/// </summary>
+		POINTER_MESSAGE_FLAG_FIRSTBUTTON = 0x00000010,
+
+		/// <summary>
+		/// Indicates a secondary action, analogous to a right mouse button down.
+		/// <para>A touch pointer does not use this flag.</para>
+		/// <para>A pen pointer has this flag set when it is in contact with the digitizer surface with the pen barrel button pressed.</para>
+		/// <para>A mouse pointer has this flag set when the right mouse button is down.</para>
+		/// </summary>
+		POINTER_MESSAGE_FLAG_SECONDBUTTON = 0x00000020,
+
+		/// <summary>
+		/// Analogous to a mouse wheel button down.
+		/// <para>A touch pointer does not use this flag.</para>
+		/// <para>A pen pointer does not use this flag.</para>
+		/// <para>A mouse pointer has this flag set when the mouse wheel button is down.</para>
+		/// </summary>
+		POINTER_MESSAGE_FLAG_THIRDBUTTON = 0x00000040,
+
+		/// <summary>
+		/// Analogous to a first extended mouse (XButton1) button down.
+		/// <para>A touch pointer does not use this flag.</para>
+		/// <para>A pen pointer does not use this flag.</para>
+		/// <para>A mouse pointer has this flag set when the first extended mouse (XBUTTON1) button is down.</para>
+		/// </summary>
+		POINTER_MESSAGE_FLAG_FOURTHBUTTON = 0x00000080,
+
+		/// <summary>
+		/// Analogous to a second extended mouse (XButton2) button down.
+		/// <para>A touch pointer does not use this flag.</para>
+		/// <para>A pen pointer does not use this flag.</para>
+		/// <para>A mouse pointer has this flag set when the second extended mouse (XBUTTON2) button is down.</para>
+		/// </summary>
+		POINTER_MESSAGE_FLAG_FIFTHBUTTON = 0x00000100,
+
+		/// <summary>
+		/// Indicates that this pointer has been designated as the primary pointer. A primary pointer is a single pointer that can perform
+		/// actions beyond those available to non-primary pointers. For example, when a primary pointer makes contact with a window s
+		/// surface, it may provide the window an opportunity to activate by sending it a WM_POINTERACTIVATE message.
+		/// <para>
+		/// The primary pointer is identified from all current user interactions on the system (mouse, touch, pen, and so on). As such, the
+		/// primary pointer might not be associated with your app. The first contact in a multi-touch interaction is set as the primary
+		/// pointer. Once a primary pointer is identified, all contacts must be lifted before a new contact can be identified as a primary
+		/// pointer. For apps that don't process pointer input, only the primary pointer's events are promoted to mouse events.
+		/// </para>
+		/// </summary>
+		POINTER_MESSAGE_FLAG_PRIMARY = 0x00002000,
+
+		/// <summary>
+		/// Confidence is a suggestion from the source device about whether the pointer represents an intended or accidental interaction,
+		/// which is especially relevant for PT_TOUCH pointers where an accidental interaction (such as with the palm of the hand) can
+		/// trigger input. The presence of this flag indicates that the source device has high confidence that this input is part of an
+		/// intended interaction.
+		/// </summary>
+		POINTER_MESSAGE_FLAG_CONFIDENCE = 0x00000400,
+
+		/// <summary>
+		/// Indicates that the pointer is departing in an abnormal manner, such as when the system receives invalid input for the pointer or
+		/// when a device with active pointers departs abruptly. If the application receiving the input is in a position to do so, it should
+		/// treat the interaction as not completed and reverse any effects of the concerned pointer.
+		/// </summary>
+		POINTER_MESSAGE_FLAG_CANCELED = 0x00000800,
+	}
+
 	/// <summary>Values that can appear in the touchFlags field of the POINTER_TOUCH_INFO structure.</summary>
 	// https://docs.microsoft.com/en-us/previous-versions/hh454914(v%3dvs.85) typedef enum tagTOUCH_FLAGS { TOUCH_FLAGS_NONE =
 	// 0x00000000 } TOUCH_FLAGS;
@@ -325,9 +477,112 @@ public static partial class User32
 		TOUCH_MASK_PRESSURE = 0x00000004,
 	}
 
+	/// <summary>Retrieves the pointer ID using the specified value.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-get_pointerid_wparam void GET_POINTERID_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GET_POINTERID_WPARAM")]
+	public static uint GET_POINTERID_WPARAM(IntPtr wParam) => (uint)Macros.LOWORD(wParam);
+
+	/// <summary>Checks whether the specified pointer message is considered intentional rather than accidental.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-has_pointer_confidence_wparam void
+	// HAS_POINTER_CONFIDENCE_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.HAS_POINTER_CONFIDENCE_WPARAM")]
+	public static bool HAS_POINTER_CONFIDENCE_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_CONFIDENCE);
+
+	/// <summary>Checks whether a pointer macro sets the specified flag.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <param name="flag">The flag to be set. The value is one of the Pointer_Flags constants.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_flag_set_wparam void IS_POINTER_FLAG_SET_WPARAM(
+	// wParam, flag );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_FLAG_SET_WPARAM")]
+	public static bool IS_POINTER_FLAG_SET_WPARAM(IntPtr wParam, POINTER_MESSAGE_FLAG flag) => ((POINTER_MESSAGE_FLAG)(uint)Macros.HIWORD(wParam)).IsFlagSet(flag);
+
+	/// <summary>Checks whether the specified pointer is a new pointer.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_new_wparam void IS_POINTER_NEW_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_NEW_WPARAM")]
+	public static bool IS_POINTER_NEW_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_NEW);
+
+	/// <summary>Checks whether the specified pointer is in range.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_inrange_wparam void IS_POINTER_INRANGE_WPARAM(
+	// wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_INRANGE_WPARAM")]
+	public static bool IS_POINTER_INRANGE_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_INRANGE);
+
+	/// <summary>Checks whether the specified pointer is in contact.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_incontact_wparam void IS_POINTER_INCONTACT_WPARAM(
+	// wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_INCONTACT_WPARAM")]
+	public static bool IS_POINTER_INCONTACT_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_INCONTACT);
+
+	/// <summary>Checks whether the specified pointer took first action.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_firstbutton_wparam void
+	// IS_POINTER_FIRSTBUTTON_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_FIRSTBUTTON_WPARAM")]
+	public static bool IS_POINTER_FIRSTBUTTON_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_FIRSTBUTTON);
+
+	/// <summary>Checks whether the specified pointer took second action.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_secondbutton_wparam void
+	// IS_POINTER_SECONDBUTTON_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_SECONDBUTTON_WPARAM")]
+	public static bool IS_POINTER_SECONDBUTTON_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_SECONDBUTTON);
+
+	/// <summary>Checks whether the specified pointer took third action.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_thirdbutton_wparam void
+	// IS_POINTER_THIRDBUTTON_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_THIRDBUTTON_WPARAM")]
+	public static bool IS_POINTER_THIRDBUTTON_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_THIRDBUTTON);
+
+	/// <summary>Checks whether the specified pointer took fourth action.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_fourthbutton_wparam void
+	// IS_POINTER_FOURTHBUTTON_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_FOURTHBUTTON_WPARAM")]
+	public static bool IS_POINTER_FOURTHBUTTON_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_FOURTHBUTTON);
+
+	/// <summary>Checks whether the specified pointer took fifth action.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_fifthbutton_wparam void
+	// IS_POINTER_FIFTHBUTTON_WPARAM( wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_FIFTHBUTTON_WPARAM")]
+	public static bool IS_POINTER_FIFTHBUTTON_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_FIFTHBUTTON);
+
+	/// <summary>Checks whether the specified pointer took primary action.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/Winuser/nf-winuser-is_pointer_primary_wparam void IS_POINTER_PRIMARY_WPARAM(
+	// wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_PRIMARY_WPARAM")]
+	public static bool IS_POINTER_PRIMARY_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_PRIMARY);
+
+	/// <summary>Checks whether the specified pointer input ended abruptly, or was invalid, indicating the interaction was not completed.</summary>
+	/// <param name="wParam">The value to be converted.</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-is_pointer_canceled_wparam void IS_POINTER_CANCELED_WPARAM(
+	// wParam );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_CANCELED_WPARAM")]
+	public static bool IS_POINTER_CANCELED_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_CANCELED);
+
 	/// <summary>
-	/// Configures the pointer injection device for the calling application, and initializes the maximum number of simultaneous pointers
-	/// that the app can inject.
+	/// Configures the pointer injection device for the calling application, and initializes the maximum number of simultaneous pointers that
+	/// the app can inject.
 	/// </summary>
 	/// <param name="pointerType">The pointer injection device type. Must be either PT_TOUCH or <c>PT_PEN</c>.</param>
 	/// <param name="maxCount">
