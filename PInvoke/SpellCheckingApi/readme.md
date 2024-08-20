@@ -24,4 +24,5 @@ Class | Description
 ---- | ----
 [Vanara.PInvoke.SpellCheck](https://github.com/dahall/Vanara/search?l=C%23&q=SpellCheck) | Functions, constants, and interfaces for the Spell Checking API.
 [Vanara.PInvoke.SpellCheck.SpellCheckerFactory](https://github.com/dahall/Vanara/search?l=C%23&q=SpellCheckerFactory) | CLSID_SpellCheckerFactory
+[Vanara.PInvoke.SpellCheck.SpellCheckerOption](https://github.com/dahall/Vanara/search?l=C%23&q=SpellCheckerOption) | Consolidated class holding information about options for the spell checker.
 [Vanara.PInvoke.SpellCheckProvider](https://github.com/dahall/Vanara/search?l=C%23&q=SpellCheckProvider) | Functions, constants, and interfaces for the Spell Checking API provider.

@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes | Enumerations | Interfaces
 --- | --- | ---
-SpellCheck SpellCheckerFactory SpellCheckProvider          | CORRECTIVE_ACTION WORDLIST_TYPE           | IComprehensiveSpellCheckProvider IEnumSpellingError IOptionDescription ISpellChecker ISpellChecker2 ISpellCheckerChangedEventHandler ISpellCheckerFactory ISpellCheckProvider ISpellCheckProviderFactory ISpellingError IUserDictionariesRegistrar 
+SpellCheck SpellCheckerFactory SpellCheckerOption SpellCheckProvider         | CORRECTIVE_ACTION WORDLIST_TYPE           | IComprehensiveSpellCheckProvider IEnumSpellingError IOptionDescription ISpellChecker ISpellChecker2 ISpellCheckerChangedEventHandler ISpellCheckerFactory ISpellCheckProvider ISpellCheckProviderFactory ISpellingError IUserDictionariesRegistrar 

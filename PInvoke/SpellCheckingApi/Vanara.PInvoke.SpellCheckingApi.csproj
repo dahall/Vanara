@@ -9,7 +9,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-SpellCheck, SpellCheckerFactory, SpellCheckProvider
+SpellCheck, SpellCheckerFactory, SpellCheckerOption, SpellCheckProvider
 
 Enumerations
 CORRECTIVE_ACTION, WORDLIST_TYPE
