@@ -1427,7 +1427,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpTemplateName;
+		public string? lpTemplateName;
 
 		/// <summary>
 		/// <para>Type: <c>HINSTANCE</c></para>
@@ -2108,7 +2108,8 @@ public static partial class ComDlg32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public StrPtrAuto lpstrInitialDir;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpstrInitialDir;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
@@ -2117,7 +2118,8 @@ public static partial class ComDlg32
 		/// (that is, <c>Save As</c> or <c>Open</c>).
 		/// </para>
 		/// </summary>
-		public StrPtrAuto lpstrTitle;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpstrTitle;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -2373,7 +2375,8 @@ public static partial class ComDlg32
 		/// a period (.). If this member is <c>NULL</c> and the user fails to type an extension, no extension is appended.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto lpstrDefExt;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpstrDefExt;
 
 		/// <summary>
 		/// <para>Type: <c>LPARAM</c></para>
