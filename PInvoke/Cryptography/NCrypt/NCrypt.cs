@@ -5090,8 +5090,8 @@ public static partial class NCrypt
 			set
 			{
 				((IDisposable)this).Dispose();
-				if (value == null || value.Length == 0) return;
-				_pBuffers = InteropExtensions.MarshalToPtr(value.Select(b => new _NCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
+				_pBuffers = value == null || value.Length == 0 ? IntPtr.Zero : InteropExtensions.MarshalToPtr(value.Select(b => new _NCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
+				cBuffers = (uint)(value?.Length ?? 0);
 			}
 		}
 
