@@ -8809,6 +8809,11 @@ public static partial class BCrypt
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(BCRYPT_ALG_HANDLE h) => h.handle;
 
+		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_ALG_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator BCRYPT_HANDLE(BCRYPT_ALG_HANDLE h) => h.handle;
+
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BCRYPT_ALG_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -8931,6 +8936,11 @@ public static partial class BCrypt
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
 
+		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_HASH_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator BCRYPT_HANDLE(BCRYPT_HASH_HANDLE h) => h.handle;
+
 		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_HASH_HANDLE"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -8978,6 +8988,11 @@ public static partial class BCrypt
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_KEY_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator BCRYPT_HANDLE(BCRYPT_KEY_HANDLE h) => h.handle;
 
 		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_KEY_HANDLE"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -9242,6 +9257,11 @@ public static partial class BCrypt
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(BCRYPT_SECRET_HANDLE h) => h.handle;
+
+		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_SECRET_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator BCRYPT_HANDLE(BCRYPT_SECRET_HANDLE h) => h.handle;
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BCRYPT_SECRET_HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
