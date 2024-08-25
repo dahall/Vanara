@@ -322,10 +322,8 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	public virtual int CompareTo(SafeAllocatedMemoryHandleBase? other)
 	{
 		if (other is null) return 1;
-		int ret = handle.ToInt64().CompareTo(other.handle.ToInt64());
-		if (ret != 0)
-			return ret;
-		ret = Size.CompareTo(other.Size);
+		if (handle.Equals(other.handle)) return 0;
+		var ret = Size.CompareTo(other.Size);
 		if (ret != 0)
 			return ret;
 
