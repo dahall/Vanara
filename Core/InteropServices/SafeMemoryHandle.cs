@@ -259,7 +259,8 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 /// </summary>
 /// <seealso cref="SafeHandle"/>
-public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IEquatable<SafeAllocatedMemoryHandleBase>
+public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IComparable<IReadOnlyList<byte>>,
+	IEquatable<SafeAllocatedMemoryHandleBase>
 {
 	/// <summary>Occurs when the handle has changed.</summary>
 	public event EventHandler<IntPtr>? HandleChanged;
@@ -341,7 +342,45 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	}
 
 	/// <inheritdoc/>
+	public virtual int CompareTo(byte[]? other) => other is null ? 1 : CompareTo(Array.AsReadOnly(other));
+
+	/// <inheritdoc/>
+	public virtual int CompareTo(IReadOnlyList<byte>? other)
+	{
+		if (other is null) return 1;
+		int ret = Size.CompareTo(other.Count);
+		if (ret != 0)
+			return ret;
+
+#if ALLOWSPAN
+		var a = AsReadOnlySpan<byte>(Size);
+#else
+		var a = GetBytes();
+#endif
+		for (int i = 0; i < Size; i++)
+		{
+			if ((ret = a[i].CompareTo(other[i])) != 0)
+				return ret;
+		}
+		return ret;
+	}
+
+	/// <inheritdoc/>
 	public bool Equals(SafeAllocatedMemoryHandleBase? other) => handle.Equals(other?.handle);
+
+	/// <inheritdoc/>
+	public override bool Equals(object? obj) => obj switch
+	{
+		null => false,
+		SafeAllocatedMemoryHandleBase m => Equals(m),
+		IntPtr p => handle.Equals(p),
+		byte[] b => CompareTo(Array.AsReadOnly(b)) == 0,
+		IReadOnlyList<byte> e => CompareTo(e) == 0,
+		_ => throw new ArgumentException("Unable to compare type.", nameof(obj)),
+	};
+
+	/// <inheritdoc/>
+	public override int GetHashCode() => handle.GetHashCode();
 
 	/// <summary>Locks this instance.</summary>
 	public virtual void Lock()
@@ -667,7 +706,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
 	public void AddSubReference(IEnumerable<ISafeMemoryHandle> children)
 	{
-		references ??= new List<ISafeMemoryHandle>();
+		references ??= [];
 		references.AddRange(children);
 	}
 
@@ -679,7 +718,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
 	public void AddSubReference(params ISafeMemoryHandle[] children)
 	{
-		references ??= new List<ISafeMemoryHandle>();
+		references ??= [];
 		references.AddRange(children);
 	}
 
@@ -693,12 +732,12 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
 	public T[] ToArray<T>(int count, int prefixBytes = 0)
 	{
-		if (IsInvalid) return new T[0];
+		if (IsInvalid) return [];
 		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
 		//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 		//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 		//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
-		return CallLocked(p => p.ToArray<T>(count, prefixBytes, sz)) ?? new T[0];
+		return CallLocked(p => p.ToArray<T>(count, prefixBytes, sz)) ?? [];
 	}
 
 	/// <summary>
@@ -754,7 +793,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>Enumeration of strings.</returns>
 	public IEnumerable<string?> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-		IsInvalid ? Enumerable.Empty<string?>() : CallLocked(p => p.ToStringEnum(count, charSet, prefixBytes, sz));
+		IsInvalid ? [] : CallLocked(p => p.ToStringEnum(count, charSet, prefixBytes, sz));
 
 	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
@@ -764,7 +803,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>An enumerated list of strings.</returns>
 	public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-		IsInvalid ? Enumerable.Empty<string>() : CallLocked(p => p.ToStringEnum(charSet, prefixBytes, sz));
+		IsInvalid ? [] : CallLocked(p => p.ToStringEnum(charSet, prefixBytes, sz));
 
 	/// <summary>
 	/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
