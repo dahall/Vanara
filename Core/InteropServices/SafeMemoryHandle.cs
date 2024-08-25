@@ -322,23 +322,27 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	public virtual int CompareTo(SafeAllocatedMemoryHandleBase? other)
 	{
 		if (other is null) return 1;
-		int ret = Size.CompareTo(other.Size);
+		int ret = handle.ToInt64().CompareTo(other.handle.ToInt64());
+		if (ret != 0)
+			return ret;
+		ret = Size.CompareTo(other.Size);
 		if (ret != 0)
 			return ret;
 
 #if ALLOWSPAN
 		var a = AsReadOnlySpan<byte>(Size);
 		var b = other.AsReadOnlySpan<byte>(Size);
+		return a.SequenceCompareTo(b);
 #else
 		var a = GetBytes();
 		var b = other.GetBytes(Size);
-#endif
 		for (int i = 0; i < Size; i++)
 		{
 			if ((ret = a[i].CompareTo(b[i])) != 0)
 				return ret;
 		}
 		return ret;
+#endif
 	}
 
 	/// <inheritdoc/>
@@ -366,7 +370,7 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	}
 
 	/// <inheritdoc/>
-	public bool Equals(SafeAllocatedMemoryHandleBase? other) => handle.Equals(other?.handle);
+	public bool Equals(SafeAllocatedMemoryHandleBase? other) => CompareTo(other) == 0;
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj switch
