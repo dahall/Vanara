@@ -3585,7 +3585,7 @@ public static partial class Crypt32
 		/// <see cref="SafeCRYPTOAPI_BLOB"/> object to an native (unmanaged) array of strings stored using the <paramref
 		/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
 		/// </returns>
-		public static SafeCRYPTOAPI_BLOB CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
+		public static SafeCRYPTOAPI_BLOB CreateFromStringList(IEnumerable<string?> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
 			new(InteropExtensions.MarshalToPtr(values, packing, MemMethods.AllocMem, out int s, charSet, prefixBytes), s);
 
 		private static IMemoryMethods MemMethods => HGlobalMemoryMethods.Instance;

@@ -146,7 +146,7 @@ public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
 	/// <param name="charSet">The character set to use for the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
 	/// <returns><see cref="SafeHGlobalHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character set defined by <paramref name="charSet"/>.</returns>
-	public static SafeHGlobalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
+	public static SafeHGlobalHandle CreateFromStringList(IEnumerable<string?> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
 		CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
 
 	[DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]

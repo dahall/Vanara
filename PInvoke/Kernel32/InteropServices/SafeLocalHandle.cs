@@ -98,7 +98,7 @@ public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 	/// <see cref="SafeLocalHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/> model
 	/// and the character set defined by <paramref name="charSet"/>.
 	/// </returns>
-	public static SafeLocalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out var s, charSet, prefixBytes), s);
+	public static SafeLocalHandle CreateFromStringList(IEnumerable<string?> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out var s, charSet, prefixBytes), s);
 
 	/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 	/// <typeparam name="T">Native type</typeparam>

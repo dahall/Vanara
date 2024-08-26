@@ -142,7 +142,7 @@ public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
 	/// <see cref="SafeCoTaskMemHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/>
 	/// model and the character set defined by <paramref name="charSet"/>.
 	/// </returns>
-	public static SafeCoTaskMemHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
+	public static SafeCoTaskMemHandle CreateFromStringList(IEnumerable<string?> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
 		CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
 
 	/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
