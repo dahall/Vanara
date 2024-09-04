@@ -1850,6 +1850,13 @@ public static partial class OleAut32
 	[PInvokeData("OleAuto.h", MSDNShortId = "ms221165")]
 	public static extern HRESULT VariantClear(IntPtr pvarg);
 
+	/// <summary>Clears a variant.</summary>
+	/// <param name="pvarg">The variant to clear.</param>
+	/// <returns>S_OK on success.</returns>
+	[DllImport(Lib.OleAut32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("OleAuto.h", MSDNShortId = "ms221165")]
+	public static extern HRESULT VariantClear(ref VARIANT pvarg);
+
 	/// <summary>Converts the variant representation of a date and time to MS-DOS date and time values.</summary>
 	/// <param name="vtime">The variant time to convert.</param>
 	/// <param name="pwDosDate">Receives the converted MS-DOS date.</param>
