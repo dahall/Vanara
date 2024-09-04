@@ -3331,6 +3331,11 @@ public static partial class OleAut32
 		/// <returns>The result of the conversion.</returns>
 		public readonly object ToObject()
 		{
+			if (vt.IsFlagSet(VARTYPE.VT_ARRAY))
+			{
+				SafeSAFEARRAY a = new(byref, false);
+				return a.ToArray();
+			}
 			VariantCopyInd(out object o, this).ThrowIfFailed();
 			return o;
 		}
