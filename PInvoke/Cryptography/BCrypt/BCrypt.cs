@@ -7,6 +7,9 @@ namespace Vanara.PInvoke;
 /// <summary>Methods and data types found in BCrypt.dll.</summary>
 public static partial class BCrypt
 {
+	/// <summary>Used by <see cref="BCRYPT_DH_PARAMETER_HEADER"/>.</summary>
+	public const uint BCRYPT_DH_PARAMETERS_MAGIC = 0x4d504844;
+
 	/// <summary>A value that specifies the algorithm operation types to include in the enumeration.</summary>
 	[PInvokeData("bcrypt.h", MSDNShortId = "7fa227c0-2b80-49ab-8a19-72f8444d5507")]
 	[Flags]
@@ -8872,6 +8875,38 @@ public static partial class BCrypt
 		public uint dwFlags;
 	}
 
+	/// <summary>
+	/// The <c>BCRYPT_DH_PARAMETER_HEADER</c> structure is used to contain parameter header information for a Diffie-Hellman key. This
+	/// structure is used with the BCRYPT_DH_PARAMETERS property in the BCryptSetProperty function.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This structure is used as a header for a larger buffer. The single memory block consists of this structure followed by a buffer of
+	/// <c>cbKeyLength</c> size that contains the Diffie-Hellman prime number, and another buffer of <c>cbKeyLength</c> size that contains
+	/// the Diffie-Hellman generator number. Both of these numbers are in big-endian format.
+	/// </para>
+	/// <para>The following example shows how to calculate the sizes needed for this buffer and how to fill in the members of this structure.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_dh_parameter_header typedef struct
+	// _BCRYPT_DH_PARAMETER_HEADER { ULONG cbLength; ULONG dwMagic; ULONG cbKeyLength; } BCRYPT_DH_PARAMETER_HEADER;
+	[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._BCRYPT_DH_PARAMETER_HEADER")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct BCRYPT_DH_PARAMETER_HEADER
+	{
+		/// <summary>The total size, in bytes, of this structure and the buffer that immediately follows this structure in memory.</summary>
+		public uint cbLength;
+
+		/// <summary>
+		/// <para>The magic value for the key.</para>
+		/// <para>This member must be the following value.</para>
+		/// <para>BCRYPT_DH_PARAMETERS_MAGIC (0x4d504844)</para>
+		/// </summary>
+		public uint dwMagic;
+
+		/// <summary>The size, in bytes, of the key that this structure applies to.</summary>
+		public uint cbKeyLength;
+	}
+
 	/// <summary>Provides a handle to a CNG object.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public readonly struct BCRYPT_HANDLE : IHandle
@@ -10045,6 +10080,11 @@ public static partial class BCrypt
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator BCRYPT_HASH_HANDLE(SafeBCRYPT_HASH_HANDLE h) => h.handle;
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_HASH_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator BCRYPT_HANDLE(SafeBCRYPT_HASH_HANDLE h) => h.handle;
+
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => BCryptDestroyHash(this).Succeeded;
 	}
@@ -10067,6 +10107,11 @@ public static partial class BCrypt
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator BCRYPT_KEY_HANDLE(SafeBCRYPT_KEY_HANDLE h) => h.handle;
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_KEY_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator BCRYPT_HANDLE(SafeBCRYPT_KEY_HANDLE h) => h.handle;
+
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => BCryptDestroyKey(this).Succeeded;
 	}
@@ -10088,6 +10133,11 @@ public static partial class BCrypt
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator BCRYPT_SECRET_HANDLE(SafeBCRYPT_SECRET_HANDLE h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_SECRET_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator BCRYPT_HANDLE(SafeBCRYPT_SECRET_HANDLE h) => h.handle;
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => BCryptDestroySecret(this).Succeeded;
