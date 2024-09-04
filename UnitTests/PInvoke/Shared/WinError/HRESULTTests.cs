@@ -50,6 +50,10 @@ public class HRESULTTests
 		Assert.That(new HRESULT(HRESULT.CO_E_ATTEMPT_TO_CREATE_OUTSIDE_CLIENT_CONTEXT).GetException(), Is.TypeOf<COMException>());
 		Assert.That(new HRESULT(HRESULT.E_INVALIDARG).GetException(), Is.TypeOf<ArgumentException>());
 		Assert.That(new HRESULT(HRESULT.E_INVALIDARG).GetException("Bad"), Has.Message.EqualTo("Bad"));
+		#if NETCOREAPP3_0_OR_GREATER
+		var win32HResult = new Win32Error(Win32Error.ERROR_SHARING_VIOLATION).ToHRESULT();
+		Assert.That(win32HResult.GetException("Bad"), Has.Property(nameof(Exception.HResult)).EqualTo(win32HResult));
+		#endif
 	}
 
 	[Test()]
