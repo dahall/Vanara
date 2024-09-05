@@ -9796,4 +9796,87 @@ public partial struct HRESULT
 
 	/// <summary>Diagnostics session finished with problems still present.</summary>
 	public const int NDF_E_PROBLEM_PRESENT = unchecked((int)0x8008F908);
+
+	/// <summary>During a query, one or more errors occurred.</summary>
+	/// <remarks>Verify that the search preference can be legally set and, if so, that it is properly set.</remarks>
+	public const int S_ADS_ERRORSOCCURRED = 0x00005011;
+
+	/// <summary>The search operation has reached the last row.</summary>
+	/// <remarks>Move on to the rest of the program.</remarks>
+	public const int S_ADS_NOMORE_ROWS = 0x00005012;
+
+	/// <summary>The search operation has reached the last column for the current row.</summary>
+	/// <remarks>Move on to next row.</remarks>
+	public const int S_ADS_NOMORE_COLUMNS = 0x00005013;
+
+	/// <summary>An invalid ADSI pathname was passed.</summary>
+	/// <remarks>Verify that the object exists on the directory server and check for typographic errors of the path.</remarks>
+	public const int E_ADS_BAD_PATHNAME = unchecked((int)0x80005000);
+
+	/// <summary>An unknown ADSI domain object was requested.</summary>
+	/// <remarks>Verify the path of the domain object.</remarks>
+	public const int E_ADS_INVALID_DOMAIN_OBJECT = unchecked((int)0x80005001);
+
+	/// <summary>An unknown ADSI user object was requested.</summary>
+	/// <remarks>Verify the existence of the user object, check for typos of the path and the user access rights.</remarks>
+	public const int E_ADS_INVALID_USER_OBJECT = unchecked((int)0x80005002);
+
+	/// <summary>An unknown ADSI computer object was requested.</summary>
+	/// <remarks>Verify the existence of the computer object, check for typos of the path and the computer access rights.</remarks>
+	public const int E_ADS_INVALID_COMPUTER_OBJECT = unchecked((int)0x80005003);
+
+	/// <summary>An unknown ADSI object was requested.</summary>
+	/// <remarks>Verify the name of and the access rights to the object.</remarks>
+	public const int E_ADS_UNKNOWN_OBJECT = unchecked((int)0x80005004);
+
+	/// <summary>The specified ADSI property was not set.</summary>
+	public const int E_ADS_PROPERTY_NOT_SET = unchecked((int)0x80005005);
+
+	/// <summary>The specified ADSI property is not supported.</summary>
+	/// <remarks>Verify that the correct property is set.</remarks>
+	public const int E_ADS_PROPERTY_NOT_SUPPORTED = unchecked((int)0x80005006);
+
+	/// <summary>The specified ADSI property is invalid</summary>
+	/// <remarks>Verify the parameters passed to the method call.</remarks>
+	public const int E_ADS_PROPERTY_INVALID = unchecked((int)0x80005007);
+
+	/// <summary>One or more input parameters are invalid.</summary>
+	public const int E_ADS_BAD_PARAMETER = unchecked((int)0x80005008);
+
+	/// <summary>The specified ADSI object is not bound to a remote resource.</summary>
+	/// <remarks>Call GetInfo on a newly created object after SetInfo has been called.</remarks>
+	public const int E_ADS_OBJECT_UNBOUND = unchecked((int)0x80005009);
+
+	/// <summary>The specified ADSI object has not been modified.</summary>
+	public const int E_ADS_PROPERTY_NOT_MODIFIED = unchecked((int)0x8000500A);
+
+	/// <summary>The specified ADSI object has been modified.</summary>
+	public const int E_ADS_PROPERTY_MODIFIED = unchecked((int)0x8000500B);
+
+	/// <summary>The data type cannot be converted to/from a native DS data type.</summary>
+	/// <remarks>
+	/// Verify that the correct data type is used and/or that there is sufficient schema data available to perform data type conversion.
+	/// </remarks>
+	public const int E_ADS_CANT_CONVERT_DATATYPE = unchecked((int)0x8000500C);
+
+	/// <summary>The property cannot be found in the cache.</summary>
+	/// <remarks>
+	/// Verify that GetInfo has been called implicitly or explicitly. If the attribute is an operational attribute, it must be explicitly
+	/// retrieved with GetInfoEx instead of GetInfo. If the problem persists, the property has not been set on the server.
+	/// </remarks>
+	public const int E_ADS_PROPERTY_NOT_FOUND = unchecked((int)0x8000500D);
+
+	/// <summary>The ADSI object exists.</summary>
+	/// <remarks>Use a different name to create the object.</remarks>
+	public const int E_ADS_OBJECT_EXISTS = unchecked((int)0x8000500E);
+
+	/// <summary>The attempted action violates the directory service schema rules.</summary>
+	public const int E_ADS_SCHEMA_VIOLATION = unchecked((int)0x8000500F);
+
+	/// <summary>The specified column in the ADSI was not set.</summary>
+	public const int E_ADS_COLUMN_NOT_SET = unchecked((int)0x80005010);
+
+	/// <summary>The specified search filter is invalid.</summary>
+	/// <remarks>Use the correct format of the filter accepted by the directory server.</remarks>
+	public const int E_ADS_INVALID_FILTER = unchecked((int)0x80005014);
 }
