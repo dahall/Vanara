@@ -724,14 +724,14 @@ public static partial class PortableDeviceApi
 
 		/// <summary>The <c>CreateObjectWithPropertiesAndData</c> method creates an object with both properties and data on the device.</summary>
 		/// <param name="pValues">
-		/// An <c>IPortableDeviceValues</c> collection of properties to assign to the object. For a list of required and optional
-		/// properties for an object, see Requirements for Objects.
+		/// An <c>IPortableDeviceValues</c> collection of properties to assign to the object. For a list of required and optional properties
+		/// for an object, see Requirements for Objects.
 		/// </param>
 		/// <param name="ppData">
-		/// An <c>IStream</c> interface that the application uses to send the object data to the device. The object will not be created
-		/// on the device until the application sends the data by calling ppData-&gt; <c>Commit</c>. To abandon a data transfer in
-		/// progress, you can call ppData -&gt; <c>Revert</c>. The caller must release this interface when it is done with it. The
-		/// underlying object extends both <c>IStream</c> and IPortableDeviceDataStream.
+		/// An <c>IStream</c> interface that the application uses to send the object data to the device. The object will not be created on
+		/// the device until the application sends the data by calling ppData-&gt; <c>Commit</c>. To abandon a data transfer in progress, you
+		/// can call ppData -&gt; <c>Revert</c>. The caller must release this interface when it is done with it using <see
+		/// cref="Marshal.ReleaseComObject"/>. The underlying object extends both <c>IStream</c> and IPortableDeviceDataStream.
 		/// </param>
 		/// <param name="pdwOptimalWriteBufferSize">
 		/// An optional <c>DWORD</c> pointer that specifies the optimal buffer size for the application to use when writing the data to
@@ -739,25 +739,24 @@ public static partial class PortableDeviceApi
 		/// </param>
 		/// <returns>
 		/// An optional unique, ID that is used to identify this creation request in the application's implementation of
-		/// IPortableDeviceEventCallback (if implemented). When the device finishes creating the object, it will send this identifier to
-		/// the callback function. This identifier allows an application to monitor object creation in a different thread from the one
-		/// that called CreateObjectWithPropertiesOnly. The SDK allocates this memory, and the caller must release it using <c>CoTaskMemFree</c>.
+		/// IPortableDeviceEventCallback (if implemented). When the device finishes creating the object, it will send this identifier to the
+		/// callback function. This identifier allows an application to monitor object creation in a different thread from the one that
+		/// called CreateObjectWithPropertiesOnly.
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// Some objects are only a collection of properties—such as a folder, which is only a collection of pointers to other
-		/// objects—while other objects are both properties and data—such as an audio file, which contains all the properties and the
-		/// actual music bits. This method is used to create an object that requires both properties and data. To create a
-		/// properties-only object, call CreateObjectWithPropertiesOnly.
+		/// Some objects are only a collection of properties—such as a folder, which is only a collection of pointers to other objects—while
+		/// other objects are both properties and data—such as an audio file, which contains all the properties and the actual music bits.
+		/// This method is used to create an object that requires both properties and data. To create a properties-only object, call CreateObjectWithPropertiesOnly.
 		/// </para>
 		/// <para>
-		/// Because the object is not created until the application calls <c>Commit</c> on the retrieved <c>IStream</c> ppData, the
-		/// object will not have an ID until <c>Commit</c> is called on it. <c>Commit</c> is synchronous, so when that method returns
-		/// successfully, the object will exist on the device.
+		/// Because the object is not created until the application calls <c>Commit</c> on the retrieved <c>IStream</c> ppData, the object
+		/// will not have an ID until <c>Commit</c> is called on it. <c>Commit</c> is synchronous, so when that method returns successfully,
+		/// the object will exist on the device.
 		/// </para>
 		/// <para>
-		/// After calling <c>Commit</c> to create the object, call <c>QueryInterface</c> on ppData for IPortableDeviceDataStream, and
-		/// then call IPortableDeviceDataStream::GetObjectID to get the ID of the newly created object.
+		/// After calling <c>Commit</c> to create the object, call <c>QueryInterface</c> on ppData for IPortableDeviceDataStream, and then
+		/// call IPortableDeviceDataStream::GetObjectID to get the ID of the newly created object.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example of how to use this method, see Transferring an Image or Music File to the Device.</para>
@@ -1965,7 +1964,7 @@ public static partial class PortableDeviceApi
 		/// </param>
 		/// <returns>
 		/// Pointer to an <c>IStream</c> interface pointer. This interface is used to read and write data to the object. The caller must
-		/// release this interface when it is done with it.
+		/// release this interface when it is done with it using <see cref="Marshal.ReleaseComObject"/>.
 		/// </returns>
 		/// <remarks>
 		/// <para>
