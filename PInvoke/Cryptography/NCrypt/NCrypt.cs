@@ -5096,7 +5096,7 @@ public static partial class NCrypt
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="NCryptBufferDesc"/> class.</summary>
-		public NCryptBufferDesc(NCryptBuffer[] buffers) => pBuffers = buffers;
+		public NCryptBufferDesc(params NCryptBuffer[] buffers) => pBuffers = buffers;
 
 		/// <inheritdoc/>
 		void IDisposable.Dispose()

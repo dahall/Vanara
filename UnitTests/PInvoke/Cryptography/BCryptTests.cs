@@ -255,13 +255,11 @@ public class BCryptTests
 		Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
 		// Build KDF parameter list Specify hash algorithm, secret to append and secret to prepend
-		var ParameterList = new NCryptBufferDesc
-		{
-			pBuffers = new[] {
+		NCryptBufferDesc ParameterList = new(
 			new NCryptBuffer(KeyDerivationBufferType.KDF_HASH_ALGORITHM, StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM),
 			new NCryptBuffer(KeyDerivationBufferType.KDF_SECRET_APPEND, SecretAppendArray),
-			new NCryptBuffer(KeyDerivationBufferType.KDF_SECRET_PREPEND, SecretPrependArray) }
-		};
+			new NCryptBuffer(KeyDerivationBufferType.KDF_SECRET_PREPEND, SecretPrependArray)
+		);
 
 		hr = NCryptDeriveKey(AgreedSecretHandleA, KDF.BCRYPT_KDF_HMAC, ParameterList, IntPtr.Zero, 0, out var AgreedSecretLengthA, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG);
 		Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
