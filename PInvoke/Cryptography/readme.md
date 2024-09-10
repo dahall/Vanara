@@ -536,6 +536,7 @@ Native Structure | Header | Managed Structure
 --- | --- | ---  
 [BCRYPT_ALG_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_ALG_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BCrypt.BCRYPT_ALG_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=BCRYPT_ALG_HANDLE)  
 [BCRYPT_ALGORITHM_IDENTIFIER](https://www.google.com/search?num=5&q=BCRYPT_ALGORITHM_IDENTIFIER+site%3Alearn.microsoft.com) | bcrypt.h | [Vanara.PInvoke.BCrypt.BCRYPT_ALGORITHM_IDENTIFIER](https://github.com/dahall/Vanara/search?l=C%23&q=BCRYPT_ALGORITHM_IDENTIFIER)  
+[BCRYPT_DH_PARAMETER_HEADER](https://www.google.com/search?num=5&q=BCRYPT_DH_PARAMETER_HEADER+site%3Alearn.microsoft.com) | bcrypt.h | [Vanara.PInvoke.BCrypt.BCRYPT_DH_PARAMETER_HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=BCRYPT_DH_PARAMETER_HEADER)  
 [BCRYPT_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BCrypt.BCRYPT_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=BCRYPT_HANDLE)  
 [BCRYPT_HASH_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_HASH_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BCrypt.BCRYPT_HASH_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=BCRYPT_HASH_HANDLE)  
 [BCRYPT_KEY_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_KEY_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BCrypt.BCRYPT_KEY_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=BCRYPT_KEY_HANDLE)  
