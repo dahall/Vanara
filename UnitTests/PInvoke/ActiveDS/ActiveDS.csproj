@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.ActiveDS</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DirectoryServices\Vanara.DirectoryServices.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\ActiveDS\Vanara.PInvoke.ActiveDS.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Wrapper classes around Win32 ADs methods and interfaces to provide simplified and object-oriented access to Active Directory and other directory service calls.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.DirectoryServices</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>vanara;net-extensions;ADs;directory services;active directory</PackageTags>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <RootNamespace>Vanara.DirectoryServices</RootNamespace>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+ADsBaseObject&lt;T&gt;, ADsComputer, ADsComputerOperations, ADsContainer&lt;T&gt;, ADsDomain, ADsFileService, ADsFileServiceOperations, ADsFileShare, ADsGroup, ADsMembership, ADsObject, ADsPrintJob, ADsPrintJobOperations, ADsPrintQueue, ADsPrintQueueOperations, ADsPropertyCache, ADsResource, ADsSchemaClass, ADsSchemaProperty, ADsSchemaPropertySyntax, ADsService, ADsServiceOperations, ADsSession, ADsUser
+
+</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PInvoke\ActiveDS\Vanara.PInvoke.ActiveDS.csproj" />
+  </ItemGroup>
+</Project>

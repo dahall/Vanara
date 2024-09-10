@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>activeds.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Active Directory Service Interfaces.</Description>
+    <AssemblyName>Vanara.PInvoke.ActiveDS</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;ActiveDS;ADS;Active Directory</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+ADsBuildEnumerator ADsBuildVarArrayInt ADsBuildVarArrayStr ADsEncodeBinaryData ADsEnumerateNext ADsFreeEnumerator ADsGetLastError ADsGetObject ADsOpenObject ADsSetLastError AllocADsMem AllocADsStr BinarySDToSecurityDescriptor ConvertSecurityDescriptorToSecDes FreeADsMem FreeADsStr ReallocADsMem ReallocADsStr SecurityDescriptorToBinarySD
+
+Structures
+ADSVALUE ADS_ATTR_DEF ADS_ATTR_INFO ADS_BACKLINK ADS_CASEIGNORE_LIST ADS_CLASS_DEF ADS_DN_WITH_BINARY ADS_DN_WITH_STRING ADS_EMAIL ADS_FAXNUMBER ADS_HOLD ADS_NETADDRESS ADS_NT_SECURITY_DESCRIPTOR ADS_OBJECT_INFO ADS_OCTET_LIST ADS_OCTET_STRING ADS_PATH ADS_POSTALADDRESS ADS_PROV_SPECIFIC ADS_REPLICAPOINTER ADS_SEARCHPREF_INFO ADS_SEARCH_COLUMN ADS_SEARCH_HANDLE ADS_SORTKEY ADS_TIMESTAMP ADS_TYPEDNAME ADS_VLV
+
+Interfaces
+IADs IADsAccessControlEntry IADsAccessControlList IADsAcl IADsADSystemInfo IADsBackLink IADsCaseIgnoreList IADsClass IADsCollection IADsComputer IADsComputerOperations IADsContainer IADsDeleteOps IADsDNWithBinary IADsDNWithString IADsDomain IADsEmail IADsExtension IADsFaxNumber IADsFileService IADsFileServiceOperations IADsFileShare IADsGroup IADsHold IADsLargeInteger IADsLocality IADsMembers IADsNamespaces IADsNameTranslate IADsNetAddress IADsO IADsObjectOptions IADsOctetList IADsOpenDSObject IADsOU IADsPath IADsPathname IADsPostalAddress IADsPrintJob IADsPrintJobOperations IADsPrintQueue IADsPrintQueueOperations IADsProperty IADsPropertyEntry IADsPropertyList IADsPropertyValue IADsPropertyValue2 IADsReplicaPointer IADsResource IADsSecurityDescriptor IADsSecurityUtility IADsService IADsServiceOperations IADsSession IADsSyntax IADsTimestamp IADsTypedName IADsUser IADsWinNTSystemInfo IDirectoryObject IDirectorySearch
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
+  </ItemGroup>
+</Project>

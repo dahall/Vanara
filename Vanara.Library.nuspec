@@ -19,10 +19,12 @@
     <dependencies>
       <dependency id="Vanara.BITS" version="4.0.4" />
       <dependency id="Vanara.Core" version="4.0.4" />
+      <dependency id="Vanara.DirectoryServices" version="4.0.4" />
       <dependency id="Vanara.Management" version="4.0.4" />
       <dependency id="Vanara.Net" version="4.0.4" />
       <dependency id="Vanara.PInvoke.Accessibility" version="4.0.4" />
       <dependency id="Vanara.PInvoke.AclUI" version="4.0.4" />
+      <dependency id="Vanara.PInvoke.ActiveDS" version="4.0.4" />
       <dependency id="Vanara.PInvoke.AMSI" version="4.0.4" />
       <dependency id="Vanara.PInvoke.Avrt" version="4.0.4" />
       <dependency id="Vanara.PInvoke.BITS" version="4.0.4" />
