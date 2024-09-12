@@ -78,6 +78,7 @@ public class ActiveDSTests
 	{
 		Assert.That(ADsGetObject(adsMachine, out IADsComputer? pComp), ResultIs.Successful);
 		TestContext.WriteLine($"{pComp?.Name}, {pComp?.Class}, {pComp?.ADsPath}, {pComp?.Schema}");
+		Assert.That(() => pComp!.GetInfo(), Throws.Nothing);
 		Write("ComputerID", () => pComp!.ComputerID);
 		Write("Site", () => pComp!.Site);
 		Write("Description", () => pComp!.Description);
@@ -112,11 +113,17 @@ public class ActiveDSTests
 		Write("  Status", () => o!.Operations.Status);
 
 		TestContext.WriteLine("Children:");
-		foreach (var child in o!.Children.Where(c => c.Class == "User").Take(3))
+		foreach (var child in o!.Children.OfType<ADsUser>().Take(3))
 		{
 			TestContext.WriteLine($"  {child.Name} ({child.Class})");
 			foreach (var kv in child!.PropertyCache)
 				Write("    " + kv.Key, () => kv.Value);
+		}
+		foreach (var child in o!.Children.OfType<ADsPrintQueue>().Take(1))
+		{
+			TestContext.WriteLine($"  {child.Name} ({child.Class})");
+			foreach (var j in child.Operations.PrintJobs!)
+				Write("    " + j.Key, () => j.Value.Operations.Status);
 		}
 
 		TestContext.WriteLine("Schema:");
@@ -221,6 +228,23 @@ public class ActiveDSTests
 	}
 
 	[Test]
+	public void IADsFileShareTest2()
+	{
+		using var fs = (ADsFileService)ADsObject.GetObject(adsFs);
+		foreach (var key in fs!.PropertyCache.Keys)
+			Write("  " + key, () => fs!.PropertyCache[key]);
+
+		TestContext.WriteLine("Sessions: " + string.Join(", ", fs.Operations.Sessions!.Keys));
+		TestContext.WriteLine("Resources:");
+		foreach (var r in fs.Operations.Resources!.Values)
+			TestContext.WriteLine($"{r.PropertyCache["UserPath"]} = {r.Path} ({r.PropertyCache["LockCount"]})");
+
+		using var o = (ADsFileShare)ADsObject.GetObject(adsShare);
+		foreach (var key in o!.PropertyCache.Keys)
+			Write("  " + key, () => o!.PropertyCache[key]);
+	}
+
+	[Test]
 	public void IADsGroupTest()
 	{
 		Assert.That(ADsGetObject(adsGroup, out IADsGroup? pGroup), ResultIs.Successful);
@@ -276,7 +300,7 @@ public class ActiveDSTests
 		Write("Status", () => ops!.Status);
 
 		TestContext.WriteLine("Jobs:");
-		foreach (var j in ops.PrintJobs().ToDictionary<IADsPrintJob>().Values)
+		foreach (var j in ops.PrintJobs().Cast<IADsPrintJob>())
 		{
 			Write("HostPrintQueue", () => j!.HostPrintQueue);
 			Write("User", () => j!.User);
@@ -290,6 +314,25 @@ public class ActiveDSTests
 			Write("UntilTime", () => j!.UntilTime);
 			Write("Notify", () => j!.Notify);
 			Write("NotifyPath", () => j!.NotifyPath);
+		}
+	}
+
+	[Test]
+	public void IADsPrintQueueTest2()
+	{
+		using var m = (ADsComputer)ADsObject.GetObject(adsMachine);
+		foreach (var o in m.Children.OfType<ADsPrintQueue>())
+		{
+			TestContext.WriteLine($"{o?.Name}, {o?.Class}, {o?.Path}");
+			foreach (var key in o!.PropertyCache.Keys)
+				Write("  " + key, () => o!.PropertyCache[key]);
+
+			Write("Status", () => o!.Operations.Status);
+
+			TestContext.WriteLine("Jobs:");
+			foreach (var j in o!.Operations.PrintJobs!.Values)
+				foreach (var key in j!.PropertyCache.Keys)
+					Write("  " + key, () => j!.PropertyCache[key]);
 		}
 	}
 

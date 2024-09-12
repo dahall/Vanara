@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Vanara.PInvoke;
@@ -34,6 +35,9 @@ public interface IADsObject : IDisposable
 {
 	/// <summary>The name of the object Schema class.</summary>
 	string Class { get; }
+
+	/// <summary>Gets the native interface.</summary>
+	IADs NativeInterface { get; }
 
 	/// <summary>
 	/// The globally unique identifier of the directory object.
@@ -162,6 +166,9 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 	public ADsSchemaClass Schema => schema ??= new(Interface.Schema);
 
 	/// <inheritdoc/>
+	IADs IADsObject.NativeInterface => Interface;
+
+	/// <inheritdoc/>
 	public void Dispose()
 	{
 		// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
@@ -229,24 +236,103 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 		int IADsContainer.Count => 0;
 		object? IADsContainer.Filter { get => null; set => throw new NotImplementedException(); }
 		object? IADsContainer.Hints { get => null; set => throw new NotImplementedException(); }
-
 		object IADsContainer.CopyHere(string SourceName, string? NewName) => throw new NotImplementedException();
-
 		object IADsContainer.Create(string ClassName, string RelativeName) => throw new NotImplementedException();
-
 		void IADsContainer.Delete(string? bstrClassName, string bstrRelativeName) => throw new NotImplementedException();
-
 		IEnumerator IADsContainer.GetEnumerator()
 		{
 			yield break;
 		}
-
 		IEnumerator IEnumerable.GetEnumerator() => ((IADsContainer)this).GetEnumerator();
-
 		object IADsContainer.GetObject(string? ClassName, string RelativeName) => throw new NotImplementedException();
-
 		object IADsContainer.MoveHere(string SourceName, string? NewName) => throw new NotImplementedException();
 	}
+}
+
+/// <summary>
+/// <para>
+/// Enables its hosting ADSI object to define and manage an arbitrary set of named data elements for a directory service. Collections differ
+/// from arrays of elements in that individual items can be added or deleted without reordering the entire array.
+/// </para>
+/// <para>
+/// Collection objects can represent one or more items that correspond to volatile data, such as processes or active communication sessions,
+/// as well as persistent data, such as physical entities for a directory service. For example, a collection object can represent a list of
+/// print jobs in a queue or a list of active sessions connected to a server. Although a collection object can represent arbitrary data sets,
+/// all elements in a collection must be of the same type. The data are of <c>Variant</c> types.
+/// </para>
+/// </summary>
+/// <typeparam name="T">The type of object exposed by the collection.</typeparam>
+/// <remarks>
+/// Of the ADSI system providers, only the WinNT provider supports this interface to handle active file service sessions, resources and print jobs.
+/// </remarks>
+public class ADsCollection<T> : IDictionary<string, T> where T : class, IADsObject
+{
+	private readonly IADsCollection c;
+
+	internal ADsCollection(IADsCollection c) => this.c = c;
+
+	/// <inheritdoc/>
+	public T this[string key]
+	{
+		get => (T)ADsObject.GetTypedObj((IADs)c.GetObject(key));
+		set => Add(key, value);
+	}
+
+	/// <inheritdoc/>
+	public int Count => Enum().Count();
+
+	/// <inheritdoc/>
+	public bool IsReadOnly => false;
+
+	/// <inheritdoc/>
+	public ICollection<string> Keys => GetKeys().ToList();
+
+	/// <inheritdoc/>
+	public ICollection<T> Values => GetValues().ToList();
+
+	/// <inheritdoc/>
+	public void Add(string key, T value) => c.Add(key, value.NativeInterface);
+
+	/// <inheritdoc/>
+	public void Add(KeyValuePair<string, T> item) => Add(item.Key, item.Value);
+
+	/// <inheritdoc/>
+	public void Clear() => GetKeys().ToList().ForEach(s => Remove(s));
+
+	/// <inheritdoc/>
+	public bool Contains(KeyValuePair<string, T> item) => TryGetValue(item.Key, out var t) && Equals(item.Value, t);
+
+	/// <inheritdoc/>
+	public bool ContainsKey(string key) { try { _ = c.GetObject(key); return true; } catch { return false; } }
+
+	/// <inheritdoc/>
+	public void CopyTo(KeyValuePair<string, T>[] array, int arrayIndex)
+	{
+		var l = GetDict().ToArray();
+		Array.ConstrainedCopy(l, 0, array, arrayIndex, l.Length);
+	}
+
+	/// <inheritdoc/>
+	public IEnumerator<KeyValuePair<string, T>> GetEnumerator() => GetDict().GetEnumerator();
+
+	/// <inheritdoc/>
+	public bool Remove(string key) { try { c.Remove(key); return true; } catch { return false; } }
+
+	/// <inheritdoc/>
+	public bool Remove(KeyValuePair<string, T> item) => Contains(item) && Remove(item.Key);
+
+	/// <inheritdoc/>
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+	public bool TryGetValue(string key, [NotNullWhen(true)] out T? value) { try { value = this[key]; return true; } catch { value = default; return false; } }
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+
+	/// <inheritdoc/>
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+	private IEnumerable<IADs> Enum() => c.Cast<IADs>();
+	private Dictionary<string, T> GetDict() => GetValues().ToDictionary(o => o.Name);
+	private IEnumerable<string> GetKeys() => Enum().Select(i => i.Name);
+	private IEnumerable<T> GetValues() => Enum().Select(ADsObject.GetTypedObj).WhereNotNull().OfType<T>();
 }
 
 /// <summary>
@@ -762,7 +848,25 @@ public class ADsFileServiceOperations : ADsBaseObject<IADsFileServiceOperations>
 	{
 	}
 
-	// TODO: Sessions and resources
+	/// <summary>
+	/// Gets an <see cref="ADsCollection{ADsResource}"/> instance of a collection of the resource objects representing the current open
+	/// resources on this file service.
+	/// </summary>
+	/// <remarks>
+	/// Traditional directory services supply data only about directory service elements represented in the underlying data store. Data about
+	/// resources for file services may not be available from the underlying directory store.
+	/// </remarks>
+	public ADsCollection<ADsResource>? Resources => TryGetProp(Interface.Resources, out var c) && c is not null ? new(c) : null;
+
+	/// <summary>
+	/// Gets an <see cref="ADsCollection{ADsSession}"/> instance of a collection of the session objects that represent the current open
+	/// sessions for this file service.
+	/// </summary>
+	/// <remarks>
+	/// Traditional directory services supply data only about directory service elements represented in the underlying data store. Data about
+	/// sessions for file services may not be available from the underlying store.
+	/// </remarks>
+	public ADsCollection<ADsSession>? Sessions => TryGetProp(Interface.Sessions, out var c) && c is not null ? new(c) : null;
 }
 
 /// <summary>
@@ -1215,8 +1319,6 @@ public class ADsPrintQueue : ADsBaseObject<IADsPrintQueue>
 
 	/// <summary>Gets the <see cref="ADsPrintQueueOperations"/> object associated with this instance.</summary>
 	public ADsPrintQueueOperations Operations => ops ??= new(Interface);
-
-	// TODO: Devices and netaddresses
 }
 
 /// <summary>
@@ -1247,7 +1349,7 @@ public class ADsPrintQueueOperations : ADsBaseObject<IADsPrintQueueOperations>
 	/// Gets the collection of the print jobs processed in this print queue. To delete a print job, use the Remove method on the retrieved
 	/// interface pointer.
 	/// </summary>
-	public IReadOnlyCollection<ADsPrintJob> PrintJobs => TryGetProp(Interface.PrintJobs, out var c) && c is not null ? c.Cast<IADsPrintJob>().Select(i => new ADsPrintJob(i)).ToArray() : [];
+	public ADsCollection<ADsPrintJob>? PrintJobs => TryGetProp(Interface.PrintJobs, out var c) && c is not null ? new(c) : null;
 
 	/// <summary>Gets the current status of the print queue operations..</summary>
 	public ADS_PRINT_QUEUE_STATUS Status => Interface.Status;
@@ -1620,7 +1722,7 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 	/// <para>The qualifier objects are provider-specific. When supported, this method can be used to obtain extended schema data.</para>
 	/// <para>This method is not currently supported by any of Microsoft providers.</para>
 	/// </remarks>
-	public IReadOnlyCollection<object> Qualifiers => TryGetProp(Interface.Qualifiers, out var c) && c is not null ? c.Cast<object>().ToArray() : [];
+	public ADsCollection<IADsObject>? Qualifiers => TryGetProp(Interface.Qualifiers, out var c) && c is not null ? new(c) : null;
 
 	private static List<T> ToADsList<T>(IEnumerable<string> paths) where T : IADsObject =>
 		paths.Select(ADsObject.GetObject).OfType<T>().ToList();
@@ -1708,7 +1810,7 @@ public class ADsSchemaProperty : ADsBaseObject<IADsProperty>
 	/// <para>The qualifier objects are provider-specific. When supported, this method can be used to obtain extended schema data.</para>
 	/// <para>This method is not currently supported by any of the providers supplied by Microsoft.</para>
 	/// </remarks>
-	public IReadOnlyCollection<object> Qualifiers => TryGetProp(Interface.Qualifiers, out var c) && c is not null ? c.Cast<object>().ToArray() : [];
+	public ADsCollection<IADsObject>? Qualifiers => TryGetProp(Interface.Qualifiers, out var c) && c is not null ? new(c) : null;
 
 	/// <summary>Gets or sets the relative path of syntax object.</summary>
 	public ADsSchemaPropertySyntax Syntax => syntax ??= new(GetSyntaxObj());

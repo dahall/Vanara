@@ -2065,36 +2065,6 @@ public static partial class ActiveDS
 		object GetObject([In, MarshalAs(UnmanagedType.BStr)] string bstrName);
 	}
 
-	/// <summary>Exposes an <see cref="IADsCollection"/> as an <see cref="IDictionary{TKey, TValue}"/>.</summary>
-	/// <typeparam name="T">The value type.</typeparam>
-	/// <param name="coll">The <see cref="IADsCollection"/> instance.</param>
-	/// <returns>An <see cref="IDictionary{TKey, TValue}"/> that wraps the collection.</returns>
-	public static IDictionary<string, T?> ToDictionary<T>(this IADsCollection coll) => new ADsCollection<T>(coll);
-
-	internal class ADsCollection<T>(IADsCollection c) : IDictionary<string, T?>
-	{
-		public T? this[string key]
-		{
-			get => (T)c.GetObject(key);
-			set => Add(key, value);
-		}
-		public ICollection<string> Keys => throw new NotImplementedException();
-		public ICollection<T?> Values => c.Cast<T?>().ToList();
-		public int Count => c.Cast<T>().Count();
-		public bool IsReadOnly => false;
-		public void Add(string key, T? value) => c.Add(key, value);
-		public void Add(KeyValuePair<string, T?> item) => throw new NotImplementedException();
-		public void Clear() => throw new NotImplementedException();
-		public bool Contains(KeyValuePair<string, T?> item) => TryGetValue(item.Key, out var t) && Equals(item.Value, t);
-		public bool ContainsKey(string key) { try { _ = this[key]; return true; } catch { return false; } }
-		public void CopyTo(KeyValuePair<string, T?>[] array, int arrayIndex) => throw new NotImplementedException();
-		public IEnumerator<KeyValuePair<string, T?>> GetEnumerator() => throw new NotImplementedException();
-		public bool Remove(string key) { try { c.Remove(key); return true; } catch { return false; } }
-		public bool Remove(KeyValuePair<string, T?> item) => Contains(item) && Remove(item.Key);
-		public bool TryGetValue(string key, out T? value) { try { value = this[key]; return true; } catch { value = default; return false; } }
-		IEnumerator IEnumerable.GetEnumerator() => c.GetEnumerator();
-	}
-
 	/// <summary>
 	/// <para>
 	/// The <c>IADsComputer</c> interface is a dual interface that inherits from IADs. It is designed to represent and manage a computer,

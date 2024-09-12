@@ -849,8 +849,7 @@ public static partial class ActiveDS
 		[DispId(14)]
 		new void GetInfoEx([In, MarshalAs(UnmanagedType.Struct)] object vProperties, [In] int lnReserved = 0);
 
-		/// <summary>Gets or sets the printer path.</summary>
-		/// <value>The printer path.</value>
+		/// <summary>Gets or sets the string that references the path by which a shared printer can be accessed.</summary>
 		[DispId(15)]
 		string PrinterPath
 		{
@@ -862,8 +861,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the model.</summary>
-		/// <value>The model.</value>
+		/// <summary>Gets or sets the name of the driver used by this print queue.</summary>
 		[DispId(16)]
 		string Model
 		{
@@ -875,8 +873,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the datatype.</summary>
-		/// <value>The datatype.</value>
+		/// <summary>Gets or sets the data type that can be processed by this queue.</summary>
 		[DispId(17)]
 		string Datatype
 		{
@@ -888,8 +885,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the print processor.</summary>
-		/// <value>The print processor.</value>
+		/// <summary>Gets or sets the print processor associated with this queue.</summary>
 		[DispId(18)]
 		string PrintProcessor
 		{
@@ -901,8 +897,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the description.</summary>
-		/// <value>The description.</value>
+		/// <summary>Gets or sets the text description of this print queue.</summary>
 		[DispId(19)]
 		string Description
 		{
@@ -914,8 +909,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the location.</summary>
-		/// <value>The location.</value>
+		/// <summary>Gets or sets the location of the queue as described by an administrator.</summary>
 		[DispId(20)]
 		string Location
 		{
@@ -927,8 +921,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the start time.</summary>
-		/// <value>The start time.</value>
+		/// <summary>Gets or sets the time when the queue should begin processing jobs. The date portion of the time is ignored.</summary>
 		[DispId(21)]
 		DateTime StartTime
 		{
@@ -939,8 +932,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the until time.</summary>
-		/// <value>The until time.</value>
+		/// <summary>Gets or sets the time when the queue should stop processing jobs.</summary>
 		[DispId(22)]
 		DateTime UntilTime
 		{
@@ -951,8 +943,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the default job priority.</summary>
-		/// <value>The default job priority.</value>
+		/// <summary>Gets or sets the default priority assigned to each print job.</summary>
 		[DispId(23)]
 		int DefaultJobPriority
 		{
@@ -963,8 +954,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the priority.</summary>
-		/// <value>The priority.</value>
+		/// <summary>Gets or sets the priority of this printer object job queue for any connected devices. All jobs in higher priority print queue objects will be processed first.</summary>
 		[DispId(24)]
 		int Priority
 		{
@@ -975,10 +965,9 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the banner page.</summary>
-		/// <value>The banner page.</value>
+		/// <summary>Gets or sets the file system path that points to the banner page used to separate print jobs. If NULL, no banner page is used.</summary>
 		[DispId(25)]
-		string BannerPage
+		string? BannerPage
 		{
 			[DispId(25)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -988,8 +977,7 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the print devices.</summary>
-		/// <value>The print devices.</value>
+		/// <summary>Gets or sets the names of the print devices to which this print queue spools jobs.</summary>
 		[DispId(26)]
 		object PrintDevices
 		{
@@ -1001,8 +989,12 @@ public static partial class ActiveDS
 			set;
 		}
 
-		/// <summary>Gets or sets the net addresses.</summary>
-		/// <value>The net addresses.</value>
+		/// <summary>
+		/// Gets or sets an array of NetAddress fields that represent the addresses by which this computer can be reached. NetAddress is a
+		/// provider-specific BSTR composed of two substrings separated by a colon (:). The left substring indicates the address type, and
+		/// the right substring is a string representation of an address of that type. For example, TCP/IP addresses are of the form:
+		/// IP:100.201.301.45. IPX type addresses are of the form: IPX:10.123456.80..
+		/// </summary>
 		[DispId(27)]
 		object NetAddresses
 		{
