@@ -227,7 +227,7 @@ Native Enum | Header | Managed Enum
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[&lt;PhysicalAddress&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<PhysicalAddress>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2_Unmanaged.&lt;PhysicalAddress&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;PhysicalAddress&gt;e__FixedBuffer)  
+[&lt;PhysicalAddress&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<PhysicalAddress>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2_Unmanaged.&lt;PhysicalAddress&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BPhysicalAddress%26gt%3Be__FixedBuffer)  
 [FIXED_INFO](https://www.google.com/search?num=5&q=FIXED_INFO+site%3Alearn.microsoft.com) | iptypes.h | [Vanara.PInvoke.IpHlpApi.FIXED_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FIXED_INFO)  
 [HIFTIMESTAMPCHANGE](https://www.google.com/search?num=5&q=HIFTIMESTAMPCHANGE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.HIFTIMESTAMPCHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=HIFTIMESTAMPCHANGE)  
 [IF_COUNTED_STRING](https://www.google.com/search?num=5&q=IF_COUNTED_STRING+site%3Alearn.microsoft.com) | ifdef.h | [Vanara.PInvoke.IpHlpApi.IF_COUNTED_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=IF_COUNTED_STRING)  
@@ -362,6 +362,6 @@ Native Class | Header | Managed Class
 [MIB_UNICASTIPADDRESS_TABLE](https://www.google.com/search?num=5&q=MIB_UNICASTIPADDRESS_TABLE+site%3Alearn.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.MIB_UNICASTIPADDRESS_TABLE](https://github.com/dahall/Vanara/search?l=C%23&q=MIB_UNICASTIPADDRESS_TABLE)  
 [PIP_PER_ADAPTER_INFO](https://www.google.com/search?num=5&q=PIP_PER_ADAPTER_INFO+site%3Alearn.microsoft.com) | iptypes.h | [Vanara.PInvoke.IpHlpApi.PIP_PER_ADAPTER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PIP_PER_ADAPTER_INFO)  
 [SafeIcmpHandle](https://www.google.com/search?num=5&q=SafeIcmpHandle+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.SafeIcmpHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeIcmpHandle)  
-[SafeMibEntryBase](https://www.google.com/search?num=5&q=SafeMibEntryBase+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.SafeMibEntryBase](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMibEntryBase)  
+[SafeMibEntryBase](https://www.google.com/search?num=5&q=SafeMibEntryBase+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.SafeMibEntryBase](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMibEntryBase%601)  
 [SafeMibTableHandle](https://www.google.com/search?num=5&q=SafeMibTableHandle+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.SafeMibTableHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMibTableHandle)  
-[SafeUnmanagedMibEntryBase](https://www.google.com/search?num=5&q=SafeUnmanagedMibEntryBase+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.SafeUnmanagedMibEntryBase](https://github.com/dahall/Vanara/search?l=C%23&q=SafeUnmanagedMibEntryBase)  
+[SafeUnmanagedMibEntryBase](https://www.google.com/search?num=5&q=SafeUnmanagedMibEntryBase+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.SafeUnmanagedMibEntryBase](https://github.com/dahall/Vanara/search?l=C%23&q=SafeUnmanagedMibEntryBase%601)  

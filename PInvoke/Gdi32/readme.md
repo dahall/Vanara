@@ -409,7 +409,7 @@ Native Enum | Header | Managed Enum
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[&lt;bmiColors&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<bmiColors>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.BITMAPINFO_UNMGD.&lt;bmiColors&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;bmiColors&gt;e__FixedBuffer)  
+[&lt;bmiColors&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<bmiColors>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.BITMAPINFO_UNMGD.&lt;bmiColors&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BbmiColors%26gt%3Be__FixedBuffer)  
 [ABC](https://www.google.com/search?num=5&q=ABC+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.ABC](https://github.com/dahall/Vanara/search?l=C%23&q=ABC)  
 [ABCFLOAT](https://www.google.com/search?num=5&q=ABCFLOAT+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.ABCFLOAT](https://github.com/dahall/Vanara/search?l=C%23&q=ABCFLOAT)  
 [AXESLIST](https://www.google.com/search?num=5&q=AXESLIST+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AXESLIST](https://github.com/dahall/Vanara/search?l=C%23&q=AXESLIST)  

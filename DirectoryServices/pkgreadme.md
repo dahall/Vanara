@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes | Interfaces
 --- | ---
-ADsBaseObject ADsComputer ADsComputerOperations ADsContainer ADsDomain ADsFileService ADsFileServiceOperations ADsFileShare ADsGroup ADsMembership ADsObject ADsPrintJob ADsPrintJobOperations ADsPrintQueue ADsPrintQueueOperations ADsPropertyCache ADsResource ADsSchemaClass ADsSchemaProperty ADsSchemaPropertySyntax ADsService ADsServiceOperations ADsSession ADsUser  | IADsContainerObject IADsObject                       
+ADsBaseObject ADsCollection ADsComputer ADsComputerOperations ADsContainer ADsDomain ADsFileService ADsFileServiceOperations ADsFileShare ADsGroup ADsMembership ADsObject ADsPrintJob ADsPrintJobOperations ADsPrintQueue ADsPrintQueueOperations ADsPropertyCache ADsResource ADsSchemaClass ADsSchemaProperty ADsSchemaPropertySyntax ADsService ADsServiceOperations ADsSession ADsUser  | IADsContainerObject IADsObject                        

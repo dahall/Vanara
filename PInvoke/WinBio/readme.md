@@ -194,5 +194,5 @@ Native Structure | Header | Managed Structure
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [SafeWinBioMemory](https://www.google.com/search?num=5&q=SafeWinBioMemory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinBio.SafeWinBioMemory](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWinBioMemory)  
-[SafeWinBioStruct](https://www.google.com/search?num=5&q=SafeWinBioStruct+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinBio.SafeWinBioStruct](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWinBioStruct)  
+[SafeWinBioStruct](https://www.google.com/search?num=5&q=SafeWinBioStruct+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinBio.SafeWinBioStruct](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWinBioStruct%601)  
 [WinBioMemoryMethods](https://www.google.com/search?num=5&q=WinBioMemoryMethods+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WinBio.WinBioMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioMemoryMethods)  

@@ -55,5 +55,5 @@ Native Interface | Header | Managed Interface
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [Opc](https://www.google.com/search?num=5&q=Opc+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Opc](https://github.com/dahall/Vanara/search?l=C%23&q=Opc)  
-[OpcEnumerator](https://www.google.com/search?num=5&q=OpcEnumerator+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Opc.OpcEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=OpcEnumerator)  
+[OpcEnumerator](https://www.google.com/search?num=5&q=OpcEnumerator+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Opc.OpcEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=OpcEnumerator%602)  
 [OpcFactory](https://www.google.com/search?num=5&q=OpcFactory+site%3Alearn.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OpcFactory](https://github.com/dahall/Vanara/search?l=C%23&q=OpcFactory)  

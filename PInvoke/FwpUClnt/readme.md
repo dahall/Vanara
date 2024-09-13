@@ -481,7 +481,7 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
-[SafeFwpmArray](https://www.google.com/search?num=5&q=SafeFwpmArray+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.SafeFwpmArray](https://github.com/dahall/Vanara/search?l=C%23&q=SafeFwpmArray)  
+[SafeFwpmArray](https://www.google.com/search?num=5&q=SafeFwpmArray+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.SafeFwpmArray](https://github.com/dahall/Vanara/search?l=C%23&q=SafeFwpmArray%601)  
 [SafeFwpmMem](https://www.google.com/search?num=5&q=SafeFwpmMem+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.SafeFwpmMem](https://github.com/dahall/Vanara/search?l=C%23&q=SafeFwpmMem)  
-[SafeFwpmStruct](https://www.google.com/search?num=5&q=SafeFwpmStruct+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.SafeFwpmStruct](https://github.com/dahall/Vanara/search?l=C%23&q=SafeFwpmStruct)  
+[SafeFwpmStruct](https://www.google.com/search?num=5&q=SafeFwpmStruct+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.SafeFwpmStruct](https://github.com/dahall/Vanara/search?l=C%23&q=SafeFwpmStruct%601)  
 [SafeHFWPENG](https://www.google.com/search?num=5&q=SafeHFWPENG+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.SafeHFWPENG](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHFWPENG)  

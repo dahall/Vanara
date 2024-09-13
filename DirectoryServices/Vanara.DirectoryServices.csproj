@@ -11,7 +11,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-ADsBaseObject&lt;T&gt;, ADsComputer, ADsComputerOperations, ADsContainer&lt;T&gt;, ADsDomain, ADsFileService, ADsFileServiceOperations, ADsFileShare, ADsGroup, ADsMembership, ADsObject, ADsPrintJob, ADsPrintJobOperations, ADsPrintQueue, ADsPrintQueueOperations, ADsPropertyCache, ADsResource, ADsSchemaClass, ADsSchemaProperty, ADsSchemaPropertySyntax, ADsService, ADsServiceOperations, ADsSession, ADsUser
+ADsBaseObject&lt;T&gt;, ADsCollection&lt;T&gt;, ADsComputer, ADsComputerOperations, ADsContainer&lt;T&gt;, ADsDomain, ADsFileService, ADsFileServiceOperations, ADsFileShare, ADsGroup, ADsMembership, ADsObject, ADsPrintJob, ADsPrintJobOperations, ADsPrintQueue, ADsPrintQueueOperations, ADsPropertyCache, ADsResource, ADsSchemaClass, ADsSchemaProperty, ADsSchemaPropertySyntax, ADsService, ADsServiceOperations, ADsSession, ADsUser
 
 </PackageReleaseNotes>
   </PropertyGroup>

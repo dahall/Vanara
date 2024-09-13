@@ -38,7 +38,7 @@ Interface | Description
 ### Classes
 Class | Description
 ---- | ----
-[Vanara.Windows.ExtenderProviderBase<T>.AddExtenderEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=AddExtenderEventArgs) | Arguments for the `Vanara.Windows.ExtenderProviderBase`1.AddingExtender` event.
+[Vanara.Windows.ExtenderProviderBase&lt;T&gt;.AddExtenderEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=AddExtenderEventArgs) | Arguments for the `Vanara.Windows.ExtenderProviderBase.AddingExtender` event.
 [Vanara.Windows.Shell.Registration.AppRegistration](https://github.com/dahall/Vanara/search?l=C%23&q=AppRegistration) | Represents the registration entries for an application.
 [Vanara.Configuration.MRUManager.AppSettingsFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=AppSettingsFileListStorage) | Storage in the local application settings.
 [Vanara.Windows.Shell.BindContext](https://github.com/dahall/Vanara/search?l=C%23&q=BindContext) | Wraps the `System.Runtime.InteropServices.ComTypes.IBindCtx` COM type.
@@ -46,10 +46,10 @@ Class | Description
 [Vanara.Windows.Shell.CommandVerb](https://github.com/dahall/Vanara/search?l=C%23&q=CommandVerb) | Encapsulates a shortcut menu verb in the registry.
 [Vanara.Windows.Shell.CommandVerbDictionary](https://github.com/dahall/Vanara/search?l=C%23&q=CommandVerbDictionary) | A dictionary of Command Verbs defined in the Windows Registry.
 [Vanara.Windows.Shell.ComObject](https://github.com/dahall/Vanara/search?l=C%23&q=ComObject) | Base class for all COM objects which handles calling AddRef and Release for the assembly, connection to IClassFactory, implements IObjectWithSite, using an internal message loop, and a mechanism to issue a non-blocking call to itself. Once implemented, you only need to implement your own interfaces. The IClassFactory implementation can get any derived interfaces through casting for calls to its QueryInterface method. If you want more control, override the QueryInterface method in this class.
-[Vanara.Windows.Shell.ComObjWrapper<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ComObjWrapper<T>) | 
+[Vanara.Windows.Shell.ComObjWrapper&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=ComObjWrapper%26lt%3BT%26gt%3B) | 
 [Vanara.Windows.Shell.ControlPanel](https://github.com/dahall/Vanara/search?l=C%23&q=ControlPanel) | Provides a means to open Control Panel items and get their paths.
 [Vanara.Windows.Shell.DragEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=DragEventArgs) | Provides data for the `Vanara.Windows.Shell.ShellDropTarget.DragDrop`, `Vanara.Windows.Shell.ShellDropTarget.DragEnter`, or `Vanara.Windows.Shell.ShellDropTarget.DragOver` event.
-[Vanara.Windows.ExtenderProviderBase<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ExtenderProviderBase<T>) | A generic base to implement `System.ComponentModel.IExtenderProvider` for a single extender type.
+[Vanara.Windows.ExtenderProviderBase&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=ExtenderProviderBase%26lt%3BT%26gt%3B) | A generic base to implement `System.ComponentModel.IExtenderProvider` for a single extender type.
 [Vanara.Windows.Shell.FileInUseHandler](https://github.com/dahall/Vanara/search?l=C%23&q=FileInUseHandler) | A handler for applications that open file types that can be opened by other applications. An application's use of this object enables Windows Explorer to discover the source of sharing errors, which enables users to address and retry operations that fail due to those errors. This object handles registering the file with the Running Object Table (see `Vanara.PInvoke.Ole32.IRunningObjectTable`). It will revoke that registration on disposal or when the `Vanara.Windows.Shell.FileInUseHandler.Registered` property is set to <see langword="false" />.
 [Vanara.Windows.Shell.Registration.FileTypeAssociation](https://github.com/dahall/Vanara/search?l=C%23&q=FileTypeAssociation) | Manages registry entries related to file types and file associations.
 [Vanara.Windows.Shell.IconLocation](https://github.com/dahall/Vanara/search?l=C%23&q=IconLocation) | Wraps the icon location string used by some Shell classes.
@@ -61,7 +61,7 @@ Class | Description
 [Vanara.Windows.Shell.MemoryPropertyStore](https://github.com/dahall/Vanara/search?l=C%23&q=MemoryPropertyStore) | An in-memory property store.
 [Vanara.Windows.Shell.ShellContextMenu.MenuItemInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MenuItemInfo) | Provides information about a single menu entry discovered in a native menu.
 [Vanara.PInvoke.MessageLoop.MessageEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=MessageEventArgs) | Holds a copy of the MSG instance retrieved by GetMessage.
-[Vanara.PInvoke.MessageLoop](https://github.com/dahall/Vanara/search?l=C%23&q=MessageLoop) | <para> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </para> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
+[Vanara.PInvoke.MessageLoop](https://github.com/dahall/Vanara/search?l=C%23&q=MessageLoop) | <p> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </p> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
 [Vanara.Configuration.MRUManager](https://github.com/dahall/Vanara/search?l=C%23&q=MRUManager) | A class that manages a Most Recently Used file listing.
 [Vanara.Windows.Shell.NativeClipboard](https://github.com/dahall/Vanara/search?l=C%23&q=NativeClipboard) | Static class with methods to interact with the Clipboard.
 [Vanara.Windows.Shell.ProgId](https://github.com/dahall/Vanara/search?l=C%23&q=ProgId) | Represents a programmatic identifier in the registry for an application.
@@ -72,7 +72,7 @@ Class | Description
 [Vanara.Windows.Shell.PropertyType](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyType) | Exposes methods that extract data from enumeration information.
 [Vanara.Windows.Shell.PropertyTypeList](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyTypeList) | Exposes methods that enumerate the possible values for a property.
 [Vanara.Windows.Shell.RecycleBin](https://github.com/dahall/Vanara/search?l=C%23&q=RecycleBin) | A static object that represents the system Recycle Bin.
-[Vanara.Windows.Shell.RegBasedDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedDictionary<T>) | A virtual dictionary that is based on values in the Windows Registry.
+[Vanara.Windows.Shell.RegBasedDictionary&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedDictionary%26lt%3BT%26gt%3B) | A virtual dictionary that is based on values in the Windows Registry.
 [Vanara.Windows.Shell.RegBasedSettings](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedSettings) | Base class for registry based settings.
 [Vanara.Configuration.MRUManager.RegistryFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=RegistryFileListStorage) | 
 [Vanara.Windows.Shell.SearchCondition](https://github.com/dahall/Vanara/search?l=C%23&q=SearchCondition) | Provides properties and methods for retrieving information about a search condition.

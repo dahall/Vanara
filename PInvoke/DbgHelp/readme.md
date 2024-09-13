@@ -274,8 +274,8 @@ Native Enum | Header | Managed Enum
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[&lt;_DataDirectory&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<_DataDirectory>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_OPTIONAL_HEADER.&lt;_DataDirectory&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;_DataDirectory&gt;e__FixedBuffer)  
-[&lt;Name&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<Name>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_SECTION_HEADER.&lt;Name&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;Name&gt;e__FixedBuffer)  
+[&lt;_DataDirectory&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<_DataDirectory>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_OPTIONAL_HEADER.&lt;_DataDirectory&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3B_DataDirectory%26gt%3Be__FixedBuffer)  
+[&lt;Name&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<Name>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_SECTION_HEADER.&lt;Name&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BName%26gt%3Be__FixedBuffer)  
 [ADDRESS](https://www.google.com/search?num=5&q=ADDRESS+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRESS)  
 [ADDRESS64](https://www.google.com/search?num=5&q=ADDRESS64+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.ADDRESS64](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRESS64)  
 [API_VERSION](https://www.google.com/search?num=5&q=API_VERSION+site%3Alearn.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.API_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=API_VERSION)  
@@ -382,7 +382,7 @@ Native Structure | Header | Managed Structure
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [ProcessSymbolHandler](https://www.google.com/search?num=5&q=ProcessSymbolHandler+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.ProcessSymbolHandler](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessSymbolHandler)  
-[SafeAnysizeStringMarshaler](https://www.google.com/search?num=5&q=SafeAnysizeStringMarshaler+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeAnysizeStringMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAnysizeStringMarshaler)  
+[SafeAnysizeStringMarshaler](https://www.google.com/search?num=5&q=SafeAnysizeStringMarshaler+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeAnysizeStringMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAnysizeStringMarshaler%601)  
 [SafeIMAGEHLP_SYMBOL](https://www.google.com/search?num=5&q=SafeIMAGEHLP_SYMBOL+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeIMAGEHLP_SYMBOL](https://github.com/dahall/Vanara/search?l=C%23&q=SafeIMAGEHLP_SYMBOL)  
 [SafeIMAGEHLP_SYMBOL64](https://www.google.com/search?num=5&q=SafeIMAGEHLP_SYMBOL64+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeIMAGEHLP_SYMBOL64](https://github.com/dahall/Vanara/search?l=C%23&q=SafeIMAGEHLP_SYMBOL64)  
 [SafeLOADED_IMAGE](https://www.google.com/search?num=5&q=SafeLOADED_IMAGE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeLOADED_IMAGE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeLOADED_IMAGE)  

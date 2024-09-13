@@ -74,4 +74,4 @@ Native Class | Header | Managed Class
 --- | --- | ---  
 [BackgroundCopyManager](https://www.google.com/search?num=5&q=BackgroundCopyManager+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BITS.BackgroundCopyManager](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyManager)  
 [BITS](https://www.google.com/search?num=5&q=BITS+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BITS](https://github.com/dahall/Vanara/search?l=C%23&q=BITS)  
-[BitsEnumerator](https://www.google.com/search?num=5&q=BitsEnumerator+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BITS.BitsEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=BitsEnumerator)  
+[BitsEnumerator](https://www.google.com/search?num=5&q=BitsEnumerator+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BITS.BitsEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=BitsEnumerator%603)  

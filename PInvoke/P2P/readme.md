@@ -215,4 +215,4 @@ Native Class | Header | Managed Class
 [SafeHPEERENUM](https://www.google.com/search?num=5&q=SafeHPEERENUM+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafeHPEERENUM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPEERENUM)  
 [SafePeerCollabHandle](https://www.google.com/search?num=5&q=SafePeerCollabHandle+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafePeerCollabHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafePeerCollabHandle)  
 [SafePeerData](https://www.google.com/search?num=5&q=SafePeerData+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafePeerData](https://github.com/dahall/Vanara/search?l=C%23&q=SafePeerData)  
-[SafePeerList](https://www.google.com/search?num=5&q=SafePeerList+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafePeerList](https://github.com/dahall/Vanara/search?l=C%23&q=SafePeerList)  
+[SafePeerList](https://www.google.com/search?num=5&q=SafePeerList+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafePeerList](https://github.com/dahall/Vanara/search?l=C%23&q=SafePeerList%601)  
