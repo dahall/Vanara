@@ -1,6 +1,4 @@
-﻿using static Vanara.PInvoke.OleAut32;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class ActiveDS
 {
@@ -2239,7 +2237,7 @@ public static partial class ActiveDS
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-getobjectattributes HRESULT GetObjectAttributes(
 		// [in] LPWSTR *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_ATTR_INFO *ppAttributeEntries, [out] DWORD
 		// *pdwNumAttributesReturned );
-		void GetObjectAttributes([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] pAttributeNames,
+		void GetObjectAttributes([In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pAttributeNames,
 			[In] uint dwNumberAttributes, out IntPtr ppAttributeEntries, out uint pdwNumAttributesReturned);
 
 		/// <summary>
@@ -2277,7 +2275,7 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-setobjectattributes HRESULT SetObjectAttributes(
 		// [in] PADS_ATTR_INFO pAttributeEntries, [in] DWORD dwNumAttributes, [out] DWORD *pdwNumAttributesModified );
-		void SetObjectAttributes([In, MarshalAs(UnmanagedType.LPArray)] ADS_ATTR_INFO[] pAttributeEntries, [In] uint dwNumAttributes, out uint pdwNumAttributesModified);
+		void SetObjectAttributes([In] IntPtr pAttributeEntries, [In] uint dwNumAttributes, out uint pdwNumAttributesModified);
 
 		/// <summary>The <c>IDirectoryObject::CreateDSObject</c> method creates a child of the current directory service object.</summary>
 		/// <param name="pszRDNName">Provides the relative distinguished name (relative path) of the object to be created.</param>
@@ -2296,7 +2294,7 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-createdsobject HRESULT CreateDSObject( [in]
 		// LPWSTR pszRDNName, [in] PADS_ATTR_INFO pAttributeEntries, [in] DWORD dwNumAttributes, [out] IDispatch **ppObject );
-		void CreateDSObject([In, MarshalAs(UnmanagedType.LPWStr)] string pszRDNName, [In, MarshalAs(UnmanagedType.LPArray)] ADS_ATTR_INFO[] pAttributeEntries, [In] uint dwNumAttributes, [MarshalAs(UnmanagedType.IDispatch)] out object ppObject);
+		void CreateDSObject([In, MarshalAs(UnmanagedType.LPWStr)] string pszRDNName, [In] IntPtr pAttributeEntries, [In] uint dwNumAttributes, [MarshalAs(UnmanagedType.IDispatch)] out object ppObject);
 
 		/// <summary>The <c>IDirectoryObject::DeleteDSObject</c> method deletes a leaf object in a directory tree.</summary>
 		/// <param name="pszRDNName">The relative distinguished name (relative path) of the object to be deleted.</param>
@@ -2308,6 +2306,142 @@ public static partial class ActiveDS
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-deletedsobject HRESULT DeleteDSObject( LPWSTR
 		// pszRDNName );
 		void DeleteDSObject([In, MarshalAs(UnmanagedType.LPWStr)] string pszRDNName);
+	}
+
+	/// <summary>
+	/// The <c>IDirectoryObject::GetObjectInformation</c> method retrieves a pointer to an ADS_OBJECT_INFO structure that contains data
+	/// regarding the identity and location of a directory service object.
+	/// </summary>
+	/// <param name="ido">The <see cref="IDirectoryObject"/> instance.</param>
+	/// <returns>
+	/// An ADS_OBJECT_INFO structure that contains data regarding the requested directory service object. If <see langword="null"/> on
+	/// return, <c>GetObjectInformation</c> cannot obtain the requested data.
+	/// </returns>
+	public static ADS_OBJECT_INFO? GetObjectInformation(this IDirectoryObject ido)
+	{
+		try
+		{
+			ido.GetObjectInformation(out var p);
+			var ret = p.ToStructure<ADS_OBJECT_INFO>();
+			FreeADsMem(p);
+			return ret;
+		}
+		catch { }
+		return default;
+	}
+
+	/// <summary>
+	/// The <c>IDirectoryObject::GetObjectAttributes</c> method retrieves one or more specified attributes of the directory service object.
+	/// </summary>
+	/// <param name="ido">The <see cref="IDirectoryObject"/> instance.</param>
+	/// <param name="pAttributeNames">
+	/// <para>Specifies an array of names of the requested attributes.</para>
+	/// <para>To request all of the object's attributes, set <c>pAttributeNames</c> to <see langword="null"/>.</para>
+	/// </param>
+	/// <returns>
+	/// An array of ADS_ATTR_INFO structures that contain the requested attribute values. If no attributes could be obtained from the
+	/// directory service object, the returned array is empty.
+	/// </returns>
+	/// <remarks>
+	/// <para>The order of attributes returned in <c>ppAttributeEntries</c> is not necessarily the same as requested in <c>pAttributeNames</c>.</para>
+	/// <para>
+	/// The <c>IDirectoryObject::GetObjectAttributes</c> method attempts to read the schema definition of the requested attributes so it can
+	/// return the attribute values in the appropriate format in the ADSVALUE structures contained in the ADS_ATTR_INFO structures. However,
+	/// <c>GetObjectAttributes</c> can succeed even when the schema definition is not available, in which case the <c>dwADsType</c> member
+	/// of the <c>ADS_ATTR_INFO</c> structure returns ADSTYPE_PROV_SPECIFIC and the value is returned in an ADS_PROV_SPECIFIC structure.
+	/// When you process the results of a <c>GetObjectAttributes</c> call, verify <c>dwADsType</c> to ensure that the data was returned in
+	/// the expected format.
+	/// </para>
+	/// </remarks>
+	public static ADS_ATTR_INFO[] GetObjectAttributes(this IDirectoryObject ido, [In, Optional] string[]? pAttributeNames)
+	{
+		try
+		{
+			ido.GetObjectAttributes(pAttributeNames, unchecked((uint)(pAttributeNames?.Length ?? -1)), out var p, out var c);
+			ADS_ATTR_INFO[] ret = p.ToArray<ADS_ATTR_INFO>((int)c) ?? [];
+			FreeADsMem(p);
+			return ret;
+		}
+		catch { }
+		return [];
+	}
+
+	/// <summary>
+	/// The <c>IDirectoryObject::SetObjectAttributes</c> method modifies data in one or more specified object attributes defined in the
+	/// ADS_ATTR_INFO structure.
+	/// </summary>
+	/// <param name="ido">The <see cref="IDirectoryObject"/> instance.</param>
+	/// <param name="pAttributeEntries">
+	/// Provides an sequence of attributes to be modified. Each attribute contains the name of the attribute, the operation to perform, and
+	/// the attribute value, if applicable. For more information, see the ADS_ATTR_INFO structure.
+	/// </param>
+	/// <returns>The number of attributes modified by the <c>SetObjectAttributes</c> method.</returns>
+	/// <remarks>
+	/// <para>
+	/// In Active Directory (LDAP provider), the <c>IDirectoryObject::SetObjectAttributes</c> method is a transacted call. The attributes
+	/// are either all committed or discarded. Other directory providers may not transact the call.
+	/// </para>
+	/// <para>
+	/// Active Directory does not allow duplicate values on a multi-valued attribute. However, if you call <c>SetObjectAttributes</c> to
+	/// append a duplicate value to a multi-valued attribute of an Active Directory object, the <c>SetObjectAttributes</c> call succeeds but
+	/// the duplicate value is ignored.
+	/// </para>
+	/// <para>
+	/// Similarly, if you use <c>SetObjectAttributes</c> to delete one or more values from a multi-valued property of an Active Directory
+	/// object, the operation succeeds even if any or all of the specified values are not set for the property
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>
+	/// The following C++ code example sets the <c>sn</c> attribute of a user object to the value of <c>Price</c> as a case-insensitive string.
+	/// </para>
+	/// </remarks>
+	public static uint SetObjectAttributes(this IDirectoryObject ido, [In] ADS_ATTR_INFO[] pAttributeEntries)
+	{
+		uint ret = 0;
+		try
+		{
+			using SafeNativeArray<ADS_ATTR_INFO> p = new(pAttributeEntries);
+			ido.SetObjectAttributes(p, (uint)p.Count, out ret);
+			return ret;
+		}
+		catch { }
+		return ret;
+	}
+
+	/// <summary>
+	/// The <c>IDirectoryObject::CreateDSObject</c> method creates a child of the current directory service object.
+	/// </summary>
+	/// <param name="ido">The <see cref="IDirectoryObject"/> instance.</param>
+	/// <param name="pszRDNName">Provides the relative distinguished name (relative path) of the object to be created.</param>
+	/// <param name="pAttributeEntries">
+	/// An array of ADS_ATTR_INFO structures that contain attribute definitions to be set when the object is created.
+	/// </param>
+	/// <returns>On success, returns the IDispatch interface on the created object.</returns>
+	/// <remarks>
+	/// <para>
+	/// Specify all attributes to be initialized on creation in the <c>pAttributeEntries</c> array. You may also specify optional
+	/// attributes. When creating a directory object with this method, attributes with any of the string data types cannot be empty or zero-length.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>The following C/C++ code example shows how to create a user object using the <c>IDirectoryObject::CreateDSObject</c> method.</para>
+	/// </remarks>
+	public static object? CreateDSObject(this IDirectoryObject ido, string pszRDNName, [In, Optional] ADS_ATTR_INFO[]? pAttributeEntries)
+	{
+		object? ret = null;
+		try
+		{
+			if (pAttributeEntries is null || pAttributeEntries.Length == 0)
+			{
+				ido.CreateDSObject(pszRDNName, IntPtr.Zero, 0, out ret);
+			}
+			else
+			{
+				using SafeNativeArray<ADS_ATTR_INFO> p = new(pAttributeEntries!);
+				ido.CreateDSObject(pszRDNName, p, (uint)p.Count, out ret);
+			}
+		}
+		catch { }
+		return ret;
 	}
 
 	/// <summary>
@@ -2370,8 +2504,9 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-executesearch HRESULT ExecuteSearch( [in] LPWSTR
 		// pszSearchFilter, [in] LPWSTR *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_SEARCH_HANDLE phSearchResult );
-		void ExecuteSearch([In, MarshalAs(UnmanagedType.LPWStr)] string pszSearchFilter, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pAttributeNames,
-			[In] uint dwNumberAttributes, out ADS_SEARCH_HANDLE phSearchResult);
+		void ExecuteSearch([In, MarshalAs(UnmanagedType.LPWStr)] string pszSearchFilter,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pAttributeNames,
+			[In, Optional] uint dwNumberAttributes, out ADS_SEARCH_HANDLE phSearchResult);
 
 		/// <summary>
 		/// The <c>IDirectorySearch::AbandonSearch</c> method abandons a search initiated by an earlier call to the ExecuteSearch method.
@@ -2461,7 +2596,7 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getnextcolumnname HRESULT GetNextColumnName(
 		// [in] ADS_SEARCH_HANDLE hSearchHandle, [out] LPWSTR *ppszColumnName );
-		void GetNextColumnName([In] ADS_SEARCH_HANDLE hSearchHandle, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszColumnName);
+		void GetNextColumnName([In] ADS_SEARCH_HANDLE hSearchHandle, out StrPtrUni ppszColumnName);
 
 		/// <summary>The <c>IDirectorySearch::GetColumn</c> method gets data from a named column of the search result.</summary>
 		/// <param name="hSearchResult">Provides a handle to the search context.</param>
@@ -2518,6 +2653,83 @@ public static partial class ActiveDS
 		void CloseSearchHandle([In] ADS_SEARCH_HANDLE hSearchResult);
 	}
 
+	/// <summary>
+	/// The <c>IDirectorySearch::ExecuteSearch</c> method executes a search and passes the results to the caller. Some providers, such as
+	/// LDAP, will defer the actual execution until the caller invokes the IDirectorySearch::GetFirstRow method or the
+	/// IDirectorySearch::GetNextRow method.
+	/// </summary>
+	/// <param name="ids">The <see cref="IDirectorySearch"/> instance.</param>
+	/// <param name="pszSearchFilter">A search filter string in LDAP format, such as "(objectClass=user)".</param>
+	/// <param name="pAttributeNames">An array of attribute names for which data is requested.</param>
+	/// <returns>
+	/// A handle to the search context. The caller passes this handle to other methods of IDirectorySearch to examine the search result. If
+	/// <see cref="SafeHANDLE.IsNull"/> is <see langword="true"/>, the search cannot be executed.
+	/// </returns>
+	/// <remarks>
+	/// When the search filter (<paramref name="pszSearchFilter"/>) contains an attribute of <c>ADS_UTC_TIME</c> type, it value must be of
+	/// the "yymmddhhmmssZ" format where "y", "m", "d", "h", "m" and "s" stand for year, month, day, hour, minute, and second, respectively.
+	/// In this format, for example, "10:20:00 May 13, 1999" becomes "990513102000Z". The final letter "Z" is the required syntax and
+	/// indicated Zulu Time or Universal Coordinated Time.
+	/// </remarks>
+	public static SafeADS_SEARCH_HANDLE ExecuteSearch(this IDirectorySearch ids, string pszSearchFilter, params string[] pAttributeNames)
+	{
+		try
+		{
+			ids.ExecuteSearch(pszSearchFilter, pAttributeNames.Length > 0 ? pAttributeNames : null, (uint)pAttributeNames.Length, out var h);
+			return new(ids, h);
+		}
+		catch { }
+		return new();
+	}
+
+	/// <summary>
+	/// The <c>IDirectorySearch::GetNextColumnName</c> method gets the name of the next column in the search result that contains data.
+	/// </summary>
+	/// <param name="ids">The <see cref="IDirectorySearch"/> instance.</param>
+	/// <param name="hSearchHandle">Provides a handle to the search context.</param>
+	/// <returns>The requested column name. If <see langword="null"/>, no subsequent rows contain data.</returns>
+	public static string? GetNextColumnName(this IDirectorySearch ids, [In] ADS_SEARCH_HANDLE hSearchHandle)
+	{
+		string? ret = null;
+		try
+		{
+			ids.GetNextColumnName(hSearchHandle, out var s);
+			ret = s.ToString();
+			FreeADsMem((IntPtr)s);
+		}
+		catch { }
+		return ret;
+	}
+
+	/// <summary>
+	/// The <c>IDirectorySearch::GetColumn</c> method gets data from a named column of the search result.
+	/// </summary>
+	/// <param name="ids">The <see cref="IDirectorySearch"/> instance.</param>
+	/// <param name="hSearchResult">Provides a handle to the search context.</param>
+	/// <param name="szColumnName">Provides the name of the column for which data is requested.</param>
+	/// <returns>A ADS_SEARCH_COLUMN structure that contains the column from the current row of the search result.</returns>
+	/// <remarks>
+	/// The <c>IDirectorySearch::GetColumn</c> method tries to read the schema definition of the requested attribute so it can return the
+	/// attribute values in the appropriate format in the ADSVALUE structures, contained in the ADS_SEARCH_COLUMN structure. However,
+	/// <c>GetColumn</c> can succeed even when the schema definition is not available, in which case the <c>dwADsType</c> member of the
+	/// <c>ADS_SEARCH_COLUMN</c> structure returns ADSTYPE_PROV_SPECIFIC and the value is returned in an ADS_PROV_SPECIFIC structure. When
+	/// you process the results of a <c>GetColumn</c> call, you must verify <c>dwADsType</c> to ensure that the data was returned in the
+	/// expected format.
+	/// </remarks>
+	public static ADS_SEARCH_COLUMN? GetColumn(this IDirectorySearch ids, [In] ADS_SEARCH_HANDLE hSearchResult, string szColumnName)
+	{
+		ADS_SEARCH_COLUMN? ret = null;
+		try
+		{
+			IntPtr p = default;
+			ids.GetColumn(hSearchResult, szColumnName, p);
+			ret = p.ToNullableStructure<ADS_SEARCH_COLUMN>();
+			ids.FreeColumn(p);
+		}
+		catch { }
+		return ret;
+	}
+
 	/// <summary>Provides a handle to an ADs Search session.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_SEARCH_HANDLE : IHandle
@@ -2569,6 +2781,25 @@ public static partial class ActiveDS
 
 		/// <inheritdoc/>
 		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>
+	/// Provides a <see cref="SafeHandle"/> for <see cref="ADS_SEARCH_HANDLE"/> that is disposed using <see cref="IDirectorySearch.CloseSearchHandle"/>.
+	/// </summary>
+	public class SafeADS_SEARCH_HANDLE : SafeHANDLE
+	{
+		private readonly IDirectorySearch? ids;
+
+		/// <summary>Initializes a new instance of the <see cref="SafeADS_SEARCH_HANDLE"/> class.</summary>
+		internal SafeADS_SEARCH_HANDLE(IDirectorySearch? ids = null, ADS_SEARCH_HANDLE h = default) : base((IntPtr)h, true) => this.ids = ids;
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeADS_SEARCH_HANDLE"/> to <see cref="ADS_SEARCH_HANDLE"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator ADS_SEARCH_HANDLE(SafeADS_SEARCH_HANDLE h) => h.handle;
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle() { try { ids?.CloseSearchHandle(handle); return true; } catch { return false; } }
 	}
 
 	/*internal class VariantMarshaler<T> : ICustomMarshaler
