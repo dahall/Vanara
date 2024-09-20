@@ -371,6 +371,11 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator IntPtr(StrPtrUni p) => p.ptr;
 
+	/// <summary>Performs an implicit conversion from <see cref="char"/>* to <see cref="StrPtrUni"/>.</summary>
+	/// <param name="p">The pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static unsafe implicit operator StrPtrUni(char* p) => new() { ptr = (IntPtr)p };
+
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StrPtrUni"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
