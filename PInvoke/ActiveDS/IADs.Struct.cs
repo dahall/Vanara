@@ -36,20 +36,48 @@ public static partial class ActiveDS
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_attr_info
 	// typedef struct _ads_attr_info { LPWSTR pszAttrName; DWORD dwControlCode; ADSTYPE dwADsType; PADSVALUE pADsValues; DWORD dwNumValues; } ADS_ATTR_INFO, *PADS_ATTR_INFO;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_attr_info")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct ADS_ATTR_INFO
+	public struct ADS_ATTR_INFO : IVanaraMarshaler
 	{
 		/// <summary>The null-terminated Unicode string that contains the attribute name.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszAttrName;
 		/// <summary>Contains one of the ADSI Attribute Modification Types values that determines the type of operation to be performed on the attribute value.</summary>
 		public ADS_ATTR dwControlCode;
 		/// <summary>A value from the ADSTYPEENUM enumeration that indicates the data type of the attribute.</summary>
 		public ADSTYPE dwADsType;
 		/// <summary>Pointer to an array of ADSVALUE structures that contain values for the attribute.</summary>
-		public ArrayPointer<ADSVALUE> pADsValues;
-		/// <summary>Size of the <c>pADsValues</c> array.</summary>
-		public uint dwNumValues;
+		public ADSVALUE[] pADsValues;
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(IntAttrInfo));
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
+		{
+			if (managedObject is not ADS_ATTR_INFO i)
+				throw new ArgumentException("Invalid object", nameof(managedObject));
+			IntAttrInfo ii = new() { dwControlCode = i.dwControlCode, dwADsType = i.dwADsType, dwNumValues = (uint?)i.pADsValues?.Length ?? 0 };
+			SizeT ext = ii.dwNumValues * Marshal.SizeOf(typeof(ADSVALUE)) + (i.pszAttrName?.GetByteCount(true, CharSet.Unicode) ?? 0);
+			var sz = Marshal.SizeOf(typeof(IntAttrInfo));
+			var ret = new SafeCoTaskMemStruct<IntAttrInfo>(ext + sz);
+			ii.pszAttrName = ret.DangerousGetHandle().Offset(sz);
+			StringHelper.Write(i.pszAttrName, (IntPtr)ii.pszAttrName, out var l, true, CharSet.Unicode);
+			ii.pADsValues = ret.DangerousGetHandle().Offset(sz + l);
+			ii.pADsValues.Write(i.pADsValues ?? [], sz + l);
+			return ret;
+		}
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			var ii = pNativeData.ToStructure<IntAttrInfo>(allocatedBytes);
+			return new ADS_ATTR_INFO() { dwControlCode = ii.dwControlCode, dwADsType = ii.dwADsType,
+				pszAttrName = ii.pszAttrName.ToString(), pADsValues = ii.pADsValues.ToArray<ADSVALUE>((int)ii.dwNumValues) ?? [] };
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		struct IntAttrInfo
+		{
+			public StrPtrUni pszAttrName;
+			public ADS_ATTR dwControlCode;
+			public ADSTYPE dwADsType;
+			public IntPtr pADsValues;
+			public uint dwNumValues;
+		}
 	}
 
 	/// <summary>The <c>ADS_BACKLINK</c> structure is an ADSI representation of the <c>Back Link</c> attribute syntax.</summary>
@@ -351,20 +379,58 @@ public static partial class ActiveDS
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_search_column
 	// typedef struct ads_search_column { LPWSTR pszAttrName; ADSTYPE dwADsType; PADSVALUE pADsValues; DWORD dwNumValues; HANDLE hReserved; } ADS_SEARCH_COLUMN, *PADS_SEARCH_COLUMN;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.ads_search_column")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct ADS_SEARCH_COLUMN
+	public struct ADS_SEARCH_COLUMN : IVanaraMarshaler
 	{
 		/// <summary>A null-terminated Unicode string that contains the name of the attribute whose values are contained in the current search column.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszAttrName;
 		/// <summary>Value from the ADSTYPEENUM enumeration that indicates how the attribute values are interpreted.</summary>
 		public ADSTYPE dwADsType;
 		/// <summary>Array of ADSVALUE structures that contain values of the attribute in the current search column for the current row.</summary>
-		public ArrayPointer<ADSVALUE> pADsValues;
-		/// <summary>Size of the <c>pADsValues</c> array.</summary>
-		public uint dwNumValues;
+		public ADSVALUE[] pADsValues;
 		/// <summary>Reserved for internal use by providers.</summary>
 		public HANDLE hReserved;
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(IntSearchCol));
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
+		{
+			if (managedObject is not ADS_SEARCH_COLUMN i)
+				throw new ArgumentException("Invalid object", nameof(managedObject));
+			IntSearchCol ii = new() { dwADsType = i.dwADsType, hReserved = i.hReserved, dwNumValues = (uint?)i.pADsValues?.Length ?? 0 };
+			SizeT ext = ii.dwNumValues * Marshal.SizeOf(typeof(ADSVALUE)) + (i.pszAttrName?.GetByteCount(true, CharSet.Unicode) ?? 0);
+			var sz = Marshal.SizeOf(typeof(IntSearchCol));
+			var ret = new SafeCoTaskMemStruct<IntSearchCol>(ext + sz);
+			ii.pszAttrName = ret.DangerousGetHandle().Offset(sz);
+			StringHelper.Write(i.pszAttrName, (IntPtr)ii.pszAttrName, out var l, true, CharSet.Unicode);
+			ii.pADsValues = ret.DangerousGetHandle().Offset(sz + l);
+			((IntPtr)ii.pADsValues).Write(i.pADsValues ?? [], sz + l);
+			return ret;
+		}
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			var ii = pNativeData.ToStructure<IntSearchCol>(allocatedBytes);
+			return new ADS_SEARCH_COLUMN()
+			{
+				pszAttrName = ii.pszAttrName.ToString(),
+				dwADsType = ii.dwADsType,
+				pADsValues = ii.pADsValues.ToArray((int)ii.dwNumValues),
+				hReserved = ii.hReserved,
+			};
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct IntSearchCol
+		{
+			/// <summary>A null-terminated Unicode string that contains the name of the attribute whose values are contained in the current search column.</summary>
+			public StrPtrUni pszAttrName;
+			/// <summary>Value from the ADSTYPEENUM enumeration that indicates how the attribute values are interpreted.</summary>
+			public ADSTYPE dwADsType;
+			/// <summary>Array of ADSVALUE structures that contain values of the attribute in the current search column for the current row.</summary>
+			public ArrayPointer<ADSVALUE> pADsValues;
+			/// <summary>Size of the <c>pADsValues</c> array.</summary>
+			public uint dwNumValues;
+			/// <summary>Reserved for internal use by providers.</summary>
+			public HANDLE hReserved;
+		}
 	}
 
 	/// <summary>The <c>ADS_SEARCHPREF_INFO</c> structure specifies the query preferences.</summary>
@@ -590,53 +656,51 @@ public static partial class ActiveDS
 		/// <summary>Provider-specific structure, as defined by ADS_PROV_SPECIFIC, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
 		public ADS_PROV_SPECIFIC ProviderSpecific;
-		/*
-		/// <summary>Pointer to a ADS_CASEIGNORE_LIST, an ADSI-defined data type.</summary>
-		[FieldOffset(4)]
-		public StructPointer<ADS_CASEIGNORE_LIST> pCaseIgnoreList;
 		/// <summary>Pointer to a list of ADS_OCTET_LIST, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
 		public ArrayPointer<ADS_OCTET_LIST> pOctetList;
-		/// <summary>Pointer to the ADS_PATH name, an ADSI-defined data type.</summary>
-		[FieldOffset(4)]
-		public StructPointer<ADS_PATH> pPath;
-		/// <summary>Pointer to the ADS_POSTALADDRESS data, an ADSI-defined data type.</summary>
-		[FieldOffset(4)]
-		public StructPointer<ADS_POSTALADDRESS> pPostalAddress;
 		/// <summary>Time stamp of the ADS_TIMESTAMP type, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
 		public ADS_TIMESTAMP Timestamp;
 		/// <summary>A link of the ADS_BACKLINK type, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
-		public ADS_BACKLINK BackLink;
-		/// <summary>Pointer to the ADS_TYPEDNAME name, an ADSI-defined data type.</summary>
-		[FieldOffset(4)]
-		public StructPointer<ADS_TYPEDNAME> pTypedName;
+		public IntPtr BackLink;
 		/// <summary>A data structure of the ADS_HOLD type, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
-		public ADS_HOLD Hold;
+		public IntPtr Hold;
 		/// <summary>Pointer to the ADS_NETADDRESS data, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
 		public StructPointer<ADS_NETADDRESS> pNetAddress;
-		/// <summary>Pointer to a replica pointer of ADS_REPLICAPOINTER, an ADSI-defined data type.</summary>
-		[FieldOffset(4)]
-		public StructPointer<ADS_REPLICAPOINTER> pReplicaPointer;
-		/// <summary>Pointer to a facsimile number of ADS_FAXNUMBER, an ADSI-defined data type.</summary>
-		[FieldOffset(4)]
-		public StructPointer<ADS_FAXNUMBER> pFaxNumber;
 		/// <summary>Email address of a user of ADS_EMAIL, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
-		public ADS_EMAIL Email;
+		public IntPtr Email;
 		/// <summary>Windows security descriptor, as defined by ADS_NT_SECURITY_DESCRIPTOR, an ADSI-defined data type.</summary>
 		[FieldOffset(4)]
 		public ADS_NT_SECURITY_DESCRIPTOR SecurityDescriptor;
+		/// <summary>Pointer to a ADS_CASEIGNORE_LIST, an ADSI-defined data type.</summary>
+		[FieldOffset(4)]
+		public IntPtr pCaseIgnoreList;
+		/// <summary>Pointer to the ADS_PATH name, an ADSI-defined data type.</summary>
+		[FieldOffset(4)]
+		public IntPtr pPath;
+		/// <summary>Pointer to the ADS_POSTALADDRESS data, an ADSI-defined data type.</summary>
+		[FieldOffset(4)]
+		public IntPtr pPostalAddress;
+		/// <summary>Pointer to the ADS_TYPEDNAME name, an ADSI-defined data type.</summary>
+		[FieldOffset(4)]
+		public IntPtr pTypedName;
+		/// <summary>Pointer to a replica pointer of ADS_REPLICAPOINTER, an ADSI-defined data type.</summary>
+		[FieldOffset(4)]
+		public IntPtr pReplicaPointer;
+		/// <summary>Pointer to a facsimile number of ADS_FAXNUMBER, an ADSI-defined data type.</summary>
+		[FieldOffset(4)]
+		public IntPtr pFaxNumber;
 		/// <summary>Pointer to an ADS_DN_WITH_BINARY structure that maps a distinguished name of an object to its GUID value.</summary>
 		[FieldOffset(4)]
-		public StructPointer<ADS_DN_WITH_BINARY> pDNWithBinary;
+		public IntPtr pDNWithBinary;
 		/// <summary>Pointer to an ADS_DN_WITH_STRING structure that maps a distinguished name of an object to a nonvarying string value.</summary>
 		[FieldOffset(4)]
-		public StructPointer<ADS_DN_WITH_STRING> pDNWithString;
-		*/
+		public IntPtr pDNWithString;
 	}
 
 	/// <summary>The <c>ADS_VLV</c> structure contains metadata used to conduct virtual list view (VLV) searches. This structure serves two roles. First, it specifies the search preferences sent to the server. Second, it returns the VLV metadata from the server.</summary>
