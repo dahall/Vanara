@@ -49,6 +49,11 @@ public struct ArrayPointer<T> where T : unmanaged
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator ArrayPointer<T>(SafeAllocatedMemoryHandle p) => new() { ptr = p };
 
+	/// <summary>Performs an implicit conversion from <see cref="ArrayPointer{T}"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="ap">The <see cref="ArrayPointer{T}"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator IntPtr(ArrayPointer<T> ap) => ap.ptr;
+
 	/// <summary>Performs an implicit conversion from <see cref="ArrayPointer{T}"/> to <typeparamref name="T"/>*.</summary>
 	/// <param name="ap">The <see cref="ArrayPointer{T}"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
