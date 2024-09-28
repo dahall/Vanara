@@ -74,7 +74,7 @@ public interface ISafeMemoryHandle : IDisposable
 	/// pointers to other objects
 	/// </summary>
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	void AddSubReference(IEnumerable<ISafeMemoryHandle> children);
+	void AddSubReference(IEnumerable<SafeAllocatedMemoryHandle> children);
 
 	/// <summary>Returns the instance as an <see cref="IntPtr"/>. This is a dangerous call as the value is mutable.</summary>
 	/// <returns>An <see cref="IntPtr"/> to the internally held memory.</returns>
@@ -94,7 +94,7 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
-	T[] ToArray<T>(int count, int prefixBytes = 0);
+	T[] ToArray<T>(SizeT count, SizeT prefixBytes = default);
 
 	/// <summary>
 	/// Extracts an enumeration of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note
@@ -104,20 +104,20 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An enumeration of structures of <typeparamref name="T"/>.</returns>
-	IEnumerable<T> ToEnumerable<T>(int count, int prefixBytes = 0);
+	IEnumerable<T> ToEnumerable<T>(SizeT count, SizeT prefixBytes = default);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	string? ToString(int len, CharSet charSet = CharSet.Unicode);
+	string? ToString(SizeT len, CharSet charSet = CharSet.Unicode);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	string? ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode);
+	string? ToString(SizeT len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode);
 
 	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
@@ -126,7 +126,7 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>Enumeration of strings.</returns>
-	IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0);
+	IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, SizeT prefixBytes = default);
 
 	/// <summary>
 	/// Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length
@@ -136,7 +136,7 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>An enumerated list of strings.</returns>
-	IEnumerable<string?> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0);
+	IEnumerable<string?> ToStringEnum(SizeT count, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default);
 
 	/// <summary>
 	/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -144,7 +144,7 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 	/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-	T? ToStructure<T>(int prefixBytes = 0);
+	T? ToStructure<T>(SizeT prefixBytes = default);
 }
 
 /// <summary>Interface to capture unmanaged simple (alloc/free) memory methods.</summary>
@@ -654,7 +654,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
 	/// that such objects being referred to wouldn't be unreferenced until this object is active.
 	/// </summary>
-	private List<ISafeMemoryHandle>? references;
+	private List<SafeAllocatedMemoryHandle>? references;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -706,7 +706,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// pointers to other objects
 	/// </summary>
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(IEnumerable<ISafeMemoryHandle> children)
+	public void AddSubReference(IEnumerable<SafeAllocatedMemoryHandle> children)
 	{
 		references ??= [];
 		references.AddRange(children);
@@ -718,7 +718,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// pointers to other objects
 	/// </summary>
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(params ISafeMemoryHandle[] children)
+	public void AddSubReference(params SafeAllocatedMemoryHandle[] children)
 	{
 		references ??= [];
 		references.AddRange(children);
@@ -732,7 +732,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
-	public T[] ToArray<T>(int count, int prefixBytes = 0)
+	public T[] ToArray<T>(SizeT count, SizeT prefixBytes = default)
 	{
 		if (IsInvalid) return [];
 		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
@@ -750,7 +750,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An enumeration of structures of <typeparamref name="T"/>.</returns>
-	public IEnumerable<T> ToEnumerable<T>(int count, int prefixBytes = 0)
+	public IEnumerable<T> ToEnumerable<T>(SizeT count, SizeT prefixBytes = default)
 	{
 		if (IsInvalid) yield break;
 		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
@@ -773,14 +773,14 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="len">The length.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public string? ToString(int len, CharSet charSet = CharSet.Unicode) => ToString(len, 0, charSet);
+	public string? ToString(SizeT len, CharSet charSet = CharSet.Unicode) => ToString(len, 0, charSet);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public string? ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode)
+	public string? ToString(SizeT len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode)
 	{
 		var str = CallLocked(p => StringHelper.GetString(p.Offset(prefixBytes), charSet, sz == 0 ? long.MaxValue : sz - prefixBytes));
 		return len == -1 ? str : str?.Substring(0, Math.Min(len, str.Length));
@@ -794,7 +794,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>Enumeration of strings.</returns>
-	public IEnumerable<string?> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
+	public IEnumerable<string?> ToStringEnum(SizeT count, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default) =>
 		IsInvalid ? [] : CallLocked(p => p.ToStringEnum(count, charSet, prefixBytes, sz));
 
 	/// <summary>
@@ -804,7 +804,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>An enumerated list of strings.</returns>
-	public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
+	public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, SizeT prefixBytes = default) =>
 		IsInvalid ? [] : CallLocked(p => p.ToStringEnum(charSet, prefixBytes, sz));
 
 	/// <summary>
@@ -813,7 +813,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 	/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-	public T? ToStructure<T>(int prefixBytes = 0)
+	public T? ToStructure<T>(SizeT prefixBytes = default)
 	{
 		if (IsInvalid) return default;
 		return CallLocked(p => p.ToStructure<T>(sz, prefixBytes));
@@ -829,7 +829,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="items"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
-	public int Write<T>(IEnumerable<T> items, bool autoExtend = true, int offset = 0)
+	public SizeT Write<T>(IEnumerable<T> items, bool autoExtend = true, SizeT offset = default)
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (autoExtend)
@@ -851,7 +851,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
-	public int Write<T>(in T value, bool autoExtend = true, int offset = 0) where T : struct
+	public SizeT Write<T>(in T value, bool autoExtend = true, SizeT offset = default) where T : struct
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (autoExtend)
@@ -871,7 +871,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
-	public int Write(object value, bool autoExtend = true, int offset = 0)
+	public SizeT Write(object value, bool autoExtend = true, SizeT offset = default)
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (value is null) return 0;
