@@ -248,7 +248,7 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	{
 		get
 		{
-			if (ToUInt64 == 0) return 0;
+			if (!CheckBounds(wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds) || ToUInt64 == 0) return 0;
 			var days = IsLeapYear(wYear) ? DaysToMonth366 : DaysToMonth365;
 			var y = wYear - 1;
 			var n = y * 365 + y / 4 - y / 100 + y / 400 + days[wMonth - 1] + wDay - 1;
@@ -368,10 +368,15 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	/// <returns>A <see cref="string" /> that represents this instance.</returns>
 	public string ToString(DateTimeKind kind, string? format, IFormatProvider? provider) => ToDateTime(kind).ToString(format, provider);
 
+	private static bool CheckBounds(ushort year, ushort month, ushort day, ushort hour, ushort minute, ushort second, ushort miillisecond) =>
+		year is not < 1601 and not > 30827 && month is not < 1 and not > 12 && day is not < 1 and not > 31 &&
+		hour is not < 0 and not > 23 && minute is not < 0 and not > 59 && second is not < 0 and not > 59 &&
+		miillisecond is not < 0 and not > 999;
+
 	[ExcludeFromCodeCoverage]
 	private DayOfWeek ComputedDayOfWeek => (DayOfWeek)((Ticks / 864000000000 + 1) % 7);
 
-	private ulong ToUInt64 => ((ulong)wYear << 36) | (((ulong)wMonth & 0x000f) << 32) |
+	private readonly ulong ToUInt64 => ((ulong)wYear << 36) | (((ulong)wMonth & 0x000f) << 32) |
 								(((ulong)wDay & 0x001f) << 27) | (((ulong)wHour & 0x000f) << 22) |
 								(((ulong)wMinute & 0x003f) << 16) | (((ulong)wSecond & 0x003f) << 10) |
 								((ulong)wMilliseconds & 0x3ff);
