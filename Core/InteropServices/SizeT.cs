@@ -78,6 +78,11 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	static SizeT INumberBase<SizeT>.Zero => Zero;
 #endif
 
+	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="short"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator short(SizeT value) => ((IConvertible)value).ToInt16(null);
+
 	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="int"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
@@ -117,6 +122,11 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator SizeT(ulong value) => new(value);
+
+	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="ushort"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator ushort(SizeT value) => (ushort)value.val;
 
 	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="uint"/>.</summary>
 	/// <param name="value">The value.</param>
