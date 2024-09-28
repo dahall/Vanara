@@ -182,11 +182,7 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 	/// <typeparam name="T">The type of the value to return.</typeparam>
 	/// <param name="f">A lambda function or delegate that attempts to return a value.</param>
 	/// <returns>The value from <paramref name="f"/>, or the default value of <typeparamref name="T"/> on failure.</returns>
-	protected static T? GetProp<T>(Func<T> f)
-	{
-		try { return f(); }
-		catch { return default; }
-	}
+	protected static T? GetProp<T>(Func<T> f) => Util.GetProp(f);
 
 	/// <summary>
 	/// Tries to get a value and compensates for exceptions, returning the default value for <typeparamref name="T"/> when an exception is thrown.
@@ -195,11 +191,7 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 	/// <param name="f">A lambda function or delegate that attempts to return a value.</param>
 	/// <param name="ret">The value from <paramref name="f"/>, or the default value of <typeparamref name="T"/> on failure.</param>
 	/// <returns><see langword="true"/> if the value was successfully retrieved; otherwise <see langword="false"/>.</returns>
-	protected static bool TryGetProp<T>(Func<T> f, out T? ret)
-	{
-		try { ret = f(); return true; }
-		catch { ret = default; return false; }
-	}
+	protected static bool TryGetProp<T>(Func<T> f, out T? ret) => Util.TryGetProp(f, out ret);
 
 	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
 	/// <param name="disposing">
@@ -382,7 +374,11 @@ public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject<IADs
 	/// right substring is a string representation of an address of that type. For example, TCP/IP addresses are of the form:
 	/// IP:100.201.301.45. IPX type addresses are of the form: IPX:10.123456.80.
 	/// </summary>
-	public string[] NetAddresses { get => TryGetProp(() => Interface.NetAddresses, out var o) ? (string[])o! : []; set => Interface.NetAddresses = value ?? []; }
+	public string[] NetAddresses
+	{
+		get => Util.ToStringArray(() => Interface.NetAddresses);
+		set => Interface.NetAddresses = Array.ConvertAll<string, object>(value ?? [], s => s);
+	}
 
 	/// <summary>Gets or sets the operating system used on this computer.</summary>
 	public string? OperatingSystem { get => GetProp(() => Interface.OperatingSystem); set => Interface.OperatingSystem = value ?? string.Empty; }
@@ -485,8 +481,8 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	/// <value>The filter.</value>
 	public string[] Filter
 	{
-		get => (string[]?)Interface.Filter ?? [];
-		set => Interface.Filter = value;
+		get => Util.ToStringArray(() => Interface.Filter);
+		set => Interface.Filter = Array.ConvertAll<string, object>(value ?? [], s => s);
 	}
 
 	/// <summary>
@@ -497,8 +493,8 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	/// <value>The hints.</value>
 	public string[] Hints
 	{
-		get => (string[]?)Interface.Hints ?? [];
-		set => Interface.Hints = value;
+		get => Util.ToStringArray(() => Interface.Hints);
+		set => Interface.Hints = Array.ConvertAll<string, object>(value ?? [], s => s);
 	}
 
 	/// <summary>Gets the underlying COM interface for this object.</summary>
@@ -806,11 +802,16 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 /// password controls. For example, to change the password of a user account, call IADsUser::ChangePassword on the user object.
 /// </summary>
 /// <remarks>For the WinNT provider supplied by Microsoft, this interface is implemented on the <c>WinNTDomain</c> object.</remarks>
-public class ADsDomain : ADsBaseObject<IADsDomain>
+public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject<IADsObject>
 {
+	private ADsContainer<IADsObject>? children;
+
 	internal ADsDomain(IADs intf) : base((IADsDomain)intf)
 	{
 	}
+
+	/// <inheritdoc/>
+	public ADsContainer<IADsObject> Children => children ??= GetContainer<IADsObject>();
 }
 
 /// <summary>
@@ -825,8 +826,9 @@ public class ADsDomain : ADsBaseObject<IADsDomain>
 /// </summary>
 /// <remarks>Under the WinNT provider, this interface is implemented on the <c>WinNTService</c> object.</remarks>
 // TODO: Inherit from ADsService??
-public class ADsFileService : ADsBaseObject<IADsFileService>
+public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObject<ADsFileShare>
 {
+	private ADsContainer<ADsFileShare>? children;
 	private ADsFileServiceOperations? ops;
 
 	internal ADsFileService(IADs intf) : base((IADsFileService)intf)
@@ -835,6 +837,9 @@ public class ADsFileService : ADsBaseObject<IADsFileService>
 
 	/// <summary>Gets the <see cref="ADsFileServiceOperations"/> object associated with this instance.</summary>
 	public ADsFileServiceOperations Operations => ops ??= new(Interface);
+
+	/// <inheritdoc/>
+	public ADsContainer<ADsFileShare> Children => children ??= GetContainer<ADsFileShare>();
 }
 
 /// <summary>
@@ -1589,7 +1594,7 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 	/// <summary>Gets or sets the array of ADsPath strings that indicate the super Auxiliary classes this class derives from.</summary>
 	public IReadOnlyCollection<string> AuxDerivedFrom
 	{
-		get => ToStringArray(() => Interface.AuxDerivedFrom);
+		get => Util.ToStringArray(() => Interface.AuxDerivedFrom);
 		set => Interface.AuxDerivedFrom = value?.ToArray() ?? [];
 	}
 
@@ -1643,7 +1648,7 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 	/// <summary>Gets or sets a string array in which each element is the name of an object class that this class can contain.</summary>
 	public IReadOnlyCollection<string> ContainmentClassNames
 	{
-		get => ToStringArray(() => Interface.Containment);
+		get => Util.ToStringArray(() => Interface.Containment);
 		set => Interface.Containment = value?.ToArray() ?? [];
 	}
 
@@ -1653,7 +1658,7 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 	/// <summary>Gets or sets the array of ADsPath strings that indicate which classes this class was derived from.</summary>
 	public IReadOnlyCollection<string> DerivedFromPaths
 	{
-		get => ToStringArray(() => Interface.DerivedFrom);
+		get => Util.ToStringArray(() => Interface.DerivedFrom);
 		set => Interface.DerivedFrom = value?.ToArray() ?? [];
 	}
 
@@ -1674,14 +1679,14 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 	/// <summary>Gets or sets the array of strings that lists the properties that must be set for this class to be written to storage.</summary>
 	public IReadOnlyCollection<string> MandatoryProperties
 	{
-		get => ToStringArray(() => Interface.MandatoryProperties);
+		get => Util.ToStringArray(() => Interface.MandatoryProperties);
 		set => Interface.MandatoryProperties = value?.ToArray() ?? [];
 	}
 
 	/// <summary>Gets or sets a array of strings that lists the properties used to name attributes of this schema class.</summary>
 	public IReadOnlyCollection<string> NamingProperties
 	{
-		get => ToStringArray(() => Interface.NamingProperties);
+		get => Util.ToStringArray(() => Interface.NamingProperties);
 		set => Interface.NamingProperties = value?.ToArray() ?? [];
 	}
 
@@ -1694,14 +1699,14 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 	/// <summary>Gets or sets array of strings that lists the optional properties for this schema class.</summary>
 	public IReadOnlyCollection<string> OptionalProperties
 	{
-		get => ToStringArray(() => Interface.OptionalProperties);
+		get => Util.ToStringArray(() => Interface.OptionalProperties);
 		set => Interface.OptionalProperties = value?.ToArray() ?? [];
 	}
 
 	/// <summary>Gets or sets an array of ADsPath strings that indicate the schema classes that can contain instances of this class.</summary>
 	public IReadOnlyCollection<string> PossibleSuperiorPaths
 	{
-		get => ToStringArray(() => Interface.PossibleSuperiors);
+		get => Util.ToStringArray(() => Interface.PossibleSuperiors);
 		set => Interface.PossibleSuperiors = value?.ToArray() ?? [];
 	}
 
@@ -1729,19 +1734,6 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 
 	private static List<T> ToADsListFromName<T>(IReadOnlyCollection<string> vals, Func<string, string> f) where T : IADsObject =>
 		ToADsList<T>(vals.Select(f));
-
-	private static string[] ToStringArray(Func<object?> f)
-	{
-		if (!TryGetProp(f, out var o))
-			o = null;
-		return o switch
-		{
-			string s => [s],
-			string[] sa => sa,
-			object[] oa => Array.ConvertAll(oa, i => i?.ToString() ?? ""),
-			_ => []
-		};
-	}
 
 	private string ClassPathFromName(string name) => Parent!.Path + '/' + name;
 }
@@ -2067,4 +2059,45 @@ public class ADsUser : ADsBaseObject<IADsUser>
 	/// <para>In Active Directory, the caller must have the Reset Password extended control access right to set the password with this method.</para>
 	/// </remarks>
 	public void SetPassword(string newPassword) => Interface.SetPassword(newPassword);
+}
+
+internal static class Util
+{
+	/// <summary>
+	/// Gets a value and compensates for exceptions, returning the default value for <typeparamref name="T"/> when an exception is thrown.
+	/// </summary>
+	/// <typeparam name="T">The type of the value to return.</typeparam>
+	/// <param name="f">A lambda function or delegate that attempts to return a value.</param>
+	/// <returns>The value from <paramref name="f"/>, or the default value of <typeparamref name="T"/> on failure.</returns>
+	public static T? GetProp<T>(Func<T> f)
+	{
+		try { return f(); }
+		catch { return default; }
+	}
+
+	public static string[] ToStringArray(Func<object?> f)
+	{
+		if (!TryGetProp(f, out var o))
+			o = null;
+		return o switch
+		{
+			string s => [s],
+			string[] sa => sa,
+			object[] oa => Array.ConvertAll(oa, i => i?.ToString() ?? ""),
+			_ => []
+		};
+	}
+
+	/// <summary>
+	/// Tries to get a value and compensates for exceptions, returning the default value for <typeparamref name="T"/> when an exception is thrown.
+	/// </summary>
+	/// <typeparam name="T">The type of the value to return.</typeparam>
+	/// <param name="f">A lambda function or delegate that attempts to return a value.</param>
+	/// <param name="ret">The value from <paramref name="f"/>, or the default value of <typeparamref name="T"/> on failure.</param>
+	/// <returns><see langword="true"/> if the value was successfully retrieved; otherwise <see langword="false"/>.</returns>
+	public static bool TryGetProp<T>(Func<T> f, out T? ret)
+	{
+		try { ret = f(); return true; }
+		catch { ret = default; return false; }
+	}
 }

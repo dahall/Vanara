@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.DirectoryServices;
@@ -16,6 +17,7 @@ public class ActiveDSTests
 	private readonly string adsPrintQ = $"WinNT://WORKGROUP/{Environment.MachineName}/HP Color LaserJet Pro M478f-9f PCL-6 (V4)";
 	private readonly string adsShare = $"WinNT://{Environment.MachineName}/LanmanServer/Users";
 	private readonly string adsUser = $"WinNT://WORKGROUP/{Environment.MachineName}/Administrator";
+	private readonly string ldapDomain = TestCaseSources.Lookup["LDAPDomain"] ?? "LDAP://baddomain.com";
 
 	[Test]
 	public void ADsLastErrorTest()
@@ -393,10 +395,10 @@ public class ActiveDSTests
 		static void WriteClass(ADsSchemaClass c, int indent = 0)
 		{
 			string spc = new(' ', indent);
-			TestContext.WriteLine($"{spc}Class: {c.Name} =====================");
-			TestContext.WriteLine($"{spc}>Properties:");
-			foreach (var prop in c.Children)
-				TestContext.WriteLine($"{spc} {prop.Name} ({prop.Syntax.Name}={prop.Syntax.OleAutoDataType})");
+			TestContext.WriteLine($"{spc}Class: {c.Name} {(c.Container ? "C" : "")} =====================");
+			//TestContext.WriteLine($"{spc}>Properties:");
+			//foreach (var prop in c.Children)
+			//	TestContext.WriteLine($"{spc} {prop.Name} ({prop.Syntax.Name}={prop.Syntax.OleAutoDataType})");
 			if (c.Container)
 			{
 				TestContext.WriteLine($"{spc}>Subclasses:");
@@ -472,6 +474,50 @@ public class ActiveDSTests
 		TestContext.WriteLine(si.ComputerName);
 		TestContext.WriteLine(si.DomainName);
 		TestContext.WriteLine(si.PDC ?? "null");
+	}
+
+	[Test]
+	public void IDirectoryObjectTest()
+	{
+		Assert.That(ADsGetObject(ldapDomain, out IDirectoryObject? o), ResultIs.Successful);
+		Assert.That(() =>
+		{
+			o!.GetObjectAttributes("otherWellKnownObjects", "auditingPolicy", "isCriticalSystemObject", "createTimeStamp", "objectClass", "nTSecurityDescriptor", "instanceType", "creationTime", "cACertificate").WriteValues();
+			o!.GetObjectInformation()?.WriteValues();
+		}, Throws.Nothing);
+	}
+
+	[Test]
+	public void IDirectorySearchTest()
+	{
+		Assert.That(ADsGetObject(ldapDomain, out IDirectorySearch? o), ResultIs.Successful);
+		ADS_SEARCHPREF_INFO[] prefs = [new ADS_SEARCHPREF_INFO(ADS_SEARCHPREF.ADS_SEARCHPREF_SEARCH_SCOPE, ADS_SCOPE.ADS_SCOPE_SUBTREE)];
+		//Assert.That(o!.SetSearchPreference(prefs, prefs.Length), ResultIs.Successful);
+		Assert.That(() => o!.SetSearchPreference(prefs), Throws.Nothing);
+		prefs.Select(i => (i.dwSearchPref, i.dwStatus)).WriteValues();
+		using var h = o!.ExecuteSearch("(objectCategory=Group)", "ADsPath", "Name");
+		Assert.That(h.IsNull, Is.False);
+
+		o!.GetFirstRow(h);
+
+		List<string> columns = [];
+		string? col;
+		while ((col = o!.GetNextColumnName(h)) != null)
+			columns.Add(col);
+		TestContext.WriteLine($"Columns: {string.Join(", ", columns)}");
+
+		int i = 1;
+		while (o!.GetNextRow(h) != HRESULT.S_ADS_NOMORE_ROWS)
+		{
+			List<string> row = [];
+			foreach (var c in columns)
+			{
+				ADS_SEARCH_COLUMN? sc = o!.GetColumn(h, c);
+				Assert.That(sc.HasValue);
+				row.Add(string.Join(',', sc!.Value.pADsValues));
+			}
+			TestContext.WriteLine($"{i++}: {string.Join(", ", row)}");
+		}
 	}
 
 	[Test]

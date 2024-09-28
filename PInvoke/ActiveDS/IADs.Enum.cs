@@ -2264,26 +2264,21 @@ public static partial class ActiveDS
 	public enum ADS_SEARCHPREF
 	{
 		/// <summary>
-		/// <para>Value:</para>
-		/// <para>0</para>
+		/// <para>Value: 0</para>
 		/// <para>Specifies that searches should be performed asynchronously. By default, searches are synchronous.</para>
-		/// <para>In a synchronous search, the</para>
-		/// <para>IDirectorySearch::GetFirstRow</para>
-		/// <para>and</para>
-		/// <para>IDirectorySearch::GetNextRow</para>
-		/// <para>methods do not return until the server returns the entire result, or for a paged search, the entire page.</para>
+		/// <para>
+		/// In a synchronous search, the IDirectorySearch::GetFirstRow and IDirectorySearch::GetNextRow methods do not return until the
+		/// server returns the entire result, or for a paged search, the entire page.
+		/// </para>
 		/// <para>
 		/// An asynchronous search blocks until one row of the search results is available, or until the timeout interval specified by the
+		/// ADS_SEARCHPREF_TIMEOUT search preference elapses.
 		/// </para>
-		/// <para>ADS_SEARCHPREF_TIMEOUT</para>
-		/// <para>search preference elapses.</para>
 		/// </summary>
 		ADS_SEARCHPREF_ASYNCHRONOUS,
 
 		/// <summary>
-		/// <para>Specifies that aliases of found objects are to be resolved. Use the</para>
-		/// <para>ADS_DEREFENUM</para>
-		/// <para>enumeration to specify how this is performed.</para>
+		/// Specifies that aliases of found objects are to be resolved. Use the ADS_DEREFENUM enumeration to specify how this is performed.
 		/// </summary>
 		ADS_SEARCHPREF_DEREF_ALIASES,
 
@@ -2308,35 +2303,28 @@ public static partial class ActiveDS
 		/// </summary>
 		ADS_SEARCHPREF_TIME_LIMIT,
 
-		/// <summary>Indicates that the search should obtain only the name of attributes to which values are assigned.</summary>
+		/// <summary>
+		/// Indicates that the search should obtain only the name of attributes to which values are assigned.
+		/// </summary>
 		ADS_SEARCHPREF_ATTRIBTYPES_ONLY,
 
 		/// <summary>
-		/// <para>
 		/// Specifies the search scope that should be observed by the server. For more information about the appropriate settings, see the
-		/// </para>
-		/// <para>ADS_SCOPEENUM</para>
-		/// <para>enumeration.</para>
+		/// ADS_SCOPEENUM enumeration.
 		/// </summary>
 		ADS_SEARCHPREF_SEARCH_SCOPE,
 
 		/// <summary>
-		/// <para>
 		/// Specifies the time limit, in seconds, that a client will wait for the server to return the result. This option is set in an
-		/// </para>
-		/// <para>ADS_SEARCHPREF_INFO</para>
-		/// <para>structure.</para>
+		/// ADS_SEARCHPREF_INFO structure.
 		/// </summary>
 		ADS_SEARCHPREF_TIMEOUT,
 
 		/// <summary>
-		/// <para>
 		/// Specifies the page size in a paged search. For each request by the client, the server returns, at most, the number of objects as
 		/// set by the page size. When page size is set, it is unnecessary to set the size limit. If a size limit is set, then the value for
 		/// page size must be less than the value for size limit. If the value for page size exceeds size limit, then the
-		/// </para>
-		/// <para>ERROR_DS_SIZELIMIT_EXCEEDED</para>
-		/// <para>error is returned with the number of rows specified by size limit.</para>
+		/// ERROR_DS_SIZELIMIT_EXCEEDED error is returned with the number of rows specified by size limit.
 		/// </summary>
 		ADS_SEARCHPREF_PAGESIZE,
 
@@ -2349,196 +2337,102 @@ public static partial class ActiveDS
 		ADS_SEARCHPREF_PAGED_TIME_LIMIT,
 
 		/// <summary>
-		/// <para>
 		/// Specifies that referrals may be chased. If the root search is not specified in the naming context of the server or when the
-		/// search results cross a naming context, for example, when you have child domains and search in the parent domain, the server sends
-		/// a referral message to the client which the client can choose to ignore or chase. For more information about referral chasing, see
-		/// </para>
-		/// <para>ADS_CHASE_REFERRALS_ENUM</para>
-		/// <para>.</para>
+		/// search results cross a naming context, for example, when you have child domains and search in the parent domain, the server
+		/// sends a referral message to the client which the client can choose to ignore or chase. For more information about referral
+		/// chasing, see ADS_CHASE_REFERRALS_ENUM.
 		/// </summary>
 		ADS_SEARCHPREF_CHASE_REFERRALS,
 
 		/// <summary>
-		/// <para>Specifies that the server sorts the result set. Use the</para>
-		/// <para>ADS_SORTKEY</para>
-		/// <para>
-		/// structure to specify the sort keys. This search preference works only for directory servers that support the LDAP control for
-		/// server-side sorting. Active Directory supports the sort control, but it can impact server performance, particularly if the
-		/// results set is large. Active Directory supports only a single sort key.
-		/// </para>
+		/// Specifies that the server sorts the result set. Use the ADS_SORTKEY structure to specify the sort keys. This search preference
+		/// works only for directory servers that support the LDAP control for server-side sorting. Active Directory supports the sort
+		/// control, but it can impact server performance, particularly if the results set is large. Active Directory supports only a single
+		/// sort key.
 		/// </summary>
 		ADS_SEARCHPREF_SORT_ON,
 
 		/// <summary>
-		/// Specifies if the result should be cached on the client side. By default, ADSI caches the result set. Disabling this option may be
-		/// desirable for large result sets.
+		/// Specifies if the result should be cached on the client side. By default, ADSI caches the result set. Disabling this option may
+		/// be desirable for large result sets.
 		/// </summary>
 		ADS_SEARCHPREF_CACHE_RESULTS,
 
 		/// <summary>
-		/// <para>Specifies a directory synchronization (DirSync) search, which returns all changes since a specified state. In the</para>
-		/// <para>ADSVALUE</para>
-		/// <para>structure, set the</para>
-		/// <para>dwType</para>
-		/// <para>member to</para>
-		/// <para>ADS_PROV_SPECIFIC</para>
-		/// <para>. The</para>
-		/// <para>ProviderSpecific</para>
-		/// <para>member is an</para>
-		/// <para>ADS_PROV_SPECIFIC</para>
-		/// <para>structure whose</para>
-		/// <para>lpValue</para>
 		/// <para>
-		/// member specifies a cookie that indicates the state from which changes are retrieved. The first time you use the DirSync control,
-		/// set the
+		/// Specifies a directory synchronization (DirSync) search, which returns all changes since a specified state. In the ADSVALUE
+		/// structure, set the dwType member to ADS_PROV_SPECIFIC. The ProviderSpecific member is an ADS_PROV_SPECIFIC structure whose
+		/// lpValue member specifies a cookie that indicates the state from which changes are retrieved. The first time you use the DirSync
+		/// control, set the dwLength and lpValue members of the ADS_PROV_SPECIFIC structure to zero and NULL respectively. After reading
+		/// the results set returned by the search until IDirectorySearch::GetNextRow returns S_ADS_NOMORE_ROWS, call
+		/// IDirectorySearch::GetColumn to retrieve the ADS_DIRSYNC_COOKIE attribute which contains a cookie to use in the next DirSync
+		/// search. For more information, see Polling for Changes Using the DirSync Control and LDAP_SERVER_DIRSYNC_OID.
 		/// </para>
-		/// <para>dwLength</para>
-		/// <para>and</para>
-		/// <para>lpValue</para>
-		/// <para>members of the</para>
-		/// <para>ADS_PROV_SPECIFIC</para>
-		/// <para>structure to zero and</para>
-		/// <para>NULL</para>
-		/// <para>respectively. After reading the results set returned by the search until</para>
-		/// <para>IDirectorySearch::GetNextRow</para>
-		/// <para>returns</para>
-		/// <para>S_ADS_NOMORE_ROWS</para>
-		/// <para>, call</para>
-		/// <para>IDirectorySearch::GetColumn</para>
-		/// <para>to retrieve the</para>
-		/// <para>ADS_DIRSYNC_COOKIE</para>
-		/// <para>attribute which contains a cookie to use in the next DirSync search. For more information, see</para>
-		/// <para>Polling for Changes Using the DirSync Control</para>
-		/// <para>and</para>
-		/// <para>LDAP_SERVER_DIRSYNC_OID</para>
-		/// <para>.</para>
-		/// <para>This flag cannot be combined with</para>
-		/// <para>ADS_SEARCHPREF_PAGESIZE</para>
-		/// <para>.</para>
-		/// <para>The caller must have the</para>
-		/// <para>SE_SYNC_AGENT_NAME</para>
-		/// <para>privilege.</para>
+		/// <para>This flag cannot be combined with ADS_SEARCHPREF_PAGESIZE.</para>
+		/// <para>The caller must have the SE_SYNC_AGENT_NAME privilege.</para>
 		/// </summary>
 		ADS_SEARCHPREF_DIRSYNC,
 
 		/// <summary>
 		/// <para>
 		/// Specifies whether the search should also return deleted objects that match the search filter. When objects are deleted, Active
-		/// Directory moves them to a "Deleted Objects" container. By default, deleted objects are not included in the search results. In the
+		/// Directory moves them to a "Deleted Objects" container. By default, deleted objects are not included in the search results. In
+		/// the ADSVALUE structure, set the dwType member to ADSTYPE_BOOLEAN. To include deleted objects, set the Boolean member of the
+		/// ADSVALUE structure to TRUE.
 		/// </para>
-		/// <para>ADSVALUE</para>
-		/// <para>structure, set the</para>
-		/// <para>dwType</para>
-		/// <para>member to</para>
-		/// <para>ADSTYPE_BOOLEAN</para>
-		/// <para>. To include deleted objects, set the</para>
-		/// <para>Boolean</para>
-		/// <para>member of the</para>
-		/// <para>ADSVALUE</para>
-		/// <para>structure to</para>
-		/// <para>TRUE</para>
-		/// <para>.</para>
-		/// <para>Not all attributes are preserved when the object is deleted. You can retrieve the</para>
-		/// <para>objectGUID</para>
-		/// <para>and</para>
-		/// <para>RDN</para>
-		/// <para>attributes. The</para>
-		/// <para>distinguishedName</para>
-		/// <para>attribute is the DN of the object in the "Deleted Objects" container, not the previous DN. The</para>
-		/// <para>isDeleted</para>
-		/// <para>attribute is</para>
-		/// <para>TRUE</para>
-		/// <para>for a deleted object. For more information, see</para>
-		/// <para>Retrieving Deleted Objects</para>
-		/// <para>.</para>
+		/// <para>
+		/// Not all attributes are preserved when the object is deleted. You can retrieve the objectGUID and RDN attributes. The
+		/// distinguishedName attribute is the DN of the object in the "Deleted Objects" container, not the previous DN. The isDeleted
+		/// attribute is TRUE for a deleted object. For more information, see Retrieving Deleted Objects.
+		/// </para>
 		/// </summary>
 		ADS_SEARCHPREF_TOMBSTONE,
 
 		/// <summary>
-		/// <para>Specifies that the search should use the LDAP virtual list view (VLV) control.</para>
-		/// <para>ADS_SEARCHPREF_VLV</para>
 		/// <para>
-		/// can be used to access both string-type and offset-type VLV searches, by setting the appropriate fields. These two options cannot
-		/// be used simultaneously because it is not possible to set the VLV control to request a result set that is both located at a
-		/// specific offset and follows a particular value in the sort sequence.
+		/// Specifies that the search should use the LDAP virtual list view (VLV) control. ADS_SEARCHPREF_VLV can be used to access both
+		/// string-type and offset-type VLV searches, by setting the appropriate fields. These two options cannot be used simultaneously
+		/// because it is not possible to set the VLV control to request a result set that is both located at a specific offset and follows
+		/// a particular value in the sort sequence.
 		/// </para>
-		/// <para>To perform a string search, set the</para>
-		/// <para>lpszTarget</para>
-		/// <para>field in</para>
-		/// <para>ADS_VLV</para>
-		/// <para>to the string to be searched for. To perform an offset type search, set the dwOffset field in</para>
-		/// <para>ADS_VLV</para>
-		/// <para>. If you use an offset search, you must set</para>
-		/// <para>lpszTarget</para>
-		/// <para>to</para>
-		/// <para>NULL</para>
-		/// <para>.</para>
-		/// <para>ADS_SEARCHPREF_SORT_ON</para>
-		/// <para>must be set to</para>
-		/// <para>TRUE</para>
-		/// <para>when using</para>
-		/// <para>ADS_SEARCHPREF_VLV</para>
 		/// <para>
-		/// . The sort order of the search results determines the order used for the VLV search. If performing an offset-type search, the
-		/// offset is used as an index into the sorted list. If performing a string-type search, the server attempts to return the first
-		/// entry which is greater-than-or-equal-to the string, based on the sort order.
+		/// To perform a string search, set the lpszTarget field in ADS_VLV to the string to be searched for. To perform an offset type
+		/// search, set the dwOffset field in ADS_VLV. If you use an offset search, you must set lpszTarget to NULL.
 		/// </para>
-		/// <para>Caching of search results is disabled when</para>
-		/// <para>ADS_SEARCHPREF_VLV</para>
-		/// <para>is specified.</para>
-		/// <para>If you assign</para>
-		/// <para>ADS_SEARCHPREF_CACHE_RESULTS</para>
-		/// <para>a</para>
-		/// <para>TRUE</para>
-		/// <para>, value when using</para>
-		/// <para>ADS_SEARCHPREF_VLV</para>
-		/// <para>,</para>
-		/// <para>SetSearchPreference</para>
-		/// <para>will fail and return the error</para>
-		/// <para>E_ADS_BAD_PARAMETER</para>
-		/// <para>.</para>
+		/// <para>
+		/// ADS_SEARCHPREF_SORT_ON must be set to TRUE when using ADS_SEARCHPREF_VLV. The sort order of the search results determines the
+		/// order used for the VLV search. If performing an offset-type search, the offset is used as an index into the sorted list. If
+		/// performing a string-type search, the server attempts to return the first entry which is greater-than-or-equal-to the string,
+		/// based on the sort order.
+		/// </para>
+		/// <para>Caching of search results is disabled when ADS_SEARCHPREF_VLV is specified.</para>
+		/// <para>
+		/// If you assign ADS_SEARCHPREF_CACHE_RESULTS a TRUE, value when using ADS_SEARCHPREF_VLV, SetSearchPreference will fail and return
+		/// the error E_ADS_BAD_PARAMETER.
+		/// </para>
 		/// </summary>
 		ADS_SEARCHPREF_VLV,
 
 		/// <summary>
-		/// <para>
 		/// Specifies that an attribute-scoped query search should be performed. The search is performed against those objects named in a
-		/// specified attribute of the base object. The
-		/// </para>
-		/// <para>vValue</para>
-		/// <para>member of the</para>
-		/// <para>ADS_SEARCHPREF_INFO</para>
-		/// <para>structure contains a</para>
-		/// <para>ADSTYPE_CASE_IGNORE_STRING</para>
-		/// <para>value which contains the lDAPDisplayName of attribute to search. This attribute must be a</para>
-		/// <para>ADS_DN_STRING</para>
-		/// <para>attribute. Only one attribute may be specified. Search scope is automatically set to</para>
-		/// <para>ADS_SCOPE_BASE</para>
-		/// <para>when using this preference, and attempting to set the scope otherwise will fail with the error</para>
-		/// <para>E_ADS_BAD_PARAMETER</para>
-		/// <para>. With the exception of the</para>
-		/// <para>ADS_SEARCHPREF_VLV</para>
-		/// <para>preference, all other preferences that use LDAP controls, such as</para>
-		/// <para>ADS_SEARCHPREF_DIRSYNC</para>
-		/// <para>,</para>
-		/// <para>ADS_SEARCHPREF_TOMBSTONE</para>
-		/// <para>, and so on, are not allowed when this preference is specified.</para>
+		/// specified attribute of the base object. The vValue member of the ADS_SEARCHPREF_INFO structure contains a
+		/// ADSTYPE_CASE_IGNORE_STRING value which contains the lDAPDisplayName of attribute to search. This attribute must be a
+		/// ADS_DN_STRING attribute. Only one attribute may be specified. Search scope is automatically set to ADS_SCOPE_BASE when using
+		/// this preference, and attempting to set the scope otherwise will fail with the error E_ADS_BAD_PARAMETER. With the exception of
+		/// the ADS_SEARCHPREF_VLV preference, all other preferences that use LDAP controls, such as ADS_SEARCHPREF_DIRSYNC,
+		/// ADS_SEARCHPREF_TOMBSTONE, and so on, are not allowed when this preference is specified.
 		/// </summary>
 		ADS_SEARCHPREF_ATTRIBUTE_QUERY,
 
 		/// <summary>
-		/// <para>Specifies that the search should return security access data for the specified attributes. The</para>
-		/// <para>vValue</para>
-		/// <para>member of the</para>
-		/// <para>ADS_SEARCHPREF_INFO</para>
-		/// <para>structure contains an</para>
-		/// <para>ADS_INTEGER</para>
-		/// <para>value that is a combination of one or more of the following values.</para>
+		/// <para>
+		/// Specifies that the search should return security access data for the specified attributes. The vValue member of the
+		/// ADS_SEARCHPREF_INFO structure contains an ADS_INTEGER value that is a combination of one or more of the following values.
+		/// </para>
 		/// <list type="table">
 		/// <listheader>
-		/// <description>Value</description>
-		/// <description>Description</description>
+		/// <term>Value</term>
+		/// <term>Description</term>
 		/// </listheader>
 		/// <item>
 		/// <description><c>ADS_SECURITY_INFO_OWNER</c></description>
@@ -2557,35 +2451,24 @@ public static partial class ActiveDS
 		/// <description>Reads the system access-control list (SACL).</description>
 		/// </item>
 		/// </list>
-		/// <para></para>
-		/// <para>If you read a security descriptor without explicitly specifying a security mask using</para>
-		/// <para>ADS_SEARCHPREF_SECURITY_MASK</para>
-		/// <para>, it defaults to the equivalent of</para>
-		/// <para>ADS_SECURITY_INFO_OWNER</para>
+		/// <para>
+		/// If you read a security descriptor without explicitly specifying a security mask using ADS_SEARCHPREF_SECURITY_MASK, it defaults
+		/// to the equivalent of ADS_SECURITY_INFO_OWNER
+		/// </para>
 		/// </summary>
 		ADS_SEARCHPREF_SECURITY_MASK,
 
 		/// <summary>
-		/// <para>Contains optional flags for use with the</para>
-		/// <para>ADS_SEARCHPREF_DIRSYNC</para>
-		/// <para>search preference. The</para>
-		/// <para>vValue</para>
-		/// <para>member of the</para>
-		/// <para>ADS_SEARCHPREF_INFO</para>
-		/// <para>structure contains an</para>
-		/// <para>ADSTYPE_INTEGER</para>
 		/// <para>
-		/// value that is zero or a combination of one or more of the following values. For more information about the DirSync control, see
+		/// Contains optional flags for use with the ADS_SEARCHPREF_DIRSYNC search preference. The vValue member of the ADS_SEARCHPREF_INFO
+		/// structure contains an ADSTYPE_INTEGER value that is zero or a combination of one or more of the following values. For more
+		/// information about the DirSync control, see Polling for Changes Using the DirSync Control and LDAP_SERVER_DIRSYNC_OID.
 		/// </para>
-		/// <para>Polling for Changes Using the DirSync Control</para>
-		/// <para>and</para>
-		/// <para>LDAP_SERVER_DIRSYNC_OID</para>
-		/// <para>.</para>
 		/// <list type="table">
 		/// <listheader>
-		/// <description>Identifier</description>
-		/// <description>Value</description>
-		/// <description>Description</description>
+		/// <term>Identifier</term>
+		/// <term>Value</term>
+		/// <term>Description</term>
 		/// </listheader>
 		/// <item>
 		/// <description><c>LDAP_DIRSYNC_OBJECT_SECURITY</c></description>
@@ -2611,8 +2494,8 @@ public static partial class ActiveDS
 		/// <description><c>LDAP_DIRSYNC_INCREMENTAL_VALUES</c></description>
 		/// <description>2147483648 (0x80000000)</description>
 		/// <description>
-		/// If this flag is not present, all of the values, up to a server-specified limit, in a multi-valued attribute are returned when any
-		/// value changes. If this flag is present, only the changed values are returned.
+		/// If this flag is not present, all of the values, up to a server-specified limit, in a multi-valued attribute are returned when
+		/// any value changes. If this flag is present, only the changed values are returned.
 		/// </description>
 		/// </item>
 		/// </list>
@@ -2620,18 +2503,10 @@ public static partial class ActiveDS
 		ADS_SEARCHPREF_DIRSYNC_FLAG,
 
 		/// <summary>
-		/// <para>The search should return distinguished names in Active Directory extended format. The</para>
-		/// <para>vValue</para>
-		/// <para>member of the</para>
-		/// <para>ADS_SEARCHPREF_INFO</para>
-		/// <para>structure contains an</para>
-		/// <para>ADSTYPE_INTEGER</para>
-		/// <para>
-		/// value that contains zero if the GUID and SID portions of the DN string should be in hex format or one if the GUID and SID
-		/// portions of the DN string should be in standard format. For more information about extended distinguished names, see
-		/// </para>
-		/// <para>LDAP_SERVER_EXTENDED_DN_OID</para>
-		/// <para>.</para>
+		/// The search should return distinguished names in Active Directory extended format. The vValue member of the ADS_SEARCHPREF_INFO
+		/// structure contains an ADSTYPE_INTEGER value that contains zero if the GUID and SID portions of the DN string should be in hex
+		/// format or one if the GUID and SID portions of the DN string should be in standard format. For more information about extended
+		/// distinguished names, see LDAP_SERVER_EXTENDED_DN_OID.
 		/// </summary>
 		ADS_SEARCHPREF_EXTENDED_DN,
 	}

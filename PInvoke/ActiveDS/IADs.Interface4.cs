@@ -1,4 +1,7 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Vanara.PInvoke;
 
 public static partial class ActiveDS
 {
@@ -2353,7 +2356,7 @@ public static partial class ActiveDS
 	/// the expected format.
 	/// </para>
 	/// </remarks>
-	public static ADS_ATTR_INFO[] GetObjectAttributes(this IDirectoryObject ido, [In, Optional] string[]? pAttributeNames)
+	public static ADS_ATTR_INFO[] GetObjectAttributes(this IDirectoryObject ido, params string[] pAttributeNames)
 	{
 		try
 		{
@@ -2395,7 +2398,7 @@ public static partial class ActiveDS
 	/// The following C++ code example sets the <c>sn</c> attribute of a user object to the value of <c>Price</c> as a case-insensitive string.
 	/// </para>
 	/// </remarks>
-	public static uint SetObjectAttributes(this IDirectoryObject ido, [In] ADS_ATTR_INFO[] pAttributeEntries)
+	public static uint SetObjectAttributes(this IDirectoryObject ido, params ADS_ATTR_INFO[] pAttributeEntries)
 	{
 		uint ret = 0;
 		try
@@ -2453,7 +2456,7 @@ public static partial class ActiveDS
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/nn-iads-idirectorysearch
 	[PInvokeData("iads.h", MSDNShortId = "NN:iads.IDirectorySearch")]
-	[ComImport, Guid("109BA8EC-92F0-11D0-A790-00C04FD8D5A8"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[ComImport, Guid("109BA8EC-92F0-11D0-A790-00C04FD8D5A8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDirectorySearch
 	{
 		/// <summary>
@@ -2465,7 +2468,8 @@ public static partial class ActiveDS
 		/// <param name="dwNumPrefs">Provides the size of the <c>pSearchPrefs</c> array.</param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-setsearchpreference HRESULT SetSearchPreference(
 		// [in] PADS_SEARCHPREF_INFO pSearchPrefs, [in] DWORD dwNumPrefs );
-		void SetSearchPreference([In, MarshalAs(UnmanagedType.LPArray)] ADS_SEARCHPREF_INFO[] pSearchPrefs, [In] uint dwNumPrefs);
+		[PreserveSig]
+		HRESULT SetSearchPreference([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ADS_SEARCHPREF_INFO[] pSearchPrefs, [In] int dwNumPrefs);
 
 		/// <summary>
 		/// The <c>IDirectorySearch::ExecuteSearch</c> method executes a search and passes the results to the caller. Some providers, such as
@@ -2539,29 +2543,23 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getfirstrow HRESULT GetFirstRow( [in]
 		// ADS_SEARCH_HANDLE hSearchResult );
-		void GetFirstRow([In] ADS_SEARCH_HANDLE hSearchResult);
+		[PreserveSig]
+		HRESULT GetFirstRow([In] ADS_SEARCH_HANDLE hSearchResult);
 
-		/// <summary>
-		/// The <c>GetNextRow</c> method gets the next row of the search result. If IDirectorySearch::GetFirstRow has not been called,
-		/// <c>GetNextRow</c> will issue a new search beginning from the first row. Otherwise, this method will advance to the next row.
-		/// </summary>
+		/// <summary>The <c>GetNextRow</c> method gets the next row of the search result. If IDirectorySearch::GetFirstRow has not been called, <c>GetNextRow</c> will issue a new search beginning from the first row. Otherwise, this method will advance to the next row.</summary>
 		/// <param name="hSearchResult">Contains the search handle obtained by calling IDirectorySearch::ExecuteSearch.</param>
+		/// <returns>
+		/// <para>This method returns the standard return values, as well as the following:</para>
+		/// <para>For more information, see ADSI Error Codes.</para>
+		/// </returns>
 		/// <remarks>
-		/// <para>
-		/// When the <c>ADS_SEARCHPREF_CACHE_RESULTS</c> flag is not set, only forward scrolling is permitted, because the client might not
-		/// cache all the query results.
-		/// </para>
-		/// <para>
-		/// The directory provider may limit the maximum number of rows available in a search. For example, on a Windows domain, the maximum
-		/// number of rows that will be provided in an Active Directory search is 1000 rows. If the search results in more than the row
-		/// limit, a paged search must be performed to obtain all rows in the search. For more information about paged searches, see Paging
-		/// with IDirectorySearch.
-		/// </para>
-		/// <para>Examples</para>
+		/// <para>When the <c>ADS_SEARCHPREF_CACHE_RESULTS</c> flag is not set, only forward scrolling is permitted, because the client might not cache all the query results.</para>
+		/// <para>The directory provider may limit the maximum number of rows available in a search. For example, on a Windows domain, the maximum number of rows that will be provided in an Active Directory search is 1000 rows. If the search results in more than the row limit, a paged search must be performed to obtain all rows in the search. For more information about paged searches, see Paging with IDirectorySearch.</para>
 		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getnextrow HRESULT GetNextRow( [in]
-		// ADS_SEARCH_HANDLE hSearchResult );
-		void GetNextRow([In] ADS_SEARCH_HANDLE hSearchResult);
+		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getnextrow
+		// HRESULT GetNextRow( [in] ADS_SEARCH_HANDLE hSearchResult );
+		[PreserveSig]
+		HRESULT GetNextRow([In] ADS_SEARCH_HANDLE hSearchResult);
 
 		/// <summary>
 		/// The <c>IDirectorySearch::GetPreviousRow</c> method gets the previous row of the search result. If the provider does not provide
@@ -2577,7 +2575,8 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getpreviousrow HRESULT GetPreviousRow( [in]
 		// ADS_SEARCH_HANDLE hSearchResult );
-		void GetPreviousRow([In] ADS_SEARCH_HANDLE hSearchResult);
+		[PreserveSig]
+		HRESULT GetPreviousRow([In] ADS_SEARCH_HANDLE hSearchResult);
 
 		/// <summary>
 		/// The <c>IDirectorySearch::GetNextColumnName</c> method gets the name of the next column in the search result that contains data.
@@ -2596,7 +2595,8 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getnextcolumnname HRESULT GetNextColumnName(
 		// [in] ADS_SEARCH_HANDLE hSearchHandle, [out] LPWSTR *ppszColumnName );
-		void GetNextColumnName([In] ADS_SEARCH_HANDLE hSearchHandle, out StrPtrUni ppszColumnName);
+		[PreserveSig]
+		HRESULT GetNextColumnName([In] ADS_SEARCH_HANDLE hSearchHandle, out StrPtrUni ppszColumnName);
 
 		/// <summary>The <c>IDirectorySearch::GetColumn</c> method gets data from a named column of the search result.</summary>
 		/// <param name="hSearchResult">Provides a handle to the search context.</param>
@@ -2622,7 +2622,8 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getcolumn HRESULT GetColumn( [in]
 		// ADS_SEARCH_HANDLE hSearchResult, [in] LPWSTR szColumnName, [out] PADS_SEARCH_COLUMN pSearchColumn );
-		void GetColumn([In] ADS_SEARCH_HANDLE hSearchResult, [In, MarshalAs(UnmanagedType.LPWStr)] string szColumnName, [Out] IntPtr pSearchColumn);
+		[PreserveSig]
+		HRESULT GetColumn([In] ADS_SEARCH_HANDLE hSearchResult, [In, MarshalAs(UnmanagedType.LPWStr)] string szColumnName, [Out] IntPtr pSearchColumn);
 
 		/// <summary>
 		/// The <c>IDirectorySearch::FreeColumn</c> method releases memory that the IDirectorySearch::GetColumn method allocated for data for
@@ -2654,6 +2655,18 @@ public static partial class ActiveDS
 	}
 
 	/// <summary>
+	/// The <c>IDirectorySearch::SetSearchPreference</c> method specifies a search preference for obtaining data in a subsequent search.
+	/// </summary>
+	/// <param name="ids">The <see cref="IDirectorySearch"/> instance.</param>
+	/// <param name="pSearchPrefs">
+	/// Provides a caller-allocated array of ADS_SEARCHPREF_INFO structures that contain the search preferences to be set.
+	/// </param>
+	// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-setsearchpreference HRESULT SetSearchPreference(
+	// [in] PADS_SEARCHPREF_INFO pSearchPrefs, [in] DWORD dwNumPrefs );
+	public static void SetSearchPreference(this IDirectorySearch ids, ADS_SEARCHPREF_INFO[] pSearchPrefs) =>
+		ids.SetSearchPreference(pSearchPrefs, pSearchPrefs?.Length ?? 0).ThrowIfFailed();
+
+	/// <summary>
 	/// The <c>IDirectorySearch::ExecuteSearch</c> method executes a search and passes the results to the caller. Some providers, such as
 	/// LDAP, will defer the actual execution until the caller invokes the IDirectorySearch::GetFirstRow method or the
 	/// IDirectorySearch::GetNextRow method.
@@ -2673,13 +2686,16 @@ public static partial class ActiveDS
 	/// </remarks>
 	public static SafeADS_SEARCH_HANDLE ExecuteSearch(this IDirectorySearch ids, string pszSearchFilter, params string[] pAttributeNames)
 	{
-		try
+		uint attrCnt;
+		if (pAttributeNames.Length == 1 && pAttributeNames[0] is "*" or null)
 		{
-			ids.ExecuteSearch(pszSearchFilter, pAttributeNames.Length > 0 ? pAttributeNames : null, (uint)pAttributeNames.Length, out var h);
-			return new(ids, h);
+			attrCnt = 0xFFFFFFFF;
+			pAttributeNames = [];
 		}
-		catch { }
-		return new();
+		else
+			attrCnt = (uint)pAttributeNames.Length;
+		ids.ExecuteSearch(pszSearchFilter, pAttributeNames.Length > 0 ? pAttributeNames : null, attrCnt, out var h);
+		return new(ids, h);
 	}
 
 	/// <summary>
@@ -2693,8 +2709,9 @@ public static partial class ActiveDS
 		string? ret = null;
 		try
 		{
-			ids.GetNextColumnName(hSearchHandle, out var s);
-			ret = s.ToString();
+			HRESULT hr = ids.GetNextColumnName(hSearchHandle, out var s);
+			hr.ThrowIfFailed();
+			ret = hr == HRESULT.S_ADS_NOMORE_COLUMNS ? null : s.ToString();
 			FreeADsMem((IntPtr)s);
 		}
 		catch { }
@@ -2718,15 +2735,14 @@ public static partial class ActiveDS
 	/// </remarks>
 	public static ADS_SEARCH_COLUMN? GetColumn(this IDirectorySearch ids, [In] ADS_SEARCH_HANDLE hSearchResult, string szColumnName)
 	{
-		ADS_SEARCH_COLUMN? ret = null;
-		try
+		ADS_SEARCH_COLUMN? ret;
+		unsafe
 		{
-			IntPtr p = default;
-			ids.GetColumn(hSearchResult, szColumnName, p);
-			ret = p.ToNullableStructure<ADS_SEARCH_COLUMN>();
-			ids.FreeColumn(p);
+			ADS_SEARCH_COLUMN.ADS_SEARCH_COLUMN_UNMGD col = new();
+			ids.GetColumn(hSearchResult, szColumnName, (IntPtr)(void*)&col).ThrowIfFailed();
+			ret = ((IntPtr)(void*)&col).ToNullableStructure<ADS_SEARCH_COLUMN>();
+			ids.FreeColumn((IntPtr)(void*)&col);
 		}
-		catch { }
 		return ret;
 	}
 
@@ -2799,7 +2815,8 @@ public static partial class ActiveDS
 		public static implicit operator ADS_SEARCH_HANDLE(SafeADS_SEARCH_HANDLE h) => h.handle;
 
 		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { try { ids?.CloseSearchHandle(handle); return true; } catch { return false; } }
+		protected override bool InternalReleaseHandle()
+		{ try { ids?.CloseSearchHandle(handle); return true; } catch { return false; } }
 	}
 
 	/*internal class VariantMarshaler<T> : ICustomMarshaler
@@ -2829,101 +2846,126 @@ public static partial class ActiveDS
 
 	/// <summary>CLSID_AccessControlEntry</summary>
 	[ComImport, Guid("B75AC000-9BDD-11D0-852C-00C04FD8D503"), ClassInterface(ClassInterfaceType.None)]
-	public class AccessControlEntry { }
+	public class AccessControlEntry
+	{ }
 
 	/// <summary>CLSID_AccessControlList</summary>
 	[ComImport, Guid("B85EA052-9BDD-11D0-852C-00C04FD8D503"), ClassInterface(ClassInterfaceType.None)]
-	public class AccessControlList { }
+	public class AccessControlList
+	{ }
 
 	/// <summary>CLSID_ADsSecurityUtility</summary>
 	[ComImport, Guid("F270C64A-FFB8-4AE4-85FE-3A75E5347966"), ClassInterface(ClassInterfaceType.None)]
-	public class ADsSecurityUtility { }
+	public class ADsSecurityUtility
+	{ }
 
 	/// <summary>CLSID_ADSystemInfo</summary>
 	[ComImport, Guid("50B6327F-AFD1-11D2-9CB9-0000F87A369E"), ClassInterface(ClassInterfaceType.None)]
-	public class ADSystemInfo { }
+	public class ADSystemInfo
+	{ }
 
 	/// <summary>CLSID_BackLink</summary>
 	[ComImport, Guid("FCBF906F-4080-11D1-A3AC-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class BackLink { }
+	public class BackLink
+	{ }
 
 	/// <summary>CLSID_CaseIgnoreList</summary>
 	[ComImport, Guid("15F88A55-4680-11D1-A3B4-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class CaseIgnoreList { }
+	public class CaseIgnoreList
+	{ }
 
 	/// <summary>CLSID_DNWithBinary</summary>
 	[ComImport, Guid("7E99C0A3-F935-11D2-BA96-00C04FB6D0D1"), ClassInterface(ClassInterfaceType.None)]
-	public class DNWithBinary { }
+	public class DNWithBinary
+	{ }
 
 	/// <summary>CLSID_DNWithString</summary>
 	[ComImport, Guid("334857CC-F934-11D2-BA96-00C04FB6D0D1"), ClassInterface(ClassInterfaceType.None)]
-	public class DNWithString { }
+	public class DNWithString
+	{ }
 
 	/// <summary>CLSID_Email</summary>
 	[ComImport, Guid("8F92A857-478E-11D1-A3B4-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class Email { }
+	public class Email
+	{ }
 
 	/// <summary>CLSID_FaxNumber</summary>
 	[ComImport, Guid("A5062215-4681-11D1-A3B4-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class FaxNumber { }
+	public class FaxNumber
+	{ }
 
 	/// <summary>CLSID_Hold</summary>
 	[ComImport, Guid("B3AD3E13-4080-11D1-A3AC-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class Hold { }
+	public class Hold
+	{ }
 
 	/// <summary>CLSID_LargeInteger</summary>
 	[ComImport, Guid("927971F5-0939-11D1-8BE1-00C04FD8D503"), ClassInterface(ClassInterfaceType.None)]
-	public class LargeInteger { }
+	public class LargeInteger
+	{ }
 
 	/// <summary>CLSID_NameTranslate</summary>
 	[ComImport, Guid("274FAE1F-3626-11D1-A3A4-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class NameTranslate { }
+	public class NameTranslate
+	{ }
 
 	/// <summary>CLSID_NetAddress</summary>
 	[ComImport, Guid("B0B71247-4080-11D1-A3AC-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class NetAddress { }
+	public class NetAddress
+	{ }
 
 	/// <summary>CLSID_OctetList</summary>
 	[ComImport, Guid("1241400F-4680-11D1-A3B4-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class OctetList { }
+	public class OctetList
+	{ }
 
 	/// <summary>CLSID_Path</summary>
 	[ComImport, Guid("B2538919-4080-11D1-A3AC-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class Path { }
+	public class Path
+	{ }
 
 	/// <summary>CLSID_Pathname</summary>
 	[ComImport, Guid("080D0D78-F421-11D0-A36E-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class Pathname { }
+	public class Pathname
+	{ }
 
 	/// <summary>CLSID_PostalAddress</summary>
 	[ComImport, Guid("0A75AFCD-4680-11D1-A3B4-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class PostalAddress { }
+	public class PostalAddress
+	{ }
 
 	/// <summary>CLSID_PropertyEntry</summary>
 	[ComImport, Guid("72D3EDC2-A4C4-11D0-8533-00C04FD8D503"), ClassInterface(ClassInterfaceType.None)]
-	public class PropertyEntry { }
+	public class PropertyEntry
+	{ }
 
 	/// <summary>CLSID_PropertyValue</summary>
 	[ComImport, Guid("7B9E38B0-A97C-11D0-8534-00C04FD8D503"), ClassInterface(ClassInterfaceType.None)]
-	public class PropertyValue { }
+	public class PropertyValue
+	{ }
 
 	/// <summary>CLSID_ReplicaPointer</summary>
 	[ComImport, Guid("F5D1BADF-4080-11D1-A3AC-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class ReplicaPointer { }
+	public class ReplicaPointer
+	{ }
 
 	/// <summary>CLSID_SecurityDescriptor</summary>
 	[ComImport, Guid("B958F73C-9BDD-11D0-852C-00C04FD8D503"), ClassInterface(ClassInterfaceType.None)]
-	public class SecurityDescriptor { }
+	public class SecurityDescriptor
+	{ }
 
 	/// <summary>CLSID_Timestamp</summary>
 	[ComImport, Guid("B2BED2EB-4080-11D1-A3AC-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class Timestamp { }
+	public class Timestamp
+	{ }
 
 	/// <summary>CLSID_TypedName</summary>
 	[ComImport, Guid("B33143CB-4080-11D1-A3AC-00C04FB950DC"), ClassInterface(ClassInterfaceType.None)]
-	public class TypedName { }
+	public class TypedName
+	{ }
 
 	/// <summary>CLSID_WinNTSystemInfo</summary>
 	[ComImport, Guid("66182EC4-AFD1-11D2-9CB9-0000F87A369E"), ClassInterface(ClassInterfaceType.None)]
-	public class WinNTSystemInfo { }
+	public class WinNTSystemInfo
+	{ }
 }
