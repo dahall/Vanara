@@ -91,6 +91,16 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="SizeT"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
+	public static implicit operator SizeT(short value) => value >= 0 ? new SizeT((uint)value) : throw new ArgumentOutOfRangeException(nameof(value));
+
+	/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="SizeT"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator SizeT(ushort value) => new((uint)value);
+
+	/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="SizeT"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the conversion.</returns>
 	public static implicit operator SizeT(int value) => value >= 0 ? new SizeT((uint)value) : throw new ArgumentOutOfRangeException(nameof(value));
 
 	/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="SizeT"/>.</summary>
