@@ -42,23 +42,35 @@ public static partial class ActiveDS
 	/// <para>Memory for the array of ADSVALUE structures is not allocated with this structure.</para>
 	/// <para>The value of the <c>dwControlCode</c> member is ignored when the structure is used as an OUT parameter.</para>
 	/// </remarks>
+	/// <param name="attrName">Name of the attribute.</param>
+	/// <param name="op">The type of operation to be performed on the attribute value.</param>
+	/// <param name="dataType">Data type of the attribute.</param>
+	/// <param name="dataValues">The value(s) for the attribute.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_attr_info
 	// typedef struct _ads_attr_info { LPWSTR pszAttrName; DWORD dwControlCode; ADSTYPE dwADsType; PADSVALUE pADsValues; DWORD dwNumValues; } ADS_ATTR_INFO, *PADS_ATTR_INFO;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_attr_info")]
 	[VanaraMarshaler(typeof(ADS_ATTR_INFO_UNMGD))]
-	public struct ADS_ATTR_INFO
+	public struct ADS_ATTR_INFO(string attrName, ADS_ATTR op, ADSTYPE dataType, params object?[] dataValues)
 	{
 		/// <summary>The null-terminated Unicode string that contains the attribute name.</summary>
-		public string pszAttrName;
+		public string pszAttrName = attrName;
 
 		/// <summary>Contains one of the ADSI Attribute Modification Types values that determines the type of operation to be performed on the attribute value.</summary>
-		public ADS_ATTR dwControlCode;
+		public ADS_ATTR dwControlCode = op;
 
 		/// <summary>A value from the ADSTYPEENUM enumeration that indicates the data type of the attribute.</summary>
-		public ADSTYPE dwADsType;
+		public ADSTYPE dwADsType = dataType;
 
-		/// <summary>Pointer to an array of ADSVALUE structures that contain values for the attribute.</summary>
-		public (ADSTYPE type, object? value)[] pADsValues;
+		/// <summary>Pointer to an array of objects that contain values for the attribute.</summary>
+		public object?[] pADsValues = dataValues;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ADS_ATTR_INFO"/> struct for the case of updating case-ignored strings as the data type.
+		/// </summary>
+		/// <param name="attrName">Name of the attribute.</param>
+		/// <param name="caseIgnoredStrings">The string(s) (case ignored) to use as values for the attribute.</param>
+		public ADS_ATTR_INFO(string attrName, params string[] caseIgnoredStrings) : 
+			this(attrName, ADS_ATTR.ADS_ATTR_UPDATE, ADSTYPE.ADSTYPE_CASE_IGNORE_STRING, caseIgnoredStrings) { }
 
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct ADS_ATTR_INFO_UNMGD : IVanaraMarshaler
@@ -80,7 +92,7 @@ public static partial class ActiveDS
 				List<ADSVALUE> vals = i.pADsValues?.Select(t =>
 				{
 					ADSVALUE av = new();
-					av.SetValue(t.type, t.value, out var m);
+					av.SetValue(i.dwADsType, t, out var m);
 					ret.AddSubReference(m);
 					return av;
 				}).ToList() ?? [];
@@ -111,7 +123,7 @@ public static partial class ActiveDS
 					dwControlCode = ii.dwControlCode,
 					dwADsType = ii.dwADsType,
 					pszAttrName = ii.pszAttrName.ToString(),
-					pADsValues = ii.pADsValues.ToIEnum<ADSVALUE>((int)ii.dwNumValues)?.Select(v => (v.dwType, v.Value)).ToArray() ?? []
+					pADsValues = ii.pADsValues.ToIEnum<ADSVALUE>((int)ii.dwNumValues).Select(v => v.Value).ToArray() ?? []
 				};
 			}
 		}
