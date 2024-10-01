@@ -721,7 +721,7 @@ public static partial class ActiveDS
 		public ADSTYPE dwADsType;
 
 		/// <summary>Array of ADSVALUE structures that contain values of the attribute in the current search column for the current row.</summary>
-		public ADSVALUE[] pADsValues;
+		public object?[] pADsValues;
 
 		/// <summary>Reserved for internal use by providers.</summary>
 		public HANDLE hReserved;
@@ -753,11 +753,12 @@ public static partial class ActiveDS
 				ADS_SEARCH_COLUMN_UNMGD ii = new() { dwADsType = i.dwADsType, hReserved = i.hReserved, dwNumValues = (uint?)i.pADsValues?.Length ?? 0 };
 				SizeT ext = ii.dwNumValues * Marshal.SizeOf(typeof(ADSVALUE)) + (i.pszAttrName?.GetByteCount(true, CharSet.Unicode) ?? 0);
 				var sz = Marshal.SizeOf(typeof(ADS_SEARCH_COLUMN_UNMGD));
-				var ret = new SafeCoTaskMemStruct<ADS_SEARCH_COLUMN_UNMGD>(ext + sz);
+				var ret = new SafeCoTaskMemHandle(ext + sz);
 				ii.pszAttrName = ret.DangerousGetHandle().Offset(sz);
 				StringHelper.Write(i.pszAttrName, (IntPtr)ii.pszAttrName, out var l, true, CharSet.Unicode);
 				ii.pADsValues = ret.DangerousGetHandle().Offset(sz + l);
-				ii.pADsValues.Write(i.pADsValues ?? [], sz + l);
+				ADSVALUE[]? vals = i.pADsValues?.Select(v => { ADSVALUE val = new(); val.SetValue(ii.dwADsType, v, out var m); ret.AddSubReference(m); return val; }).ToArray();
+				ii.pADsValues.Write(vals ?? [], sz + l);
 				return ret;
 			}
 
@@ -770,7 +771,7 @@ public static partial class ActiveDS
 				{
 					pszAttrName = ii.pszAttrName.ToString(),
 					dwADsType = ii.dwADsType,
-					pADsValues = ii.pADsValues.ToArray<ADSVALUE>(ii.dwNumValues) ?? [],
+					pADsValues = ii.pADsValues.ToIEnum<ADSVALUE>(ii.dwNumValues).Select(i => i.Value).ToArray(),
 					hReserved = ii.hReserved,
 				};
 			}
@@ -921,6 +922,16 @@ public static partial class ActiveDS
 			};
 			vValue.SetValue(t, value, out _);
 		}
+
+		/// <summary>Initializes a new instance of the <see cref="ADS_SEARCHPREF_INFO"/> struct.</summary>
+		/// <param name="pref">The search option to set.</param>
+		/// <param name="type">The search preference value type.</param>
+		/// <param name="value">The memory allocated for the search preference value.</param>
+		public ADS_SEARCHPREF_INFO(ADS_SEARCHPREF pref, ADSTYPE type, SafeAllocatedMemoryHandle value)
+		{
+			dwSearchPref = pref;
+			vValue.SetValue(type, value, out _);
+		}
 	}
 
 	/// <summary>The <c>ADS_SORTKEY</c> structure specifies how to sort a query.</summary>
@@ -932,19 +943,19 @@ public static partial class ActiveDS
 	// typedef struct _ads_sortkey { LPWSTR pszAttrType; LPWSTR pszReserved; BOOLEAN fReverseorder; } ADS_SORTKEY, *PADS_SORTKEY;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_sortkey")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ADS_SORTKEY
+	public struct ADS_SORTKEY(string attrType, bool reverseOrder = false, string? reserved = null)
 	{
 		/// <summary>The null-terminated Unicode string that contains the attribute type.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszAttrType;
+		public string pszAttrType = attrType;
 
 		/// <summary>Reserved.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszReserved;
+		public string? pszReserved = reserved;
 
 		/// <summary>Reverse the order of the sorted results.</summary>
 		[MarshalAs(UnmanagedType.U1)]
-		public bool fReverseorder;
+		public bool fReverseorder = reverseOrder;
 	}
 
 	/// <summary>The <c>ADS_TIMESTAMP</c> structure is an ADSI representation of the <c>Timestamp</c> attribute syntax.</summary>
@@ -1223,7 +1234,7 @@ public static partial class ActiveDS
 					break;
 
 				case ADSTYPE.ADSTYPE_OCTET_STRING:
-					OctetString = PutBytes<ADS_OCTET_STRING>(value, m => new() { lpValue = m }, out mem);
+					OctetString = PutBytes<ADS_OCTET_STRING>(value, m => new() { lpValue = m, dwLength = m.Size }, out mem);
 					break;
 
 				case ADSTYPE.ADSTYPE_UTC_TIME:
@@ -1240,7 +1251,7 @@ public static partial class ActiveDS
 					break;
 
 				case ADSTYPE.ADSTYPE_PROV_SPECIFIC:
-					ProviderSpecific = PutBytes<ADS_PROV_SPECIFIC>(value, m => new() { lpValue = m }, out mem);
+					ProviderSpecific = PutBytes<ADS_PROV_SPECIFIC>(value, m => new() { lpValue = m, dwLength = m.Size }, out mem);
 					break;
 
 				case ADSTYPE.ADSTYPE_CASEIGNORE_LIST:
@@ -1343,6 +1354,8 @@ public static partial class ActiveDS
 
 			T PutBytes<T>(object value, Func<SafeAllocatedMemoryHandle, T> a, out SafeAllocatedMemoryHandle m) where T : struct
 			{
+				if (value is SafeAllocatedMemoryHandle h)
+					return a(m = h);
 				if (value is not byte[] ba)
 					throw new ArgumentException("A byte array is required for this type.", nameof(value));
 				m = new SafeCoTaskMemHandle(ba);

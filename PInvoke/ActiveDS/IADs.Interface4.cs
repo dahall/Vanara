@@ -2663,8 +2663,8 @@ public static partial class ActiveDS
 	/// </param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-setsearchpreference HRESULT SetSearchPreference(
 	// [in] PADS_SEARCHPREF_INFO pSearchPrefs, [in] DWORD dwNumPrefs );
-	public static void SetSearchPreference(this IDirectorySearch ids, ADS_SEARCHPREF_INFO[] pSearchPrefs) =>
-		ids.SetSearchPreference(pSearchPrefs, pSearchPrefs?.Length ?? 0).ThrowIfFailed();
+	public static HRESULT SetSearchPreference(this IDirectorySearch ids, ADS_SEARCHPREF_INFO[] pSearchPrefs) =>
+		ids.SetSearchPreference(pSearchPrefs, pSearchPrefs?.Length ?? 0);
 
 	/// <summary>
 	/// The <c>IDirectorySearch::ExecuteSearch</c> method executes a search and passes the results to the caller. Some providers, such as
@@ -2696,6 +2696,21 @@ public static partial class ActiveDS
 			attrCnt = (uint)pAttributeNames.Length;
 		ids.ExecuteSearch(pszSearchFilter, pAttributeNames.Length > 0 ? pAttributeNames : null, attrCnt, out var h);
 		return new(ids, h);
+	}
+
+	/// <summary>
+	/// Gets a list of the names of the all the columns in the search result that contains data.
+	/// </summary>
+	/// <param name="ids">The <see cref="IDirectorySearch"/> instance.</param>
+	/// <param name="hSearchHandle">Provides a handle to the search context.</param>
+	/// <returns>A list of all the names of the columns.</returns>
+	public static List<string> GetColumnNames(this IDirectorySearch ids, [In] ADS_SEARCH_HANDLE hSearchHandle)
+	{
+		List<string> ret = [];
+		string? cn = null;
+		while ((cn = ids.GetNextColumnName(hSearchHandle)) is not null)
+			ret.Add(cn);
+		return ret;
 	}
 
 	/// <summary>
@@ -2744,6 +2759,23 @@ public static partial class ActiveDS
 			ids.FreeColumn((IntPtr)(void*)&col);
 		}
 		return ret;
+	}
+
+	/// <summary>Gets the data for each column in a sequence of all rows from a search query.</summary>
+	/// <param name="ids">The <see cref="IDirectorySearch"/> instance.</param>
+	/// <param name="hSearchHandle">Provides a handle to the search context.</param>
+	/// <returns>A seqence of row data where each item is a list of column details for all columns.</returns>
+	public static IEnumerable<IReadOnlyList<ADS_SEARCH_COLUMN>> GetRowData(this IDirectorySearch ids, [In] ADS_SEARCH_HANDLE hSearchHandle)
+	{
+		ids.GetFirstRow(hSearchHandle).ThrowIfFailed();
+		var cols = ids.GetColumnNames(hSearchHandle);
+		while (ids.GetNextRow(hSearchHandle) != HRESULT.S_ADS_NOMORE_ROWS)
+		{
+			var row = new List<ADS_SEARCH_COLUMN>();
+			foreach (var cn in cols)
+				row.Add(ids.GetColumn(hSearchHandle, cn).GetValueOrDefault());
+			yield return row;
+		}
 	}
 
 	/// <summary>Provides a handle to an ADs Search session.</summary>

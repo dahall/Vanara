@@ -492,32 +492,16 @@ public class ActiveDSTests
 	{
 		Assert.That(ADsGetObject(ldapDomain, out IDirectorySearch? o), ResultIs.Successful);
 		ADS_SEARCHPREF_INFO[] prefs = [new ADS_SEARCHPREF_INFO(ADS_SEARCHPREF.ADS_SEARCHPREF_SEARCH_SCOPE, ADS_SCOPE.ADS_SCOPE_SUBTREE)];
-		//Assert.That(o!.SetSearchPreference(prefs, prefs.Length), ResultIs.Successful);
-		Assert.That(() => o!.SetSearchPreference(prefs), Throws.Nothing);
+		Assert.That(o!.SetSearchPreference(prefs), ResultIs.Successful);
 		prefs.Select(i => (i.dwSearchPref, i.dwStatus)).WriteValues();
-		using var h = o!.ExecuteSearch("(objectCategory=Group)", "ADsPath", "Name");
-		Assert.That(h.IsNull, Is.False);
+		SafeADS_SEARCH_HANDLE h;
+		Assert.That(h = o!.ExecuteSearch("(objectCategory=Group)", "ADsPath", "Name"), ResultIs.ValidHandle);
+		Assert.That(o!.GetFirstRow(h), ResultIs.Successful);
 
-		o!.GetFirstRow(h);
-
-		List<string> columns = [];
-		string? col;
-		while ((col = o!.GetNextColumnName(h)) != null)
-			columns.Add(col);
-		TestContext.WriteLine($"Columns: {string.Join(", ", columns)}");
-
+		TestContext.WriteLine($"Columns: {string.Join(", ", o!.GetColumnNames(h))}");
 		int i = 1;
-		while (o!.GetNextRow(h) != HRESULT.S_ADS_NOMORE_ROWS)
-		{
-			List<string> row = [];
-			foreach (var c in columns)
-			{
-				ADS_SEARCH_COLUMN? sc = o!.GetColumn(h, c);
-				Assert.That(sc.HasValue);
-				row.Add(string.Join(',', sc!.Value.pADsValues));
-			}
-			TestContext.WriteLine($"{i++}: {string.Join(", ", row)}");
-		}
+		foreach (var row in o!.GetRowData(h))
+			TestContext.WriteLine($"{i++}: {string.Join(", ", row.Select(sc => string.Join(',', sc.pADsValues)))}");
 	}
 
 	[Test]

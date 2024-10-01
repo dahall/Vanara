@@ -160,7 +160,78 @@ public static partial class ActiveDS
 	// pbSrcData, [in] DWORD dwSrcLen, [out] LPWSTR *ppszDestData );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT ADsEncodeBinaryData([In] IntPtr pbSrcData, uint dwSrcLen, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDestData);
+	public static extern HRESULT ADsEncodeBinaryData([In] IntPtr pbSrcData, uint dwSrcLen, out IntPtr ppszDestData);
+
+	/// <summary>
+	/// The <c>ADsEncodeBinaryData</c> function converts a binary large object (BLOB) to the Unicode format suitable to be embedded in a
+	/// search filter.
+	/// </summary>
+	/// <param name="pbSrcData">
+	/// <para>Type: <c>PBYTE</c></para>
+	/// <para>BLOB to be converted.</para>
+	/// </param>
+	/// <param name="dwSrcLen">
+	/// <para>Type: <c>DWORD</c></para>
+	/// <para>Size, in bytes, of the BLOB.</para>
+	/// </param>
+	/// <param name="ppszDestData">
+	/// <para>Type: <c>LPWSTR*</c></para>
+	/// <para>Pointer to a null-terminated Unicode string that receives the converted data.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>This method supports the standard return values, as well as the following.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// In ADSI, search filters must be Unicode strings. Sometimes, a filter contains data that is normally represented by an opaque BLOB of
+	/// data. For example, you may want to include an object security identifier in a search filter, which is of binary data. In this case,
+	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format. When the data is
+	/// no longer required, call the FreeADsMem function to free the converted Unicode string; that is, <c>ppszDestData</c>.
+	/// </para>
+	/// <para>
+	/// The <c>ADsEncodeBinaryData</c> function does not encode byte values that represent alpha-numeric characters. It will, instead, place
+	/// the character into the string without encoding it. This results in the string containing a mixture of encoded and unencoded
+	/// characters. For example, if the binary data is 0x05|0x1A|0x1B|0x43|0x32, the encoded string will contain "\05\1A\1BC2". This has no
+	/// effect on the filter and the search filters will work correctly with these types of strings.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>The following code example shows how to use this function.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsencodebinarydata HRESULT ADsEncodeBinaryData( [in] PBYTE
+	// pbSrcData, [in] DWORD dwSrcLen, [out] LPWSTR *ppszDestData );
+	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
+	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, uint dwSrcLen, out IntPtr ppszDestData);
+
+	/// <summary>
+	/// The <c>ADsEncodeBinaryData</c> function converts a binary large object (BLOB) to the Unicode format suitable to be embedded in a
+	/// search filter.
+	/// </summary>
+	/// <param name="pbSrcData">BLOB to be converted.</param>
+	/// <param name="ppszDestData">Pointer to a null-terminated Unicode string that receives the converted data.</param>
+	/// <returns>This method supports the standard return values, as well as the following.</returns>
+	/// <remarks>
+	/// <para>
+	/// In ADSI, search filters must be Unicode strings. Sometimes, a filter contains data that is normally represented by an opaque BLOB of
+	/// data. For example, you may want to include an object security identifier in a search filter, which is of binary data. In this case,
+	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format.
+	/// </para>
+	/// <para>
+	/// The <c>ADsEncodeBinaryData</c> function does not encode byte values that represent alpha-numeric characters. It will, instead, place
+	/// the character into the string without encoding it. This results in the string containing a mixture of encoded and unencoded
+	/// characters. For example, if the binary data is 0x05|0x1A|0x1B|0x43|0x32, the encoded string will contain "\05\1A\1BC2". This has no
+	/// effect on the filter and the search filters will work correctly with these types of strings.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
+	public static HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, out string? ppszDestData)
+	{
+		var hr = ADsEncodeBinaryData(pbSrcData, (uint)pbSrcData.Length, out var ppsz);
+		ppszDestData = hr.Succeeded ? Marshal.PtrToStringUni(ppsz) : null;
+		if (hr.Succeeded) FreeADsMem(ppsz);
+		return hr;
+	}
 
 	/// <summary>
 	/// The <c>ADsEnumerateNext</c> function enumerates through a specified number of elements from the current cursor position of the
