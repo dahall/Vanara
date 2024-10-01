@@ -2275,11 +2275,13 @@ public static partial class ActiveDS
 		/// ADS_SEARCHPREF_TIMEOUT search preference elapses.
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(bool))]
 		ADS_SEARCHPREF_ASYNCHRONOUS,
 
 		/// <summary>
 		/// Specifies that aliases of found objects are to be resolved. Use the ADS_DEREFENUM enumeration to specify how this is performed.
 		/// </summary>
+		[CorrespondingType(typeof(bool))]
 		ADS_SEARCHPREF_DEREF_ALIASES,
 
 		/// <summary>
@@ -2294,6 +2296,7 @@ public static partial class ActiveDS
 		/// Directory, the maximum number of objects returned by a search is 1000 objects.
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		ADS_SEARCHPREF_SIZE_LIMIT,
 
 		/// <summary>
@@ -2301,23 +2304,27 @@ public static partial class ActiveDS
 		/// searching and returns the results accumulated to that point. If this value is zero, the timeout period is infinite. The default
 		/// for this value is 120 seconds.
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		ADS_SEARCHPREF_TIME_LIMIT,
 
 		/// <summary>
 		/// Indicates that the search should obtain only the name of attributes to which values are assigned.
 		/// </summary>
+		[CorrespondingType(typeof(bool))]
 		ADS_SEARCHPREF_ATTRIBTYPES_ONLY,
 
 		/// <summary>
 		/// Specifies the search scope that should be observed by the server. For more information about the appropriate settings, see the
 		/// ADS_SCOPEENUM enumeration.
 		/// </summary>
+		[CorrespondingType(typeof(ADS_SCOPE))]
 		ADS_SEARCHPREF_SEARCH_SCOPE,
 
 		/// <summary>
 		/// Specifies the time limit, in seconds, that a client will wait for the server to return the result. This option is set in an
 		/// ADS_SEARCHPREF_INFO structure.
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		ADS_SEARCHPREF_TIMEOUT,
 
 		/// <summary>
@@ -2326,6 +2333,7 @@ public static partial class ActiveDS
 		/// page size must be less than the value for size limit. If the value for page size exceeds size limit, then the
 		/// ERROR_DS_SIZELIMIT_EXCEEDED error is returned with the number of rows specified by size limit.
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		ADS_SEARCHPREF_PAGESIZE,
 
 		/// <summary>
@@ -2334,6 +2342,7 @@ public static partial class ActiveDS
 		/// along with a cookie that contains the data about where to resume searching. If this value is zero, the page timeout period is
 		/// infinite. The default value for this limit is 120 seconds.
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		ADS_SEARCHPREF_PAGED_TIME_LIMIT,
 
 		/// <summary>
@@ -2342,6 +2351,7 @@ public static partial class ActiveDS
 		/// sends a referral message to the client which the client can choose to ignore or chase. For more information about referral
 		/// chasing, see ADS_CHASE_REFERRALS_ENUM.
 		/// </summary>
+		[CorrespondingType(typeof(ADS_CHASE_REFERRALS))]
 		ADS_SEARCHPREF_CHASE_REFERRALS,
 
 		/// <summary>
@@ -2350,12 +2360,14 @@ public static partial class ActiveDS
 		/// control, but it can impact server performance, particularly if the results set is large. Active Directory supports only a single
 		/// sort key.
 		/// </summary>
+		[CorrespondingType(typeof(ADS_SORTKEY))]
 		ADS_SEARCHPREF_SORT_ON,
 
 		/// <summary>
 		/// Specifies if the result should be cached on the client side. By default, ADSI caches the result set. Disabling this option may
 		/// be desirable for large result sets.
 		/// </summary>
+		[CorrespondingType(typeof(bool))]
 		ADS_SEARCHPREF_CACHE_RESULTS,
 
 		/// <summary>
@@ -2371,6 +2383,7 @@ public static partial class ActiveDS
 		/// <para>This flag cannot be combined with ADS_SEARCHPREF_PAGESIZE.</para>
 		/// <para>The caller must have the SE_SYNC_AGENT_NAME privilege.</para>
 		/// </summary>
+		[CorrespondingType(typeof(ADS_PROV_SPECIFIC))]
 		ADS_SEARCHPREF_DIRSYNC,
 
 		/// <summary>
@@ -2386,6 +2399,7 @@ public static partial class ActiveDS
 		/// attribute is TRUE for a deleted object. For more information, see Retrieving Deleted Objects.
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(bool))]
 		ADS_SEARCHPREF_TOMBSTONE,
 
 		/// <summary>
@@ -2411,6 +2425,7 @@ public static partial class ActiveDS
 		/// the error E_ADS_BAD_PARAMETER.
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(ADS_VLV))]
 		ADS_SEARCHPREF_VLV,
 
 		/// <summary>
@@ -2422,6 +2437,7 @@ public static partial class ActiveDS
 		/// the ADS_SEARCHPREF_VLV preference, all other preferences that use LDAP controls, such as ADS_SEARCHPREF_DIRSYNC,
 		/// ADS_SEARCHPREF_TOMBSTONE, and so on, are not allowed when this preference is specified.
 		/// </summary>
+		[CorrespondingType(typeof(string))]
 		ADS_SEARCHPREF_ATTRIBUTE_QUERY,
 
 		/// <summary>
@@ -2456,6 +2472,7 @@ public static partial class ActiveDS
 		/// to the equivalent of ADS_SECURITY_INFO_OWNER
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(ADS_SECURITY_INFO))]
 		ADS_SEARCHPREF_SECURITY_MASK,
 
 		/// <summary>
@@ -2500,6 +2517,7 @@ public static partial class ActiveDS
 		/// </item>
 		/// </list>
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		ADS_SEARCHPREF_DIRSYNC_FLAG,
 
 		/// <summary>
@@ -2508,6 +2526,7 @@ public static partial class ActiveDS
 		/// format or one if the GUID and SID portions of the DN string should be in standard format. For more information about extended
 		/// distinguished names, see LDAP_SERVER_EXTENDED_DN_OID.
 		/// </summary>
+		[CorrespondingType(typeof(int))]
 		ADS_SEARCHPREF_EXTENDED_DN,
 	}
 
