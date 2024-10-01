@@ -491,16 +491,22 @@ public class ActiveDSTests
 	public void IDirectorySearchTest()
 	{
 		Assert.That(ADsGetObject(ldapDomain, out IDirectorySearch? o), ResultIs.Successful);
-		ADS_SEARCHPREF_INFO[] prefs = [new ADS_SEARCHPREF_INFO(ADS_SEARCHPREF.ADS_SEARCHPREF_SEARCH_SCOPE, ADS_SCOPE.ADS_SCOPE_SUBTREE)];
+
+		ADS_SEARCHPREF_INFO[] prefs = [
+			new(ADS_SEARCHPREF.ADS_SEARCHPREF_SEARCH_SCOPE, ADS_SCOPE.ADS_SCOPE_SUBTREE),
+			new(ADS_SEARCHPREF.ADS_SEARCHPREF_SORT_ON, new ADS_SORTKEY("Name")),
+		];
 		Assert.That(o!.SetSearchPreference(prefs), ResultIs.Successful);
 		prefs.Select(i => (i.dwSearchPref, i.dwStatus)).WriteValues();
+
 		SafeADS_SEARCH_HANDLE h;
-		Assert.That(h = o!.ExecuteSearch("(objectCategory=Group)", "ADsPath", "Name"), ResultIs.ValidHandle);
+		List<string> attrs = ["ADsPath", "Name", "usnchanged"];
+		Assert.That(h = o!.ExecuteSearch("(objectClass=*)", attrs.ToArray()), ResultIs.ValidHandle);
 		Assert.That(o!.GetFirstRow(h), ResultIs.Successful);
 
 		TestContext.WriteLine($"Columns: {string.Join(", ", o!.GetColumnNames(h))}");
 		int i = 1;
-		foreach (var row in o!.GetRowData(h))
+		foreach (var row in o!.GetRowData(h).Take(15))
 			TestContext.WriteLine($"{i++}: {string.Join(", ", row.Select(sc => string.Join(',', sc.pADsValues)))}");
 	}
 

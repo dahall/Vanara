@@ -908,29 +908,22 @@ public static partial class ActiveDS
 		/// <summary>Initializes a new instance of the <see cref="ADS_SEARCHPREF_INFO"/> struct.</summary>
 		/// <param name="pref">The search option to set.</param>
 		/// <param name="value">The search preference value.</param>
-		public ADS_SEARCHPREF_INFO(ADS_SEARCHPREF pref, object? value) : this()
+		public ADS_SEARCHPREF_INFO(ADS_SEARCHPREF pref, object value) : this()
 		{
 			dwSearchPref = pref;
-			ADSTYPE t = Type.GetTypeCode(value?.GetType()) switch
+			Type validType = CorrespondingTypeAttribute.GetCorrespondingTypes(pref).FirstOrDefault() ?? typeof(object);
+			if (value.GetType() != validType)
+				throw new ArgumentException($"Invalid value type. '{validType?.Name ?? "unknow"}' was expected.", nameof(value));
+			ADSTYPE t = Type.GetTypeCode(validType) switch
 			{
 				TypeCode.Boolean => ADSTYPE.ADSTYPE_BOOLEAN,
 				TypeCode.Int32 => ADSTYPE.ADSTYPE_INTEGER,
 				TypeCode.String => ADSTYPE.ADSTYPE_CASE_IGNORE_STRING,
-				TypeCode.Object when value!.GetType().IsEnum => ADSTYPE.ADSTYPE_INTEGER,
-				//TypeCode.Object when value is byte[] b => ADSTYPE.ADSTYPE_PROV_SPECIFIC,
+				TypeCode.Object when validType.IsEnum => ADSTYPE.ADSTYPE_INTEGER,
+				TypeCode.Object when !validType.IsPrimitive && validType.IsLayoutSequential => ADSTYPE.ADSTYPE_PROV_SPECIFIC,
 				_ => throw new ArgumentException("Invalid value", nameof(value)),
 			};
 			vValue.SetValue(t, value, out _);
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="ADS_SEARCHPREF_INFO"/> struct.</summary>
-		/// <param name="pref">The search option to set.</param>
-		/// <param name="type">The search preference value type.</param>
-		/// <param name="value">The memory allocated for the search preference value.</param>
-		public ADS_SEARCHPREF_INFO(ADS_SEARCHPREF pref, ADSTYPE type, SafeAllocatedMemoryHandle value)
-		{
-			dwSearchPref = pref;
-			vValue.SetValue(type, value, out _);
 		}
 	}
 
@@ -1251,7 +1244,10 @@ public static partial class ActiveDS
 					break;
 
 				case ADSTYPE.ADSTYPE_PROV_SPECIFIC:
-					ProviderSpecific = PutBytes<ADS_PROV_SPECIFIC>(value, m => new() { lpValue = m, dwLength = m.Size }, out mem);
+					if (value is ADS_PROV_SPECIFIC aps)
+						ProviderSpecific = aps;
+					else
+						ProviderSpecific = PutBytes<ADS_PROV_SPECIFIC>(value, m => new() { lpValue = m, dwLength = m.Size }, out mem);
 					break;
 
 				case ADSTYPE.ADSTYPE_CASEIGNORE_LIST:
@@ -1356,6 +1352,10 @@ public static partial class ActiveDS
 			{
 				if (value is SafeAllocatedMemoryHandle h)
 					return a(m = h);
+				if (value is ADS_SORTKEY sk)
+					return a(m = SafeCoTaskMemHandle.CreateFromStructure(sk));
+				if (value is ADS_VLV v)
+					return a(m = SafeCoTaskMemHandle.CreateFromStructure(v));
 				if (value is not byte[] ba)
 					throw new ArgumentException("A byte array is required for this type.", nameof(value));
 				m = new SafeCoTaskMemHandle(ba);
