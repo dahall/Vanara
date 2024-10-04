@@ -10,9 +10,8 @@ using static Vanara.PInvoke.AdvApi32;
 namespace Vanara.DirectoryServices;
 
 /// <summary>Interface that identifies an object as a container with access to its children.</summary>
-/// <typeparam name="T">The type of the child.</typeparam>
 /// <seealso cref="Vanara.DirectoryServices.IADsObject"/>
-public interface IADsContainerObject<T> : IADsObject where T : class, IADsObject
+public interface IADsContainerObject : IADsObject
 {
 	/// <summary>
 	/// <para>
@@ -26,7 +25,7 @@ public interface IADsContainerObject<T> : IADsObject where T : class, IADsObject
 	/// object, send the request to the container object to perform the task.
 	/// </para>
 	/// </summary>
-	ADsContainer<T> Children { get; }
+	IReadOnlyCollection<IADsObject> Children { get; }
 }
 
 /// <summary>Interface that represents an ADs object.</summary>
@@ -335,7 +334,7 @@ public class ADsCollection<T> : IDictionary<string, T> where T : class, IADsObje
 /// </para>
 /// <note>The <see cref="ADsComputer"/> object is not implemented by the LDAP ADSI provider. For more information, see ADSI Objects of LDAP.</note>
 /// </summary>
-public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject<IADsObject>
+public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject
 {
 	private ADsContainer<IADsObject>? children;
 	private ADsComputerOperations? ops;
@@ -414,6 +413,8 @@ public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject<IADs
 
 	/// <summary>Gets or sets the size, in megabytes, of the disk.</summary>
 	public string? StorageCapacity { get => GetProp(() => Interface.StorageCapacity); set => Interface.StorageCapacity = value ?? string.Empty; }
+
+	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => (IReadOnlyCollection<IADsObject>)Children;
 }
 
 /// <summary>
@@ -802,7 +803,7 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 /// password controls. For example, to change the password of a user account, call IADsUser::ChangePassword on the user object.
 /// </summary>
 /// <remarks>For the WinNT provider supplied by Microsoft, this interface is implemented on the <c>WinNTDomain</c> object.</remarks>
-public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject<IADsObject>
+public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject
 {
 	private ADsContainer<IADsObject>? children;
 
@@ -812,6 +813,8 @@ public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject<IADsObje
 
 	/// <inheritdoc/>
 	public ADsContainer<IADsObject> Children => children ??= GetContainer<IADsObject>();
+
+	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => (IReadOnlyCollection<IADsObject>)Children;
 }
 
 /// <summary>
@@ -826,7 +829,7 @@ public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject<IADsObje
 /// </summary>
 /// <remarks>Under the WinNT provider, this interface is implemented on the <c>WinNTService</c> object.</remarks>
 // TODO: Inherit from ADsService??
-public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObject<ADsFileShare>
+public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObject
 {
 	private ADsContainer<ADsFileShare>? children;
 	private ADsFileServiceOperations? ops;
@@ -840,6 +843,8 @@ public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObjec
 
 	/// <inheritdoc/>
 	public ADsContainer<ADsFileShare> Children => children ??= GetContainer<ADsFileShare>();
+
+	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => Children.Cast<IADsObject>().ToList();
 }
 
 /// <summary>
@@ -1576,7 +1581,7 @@ public class ADsResource : ADsBaseObject<IADsResource>
 /// Schema objects are organized in the schema container of a given directory. To access an object's schema class, use the object's
 /// <c>Schema</c> property to obtain the ADsPath string and use that string to bind to its schema class object.
 /// </remarks>
-public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsSchemaProperty>
+public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject
 {
 	private ADsContainer<ADsSchemaProperty>? cont;
 
@@ -1728,6 +1733,8 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject<ADsS
 	/// <para>This method is not currently supported by any of Microsoft providers.</para>
 	/// </remarks>
 	public ADsCollection<IADsObject>? Qualifiers => TryGetProp(Interface.Qualifiers, out var c) && c is not null ? new(c) : null;
+
+	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => Children.Cast<IADsObject>().ToList();
 
 	private static List<T> ToADsList<T>(IEnumerable<string> paths) where T : IADsObject =>
 		paths.Select(ADsObject.GetObject).OfType<T>().ToList();
@@ -2059,6 +2066,210 @@ public class ADsUser : ADsBaseObject<IADsUser>
 	/// <para>In Active Directory, the caller must have the Reset Password extended control access right to set the password with this method.</para>
 	/// </remarks>
 	public void SetPassword(string newPassword) => Interface.SetPassword(newPassword);
+}
+
+/// <summary>
+/// <para>
+/// Provides clients with direct access to directory service objects. The class enables access by means of a direct over-the-wire protocol,
+/// rather than through the ADSI attribute cache. Using the over-the-wire protocol optimizes performance. With <c>DirectoryObject</c>, a
+/// client can get, or set, any number of object attributes with one method call. Unlike the corresponding Automation methods, which are
+/// invoked in batch, those of <c>DirectoryObject</c> are executed when they are called. <c>DirectoryObject</c> performs no attribute caching.
+/// </para>
+/// <para>Of the ADSI system-supplied providers, only the LDAP provider supports this interface.</para>
+/// </summary>
+public class DirectoryObject
+{
+	private readonly IDirectoryObject? dirObj;
+
+	/// <summary>Initializes a new instance of the <see cref="DirectoryObject"/> class.</summary>
+	/// <param name="ldapPath">The LDAP path.</param>
+	public DirectoryObject(string ldapPath) => ADsGetObject(ldapPath, out dirObj).ThrowIfFailed();
+
+	/// <summary>
+	/// Gets an ADS_OBJECT_INFO structure that contains data regarding the identity and location of a directory service object.
+	/// </summary>
+	/// <returns>An ADS_OBJECT_INFO structure that contains data regarding the requested directory service object.</returns>
+	public ADS_OBJECT_INFO ObjectInfo => dirObj!.GetObjectInformation() ?? throw new InvalidOperationException();
+
+	/// <summary>
+	/// Retrieves one or more specified attributes of the directory service object.
+	/// </summary>
+	/// <param name="attributeNames">
+	/// <para>Specifies an array of names of the requested attributes.</para>
+	/// <para>To request all of the object's attributes, set the first value to "*" or <see langword="null"/>.</para>
+	/// </param>
+	/// <returns>
+	/// An array of ADS_ATTR_INFO structures that contain the requested attribute values. If no attributes could be obtained from the
+	/// directory service object, the returned array is empty.
+	/// </returns>
+	/// <remarks>
+	/// <para>The order of attributes returned in <c>ppAttributeEntries</c> is not necessarily the same as requested in <c>pAttributeNames</c>.</para>
+	/// <para>
+	/// This method attempts to read the schema definition of the requested attributes so it can return the attribute values in the
+	/// appropriate format in the ADSVALUE structures contained in the ADS_ATTR_INFO structures. However, <c>GetObjectAttributes</c> can
+	/// succeed even when the schema definition is not available, in which case the <c>dwADsType</c> member of the <c>ADS_ATTR_INFO</c>
+	/// structure returns ADSTYPE_PROV_SPECIFIC and the value is returned as a <see cref="byte"/> array. When you process the results of a
+	/// <c>GetObjectAttributes</c> call, verify <c>dwADsType</c> to ensure that the data was returned in the expected format.
+	/// </para>
+	/// </remarks>
+	public ADS_ATTR_INFO[] GetAttributes(params string[] attributeNames) => dirObj!.GetObjectAttributes(attributeNames);
+
+	/// <summary>
+	/// Modifies data in one or more specified object attributes defined in the ADS_ATTR_INFO structure.
+	/// </summary>
+	/// <param name="pAttributeEntries">
+	/// Provides an sequence of attributes to be modified. Each attribute contains the name of the attribute, the operation to perform, and
+	/// the attribute value, if applicable. For more information, see the ADS_ATTR_INFO structure.
+	/// </param>
+	/// <returns>The number of attributes modified by the <c>SetObjectAttributes</c> method.</returns>
+	/// <remarks>
+	/// <para>
+	/// In Active Directory (LDAP provider), this method is a transacted call. The attributes are either all committed or discarded. Other
+	/// directory providers may not transact the call.
+	/// </para>
+	/// <para>
+	/// Active Directory does not allow duplicate values on a multi-valued attribute. However, if you call <c>SetObjectAttributes</c> to
+	/// append a duplicate value to a multi-valued attribute of an Active Directory object, the <c>SetObjectAttributes</c> call succeeds but
+	/// the duplicate value is ignored.
+	/// </para>
+	/// <para>
+	/// Similarly, if you use <c>SetObjectAttributes</c> to delete one or more values from a multi-valued property of an Active Directory
+	/// object, the operation succeeds even if any or all of the specified values are not set for the property.
+	/// </para>
+	/// </remarks>
+	public uint SetObjectAttributes(params ADS_ATTR_INFO[] pAttributeEntries) => dirObj!.SetObjectAttributes(pAttributeEntries);
+}
+
+/// <summary>
+/// <para>Provides a low overhead method that clients can use to perform queries in the underlying directory.</para>
+/// <para>Of the ADSI system-supplied providers, only the LDAP provider supports this interface.</para>
+/// </summary>
+public class DirectorySearch
+{
+	private readonly IDirectorySearch? iSearch;
+
+	/// <summary>Initializes a new instance of the <see cref="DirectorySearch"/> class.</summary>
+	/// <param name="ldapPath">The LDAP path.</param>
+	public DirectorySearch(string ldapPath) => ADsGetObject(ldapPath, out iSearch).ThrowIfFailed();
+
+	/// <summary>
+	/// Specifies the search preferences for obtaining data in a search.
+	/// </summary>
+	public IDictionary<ADS_SEARCHPREF, object> Preferences { get; } = new Dictionary<ADS_SEARCHPREF, object>();
+
+	/// <summary>
+	/// Executes a search and passes the results to the caller.
+	/// </summary>
+	/// <param name="filter">A search filter string in LDAP format, such as "(objectClass=user)".</param>
+	/// <param name="attributes">An array of attribute names for which data is requested.</param>
+	/// <returns>The search results.</returns>
+	/// <remarks>
+	/// When the search filter ( <paramref name="filter"/>) contains an attribute of <c>ADS_UTC_TIME</c> type, it value must be of the
+	/// "yymmddhhmmssZ" format where "y", "m", "d", "h", "m" and "s" stand for year, month, day, hour, minute, and second, respectively. In
+	/// this format, for example, "10:20:00 May 13, 1999" becomes "990513102000Z". The final letter "Z" is the required syntax and indicated
+	/// Zulu Time or Universal Coordinated Time.
+	/// </remarks>
+	public SearchResult Search(string filter, string[] attributes)
+	{
+		// Set search preferences
+		if (Preferences.Count > 0)
+			iSearch!.SetSearchPreference(Preferences.Select(kv => new ADS_SEARCHPREF_INFO(kv.Key, kv.Value)).ToArray());
+
+		// Execute the search
+		var h = iSearch!.ExecuteSearch(filter, attributes);
+
+		return new SearchResult(iSearch!, h);
+	}
+
+	/// <summary>
+	/// A navigatable set of results from the search initiated by the <see cref="Search"/> method.
+	/// </summary>
+	public class SearchResult : IEnumerator<SearchRow>
+	{
+		internal readonly IDirectorySearch iSearch;
+		internal readonly SafeADS_SEARCH_HANDLE handle;
+		private List<string>? columns;
+
+		internal SearchResult(IDirectorySearch iSearch, SafeADS_SEARCH_HANDLE handle)
+		{
+			this.iSearch = iSearch;
+			this.handle = handle;
+		}
+
+		/// <summary>
+		/// Abandons a search initiated by an earlier call to the <see cref="Search"/> method.
+		/// </summary>
+		/// <remarks>
+		/// This method may be used if the Page_Size or Asynchronous options can be specified through <see cref="Preferences"/> before the
+		/// search is executed.
+		/// </remarks>
+		public void Abandon() => iSearch.AbandonSearch(handle);
+
+		/// <summary>Gets the ordered list of column names returned by the executed search.</summary>
+		/// <value>The column names.</value>
+		public IReadOnlyList<string> ColumnNames => columns ??= iSearch.GetColumnNames(handle);
+
+		/// <inheritdoc/>
+		public SearchRow Current => new(this);
+
+		object IEnumerator.Current => Current;
+
+		void IDisposable.Dispose()
+		{
+			handle.Dispose();
+			GC.SuppressFinalize(this);
+		}
+
+		/// <inheritdoc/>
+		public bool MoveNext() => iSearch.GetNextRow(handle) == HRESULT.S_OK;
+
+		/// <summary>
+		/// Gets the previous row of the search result. If the provider does not provide cursor support, it should return <see langword="false"/>.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true"/> if the enumerator was moved to the previous position, <see langword="false"/> if the enumerator has moved
+		/// before the beginning of the enumeration.
+		/// </returns>
+		/// <remarks>
+		/// When the <c>ADS_SEARCHPREF_CACHE_RESULTS</c> flag is not set, only forward scrolling is permitted, because the client might not
+		/// cache all the query results.
+		/// </remarks>
+		public bool MovePrevious() => iSearch.GetPreviousRow(handle) == HRESULT.S_OK;
+
+		/// <inheritdoc/>
+		public void Reset() => iSearch.GetFirstRow(handle);
+	}
+
+	/// <summary>A row of the search result.</summary>
+	/// <returns>A search result row that provides access to all column values</returns>
+	public class SearchRow : IEnumerable<object?[]>
+	{
+		private readonly SearchResult result;
+
+		internal SearchRow(SearchResult result) => this.result = result;
+
+		/// <summary>
+		/// Gets data from a named column of the search result.
+		/// </summary>
+		/// <param name="columnName">Provides the name of the column for which data is requested.</param>
+		/// <value>The <see cref="object"/>[].</value>
+		/// <returns>The column value from the current row of the search result.</returns>
+		/// <remarks>
+		/// This property tries to read the schema definition of the requested attribute so it can return the attribute values in the
+		/// appropriate format. However, this property can succeed even when the schema definition is not available, in which case the
+		/// value is returned as a byte array.
+		/// </remarks>
+		public object?[] this[string columnName] => result.iSearch.GetColumn(result.handle, columnName)?.pADsValues ?? [];
+
+		/// <inheritdoc/>
+		public IEnumerator<object?[]> GetEnumerator()
+		{
+			foreach (var col in result.ColumnNames)
+				yield return this[col];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
 }
 
 internal static class Util

@@ -511,6 +511,24 @@ public class ActiveDSTests
 	}
 
 	[Test]
+	public void IDirectorySearchTest2()
+	{
+		DirectorySearch o = new(ldapDomain);
+		o.Preferences.Add(ADS_SEARCHPREF.ADS_SEARCHPREF_SEARCH_SCOPE, ADS_SCOPE.ADS_SCOPE_SUBTREE);
+		o.Preferences.Add(ADS_SEARCHPREF.ADS_SEARCHPREF_SORT_ON, new ADS_SORTKEY("Name"));
+		o.Preferences.Add(ADS_SEARCHPREF.ADS_SEARCHPREF_CACHE_RESULTS, true);
+
+		List<string> attrs = ["ADsPath", "Name", "usnchanged"];
+		using var sres = o!.Search("(objectClass=*)", attrs.ToArray());
+		sres.Reset();
+
+		TestContext.WriteLine($"Columns: {string.Join(", ", sres.ColumnNames)}");
+		int i = 1;
+		while (sres.MoveNext())
+			TestContext.WriteLine($"{i++}: {string.Join(", ", sres.Current.Select(cv => string.Join(',', cv)))}");
+	}
+
+	[Test]
 	public void SecurityInterfacesTest()
 	{
 		IADsSecurityUtility util = new();
