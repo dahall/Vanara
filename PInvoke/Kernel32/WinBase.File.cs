@@ -199,6 +199,46 @@ public static partial class Kernel32
 		FILE_ACTION_RENAMED_NEW_NAME = 0x00000005,
 	}
 
+	/// <summary>Specifies the type of information that should be retrieved.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ne-minwinbase-file_info_by_name_class typedef enum
+	// _FILE_INFO_BY_NAME_CLASS { FileStatByNameInfo, FileStatLxByNameInfo, FileCaseSensitiveByNameInfo, FileStatBasicByNameInfo,
+	// MaximumFileInfoByNameClass } FILE_INFO_BY_NAME_CLASS, *PFILE_INFO_BY_NAME_CLASS;
+	[PInvokeData("minwinbase.h", MSDNShortId = "NE:minwinbase._FILE_INFO_BY_NAME_CLASS")]
+	public enum FILE_INFO_BY_NAME_CLASS
+	{
+		/// <summary>
+		/// <para>Minimal stat info should be queried. See</para>
+		/// <para>FILE_STAT_INFORMATION</para>
+		/// <para>.</para>
+		/// </summary>
+		[CorrespondingType(typeof(FILE_STAT_INFORMATION))]
+		FileStatByNameInfo,
+
+		/// <summary>
+		/// <para>Additional (Linux-oriented) stat info should be queried. See</para>
+		/// <para>FILE_STAT_LX_INFORMATION</para>
+		/// <para>.</para>
+		/// </summary>
+		[CorrespondingType(typeof(FILE_STAT_LX_INFORMATION))]
+		FileStatLxByNameInfo,
+
+		/// <summary>
+		/// <para>Info about case-sensitivity should be queried. See</para>
+		/// <para>FILE_CASE_SENSITIVE_INFORMATION</para>
+		/// <para>.</para>
+		/// </summary>
+		[CorrespondingType(typeof(FILE_CASE_SENSITIVE_INFORMATION))]
+		FileCaseSensitiveByNameInfo,
+
+		/// <summary>
+		/// <para>Extended stat info should be queried. See</para>
+		/// <para>FILE_STAT_BASIC_INFORMATION</para>
+		/// <para>.</para>
+		/// </summary>
+		[CorrespondingType(typeof(FILE_STAT_BASIC_INFORMATION))]
+		FileStatBasicByNameInfo,
+	}
+
 	/// <summary>
 	/// <para>
 	/// Identifies the type of file information that <see cref="GetFileInformationByHandleEx"/> should retrieve or
@@ -445,6 +485,54 @@ public static partial class Kernel32
 
 		/// <summary>Return the opened file name (not normalized).</summary>
 		FILE_NAME_OPENED = 0x8,
+	}
+
+	/// <summary>Specifies the Linux file type and file system permissions.</summary>
+	[Flags]
+	public enum LinuxFileAttr : uint
+	{
+		/// <summary>Bits that determine the symlink.</summary>
+		S_IFLNK = 0xA000,
+		/// <summary>Bits that determine the socket.</summary>
+		S_IFSOCK = 0xC000,
+		/// <summary>Bits that determine the block device.</summary>
+		S_IFBLK = 0x6000,
+		/// <summary>File type mask</summary>
+		S_IFMT = 0xF000,
+		/// <summary>Directory</summary>
+		S_IFDIR = 0x4000,
+		/// <summary>Character special</summary>
+		S_IFCHR = 0x2000,
+		/// <summary>Pipe</summary>
+		S_IFIFO = 0x1000,
+		/// <summary>Regular</summary>
+		S_IFREG = 0x8000,
+		/// <summary>Read permission, owner</summary>
+		S_IREAD = 0x0100,
+		/// <summary>Write permission, owner</summary>
+		S_IWRITE = 0x0080,
+		/// <summary>Execute/search permission, owner</summary>
+		S_IEXEC = 0x0040,
+	}
+
+	/// <summary>The flags associated with FILE_STAT_LX_INFORMATION that specify which metadata fields were present in the file.</summary>
+	[Flags]
+	public enum LX_FILE_METADATA : uint
+	{
+		/// <summary/>
+		LX_FILE_METADATA_HAS_UID = 0x1,
+
+		/// <summary/>
+		LX_FILE_METADATA_HAS_GID = 0x2,
+
+		/// <summary/>
+		LX_FILE_METADATA_HAS_MODE = 0x4,
+
+		/// <summary/>
+		LX_FILE_METADATA_HAS_DEVICE_ID = 0x8,
+
+		/// <summary/>
+		LX_FILE_CASE_SENSITIVE_DIR = 0x10,
 	}
 
 	/// <summary>MoveFileEx options.</summary>
@@ -1722,6 +1810,54 @@ public static partial class Kernel32
 	[PInvokeData("winbase.h", MSDNShortId = "3caf38f6-e853-4057-a192-71cda4443dbd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetFileBandwidthReservation(HFILE hFile, out uint lpPeriodMilliseconds, out uint lpBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] out bool pDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
+
+	/// <summary>
+	/// <para>Important</para>
+	/// <para>Some information relates to a prerelease product which may be substantially modified before it's commercially released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</para>
+	/// </summary>
+	/// <param name="FileName">The file name/path.</param>
+	/// <param name="FileInformationClass">Specifies the type of information that should be retrieved.</param>
+	/// <param name="FileInfoBuffer">A pointer to a buffer where the retrieved data will be stored.</param>
+	/// <param name="FileInfoBufferSize">Specifies the size of the FileInfoBuffer buffer.</param>
+	/// <returns>If the function fails, the return value is <c>FALSE</c>, otherwise <c>TRUE</c>. To get extended error information, call GetLastError.</returns>
+	/// <remarks>
+	/// <para>This routine returns the requested information about the file specified by FileName. It does so without opening and returning a handle to the file. The information returned is determined by the FileInformationClass that is specified and is placed into the caller's buffer.</para>
+	/// <para>The FileInformationClass argument must be one of the following values from the FILE_INFO_BY_NAME_CLASS enumeration. The following list describes the type which must be used for the FileInfoBuffer parameter:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>FileInformationClass type</description>
+	/// <description>FileInfoBuffer type</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>FileStatByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileStatLxByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_LX_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileCaseSensitiveByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_CASE_SENSITIVE_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileStatBasicByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_BASIC_INFORMATION.</description>
+	/// </item>
+	/// </list>
+	/// <para>Examples</para>
+	/// <para>The following shows an example of querying information of file information class <c>FileStatByNameInfo</c> by filepath using <c>GetFileInformationByName</c>. See FILE_STAT_INFORMATION for additional details on the query results.</para>
+	/// <para>The following shows an example of querying information of file information class <c>FileStatLxByNameInfo</c> by filepath using <c>GetFileInformationByName</c>. See FILE_STAT_LX_INFORMATION for additional details on the query results.</para>
+	/// <para>The following shows an example of querying case-sensitive information for file information class <c>FileCaseSensitiveByNameInfo</c> with a filepath by using <c>GetFileInformationByName</c>. See FILE_CASE_SENSITIVE_INFORMATION for additional details on the query results.</para>
+	/// <para>The following shows an example of querying information of file information class <c>FileStatBasicByNameInfo</c> with a filepath by using <c>GetFileInformationByName</c>. See <c>FILE_STAT_BASIC_INFORMATION</c> for additional details on the query results.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyname
+	// BOOL GetFileInformationByName( PCWSTR FileName, FILE_INFO_BY_NAME_CLASS FileInformationClass, PVOID FileInfoBuffer, ULONG FileInfoBufferSize );
+	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.GetFileInformationByName")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool GetFileInformationByName([MarshalAs(UnmanagedType.LPWStr)] string FileName,
+		FILE_INFO_BY_NAME_CLASS FileInformationClass, IntPtr FileInfoBuffer, uint FileInfoBufferSize);
 
 	/// <summary>
 	/// <para>Retrieves file information for the specified file.</para>
@@ -5013,12 +5149,522 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para><c>TRUE</c> if the file in the delete queue; otherwise, <c>false</c>.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.U1)] public bool DeletePending;
+		[MarshalAs(UnmanagedType.U1)]
+		public bool DeletePending;
 
 		/// <summary>
 		/// <para><c>TRUE</c> if the file is a directory; otherwise, <c>false</c>.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.U1)] public bool Directory;
+		[MarshalAs(UnmanagedType.U1)]
+		public bool Directory;
+	}
+
+	/// <summary>
+	/// <c>FILE_STAT_INFORMATION</c> contains metadata about a file.
+	/// </summary>
+	/// <remarks>
+	/// <c>NtQueryInformationByName</c> and <c>NtQueryInformationFile</c> return information in a <c>FILE_STAT_INFORMATION</c> structure
+	/// when their <c>FileInformationClass</c> parameter is FileStatInformation.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_stat_information typedef struct
+	// _FILE_STAT_INFORMATION { LARGE_INTEGER FileId; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime;
+	// LARGE_INTEGER ChangeTime; LARGE_INTEGER AllocationSize; LARGE_INTEGER EndOfFile; ULONG FileAttributes; ULONG ReparseTag; ULONG
+	// NumberOfLinks; ACCESS_MASK EffectiveAccess; } FILE_STAT_INFORMATION, *PFILE_STAT_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_STAT_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_STAT_INFORMATION
+	{
+		/// <summary>
+		/// Specifies the id of a file.
+		/// </summary>
+		public long FileId;
+
+		/// <summary>
+		/// Specifies the creation time of a file.
+		/// </summary>
+		public FILETIME CreationTime;
+
+		/// <summary>
+		/// Specifies the last time a file was accessed.
+		/// </summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>
+		/// Specifies the last time a file was written to.
+		/// </summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>
+		/// Specifies the last time a file was changed.
+		/// </summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// File allocation size, in bytes. Usually this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>
+		/// Absolute new end-of-file position as a byte offset from the start of the file. <c>EndOfFile</c> specifies the byte offset to the
+		/// end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
+		/// <c>EndOfFile</c> is the offset to the byte immediately following the last valid byte in the file.
+		/// </summary>
+		public long EndOfFile;
+
+		/// <summary>
+		/// <para>File attributes, which can be any valid combination of the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Attribute</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_READONLY</description>
+		/// <description>0x00000001</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
+		/// <description>0x00000002</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
+		/// <description>0x00000004</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
+		/// <description>0x00000010</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
+		/// <description>0x00000020</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NORMAL</description>
+		/// <description>0x00000080</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FileAttributes FileAttributes;
+
+		/// <summary>
+		/// Reparse point tag. See About reparse points for more information.
+		/// </summary>
+		public uint ReparseTag;
+
+		/// <summary>
+		/// Specifies the number of links to the file.
+		/// </summary>
+		public uint NumberOfLinks;
+
+		/// <summary>
+		/// Specifies the access rights of the file.
+		/// </summary>
+		public ACCESS_MASK EffectiveAccess;
+	}
+
+	/// <summary>
+	/// <c>FILE_STAT_LX_INFORMATION</c> contains Linux metadata extended attributes present on the file. This is used and created by the
+	/// Windows Subsystem for Linux (WSL).
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// <c>NtQueryInformationByName</c> and <c>NtQueryInformationFile</c> return information in a <c>FILE_STAT_LX_INFORMATION</c> structure
+	/// when their <c>FileInformationClass</c> parameter is FileStatLxInformation.
+	/// </para>
+	/// <para>
+	/// For more information about absolute and relative symbolic links, see Creating Symbolic Links in the Microsoft Windows SDK documentation.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_stat_lx_information typedef struct
+	// _FILE_STAT_LX_INFORMATION { LARGE_INTEGER FileId; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER
+	// LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER AllocationSize; LARGE_INTEGER EndOfFile; ULONG FileAttributes; ULONG
+	// ReparseTag; ULONG NumberOfLinks; ACCESS_MASK EffectiveAccess; ULONG LxFlags; ULONG LxUid; ULONG LxGid; ULONG LxMode; ULONG
+	// LxDeviceIdMajor; ULONG LxDeviceIdMinor; } FILE_STAT_LX_INFORMATION, *PFILE_STAT_LX_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_STAT_LX_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_STAT_LX_INFORMATION
+	{
+		/// <summary>
+		/// Specifies the id of a file.
+		/// </summary>
+		public long FileId;
+
+		/// <summary>
+		/// Specifies the creation time of a file.
+		/// </summary>
+		public FILETIME CreationTime;
+
+		/// <summary>
+		/// Specifies the last time a file was accessed.
+		/// </summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>
+		/// Specifies the last time a file was written to.
+		/// </summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>
+		/// Specifies the last time a file was changed.
+		/// </summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// File allocation size, in bytes. Usually this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>
+		/// Absolute new end-of-file position as a byte offset from the start of the file. <c>EndOfFile</c> specifies the byte offset to the
+		/// end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
+		/// <c>EndOfFile</c> is the offset to the byte immediately following the last valid byte in the file.
+		/// </summary>
+		public long EndOfFile;
+
+		/// <summary>
+		/// <para>File attributes, which can be any valid combination of the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Attribute</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_READONLY</description>
+		/// <description>0x00000001</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
+		/// <description>0x00000002</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
+		/// <description>0x00000004</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
+		/// <description>0x00000010</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
+		/// <description>0x00000020</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NORMAL</description>
+		/// <description>0x00000080</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FileAttributes FileAttributes;
+
+		/// <summary>
+		/// Reparse point tag. See About reparse points for more information.
+		/// </summary>
+		public uint ReparseTag;
+
+		/// <summary>
+		/// Specifies the number of links to the file.
+		/// </summary>
+		public uint NumberOfLinks;
+
+		/// <summary>
+		/// Specifies the access rights of the file.
+		/// </summary>
+		public ACCESS_MASK EffectiveAccess;
+
+		/// <summary>
+		/// <para>The flags associated with <c>FILE_STAT_LX_INFORMATION</c> that specify which metadata fields were present in the file.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Flag</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>LX_FILE_METADATA_HAS_UID</description>
+		/// <description>x1</description>
+		/// </item>
+		/// <item>
+		/// <description>LX_FILE_METADATA_HAS_GID</description>
+		/// <description>x2</description>
+		/// </item>
+		/// <item>
+		/// <description>LX_FILE_METADATA_HAS_MODE</description>
+		/// <description>x4</description>
+		/// </item>
+		/// <item>
+		/// <description>LX_FILE_METADATA_HAS_DEVICE_ID</description>
+		/// <description>x8</description>
+		/// </item>
+		/// <item>
+		/// <description>LX_FILE_CASE_SENSITIVE_DIR</description>
+		/// <description>x10</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public LX_FILE_METADATA LxFlags;
+
+		/// <summary>
+		/// Specifies the User id of the file.
+		/// </summary>
+		public uint LxUid;
+
+		/// <summary>
+		/// Specifies the Group id of the file.
+		/// </summary>
+		public uint LxGid;
+
+		/// <summary>
+		/// <para>Specifies the Linux file type and file system permissions. These values are defined in sys/stat.h in the Windows SDK.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>S_IFLNK</description>
+		/// </item>
+		/// <item>
+		/// <description>S_IFSOCK</description>
+		/// </item>
+		/// <item>
+		/// <description>S_IFBLK</description>
+		/// </item>
+		/// </list>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Flag</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description>_S_IFMT 0xF000</description>
+		/// <description>File type mask</description>
+		/// </item>
+		/// <item>
+		/// <description>_S_IFDIR 0x4000</description>
+		/// <description>Directory</description>
+		/// </item>
+		/// <item>
+		/// <description>_S_IFCHR 0x2000</description>
+		/// <description>Character special</description>
+		/// </item>
+		/// <item>
+		/// <description>_S_IFIFO 0x1000</description>
+		/// <description>Pipe</description>
+		/// </item>
+		/// <item>
+		/// <description>_S_IFREG 0x8000</description>
+		/// <description>Regular</description>
+		/// </item>
+		/// <item>
+		/// <description>_S_IREAD 0x0100</description>
+		/// <description>Read permission, owner</description>
+		/// </item>
+		/// <item>
+		/// <description>_S_IWRITE 0x0080</description>
+		/// <description>Write permission, owner</description>
+		/// </item>
+		/// <item>
+		/// <description>_S_IEXEC 0x0040</description>
+		/// <description>Execute/search permission, owner</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public LinuxFileAttr LxMode;
+
+		/// <summary>
+		/// For device files (_S_IFCHR or S_IFBLK), specifies the device major number. For other file types, this field is not used.
+		/// </summary>
+		public uint LxDeviceIdMajor;
+
+		/// <summary>
+		/// For device files (_S_IFCHR or S_IFBLK), specifies the device minor number. For other file types, this field is not used.
+		/// </summary>
+		public uint LxDeviceIdMinor;
+	}
+
+	/// <summary>Per-directory case-sensitive information.</summary>
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_CASE_SENSITIVE_INFORMATION")]
+	[Flags]
+	public enum FILE_CS_FLAG : uint
+	{
+		/// <summary>Specifies the directory is case-sensitive.</summary>
+		FILE_CS_FLAG_CASE_SENSITIVE_DIR = 0x00000001,
+	}
+
+	/// <summary>
+	/// The <c>FILE_CASE_SENSITIVE_INFORMATION</c> structure is used to query or set per-directory case-sensitive information.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_case_sensitive_information typedef struct
+	// _FILE_CASE_SENSITIVE_INFORMATION { ULONG Flags; } FILE_CASE_SENSITIVE_INFORMATION, *PFILE_CASE_SENSITIVE_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_CASE_SENSITIVE_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_CASE_SENSITIVE_INFORMATION
+	{
+		/// <summary>
+		/// <para>Contains one the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Flag</description>
+		/// <description>Value</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description>FILE_CS_FLAG_CASE_SENSITIVE_DIR</description>
+		/// <description>0x00000001</description>
+		/// <description>Specifies the directory is case-sensitive.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FILE_CS_FLAG Flags;
+	}
+
+	/// <summary>
+	/// <c>FILE_STAT_BASIC_INFORMATION</c> contains basic metadata about a file.
+	/// </summary>
+	/// <remarks>
+	/// <para>This information can be queried in either of the following ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// <para>
+	/// Call <c>ZwQueryDirectoryFile</c>, passing <c>FileStatBasicInformation</c> as the value of <c>FileInformationClass</c> and passing a
+	/// caller-allocated, <c>FILE_ID_EXTD_DIR_INFORMATION</c>-structured buffer as the value of <c>FileInformation</c>.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>Create an IRP with major function code IRP_MJ_DIRECTORY_CONTROL and minor function code IRP_MN_QUERY_DIRECTORY.</para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>No specific access rights are required to query this information.</para>
+	/// <para>
+	/// File reference numbers, also called file IDs, are guaranteed to be unique only within a static file system. They are not guaranteed
+	/// to be unique over time, because file systems are free to reuse them. Nor are they guaranteed to remain constant. For example, the
+	/// FAT file system generates the file reference number for a file from the byte offset of the file's directory entry record (DIRENT) on
+	/// the disk. Defragmentation can change this byte offset. Thus a FAT file reference number can change over time.
+	/// </para>
+	/// <para>
+	/// All dates and times are in absolute system-time format. Absolute system time is the number of 100-nanosecond intervals since the
+	/// start of the year 1601.
+	/// </para>
+	/// <para>
+	/// This structure must be aligned on a LONGLONG (8-byte) boundary. If a buffer contains two or more of these structures, the
+	/// <c>NextEntryOffset</c> value in each entry, except the last, falls on an 8-byte boundary.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-file_stat_basic_information typedef struct
+	// _FILE_STAT_BASIC_INFORMATION { LARGE_INTEGER FileId; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER
+	// LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER AllocationSize; LARGE_INTEGER EndOfFile; ULONG FileAttributes; ULONG
+	// ReparseTag; ULONG NumberOfLinks; ULONG DeviceType; ULONG DeviceCharacteristics; ULONG Reserved; LARGE_INTEGER VolumeSerialNumber;
+	// FILE_ID_128 FileId128; } FILE_STAT_BASIC_INFORMATION, *PFILE_STAT_BASIC_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_STAT_BASIC_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_STAT_BASIC_INFORMATION
+	{
+		/// <summary>
+		/// Specifies the identifier of a file.
+		/// </summary>
+		public long FileId;
+
+		/// <summary>
+		/// Specifies the creation time of a file.
+		/// </summary>
+		public FILETIME CreationTime;
+
+		/// <summary>
+		/// Specifies the last time a file was accessed.
+		/// </summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>
+		/// Specifies the last time a file was written to.
+		/// </summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>
+		/// Specifies the last time a file was changed.
+		/// </summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// File allocation size, in bytes. Usually this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>
+		/// The absolute new end-of-file position as a byte offset from the start of the file. <c>EndOfFile</c> specifies the byte offset to
+		/// the end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
+		/// <c>EndOfFile</c> is the offset to the byte immediately following the last valid byte in the file.
+		/// </summary>
+		public long EndOfFile;
+
+		/// <summary>
+		/// <para>File attributes, which can be any valid combination of the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Attribute</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_READONLY</description>
+		/// <description>0x00000001</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
+		/// <description>0x00000002</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
+		/// <description>0x00000004</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
+		/// <description>0x00000010</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
+		/// <description>0x00000020</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NORMAL</description>
+		/// <description>0x00000080</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FileAttributes FileAttributes;
+
+		/// <summary>
+		/// Specifies the tag for a reparse point. See About reparse points for more information.
+		/// </summary>
+		public uint ReparseTag;
+
+		/// <summary>
+		/// Specifies the number of links to the file.
+		/// </summary>
+		public uint NumberOfLinks;
+
+		/// <summary>
+		/// Set when a driver calls <c>IoCreateDevice</c> as appropriate for the type of underlying device. For more information, see
+		/// Specifying Device Types.
+		/// </summary>
+		public FILE_DEVICE DeviceType;
+
+		/// <summary>
+		/// The device characteristics. For a description of relevant values, see <c>DEVICE_OBJECT</c>.
+		/// </summary>
+		public CM_FILE DeviceCharacteristics;
+
+		/// <summary>
+		/// Reserved for system use.
+		/// </summary>
+		public uint Reserved;
+
+		/// <summary>
+		/// Serial number of the volume where the file is located.
+		/// </summary>
+		public long VolumeSerialNumber;
+
+		/// <summary>
+		/// The 128-byte file reference number for the file. This number is generated and assigned to the file by the file system.
+		/// </summary>
+		public FILE_ID_128 FileId128;
 	}
 
 	/// <summary>
