@@ -5472,6 +5472,46 @@ public static partial class Kernel32
 	public static extern IntPtr TlsGetValue(uint dwTlsIndex);
 
 	/// <summary>
+	/// <para>Important</para>
+	/// <para>
+	/// Some information relates to a prerelease product which may be substantially modified before it's commercially released. Microsoft
+	/// makes no warranties, express or implied, with respect to the information provided here.
+	/// </para>
+	/// </summary>
+	/// <param name="dwTlsIndex">The TLS index that was allocated by the TlsAlloc function.</param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, the return value is the value stored in the calling thread's TLS slot associated with the specified index.
+	/// If dwTlsIndex is a valid index allocated by a successful call to TlsAlloc, this function always succeeds.
+	/// </para>
+	/// <para>If the function fails, the return value is zero.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// TLS indexes are typically allocated by the TlsAlloc function during process or DLL initialization. After a TLS index is allocated,
+	/// each thread of the process can use it to access its own TLS slot for that index. A thread specifies a TLS index in a call to
+	/// TlsSetValue to store a value in its slot. The thread specifies the same index in a subsequent call to <c>TlsGetValue2</c> to
+	/// retrieve the stored value.
+	/// </para>
+	/// <para>
+	/// <c>TlsGetValue2</c> was implemented with speed as the primary goal. The function performs minimal parameter validation and error
+	/// checking. In particular, it succeeds if dwTlsIndex is in the range 0 through ( <c>TLS_MINIMUM_AVAILABLE</c>– 1). It is up to the
+	/// programmer to ensure that the index is valid and that the thread calls TlsSetValue before calling <c>TlsGetValue2</c>.
+	/// </para>
+	/// <para>
+	/// This function is identical to <c>TlsGetValue</c> except that it doesn't set the thread's last error. Applications calling this
+	/// function should avoid using 0 as a valid value, because <c>GetLastError</c> cannot be called to check if the function failed.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>See Using Thread Local Storage or Using Thread Local Storage in a Dynamic-Link Library.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsgetvalue2
+	// LPVOID TlsGetValue2( [in] DWORD dwTlsIndex );
+	[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.TlsGetValue2")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	public static extern IntPtr TlsGetValue2(uint dwTlsIndex);
+
+	/// <summary>
 	/// Stores a value in the calling thread's thread local storage (TLS) slot for the specified TLS index. Each thread of a process has its
 	/// own slot for each TLS index.
 	/// </summary>
