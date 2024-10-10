@@ -2495,11 +2495,11 @@ public static partial class User32
 		public POINTER_INPUT_TYPE type;
 
 		/// <summary>Basic touch information common to all pointer types.</summary>
-		[FieldOffset(4)]
+		[FieldOffset(8)]
 		public POINTER_TOUCH_INFO touchInfo;
 
 		/// <summary>Basic pen information common to all pointer types.</summary>
-		[FieldOffset(4)]
+		[FieldOffset(8)]
 		public POINTER_PEN_INFO penInfo;
 	}
 
