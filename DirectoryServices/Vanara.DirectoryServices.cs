@@ -1838,9 +1838,9 @@ public class ADsSchemaProperty : ADsBaseObject<IADsProperty>
 /// </summary>
 public class ADsSchemaPropertySyntax : ADsBaseObject<IADs>
 {
-	private readonly IADsSyntax? isyntax;
+	private readonly IADsSyntax isyntax;
 
-	internal ADsSchemaPropertySyntax(IADs intf) : base(intf) => isyntax = intf as IADsSyntax;
+	internal ADsSchemaPropertySyntax(IADs intf) : base(intf) => isyntax = (IADsSyntax)intf;
 
 	/// <summary>Retrieves and sets a value of the VT_xxx constant for the Automation data type that represents this syntax.</summary>
 	public Ole32.VARTYPE OleAutoDataType
