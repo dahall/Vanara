@@ -147,7 +147,7 @@ public class ActiveDSTests
 		Write("  HelpFileContext", () => o!.Schema.HelpFileContext);
 		Write("  Qualifiers", () => o!.Schema.Qualifiers);
 		TestContext.WriteLine("  Properties:");
-		foreach (var child in o!.Schema.Children)
+		foreach (var child in o!.Schema.Children.OfType<ADsSchemaProperty>())
 		{
 			var pName = child.Name;
 			Write("    ============", () => pName);

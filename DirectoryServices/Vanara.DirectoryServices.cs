@@ -15,17 +15,17 @@ public interface IADsContainerObject : IADsObject
 {
 	/// <summary>
 	/// <para>
-	/// The <see cref="ADsContainer{T}"/> object enables an ADSI object to create, delete, and manage contained ADSI objects. Container objects
+	/// The <see cref="ADsContainer"/> object enables an ADSI object to create, delete, and manage contained ADSI objects. Container objects
 	/// represent hierarchical directory trees, such as in a file system, and to organize the directory hierarchy.
 	/// </para>
 	/// <para>
-	/// You can use the <see cref="ADsContainer{T}"/> object to either enumerate contained objects or manage their lifecycle. An example would
-	/// be to recursively navigate a directory tree. By querying the <see cref="ADsContainer{T}"/> object on an ADSI object, you can determine
+	/// You can use the <see cref="ADsContainer"/> object to either enumerate contained objects or manage their lifecycle. An example would
+	/// be to recursively navigate a directory tree. By querying the <see cref="ADsContainer"/> object on an ADSI object, you can determine
 	/// if the object has any children. You can continue this process for the newly found container objects. To create, copy, or delete an
 	/// object, send the request to the container object to perform the task.
 	/// </para>
 	/// </summary>
-	IReadOnlyCollection<IADsObject> Children { get; }
+	ADsContainer Children { get; }
 }
 
 /// <summary>Interface that represents an ADs object.</summary>
@@ -210,7 +210,7 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 	}
 
 	/// <inheritdoc/>
-	protected ADsContainer<T> GetContainer<T>() where T : class, IADsObject
+	protected ADsContainer GetContainer()
 	{
 		try
 		{
@@ -227,15 +227,22 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 		int IADsContainer.Count => 0;
 		object? IADsContainer.Filter { get => null; set => throw new NotImplementedException(); }
 		object? IADsContainer.Hints { get => null; set => throw new NotImplementedException(); }
+
 		object IADsContainer.CopyHere(string SourceName, string? NewName) => throw new NotImplementedException();
+
 		object IADsContainer.Create(string ClassName, string RelativeName) => throw new NotImplementedException();
+
 		void IADsContainer.Delete(string? bstrClassName, string bstrRelativeName) => throw new NotImplementedException();
+
 		IEnumerator IADsContainer.GetEnumerator()
 		{
 			yield break;
 		}
+
 		IEnumerator IEnumerable.GetEnumerator() => ((IADsContainer)this).GetEnumerator();
+
 		object IADsContainer.GetObject(string? ClassName, string RelativeName) => throw new NotImplementedException();
+
 		object IADsContainer.MoveHere(string SourceName, string? NewName) => throw new NotImplementedException();
 	}
 }
@@ -294,7 +301,8 @@ public class ADsCollection<T> : IDictionary<string, T> where T : class, IADsObje
 	public bool Contains(KeyValuePair<string, T> item) => TryGetValue(item.Key, out var t) && Equals(item.Value, t);
 
 	/// <inheritdoc/>
-	public bool ContainsKey(string key) { try { _ = c.GetObject(key); return true; } catch { return false; } }
+	public bool ContainsKey(string key)
+	{ try { _ = c.GetObject(key); return true; } catch { return false; } }
 
 	/// <inheritdoc/>
 	public void CopyTo(KeyValuePair<string, T>[] array, int arrayIndex)
@@ -307,22 +315,29 @@ public class ADsCollection<T> : IDictionary<string, T> where T : class, IADsObje
 	public IEnumerator<KeyValuePair<string, T>> GetEnumerator() => GetDict().GetEnumerator();
 
 	/// <inheritdoc/>
-	public bool Remove(string key) { try { c.Remove(key); return true; } catch { return false; } }
+	public bool Remove(string key)
+	{ try { c.Remove(key); return true; } catch { return false; } }
 
 	/// <inheritdoc/>
 	public bool Remove(KeyValuePair<string, T> item) => Contains(item) && Remove(item.Key);
 
 	/// <inheritdoc/>
 #pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
-	public bool TryGetValue(string key, [NotNullWhen(true)] out T? value) { try { value = this[key]; return true; } catch { value = default; return false; } }
+
+	public bool TryGetValue(string key, [NotNullWhen(true)] out T? value)
+	{ try { value = this[key]; return true; } catch { value = default; return false; } }
+
 #pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	private IEnumerable<IADs> Enum() => c.Cast<IADs>();
+
 	private Dictionary<string, T> GetDict() => GetValues().ToDictionary(o => o.Name);
+
 	private IEnumerable<string> GetKeys() => Enum().Select(i => i.Name);
+
 	private IEnumerable<T> GetValues() => Enum().Select(ADsObject.GetTypedObj).WhereNotNull().OfType<T>();
 }
 
@@ -336,7 +351,7 @@ public class ADsCollection<T> : IDictionary<string, T> where T : class, IADsObje
 /// </summary>
 public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject
 {
-	private ADsContainer<IADsObject>? children;
+	private ADsContainer? children;
 	private ADsComputerOperations? ops;
 
 	internal ADsComputer(IADs intf) : base((IADsComputer)intf)
@@ -344,7 +359,7 @@ public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject
 	}
 
 	/// <inheritdoc/>
-	public ADsContainer<IADsObject> Children => children ??= GetContainer<IADsObject>();
+	public ADsContainer Children => children ??= GetContainer();
 
 	/// <summary>Gets the globally unique identifier assigned to each computer.</summary>
 	public Guid? ComputerID => TryGetProp(() => Interface.ComputerID, out var r) ? new(r!) : null;
@@ -413,8 +428,6 @@ public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject
 
 	/// <summary>Gets or sets the size, in megabytes, of the disk.</summary>
 	public string? StorageCapacity { get => GetProp(() => Interface.StorageCapacity); set => Interface.StorageCapacity = value ?? string.Empty; }
-
-	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => (IReadOnlyCollection<IADsObject>)Children;
 }
 
 /// <summary>
@@ -438,12 +451,12 @@ public class ADsComputerOperations : ADsBaseObject<IADsComputerOperations>
 
 /// <summary>
 /// <para>
-/// The <see cref="ADsContainer{T}"/> class enables an ADSI container object to create, delete, and manage contained ADSI objects. Container
+/// The <see cref="ADsContainer"/> class enables an ADSI container object to create, delete, and manage contained ADSI objects. Container
 /// objects represent hierarchical directory trees, such as in a file system, and to organize the directory hierarchy.
 /// </para>
 /// <para>
-/// You can use the <see cref="ADsContainer{T}"/> class to either enumerate contained objects or manage their lifecycle. An example would be to
-/// recursively navigate a directory tree. By querying the <see cref="ADsContainer{T}"/> class on an ADSI object, you can determine if the
+/// You can use the <see cref="ADsContainer"/> class to either enumerate contained objects or manage their lifecycle. An example would be to
+/// recursively navigate a directory tree. By querying the <see cref="ADsContainer"/> class on an ADSI object, you can determine if the
 /// object has any children. If the interface is not supported, the object is a leaf. Otherwise, it is a container. You can continue this
 /// process for the newly found container objects. To create, copy, or delete an object, send the request to the container object to perform
 /// the task.
@@ -466,7 +479,7 @@ public class ADsComputerOperations : ADsBaseObject<IADsComputerOperations>
 /// <para>The following code example determines if an ADSI object is a container.</para>
 /// <para>The following code example determines if an ADSI object is a container.</para>
 /// </remarks>
-public class ADsContainer<T> : ICollection<T> where T : IADsObject
+public class ADsContainer : ICollection<IADsObject>
 {
 	internal string? classFilter = null;
 
@@ -502,20 +515,20 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	public IADsContainer Interface { get; private set; }
 
 	/// <inheritdoc/>
-	bool ICollection<T>.IsReadOnly => false;
+	bool ICollection<IADsObject>.IsReadOnly => false;
 
-	/// <summary>Gets the <typeparamref name="T"/> value with the specified relative name.</summary>
-	/// <value>The <typeparamref name="T"/> value instance.</value>
+	/// <summary>Gets the <see cref="IADsObject"/> value with the specified relative name.</summary>
+	/// <value>The <see cref="IADsObject"/> value instance.</value>
 	/// <param name="relativeName">A string that specifies the relative distinguished name of the object to retrieve.</param>
-	/// <returns>The <typeparamref name="T"/> value.</returns>
-	public T this[string relativeName] => I2T((IADs)Interface.GetObject(null, relativeName));
+	/// <returns>The <see cref="IADsObject"/> value.</returns>
+	public IADsObject this[string relativeName] => I2T((IADs)Interface.GetObject(null, relativeName));
 
-	/// <summary>Gets the <typeparamref name="T"/> value with the specified relative name and class.</summary>
-	/// <value>The <typeparamref name="T"/> value instance.</value>
+	/// <summary>Gets the <see cref="IADsObject"/> value with the specified relative name and class.</summary>
+	/// <value>The <see cref="IADsObject"/> value instance.</value>
 	/// <param name="relativeName">A string that specifies the relative distinguished name of the object to retrieve.</param>
 	/// <param name="className">A string that specifies the name of the object class as of the object to retrieve.</param>
-	/// <returns>The <typeparamref name="T"/> value.</returns>
-	public T this[string className, string relativeName] => I2T((IADs)Interface.GetObject(className, relativeName));
+	/// <returns>The <see cref="IADsObject"/> value.</returns>
+	public IADsObject this[string className, string relativeName] => I2T((IADs)Interface.GetObject(className, relativeName));
 
 	/// <summary>
 	/// Sets up a request to create a directory object of the specified schema class and a given name in the container. The object is not
@@ -525,7 +538,7 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	/// <param name="className">Name of the schema class object to be created.</param>
 	/// <param name="relativeName">Relative name of the object as it is known in the underlying directory.</param>
 	/// <returns>Indirect pointer to the IDispatch interface on the newly created object.</returns>
-	public T Add(string className, string relativeName) =>
+	public IADsObject Add(string className, string relativeName) =>
 		I2T((IADs)Interface.Create(className, relativeName));
 
 	/// <inheritdoc/>
@@ -536,7 +549,7 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	}
 
 	/// <inheritdoc/>
-	public bool Contains(T item) => EnumInt().Any(i => i.ADsPath == item.Path);
+	public bool Contains(IADsObject item) => EnumInt().Any(i => i.ADsPath == item.Path);
 
 	/// <summary>The <c>IADsContainer::CopyHere</c> method creates a copy of the specified directory object in this container.</summary>
 	/// <param name="sourcePath">The ADsPath of the object to copy.</param>
@@ -552,7 +565,7 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	/// </para>
 	/// <para>The providers supplied with ADSI return the <c>E_NOTIMPL</c> error message.</para>
 	/// </remarks>
-	public T CopyHere(string sourcePath, string? newName = null) => I2T((IADs)Interface.CopyHere(sourcePath, newName));
+	public IADsObject CopyHere(string sourcePath, string? newName = null) => I2T((IADs)Interface.CopyHere(sourcePath, newName));
 
 	/// <summary>The <c>IADsContainer::CopyHere</c> method creates a copy of the specified directory object in this container.</summary>
 	/// <param name="item">The ADsPath of the object to copy.</param>
@@ -568,17 +581,17 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	/// </para>
 	/// <para>The providers supplied with ADSI return the <c>E_NOTIMPL</c> error message.</para>
 	/// </remarks>
-	public T CopyHere(T item, string? newName = null) => I2T((IADs)Interface.CopyHere(item.Path, newName));
+	public IADsObject CopyHere(IADsObject item, string? newName = null) => I2T((IADs)Interface.CopyHere(item.Path, newName));
 
 	/// <inheritdoc/>
-	public void CopyTo(T[] array, int arrayIndex)
+	public void CopyTo(IADsObject[] array, int arrayIndex)
 	{
 		var a = Enum().ToArray();
 		Array.Copy(a, 0, array, arrayIndex, a.Length);
 	}
 
 	/// <inheritdoc/>
-	public IEnumerator<T> GetEnumerator() => Enum().GetEnumerator();
+	public IEnumerator<IADsObject> GetEnumerator() => Enum().GetEnumerator();
 
 	/// <summary>
 	/// The <c>IADsContainer::MoveHere</c> method moves a specified object to the container that implements this interface.The method can be
@@ -659,7 +672,7 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	/// <para>The following code example shows how to use this method to rename an object.</para>
 	/// <para>The following code example moves a user object using the <c>IADsContainer::MoveHere</c> method.</para>
 	/// </remarks>
-	public T MoveHere(string sourcePath, string? newName = null) => I2T((IADs)Interface.MoveHere(sourcePath, newName));
+	public IADsObject MoveHere(string sourcePath, string? newName = null) => I2T((IADs)Interface.MoveHere(sourcePath, newName));
 
 	/// <summary>
 	/// The <c>IADsContainer::MoveHere</c> method moves a specified object to the container that implements this interface.The method can be
@@ -740,10 +753,10 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	/// <para>The following code example shows how to use this method to rename an object.</para>
 	/// <para>The following code example moves a user object using the <c>IADsContainer::MoveHere</c> method.</para>
 	/// </remarks>
-	public T MoveHere(T item, string? newName = null) => I2T((IADs)Interface.MoveHere(item.Path, newName));
+	public IADsObject MoveHere(IADsObject item, string? newName = null) => I2T((IADs)Interface.MoveHere(item.Path, newName));
 
 	/// <inheritdoc/>
-	public bool Remove(T item) => Remove(MakeRelative(item.Path), item.Class);
+	public bool Remove(IADsObject item) => Remove(MakeRelative(item.Path), item.Class);
 
 	/// <summary>Removes a specified directory object from this container.</summary>
 	/// <param name="relativeName">Name of the object as it is known in the underlying directory.</param>
@@ -782,18 +795,18 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 	}
 
 	/// <inheritdoc/>
-	void ICollection<T>.Add(T item) => throw new NotImplementedException();
+	void ICollection<IADsObject>.Add(IADsObject item) => throw new NotImplementedException();
 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	private static string MakeRelative(string path) => path.Split('/').Last();
 
-	private IEnumerable<T> Enum() => EnumInt().Select(I2T);
+	private IEnumerable<IADsObject> Enum() => EnumInt().Select(I2T);
 
 	private IEnumerable<IADs> EnumInt() => Interface.Cast<IADs>().Where(i => classFilter is null || string.Equals(i.Class, classFilter, StringComparison.InvariantCultureIgnoreCase));
 
-	private T I2T(IADs i) => (T)ADsObject.GetTypedObj(i);
+	private IADsObject I2T(IADs i) => ADsObject.GetTypedObj(i);
 }
 
 /// <summary>
@@ -805,16 +818,14 @@ public class ADsContainer<T> : ICollection<T> where T : IADsObject
 /// <remarks>For the WinNT provider supplied by Microsoft, this interface is implemented on the <c>WinNTDomain</c> object.</remarks>
 public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject
 {
-	private ADsContainer<IADsObject>? children;
+	private ADsContainer? children;
 
 	internal ADsDomain(IADs intf) : base((IADsDomain)intf)
 	{
 	}
 
 	/// <inheritdoc/>
-	public ADsContainer<IADsObject> Children => children ??= GetContainer<IADsObject>();
-
-	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => (IReadOnlyCollection<IADsObject>)Children;
+	public ADsContainer Children => children ??= GetContainer();
 }
 
 /// <summary>
@@ -831,7 +842,7 @@ public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject
 // TODO: Inherit from ADsService??
 public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObject
 {
-	private ADsContainer<ADsFileShare>? children;
+	private ADsContainer? children;
 	private ADsFileServiceOperations? ops;
 
 	internal ADsFileService(IADs intf) : base((IADsFileService)intf)
@@ -842,9 +853,7 @@ public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObjec
 	public ADsFileServiceOperations Operations => ops ??= new(Interface);
 
 	/// <inheritdoc/>
-	public ADsContainer<ADsFileShare> Children => children ??= GetContainer<ADsFileShare>();
-
-	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => Children.Cast<IADsObject>().ToList();
+	public ADsContainer Children => children ??= GetContainer();
 }
 
 /// <summary>
@@ -1583,7 +1592,7 @@ public class ADsResource : ADsBaseObject<IADsResource>
 /// </remarks>
 public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject
 {
-	private ADsContainer<ADsSchemaProperty>? cont;
+	private ADsContainer? cont;
 
 	internal ADsSchemaClass(string pathName) : base(pathName) => Interface.GetInfo();
 
@@ -1613,7 +1622,7 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject
 
 	/// <summary>Gets the collection of properties associated with this schema object.</summary>
 	/// <value>The schema properties.</value>
-	public ADsContainer<ADsSchemaProperty> Children
+	public ADsContainer Children
 	{
 		get
 		{
@@ -1734,8 +1743,6 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject
 	/// </remarks>
 	public ADsCollection<IADsObject>? Qualifiers => TryGetProp(Interface.Qualifiers, out var c) && c is not null ? new(c) : null;
 
-	IReadOnlyCollection<IADsObject> IADsContainerObject.Children => Children.Cast<IADsObject>().ToList();
-
 	private static List<T> ToADsList<T>(IEnumerable<string> paths) where T : IADsObject =>
 		paths.Select(ADsObject.GetObject).OfType<T>().ToList();
 
@@ -1839,7 +1846,7 @@ public class ADsSchemaPropertySyntax : ADsBaseObject<IADs>
 	public Ole32.VARTYPE OleAutoDataType
 	{
 		get => isyntax is not null && TryGetProp(() => isyntax.OleAutoDataType, out int? r) ? (Ole32.VARTYPE)r! : Ole32.VARTYPE.VT_EMPTY;
-		set { if (isyntax is not null) isyntax.OleAutoDataType = (int)value; else throw new NotImplementedException(); }
+		set => isyntax.OleAutoDataType = isyntax is not null ? (int)value : throw new NotImplementedException();
 	}
 }
 
