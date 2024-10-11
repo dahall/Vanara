@@ -1,38 +1,38 @@
 ## Vanara.PInvoke.Drt  
 PInvoke API (methods, structures and constants) imported from Windows Drt.dll for the Distributed Routing Table (DRT) API.
 
-- Includes methods from drt.dll, drtprov.dll, drttransport.dll  
+- Includes methods from Vanara.PInvoke.Drt.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Drt?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Drt?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Drt)  
 ### Methods - 100% API coverage (27 of 27 functions)  
-Native Method | Native DLL | Header | Managed Method  
---- | --- | --- | ---  
-[DrtClose](https://www.google.com/search?num=5&q=DrtClose+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtClose](https://github.com/dahall/Vanara/search?l=C%23&q=DrtClose)  
-[DrtContinueSearch](https://www.google.com/search?num=5&q=DrtContinueSearch+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtContinueSearch](https://github.com/dahall/Vanara/search?l=C%23&q=DrtContinueSearch)  
-[DrtCreateDerivedKey](https://www.google.com/search?num=5&q=DrtCreateDerivedKey+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtCreateDerivedKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateDerivedKey)  
-[DrtCreateDerivedKeySecurityProvider](https://www.google.com/search?num=5&q=DrtCreateDerivedKeySecurityProvider+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtCreateDerivedKeySecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateDerivedKeySecurityProvider)  
-[DrtCreateDnsBootstrapResolver](https://www.google.com/search?num=5&q=DrtCreateDnsBootstrapResolver+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtCreateDnsBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateDnsBootstrapResolver)  
-[DrtCreateIpv6UdpTransport](https://www.google.com/search?num=5&q=DrtCreateIpv6UdpTransport+site%3Alearn.microsoft.com) | drttransport.dll | drt.h | [Vanara.PInvoke.Drt.DrtCreateIpv6UdpTransport](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateIpv6UdpTransport)  
-[DrtCreateNullSecurityProvider](https://www.google.com/search?num=5&q=DrtCreateNullSecurityProvider+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtCreateNullSecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateNullSecurityProvider)  
-[DrtCreatePnrpBootstrapResolver](https://www.google.com/search?num=5&q=DrtCreatePnrpBootstrapResolver+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtCreatePnrpBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreatePnrpBootstrapResolver)  
-[DrtDeleteDerivedKeySecurityProvider](https://www.google.com/search?num=5&q=DrtDeleteDerivedKeySecurityProvider+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtDeleteDerivedKeySecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteDerivedKeySecurityProvider)  
-[DrtDeleteDnsBootstrapResolver](https://www.google.com/search?num=5&q=DrtDeleteDnsBootstrapResolver+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtDeleteDnsBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteDnsBootstrapResolver)  
-[DrtDeleteIpv6UdpTransport](https://www.google.com/search?num=5&q=DrtDeleteIpv6UdpTransport+site%3Alearn.microsoft.com) | drttransport.dll | drt.h | [Vanara.PInvoke.Drt.DrtDeleteIpv6UdpTransport](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteIpv6UdpTransport)  
-[DrtDeleteNullSecurityProvider](https://www.google.com/search?num=5&q=DrtDeleteNullSecurityProvider+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtDeleteNullSecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteNullSecurityProvider)  
-[DrtDeletePnrpBootstrapResolver](https://www.google.com/search?num=5&q=DrtDeletePnrpBootstrapResolver+site%3Alearn.microsoft.com) | drtprov.dll | drt.h | [Vanara.PInvoke.Drt.DrtDeletePnrpBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeletePnrpBootstrapResolver)  
-[DrtEndSearch](https://www.google.com/search?num=5&q=DrtEndSearch+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtEndSearch](https://github.com/dahall/Vanara/search?l=C%23&q=DrtEndSearch)  
-[DrtGetEventData](https://www.google.com/search?num=5&q=DrtGetEventData+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetEventData](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetEventData)  
-[DrtGetEventDataSize](https://www.google.com/search?num=5&q=DrtGetEventDataSize+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetEventDataSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetEventDataSize)  
-[DrtGetInstanceName](https://www.google.com/search?num=5&q=DrtGetInstanceName+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetInstanceName](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetInstanceName)  
-[DrtGetInstanceNameSize](https://www.google.com/search?num=5&q=DrtGetInstanceNameSize+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetInstanceNameSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetInstanceNameSize)  
-[DrtGetSearchPath](https://www.google.com/search?num=5&q=DrtGetSearchPath+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchPath](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchPath)  
-[DrtGetSearchPathSize](https://www.google.com/search?num=5&q=DrtGetSearchPathSize+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchPathSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchPathSize)  
-[DrtGetSearchResult](https://www.google.com/search?num=5&q=DrtGetSearchResult+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchResult](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchResult)  
-[DrtGetSearchResultSize](https://www.google.com/search?num=5&q=DrtGetSearchResultSize+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchResultSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchResultSize)  
-[DrtOpen](https://www.google.com/search?num=5&q=DrtOpen+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtOpen](https://github.com/dahall/Vanara/search?l=C%23&q=DrtOpen)  
-[DrtRegisterKey](https://www.google.com/search?num=5&q=DrtRegisterKey+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtRegisterKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtRegisterKey)  
-[DrtStartSearch](https://www.google.com/search?num=5&q=DrtStartSearch+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtStartSearch](https://github.com/dahall/Vanara/search?l=C%23&q=DrtStartSearch)  
-[DrtUnregisterKey](https://www.google.com/search?num=5&q=DrtUnregisterKey+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtUnregisterKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtUnregisterKey)  
-[DrtUpdateKey](https://www.google.com/search?num=5&q=DrtUpdateKey+site%3Alearn.microsoft.com) | drt.dll | drt.h | [Vanara.PInvoke.Drt.DrtUpdateKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtUpdateKey)  
+Native Method | Header | Managed Method  
+--- | --- | ---  
+[DrtClose](https://www.google.com/search?num=5&q=DrtClose+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtClose](https://github.com/dahall/Vanara/search?l=C%23&q=DrtClose)  
+[DrtContinueSearch](https://www.google.com/search?num=5&q=DrtContinueSearch+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtContinueSearch](https://github.com/dahall/Vanara/search?l=C%23&q=DrtContinueSearch)  
+[DrtCreateDerivedKey](https://www.google.com/search?num=5&q=DrtCreateDerivedKey+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtCreateDerivedKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateDerivedKey)  
+[DrtCreateDerivedKeySecurityProvider](https://www.google.com/search?num=5&q=DrtCreateDerivedKeySecurityProvider+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtCreateDerivedKeySecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateDerivedKeySecurityProvider)  
+[DrtCreateDnsBootstrapResolver](https://www.google.com/search?num=5&q=DrtCreateDnsBootstrapResolver+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtCreateDnsBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateDnsBootstrapResolver)  
+[DrtCreateIpv6UdpTransport](https://www.google.com/search?num=5&q=DrtCreateIpv6UdpTransport+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtCreateIpv6UdpTransport](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateIpv6UdpTransport)  
+[DrtCreateNullSecurityProvider](https://www.google.com/search?num=5&q=DrtCreateNullSecurityProvider+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtCreateNullSecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreateNullSecurityProvider)  
+[DrtCreatePnrpBootstrapResolver](https://www.google.com/search?num=5&q=DrtCreatePnrpBootstrapResolver+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtCreatePnrpBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtCreatePnrpBootstrapResolver)  
+[DrtDeleteDerivedKeySecurityProvider](https://www.google.com/search?num=5&q=DrtDeleteDerivedKeySecurityProvider+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtDeleteDerivedKeySecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteDerivedKeySecurityProvider)  
+[DrtDeleteDnsBootstrapResolver](https://www.google.com/search?num=5&q=DrtDeleteDnsBootstrapResolver+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtDeleteDnsBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteDnsBootstrapResolver)  
+[DrtDeleteIpv6UdpTransport](https://www.google.com/search?num=5&q=DrtDeleteIpv6UdpTransport+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtDeleteIpv6UdpTransport](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteIpv6UdpTransport)  
+[DrtDeleteNullSecurityProvider](https://www.google.com/search?num=5&q=DrtDeleteNullSecurityProvider+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtDeleteNullSecurityProvider](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeleteNullSecurityProvider)  
+[DrtDeletePnrpBootstrapResolver](https://www.google.com/search?num=5&q=DrtDeletePnrpBootstrapResolver+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtDeletePnrpBootstrapResolver](https://github.com/dahall/Vanara/search?l=C%23&q=DrtDeletePnrpBootstrapResolver)  
+[DrtEndSearch](https://www.google.com/search?num=5&q=DrtEndSearch+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtEndSearch](https://github.com/dahall/Vanara/search?l=C%23&q=DrtEndSearch)  
+[DrtGetEventData](https://www.google.com/search?num=5&q=DrtGetEventData+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetEventData](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetEventData)  
+[DrtGetEventDataSize](https://www.google.com/search?num=5&q=DrtGetEventDataSize+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetEventDataSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetEventDataSize)  
+[DrtGetInstanceName](https://www.google.com/search?num=5&q=DrtGetInstanceName+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetInstanceName](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetInstanceName)  
+[DrtGetInstanceNameSize](https://www.google.com/search?num=5&q=DrtGetInstanceNameSize+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetInstanceNameSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetInstanceNameSize)  
+[DrtGetSearchPath](https://www.google.com/search?num=5&q=DrtGetSearchPath+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchPath](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchPath)  
+[DrtGetSearchPathSize](https://www.google.com/search?num=5&q=DrtGetSearchPathSize+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchPathSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchPathSize)  
+[DrtGetSearchResult](https://www.google.com/search?num=5&q=DrtGetSearchResult+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchResult](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchResult)  
+[DrtGetSearchResultSize](https://www.google.com/search?num=5&q=DrtGetSearchResultSize+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtGetSearchResultSize](https://github.com/dahall/Vanara/search?l=C%23&q=DrtGetSearchResultSize)  
+[DrtOpen](https://www.google.com/search?num=5&q=DrtOpen+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtOpen](https://github.com/dahall/Vanara/search?l=C%23&q=DrtOpen)  
+[DrtRegisterKey](https://www.google.com/search?num=5&q=DrtRegisterKey+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtRegisterKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtRegisterKey)  
+[DrtStartSearch](https://www.google.com/search?num=5&q=DrtStartSearch+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtStartSearch](https://github.com/dahall/Vanara/search?l=C%23&q=DrtStartSearch)  
+[DrtUnregisterKey](https://www.google.com/search?num=5&q=DrtUnregisterKey+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtUnregisterKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtUnregisterKey)  
+[DrtUpdateKey](https://www.google.com/search?num=5&q=DrtUpdateKey+site%3Alearn.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtUpdateKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtUpdateKey)  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
@@ -70,5 +70,6 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[Drt](https://www.google.com/search?num=5&q=Drt+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Drt](https://github.com/dahall/Vanara/search?l=C%23&q=Drt)  
 [SafeHDRT](https://www.google.com/search?num=5&q=SafeHDRT+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Drt.SafeHDRT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHDRT)  
 [SafeHDRT_TRANSPORT](https://www.google.com/search?num=5&q=SafeHDRT_TRANSPORT+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Drt.SafeHDRT_TRANSPORT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHDRT_TRANSPORT)  

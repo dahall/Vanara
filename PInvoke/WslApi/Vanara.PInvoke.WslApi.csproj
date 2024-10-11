@@ -12,7 +12,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DllMain WslConfigureDistribution WslGetDistributionConfiguration WslIsDistributionRegistered WslLaunch WslLaunchInteractive WslRegisterDistribution WslUnregisterDistribution
+WslConfigureDistribution WslGetDistributionConfiguration WslIsDistributionRegistered WslLaunch WslLaunchInteractive WslRegisterDistribution WslUnregisterDistribution
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>

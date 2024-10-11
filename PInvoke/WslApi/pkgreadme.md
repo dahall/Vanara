@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations
 --- | ---
-WslConfigureDistribution WslGetDistributionConfiguration WslIsDistributionRegistered WslLaunch WslLaunchInteractive WslRegisterDistribution WslUnregisterDistribution  | WSL_DISTRIBUTION_FLAGS        
+WslConfigureDistribution WslGetDistributionConfiguration WslIsDistributionRegistered WslLaunch WslLaunchInteractive WslRegisterDistribution WslUnregisterDistribution  | WSL_DISTRIBUTION_FLAGS       

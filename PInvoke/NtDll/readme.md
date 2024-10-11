@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (38 of 635 functions)  
+### Methods - 5% API coverage (38 of 659 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
@@ -27,6 +27,8 @@ Native Method | Header | Managed Method
 [LdrUnregisterDllNotification](https://www.google.com/search?num=5&q=LdrUnregisterDllNotification+site%3Alearn.microsoft.com) | ntldr.h | [Vanara.PInvoke.NtDll.LdrUnregisterDllNotification](https://github.com/dahall/Vanara/search?l=C%23&q=LdrUnregisterDllNotification)  
 [MicrosoftTelemetryAssertTriggeredUM](https://www.google.com/search?num=5&q=MicrosoftTelemetryAssertTriggeredUM+site%3Alearn.microsoft.com) |  |   
 [NtAcquireCrossVmMutant](https://www.google.com/search?num=5&q=NtAcquireCrossVmMutant+site%3Alearn.microsoft.com) |  |   
+[NtAlertMultipleThreadByThreadId](https://www.google.com/search?num=5&q=NtAlertMultipleThreadByThreadId+site%3Alearn.microsoft.com) |  |   
+[NtAlertThreadByThreadIdEx](https://www.google.com/search?num=5&q=NtAlertThreadByThreadIdEx+site%3Alearn.microsoft.com) |  |   
 [NtAllocateUserPhysicalPagesEx](https://www.google.com/search?num=5&q=NtAllocateUserPhysicalPagesEx+site%3Alearn.microsoft.com) |  |   
 [NtAllocateVirtualMemory](https://www.google.com/search?num=5&q=NtAllocateVirtualMemory+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtAllocateVirtualMemory](https://github.com/dahall/Vanara/search?l=C%23&q=NtAllocateVirtualMemory)  
 [NtAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=NtAllocateVirtualMemoryEx+site%3Alearn.microsoft.com) |  |   
@@ -135,6 +137,7 @@ Native Method | Header | Managed Method
 [NtRollbackEnlistment](https://www.google.com/search?num=5&q=NtRollbackEnlistment+site%3Alearn.microsoft.com) |  |   
 [NtRollbackTransaction](https://www.google.com/search?num=5&q=NtRollbackTransaction+site%3Alearn.microsoft.com) |  |   
 [NtRollforwardTransactionManager](https://www.google.com/search?num=5&q=NtRollforwardTransactionManager+site%3Alearn.microsoft.com) |  |   
+[NtSetEventEx](https://www.google.com/search?num=5&q=NtSetEventEx+site%3Alearn.microsoft.com) |  |   
 [NtSetInformationCpuPartition](https://www.google.com/search?num=5&q=NtSetInformationCpuPartition+site%3Alearn.microsoft.com) |  |   
 [NtSetInformationEnlistment](https://www.google.com/search?num=5&q=NtSetInformationEnlistment+site%3Alearn.microsoft.com) |  |   
 [NtSetInformationFile](https://www.google.com/search?num=5&q=NtSetInformationFile+site%3Alearn.microsoft.com) |  |   
@@ -259,7 +262,9 @@ Native Method | Header | Managed Method
 [RtlFindSetBitsAndClearEx](https://www.google.com/search?num=5&q=RtlFindSetBitsAndClearEx+site%3Alearn.microsoft.com) |  |   
 [RtlFindSetBitsEx](https://www.google.com/search?num=5&q=RtlFindSetBitsEx+site%3Alearn.microsoft.com) |  |   
 [RtlFirstEntrySList](https://www.google.com/search?num=5&q=RtlFirstEntrySList+site%3Alearn.microsoft.com) |  |   
+[RtlFlsAllocEx](https://www.google.com/search?num=5&q=RtlFlsAllocEx+site%3Alearn.microsoft.com) |  |   
 [RtlFlsGetValue](https://www.google.com/search?num=5&q=RtlFlsGetValue+site%3Alearn.microsoft.com) |  |   
+[RtlFlsGetValue2](https://www.google.com/search?num=5&q=RtlFlsGetValue2+site%3Alearn.microsoft.com) |  |   
 [RtlFlsSetValue](https://www.google.com/search?num=5&q=RtlFlsSetValue+site%3Alearn.microsoft.com) |  |   
 [RtlFlushNonVolatileMemory](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemory+site%3Alearn.microsoft.com) |  |   
 [RtlFlushNonVolatileMemoryRanges](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemoryRanges+site%3Alearn.microsoft.com) |  |   
@@ -272,7 +277,9 @@ Native Method | Header | Managed Method
 [RtlFreeUTF8String](https://www.google.com/search?num=5&q=RtlFreeUTF8String+site%3Alearn.microsoft.com) |  |   
 [RtlGenerate8dot3Name](https://www.google.com/search?num=5&q=RtlGenerate8dot3Name+site%3Alearn.microsoft.com) |  |   
 [RtlGetAce](https://www.google.com/search?num=5&q=RtlGetAce+site%3Alearn.microsoft.com) |  |   
+[RtlGetAcesBufferSize](https://www.google.com/search?num=5&q=RtlGetAcesBufferSize+site%3Alearn.microsoft.com) |  |   
 [RtlGetCompressionWorkSpaceSize](https://www.google.com/search?num=5&q=RtlGetCompressionWorkSpaceSize+site%3Alearn.microsoft.com) |  |   
+[RtlGetCurrentThreadPrimaryGroup](https://www.google.com/search?num=5&q=RtlGetCurrentThreadPrimaryGroup+site%3Alearn.microsoft.com) |  |   
 [RtlGetDaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetDaclSecurityDescriptor+site%3Alearn.microsoft.com) |  |   
 [RtlGetElementGenericTable](https://www.google.com/search?num=5&q=RtlGetElementGenericTable+site%3Alearn.microsoft.com) |  |   
 [RtlGetElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlGetElementGenericTableAvl+site%3Alearn.microsoft.com) |  |   
@@ -358,6 +365,7 @@ Native Method | Header | Managed Method
 [RtlLengthSecurityDescriptor](https://www.google.com/search?num=5&q=RtlLengthSecurityDescriptor+site%3Alearn.microsoft.com) |  |   
 [RtlLengthSid](https://www.google.com/search?num=5&q=RtlLengthSid+site%3Alearn.microsoft.com) |  |   
 [RtlLocalTimeToSystemTime](https://www.google.com/search?num=5&q=RtlLocalTimeToSystemTime+site%3Alearn.microsoft.com) |  |   
+[RtlLogUnexpectedCodepath](https://www.google.com/search?num=5&q=RtlLogUnexpectedCodepath+site%3Alearn.microsoft.com) |  |   
 [RtlLookupElementGenericTable](https://www.google.com/search?num=5&q=RtlLookupElementGenericTable+site%3Alearn.microsoft.com) |  |   
 [RtlLookupElementGenericTableAvl](https://www.google.com/search?num=5&q=RtlLookupElementGenericTableAvl+site%3Alearn.microsoft.com) |  |   
 [RtlLookupElementGenericTableFullAvl](https://www.google.com/search?num=5&q=RtlLookupElementGenericTableFullAvl+site%3Alearn.microsoft.com) |  |   
@@ -384,6 +392,7 @@ Native Method | Header | Managed Method
 [RtlOverwriteFeatureConfigurationBuffer](https://www.google.com/search?num=5&q=RtlOverwriteFeatureConfigurationBuffer+site%3Alearn.microsoft.com) |  |   
 [RtlPcToFileHeader](https://www.google.com/search?num=5&q=RtlPcToFileHeader+site%3Alearn.microsoft.com) |  |   
 [RtlPrefixUnicodeString](https://www.google.com/search?num=5&q=RtlPrefixUnicodeString+site%3Alearn.microsoft.com) |  |   
+[RtlpScpCfgNtdllExports](https://www.google.com/search?num=5&q=RtlpScpCfgNtdllExports+site%3Alearn.microsoft.com) |  |   
 [RtlpTimeFieldsToTime](https://www.google.com/search?num=5&q=RtlpTimeFieldsToTime+site%3Alearn.microsoft.com) |  |   
 [RtlpTimeToTimeFields](https://www.google.com/search?num=5&q=RtlpTimeToTimeFields+site%3Alearn.microsoft.com) |  |   
 [RtlpWow64CtxFromAmd64](https://www.google.com/search?num=5&q=RtlpWow64CtxFromAmd64+site%3Alearn.microsoft.com) |  |   
@@ -409,6 +418,11 @@ Native Method | Header | Managed Method
 [RtlRaiseNoncontinuableException](https://www.google.com/search?num=5&q=RtlRaiseNoncontinuableException+site%3Alearn.microsoft.com) |  |   
 [RtlRandom](https://www.google.com/search?num=5&q=RtlRandom+site%3Alearn.microsoft.com) |  |   
 [RtlRandomEx](https://www.google.com/search?num=5&q=RtlRandomEx+site%3Alearn.microsoft.com) |  |   
+[RtlRcuAllocate](https://www.google.com/search?num=5&q=RtlRcuAllocate+site%3Alearn.microsoft.com) |  |   
+[RtlRcuFree](https://www.google.com/search?num=5&q=RtlRcuFree+site%3Alearn.microsoft.com) |  |   
+[RtlRcuReadLock](https://www.google.com/search?num=5&q=RtlRcuReadLock+site%3Alearn.microsoft.com) |  |   
+[RtlRcuReadUnlock](https://www.google.com/search?num=5&q=RtlRcuReadUnlock+site%3Alearn.microsoft.com) |  |   
+[RtlRcuSynchronize](https://www.google.com/search?num=5&q=RtlRcuSynchronize+site%3Alearn.microsoft.com) |  |   
 [RtlRealPredecessor](https://www.google.com/search?num=5&q=RtlRealPredecessor+site%3Alearn.microsoft.com) |  |   
 [RtlRealSuccessor](https://www.google.com/search?num=5&q=RtlRealSuccessor+site%3Alearn.microsoft.com) |  |   
 [RtlRegisterFeatureConfigurationChangeNotification](https://www.google.com/search?num=5&q=RtlRegisterFeatureConfigurationChangeNotification+site%3Alearn.microsoft.com) |  |   
@@ -452,6 +466,9 @@ Native Method | Header | Managed Method
 [RtlTimeToSecondsSince1970](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1970+site%3Alearn.microsoft.com) |  |   
 [RtlTimeToSecondsSince1980](https://www.google.com/search?num=5&q=RtlTimeToSecondsSince1980+site%3Alearn.microsoft.com) |  |   
 [RtlTimeToTimeFields](https://www.google.com/search?num=5&q=RtlTimeToTimeFields+site%3Alearn.microsoft.com) |  |   
+[RtlTlsAlloc](https://www.google.com/search?num=5&q=RtlTlsAlloc+site%3Alearn.microsoft.com) |  |   
+[RtlTlsFree](https://www.google.com/search?num=5&q=RtlTlsFree+site%3Alearn.microsoft.com) |  |   
+[RtlTlsSetValue](https://www.google.com/search?num=5&q=RtlTlsSetValue+site%3Alearn.microsoft.com) |  |   
 [RtlUdiv128](https://www.google.com/search?num=5&q=RtlUdiv128+site%3Alearn.microsoft.com) |  |   
 [RtlUnicodeStringToAnsiString](https://www.google.com/search?num=5&q=RtlUnicodeStringToAnsiString+site%3Alearn.microsoft.com) |  |   
 [RtlUnicodeStringToCountedOemString](https://www.google.com/search?num=5&q=RtlUnicodeStringToCountedOemString+site%3Alearn.microsoft.com) |  |   
@@ -480,12 +497,14 @@ Native Method | Header | Managed Method
 [RtlUTF8StringToUnicodeString](https://www.google.com/search?num=5&q=RtlUTF8StringToUnicodeString+site%3Alearn.microsoft.com) |  |   
 [RtlUTF8ToUnicodeN](https://www.google.com/search?num=5&q=RtlUTF8ToUnicodeN+site%3Alearn.microsoft.com) |  |   
 [RtlValidateCorrelationVector](https://www.google.com/search?num=5&q=RtlValidateCorrelationVector+site%3Alearn.microsoft.com) |  |   
+[RtlValidateUserCallTarget](https://www.google.com/search?num=5&q=RtlValidateUserCallTarget+site%3Alearn.microsoft.com) |  |   
 [RtlValidRelativeSecurityDescriptor](https://www.google.com/search?num=5&q=RtlValidRelativeSecurityDescriptor+site%3Alearn.microsoft.com) |  |   
 [RtlVerifyVersionInfo](https://www.google.com/search?num=5&q=RtlVerifyVersionInfo+site%3Alearn.microsoft.com) |  |   
 [RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Alearn.microsoft.com) |  |   
 [RtlVirtualUnwind2](https://www.google.com/search?num=5&q=RtlVirtualUnwind2+site%3Alearn.microsoft.com) |  |   
 [RtlWow64ChangeProcessState](https://www.google.com/search?num=5&q=RtlWow64ChangeProcessState+site%3Alearn.microsoft.com) |  |   
 [RtlWow64ChangeThreadState](https://www.google.com/search?num=5&q=RtlWow64ChangeThreadState+site%3Alearn.microsoft.com) |  |   
+[RtlWow64GetCpuAreaEnabledFeatures](https://www.google.com/search?num=5&q=RtlWow64GetCpuAreaEnabledFeatures+site%3Alearn.microsoft.com) |  |   
 [RtlWow64GetEquivalentMachineCHPE](https://www.google.com/search?num=5&q=RtlWow64GetEquivalentMachineCHPE+site%3Alearn.microsoft.com) |  |   
 [RtlWow64GetSharedInfoProcess](https://www.google.com/search?num=5&q=RtlWow64GetSharedInfoProcess+site%3Alearn.microsoft.com) |  |   
 [RtlWow64PopAllCrossProcessWorkFromWorkList](https://www.google.com/search?num=5&q=RtlWow64PopAllCrossProcessWorkFromWorkList+site%3Alearn.microsoft.com) |  |   
@@ -496,6 +515,8 @@ Native Method | Header | Managed Method
 [RtlWow64SuspendProcess](https://www.google.com/search?num=5&q=RtlWow64SuspendProcess+site%3Alearn.microsoft.com) |  |   
 [RtlWriteNonVolatileMemory](https://www.google.com/search?num=5&q=RtlWriteNonVolatileMemory+site%3Alearn.microsoft.com) |  |   
 [RtlWriteRegistryValue](https://www.google.com/search?num=5&q=RtlWriteRegistryValue+site%3Alearn.microsoft.com) |  |   
+[RtlXRestore](https://www.google.com/search?num=5&q=RtlXRestore+site%3Alearn.microsoft.com) |  |   
+[RtlXSave](https://www.google.com/search?num=5&q=RtlXSave+site%3Alearn.microsoft.com) |  |   
 [TpSetPoolThreadCpuSets](https://www.google.com/search?num=5&q=TpSetPoolThreadCpuSets+site%3Alearn.microsoft.com) |  |   
 [TpWorkOnBehalfClearTicket](https://www.google.com/search?num=5&q=TpWorkOnBehalfClearTicket+site%3Alearn.microsoft.com) |  |   
 [TpWorkOnBehalfSetTicket](https://www.google.com/search?num=5&q=TpWorkOnBehalfSetTicket+site%3Alearn.microsoft.com) |  |   
@@ -503,6 +524,8 @@ Native Method | Header | Managed Method
 [vDbgPrintExWithPrefix](https://www.google.com/search?num=5&q=vDbgPrintExWithPrefix+site%3Alearn.microsoft.com) |  |   
 [VerSetConditionMask](https://www.google.com/search?num=5&q=VerSetConditionMask+site%3Alearn.microsoft.com) |  |   
 [ZwAcquireCrossVmMutant](https://www.google.com/search?num=5&q=ZwAcquireCrossVmMutant+site%3Alearn.microsoft.com) |  |   
+[ZwAlertMultipleThreadByThreadId](https://www.google.com/search?num=5&q=ZwAlertMultipleThreadByThreadId+site%3Alearn.microsoft.com) |  |   
+[ZwAlertThreadByThreadIdEx](https://www.google.com/search?num=5&q=ZwAlertThreadByThreadIdEx+site%3Alearn.microsoft.com) |  |   
 [ZwAllocateLocallyUniqueId](https://www.google.com/search?num=5&q=ZwAllocateLocallyUniqueId+site%3Alearn.microsoft.com) |  |   
 [ZwAllocateUserPhysicalPagesEx](https://www.google.com/search?num=5&q=ZwAllocateUserPhysicalPagesEx+site%3Alearn.microsoft.com) |  |   
 [ZwAllocateVirtualMemory](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemory+site%3Alearn.microsoft.com) |  |   
@@ -617,6 +640,7 @@ Native Method | Header | Managed Method
 [ZwRollforwardTransactionManager](https://www.google.com/search?num=5&q=ZwRollforwardTransactionManager+site%3Alearn.microsoft.com) |  |   
 [ZwSetEaFile](https://www.google.com/search?num=5&q=ZwSetEaFile+site%3Alearn.microsoft.com) |  |   
 [ZwSetEvent](https://www.google.com/search?num=5&q=ZwSetEvent+site%3Alearn.microsoft.com) |  |   
+[ZwSetEventEx](https://www.google.com/search?num=5&q=ZwSetEventEx+site%3Alearn.microsoft.com) |  |   
 [ZwSetInformationCpuPartition](https://www.google.com/search?num=5&q=ZwSetInformationCpuPartition+site%3Alearn.microsoft.com) |  |   
 [ZwSetInformationEnlistment](https://www.google.com/search?num=5&q=ZwSetInformationEnlistment+site%3Alearn.microsoft.com) |  |   
 [ZwSetInformationFile](https://www.google.com/search?num=5&q=ZwSetInformationFile+site%3Alearn.microsoft.com) |  |   
