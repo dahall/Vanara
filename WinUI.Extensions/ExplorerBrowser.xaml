@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="electrifier.Controls.Vanara.ExplorerBrowser"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:electrifier.Controls.Vanara"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
+    mc:Ignorable="d">
+    <!--  TODO: Fix TeachingTip  -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
+            <Button x:Uid="BackButton">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE652;" />
+            </Button>
+            <SplitButton x:Name="ForwardSplitButton" Height="32">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE651;" />
+                <SplitButton.Flyout>
+                    <Flyout x:Name="Flyout" Placement="Bottom">
+                        <!--  TODO: Check                       <TreeViewList></TreeViewList> -->
+                        <ItemsStackPanel>
+                            <Button>Workbench</Button>
+                            <Button>Workbench</Button>
+                            <Button>Workbench</Button>
+                        </ItemsStackPanel>
+                        <!--  flyout content  -->
+                    </Flyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+            <Button x:Uid="UpOneFolderButton">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE650;" />
+            </Button>
+            <ProgressRing
+                x:Name="NavigationBarProgressRing"
+                BorderThickness="1"
+                IsActive="{x:Bind IsLoading, Mode=OneWay}"
+                Visibility="Visible" />
+            <Button x:Uid="ReloadButton">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
+            </Button>
+            <controls:GridSplitter />
+            <CommandBar
+                x:Name="TopCommandBar"
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                DefaultLabelPosition="Collapsed"
+                IsOpen="False"
+                Visibility="{x:Bind TopCommandBarVisibility}">
+                <AppBarElementContainer>
+                    <SplitButton
+                        x:Name="NewItemSplitButton"
+                        Content="New"
+                        IsEnabled="False">
+                        <SplitButton.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <Button Background="Transparent" Content="Folder" />
+                                    <Button Background="Transparent" Content="Text File" />
+                                    <Button Background="Transparent" Content="Shortcut" />
+                                    <Button Background="Transparent" Content="Select..." />
+                                </StackPanel>
+                            </Flyout>
+                        </SplitButton.Flyout>
+                    </SplitButton>
+                </AppBarElementContainer>
+                <AppBarSeparator />
+                <AppBarButton
+                    Icon="Cut"
+                    IsEnabled="False"
+                    Label="Cut" />
+                <AppBarButton
+                    Icon="Copy"
+                    IsEnabled="False"
+                    Label="Copy" />
+                <AppBarButton
+                    Icon="Paste"
+                    IsEnabled="False"
+                    Label="Paste" />
+                <AppBarButton
+                    Icon="Rename"
+                    IsEnabled="False"
+                    Label="Rename" />
+                <AppBarButton
+                    Icon="Share"
+                    IsEnabled="False"
+                    Label="Share" />
+                <AppBarButton
+                    Icon="Delete"
+                    IsEnabled="False"
+                    Label="Delete" />
+                <AppBarSeparator />
+                <AppBarElementContainer>
+                    <SplitButton
+                        x:Name="SortSplitButton"
+                        Content="Sort"
+                        IsEnabled="False">
+                        <SplitButton.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <Button Background="Transparent" Content="Name" />
+                                    <Button Background="Transparent" Content="Date Modified" />
+                                    <Button Background="Transparent" Content="Type" />
+                                    <Button Background="Transparent" Content="~" />
+                                    <Button Background="Transparent" Content="More" />
+                                    <Button Background="Transparent" Content="~" />
+                                    <Button Background="Transparent" Content="Ascending" />
+                                    <Button Background="Transparent" Content="Descending" />
+                                    <Button Background="Transparent" Content="~" />
+                                    <Button Background="Transparent" Content="Group by" />
+                                </StackPanel>
+                            </Flyout>
+                        </SplitButton.Flyout>
+                        <SplitButton.Resources>
+                            <TeachingTip
+                                x:Name="SortSplitButtonTeachingTip"
+                                Title="Sort and Group options."
+                                Subtitle="Use the dropdown button option to save your item and create another."
+                                Target="{x:Bind SortSplitButton}" />
+                        </SplitButton.Resources>
+                    </SplitButton>
+                </AppBarElementContainer>
+                <AppBarElementContainer>
+                    <SplitButton
+                        x:Name="ViewSplitButton"
+                        Content="View"
+                        IsEnabled="False">
+                        <SplitButton.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <Button Background="Transparent" Content="Tiles" />
+                                    <Button Background="Transparent" Content="Content" />
+                                    <Button Background="Transparent" Content="~" />
+                                    <Button Background="Transparent" Content="Details pane" />
+                                    <Button Background="Transparent" Content="Preview pane" />
+                                    <Button Background="Transparent" Content="~" />
+                                    <Button Background="Transparent" Content="Show" />
+                                    <Button Background="Transparent" Content="~" />
+                                    <Button Background="Transparent" Content="Two Pages" />
+                                    <!--  Glyph: E89A, TwoPage  -->
+                                </StackPanel>
+                            </Flyout>
+                        </SplitButton.Flyout>
+                        <SplitButton.Resources>
+                            <TeachingTip
+                                x:Name="ViewSplitButtonTeachingTip"
+                                Title="Sort and Group options."
+                                Subtitle="Use the dropdown button option to save your item and create another."
+                                Target="{x:Bind SortSplitButton}" />
+                        </SplitButton.Resources>
+                    </SplitButton>
+                </AppBarElementContainer>
+                <AppBarElementContainer>
+                    <SplitButton
+                        x:Name="FilterSplitButton"
+                        Content="Filter"
+                        IsEnabled="False">
+                        <SplitButton.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <Button Background="Transparent" Content="All File Types" />
+                                    <Button Background="Transparent" Content="~" />
+                                    <Button Background="Transparent" Content="Files" />
+                                    <Button Background="Transparent" Content="Folders" />
+                                </StackPanel>
+                            </Flyout>
+                        </SplitButton.Flyout>
+                        <SplitButton.Resources>
+                            <TeachingTip
+                                x:Name="FilterSplitButtonTeachingTip"
+                                Title="filter some options."
+                                Subtitle="Use the dropdown button option to save your item and create another."
+                                Target="{x:Bind FilterSplitButton}" />
+                        </SplitButton.Resources>
+                    </SplitButton>
+                </AppBarElementContainer>
+                <AppBarSeparator />
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton Icon="Undo" Label="Undo" />
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Pin" Label="Pin to Quick access" />
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Undo" Label="Select all" />
+                    <AppBarButton Icon="Undo" Label="Select none" />
+                    <AppBarButton Icon="Undo" Label="Invert selection" />
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Undo" Label="Properties" />
+                    <AppBarButton Icon="Setting" Label="Options" />
+                    <AppBarButton Icon="Orientation" Label="Orientation" />
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
+            <!--<controls:SwitchPresenter Grid.Row="1" Value="{x:Bind HasNavigationFailure}">
+            <controls:Case Value="true">-->
+        </StackPanel>
+        <Border Grid.Row="1">
+            <InfoBar
+                x:Name="NavigationFailedInfoBar"
+                Title="Navigation failed"
+                BorderBrush="DarkRed"
+                BorderThickness="8"
+                IsClosable="True"
+                IsOpen="True"
+                Message="{x:Bind NavigationFailure}"
+                Severity="Error">
+                <InfoBar.Content>
+                    <ItemsStackPanel
+                        Height="Auto"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button>
+                            Reload folder.
+                        </Button>
+                    </ItemsStackPanel>
+                </InfoBar.Content>
+            </InfoBar>
+        </Border>
+        <!--<StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        x:Uid="NavigationFailureTextBlock"
+                        HorizontalAlignment="Center"
+                        Text="Navigation has failed."
+                        TextWrapping="WrapWholeWords" />
+                    <TextBlock
+                        x:Uid="NavigationFailureTextBlock"
+                        HorizontalAlignment="Center"
+                        Text="Navigation has failed."
+                        TextWrapping="WrapWholeWords" />
+                    <HyperlinkButton
+                        x:Uid="NavigationFailureRefreshViewButton"
+                        HorizontalAlignment="Center"
+                        Command="{x:Bind RefreshViewCommand}" />
+                </StackPanel>-->
+        <!--</controls:Case>
+        </controls:SwitchPresenter>-->
+        <Grid x:Name="ArenaGrid" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <!--  controls:DockPanel.Dock="Left"  -->
+                <ColumnDefinition Width="256" MinWidth="76" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="76" />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="NavigationAreaBorder">
+                <StackPanel VerticalAlignment="Top">
+                    <Expander
+                        Grid.Column="0"
+                        Padding="8"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Top"
+                        IsEnabled="True"
+                        IsExpanded="True">
+                        <Expander.Header>
+                            <TextBlock>Desktop</TextBlock>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <local:Shell32TreeView x:Name="ShellTreeView" VerticalAlignment="Top" />
+                        </Expander.Content>
+                    </Expander>
+                    <Expander
+                        Grid.Column="0"
+                        Padding="8"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Top"
+                        IsEnabled="True"
+                        IsExpanded="True">
+                        <Expander.Header>
+                            <TextBlock>History</TextBlock>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <Border />
+                        </Expander.Content>
+                    </Expander>
+                </StackPanel>
+            </Border>
+            <!--  TODO: GridSplitter is not Working when TreeView Visibility changes to Collapsed  -->
+            <controls:GridSplitter
+                x:Name="ArenaGridSplitter"
+                Grid.Column="1"
+                Width="12"
+                HorizontalAlignment="Left"
+                ResizeBehavior="BasedOnAlignment"
+                ResizeDirection="Columns"
+                Visibility="{x:Bind ArenaGridSplitterVisibility}">
+                <controls:GridSplitter.RenderTransform>
+                    <TranslateTransform X="-6" />
+                </controls:GridSplitter.RenderTransform>
+            </controls:GridSplitter>
+            <Border x:Name="ShellGridViewBorder" Grid.Column="2">
+                <StackPanel Orientation="Vertical">
+                    <local:Shell32GridView
+                        x:Name="ShellGridView"
+                        BorderThickness="3"
+                        ItemsSource="{x:Bind CurrentFolderItems}"
+                        Visibility="{x:Bind GridViewVisibility}" />
+                    <AppBar
+                        x:Name="BottomAppBar"
+                        Grid.Row="3"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        Visibility="{x:Bind BottomAppBarVisibility}">
+                        <StackPanel>
+                            <TextBlock Text="no binding :(" />
+                            <AppBarButton
+                                Icon="Folder"
+                                Label="folder"
+                                ToolTipService.ToolTip="Number of Folders" />
+                            <AppBarSeparator />
+                            <AppBarButton
+                                Icon="OpenFile"
+                                Label="open-file"
+                                ToolTipService.ToolTip="Number of Files" />
+                            <AppBarSeparator />
+                            <AppBarButton Icon="Setting" Label="Settings">
+                                <AppBarButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="I" Modifiers="Control" />
+                                </AppBarButton.KeyboardAccelerators>
+                            </AppBarButton>
+                        </StackPanel>
+                    </AppBar>
+                </StackPanel>
+            </Border>
+            <!-- add `ShellGridViewEast`:
+            <controls:GridSplitter
+                x:Name="MidArenaGridSplitter"
+                Grid.Column="3"
+                Width="12"
+                HorizontalAlignment="Left"
+                ResizeBehavior="BasedOnAlignment"
+                ResizeDirection="Columns"
+                Visibility="{x:Bind ArenaGridSplitterVisibility}">
+                <controls:GridSplitter.RenderTransform>
+                    <TranslateTransform X="-6" />
+                </controls:GridSplitter.RenderTransform>
+            </controls:GridSplitter>
+            <Border Grid.Column="4">
+                <local:Shell32GridView
+                    x:Name="ShellGridViewEast"
+                    BorderThickness="3"
+                    ItemsSource="{x:Bind CurrentFolderItems}"
+                    Visibility="{x:Bind GridViewVisibility}" />
+            </Border>-->
+        </Grid>
+        <CommandBar
+            Grid.Row="4"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            DefaultLabelPosition="Collapsed">
+            <AppBarButton
+                Content="xxx Items"
+                IsCompact="True"
+                IsEnabled="False" />
+            <AppBarSeparator />
+            <AppBarToggleButton
+                Content="xxx folders"
+                IsChecked="True"
+                IsCompact="True" />
+            <AppBarSeparator />
+            <AppBarToggleButton
+                Content="xxx files"
+                IsChecked="True"
+                IsCompact="True" />
+            <AppBarSeparator />
+            <AppBarToggleButton
+                Content="xxx hidden (0 / 0)"
+                IsChecked="True"
+                IsCompact="True" />
+            <AppBarSeparator />
+            <AppBarButton
+                Content="Size: bytes"
+                IsCompact="True"
+                IsEnabled="False" />
+        </CommandBar>
+    </Grid>
+</UserControl>
