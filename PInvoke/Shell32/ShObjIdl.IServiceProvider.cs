@@ -42,17 +42,67 @@ public static partial class Shell32
 		void RevokeService(uint dwCookie);
 	}
 
-	/// <summary>Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</summary>
+	/// <summary>Provides a generic access mechanism to locate a GUID-identified service.</summary>
+	/// <remarks>
+	/// <para>
+	/// The <c>IServiceProvider</c> interface is a generic access mechanism to locate a GUID-identified service that is provided through a
+	/// control or any other object that the service can communicate with. For example, an embedded object (such as an OLE control)
+	/// typically communicates only with its associated client site object in the container through the IOleClientSite interface that is
+	/// supplied by using IOleObject::SetClientSite. The embedded object must ask the client site for some other service that the container
+	/// supports when that service might not be implemented in the client site.
+	/// </para>
+	/// <para>
+	/// The client site must provide a means by which the control that is managed by the site can access the service when necessary. For
+	/// example, the IOleInPlaceSite::GetWindowContext) function can be used by an in-place object or control to access interface pointers
+	/// for the document object that contains the site and the frame object that contains the document. Because these interface pointers
+	/// exist on separate objects, the control cannot call the site's QueryInterface to obtain those pointers. Instead, use the
+	/// IServiceProvider interface.
+	/// </para>
+	/// <para>
+	/// The <c>IServiceProvider</c> interface has to overloads of a single method, QueryService, through which a caller specifies the
+	/// service ID (SID, a GUID), the IID of the interface to return, and the address of the caller's interface pointer variable. The second
+	/// overload infers the IID from the output pointer passed into the method.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/servprov/nn-servprov-iserviceprovider
+	[PInvokeData("servprov.h", MSDNShortId = "NN:servprov.IServiceProvider")]
 	[ComImport, Guid("6d5140c1-7436-11ce-8034-00aa006009fa"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[PInvokeData("servprov.h")]
 	public interface IServiceProvider
 	{
-		/// <summary>Performs as a factory for services that are exposed through an implementation of IServiceProvider.</summary>
-		/// <param name="guidService">A unique identifier of the requested service.</param>
-		/// <param name="riid">A unique identifier of the interface which the caller wishes to receive for the service.</param>
-		/// <param name="ppvObject">The interface specified by the <paramref name="riid"/> parameter.</param>
-		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+		/// <summary>
+		/// <para>The unique identifier of the service (an SID).</para>
+		/// <para>The unique identifier of the interface that the caller wants to receive for the service.</para>
+		/// <para>
+		/// The address of the caller-allocated variable to receive the interface pointer of the service on successful return from this
+		/// function. The caller becomes responsible for calling Release through this interface pointer when the service is no longer required.
+		/// </para>
+		/// </summary>
+		/// <param name="guidService">The unique identifier of the service (an SID).</param>
+		/// <param name="riid">The unique identifier of the interface that the caller wants to receive for the service.</param>
+		/// <param name="ppvObject">
+		/// The address of the caller-allocated variable to receive the interface pointer of the service on successful return from this
+		/// function. The caller becomes responsible for calling Release through this interface pointer when the service is no longer required.
+		/// </param>
+		/// <returns>S_OK on success.</returns>
+		/// <remarks>
+		/// <c>QueryService</c> creates or accesses the implementation of the service identified with guidService. In ppv, it returns the
+		/// address of the interface that is specified by riid.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/servprov/nf-servprov-iserviceprovider-queryservice(refguid_refiid_void)
+		// HRESULT QueryService( REFGUID guidService, REFIID riid, void **ppvObject );
 		[PreserveSig]
-		HRESULT QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject); //[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppvObject);
+		HRESULT QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject);
+	}
+
+	/// <summary>Performs as a factory for services that are exposed through an implementation of IServiceProvider.</summary>
+	/// <typeparam name="T">The interface type which the caller wishes to receive for the service.</typeparam>
+	/// <param name="this">The <see cref="IServiceProvider"/> instance.</param>
+	/// <param name="guidService">A unique identifier of the requested service.</param>
+	/// <returns>The interface specified by the <typeparamref name="T" /> parameter.</returns>
+	public static T? QueryService<T>(this IServiceProvider @this, in Guid guidService) where T: class
+	{
+		var hr = @this.QueryService(guidService, typeof(T).GUID, out var ppv);
+		return hr.Succeeded ? Marshal.GetObjectForIUnknown(ppv) as T : throw hr.GetException()!;
 	}
 }
