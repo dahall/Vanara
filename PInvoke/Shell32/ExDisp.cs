@@ -1,6 +1,7 @@
 ﻿// Work in progress, may not ever complete as it is so poorly supported anymore.
 
-using System.Runtime.InteropServices.ComTypes;
+using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
@@ -2400,13 +2401,12 @@ public static partial class Shell32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/exdisp/nn-exdisp-ishellwindows
 	[PInvokeData("exdisp.h", MSDNShortId = "e609c8b6-2b2e-4188-894c-5c85960206ea")]
-	[ComImport, Guid("85CB6900-4D95-11CF-960C-0080C7F4EE85"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch), CoClass(typeof(ShellWindows))]
-	public interface IShellWindows
+	[ComImport, Guid("85CB6900-4D95-11CF-960C-0080C7F4EE85"), InterfaceType(ComInterfaceType.InterfaceIsDual), CoClass(typeof(ShellWindows))]
+	public interface IShellWindows : ICollection
 	{
 		/// <summary>Gets the number of windows in the Shell windows collection.</summary>
 		/// <value>Returns a <see cref="int"/> value.</value>
-		[DispId(0x60020000)]
-		int Count { [DispId(0x60020000)] get; }
+		new int Count { [DispId(0x60020000)] get; }
 
 		/// <summary>Returns the registered Shell window for a specified index.</summary>
 		/// <param name="index">
@@ -2416,20 +2416,20 @@ public static partial class Shell32
 		/// </param>
 		/// <returns>A reference to the window's IDispatch interface, or NULL if the specified window was not found.</returns>
 		[return: MarshalAs(UnmanagedType.IDispatch)]
-		[DispId(0)]
 		object? Item([In, Optional, MarshalAs(UnmanagedType.Struct)] object? index);
 
 		/// <summary>Retrieves an enumerator for the collection of Shell windows.</summary>
-		/// <returns>When this method returns, contains an interface pointer to an object that implements the IEnumVARIANT interface.</returns>
+		/// <returns>When this method returns, contains an <see cref="System.Collections.IEnumerable"/> interface.</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[DispId(-4)]
-		IEnumVARIANT GetEnumerator();
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler, CustomMarshalers, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+		new IEnumerator GetEnumerator();
 
 		/// <summary>Registers an open window as a Shell window; the window is specified by handle.</summary>
 		/// <param name="pid">The window's IDispatch interface.</param>
 		/// <param name="HWND">A handle that specifies the window to register.</param>
 		/// <param name="swClass">A member of ShellWindowTypeConstants that specifies the type of window.</param>
 		/// <returns>The window's cookie.</returns>
-		[DispId(0x60020003)]
 		int Register([In, MarshalAs(UnmanagedType.IDispatch)] object pid, [In] int HWND, [In] ShellWindowTypeConstants swClass);
 
 		/// <summary>Registers a pending window as a Shell window; the window is specified by an absolute PIDL.</summary>
@@ -2441,13 +2441,11 @@ public static partial class Shell32
 		/// <param name="pvarlocRoot">Must be NULL or of type VT_EMPTY.</param>
 		/// <param name="swClass">A member of ShellWindowTypeConstants that specifies the type of window.</param>
 		/// <returns>The window's cookie.</returns>
-		[DispId(0x60020004)]
 		int RegisterPending([In] int lThreadId, [In, MarshalAs(UnmanagedType.Struct)] in object pvarloc,
-			[In, Optional] IntPtr pvarlocRoot, [In] ShellWindowTypeConstants swClass);
+			[Optional, MarshalAs(UnmanagedType.Struct)] in object? pvarlocRoot, [In] ShellWindowTypeConstants swClass);
 
 		/// <summary>Revokes a Shell window's registration and removes the window from the Shell windows collection.</summary>
 		/// <param name="lCookie">The cookie that identifies the window to un-register.</param>
-		[DispId(0x60020005)]
 		void Revoke([In] int lCookie);
 
 		/// <summary>Occurs when a Shell window is navigated to a new location.</summary>
@@ -2456,40 +2454,110 @@ public static partial class Shell32
 		/// A VARIANT of type VT_VARIANT | VT_BYREF. Set the value of pvarLoc to an absolute PIDL (PIDLIST_ABSOLUTE) that specifies the
 		/// new location.
 		/// </param>
-		[DispId(0x60020006)]
 		void OnNavigate([In] int lCookie, [In, MarshalAs(UnmanagedType.Struct)] ref object pvarloc);
 
 		/// <summary>Occurs when a Shell window's activation state changes.</summary>
 		/// <param name="lCookie">The cookie that identifies the window.</param>
 		/// <param name="fActive">TRUE if the window is being activated; FALSE if the window is being deactivated.</param>
-		[DispId(0x60020007)]
 		void OnActivated([In] int lCookie, [In] bool fActive);
 
 		/// <summary>Finds a window in the Shell windows collection and returns the window's handle and IDispatch interface.</summary>
-		/// <param name="pvarloc">
-		/// A VARIANT of type VT_VARIANT | VT_BYREF. Set the value of pvarLoc to an absolute PIDL (PIDLIST_ABSOLUTE) that specifies the
-		/// window to find. (See remarks.)
+		/// <param name="pvarLoc">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>
+		/// A VARIANT of type VT_VARIANT | VT_BYREF. Set the value of <c>pvarLoc</c> to an absolute PIDL (PIDLIST_ABSOLUTE) that specifies
+		/// the window to find. (See remarks.)
+		/// </para>
 		/// </param>
-		/// <param name="pvarlocRoot">Must be NULL or of type VT_EMPTY.</param>
-		/// <param name="swClass">One or more ShellWindowTypeConstants flags that specify window types to include in the search.</param>
-		/// <param name="pHWND">A handle for the window matching the specified search criteria, or NULL if no such window was found.</param>
-		/// <param name="swfwOptions">One or more ShellWindowFindWindowOptions flags that specify search options.</param>
-		/// <returns>A reference to the window's IDispatch interface, or NULL if no such window was found.</returns>
-		[return: MarshalAs(UnmanagedType.IDispatch)]
-		[DispId(0x60020008)]
-		object FindWindowSW([In, MarshalAs(UnmanagedType.Struct)] in object pvarloc,
-			[In, Optional] IntPtr pvarlocRoot, [In] ShellWindowTypeConstants swClass, out int pHWND, [In] ShellWindowFindWindowOptions swfwOptions);
+		/// <param name="pvarLocRoot">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>Must be <c>NULL</c> or of type VT_EMPTY.</para>
+		/// </param>
+		/// <param name="swClass">
+		/// <para>Type: <c>int</c></para>
+		/// <para>One or more ShellWindowTypeConstants flags that specify window types to include in the search.</para>
+		/// </param>
+		/// <param name="phwnd">
+		/// <para>Type: <c>long*</c></para>
+		/// <para>A handle for the window matching the specified search criteria, or <c>NULL</c> if no such window was found.</para>
+		/// </param>
+		/// <param name="swfwOptions">
+		/// <para>Type: <c>int</c></para>
+		/// <para>One or more ShellWindowFindWindowOptions flags that specify search options.</para>
+		/// </param>
+		/// <param name="ppdispOut">
+		/// <para>Type: <c>IDispatch**</c></para>
+		/// <para>A reference to the window's IDispatch interface, or <c>NULL</c> if no such window was found.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>One of the following values, or a standard result code.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Return code</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>S_OK</c></description>
+		/// <description>A window matching the specified search criteria was found.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>S_FALSE</c></description>
+		/// <description>A window matching the specified search criteria was not found.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_NOINTERFACE</c></description>
+		/// <description>
+		/// A window was found, but a reference to the window's IDispatch interface could not be obtained. Only occurs if the
+		/// SWFO_NEEDDISPATCH flag is set.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><c>E_PENDING</c></description>
+		/// <description>A window was found, but the window is pending open. Only occurs if the SWFO_INCLUDEPENDING flag is set.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>If the SWFO_COOKIEPASSED flag is set, <c>pvarLoc</c> is interpreted as a cookie instead of a PIDL.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/exdisp/nf-exdisp-ishellwindows-findwindowsw HRESULT FindWindowSW( [in]
+		// VARIANT *pvarLoc, [in] VARIANT *pvarLocRoot, [in] int swClass, [out] long *phwnd, int swfwOptions, [out, retval] IDispatch
+		// **ppdispOut );
+		[PreserveSig]
+		HRESULT FindWindowSW([MarshalAs(UnmanagedType.Struct)] in object pvarLoc, [Optional, MarshalAs(UnmanagedType.Struct)] in object? pvarLocRoot,
+			[In] ShellWindowTypeConstants swClass, out int phwnd, [In] ShellWindowFindWindowOptions swfwOptions,
+			[MarshalAs(UnmanagedType.IDispatch)] out object? ppdispOut);
 
 		/// <summary>Occurs when a new Shell window is created for a frame.</summary>
 		/// <param name="lCookie">The cookie that identifies the window.</param>
 		/// <param name="punk">The address of the new window's IUnknown interface.</param>
-		[DispId(0x60020009)]
 		void OnCreated([In] int lCookie, [In, MarshalAs(UnmanagedType.IUnknown)] object punk);
 
 		/// <summary>Deprecated. Always returns S_OK.</summary>
 		/// <param name="fAttach">Not used.</param>
-		[DispId(0x6002000a), Obsolete]
 		void ProcessAttachDetach([In] bool fAttach);
+	}
+
+	/// <summary>Finds a window in the Shell windows collection and returns the window's handle and IDispatch interface.</summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="this">The this.</param>
+	/// <param name="pvarLoc">Specifies the window to find.</param>
+	/// <param name="swClass"><para>Type: <c>int</c></para>
+	/// <para>One or more ShellWindowTypeConstants flags that specify window types to include in the search.</para></param>
+	/// <param name="includingPending">if set to <c>true</c> [including pending].</param>
+	/// <returns>A reference to the window's interface, or <c>NULL</c> if no such window was found.</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/exdisp/nf-exdisp-ishellwindows-findwindowsw HRESULT FindWindowSW( [in]
+	// VARIANT *pvarLoc, [in] VARIANT *pvarLocRoot, [in] int swClass, [out] long *phwnd, int swfwOptions, [out, retval] IDispatch
+	// **ppdispOut );
+	public static T? FindWindowSW<T>(this IShellWindows @this, CSIDL pvarLoc, ShellWindowTypeConstants swClass,
+		bool includingPending = false) where T: class
+	{
+		var hr = @this.FindWindowSW((int)pvarLoc, null, swClass, out _, ShellWindowFindWindowOptions.SWFO_NEEDDISPATCH | (includingPending ? ShellWindowFindWindowOptions.SWFO_INCLUDEPENDING : 0), out var pOut);
+		if (hr == HRESULT.S_OK)
+			return pOut as T;
+		else if (hr == HRESULT.S_FALSE)
+			return null;
+		else
+			throw hr.GetException()!;
 	}
 
 	/*
