@@ -446,23 +446,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WUApi", "PIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WUApi", "UnitTests\PInvoke\WUApi\WUApi.csproj", "{4E84A8EA-A180-4897-9542-C529A91702AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.WindowsUpdate", "WindowsUpdate\Vanara.WindowsUpdate.csproj", "{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.WindowsUpdate", "WindowsUpdate\Vanara.WindowsUpdate.csproj", "{DCD4CDCF-F963-48B6-9B8F-1F273C38952F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchApi", "UnitTests\PInvoke\SearchApi\SearchApi.csproj", "{B359422A-F804-46B1-BC79-A55F241C5DF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchApi", "UnitTests\PInvoke\SearchApi\SearchApi.csproj", "{B359422A-F804-46B1-BC79-A55F241C5DF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.ElsCore", "PInvoke\ElsCore\Vanara.PInvoke.ElsCore.csproj", "{CA0ED08D-5311-4963-80C0-54F473EC097D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.ElsCore", "PInvoke\ElsCore\Vanara.PInvoke.ElsCore.csproj", "{CA0ED08D-5311-4963-80C0-54F473EC097D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElsCore", "UnitTests\PInvoke\ElsCore\ElsCore.csproj", "{BE66983D-2159-4BC1-873E-BBCE72EC0782}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElsCore", "UnitTests\PInvoke\ElsCore\ElsCore.csproj", "{BE66983D-2159-4BC1-873E-BBCE72EC0782}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.SpellCheckingApi", "PInvoke\SpellCheckingApi\Vanara.PInvoke.SpellCheckingApi.csproj", "{C8A41176-7562-4E4D-BCAE-1E46B89432BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.SpellCheckingApi", "PInvoke\SpellCheckingApi\Vanara.PInvoke.SpellCheckingApi.csproj", "{C8A41176-7562-4E4D-BCAE-1E46B89432BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellCheckingApi", "UnitTests\PInvoke\SpellCheckingApi\SpellCheckingApi.csproj", "{2033F1A1-D4FC-4851-8C38-093BD9360A46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellCheckingApi", "UnitTests\PInvoke\SpellCheckingApi\SpellCheckingApi.csproj", "{2033F1A1-D4FC-4851-8C38-093BD9360A46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.ActiveDS", "PInvoke\ActiveDS\Vanara.PInvoke.ActiveDS.csproj", "{7EA9D8A9-73D9-4BE1-A7FA-50DEF7D9529E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActiveDS", "UnitTests\PInvoke\ActiveDS\ActiveDS.csproj", "{53FB01D1-C4F6-44AC-9FE8-FFE3DBCF877F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.DirectoryServices", "DirectoryServices\Vanara.DirectoryServices.csproj", "{E3F4F3F4-A3B4-4625-9A60-B677A022448D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.UIAnimation", "PInvoke\UIAnimation\Vanara.PInvoke.UIAnimation.csproj", "{BC92604E-7C28-4DA8-9692-E899FFF81685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAnimation", "UnitTests\PInvoke\UIAnimation\UIAnimation.csproj", "{CF353815-F31F-4845-9BB9-D2E437019868}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4082,6 +4086,41 @@ Global
 		{E3F4F3F4-A3B4-4625-9A60-B677A022448D}.Release|x64.Build.0 = Release|x64
 		{E3F4F3F4-A3B4-4625-9A60-B677A022448D}.Release|x86.ActiveCfg = Release|x86
 		{E3F4F3F4-A3B4-4625-9A60-B677A022448D}.Release|x86.Build.0 = Release|x86
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Debug|x64.ActiveCfg = Debug|x64
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Debug|x64.Build.0 = Debug|x64
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Debug|x86.ActiveCfg = Debug|x86
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Debug|x86.Build.0 = Debug|x86
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.DebugNoTests|x64.ActiveCfg = Debug|x64
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.DebugNoTests|x64.Build.0 = Debug|x64
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.DebugNoTests|x86.ActiveCfg = Debug|x86
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.DebugNoTests|x86.Build.0 = Debug|x86
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Release|x64.ActiveCfg = Release|x64
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Release|x64.Build.0 = Release|x64
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Release|x86.ActiveCfg = Release|x86
+		{BC92604E-7C28-4DA8-9692-E899FFF81685}.Release|x86.Build.0 = Release|x86
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Debug|x64.ActiveCfg = Debug|x64
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Debug|x64.Build.0 = Debug|x64
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Debug|x86.ActiveCfg = Debug|x86
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Debug|x86.Build.0 = Debug|x86
+		{CF353815-F31F-4845-9BB9-D2E437019868}.DebugNoTests|Any CPU.ActiveCfg = DebugNoTests|Any CPU
+		{CF353815-F31F-4845-9BB9-D2E437019868}.DebugNoTests|Any CPU.Build.0 = DebugNoTests|Any CPU
+		{CF353815-F31F-4845-9BB9-D2E437019868}.DebugNoTests|x64.ActiveCfg = DebugNoTests|x64
+		{CF353815-F31F-4845-9BB9-D2E437019868}.DebugNoTests|x64.Build.0 = DebugNoTests|x64
+		{CF353815-F31F-4845-9BB9-D2E437019868}.DebugNoTests|x86.ActiveCfg = DebugNoTests|x86
+		{CF353815-F31F-4845-9BB9-D2E437019868}.DebugNoTests|x86.Build.0 = DebugNoTests|x86
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Release|x64.ActiveCfg = Release|x64
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Release|x64.Build.0 = Release|x64
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Release|x86.ActiveCfg = Release|x86
+		{CF353815-F31F-4845-9BB9-D2E437019868}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -4289,6 +4328,8 @@ Global
 		{2033F1A1-D4FC-4851-8C38-093BD9360A46} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{7EA9D8A9-73D9-4BE1-A7FA-50DEF7D9529E} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{53FB01D1-C4F6-44AC-9FE8-FFE3DBCF877F} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{BC92604E-7C28-4DA8-9692-E899FFF81685} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{CF353815-F31F-4845-9BB9-D2E437019868} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

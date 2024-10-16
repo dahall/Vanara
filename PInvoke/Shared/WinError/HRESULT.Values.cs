@@ -9879,4 +9879,79 @@ public partial struct HRESULT
 	/// <summary>The specified search filter is invalid.</summary>
 	/// <remarks>Use the correct format of the filter accepted by the directory server.</remarks>
 	public const int E_ADS_INVALID_FILTER = unchecked((int)0x80005014);
+
+	/// <summary>The object could not be created.</summary>
+	public const int UI_E_CREATE_FAILED = unchecked((int)0x802A0001);
+
+	/// <summary>Shutdown was already called on this object or the object that owns it.</summary>
+	public const int UI_E_SHUTDOWN_CALLED = unchecked((int)0x802A0002);
+
+	/// <summary>This method cannot be called during this type of callback.</summary>
+	public const int UI_E_ILLEGAL_REENTRANCY = unchecked((int)0x802A0003);
+
+	/// <summary>This object has been sealed, so this change is no longer allowed.</summary>
+	public const int UI_E_OBJECT_SEALED = unchecked((int)0x802A0004);
+
+	/// <summary>The requested value was never set.</summary>
+	public const int UI_E_VALUE_NOT_SET = unchecked((int)0x802A0005);
+
+	/// <summary>The requested value cannot be determined.</summary>
+	public const int UI_E_VALUE_NOT_DETERMINED = unchecked((int)0x802A0006);
+
+	/// <summary>A callback returned an invalid output parameter.</summary>
+	public const int UI_E_INVALID_OUTPUT = unchecked((int)0x802A0007);
+
+	/// <summary>A callback returned a success code other than S_OK or S_FALSE.</summary>
+	public const int UI_E_BOOLEAN_EXPECTED = unchecked((int)0x802A0008);
+
+	/// <summary>A parameter that should be owned by this object is owned by a different object.</summary>
+	public const int UI_E_DIFFERENT_OWNER = unchecked((int)0x802A0009);
+
+	/// <summary>More than one item matched the search criteria.</summary>
+	public const int UI_E_AMBIGUOUS_MATCH = unchecked((int)0x802A000A);
+
+	/// <summary>A floating-point overflow occurred.</summary>
+	public const int UI_E_FP_OVERFLOW = unchecked((int)0x802A000B);
+
+	/// <summary>This method can only be called from the thread that created the object.</summary>
+	public const int UI_E_WRONG_THREAD = unchecked((int)0x802A000C);
+
+	/// <summary>The storyboard is currently in the schedule.</summary>
+	public const int UI_E_STORYBOARD_ACTIVE = unchecked((int)0x802A0101);
+
+	/// <summary>The storyboard is not playing.</summary>
+	public const int UI_E_STORYBOARD_NOT_PLAYING = unchecked((int)0x802A0102);
+
+	/// <summary>The start keyframe might occur after the end keyframe.</summary>
+	public const int UI_E_START_KEYFRAME_AFTER_END = unchecked((int)0x802A0103);
+
+	/// <summary>It might not be possible to determine the end keyframe time when the start keyframe is reached.</summary>
+	public const int UI_E_END_KEYFRAME_NOT_DETERMINED = unchecked((int)0x802A0104);
+
+	/// <summary>Two repeated portions of a storyboard might overlap.</summary>
+	public const int UI_E_LOOPS_OVERLAP = unchecked((int)0x802A0105);
+
+	/// <summary>The transition has already been added to a storyboard.</summary>
+	public const int UI_E_TRANSITION_ALREADY_USED = unchecked((int)0x802A0106);
+
+	/// <summary>The transition has not been added to a storyboard.</summary>
+	public const int UI_E_TRANSITION_NOT_IN_STORYBOARD = unchecked((int)0x802A0107);
+
+	/// <summary>The transition might eclipse the beginning of another transition in the storyboard.</summary>
+	public const int UI_E_TRANSITION_ECLIPSED = unchecked((int)0x802A0108);
+
+	/// <summary>The given time is earlier than the time passed to the last update.</summary>
+	public const int UI_E_TIME_BEFORE_LAST_UPDATE = unchecked((int)0x802A0109);
+
+	/// <summary>This client is already connected to a timer.</summary>
+	public const int UI_E_TIMER_CLIENT_ALREADY_CONNECTED = unchecked((int)0x802A010A);
+
+	/// <summary>The passed dimension is invalid or does not match the object's dimension.</summary>
+	public const int UI_E_INVALID_DIMENSION = unchecked((int)0x802A010B);
+
+	/// <summary>The added primitive begins at or beyond the duration of the interpolator.</summary>
+	public const int UI_E_PRIMITIVE_OUT_OF_BOUNDS = unchecked((int)0x802A010C);
+
+	/// <summary>The operation cannot be completed because the window is being closed.</summary>
+	public const int UI_E_WINDOW_CLOSED = unchecked((int)0x802A0201);
 }
