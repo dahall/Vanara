@@ -100,6 +100,7 @@
       <dependency id="Vanara.PInvoke.SpellCheckingApi" version="4.0.5" />
       <dependency id="Vanara.PInvoke.TaskSchd" version="4.0.5" />
       <dependency id="Vanara.PInvoke.TextServicesFramework" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.UIAnimation" version="4.0.5" />
       <dependency id="Vanara.PInvoke.UIAutomation" version="4.0.5" />
       <dependency id="Vanara.PInvoke.UrlMon" version="4.0.5" />
       <dependency id="Vanara.PInvoke.User32" version="4.0.5" />
