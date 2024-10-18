@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI types and methods.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net45;net48;net6.0;net7.0;net8.0-windows;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0-windows;netcoreapp3.1</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWPF>true</UseWPF>
     <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
@@ -16,6 +16,7 @@ SystemFoundationExtensions
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <RootNamespace>Vanara.WinUI.Extensions</RootNamespace>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
     <Reference Include="netstandard" />
@@ -26,6 +27,7 @@ SystemFoundationExtensions
     <ProjectReference Include="..\Windows.Shell.Common\Vanara.Windows.Shell.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
     <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
   </ItemGroup>
 </Project>
