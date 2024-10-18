@@ -156,7 +156,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Provides access to a rectangular area of the bitmap.</summary>
 		/// <param name="prcLock">
@@ -198,7 +198,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmap-lock HRESULT Lock( const WICRect *prcLock,
 		// DWORD flags, IWICBitmapLock **ppILock );
-		IWICBitmapLock Lock([In, Optional] PWICRect prcLock, WICBitmapLockFlags flags);
+		IWICBitmapLock Lock([In, Optional] PWICRect? prcLock, WICBitmapLockFlags flags);
 
 		/// <summary>Provides access for palette modifications.</summary>
 		/// <param name="pIPalette">
@@ -366,7 +366,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Initializes the bitmap clipper with the provided parameters.</summary>
 		/// <param name="pISource">
@@ -790,7 +790,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapcodecprogressnotification-registerprogressnotification
 		// HRESULT RegisterProgressNotification( PFNProgressNotification pfnProgressNotification, LPVOID pvData, DWORD dwProgressFlags );
-		void RegisterProgressNotification([In, Optional] PFNProgressNotification pfnProgressNotification, [In, Optional] IntPtr pvData, uint dwProgressFlags);
+		void RegisterProgressNotification([In, Optional] PFNProgressNotification? pfnProgressNotification, [In, Optional] IntPtr pvData, uint dwProgressFlags);
 	}
 
 	/// <summary>
@@ -2146,7 +2146,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Initializes the bitmap flip rotator with the provided parameters.</summary>
 		/// <param name="pISource">
@@ -2299,7 +2299,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Retrieves a metadata query reader for the frame.</summary>
 		/// <returns>
@@ -2486,7 +2486,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframeencode-setpalette HRESULT SetPalette(
 		// IWICPalette *pIPalette );
-		void SetPalette([Optional]  IWICPalette? pIPalette);
+		void SetPalette([Optional] IWICPalette? pIPalette);
 
 		/// <summary>Sets the frame thumbnail if supported by the codec.</summary>
 		/// <param name="pIThumbnail">
@@ -2587,7 +2587,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframeencode-writesource HRESULT
 		// WriteSource( IWICBitmapSource *pIBitmapSource, WICRect *prc );
-		void WriteSource([Optional] IWICBitmapSource? pIBitmapSource, [In, Optional] PWICRect prc);
+		void WriteSource([Optional] IWICBitmapSource? pIBitmapSource, [In, Optional] PWICRect? prc);
 
 		/// <summary>Commits the frame to the image.</summary>
 		/// <remarks>
@@ -2848,7 +2848,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Initializes the bitmap scaler with the provided parameters.</summary>
 		/// <param name="pISource">
@@ -3027,7 +3027,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 	}
 
 	/// <summary>Exposes methods for offloading certain operations to the underlying IWICBitmapSource implementation.</summary>
@@ -3118,7 +3118,7 @@ public static partial class WindowsCodecs
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsourcetransform-copypixels HRESULT
 		// CopyPixels( const WICRect *prc, UINT uiWidth, UINT uiHeight, WICPixelFormatGUID *pguidDstFormat, WICBitmapTransformOptions
 		// dstTransform, UINT nStride, UINT cbBufferSize, BYTE *pbBuffer );
-		void CopyPixels([In, Optional] PWICRect prc, uint uiWidth, uint uiHeight, in Guid pguidDstFormat, WICBitmapTransformOptions dstTransform, uint nStride, uint cbBufferSize, [Out] IntPtr pbBuffer);
+		void CopyPixels([In, Optional] PWICRect? prc, uint uiWidth, uint uiHeight, in Guid pguidDstFormat, WICBitmapTransformOptions dstTransform, uint nStride, uint cbBufferSize, [Out] IntPtr pbBuffer);
 
 		/// <summary>Returns the closest dimensions the implementation can natively scale to given the desired dimensions.</summary>
 		/// <param name="puiWidth">
@@ -4642,7 +4642,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Retrieves a metadata query reader for the frame.</summary>
 		/// <returns>

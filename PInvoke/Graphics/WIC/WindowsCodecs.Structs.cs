@@ -41,7 +41,8 @@ public static partial class WindowsCodecs
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>The end of the stream.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool EndOfStream;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool EndOfStream;
 	}
 
 	/// <summary>Specifies the pixel format, buffer, stride and size of a component plane for a planar pixel format.</summary>
