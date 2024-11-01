@@ -101,7 +101,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicddsframedecode-copyblocks HRESULT CopyBlocks(
 		// const WICRect *prcBoundsInBlocks, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		void CopyBlocks([In, Optional] PWICRect prcBoundsInBlocks, uint cbStride, uint cbBufferSize, [Out] IntPtr pbBuffer);
+		void CopyBlocks([In, Optional] PWICRect? prcBoundsInBlocks, uint cbStride, uint cbBufferSize, [Out] IntPtr pbBuffer);
 	}
 
 	/// <summary>Exposes methods that provide enumeration services for individual metadata items.</summary>
@@ -359,7 +359,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Initializes the format converter.</summary>
 		/// <param name="pISource">
@@ -733,7 +733,7 @@ public static partial class WindowsCodecs
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nn-wincodec-iwicimagingfactory
 	[PInvokeData("wincodec.h", MSDNShortId = "30d155b1-a46c-46c4-9f8f-fb56dc6bf0a9")]
-	[ComImport, Guid("ec5ec8a9-c395-4314-9c77-54d7a935ff70"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[ComImport, Guid("ec5ec8a9-c395-4314-9c77-54d7a935ff70"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(WICImagingFactory))]
 	public interface IWICImagingFactory
 	{
 		/// <summary>Creates a new instance of the IWICBitmapDecoder class based on the given file.</summary>
@@ -1346,7 +1346,7 @@ public static partial class WindowsCodecs
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nn-wincodec-iwicimagingfactory2
 	[PInvokeData("wincodec.h", MSDNShortId = "95F64E01-6174-4C1C-B0BE-331380E583C2")]
-	[ComImport, Guid("7B816B45-1996-4476-B132-DE9E247C8AF0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[ComImport, Guid("7B816B45-1996-4476-B132-DE9E247C8AF0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(WICImagingFactory2))]
 	public interface IWICImagingFactory2 : IWICImagingFactory
 	{
 		/// <summary>Creates a new instance of the IWICBitmapDecoder class based on the given file.</summary>
@@ -2992,7 +2992,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatareader-getvalue HRESULT GetValue(
 		// const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, PROPVARIANT *pvarValue );
-		void GetValue([In, Optional] PROPVARIANT pvarSchema, [In] PROPVARIANT pvarId, [In, Out, Optional] PROPVARIANT pvarValue);
+		void GetValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In, Out, Optional] PROPVARIANT? pvarValue);
 
 		/// <summary>Gets an enumerator of all the metadata items.</summary>
 		/// <returns>
@@ -3369,7 +3369,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatareader-getvalue HRESULT GetValue(
 		// const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, PROPVARIANT *pvarValue );
-		new void GetValue([In, Optional] PROPVARIANT pvarSchema, [In] PROPVARIANT pvarId, [In, Out, Optional] PROPVARIANT pvarValue);
+		new void GetValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In, Out, Optional] PROPVARIANT? pvarValue);
 
 		/// <summary>Gets an enumerator of all the metadata items.</summary>
 		/// <returns>
@@ -3395,7 +3395,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatawriter-setvalue HRESULT SetValue(
 		// const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, const PROPVARIANT *pvarValue );
-		void SetValue([In, Optional] PROPVARIANT pvarSchema, [In] PROPVARIANT pvarId, [In] PROPVARIANT pvarValue);
+		void SetValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In] PROPVARIANT pvarValue);
 
 		/// <summary>Sets the metadata item to the specified index.</summary>
 		/// <param name="nIndex">
@@ -3420,7 +3420,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatawriter-setvaluebyindex HRESULT
 		// SetValueByIndex( UINT nIndex, const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, const PROPVARIANT *pvarValue );
-		void SetValueByIndex(uint nIndex, [In, Optional] PROPVARIANT pvarSchema, [In] PROPVARIANT pvarId, [In] PROPVARIANT pvarValue);
+		void SetValueByIndex(uint nIndex, [In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In] PROPVARIANT pvarValue);
 
 		/// <summary>Removes the metadata item that matches the given parameters.</summary>
 		/// <param name="pvarSchema">
@@ -3433,7 +3433,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatawriter-removevalue HRESULT
 		// RemoveValue( const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId );
-		void RemoveValue([In, Optional] PROPVARIANT pvarSchema, [In] PROPVARIANT pvarId);
+		void RemoveValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId);
 
 		/// <summary>Removes the metadata item at the specified index.</summary>
 		/// <param name="nIndex">
@@ -5015,7 +5015,7 @@ public static partial class WindowsCodecs
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nn-wincodec-iwicplanarformatconverter
 	[PInvokeData("wincodec.h", MSDNShortId = "07258A07-84AA-4DC2-B2E3-14A43AED5617")]
-	[ComImport, Guid("BEBEE9CB-83B0-4DCC-8132-B0AAA55EAC96"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[ComImport, Guid("BEBEE9CB-83B0-4DCC-8132-B0AAA55EAC96"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(WICPlanarFormatConverter))]
 	public interface IWICPlanarFormatConverter : IWICBitmapSource
 	{
 		/// <summary>Retrieves the pixel width and height of the bitmap.</summary>
@@ -5149,7 +5149,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapsource-copypixels HRESULT CopyPixels( const
 		// WICRect *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer );
-		new void CopyPixels([In, Optional] PWICRect prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
+		new void CopyPixels([In, Optional] PWICRect? prc, uint cbStride, uint cbBufferSize, [In, Out] IntPtr pbBuffer);
 
 		/// <summary>Initializes a format converter with a planar source, and specifies the interleaved output pixel format.</summary>
 		/// <param name="ppPlanes">
@@ -5319,7 +5319,7 @@ public static partial class WindowsCodecs
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nn-wincodec-iwicstream
 	[PInvokeData("wincodec.h", MSDNShortId = "bc398732-037d-4f48-940f-c70975447972")]
 	[ComImport, Guid("135FF860-22B7-4ddf-B0F6-218F4F299A43"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IWICStream : IStream
+	public interface IWICStream : IStream, ISequentialStream
 	{
 		/// <inheritdoc/>
 		new void Read(byte[] pv, int cb, IntPtr pcbRead);
@@ -5502,4 +5502,128 @@ public static partial class WindowsCodecs
 		action(sz, sb, out _);
 		return sb.ToString();
 	}
+
+	/// <summary>CLSID_WICAdngDecoder</summary>
+	[ComImport, Guid("981d9411-909e-42a7-8f5d-a747ff052edb"), ClassInterface(ClassInterfaceType.None)]
+	public class WICAdngDecoder { }
+
+	/// <summary>CLSID_WICBmpDecoder</summary>
+	[ComImport, Guid("6b462062-7cbf-400d-9fdb-813dd10f2778"), ClassInterface(ClassInterfaceType.None)]
+	public class WICBmpDecoder { }
+
+	/// <summary>CLSID_WICBmpEncoder</summary>
+	[ComImport, Guid("69be8bb4-d66d-47c8-865a-ed1589433782"), ClassInterface(ClassInterfaceType.None)]
+	public class WICBmpEncoder { }
+
+	/// <summary>CLSID_WICDdsDecoder</summary>
+	[ComImport, Guid("9053699f-a341-429d-9e90-ee437cf80c73"), ClassInterface(ClassInterfaceType.None)]
+	public class WICDdsDecoder { }
+
+	/// <summary>CLSID_WICDdsEncoder</summary>
+	[ComImport, Guid("a61dde94-66ce-4ac1-881b-71680588895e"), ClassInterface(ClassInterfaceType.None)]
+	public class WICDdsEncoder { }
+
+	/// <summary>CLSID_WICDefaultFormatConverter</summary>
+	[ComImport, Guid("1a3f11dc-b514-4b17-8c5f-2154513852f1"), ClassInterface(ClassInterfaceType.None)]
+	public class WICDefaultFormatConverter { }
+
+	/// <summary>CLSID_WICFormatConverterHighColor</summary>
+	[ComImport, Guid("ac75d454-9f37-48f8-b972-4e19bc856011"), ClassInterface(ClassInterfaceType.None)]
+	public class WICFormatConverterHighColor { }
+
+	/// <summary>CLSID_WICFormatConverterNChannel</summary>
+	[ComImport, Guid("c17cabb2-d4a3-47d7-a557-339b2efbd4f1"), ClassInterface(ClassInterfaceType.None)]
+	public class WICFormatConverterNChannel { }
+
+	/// <summary>CLSID_WICFormatConverterWMPhoto</summary>
+	[ComImport, Guid("9cb5172b-d600-46ba-ab77-77bb7e3a00d9"), ClassInterface(ClassInterfaceType.None)]
+	public class WICFormatConverterWMPhoto { }
+
+	/// <summary>CLSID_WICGifDecoder</summary>
+	[ComImport, Guid("381dda3c-9ce9-4834-a23e-1f98f8fc52be"), ClassInterface(ClassInterfaceType.None)]
+	public class WICGifDecoder { }
+
+	/// <summary>CLSID_WICGifEncoder</summary>
+	[ComImport, Guid("114f5598-0b22-40a0-86a1-c83ea495adbd"), ClassInterface(ClassInterfaceType.None)]
+	public class WICGifEncoder { }
+
+	/// <summary>CLSID_WICHeifDecoder</summary>
+	[ComImport, Guid("e9A4A80a-44fe-4DE4-8971-7150B10a5199"), ClassInterface(ClassInterfaceType.None)]
+	public class WICHeifDecoder { }
+
+	/// <summary>CLSID_WICHeifEncoder</summary>
+	[ComImport, Guid("0dbecec1-9eb3-4860-9c6f-ddbe86634575"), ClassInterface(ClassInterfaceType.None)]
+	public class WICHeifEncoder { }
+
+	/// <summary>CLSID_WICIcoDecoder</summary>
+	[ComImport, Guid("c61bfcdf-2e0f-4aad-a8d7-e06bafebcdfe"), ClassInterface(ClassInterfaceType.None)]
+	public class WICIcoDecoder { }
+
+	/// <summary>CLSID_WICImagingCategories</summary>
+	[ComImport, Guid("fae3d380-fea4-4623-8c75-c6b61110b681"), ClassInterface(ClassInterfaceType.None)]
+	public class WICImagingCategories { }
+
+	/// <summary>CLSID_WICImagingFactory</summary>
+	[ComImport, Guid("cacaf262-9370-4615-a13b-9f5539da4c0a"), ClassInterface(ClassInterfaceType.None)]
+	public class WICImagingFactory { }
+
+	/// <summary>CLSID_WICImagingFactory2</summary>
+	[ComImport, Guid("317d06e8-5f24-433d-bdf7-79ce68d8abc2"), ClassInterface(ClassInterfaceType.None)]
+	public class WICImagingFactory2 { }
+
+	/// <summary>CLSID_WICJpegDecoder</summary>
+	[ComImport, Guid("9456a480-e88b-43ea-9e73-0b2d9b71b1ca"), ClassInterface(ClassInterfaceType.None)]
+	public class WICJpegDecoder { }
+
+	/// <summary>CLSID_WICJpegEncoder</summary>
+	[ComImport, Guid("1a34f5c1-4a5a-46dc-b644-1f4567e7a676"), ClassInterface(ClassInterfaceType.None)]
+	public class WICJpegEncoder { }
+
+	/// <summary>CLSID_WICJpegQualcommPhoneEncoder</summary>
+	[ComImport, Guid("68ed5c62-f534-4979-b2b3-686a12b2b34c"), ClassInterface(ClassInterfaceType.None)]
+	public class WICJpegQualcommPhoneEncoder { }
+
+	/// <summary>CLSID_WICPlanarFormatConverter</summary>
+	[ComImport, Guid("184132b8-32f8-4784-9131-dd7224b23438"), ClassInterface(ClassInterfaceType.None)]
+	public class WICPlanarFormatConverter { }
+
+	/// <summary>CLSID_WICPngDecoder</summary>
+	[ComImport, Guid("389ea17b-5078-4cde-b6ef-25c15175c751"), ClassInterface(ClassInterfaceType.None)]
+	public class WICPngDecoder { }
+
+	/// <summary>CLSID_WICPngDecoder1</summary>
+	[ComImport, Guid("389ea17b-5078-4cde-b6ef-25c15175c751"), ClassInterface(ClassInterfaceType.None)]
+	public class WICPngDecoder1 { }
+
+	/// <summary>CLSID_WICPngDecoder2</summary>
+	[ComImport, Guid("e018945b-aa86-4008-9bd4-6777a1e40c11"), ClassInterface(ClassInterfaceType.None)]
+	public class WICPngDecoder2 { }
+
+	/// <summary>CLSID_WICPngEncoder</summary>
+	[ComImport, Guid("27949969-876a-41d7-9447-568f6a35a4dc"), ClassInterface(ClassInterfaceType.None)]
+	public class WICPngEncoder { }
+
+	/// <summary>CLSID_WICRAWDecoder</summary>
+	[ComImport, Guid("41945702-8302-44A6-9445-AC98E8AFA086"), ClassInterface(ClassInterfaceType.None)]
+	public class WICRAWDecoder { }
+
+	/// <summary>CLSID_WICTiffDecoder</summary>
+	[ComImport, Guid("b54e85d9-fe23-499f-8b88-6acea713752b"), ClassInterface(ClassInterfaceType.None)]
+	public class WICTiffDecoder { }
+
+	/// <summary>CLSID_WICTiffEncoder</summary>
+	[ComImport, Guid("0131be10-2001-4c5f-a9b0-cc88fab64ce8"), ClassInterface(ClassInterfaceType.None)]
+	public class WICTiffEncoder { }
+
+	/// <summary>CLSID_WICWebpDecoder</summary>
+	[ComImport, Guid("7693E886-51C9-4070-8419-9F70738EC8FA"), ClassInterface(ClassInterfaceType.None)]
+	public class WICWebpDecoder { }
+
+	/// <summary>CLSID_WICWmpDecoder</summary>
+	[ComImport, Guid("a26cec36-234c-4950-ae16-e34aace71d0d"), ClassInterface(ClassInterfaceType.None)]
+	public class WICWmpDecoder { }
+
+	/// <summary>CLSID_WICWmpEncoder</summary>
+	[ComImport, Guid("ac4ce3cb-e1c1-44cd-8215-5a1665509ec2"), ClassInterface(ClassInterfaceType.None)]
+	public class WICWmpEncoder { }
 }

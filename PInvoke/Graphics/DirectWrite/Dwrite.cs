@@ -1673,7 +1673,8 @@ public static partial class Dwrite
 		/// achieved by specifying <c>isSideways</c> = true and rotating the entire run 90 degrees to the right via a rotate transform.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool isSideways;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool isSideways;
 
 		/// <summary>
 		/// <para>Type: <c>UINT32</c></para>
@@ -1782,13 +1783,15 @@ public static partial class Dwrite
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>true if the hit region contains text; otherwise, false.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool isText;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool isText;
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>true if the text range is trimmed; otherwise, false.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool isTrimmed;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool isTrimmed;
 	}
 
 	/// <summary>Contains properties describing the geometric measurement of an application-defined inline object.</summary>
@@ -1825,7 +1828,8 @@ public static partial class Dwrite
 		/// A Boolean flag that indicates whether the object is to be placed upright or alongside the text baseline for vertical text.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool supportsSideways;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool supportsSideways;
 	}
 
 	/// <summary>Line breakpoint characteristics of a character.</summary>
@@ -1906,7 +1910,8 @@ public static partial class Dwrite
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>The line is trimmed.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool isTrimmed;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool isTrimmed;
 	}
 
 	/// <summary>The <c>DWRITE_MATRIX</c> structure specifies the graphics transform to be applied to rendered glyphs.</summary>
