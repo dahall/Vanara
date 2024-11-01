@@ -210,6 +210,11 @@ public class Matrix :
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator Matrix(float[,] values) => new(values);
 
+	/// <summary>Performs an implicit conversion from <see cref="Matrix" /> to <see cref="float" />[,].</summary>
+	/// <param name="m">The matrix.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator float[,](Matrix m) => m.ToArray();
+
 	/// <summary>Negates the specified matrix by multiplying all its values by -1.</summary>
 	/// <param name="value">The matrix to negate.</param>
 	/// <returns>The negated matrix.</returns>
@@ -516,6 +521,18 @@ public class Matrix :
 			for (int j = 0; j < (columnsToKeep?.Count() ?? 0); j++)
 				sp[i * columns + j] = m.Span[i * Columns + j];
 		return new(submatrix, rows, columns);
+	}
+
+	/// <summary>Converts the matrix to a two-dimensional array.</summary>
+	/// <returns>A two-dimensional array with all the elements of the matrix.</returns>
+	public float[,] ToArray()
+	{
+		Span<float> sp = m.Span;
+		float[,] r = new float[Rows, Columns];
+		for (int a = 0; a < Rows; a++)
+			for (int b = 0; b < Columns; b++)
+				r[a, b] = sp[a * Columns + b];
+		return r;
 	}
 
 	/// <inheritdoc/>
