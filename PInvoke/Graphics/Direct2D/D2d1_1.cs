@@ -1,12 +1,52 @@
 ﻿using static Vanara.PInvoke.Dwrite;
 using static Vanara.PInvoke.DXGI;
+using D2D1_COLOR_F = Vanara.PInvoke.D2d1.D3DCOLORVALUE;
+using D2D1_MATRIX_3X2_F = Vanara.PInvoke.D2d1.D2D_MATRIX_3X2_F;
+using D2D1_POINT_2F = Vanara.PInvoke.D2d1.D2D_POINT_2F;
+using D2D1_TAG = System.UInt64;
 
 namespace Vanara.PInvoke;
 
-// TODO: Move once D2d1 lib is done
 /// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1
 {
+	/// <summary>Describes the implementation of an effect.</summary>
+	/// <param name="effectImpl">The effect implementation returned by the factory.</param>
+	/// <returns>The effect factory is implemented by an effect author.</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nc-d2d1_1-pd2d1_effect_factory
+	// PD2D1_EFFECT_FACTORY Pd2d1EffectFactory; HRESULT Pd2d1EffectFactory( IUnknown **effectImpl ) {...}
+	[PInvokeData("d2d1_1.h", MSDNShortId = "NC:d2d1_1.PD2D1_EFFECT_FACTORY")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	public delegate HRESULT PD2D1_EFFECT_FACTORY([MarshalAs(UnmanagedType.IUnknown)] out object? effectImpl);
+
+	/// <summary>Gets a property from an effect.</summary>
+	/// <param name="effect">A pointer to the IUnknown interface for the effect on which the property will be retrieved.</param>
+	/// <param name="data">A pointer to a variable that stores the data that this function retrieves on the property.</param>
+	/// <param name="dataSize">The number of bytes in the property to retrieve.</param>
+	/// <param name="actualSize">A optional pointer to a variable that stores the actual number of bytes retrieved on the property. If not used, set to <c>NULL</c>.</param>
+	/// <returns>Returns S_OK if successful; otherwise, returns an <c>HRESULT</c> error code.</returns>
+	/// <remarks>Supply a <c>PD2D1_PROPERTY_GET_FUNCTION</c> to the <c>getFunction</c> member of a D2D1_PROPERTY_BINDING structure to specify the function that Direct2D uses to get data for a property.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/nc-d2d1effectauthor-pd2d1_property_get_function
+	// PD2D1_PROPERTY_GET_FUNCTION Pd2d1PropertyGetFunction; HRESULT Pd2d1PropertyGetFunction( [in] const IUnknown *effect, [out] BYTE
+	// *data, UINT32 dataSize, [out, optional] UINT32 *actualSize ) {...}
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NC:d2d1effectauthor.PD2D1_PROPERTY_GET_FUNCTION")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	public delegate HRESULT PD2D1_PROPERTY_GET_FUNCTION([In, MarshalAs(UnmanagedType.IUnknown)] object effect,
+		[Out] IntPtr data, uint dataSize, out uint actualSize);
+
+	/// <summary>Sets a property on an effect.</summary>
+	/// <param name="effect">A pointer to the IUnknown interface for the effect on which the property will be set.</param>
+	/// <param name="data">A pointer to the data to be set on the property.</param>
+	/// <param name="dataSize">The number of bytes in the property set by the function.</param>
+	/// <returns>Returns S_OK if successful; otherwise, returns an <c>HRESULT</c> error code.</returns>
+	/// <remarks>Supply a <c>PD2D1_PROPERTY_SET_FUNCTION</c> function pointer to the <c>setFunction</c> member of a D2D1_PROPERTY_BINDING structure to specify the function that Direct2D uses to set data for a property.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/nc-d2d1effectauthor-pd2d1_property_set_function
+	// PD2D1_PROPERTY_SET_FUNCTION Pd2d1PropertySetFunction; HRESULT Pd2d1PropertySetFunction( [in] IUnknown *effect, [in] const BYTE *data, UINT32 dataSize ) {...}
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NC:d2d1effectauthor.PD2D1_PROPERTY_SET_FUNCTION")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	public delegate HRESULT PD2D1_PROPERTY_SET_FUNCTION([In, MarshalAs(UnmanagedType.IUnknown)] object effect,
+		[In] IntPtr data, uint dataSize);
+
 	/// <summary>Specifies how a bitmap can be used.</summary>
 	/// <remarks>
 	/// <para>
@@ -53,9 +93,148 @@ public static partial class D2d1
 
 		/// <summary>The bitmap works with ID2D1GdiInteropRenderTarget::GetDC.</summary>
 		D2D1_BITMAP_OPTIONS_GDI_COMPATIBLE = 0x00000008,
+	}
 
-		/// <summary/>
-		D2D1_BITMAP_OPTIONS_FORCE_DWORD = 0xffffffff,
+	/// <summary>Specifies how one of the color sources is to be derived and optionally specifies a preblend operation on the color source.</summary>
+	/// <remarks>This enumeration has the same numeric values as D3D10_BLEND.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ne-d2d1effectauthor-d2d1_blend
+	// typedef enum D2D1_BLEND { D2D1_BLEND_ZERO = 1, D2D1_BLEND_ONE = 2, D2D1_BLEND_SRC_COLOR = 3, D2D1_BLEND_INV_SRC_COLOR = 4, D2D1_BLEND_SRC_ALPHA = 5, D2D1_BLEND_INV_SRC_ALPHA = 6, D2D1_BLEND_DEST_ALPHA = 7, D2D1_BLEND_INV_DEST_ALPHA = 8, D2D1_BLEND_DEST_COLOR = 9, D2D1_BLEND_INV_DEST_COLOR = 10, D2D1_BLEND_SRC_ALPHA_SAT = 11, D2D1_BLEND_BLEND_FACTOR = 14, D2D1_BLEND_INV_BLEND_FACTOR = 15, D2D1_BLEND_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NE:d2d1effectauthor.D2D1_BLEND")]
+	public enum D2D1_BLEND : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The data source is black (0, 0, 0, 0). There is no preblend operation.</para>
+		/// </summary>
+		D2D1_BLEND_ZERO = 1,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>2</para>
+		///   <para>The data source is white (1, 1, 1, 1). There is no preblend operation.</para>
+		/// </summary>
+		D2D1_BLEND_ONE,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>3</para>
+		///   <para>The data source is color data (RGB) from the second input of the blend transform. There is not a preblend operation.</para>
+		/// </summary>
+		D2D1_BLEND_SRC_COLOR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>4</para>
+		///   <para>The data source is color data (RGB) from second input of the blend transform. The preblend operation inverts the data, generating 1 - RGB.</para>
+		/// </summary>
+		D2D1_BLEND_INV_SRC_COLOR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>5</para>
+		///   <para>The data source is alpha data (A) from second input of the blend transform. There is no preblend operation.</para>
+		/// </summary>
+		D2D1_BLEND_SRC_ALPHA,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>6</para>
+		///   <para>The data source is alpha data (A) from the second input of the blend transform. The preblend operation inverts the data, generating 1 - A.</para>
+		/// </summary>
+		D2D1_BLEND_INV_SRC_ALPHA,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>7</para>
+		///   <para>The data source is alpha data (A) from the first input of the blend transform. There is no preblend operation.</para>
+		/// </summary>
+		D2D1_BLEND_DEST_ALPHA,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>8</para>
+		///   <para>The data source is alpha data (A) from the first input of the blend transform. The preblend operation inverts the data, generating 1 - A.</para>
+		/// </summary>
+		D2D1_BLEND_INV_DEST_ALPHA,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>9</para>
+		///   <para>The data source is color data from the first input of the blend transform. There is no preblend operation.</para>
+		/// </summary>
+		D2D1_BLEND_DEST_COLOR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>10</para>
+		///   <para>The data source is color data from the first input of the blend transform. The preblend operation inverts the data, generating 1 - RGB.</para>
+		/// </summary>
+		D2D1_BLEND_INV_DEST_COLOR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>11</para>
+		///   <para>The data source is alpha data from the second input of the blend transform. The preblend operation clamps the data to 1 or less.</para>
+		/// </summary>
+		D2D1_BLEND_SRC_ALPHA_SAT,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>14</para>
+		///   <para>The data source is the blend factor. There is no preblend operation.</para>
+		/// </summary>
+		D2D1_BLEND_BLEND_FACTOR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>15</para>
+		///   <para>The data source is the blend factor. The preblend operation inverts the blend factor, generating 1 - blend_factor.</para>
+		/// </summary>
+		D2D1_BLEND_INV_BLEND_FACTOR,
+	}
+
+	/// <summary>Specifies the blend operation on two color sources.</summary>
+	/// <remarks>This enumeration has the same numeric values as D3D10_BLEND_OP.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ne-d2d1effectauthor-d2d1_blend_operation
+	// typedef enum D2D1_BLEND_OPERATION { D2D1_BLEND_OPERATION_ADD = 1, D2D1_BLEND_OPERATION_SUBTRACT = 2, D2D1_BLEND_OPERATION_REV_SUBTRACT = 3, D2D1_BLEND_OPERATION_MIN = 4, D2D1_BLEND_OPERATION_MAX = 5, D2D1_BLEND_OPERATION_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NE:d2d1effectauthor.D2D1_BLEND_OPERATION")]
+	public enum D2D1_BLEND_OPERATION : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>Add source 1 and source 2.</para>
+		/// </summary>
+		D2D1_BLEND_OPERATION_ADD = 1,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>2</para>
+		///   <para>Subtract source 1 from source 2.</para>
+		/// </summary>
+		D2D1_BLEND_OPERATION_SUBTRACT,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>3</para>
+		///   <para>Subtract source 2 from source 1.</para>
+		/// </summary>
+		D2D1_BLEND_OPERATION_REV_SUBTRACT,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>4</para>
+		///   <para>Find the minimum of source 1 and source 2.</para>
+		/// </summary>
+		D2D1_BLEND_OPERATION_MIN,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>5</para>
+		///   <para>Find the maximum of source 1 and source 2.</para>
+		/// </summary>
+		D2D1_BLEND_OPERATION_MAX,
 	}
 
 	/// <summary>Represents the bit depth of the imaging pipeline in Direct2D.</summary>
@@ -84,12 +263,34 @@ public static partial class D2d1
 
 		/// <summary>Use 32-bit floats per channel.</summary>
 		D2D1_BUFFER_PRECISION_32BPC_FLOAT,
+	}
+
+	/// <summary>Allows a caller to control the channel depth of a stage in the rendering pipeline.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ne-d2d1effectauthor-d2d1_channel_depth
+	// typedef enum D2D1_CHANNEL_DEPTH { D2D1_CHANNEL_DEPTH_DEFAULT = 0, D2D1_CHANNEL_DEPTH_1 = 1, D2D1_CHANNEL_DEPTH_4 = 4, D2D1_CHANNEL_DEPTH_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NE:d2d1effectauthor.D2D1_CHANNEL_DEPTH")]
+	public enum D2D1_CHANNEL_DEPTH : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>The channel depth is the default. It is inherited from the inputs.</para>
+		/// </summary>
+		D2D1_CHANNEL_DEPTH_DEFAULT,
 
 		/// <summary>
-		/// Forces this enumeration to compile to 32 bits in size. Without this value, some compilers would allow this enumeration to
-		/// compile to a size other than 32 bits.Do not use this value.
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The channel depth is 1.</para>
 		/// </summary>
-		D2D1_BUFFER_PRECISION_FORCE_DWORD = 0xffffffff,
+		D2D1_CHANNEL_DEPTH_1,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>4</para>
+		///   <para>The channel depth is 4.</para>
+		/// </summary>
+		D2D1_CHANNEL_DEPTH_4 = 4,
 	}
 
 	/// <summary>Defines how to interpolate between colors.</summary>
@@ -104,9 +305,6 @@ public static partial class D2d1
 
 		/// <summary>Colors are interpolated with premultiplied alpha.</summary>
 		D2D1_COLOR_INTERPOLATION_MODE_PREMULTIPLIED,
-
-		/// <summary/>
-		D2D1_COLOR_INTERPOLATION_MODE_FORCE_DWORD = 0xffffffff,
 	}
 
 	/// <summary>Used to specify the blend mode for all of the Direct2D blending operations.</summary>
@@ -177,9 +375,118 @@ public static partial class D2d1
 
 		/// <summary>Destination colors are inverted according to a source mask.</summary>
 		D2D1_COMPOSITE_MODE_MASK_INVERT,
+	}
 
-		/// <summary/>
-		D2D1_COMPOSITE_MODE_FORCE_DWORD = 0xffffffff,
+	/// <summary>Represents filtering modes that a transform may select to use on input textures.</summary>
+	/// <remarks>This enumeration has the same numeric values as D3D11_FILTER.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ne-d2d1effectauthor-d2d1_filter
+	// typedef enum D2D1_FILTER { D2D1_FILTER_MIN_MAG_MIP_POINT = 0x00, D2D1_FILTER_MIN_MAG_POINT_MIP_LINEAR = 0x01, D2D1_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x04, D2D1_FILTER_MIN_POINT_MAG_MIP_LINEAR = 0x05, D2D1_FILTER_MIN_LINEAR_MAG_MIP_POINT = 0x10, D2D1_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x11, D2D1_FILTER_MIN_MAG_LINEAR_MIP_POINT = 0x14, D2D1_FILTER_MIN_MAG_MIP_LINEAR = 0x15, D2D1_FILTER_ANISOTROPIC = 0x55, D2D1_FILTER_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NE:d2d1effectauthor.D2D1_FILTER")]
+	public enum D2D1_FILTER : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x00</para>
+		///   <para>Use point sampling for minification, magnification, and mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_MAG_MIP_POINT,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x01</para>
+		///   <para>Use point sampling for minification and magnification; use linear interpolation for mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_MAG_POINT_MIP_LINEAR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x04</para>
+		///   <para>Use point sampling for minification; use linear interpolation for magnification; use point sampling for mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT = 4,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x05</para>
+		///   <para>Use point sampling for minification; use linear interpolation for magnification and mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_POINT_MAG_MIP_LINEAR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x10</para>
+		///   <para>Use linear interpolation for minification; use point sampling for magnification and mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_LINEAR_MAG_MIP_POINT = 0x10,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x11</para>
+		///   <para>Use linear interpolation for minification; use point sampling for magnification; use linear interpolation for mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x14</para>
+		///   <para>Use linear interpolation for minification and magnification; use point sampling for mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_MAG_LINEAR_MIP_POINT = 0x14,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x15</para>
+		///   <para>Use linear interpolation for minification, magnification, and mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_MIN_MAG_MIP_LINEAR,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0x55</para>
+		///   <para>Use anisotropic interpolation for minification, magnification, and mip-level sampling.</para>
+		/// </summary>
+		D2D1_FILTER_ANISOTROPIC = 0x55,
+	}
+
+	/// <summary>Determines what gamma is used for interpolation and blending.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ne-d2d1_3-d2d1_gamma1
+	// typedef enum D2D1_GAMMA1 { D2D1_GAMMA1_G22, D2D1_GAMMA1_G10, D2D1_GAMMA1_G2084 = 2, D2D1_GAMMA1_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NE:d2d1_3.D2D1_GAMMA1")]
+	public enum D2D1_GAMMA1 : uint
+	{
+		/// <summary>Colors are manipulated in 2.2 gamma color space.</summary>
+		D2D1_GAMMA1_G22,
+
+		/// <summary>Colors are manipulated in 1.0 gamma color space.</summary>
+		D2D1_GAMMA1_G10,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>2</para>
+		///   <para>Colors are manipulated in ST.2084 PQ gamma color space.</para>
+		/// </summary>
+		D2D1_GAMMA1_G2084,
+	}
+
+	/// <summary>Specifies the appearance of the ink nib (pen tip) as part of an D2D1_INK_STYLE_PROPERTIES structure.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ne-d2d1_3-d2d1_ink_nib_shape
+	// typedef enum D2D1_INK_NIB_SHAPE { D2D1_INK_NIB_SHAPE_ROUND = 0, D2D1_INK_NIB_SHAPE_SQUARE = 1, D2D1_INK_NIB_SHAPE_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NE:d2d1_3.D2D1_INK_NIB_SHAPE")]
+	public enum D2D1_INK_NIB_SHAPE
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>The pen tip is circular.</para>
+		/// </summary>
+		D2D1_INK_NIB_SHAPE_ROUND,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The pen tip is square.</para>
+		/// </summary>
+		D2D1_INK_NIB_SHAPE_SQUARE,
 	}
 
 	/// <summary>
@@ -223,9 +530,6 @@ public static partial class D2d1
 		/// transform matrix. Then uses the cubic interpolation mode for the final output.
 		/// </summary>
 		D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC,
-
-		/// <summary/>
-		D2D1_INTERPOLATION_MODE_FORCE_DWORD = 0xffffffff,
 	}
 
 	/// <summary>Specifies how the layer contents should be prepared.</summary>
@@ -243,9 +547,6 @@ public static partial class D2d1
 
 		/// <summary>The layer is always created as ignore alpha. All content rendered into the layer will be treated as opaque.</summary>
 		D2D1_LAYER_OPTIONS1_IGNORE_ALPHA,
-
-		/// <summary/>
-		D2D1_LAYER_OPTIONS1_FORCE_DWORD = 0xffffffff,
 	}
 
 	/// <summary>Specifies how the memory to be mapped from the corresponding ID2D1Bitmap1 should be treated.</summary>
@@ -279,9 +580,98 @@ public static partial class D2d1
 
 		/// <summary>Discard the previous contents of the resource when it is mapped.</summary>
 		D2D1_MAP_OPTIONS_DISCARD = 0x04,
+	}
 
-		/// <summary/>
-		D2D1_MAP_OPTIONS_FORCE_DWORD = 0xffffffff,
+	/// <summary>Specifies the flip and rotation at which an image appears.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ne-d2d1_3-d2d1_orientation
+	// typedef enum D2D1_ORIENTATION { D2D1_ORIENTATION_DEFAULT = 1, D2D1_ORIENTATION_FLIP_HORIZONTAL = 2, D2D1_ORIENTATION_ROTATE_CLOCKWISE180 = 3, D2D1_ORIENTATION_ROTATE_CLOCKWISE180_FLIP_HORIZONTAL = 4, D2D1_ORIENTATION_ROTATE_CLOCKWISE90_FLIP_HORIZONTAL = 5, D2D1_ORIENTATION_ROTATE_CLOCKWISE270 = 6, D2D1_ORIENTATION_ROTATE_CLOCKWISE270_FLIP_HORIZONTAL = 7, D2D1_ORIENTATION_ROTATE_CLOCKWISE90 = 8, D2D1_ORIENTATION_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NE:d2d1_3.D2D1_ORIENTATION")]
+	public enum D2D1_ORIENTATION : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The orientation is unchanged.</para>
+		/// </summary>
+		D2D1_ORIENTATION_DEFAULT = 1,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>2</para>
+		///   <para>The image is flipped horizontally.</para>
+		/// </summary>
+		D2D1_ORIENTATION_FLIP_HORIZONTAL,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>3</para>
+		///   <para>The image is rotated clockwise 180 degrees.</para>
+		/// </summary>
+		D2D1_ORIENTATION_ROTATE_CLOCKWISE180,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>4</para>
+		///   <para>The image is rotated clockwise 180 degrees, then flipped horizontally.</para>
+		/// </summary>
+		D2D1_ORIENTATION_ROTATE_CLOCKWISE180_FLIP_HORIZONTAL,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>5</para>
+		///   <para>The image is rotated clockwise 90 degrees, then flipped horizontally.</para>
+		/// </summary>
+		D2D1_ORIENTATION_ROTATE_CLOCKWISE90_FLIP_HORIZONTAL,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>6</para>
+		///   <para>The image is rotated clockwise 270 degrees.</para>
+		/// </summary>
+		D2D1_ORIENTATION_ROTATE_CLOCKWISE270,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>7</para>
+		///   <para>The image is rotated clockwise 270 degrees, then flipped horizontally.</para>
+		/// </summary>
+		D2D1_ORIENTATION_ROTATE_CLOCKWISE270_FLIP_HORIZONTAL,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>8</para>
+		///   <para>The image is rotated clockwise 90 degrees.</para>
+		/// </summary>
+		D2D1_ORIENTATION_ROTATE_CLOCKWISE90,
+	}
+
+	/// <summary>Specifies how to render gradient mesh edges.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ne-d2d1_3-d2d1_patch_edge_mode
+	// typedef enum D2D1_PATCH_EDGE_MODE { D2D1_PATCH_EDGE_MODE_ALIASED = 0, D2D1_PATCH_EDGE_MODE_ANTIALIASED = 1, D2D1_PATCH_EDGE_MODE_ALIASED_INFLATED = 2, D2D1_PATCH_EDGE_MODE_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NE:d2d1_3.D2D1_PATCH_EDGE_MODE")]
+	public enum D2D1_PATCH_EDGE_MODE : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>Render this patch edge aliased. Use this value for the internal edges of your gradient mesh.</para>
+		/// </summary>
+		D2D1_PATCH_EDGE_MODE_ALIASED,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>Render this patch edge antialiased. Use this value for the external (boundary) edges of your mesh.</para>
+		/// </summary>
+		D2D1_PATCH_EDGE_MODE_ANTIALIASED,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>2</para>
+		///   <para>Render this patch edge aliased and also slightly inflated. Use this for the internal edges of your gradient mesh when there could be t-junctions among patches.</para>
+		///   <para>Inflating the internal edges mitigates seams that can appear along those junctions.</para>
+		/// </summary>
+		D2D1_PATCH_EDGE_MODE_ALIASED_INFLATED,
 	}
 
 	/// <summary>Used to specify the geometric blend mode for all Direct2D primitives.</summary>
@@ -376,9 +766,6 @@ public static partial class D2d1
 		/// (set using ID21CommandSink4::SetPrimitiveBlend2).
 		/// </summary>
 		D2D1_PRIMITIVE_BLEND_MAX,
-
-		/// <summary/>
-		D2D1_PRIMITIVE_BLEND_FORCE_DWORD = 0xffffffff,
 	}
 
 	/// <summary>Specifies the types of properties supported by the Direct2D property interface.</summary>
@@ -452,9 +839,163 @@ public static partial class D2d1
 
 		/// <summary>A nano-COM color context interface pointer.</summary>
 		D2D1_PROPERTY_TYPE_COLOR_CONTEXT,
+	}
 
-		/// <summary/>
-		D2D1_PROPERTY_TYPE_FORCE_DWORD = 0xffffffff,
+	/// <summary>Defines how the world transform, dots per inch (dpi), and stroke width affect the shape of the pen used to stroke a primitive.</summary>
+	/// <remarks>
+	/// <para>If you specify <c>D2D1_STROKE_TRANSFORM_TYPE_FIXED</c> the stroke isn't affected by the world transform.</para>
+	/// <para>If you specify <c>D2D1_STROKE_TRANSFORM_TYPE_FIXED</c> the application has the same behavior in Windows 7 and later.</para>
+	/// <para>If you specify <c>D2D1_STROKE_TRANSFORM_TYPE_HAIRLINE</c> the stroke is always 1 pixel wide.</para>
+	/// <para>Apart from the stroke, any value derived from the stroke width is not affected when the transformType is either fixed or hairline. This includes miters, line caps and so on.</para>
+	/// <para>It is important to distinguish between the geometry being stroked and the shape of the stroke pen. When D2D1_STROKE_TRANSFORM_TYPE_FIXED or D2D1_STROKE_TRANSFORM_TYPE_HAIRLINE is specified, the geometry still respects the transform and dpi, but the pen that traces the geometry will not.</para>
+	/// <para>Here is an illustration of a stroke with dashing and a skew and stretch transform.</para>
+	/// <para>And here is an illustration of a fixed width stroke which does not get transformed.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/ne-d2d1_1-d2d1_stroke_transform_type
+	// typedef enum D2D1_STROKE_TRANSFORM_TYPE { D2D1_STROKE_TRANSFORM_TYPE_NORMAL = 0, D2D1_STROKE_TRANSFORM_TYPE_FIXED = 1, D2D1_STROKE_TRANSFORM_TYPE_HAIRLINE = 2, D2D1_STROKE_TRANSFORM_TYPE_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1_1.h", MSDNShortId = "NE:d2d1_1.D2D1_STROKE_TRANSFORM_TYPE")]
+	public enum D2D1_STROKE_TRANSFORM_TYPE : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>The stroke respects the currently set world transform, the dpi, and the stroke width.</para>
+		/// </summary>
+		D2D1_STROKE_TRANSFORM_TYPE_NORMAL,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The stroke does not respect the world transform but it does respect the dpi and stroke width.</para>
+		/// </summary>
+		D2D1_STROKE_TRANSFORM_TYPE_FIXED,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>2</para>
+		///   <para>The stroke is forced to 1 pixel wide (in device space) and does not respect the world transform, the dpi, or the stroke width.</para>
+		/// </summary>
+		D2D1_STROKE_TRANSFORM_TYPE_HAIRLINE,
+	}
+
+	/// <summary>The alignment portion of the SVG preserveAspectRatio attribute.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/ne-d2d1svg-d2d1_svg_aspect_align
+	// typedef enum D2D1_SVG_ASPECT_ALIGN { D2D1_SVG_ASPECT_ALIGN_NONE = 0, D2D1_SVG_ASPECT_ALIGN_X_MIN_Y_MIN = 1, D2D1_SVG_ASPECT_ALIGN_X_MID_Y_MIN = 2, D2D1_SVG_ASPECT_ALIGN_X_MAX_Y_MIN = 3, D2D1_SVG_ASPECT_ALIGN_X_MIN_Y_MID = 4, D2D1_SVG_ASPECT_ALIGN_X_MID_Y_MID = 5, D2D1_SVG_ASPECT_ALIGN_X_MAX_Y_MID = 6, D2D1_SVG_ASPECT_ALIGN_X_MIN_Y_MAX = 7, D2D1_SVG_ASPECT_ALIGN_X_MID_Y_MAX = 8, D2D1_SVG_ASPECT_ALIGN_X_MAX_Y_MAX = 9, D2D1_SVG_ASPECT_ALIGN_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1svg.h", MSDNShortId = "NE:d2d1svg.D2D1_SVG_ASPECT_ALIGN")]
+	public enum D2D1_SVG_ASPECT_ALIGN : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>The alignment is set to SVG's 'none' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_NONE,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The alignment is set to SVG's 'xMinYMin' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MIN_Y_MIN,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>2</para>
+		///   <para>The alignment is set to SVG's 'xMidYMin' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MID_Y_MIN,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>3</para>
+		///   <para>The alignment is set to SVG's 'xMaxYMin' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MAX_Y_MIN,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>4</para>
+		///   <para>The alignment is set to SVG's 'xMinYMid' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MIN_Y_MID,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>5</para>
+		///   <para>The alignment is set to SVG's 'xMidYMid' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MID_Y_MID,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>6</para>
+		///   <para>The alignment is set to SVG's 'xMaxYMid' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MAX_Y_MID,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>7</para>
+		///   <para>The alignment is set to SVG's 'xMinYMax' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MIN_Y_MAX,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>8</para>
+		///   <para>The alignment is set to SVG's 'xMidYMax' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MID_Y_MAX,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>9</para>
+		///   <para>The alignment is set to SVG's 'xMaxYMax' value.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_ALIGN_X_MAX_Y_MAX,
+	}
+
+	/// <summary>The meetOrSlice portion of the SVG preserveAspectRatio attribute.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/ne-d2d1svg-d2d1_svg_aspect_scaling
+	// typedef enum D2D1_SVG_ASPECT_SCALING { D2D1_SVG_ASPECT_SCALING_MEET = 0, D2D1_SVG_ASPECT_SCALING_SLICE = 1, D2D1_SVG_ASPECT_SCALING_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1svg.h", MSDNShortId = "NE:d2d1svg.D2D1_SVG_ASPECT_SCALING")]
+	public enum D2D1_SVG_ASPECT_SCALING : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>Scale the viewBox up as much as possible such that the entire viewBox is visible within the viewport.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_SCALING_MEET,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>Scale the viewBox down as much as possible such that the entire viewport is</para>
+		///   <para>covered by the viewBox.</para>
+		/// </summary>
+		D2D1_SVG_ASPECT_SCALING_SLICE,
+	}
+
+	/// <summary>Specifies the units for an SVG length.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/ne-d2d1svg-d2d1_svg_length_units
+	// typedef enum D2D1_SVG_LENGTH_UNITS { D2D1_SVG_LENGTH_UNITS_NUMBER = 0, D2D1_SVG_LENGTH_UNITS_PERCENTAGE = 1, D2D1_SVG_LENGTH_UNITS_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1svg.h", MSDNShortId = "NE:d2d1svg.D2D1_SVG_LENGTH_UNITS")]
+	public enum D2D1_SVG_LENGTH_UNITS : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>The length is unitless.</para>
+		/// </summary>
+		D2D1_SVG_LENGTH_UNITS_NUMBER,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The length is a percentage value.</para>
+		/// </summary>
+		D2D1_SVG_LENGTH_UNITS_PERCENTAGE,
 	}
 
 	/// <summary>Specifies the threading mode used while simultaneously creating the device, factory, and device context.</summary>
@@ -468,9 +1009,27 @@ public static partial class D2d1
 
 		/// <summary>Resources may be invoked from multiple threads. Resources use interlocked reference counting and their state is protected.</summary>
 		D2D1_THREADING_MODE_MULTI_THREADED = 1,
+	}
 
-		/// <summary />
-		D2D1_THREADING_MODE_FORCE_DWORD = 0xffffffff,
+	/// <summary>Option flags for transformed image sources.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ne-d2d1_3-d2d1_transformed_image_source_options
+	// typedef enum D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS { D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS_NONE = 0, D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS_DISABLE_DPI_SCALE = 1, D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NE:d2d1_3.D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS")]
+	public enum D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>No option flags.</para>
+		/// </summary>
+		D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS_NONE,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>Prevents the image source from being automatically scaled (by a ratio of the context DPI divided by 96) while drawn.</para>
+		/// </summary>
+		D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS_DISABLE_DPI_SCALE,
 	}
 
 	/// <summary>Specifies how units in Direct2D will be interpreted.</summary>
@@ -489,9 +1048,28 @@ public static partial class D2d1
 
 		/// <summary>Units will be interpreted as pixels.</summary>
 		D2D1_UNIT_MODE_PIXELS,
+	}
 
-		/// <summary/>
-		D2D1_UNIT_MODE_FORCE_DWORD = 0xffffffff,
+	/// <summary>Indicates whether the vertex buffer changes infrequently or frequently.</summary>
+	/// <remarks>If a dynamic vertex buffer is created, Direct2D will not necessarily map the buffer directly to a Direct3D vertex buffer. Instead, a system memory copy can be copied to the rendering engine vertex buffer as the effects are rendered.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ne-d2d1effectauthor-d2d1_vertex_usage
+	// typedef enum D2D1_VERTEX_USAGE { D2D1_VERTEX_USAGE_STATIC = 0, D2D1_VERTEX_USAGE_DYNAMIC = 1, D2D1_VERTEX_USAGE_FORCE_DWORD = 0xffffffff } ;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NE:d2d1effectauthor.D2D1_VERTEX_USAGE")]
+	public enum D2D1_VERTEX_USAGE : uint
+	{
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>0</para>
+		///   <para>The created vertex buffer is updated infrequently.</para>
+		/// </summary>
+		D2D1_VERTEX_USAGE_STATIC,
+
+		/// <summary>
+		///   <para>Value:</para>
+		///   <para>1</para>
+		///   <para>The created vertex buffer is changed frequently.</para>
+		/// </summary>
+		D2D1_VERTEX_USAGE_DYNAMIC,
 	}
 
 	/// <summary>
@@ -691,7 +1269,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-copyfrommemory HRESULT CopyFromMemory( const
 		// D2D1_RECT_U *dstRect, const void *srcData, UINT32 pitch );
-		new void CopyFromMemory([In, Optional] IntPtr dstRect, [In]  IntPtr srcData, uint pitch);
+		new void CopyFromMemory([In, Optional] IntPtr dstRect, [In] IntPtr srcData, uint pitch);
 
 		/// <summary>Gets the color context information associated with the bitmap.</summary>
 		/// <param name="colorContext">
@@ -3207,6 +3785,32 @@ public static partial class D2d1
 		ID2D1Properties GetSubProperties(uint index);
 	}
 
+	/// <summary>Describes the extend modes and the interpolation mode of an ID2D1BitmapBrush.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_bitmap_brush_properties1
+	// typedef struct D2D1_BITMAP_BRUSH_PROPERTIES1 { D2D1_EXTEND_MODE extendModeX; D2D1_EXTEND_MODE extendModeY; D2D1_INTERPOLATION_MODE interpolationMode; } D2D1_BITMAP_BRUSH_PROPERTIES1;
+	[PInvokeData("d2d1_1.h", MSDNShortId = "NS:d2d1_1.D2D1_BITMAP_BRUSH_PROPERTIES1")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_BITMAP_BRUSH_PROPERTIES1
+	{
+		/// <summary>
+		///   <para>Type: <c>D2D1_EXTEND_MODE</c></para>
+		///   <para>A value that describes how the brush horizontally tiles those areas that extend past its bitmap.</para>
+		/// </summary>
+		public D2D1_EXTEND_MODE extendModeX;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_EXTEND_MODE</c></para>
+		///   <para>A value that describes how the brush vertically tiles those areas that extend past its bitmap.</para>
+		/// </summary>
+		public D2D1_EXTEND_MODE extendModeY;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_INTERPOLATION_MODE</c></para>
+		///   <para>A value that specifies how the bitmap is interpolated when it is scaled or rotated.</para>
+		/// </summary>
+		public D2D1_INTERPOLATION_MODE interpolationMode;
+	}
+
 	/// <summary>This structure allows a ID2D1Bitmap1 to be created with bitmap options and color context information available.</summary>
 	/// <remarks>
 	/// If both <c>dpiX</c> and <c>dpiY</c> are 0, the dpi of the bitmap will be set to the desktop dpi if the device context is a
@@ -3250,6 +3854,43 @@ public static partial class D2d1
 		public IntPtr colorContext;
 	}
 
+	/// <summary>Defines a blend description to be used in a particular blend transform.</summary>
+	/// <remarks>This description closely matches the D3D11_BLEND_DESC struct with some omissions and the addition of the blend factor in the description.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_blend_description typedef struct
+	// D2D1_BLEND_DESCRIPTION { D2D1_BLEND sourceBlend; D2D1_BLEND destinationBlend; D2D1_BLEND_OPERATION blendOperation; D2D1_BLEND
+	// sourceBlendAlpha; D2D1_BLEND destinationBlendAlpha; D2D1_BLEND_OPERATION blendOperationAlpha; FLOAT blendFactor[4]; } D2D1_BLEND_DESCRIPTION;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_BLEND_DESCRIPTION")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_BLEND_DESCRIPTION
+	{
+		/// <summary>Specifies the first RGB data source and includes an optional preblend operation.</summary>
+		public D2D1_BLEND sourceBlend;
+
+		/// <summary>Specifies the second RGB data source and includes an optional preblend operation.</summary>
+		public D2D1_BLEND destinationBlend;
+
+		/// <summary>Specifies how to combine the RGB data sources.</summary>
+		public D2D1_BLEND_OPERATION blendOperation;
+
+		/// <summary>Specifies the first alpha data source and includes an optional preblend operation. Blend options that end in _COLOR are not allowed.</summary>
+		public D2D1_BLEND sourceBlendAlpha;
+
+		/// <summary>Specifies the second alpha data source and includes an optional preblend operation. Blend options that end in _COLOR are not allowed.</summary>
+		public D2D1_BLEND destinationBlendAlpha;
+
+		/// <summary>Specifies how to combine the alpha data sources.</summary>
+		public D2D1_BLEND_OPERATION blendOperationAlpha;
+
+		private unsafe fixed float _blendFactor[4];
+
+		/// <summary>Parameters to the blend operations. The blend must use <c>D2D1_BLEND_BLEND_FACTOR</c> for this to be used.</summary>
+		public float[] blendFactor
+		{
+			get { unsafe { fixed (float* p = _blendFactor) return [p[0], p[1], p[2], p[3]]; } }
+			set { unsafe { fixed (float* p = _blendFactor) { p[0] = value[0]; p[1] = value[1]; p[2] = value[2]; p[3] = value[3]; } } }
+		}
+	}
+
 	/// <summary>Specifies the options with which the Direct2D device, factory, and device context are created.</summary>
 	/// <remarks>The root objects referred to here are the Direct2D device, Direct2D factory and the Direct2D device context.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_creation_properties
@@ -3266,6 +3907,84 @@ public static partial class D2d1
 
 		/// <summary>The device context options that the root objects should be created with.</summary>
 		public D2D1_DEVICE_CONTEXT_OPTIONS options;
+	}
+
+	/// <summary>Defines a vertex shader and the input element description to define the input layout. The combination is used to allow a custom vertex effect to create a custom vertex shader and pass it a custom layout.</summary>
+	/// <remarks>
+	/// <para>The vertex shader will be loaded by the CreateVertexBuffer call that accepts the vertex buffer properties.</para>
+	/// <para>This structure does not need to be specified if one of the standard vertex shaders is used.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_custom_vertex_buffer_properties
+	// typedef struct D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES { const BYTE *shaderBufferWithInputSignature; UINT32 shaderBufferSize; const D2D1_INPUT_ELEMENT_DESC *inputElements; UINT32 elementCount; UINT32 stride; } D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES
+	{
+		/// <summary>A pointer to the buffer.</summary>
+		public IntPtr shaderBufferWithInputSignature;
+
+		/// <summary>The size of the buffer.</summary>
+		public uint shaderBufferSize;
+
+		/// <summary>An array of input assembler stage data types.</summary>
+		public ArrayPointer<D2D1_INPUT_ELEMENT_DESC> inputElements;
+
+		/// <summary>The number of input elements in the vertex shader.</summary>
+		public uint elementCount;
+
+		/// <summary>The vertex stride.</summary>
+		public uint stride;
+	}
+
+	/// <summary>Describes the drawing state of a device context.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_drawing_state_description1 typedef struct
+	// D2D1_DRAWING_STATE_DESCRIPTION1 { D2D1_ANTIALIAS_MODE antialiasMode; D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode; D2D1_TAG tag1;
+	// D2D1_TAG tag2; D2D1_MATRIX_3X2_F transform; D2D1_PRIMITIVE_BLEND primitiveBlend; D2D1_UNIT_MODE unitMode; } D2D1_DRAWING_STATE_DESCRIPTION1;
+	[PInvokeData("d2d1_1.h", MSDNShortId = "NS:d2d1_1.D2D1_DRAWING_STATE_DESCRIPTION1")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_DRAWING_STATE_DESCRIPTION1
+	{
+		/// <summary>
+		///   <para>Type: <c>D2D1_ANTIALIAS_MODE</c></para>
+		///   <para>The antialiasing mode for subsequent nontext drawing operations.</para>
+		/// </summary>
+		public D2D1_ANTIALIAS_MODE antialiasMode;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_TEXT_ANTIALIAS_MODE</c></para>
+		///   <para>The antialiasing mode for subsequent text and glyph drawing operations.</para>
+		/// </summary>
+		public D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_TAG</c></para>
+		///   <para>A label for subsequent drawing operations.</para>
+		/// </summary>
+		public D2D1_TAG tag1;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_TAG</c></para>
+		///   <para>A label for subsequent drawing operations.</para>
+		/// </summary>
+		public D2D1_TAG tag2;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_MATRIX_3X2_F</c></para>
+		///   <para>The transformation to apply to subsequent drawing operations.</para>
+		/// </summary>
+		public D2D_MATRIX_3X2_F transform;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_PRIMITIVE_BLEND</c></para>
+		///   <para>The blend mode for the device context to apply to subsequent drawing operations.</para>
+		/// </summary>
+		public D2D1_PRIMITIVE_BLEND primitiveBlend;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_UNIT_MODE</c></para>
+		///   <para>D2D1_UNIT_MODE</para>
+		/// </summary>
+		public D2D1_UNIT_MODE unitMode;
 	}
 
 	/// <summary>Describes features of an effect.</summary>
@@ -3289,6 +4008,137 @@ public static partial class D2d1
 		/// The amount of data that would be available on the input. This can be used to query this information when the data is not yet available.
 		/// </summary>
 		public D2D_RECT_F inputRectangle;
+	}
+
+	/// <summary>Describes compute shader support, which is an option on D3D10 feature level.</summary>
+	/// <remarks>You can fill this structure by passing a D2D1_ FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS structure to ID2D1EffectContext::CheckFeatureSupport.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_feature_data_d3d10_x_hardware_options
+	// typedef struct D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS { BOOL computeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x; } D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS
+	{
+		/// <summary>Shader model 4 compute shaders are supported.</summary>
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool computeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x;
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS"/> to <see cref="System.Boolean"/>.
+		/// </summary>
+		/// <param name="d">The d.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator bool(D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS d) => d.computeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x;
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="System.Boolean"/> to <see cref="D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS"/>.
+		/// </summary>
+		/// <param name="b">if set to <c>true</c> [b].</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D1_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS(bool b) => new() { computeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x = b };
+	}
+
+	/// <summary>Describes the support for doubles in shaders.</summary>
+	/// <remarks>Fill this structure by passing a D2D1_FEATURE_DOUBLES structure to ID2D1EffectContext::CheckFeatureSupport.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_feature_data_doubles
+	// typedef struct D2D1_FEATURE_DATA_DOUBLES { BOOL doublePrecisionFloatShaderOps; } D2D1_FEATURE_DATA_DOUBLES;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_FEATURE_DATA_DOUBLES")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_FEATURE_DATA_DOUBLES
+	{
+		/// <summary>TRUE is doubles are supported within the shaders.</summary>
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool doublePrecisionFloatShaderOps;
+
+		/// <summary>Performs an implicit conversion from <see cref="D2D1_FEATURE_DATA_DOUBLES"/> to <see cref="System.Boolean"/>.</summary>
+		/// <param name="d">The d.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator bool(D2D1_FEATURE_DATA_DOUBLES d) => d.doublePrecisionFloatShaderOps;
+
+		/// <summary>Performs an implicit conversion from <see cref="System.Boolean"/> to <see cref="D2D1_FEATURE_DATA_DOUBLES"/>.</summary>
+		/// <param name="b">if set to <c>true</c> [b].</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D1_FEATURE_DATA_DOUBLES(bool b) => new() { doublePrecisionFloatShaderOps = b };
+	}
+
+	/// <summary>Represents a tensor patch with 16 control points, 4 corner colors, and boundary flags. An ID2D1GradientMesh is made up of 1 or more gradient mesh patches. Use the GradientMeshPatch function or the GradientMeshPatchFromCoonsPatch function to create one.</summary>
+	/// <remarks>The following image shows the numbering of control points on a tensor grid.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ns-d2d1_3-d2d1_gradient_mesh_patch
+	// typedef struct D2D1_GRADIENT_MESH_PATCH { D2D1_POINT_2F point00; D2D1_POINT_2F point01; D2D1_POINT_2F point02; D2D1_POINT_2F point03; D2D1_POINT_2F point10; D2D1_POINT_2F point11; D2D1_POINT_2F point12; D2D1_POINT_2F point13; D2D1_POINT_2F point20; D2D1_POINT_2F point21; D2D1_POINT_2F point22; D2D1_POINT_2F point23; D2D1_POINT_2F point30; D2D1_POINT_2F point31; D2D1_POINT_2F point32; D2D1_POINT_2F point33; D2D1_COLOR_F color00; D2D1_COLOR_F color03; D2D1_COLOR_F color30; D2D1_COLOR_F color33; D2D1_PATCH_EDGE_MODE topEdgeMode; D2D1_PATCH_EDGE_MODE leftEdgeMode; D2D1_PATCH_EDGE_MODE bottomEdgeMode; D2D1_PATCH_EDGE_MODE rightEdgeMode; } D2D1_GRADIENT_MESH_PATCH;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_GRADIENT_MESH_PATCH")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_GRADIENT_MESH_PATCH
+	{
+		/// <summary>The coordinate-space location of the control point in column 0 and row 0 of the tensor grid.</summary>
+		public D2D1_POINT_2F point00;
+
+		/// <summary>The coordinate-space location of the control point in column 0 and row 1 of the tensor grid.</summary>
+		public D2D1_POINT_2F point01;
+
+		/// <summary>The coordinate-space location of the control point in column 0 and row 2 of the tensor grid.</summary>
+		public D2D1_POINT_2F point02;
+
+		/// <summary>The coordinate-space location of the control point in column 0 and row 3 of the tensor grid.</summary>
+		public D2D1_POINT_2F point03;
+
+		/// <summary>The coordinate-space location of the control point in column 1 and row 0 of the tensor grid.</summary>
+		public D2D1_POINT_2F point10;
+
+		/// <summary>The coordinate-space location of the control point in column 1 and row 1 of the tensor grid.</summary>
+		public D2D1_POINT_2F point11;
+
+		/// <summary>The coordinate-space location of the control point in column 1 and row 2 of the tensor grid.</summary>
+		public D2D1_POINT_2F point12;
+
+		/// <summary>The coordinate-space location of the control point in column 1 and row 3 of the tensor grid.</summary>
+		public D2D1_POINT_2F point13;
+
+		/// <summary>The coordinate-space location of the control point in column 2 and row 0 of the tensor grid.</summary>
+		public D2D1_POINT_2F point20;
+
+		/// <summary>The coordinate-space location of the control point in column 2 and row 1 of the tensor grid.</summary>
+		public D2D1_POINT_2F point21;
+
+		/// <summary>The coordinate-space location of the control point in column 2 and row 2 of the tensor grid.</summary>
+		public D2D1_POINT_2F point22;
+
+		/// <summary>The coordinate-space location of the control point in column 2 and row 3 of the tensor grid.</summary>
+		public D2D1_POINT_2F point23;
+
+		/// <summary>The coordinate-space location of the control point in column 3 and row 0 of the tensor grid.</summary>
+		public D2D1_POINT_2F point30;
+
+		/// <summary>The coordinate-space location of the control point in column 3 and row 1 of the tensor grid.</summary>
+		public D2D1_POINT_2F point31;
+
+		/// <summary>The coordinate-space location of the control point in column 3 and row 2 of the tensor grid.</summary>
+		public D2D1_POINT_2F point32;
+
+		/// <summary>The coordinate-space location of the control point in column 3 and row 3 of the tensor grid.</summary>
+		public D2D1_POINT_2F point33;
+
+		/// <summary>The color associated with the control point in column 0 and row 0 of the tensor grid.</summary>
+		public D2D1_COLOR_F color00;
+
+		/// <summary>The color associated with the control point in column 0 and row 3 of the tensor grid.</summary>
+		public D2D1_COLOR_F color03;
+
+		/// <summary>The color associated with the control point in column 3 and row 0 of the tensor grid.</summary>
+		public D2D1_COLOR_F color30;
+
+		/// <summary>The color associated with the control point in column 3 and row 3 of the tensor grid.</summary>
+		public D2D1_COLOR_F color33;
+
+		/// <summary>Specifies how to render the top edge of the mesh.</summary>
+		public D2D1_PATCH_EDGE_MODE topEdgeMode;
+
+		/// <summary>Specifies how to render the left edge of the mesh.</summary>
+		public D2D1_PATCH_EDGE_MODE leftEdgeMode;
+
+		/// <summary>Specifies how to render the bottom edge of the mesh.</summary>
+		public D2D1_PATCH_EDGE_MODE bottomEdgeMode;
+
+		/// <summary>Specifies how to render the right edge of the mesh.</summary>
+		public D2D1_PATCH_EDGE_MODE rightEdgeMode;
 	}
 
 	/// <summary>Describes image brush features.</summary>
@@ -3322,6 +4172,95 @@ public static partial class D2d1
 		/// <para>The interpolation mode to use when scaling the image brush.</para>
 		/// </summary>
 		public D2D1_INTERPOLATION_MODE interpolationMode;
+	}
+
+	/// <summary>Represents a Bezier segment to be used in the creation of an ID2D1Ink object. This structure differs from D2D1_BEZIER_SEGMENT in that it is composed of D2D1_INK_POINTs, which contain a radius in addition to x- and y-coordinates.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ns-d2d1_3-d2d1_ink_bezier_segment
+	// typedef struct D2D1_INK_BEZIER_SEGMENT { D2D1_INK_POINT point1; D2D1_INK_POINT point2; D2D1_INK_POINT point3; } D2D1_INK_BEZIER_SEGMENT;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_INK_BEZIER_SEGMENT")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_INK_BEZIER_SEGMENT
+	{
+		/// <summary>The first control point for the Bezier segment.</summary>
+		public D2D1_INK_POINT point1;
+
+		/// <summary>The second control point for the Bezier segment.</summary>
+		public D2D1_INK_POINT point2;
+
+		/// <summary>The end point for the Bezier segment.</summary>
+		public D2D1_INK_POINT point3;
+	}
+
+	/// <summary>Represents a point, radius pair that makes up part of a D2D1_INK_BEZIER_SEGMENT.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ns-d2d1_3-d2d1_ink_point
+	// typedef struct D2D1_INK_POINT { FLOAT x; FLOAT y; FLOAT radius; } D2D1_INK_POINT;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_INK_POINT")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_INK_POINT
+	{
+		/// <summary>The x-coordinate of the point.</summary>
+		public float x;
+
+		/// <summary>The y-coordinate of the point.</summary>
+		public float y;
+
+		/// <summary>The radius of this point. Corresponds to the width of the ink stroke at this point in the stroke.</summary>
+		public float radius;
+	}
+
+	/// <summary>Defines the general pen tip shape and the transform used in an ID2D1InkStyle object.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ns-d2d1_3-d2d1_ink_style_properties
+	// typedef struct D2D1_INK_STYLE_PROPERTIES { D2D1_INK_NIB_SHAPE nibShape; D2D1_MATRIX_3X2_F nibTransform; } D2D1_INK_STYLE_PROPERTIES;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_INK_STYLE_PROPERTIES")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_INK_STYLE_PROPERTIES
+	{
+		/// <summary>The pre-transform shape of the nib (pen tip) used to draw a given ink object.</summary>
+		public D2D1_INK_NIB_SHAPE nibShape;
+
+		/// <summary>The transform applied to the nib. Note that the translation components of the transform matrix are ignored for the purposes of rendering.</summary>
+		public D2D1_MATRIX_3X2_F nibTransform;
+	}
+
+	/// <summary>Describes the options that transforms may set on input textures.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_input_description
+	// typedef struct D2D1_INPUT_DESCRIPTION { D2D1_FILTER filter; UINT32 levelOfDetailCount; } D2D1_INPUT_DESCRIPTION;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_INPUT_DESCRIPTION")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_INPUT_DESCRIPTION
+	{
+		/// <summary>The type of filter to apply to the input texture.</summary>
+		public D2D1_FILTER filter;
+
+		/// <summary>The mip level to retrieve from the upstream transform, if specified.</summary>
+		public uint levelOfDetailCount;
+	}
+
+	/// <summary>A description of a single element to the vertex layout.</summary>
+	/// <remarks>
+	/// <para>This structure is a subset of D3D11_INPUT_ELEMENT_DESC that omits fields required to define a vertex layout.</para>
+	/// <para>If the D2D1_APPEND_ALIGNED_ELEMENT constant is used for <c>alignedByteOffset</c>, the elements will be packed contiguously for convenience.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_input_element_desc
+	// typedef struct D2D1_INPUT_ELEMENT_DESC { PCSTR semanticName; UINT32 semanticIndex; DXGI_FORMAT format; UINT32 inputSlot; UINT32 alignedByteOffset; } D2D1_INPUT_ELEMENT_DESC;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_INPUT_ELEMENT_DESC")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_INPUT_ELEMENT_DESC
+	{
+		/// <summary>The HLSL semantic associated with this element in a shader input-signature.</summary>
+		public StrPtrAnsi semanticName;
+
+		/// <summary>The semantic index for the element. A semantic index modifies a semantic, with an integer index number. A semantic index is only needed in a case where there is more than one element with the same semantic. For example, a 4x4 matrix would have four components each with the semantic name matrix; however, each of the four components would have different semantic indices (0, 1, 2, and 3).</summary>
+		public uint semanticIndex;
+
+		/// <summary>The data type of the element data.</summary>
+		public DXGI_FORMAT format;
+
+		/// <summary>An integer value that identifies the input-assembler. Valid values are between 0 and 15.</summary>
+		public uint inputSlot;
+
+		/// <summary>The offset in bytes between each element.</summary>
+		public uint alignedByteOffset;
 	}
 
 	/// <summary>Contains the content bounds, mask information, opacity settings, and other options for a layer resource.</summary>
@@ -3393,6 +4332,53 @@ public static partial class D2d1
 		public IntPtr bits;
 	}
 
+	/// <summary>Describes a point on a path geometry.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_point_description
+	// typedef struct D2D1_POINT_DESCRIPTION { D2D1_POINT_2F point; D2D1_POINT_2F unitTangentVector; UINT32 endSegment; UINT32 endFigure; FLOAT lengthToEndSegment; } D2D1_POINT_DESCRIPTION;
+	[PInvokeData("d2d1_1.h", MSDNShortId = "NS:d2d1_1.D2D1_POINT_DESCRIPTION")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_POINT_DESCRIPTION
+	{
+		/// <summary>The end point after walking the path.</summary>
+		public D2D1_POINT_2F point;
+
+		/// <summary>A unit vector indicating the tangent point.</summary>
+		public D2D1_POINT_2F unitTangentVector;
+
+		/// <summary>The index of the segment on which point resides. This index is global to the entire path, not just to a particular figure.</summary>
+		public uint endSegment;
+
+		/// <summary>The index of the figure on which point resides.</summary>
+		public uint endFigure;
+
+		/// <summary>The length of the section of the path stretching from the start of the path to the start of <c>endSegment</c>.</summary>
+		public float lengthToEndSegment;
+	}
+
+	/// <summary>Defines a property binding to a pair of functions which get and set the corresponding property.</summary>
+	/// <remarks>
+	/// <para>The <c>propertyName</c> is used to cross-correlate the property binding with the registration XML. The <c>propertyName</c> must be present in the XML call or the registration will fail.</para>
+	/// <para>All properties must be bound.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_property_binding
+	// typedef struct D2D1_PROPERTY_BINDING { PCWSTR propertyName; PD2D1_PROPERTY_SET_FUNCTION setFunction; PD2D1_PROPERTY_GET_FUNCTION getFunction; } D2D1_PROPERTY_BINDING;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_PROPERTY_BINDING")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_PROPERTY_BINDING
+	{
+		/// <summary>The name of the property.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string propertyName;
+
+		/// <summary>The function that will receive the data to set.</summary>
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public PD2D1_PROPERTY_SET_FUNCTION? setFunction;
+
+		/// <summary>The function that will be asked to write the output data.</summary>
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public PD2D1_PROPERTY_GET_FUNCTION? getFunction;
+	}
+
 	/// <summary>Describes limitations to be applied to an imaging effect renderer.</summary>
 	/// <remarks>
 	/// <para>
@@ -3426,5 +4412,267 @@ public static partial class D2d1
 
 		/// <summary>The tile allocation size to be used by the imaging effect renderer.</summary>
 		public D2D_SIZE_U tileSize;
+	}
+	/// <summary>Defines a resource texture when the original resource texture is created.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_resource_texture_properties typedef
+	// struct D2D1_RESOURCE_TEXTURE_PROPERTIES { const UINT32 *extents; UINT32 dimensions; D2D1_BUFFER_PRECISION bufferPrecision;
+	// D2D1_CHANNEL_DEPTH channelDepth; D2D1_FILTER filter; const D2D1_EXTEND_MODE *extendModes; } D2D1_RESOURCE_TEXTURE_PROPERTIES;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_RESOURCE_TEXTURE_PROPERTIES")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_RESOURCE_TEXTURE_PROPERTIES
+	{
+		/// <summary>The extents of the resource table in each dimension.</summary>
+		public ArrayPointer<uint> extents;
+
+		/// <summary>The number of dimensions in the resource texture. This must be a number from 1 to 3.</summary>
+		public uint dimensions;
+
+		/// <summary>The precision of the resource texture to create.</summary>
+		public D2D1_BUFFER_PRECISION bufferPrecision;
+
+		/// <summary>The number of channels in the resource texture.</summary>
+		public D2D1_CHANNEL_DEPTH channelDepth;
+
+		/// <summary>The filtering mode to use on the texture.</summary>
+		public D2D1_FILTER filter;
+
+		/// <summary>Specifies how pixel values beyond the extent of the texture will be sampled, in every dimension.</summary>
+		public ArrayPointer<D2D1_EXTEND_MODE> extendModes;
+	}
+	/// <summary>Describes the memory used by image textures and shaders.</summary>
+	/// <remarks>
+	/// <para>The processing texture area memory will take the width and height of all of the textures allocated for processing and multiply this by the number of channels and the bit depth per channel.</para>
+	/// <para>The <c>cachingTextureArea</c> memory will take the width and height of all of the textures allocated for cache effects and multiply this by the number of channels and the bit depth per channel.</para>
+	/// <para>The <c>shaderCacheMemory</c> will sum the number of bytes of pre-JITed shader code that has been loaded.</para>
+	/// <para>None of these measures take into account:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>Driver allocation boundaries or overhead.</description>
+	/// </item>
+	/// <item>
+	/// <description>The cost of system memory structures used to track the video memory.</description>
+	/// </item>
+	/// <item>
+	/// <description>The contraction or expansion caused by JITing shaders.</description>
+	/// </item>
+	/// </list>
+	/// <para>This data is intended to be used by the application as a reference for when it should clear resources. It is not intended to be a precise profiling tool.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/hh404326(v=vs.85)
+	// typedef struct D2D1_RESOURCE_USAGE { SIZE_T workingTextureAreaMemory; SIZE_T cachingTextureAreaMemory; SIZE_T shaderCacheMemory; } D2D1_RESOURCE_USAGE, *PD2D1_RESOURCE_USAGE;
+	[PInvokeData("D2D1.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_RESOURCE_USAGE
+	{
+		/// <summary>
+		///   <c>workingTextureAreaMemory</c> An approximate amount of memory usage by image pipeline processing textures.</summary>
+		public SizeT workingTextureAreaMemory;
+
+		/// <summary>
+		///   <c>cachingTextureAreaMemory</c> The approximate amount of memory used by the cached effect.</summary>
+		public SizeT cachingTextureAreaMemory;
+
+		/// <summary>
+		///   <c>shaderCacheMemory</c> The approximate amount of memory used by cached shaders.</summary>
+		public SizeT shaderCacheMemory;
+	}
+
+	/// <summary>Simple description of a color space.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ns-d2d1_3-d2d1_simple_color_profile
+	// typedef struct D2D1_SIMPLE_COLOR_PROFILE { D2D1_POINT_2F redPrimary; D2D1_POINT_2F greenPrimary; D2D1_POINT_2F bluePrimary; D2D1_POINT_2F whitePointXZ; D2D1_GAMMA1 gamma; } D2D1_SIMPLE_COLOR_PROFILE;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_SIMPLE_COLOR_PROFILE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_SIMPLE_COLOR_PROFILE
+	{
+		/// <summary>The xy coordinates of the red primary in the CIExyY color space.</summary>
+		public D2D1_POINT_2F redPrimary;
+
+		/// <summary>The xy coordinates of the green primary in the CIExyY color space.</summary>
+		public D2D1_POINT_2F greenPrimary;
+
+		/// <summary>The xy coordinates of the blue primary in the CIExyY color space.</summary>
+		public D2D1_POINT_2F bluePrimary;
+
+		/// <summary>The XZ tristimulus values for the whitepoint in the CIEXYZ color space, normalized to luminance (Y) of 1.</summary>
+		public D2D1_POINT_2F whitePointXZ;
+
+		/// <summary>The gamma encoding to use for this color space.</summary>
+		public D2D1_GAMMA1 gamma;
+	}
+	/// <summary>Describes the stroke that outlines a shape.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_stroke_style_properties1
+	// typedef struct D2D1_STROKE_STYLE_PROPERTIES1 { D2D1_CAP_STYLE startCap; D2D1_CAP_STYLE endCap; D2D1_CAP_STYLE dashCap; D2D1_LINE_JOIN lineJoin; FLOAT miterLimit; D2D1_DASH_STYLE dashStyle; FLOAT dashOffset; D2D1_STROKE_TRANSFORM_TYPE transformType; } D2D1_STROKE_STYLE_PROPERTIES1;
+	[PInvokeData("d2d1_1.h", MSDNShortId = "NS:d2d1_1.D2D1_STROKE_STYLE_PROPERTIES1")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_STROKE_STYLE_PROPERTIES1
+	{
+		/// <summary>
+		///   <para>Type: <c>D2D1_CAP_STYLE</c></para>
+		///   <para>The cap to use at the start of each open figure.</para>
+		/// </summary>
+		public D2D1_CAP_STYLE startCap;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_CAP_STYLE</c></para>
+		///   <para>The cap to use at the end of each open figure.</para>
+		/// </summary>
+		public D2D1_CAP_STYLE endCap;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_CAP_STYLE</c></para>
+		///   <para>The cap to use at the start and end of each dash.</para>
+		/// </summary>
+		public D2D1_CAP_STYLE dashCap;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_LINE_JOIN</c></para>
+		///   <para>The line join to use.</para>
+		/// </summary>
+		public D2D1_LINE_JOIN lineJoin;
+
+		/// <summary>
+		///   <para>Type: <c>FLOAT</c></para>
+		///   <para>The limit beyond which miters are either clamped or converted to bevels.</para>
+		/// </summary>
+		public float miterLimit;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_DASH_STYLE</c></para>
+		///   <para>The type of dash to use.</para>
+		/// </summary>
+		public D2D1_DASH_STYLE dashStyle;
+
+		/// <summary>
+		///   <para>Type: <c>FLOAT</c></para>
+		///   <para>The location of the first dash, relative to the start of the figure.</para>
+		/// </summary>
+		public float dashOffset;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_STROKE_TRANSFORM_TYPE</c></para>
+		///   <para>The rule that determines what render target properties affect the nib of the stroke.</para>
+		/// </summary>
+		public D2D1_STROKE_TRANSFORM_TYPE transformType;
+	}
+	/// <summary>Represents an SVG length.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/ns-d2d1svg-d2d1_svg_length
+	// typedef struct D2D1_SVG_LENGTH { FLOAT value; D2D1_SVG_LENGTH_UNITS units; } D2D1_SVG_LENGTH;
+	[PInvokeData("d2d1svg.h", MSDNShortId = "NS:d2d1svg.D2D1_SVG_LENGTH")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_SVG_LENGTH
+	{
+		/// <summary />
+		public float value;
+
+		/// <summary />
+		public D2D1_SVG_LENGTH_UNITS units;
+	}
+	/// <summary>Represents all SVG preserveAspectRatio settings.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/ns-d2d1svg-d2d1_svg_preserve_aspect_ratio
+	// typedef struct D2D1_SVG_PRESERVE_ASPECT_RATIO { BOOL defer; D2D1_SVG_ASPECT_ALIGN align; D2D1_SVG_ASPECT_SCALING meetOrSlice; } D2D1_SVG_PRESERVE_ASPECT_RATIO;
+	[PInvokeData("d2d1svg.h", MSDNShortId = "NS:d2d1svg.D2D1_SVG_PRESERVE_ASPECT_RATIO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_SVG_PRESERVE_ASPECT_RATIO
+	{
+		/// <summary>Sets the 'defer' portion of the preserveAspectRatio settings. This field only has an effect on an 'image' element that references another SVG document. As this is not currently supported, the field has no impact on rendering.</summary>
+		[MarshalAs(UnmanagedType.Bool)] public bool defer;
+
+		/// <summary>Sets the align portion of the preserveAspectRatio settings.</summary>
+		public D2D1_SVG_ASPECT_ALIGN align;
+
+		/// <summary>Sets the meetOrSlice portion of the preserveAspectRatio settings.</summary>
+		public D2D1_SVG_ASPECT_SCALING meetOrSlice;
+	}
+	/// <summary>Represents an SVG viewBox.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/ns-d2d1svg-d2d1_svg_viewbox
+	// typedef struct D2D1_SVG_VIEWBOX { FLOAT x; FLOAT y; FLOAT width; FLOAT height; } D2D1_SVG_VIEWBOX;
+	[PInvokeData("d2d1svg.h", MSDNShortId = "NS:d2d1svg.D2D1_SVG_VIEWBOX")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_SVG_VIEWBOX
+	{
+		/// <summary>X coordinate of the view box.</summary>
+		public float x;
+
+		/// <summary>Y coordinate of the view box.</summary>
+		public float y;
+
+		/// <summary>Width of the view box.</summary>
+		public float width;
+
+		/// <summary>Height of the view box.</summary>
+		public float height;
+	}
+	/// <summary>Properties of a transformed image source.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/ns-d2d1_3-d2d1_transformed_image_source_properties
+	// typedef struct D2D1_TRANSFORMED_IMAGE_SOURCE_PROPERTIES { D2D1_ORIENTATION orientation; FLOAT scaleX; FLOAT scaleY; D2D1_INTERPOLATION_MODE interpolationMode; D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS options; } D2D1_TRANSFORMED_IMAGE_SOURCE_PROPERTIES;
+	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_TRANSFORMED_IMAGE_SOURCE_PROPERTIES")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_TRANSFORMED_IMAGE_SOURCE_PROPERTIES
+	{
+		/// <summary>
+		///   <para>Type: <c>D2D1_ORIENTATION</c></para>
+		///   <para>The orientation at which the image source is drawn.</para>
+		/// </summary>
+		public D2D1_ORIENTATION orientation;
+
+		/// <summary>
+		///   <para>Type: <c>FLOAT</c></para>
+		///   <para>The horizontal scale factor at which the image source is drawn.</para>
+		/// </summary>
+		public float scaleX;
+
+		/// <summary>
+		///   <para>Type: <c>FLOAT</c></para>
+		///   <para>The vertical scale factor at which the image source is drawn.</para>
+		/// </summary>
+		public float scaleY;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_INTERPOLATION_MODE</c></para>
+		///   <para>The interpolation mode used when the image source is drawn. This is ignored if the image source is drawn using the DrawImage method, or using an image brush.</para>
+		/// </summary>
+		public D2D1_INTERPOLATION_MODE interpolationMode;
+
+		/// <summary>
+		///   <para>Type: <c>D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS</c></para>
+		///   <para>Image source option flags.</para>
+		/// </summary>
+		public D2D1_TRANSFORMED_IMAGE_SOURCE_OPTIONS options;
+	}
+	/// <summary>Defines the properties of a vertex buffer that are standard for all vertex shader definitions.</summary>
+	/// <remarks>
+	/// <para>If <c>usage</c> is dynamic, the system might return a system memory buffer and copy these vertices into the rendering vertex buffer for each element.</para>
+	/// <para>If the initialization data is not specified, the buffer will be uninitialized.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_vertex_buffer_properties
+	// typedef struct D2D1_VERTEX_BUFFER_PROPERTIES { UINT32 inputCount; D2D1_VERTEX_USAGE usage; const BYTE *data; UINT32 byteWidth; } D2D1_VERTEX_BUFFER_PROPERTIES;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_VERTEX_BUFFER_PROPERTIES")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_VERTEX_BUFFER_PROPERTIES
+	{
+		/// <summary>The number of inputs to the vertex shader.</summary>
+		public uint inputCount;
+
+		/// <summary>Indicates how frequently the vertex buffer is likely to be updated.</summary>
+		public D2D1_VERTEX_USAGE usage;
+
+		/// <summary>The initial contents of the vertex buffer.</summary>
+		public IntPtr data;
+
+		/// <summary>The size of the vertex buffer, in bytes.</summary>
+		public uint byteWidth;
+	}
+	/// <summary>Defines a range of vertices that are used when rendering less than the full contents of a vertex buffer.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/ns-d2d1effectauthor-d2d1_vertex_range
+	// typedef struct D2D1_VERTEX_RANGE { UINT32 startVertex; UINT32 vertexCount; } D2D1_VERTEX_RANGE;
+	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NS:d2d1effectauthor.D2D1_VERTEX_RANGE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_VERTEX_RANGE
+	{
+		/// <summary>The first vertex in the range to process.</summary>
+		public uint startVertex;
+
+		/// <summary>The number of vertices to use.</summary>
+		public uint vertexCount;
 	}
 }
