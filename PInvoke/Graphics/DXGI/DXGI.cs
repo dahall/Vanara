@@ -7,6 +7,32 @@ namespace Vanara.PInvoke;
 /// <summary>Items from the DXGI.dll</summary>
 public static partial class DXGI
 {
+	/// <summary>The resource is unused and can be evicted as soon as another resource requires the memory that the resource occupies.</summary>
+	public const uint DXGI_RESOURCE_PRIORITY_MINIMUM = 0x28000000;
+
+	/// <summary>
+	/// The eviction priority of the resource is low. The placement of the resource is not critical, and minimal work is performed to find a
+	/// location for the resource. For example, if a GPU can render with a vertex buffer from either local or non-local memory with little
+	/// difference in performance, that vertex buffer is low priority. Other more critical resources (for example, a render target or
+	/// texture) can then occupy the faster memory.
+	/// </summary>
+	public const uint DXGI_RESOURCE_PRIORITY_LOW = 0x50000000;
+
+	/// <summary>
+	/// The eviction priority of the resource is normal. The placement of the resource is important, but not critical, for performance. The
+	/// resource is placed in its preferred location instead of a low-priority resource.
+	/// </summary>
+	public const uint DXGI_RESOURCE_PRIORITY_NORMAL = 0x78000000;
+
+	/// <summary>
+	/// The eviction priority of the resource is high. The resource is placed in its preferred location instead of a low-priority or
+	/// normal-priority resource.
+	/// </summary>
+	public const uint DXGI_RESOURCE_PRIORITY_HIGH = 0xa0000000;
+
+	/// <summary>The resource is evicted from memory only if there is no other way of resolving the memory requirement.</summary>
+	public const uint DXGI_RESOURCE_PRIORITY_MAXIMUM = 0xc8000000;
+
 	/// <summary>Identifies the type of DXGI adapter.</summary>
 	/// <remarks>
 	/// The <c>DXGI_ADAPTER_FLAG</c> enumerated type is used by the <c>Flags</c> member of the DXGI_ADAPTER_DESC1 or DXGI_ADAPTER_DESC2
@@ -4614,30 +4640,22 @@ public static partial class DXGI
 		private unsafe fixed float whitePoints[16 * 2];
 
 		/// <summary>The primary coordinates, as an 8 by 2 array of FLOAT values.</summary>
-		public float[,] PrimaryCoordinates
-		{
-			get
-			{
+		public readonly float[,] PrimaryCoordinates
 #if NET45
-				throw new NotImplementedException();
+			=> throw new NotImplementedException();
+
 #else
-				unsafe { fixed (float* p = primaryCoordinates) return new Span2D<float>(p, 8, 2, 0).ToArray(); }
+			{ get { unsafe { fixed (float* p = primaryCoordinates) return new Span2D<float>(p, 8, 2, 0).ToArray(); } } }
 #endif
-			}
-		}
 
 		/// <summary>The white points, as a 16 by 2 array of FLOAT values.</summary>
-		public float[,] WhitePoints
-		{
-			get
-			{
+		public readonly float[,] WhitePoints
 #if NET45
-				throw new NotImplementedException();
+			=> throw new NotImplementedException();
+
 #else
-				unsafe { fixed (float* p = primaryCoordinates) return new Span2D<float>(p, 16, 2, 0).ToArray(); }
+			{ get { unsafe { fixed (float* p = primaryCoordinates) return new Span2D<float>(p, 16, 2, 0).ToArray(); } } }
 #endif
-			}
-		}
 	}
 
 	/// <summary>
@@ -4726,7 +4744,7 @@ public static partial class DXGI
 	/// </para>
 	/// <para>
 	/// Example: Mastering display with DCI-P3 color primaries and D65 white point, maximum luminance of 1000 nits and minimum luminance of
-	///          0.001 nits; content has maximum luminance of 2000 nits and maximum frame average light level (MaxFALL) of 500 nits.
+	/// 0.001 nits; content has maximum luminance of 2000 nits and maximum frame average light level (MaxFALL) of 500 nits.
 	/// </para>
 	/// <para>This structure is used in conjunction with the SetHDRMetaData method.</para>
 	/// </remarks>
