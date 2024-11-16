@@ -1,10 +1,8 @@
 ﻿using System.Drawing;
-using static Vanara.PInvoke.DXGI;
 
 namespace Vanara.PInvoke;
 
-/// <summary>Items from the D2d1.dll</summary>
-public static partial class D2d1
+public static partial class DXGI
 {
 	/// <summary>Specifies how the alpha value of a bitmap or render target should be treated.</summary>
 	/// <remarks>
@@ -494,14 +492,14 @@ public static partial class D2d1
 		public float y = y;
 
 		/// <summary>
-		/// Performs an implicit conversion from <see cref="System.Drawing.PointF"/> to <see cref="Vanara.PInvoke.D2d1.D2D_POINT_2F"/>.
+		/// Performs an implicit conversion from <see cref="System.Drawing.PointF"/> to <see cref="D2D_POINT_2F"/>.
 		/// </summary>
 		/// <param name="pointF">The point f.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator D2D_POINT_2F(PointF pointF) => new(pointF.X, pointF.Y);
 
 		/// <summary>
-		/// Performs an implicit conversion from <see cref="Vanara.PInvoke.D2d1.D2D_POINT_2F"/> to <see cref="System.Drawing.PointF"/>.
+		/// Performs an implicit conversion from <see cref="D2D_POINT_2F"/> to <see cref="System.Drawing.PointF"/>.
 		/// </summary>
 		/// <param name="pointF">The point f.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -543,14 +541,14 @@ public static partial class D2d1
 		public float bottom = bottom;
 
 		/// <summary>
-		/// Performs an implicit conversion from <see cref="System.Drawing.RectangleF"/> to <see cref="Vanara.PInvoke.D2d1.D2D_RECT_F"/>.
+		/// Performs an implicit conversion from <see cref="System.Drawing.RectangleF"/> to <see cref="D2D_RECT_F"/>.
 		/// </summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator D2D_RECT_F(RectangleF r) => new(r.Left, r.Top, r.Right, r.Bottom);
 
 		/// <summary>
-		/// Performs an implicit conversion from <see cref="Vanara.PInvoke.D2d1.D2D_RECT_F"/> to <see cref="System.Drawing.RectangleF"/>.
+		/// Performs an implicit conversion from <see cref="D2D_RECT_F"/> to <see cref="System.Drawing.RectangleF"/>.
 		/// </summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -576,12 +574,12 @@ public static partial class D2d1
 		/// </summary>
 		public float height = height;
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Drawing.SizeF"/> to <see cref="Vanara.PInvoke.D2d1.D2D_SIZE_F"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="System.Drawing.SizeF"/> to <see cref="D2D_SIZE_F"/>.</summary>
 		/// <param name="sz">The sz.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator D2D_SIZE_F(SizeF sz) => new(sz.Width, sz.Height);
 
-		/// <summary>Performs an implicit conversion from <see cref="Vanara.PInvoke.D2d1.D2D_SIZE_F"/> to <see cref="System.Drawing.SizeF"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="D2D_SIZE_F"/> to <see cref="System.Drawing.SizeF"/>.</summary>
 		/// <param name="sz">The sz.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SizeF(D2D_SIZE_F sz) => new(sz.width, sz.height);
@@ -606,7 +604,7 @@ public static partial class D2d1
 		/// </summary>
 		public uint height = height;
 
-		/// <summary>Performs an explicit conversion from <see cref="System.Drawing.Size"/> to <see cref="Vanara.PInvoke.D2d1.D2D_SIZE_U"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="System.Drawing.Size"/> to <see cref="D2D_SIZE_U"/>.</summary>
 		/// <param name="sz">The sz.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator D2D_SIZE_U(Size sz) => new((uint)sz.Width, (uint)sz.Height);

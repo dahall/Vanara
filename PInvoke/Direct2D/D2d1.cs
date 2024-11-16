@@ -1,4 +1,11 @@
-﻿namespace Vanara.PInvoke;
+﻿global using System.Runtime.InteropServices.ComTypes;
+global using static Vanara.PInvoke.DXGI;
+global using static Vanara.PInvoke.Dwrite;
+global using static Vanara.PInvoke.Ole32;
+global using static Vanara.PInvoke.OleAut32;
+global using static Vanara.PInvoke.WindowsCodecs;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1
@@ -1707,49 +1714,5 @@ public static partial class D2d1
 		/// </para>
 		/// </summary>
 		public uint bidiLevel;
-	}
-
-	/// <summary>Describes a JPEG AC huffman table.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/dxgi-jpeg-ac-huffman-table typedef struct DXGI_JPEG_AC_HUFFMAN_TABLE
-	// { BYTE CodeCounts[16]; BYTE CodeValues[162]; } DXGI_JPEG_AC_HUFFMAN_TABLE;
-	[PInvokeData("dxgitype.h", MSDNShortId = "E1923FFA-E7E5-4158-9793-3E7F5A6EA7FA")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct DXGI_JPEG_AC_HUFFMAN_TABLE
-	{
-		/// <summary>The number of codes for each code length.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-		public byte[] CodeCounts;
-
-		/// <summary>The Huffman code values, in order of increasing code length.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 162)]
-		public byte[] CodeValues;
-	}
-
-	/// <summary>Describes a JPEG DC huffman table.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/dxgi-jpeg-dc-huffman-table typedef struct DXGI_JPEG_DC_HUFFMAN_TABLE
-	// { BYTE CodeCounts[12]; BYTE CodeValues[12]; } DXGI_JPEG_DC_HUFFMAN_TABLE;
-	[PInvokeData("dxgitype.h", MSDNShortId = "9D6C18C3-F75C-41E0-9EFA-E882E89DE713")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct DXGI_JPEG_DC_HUFFMAN_TABLE
-	{
-		/// <summary>The number of codes for each code length.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
-		public byte[] CodeCounts;
-
-		/// <summary>The Huffman code values, in order of increasing code length.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
-		public byte[] CodeValues;
-	}
-
-	/// <summary>Describes a JPEG quantization table.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/dxgi-jpeg-quantization-table typedef struct
-	// DXGI_JPEG_QUANTIZATION_TABLE { BYTE Elements[64]; } DXGI_JPEG_QUANTIZATION_TABLE;
-	[PInvokeData("dxgitype.h", MSDNShortId = "DE1AAB15-B0B8-4594-BBCE-5F8EE5CE0AF7")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct DXGI_JPEG_QUANTIZATION_TABLE
-	{
-		/// <summary>An array of bytes containing the elements of the quantization table.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-		public byte[] Elements;
 	}
 }

@@ -1,10 +1,7 @@
-using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.D2d1;
-using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
 
-/// <summary>Items from the WindowsCodecs.dll</summary>
 public static partial class WindowsCodecs
 {
 	private delegate void GetArrayAction<T>(uint cbSize, T[]? value, out uint actualSize);

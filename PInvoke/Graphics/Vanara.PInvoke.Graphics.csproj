@@ -31,6 +31,9 @@ ID2D1Bitmap ID2D1Bitmap1 ID2D1BitmapBrush ID2D1BitmapBrush1 ID2D1BitmapRenderTar
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\D3DCompiler\Vanara.PInvoke.D3DCompiler.csproj" />
+    <ProjectReference Include="..\Direct2D\Vanara.PInvoke.Direct2D.csproj" />
+    <ProjectReference Include="..\Direct3D11\Vanara.PInvoke.Direct3D11.csproj" />
     <ProjectReference Include="..\DXCore\Vanara.PInvoke.DXCore.csproj" />
     <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
     <ProjectReference Include="..\DStorage\Vanara.PInvoke.DStorage.csproj" />

@@ -1,9 +1,5 @@
-﻿using static Vanara.PInvoke.Dwrite;
-using static Vanara.PInvoke.WindowsCodecs;
+﻿namespace Vanara.PInvoke;
 
-namespace Vanara.PInvoke;
-
-/// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1
 {
 	/// <summary>Represents a bitmap that has been bound to an ID2D1RenderTarget.</summary>

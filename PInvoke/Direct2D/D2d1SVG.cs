@@ -1,7 +1,4 @@
-﻿using static Vanara.PInvoke.Ole32.PROPERTYKEY.System;
-using static Vanara.PInvoke.Ole32.PROPERTYKEY;
-using System.Drawing.Drawing2D;
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class D2d1
 {

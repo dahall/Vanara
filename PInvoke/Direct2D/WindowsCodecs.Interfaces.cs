@@ -1,10 +1,5 @@
-using System.Runtime.InteropServices.ComTypes;
-using static Vanara.PInvoke.Ole32;
-using static Vanara.PInvoke.OleAut32;
-
 namespace Vanara.PInvoke;
 
-/// <summary>Items from the WindowsCodecs.dll</summary>
 public static partial class WindowsCodecs
 {
 	/// <summary>Defines methods that add the concept of writeability and static in-memory representations of bitmaps to IWICBitmapSource.</summary>

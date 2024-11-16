@@ -1,9 +1,5 @@
-using static Vanara.PInvoke.D2d1;
-using static Vanara.PInvoke.DXGI;
-
 namespace Vanara.PInvoke;
 
-/// <summary>Items from the WindowsCodecs.dll</summary>
 public static partial class WindowsCodecs
 {
 	/// <summary>Contains members that identify a pattern within an image file which can be used to identify a particular format.</summary>

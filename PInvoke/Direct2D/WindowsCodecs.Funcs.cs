@@ -1,6 +1,5 @@
 namespace Vanara.PInvoke;
 
-/// <summary>Items from the WindowsCodecs.dll</summary>
 public static partial class WindowsCodecs
 {
 	/// <summary>Application defined callback function called when codec component progress is made.</summary>

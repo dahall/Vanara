@@ -1,15 +1,11 @@
 ﻿using System.IO;
-using System.Runtime.InteropServices.ComTypes;
-using static Vanara.PInvoke.Dwrite;
-using static Vanara.PInvoke.DXGI;
-using D2D1_COLOR_F = Vanara.PInvoke.D2d1.D3DCOLORVALUE;
-using D2D1_MATRIX_3X2_F = Vanara.PInvoke.D2d1.D2D_MATRIX_3X2_F;
-using D2D1_POINT_2F = Vanara.PInvoke.D2d1.D2D_POINT_2F;
+using D2D1_COLOR_F = Vanara.PInvoke.DXGI.D3DCOLORVALUE;
+using D2D1_MATRIX_3X2_F = Vanara.PInvoke.DXGI.D2D_MATRIX_3X2_F;
+using D2D1_POINT_2F = Vanara.PInvoke.DXGI.D2D_POINT_2F;
 using D2D1_TAG = System.UInt64;
 
 namespace Vanara.PInvoke;
 
-/// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1
 {
 	/// <summary>Describes the implementation of an effect.</summary>

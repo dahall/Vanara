@@ -1,10 +1,5 @@
-﻿using static Vanara.PInvoke.Dwrite;
-using static Vanara.PInvoke.DXGI;
-using static Vanara.PInvoke.WindowsCodecs;
+﻿namespace Vanara.PInvoke;
 
-namespace Vanara.PInvoke;
-
-/// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1
 {
 	/// <summary>Represents the drawing state of a render target: the antialiasing mode, transform, tags, and text-rendering options.</summary>
