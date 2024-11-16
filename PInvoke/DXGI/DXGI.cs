@@ -1,10 +1,15 @@
-﻿#if !NET45
+﻿global using D3DCOLOR = Vanara.PInvoke.COLORREF;
+global using D3DRECT = Vanara.PInvoke.RECT;
+#if !NET45
 using CommunityToolkit.HighPerformance;
 #endif
 
 namespace Vanara.PInvoke;
 
-/// <summary>Items from the DXGI.dll</summary>
+/// <summary>
+/// The Microsoft DirectX Graphics Infrastructure (DXGI) manages low-level tasks that can be independent of the Direct3D graphics runtime.
+/// DXGI provides a common framework for several versions of Direct3D.
+/// </summary>
 public static partial class DXGI
 {
 	/// <summary>The resource is unused and can be evicted as soon as another resource requires the memory that the resource occupies.</summary>
@@ -1968,6 +1973,94 @@ public static partial class DXGI
 	[PInvokeData("dxgi1_3.h", MSDNShortId = "0FE0EAF5-3ADC-426F-9DA9-FEDEC519EEF0")]
 	public static extern HRESULT DXGIGetDebugInterface1([Optional] uint Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? pDebug);
 
+	/// <summary>Represents a color value with alpha, which is used for transparency.</summary>
+	/// <remarks>
+	/// <para>
+	/// You can set the members of this structure to values outside the range of 0 through 1 to implement some unusual effects. Values
+	/// greater than 1 produce strong lights that tend to wash out a scene. Negative values produce dark lights that actually remove light
+	/// from a scene.
+	/// </para>
+	/// <para>The DXGItype.h header type-defines <c>DXGI_RGBA</c> as an alias of <c>D3DCOLORVALUE</c>, as follows:</para>
+	/// <para>
+	/// You can use D3DCOLORVALUE or <c>DXGI_RGBA</c> with <c>IDXGISwapChain1::SetBackgroundColor</c>,
+	/// <c>IDXGISwapChain1::GetBackgroundColor</c>, and <c>DXGI_ALPHA_MODE</c>.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/d3dcolorvalue typedef struct _D3DCOLORVALUE { float r; float g; float b;
+	// float a; } D3DCOLORVALUE;
+	[PInvokeData("d3dtypes.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3DCOLORVALUE(float r, float g, float b, float a = 1.0f) : IEquatable<D3DCOLORVALUE>
+	{
+		/// <summary>
+		/// Floating-point value that specifies the red component of a color. This value generally is in the range from 0.0 through 1.0. A
+		/// value of 0.0 indicates the complete absence of the red component, while a value of 1.0 indicates that red is fully present.
+		/// </summary>
+		public float r = r;
+
+		/// <summary>
+		/// Floating-point value that specifies the green component of a color. This value generally is in the range from 0.0 through 1.0. A
+		/// value of 0.0 indicates the complete absence of the green component, while a value of 1.0 indicates that green is fully present.
+		/// </summary>
+		public float g = g;
+
+		/// <summary>
+		/// Floating-point value that specifies the blue component of a color. This value generally is in the range from 0.0 through 1.0. A
+		/// value of 0.0 indicates the complete absence of the blue component, while a value of 1.0 indicates that blue is fully present.
+		/// </summary>
+		public float b = b;
+
+		/// <summary>
+		/// Floating-point value that specifies the alpha component of a color. This value generally is in the range from 0.0 through 1.0. A
+		/// value of 0.0 indicates fully transparent, while a value of 1.0 indicates fully opaque.
+		/// </summary>
+		public float a = a;
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D3DCOLORVALUE dCOLORVALUE && Equals(dCOLORVALUE);
+
+		/// <summary>Equalses the specified other.</summary>
+		/// <param name="other">The other.</param>
+		/// <returns></returns>
+		public bool Equals(D3DCOLORVALUE other) => r == other.r && g == other.g && b == other.b && a == other.a;
+
+		/// <inheritdoc/>
+		public override int GetHashCode()
+		{
+			int hashCode = -490236692;
+			hashCode = hashCode * -1521134295 + r.GetHashCode();
+			hashCode = hashCode * -1521134295 + g.GetHashCode();
+			hashCode = hashCode * -1521134295 + b.GetHashCode();
+			hashCode = hashCode * -1521134295 + a.GetHashCode();
+			return hashCode;
+		}
+
+		/// <inheritdoc/>
+		public override string ToString() => $"r:{r}, g:{g}, b:{b}, a:{a}";
+
+		/// <summary>Implements the operator op_Equality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(D3DCOLORVALUE left, D3DCOLORVALUE right) => left.Equals(right);
+
+		/// <summary>Implements the operator op_Inequality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(D3DCOLORVALUE left, D3DCOLORVALUE right) => !(left == right);
+
+		/// <summary>Performs an explicit conversion from <see cref="Vanara.PInvoke.COLORREF"/> to <see cref="D3DCOLORVALUE"/>.</summary>
+		/// <param name="c">The color.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator D3DCOLORVALUE(D3DCOLOR c) => new(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
+
+		/// <summary>Performs an explicit conversion from <see cref="D3DCOLORVALUE"/> to <see cref="Vanara.PInvoke.COLORREF"/>.</summary>
+		/// <param name="cv">The color value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator D3DCOLOR(D3DCOLORVALUE cv) => new((byte)(cv.r * 255), (byte)(cv.g * 255), (byte)(cv.b * 255), (byte)(cv.a * 255));
+	}
+
 	/// <summary>Describes an adapter (or video card) by using DXGI 1.0.</summary>
 	/// <remarks>
 	/// The <c>DXGI_ADAPTER_DESC</c> structure provides a description of an adapter. This structure is initialized by using the
@@ -2049,7 +2142,7 @@ public static partial class DXGI
 		/// <para>Type: <c>LUID</c></para>
 		/// <para>A unique value that identifies the adapter. See LUID for a definition of the structure. <c>LUID</c> is defined in dxgi.h.</para>
 		/// </summary>
-		public AdvApi32.LUID AdapterLuid;
+		public LUID AdapterLuid;
 	}
 
 	/// <summary>Describes an adapter (or video card) using DXGI 1.1.</summary>
@@ -2133,7 +2226,7 @@ public static partial class DXGI
 		/// <para>Type: <c>LUID</c></para>
 		/// <para>A unique value that identifies the adapter. See LUID for a definition of the structure. <c>LUID</c> is defined in dxgi.h.</para>
 		/// </summary>
-		public AdvApi32.LUID AdapterLuid;
+		public LUID AdapterLuid;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>

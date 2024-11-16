@@ -561,52 +561,6 @@ public static partial class D2d1
 		uint GetFigureCount();
 	}
 
-	/// <summary>
-	/// Converts Direct2D primitives stored in an ID2D1CommandList into a fixed page representation. The print sub-system then consumes
-	/// the primitives.
-	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nn-d2d1_1-id2d1printcontrol
-	[ComImport, Guid("2c1d867d-c290-41c8-ae7e-34a98702e9a5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID2D1PrintControl
-	{
-		/// <summary>
-		/// Converts Direct2D primitives in the passed-in command list into a fixed page representation for use by the print subsystem.
-		/// </summary>
-		/// <param name="commandList">
-		/// <para>Type: <c>ID2D1CommandList*</c></para>
-		/// <para>The command list that contains the rendering operations.</para>
-		/// </param>
-		/// <param name="pageSize">
-		/// <para>Type: <c>D2D_SIZE_F</c></para>
-		/// <para>The size of the page to add.</para>
-		/// </param>
-		/// <param name="pagePrintTicketStream">
-		/// <para>Type: <c>IStream*</c></para>
-		/// <para>The print ticket stream.</para>
-		/// </param>
-		/// <param name="tag1">
-		/// <para>Type: <c>ulong*</c></para>
-		/// <para>
-		/// Contains the first label for subsequent drawing operations. This parameter is passed uninitialized. If NULL is specified, no
-		/// value is retrieved for this parameter.
-		/// </para>
-		/// </param>
-		/// <param name="tag2">
-		/// <para>Type: <c>ulong*</c></para>
-		/// <para>
-		/// Contains the second label for subsequent drawing operations. This parameter is passed uninitialized. If NULL is specified,
-		/// no value is retrieved for this parameter.
-		/// </para>
-		/// </param>
-		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1printcontrol-addpage HRESULT AddPage(
-		// ID2D1CommandList *commandList, D2D_SIZE_F pageSize, IStream *pagePrintTicketStream, ulong *tag1, ulong *tag2 );
-		void AddPage(ID2D1CommandList commandList, D2D_SIZE_F pageSize, [Optional] IStream? pagePrintTicketStream, out ulong tag1, out ulong tag2);
-
-		/// <summary>Passes all remaining resources to the print sub-system, then clean up and close the current print job.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1printcontrol-close HRESULT Close();
-		void Close();
-	}
-
 	/// <summary>Paints an area with a radial gradient.</summary>
 	/// <remarks>
 	/// <para>

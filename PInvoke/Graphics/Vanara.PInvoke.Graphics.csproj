@@ -25,22 +25,17 @@ ID2D1Bitmap ID2D1Bitmap1 ID2D1BitmapBrush ID2D1BitmapBrush1 ID2D1BitmapRenderTar
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Direct2D\**" />
+    <EmbeddedResource Remove="Direct2D\**" />
+    <None Remove="Direct2D\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\DXCore\Vanara.PInvoke.DXCore.csproj" />
+    <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
+    <ProjectReference Include="..\DStorage\Vanara.PInvoke.DStorage.csproj" />
+    <ProjectReference Include="..\DWrite\Vanara.PInvoke.DWrite.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
-    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DStorage\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="DStorage\dstorage.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="DStorage\dstoragecore.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>

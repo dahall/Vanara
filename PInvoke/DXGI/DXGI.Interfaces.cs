@@ -1,7 +1,5 @@
 ﻿namespace Vanara.PInvoke;
 
-// TODO: Move once DXGI lib is done
-/// <summary>Items from the DXGI.dll</summary>
 public static partial class DXGI
 {
 	/// <summary>The <c>IDXGIAdapter</c> interface represents a display subsystem (including one or more GPUs, DACs and video memory).</summary>

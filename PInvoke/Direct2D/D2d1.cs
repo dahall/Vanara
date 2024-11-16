@@ -1,6 +1,4 @@
-﻿using static Vanara.PInvoke.DXGI;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 /// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1
@@ -92,25 +90,6 @@ public static partial class D2d1
 
 		/// <summary/>
 		D2D1_CAP_STYLE_FORCE_DWORD = 0xffffffff,
-	}
-
-	/// <summary>Defines options that should be applied to the color space.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/ne-d2d1_1-d2d1_color_space typedef enum D2D1_COLOR_SPACE {
-	// D2D1_COLOR_SPACE_CUSTOM, D2D1_COLOR_SPACE_SRGB, D2D1_COLOR_SPACE_SCRGB, D2D1_COLOR_SPACE_FORCE_DWORD } ;
-	[PInvokeData("d2d1_1.h", MSDNShortId = "2c90978b-8a5a-4e5d-9ced-e0ec917271ff")]
-	public enum D2D1_COLOR_SPACE : uint
-	{
-		/// <summary>The color space is otherwise described, such as with a color profile.</summary>
-		D2D1_COLOR_SPACE_CUSTOM,
-
-		/// <summary>The color space is sRGB.</summary>
-		D2D1_COLOR_SPACE_SRGB,
-
-		/// <summary>The color space is scRGB.</summary>
-		D2D1_COLOR_SPACE_SCRGB,
-
-		/// <summary/>
-		D2D1_COLOR_SPACE_FORCE_DWORD = 0xffffffff,
 	}
 
 	/// <summary>Specifies the different methods by which two geometries can be combined.</summary>
@@ -263,26 +242,6 @@ public static partial class D2d1
 
 		/// <summary/>
 		D2D1_DEBUG_LEVEL_FORCE_DWORD = 0xffffffff
-	}
-
-	/// <summary>This specifies options that apply to the device context for its lifetime.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/ne-d2d1_1-d2d1_device_context_options typedef enum
-	// D2D1_DEVICE_CONTEXT_OPTIONS { D2D1_DEVICE_CONTEXT_OPTIONS_NONE, D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS,
-	// D2D1_DEVICE_CONTEXT_OPTIONS_FORCE_DWORD } ;
-	[PInvokeData("d2d1_1.h", MSDNShortId = "be4e6eb7-0767-4faf-9f27-eeb3bed48244")]
-	public enum D2D1_DEVICE_CONTEXT_OPTIONS : uint
-	{
-		/// <summary>The device context is created with default options.</summary>
-		D2D1_DEVICE_CONTEXT_OPTIONS_NONE,
-
-		/// <summary>
-		/// Distribute rendering work across multiple threads. Refer to Improving the performance of Direct2D apps for additional notes
-		/// on the use of this flag.
-		/// </summary>
-		D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS,
-
-		/// <summary/>
-		D2D1_DEVICE_CONTEXT_OPTIONS_FORCE_DWORD = 0xffffffff,
 	}
 
 	/// <summary>
@@ -723,26 +682,6 @@ public static partial class D2d1
 		D2D1_PRESENT_OPTIONS_FORCE_DWORD = 0xffffffff,
 	}
 
-	/// <summary>Defines when font resources should be subset during printing.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/ne-d2d1_1-d2d1_print_font_subset_mode typedef enum
-	// D2D1_PRINT_FONT_SUBSET_MODE { D2D1_PRINT_FONT_SUBSET_MODE_DEFAULT, D2D1_PRINT_FONT_SUBSET_MODE_EACHPAGE,
-	// D2D1_PRINT_FONT_SUBSET_MODE_NONE, D2D1_PRINT_FONT_SUBSET_MODE_FORCE_DWORD } ;
-	[PInvokeData("d2d1_1.h", MSDNShortId = "B8361117-6018-48EE-AD3D-2A37F6B71293")]
-	public enum D2D1_PRINT_FONT_SUBSET_MODE : uint
-	{
-		/// <summary/>
-		D2D1_PRINT_FONT_SUBSET_MODE_DEFAULT,
-
-		/// <summary/>
-		D2D1_PRINT_FONT_SUBSET_MODE_EACHPAGE,
-
-		/// <summary/>
-		D2D1_PRINT_FONT_SUBSET_MODE_NONE,
-
-		/// <summary/>
-		D2D1_PRINT_FONT_SUBSET_MODE_FORCE_DWORD = 0xffffffff,
-	}
-
 	/// <summary>
 	/// Describes whether a render target uses hardware or software rendering, or if Direct2D should select the rendering mode.
 	/// </summary>
@@ -872,125 +811,6 @@ public static partial class D2d1
 		D2D1_WINDOW_STATE_FORCE_DWORD = 0xffffffff
 	}
 
-	/// <summary>Computes the maximum factor by which a given transform can stretch any vector.</summary>
-	/// <param name="matrix">The input transform matrix.</param>
-	/// <returns>The scale factor.</returns>
-	/// <remarks>
-	/// <para>
-	/// Formally, if M is the input matrix, this method will return the maximum value of |V * M| / |V| for all vectors V, where |.|
-	/// denotes length.
-	/// </para>
-	/// <para>
-	/// <c>Note</c> Since this describes how M affects vectors (rather than points), the translation components (_31 and _32) of M are ignored.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_2/nf-d2d1_2-d2d1computemaximumscalefactor FLOAT
-	// D2D1ComputeMaximumScaleFactor( const D2D1_MATRIX_3X2_F *matrix );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_2.h", MSDNShortId = "5BC10305-436F-4528-9647-E70713130505")]
-	public static extern float D2D1ComputeMaximumScaleFactor(in D2D_MATRIX_3X2_F matrix);
-
-	/// <summary>Converts the given color from one colorspace to another.</summary>
-	/// <param name="sourceColorSpace">
-	/// <para>Type: <c>D2D1_COLOR_SPACE</c></para>
-	/// <para>The source color space.</para>
-	/// </param>
-	/// <param name="destinationColorSpace">
-	/// <para>Type: <c>D2D1_COLOR_SPACE</c></para>
-	/// <para>The destination color space.</para>
-	/// </param>
-	/// <param name="color">
-	/// <para>Type: <c>const D2D1_COLOR_F*</c></para>
-	/// <para>The source color.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>D2D1_COLOR_F</c></para>
-	/// <para>The converted color.</para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-d2d1convertcolorspace D2D1_COLOR_F D2D1ConvertColorSpace(
-	// D2D1_COLOR_SPACE sourceColorSpace, D2D1_COLOR_SPACE destinationColorSpace, const D2D1_COLOR_F *color );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_1.h", MSDNShortId = "ECFE9F50-290D-4E6C-90AB-A46B9E413A48")]
-	public static extern D3DCOLORVALUE D2D1ConvertColorSpace(D2D1_COLOR_SPACE sourceColorSpace, D2D1_COLOR_SPACE destinationColorSpace, in D3DCOLORVALUE color);
-
-	/// <summary>Creates a new Direct2D device associated with the provided DXGI device.</summary>
-	/// <param name="dxgiDevice">The DXGI device the Direct2D device is associated with.</param>
-	/// <param name="creationProperties">The properties to apply to the Direct2D device.</param>
-	/// <param name="d2dDevice">When this function returns, contains the address of a pointer to a Direct2D device.</param>
-	/// <returns>
-	/// <para>The function returns an <c>HRESULT</c>. Possible values include, but are not limited to, those in the following table.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>HRESULT</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>S_OK</term>
-	/// <term>No error occurred.</term>
-	/// </item>
-	/// <item>
-	/// <term>E_OUTOFMEMORY</term>
-	/// <term>Direct2D could not allocate sufficient memory to complete the call.</term>
-	/// </item>
-	/// <item>
-	/// <term>E_INVALIDARG</term>
-	/// <term>An invalid value was passed to the method.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>This function will also create a new ID2D1Factory1 that can be retrieved through ID2D1Resource::GetFactory.</para>
-	/// <para>
-	/// If the creation properties are not specified, then d2dDevice will inherit its threading mode from dxgiDevice and debug tracing
-	/// will not be enabled.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-d2d1createdevice HRESULT D2D1CreateDevice( IDXGIDevice
-	// *dxgiDevice, const D2D1_CREATION_PROPERTIES *creationProperties, ID2D1Device **d2dDevice );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_1.h", MSDNShortId = "5ed3ec21-b609-41b6-9568-6ede460bc395")]
-	public static extern HRESULT D2D1CreateDevice(IDXGIDevice dxgiDevice, in D2D1_CREATION_PROPERTIES creationProperties, out ID2D1Device d2dDevice);
-
-	/// <summary>Creates a new Direct2D device context associated with a DXGI surface.</summary>
-	/// <param name="dxgiSurface">The DXGI surface the Direct2D device context is associated with.</param>
-	/// <param name="creationProperties">The properties to apply to the Direct2D device context.</param>
-	/// <param name="d2dDeviceContext">When this function returns, contains the address of a pointer to a Direct2D device context.</param>
-	/// <returns>
-	/// <para>The function returns an <c>HRESULT</c>. Possible values include, but are not limited to, those in the following table.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>HRESULT</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>S_OK</term>
-	/// <term>No error occurred.</term>
-	/// </item>
-	/// <item>
-	/// <term>E_OUTOFMEMORY</term>
-	/// <term>Direct2D could not allocate sufficient memory to complete the call.</term>
-	/// </item>
-	/// <item>
-	/// <term>E_INVALIDARG</term>
-	/// <term>An invalid value was passed to the method.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>This function will also create a new ID2D1Factory1 that can be retrieved through ID2D1Resource::GetFactory.</para>
-	/// <para>This function will also create a new ID2D1Device that can be retrieved through ID2D1DeviceContext::GetDevice.</para>
-	/// <para>The DXGI device will be specified implicitly through dxgiSurface.</para>
-	/// <para>
-	/// If creationProperties are not specified, the Direct2D device will inherit its threading mode from the DXGI device implied by
-	/// dxgiSurface and debug tracing will not be enabled.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-d2d1createdevicecontext HRESULT D2D1CreateDeviceContext(
-	// IDXGISurface *dxgiSurface, const D2D1_CREATION_PROPERTIES *creationProperties, ID2D1DeviceContext **d2dDeviceContext );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_1.h", MSDNShortId = "0e56d057-20a5-47b7-aec9-63c8e31f349b")]
-	public static extern HRESULT D2D1CreateDeviceContext(IDXGISurface dxgiSurface, in D2D1_CREATION_PROPERTIES creationProperties, out ID2D1DeviceContext d2dDeviceContext);
-
 	/// <summary>Creates a factory object that can be used to create Direct2D resources.</summary>
 	/// <param name="factoryType">
 	/// <para>Type: <c>D2D1_FACTORY_TYPE</c></para>
@@ -1042,88 +862,6 @@ public static partial class D2d1
 #pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		return (T)ppv;
 	}
-
-	/// <summary>
-	/// <para>Returns the interior points for a gradient mesh patch based on the points defining a Coons patch.</para>
-	/// <para><c>Note</c></para>
-	/// </summary>
-	/// <param name="pPoint0">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 0.</para>
-	/// </param>
-	/// <param name="pPoint1">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 1.</para>
-	/// </param>
-	/// <param name="pPoint2">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 2.</para>
-	/// </param>
-	/// <param name="pPoint3">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 3.</para>
-	/// </param>
-	/// <param name="pPoint4">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 4.</para>
-	/// </param>
-	/// <param name="pPoint5">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 5.</para>
-	/// </param>
-	/// <param name="pPoint6">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 6.</para>
-	/// </param>
-	/// <param name="pPoint7">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 7.</para>
-	/// </param>
-	/// <param name="pPoint8">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 8.</para>
-	/// </param>
-	/// <param name="pPoint9">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 9.</para>
-	/// </param>
-	/// <param name="pPoint10">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 10.</para>
-	/// </param>
-	/// <param name="pPoint11">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>The coordinate-space location of the control point at position 11.</para>
-	/// </param>
-	/// <param name="pTensorPoint11">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>Returns the interior point for the gradient mesh corresponding to point11 in the D2D1_GRADIENT_MESH_PATCH structure.</para>
-	/// </param>
-	/// <param name="pTensorPoint12">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>Returns the interior point for the gradient mesh corresponding to point12 in the D2D1_GRADIENT_MESH_PATCH structure.</para>
-	/// </param>
-	/// <param name="pTensorPoint21">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>Returns the interior point for the gradient mesh corresponding to point21 in the D2D1_GRADIENT_MESH_PATCH structure.</para>
-	/// </param>
-	/// <param name="pTensorPoint22">
-	/// <para>Type: <c>D2D1_POINT_2F*</c></para>
-	/// <para>Returns the interior point for the gradient mesh corresponding to point22 in the D2D1_GRADIENT_MESH_PATCH structure.</para>
-	/// </param>
-	/// <returns>None</returns>
-	/// <remarks>This function is called by the GradientMeshPatchFromCoonsPatch function and is not intended to be used directly.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_3/nf-d2d1_3-d2d1getgradientmeshinteriorpointsfromcoonspatch void
-	// D2D1GetGradientMeshInteriorPointsFromCoonsPatch( const D2D1_POINT_2F *pPoint0, const D2D1_POINT_2F *pPoint1, const D2D1_POINT_2F
-	// *pPoint2, const D2D1_POINT_2F *pPoint3, const D2D1_POINT_2F *pPoint4, const D2D1_POINT_2F *pPoint5, const D2D1_POINT_2F *pPoint6,
-	// const D2D1_POINT_2F *pPoint7, const D2D1_POINT_2F *pPoint8, const D2D1_POINT_2F *pPoint9, const D2D1_POINT_2F *pPoint10, const
-	// D2D1_POINT_2F *pPoint11, D2D1_POINT_2F *pTensorPoint11, D2D1_POINT_2F *pTensorPoint12, D2D1_POINT_2F *pTensorPoint21,
-	// D2D1_POINT_2F *pTensorPoint22 );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_3.h", MSDNShortId = "388d5cbf-cb15-f0c9-3f3b-897f68519a4c")]
-	public static extern void D2D1GetGradientMeshInteriorPointsFromCoonsPatch(in D2D_POINT_2F pPoint0, in D2D_POINT_2F pPoint1, in D2D_POINT_2F pPoint2, in D2D_POINT_2F pPoint3,
-		in D2D_POINT_2F pPoint4, in D2D_POINT_2F pPoint5, in D2D_POINT_2F pPoint6, in D2D_POINT_2F pPoint7, in D2D_POINT_2F pPoint8, in D2D_POINT_2F pPoint9,
-		in D2D_POINT_2F pPoint10, in D2D_POINT_2F pPoint11, out D2D_POINT_2F pTensorPoint11, out D2D_POINT_2F pTensorPoint12, out D2D_POINT_2F pTensorPoint21, out D2D_POINT_2F pTensorPoint22);
 
 	/// <summary>Tries to invert the specified matrix.</summary>
 	/// <param name="matrix">
@@ -1200,62 +938,6 @@ public static partial class D2d1
 	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("d2d1.h", MSDNShortId = "9f29488c-37f0-4d53-9e3b-3b27e841c8b4")]
 	public static extern void D2D1MakeSkewMatrix(float angleX, float angleY, D2D_POINT_2F center, out D2D_MATRIX_3X2_F matrix);
-
-	/// <summary>Returns the sine and cosine of an angle.</summary>
-	/// <param name="angle">
-	/// <para>Type: <c>FLOAT</c></para>
-	/// <para>The angle to calculate.</para>
-	/// </param>
-	/// <param name="s">
-	/// <para>Type: <c>FLOAT*</c></para>
-	/// <para>The sine of the angle.</para>
-	/// </param>
-	/// <param name="c">
-	/// <para>Type: <c>FLOAT*</c></para>
-	/// <para>The cosine of the angle.</para>
-	/// </param>
-	/// <returns>None</returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-d2d1sincos void D2D1SinCos( FLOAT angle, FLOAT *s, FLOAT *c );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_1.h", MSDNShortId = "CE5899A8-B70F-492E-9A16-849FB64830AC")]
-	public static extern void D2D1SinCos(float angle, out float s, out float c);
-
-	/// <summary>Returns the tangent of an angle.</summary>
-	/// <param name="angle">
-	/// <para>Type: <c>FLOAT</c></para>
-	/// <para>The angle to calculate the tangent for.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>FLOAT</c></para>
-	/// <para>The tangent of the angle.</para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-d2d1tan FLOAT D2D1Tan( FLOAT angle );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_1.h", MSDNShortId = "2BC66DEA-5C40-4EBA-8CDB-B48036E8A85F")]
-	public static extern float D2D1Tan(float angle);
-
-	/// <summary>Returns the length of a 3 dimensional vector.</summary>
-	/// <param name="x">
-	/// <para>Type: <c>FLOAT</c></para>
-	/// <para>The x value of the vector.</para>
-	/// </param>
-	/// <param name="y">
-	/// <para>Type: <c>FLOAT</c></para>
-	/// <para>The y value of the vector.</para>
-	/// </param>
-	/// <param name="z">
-	/// <para>Type: <c>FLOAT</c></para>
-	/// <para>The z value of the vector.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>FLOAT</c></para>
-	/// <para>The length of the vector.</para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-d2d1vec3length FLOAT D2D1Vec3Length( FLOAT x, FLOAT y, FLOAT
-	// z );
-	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("d2d1_1.h", MSDNShortId = "0E305151-63EA-4865-B9C4-5F685D17FD5A")]
-	public static extern float D2D1Vec3Length(float x, float y, float z);
 
 	/// <summary>Describes an elliptical arc between two points.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/ns-d2d1-d2d1_arc_segment typedef struct D2D1_ARC_SEGMENT { D2D1_POINT_2F
@@ -1668,32 +1350,6 @@ public static partial class D2d1
 		public D2D_POINT_2F endPoint;
 	}
 
-	/// <summary>The creation properties for a ID2D1PrintControl object.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_print_control_properties typedef struct
-	// D2D1_PRINT_CONTROL_PROPERTIES { D2D1_PRINT_FONT_SUBSET_MODE fontSubset; FLOAT rasterDPI; D2D1_COLOR_SPACE colorSpace; } D2D1_PRINT_CONTROL_PROPERTIES;
-	[PInvokeData("d2d1_1.h", MSDNShortId = "5A4D4DDC-4161-44A2-9EB6-E4C14696B810")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_PRINT_CONTROL_PROPERTIES
-	{
-		/// <summary>
-		/// <para>Type: <c>D2D1_PRINT_FONT_SUBSET_MODE</c></para>
-		/// <para>The mode to use for subsetting fonts for printing, defaults to D2D1_PRINT_FONT_SUBSET_MODE_DEFAULT.</para>
-		/// </summary>
-		public D2D1_PRINT_FONT_SUBSET_MODE fontSubset;
-
-		/// <summary>
-		/// <para>Type: <c>FLOAT</c></para>
-		/// <para>DPI for rasterization of all unsupported Direct2D commands or options, defaults to 150.0.</para>
-		/// </summary>
-		public float rasterDPI;
-
-		/// <summary>
-		/// <para>Type: <c>D2D1_COLOR_SPACE</c></para>
-		/// <para>Color space for vector graphics, defaults to D2D1_COLOR_SPACE_SRGB.</para>
-		/// </summary>
-		public D2D1_COLOR_SPACE colorSpace;
-	}
-
 	/// <summary>Contains the control point and end point for a quadratic Bezier segment.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/ns-d2d1-d2d1_quadratic_bezier_segment typedef struct
 	// D2D1_QUADRATIC_BEZIER_SEGMENT { D2D1_POINT_2F point1; D2D1_POINT_2F point2; } D2D1_QUADRATIC_BEZIER_SEGMENT;
@@ -1984,31 +1640,6 @@ public static partial class D2d1
 		/// <para>The third vertex of a triangle.</para>
 		/// </summary>
 		public D2D_POINT_2F point3;
-	}
-
-	/// <summary>Describes color values.</summary>
-	/// <remarks>
-	/// You can set the members of this structure to values outside the range of 0 through 1 to implement some unusual effects. Values
-	/// greater than 1 produce strong lights that tend to wash out a scene. Negative values produce dark lights that actually remove
-	/// light from a scene.
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/direct3d9/d3dcolorvalue typedef struct _D3DCOLORVALUE { float r; float g; float b;
-	// float a; } D3DCOLORVALUE;
-	[PInvokeData("", MSDNShortId = "6af8c2ec-bc79-4dc6-b56d-7a7676a50b39")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D3DCOLORVALUE
-	{
-		/// <summary>Type: <c>float</c></summary>
-		public float r;
-
-		/// <summary>Type: <c>float</c></summary>
-		public float g;
-
-		/// <summary>Type: <c>float</c></summary>
-		public float b;
-
-		/// <summary>Type: <c>float</c></summary>
-		public float a;
 	}
 
 	/// <summary>
