@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>DXGI.dll</SupportedDlls>
+    <SupportedDlls>DWrite.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants) imported from Windows DXGI.dll.</Description>
-    <AssemblyName>Vanara.PInvoke.DXGI</AssemblyName>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows DWrite.dll.</Description>
+    <AssemblyName>Vanara.PInvoke.DWrite</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
-    <PackageTags>pinvoke;vanara;net-extensions;interop;DXGI</PackageTags>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;DWrite</PackageTags>
     <PackageReleaseNotes/>
   </PropertyGroup>
   <ItemGroup>

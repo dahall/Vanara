@@ -1291,7 +1291,7 @@ public static partial class Dwrite
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[]? glyphAdvances,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DWRITE_GLYPH_OFFSET[]? glyphOffsets,
 			uint glyphCount, [MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft,
-			[In] D2d1.ID2D1SimplifiedGeometrySink geometrySink);
+			[In, MarshalAs(UnmanagedType.Interface)] object geometrySink);
 
 		/// <summary>Determines the recommended rendering mode for the font, using the specified size and rendering parameters.</summary>
 		/// <param name="emSize">

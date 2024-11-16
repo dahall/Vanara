@@ -1,4 +1,3 @@
-using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.D3D;
 
 namespace Vanara.PInvoke;
@@ -7,6 +6,7 @@ namespace Vanara.PInvoke;
 public static partial class DStorage
 {
 	private const string Lib_DirectStorage = "dstorage.dll";
+	private const int MAX_PATH = 260;
 
 	static DStorage()
 	{
