@@ -44,6 +44,19 @@ public struct COLORREF : IEquatable<COLORREF>
 		B = b;
 	}
 
+	/// <summary>Initializes a new instance of the <see cref="COLORREF" /> struct.</summary>
+	/// <param name="r">The intensity of the red color.</param>
+	/// <param name="g">The intensity of the green color.</param>
+	/// <param name="b">The intensity of the blue color.</param>
+	/// <param name="a">The transparency.</param>
+	public COLORREF(byte r, byte g, byte b, byte a)
+	{
+		A = a;
+		R = r;
+		G = g;
+		B = b;
+	}
+
 	/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
 	/// <param name="value">The packed DWORD value.</param>
 	public COLORREF(uint value)
