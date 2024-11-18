@@ -1,5 +1,5 @@
-﻿using static Vanara.PInvoke.D3D11;
-using ID3DBlob = Vanara.PInvoke.D3D11.ID3D10Blob;
+﻿global using static Vanara.PInvoke.DXGI;
+global using ID3DBlob = Vanara.PInvoke.DXGI.ID3D10Blob;
 
 namespace Vanara.PInvoke;
 
@@ -1461,7 +1461,7 @@ public static partial class D3DCompiler
 	// [in] ID3D10Effect *pEffect, [in] UINT Flags, [out] ID3DBlob **ppDisassembly );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDisassemble10Effect")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DDisassemble10Effect([In] ID3D10Effect pEffect, uint Flags, out ID3DBlob ppDisassembly);
+	public static extern HRESULT D3DDisassemble10Effect([In, MarshalAs(UnmanagedType.Interface)] object pEffect, uint Flags, out ID3DBlob ppDisassembly);
 
 	/// <summary>Disassembles a specific region of compiled Microsoft High Level Shader Language (HLSL) code.</summary>
 	/// <param name="pSrcData">A pointer to compiled shader data.</param>

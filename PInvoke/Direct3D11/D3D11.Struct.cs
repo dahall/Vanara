@@ -585,6 +585,216 @@ public static partial class D3D11
 		uint FeatureLevels, uint SDKVersion, [In, Optional] DXGI_SWAP_CHAIN_DESC* pSwapChainDesc, [Out, Optional] IntPtr ppSwapChain,
 		[Out, Optional] IntPtr ppDevice, [Out, Optional] D3D_FEATURE_LEVEL* pFeatureLevel, [Out, Optional] IntPtr ppImmediateContext);
 
+	/// <summary>
+	/// Creates a device that uses Direct3D 11 functionality in Direct3D 12, specifying a pre-existing Direct3D 12 device to use for
+	/// Direct3D 11 interop.
+	/// </summary>
+	/// <param name="pDevice">
+	/// <para>Type: <c>IUnknown*</c></para>
+	/// <para>Specifies a pre-existing Direct3D 12 device to use for Direct3D 11 interop. May not be NULL.</para>
+	/// </param>
+	/// <param name="Flags">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>
+	/// One or more bitwise OR'd flags from D3D11_CREATE_DEVICE_FLAG. These are the same flags as those used by
+	/// D3D11CreateDeviceAndSwapChain. Specifies which runtime layers to enable. <c>Flags</c> must be compatible with device flags, and its
+	/// <c>NodeMask</c> must be a subset of the <c>NodeMask</c> provided to the present API.
+	/// </para>
+	/// </param>
+	/// <param name="pFeatureLevels">
+	/// <para>Type: <c>const D3D_FEATURE_LEVEL*</c></para>
+	/// <para>An array of any of the following:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_12_1</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_12_0</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_11_1</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_11_0</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_10_1</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_10_0</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_9_3</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_9_2</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_9_1</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The first feature level that is less than or equal to the Direct3D 12 device's feature level will be used to perform Direct3D 11
+	/// validation. Creation will fail if no acceptable feature levels are provided. Providing NULL will default to the Direct3D 12 device's
+	/// feature level.
+	/// </para>
+	/// </param>
+	/// <param name="FeatureLevels">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The size of (that is, the number of elements in) the pFeatureLevels array.</para>
+	/// </param>
+	/// <param name="ppCommandQueues">
+	/// <para>Type: <c>IUnknown* const *</c></para>
+	/// <para>An array of unique queues for D3D11On12 to use. The queues must be of the 3D command queue type.</para>
+	/// </param>
+	/// <param name="NumQueues">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The size of (that is, the number of elements in) the ppCommandQueues array.</para>
+	/// </param>
+	/// <param name="NodeMask">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>Which node of the Direct3D 12 device to use. Only 1 bit may be set.</para>
+	/// </param>
+	/// <param name="ppDevice">
+	/// <para>Type: <c>ID3D11Device**</c></para>
+	/// <para>Pointer to the returned ID3D11Device. May be NULL.</para>
+	/// </param>
+	/// <param name="ppImmediateContext">
+	/// <para>Type: <c>ID3D11DeviceContext**</c></para>
+	/// <para>A pointer to the returned ID3D11DeviceContext. May be NULL.</para>
+	/// </param>
+	/// <param name="pChosenFeatureLevel">
+	/// <para>Type: <c>D3D_FEATURE_LEVEL*</c></para>
+	/// <para>A pointer to the returned feature level. May be NULL.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>This method returns one of the Direct3D 12 Return Codes that are documented for D3D11CreateDevice.</para>
+	/// <para>
+	/// This method returns DXGI_ERROR_SDK_COMPONENT_MISSING if you specify D3D11_CREATE_DEVICE_DEBUG in <c>Flags</c> and the incorrect
+	/// version of the debug layer is installed on your computer. Install the latest Windows SDK to get the correct version.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// The function signature PFN_D3D11ON12_CREATE_DEVICE is provided as a typedef, so that you can use dynamic linking techniques
+	/// (GetProcAddress) instead of statically linking.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-d3d11on12createdevice HRESULT D3D11On12CreateDevice( [in]
+	// IUnknown *pDevice, UINT Flags, [in, optional] const D3D_FEATURE_LEVEL *pFeatureLevels, UINT FeatureLevels, [in, optional] IUnknown *
+	// const *ppCommandQueues, UINT NumQueues, UINT NodeMask, [out, optional] ID3D11Device **ppDevice, [out, optional] ID3D11DeviceContext
+	// **ppImmediateContext, [out, optional] D3D_FEATURE_LEVEL *pChosenFeatureLevel );
+	[PInvokeData("d3d11on12.h", MSDNShortId = "NF:d3d11on12.D3D11On12CreateDevice")]
+	[DllImport(Lib_D3D11, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT D3D11On12CreateDevice([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, D3D11_CREATE_DEVICE_FLAG Flags,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D_FEATURE_LEVEL[]? pFeatureLevels, uint FeatureLevels,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] object[]? ppCommandQueues,
+		uint NumQueues, uint NodeMask, [Out, Optional] IntPtr ppDevice, [Out, Optional] IntPtr ppImmediateContext, [Out, Optional] IntPtr pChosenFeatureLevel);
+
+	/// <summary>
+	/// Creates a device that uses Direct3D 11 functionality in Direct3D 12, specifying a pre-existing Direct3D 12 device to use for
+	/// Direct3D 11 interop.
+	/// </summary>
+	/// <param name="pDevice">
+	/// <para>Type: <c>IUnknown*</c></para>
+	/// <para>Specifies a pre-existing Direct3D 12 device to use for Direct3D 11 interop. May not be NULL.</para>
+	/// </param>
+	/// <param name="Flags">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>
+	/// One or more bitwise OR'd flags from D3D11_CREATE_DEVICE_FLAG. These are the same flags as those used by
+	/// D3D11CreateDeviceAndSwapChain. Specifies which runtime layers to enable. <c>Flags</c> must be compatible with device flags, and its
+	/// <c>NodeMask</c> must be a subset of the <c>NodeMask</c> provided to the present API.
+	/// </para>
+	/// </param>
+	/// <param name="pFeatureLevels">
+	/// <para>Type: <c>const D3D_FEATURE_LEVEL*</c></para>
+	/// <para>An array of any of the following:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_12_1</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_12_0</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_11_1</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_11_0</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_10_1</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_10_0</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_9_3</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_9_2</description>
+	/// </item>
+	/// <item>
+	/// <description>D3D_FEATURE_LEVEL_9_1</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The first feature level that is less than or equal to the Direct3D 12 device's feature level will be used to perform Direct3D 11
+	/// validation. Creation will fail if no acceptable feature levels are provided. Providing NULL will default to the Direct3D 12 device's
+	/// feature level.
+	/// </para>
+	/// </param>
+	/// <param name="FeatureLevels">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The size of (that is, the number of elements in) the pFeatureLevels array.</para>
+	/// </param>
+	/// <param name="ppCommandQueues">
+	/// <para>Type: <c>IUnknown* const *</c></para>
+	/// <para>An array of unique queues for D3D11On12 to use. The queues must be of the 3D command queue type.</para>
+	/// </param>
+	/// <param name="NumQueues">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The size of (that is, the number of elements in) the ppCommandQueues array.</para>
+	/// </param>
+	/// <param name="NodeMask">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>Which node of the Direct3D 12 device to use. Only 1 bit may be set.</para>
+	/// </param>
+	/// <param name="ppDevice">
+	/// <para>Type: <c>ID3D11Device**</c></para>
+	/// <para>Pointer to the returned ID3D11Device. May be NULL.</para>
+	/// </param>
+	/// <param name="ppImmediateContext">
+	/// <para>Type: <c>ID3D11DeviceContext**</c></para>
+	/// <para>A pointer to the returned ID3D11DeviceContext. May be NULL.</para>
+	/// </param>
+	/// <param name="pChosenFeatureLevel">
+	/// <para>Type: <c>D3D_FEATURE_LEVEL*</c></para>
+	/// <para>A pointer to the returned feature level. May be NULL.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>This method returns one of the Direct3D 12 Return Codes that are documented for D3D11CreateDevice.</para>
+	/// <para>
+	/// This method returns DXGI_ERROR_SDK_COMPONENT_MISSING if you specify D3D11_CREATE_DEVICE_DEBUG in <c>Flags</c> and the incorrect
+	/// version of the debug layer is installed on your computer. Install the latest Windows SDK to get the correct version.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// The function signature PFN_D3D11ON12_CREATE_DEVICE is provided as a typedef, so that you can use dynamic linking techniques
+	/// (GetProcAddress) instead of statically linking.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-d3d11on12createdevice HRESULT D3D11On12CreateDevice( [in]
+	// IUnknown *pDevice, UINT Flags, [in, optional] const D3D_FEATURE_LEVEL *pFeatureLevels, UINT FeatureLevels, [in, optional] IUnknown *
+	// const *ppCommandQueues, UINT NumQueues, UINT NodeMask, [out, optional] ID3D11Device **ppDevice, [out, optional] ID3D11DeviceContext
+	// **ppImmediateContext, [out, optional] D3D_FEATURE_LEVEL *pChosenFeatureLevel );
+	[PInvokeData("d3d11on12.h", MSDNShortId = "NF:d3d11on12.D3D11On12CreateDevice")]
+	[DllImport(Lib_D3D11, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT D3D11On12CreateDevice([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, D3D11_CREATE_DEVICE_FLAG Flags,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D_FEATURE_LEVEL[]? pFeatureLevels, uint FeatureLevels,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] object[]? ppCommandQueues,
+		uint NumQueues, uint NodeMask, out ID3D11Device ppDevice, out ID3D11DeviceContext ppImmediateContext, out D3D_FEATURE_LEVEL pChosenFeatureLevel);
+
 	/// <summary>Contains the response from the ID3D11VideoContext::ConfigureAuthenticatedChannel method.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_authenticated_configure_output typedef struct
 	// D3D11_AUTHENTICATED_CONFIGURE_OUTPUT { D3D11_OMAC omac; GUID ConfigureType; HANDLE hChannel; UINT SequenceNumber; HRESULT ReturnCode;

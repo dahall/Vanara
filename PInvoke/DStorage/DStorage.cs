@@ -1,4 +1,6 @@
-using static Vanara.PInvoke.D3D;
+using static Vanara.PInvoke.D3D12;
+using static Vanara.PInvoke.Kernel32;
+using D3D12_BOX = Vanara.PInvoke.DXGI.D3D10_BOX;
 
 namespace Vanara.PInvoke;
 

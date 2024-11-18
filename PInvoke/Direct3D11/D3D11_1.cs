@@ -11695,6 +11695,8 @@ public static partial class D3D11
 		/// <summary>The size of the DRM command data.</summary>
 		public uint HWProtectionDataSize;
 
+		private unsafe fixed byte _pbInput[4];
+
 		/// <summary>
 		/// <para>
 		/// If <c>PrivateDataSize</c> is greater than 0, pbInput[0] – <c>pbInput</c>[ <c>PrivateDataSize</c> - 1] is reserved for IHV use.
@@ -11704,8 +11706,11 @@ public static partial class D3D11
 		/// input data for the DRM command. The format and size of the DRM command is defined by the DRM specification.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		public byte[] pbInput;
+		public byte[] pbInput
+		{
+			get { unsafe { fixed (byte* p = _pbInput) return ((IntPtr)p).ToByteArray(4)!; } }
+			set { unsafe { fixed (byte* p = _pbInput) Marshal.Copy(value, 0, (IntPtr)p, 4); } }
+		}
 	}
 
 	/// <summary>Represents key exchange output data for hardware content protection.</summary>
@@ -11737,6 +11742,8 @@ public static partial class D3D11
 		/// <summary>The number of 100 nanosecond units spent executing the content protection command.</summary>
 		public ulong ExecutionTime;
 
+		private unsafe fixed byte _pbOutput[4];
+
 		/// <summary>
 		/// <para>
 		/// If <c>PrivateDataSize</c> is greater than 0, pbInput[0] – <c>pbOutput</c>[ <c>PrivateDataSize</c> - 1] is reserved for IHV use.
@@ -11746,8 +11753,11 @@ public static partial class D3D11
 		/// the input data for the DRM command. The format and size of the DRM command is defined by the DRM specification.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		public byte[] pbOutput;
+		public byte[] pbOutput
+		{
+			get { unsafe { fixed (byte* p = _pbOutput) return ((IntPtr)p).ToByteArray(4)!; } }
+			set { unsafe { fixed (byte* p = _pbOutput) Marshal.Copy(value, 0, (IntPtr)p, 4); } }
+		}
 	}
 
 	/// <summary>Describes the rasterizer state.</summary>
