@@ -69,9 +69,7 @@ public static partial class D3D12
 		/// should then be expected to be in the "in" state. If no resource list is provided, all wrapped resources are transitioned. These
 		/// resources will be marked as “not acquired” in hazard tracking until ID3D11On12Device::AcquireWrappedResources is called.
 		/// </para>
-		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::ReleaseSync instead.</para>
-		/// <para>Examples</para>
-		/// <para>Render text over D3D12 using D2D via the 11On12 device.</para>
+		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::ReleaseSync instead. Examples Render text over D3D12 using D2D via the 11On12 device.</para>
 		/// <para>Refer to the Example Code in the D3D12 Reference.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device-releasewrappedresources void
@@ -91,9 +89,7 @@ public static partial class D3D12
 		/// <returns>None</returns>
 		/// <remarks>
 		/// <para>This method marks the resources as "acquired" in hazard tracking.</para>
-		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::AcquireSync instead.</para>
-		/// <para>Examples</para>
-		/// <para>Render text over D3D12 using D2D via the 11On12 device.</para>
+		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::AcquireSync instead. Examples Render text over D3D12 using D2D via the 11On12 device.</para>
 		/// <para>Refer to the Example Code in the D3D12 Reference.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device-acquirewrappedresources void
@@ -170,9 +166,7 @@ public static partial class D3D12
 		/// should then be expected to be in the "in" state. If no resource list is provided, all wrapped resources are transitioned. These
 		/// resources will be marked as “not acquired” in hazard tracking until ID3D11On12Device::AcquireWrappedResources is called.
 		/// </para>
-		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::ReleaseSync instead.</para>
-		/// <para>Examples</para>
-		/// <para>Render text over D3D12 using D2D via the 11On12 device.</para>
+		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::ReleaseSync instead. Examples Render text over D3D12 using D2D via the 11On12 device.</para>
 		/// <para>Refer to the Example Code in the D3D12 Reference.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device-releasewrappedresources void
@@ -192,9 +186,7 @@ public static partial class D3D12
 		/// <returns>None</returns>
 		/// <remarks>
 		/// <para>This method marks the resources as "acquired" in hazard tracking.</para>
-		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::AcquireSync instead.</para>
-		/// <para>Examples</para>
-		/// <para>Render text over D3D12 using D2D via the 11On12 device.</para>
+		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::AcquireSync instead. Examples Render text over D3D12 using D2D via the 11On12 device.</para>
 		/// <para>Refer to the Example Code in the D3D12 Reference.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device-acquirewrappedresources void
@@ -297,9 +289,7 @@ public static partial class D3D12
 		/// should then be expected to be in the "in" state. If no resource list is provided, all wrapped resources are transitioned. These
 		/// resources will be marked as “not acquired” in hazard tracking until ID3D11On12Device::AcquireWrappedResources is called.
 		/// </para>
-		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::ReleaseSync instead.</para>
-		/// <para>Examples</para>
-		/// <para>Render text over D3D12 using D2D via the 11On12 device.</para>
+		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::ReleaseSync instead. Examples Render text over D3D12 using D2D via the 11On12 device.</para>
 		/// <para>Refer to the Example Code in the D3D12 Reference.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device-releasewrappedresources void
@@ -319,9 +309,7 @@ public static partial class D3D12
 		/// <returns>None</returns>
 		/// <remarks>
 		/// <para>This method marks the resources as "acquired" in hazard tracking.</para>
-		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::AcquireSync instead.</para>
-		/// <para>Examples</para>
-		/// <para>Render text over D3D12 using D2D via the 11On12 device.</para>
+		/// <para>Keyed mutex resources cannot be provided to this method; use IDXGIKeyedMutex::AcquireSync instead. Examples Render text over D3D12 using D2D via the 11On12 device.</para>
 		/// <para>Refer to the Example Code in the D3D12 Reference.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device-acquirewrappedresources void
