@@ -472,17 +472,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DXCore", "PI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DXGI", "PInvoke\DXGI\Vanara.PInvoke.DXGI.csproj", "{77F2176F-E854-449D-B148-641E90E69608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.DWrite", "PInvoke\DWrite\Vanara.PInvoke.DWrite.csproj", "{C77DF16E-F4F2-4DB4-83AB-7F85AE86FBCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DWrite", "PInvoke\DWrite\Vanara.PInvoke.DWrite.csproj", "{C77DF16E-F4F2-4DB4-83AB-7F85AE86FBCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.DStorage", "PInvoke\DStorage\Vanara.PInvoke.DStorage.csproj", "{C7D89EB8-5328-41FB-9DE0-751FA65CD65D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DStorage", "PInvoke\DStorage\Vanara.PInvoke.DStorage.csproj", "{C7D89EB8-5328-41FB-9DE0-751FA65CD65D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Direct2D", "PInvoke\Direct2D\Vanara.PInvoke.Direct2D.csproj", "{D4351141-25F8-4072-8159-044A814BAFD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Direct2D", "PInvoke\Direct2D\Vanara.PInvoke.Direct2D.csproj", "{D4351141-25F8-4072-8159-044A814BAFD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Direct3D11", "PInvoke\Direct3D11\Vanara.PInvoke.Direct3D11.csproj", "{8BABAD3E-2390-4680-9953-D0B47E2B532F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Direct3D11", "PInvoke\Direct3D11\Vanara.PInvoke.Direct3D11.csproj", "{8BABAD3E-2390-4680-9953-D0B47E2B532F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.D3DCompiler", "PInvoke\D3DCompiler\Vanara.PInvoke.D3DCompiler.csproj", "{1B235513-21B2-4D36-BDEA-B9A205AAE4E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.D3DCompiler", "PInvoke\D3DCompiler\Vanara.PInvoke.D3DCompiler.csproj", "{1B235513-21B2-4D36-BDEA-B9A205AAE4E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Direct3D12", "PInvoke\Direct3D12\Vanara.PInvoke.Direct3D12.csproj", "{1A1C50D3-7BD1-4F77-A3DD-674A1F531F3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Direct3D12", "PInvoke\Direct3D12\Vanara.PInvoke.Direct3D12.csproj", "{1A1C50D3-7BD1-4F77-A3DD-674A1F531F3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
