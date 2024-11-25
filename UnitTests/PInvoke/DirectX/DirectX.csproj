@@ -4,7 +4,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PInvoke\Graphics\Vanara.PInvoke.Graphics.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\DirectX\Vanara.PInvoke.DirectX.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -97,7 +97,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.FwpUClnt", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Gdi32", "PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj", "{E186AFF0-BC70-4776-8BEE-9FDAE108F4EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Graphics", "PInvoke\Graphics\Vanara.PInvoke.Graphics.csproj", "{FAF09C42-66CA-4765-910A-2A9A2EF399D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DirectX", "PInvoke\DirectX\Vanara.PInvoke.DirectX.csproj", "{FAF09C42-66CA-4765-910A-2A9A2EF399D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.HttpApi", "PInvoke\HttpApi\Vanara.PInvoke.HttpApi.csproj", "{69A67DD1-E9B7-4BF1-A63F-A58639C86161}"
 EndProject
@@ -310,7 +310,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FwpUClnt", "UnitTests\PInvo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gdi32", "UnitTests\PInvoke\Gdi32\Gdi32.csproj", "{A1A941E2-CF51-4582-B8B3-5CBC8905CA8D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphics", "UnitTests\PInvoke\Graphics\Graphics.csproj", "{AD003766-998F-4969-8632-A9CD0E3A21F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirectX", "UnitTests\PInvoke\DirectX\DirectX.csproj", "{AD003766-998F-4969-8632-A9CD0E3A21F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpApi", "UnitTests\PInvoke\HttpApi\HttpApi.csproj", "{EDEC2A6D-2CCD-4370-A84B-D64DB546BC79}"
 EndProject
