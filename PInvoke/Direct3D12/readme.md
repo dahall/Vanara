@@ -3,27 +3,17 @@ PInvoke API (methods, structures and constants) imported from Windows Direct3D 1
 
 - Includes methods from d3d12.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Direct3D12?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Direct3D12?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Direct3D12)  
-### Methods - 44% API coverage (8 of 18 functions)  
+### Methods - 100% API coverage (8 of 8 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[D3D12CoreCreateLayeredDevice](https://www.google.com/search?num=5&q=D3D12CoreCreateLayeredDevice+site%3Alearn.microsoft.com) |  |   
-[D3D12CoreGetLayeredDeviceSize](https://www.google.com/search?num=5&q=D3D12CoreGetLayeredDeviceSize+site%3Alearn.microsoft.com) |  |   
-[D3D12CoreRegisterLayers](https://www.google.com/search?num=5&q=D3D12CoreRegisterLayers+site%3Alearn.microsoft.com) |  |   
 [D3D12CreateDevice](https://www.google.com/search?num=5&q=D3D12CreateDevice+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12CreateDevice](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12CreateDevice)  
 [D3D12CreateRootSignatureDeserializer](https://www.google.com/search?num=5&q=D3D12CreateRootSignatureDeserializer+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12CreateRootSignatureDeserializer](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12CreateRootSignatureDeserializer)  
 [D3D12CreateVersionedRootSignatureDeserializer](https://www.google.com/search?num=5&q=D3D12CreateVersionedRootSignatureDeserializer+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12CreateVersionedRootSignatureDeserializer](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12CreateVersionedRootSignatureDeserializer)  
-[D3D12DeviceRemovedExtendedData](https://www.google.com/search?num=5&q=D3D12DeviceRemovedExtendedData+site%3Alearn.microsoft.com) |  |   
 [D3D12EnableExperimentalFeatures](https://www.google.com/search?num=5&q=D3D12EnableExperimentalFeatures+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12EnableExperimentalFeatures](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12EnableExperimentalFeatures)  
 [D3D12GetDebugInterface](https://www.google.com/search?num=5&q=D3D12GetDebugInterface+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12GetDebugInterface](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12GetDebugInterface)  
 [D3D12GetInterface](https://www.google.com/search?num=5&q=D3D12GetInterface+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12GetInterface](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12GetInterface)  
-[D3D12PIXEventsReplaceBlock](https://www.google.com/search?num=5&q=D3D12PIXEventsReplaceBlock+site%3Alearn.microsoft.com) |  |   
-[D3D12PIXGetThreadInfo](https://www.google.com/search?num=5&q=D3D12PIXGetThreadInfo+site%3Alearn.microsoft.com) |  |   
-[D3D12PIXNotifyWakeFromFenceSignal](https://www.google.com/search?num=5&q=D3D12PIXNotifyWakeFromFenceSignal+site%3Alearn.microsoft.com) |  |   
-[D3D12PIXReportCounter](https://www.google.com/search?num=5&q=D3D12PIXReportCounter+site%3Alearn.microsoft.com) |  |   
 [D3D12SerializeRootSignature](https://www.google.com/search?num=5&q=D3D12SerializeRootSignature+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12SerializeRootSignature](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12SerializeRootSignature)  
 [D3D12SerializeVersionedRootSignature](https://www.google.com/search?num=5&q=D3D12SerializeVersionedRootSignature+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12SerializeVersionedRootSignature](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12SerializeVersionedRootSignature)  
-[GetBehaviorValue](https://www.google.com/search?num=5&q=GetBehaviorValue+site%3Alearn.microsoft.com) |  |   
-[SetAppCompatStringPointer](https://www.google.com/search?num=5&q=SetAppCompatStringPointer+site%3Alearn.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

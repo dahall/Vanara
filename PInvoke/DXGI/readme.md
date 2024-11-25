@@ -3,30 +3,15 @@ PInvoke API (methods, structures and constants) imported from Windows DXGI.dll.
 
 - Includes methods from dxgi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DXGI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DXGI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DXGI)  
-### Methods - 28% API coverage (6 of 21 functions)  
+### Methods - 100% API coverage (6 of 6 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[ApplyCompatResolutionQuirking](https://www.google.com/search?num=5&q=ApplyCompatResolutionQuirking+site%3Alearn.microsoft.com) |  |   
-[CompatString](https://www.google.com/search?num=5&q=CompatString+site%3Alearn.microsoft.com) |  |   
-[CompatValue](https://www.google.com/search?num=5&q=CompatValue+site%3Alearn.microsoft.com) |  |   
 [CreateDXGIFactory](https://www.google.com/search?num=5&q=CreateDXGIFactory+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.CreateDXGIFactory](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDXGIFactory)  
 [CreateDXGIFactory1](https://www.google.com/search?num=5&q=CreateDXGIFactory1+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.CreateDXGIFactory1](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDXGIFactory1)  
 [CreateDXGIFactory2](https://www.google.com/search?num=5&q=CreateDXGIFactory2+site%3Alearn.microsoft.com) | dxgi1_3.h | [Vanara.PInvoke.DXGI.CreateDXGIFactory2](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDXGIFactory2)  
-[DXGID3D10CreateDevice](https://www.google.com/search?num=5&q=DXGID3D10CreateDevice+site%3Alearn.microsoft.com) |  |   
-[DXGID3D10CreateLayeredDevice](https://www.google.com/search?num=5&q=DXGID3D10CreateLayeredDevice+site%3Alearn.microsoft.com) |  |   
-[DXGID3D10GetLayeredDeviceSize](https://www.google.com/search?num=5&q=DXGID3D10GetLayeredDeviceSize+site%3Alearn.microsoft.com) |  |   
-[DXGID3D10RegisterLayers](https://www.google.com/search?num=5&q=DXGID3D10RegisterLayers+site%3Alearn.microsoft.com) |  |   
 [DXGIDeclareAdapterRemovalSupport](https://www.google.com/search?num=5&q=DXGIDeclareAdapterRemovalSupport+site%3Alearn.microsoft.com) | dxgi1_6.h | [Vanara.PInvoke.DXGI.DXGIDeclareAdapterRemovalSupport](https://github.com/dahall/Vanara/search?l=C%23&q=DXGIDeclareAdapterRemovalSupport)  
-[DXGIDisableVBlankVirtualization](https://www.google.com/search?num=5&q=DXGIDisableVBlankVirtualization+site%3Alearn.microsoft.com) |  |   
-[DXGIDumpJournal](https://www.google.com/search?num=5&q=DXGIDumpJournal+site%3Alearn.microsoft.com) |  |   
 [DXGIGetDebugInterface](https://www.google.com/search?num=5&q=DXGIGetDebugInterface+site%3Alearn.microsoft.com) | dxgidebug.h | [Vanara.PInvoke.DXGI.DXGIGetDebugInterface](https://github.com/dahall/Vanara/search?l=C%23&q=DXGIGetDebugInterface)  
 [DXGIGetDebugInterface1](https://www.google.com/search?num=5&q=DXGIGetDebugInterface1+site%3Alearn.microsoft.com) | dxgi1_3.h | [Vanara.PInvoke.DXGI.DXGIGetDebugInterface1](https://github.com/dahall/Vanara/search?l=C%23&q=DXGIGetDebugInterface1)  
-[DXGIReportAdapterConfiguration](https://www.google.com/search?num=5&q=DXGIReportAdapterConfiguration+site%3Alearn.microsoft.com) |  |   
-[PIXBeginCapture](https://www.google.com/search?num=5&q=PIXBeginCapture+site%3Alearn.microsoft.com) |  |   
-[PIXEndCapture](https://www.google.com/search?num=5&q=PIXEndCapture+site%3Alearn.microsoft.com) |  |   
-[PIXGetCaptureState](https://www.google.com/search?num=5&q=PIXGetCaptureState+site%3Alearn.microsoft.com) |  |   
-[SetAppCompatStringPointer](https://www.google.com/search?num=5&q=SetAppCompatStringPointer+site%3Alearn.microsoft.com) |  |   
-[UpdateHMDEmulationStatus](https://www.google.com/search?num=5&q=UpdateHMDEmulationStatus+site%3Alearn.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

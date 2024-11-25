@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll
 
 - Includes methods from gdi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Gdi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Gdi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)  
-### Methods - 99% API coverage (306 of 307 functions)  
+### Methods - 100% API coverage (306 of 306 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -63,7 +63,6 @@ Native Method | Header | Managed Method
 [CreateRoundRectRgn](https://www.google.com/search?num=5&q=CreateRoundRectRgn+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRoundRectRgn](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRoundRectRgn)  
 [CreateScalableFontResource](https://www.google.com/search?num=5&q=CreateScalableFontResourceA+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateScalableFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateScalableFontResource)  
 [CreateSolidBrush](https://www.google.com/search?num=5&q=CreateSolidBrush+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateSolidBrush](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSolidBrush)  
-[D3DKMTIsFeatureEnabled](https://www.google.com/search?num=5&q=D3DKMTIsFeatureEnabled+site%3Alearn.microsoft.com) |  |   
 [DeleteColorSpace](https://www.google.com/search?num=5&q=DeleteColorSpace+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteColorSpace](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteColorSpace)  
 [DeleteDC](https://www.google.com/search?num=5&q=DeleteDC+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.DeleteDC](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteDC)  
 [DeleteEnhMetaFile](https://www.google.com/search?num=5&q=DeleteEnhMetaFile+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteEnhMetaFile)  
