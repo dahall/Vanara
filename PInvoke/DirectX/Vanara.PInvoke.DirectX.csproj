@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>PInvoke API (methods, interfaces, structures and constants) imported from DirectX.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.DirectX</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;directx</PackageTags>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <PackageReleaseNotes>Currently implements:
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\D3DCompiler\Vanara.PInvoke.D3DCompiler.csproj" />
+    <ProjectReference Include="..\Direct2D\Vanara.PInvoke.Direct2D.csproj" />
+    <ProjectReference Include="..\Direct3D11\Vanara.PInvoke.Direct3D11.csproj" />
+    <ProjectReference Include="..\Direct3D12\Vanara.PInvoke.Direct3D12.csproj" />
+    <ProjectReference Include="..\DXCore\Vanara.PInvoke.DXCore.csproj" />
+    <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
+    <ProjectReference Include="..\DStorage\Vanara.PInvoke.DStorage.csproj" />
+    <ProjectReference Include="..\DWrite\Vanara.PInvoke.DWrite.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

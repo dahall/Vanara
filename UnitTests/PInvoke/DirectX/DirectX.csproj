@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.DirectX</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\DirectX\Vanara.PInvoke.DirectX.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+</Project>

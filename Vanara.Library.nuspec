@@ -38,13 +38,22 @@
       <dependency id="Vanara.PInvoke.CoreAudio" version="4.0.5" />
       <dependency id="Vanara.PInvoke.CredUI" version="4.0.5" />
       <dependency id="Vanara.PInvoke.Cryptography" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.D3DCompiler" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DavClnt" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DbgHelp" version="4.0.5" />
       <dependency id="Vanara.PInvoke.Dhcp" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.Direct2D" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.Direct3D11" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.Direct3D12" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.DirectX" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DnsApi" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DOSvc" version="4.0.5" />
       <dependency id="Vanara.PInvoke.Drt" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.DStorage" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DwmApi" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.DWrite" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.DXCore" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.DXGI" version="4.0.5" />
       <dependency id="Vanara.PInvoke.ElsCore" version="4.0.5" />
       <dependency id="Vanara.PInvoke.EnhancedStorage" version="4.0.5" />
       <dependency id="Vanara.PInvoke.FhSvcCtl" version="4.0.5" />
@@ -52,7 +61,6 @@
       <dependency id="Vanara.PInvoke.FunDisc" version="4.0.5" />
       <dependency id="Vanara.PInvoke.FwpUClnt" version="4.0.5" />
       <dependency id="Vanara.PInvoke.Gdi32" version="4.0.5" />
-      <dependency id="Vanara.PInvoke.Graphics" version="4.0.5" />
       <dependency id="Vanara.PInvoke.HttpApi" version="4.0.5" />
       <dependency id="Vanara.PInvoke.IMAPI" version="4.0.5" />
       <dependency id="Vanara.PInvoke.Imm32" version="4.0.5" />

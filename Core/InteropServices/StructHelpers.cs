@@ -79,56 +79,22 @@ public struct ArrayPointer<T> where T : unmanaged
 	}
 }
 
-/// <summary>A pointer to a structure.</summary>
-/// <typeparam name="T">The structure type.</typeparam>
-[StructLayout(LayoutKind.Sequential)]
-public struct StructPointer<T> where T : unmanaged
+/// <summary>This structure is used to hold a reference to an IUnknown interface pointer.</summary>
+/// <typeparam name="T">The type of the interface.</typeparam>
+public struct IUnknownPointer<T> where T : class
 {
 	private IntPtr ptr;
 
-	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
-	/// <returns>A referenced structure.</returns>
-	public ref T AsRef() { if (ptr != IntPtr.Zero) return ref ptr.AsRef<T>(); throw new InvalidCastException("Cannot get reference to null pointer."); }
-
-	/// <summary>Converts this pointer to a copied structure. If pointer has no value, <c>null</c> is returned.</summary>
-	/// <returns>The converted structure or <c>null</c>.</returns>
-	public T? Value => ptr.ToNullableStructure<T>();
-
-	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StructPointer{T}"/>.</summary>
-	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
+	/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="IUnknownPointer{T}"/>.</summary>
+	/// <param name="p">The IUnknown interface.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator StructPointer<T>(IntPtr p) => new() { ptr = p };
+	public static implicit operator IUnknownPointer<T>(T? p) => new() { ptr = p == null ? IntPtr.Zero : Marshal.GetIUnknownForObject(p) };
 
-	/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="StructPointer{T}"/>.</summary>
-	/// <param name="p">The <see cref="SafeAllocatedMemoryHandle"/> to assign to this pointer.</param>
+	/// <summary>Performs an implicit conversion from <see cref="IUnknownPointer{T}"/> to <typeparamref name="T"/>.</summary>
+	/// <param name="p">The <see cref="IUnknownPointer{T}"/> value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator StructPointer<T>(SafeAllocatedMemoryHandle p) => new() { ptr = p };
-
-	/// <summary>Performs an implicit conversion from <see cref="StructPointer{T}"/> to <typeparamref name="T"/>*.</summary>
-	/// <param name="ap">The <see cref="StructPointer{T}"/> instance.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static unsafe implicit operator T*(StructPointer<T> ap) => (T*)ap.ptr;
-
-	/// <summary>Performs an implicit conversion from <typeparamref name="T"/>* to <see cref="StructPointer{T}"/>.</summary>
-	/// <param name="ap">The <typeparamref name="T"/>*.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static unsafe implicit operator StructPointer<T>(T* ap) => new() { ptr = (IntPtr)ap };
-
-	/// <summary>
-	/// <para>Destructively assigns a created pointer to allocated memory containing <paramref name="item"/>.</para>
-	/// <note type="warning">This function will overwrite the value of the underlying pointer without releasing any allocated memory already
-	/// assigned to it.</note>
-	/// </summary>
-	/// <param name="item">The item to allocate to memory and assign to this pointer.</param>
-	/// <returns>A reference to the allocated memory behind <paramref name="item"/>.</returns>
-	public SafeAllocatedMemoryHandle DestructiveAssign(T? item)
-	{
-		var h = SafeCoTaskMemHandle.CreateFromStructure(item);
-		ptr = h;
-		return h;
-	}
+	public static implicit operator T?(IUnknownPointer<T> p) => p.ptr == IntPtr.Zero ? null : (T)Marshal.GetObjectForIUnknown(p.ptr);
 }
-
 /// <summary>A pointer to an array of ANSI string pointers as a field in a structure.</summary>
 [StructLayout(LayoutKind.Sequential)]
 public struct LPCSTRArrayPointer
@@ -225,6 +191,95 @@ public struct LPCWSTRArrayPointer
 	public static implicit operator LPCWSTRArrayPointer(SafeAllocatedMemoryHandle p) => new() { ptr = p };
 }
 
+/// <summary>A pointer to a managed structure.</summary>
+/// <typeparam name="T">The structure type.</typeparam>
+[StructLayout(LayoutKind.Sequential)]
+public struct ManagedStructPointer<T> where T : struct
+{
+	private IntPtr ptr;
+
+	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
+	/// <returns>A referenced structure.</returns>
+	public ref T AsRef() { if (ptr != IntPtr.Zero) return ref ptr.AsRef<T>(); throw new InvalidCastException("Cannot get reference to null pointer."); }
+
+	/// <summary>Converts this pointer to a copied structure. If pointer has no value, <c>null</c> is returned.</summary>
+	/// <returns>The converted structure or <c>null</c>.</returns>
+	public T? Value => ptr.ToNullableStructure<T>();
+
+	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StructPointer{T}"/>.</summary>
+	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator ManagedStructPointer<T>(IntPtr p) => new() { ptr = p };
+
+	/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="StructPointer{T}"/>.</summary>
+	/// <param name="p">The <see cref="SafeAllocatedMemoryHandle"/> to assign to this pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator ManagedStructPointer<T>(SafeAllocatedMemoryHandle p) => new() { ptr = p };
+
+	/// <summary>
+	/// <para>Destructively assigns a created pointer to allocated memory containing <paramref name="item"/>.</para>
+	/// <note type="warning">This function will overwrite the value of the underlying pointer without releasing any allocated memory already
+	/// assigned to it.</note>
+	/// </summary>
+	/// <param name="item">The item to allocate to memory and assign to this pointer.</param>
+	/// <returns>A reference to the allocated memory behind <paramref name="item"/>.</returns>
+	public SafeAllocatedMemoryHandle DestructiveAssign(T? item)
+	{
+		var h = SafeCoTaskMemHandle.CreateFromStructure(item);
+		ptr = h;
+		return h;
+	}
+}
+
+/// <summary>A pointer to a structure.</summary>
+/// <typeparam name="T">The structure type.</typeparam>
+[StructLayout(LayoutKind.Sequential)]
+public struct StructPointer<T> where T : unmanaged
+{
+	private IntPtr ptr;
+
+	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
+	/// <returns>A referenced structure.</returns>
+	public ref T AsRef() { if (ptr != IntPtr.Zero) return ref ptr.AsRef<T>(); throw new InvalidCastException("Cannot get reference to null pointer."); }
+
+	/// <summary>Converts this pointer to a copied structure. If pointer has no value, <c>null</c> is returned.</summary>
+	/// <returns>The converted structure or <c>null</c>.</returns>
+	public T? Value => ptr.ToNullableStructure<T>();
+
+	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StructPointer{T}"/>.</summary>
+	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator StructPointer<T>(IntPtr p) => new() { ptr = p };
+
+	/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="StructPointer{T}"/>.</summary>
+	/// <param name="p">The <see cref="SafeAllocatedMemoryHandle"/> to assign to this pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator StructPointer<T>(SafeAllocatedMemoryHandle p) => new() { ptr = p };
+
+	/// <summary>Performs an implicit conversion from <see cref="StructPointer{T}"/> to <typeparamref name="T"/>*.</summary>
+	/// <param name="ap">The <see cref="StructPointer{T}"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static unsafe implicit operator T*(StructPointer<T> ap) => (T*)ap.ptr;
+
+	/// <summary>Performs an implicit conversion from <typeparamref name="T"/>* to <see cref="StructPointer{T}"/>.</summary>
+	/// <param name="ap">The <typeparamref name="T"/>*.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static unsafe implicit operator StructPointer<T>(T* ap) => new() { ptr = (IntPtr)ap };
+
+	/// <summary>
+	/// <para>Destructively assigns a created pointer to allocated memory containing <paramref name="item"/>.</para>
+	/// <note type="warning">This function will overwrite the value of the underlying pointer without releasing any allocated memory already
+	/// assigned to it.</note>
+	/// </summary>
+	/// <param name="item">The item to allocate to memory and assign to this pointer.</param>
+	/// <returns>A reference to the allocated memory behind <paramref name="item"/>.</returns>
+	public SafeAllocatedMemoryHandle DestructiveAssign(T? item)
+	{
+		var h = SafeCoTaskMemHandle.CreateFromStructure(item);
+		ptr = h;
+		return h;
+	}
+}
 /// <summary>A pointer to an array of entries in a structure.</summary>
 /// <typeparam name="T">The managed structure that is the element of the array.</typeparam>
 [StructLayout(LayoutKind.Sequential)]

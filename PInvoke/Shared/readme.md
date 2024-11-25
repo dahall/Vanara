@@ -140,6 +140,7 @@ Struct | Description
 [Vanara.PInvoke.LCID](https://github.com/dahall/Vanara/search?l=C%23&q=LCID) | An LCID is a 4-byte value. The value supplied in an LCID is a standard numeric substitution for the international [RFC5646] string.
 [Vanara.PInvoke.LOGFONT](https://github.com/dahall/Vanara/search?l=C%23&q=LOGFONT) | The LOGFONT structure defines the attributes of a font.
 [Vanara.PInvoke.LOGPALETTE](https://github.com/dahall/Vanara/search?l=C%23&q=LOGPALETTE) | The <c>LOGPALETTE</c> structure defines a logical palette.
+[Vanara.PInvoke.LUID](https://github.com/dahall/Vanara/search?l=C%23&q=LUID) | An LUID is a 64-bit value guaranteed to be unique only on the system on which it was generated. The uniqueness of a locally unique identifier (LUID) is guaranteed only until the system is restarted. <p>Applications must use functions and structures to manipulate LUID values.</p>
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory40](https://github.com/dahall/Vanara/search?l=C%23&q=Memory40) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory48](https://github.com/dahall/Vanara/search?l=C%23&q=Memory48) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory64](https://github.com/dahall/Vanara/search?l=C%23&q=Memory64) | 
