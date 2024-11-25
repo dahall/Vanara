@@ -381,7 +381,10 @@ public static partial class D3D12
 		void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 	}
 
-	/// <summary>Encapsulates a list of graphics commands for video decoding. This interface inherits from <c>ID3D12VideoDecodeCommandList</c> and adds support for video decode histograms.</summary>
+	/// <summary>
+	/// Encapsulates a list of graphics commands for video decoding. This interface inherits from <c>ID3D12VideoDecodeCommandList</c> and
+	/// adds support for video decode histograms.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecodecommandlist1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecodeCommandList1")]
 	[ComImport, Guid("d52f011b-b56e-453c-a05a-a7f311c8f472"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -778,7 +781,10 @@ public static partial class D3D12
 		void DecodeFrame1([In] ID3D12VideoDecoder pDecoder, in D3D12_VIDEO_DECODE_OUTPUT_STREAM_ARGUMENTS1 pOutputArguments, in D3D12_VIDEO_DECODE_INPUT_STREAM_ARGUMENTS pInputArguments);
 	}
 
-	/// <summary>Encapsulates a list of graphics commands for video decoding. This interface inherits from <c>ID3D12VideoDecodeCommandList1</c> and adds support for video extension commands.</summary>
+	/// <summary>
+	/// Encapsulates a list of graphics commands for video decoding. This interface inherits from <c>ID3D12VideoDecodeCommandList1</c> and
+	/// adds support for video extension commands.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecodecommandlist2
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecodeCommandList2")]
 	[ComImport, Guid("6e120880-c114-4153-8036-d247051e1729"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1174,8 +1180,16 @@ public static partial class D3D12
 		[PreserveSig]
 		new void DecodeFrame1([In] ID3D12VideoDecoder pDecoder, in D3D12_VIDEO_DECODE_OUTPUT_STREAM_ARGUMENTS1 pOutputArguments, in D3D12_VIDEO_DECODE_INPUT_STREAM_ARGUMENTS pInputArguments);
 
-		/// <summary>Specifies whether or not protected resources can be accessed by subsequent commands in the video decode command list. By default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no protected resources can be accessed.</summary>
-		/// <param name="pProtectedResourceSession">An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.</param>
+		/// <summary>
+		/// Specifies whether or not protected resources can be accessed by subsequent commands in the video decode command list. By
+		/// default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected
+		/// resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no
+		/// protected resources can be accessed.
+		/// </summary>
+		/// <param name="pProtectedResourceSession">
+		/// An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by
+		/// calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.
+		/// </param>
 		/// <returns>None</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-setprotectedresourcesession
 		// void SetProtectedResourceSession( ID3D12ProtectedResourceSession *pProtectedResourceSession );
@@ -1183,30 +1197,53 @@ public static partial class D3D12
 		void SetProtectedResourceSession([In] ID3D12ProtectedResourceSession pProtectedResourceSession);
 
 		/// <summary>Records a command to initializes or re-initializes a video extension command into a video decode command list.</summary>
-		/// <param name="pExtensionCommand">Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to initialize. The caller is responsible for maintaining object lifetime until command execution is complete.</param>
-		/// <param name="pInitializationParameters">A pointer to the creation parameters structure, which is defined by the command. The parameters structure must match the parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_INITIALIZATION</c>.</param>
+		/// <param name="pExtensionCommand">
+		/// Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to initialize. The caller is
+		/// responsible for maintaining object lifetime until command execution is complete.
+		/// </param>
+		/// <param name="pInitializationParameters">
+		/// A pointer to the creation parameters structure, which is defined by the command. The parameters structure must match the
+		/// parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of
+		/// <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_INITIALIZATION</c>.
+		/// </param>
 		/// <param name="InitializationParametersSizeInBytes">The size of the pInitializationParameters parameter structure, in bytes.</param>
 		/// <returns>None</returns>
-		/// <remarks>Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.</remarks>
+		/// <remarks>
+		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
+		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T InitializationParametersSizeInBytes );
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a decode command list.</summary>
-		/// <param name="pExtensionCommand">Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to execute. The caller is responsible for maintaining object lifetime until command execution is complete.</param>
-		/// <param name="pExecutionParameters">A pointer to the execution parameters structure, which is defined by the command. The parameters structure must match the parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_EXECUTION</c>.</param>
+		/// <param name="pExtensionCommand">
+		/// Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to execute. The caller is responsible
+		/// for maintaining object lifetime until command execution is complete.
+		/// </param>
+		/// <param name="pExecutionParameters">
+		/// A pointer to the execution parameters structure, which is defined by the command. The parameters structure must match the
+		/// parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of
+		/// <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_EXECUTION</c>.
+		/// </param>
 		/// <param name="ExecutionParametersSizeInBytes">The size of the pExecutionParameters parameter structure, in bytes.</param>
 		/// <returns>None</returns>
-		/// <remarks>Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.</remarks>
+		/// <remarks>
+		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
+		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes );
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
 	}
 
 	/// <summary>
-	/// <para>Encapsulates a list of graphics commands for video decoding. This interface derives from <c>ID3D12VideoDecodeCommandList2</c>, and adds support for barriers.</para>
+	/// <para>
+	/// Encapsulates a list of graphics commands for video decoding. This interface derives from <c>ID3D12VideoDecodeCommandList2</c>, and
+	/// adds support for barriers.
+	/// </para>
 	/// <para>Requires the DirectX 12 Agility SDK 1.7 or later.</para>
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecodecommandlist3
@@ -1604,8 +1641,16 @@ public static partial class D3D12
 		[PreserveSig]
 		new void DecodeFrame1([In] ID3D12VideoDecoder pDecoder, in D3D12_VIDEO_DECODE_OUTPUT_STREAM_ARGUMENTS1 pOutputArguments, in D3D12_VIDEO_DECODE_INPUT_STREAM_ARGUMENTS pInputArguments);
 
-		/// <summary>Specifies whether or not protected resources can be accessed by subsequent commands in the video decode command list. By default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no protected resources can be accessed.</summary>
-		/// <param name="pProtectedResourceSession">An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.</param>
+		/// <summary>
+		/// Specifies whether or not protected resources can be accessed by subsequent commands in the video decode command list. By
+		/// default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected
+		/// resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no
+		/// protected resources can be accessed.
+		/// </summary>
+		/// <param name="pProtectedResourceSession">
+		/// An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by
+		/// calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.
+		/// </param>
 		/// <returns>None</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-setprotectedresourcesession
 		// void SetProtectedResourceSession( ID3D12ProtectedResourceSession *pProtectedResourceSession );
@@ -1613,24 +1658,44 @@ public static partial class D3D12
 		new void SetProtectedResourceSession([In] ID3D12ProtectedResourceSession pProtectedResourceSession);
 
 		/// <summary>Records a command to initializes or re-initializes a video extension command into a video decode command list.</summary>
-		/// <param name="pExtensionCommand">Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to initialize. The caller is responsible for maintaining object lifetime until command execution is complete.</param>
-		/// <param name="pInitializationParameters">A pointer to the creation parameters structure, which is defined by the command. The parameters structure must match the parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_INITIALIZATION</c>.</param>
+		/// <param name="pExtensionCommand">
+		/// Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to initialize. The caller is
+		/// responsible for maintaining object lifetime until command execution is complete.
+		/// </param>
+		/// <param name="pInitializationParameters">
+		/// A pointer to the creation parameters structure, which is defined by the command. The parameters structure must match the
+		/// parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of
+		/// <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_INITIALIZATION</c>.
+		/// </param>
 		/// <param name="InitializationParametersSizeInBytes">The size of the pInitializationParameters parameter structure, in bytes.</param>
 		/// <returns>None</returns>
-		/// <remarks>Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.</remarks>
+		/// <remarks>
+		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
+		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T InitializationParametersSizeInBytes );
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a decode command list.</summary>
-		/// <param name="pExtensionCommand">Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to execute. The caller is responsible for maintaining object lifetime until command execution is complete.</param>
-		/// <param name="pExecutionParameters">A pointer to the execution parameters structure, which is defined by the command. The parameters structure must match the parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_EXECUTION</c>.</param>
+		/// <param name="pExtensionCommand">
+		/// Pointer to an <c>ID3D12VideoExtensionCommand</c> representing the video extension command to execute. The caller is responsible
+		/// for maintaining object lifetime until command execution is complete.
+		/// </param>
+		/// <param name="pExecutionParameters">
+		/// A pointer to the execution parameters structure, which is defined by the command. The parameters structure must match the
+		/// parameters enumerated by a call to <c>ID3D12VideoDevice::CheckFeatureSupport</c> with the feature value of
+		/// <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS</c> and a parameter stage value of <c>D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_EXECUTION</c>.
+		/// </param>
 		/// <param name="ExecutionParametersSizeInBytes">The size of the pExecutionParameters parameter structure, in bytes.</param>
 		/// <returns>None</returns>
-		/// <remarks>Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.</remarks>
+		/// <remarks>
+		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
+		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes );
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
 
@@ -1641,13 +1706,15 @@ public static partial class D3D12
 		/// <param name="NumBarrierGroups">Number of barrier groups pointed to by pBarrierGroups.</param>
 		/// <param name="pBarrierGroups">Pointer to an array of <c>D3D12_BARRIER_GROUP</c> objects.</param>
 		/// <returns>None</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist3-barrier
-		// void Barrier( UINT32 NumBarrierGroups, const D3D12_BARRIER_GROUP *pBarrierGroups );
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist3-barrier void Barrier(
+		// UINT32 NumBarrierGroups, const D3D12_BARRIER_GROUP *pBarrierGroups );
 		[PreserveSig]
 		void Barrier(int NumBarrierGroups, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_BARRIER_GROUP[] pBarrierGroups);
 	}
 
-	/// <summary>Represents a Direct3D 12 video decoder that contains resolution-independent resources and state for performing the decode operation.</summary>
+	/// <summary>
+	/// Represents a Direct3D 12 video decoder that contains resolution-independent resources and state for performing the decode operation.
+	/// </summary>
 	/// <remarks>
 	/// <para>Get an instance of this class by calling <c>ID3D12VideoDevice::CreateVideoDecoder</c>.</para>
 	/// <para>It is not necessary to recreate this object during a resolution change.</para>
@@ -1813,15 +1880,20 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvDevice);
 
-		/// <summary>Gets the <c>D3D12_VIDEO_DECODER_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoder</c> when the <c>ID3D12VideoDecoder</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>D3D12_VIDEO_DECODER_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoder</c> when the
+		/// <c>ID3D12VideoDecoder</c> was created.
+		/// </summary>
 		/// <returns>This method returns a <b>D3D12_VIDEO_DECODER_DESC</b> structure.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecoder-getdesc
-		// D3D12_VIDEO_DECODER_DESC GetDesc();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecoder-getdesc D3D12_VIDEO_DECODER_DESC GetDesc();
 		[PreserveSig]
 		void GetDesc(out D3D12_VIDEO_DECODER_DESC size);
 	}
 
-	/// <summary>Represents a Direct3D 12 video decoder that contains resolution-independent resources and state for performing the decode operation. Inherits from <c>ID3D12VideoDecoder</c> and adds support for protected resources.</summary>
+	/// <summary>
+	/// Represents a Direct3D 12 video decoder that contains resolution-independent resources and state for performing the decode operation.
+	/// Inherits from <c>ID3D12VideoDecoder</c> and adds support for protected resources.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecoder1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecoder1")]
 	[ComImport, Guid("79a2e5fb-ccd2-469a-9fde-195d10951f7e"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1983,14 +2055,19 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvDevice);
 
-		/// <summary>Gets the <c>D3D12_VIDEO_DECODER_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoder</c> when the <c>ID3D12VideoDecoder</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>D3D12_VIDEO_DECODER_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoder</c> when the
+		/// <c>ID3D12VideoDecoder</c> was created.
+		/// </summary>
 		/// <returns>This method returns a <b>D3D12_VIDEO_DECODER_DESC</b> structure.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecoder-getdesc
-		// D3D12_VIDEO_DECODER_DESC GetDesc();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecoder-getdesc D3D12_VIDEO_DECODER_DESC GetDesc();
 		[PreserveSig]
 		new void GetDesc(out D3D12_VIDEO_DECODER_DESC size);
 
-		/// <summary>Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoDecoder1</c> when the <c>ID3D12VideoDecoder1</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoDecoder1</c> when the
+		/// <c>ID3D12VideoDecoder1</c> was created.
+		/// </summary>
 		/// <param name="riid">The globally unique identifier (GUID) for the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <param name="ppProtectedSession">Receives a void pointer representing the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <returns>This method returns HRESULT.</returns>
@@ -2000,7 +2077,9 @@ public static partial class D3D12
 		HRESULT GetProtectedResourceSession(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppProtectedSession);
 	}
 
-	/// <summary>Represents a Direct3D 12 video decoder heap that contains resolution-dependent resources and state for performing the decode operation.</summary>
+	/// <summary>
+	/// Represents a Direct3D 12 video decoder heap that contains resolution-dependent resources and state for performing the decode operation.
+	/// </summary>
 	/// <remarks>Get an instance of this class by calling <c>ID3D12VideoDevice::CreateVideoDecoderHeap</c>.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecoderheap
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecoderHeap")]
@@ -2163,7 +2242,10 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvDevice);
 
-		/// <summary>Gets the <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoderHeap</c> when the <c>ID3D12VideoDecoderHeap</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoderHeap</c>
+		/// when the <c>ID3D12VideoDecoderHeap</c> was created.
+		/// </summary>
 		/// <returns>This method returns a <b>D3D12_VIDEO_DECODER_HEAP_DESC</b> structure.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecoderheap-getdesc
 		// D3D12_VIDEO_DECODER_HEAP_DESC GetDesc();
@@ -2333,14 +2415,20 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvDevice);
 
-		/// <summary>Gets the <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoderHeap</c> when the <c>ID3D12VideoDecoderHeap</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> structure that was passed into <c>ID3D12VideoDevice::CreateVideoDecoderHeap</c>
+		/// when the <c>ID3D12VideoDecoderHeap</c> was created.
+		/// </summary>
 		/// <returns>This method returns a <b>D3D12_VIDEO_DECODER_HEAP_DESC</b> structure.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecoderheap-getdesc
 		// D3D12_VIDEO_DECODER_HEAP_DESC GetDesc();
 		[PreserveSig]
 		new void GetDesc(out D3D12_VIDEO_DECODER_HEAP_DESC size);
 
-		/// <summary>Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoDecoderHeap1</c> when the <c>ID3D12VideoDecoderHeap1</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoDecoderHeap1</c> when the
+		/// <c>ID3D12VideoDecoderHeap1</c> was created.
+		/// </summary>
 		/// <param name="riid">The globally unique identifier (GUID) for the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <param name="ppProtectedSession">Receives a void pointer representing the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <returns>This method returns HRESULT.</returns>
@@ -2350,7 +2438,10 @@ public static partial class D3D12
 		HRESULT GetProtectedResourceSession(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppProtectedSession);
 	}
 
-	/// <summary>Provides video decoding and processing capabilities of a Microsoft Direct3D 12 device including the ability to query video capabilities and instantiating video decoders and processors.</summary>
+	/// <summary>
+	/// Provides video decoding and processing capabilities of a Microsoft Direct3D 12 device including the ability to query video
+	/// capabilities and instantiating video decoders and processors.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodevice
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDevice")]
 	[ComImport, Guid("1f052807-0b46-4acc-8a89-364f793718a4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -3456,7 +3547,10 @@ public static partial class D3D12
 		void SetProtectedResourceSession([In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession);
 	}
 
-	/// <summary>Encapsulates a list of graphics commands for video decoding. This interface inherits from <c>ID3D12VideoEncodeCommandList</c> and adds support for video extension commands.</summary>
+	/// <summary>
+	/// Encapsulates a list of graphics commands for video decoding. This interface inherits from <c>ID3D12VideoEncodeCommandList</c> and
+	/// adds support for video extension commands.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencodecommandlist1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncodeCommandList1")]
 	[ComImport, Guid("94971eca-2bdb-4769-88cf-3675ea757ebc"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -3920,7 +4014,10 @@ public static partial class D3D12
 			SizeT ExecutionParametersSizeInBytes);
 	}
 
-	/// <summary>Encapsulates a list of graphics commands for video encoding. This interface inherits from <c>ID3D12VideoEncodeCommandList1</c> and adds methods for encoding video and resolving encode operation metadata.</summary>
+	/// <summary>
+	/// Encapsulates a list of graphics commands for video encoding. This interface inherits from <c>ID3D12VideoEncodeCommandList1</c> and
+	/// adds methods for encoding video and resolving encode operation metadata.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencodecommandlist2
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncodeCommandList2")]
 	[ComImport, Guid("895491e2-e701-46a9-9a1f-8d3480ed867a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -4443,7 +4540,10 @@ public static partial class D3D12
 	}
 
 	/// <summary>
-	/// <para>Encapsulates a list of graphics commands for video encoding. This interface derives from <c>ID3D12VideoEncodeCommandList2</c>, and adds support for barriers.</para>
+	/// <para>
+	/// Encapsulates a list of graphics commands for video encoding. This interface derives from <c>ID3D12VideoEncodeCommandList2</c>, and
+	/// adds support for barriers.
+	/// </para>
 	/// <para>Requires the DirectX 12 Agility SDK 1.7 or later.</para>
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencodecommandlist3
@@ -4973,8 +5073,8 @@ public static partial class D3D12
 		/// <param name="NumBarrierGroups">Number of barrier groups pointed to by pBarrierGroups.</param>
 		/// <param name="pBarrierGroups">Pointer to an array of <c>D3D12_BARRIER_GROUP</c> objects.</param>
 		/// <returns>None</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist3-barrier
-		// void Barrier( UINT32 NumBarrierGroups, const D3D12_BARRIER_GROUP *pBarrierGroups );
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist3-barrier void Barrier(
+		// UINT32 NumBarrierGroups, const D3D12_BARRIER_GROUP *pBarrierGroups );
 		[PreserveSig]
 		void Barrier(int NumBarrierGroups, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_BARRIER_GROUP[] pBarrierGroups);
 	}
@@ -5144,50 +5244,62 @@ public static partial class D3D12
 
 		/// <summary>Gets the node mask for the video encoder.</summary>
 		/// <returns>The node mask value specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getnodemask
-		// UINT GetNodeMask();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getnodemask UINT GetNodeMask();
 		[PreserveSig]
 		uint GetNodeMask();
 
 		/// <summary>Gets the encoder flags with which the video encoder was initialized.</summary>
-		/// <returns>The bitwise OR combination of values from the <c>D3D12_VIDEO_ENCODER_FLAGS</c> enumeration specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.</returns>
+		/// <returns>
+		/// The bitwise OR combination of values from the <c>D3D12_VIDEO_ENCODER_FLAGS</c> enumeration specified in the
+		/// <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.
+		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getencoderflags
 		// D3D12_VIDEO_ENCODER_FLAGS GetEncoderFlags();
 		[PreserveSig]
 		D3D12_VIDEO_ENCODER_FLAGS GetEncoderFlags();
 
 		/// <summary>Gets the codec associated with the video encoder.</summary>
-		/// <returns>The value from the <c>D3D12_VIDEO_ENCODER_CODEC</c> enumeration specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.</returns>
+		/// <returns>
+		/// The value from the <c>D3D12_VIDEO_ENCODER_CODEC</c> enumeration specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.
+		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getcodec
 		// D3D12_VIDEO_ENCODER_CODEC GetCodec();
 		[PreserveSig]
 		D3D12_VIDEO_ENCODER_CODEC GetCodec();
 
 		/// <summary>Gets the codec profile associated with the video encoder.</summary>
-		/// <param name="dstProfile">Receives a <c>D3D12_VIDEO_ENCODER_PROFILE_DESC</c> structure representing the codec profile specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.</param>
+		/// <param name="dstProfile">
+		/// Receives a <c>D3D12_VIDEO_ENCODER_PROFILE_DESC</c> structure representing the codec profile specified in the
+		/// <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.
+		/// </param>
 		/// <returns>Returns S_OK on success.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getcodecprofile
-		// HRESULT GetCodecProfile( D3D12_VIDEO_ENCODER_PROFILE_DESC dstProfile );
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getcodecprofile HRESULT
+		// GetCodecProfile( D3D12_VIDEO_ENCODER_PROFILE_DESC dstProfile );
 		[PreserveSig]
 		HRESULT GetCodecProfile(D3D12_VIDEO_ENCODER_PROFILE_DESC dstProfile);
 
 		/// <summary>Gets the codec configuration parameters associated with the video encoder.</summary>
-		/// <param name="dstCodecConfig">Receives a <c>D3D12_VIDEO_ENCODER_CODEC_CONFIGURATION</c> structure representing the codec configuration parameters specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.</param>
+		/// <param name="dstCodecConfig">
+		/// Receives a <c>D3D12_VIDEO_ENCODER_CODEC_CONFIGURATION</c> structure representing the codec configuration parameters specified in
+		/// the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.
+		/// </param>
 		/// <returns>Returns S_OK on success.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getcodecconfiguration
-		// HRESULT GetCodecConfiguration( D3D12_VIDEO_ENCODER_CODEC_CONFIGURATION dstCodecConfig );
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getcodecconfiguration HRESULT
+		// GetCodecConfiguration( D3D12_VIDEO_ENCODER_CODEC_CONFIGURATION dstCodecConfig );
 		[PreserveSig]
 		HRESULT GetCodecConfiguration(D3D12_VIDEO_ENCODER_CODEC_CONFIGURATION dstCodecConfig);
 
 		/// <summary>Gets the input format of the video encoder.</summary>
 		/// <returns>The <c>DXGI_FORMAT</c> value specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getinputformat
-		// DXGI_FORMAT GetInputFormat();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getinputformat DXGI_FORMAT GetInputFormat();
 		[PreserveSig]
 		DXGI_FORMAT GetInputFormat();
 
 		/// <summary>Gets the maximum motion estimation precision of the video encoder.</summary>
-		/// <returns>The value from the <c>D3D12_VIDEO_ENCODER_MOTION_ESTIMATION_PRECISION_MODE</c> enumeration specified in the <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.</returns>
+		/// <returns>
+		/// The value from the <c>D3D12_VIDEO_ENCODER_MOTION_ESTIMATION_PRECISION_MODE</c> enumeration specified in the
+		/// <c>D3D12_VIDEO_ENCODER_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoder</c>.
+		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoder-getmaxmotionestimationprecision
 		// D3D12_VIDEO_ENCODER_MOTION_ESTIMATION_PRECISION_MODE GetMaxMotionEstimationPrecision();
 		[PreserveSig]
@@ -5359,53 +5471,68 @@ public static partial class D3D12
 
 		/// <summary>Gets the node mask for the video encoder heap.</summary>
 		/// <returns>The node mask value specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getnodemask
-		// UINT GetNodeMask();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getnodemask UINT GetNodeMask();
 		[PreserveSig]
 		uint GetNodeMask();
 
 		/// <summary>Gets the encoder heap flags with which the video encoder heap was initialized.</summary>
-		/// <returns>The bitwise OR combination of values from the <c>D3D12_VIDEO_ENCODER_HEAP_FLAGS</c> enumeration specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.</returns>
+		/// <returns>
+		/// The bitwise OR combination of values from the <c>D3D12_VIDEO_ENCODER_HEAP_FLAGS</c> enumeration specified in the
+		/// <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.
+		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getencoderheapflags
 		// D3D12_VIDEO_ENCODER_HEAP_FLAGS GetEncoderHeapFlags();
 		[PreserveSig]
 		D3D12_VIDEO_ENCODER_HEAP_FLAGS GetEncoderHeapFlags();
 
 		/// <summary>Gets the codec associated with the video encoder heap.</summary>
-		/// <returns>The value from the <c>D3D12_VIDEO_ENCODER_CODEC</c> enumeration specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.</returns>
+		/// <returns>
+		/// The value from the <c>D3D12_VIDEO_ENCODER_CODEC</c> enumeration specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed
+		/// into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.
+		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getcodec
 		// D3D12_VIDEO_ENCODER_CODEC GetCodec();
 		[PreserveSig]
 		D3D12_VIDEO_ENCODER_CODEC GetCodec();
 
 		/// <summary>Gets the codec profile associated with the video encoder heap.</summary>
-		/// <param name="dstProfile">Receives a <c>D3D12_VIDEO_ENCODER_PROFILE_DESC</c> structure representing the codec profile specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.</param>
+		/// <param name="dstProfile">
+		/// Receives a <c>D3D12_VIDEO_ENCODER_PROFILE_DESC</c> structure representing the codec profile specified in the
+		/// <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.
+		/// </param>
 		/// <returns>Returns S_OK on success.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getcodecprofile
-		// HRESULT GetCodecProfile( D3D12_VIDEO_ENCODER_PROFILE_DESC dstProfile );
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getcodecprofile HRESULT
+		// GetCodecProfile( D3D12_VIDEO_ENCODER_PROFILE_DESC dstProfile );
 		[PreserveSig]
 		HRESULT GetCodecProfile(D3D12_VIDEO_ENCODER_PROFILE_DESC dstProfile);
 
 		/// <summary>Gets the codec level associated with the video encoder heap.</summary>
-		/// <param name="dstLevel">Receives a <c>D3D12_VIDEO_ENCODER_LEVEL_SETTING</c> structure representing the codec profile specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.</param>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getcodeclevel
-		// HRESULT GetCodecLevel( D3D12_VIDEO_ENCODER_LEVEL_SETTING dstLevel );
+		/// <param name="dstLevel">
+		/// Receives a <c>D3D12_VIDEO_ENCODER_LEVEL_SETTING</c> structure representing the codec profile specified in the
+		/// <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.
+		/// </param>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getcodeclevel HRESULT
+		// GetCodecLevel( D3D12_VIDEO_ENCODER_LEVEL_SETTING dstLevel );
 		[PreserveSig]
 		HRESULT GetCodecLevel(D3D12_VIDEO_ENCODER_LEVEL_SETTING dstLevel);
 
 		/// <summary>Gets the resolution list count associated with the video encoder heap.</summary>
 		/// <returns>The size of the resolution list provided in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getresolutionlistcount
-		// UINT GetResolutionListCount();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getresolutionlistcount UINT GetResolutionListCount();
 		[PreserveSig]
 		uint GetResolutionListCount();
 
 		/// <summary>Gets the resolution list associated with the video encoder heap.</summary>
-		/// <param name="ResolutionsListCount">The count of resolutions to retrieve. Get the number of resolutions with which the encoder heap was created by calling <c>ID3D12VideoEncoderHeap::GetResolutionListCount</c>.</param>
-		/// <param name="pResolutionList">Receives a pointer to an array of <c>D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC</c> structures representing the resolutions specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.</param>
+		/// <param name="ResolutionsListCount">
+		/// The count of resolutions to retrieve. Get the number of resolutions with which the encoder heap was created by calling <c>ID3D12VideoEncoderHeap::GetResolutionListCount</c>.
+		/// </param>
+		/// <param name="pResolutionList">
+		/// Receives a pointer to an array of <c>D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC</c> structures representing the resolutions
+		/// specified in the <c>D3D12_VIDEO_ENCODER_HEAP_DESC</c> passed into <c>ID3D12VideoDevice3::CreateVideoEncoderHeap</c>.
+		/// </param>
 		/// <returns>Returns S_OK on success.</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getresolutionlist
-		// HRESULT GetResolutionList( const UINT ResolutionsListCount, D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC *pResolutionList );
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getresolutionlist HRESULT
+		// GetResolutionList( const UINT ResolutionsListCount, D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC *pResolutionList );
 		[PreserveSig]
 		HRESULT GetResolutionList(int ResolutionsListCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC[] pResolutionList);
 	}
@@ -5580,7 +5707,10 @@ public static partial class D3D12
 		[PreserveSig]
 		D3D12_VIDEO_EXTENSION_COMMAND_DESC GetDesc();
 
-		/// <summary>Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoExtensionCommand</c> when the <c>ID3D12VideoExtensionCommand</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoExtensionCommand</c> when
+		/// the <c>ID3D12VideoExtensionCommand</c> was created.
+		/// </summary>
 		/// <param name="riid">The globally unique identifier (GUID) for the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <param name="ppProtectedSession">Receives a void pointer representing the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <returns>This method returns HRESULT.</returns>
@@ -5756,14 +5886,20 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvDevice);
 
-		/// <summary>Gets the <c>D3D12_VIDEO_MOTION_ESTIMATOR_DESC</c> structure that was passed into <c>ID3D12VideoDevice1::CreateVideoMotionEstimator</c> when the <c>ID3D12VideoMotionEstimator</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>D3D12_VIDEO_MOTION_ESTIMATOR_DESC</c> structure that was passed into
+		/// <c>ID3D12VideoDevice1::CreateVideoMotionEstimator</c> when the <c>ID3D12VideoMotionEstimator</c> was created.
+		/// </summary>
 		/// <returns>This method returns a <b>D3D12_VIDEO_MOTION_ESTIMATOR_DESC</b> structure.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videomotionestimator-getdesc
 		// D3D12_VIDEO_MOTION_ESTIMATOR_DESC GetDesc();
 		[PreserveSig]
 		void GetDesc(out D3D12_VIDEO_MOTION_ESTIMATOR_DESC size);
 
-		/// <summary>Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice1::CreateVideoMotionEstimator</c> when the <c>ID3D12VideoMotionEstimator</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice1::CreateVideoMotionEstimator</c> when
+		/// the <c>ID3D12VideoMotionEstimator</c> was created.
+		/// </summary>
 		/// <param name="riid">The globally unique identifier (GUID) for the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <param name="ppProtectedSession">Receives a void pointer representing the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <returns>This method returns HRESULT.</returns>
@@ -5773,10 +5909,19 @@ public static partial class D3D12
 		HRESULT GetProtectedResourceSession(in Guid riid, [Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppProtectedSession);
 	}
 
-	/// <summary>Represents the storage of the motion vector output of a motion estimation operation in an IHV-dependent layout. Call <c>ID3D12VideoEncodeCommandList::EstimateMotion</c> to calculate and store motion vectors. Use <c>ID3D12VideoEncodeCommandList::ResolveMotionVectorHeap</c> to copy and translate these results into the API-defined layout in a Texture 2D.</summary>
+	/// <summary>
+	/// Represents the storage of the motion vector output of a motion estimation operation in an IHV-dependent layout. Call
+	/// <c>ID3D12VideoEncodeCommandList::EstimateMotion</c> to calculate and store motion vectors. Use
+	/// <c>ID3D12VideoEncodeCommandList::ResolveMotionVectorHeap</c> to copy and translate these results into the API-defined layout in a
+	/// Texture 2D.
+	/// </summary>
 	/// <remarks>
 	/// <para>Create a new instance of this interface by calling <c>ID3D12VideoDevice1::CreateVideoMotionVectorHeap</c>.</para>
-	/// <para>This interface is used by the <c>D3D12_VIDEO_MOTION_ESTIMATOR_OUTPUT</c> structure returned from <c>ID3D12VideoEncodeCommandList::EstimateMotion</c>. It is also used to supply hint vectors in the <c>D3D12_VIDEO_MOTION_ESTIMATOR_INPUT</c> structure.</para>
+	/// <para>
+	/// This interface is used by the <c>D3D12_VIDEO_MOTION_ESTIMATOR_OUTPUT</c> structure returned from
+	/// <c>ID3D12VideoEncodeCommandList::EstimateMotion</c>. It is also used to supply hint vectors in the
+	/// <c>D3D12_VIDEO_MOTION_ESTIMATOR_INPUT</c> structure.
+	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videomotionvectorheap
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoMotionVectorHeap")]
@@ -5939,14 +6084,20 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvDevice);
 
-		/// <summary>Gets the <c>D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC</c> structure that was passed into <c>ID3D12VideoDevice1::CreateVideoMotionEstimatorHeap</c> when the <c>ID3D12VideoMotionEstimatorHeap</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC</c> structure that was passed into
+		/// <c>ID3D12VideoDevice1::CreateVideoMotionEstimatorHeap</c> when the <c>ID3D12VideoMotionEstimatorHeap</c> was created.
+		/// </summary>
 		/// <returns>This method returns a <b>D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC</b> structure.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videomotionvectorheap-getdesc
 		// D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC GetDesc();
 		[PreserveSig]
 		void GetDesc(out D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC size);
 
-		/// <summary>Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice1::CreateVideoMotionEstimatorHeap</c> when the <c>ID3D12VideoMotionEstimatorHeap</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice1::CreateVideoMotionEstimatorHeap</c>
+		/// when the <c>ID3D12VideoMotionEstimatorHeap</c> was created.
+		/// </summary>
 		/// <param name="riid">The globally unique identifier (GUID) for the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <param name="ppProtectedSession">Receives a void pointer representing the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <returns>This method returns HRESULT.</returns>
@@ -6358,7 +6509,10 @@ public static partial class D3D12
 		void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 	}
 
-	/// <summary>Encapsulates a list of graphics commands for video processing. Adds the <c>ID3D12VideoProcessCommandList1::ProcessFrames1</c> method which supports changing the <c>D3D12_VIDEO_FIELD_TYPE</c> for each call, unlike <c>ID3D12VideoProcessCommandList::ProcessFrames</c>.</summary>
+	/// <summary>
+	/// Encapsulates a list of graphics commands for video processing. Adds the <c>ID3D12VideoProcessCommandList1::ProcessFrames1</c> method
+	/// which supports changing the <c>D3D12_VIDEO_FIELD_TYPE</c> for each call, unlike <c>ID3D12VideoProcessCommandList::ProcessFrames</c>.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocesscommandlist1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessCommandList1")]
 	[ComImport, Guid("542c5c4d-7596-434f-8c93-4efa6766f267"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -6780,7 +6934,10 @@ public static partial class D3D12
 			uint NumInputStreams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_ARGUMENTS1[] pInputArguments);
 	}
 
-	/// <summary>Encapsulates a list of graphics commands for video processing. This interface inherits from <c>ID3D12VideoProcessCommandList1</c> and adds support for video extension commands.</summary>
+	/// <summary>
+	/// Encapsulates a list of graphics commands for video processing. This interface inherits from <c>ID3D12VideoProcessCommandList1</c>
+	/// and adds support for video extension commands.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocesscommandlist2
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessCommandList2")]
 	[ComImport, Guid("db525ae4-6ad6-473c-baa7-59b2e37082e4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -7201,8 +7358,16 @@ public static partial class D3D12
 		new void ProcessFrames1([In] ID3D12VideoProcessor pVideoProcessor, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_ARGUMENTS pOutputArguments,
 			uint NumInputStreams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_ARGUMENTS1[] pInputArguments);
 
-		/// <summary>Specifies whether or not protected resources can be accessed by subsequent commands in the video process command list. By default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no protected resources can be accessed.</summary>
-		/// <param name="pProtectedResourceSession">An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.</param>
+		/// <summary>
+		/// Specifies whether or not protected resources can be accessed by subsequent commands in the video process command list. By
+		/// default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected
+		/// resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no
+		/// protected resources can be accessed.
+		/// </summary>
+		/// <param name="pProtectedResourceSession">
+		/// An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by
+		/// calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.
+		/// </param>
 		/// <returns>None</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist2-setprotectedresourcesession
 		// void SetProtectedResourceSession( ID3D12ProtectedResourceSession *pProtectedResourceSession );
@@ -7253,7 +7418,10 @@ public static partial class D3D12
 	}
 
 	/// <summary>
-	/// <para>Encapsulates a list of graphics commands for video processing. This interface derives from <c>ID3D12VideoProcessCommandList2</c>, and adds support for barriers.</para>
+	/// <para>
+	/// Encapsulates a list of graphics commands for video processing. This interface derives from <c>ID3D12VideoProcessCommandList2</c>,
+	/// and adds support for barriers.
+	/// </para>
 	/// <para>Requires the DirectX 12 Agility SDK 1.7 or later.</para>
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocesscommandlist3
@@ -7676,8 +7844,16 @@ public static partial class D3D12
 		new void ProcessFrames1([In] ID3D12VideoProcessor pVideoProcessor, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_ARGUMENTS pOutputArguments,
 			uint NumInputStreams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_ARGUMENTS1[] pInputArguments);
 
-		/// <summary>Specifies whether or not protected resources can be accessed by subsequent commands in the video process command list. By default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no protected resources can be accessed.</summary>
-		/// <param name="pProtectedResourceSession">An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.</param>
+		/// <summary>
+		/// Specifies whether or not protected resources can be accessed by subsequent commands in the video process command list. By
+		/// default, no protected resources are enabled. After calling <b>SetProtectedResourceSession</b> with a valid session, protected
+		/// resources of the same type can refer to that session. After calling <b>SetProtectedResourceSession</b> with <b>NULL</b>, no
+		/// protected resources can be accessed.
+		/// </summary>
+		/// <param name="pProtectedResourceSession">
+		/// An optional pointer to an <c>ID3D12ProtectedResourceSession</c>. You can obtain an <b>ID3D12ProtectedResourceSession</b> by
+		/// calling <c>ID3D12Device4::CreateProtectedResourceSession</c>.
+		/// </param>
 		/// <returns>None</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist2-setprotectedresourcesession
 		// void SetProtectedResourceSession( ID3D12ProtectedResourceSession *pProtectedResourceSession );
@@ -7733,13 +7909,16 @@ public static partial class D3D12
 		/// <param name="NumBarrierGroups">Number of barrier groups pointed to by pBarrierGroups.</param>
 		/// <param name="pBarrierGroups">Pointer to an array of <c>D3D12_BARRIER_GROUP</c> objects.</param>
 		/// <returns>None</returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist3-barrier
-		// void Barrier( UINT32 NumBarrierGroups, const D3D12_BARRIER_GROUP *pBarrierGroups );
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist3-barrier void Barrier(
+		// UINT32 NumBarrierGroups, const D3D12_BARRIER_GROUP *pBarrierGroups );
 		[PreserveSig]
 		void Barrier(int NumBarrierGroups, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_BARRIER_GROUP[] pBarrierGroups);
 	}
 
-	/// <summary>Provides methods for getting information about the parameters to the call to <c>ID3D12VideoDevice::CreateVideoProcessor</c> that created the video processor.</summary>
+	/// <summary>
+	/// Provides methods for getting information about the parameters to the call to <c>ID3D12VideoDevice::CreateVideoProcessor</c> that
+	/// created the video processor.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocessor
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessor")]
 	[ComImport, Guid("304fdb32-bede-410a-8545-943ac6a46138"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -7939,7 +8118,10 @@ public static partial class D3D12
 		void GetOutputStreamDesc(out D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC size);
 	}
 
-	/// <summary>Provides methods for getting information about the parameters to the call to <c>ID3D12VideoDevice2::CreateVideoProcessor1</c> that created the video processor.</summary>
+	/// <summary>
+	/// Provides methods for getting information about the parameters to the call to <c>ID3D12VideoDevice2::CreateVideoProcessor1</c> that
+	/// created the video processor.
+	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocessor1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessor1")]
 	[ComImport, Guid("f3cfe615-553f-425c-86d8-ee8c1b1fb01c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -8138,7 +8320,10 @@ public static partial class D3D12
 		[PreserveSig]
 		new void GetOutputStreamDesc(out D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC size);
 
-		/// <summary>Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoProcessor1</c> when the <c>ID3D12VideoProcessor1</c> was created.</summary>
+		/// <summary>
+		/// Gets the <c>ID3D12ProtectedResourceSession</c> that was passed into <c>ID3D12VideoDevice2::CreateVideoProcessor1</c> when the
+		/// <c>ID3D12VideoProcessor1</c> was created.
+		/// </summary>
 		/// <param name="riid">The globally unique identifier (GUID) for the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <param name="ppProtectedSession">Receives a void pointer representing the <b>ID3D12ProtectedResourceSession</b> interface.</param>
 		/// <returns>This method returns HRESULT.</returns>
