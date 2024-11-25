@@ -9,7 +9,19 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;DStorage</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DStorageCreateCompressionCodec DStorageGetFactory DStorageSetConfiguration DStorageSetConfiguration1
+
+Structures
+&lt;Reserved1&gt;e__FixedBuffer &lt;Reserved&gt;e__FixedBuffer &lt;Reserved&gt;e__FixedBuffer &lt;_RequestName&gt;e__FixedBuffer DSTORAGE_CONFIGURATION DSTORAGE_CONFIGURATION1 DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST DSTORAGE_CUSTOM_DECOMPRESSION_RESULT DSTORAGE_DESTINATION_BUFFER DSTORAGE_DESTINATION_MEMORY DSTORAGE_DESTINATION_MULTIPLE_SUBRESOURCES DSTORAGE_DESTINATION_TEXTURE_REGION DSTORAGE_DESTINATION_TILES DSTORAGE_ERROR_PARAMETERS_EVENT DSTORAGE_ERROR_PARAMETERS_SIGNAL DSTORAGE_ERROR_PARAMETERS_STATUS DSTORAGE_QUEUE_DESC DSTORAGE_QUEUE_INFO DSTORAGE_REQUEST_OPTIONS DSTORAGE_SOURCE_FILE DSTORAGE_SOURCE_MEMORY
+
+Interfaces
+IDStorageCompressionCodec IDStorageCustomDecompressionQueue IDStorageCustomDecompressionQueue1 IDStorageFactory IDStorageFile IDStorageQueue IDStorageQueue1 IDStorageQueue2 IDStorageStatusArray
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

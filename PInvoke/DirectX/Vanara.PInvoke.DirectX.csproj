@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <ProjectExtensions>
-    <SupportedDlls/>
-  </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, interfaces, structures and constants) imported from DirectX.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <AssemblyName>Vanara.PInvoke.Graphics</AssemblyName>
+    <AssemblyName>Vanara.PInvoke.DirectX</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;directx</PackageTags>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+</PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 ## Vanara.PInvoke.P2P  
 PInvoke API (methods, structures and constants) imported from Windows P2P.dll for Peer-to-Peer API.
 
-- Includes methods from p2p.dll  
+- Includes methods from Vanara.PInvoke.P2P.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.P2P?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.P2P?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.P2P)  
 ### Methods - 100% API coverage (109 of 109 functions)  
 Native Method | Header | Managed Method  
@@ -210,6 +210,7 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[P2P](https://www.google.com/search?num=5&q=P2P+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P](https://github.com/dahall/Vanara/search?l=C%23&q=P2P)  
 [SafeCollabHPEEREVENT](https://www.google.com/search?num=5&q=SafeCollabHPEEREVENT+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafeCollabHPEEREVENT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCollabHPEEREVENT)  
 [SafeGroupHPEEREVENT](https://www.google.com/search?num=5&q=SafeGroupHPEEREVENT+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafeGroupHPEEREVENT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeGroupHPEEREVENT)  
 [SafeHPEERENUM](https://www.google.com/search?num=5&q=SafeHPEERENUM+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.P2P.SafeHPEERENUM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPEERENUM)  

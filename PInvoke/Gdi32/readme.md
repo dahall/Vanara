@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll
 
 - Includes methods from gdi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Gdi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Gdi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)  
-### Methods - 99% API coverage (307 of 308 functions)  
+### Methods - 99% API coverage (306 of 307 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -63,7 +63,6 @@ Native Method | Header | Managed Method
 [CreateRoundRectRgn](https://www.google.com/search?num=5&q=CreateRoundRectRgn+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRoundRectRgn](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRoundRectRgn)  
 [CreateScalableFontResource](https://www.google.com/search?num=5&q=CreateScalableFontResourceA+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateScalableFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateScalableFontResource)  
 [CreateSolidBrush](https://www.google.com/search?num=5&q=CreateSolidBrush+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateSolidBrush](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSolidBrush)  
-[D3DKMTAcquireKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTAcquireKeyedMutex+site%3Alearn.microsoft.com) | d3dkmthk.h | [Vanara.PInvoke.Gdi32.D3DKMTAcquireKeyedMutex](https://github.com/dahall/Vanara/search?l=C%23&q=D3DKMTAcquireKeyedMutex)  
 [D3DKMTIsFeatureEnabled](https://www.google.com/search?num=5&q=D3DKMTIsFeatureEnabled+site%3Alearn.microsoft.com) |  |   
 [DeleteColorSpace](https://www.google.com/search?num=5&q=DeleteColorSpace+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteColorSpace](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteColorSpace)  
 [DeleteDC](https://www.google.com/search?num=5&q=DeleteDC+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.DeleteDC](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteDC)  
@@ -326,10 +325,7 @@ Native Enum | Header | Managed Enum
 [CharacterSetUint](https://www.google.com/search?num=5&q=CharacterSetUint+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.CharacterSetUint](https://github.com/dahall/Vanara/search?l=C%23&q=CharacterSetUint)  
 [ClippingPrecision](https://www.google.com/search?num=5&q=ClippingPrecision+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.ClippingPrecision](https://github.com/dahall/Vanara/search?l=C%23&q=ClippingPrecision)  
 [CS](https://www.google.com/search?num=5&q=CS+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CS](https://github.com/dahall/Vanara/search?l=C%23&q=CS)  
-[D3DKMDT_MODE_PRUNING_REASON](https://www.google.com/search?num=5&q=D3DKMDT_MODE_PRUNING_REASON+site%3Alearn.microsoft.com) | d3dkmthk.h | [Vanara.PInvoke.Gdi32.D3DKMDT_MODE_PRUNING_REASON](https://github.com/dahall/Vanara/search?l=C%23&q=D3DKMDT_MODE_PRUNING_REASON)  
 [D3DKMDT_VIDEO_SIGNAL_STANDARD](https://www.google.com/search?num=5&q=D3DKMDT_VIDEO_SIGNAL_STANDARD+site%3Alearn.microsoft.com) | d3dkmdt.h | [Vanara.PInvoke.Gdi32.D3DKMDT_VIDEO_SIGNAL_STANDARD](https://github.com/dahall/Vanara/search?l=C%23&q=D3DKMDT_VIDEO_SIGNAL_STANDARD)  
-[D3DKMT_ACTIVATE_SPECIFIC_DIAG_TYPE](https://www.google.com/search?num=5&q=D3DKMT_ACTIVATE_SPECIFIC_DIAG_TYPE+site%3Alearn.microsoft.com) | d3dkmthk.h | [Vanara.PInvoke.Gdi32.D3DKMT_ACTIVATE_SPECIFIC_DIAG_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=D3DKMT_ACTIVATE_SPECIFIC_DIAG_TYPE)  
-[D3DKMT_ADAPTER_VERIFIER_OPTION_TYPE](https://www.google.com/search?num=5&q=D3DKMT_ADAPTER_VERIFIER_OPTION_TYPE+site%3Alearn.microsoft.com) | d3dkmthk.h | [Vanara.PInvoke.Gdi32.D3DKMT_ADAPTER_VERIFIER_OPTION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=D3DKMT_ADAPTER_VERIFIER_OPTION_TYPE)  
 [DCB](https://www.google.com/search?num=5&q=DCB+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DCB](https://github.com/dahall/Vanara/search?l=C%23&q=DCB)  
 [DCLayout](https://www.google.com/search?num=5&q=DCLayout+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.DCLayout](https://github.com/dahall/Vanara/search?l=C%23&q=DCLayout)  
 [DeviceCap](https://www.google.com/search?num=5&q=DeviceCap+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.DeviceCap](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceCap)  
@@ -433,8 +429,6 @@ Native Structure | Header | Managed Structure
 [CIEXYZ](https://www.google.com/search?num=5&q=CIEXYZ+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CIEXYZ](https://github.com/dahall/Vanara/search?l=C%23&q=CIEXYZ)  
 [CIEXYZTRIPLE](https://www.google.com/search?num=5&q=CIEXYZTRIPLE+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CIEXYZTRIPLE](https://github.com/dahall/Vanara/search?l=C%23&q=CIEXYZTRIPLE)  
 [COLORADJUSTMENT](https://www.google.com/search?num=5&q=COLORADJUSTMENT+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.COLORADJUSTMENT](https://github.com/dahall/Vanara/search?l=C%23&q=COLORADJUSTMENT)  
-[D3DKMT_ACQUIREKEYEDMUTEX](https://www.google.com/search?num=5&q=D3DKMT_ACQUIREKEYEDMUTEX+site%3Alearn.microsoft.com) | d3dkmthk.h | [Vanara.PInvoke.Gdi32.D3DKMT_ACQUIREKEYEDMUTEX](https://github.com/dahall/Vanara/search?l=C%23&q=D3DKMT_ACQUIREKEYEDMUTEX)  
-[D3DKMT_HANDLE](https://www.google.com/search?num=5&q=D3DKMT_HANDLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.D3DKMT_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=D3DKMT_HANDLE)  
 [DESIGNVECTOR](https://www.google.com/search?num=5&q=DESIGNVECTOR+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DESIGNVECTOR](https://github.com/dahall/Vanara/search?l=C%23&q=DESIGNVECTOR)  
 [DIBSECTION](https://www.google.com/search?num=5&q=DIBSECTION+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.DIBSECTION](https://github.com/dahall/Vanara/search?l=C%23&q=DIBSECTION)  
 [DISPLAY_DEVICE](https://www.google.com/search?num=5&q=DISPLAY_DEVICE+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DISPLAY_DEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=DISPLAY_DEVICE)  

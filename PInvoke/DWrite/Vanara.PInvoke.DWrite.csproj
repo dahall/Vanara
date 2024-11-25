@@ -9,7 +9,19 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;DWrite</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DWriteCreateFactory
+
+Structures
+DWRITE_CLUSTER_METRICS DWRITE_FONT_FEATURE DWRITE_FONT_METRICS DWRITE_GLYPH_METRICS DWRITE_GLYPH_OFFSET DWRITE_GLYPH_RUN DWRITE_GLYPH_RUN_DESCRIPTION DWRITE_HIT_TEST_METRICS DWRITE_INLINE_OBJECT_METRICS DWRITE_LINE_BREAKPOINT DWRITE_LINE_METRICS DWRITE_MATRIX DWRITE_OVERHANG_METRICS DWRITE_SCRIPT_ANALYSIS DWRITE_SHAPING_GLYPH_PROPERTIES DWRITE_SHAPING_TEXT_PROPERTIES DWRITE_STRIKETHROUGH DWRITE_TEXT_METRICS DWRITE_TEXT_RANGE DWRITE_TRIMMING DWRITE_TYPOGRAPHIC_FEATURES DWRITE_UNDERLINE
+
+Interfaces
+IDWriteBitmapRenderTarget IDWriteFactory IDWriteFont IDWriteFontCollection IDWriteFontCollectionLoader IDWriteFontFace IDWriteFontFamily IDWriteFontFile IDWriteFontFileEnumerator IDWriteFontFileLoader IDWriteFontFileStream IDWriteFontList IDWriteGdiInterop IDWriteGlyphRunAnalysis IDWriteInlineObject IDWriteLocalFontFileLoader IDWriteLocalizedStrings IDWriteNumberSubstitution IDWritePixelSnapping IDWriteRenderingParams IDWriteTextAnalysisSink IDWriteTextAnalysisSource IDWriteTextAnalyzer IDWriteTextFormat IDWriteTextLayout IDWriteTextRenderer IDWriteTypography
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
