@@ -1792,7 +1792,7 @@ public static partial class DXGI
 	// **ppFactory );
 	[DllImport(Lib.DXGI, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dxgi.h")]
-	public static extern HRESULT CreateDXGIFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppFactory);
+	public static extern HRESULT CreateDXGIFactory(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppFactory);
 
 	/// <summary>Creates a DXGI 1.0 factory that you can use to generate other DXGI objects.</summary>
 	/// <returns>An IDXGIFactory object.</returns>
@@ -1881,7 +1881,7 @@ public static partial class DXGI
 	// **ppFactory );
 	[DllImport(Lib.DXGI, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dxgi.h", MSDNShortId = "6fb9d7a3-0b59-4b7a-8871-b99d59811d46")]
-	public static extern HRESULT CreateDXGIFactory1(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppFactory);
+	public static extern HRESULT CreateDXGIFactory1(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppFactory);
 
 	/// <summary>
 	/// <para>Creates a DXGI 1.3 factory that you can use to generate other DXGI objects.</para>
@@ -1915,7 +1915,7 @@ public static partial class DXGI
 	// REFIID riid, void **ppFactory );
 	[DllImport(Lib.DXGI, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dxgi1_3.h", MSDNShortId = "D3CF43B0-8F17-486E-8750-CF0B9052BE74")]
-	public static extern HRESULT CreateDXGIFactory2(DXGI_CREATE_FACTORY Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppFactory);
+	public static extern HRESULT CreateDXGIFactory2(DXGI_CREATE_FACTORY Flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppFactory);
 
 	/// <summary>Allows a process to indicate that it's resilient to any of its graphics devices being removed.</summary>
 	/// <returns>
@@ -1953,7 +1953,7 @@ public static partial class DXGI
 	// REFIID riid, void **ppDebug );
 	[PInvokeData("dxgidebug.h", MSDNShortId = "NF:dxgidebug.DXGIGetDebugInterface")]
 	[DllImport("dxgidebug.dll", SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DXGIGetDebugInterface(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppDebug);
+	public static extern HRESULT DXGIGetDebugInterface(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppDebug);
 
 	/// <summary>Retrieves an interface that Windows Store apps use for debugging the Microsoft DirectX Graphics Infrastructure (DXGI).</summary>
 	/// <param name="Flags">Not used.</param>
@@ -1971,7 +1971,7 @@ public static partial class DXGI
 	// Flags, REFIID riid, void **pDebug );
 	[DllImport(Lib.DXGI, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dxgi1_3.h", MSDNShortId = "0FE0EAF5-3ADC-426F-9DA9-FEDEC519EEF0")]
-	public static extern HRESULT DXGIGetDebugInterface1([Optional] uint Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? pDebug);
+	public static extern HRESULT DXGIGetDebugInterface1([Optional] uint Flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? pDebug);
 
 	/// <summary>Represents a color value with alpha, which is used for transparency.</summary>
 	/// <remarks>

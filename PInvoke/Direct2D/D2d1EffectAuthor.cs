@@ -19,7 +19,7 @@ public static partial class D2d1
 	// *data, UINT32 dataSize, [out, optional] UINT32 *actualSize ) {...}
 	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NC:d2d1effectauthor.PD2D1_PROPERTY_GET_FUNCTION")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
-	public delegate HRESULT PD2D1_PROPERTY_GET_FUNCTION([In, MarshalAs(UnmanagedType.IUnknown)] object effect,
+	public delegate HRESULT PD2D1_PROPERTY_GET_FUNCTION([In, MarshalAs(UnmanagedType.Interface)] object effect,
 		[Out] IntPtr data, uint dataSize, out uint actualSize);
 
 	/// <summary>Sets a property on an effect.</summary>
@@ -36,7 +36,7 @@ public static partial class D2d1
 	// UINT32 dataSize ) {...}
 	[PInvokeData("d2d1effectauthor.h", MSDNShortId = "NC:d2d1effectauthor.PD2D1_PROPERTY_SET_FUNCTION")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
-	public delegate HRESULT PD2D1_PROPERTY_SET_FUNCTION([In, MarshalAs(UnmanagedType.IUnknown)] object effect,
+	public delegate HRESULT PD2D1_PROPERTY_SET_FUNCTION([In, MarshalAs(UnmanagedType.Interface)] object effect,
 		[In] IntPtr data, uint dataSize);
 
 	/// <summary>Specifies how one of the color sources is to be derived and optionally specifies a preblend operation on the color source.</summary>

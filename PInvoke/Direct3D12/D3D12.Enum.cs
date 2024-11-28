@@ -1113,15 +1113,15 @@ public static partial class D3D12
 	/// <remarks>
 	/// <para>This enum is used by the following methods:</para>
 	/// <list type="bullet">
-	/// <item>
-	/// <description>CreateCommandAllocator</description>
-	/// </item>
-	/// <item>
-	/// <description>CreateCommandQueue</description>
-	/// </item>
-	/// <item>
-	/// <description>CreateCommandList</description>
-	/// </item>
+	///   <item>
+	///     <description>CreateCommandAllocator</description>
+	///   </item>
+	///   <item>
+	///     <description>CreateCommandQueue</description>
+	///   </item>
+	///   <item>
+	///     <description>CreateCommandList</description>
+	///   </item>
 	/// </list>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ne-d3d12-d3d12_command_list_type typedef enum D3D12_COMMAND_LIST_TYPE {
@@ -1131,37 +1131,26 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NE:d3d12.D3D12_COMMAND_LIST_TYPE")]
 	public enum D3D12_COMMAND_LIST_TYPE
 	{
-		/// <summary>
-		/// <para>Value: 0 Specifies a command buffer that the GPU can execute. A direct command list doesn't inherit any GPU state.</para>
-		/// </summary>
+		/// <summary>Value: 0 Specifies a command buffer that the GPU can execute. A direct command list doesn't inherit any GPU state.</summary>
 		D3D12_COMMAND_LIST_TYPE_DIRECT = 0,
 
 		/// <summary>
-		/// <para>Value: 1 
+		/// Value: 1
 		/// Specifies a command buffer that can be executed only directly via a direct command list. A bundle command list inherits all GPU
-		/// state (except for the currently set pipeline state object and primitive topology).
-		/// </para>
+		/// {D255958A-8513-4226-94B9-080D98F904A1}{D255958A-8513-4226-94B9-080D98F904A1}state (except for the currently set pipeline state object and primitive topology).
 		/// </summary>
 		D3D12_COMMAND_LIST_TYPE_BUNDLE,
 
-		/// <summary>
-		/// <para>Value: 2 Specifies a command buffer for computing.</para>
-		/// </summary>
+		/// <summary>Value: 2 Specifies a command buffer for computing.</summary>
 		D3D12_COMMAND_LIST_TYPE_COMPUTE,
 
-		/// <summary>
-		/// <para>Value: 3 Specifies a command buffer for copying.</para>
-		/// </summary>
+		/// <summary>Value: 3 Specifies a command buffer for copying.</summary>
 		D3D12_COMMAND_LIST_TYPE_COPY,
 
-		/// <summary>
-		/// <para>Value: 4 Specifies a command buffer for video decoding.</para>
-		/// </summary>
+		/// <summary>Value: 4 Specifies a command buffer for video decoding.</summary>
 		D3D12_COMMAND_LIST_TYPE_VIDEO_DECODE,
 
-		/// <summary>
-		/// <para>Value: 5 Specifies a command buffer for video processing.</para>
-		/// </summary>
+		/// <summary>Value: 5 Specifies a command buffer for video processing.</summary>
 		D3D12_COMMAND_LIST_TYPE_VIDEO_PROCESS,
 	}
 

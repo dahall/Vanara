@@ -685,7 +685,7 @@ public static partial class D3D11
 	// **ppImmediateContext, [out, optional] D3D_FEATURE_LEVEL *pChosenFeatureLevel );
 	[PInvokeData("d3d11on12.h", MSDNShortId = "NF:d3d11on12.D3D11On12CreateDevice")]
 	[DllImport(Lib_D3D11, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3D11On12CreateDevice([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, D3D11_CREATE_DEVICE_FLAG Flags,
+	public static extern HRESULT D3D11On12CreateDevice([In, MarshalAs(UnmanagedType.Interface)] object pDevice, D3D11_CREATE_DEVICE_FLAG Flags,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D_FEATURE_LEVEL[]? pFeatureLevels, uint FeatureLevels,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] object[]? ppCommandQueues,
 		uint NumQueues, uint NodeMask, [Out, Optional] IntPtr ppDevice, [Out, Optional] IntPtr ppImmediateContext, [Out, Optional] IntPtr pChosenFeatureLevel);
@@ -790,7 +790,7 @@ public static partial class D3D11
 	// **ppImmediateContext, [out, optional] D3D_FEATURE_LEVEL *pChosenFeatureLevel );
 	[PInvokeData("d3d11on12.h", MSDNShortId = "NF:d3d11on12.D3D11On12CreateDevice")]
 	[DllImport(Lib_D3D11, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3D11On12CreateDevice([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, D3D11_CREATE_DEVICE_FLAG Flags,
+	public static extern HRESULT D3D11On12CreateDevice([In, MarshalAs(UnmanagedType.Interface)] object pDevice, D3D11_CREATE_DEVICE_FLAG Flags,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D_FEATURE_LEVEL[]? pFeatureLevels, uint FeatureLevels,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] object[]? ppCommandQueues,
 		uint NumQueues, uint NodeMask, out ID3D11Device ppDevice, out ID3D11DeviceContext ppImmediateContext, out D3D_FEATURE_LEVEL pChosenFeatureLevel);
@@ -5463,7 +5463,7 @@ public static partial class D3D11
 		public IntPtr ppPastSurfaces;
 
 		/// <summary>A pointer to the ID3D11VideoProcessorInputView interface of the surface that contains the current input frame.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D11VideoProcessorInputView pInputSurface;
 
 		/// <summary>
@@ -5488,7 +5488,7 @@ public static partial class D3D11
 		/// </para>
 		/// <para>For any other stereo 3D format, set this member to <c>NULL</c>.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D11VideoProcessorInputView pInputSurfaceRight;
 
 		/// <summary>

@@ -4341,7 +4341,7 @@ public static partial class D3D12
 	public struct D3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_INPUT
 	{
 		/// <summary>The <c>ID3D12VideoMotionVectorHeap</c> containing the hardware-dependent data layout of the motion search.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12VideoMotionVectorHeap pMotionVectorHeap;
 
 		/// <summary>
@@ -4371,7 +4371,7 @@ public static partial class D3D12
 		/// vector component stored in the R component and the Y vector component stored in the G component. Motion vectors are stored in a
 		/// 2D layout that corresponds to the pixel layout of the original input textures.
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pMotionVectorTexture2D;
 
 		/// <summary>
@@ -4409,7 +4409,7 @@ public static partial class D3D12
 	public struct D3D12_VIDEO_DECODE_COMPRESSED_BITSTREAM
 	{
 		/// <summary>A pointer to an <c>ID3D12Resource</c> representing the source buffer containing the compressed bitstream to decode.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pBuffer;
 
 		/// <summary>
@@ -4474,7 +4474,7 @@ public static partial class D3D12
 		/// A pointer to an <c>ID3D12Resource</c> containing the native decoding output. When downsampling is enabled, the output at native
 		/// decode resolution, color space, and format may be required for future decode submissions (as reference frames, for instance).
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pReferenceTexture2D;
 
 		/// <summary>The subresource index of the resource provided in pDecodeTexture2D to use.</summary>
@@ -4505,7 +4505,7 @@ public static partial class D3D12
 		/// A pointer to an <c>ID3D12Resource</c> containing the native decoding output. When downsampling is enabled, the output at native
 		/// decode resolution, color space, and format may be required for future decode submissions (as reference frames, for instance).
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pReferenceTexture2D;
 
 		/// <summary>The subresource index of the resource provided in pDecodeTexture2D to use.</summary>
@@ -4568,7 +4568,7 @@ public static partial class D3D12
 		public D3D12_VIDEO_DECODE_COMPRESSED_BITSTREAM CompressedBitstream;
 
 		/// <summary>An <c>ID3D12VideoDecoderHeap</c> representing a pointer to the heap for the current decode resolution.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12VideoDecoderHeap pHeap;
 	}
 
@@ -4657,7 +4657,7 @@ public static partial class D3D12
 		/// And <c>ID3D12Resource</c> representing the target buffer for hardware to write the components histogram. Set to a nullptr when
 		/// the component histogram is disabled.
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pBuffer;
 	}
 
@@ -4676,7 +4676,7 @@ public static partial class D3D12
 		/// An <c>ID3D12Resource</c> representing the output texture. If decode conversion is enabled, this texture will contain the
 		/// post-conversion output. If decode conversion is not enabled, this texture will contain the decode output.
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pOutputTexture2D;
 
 		/// <summary>
@@ -4703,7 +4703,7 @@ public static partial class D3D12
 		/// An <c>ID3D12Resource</c> representing the output texture. If decode conversion is enabled, this texture will contain the
 		/// post-conversion output. If decode conversion is not enabled, this texture will contain the decode output.
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pOutputTexture2D;
 
 		/// <summary>
@@ -5937,7 +5937,7 @@ public static partial class D3D12
 		/// A pointer to a <c>ID3D12Resource</c> containing the compressed bitstream buffer. Note that the resource buffer size is not the
 		/// available size for this encoding operation because FrameStartOffset needs to be taken into account against this size.
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pBuffer;
 
 		/// <summary>
@@ -5994,7 +5994,7 @@ public static partial class D3D12
 	public struct D3D12_VIDEO_ENCODER_ENCODE_OPERATION_METADATA_BUFFER
 	{
 		/// <summary>A pointer to an <c>ID3D12Resource</c> representing the metadata buffer.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pBuffer;
 
 		/// <summary>The offset into the associated buffer.</summary>
@@ -6017,7 +6017,7 @@ public static partial class D3D12
 		public D3D12_VIDEO_ENCODER_PICTURE_CONTROL_DESC PictureControlDesc;
 
 		/// <summary>An <c>ID3D12Resource</c> representing the frame to encode.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pInputFrame;
 
 		/// <summary>A UINT64 specifying the subresource index for pInputFrame.</summary>
@@ -8218,7 +8218,7 @@ public static partial class D3D12
 	public struct D3D12_VIDEO_ENCODER_RECONSTRUCTED_PICTURE
 	{
 		/// <summary>A <c>ID3D12Resource</c> representing the reconstructed picture generated from the input frame.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pReconstructedPicture;
 
 		/// <summary>A UINT64 specifying the subresource index for pReconstructedPicture.</summary>
@@ -8765,14 +8765,14 @@ public static partial class D3D12
 	public struct D3D12_VIDEO_MOTION_ESTIMATOR_INPUT
 	{
 		/// <summary>An <c>ID3D12Resource</c> representing the current frame. The motion estimation operation applies to the entire frame.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pInputTexture2D;
 
 		/// <summary>The base plane of the MIP and array slice to use for the input.</summary>
 		public uint InputSubresourceIndex;
 
 		/// <summary>An <c>ID3D12Resource</c> representing the reference frame, or past frame, used for motion estimation.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pReferenceTexture2D;
 
 		/// <summary>The base plane of the MIP and array slice to use for the reference.</summary>
@@ -8783,7 +8783,7 @@ public static partial class D3D12
 		/// estimator operation which may be used for hinting the current operation. This parameter may be NULL, indicating that previous
 		/// motion estimator output should not be considered for the current operation.
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12VideoMotionVectorHeap pHintMotionVectorHeap;
 	}
 
@@ -8804,7 +8804,7 @@ public static partial class D3D12
 		/// vector component stored in the R component and the Y vector component stored in the G component. Motion vectors are stored in a
 		/// 2D layout that corresponds to the pixel layout of the original input textures.
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12VideoMotionVectorHeap pMotionVectorHeap;
 	}
 
@@ -8943,7 +8943,7 @@ public static partial class D3D12
 	public struct D3D12_VIDEO_PROCESS_INPUT_STREAM
 	{
 		/// <summary>An <c>ID3D12Resource</c> representing the current input field or frame.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pTexture2D;
 
 		/// <summary>The subresource index to use of the pTexture2D argument.</summary>
@@ -9260,7 +9260,7 @@ public static partial class D3D12
 	public struct D3D12_VIDEO_PROCESS_OUTPUT_STREAM
 	{
 		/// <summary>A pointer to a <c>ID3D12Resource</c> representing the output surfaces for the video process command.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pTexture2D;
 
 		/// <summary>The subresource indices to use within the resource specified pTexture2D resource.</summary>

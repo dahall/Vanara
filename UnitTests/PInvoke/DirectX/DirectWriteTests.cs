@@ -13,6 +13,13 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 	protected override IDWriteFactory InitInstance() => DWriteCreateFactory<IDWriteFactory>();
 
 	[Test]
+	public void StructTest()
+	{
+		foreach (var ss in TestHelper.GetNestedStructSizes(typeof(Dwrite)))
+			TestContext.WriteLine(ss);
+	}
+
+	[Test]
 	public void EnumFontsTest()
 	{
 		Instance.GetSystemFontCollection(out var coll);

@@ -28,7 +28,7 @@ public static partial class DXCore
 	[PInvokeData("dxcore_interface.h", MSDNShortId = "NC:dxcore_interface.PFN_DXCORE_NOTIFICATION_CALLBACK")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
 	public delegate void PFN_DXCORE_NOTIFICATION_CALLBACK(DXCoreNotificationType notificationType,
-		[MarshalAs(UnmanagedType.IUnknown)] object? @object, [In] IntPtr context);
+		[MarshalAs(UnmanagedType.Interface)] object? @object, [In] IntPtr context);
 
 	/// <summary>
 	/// Defines constants that specify DXCore adapter preferences to be used as list-sorting criteria. You can sort a DXCore adapter list by
@@ -569,7 +569,7 @@ public static partial class DXCore
 	// REFIID riid, [out] void **ppvFactory );
 	[PInvokeData("dxcore.h", MSDNShortId = "NF:dxcore.DXCoreCreateAdapterFactory")]
 	[DllImport(Lib_dxcore, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DXCoreCreateAdapterFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppvFactory);
+	public static extern HRESULT DXCoreCreateAdapterFactory(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppvFactory);
 
 	/// <summary>Represents the physical adapter index and the engine ID.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxcore_interface/ns-dxcore_interface-dxcoreadapterengineindex struct

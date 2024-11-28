@@ -1369,7 +1369,7 @@ public static partial class D3D12
 	// IUnknown *pAdapter, D3D_FEATURE_LEVEL MinimumFeatureLevel, [in] REFIID riid, [out, optional] void **ppDevice );
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12CreateDevice")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3D12CreateDevice([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pAdapter,
+	public static extern HRESULT D3D12CreateDevice([In, Optional, MarshalAs(UnmanagedType.Interface)] object? pAdapter,
 		D3D_FEATURE_LEVEL MinimumFeatureLevel, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppDevice);
 
 	/// <summary>Creates a device that represents the display adapter.</summary>

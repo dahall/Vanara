@@ -149,7 +149,7 @@ public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
 	/// <typeparam name="T">Native type</typeparam>
 	/// <param name="value">The value.</param>
 	/// <returns><see cref="SafeCoTaskMemHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-	public static SafeCoTaskMemHandle CreateFromStructure<T>(in T? value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
+	public static SafeCoTaskMemHandle CreateFromStructure<T>(in T? value = default) => value is null ? Null : new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
 
 	/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeCoTaskMemHandle"/> where it owns the reference.</summary>
 	/// <param name="ptr">The <see cref="IntPtr"/>.</param>

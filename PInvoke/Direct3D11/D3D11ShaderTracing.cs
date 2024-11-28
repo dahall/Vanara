@@ -718,7 +718,7 @@ public static partial class D3D11
 		// HRESULT CreateShaderTrace( [in] IUnknown *pShader, [in] D3D11_SHADER_TRACE_DESC *pTraceDesc, [out] ID3D11ShaderTrace
 		// **ppShaderTrace );
 		[PreserveSig]
-		HRESULT CreateShaderTrace([In, MarshalAs(UnmanagedType.IUnknown)] object pShader, in D3D11_SHADER_TRACE_DESC pTraceDesc, out ID3D11ShaderTrace ppShaderTrace);
+		HRESULT CreateShaderTrace([In, MarshalAs(UnmanagedType.Interface)] object pShader, in D3D11_SHADER_TRACE_DESC pTraceDesc, out ID3D11ShaderTrace ppShaderTrace);
 	}
 
 	/// <summary>

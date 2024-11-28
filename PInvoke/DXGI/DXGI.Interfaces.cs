@@ -80,7 +80,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -334,7 +334,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -607,7 +607,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -889,7 +889,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -1061,7 +1061,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -1330,7 +1330,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgifactory-createswapchain HRESULT CreateSwapChain(
 		// IUnknown *pDevice, DXGI_SWAP_CHAIN_DESC *pDesc, IDXGISwapChain **ppSwapChain );
-		IDXGISwapChain CreateSwapChain([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, in DXGI_SWAP_CHAIN_DESC pDesc);
+		IDXGISwapChain CreateSwapChain([In, MarshalAs(UnmanagedType.Interface)] object pDevice, in DXGI_SWAP_CHAIN_DESC pDesc);
 
 		/// <summary>Create an adapter interface that represents a software adapter.</summary>
 		/// <param name="Module">
@@ -1443,7 +1443,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -1712,7 +1712,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgifactory-createswapchain HRESULT CreateSwapChain(
 		// IUnknown *pDevice, DXGI_SWAP_CHAIN_DESC *pDesc, IDXGISwapChain **ppSwapChain );
-		new IDXGISwapChain CreateSwapChain([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, in DXGI_SWAP_CHAIN_DESC pDesc);
+		new IDXGISwapChain CreateSwapChain([In, MarshalAs(UnmanagedType.Interface)] object pDevice, in DXGI_SWAP_CHAIN_DESC pDesc);
 
 		/// <summary>Create an adapter interface that represents a software adapter.</summary>
 		/// <param name="Module">
@@ -1892,7 +1892,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -2037,7 +2037,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -2234,7 +2234,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgioutput-findclosestmatchingmode HRESULT
 		// FindClosestMatchingMode( const DXGI_MODE_DESC *pModeToMatch, DXGI_MODE_DESC *pClosestMatch, IUnknown *pConcernedDevice );
-		void FindClosestMatchingMode(in DXGI_MODE_DESC pModeToMatch, out DXGI_MODE_DESC pClosestMatch, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pConcernedDevice);
+		void FindClosestMatchingMode(in DXGI_MODE_DESC pModeToMatch, out DXGI_MODE_DESC pClosestMatch, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pConcernedDevice);
 
 		/// <summary>Halt a thread until the next vertical blank occurs.</summary>
 		/// <remarks>
@@ -2264,7 +2264,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgioutput-takeownership HRESULT TakeOwnership( IUnknown
 		// *pDevice, BOOL Exclusive );
-		void TakeOwnership([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, [MarshalAs(UnmanagedType.Bool)] bool Exclusive);
+		void TakeOwnership([In, MarshalAs(UnmanagedType.Interface)] object pDevice, [MarshalAs(UnmanagedType.Bool)] bool Exclusive);
 
 		/// <summary>Releases ownership of the output.</summary>
 		/// <returns>None</returns>
@@ -2461,7 +2461,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -2671,7 +2671,7 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( REFGUID Name, const IUnknown *pUnknown );
-		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+		new void SetPrivateDataInterface(in Guid Name, [In, Optional, MarshalAs(UnmanagedType.Interface)] object pUnknown);
 
 		/// <summary>Get a pointer to the object's data.</summary>
 		/// <param name="Name">
@@ -2882,7 +2882,7 @@ public static partial class DXGI
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiswapchain-getbuffer HRESULT GetBuffer( UINT Buffer,
 		// REFIID riid, void **ppSurface );
-		[return: MarshalAs(UnmanagedType.IUnknown)] object GetBuffer(uint Buffer, in Guid riid);
+		[return: MarshalAs(UnmanagedType.Interface)] object GetBuffer(uint Buffer, in Guid riid);
 
 		/// <summary>Sets the display state to windowed or full screen.</summary>
 		/// <param name="Fullscreen">

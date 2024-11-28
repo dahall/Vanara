@@ -5954,7 +5954,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11tracingdevice-setshadertrackingoptions
 		// HRESULT SetShaderTrackingOptions( [in] IUnknown *pShader, [in] UINT Options );
 		[PreserveSig]
-		HRESULT SetShaderTrackingOptions([In, MarshalAs(UnmanagedType.IUnknown)] object pShader, D3D11_SHADER_TRACKING_OPTION Options);
+		HRESULT SetShaderTrackingOptions([In, MarshalAs(UnmanagedType.Interface)] object pShader, D3D11_SHADER_TRACKING_OPTION Options);
 	}
 
 	/// <summary>Debug message filter; contains a lists of message types to allow or deny.</summary>

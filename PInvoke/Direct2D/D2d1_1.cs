@@ -15,7 +15,7 @@ public static partial class D2d1
 	// PD2D1_EFFECT_FACTORY Pd2d1EffectFactory; HRESULT Pd2d1EffectFactory( IUnknown **effectImpl ) {...}
 	[PInvokeData("d2d1_1.h", MSDNShortId = "NC:d2d1_1.PD2D1_EFFECT_FACTORY")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
-	public delegate HRESULT PD2D1_EFFECT_FACTORY([MarshalAs(UnmanagedType.IUnknown)] out object? effectImpl);
+	public delegate HRESULT PD2D1_EFFECT_FACTORY([MarshalAs(UnmanagedType.Interface)] out object? effectImpl);
 
 	/// <summary>Specifies how a bitmap can be used.</summary>
 	/// <remarks>

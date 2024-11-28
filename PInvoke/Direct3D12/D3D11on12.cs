@@ -50,8 +50,8 @@ public static partial class D3D12
 		// CreateWrappedResource( [in] IUnknown *pResource12, [in] const D3D11_RESOURCE_FLAGS *pFlags11, D3D12_RESOURCE_STATES InState,
 		// D3D12_RESOURCE_STATES OutState, REFIID riid, [out, optional] void **ppResource11 );
 		[PreserveSig]
-		HRESULT CreateWrappedResource([MarshalAs(UnmanagedType.IUnknown)] object pResource12, in D3D11_RESOURCE_FLAGS pFlags11,
-			D3D12_RESOURCE_STATES InState, D3D12_RESOURCE_STATES OutState, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppResource11);
+		HRESULT CreateWrappedResource([MarshalAs(UnmanagedType.Interface)] object pResource12, in D3D11_RESOURCE_FLAGS pFlags11,
+			D3D12_RESOURCE_STATES InState, D3D12_RESOURCE_STATES OutState, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppResource11);
 
 		/// <summary>Releases D3D11 resources that were wrapped for D3D 11on12.</summary>
 		/// <param name="ppResources">
@@ -147,8 +147,8 @@ public static partial class D3D12
 		// CreateWrappedResource( [in] IUnknown *pResource12, [in] const D3D11_RESOURCE_FLAGS *pFlags11, D3D12_RESOURCE_STATES InState,
 		// D3D12_RESOURCE_STATES OutState, REFIID riid, [out, optional] void **ppResource11 );
 		[PreserveSig]
-		new HRESULT CreateWrappedResource([MarshalAs(UnmanagedType.IUnknown)] object pResource12, in D3D11_RESOURCE_FLAGS pFlags11,
-			D3D12_RESOURCE_STATES InState, D3D12_RESOURCE_STATES OutState, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppResource11);
+		new HRESULT CreateWrappedResource([MarshalAs(UnmanagedType.Interface)] object pResource12, in D3D11_RESOURCE_FLAGS pFlags11,
+			D3D12_RESOURCE_STATES InState, D3D12_RESOURCE_STATES OutState, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppResource11);
 
 		/// <summary>Releases D3D11 resources that were wrapped for D3D 11on12.</summary>
 		/// <param name="ppResources">
@@ -219,7 +219,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device1-getd3d12device HRESULT
 		// GetD3D12Device( REFIID riid, void **ppvDevice );
 		[PreserveSig]
-		HRESULT GetD3D12Device(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvDevice);
+		HRESULT GetD3D12Device(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvDevice);
 	}
 
 	/// <summary>
@@ -270,8 +270,8 @@ public static partial class D3D12
 		// CreateWrappedResource( [in] IUnknown *pResource12, [in] const D3D11_RESOURCE_FLAGS *pFlags11, D3D12_RESOURCE_STATES InState,
 		// D3D12_RESOURCE_STATES OutState, REFIID riid, [out, optional] void **ppResource11 );
 		[PreserveSig]
-		new HRESULT CreateWrappedResource([In, MarshalAs(UnmanagedType.IUnknown)] object pResource12, in D3D11_RESOURCE_FLAGS pFlags11,
-			D3D12_RESOURCE_STATES InState, D3D12_RESOURCE_STATES OutState, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppResource11);
+		new HRESULT CreateWrappedResource([In, MarshalAs(UnmanagedType.Interface)] object pResource12, in D3D11_RESOURCE_FLAGS pFlags11,
+			D3D12_RESOURCE_STATES InState, D3D12_RESOURCE_STATES OutState, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppResource11);
 
 		/// <summary>Releases D3D11 resources that were wrapped for D3D 11on12.</summary>
 		/// <param name="ppResources">
@@ -342,7 +342,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nf-d3d11on12-id3d11on12device1-getd3d12device HRESULT
 		// GetD3D12Device( REFIID riid, void **ppvDevice );
 		[PreserveSig]
-		new HRESULT GetD3D12Device(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvDevice);
+		new HRESULT GetD3D12Device(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvDevice);
 
 		/// <summary>Unwraps a Direct3D 11 resource object, and retrieves it as a Direct3D 12 resource object.</summary>
 		/// <param name="pResource11">
@@ -398,7 +398,7 @@ public static partial class D3D12
 		// **ppvResource12 );
 		[PreserveSig]
 		HRESULT UnwrapUnderlyingResource([In] ID3D11Resource pResource11, [In] ID3D12CommandQueue pCommandQueue, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown)] out object ppvResource12);
+			[MarshalAs(UnmanagedType.Interface)] out object ppvResource12);
 
 		/// <summary>
 		/// With this method, you can return a Direct3D 11 resource object to Direct3D11On12, and indicate (by way of fences and fence

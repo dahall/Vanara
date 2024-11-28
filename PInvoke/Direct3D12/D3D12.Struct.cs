@@ -37,10 +37,10 @@ public static partial class D3D12
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pCommandQueueDebugNameW;
 		/// <summary>A pointer to the ID3D12GraphicsCommandList interface representing the outstanding command list at the time of execution.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12GraphicsCommandList pCommandList;
 		/// <summary>A pointer to the ID3D12CommandQueue interface representing the outstanding command queue.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12CommandQueue pCommandQueue;
 		/// <summary>A <c>UINT32</c> containing the count of D3D12_AUTO_BREADCRUMB_OP values in the array pointed to by .</summary>
 		public uint BreadcrumbCount;
@@ -135,10 +135,10 @@ public static partial class D3D12
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pCommandQueueDebugNameW;
 		/// <summary>A pointer to the ID3D12GraphicsCommandList interface representing the outstanding command list at the time of execution.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12GraphicsCommandList pCommandList;
 		/// <summary>A pointer to the ID3D12CommandQueue interface representing the outstanding command queue.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12CommandQueue pCommandQueue;
 		/// <summary>A <c>UINT32</c> containing the count of D3D12_AUTO_BREADCRUMB_OP values in the array pointed to by .</summary>
 		public uint BreadcrumbCount;
@@ -194,7 +194,7 @@ public static partial class D3D12
 		/// <summary>Access bits corresponding with resource usage after the barrier completes.</summary>
 		public D3D12_BARRIER_ACCESS AccessAfter;
 		/// <summary>Pointer to the buffer resource being using the barrier.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pResource;
 		/// <summary>Must be 0.</summary>
 		public ulong Offset;
@@ -239,7 +239,7 @@ public static partial class D3D12
 		/// <summary>Layout of texture upon completion of barrier execution.</summary>
 		public D3D12_BARRIER_LAYOUT LayoutAfter;
 		/// <summary>Pointer to the buffer resource being using the barrier.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pResource;
 		/// <summary>Range of texture subresources being barriered.</summary>
 		public D3D12_BARRIER_SUBRESOURCE_RANGE Subresources;
@@ -948,7 +948,7 @@ public static partial class D3D12
 	public struct D3D12_COMPUTE_PIPELINE_STATE_DESC
 	{
 		/// <summary>A pointer to the <c>ID3D12RootSignature</c> object.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12RootSignature pRootSignature;
 		/// <summary>A <c>D3D12_SHADER_BYTECODE</c> structure that describes the compute shader.</summary>
 		public D3D12_SHADER_BYTECODE CS;
@@ -1716,7 +1716,7 @@ public static partial class D3D12
 	public struct D3D12_EXISTING_COLLECTION_DESC
 	{
 		/// <summary>The collection to include in a state object. The enclosing state object holds a reference to the existing collection.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12StateObject pExistingCollection;
 		/// <summary>
 		///   <para>Size of the <i>pExports</i> array. If 0, all of the collection’s exports get exported.</para>
@@ -2597,7 +2597,7 @@ public static partial class D3D12
 	public struct D3D12_GLOBAL_ROOT_SIGNATURE
 	{
 		/// <summary>The root signature that will function as a global root signature. A state object holds a reference to this signature.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12RootSignature pGlobalRootSignature;
 	}
 
@@ -2702,7 +2702,7 @@ public static partial class D3D12
 	public struct D3D12_GRAPHICS_PIPELINE_STATE_DESC
 	{
 		/// <summary>A pointer to the <c>ID3D12RootSignature</c> object.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12RootSignature pRootSignature;
 		/// <summary>A <c>D3D12_SHADER_BYTECODE</c> structure that describes the vertex shader.</summary>
 		public D3D12_SHADER_BYTECODE VS;
@@ -3018,7 +3018,7 @@ public static partial class D3D12
 	public struct D3D12_LOCAL_ROOT_SIGNATURE
 	{
 		/// <summary>The root signature that will function as a local root signature. A state object holds a reference to this signature.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12RootSignature pLocalRootSignature;
 	}
 
@@ -3932,10 +3932,10 @@ public static partial class D3D12
 	public struct D3D12_RENDER_PASS_ENDING_ACCESS_RESOLVE_PARAMETERS
 	{
 		/// <summary>A pointer to an <c>ID3D12Resource</c>. The source resource.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pSrcResource;
 		/// <summary>A pointer to an <c>ID3D12Resource</c>. The destination resource.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pDstResource;
 		/// <summary>A <b>UINT</b>. The number of subresources.</summary>
 		public uint SubresourceCount;
@@ -4053,10 +4053,10 @@ public static partial class D3D12
 	public struct D3D12_RESOURCE_ALIASING_BARRIER
 	{
 		/// <summary>A pointer to the <c>ID3D12Resource</c> object that represents the before resource used in the transition.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pResourceBefore;
 		/// <summary>A pointer to the <c>ID3D12Resource</c> object that represents the after resource used in the transition.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pResourceAfter;
 	}
 
@@ -4279,7 +4279,7 @@ public static partial class D3D12
 	public struct D3D12_RESOURCE_TRANSITION_BARRIER
 	{
 		/// <summary>A pointer to the <c>ID3D12Resource</c> object that represents the resource used in the transition.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pResource;
 		/// <summary>The index of the subresource for the transition. Use the <b>D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES</b> flag ( 0xffffffff ) to transition all subresources in a resource at the same time.</summary>
 		public uint Subresource;
@@ -4302,7 +4302,7 @@ public static partial class D3D12
 	public struct D3D12_RESOURCE_UAV_BARRIER
 	{
 		/// <summary>The resource used in the transition, as a pointer to <c>ID3D12Resource</c>.</summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pResource;
 	}
 
@@ -5483,7 +5483,7 @@ public static partial class D3D12
 		///   <para>When Type is D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT, pResource must point to a buffer resource.</para>
 		///   <para>When Type is D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX, pResource must point to a texture resource.</para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.IUnknown)]
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Resource pResource;
 		/// <summary>Specifies which type of resource location this is: a subresource of a texture, or a description of a texture layout which can be applied to a buffer. This <c>D3D12_TEXTURE_COPY_TYPE</c> enum indicates which union member to use.</summary>
 		public D3D12_TEXTURE_COPY_TYPE Type;

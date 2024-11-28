@@ -293,7 +293,7 @@ public struct StructPointer<T> where T : unmanaged
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
 	/// <summary>Converts this pointer to a copied structure. If pointer has no value, <c>null</c> is returned.</summary>

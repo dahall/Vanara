@@ -96,7 +96,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -268,7 +268,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -466,7 +466,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -663,7 +663,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -849,7 +849,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -969,7 +969,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -1133,7 +1133,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -1432,7 +1432,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -1834,7 +1834,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -2015,7 +2015,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -2216,7 +2216,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -2424,7 +2424,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -2637,7 +2637,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -2803,7 +2803,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -3281,7 +3281,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -3767,7 +3767,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -4261,7 +4261,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -4416,7 +4416,7 @@ public static partial class D3D12
 		new HRESULT SetSDKVersion(uint SDKVersion, [MarshalAs(UnmanagedType.LPStr)] string SDKPath);
 
 		[PreserveSig]
-		HRESULT CreateDeviceFactory(uint SDKVersion, [MarshalAs(UnmanagedType.LPStr)] string SDKPath, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvFactory);
+		HRESULT CreateDeviceFactory(uint SDKVersion, [MarshalAs(UnmanagedType.LPStr)] string SDKPath, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvFactory);
 
 		[PreserveSig]
 		void FreeUnusedSDKs();
@@ -4514,7 +4514,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -4813,7 +4813,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -5048,7 +5048,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12swapchainassistant-getcurrentresourceandcommandqueue
 		// HRESULT GetCurrentResourceAndCommandQueue( REFIID riidResource, void **ppvResource, REFIID riidQueue, void **ppvQueue );
 		[PreserveSig]
-		HRESULT GetCurrentResourceAndCommandQueue(in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource,
+		HRESULT GetCurrentResourceAndCommandQueue(in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource,
 			in Guid riidQueue, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvQueue);
 
 		/// <summary/>

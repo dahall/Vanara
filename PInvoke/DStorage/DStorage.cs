@@ -44,15 +44,19 @@ public static partial class DStorage
 		DSTORAGE_COMMAND_TYPE_NONE = -1,
 
 		/// <summary/>
+		[CorrespondingType(typeof(DSTORAGE_ERROR_PARAMETERS_REQUEST))]
 		DSTORAGE_COMMAND_TYPE_REQUEST = 0,
 
 		/// <summary/>
+		[CorrespondingType(typeof(DSTORAGE_ERROR_PARAMETERS_STATUS))]
 		DSTORAGE_COMMAND_TYPE_STATUS = 1,
 
 		/// <summary/>
+		[CorrespondingType(typeof(DSTORAGE_ERROR_PARAMETERS_SIGNAL))]
 		DSTORAGE_COMMAND_TYPE_SIGNAL = 2,
 
 		/// <summary/>
+		[CorrespondingType(typeof(DSTORAGE_ERROR_PARAMETERS_EVENT))]
 		DSTORAGE_COMMAND_TYPE_EVENT = 3,
 	}
 
@@ -462,7 +466,7 @@ public static partial class DStorage
 		/// <param name="ppv">Receives the new queue created.</param>
 		/// <returns>Standard HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT CreateQueue(in DSTORAGE_QUEUE_DESC desc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+		HRESULT CreateQueue(in DSTORAGE_QUEUE_DESC desc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
 
 		/// <summary>Opens a file for DirectStorage access.</summary>
 		/// <param name="path">Path of the file to be opened.</param>
@@ -470,7 +474,7 @@ public static partial class DStorage
 		/// <param name="ppv">Receives the new file opened.</param>
 		/// <returns>Standard HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT OpenFile([In] string path, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+		HRESULT OpenFile([In] string path, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
 
 		/// <summary>Creates a DirectStorage status array object.</summary>
 		/// <param name="capacity">Specifies the number of statuses that the array can hold.</param>
@@ -481,7 +485,7 @@ public static partial class DStorage
 		/// <param name="ppv">Receives the new status array object created.</param>
 		/// <returns>Standard HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT CreateStatusArray(uint capacity, [In, Optional] string name, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+		HRESULT CreateStatusArray(uint capacity, [In, Optional] string? name, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
 
 		/// <summary>Sets flags used to control the debug layer.</summary>
 		/// <param name="flags">A set of flags controlling the debug layer.</param>
@@ -503,6 +507,42 @@ public static partial class DStorage
 		/// Requests that exceed the specified size to SetStagingBufferSize will fail.
 		/// </remarks>
 		void SetStagingBufferSize(uint size);
+	}
+
+	/// <summary>Creates a DirectStorage queue object.</summary>
+	/// <typeparam name="T">The type of the DirectStorage queue interface, such as IDStorageQueue.</typeparam>
+	/// <param name="f">The DirectStorage factory object.</param>
+	/// <param name="desc">Descriptor to specify the properties of the queue.</param>
+	/// <returns>Receives the new queue created.</returns>
+	public static T CreateQueue<T>(this IDStorageFactory f, in DSTORAGE_QUEUE_DESC desc) where T : class
+	{
+		f.CreateQueue(desc, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return ppv as T ?? throw new InvalidCastException();
+	}
+
+	/// <summary>Opens a file for DirectStorage access.</summary>
+	/// <typeparam name="T">The type of the DirectStorage file interface, such as IDStorageFile.</typeparam>
+	/// <param name="f">The DirectStorage factory object.</param>
+	/// <param name="path">Path of the file to be opened.</param>
+	/// <returns>Receives the new file opened.</returns>
+	public static T OpenFile<T>(this IDStorageFactory f, [In] string path) where T : class
+	{
+		f.OpenFile(path, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return ppv as T ?? throw new InvalidCastException();
+	}
+
+	/// <summary>Creates a DirectStorage status array object.</summary>
+	/// <typeparam name="T">The type of the DirectStorage status interface, such as IDStorageStatusArray.</typeparam>
+	/// <param name="f">The DirectStorage factory object.</param>
+	/// <param name="capacity">Specifies the number of statuses that the array can hold.</param>
+	/// <param name="name">
+	/// Specifies object's name that will appear in the ETW events if enabled through the debug layer. This is an optional parameter.
+	/// </param>
+	/// <returns>Receives the new status array object created.</returns>
+	public static T CreateStatusArray<T>(this IDStorageFactory f, uint capacity, string? name = null) where T : class
+	{
+		f.CreateStatusArray(capacity, name, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return ppv as T ?? throw new InvalidCastException();
 	}
 
 	/// <summary>Represents a file to be accessed by DirectStorage.</summary>
@@ -682,7 +722,7 @@ public static partial class DStorage
 	/// <param name="ppv">Receives the DirectStorage object.</param>
 	/// <returns>Standard HRESULT error code.</returns>
 	[DllImport(Lib_DirectStorage, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
-	public static extern HRESULT DStorageCreateCompressionCodec(DSTORAGE_COMPRESSION_FORMAT format, uint numThreads, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern HRESULT DStorageCreateCompressionCodec(DSTORAGE_COMPRESSION_FORMAT format, uint numThreads, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
 
 	/// <summary>
 	/// Returns the static DirectStorage factory object used to create DirectStorage queues, open files for DirectStorage access, and other
@@ -692,7 +732,19 @@ public static partial class DStorage
 	/// <param name="ppv">Receives the DirectStorage factory object.</param>
 	/// <returns>Standard HRESULT error code.</returns>
 	[DllImport(Lib_DirectStorage, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
-	public static extern HRESULT DStorageGetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern HRESULT DStorageGetFactory(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+
+	/// <summary>
+	/// Returns the static DirectStorage factory object used to create DirectStorage queues, open files for DirectStorage access, and other
+	/// global operations.
+	/// </summary>
+	/// <typeparam name="T">Specifies the DirectStorage factory type, such as IDStorageFactory.</typeparam>
+	/// <returns>The DirectStorage factory object.</returns>
+	public static T DStorageGetFactory<T>() where T : class
+	{
+		DStorageGetFactory(typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return ppv as T ?? throw new InvalidCastException();
+	}
 
 	/// <summary>
 	/// Configures DirectStorage. This must be called before the first call to DStorageGetFactory. If this is not called, then default
@@ -916,11 +968,11 @@ public static partial class DStorage
 	}
 
 	/// <summary>Describes the destination for a request with DestinationType DSTORAGE_REQUEST_DESTINATION_BUFFER.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_DESTINATION_BUFFER
 	{
 		/// <summary>Address of the resource to receive the final result of this request.</summary>
-		public ID3D12Resource Resource;
+		public IUnknownPointer<ID3D12Resource> Resource;
 
 		/// <summary>The offset, in bytes, in the buffer resource to write into.</summary>
 		public ulong Offset;
@@ -930,7 +982,7 @@ public static partial class DStorage
 	}
 
 	/// <summary>Describes the destination for a request with DestinationType DSTORAGE_REQUEST_DESTINATION_MEMORY.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_DESTINATION_MEMORY
 	{
 		/// <summary>Address of the buffer to receive the final result of this request.</summary>
@@ -941,14 +993,14 @@ public static partial class DStorage
 	}
 
 	/// <summary>Describes the destination for a request with DestinationType DSTORAGE_REQUEST_DESTINATION_MULTIPLE_SUBRESOURCES.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_DESTINATION_MULTIPLE_SUBRESOURCES
 	{
 		/// <summary>
 		/// Address of the resource to receive the final result of this request. The source is expected to contain full data for all
 		/// subresources, starting from FirstSubresource.
 		/// </summary>
-		public ID3D12Resource Resource;
+		public IUnknownPointer<ID3D12Resource> Resource;
 
 		/// <summary>
 		/// Describes the first subresource of the destination texture copy location. The subresource referred to must be in the
@@ -958,11 +1010,11 @@ public static partial class DStorage
 	}
 
 	/// <summary>Describes the destination for a request with DestinationType DSTORAGE_REQUEST_DESTINATION_TEXTURE_REGION.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_DESTINATION_TEXTURE_REGION
 	{
 		/// <summary>Address of the resource to receive the final result of this request.</summary>
-		public ID3D12Resource Resource;
+		public IUnknownPointer<ID3D12Resource> Resource;
 
 		/// <summary>
 		/// Describes the destination texture copy location. The subresource referred to must be in the D3D12_RESOURCE_STATE_COMMON state.
@@ -974,14 +1026,14 @@ public static partial class DStorage
 	}
 
 	/// <summary>Describes the destination for a request with DestinationType DSTORAGE_REQUEST_DESTINATION_TILES.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_DESTINATION_TILES
 	{
 		/// <summary>
 		/// Address of the resource to receive the final result of this request. The source buffer is expected to contain data arranged as
 		/// if it were the source to a CopyTiles call with these parameters.
 		/// </summary>
-		public ID3D12Resource Resource;
+		public IUnknownPointer<ID3D12Resource> Resource;
 
 		/// <summary>The starting coordinates of the tiled region.</summary>
 		public D3D12_TILED_RESOURCE_COORDINATE TiledRegionStartCoordinate;
@@ -1037,23 +1089,21 @@ public static partial class DStorage
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DSTORAGE_ERROR_PARAMETERS_REQUEST
 	{
+		private unsafe fixed char _Filename[MAX_PATH];
+
 		/// <summary>For a file source request, the name of the file the request was targeted to.</summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
-		public string Filename;
+		public string Filename
+		{
+			get { unsafe { fixed (char* f = _Filename) return new string(f); } }
+			set { unsafe { fixed (char* f = _Filename) value.AsSpan().CopyTo(new Span<char>(f, MAX_PATH)); } }
+		}
 
 		private unsafe fixed byte _RequestName[DSTORAGE_REQUEST_MAX_NAME];
 
 		/// <summary>The name of the request if one was specified.</summary>
 		public string? RequestName
 		{
-			get
-			{
-				unsafe
-				{
-					fixed (byte* p = _RequestName)
-						return Marshal.PtrToStringAnsi((IntPtr)p);
-				}
-			}
+			get { unsafe { fixed (byte* p = _RequestName) return Marshal.PtrToStringAnsi((IntPtr)p); } }
 			set
 			{
 				unsafe
@@ -1084,7 +1134,7 @@ public static partial class DStorage
 	public struct DSTORAGE_ERROR_PARAMETERS_SIGNAL
 	{
 		/// <summary/>
-		public ID3D12Fence Fence;
+		public IUnknownPointer<ID3D12Fence> Fence;
 
 		/// <summary/>
 		public ulong Value;
@@ -1095,7 +1145,7 @@ public static partial class DStorage
 	public struct DSTORAGE_ERROR_PARAMETERS_STATUS
 	{
 		/// <summary/>
-		public IDStorageStatusArray StatusArray;
+		public IUnknownPointer<IDStorageStatusArray> StatusArray;
 
 		/// <summary/>
 		public uint Index;
@@ -1113,7 +1163,7 @@ public static partial class DStorage
 	}
 
 	/// <summary>The DSTORAGE_QUEUE_DESC structure contains the properties of a DirectStorage queue for the queue's creation.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_QUEUE_DESC
 	{
 		/// <summary>The source type of requests that this DirectStorage queue can accept.</summary>
@@ -1135,6 +1185,7 @@ public static partial class DStorage
 		///
 		/// This member may be null. If you specify a null device, then the destination type must be DSTORAGE_REQUEST_DESTINATION_MEMORY.
 		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
 		public ID3D12Device Device;
 	}
 
@@ -1156,7 +1207,7 @@ public static partial class DStorage
 	}
 
 	/// <summary>Represents a DirectStorage request.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_REQUEST
 	{
 		/// <summary>Combination of decompression and other options for this request.</summary>
@@ -1191,7 +1242,7 @@ public static partial class DStorage
 	}
 
 	/// <summary>Options for a DirectStorage request.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_REQUEST_OPTIONS
 	{
 		/// <summary>DSTORAGE_COMPRESSION_FORMAT indicating how the data is compressed.</summary>
@@ -1217,7 +1268,7 @@ public static partial class DStorage
 		}
 
 		/// <summary>Reserved fields. Must be 0.</summary>
-		public unsafe fixed ulong Reserved[3];
+		public unsafe fixed byte Reserved[7];
 	}
 
 	/// <summary>
@@ -1237,11 +1288,11 @@ public static partial class DStorage
 	}
 
 	/// <summary>Describes a source for a request with SourceType DSTORAGE_REQUEST_SOURCE_FILE.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_SOURCE_FILE
 	{
 		/// <summary>The file to perform this read request from.</summary>
-		public IDStorageFile Source;
+		public IUnknownPointer<IDStorageFile> Source;
 
 		/// <summary>The offset, in bytes, in the file to start the read request at.</summary>
 		public ulong Offset;
@@ -1251,7 +1302,7 @@ public static partial class DStorage
 	}
 
 	/// <summary>Describes the source for a request with SourceType DSTORAGE_REQUEST_SOURCE_MEMORY.</summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct DSTORAGE_SOURCE_MEMORY
 	{
 		/// <summary>Address of the source buffer to be read from.</summary>

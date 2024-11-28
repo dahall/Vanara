@@ -2064,7 +2064,7 @@ public static partial class Dwrite
 		// *clientDrawingContext, IDWriteTextRenderer *renderer, FLOAT originX, FLOAT originY, BOOL isSideways, BOOL isRightToLeft,
 		// IUnknown *clientDrawingEffect );
 		void Draw([In, Optional] IntPtr clientDrawingContext, [In] IDWriteTextRenderer renderer, float originX, float originY,
-			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft, [In, Optional, MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout calls this callback function to get the measurement of the inline object.</summary>
 		/// <returns>
@@ -4038,7 +4038,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-setdrawingeffect HRESULT
 		// SetDrawingEffect( IUnknown *drawingEffect, DWRITE_TEXT_RANGE textRange );
-		void SetDrawingEffect([MarshalAs(UnmanagedType.IUnknown)] object drawingEffect, DWRITE_TEXT_RANGE textRange);
+		void SetDrawingEffect([MarshalAs(UnmanagedType.Interface)] object drawingEffect, DWRITE_TEXT_RANGE textRange);
 
 		/// <summary>Sets the inline object.</summary>
 		/// <param name="inlineObject">
@@ -4326,7 +4326,7 @@ public static partial class Dwrite
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-getdrawingeffect HRESULT
 		// GetDrawingEffect( UINT32 currentPosition, IUnknown **drawingEffect, DWRITE_TEXT_RANGE *textRange );
-		void GetDrawingEffect(uint currentPosition, [MarshalAs(UnmanagedType.IUnknown)] out object drawingEffect, out DWRITE_TEXT_RANGE textRange);
+		void GetDrawingEffect(uint currentPosition, [MarshalAs(UnmanagedType.Interface)] out object drawingEffect, out DWRITE_TEXT_RANGE textRange);
 
 		/// <summary>Gets the inline object at the specified position.</summary>
 		/// <param name="currentPosition">
@@ -4764,7 +4764,7 @@ public static partial class Dwrite
 		// void *clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_MEASURING_MODE measuringMode,
 		// DWRITE_GLYPH_RUN const *glyphRun, DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, IUnknown *clientDrawingEffect );
 		void DrawGlyphRun([In, Optional] IntPtr clientDrawingContext, float baselineOriginX, float baselineOriginY, DWRITE_MEASURING_MODE measuringMode,
-			in DWRITE_GLYPH_RUN glyphRun, in DWRITE_GLYPH_RUN_DESCRIPTION glyphRunDescription, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			in DWRITE_GLYPH_RUN glyphRun, in DWRITE_GLYPH_RUN_DESCRIPTION glyphRunDescription, [In, Optional, MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout::Draw calls this function to instruct the client to draw an underline.</summary>
 		/// <param name="clientDrawingContext">
@@ -4802,7 +4802,7 @@ public static partial class Dwrite
 		// void *clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_UNDERLINE const *underline, IUnknown
 		// *clientDrawingEffect );
 		void DrawUnderline([In, Optional] IntPtr clientDrawingContext, float baselineOriginX, float baselineOriginY,
-			in DWRITE_UNDERLINE underline, [In, Optional] [MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			in DWRITE_UNDERLINE underline, [In, Optional] [MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout::Draw calls this function to instruct the client to draw a strikethrough.</summary>
 		/// <param name="clientDrawingContext">
@@ -4837,7 +4837,7 @@ public static partial class Dwrite
 		// DrawStrikethrough( void *clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_STRIKETHROUGH const
 		// *strikethrough, IUnknown *clientDrawingEffect );
 		void DrawStrikethrough([In, Optional] IntPtr clientDrawingContext, float baselineOriginX, float baselineOriginY,
-			in DWRITE_STRIKETHROUGH strikethrough, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			in DWRITE_STRIKETHROUGH strikethrough, [In, Optional, MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout::Draw calls this application callback when it needs to draw an inline object.</summary>
 		/// <param name="clientDrawingContext">
@@ -4879,7 +4879,7 @@ public static partial class Dwrite
 		// isSideways, BOOL isRightToLeft, IUnknown *clientDrawingEffect );
 		void DrawInlineObject([In, Optional] IntPtr clientDrawingContext, float originX, float originY, [In] IDWriteInlineObject inlineObject,
 			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft,
-			[In, Optional] [MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			[In, Optional] [MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 	}
 
 	/// <summary>Represents a font typography setting.</summary>
@@ -4959,7 +4959,7 @@ public static partial class Dwrite
 	// DWRITE_FACTORY_TYPE factoryType, REFIID iid, IUnknown **factory );
 	[DllImport("dwrite.dll", SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dwrite.h", MSDNShortId = "c74c0906-0a5c-4ab8-87cf-a195566e1d9e")]
-	public static extern HRESULT DWriteCreateFactory(DWRITE_FACTORY_TYPE factoryType, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object factory);
+	public static extern HRESULT DWriteCreateFactory(DWRITE_FACTORY_TYPE factoryType, in Guid iid, [MarshalAs(UnmanagedType.Interface)] out object factory);
 
 	/// <summary>Creates a DirectWrite factory object that is used for subsequent creation of individual DirectWrite objects.</summary>
 	/// <typeparam name="T">Identifies the DirectWrite factory interface, such as IDWriteFactory.</typeparam>

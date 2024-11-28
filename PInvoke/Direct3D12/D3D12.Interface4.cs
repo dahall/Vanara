@@ -11109,31 +11109,31 @@ public static partial class D3D12
 		new uint GetNodeCount();
 
 		[PreserveSig]
-		new HRESULT CreateCommandQueue(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandQueue);
+		new HRESULT CreateCommandQueue(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandQueue);
 
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandAllocator);
 
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(ref D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(ref D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(ref D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(ref D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, ID3D12PipelineState pInitialState, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandList);
+		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, ID3D12PipelineState pInitialState, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandList);
 
 		[PreserveSig]
 		new HRESULT CheckFeatureSupport(D3D12_FEATURE Feature, IntPtr pFeatureSupportData, uint FeatureSupportDataSize);
 
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(ref D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(ref D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new uint GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapType);
 
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, IntPtr pBlobWithRootSignature, IntPtr blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, IntPtr pBlobWithRootSignature, IntPtr blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvRootSignature);
 
 		[PreserveSig]
 		new void CreateConstantBufferView(IntPtr pDesc, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11166,22 +11166,22 @@ public static partial class D3D12
 		new void GetCustomHeapProperties(out D3D12_HEAP_PROPERTIES size, uint nodeMask, D3D12_HEAP_TYPE heapType);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateHeap(ref D3D12_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateHeap(ref D3D12_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new HRESULT CreateSharedHandle([In] ID3D12DeviceChild pObject, IntPtr pAttributes, uint Access, [MarshalAs(UnmanagedType.LPWStr)] string Name, out IntPtr pHandle);
 
 		[PreserveSig]
-		new HRESULT OpenSharedHandle(IntPtr NTHandle, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+		new HRESULT OpenSharedHandle(IntPtr NTHandle, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvObj);
 
 		[PreserveSig]
 		new HRESULT OpenSharedHandleByName([MarshalAs(UnmanagedType.LPWStr)] string Name, uint Access, out IntPtr pNTHandle);
@@ -11193,7 +11193,7 @@ public static partial class D3D12
 		new HRESULT Evict(int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12Pageable[] ppObjects);
 
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppFence);
 
 		[PreserveSig]
 		new HRESULT GetDeviceRemovedReason();
@@ -11202,13 +11202,13 @@ public static partial class D3D12
 		new void GetCopyableFootprints(ref D3D12_RESOURCE_DESC pResourceDesc, uint FirstSubresource, int NumSubresources, ulong BaseOffset, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[] pLayouts, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pNumRows, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pRowSizeInBytes, IntPtr pTotalBytes);
 
 		[PreserveSig]
-		new HRESULT CreateQueryHeap(ref D3D12_QUERY_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateQueryHeap(ref D3D12_QUERY_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new HRESULT SetStablePowerState(bool Enable);
 
 		[PreserveSig]
-		new HRESULT CreateCommandSignature(ref D3D12_COMMAND_SIGNATURE_DESC pDesc, [In] ID3D12RootSignature pRootSignature, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvCommandSignature);
+		new HRESULT CreateCommandSignature(ref D3D12_COMMAND_SIGNATURE_DESC pDesc, [In] ID3D12RootSignature pRootSignature, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvCommandSignature);
 
 		[PreserveSig]
 		new void GetResourceTiling([In] ID3D12Resource pTiledResource, IntPtr pNumTilesForEntireResource, IntPtr pPackedMipDesc, IntPtr pStandardTileShapeForNonPackedMips, IntPtr pNumSubresourceTilings, uint FirstSubresourceTilingToGet, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_TILING[] pSubresourceTilingsForNonPackedMips);
@@ -11217,7 +11217,7 @@ public static partial class D3D12
 		new void GetAdapterLuid(out _LUID size);
 
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary(IntPtr pLibraryBlob, IntPtr BlobLength, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineLibrary);
+		new HRESULT CreatePipelineLibrary(IntPtr pLibraryBlob, IntPtr BlobLength, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineLibrary);
 
 		[PreserveSig]
 		new HRESULT SetEventOnMultipleFenceCompletion([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)][In] ID3D12Fence[] ppFences, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pFenceValues, int NumFences, D3D12_MULTIPLE_FENCE_WAIT_FLAGS Flags, IntPtr hEvent);
@@ -11226,37 +11226,37 @@ public static partial class D3D12
 		new HRESULT SetResidencyPriority(int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12Pageable[] ppObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESIDENCY_PRIORITY[] pPriorities);
 
 		[PreserveSig]
-		new HRESULT CreatePipelineState(ref D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreatePipelineState(ref D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress(IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress(IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromFileMapping(IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromFileMapping(IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new HRESULT EnqueueMakeResident(D3D12_RESIDENCY_FLAGS Flags, int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)][In] ID3D12Pageable[] ppObjects, ID3D12Fence pFenceToSignal, ulong FenceValueToSignal);
 
 		[PreserveSig]
-		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandList);
+		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandList);
 
 		[PreserveSig]
-		new HRESULT CreateProtectedResourceSession(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppSession);
+		new HRESULT CreateProtectedResourceSession(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppSession);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource1(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource1(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateHeap1(ref D3D12_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateHeap1(ref D3D12_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource1(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource1(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo1(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC[] pResourceDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvTracker);
+		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvTracker);
 
 		[PreserveSig]
 		new void RemoveDevice();
@@ -11268,10 +11268,10 @@ public static partial class D3D12
 		new HRESULT EnumerateMetaCommandParameters(in Guid CommandId, D3D12_META_COMMAND_PARAMETER_STAGE Stage, IntPtr pTotalStructureSizeInBytes, ref int pParameterCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D12_META_COMMAND_PARAMETER_DESC[] pParameterDescs);
 
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, IntPtr pCreationParametersData, IntPtr CreationParametersDataSizeInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppMetaCommand);
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, IntPtr pCreationParametersData, IntPtr CreationParametersDataSizeInBytes, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppMetaCommand);
 
 		[PreserveSig]
-		new HRESULT CreateStateObject(ref D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppStateObject);
+		new HRESULT CreateStateObject(ref D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppStateObject);
 
 		[PreserveSig]
 		new void GetRaytracingAccelerationStructurePrebuildInfo(ref D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS pDesc, out D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO pInfo);
@@ -11283,19 +11283,19 @@ public static partial class D3D12
 		new HRESULT SetBackgroundProcessingMode(D3D12_BACKGROUND_PROCESSING_MODE Mode, D3D12_MEASUREMENTS_ACTION MeasurementsAction, IntPtr hEventToSignalUponCompletion, IntPtr pbFurtherMeasurementsDesired);
 
 		[PreserveSig]
-		new HRESULT AddToStateObject(ref D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppNewStateObject);
+		new HRESULT AddToStateObject(ref D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppNewStateObject);
 
 		[PreserveSig]
-		new HRESULT CreateProtectedResourceSession1(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppSession);
+		new HRESULT CreateProtectedResourceSession1(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppSession);
 
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo2(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC1[] pResourceDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource2(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource2(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource1([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource1([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new void CreateSamplerFeedbackUnorderedAccessView([In] ID3D12Resource pTargetedResource, ID3D12Resource pFeedbackResource, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11304,22 +11304,22 @@ public static partial class D3D12
 		new void GetCopyableFootprints1(ref D3D12_RESOURCE_DESC1 pResourceDesc, uint FirstSubresource, int NumSubresources, ulong BaseOffset, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[] pLayouts, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pNumRows, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pRowSizeInBytes, IntPtr pTotalBytes);
 
 		[PreserveSig]
-		new HRESULT CreateShaderCacheSession(ref D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSession);
+		new HRESULT CreateShaderCacheSession(ref D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvSession);
 
 		[PreserveSig]
 		new HRESULT ShaderCacheControl(D3D12_SHADER_CACHE_KIND_FLAGS Kinds, D3D12_SHADER_CACHE_CONTROL_FLAGS Control);
 
 		[PreserveSig]
-		new HRESULT CreateCommandQueue1(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandQueue);
+		new HRESULT CreateCommandQueue1(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandQueue);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource3(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] DXGI_FORMAT[] pCastableFormats, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource3(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] DXGI_FORMAT[] pCastableFormats, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource2([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource2([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource2(ref D3D12_RESOURCE_DESC pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource2(ref D3D12_RESOURCE_DESC pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new void CreateSampler2(ref D3D12_SAMPLER_DESC2 pDesc, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11347,31 +11347,31 @@ public static partial class D3D12
 		new uint GetNodeCount();
 
 		[PreserveSig]
-		new HRESULT CreateCommandQueue(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandQueue);
+		new HRESULT CreateCommandQueue(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandQueue);
 
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandAllocator);
 
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(ref D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(ref D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(ref D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(ref D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, ID3D12PipelineState pInitialState, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandList);
+		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, ID3D12PipelineState pInitialState, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandList);
 
 		[PreserveSig]
 		new HRESULT CheckFeatureSupport(D3D12_FEATURE Feature, IntPtr pFeatureSupportData, uint FeatureSupportDataSize);
 
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(ref D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(ref D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new uint GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapType);
 
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, IntPtr pBlobWithRootSignature, IntPtr blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, IntPtr pBlobWithRootSignature, IntPtr blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvRootSignature);
 
 		[PreserveSig]
 		new void CreateConstantBufferView(IntPtr pDesc, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11404,22 +11404,22 @@ public static partial class D3D12
 		new void GetCustomHeapProperties(out D3D12_HEAP_PROPERTIES size, uint nodeMask, D3D12_HEAP_TYPE heapType);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateHeap(ref D3D12_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateHeap(ref D3D12_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new HRESULT CreateSharedHandle([In] ID3D12DeviceChild pObject, IntPtr pAttributes, uint Access, [MarshalAs(UnmanagedType.LPWStr)] string Name, out IntPtr pHandle);
 
 		[PreserveSig]
-		new HRESULT OpenSharedHandle(IntPtr NTHandle, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+		new HRESULT OpenSharedHandle(IntPtr NTHandle, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvObj);
 
 		[PreserveSig]
 		new HRESULT OpenSharedHandleByName([MarshalAs(UnmanagedType.LPWStr)] string Name, uint Access, out IntPtr pNTHandle);
@@ -11431,7 +11431,7 @@ public static partial class D3D12
 		new HRESULT Evict(int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12Pageable[] ppObjects);
 
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppFence);
 
 		[PreserveSig]
 		new HRESULT GetDeviceRemovedReason();
@@ -11440,13 +11440,13 @@ public static partial class D3D12
 		new void GetCopyableFootprints(ref D3D12_RESOURCE_DESC pResourceDesc, uint FirstSubresource, int NumSubresources, ulong BaseOffset, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[] pLayouts, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pNumRows, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pRowSizeInBytes, IntPtr pTotalBytes);
 
 		[PreserveSig]
-		new HRESULT CreateQueryHeap(ref D3D12_QUERY_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateQueryHeap(ref D3D12_QUERY_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new HRESULT SetStablePowerState(bool Enable);
 
 		[PreserveSig]
-		new HRESULT CreateCommandSignature(ref D3D12_COMMAND_SIGNATURE_DESC pDesc, [In] ID3D12RootSignature pRootSignature, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvCommandSignature);
+		new HRESULT CreateCommandSignature(ref D3D12_COMMAND_SIGNATURE_DESC pDesc, [In] ID3D12RootSignature pRootSignature, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvCommandSignature);
 
 		[PreserveSig]
 		new void GetResourceTiling([In] ID3D12Resource pTiledResource, IntPtr pNumTilesForEntireResource, IntPtr pPackedMipDesc, IntPtr pStandardTileShapeForNonPackedMips, IntPtr pNumSubresourceTilings, uint FirstSubresourceTilingToGet, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_TILING[] pSubresourceTilingsForNonPackedMips);
@@ -11455,7 +11455,7 @@ public static partial class D3D12
 		new void GetAdapterLuid(out _LUID size);
 
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary(IntPtr pLibraryBlob, IntPtr BlobLength, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineLibrary);
+		new HRESULT CreatePipelineLibrary(IntPtr pLibraryBlob, IntPtr BlobLength, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineLibrary);
 
 		[PreserveSig]
 		new HRESULT SetEventOnMultipleFenceCompletion([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)][In] ID3D12Fence[] ppFences, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pFenceValues, int NumFences, D3D12_MULTIPLE_FENCE_WAIT_FLAGS Flags, IntPtr hEvent);
@@ -11464,37 +11464,37 @@ public static partial class D3D12
 		new HRESULT SetResidencyPriority(int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12Pageable[] ppObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESIDENCY_PRIORITY[] pPriorities);
 
 		[PreserveSig]
-		new HRESULT CreatePipelineState(ref D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreatePipelineState(ref D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress(IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress(IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromFileMapping(IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromFileMapping(IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new HRESULT EnqueueMakeResident(D3D12_RESIDENCY_FLAGS Flags, int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)][In] ID3D12Pageable[] ppObjects, ID3D12Fence pFenceToSignal, ulong FenceValueToSignal);
 
 		[PreserveSig]
-		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandList);
+		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandList);
 
 		[PreserveSig]
-		new HRESULT CreateProtectedResourceSession(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppSession);
+		new HRESULT CreateProtectedResourceSession(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppSession);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource1(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource1(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateHeap1(ref D3D12_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateHeap1(ref D3D12_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource1(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource1(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo1(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC[] pResourceDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvTracker);
+		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvTracker);
 
 		[PreserveSig]
 		new void RemoveDevice();
@@ -11506,10 +11506,10 @@ public static partial class D3D12
 		new HRESULT EnumerateMetaCommandParameters(in Guid CommandId, D3D12_META_COMMAND_PARAMETER_STAGE Stage, IntPtr pTotalStructureSizeInBytes, ref int pParameterCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D12_META_COMMAND_PARAMETER_DESC[] pParameterDescs);
 
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, IntPtr pCreationParametersData, IntPtr CreationParametersDataSizeInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppMetaCommand);
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, IntPtr pCreationParametersData, IntPtr CreationParametersDataSizeInBytes, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppMetaCommand);
 
 		[PreserveSig]
-		new HRESULT CreateStateObject(ref D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppStateObject);
+		new HRESULT CreateStateObject(ref D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppStateObject);
 
 		[PreserveSig]
 		new void GetRaytracingAccelerationStructurePrebuildInfo(ref D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS pDesc, out D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO pInfo);
@@ -11521,19 +11521,19 @@ public static partial class D3D12
 		new HRESULT SetBackgroundProcessingMode(D3D12_BACKGROUND_PROCESSING_MODE Mode, D3D12_MEASUREMENTS_ACTION MeasurementsAction, IntPtr hEventToSignalUponCompletion, IntPtr pbFurtherMeasurementsDesired);
 
 		[PreserveSig]
-		new HRESULT AddToStateObject(ref D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppNewStateObject);
+		new HRESULT AddToStateObject(ref D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppNewStateObject);
 
 		[PreserveSig]
-		new HRESULT CreateProtectedResourceSession1(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppSession);
+		new HRESULT CreateProtectedResourceSession1(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppSession);
 
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo2(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC1[] pResourceDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource2(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource2(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource1([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource1([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new void CreateSamplerFeedbackUnorderedAccessView([In] ID3D12Resource pTargetedResource, ID3D12Resource pFeedbackResource, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11542,22 +11542,22 @@ public static partial class D3D12
 		new void GetCopyableFootprints1(ref D3D12_RESOURCE_DESC1 pResourceDesc, uint FirstSubresource, int NumSubresources, ulong BaseOffset, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[] pLayouts, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pNumRows, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pRowSizeInBytes, IntPtr pTotalBytes);
 
 		[PreserveSig]
-		new HRESULT CreateShaderCacheSession(ref D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSession);
+		new HRESULT CreateShaderCacheSession(ref D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvSession);
 
 		[PreserveSig]
 		new HRESULT ShaderCacheControl(D3D12_SHADER_CACHE_KIND_FLAGS Kinds, D3D12_SHADER_CACHE_CONTROL_FLAGS Control);
 
 		[PreserveSig]
-		new HRESULT CreateCommandQueue1(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandQueue);
+		new HRESULT CreateCommandQueue1(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandQueue);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource3(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] DXGI_FORMAT[] pCastableFormats, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource3(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] DXGI_FORMAT[] pCastableFormats, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource2([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource2([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource2(ref D3D12_RESOURCE_DESC pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource2(ref D3D12_RESOURCE_DESC pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new void CreateSampler2(ref D3D12_SAMPLER_DESC2 pDesc, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11566,7 +11566,7 @@ public static partial class D3D12
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo3(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC1[] pResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] pNumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DXGI_FORMAT[] ppCastableFormats, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		HRESULT OpenExistingHeapFromAddress1(IntPtr pAddress, IntPtr size, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		HRESULT OpenExistingHeapFromAddress1(IntPtr pAddress, IntPtr size, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 	}
 
 	[ComImport, Guid("5f6e592d-d895-44c2-8e4a-88ad4926d323"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -11588,31 +11588,31 @@ public static partial class D3D12
 		new uint GetNodeCount();
 
 		[PreserveSig]
-		new HRESULT CreateCommandQueue(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandQueue);
+		new HRESULT CreateCommandQueue(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandQueue);
 
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandAllocator);
 
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(ref D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(ref D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(ref D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(ref D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, ID3D12PipelineState pInitialState, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandList);
+		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, ID3D12PipelineState pInitialState, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandList);
 
 		[PreserveSig]
 		new HRESULT CheckFeatureSupport(D3D12_FEATURE Feature, IntPtr pFeatureSupportData, uint FeatureSupportDataSize);
 
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(ref D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(ref D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new uint GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapType);
 
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, IntPtr pBlobWithRootSignature, IntPtr blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, IntPtr pBlobWithRootSignature, IntPtr blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvRootSignature);
 
 		[PreserveSig]
 		new void CreateConstantBufferView(IntPtr pDesc, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11645,22 +11645,22 @@ public static partial class D3D12
 		new void GetCustomHeapProperties(out D3D12_HEAP_PROPERTIES size, uint nodeMask, D3D12_HEAP_TYPE heapType);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateHeap(ref D3D12_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateHeap(ref D3D12_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new HRESULT CreateSharedHandle([In] ID3D12DeviceChild pObject, IntPtr pAttributes, uint Access, [MarshalAs(UnmanagedType.LPWStr)] string Name, out IntPtr pHandle);
 
 		[PreserveSig]
-		new HRESULT OpenSharedHandle(IntPtr NTHandle, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+		new HRESULT OpenSharedHandle(IntPtr NTHandle, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvObj);
 
 		[PreserveSig]
 		new HRESULT OpenSharedHandleByName([MarshalAs(UnmanagedType.LPWStr)] string Name, uint Access, out IntPtr pNTHandle);
@@ -11672,7 +11672,7 @@ public static partial class D3D12
 		new HRESULT Evict(int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12Pageable[] ppObjects);
 
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppFence);
 
 		[PreserveSig]
 		new HRESULT GetDeviceRemovedReason();
@@ -11681,13 +11681,13 @@ public static partial class D3D12
 		new void GetCopyableFootprints(ref D3D12_RESOURCE_DESC pResourceDesc, uint FirstSubresource, int NumSubresources, ulong BaseOffset, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[] pLayouts, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pNumRows, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pRowSizeInBytes, IntPtr pTotalBytes);
 
 		[PreserveSig]
-		new HRESULT CreateQueryHeap(ref D3D12_QUERY_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateQueryHeap(ref D3D12_QUERY_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new HRESULT SetStablePowerState(bool Enable);
 
 		[PreserveSig]
-		new HRESULT CreateCommandSignature(ref D3D12_COMMAND_SIGNATURE_DESC pDesc, [In] ID3D12RootSignature pRootSignature, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvCommandSignature);
+		new HRESULT CreateCommandSignature(ref D3D12_COMMAND_SIGNATURE_DESC pDesc, [In] ID3D12RootSignature pRootSignature, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvCommandSignature);
 
 		[PreserveSig]
 		new void GetResourceTiling([In] ID3D12Resource pTiledResource, IntPtr pNumTilesForEntireResource, IntPtr pPackedMipDesc, IntPtr pStandardTileShapeForNonPackedMips, IntPtr pNumSubresourceTilings, uint FirstSubresourceTilingToGet, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_TILING[] pSubresourceTilingsForNonPackedMips);
@@ -11696,7 +11696,7 @@ public static partial class D3D12
 		new void GetAdapterLuid(out _LUID size);
 
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary(IntPtr pLibraryBlob, IntPtr BlobLength, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineLibrary);
+		new HRESULT CreatePipelineLibrary(IntPtr pLibraryBlob, IntPtr BlobLength, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineLibrary);
 
 		[PreserveSig]
 		new HRESULT SetEventOnMultipleFenceCompletion([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)][In] ID3D12Fence[] ppFences, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pFenceValues, int NumFences, D3D12_MULTIPLE_FENCE_WAIT_FLAGS Flags, IntPtr hEvent);
@@ -11705,37 +11705,37 @@ public static partial class D3D12
 		new HRESULT SetResidencyPriority(int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12Pageable[] ppObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESIDENCY_PRIORITY[] pPriorities);
 
 		[PreserveSig]
-		new HRESULT CreatePipelineState(ref D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppPipelineState);
+		new HRESULT CreatePipelineState(ref D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppPipelineState);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress(IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress(IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromFileMapping(IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromFileMapping(IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
 		new HRESULT EnqueueMakeResident(D3D12_RESIDENCY_FLAGS Flags, int NumObjects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)][In] ID3D12Pageable[] ppObjects, ID3D12Fence pFenceToSignal, ulong FenceValueToSignal);
 
 		[PreserveSig]
-		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandList);
+		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandList);
 
 		[PreserveSig]
-		new HRESULT CreateProtectedResourceSession(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppSession);
+		new HRESULT CreateProtectedResourceSession(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppSession);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource1(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource1(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateHeap1(ref D3D12_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT CreateHeap1(ref D3D12_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource1(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource1(ref D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo1(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC[] pResourceDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvTracker);
+		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvTracker);
 
 		[PreserveSig]
 		new void RemoveDevice();
@@ -11747,10 +11747,10 @@ public static partial class D3D12
 		new HRESULT EnumerateMetaCommandParameters(in Guid CommandId, D3D12_META_COMMAND_PARAMETER_STAGE Stage, IntPtr pTotalStructureSizeInBytes, ref int pParameterCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D12_META_COMMAND_PARAMETER_DESC[] pParameterDescs);
 
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, IntPtr pCreationParametersData, IntPtr CreationParametersDataSizeInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppMetaCommand);
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, IntPtr pCreationParametersData, IntPtr CreationParametersDataSizeInBytes, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppMetaCommand);
 
 		[PreserveSig]
-		new HRESULT CreateStateObject(ref D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppStateObject);
+		new HRESULT CreateStateObject(ref D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppStateObject);
 
 		[PreserveSig]
 		new void GetRaytracingAccelerationStructurePrebuildInfo(ref D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS pDesc, out D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO pInfo);
@@ -11762,19 +11762,19 @@ public static partial class D3D12
 		new HRESULT SetBackgroundProcessingMode(D3D12_BACKGROUND_PROCESSING_MODE Mode, D3D12_MEASUREMENTS_ACTION MeasurementsAction, IntPtr hEventToSignalUponCompletion, IntPtr pbFurtherMeasurementsDesired);
 
 		[PreserveSig]
-		new HRESULT AddToStateObject(ref D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppNewStateObject);
+		new HRESULT AddToStateObject(ref D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppNewStateObject);
 
 		[PreserveSig]
-		new HRESULT CreateProtectedResourceSession1(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppSession);
+		new HRESULT CreateProtectedResourceSession1(ref D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppSession);
 
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo2(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC1[] pResourceDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource2(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource2(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialResourceState, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource1([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource1([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_RESOURCE_STATES InitialState, IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new void CreateSamplerFeedbackUnorderedAccessView([In] ID3D12Resource pTargetedResource, ID3D12Resource pFeedbackResource, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11783,22 +11783,22 @@ public static partial class D3D12
 		new void GetCopyableFootprints1(ref D3D12_RESOURCE_DESC1 pResourceDesc, uint FirstSubresource, int NumSubresources, ulong BaseOffset, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[] pLayouts, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pNumRows, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] pRowSizeInBytes, IntPtr pTotalBytes);
 
 		[PreserveSig]
-		new HRESULT CreateShaderCacheSession(ref D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSession);
+		new HRESULT CreateShaderCacheSession(ref D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvSession);
 
 		[PreserveSig]
 		new HRESULT ShaderCacheControl(D3D12_SHADER_CACHE_KIND_FLAGS Kinds, D3D12_SHADER_CACHE_CONTROL_FLAGS Control);
 
 		[PreserveSig]
-		new HRESULT CreateCommandQueue1(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppCommandQueue);
+		new HRESULT CreateCommandQueue1(ref D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppCommandQueue);
 
 		[PreserveSig]
-		new HRESULT CreateCommittedResource3(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] DXGI_FORMAT[] pCastableFormats, in Guid riidResource, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateCommittedResource3(ref D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] DXGI_FORMAT[] pCastableFormats, in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreatePlacedResource2([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreatePlacedResource2([In] ID3D12Heap pHeap, ulong HeapOffset, ref D3D12_RESOURCE_DESC1 pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
-		new HRESULT CreateReservedResource2(ref D3D12_RESOURCE_DESC pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvResource);
+		new HRESULT CreateReservedResource2(ref D3D12_RESOURCE_DESC pDesc, D3D12_BARRIER_LAYOUT InitialLayout, IntPtr pOptimizedClearValue, [In] ID3D12ProtectedResourceSession pProtectedSession, int NumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DXGI_FORMAT[] pCastableFormats, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvResource);
 
 		[PreserveSig]
 		new void CreateSampler2(ref D3D12_SAMPLER_DESC2 pDesc, D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
@@ -11807,10 +11807,10 @@ public static partial class D3D12
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo3(uint visibleMask, int numResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC1[] pResourceDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] pNumCastableFormats, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DXGI_FORMAT[] ppCastableFormats, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[] pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress1(IntPtr pAddress, IntPtr size, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress1(IntPtr pAddress, IntPtr size, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvHeap);
 
 		[PreserveSig]
-		HRESULT CreateRootSignatureFromSubobjectInLibrary(uint nodeMask, IntPtr pLibraryBlob, IntPtr blobLengthInBytes, [MarshalAs(UnmanagedType.LPWStr)] string subobjectName, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvRootSignature);
+		HRESULT CreateRootSignatureFromSubobjectInLibrary(uint nodeMask, IntPtr pLibraryBlob, IntPtr blobLengthInBytes, [MarshalAs(UnmanagedType.LPWStr)] string subobjectName, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvRootSignature);
 	}
 	*/
 }
