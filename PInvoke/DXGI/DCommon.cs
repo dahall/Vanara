@@ -167,10 +167,10 @@ public static partial class DXGI
 	/// </para>
 	/// </para>
 	/// </summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_cbuffer_type typedef enum _D3D_CBUFFER_TYPE {
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_cbuffer_type typedef enum D3D_CBUFFER_TYPE {
 	// D3D_CT_CBUFFER = 0, D3D_CT_TBUFFER, D3D_CT_INTERFACE_POINTERS, D3D_CT_RESOURCE_BIND_INFO, D3D10_CT_CBUFFER, D3D10_CT_TBUFFER,
 	// D3D11_CT_CBUFFER, D3D11_CT_TBUFFER, D3D11_CT_INTERFACE_POINTERS, D3D11_CT_RESOURCE_BIND_INFO } D3D_CBUFFER_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_CBUFFER_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_CBUFFER_TYPE")]
 	public enum D3D_CBUFFER_TYPE
 	{
 		/// <summary>
@@ -209,8 +209,7 @@ public static partial class DXGI
 	}
 
 	/// <summary/>
-	[PInvokeData("d3dcommon.h")]
-	[Flags]
+	[PInvokeData("d3dcommon.h"), Flags]
 	public enum D3D_COMPONENT_MASK
 	{
 		/// <summary/>
@@ -516,9 +515,9 @@ public static partial class DXGI
 	/// You pass a <c>D3D_INCLUDE_TYPE</c>-typed value to the <c>IncludeType</c> parameter in a call to the ID3DInclude::Open method to
 	/// indicate the location of the #include file.
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_include_type typedef enum _D3D_INCLUDE_TYPE {
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_include_type typedef enum D3D_INCLUDE_TYPE {
 	// D3D_INCLUDE_LOCAL = 0, D3D_INCLUDE_SYSTEM, D3D10_INCLUDE_LOCAL, D3D10_INCLUDE_SYSTEM, D3D_INCLUDE_FORCE_DWORD = 0x7fffffff } D3D_INCLUDE_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_INCLUDE_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_INCLUDE_TYPE")]
 	public enum D3D_INCLUDE_TYPE : uint
 	{
 		/// <summary>
@@ -1020,10 +1019,9 @@ public static partial class DXGI
 	}
 
 	/// <summary>Indicates semantic flags for function parameters.</summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_parameter_flags typedef enum _D3D_PARAMETER_FLAGS {
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_parameter_flags typedef enum D3D_PARAMETER_FLAGS {
 	// D3D_PF_NONE = 0, D3D_PF_IN = 0x1, D3D_PF_OUT = 0x2, D3D_PF_FORCE_DWORD = 0x7fffffff } D3D_PARAMETER_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_PARAMETER_FLAGS")]
-	[Flags]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_PARAMETER_FLAGS"), Flags]
 	public enum D3D_PARAMETER_FLAGS : uint
 	{
 		/// <summary>
@@ -2176,9 +2174,8 @@ public static partial class DXGI
 	/// <c>D3D_SHADER_CBUFFER_FLAGS</c>-typed values are specified in the <c>uFlags</c> member of the D3D11_SHADER_BUFFER_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_cbuffer_flags typedef enum
-	// _D3D_SHADER_CBUFFER_FLAGS { D3D_CBF_USERPACKED = 1, D3D10_CBF_USERPACKED, D3D_CBF_FORCE_DWORD = 0x7fffffff } D3D_SHADER_CBUFFER_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_CBUFFER_FLAGS")]
-	[Flags]
+	// D3D_SHADER_CBUFFER_FLAGS { D3D_CBF_USERPACKED = 1, D3D10_CBF_USERPACKED, D3D_CBF_FORCE_DWORD = 0x7fffffff } D3D_SHADER_CBUFFER_FLAGS;
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_CBUFFER_FLAGS"), Flags]
 	public enum D3D_SHADER_CBUFFER_FLAGS : uint
 	{
 		/// <summary>
@@ -2312,12 +2309,11 @@ public static partial class DXGI
 	/// <c>D3D_SHADER_INPUT_FLAGS</c>-typed values are specified in the <c>uFlags</c> member of the D3D11_SHADER_INPUT_BIND_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_input_flags typedef enum
-	// _D3D_SHADER_INPUT_FLAGS { D3D_SIF_USERPACKED = 0x1, D3D_SIF_COMPARISON_SAMPLER = 0x2, D3D_SIF_TEXTURE_COMPONENT_0 = 0x4,
+	// D3D_SHADER_INPUT_FLAGS { D3D_SIF_USERPACKED = 0x1, D3D_SIF_COMPARISON_SAMPLER = 0x2, D3D_SIF_TEXTURE_COMPONENT_0 = 0x4,
 	// D3D_SIF_TEXTURE_COMPONENT_1 = 0x8, D3D_SIF_TEXTURE_COMPONENTS = 0xc, D3D_SIF_UNUSED = 0x10, D3D10_SIF_USERPACKED,
 	// D3D10_SIF_COMPARISON_SAMPLER, D3D10_SIF_TEXTURE_COMPONENT_0, D3D10_SIF_TEXTURE_COMPONENT_1, D3D10_SIF_TEXTURE_COMPONENTS,
 	// D3D_SIF_FORCE_DWORD = 0x7fffffff } D3D_SHADER_INPUT_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_INPUT_FLAGS")]
-	[Flags]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_INPUT_FLAGS"), Flags]
 	public enum D3D_SHADER_INPUT_FLAGS : uint
 	{
 		/// <summary>
@@ -2406,14 +2402,14 @@ public static partial class DXGI
 	/// <remarks>
 	/// <c>D3D_SHADER_INPUT_TYPE</c>-typed values are specified in the <c>Type</c> member of the D3D11_SHADER_INPUT_BIND_DESC structure.
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_input_type typedef enum _D3D_SHADER_INPUT_TYPE
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_input_type typedef enum D3D_SHADER_INPUT_TYPE
 	// { D3D_SIT_CBUFFER = 0, D3D_SIT_TBUFFER, D3D_SIT_TEXTURE, D3D_SIT_SAMPLER, D3D_SIT_UAV_RWTYPED, D3D_SIT_STRUCTURED,
 	// D3D_SIT_UAV_RWSTRUCTURED, D3D_SIT_BYTEADDRESS, D3D_SIT_UAV_RWBYTEADDRESS, D3D_SIT_UAV_APPEND_STRUCTURED,
 	// D3D_SIT_UAV_CONSUME_STRUCTURED, D3D_SIT_UAV_RWSTRUCTURED_WITH_COUNTER, D3D_SIT_RTACCELERATIONSTRUCTURE, D3D_SIT_UAV_FEEDBACKTEXTURE,
 	// D3D10_SIT_CBUFFER, D3D10_SIT_TBUFFER, D3D10_SIT_TEXTURE, D3D10_SIT_SAMPLER, D3D11_SIT_UAV_RWTYPED, D3D11_SIT_STRUCTURED,
 	// D3D11_SIT_UAV_RWSTRUCTURED, D3D11_SIT_BYTEADDRESS, D3D11_SIT_UAV_RWBYTEADDRESS, D3D11_SIT_UAV_APPEND_STRUCTURED,
 	// D3D11_SIT_UAV_CONSUME_STRUCTURED, D3D11_SIT_UAV_RWSTRUCTURED_WITH_COUNTER } D3D_SHADER_INPUT_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_INPUT_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_INPUT_TYPE")]
 	public enum D3D_SHADER_INPUT_TYPE
 	{
 		/// <summary>
@@ -2511,11 +2507,11 @@ public static partial class DXGI
 	/// and so on. <c>D3D_SHADER_VARIABLE_CLASS</c>-typed values are specified in the <c>Class</c> member of the D3D11_SHADER_TYPE_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_variable_class typedef enum
-	// _D3D_SHADER_VARIABLE_CLASS { D3D_SVC_SCALAR = 0, D3D_SVC_VECTOR, D3D_SVC_MATRIX_ROWS, D3D_SVC_MATRIX_COLUMNS, D3D_SVC_OBJECT,
+	// D3D_SHADER_VARIABLE_CLASS { D3D_SVC_SCALAR = 0, D3D_SVC_VECTOR, D3D_SVC_MATRIX_ROWS, D3D_SVC_MATRIX_COLUMNS, D3D_SVC_OBJECT,
 	// D3D_SVC_STRUCT, D3D_SVC_INTERFACE_CLASS, D3D_SVC_INTERFACE_POINTER, D3D10_SVC_SCALAR, D3D10_SVC_VECTOR, D3D10_SVC_MATRIX_ROWS,
 	// D3D10_SVC_MATRIX_COLUMNS, D3D10_SVC_OBJECT, D3D10_SVC_STRUCT, D3D11_SVC_INTERFACE_CLASS, D3D11_SVC_INTERFACE_POINTER,
 	// D3D_SVC_FORCE_DWORD = 0x7fffffff } D3D_SHADER_VARIABLE_CLASS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_VARIABLE_CLASS")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_VARIABLE_CLASS")]
 	public enum D3D_SHADER_VARIABLE_CLASS
 	{
 		/// <summary>
@@ -2581,11 +2577,10 @@ public static partial class DXGI
 	/// member of a D3D11_SHADER_VARIABLE_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_variable_flags typedef enum
-	// _D3D_SHADER_VARIABLE_FLAGS { D3D_SVF_USERPACKED = 1, D3D_SVF_USED = 2, D3D_SVF_INTERFACE_POINTER = 4, D3D_SVF_INTERFACE_PARAMETER =
+	// D3D_SHADER_VARIABLE_FLAGS { D3D_SVF_USERPACKED = 1, D3D_SVF_USED = 2, D3D_SVF_INTERFACE_POINTER = 4, D3D_SVF_INTERFACE_PARAMETER =
 	// 8, D3D10_SVF_USERPACKED, D3D10_SVF_USED, D3D11_SVF_INTERFACE_POINTER, D3D11_SVF_INTERFACE_PARAMETER, D3D_SVF_FORCE_DWORD = 0x7fffffff
 	// } D3D_SHADER_VARIABLE_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_VARIABLE_FLAGS")]
-	[Flags]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_VARIABLE_FLAGS"), Flags]
 	public enum D3D_SHADER_VARIABLE_FLAGS : uint
 	{
 		/// <summary>
@@ -2657,7 +2652,7 @@ public static partial class DXGI
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_variable_type typedef enum
-	// _D3D_SHADER_VARIABLE_TYPE { D3D_SVT_VOID = 0, D3D_SVT_BOOL = 1, D3D_SVT_INT = 2, D3D_SVT_FLOAT = 3, D3D_SVT_STRING = 4,
+	// D3D_SHADER_VARIABLE_TYPE { D3D_SVT_VOID = 0, D3D_SVT_BOOL = 1, D3D_SVT_INT = 2, D3D_SVT_FLOAT = 3, D3D_SVT_STRING = 4,
 	// D3D_SVT_TEXTURE = 5, D3D_SVT_TEXTURE1D = 6, D3D_SVT_TEXTURE2D = 7, D3D_SVT_TEXTURE3D = 8, D3D_SVT_TEXTURECUBE = 9, D3D_SVT_SAMPLER =
 	// 10, D3D_SVT_SAMPLER1D = 11, D3D_SVT_SAMPLER2D = 12, D3D_SVT_SAMPLER3D = 13, D3D_SVT_SAMPLERCUBE = 14, D3D_SVT_PIXELSHADER = 15,
 	// D3D_SVT_VERTEXSHADER = 16, D3D_SVT_PIXELFRAGMENT = 17, D3D_SVT_VERTEXFRAGMENT = 18, D3D_SVT_UINT = 19, D3D_SVT_UINT8 = 20,
@@ -2680,7 +2675,7 @@ public static partial class DXGI
 	// D3D11_SVT_RWTEXTURE2D, D3D11_SVT_RWTEXTURE2DARRAY, D3D11_SVT_RWTEXTURE3D, D3D11_SVT_RWBUFFER, D3D11_SVT_BYTEADDRESS_BUFFER,
 	// D3D11_SVT_RWBYTEADDRESS_BUFFER, D3D11_SVT_STRUCTURED_BUFFER, D3D11_SVT_RWSTRUCTURED_BUFFER, D3D11_SVT_APPEND_STRUCTURED_BUFFER,
 	// D3D11_SVT_CONSUME_STRUCTURED_BUFFER, D3D_SVT_FORCE_DWORD = 0x7fffffff } D3D_SHADER_VARIABLE_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_VARIABLE_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_VARIABLE_TYPE")]
 	public enum D3D_SHADER_VARIABLE_TYPE
 	{
 		/// <summary>
@@ -3659,8 +3654,7 @@ public static partial class DXGI
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nn-d3dcommon-id3d10blob
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3D10Blob")]
-	[ComImport, Guid("8BA5FB08-5195-40e2-AC58-0D989C3A0102"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3D10Blob"), ComImport, Guid("8BA5FB08-5195-40e2-AC58-0D989C3A0102"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface ID3D10Blob
 	{
 		/// <summary>Gets a pointer to the data.</summary>
@@ -3701,8 +3695,7 @@ public static partial class DXGI
 	/// object disposal.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nn-d3dcommon-id3ddestructionotifier
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3DDestructionNotifier")]
-	[ComImport, Guid("a06eb39a-50da-425b-8c31-4eecd6c270f3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3DDestructionNotifier"), ComImport, Guid("a06eb39a-50da-425b-8c31-4eecd6c270f3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface ID3DDestructionNotifier
 	{
 		/// <summary>
@@ -3826,9 +3819,8 @@ public static partial class DXGI
 	/// <summary>Represents a 3-by-2 matrix.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_3x2_f typedef struct D2D_MATRIX_3X2_F { union {
 	// struct { FLOAT m11; FLOAT m12; FLOAT m21; FLOAT m22; FLOAT dx; FLOAT dy; }; struct { FLOAT _11; FLOAT _12; FLOAT _21; FLOAT _22;
-	// FLOAT _31; FLOAT _32; }; FLOAT m[3][2]; }; } D2D_MATRIX_3X2_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "c8a54bad-4376-479b-8529-1e407623e473")]
-	[StructLayout(LayoutKind.Sequential)]
+	// FLOAT _31; FLOAT _32; }; FLOAT m[3, 2]; }; } D2D_MATRIX_3X2_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "c8a54bad-4376-479b-8529-1e407623e473"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_3X2_F
 	{
 		/// <summary>Horizontal scaling / cosine of rotation</summary>
@@ -3892,9 +3884,8 @@ public static partial class DXGI
 	/// <summary>Describes a 4-by-3 floating point matrix.</summary>
 	/// <remarks>The <c>D2D1_MATRIX_4X3_F</c> structure is type defined from a <c>D2D_MATRIX_4X3_F</c> structure in D2d1_1.h.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_4x3_f
-	// typedef struct D2D_MATRIX_4X3_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _41; FLOAT _42; FLOAT _43; } DUMMYSTRUCTNAME; FLOAT m[4][3]; } DUMMYUNIONNAME; } D2D_MATRIX_4X3_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X3_F")]
-	[StructLayout(LayoutKind.Sequential)]
+	// typedef struct D2D_MATRIX_4X3_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _41; FLOAT _42; FLOAT _43; } DUMMYSTRUCTNAME; FLOAT m[4, 3]; } DUMMYUNIONNAME; } D2D_MATRIX_4X3_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X3_F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_4X3_F
 	{
 		/// <summary/>
@@ -3983,9 +3974,8 @@ public static partial class DXGI
 	/// <summary>Describes a 4-by-4 floating point matrix.</summary>
 	/// <remarks>The <c>D2D1_MATRIX_4X4_F</c> structure is type defined from a <c>D2D_MATRIX_4X4_F</c> structure in D2d1_1.h.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_4x4_f
-	// typedef struct D2D_MATRIX_4X4_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _14; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _24; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; } DUMMYSTRUCTNAME; FLOAT m[4][4]; } DUMMYUNIONNAME; } D2D_MATRIX_4X4_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X4_F")]
-	[StructLayout(LayoutKind.Sequential)]
+	// typedef struct D2D_MATRIX_4X4_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _14; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _24; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; } DUMMYSTRUCTNAME; FLOAT m[4, 4]; } DUMMYUNIONNAME; } D2D_MATRIX_4X4_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X4_F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_4X4_F
 	{
 		/// <summary/>
@@ -4088,10 +4078,9 @@ public static partial class DXGI
 	/// <remarks>The <c>D2D1_MATRIX_5X4_F</c> structure is type defined from a <c>D2D_MATRIX_5X4_F</c> structure in D2d1_1.h.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_5x4_f typedef struct D2D_MATRIX_5X4_F { union {
 	// struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _14; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _24; FLOAT _31; FLOAT _32; FLOAT _33;
-	// FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; FLOAT _51; FLOAT _52; FLOAT _53; FLOAT _54; } DUMMYSTRUCTNAME; FLOAT m[5][4];
+	// FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; FLOAT _51; FLOAT _52; FLOAT _53; FLOAT _54; } DUMMYSTRUCTNAME; FLOAT m[5, 4];
 	// } DUMMYUNIONNAME; } D2D_MATRIX_5X4_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_5X4_F")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_5X4_F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_5X4_F
 	{
 		/// <summary/>
@@ -4209,8 +4198,7 @@ public static partial class DXGI
 	/// <summary>Represents an x-coordinate and y-coordinate pair, expressed as floating-point values, in two-dimensional space.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT x; FLOAT
 	// y; } D2D_POINT_2F;
-	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_POINT_2F(float x, float y)
 	{
 		/// <summary>
@@ -4246,8 +4234,7 @@ public static partial class DXGI
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_rect_f typedef struct D2D_RECT_F { FLOAT left; FLOAT
 	// top; FLOAT right; FLOAT bottom; } D2D_RECT_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_RECT_F(float left, float top, float right, float bottom)
 	{
 		/// <summary>
@@ -4292,8 +4279,7 @@ public static partial class DXGI
 	/// <summary>Stores an ordered pair of floating-point values, typically the width and height of a rectangle.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_size_f typedef struct D2D_SIZE_F { FLOAT width; FLOAT
 	// height; } D2D_SIZE_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "9d519bb9-3eb8-4d7e-ba00-b6cf5a428a04")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "9d519bb9-3eb8-4d7e-ba00-b6cf5a428a04"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_SIZE_F(float width, float height)
 	{
 		/// <summary>
@@ -4322,8 +4308,7 @@ public static partial class DXGI
 	/// <summary>Stores an ordered pair of integers, typically the width and height of a rectangle.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_size_u typedef struct D2D_SIZE_U { UINT32 width; UINT32
 	// height; } D2D_SIZE_U;
-	[PInvokeData("dcommon.h", MSDNShortId = "d9ea9df5-7c5f-4afa-9859-14d77b017904")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "d9ea9df5-7c5f-4afa-9859-14d77b017904"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_SIZE_U(uint width, uint height)
 	{
 		/// <summary>
@@ -4347,8 +4332,7 @@ public static partial class DXGI
 	/// <summary>A vector of 2 FLOAT values (x, y).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_2f
 	// typedef struct D2D_VECTOR_2F { FLOAT x; FLOAT y; } D2D_VECTOR_2F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_2F")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_2F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_VECTOR_2F
 	{
 		/// <summary>The x value of the vector.</summary>
@@ -4361,8 +4345,7 @@ public static partial class DXGI
 	/// <summary>A vector of 3 FLOAT values (x, y, z).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_3f
 	// typedef struct D2D_VECTOR_3F { FLOAT x; FLOAT y; FLOAT z; } D2D_VECTOR_3F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_3F")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_3F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_VECTOR_3F
 	{
 		/// <summary>The x value of the vector.</summary>
@@ -4378,8 +4361,7 @@ public static partial class DXGI
 	/// <summary>A vector of 4 FLOAT values (x, y, z, w).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_4f
 	// typedef struct D2D_VECTOR_4F { FLOAT x; FLOAT y; FLOAT z; FLOAT w; } D2D_VECTOR_4F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_4F")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_4F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_VECTOR_4F
 	{
 		/// <summary>The x value of the vector.</summary>
@@ -4408,8 +4390,7 @@ public static partial class DXGI
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d1_pixel_format typedef struct D2D1_PIXEL_FORMAT {
 	// DXGI_FORMAT format; D2D1_ALPHA_MODE alphaMode; } D2D1_PIXEL_FORMAT;
-	[PInvokeData("dcommon.h", MSDNShortId = "e95afd9c-5793-4cb7-bcb8-aae4d28b6532")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "e95afd9c-5793-4cb7-bcb8-aae4d28b6532"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D1_PIXEL_FORMAT
 	{
 		/// <summary>
@@ -4432,8 +4413,7 @@ public static partial class DXGI
 	/// <remarks>The following diagram shows a 3D box, where the origin is the left, front, top corner.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d10/ns-d3d10-d3d10_box typedef struct D3D10_BOX { UINT left; UINT top; UINT
 	// front; UINT right; UINT bottom; UINT back; } D3D10_BOX;
-	[PInvokeData("d3d10.h", MSDNShortId = "NS:d3d10.D3D10_BOX")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("d3d10.h", MSDNShortId = "NS:d3d10.D3D10_BOX"), StructLayout(LayoutKind.Sequential)]
 	public struct D3D10_BOX
 	{
 		/// <summary>
@@ -4495,10 +4475,9 @@ public static partial class DXGI
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ns-d3dcommon-d3d_shader_macro typedef struct _D3D_SHADER_MACRO { LPCSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ns-d3dcommon-d3d_shader_macro typedef struct D3D_SHADER_MACRO { LPCSTR
 	// Name; LPCSTR Definition; } D3D_SHADER_MACRO, *LPD3D_SHADER_MACRO;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NS:d3dcommon._D3D_SHADER_MACRO")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NS:d3dcommon.D3D_SHADER_MACRO"), StructLayout(LayoutKind.Sequential)]
 	public struct D3D_SHADER_MACRO
 	{
 		/// <summary>The macro name.</summary>
