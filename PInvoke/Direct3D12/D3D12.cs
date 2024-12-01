@@ -1370,6 +1370,85 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12CreateDevice")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3D12CreateDevice([In, Optional, MarshalAs(UnmanagedType.Interface)] object? pAdapter,
+		D3D_FEATURE_LEVEL MinimumFeatureLevel, in Guid riid, [Out, Optional] IntPtr ppDevice);
+
+	/// <summary>Creates a device that represents the display adapter.</summary>
+	/// <param name="pAdapter">
+	/// <para>Type: <b>IUnknown*</b></para>
+	/// <para>
+	/// A pointer to the video adapter to use when creating a <c>device</c>. Pass <b>NULL</b> to use the default adapter, which is the first
+	/// adapter that is enumerated by <c>IDXGIFactory1::EnumAdapters</c>.
+	/// </para>
+	/// <para>
+	/// <b>Note</b>  Don't mix the use of DXGI 1.0 ( <c>IDXGIFactory</c>) and DXGI 1.1 ( <c>IDXGIFactory1</c>) in an application. Use
+	/// <b>IDXGIFactory</b> or <b>IDXGIFactory1</b>, but not both in an application.
+	/// </para>
+	/// <para></para>
+	/// </param>
+	/// <param name="MinimumFeatureLevel">
+	/// <para>Type: <b><c>D3D_FEATURE_LEVEL</c></b></para>
+	/// <para>The minimum <c>D3D_FEATURE_LEVEL</c> required for successful device creation.</para>
+	/// </param>
+	/// <param name="riid">
+	/// <para>Type: <b><b>REFIID</b></b></para>
+	/// <para>
+	/// The globally unique identifier ( <b>GUID</b>) for the device interface. This parameter, and <i>ppDevice</i>, can be addressed with
+	/// the single macro <c>IID_PPV_ARGS</c>.
+	/// </para>
+	/// </param>
+	/// <param name="ppDevice">
+	/// <para>Type: <b><b>void</b>**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the device. Pass <b>NULL</b> to test if device creation would succeed, but to
+	/// not actually create the device. If <b>NULL</b> is passed and device creation would succeed, <b>S_FALSE</b> is returned.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c>HRESULT</c></b></para>
+	/// <para>This method can return one of the <c>Direct3D 12 Return Codes</c>.</para>
+	/// <para>Possible return values include those documented for <c>CreateDXGIFactory1</c> and <c>IDXGIFactory::EnumAdapters</c>.</para>
+	/// <para>If <b>ppDevice</b> is <b>NULL</b> and the function succeeds, <b>S_FALSE</b> is returned, rather than <b>S_OK</b>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Direct3D 12 devices are singletons per adapter. If a Direct3D 12 device already exists in the current process for a given adapter,
+	/// then a subsequent call to <b>D3D12CreateDevice</b> returns the existing device. If the current Direct3D 12 device is in a removed
+	/// state (that is, <c>ID3D12Device::GetDeviceRemovedReason</c> returns a failing HRESULT), then <b>D3D12CreateDevice</b> fails instead
+	/// of returning the existing device. The sameness of two adapters (that is, they have the same identity) is determined by comparing
+	/// their LUIDs, not their pointers.
+	/// </para>
+	/// <para>In order to be sure to pick up the first adapter that supports D3D12, use the following code.</para>
+	/// <para>
+	/// <c>void GetHardwareAdapter(IDXGIFactory4* pFactory, IDXGIAdapter1** ppAdapter) { *ppAdapter = nullptr; for (UINT adapterIndex = 0; ;
+	/// ++adapterIndex) { IDXGIAdapter1* pAdapter = nullptr; if (DXGI_ERROR_NOT_FOUND == pFactory-&gt;EnumAdapters1(adapterIndex,
+	/// &amp;pAdapter)) { // No more adapters to enumerate. break; } // Check to see if the adapter supports Direct3D 12, but don't create
+	/// the // actual device yet. if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr))) {
+	/// *ppAdapter = pAdapter; return; } pAdapter-&gt;Release(); } }</c>
+	/// </para>
+	/// <para>
+	/// The function signature PFN_D3D12_CREATE_DEVICE is provided as a typedef, so that you can use dynamic linking techniques (
+	/// <c>GetProcAddress</c>) instead of statically linking.
+	/// </para>
+	/// <para>
+	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to a device can be obtained by using the <c>__uuidof()</c> macro. For example,
+	/// <c>__uuidof</c>( <c>ID3D12Device</c>) will get the <b>GUID</b> of the interface to a device.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>Create a hardware based device, unless instructed to create a WARP software device.</para>
+	/// <para>
+	/// <c>ComPtr&lt;IDXGIFactory4&gt; factory; ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&amp;factory))); if (m_useWarpDevice) {
+	/// ComPtr&lt;IDXGIAdapter&gt; warpAdapter; ThrowIfFailed(factory-&gt;EnumWarpAdapter(IID_PPV_ARGS(&amp;warpAdapter)));
+	/// ThrowIfFailed(D3D12CreateDevice( warpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&amp;m_device) )); } else {
+	/// ComPtr&lt;IDXGIAdapter1&gt; hardwareAdapter; GetHardwareAdapter(factory.Get(), &amp;hardwareAdapter);
+	/// ThrowIfFailed(D3D12CreateDevice( hardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&amp;m_device) )); }</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-d3d12createdevice HRESULT D3D12CreateDevice( [in, optional]
+	// IUnknown *pAdapter, D3D_FEATURE_LEVEL MinimumFeatureLevel, [in] REFIID riid, [out, optional] void **ppDevice );
+	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12CreateDevice")]
+	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT D3D12CreateDevice([In, Optional, MarshalAs(UnmanagedType.Interface)] object? pAdapter,
 		D3D_FEATURE_LEVEL MinimumFeatureLevel, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppDevice);
 
 	/// <summary>Creates a device that represents the display adapter.</summary>

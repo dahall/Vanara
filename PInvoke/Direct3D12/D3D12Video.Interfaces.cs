@@ -6,7 +6,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecodecommandlist
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecodeCommandList")]
 	[ComImport, Guid("3b60536e-ad29-4e64-a269-f853837e5e53"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecodeCommandList : ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecodeCommandList : ID3D12CommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -388,7 +388,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecodecommandlist1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecodeCommandList1")]
 	[ComImport, Guid("d52f011b-b56e-453c-a05a-a7f311c8f472"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecodeCommandList1 : ID3D12VideoDecodeCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecodeCommandList1 : ID3D12VideoDecodeCommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -788,7 +788,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecodecommandlist2
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecodeCommandList2")]
 	[ComImport, Guid("6e120880-c114-4153-8036-d247051e1729"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecodeCommandList2 : ID3D12VideoDecodeCommandList1, ID3D12VideoDecodeCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecodeCommandList2 : ID3D12VideoDecodeCommandList1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1249,7 +1249,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecodecommandlist3
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecodeCommandList3")]
 	[ComImport, Guid("2aee8c37-9562-42da-8abf-61efeb2e4513"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecodeCommandList3 : ID3D12VideoDecodeCommandList2, ID3D12VideoDecodeCommandList1, ID3D12VideoDecodeCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecodeCommandList3 : ID3D12VideoDecodeCommandList2
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1722,7 +1722,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecoder
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecoder")]
 	[ComImport, Guid("c59b6bdc-7720-4074-a136-17a156037470"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecoder : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecoder : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1897,7 +1897,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecoder1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecoder1")]
 	[ComImport, Guid("79a2e5fb-ccd2-469a-9fde-195d10951f7e"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecoder1 : ID3D12VideoDecoder, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecoder1 : ID3D12VideoDecoder
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2084,7 +2084,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecoderheap
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecoderHeap")]
 	[ComImport, Guid("0946b7c9-ebf6-4047-bb73-8683e27dbb1f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecoderHeap : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecoderHeap : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2257,7 +2257,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodecoderheap1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDecoderHeap1")]
 	[ComImport, Guid("da1d98c5-539f-41b2-bf6b-1198a03b6d26"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDecoderHeap1 : ID3D12VideoDecoderHeap, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoDecoderHeap1 : ID3D12VideoDecoderHeap
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2636,7 +2636,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodevice2
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDevice2")]
 	[ComImport, Guid("f019ac49-f838-4a95-9b17-579437c8f513"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDevice2 : ID3D12VideoDevice1, ID3D12VideoDevice
+	public interface ID3D12VideoDevice2 : ID3D12VideoDevice1
 	{
 		/// <summary>Gets information about the features that are supported by the current video driver.</summary>
 		/// <param name="FeatureVideo">A member of the <c>D3D12_FEATURE_VIDEO</c> enumeration that specifies the feature to query for support.</param>
@@ -2873,7 +2873,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videodevice3
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoDevice3")]
 	[ComImport, Guid("4243adb4-3a32-4666-973c-0ccc5625dc44"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoDevice3 : ID3D12VideoDevice2, ID3D12VideoDevice1, ID3D12VideoDevice
+	public interface ID3D12VideoDevice3 : ID3D12VideoDevice2
 	{
 		/// <summary>Gets information about the features that are supported by the current video driver.</summary>
 		/// <param name="FeatureVideo">A member of the <c>D3D12_FEATURE_VIDEO</c> enumeration that specifies the feature to query for support.</param>
@@ -3131,7 +3131,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencodecommandlist
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncodeCommandList")]
 	[ComImport, Guid("8455293a-0cbd-4831-9b39-fbdbab724723"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoEncodeCommandList : ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoEncodeCommandList : ID3D12CommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3554,7 +3554,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencodecommandlist1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncodeCommandList1")]
 	[ComImport, Guid("94971eca-2bdb-4769-88cf-3675ea757ebc"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoEncodeCommandList1 : ID3D12VideoEncodeCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoEncodeCommandList1 : ID3D12VideoEncodeCommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -4021,7 +4021,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencodecommandlist2
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncodeCommandList2")]
 	[ComImport, Guid("895491e2-e701-46a9-9a1f-8d3480ed867a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoEncodeCommandList2 : ID3D12VideoEncodeCommandList1, ID3D12VideoEncodeCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoEncodeCommandList2 : ID3D12VideoEncodeCommandList1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -4549,7 +4549,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencodecommandlist3
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncodeCommandList3")]
 	[ComImport, Guid("7f027b22-1515-4e85-aa0d-026486580576"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoEncodeCommandList3 : ID3D12VideoEncodeCommandList2, ID3D12VideoEncodeCommandList1, ID3D12VideoEncodeCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoEncodeCommandList3 : ID3D12VideoEncodeCommandList2
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -5084,7 +5084,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencoder
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncoder")]
 	[ComImport, Guid("2e0d212d-8df9-44a6-a770-bb289b182737"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoEncoder : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoEncoder : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -5311,7 +5311,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoencoderheap
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoEncoderHeap")]
 	[ComImport, Guid("22b35d96-876a-44c0-b25e-fb8c9c7f1c4a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoEncoderHeap : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoEncoderHeap : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -5542,7 +5542,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoextensioncommand
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoExtensionCommand")]
 	[ComImport, Guid("554e41e8-ae8e-4a8c-b7d2-5b4f274a30e4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoExtensionCommand : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoExtensionCommand : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -5728,7 +5728,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videomotionestimator
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoMotionEstimator")]
 	[ComImport, Guid("33fdae0e-098b-428f-87bb-34b695de08f8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoMotionEstimator : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoMotionEstimator : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -5926,7 +5926,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videomotionvectorheap
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoMotionVectorHeap")]
 	[ComImport, Guid("5be17987-743a-4061-834b-23d22daea505"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoMotionVectorHeap : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoMotionVectorHeap : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6111,7 +6111,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocesscommandlist
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessCommandList")]
 	[ComImport, Guid("aeb2543a-167f-4682-acc8-d159ed4a6209"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoProcessCommandList : ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoProcessCommandList : ID3D12CommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6516,7 +6516,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocesscommandlist1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessCommandList1")]
 	[ComImport, Guid("542c5c4d-7596-434f-8c93-4efa6766f267"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoProcessCommandList1 : ID3D12VideoProcessCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoProcessCommandList1 : ID3D12VideoProcessCommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6941,7 +6941,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocesscommandlist2
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessCommandList2")]
 	[ComImport, Guid("db525ae4-6ad6-473c-baa7-59b2e37082e4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoProcessCommandList2 : ID3D12VideoProcessCommandList1, ID3D12VideoProcessCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoProcessCommandList2 : ID3D12VideoProcessCommandList1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -7427,7 +7427,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocesscommandlist3
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessCommandList3")]
 	[ComImport, Guid("1a0a4ca4-9f08-40ce-9558-b411fd2666ff"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoProcessCommandList3 : ID3D12VideoProcessCommandList2, ID3D12VideoProcessCommandList1, ID3D12VideoProcessCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoProcessCommandList3 : ID3D12VideoProcessCommandList2
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -7922,7 +7922,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocessor
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessor")]
 	[ComImport, Guid("304fdb32-bede-410a-8545-943ac6a46138"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoProcessor : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoProcessor : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -8125,7 +8125,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nn-d3d12video-id3d12videoprocessor1
 	[PInvokeData("d3d12video.h", MSDNShortId = "NN:d3d12video.ID3D12VideoProcessor1")]
 	[ComImport, Guid("f3cfe615-553f-425c-86d8-ee8c1b1fb01c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12VideoProcessor1 : ID3D12VideoProcessor, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12VideoProcessor1 : ID3D12VideoProcessor
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">

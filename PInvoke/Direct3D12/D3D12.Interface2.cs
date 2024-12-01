@@ -15,7 +15,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device2")]
 	[ComImport, Guid("30baa41e-b15b-475c-a0bb-1af5c5b64328"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device2 : ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device2 : ID3D12Device1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2225,7 +2225,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device3
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device3")]
 	[ComImport, Guid("81dadc15-2bad-4392-93c5-101345c4aa98"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device3 : ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device3 : ID3D12Device2
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -4575,7 +4575,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device4
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device4")]
 	[ComImport, Guid("e865df17-a9ee-46f9-a463-3098315aa2e5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device4 : ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device4 : ID3D12Device3
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -7329,7 +7329,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device5
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device5")]
 	[ComImport, Guid("8b4f173b-2fea-4b80-8f58-4307191ab95d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device5 : ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device5 : ID3D12Device4
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">

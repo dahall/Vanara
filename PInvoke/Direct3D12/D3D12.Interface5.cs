@@ -326,7 +326,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12deviceremovedextendeddata2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12DeviceRemovedExtendedData2")]
 	[ComImport, Guid("67fc5816-e4ca-4915-bf18-42541272da54"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12DeviceRemovedExtendedData2 : ID3D12DeviceRemovedExtendedData1, ID3D12DeviceRemovedExtendedData
+	public interface ID3D12DeviceRemovedExtendedData2 : ID3D12DeviceRemovedExtendedData1
 	{
 		/// <summary>Retrieves the Device Removed Extended Data (DRED) auto-breadcrumbs output after device removal.</summary>
 		/// <param name="pOutput">
@@ -465,7 +465,7 @@ public static partial class D3D12
 
 	/*
 	[ComImport, Guid("61552388-01ab-4008-a436-83db189566ea"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12DeviceRemovedExtendedDataSettings2 : ID3D12DeviceRemovedExtendedDataSettings1, ID3D12DeviceRemovedExtendedDataSettings
+	public interface ID3D12DeviceRemovedExtendedDataSettings2 : ID3D12DeviceRemovedExtendedDataSettings1
 	{
 		[PreserveSig]
 		new void SetAutoBreadcrumbsEnablement(D3D12_DRED_ENABLEMENT Enablement);
@@ -488,7 +488,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12fence
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Fence")]
 	[ComImport, Guid("0a753dcf-c4d8-4b91-adf6-be5a60d95a76"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Fence : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Fence : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -709,7 +709,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12fence1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Fence1")]
 	[ComImport, Guid("433685fe-e22b-4ca0-a8db-b5b4f4dd0e4a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Fence1 : ID3D12Fence, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Fence1 : ID3D12Fence
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -988,7 +988,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList")]
 	[ComImport, Guid("5b160d0f-ac1b-4185-8ba8-b3ae42a5a455"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList : ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList : ID3D12CommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3674,7 +3674,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList1")]
 	[ComImport, Guid("553103fb-1fe7-4557-bb38-946d7d0e7ca7"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList1 : ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList1 : ID3D12GraphicsCommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6821,7 +6821,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList2")]
 	[ComImport, Guid("38c3e585-ff17-412c-9150-4fc6f9d72a28"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList2 : ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList2 : ID3D12GraphicsCommandList1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">

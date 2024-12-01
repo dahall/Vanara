@@ -6,7 +6,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist3
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList3")]
 	[ComImport, Guid("6fda83a7-b84c-4e38-9ac8-c7bd22016b3d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList3 : ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList3 : ID3D12GraphicsCommandList2
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3193,7 +3193,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist4
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList4")]
 	[ComImport, Guid("8754318e-d3a9-4541-98cf-645b50dc4874"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList4 : ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList4 : ID3D12GraphicsCommandList3
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6608,7 +6608,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist5
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList5")]
 	[ComImport, Guid("55050859-4024-474c-87f5-6472eaee44ea"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList5 : ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList5 : ID3D12GraphicsCommandList4
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -10104,7 +10104,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist6
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList6")]
 	[ComImport, Guid("c3827890-e548-4cfa-96cf-5689a9370f80"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList6 : ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList6 : ID3D12GraphicsCommandList5
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -13613,7 +13613,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist7
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList7")]
 	[ComImport, Guid("dd171223-8b61-4769-90e3-160ccde4e2c1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList7 : ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList7 : ID3D12GraphicsCommandList6
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -17129,7 +17129,7 @@ public static partial class D3D12
 
 	/*
 	[ComImport, Guid("ee936ef9-599d-4d28-938e-23c4ad05ce51"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList8 : ID3D12GraphicsCommandList7, ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList8 : ID3D12GraphicsCommandList7
 	{
 		[PreserveSig]
 		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);
@@ -17370,7 +17370,7 @@ public static partial class D3D12
 	}
 
 	[ComImport, Guid("34ed2808-ffe6-4c2b-b11a-cabd2b0c59e1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList9 : ID3D12GraphicsCommandList8, ID3D12GraphicsCommandList7, ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList9 : ID3D12GraphicsCommandList8
 	{
 		[PreserveSig]
 		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);
@@ -17617,7 +17617,7 @@ public static partial class D3D12
 	}
 
 	[ComImport, Guid("7013c015-d161-4b63-a08c-238552dd8acc"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList10 : ID3D12GraphicsCommandList9, ID3D12GraphicsCommandList8, ID3D12GraphicsCommandList7, ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList10 : ID3D12GraphicsCommandList9
 	{
 		[PreserveSig]
 		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);

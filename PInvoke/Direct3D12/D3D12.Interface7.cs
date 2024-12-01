@@ -9,7 +9,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12heap
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Heap")]
 	[ComImport, Guid("6b3b2502-6e51-45b3-90ee-9884265e8df3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Heap : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Heap : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -181,7 +181,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12heap1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Heap1")]
 	[ComImport, Guid("572f7389-2168-49e3-9693-d6df5871bf6d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Heap1 : ID3D12Heap, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Heap1 : ID3D12Heap
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -379,7 +379,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12lifetimetracker
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12LifetimeTracker")]
 	[ComImport, Guid("3fd03d36-4eb1-424a-a582-494ecb8ba813"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12LifetimeTracker : ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12LifetimeTracker : ID3D12DeviceChild
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -576,7 +576,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12metacommand
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12MetaCommand")]
 	[ComImport, Guid("dbb84c27-36ce-4fc9-b801-f048c46ac570"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12MetaCommand : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12MetaCommand : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -882,7 +882,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12pageable
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Pageable")]
 	[ComImport, Guid("63ee58fb-1268-4835-86da-f008ce62f0d6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Pageable : ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Pageable : ID3D12DeviceChild
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1046,7 +1046,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12pipelinelibrary
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12PipelineLibrary")]
 	[ComImport, Guid("c64226a8-9201-46af-b4cc-53fb9ff7414f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12PipelineLibrary : ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12PipelineLibrary : ID3D12DeviceChild
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1345,7 +1345,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12pipelinelibrary1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12PipelineLibrary1")]
 	[ComImport, Guid("80eabf42-2568-4e5e-bd82-c37f86961dc3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12PipelineLibrary1 : ID3D12PipelineLibrary, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12PipelineLibrary1 : ID3D12PipelineLibrary
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1747,7 +1747,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12pipelinestate
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12PipelineState")]
 	[ComImport, Guid("765a30f3-f624-4c6f-a828-ace948622445"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12PipelineState : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12PipelineState : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1928,7 +1928,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12protectedresourcesession
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12ProtectedResourceSession")]
 	[ComImport, Guid("6cd696f4-f289-40cc-8091-5a6c0a099c3d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12ProtectedResourceSession : ID3D12ProtectedSession, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12ProtectedResourceSession : ID3D12ProtectedSession
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2129,7 +2129,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12protectedresourcesession1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12ProtectedResourceSession1")]
 	[ComImport, Guid("d6f12dd6-76fb-406e-8961-4296eefc0409"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12ProtectedResourceSession1 : ID3D12ProtectedResourceSession, ID3D12ProtectedSession, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12ProtectedResourceSession1 : ID3D12ProtectedResourceSession
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2337,7 +2337,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12protectedsession
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12ProtectedSession")]
 	[ComImport, Guid("a1533d18-0ac1-4084-85b9-89a96116806b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12ProtectedSession : ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12ProtectedSession : ID3D12DeviceChild
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2550,7 +2550,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12queryheap
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12QueryHeap")]
 	[ComImport, Guid("0d9658ae-ed45-469e-a61d-970ec583cab4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12QueryHeap : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12QueryHeap : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2716,7 +2716,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12resource
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Resource")]
 	[ComImport, Guid("696442be-a72e-4059-bc79-5b5c98040fad"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Resource : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Resource : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3194,7 +3194,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12resource1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Resource1")]
 	[ComImport, Guid("9d5e227a-4430-4161-88b3-3eca6bb16e19"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Resource1 : ID3D12Resource, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Resource1 : ID3D12Resource
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3680,7 +3680,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12resource2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Resource2")]
 	[ComImport, Guid("be36ec3b-ea85-4aeb-a45a-e9d76404a495"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Resource2 : ID3D12Resource1, ID3D12Resource, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Resource2 : ID3D12Resource1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -4174,7 +4174,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12rootsignature
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12RootSignature")]
 	[ComImport, Guid("c54a6b66-72df-4ee8-8be5-a946a1429214"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12RootSignature : ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12RootSignature : ID3D12DeviceChild
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -4427,7 +4427,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12shadercachesession
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12ShaderCacheSession")]
 	[ComImport, Guid("28e2495d-0f64-4ae4-a6ec-129255dc49a8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12ShaderCacheSession : ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12ShaderCacheSession : ID3D12DeviceChild
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -4726,7 +4726,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12stateobject
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12StateObject")]
 	[ComImport, Guid("47016943-fca8-4594-93ea-af258b55346d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12StateObject : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12StateObject : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">

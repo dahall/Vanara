@@ -228,7 +228,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11on12/nn-d3d11on12-id3d11on12device2
 	[PInvokeData("d3d11on12.h", MSDNShortId = "NN:d3d11on12.ID3D11On12Device2")]
 	[ComImport, Guid("dc90f331-4740-43fa-866e-67f12cb58223"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D11On12Device2 : ID3D11On12Device1, ID3D11On12Device
+	public interface ID3D11On12Device2 : ID3D11On12Device1
 	{
 		/// <summary>This method creates D3D11 resources for use with D3D 11on12.</summary>
 		/// <param name="pResource12">

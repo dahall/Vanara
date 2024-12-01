@@ -6,7 +6,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device9
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device9")]
 	[ComImport, Guid("4c80e962-f032-4f60-bc9e-ebc2cfa1d83c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device9 : ID3D12Device8, ID3D12Device7, ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device9 : ID3D12Device8
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3545,7 +3545,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device10
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device10")]
 	[ComImport, Guid("517f8718-aa66-49f9-b02b-a7ab89c06031"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device10 : ID3D12Device9, ID3D12Device8, ID3D12Device7, ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device10 : ID3D12Device9
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -7316,7 +7316,7 @@ public static partial class D3D12
 
 	/*
 	[ComImport, Guid("5405c344-d457-444e-b4dd-2366e45aee39"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device11 : ID3D12Device10, ID3D12Device9, ID3D12Device8, ID3D12Device7, ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device11 : ID3D12Device10
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -11091,7 +11091,7 @@ public static partial class D3D12
 
 	/// <summary>Undocumented</summary>
 	[ComImport, Guid("5af5c532-4c91-4cd0-b541-15a405395fc5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device12 : ID3D12Device11, ID3D12Device10, ID3D12Device9, ID3D12Device8, ID3D12Device7, ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device12 : ID3D12Device11
 	{
 		[PreserveSig]
 		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);
@@ -11329,7 +11329,7 @@ public static partial class D3D12
 	}
 
 	[ComImport, Guid("14eecffc-4df8-40f7-a118-5c816f45695e"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device13 : ID3D12Device12, ID3D12Device11, ID3D12Device10, ID3D12Device9, ID3D12Device8, ID3D12Device7, ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device13 : ID3D12Device12
 	{
 		[PreserveSig]
 		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);
@@ -11570,7 +11570,7 @@ public static partial class D3D12
 	}
 
 	[ComImport, Guid("5f6e592d-d895-44c2-8e4a-88ad4926d323"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device14 : ID3D12Device13, ID3D12Device12, ID3D12Device11, ID3D12Device10, ID3D12Device9, ID3D12Device8, ID3D12Device7, ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device14 : ID3D12Device13
 	{
 		[PreserveSig]
 		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);

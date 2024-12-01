@@ -9,7 +9,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device6
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device6")]
 	[ComImport, Guid("c70b221b-40e4-4a17-89af-025a0727a6dc"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device6 : ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device6 : ID3D12Device5
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3064,7 +3064,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device7
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device7")]
 	[ComImport, Guid("5c014b53-68a1-4b9b-8bd1-dd6046b9358b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device7 : ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device7 : ID3D12Device6
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6195,7 +6195,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device8
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device8")]
 	[ComImport, Guid("9218e6bb-f944-4f7e-a75c-b1b2c7b701f3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device8 : ID3D12Device7, ID3D12Device6, ID3D12Device5, ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device8 : ID3D12Device7
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
