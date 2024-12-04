@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (38 of 659 functions)  
+### Methods - 5% API coverage (38 of 660 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
@@ -405,6 +405,7 @@ Native Method | Header | Managed Method
 [RtlQueryFeatureConfigurationChangeStamp](https://www.google.com/search?num=5&q=RtlQueryFeatureConfigurationChangeStamp+site%3Alearn.microsoft.com) |  |   
 [RtlQueryFeatureUsageNotificationSubscriptions](https://www.google.com/search?num=5&q=RtlQueryFeatureUsageNotificationSubscriptions+site%3Alearn.microsoft.com) |  |   
 [RtlQueryImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlQueryImageMitigationPolicy+site%3Alearn.microsoft.com) |  |   
+[RtlQueryInternalFeatureConfiguration](https://www.google.com/search?num=5&q=RtlQueryInternalFeatureConfiguration+site%3Alearn.microsoft.com) |  |   
 [RtlQueryPointerMapping](https://www.google.com/search?num=5&q=RtlQueryPointerMapping+site%3Alearn.microsoft.com) |  |   
 [RtlQueryProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryProcessPlaceholderCompatibilityMode+site%3Alearn.microsoft.com) |  |   
 [RtlQueryPropertyStore](https://www.google.com/search?num=5&q=RtlQueryPropertyStore+site%3Alearn.microsoft.com) |  |   
