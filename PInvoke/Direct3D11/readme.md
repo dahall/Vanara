@@ -3,18 +3,13 @@ PInvoke API (methods, structures and constants) imported from Windows Direct3D11
 
 - Includes methods from d3d11.dll, d3dcsx.dll, d3d11sdklayers.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Direct3D11?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Direct3D11?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Direct3D11)  
-### Methods - 21% API coverage (13 of 61 functions)  
+### Methods - 26% API coverage (13 of 50 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CreateDirect3D11DeviceFromDXGIDevice](https://www.google.com/search?num=5&q=CreateDirect3D11DeviceFromDXGIDevice+site%3Alearn.microsoft.com) |  |   
 [CreateDirect3D11SurfaceFromDXGISurface](https://www.google.com/search?num=5&q=CreateDirect3D11SurfaceFromDXGISurface+site%3Alearn.microsoft.com) |  |   
-[D3D11CoreCreateDevice](https://www.google.com/search?num=5&q=D3D11CoreCreateDevice+site%3Alearn.microsoft.com) |  |   
-[D3D11CoreCreateLayeredDevice](https://www.google.com/search?num=5&q=D3D11CoreCreateLayeredDevice+site%3Alearn.microsoft.com) |  |   
-[D3D11CoreGetLayeredDeviceSize](https://www.google.com/search?num=5&q=D3D11CoreGetLayeredDeviceSize+site%3Alearn.microsoft.com) |  |   
-[D3D11CoreRegisterLayers](https://www.google.com/search?num=5&q=D3D11CoreRegisterLayers+site%3Alearn.microsoft.com) |  |   
 [D3D11CreateDevice](https://www.google.com/search?num=5&q=D3D11CreateDevice+site%3Alearn.microsoft.com) | d3d11.h | [Vanara.PInvoke.D3D11.D3D11CreateDevice](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11CreateDevice)  
 [D3D11CreateDeviceAndSwapChain](https://www.google.com/search?num=5&q=D3D11CreateDeviceAndSwapChain+site%3Alearn.microsoft.com) | d3d11.h | [Vanara.PInvoke.D3D11.D3D11CreateDeviceAndSwapChain](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11CreateDeviceAndSwapChain)  
-[D3D11CreateDeviceForD3D12](https://www.google.com/search?num=5&q=D3D11CreateDeviceForD3D12+site%3Alearn.microsoft.com) |  |   
 [D3D11On12CreateDevice](https://www.google.com/search?num=5&q=D3D11On12CreateDevice+site%3Alearn.microsoft.com) | d3d11on12.h | [Vanara.PInvoke.D3D11.D3D11On12CreateDevice](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11On12CreateDevice)  
 [D3DDisassemble11Trace](https://www.google.com/search?num=5&q=D3DDisassemble11Trace+site%3Alearn.microsoft.com) | d3d11shadertracing.h | [Vanara.PInvoke.D3D11.D3DDisassemble11Trace](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble11Trace)  
 [D3DKMTCloseAdapter](https://www.google.com/search?num=5&q=D3DKMTCloseAdapter+site%3Alearn.microsoft.com) |  |   
@@ -51,10 +46,6 @@ Native Method | Header | Managed Method
 [D3DKMTUnlock](https://www.google.com/search?num=5&q=D3DKMTUnlock+site%3Alearn.microsoft.com) |  |   
 [D3DKMTWaitForSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObject+site%3Alearn.microsoft.com) |  |   
 [D3DKMTWaitForVerticalBlankEvent](https://www.google.com/search?num=5&q=D3DKMTWaitForVerticalBlankEvent+site%3Alearn.microsoft.com) |  |   
-[D3DPerformance_BeginEvent](https://www.google.com/search?num=5&q=D3DPerformance_BeginEvent+site%3Alearn.microsoft.com) |  |   
-[D3DPerformance_EndEvent](https://www.google.com/search?num=5&q=D3DPerformance_EndEvent+site%3Alearn.microsoft.com) |  |   
-[D3DPerformance_GetStatus](https://www.google.com/search?num=5&q=D3DPerformance_GetStatus+site%3Alearn.microsoft.com) |  |   
-[D3DPerformance_SetMarker](https://www.google.com/search?num=5&q=D3DPerformance_SetMarker+site%3Alearn.microsoft.com) |  |   
 [D3DX11CreateFFT](https://www.google.com/search?num=5&q=D3DX11CreateFFT+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT)  
 [D3DX11CreateFFT1DComplex](https://www.google.com/search?num=5&q=D3DX11CreateFFT1DComplex+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT1DComplex](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT1DComplex)  
 [D3DX11CreateFFT1DReal](https://www.google.com/search?num=5&q=D3DX11CreateFFT1DReal+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT1DReal](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT1DReal)  
@@ -65,8 +56,6 @@ Native Method | Header | Managed Method
 [D3DX11CreateScan](https://www.google.com/search?num=5&q=D3DX11CreateScan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateScan](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateScan)  
 [D3DX11CreateSegmentedScan](https://www.google.com/search?num=5&q=D3DX11CreateSegmentedScan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateSegmentedScan](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateSegmentedScan)  
 [EnableFeatureLevelUpgrade](https://www.google.com/search?num=5&q=EnableFeatureLevelUpgrade+site%3Alearn.microsoft.com) |  |   
-[OpenAdapter10](https://www.google.com/search?num=5&q=OpenAdapter10+site%3Alearn.microsoft.com) |  |   
-[OpenAdapter10_2](https://www.google.com/search?num=5&q=OpenAdapter10_2+site%3Alearn.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

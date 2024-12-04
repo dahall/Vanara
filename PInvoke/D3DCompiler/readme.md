@@ -3,10 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows D3DCompile
 
 - Includes methods from d3dcompiler_47.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.D3DCompiler?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.D3DCompiler?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.D3DCompiler)  
-### Methods - 86% API coverage (25 of 29 functions)  
+### Methods - 100% API coverage (25 of 25 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[D3DAssemble](https://www.google.com/search?num=5&q=D3DAssemble+site%3Alearn.microsoft.com) |  |   
 [D3DCompile](https://www.google.com/search?num=5&q=D3DCompile+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompile)  
 [D3DCompile2](https://www.google.com/search?num=5&q=D3DCompile2+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompile2](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompile2)  
 [D3DCompileFromFile](https://www.google.com/search?num=5&q=D3DCompileFromFile+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompileFromFile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompileFromFile)  
@@ -17,7 +16,6 @@ Native Method | Header | Managed Method
 [D3DDecompressShaders](https://www.google.com/search?num=5&q=D3DDecompressShaders+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDecompressShaders](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDecompressShaders)  
 [D3DDisassemble](https://www.google.com/search?num=5&q=D3DDisassemble+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassemble](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble)  
 [D3DDisassemble10Effect](https://www.google.com/search?num=5&q=D3DDisassemble10Effect+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassemble10Effect](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble10Effect)  
-[D3DDisassemble11Trace](https://www.google.com/search?num=5&q=D3DDisassemble11Trace+site%3Alearn.microsoft.com) |  |   
 [D3DDisassembleRegion](https://www.google.com/search?num=5&q=D3DDisassembleRegion+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassembleRegion](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassembleRegion)  
 [D3DGetBlobPart](https://www.google.com/search?num=5&q=D3DGetBlobPart+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetBlobPart](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetBlobPart)  
 [D3DGetDebugInfo](https://www.google.com/search?num=5&q=D3DGetDebugInfo+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetDebugInfo](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetDebugInfo)  
@@ -30,11 +28,9 @@ Native Method | Header | Managed Method
 [D3DReadFileToBlob](https://www.google.com/search?num=5&q=D3DReadFileToBlob+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReadFileToBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReadFileToBlob)  
 [D3DReflect](https://www.google.com/search?num=5&q=D3DReflect+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReflect](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReflect)  
 [D3DReflectLibrary](https://www.google.com/search?num=5&q=D3DReflectLibrary+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReflectLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReflectLibrary)  
-[D3DReturnFailure1](https://www.google.com/search?num=5&q=D3DReturnFailure1+site%3Alearn.microsoft.com) |  |   
 [D3DSetBlobPart](https://www.google.com/search?num=5&q=D3DSetBlobPart+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DSetBlobPart](https://github.com/dahall/Vanara/search?l=C%23&q=D3DSetBlobPart)  
 [D3DStripShader](https://www.google.com/search?num=5&q=D3DStripShader+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DStripShader](https://github.com/dahall/Vanara/search?l=C%23&q=D3DStripShader)  
 [D3DWriteBlobToFile](https://www.google.com/search?num=5&q=D3DWriteBlobToFile+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DWriteBlobToFile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DWriteBlobToFile)  
-[DebugSetMute](https://www.google.com/search?num=5&q=DebugSetMute+site%3Alearn.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
