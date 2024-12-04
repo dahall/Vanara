@@ -1222,7 +1222,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -2941,7 +2941,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -3908,7 +3908,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -5627,7 +5627,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -7055,7 +7055,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -8774,7 +8774,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>

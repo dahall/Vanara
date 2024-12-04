@@ -27,20 +27,17 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NE:d3d12.D3D_ROOT_SIGNATURE_VERSION")]
 	public enum D3D_ROOT_SIGNATURE_VERSION
 	{
-		/// <summary>
-		/// <para>Value: 0x1 Version one of root signature layout.</para>
-		/// </summary>
+		/// <summary>Value: 0x1 Version one of root signature layout.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1 = 1,
 
-		/// <summary>
-		/// <para>Value: 0x1 Version one of root signature layout.</para>
-		/// </summary>
+		/// <summary>Value: 0x1 Version one of root signature layout.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1_0 = 1,
 
-		/// <summary>
-		/// <para>Value: 0x2 Version 1.1 of root signature layout. Refer to Root Signature Version 1.1.</para>
-		/// </summary>
+		/// <summary>Value: 0x2 Version 1.1 of root signature layout. Refer to Root Signature Version 1.1.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1_1 = 2,
+
+		/// <summary>Value: 0x3 Version 1.2 of root signature layout. Refer to Root Signature Version 1.2.</summary>
+		D3D_ROOT_SIGNATURE_VERSION_1_2 = 0x3
 	}
 
 	/// <summary>Undocumented</summary>
@@ -117,6 +114,18 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D_SHADER_MODEL_6_7 = 0x67,
+
+		/// <summary>
+		/// <para>Value: 0x68 
+		/// </para>
+		/// </summary>
+		D3D_SHADER_MODEL_6_8 = 0x68,
+
+		/// <summary>
+		/// <para>Value: 0x69 
+		/// </para>
+		/// </summary>
+		D3D_SHADER_MODEL_6_9 = 0x69,
 	}
 
 	/// <summary>Defines constants that specify render/compute GPU operations.</summary>
@@ -1137,7 +1146,7 @@ public static partial class D3D12
 		/// <summary>
 		/// Value: 1
 		/// Specifies a command buffer that can be executed only directly via a direct command list. A bundle command list inherits all GPU
-		/// {D255958A-8513-4226-94B9-080D98F904A1}{D255958A-8513-4226-94B9-080D98F904A1}state (except for the currently set pipeline state object and primitive topology).
+		/// state (except for the currently set pipeline state object and primitive topology).
 		/// </summary>
 		D3D12_COMMAND_LIST_TYPE_BUNDLE,
 
@@ -3556,6 +3565,9 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D12_HEAP_TYPE_CUSTOM,
+
+		/// <summary/>
+		D3D12_HEAP_TYPE_GPU_UPLOAD
 	}
 
 	/// <summary>

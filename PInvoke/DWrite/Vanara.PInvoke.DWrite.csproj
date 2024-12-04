@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>DWrite.dll</SupportedDlls>
+    <SupportedDlls>dwrite.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows DWrite.dll.</Description>

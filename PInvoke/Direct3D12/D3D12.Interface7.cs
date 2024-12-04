@@ -2984,7 +2984,7 @@ public static partial class D3D12
 		/// <para>
 		/// <c>// Create an upload heap for the constant buffers. ThrowIfFailed(pDevice-&gt;CreateCommittedResource(
 		/// &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer) * m_cityRowCount * m_cityColumnCount),
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer) * m_cityRowCount * m_cityColumnCount),
 		/// D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&amp;m_cbvUploadHeap))); // Map the constant buffers. Note that unlike
 		/// D3D11, the resource // does not need to be unmapped for use by the GPU. In this sample, // the resource stays 'permanently'
 		/// mapped to avoid overhead with // mapping/unmapping each frame. CD3DX12_RANGE readRange(0, 0); // We do not intend to read from
@@ -3462,7 +3462,7 @@ public static partial class D3D12
 		/// <para>
 		/// <c>// Create an upload heap for the constant buffers. ThrowIfFailed(pDevice-&gt;CreateCommittedResource(
 		/// &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer) * m_cityRowCount * m_cityColumnCount),
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer) * m_cityRowCount * m_cityColumnCount),
 		/// D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&amp;m_cbvUploadHeap))); // Map the constant buffers. Note that unlike
 		/// D3D11, the resource // does not need to be unmapped for use by the GPU. In this sample, // the resource stays 'permanently'
 		/// mapped to avoid overhead with // mapping/unmapping each frame. CD3DX12_RANGE readRange(0, 0); // We do not intend to read from
@@ -3948,7 +3948,7 @@ public static partial class D3D12
 		/// <para>
 		/// <c>// Create an upload heap for the constant buffers. ThrowIfFailed(pDevice-&gt;CreateCommittedResource(
 		/// &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer) * m_cityRowCount * m_cityColumnCount),
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer) * m_cityRowCount * m_cityColumnCount),
 		/// D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&amp;m_cbvUploadHeap))); // Map the constant buffers. Note that unlike
 		/// D3D11, the resource // does not need to be unmapped for use by the GPU. In this sample, // the resource stays 'permanently'
 		/// mapped to avoid overhead with // mapping/unmapping each frame. CD3DX12_RANGE readRange(0, 0); // We do not intend to read from

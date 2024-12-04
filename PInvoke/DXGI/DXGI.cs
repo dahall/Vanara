@@ -974,6 +974,16 @@ public static partial class DXGI
 		/// <param name="cv">The color value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator D3DCOLOR(D3DCOLORVALUE cv) => new((byte)(cv.r * 255), (byte)(cv.g * 255), (byte)(cv.b * 255), (byte)(cv.a * 255));
+
+		/// <summary>Performs an explicit conversion from <see cref="Vanara.PInvoke.DXGI.D3DCOLORVALUE"/> to <see cref="float"/>[].</summary>
+		/// <param name="cv">The color value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator float[](D3DCOLORVALUE cv) => [cv.r, cv.g, cv.b, cv.a];
+
+		/// <summary>Performs an explicit conversion from <see cref="float"/>[] to <see cref="Vanara.PInvoke.DXGI.D3DCOLORVALUE"/>.</summary>
+		/// <param name="cv">The color value array.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D3DCOLORVALUE(float[] cv) => cv is not null && cv.Length == 4 ? new(cv[0], cv[1], cv[2], cv[3]) : throw new ArgumentException("An array of four values is required.", nameof(cv));
 	}
 
 	/// <summary>Describes an adapter (or video card) by using DXGI 1.0.</summary>

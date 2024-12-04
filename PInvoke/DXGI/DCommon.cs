@@ -4333,48 +4333,78 @@ public static partial class DXGI
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_2f
 	// typedef struct D2D_VECTOR_2F { FLOAT x; FLOAT y; } D2D_VECTOR_2F;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_2F"), StructLayout(LayoutKind.Sequential)]
-	public struct D2D_VECTOR_2F
+	public struct D2D_VECTOR_2F(float x, float y)
 	{
 		/// <summary>The x value of the vector.</summary>
-		public float x;
+		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
-		public float y;
+		public float y = y;
+
+		/// <summary>Performs an implicit conversion from <see cref="float"/>[] to <see cref="Vanara.PInvoke.DXGI.D2D_VECTOR_2F"/>.</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_VECTOR_2F(float[] v) => v is not null && v.Length == 2 ? new(v[0], v[1]) : throw new ArgumentOutOfRangeException(nameof(v), "Value must be an array of 2 elements.");
+
+		/// <summary>Performs an implicit conversion from <see cref="Vanara.PInvoke.DXGI.D2D_VECTOR_2F"/> to <see cref="float"/>[].</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator float[](D2D_VECTOR_2F v) => [v.x, v.y];
 	}
 
 	/// <summary>A vector of 3 FLOAT values (x, y, z).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_3f
 	// typedef struct D2D_VECTOR_3F { FLOAT x; FLOAT y; FLOAT z; } D2D_VECTOR_3F;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_3F"), StructLayout(LayoutKind.Sequential)]
-	public struct D2D_VECTOR_3F
+	public struct D2D_VECTOR_3F(float x, float y, float z)
 	{
 		/// <summary>The x value of the vector.</summary>
-		public float x;
+		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
-		public float y;
+		public float y = y;
 
 		/// <summary>The z value of the vector.</summary>
-		public float z;
+		public float z = z;
+
+		/// <summary>Performs an implicit conversion from <see cref="float"/>[] to <see cref="D2D_VECTOR_3F"/>.</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_VECTOR_3F(float[] v) => v is not null && v.Length == 3 ? new(v[0], v[1], v[2]) : throw new ArgumentOutOfRangeException(nameof(v), "Value must be an array of 3 elements.");
+
+		/// <summary>Performs an implicit conversion from <see cref="D2D_VECTOR_3F"/> to <see cref="float"/>[].</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator float[](D2D_VECTOR_3F v) => [v.x, v.y, v.z];
 	}
 
 	/// <summary>A vector of 4 FLOAT values (x, y, z, w).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_4f
 	// typedef struct D2D_VECTOR_4F { FLOAT x; FLOAT y; FLOAT z; FLOAT w; } D2D_VECTOR_4F;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_4F"), StructLayout(LayoutKind.Sequential)]
-	public struct D2D_VECTOR_4F
+	public struct D2D_VECTOR_4F(float x, float y, float z, float w)
 	{
 		/// <summary>The x value of the vector.</summary>
-		public float x;
+		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
-		public float y;
+		public float y = y;
 
 		/// <summary>The z value of the vector.</summary>
-		public float z;
+		public float z = z;
 
 		/// <summary>The w value of the vector.</summary>
-		public float w;
+		public float w = w;
+
+		/// <summary>Performs an implicit conversion from <see cref="float"/>[] to <see cref="D2D_VECTOR_4F"/>.</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_VECTOR_4F(float[] v) => v is not null && v.Length == 4 ? new(v[0], v[1], v[2], v[3]) : throw new ArgumentOutOfRangeException(nameof(v), "Value must be an array of 4 elements.");
+
+		/// <summary>Performs an implicit conversion from <see cref="D2D_VECTOR_4F"/> to <see cref="float"/>[].</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator float[](D2D_VECTOR_4F v) => [v.x, v.y, v.z, v.w];
 	}
 
 	/// <summary>Contains the data format and alpha mode for a bitmap or render target.</summary>
@@ -4414,7 +4444,7 @@ public static partial class DXGI
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d10/ns-d3d10-d3d10_box typedef struct D3D10_BOX { UINT left; UINT top; UINT
 	// front; UINT right; UINT bottom; UINT back; } D3D10_BOX;
 	[PInvokeData("d3d10.h", MSDNShortId = "NS:d3d10.D3D10_BOX"), StructLayout(LayoutKind.Sequential)]
-	public struct D3D10_BOX
+	public struct D3D10_BOX : IEquatable<D3D10_BOX>
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -4451,6 +4481,56 @@ public static partial class DXGI
 		/// <para>The z position of the back of the box.</para>
 		/// </summary>
 		public uint back;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D10_BOX" /> struct.</summary>
+		/// <param name="Left">The x position of the left hand side of the box.</param>
+		/// <param name="Right">The y position of the top of the box.</param>
+		/// <param name="Top">The y position of the top of the box.</param>
+		/// <param name="Bottom">The y position of the bottom of the box.</param>
+		/// <param name="Front">The z position of the front of the box.</param>
+		/// <param name="Back">The z position of the back of the box.</param>
+		public D3D10_BOX(int Left, int Right, int Top = 0, int Bottom = 1, int Front = 0, int Back = 1)
+		{
+			left = unchecked((uint)Left);
+			top = unchecked((uint)Top);
+			front = unchecked((uint)Front);
+			right = unchecked((uint)Right);
+			bottom = unchecked((uint)Bottom);
+			back = unchecked((uint)Back);
+		}
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D3D10_BOX bOX && Equals(bOX);
+
+		/// <summary>Determines whether the specified object is equal to the current object.</summary>
+		/// <param name="other">The object to compare with the current object.</param>
+		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
+		public bool Equals(D3D10_BOX other) => left == other.left && top == other.top && front == other.front && right == other.right && bottom == other.bottom && back == other.back;
+
+		/// <inheritdoc/>
+		public override int GetHashCode()
+		{
+			int hashCode = 1435850453;
+			hashCode = hashCode * -1521134295 + left.GetHashCode();
+			hashCode = hashCode * -1521134295 + top.GetHashCode();
+			hashCode = hashCode * -1521134295 + front.GetHashCode();
+			hashCode = hashCode * -1521134295 + right.GetHashCode();
+			hashCode = hashCode * -1521134295 + bottom.GetHashCode();
+			hashCode = hashCode * -1521134295 + back.GetHashCode();
+			return hashCode;
+		}
+
+		/// <summary>Implements the operator op_Equality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(D3D10_BOX left, D3D10_BOX right) => left.Equals(right);
+
+		/// <summary>Implements the operator op_Inequality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(D3D10_BOX left, D3D10_BOX right) => !(left == right);
 	}
 	
 	/// <summary>Defines a shader macro.</summary>

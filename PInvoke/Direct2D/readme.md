@@ -1,7 +1,7 @@
 ## Vanara.PInvoke.Direct2D  
 PInvoke API (methods, structures and constants) imported from Windows Direct2D.dll.
 
-- Includes methods from Vanara.PInvoke.Direct2D.dll  
+- Includes methods from d2d1.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Direct2D?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Direct2D?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Direct2D)  
 ### Methods - 100% API coverage (19 of 19 functions)  
 Native Method | Header | Managed Method  
@@ -321,7 +321,6 @@ Native Interface | Header | Managed Interface
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
-[D2d1](https://www.google.com/search?num=5&q=D2d1+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D2d1](https://github.com/dahall/Vanara/search?l=C%23&q=D2d1)  
 [PWICRect](https://www.google.com/search?num=5&q=PWICRect+site%3Alearn.microsoft.com) | wincodec.h | [Vanara.PInvoke.WindowsCodecs.PWICRect](https://github.com/dahall/Vanara/search?l=C%23&q=PWICRect)  
 [WICAdngDecoder](https://www.google.com/search?num=5&q=WICAdngDecoder+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WindowsCodecs.WICAdngDecoder](https://github.com/dahall/Vanara/search?l=C%23&q=WICAdngDecoder)  
 [WICBmpDecoder](https://www.google.com/search?num=5&q=WICBmpDecoder+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.WindowsCodecs.WICBmpDecoder](https://github.com/dahall/Vanara/search?l=C%23&q=WICBmpDecoder)  

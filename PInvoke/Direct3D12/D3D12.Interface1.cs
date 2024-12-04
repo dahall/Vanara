@@ -1397,35 +1397,32 @@ public static partial class D3D12
 
 		/// <summary>Gets the descriptor heap description.</summary>
 		/// <returns>
-		/// <para>Type: <b><c>D3D12_DESCRIPTOR_HEAP_DESC</c></b></para>
-		/// <para>The description of the descriptor heap, as a <c>D3D12_DESCRIPTOR_HEAP_DESC</c> structure.</para>
+		///   <para>Type: <b><c>D3D12_DESCRIPTOR_HEAP_DESC</c></b></para>
+		///   <para>The description of the descriptor heap, as a <c>D3D12_DESCRIPTOR_HEAP_DESC</c> structure.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12descriptorheap-getdesc D3D12_DESCRIPTOR_HEAP_DESC GetDesc();
-		[PreserveSig]
-		void GetDesc(out D3D12_DESCRIPTOR_HEAP_DESC size);
+		D3D12_DESCRIPTOR_HEAP_DESC GetDesc();
 
 		/// <summary>Gets the CPU descriptor handle that represents the start of the heap.</summary>
 		/// <returns>
-		/// <para>Type: <b><c>D3D12_CPU_DESCRIPTOR_HANDLE</c></b></para>
-		/// <para>Returns the CPU descriptor handle that represents the start of the heap.</para>
+		///   <para>Type: <b><c>D3D12_CPU_DESCRIPTOR_HANDLE</c></b></para>
+		///   <para>Returns the CPU descriptor handle that represents the start of the heap.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12descriptorheap-getcpudescriptorhandleforheapstart
 		// D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandleForHeapStart();
-		[PreserveSig]
-		void GetCPUDescriptorHandleForHeapStart(out D3D12_CPU_DESCRIPTOR_HANDLE size);
+		D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandleForHeapStart();
 
 		/// <summary>Gets the GPU descriptor handle that represents the start of the heap.</summary>
 		/// <returns>
-		/// <para>Type: <b><c>D3D12_GPU_DESCRIPTOR_HANDLE</c></b></para>
-		/// <para>
+		///   <para>Type: <b><c>D3D12_GPU_DESCRIPTOR_HANDLE</c></b></para>
+		///   <para>
 		/// Returns the GPU descriptor handle that represents the start of the heap. If the descriptor heap is not shader-visible, a null
 		/// handle is returned.
 		/// </para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12descriptorheap-getgpudescriptorhandleforheapstart
 		// D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandleForHeapStart();
-		[PreserveSig]
-		void GetGPUDescriptorHandleForHeapStart(out D3D12_GPU_DESCRIPTOR_HANDLE size);
+		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandleForHeapStart();
 	}
 
 	/// <summary>
@@ -3743,9 +3740,9 @@ public static partial class D3D12
 	/// ThrowIfFailed(m_device-&gt;CreateRootSignature(0, signature-&gt;GetBufferPointer(), signature-&gt;GetBufferSize(), IID_PPV_ARGS(&amp;m_rootSignature)));</c>
 	/// </para>
 	/// </remarks>
-	public static T CreateRootSignature<T>(this ID3D12Device device, uint nodeMask, SafeAllocatedMemoryHandle pBlobWithRootSignature) where T : class
+	public static T CreateRootSignature<T>(this ID3D12Device device, uint nodeMask, ID3DBlob pBlobWithRootSignature) where T : class
 	{
-		device.CreateRootSignature(nodeMask, pBlobWithRootSignature, pBlobWithRootSignature.Size, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		device.CreateRootSignature(nodeMask, pBlobWithRootSignature.GetBufferPointer(), pBlobWithRootSignature.GetBufferSize(), typeof(T).GUID, out var ppv).ThrowIfFailed();
 		return (T)ppv!;
 	}
 
