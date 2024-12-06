@@ -5000,27 +5000,6 @@ public static partial class D3D12
 		void SetPipelineStackSize(ulong PipelineStackSizeInBytes);
 	}
 
-	/*
-	[ComImport, Guid("460caac7-1d24-446a-a184-ca67db494138"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12StateObjectProperties1 : ID3D12StateObjectProperties
-	{
-		[PreserveSig]
-		new void GetShaderIdentifier([MarshalAs(UnmanagedType.LPWStr)] string pExportName);
-
-		[PreserveSig]
-		new ulong GetShaderStackSize([MarshalAs(UnmanagedType.LPWStr)] string pExportName);
-
-		[PreserveSig]
-		new ulong GetPipelineStackSize();
-
-		[PreserveSig]
-		new void SetPipelineStackSize(ulong PipelineStackSizeInBytes);
-
-		[PreserveSig]
-		D3D12_PROGRAM_IDENTIFIER GetProgramIdentifier([MarshalAs(UnmanagedType.LPWStr)] string pProgramName);
-	}
-	*/
-
 	/// <summary>The <b>ID3D12SwapChainAssistant</b> interface inherits from the IUnknown interface.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12swapchainassistant
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12SwapChainAssistant")]
@@ -5245,6 +5224,231 @@ public static partial class D3D12
 		IntPtr p = mem.DangerousGetHandle();
 		pObj.GetPrivateData(guid, ref sz, p).ThrowIfFailed();
 		return p.Convert<T>(sz);
+	}
+
+	/// <summary>
+	/// Gets a CPU pointer to the specified subresource in the resource, but may not disclose the pointer value to applications. <b>Map</b>
+	/// also invalidates the CPU cache, when necessary, so that CPU reads to this address reflect any modifications made by the GPU.
+	/// </summary>
+	/// <param name="res">The resource instance.</param>
+	/// <param name="Subresource">Specifies the index number of the subresource.</param>
+	/// <param name="pReadRange">
+	/// <para>A pointer to a <c>D3D12_RANGE</c> structure that describes the range of memory to access.</para>
+	/// <para>
+	/// This indicates the region the CPU might read, and the coordinates are subresource-relative. A null pointer indicates the entire
+	/// subresource might be read by the CPU. It is valid to specify the CPU won't read any data by passing a range where <b>End</b> is less
+	/// than or equal to <b>Begin</b>.
+	/// </para>
+	/// </param>
+	/// <param name="ppData">A pointer to a memory block that receives a pointer to the resource data.</param>
+	/// <returns>This method returns one of the <c>Direct3D 12 Return Codes</c>.</returns>
+	/// <remarks>
+	/// <para>
+	/// <b>Map</b> and <c>Unmap</c> can be called by multiple threads safely. Nested <b>Map</b> calls are supported and are ref-counted. The
+	/// first call to <b>Map</b> allocates a CPU virtual address range for the resource. The last call to <b>Unmap</b> deallocates the CPU
+	/// virtual address range. The CPU virtual address is commonly returned to the application; but manipulating the contents of textures
+	/// with unknown layouts precludes disclosing the CPU virtual address. See <c>WriteToSubresource</c> for more details. Applications
+	/// cannot rely on the address being consistent, unless <b>Map</b> is persistently nested.
+	/// </para>
+	/// <para>
+	/// Pointers returned by <b>Map</b> are not guaranteed to have all the capabilities of normal pointers, but most applications won't
+	/// notice a difference in normal usage. For example, pointers with WRITE_COMBINE behavior have weaker CPU memory ordering guarantees
+	/// than WRITE_BACK behavior. Memory accessible by both CPU and GPU are not guaranteed to share the same atomic memory guarantees that
+	/// the CPU has, due to PCIe limitations. Use fences for synchronization.
+	/// </para>
+	/// <para>
+	/// There are two usage model categories for <b>Map</b>, simple and advanced. The simple usage models maximize tool performance, so
+	/// applications are recommended to stick with the simple models until the advanced models are proven to be required by the app.
+	/// </para>
+	/// <para>Simple Usage Models</para>
+	/// <para>
+	/// Applications should stick to the heap type abstractions of UPLOAD, DEFAULT, and READBACK, in order to support all adapter
+	/// architectures reasonably well.
+	/// </para>
+	/// <para>
+	/// Applications should avoid CPU reads from pointers to resources on UPLOAD heaps, even accidently. CPU reads will work, but are
+	/// prohibitively slow on many common GPU architectures, so consider the following:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>Don't make the CPU read from resources associated with heaps that are D3D12_HEAP_TYPE_UPLOAD or have D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// The memory region to which <b>pData</b> points can be allocated with <c>PAGE_WRITECOMBINE</c>, and your app must honor all
+	/// restrictions that are associated with such memory.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// Even the following C++ code can read from memory and trigger the performance penalty because the code can expand to the following
+	/// x86 assembly code.
+	/// <para>C++ code:</para>
+	/// <para>x86 assembly code:</para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// Use the appropriate optimization settings and language constructs to help avoid this performance penalty. For example, you can avoid
+	/// the xor optimization by using a <b>volatile</b> pointer or by optimizing for code speed instead of code size.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Applications are encouraged to leave resources unmapped while the CPU will not modify them, and use tight, accurate ranges at all
+	/// times. This enables the fastest modes for tools, like <c>Graphics Debugging</c> and the debug layer. Such tools need to track all
+	/// CPU modifications to memory that the GPU could read.
+	/// </para>
+	/// <para>Advanced Usage Models</para>
+	/// <para>
+	/// Resources on CPU-accessible heaps can be persistently mapped, meaning <b>Map</b> can be called once, immediately after resource
+	/// creation. <c>Unmap</c> never needs to be called, but the address returned from <b>Map</b> must no longer be used after the last
+	/// reference to the resource is released. When using persistent map, the application must ensure the CPU finishes writing data into
+	/// memory before the GPU executes a command list that reads or writes the memory. In common scenarios, the application merely must
+	/// write to memory before calling <c>ExecuteCommandLists</c>; but using a fence to delay command list execution works as well.
+	/// </para>
+	/// <para>
+	/// All CPU-accessible memory types support persistent mapping usage, where the resource is mapped but then never unmapped, provided the
+	/// application does not access the pointer after the resource has been disposed. Examples The <c>D3D12Bundles</c> sample uses
+	/// <b>ID3D12Resource::Map</b> as follows:
+	/// </para>
+	/// <para>Copy triangle data to the vertex buffer.</para>
+	/// <para>
+	/// <c>// Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE readRange(0, 0); // We do not intend to
+	/// read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0, &amp;readRange,
+	/// reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices, sizeof(triangleVertices));
+	/// m_vertexBuffer-&gt;Unmap(0, nullptr);</c>
+	/// </para>
+	/// <para>Create an upload heap for the constant buffers.</para>
+	/// <para>
+	/// <c>// Create an upload heap for the constant buffers. ThrowIfFailed(pDevice-&gt;CreateCommittedResource(
+	/// &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE, &amp;D3D12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer)
+	/// * m_cityRowCount * m_cityColumnCount), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&amp;m_cbvUploadHeap))); // Map the
+	/// constant buffers. Note that unlike D3D11, the resource // does not need to be unmapped for use by the GPU. In this sample, // the
+	/// resource stays 'permanently' mapped to avoid overhead with // mapping/unmapping each frame. CD3DX12_RANGE readRange(0, 0); // We do
+	/// not intend to read from this resource on the CPU. ThrowIfFailed(m_cbvUploadHeap-&gt;Map(0, &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;m_pConstantBuffers)));</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	public static HRESULT Map(this ID3D12Resource res, uint Subresource, [In, Optional] D3D12_RANGE? pReadRange, out IntPtr ppData)
+	{
+		using SafeCoTaskMemStruct<D3D12_RANGE> rng = pReadRange;
+		unsafe
+		{
+			void* p = default;
+			var hr = res.Map(Subresource, rng, (IntPtr)(void**)&p);
+			ppData = (IntPtr)p;
+			return hr;
+		}
+	}
+
+	/// <summary>
+	/// Gets a CPU pointer to the specified subresource in the resource, but may not disclose the pointer value to applications. <b>Map</b>
+	/// also invalidates the CPU cache, when necessary, so that CPU reads to this address reflect any modifications made by the GPU.
+	/// </summary>
+	/// <param name="res">The resource instance.</param>
+	/// <param name="Subresource">Specifies the index number of the subresource.</param>
+	/// <param name="pReadRange">
+	/// <para>A pointer to a <c>D3D12_RANGE</c> structure that describes the range of memory to access.</para>
+	/// <para>
+	/// This indicates the region the CPU might read, and the coordinates are subresource-relative. A null pointer indicates the entire
+	/// subresource might be read by the CPU. It is valid to specify the CPU won't read any data by passing a range where <b>End</b> is less
+	/// than or equal to <b>Begin</b>.
+	/// </para>
+	/// </param>
+	/// <returns>This method returns one of the <c>Direct3D 12 Return Codes</c>.</returns>
+	/// <remarks>
+	/// <para>
+	/// <b>Map</b> and <c>Unmap</c> can be called by multiple threads safely. Nested <b>Map</b> calls are supported and are ref-counted. The
+	/// first call to <b>Map</b> allocates a CPU virtual address range for the resource. The last call to <b>Unmap</b> deallocates the CPU
+	/// virtual address range. The CPU virtual address is commonly returned to the application; but manipulating the contents of textures
+	/// with unknown layouts precludes disclosing the CPU virtual address. See <c>WriteToSubresource</c> for more details. Applications
+	/// cannot rely on the address being consistent, unless <b>Map</b> is persistently nested.
+	/// </para>
+	/// <para>
+	/// Pointers returned by <b>Map</b> are not guaranteed to have all the capabilities of normal pointers, but most applications won't
+	/// notice a difference in normal usage. For example, pointers with WRITE_COMBINE behavior have weaker CPU memory ordering guarantees
+	/// than WRITE_BACK behavior. Memory accessible by both CPU and GPU are not guaranteed to share the same atomic memory guarantees that
+	/// the CPU has, due to PCIe limitations. Use fences for synchronization.
+	/// </para>
+	/// <para>
+	/// There are two usage model categories for <b>Map</b>, simple and advanced. The simple usage models maximize tool performance, so
+	/// applications are recommended to stick with the simple models until the advanced models are proven to be required by the app.
+	/// </para>
+	/// <para>Simple Usage Models</para>
+	/// <para>
+	/// Applications should stick to the heap type abstractions of UPLOAD, DEFAULT, and READBACK, in order to support all adapter
+	/// architectures reasonably well.
+	/// </para>
+	/// <para>
+	/// Applications should avoid CPU reads from pointers to resources on UPLOAD heaps, even accidently. CPU reads will work, but are
+	/// prohibitively slow on many common GPU architectures, so consider the following:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>Don't make the CPU read from resources associated with heaps that are D3D12_HEAP_TYPE_UPLOAD or have D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// The memory region to which <b>pData</b> points can be allocated with <c>PAGE_WRITECOMBINE</c>, and your app must honor all
+	/// restrictions that are associated with such memory.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// Even the following C++ code can read from memory and trigger the performance penalty because the code can expand to the following
+	/// x86 assembly code.
+	/// <para>C++ code:</para>
+	/// <para>x86 assembly code:</para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// Use the appropriate optimization settings and language constructs to help avoid this performance penalty. For example, you can avoid
+	/// the xor optimization by using a <b>volatile</b> pointer or by optimizing for code speed instead of code size.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Applications are encouraged to leave resources unmapped while the CPU will not modify them, and use tight, accurate ranges at all
+	/// times. This enables the fastest modes for tools, like <c>Graphics Debugging</c> and the debug layer. Such tools need to track all
+	/// CPU modifications to memory that the GPU could read.
+	/// </para>
+	/// <para>Advanced Usage Models</para>
+	/// <para>
+	/// Resources on CPU-accessible heaps can be persistently mapped, meaning <b>Map</b> can be called once, immediately after resource
+	/// creation. <c>Unmap</c> never needs to be called, but the address returned from <b>Map</b> must no longer be used after the last
+	/// reference to the resource is released. When using persistent map, the application must ensure the CPU finishes writing data into
+	/// memory before the GPU executes a command list that reads or writes the memory. In common scenarios, the application merely must
+	/// write to memory before calling <c>ExecuteCommandLists</c>; but using a fence to delay command list execution works as well.
+	/// </para>
+	/// <para>
+	/// All CPU-accessible memory types support persistent mapping usage, where the resource is mapped but then never unmapped, provided the
+	/// application does not access the pointer after the resource has been disposed. Examples The <c>D3D12Bundles</c> sample uses
+	/// <b>ID3D12Resource::Map</b> as follows:
+	/// </para>
+	/// <para>Copy triangle data to the vertex buffer.</para>
+	/// <para>
+	/// <c>// Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE readRange(0, 0); // We do not intend to
+	/// read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0, &amp;readRange,
+	/// reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices, sizeof(triangleVertices));
+	/// m_vertexBuffer-&gt;Unmap(0, nullptr);</c>
+	/// </para>
+	/// <para>Create an upload heap for the constant buffers.</para>
+	/// <para>
+	/// <c>// Create an upload heap for the constant buffers. ThrowIfFailed(pDevice-&gt;CreateCommittedResource(
+	/// &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE, &amp;D3D12_RESOURCE_DESC::Buffer(sizeof(ConstantBuffer)
+	/// * m_cityRowCount * m_cityColumnCount), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&amp;m_cbvUploadHeap))); // Map the
+	/// constant buffers. Note that unlike D3D11, the resource // does not need to be unmapped for use by the GPU. In this sample, // the
+	/// resource stays 'permanently' mapped to avoid overhead with // mapping/unmapping each frame. CD3DX12_RANGE readRange(0, 0); // We do
+	/// not intend to read from this resource on the CPU. ThrowIfFailed(m_cbvUploadHeap-&gt;Map(0, &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;m_pConstantBuffers)));</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	public static HRESULT Map(this ID3D12Resource res, uint Subresource, [In, Optional] D3D12_RANGE? pReadRange)
+	{
+		using SafeCoTaskMemStruct<D3D12_RANGE> rng = pReadRange;
+		return res.Map(Subresource, rng, default);
 	}
 
 	/// <summary>Sets application-defined data to a device object and associates that data with an application-defined <b>GUID</b>.</summary>

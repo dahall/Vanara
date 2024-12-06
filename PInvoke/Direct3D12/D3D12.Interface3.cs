@@ -9622,4 +9622,41 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[]? pRowSizeInBytes, out ulong pTotalBytes);
 	}
+
+	/// <summary>
+	/// Incrementally add to an existing state object. This incurs lower CPU overhead than creating a state object from scratch that is
+	/// a superset of an existing one (for example, adding a few more shaders).
+	/// </summary>
+	/// <param name="dev">The <see cref="ID3D12Device5"/> instance.</param>
+	/// <param name="pAddition">
+	/// <para>
+	/// Description of state object contents to add to existing state object. To help generate this see the
+	/// <b>CD3D12_STATE_OBJECT_DESC</b> helper in class in <c>d3dx12.h</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pStateObjectToGrowFrom">
+	/// <para>Existing state object, which can be in use (for example, active raytracing) during this operation.</para>
+	/// <para>The existing state object must not be of type <b>Collection</b>.</para>
+	/// </param>
+	/// <param name="ppNewStateObject">
+	/// <para>Returned state object.</para>
+	/// <para>
+	/// Behavior is undefined if shader identifiers are retrieved for new shaders from this call and they are accessed via shader tables
+	/// by any already existing or in-flight command list that references some older state object. Use of the new shaders added to the
+	/// state object can occur only from commands (such as <b>DispatchRays</b> or <b>ExecuteIndirect</b> calls) recorded in a command
+	/// list after the call to <b>AddToStateObject</b>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <b>S_OK</b> for success. <b>E_INVALIDARG</b>, <b>E_OUTOFMEMORY</b> on failure. The debug layer provides detailed status information.
+	/// </returns>
+	/// <remarks>For more info, see <c>AddToStateObject</c>.</remarks>
+	public static HRESULT AddToStateObject(this ID3D12Device7 dev, [In] D3D12_STATE_OBJECT_DESC_MGD pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom,
+		out ID3D12StateObject? ppNewStateObject)
+	{
+		var hr = dev.AddToStateObject(pAddition.GetUnmanaged(out var mem), pStateObjectToGrowFrom, typeof(ID3D12StateObject).GUID, out var ppv);
+		ppNewStateObject = hr.Failed ? null : (ID3D12StateObject)ppv!;
+		mem.Dispose();
+		return hr;
+	}
 }

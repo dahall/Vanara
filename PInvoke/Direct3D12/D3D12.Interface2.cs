@@ -10247,4 +10247,30 @@ public static partial class D3D12
 		D3D12_DRIVER_MATCHING_IDENTIFIER_STATUS CheckDriverMatchingIdentifier(D3D12_SERIALIZED_DATA_TYPE SerializedDataType,
 			in D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER pIdentifierToCheck);
 	}
+
+	/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
+	/// <param name="dev">The <see cref="ID3D12Device5"/> instance.</param>
+	/// <param name="pDesc">The description of the state object to create.</param>
+	/// <param name="ppStateObject">The returned state object.</param>
+	/// <returns>
+	/// <para>Returns S_OK if successful; otherwise, returns one of the following values:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>E_INVALIDARG if one of the input parameters is invalid.</description>
+	/// </item>
+	/// <item>
+	/// <description>E_OUTOFMEMORY if sufficient memory is not available to create the handle.</description>
+	/// </item>
+	/// <item>
+	/// <description>Possibly other error codes that are described in the <c>Direct3D 12 Return Codes</c> topic.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	public static HRESULT CreateStateObject(this ID3D12Device5 dev, [In] D3D12_STATE_OBJECT_DESC_MGD pDesc, out ID3D12StateObject? ppStateObject)
+	{
+		var hr = dev.CreateStateObject(pDesc.GetUnmanaged(out var mem), typeof(ID3D12StateObject).GUID, out var ret);
+		ppStateObject = hr.Succeeded ? (ID3D12StateObject)ret! : null;
+		mem.Dispose();
+		return hr;
+	}
 }

@@ -25932,6 +25932,118 @@ public static partial class D3D12
 		void IASetIndexBufferStripCutValue(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE IBStripCutValue);
 	}
 
+	[ComImport, Guid("460caac7-1d24-446a-a184-ca67db494138"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface ID3D12StateObjectProperties1 : ID3D12StateObjectProperties
+	{
+		/// <summary>Retrieves the unique identifier for a shader that can be used in a shader record.</summary>
+		/// <param name="pExportName">Entrypoint in the state object for which to retrieve an identifier.</param>
+		/// <returns>
+		/// <para>A pointer to the shader identifier.</para>
+		/// <para>
+		/// The data referenced by this pointer is valid as long as the state object it came from is valid. The size of the data returned is
+		/// <c>D3D12_SHADER_IDENTIFIER_SIZE_IN_BYTES</c>. Applications should copy and cache this data to avoid the cost of searching for it
+		/// in the state object if it will need to be retrieved many times. The identifier is used in shader records within shader tables in
+		/// GPU memory, which the app must populate.
+		/// </para>
+		/// <para>
+		/// The data itself globally identifies the shader, so even if the shader appears in a different state object with same
+		/// associations, like any root signatures, it will have the same identifier.
+		/// </para>
+		/// <para>If the shader isn’t fully resolved in the state object, the return value is <b>nullptr</b>.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12stateobjectproperties-getshaderidentifier void *
+		// GetShaderIdentifier( LPCWSTR pExportName );
+		[PreserveSig]
+		new void GetShaderIdentifier([MarshalAs(UnmanagedType.LPWStr)] string pExportName);
+
+		/// <summary>Gets the amount of stack memory required to invoke a raytracing shader in HLSL.</summary>
+		/// <param name="pExportName">
+		/// <para>
+		/// The shader entrypoint in the state object for which to retrieve stack size. For hit groups, an individual shader within the hit
+		/// group must be specified using the syntax:
+		/// </para>
+		/// <para>hitGroupName::shaderType</para>
+		/// <para>Where <i>hitGroupName</i> is the entrypoint name for the hit group and <i>shaderType</i> is one of:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>intersection</description>
+		/// </item>
+		/// <item>
+		/// <description>anyhit</description>
+		/// </item>
+		/// <item>
+		/// <description>closesthit</description>
+		/// </item>
+		/// </list>
+		/// <para>These values are all case-sensitive.</para>
+		/// <para>An example value is: "myTreeLeafHitGroup::anyhit".</para>
+		/// </param>
+		/// <returns>
+		/// Amount of stack memory, in bytes, required to invoke the shader. If the shader isn’t fully resolved in the state object, or the
+		/// shader is unknown or of a type for which a stack size isn’t relevant, such as a hit group, the return value is 0xffffffff. The
+		/// 32-bit 0xffffffff value is used for the UINT64 return value to ensure that bad return values don’t get lost when summed up with
+		/// other values as part of calculating an overall pipeline stack size.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method only needs to be called if the app wants to configure the stack size by calling <c>SetPipelineStackSize</c>, rather
+		/// than relying on the conservative default stack size. This method is only valid for ray generation shaders, hit groups, miss
+		/// shaders, and callable shaders. Even ray generation shaders may return a non-zero value despite being at the bottom of the stack.
+		/// </para>
+		/// <para>
+		/// For hit groups, stack size must be queried for the individual shaders comprising it (intersection shaders, any hit shaders,
+		/// closest hit shaders), as each likely has a different stack size requirement. The stack size can’t be queried on these individual
+		/// shaders directly, as the way they are compiled can be influenced by the overall hit group that contains them. The
+		/// <i>pExportName</i> parameter includes syntax for identifying individual shaders within a hit group.
+		/// </para>
+		/// <para>This API can be called on either collection state objects or raytracing pipeline state objects.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12stateobjectproperties-getshaderstacksize UINT64
+		// GetShaderStackSize( LPCWSTR pExportName );
+		[PreserveSig]
+		new ulong GetShaderStackSize([MarshalAs(UnmanagedType.LPWStr)] string pExportName);
+
+		/// <summary>Gets the current pipeline stack size.</summary>
+		/// <returns>
+		/// The current pipeline stack size in bytes. When called on non-executable state objects, such as collections, the return value is 0.
+		/// </returns>
+		/// <remarks>
+		/// This method and <c>SetPipelineStackSize</c> are not re-entrant. This means if calling either or both from separate threads, the
+		/// app must synchronize on its own.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12stateobjectproperties-getpipelinestacksize UINT64 GetPipelineStackSize();
+		[PreserveSig]
+		new ulong GetPipelineStackSize();
+
+		/// <summary>Set the current pipeline stack size.</summary>
+		/// <param name="PipelineStackSizeInBytes">
+		/// <para>
+		/// Stack size in bytes to use during pipeline execution for each shader thread. There can be many thousands of threads in flight at
+		/// once on the GPU.
+		/// </para>
+		/// <para>
+		/// If the value is greater than 0xffffffff (the maximum value of a 32-bit UINT) the runtime will drop the call, and the debug layer
+		/// will print an error, as this is likely the result of summing up invalid stack sizes returned from <c>GetShaderStackSize</c>
+		/// called with invalid parameters, which return 0xffffffff. In this case, the previously set stack size, or the default, remains.
+		/// </para>
+		/// </param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>
+		/// This method and <c>GetPipelineStackSize</c> are not re-entrant. This means if calling either or both from separate threads, the
+		/// app must synchronize on its own.
+		/// </para>
+		/// <para>The runtime drops calls to state objects other than raytracing pipelines, such as collections.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12stateobjectproperties-setpipelinestacksize void
+		// SetPipelineStackSize( UINT64 PipelineStackSizeInBytes );
+		[PreserveSig]
+		new void SetPipelineStackSize(ulong PipelineStackSizeInBytes);
+
+		[PreserveSig]
+		D3D12_PROGRAM_IDENTIFIER GetProgramIdentifier([MarshalAs(UnmanagedType.LPWStr)] string pProgramName);
+	}
+
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_DISPATCH_GRAPH_DESC
 	{
@@ -26099,5 +26211,96 @@ public static partial class D3D12
 		public D3D12_GPU_VIRTUAL_ADDRESS_RANGE BackingMemory;
 
 		public D3D12_GPU_VIRTUAL_ADDRESS_RANGE_AND_STRIDE NodeLocalRootArgumentsTable;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_RASTERIZER_DESC2
+	{
+		public D3D12_FILL_MODE FillMode;
+		public D3D12_CULL_MODE CullMode;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool FrontCounterClockwise;
+		public float DepthBias;
+		public float DepthBiasClamp;
+		public float SlopeScaledDepthBias;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool DepthClipEnable;
+		public D3D12_LINE_RASTERIZATION_MODE LineRasterizationMode;
+		public uint ForcedSampleCount;
+		public D3D12_CONSERVATIVE_RASTERIZATION_MODE ConservativeRaster;
+	}
+
+	public enum D3D12_LINE_RASTERIZATION_MODE
+	{
+		D3D12_LINE_RASTERIZATION_MODE_ALIASED = 0,
+		D3D12_LINE_RASTERIZATION_MODE_ALPHA_ANTIALIASED,
+		D3D12_LINE_RASTERIZATION_MODE_QUADRILATERAL_WIDE,
+		D3D12_LINE_RASTERIZATION_MODE_QUADRILATERAL_NARROW,
+	}
+
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct D3D12_GENERIC_PROGRAM_DESC
+	{
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string ProgramName;
+		public uint NumExports;
+		public ArrayPointer<StrPtrUni> pExports;
+		public uint NumSubobjects;
+		public ArrayPointer<D3D12_STATE_SUBOBJECT> ppSubobjects;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_GENERIC_PROGRAM_DESC"/> struct.</summary>
+		public D3D12_GENERIC_PROGRAM_DESC(string programName, [Optional] string[]? exports, [Optional] object[]? subobjects, out SafeAllocatedMemoryHandle memoryHandle)
+		{
+			SafeCoTaskMemHandle h = new(256);
+			NativeMemoryStream ms = new(h);
+			ProgramName = programName;
+			NumExports = (uint)(exports?.Length ?? 0);
+			if (NumExports > 0)
+			{
+				pExports = ms.Pointer;
+				ms.Write(exports!, StringListPackMethod.Packed);
+			}
+			NumSubobjects = (uint)(subobjects?.Length ?? 0);
+			if (NumSubobjects > 0)
+			{
+				var subs = new D3D12_STATE_SUBOBJECT[(int)NumSubobjects];
+				for (int i = 0; i < subs.Length; i++)
+				{
+					if (!CorrespondingTypeAttribute.CanSet(subobjects![i].GetType(), out D3D12_STATE_SUBOBJECT_TYPE type))
+						throw new ArgumentException("Subobject type is not valid.", nameof(subobjects));
+					subs[i] = new D3D12_STATE_SUBOBJECT() { Type = type, pDesc = ms.Pointer.Offset(ms.Position) };
+					ms.WriteObject(subobjects![i]);
+				}
+				ppSubobjects = ms.Pointer.Offset(ms.Position);
+				ms.Write(subs);
+			}
+			memoryHandle = h;
+		}
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_DEPTH_STENCIL_DESC2
+	{
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool DepthEnable;
+		public D3D12_DEPTH_WRITE_MASK DepthWriteMask;
+		public D3D12_COMPARISON_FUNC DepthFunc;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool StencilEnable;
+		public D3D12_DEPTH_STENCILOP_DESC1 FrontFace;
+		public D3D12_DEPTH_STENCILOP_DESC1 BackFace;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool DepthBoundsTestEnable;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_DEPTH_STENCILOP_DESC1
+	{
+		public D3D12_STENCIL_OP StencilFailOp;
+		public D3D12_STENCIL_OP StencilDepthFailOp;
+		public D3D12_STENCIL_OP StencilPassOp;
+		public D3D12_COMPARISON_FUNC StencilFunc;
+		public byte StencilReadMask;
+		public byte StencilWriteMask;
 	}
 }

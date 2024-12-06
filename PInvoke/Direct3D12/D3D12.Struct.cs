@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -1007,7 +1007,7 @@ public static partial class D3D12
 		/// <param name="offsetInDescriptors">The offset in descriptors.</param>
 		/// <param name="descriptorIncrementSize">Size of the descriptor increment.</param>
 		/// <returns></returns>
-		private D3D12_CPU_DESCRIPTOR_HANDLE Offset(int offsetInDescriptors, uint descriptorIncrementSize)
+		public D3D12_CPU_DESCRIPTOR_HANDLE Offset(int offsetInDescriptors, uint descriptorIncrementSize)
 		{
 			ptr += offsetInDescriptors * descriptorIncrementSize;
 			return this;
@@ -1016,7 +1016,7 @@ public static partial class D3D12
 		/// <summary>Offsets the specified offset scaled by increment size.</summary>
 		/// <param name="offsetScaledByIncrementSize">Size of the offset scaled by increment.</param>
 		/// <returns></returns>
-		private D3D12_CPU_DESCRIPTOR_HANDLE Offset(int offsetScaledByIncrementSize)
+		public D3D12_CPU_DESCRIPTOR_HANDLE Offset(int offsetScaledByIncrementSize)
 		{
 			ptr += offsetScaledByIncrementSize;
 			return this;
@@ -2196,7 +2196,7 @@ public static partial class D3D12
 		public uint NumExports;
 
 		/// <summary/>
-		public ManagedStructPointer<D3D12_EXPORT_DESC> pExports;
+		public ManagedArrayPointer<D3D12_EXPORT_DESC> pExports;
 	}
 
 	/// <summary>This subobject is unsupported in the current release.</summary>
@@ -2247,7 +2247,7 @@ public static partial class D3D12
 	// LPCWSTR ExportToRename; D3D12_EXPORT_FLAGS Flags; } D3D12_EXPORT_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_EXPORT_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_EXPORT_DESC
+	public struct D3D12_EXPORT_DESC(string name, string? exportToRename = null)
 	{
 		/// <summary>
 		/// <para>
@@ -2262,7 +2262,7 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string Name;
+		public string Name = name;
 
 		/// <summary>
 		/// <para>If non-null, this is the name of an export to use but then rename when exported.</para>
@@ -2270,10 +2270,10 @@ public static partial class D3D12
 		/// <para>The flags to apply to the export.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string ExportToRename;
+		public string? ExportToRename = exportToRename;
 
 		/// <summary/>
-		public D3D12_EXPORT_FLAGS Flags;
+		public D3D12_EXPORT_FLAGS Flags = 0;
 	}
 
 	/// <summary>
@@ -3637,7 +3637,7 @@ public static partial class D3D12
 		/// <param name="offsetInDescriptors">The offset in descriptors.</param>
 		/// <param name="descriptorIncrementSize">Size of the descriptor increment.</param>
 		/// <returns></returns>
-		private D3D12_GPU_DESCRIPTOR_HANDLE Offset(int offsetInDescriptors, uint descriptorIncrementSize)
+		public D3D12_GPU_DESCRIPTOR_HANDLE Offset(int offsetInDescriptors, uint descriptorIncrementSize)
 		{
 			ptr += offsetInDescriptors * descriptorIncrementSize;
 			return this;
@@ -3646,7 +3646,7 @@ public static partial class D3D12
 		/// <summary>Offsets the specified offset scaled by increment size.</summary>
 		/// <param name="offsetScaledByIncrementSize">Size of the offset scaled by increment.</param>
 		/// <returns></returns>
-		private D3D12_GPU_DESCRIPTOR_HANDLE Offset(int offsetScaledByIncrementSize)
+		public D3D12_GPU_DESCRIPTOR_HANDLE Offset(int offsetScaledByIncrementSize)
 		{
 			ptr += offsetScaledByIncrementSize;
 			return this;
@@ -4325,11 +4325,13 @@ public static partial class D3D12
 	// InputSlotClass; UINT InstanceDataStepRate; } D3D12_INPUT_ELEMENT_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_INPUT_ELEMENT_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_INPUT_ELEMENT_DESC
+	public struct D3D12_INPUT_ELEMENT_DESC(string semanticName, DXGI_FORMAT format, uint semanticIndex = 0,
+		D3D12_INPUT_CLASSIFICATION inputSlotClass = D3D12_INPUT_CLASSIFICATION.D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+		uint inputSlot = 0, uint instanceDataStepRate = 0, uint alignedByteOffset = 0)
 	{
 		/// <summary>The HLSL semantic associated with this element in a shader input-signature. See <c>HLSL Semantics</c> for more info.</summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string SemanticName;
+		public string SemanticName = semanticName;
 
 		/// <summary>
 		/// The semantic index for the element. A semantic index modifies a semantic, with an integer index number. A semantic index is only
@@ -4337,30 +4339,30 @@ public static partial class D3D12
 		/// components each with the semantic name <b>matrix</b>, however each of the four component would have different semantic indices
 		/// (0, 1, 2, and 3).
 		/// </summary>
-		public uint SemanticIndex;
+		public uint SemanticIndex = semanticIndex;
 
 		/// <summary>A <c>DXGI_FORMAT</c>-typed value that specifies the format of the element data.</summary>
-		public DXGI_FORMAT Format;
+		public DXGI_FORMAT Format = format;
 
 		/// <summary>
 		/// An integer value that identifies the input-assembler. For more info, see <c>Input Slots</c>. Valid values are between 0 and 15.
 		/// </summary>
-		public uint InputSlot;
+		public uint InputSlot = inputSlot;
 
 		/// <summary>
 		/// Optional. Offset, in bytes, to this element from the start of the vertex. Use D3D12_APPEND_ALIGNED_ELEMENT (0xffffffff) for
 		/// convenience to define the current element directly after the previous one, including any packing if necessary.
 		/// </summary>
-		public uint AlignedByteOffset;
+		public uint AlignedByteOffset = alignedByteOffset;
 
 		/// <summary>A value that identifies the input data class for a single input slot.</summary>
-		public D3D12_INPUT_CLASSIFICATION InputSlotClass;
+		public D3D12_INPUT_CLASSIFICATION InputSlotClass = inputSlotClass;
 
 		/// <summary>
 		/// The number of instances to draw using the same per-instance data before advancing in the buffer by one element. This value must
 		/// be 0 for an element that contains per-vertex data (the slot class is set to the D3D12_INPUT_PER_VERTEX_DATA member of <c>D3D12_INPUT_CLASSIFICATION</c>).
 		/// </summary>
-		public uint InstanceDataStepRate;
+		public uint InstanceDataStepRate = instanceDataStepRate;
 	}
 
 	/// <summary>Describes the input-buffer data for the input-assembler stage.</summary>
@@ -4376,6 +4378,15 @@ public static partial class D3D12
 
 		/// <summary>The number of input-data types in the array of input elements that the <b>pInputElementDescs</b> member points to.</summary>
 		public uint NumElements;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_INPUT_LAYOUT_DESC"/> struct.</summary>
+		/// <param name="elements">The elements.</param>
+		/// <param name="memoryHandle">The memory handle allocated for the elements.</param>
+		public D3D12_INPUT_LAYOUT_DESC(D3D12_INPUT_ELEMENT_DESC[] elements, out SafeAllocatedMemoryHandle memoryHandle)
+		{
+			NumElements = (uint)(elements?.Length ?? 0);
+			pInputElementDescs = memoryHandle = NumElements > 0 ? SafeCoTaskMemHandle.CreateFromList(elements!) : SafeCoTaskMemHandle.Null;
+		}
 	}
 
 	/// <summary>Defines a local root signature state subobject that will be used with associated shaders.</summary>
@@ -6500,7 +6511,9 @@ public static partial class D3D12
 		/// <summary>Determines whether the specified object is equal to the current object.</summary>
 		/// <param name="other">The object to compare with the current object.</param>
 		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D12_RESOURCE_DESC other) => Dimension == other.Dimension && Alignment == other.Alignment && Width == other.Width && Height == other.Height && DepthOrArraySize == other.DepthOrArraySize && MipLevels == other.MipLevels && Format == other.Format && EqualityComparer<DXGI_SAMPLE_DESC>.Default.Equals(SampleDesc, other.SampleDesc) && Layout == other.Layout && Flags == other.Flags;
+		public bool Equals(D3D12_RESOURCE_DESC other) => Dimension == other.Dimension && Alignment == other.Alignment && Width == other.Width &&
+			Height == other.Height && DepthOrArraySize == other.DepthOrArraySize && MipLevels == other.MipLevels && Format == other.Format &&
+			EqualityComparer<DXGI_SAMPLE_DESC>.Default.Equals(SampleDesc, other.SampleDesc) && Layout == other.Layout && Flags == other.Flags;
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -7687,6 +7700,87 @@ public static partial class D3D12
 
 		/// <summary>An array of subobject definitions.</summary>
 		public ArrayPointer<D3D12_STATE_SUBOBJECT> pSubobjects;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_STATE_OBJECT_DESC"/> struct.</summary>
+		/// <param name="type">The type of the state object.</param>
+		public D3D12_STATE_OBJECT_DESC(D3D12_STATE_OBJECT_TYPE type) : this() => this.Type = type;
+	}
+
+	/// <summary>Description of a state object. Pass a value of this structure type to <c>ID3D12Device5::CreateStateObject</c>.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="D3D12_STATE_OBJECT_DESC_MGD"/> class.</remarks>
+	/// <param name="type">The type of the state object.</param>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_state_object_desc typedef struct D3D12_STATE_OBJECT_DESC {
+	// D3D12_STATE_OBJECT_TYPE Type; UINT NumSubobjects; const D3D12_STATE_SUBOBJECT *pSubobjects; } D3D12_STATE_OBJECT_DESC;
+	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_STATE_OBJECT_DESC")]
+	public class D3D12_STATE_OBJECT_DESC_MGD(D3D12_STATE_OBJECT_TYPE type = D3D12_STATE_OBJECT_TYPE.D3D12_STATE_OBJECT_TYPE_COLLECTION) : IVanaraMarshaler
+	{
+		/// <summary>The type of the state object.</summary>
+		public D3D12_STATE_OBJECT_TYPE Type = type;
+
+		/// <summary>A list of subobject definitions.</summary>
+		public List<(D3D12_STATE_SUBOBJECT_TYPE type, object desc)> pSubobjects { get; } = [];
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_STATE_OBJECT_DESC"/> struct.</summary>
+		/// <summary>Adds the specified subobject to <see cref="pSubobjects"/>.</summary>
+		/// <typeparam name="T">The type of the subobject</typeparam>
+		/// <param name="subobject">The subobject value.</param>
+		/// <exception cref="ArgumentException">Subobject type is not valid., nameof(subobject)</exception>
+		public void Add<T>(T subobject) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanSet<T, D3D12_STATE_SUBOBJECT_TYPE>(out var sotype))
+				throw new ArgumentException("Subobject type is not valid.", nameof(subobject));
+			pSubobjects.Add((sotype, subobject));
+		}
+
+		/// <summary>Gets the unmanaged version of this structure and returns the allocated memory behind the subobjects.</summary>
+		/// <param name="mem">The allocated memory.</param>
+		/// <returns>A <see cref="D3D12_STATE_OBJECT_DESC"/> instance.</returns>
+		public D3D12_STATE_OBJECT_DESC GetUnmanaged(out SafeAllocatedMemoryHandle mem)
+		{
+			mem = ((IVanaraMarshaler)this).MarshalManagedToNative(this);
+			return mem.DangerousGetHandle().ToStructure<D3D12_STATE_OBJECT_DESC>();
+		}
+
+		private int[] GetSizes() => [ Marshal.SizeOf(typeof(D3D12_STATE_OBJECT_DESC)), pSubobjects.Count * Marshal.SizeOf(typeof(D3D12_STATE_SUBOBJECT)),
+			pSubobjects.Sum(o => Marshal.SizeOf(o.desc)) ];
+
+		/// <inheritdoc/>
+		SizeT IVanaraMarshaler.GetNativeSize() => GetSizes().Sum();
+
+		/// <inheritdoc/>
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
+		{
+			D3D12_STATE_OBJECT_DESC_MGD mdesc = managedObject as D3D12_STATE_OBJECT_DESC_MGD ?? throw new ArgumentException("Must be D3D12_STATE_OBJECT_DESC_MGD.", nameof(managedObject));
+
+			// Get sizes and allocate memory
+			int[] sz = mdesc.GetSizes();
+			SafeCoTaskMemHandle mem = new(sz.Sum());
+
+			// Write each subobject to memory
+			IntPtr soarray = mem.DangerousGetHandle().Offset(sz[1]);
+			IntPtr sop = mem.DangerousGetHandle().Offset(sz[2]);
+			for (int i = 0, poffset = 0, sooffset = 0; i < mdesc.pSubobjects.Count; i++)
+			{
+				(D3D12_STATE_SUBOBJECT_TYPE type, object sodesc) = mdesc.pSubobjects[i];
+				var psz = sop.Write(sodesc, poffset);
+				sooffset += soarray.Write(new D3D12_STATE_SUBOBJECT { Type = type, pDesc = sop.Offset(poffset) }, sooffset);
+				poffset += psz;
+			}
+
+			// Write primary description
+			D3D12_STATE_OBJECT_DESC desc = new()
+			{
+				Type = mdesc.Type,
+				NumSubobjects = (uint)mdesc.pSubobjects.Count,
+				pSubobjects = mem.DangerousGetHandle().Offset(Marshal.OffsetOf(typeof(D3D12_STATE_OBJECT_DESC), "pSubobjects").ToInt64())
+			};
+			mem.Write(desc);
+
+			return mem;
+		}
+
+		/// <inheritdoc/>
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => throw new NotImplementedException();
 	}
 
 	/// <summary>Represents a subobject within a state object description. Use with <c>D3D12_STATE_OBJECT_DESC</c>.</summary>
@@ -9076,39 +9170,35 @@ public static partial class D3D12
 		public D3D12_ROOT_SIGNATURE_DESC2 Desc_1_2;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_VERSIONED_ROOT_SIGNATURE_DESC"/> struct.</summary>
-		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER</c> structures for the slots in the root signature.</param>
-		/// <param name="pStaticSamplers">Optional array of one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
-		/// <param name="flags">Specifies options for the root signature layout.</param>
-		/// <param name="memoryHandle">The memory allocated for the arrays.</param>
-		public D3D12_VERSIONED_ROOT_SIGNATURE_DESC([Optional] D3D12_ROOT_PARAMETER[]? pParameters, [Optional] D3D12_STATIC_SAMPLER_DESC[]? pStaticSamplers,
-			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle)
-		{
-			Version = D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0;
-			Desc_1_0 = new(pParameters, pStaticSamplers, flags, out memoryHandle);
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="D3D12_VERSIONED_ROOT_SIGNATURE_DESC"/> struct.</summary>
-		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
-		/// <param name="pStaticSamplers">Optional array of one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
-		/// <param name="flags">Specifies options for the root signature layout.</param>
-		/// <param name="memoryHandle">The memory allocated for the arrays.</param>
-		public D3D12_VERSIONED_ROOT_SIGNATURE_DESC([Optional] D3D12_ROOT_PARAMETER1[]? pParameters, [Optional] D3D12_STATIC_SAMPLER_DESC[]? pStaticSamplers,
-			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle)
+		/// <param name="Flags">Specifies options for the root signature layout.</param>
+		public D3D12_VERSIONED_ROOT_SIGNATURE_DESC(D3D12_ROOT_SIGNATURE_FLAGS Flags) : this()
 		{
 			Version = D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1;
-			Desc_1_1 = new(pParameters, pStaticSamplers, flags, out memoryHandle);
+			Desc_1_1 = new(null, null, Flags, out _);
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_VERSIONED_ROOT_SIGNATURE_DESC"/> struct.</summary>
-		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
-		/// <param name="pStaticSamplers">Optional array of one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
-		/// <param name="flags">Specifies options for the root signature layout.</param>
-		/// <param name="memoryHandle">The memory allocated for the arrays.</param>
-		public D3D12_VERSIONED_ROOT_SIGNATURE_DESC([Optional] D3D12_ROOT_PARAMETER1[]? pParameters, [Optional] D3D12_STATIC_SAMPLER_DESC1[]? pStaticSamplers,
-			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle)
+		/// <param name="desc">A <c>D3D12_ROOT_SIGNATURE_DESC</c> structure for the root signature.</param>
+		public D3D12_VERSIONED_ROOT_SIGNATURE_DESC(in D3D12_ROOT_SIGNATURE_DESC desc)
+		{
+			Version = D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0;
+			Desc_1_0 = desc;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_VERSIONED_ROOT_SIGNATURE_DESC"/> struct.</summary>
+		/// <param name="desc">A <c>D3D12_ROOT_SIGNATURE_DESC1</c> structure for the root signature.</param>
+		public D3D12_VERSIONED_ROOT_SIGNATURE_DESC(in D3D12_ROOT_SIGNATURE_DESC1 desc)
+		{
+			Version = D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1;
+			Desc_1_1 = desc;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_VERSIONED_ROOT_SIGNATURE_DESC"/> struct.</summary>
+		/// <param name="desc">A <c>D3D12_ROOT_SIGNATURE_DESC2</c> structure for the root signature.</param>
+		public D3D12_VERSIONED_ROOT_SIGNATURE_DESC(in D3D12_ROOT_SIGNATURE_DESC2 desc)
 		{
 			Version = D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2;
-			Desc_1_2 = new(pParameters, pStaticSamplers, flags, out memoryHandle);
+			Desc_1_2 = desc;
 		}
 	}
 
