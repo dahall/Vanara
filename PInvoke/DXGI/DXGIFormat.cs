@@ -826,10 +826,13 @@ public static partial class DXGI
 		/// <summary>An 8 bit YCbCrA 4:4:4:4 rendering format.</summary>
 		DXGI_FORMAT_V408,
 
-		/// <summary>
-		/// Forces this enumeration to compile to 32 bits in size. Without this value, some compilers would allow this enumeration to
-		/// compile to a size other than 32 bits. This value is not used.
-		/// </summary>
-		DXGI_FORMAT_FORCE_UINT = 0xffffffff,
+		/// <summary/>
+		DXGI_FORMAT_SAMPLER_FEEDBACK_MIN_MIP_OPAQUE = 189,
+
+		/// <summary/>
+		DXGI_FORMAT_SAMPLER_FEEDBACK_MIP_REGION_USED_OPAQUE,
+
+		/// <summary/>
+		DXGI_FORMAT_A4B4G4R4_UNORM,
 	}
 }

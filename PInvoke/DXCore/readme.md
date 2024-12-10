@@ -38,3 +38,11 @@ Native Structure | Header | Managed Structure
 [DXCoreMemoryUsage](https://www.google.com/search?num=5&q=DXCoreMemoryUsage+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.DXCoreMemoryUsage](https://github.com/dahall/Vanara/search?l=C%23&q=DXCoreMemoryUsage)  
 [DXCoreProcessMemoryQueryInput](https://www.google.com/search?num=5&q=DXCoreProcessMemoryQueryInput+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.DXCoreProcessMemoryQueryInput](https://github.com/dahall/Vanara/search?l=C%23&q=DXCoreProcessMemoryQueryInput)  
 [DXCoreProcessMemoryQueryOutput](https://www.google.com/search?num=5&q=DXCoreProcessMemoryQueryOutput+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.DXCoreProcessMemoryQueryOutput](https://github.com/dahall/Vanara/search?l=C%23&q=DXCoreProcessMemoryQueryOutput)  
+### Interfaces  
+Native Interface | Header | Managed Interface  
+--- | --- | ---  
+[IDXCoreAdapter](https://www.google.com/search?num=5&q=IDXCoreAdapter+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.IDXCoreAdapter](https://github.com/dahall/Vanara/search?l=C%23&q=IDXCoreAdapter)  
+[IDXCoreAdapter1](https://www.google.com/search?num=5&q=IDXCoreAdapter1+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.IDXCoreAdapter1](https://github.com/dahall/Vanara/search?l=C%23&q=IDXCoreAdapter1)  
+[IDXCoreAdapterFactory](https://www.google.com/search?num=5&q=IDXCoreAdapterFactory+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.IDXCoreAdapterFactory](https://github.com/dahall/Vanara/search?l=C%23&q=IDXCoreAdapterFactory)  
+[IDXCoreAdapterFactory1](https://www.google.com/search?num=5&q=IDXCoreAdapterFactory1+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.IDXCoreAdapterFactory1](https://github.com/dahall/Vanara/search?l=C%23&q=IDXCoreAdapterFactory1)  
+[IDXCoreAdapterList](https://www.google.com/search?num=5&q=IDXCoreAdapterList+site%3Alearn.microsoft.com) | dxcore_interface.h | [Vanara.PInvoke.DXCore.IDXCoreAdapterList](https://github.com/dahall/Vanara/search?l=C%23&q=IDXCoreAdapterList)  

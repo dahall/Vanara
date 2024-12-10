@@ -3268,7 +3268,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[]? pLayouts,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[]? pRowSizeInBytes,
-			[Out, Optional] StructPointer<ulong> pTotalBytes);
+			out ulong pTotalBytes);
 
 		/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
 		/// <param name="pDesc">
@@ -5946,7 +5946,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[]? pLayouts,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[]? pRowSizeInBytes,
-			[Out, Optional] StructPointer<ulong> pTotalBytes);
+			out ulong pTotalBytes);
 
 		/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
 		/// <param name="pDesc">

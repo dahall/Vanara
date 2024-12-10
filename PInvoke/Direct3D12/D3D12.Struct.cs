@@ -8050,10 +8050,10 @@ public static partial class D3D12
 		public IntPtr pData;
 
 		/// <summary>The row pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public IntPtr RowPitch;
+		public SizeT RowPitch;
 
 		/// <summary>The depth pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public IntPtr SlicePitch;
+		public SizeT SlicePitch;
 	}
 
 	/// <summary>Describes the format, width, height, depth, and row-pitch of the subresource into the parent resource.</summary>

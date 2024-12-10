@@ -892,6 +892,101 @@ public static partial class DXC
 		HRESULT LoadSource([MarshalAs(UnmanagedType.LPWStr)] string pFilename, out IDxcBlob? ppIncludeSource);
 	}
 
+	/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-idxclibrary
+	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.IDxcLibrary")]
+	[ComImport, Guid("E5204DC7-D18C-4C3C-BDFB-851673980FE7"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Obsolete("IDxcLibrary is deprecated; use IDxcUtils instead.")]
+	public interface IDxcLibrary
+	{
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pMalloc"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-setmalloc HRESULT SetMalloc( IMalloc *pMalloc );
+		[PreserveSig]
+		HRESULT SetMalloc(IMalloc pMalloc);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pBlob"/>
+		/// <param name="offset"/>
+		/// <param name="length"/>
+		/// <param name="ppResult"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobfromblob HRESULT CreateBlobFromBlob(
+		// IDxcBlob *pBlob, UINT32 offset, UINT32 length, IDxcBlob **ppResult );
+		[PreserveSig]
+		HRESULT CreateBlobFromBlob(IDxcBlob pBlob, uint offset, uint length, out IDxcBlob ppResult);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pFileName"/>
+		/// <param name="codePage"/>
+		/// <param name="pBlobEncoding"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobfromfile HRESULT CreateBlobFromFile(
+		// LPCWSTR pFileName, UINT32 *codePage, IDxcBlobEncoding **pBlobEncoding );
+		[PreserveSig]
+		HRESULT CreateBlobFromFile([MarshalAs(UnmanagedType.LPWStr)] string pFileName, [Optional] StructPointer<DXC_CP> codePage, out IDxcBlobEncoding pBlobEncoding);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pText"/>
+		/// <param name="size"/>
+		/// <param name="codePage"/>
+		/// <param name="pBlobEncoding"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingfrompinned HRESULT
+		// CreateBlobWithEncodingFromPinned( LPCVOID pText, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
+		[PreserveSig]
+		HRESULT CreateBlobWithEncodingFromPinned([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pText"/>
+		/// <param name="size"/>
+		/// <param name="codePage"/>
+		/// <param name="pBlobEncoding"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingonheapcopy HRESULT
+		// CreateBlobWithEncodingOnHeapCopy( LPCVOID pText, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
+		[PreserveSig]
+		HRESULT CreateBlobWithEncodingOnHeapCopy([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pText"/>
+		/// <param name="pIMalloc"/>
+		/// <param name="size"/>
+		/// <param name="codePage"/>
+		/// <param name="pBlobEncoding"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingonmalloc HRESULT
+		// CreateBlobWithEncodingOnMalloc( LPCVOID pText, IMalloc *pIMalloc, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
+		[PreserveSig]
+		HRESULT CreateBlobWithEncodingOnMalloc([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pText, IMalloc pIMalloc, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="ppResult"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createincludehandler HRESULT
+		// CreateIncludeHandler( IDxcIncludeHandler **ppResult );
+		[PreserveSig]
+		HRESULT CreateIncludeHandler(out IDxcIncludeHandler ppResult);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pBlob"/>
+		/// <param name="ppStream"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createstreamfromblobreadonly HRESULT
+		// CreateStreamFromBlobReadOnly( IDxcBlob *pBlob, IStream **ppStream );
+		[PreserveSig]
+		HRESULT CreateStreamFromBlobReadOnly(IDxcBlob pBlob, out System.Runtime.InteropServices.ComTypes.IStream ppStream);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pBlob"/>
+		/// <param name="pBlobEncoding"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-getblobasutf8 HRESULT GetBlobAsUtf8( IDxcBlob
+		// *pBlob, IDxcBlobEncoding **pBlobEncoding );
+		[PreserveSig]
+		HRESULT GetBlobAsUtf8(IDxcBlob pBlob, out IDxcBlobEncoding pBlobEncoding);
+
+		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
+		/// <param name="pBlob"/>
+		/// <param name="pBlobEncoding"/>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-getblobasutf16 HRESULT GetBlobAsUtf16( IDxcBlob
+		// *pBlob, IDxcBlobEncoding **pBlobEncoding );
+		[PreserveSig]
+		HRESULT GetBlobAsUtf16(IDxcBlob pBlob, out IDxcBlobEncoding pBlobEncoding);
+	}
+
 	/// <summary>
 	/// <para>The DXC linker interface.</para>
 	/// <para>To obtain an instance of this interface, call <c>DxcCreateInstance</c>.</para>
