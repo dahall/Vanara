@@ -4,6 +4,10 @@ global using static Vanara.PInvoke.Dwrite;
 global using static Vanara.PInvoke.Ole32;
 global using static Vanara.PInvoke.OleAut32;
 global using static Vanara.PInvoke.WindowsCodecs;
+global using D2D1_COLOR_F = Vanara.PInvoke.DXGI.D3DCOLORVALUE;
+global using D2D1_MATRIX_3X2_F = Vanara.PInvoke.DXGI.D2D_MATRIX_3X2_F;
+global using D2D1_POINT_2F = Vanara.PInvoke.DXGI.D2D_POINT_2F;
+global using D2D1_TAG = System.UInt64;
 
 namespace Vanara.PInvoke;
 

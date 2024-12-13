@@ -799,8 +799,10 @@ Native Interface | Header | Managed Interface
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[D3D12_PROPERTY_LAYOUT_FORMAT_TABLE](https://www.google.com/search?num=5&q=D3D12_PROPERTY_LAYOUT_FORMAT_TABLE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3D12.D3D12_PROPERTY_LAYOUT_FORMAT_TABLE](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12_PROPERTY_LAYOUT_FORMAT_TABLE)  
 [D3D12_STATE_OBJECT_DESC_MGD](https://www.google.com/search?num=5&q=D3D12_STATE_OBJECT_DESC_MGD+site%3Alearn.microsoft.com) | d3d12.h | [Vanara.PInvoke.D3D12.D3D12_STATE_OBJECT_DESC_MGD](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12_STATE_OBJECT_DESC_MGD)  
 [D3D12Debug](https://www.google.com/search?num=5&q=D3D12Debug+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3D12.D3D12Debug](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12Debug)  
 [D3D12DeviceRemovedExtendedData](https://www.google.com/search?num=5&q=D3D12DeviceRemovedExtendedData+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3D12.D3D12DeviceRemovedExtendedData](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12DeviceRemovedExtendedData)  
 [D3D12SDKConfiguration](https://www.google.com/search?num=5&q=D3D12SDKConfiguration+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3D12.D3D12SDKConfiguration](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12SDKConfiguration)  
 [D3D12Tools](https://www.google.com/search?num=5&q=D3D12Tools+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3D12.D3D12Tools](https://github.com/dahall/Vanara/search?l=C%23&q=D3D12Tools)  
+[FORMAT_DETAIL](https://www.google.com/search?num=5&q=FORMAT_DETAIL+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3D12.D3D12_PROPERTY_LAYOUT_FORMAT_TABLE.FORMAT_DETAIL](https://github.com/dahall/Vanara/search?l=C%23&q=FORMAT_DETAIL)  

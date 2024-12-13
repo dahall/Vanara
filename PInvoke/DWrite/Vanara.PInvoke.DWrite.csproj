@@ -26,5 +26,6 @@ IDWriteBitmapRenderTarget IDWriteFactory IDWriteFont IDWriteFontCollection IDWri
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
   </ItemGroup>
 </Project>

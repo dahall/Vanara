@@ -1,0 +1,24 @@
+﻿namespace Vanara.PInvoke;
+
+public static partial class Dwrite
+{
+/*
+DWRITE_GRID_FIT_MODE
+DWRITE_OPTICAL_ALIGNMENT
+
+DWRITE_COLOR_GLYPH_RUN
+DWRITE_TEXT_METRICS1
+
+IDWriteColorGlyphRunEnumerator
+IDWriteFactory2
+IDWriteFont2
+IDWriteFontFace2
+IDWriteFontFallback
+IDWriteFontFallbackBuilder
+IDWriteRenderingParams2
+IDWriteTextAnalyzer2
+IDWriteTextFormat1
+IDWriteTextLayout2
+IDWriteTextRenderer1
+*/
+}

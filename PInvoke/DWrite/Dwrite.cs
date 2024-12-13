@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿global using static Vanara.PInvoke.DXGI;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Items from the Dwrite.dll</summary>
 public static partial class Dwrite
@@ -999,28 +1001,6 @@ public static partial class Dwrite
 		/// inline objects.
 		/// </summary>
 		DWRITE_LINE_SPACING_METHOD_PROPORTIONAL,
-	}
-
-	/// <summary>Indicates the measuring method used for text layout.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ne-dcommon-dwrite_measuring_mode typedef enum DWRITE_MEASURING_MODE {
-	// DWRITE_MEASURING_MODE_NATURAL, DWRITE_MEASURING_MODE_GDI_CLASSIC, DWRITE_MEASURING_MODE_GDI_NATURAL } ;
-	[PInvokeData("dcommon.h", MSDNShortId = "99e89754-8bc2-457d-bfdb-a3c9ccfe00c1")]
-	public enum DWRITE_MEASURING_MODE
-	{
-		/// <summary>
-		/// Specifies that text is measured using glyph ideal metrics whose values are independent to the current display resolution.
-		/// </summary>
-		DWRITE_MEASURING_MODE_NATURAL,
-
-		/// <summary>
-		/// Specifies that text is measured using glyph display-compatible metrics whose values tuned for the current display resolution.
-		/// </summary>
-		DWRITE_MEASURING_MODE_GDI_CLASSIC,
-
-		/// <summary>
-		/// Specifies that text is measured using the same glyph display metrics as text measured by GDI using a font created with CLEARTYPE_NATURAL_QUALITY.
-		/// </summary>
-		DWRITE_MEASURING_MODE_GDI_NATURAL,
 	}
 
 	/// <summary>Specifies how to apply number substitution on digits and related punctuation.</summary>

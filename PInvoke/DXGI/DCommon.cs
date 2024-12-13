@@ -3642,6 +3642,120 @@ public static partial class DXGI
 		D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_EVEN = D3D_TESSELLATOR_PARTITIONING_FRACTIONAL_EVEN,
 	}
 
+	/// <summary>
+	/// <note>Some information relates to pre-released product, which may be substantially modified before it's commercially released.
+	/// Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ne-dcommon-dwrite_glyph_image_formats typedef enum
+	// DWRITE_GLYPH_IMAGE_FORMATS { DWRITE_GLYPH_IMAGE_FORMATS_NONE = 0x00000000, DWRITE_GLYPH_IMAGE_FORMATS_TRUETYPE = 0x00000001,
+	// DWRITE_GLYPH_IMAGE_FORMATS_CFF = 0x00000002, DWRITE_GLYPH_IMAGE_FORMATS_COLR = 0x00000004, DWRITE_GLYPH_IMAGE_FORMATS_SVG =
+	// 0x00000008, DWRITE_GLYPH_IMAGE_FORMATS_PNG = 0x00000010, DWRITE_GLYPH_IMAGE_FORMATS_JPEG = 0x00000020,
+	// DWRITE_GLYPH_IMAGE_FORMATS_TIFF = 0x00000040, DWRITE_GLYPH_IMAGE_FORMATS_PREMULTIPLIED_B8G8R8A8 = 0x00000080,
+	// DWRITE_GLYPH_IMAGE_FORMATS_COLR_PAINT_TREE = 0x00000100 } ;
+	[PInvokeData("dcommon.h", MSDNShortId = "NE:dcommon.DWRITE_GLYPH_IMAGE_FORMATS")]
+	[Flags]
+	public enum DWRITE_GLYPH_IMAGE_FORMATS
+	{
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000000</para>
+		/// <para>Specifies that no data is available for this glyph.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_NONE = 0x0,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000001</para>
+		/// <para>Specifies that the glyph has TrueType outlines.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_TRUETYPE = 0x1,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000002</para>
+		/// <para>Specifies that the glyph has CFF outlines.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_CFF = 0x2,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000004</para>
+		/// <para>Specifies that the glyph has multilayered COLR data.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_COLR = 0x4,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000008</para>
+		/// <para>
+		/// Specifies that the glyph has SVG outlines as standard XML. Fonts may store the content gzip'd rather than plain text, indicated
+		/// by the first two bytes as gzip header {0x1F 0x8B}.
+		/// </para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_SVG = 0x8,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000010</para>
+		/// <para>Specifies that the glyph has PNG image data, with standard PNG IHDR.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_PNG = 0x10,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000020</para>
+		/// <para>Specifies that the glyph has JPEG image data, with standard JIFF SOI header.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_JPEG = 0x20,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000040</para>
+		/// <para>Specifies that the glyph has TIFF image data.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_TIFF = 0x40,
+	
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000080</para>
+		/// <para>Specifies that the glyph has raw 32-bit premultiplied BGRA data.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_PREMULTIPLIED_B8G8R8A8 = 0x80,
+	
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000100</para>
+		/// <para>
+		/// <para>IMPORTANT</para>
+		/// <para>
+		/// The <b>DWRITE_GLYPH_IMAGE_FORMATS_COLR_PAINT_TREE</b> constant is available in pre-release versions of the <c>Windows Insider
+		/// Preview</c>.Specifies that the glyph is represented by a tree of paint elements in the font's COLR table.
+		/// </para>
+		/// </para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_COLR_PAINT_TREE = 0x100,
+	}
+
+	/// <summary>Indicates the measuring method used for text layout.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ne-dcommon-dwrite_measuring_mode typedef enum DWRITE_MEASURING_MODE {
+	// DWRITE_MEASURING_MODE_NATURAL, DWRITE_MEASURING_MODE_GDI_CLASSIC, DWRITE_MEASURING_MODE_GDI_NATURAL } ;
+	[PInvokeData("dcommon.h", MSDNShortId = "NE:dcommon.DWRITE_MEASURING_MODE")]
+	public enum DWRITE_MEASURING_MODE
+	{
+		/// <summary>Specifies that text is measured using glyph ideal metrics whose values are independent to the current display resolution.</summary>
+		DWRITE_MEASURING_MODE_NATURAL,
+
+		/// <summary>
+		/// Specifies that text is measured using glyph display-compatible metrics whose values tuned for the current display resolution.
+		/// </summary>
+		DWRITE_MEASURING_MODE_GDI_CLASSIC,
+
+		/// <summary>
+		/// Specifies that text is measured using the same glyph display metrics as text measured by GDI using a font created with CLEARTYPE_NATURAL_QUALITY.
+		/// </summary>
+		DWRITE_MEASURING_MODE_GDI_NATURAL,
+	}
+	
 	/// <summary>This interface is used to return arbitrary-length data.</summary>
 	/// <remarks>
 	/// <para>
@@ -4228,6 +4342,75 @@ public static partial class DXGI
 		public static implicit operator PointF(D2D_POINT_2F pointF) => new(pointF.x, pointF.y);
 	}
 
+	/// <summary>Represents an x-coordinate and y-coordinate pair, expressed as floating-point values, in two-dimensional space.</summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT x; FLOAT
+	// y; } D2D_POINT_2F;
+	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30"), StructLayout(LayoutKind.Sequential)]
+	public class PD2D_POINT_2F(float x, float y)
+	{
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The x-coordinate of the point.</para>
+		/// </summary>
+		public float x = x;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The y-coordinate of the point.</para>
+		/// </summary>
+		public float y = y;
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="System.Drawing.PointF"/> to <see cref="D2D_POINT_2F"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_POINT_2F?(PointF? pointF) => pointF is null ? null : new(pointF.Value.X, pointF.Value.Y);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="D2D_POINT_2F"/> to <see cref="System.Drawing.PointF"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PointF?(PD2D_POINT_2F? pointF) => pointF is null ? null : new(pointF.x, pointF.y);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="System.Drawing.PointF"/> to <see cref="D2D_POINT_2F"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_POINT_2F?(D2D_POINT_2F? pointF) => pointF is null ? null : new(pointF.Value.x, pointF.Value.y);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="D2D_POINT_2F"/> to <see cref="System.Drawing.PointF"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_POINT_2F?(PD2D_POINT_2F? pointF) => pointF is null ? null : new(pointF.x, pointF.y);
+	}
+
+	/// <summary>
+	/// Represents an x-coordinate and y-coordinate pair, expressed as an unsigned 32-bit integer value, in two-dimensional space.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2u typedef struct D2D_POINT_2U { UINT32 x; UINT32 y;
+	// } D2D_POINT_2U;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_POINT_2U")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D_POINT_2U
+	{
+		/// <summary>
+		/// <para>Type: <b>UINT32</b></para>
+		/// <para>The x-coordinate value of the point.</para>
+		/// </summary>
+		public uint x;
+
+		/// <summary>
+		/// <para>Type: <b>UINT32</b></para>
+		/// <para>The y-coordinate value of the point.</para>
+		/// </summary>
+		public uint y;
+	}
+
 	/// <summary>
 	/// Represents a rectangle defined by the coordinates of the upper-left corner (left, top) and the coordinates of the lower-right
 	/// corner (right, bottom).
@@ -4235,7 +4418,147 @@ public static partial class DXGI
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_rect_f typedef struct D2D_RECT_F { FLOAT left; FLOAT
 	// top; FLOAT right; FLOAT bottom; } D2D_RECT_F;
 	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868"), StructLayout(LayoutKind.Sequential)]
-	public struct D2D_RECT_F(float left, float top, float right, float bottom)
+	public struct D2D_RECT_F(float left, float top, float right, float bottom) : IEquatable<D2D_RECT_F>
+	{
+		/// <summary>The x-coordinate of the upper-left corner of the rectangle.</summary>
+		public float left = left;
+
+		/// <summary>The y-coordinate of the upper-left corner of the rectangle.</summary>
+		public float top = top;
+
+		/// <summary>The x-coordinate of the lower-right corner of the rectangle.</summary>
+		public float right = right;
+
+		/// <summary>The y-coordinate of the lower-right corner of the rectangle.</summary>
+		public float bottom = bottom;
+
+		/// <summary>Gets a value indicating whether this instance is empty.</summary>
+		/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
+		public bool IsEmpty => left == 0f && top == 0f && right == 0f && bottom == 0f;
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_RECT_F f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_RECT_F other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => (left, top, right, bottom).GetHashCode();
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_F"/> structures have equal location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_F"/> structure that is to the left of the equality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_F"/> structure that is to the right of the equality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if the two <see cref="D2D_RECT_F"/> structures have equal left, top, right, and
+		/// bottom properties.
+		/// </returns>
+		public static bool operator ==(D2D_RECT_F left, D2D_RECT_F right) => left.Equals(right);
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_F"/> structures differ in location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_F"/> structure that is to the left of the inequality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_F"/> structure that is to the right of the inequality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if any of the left, top, right, and bottom properties of the two <see
+		/// cref="D2D_RECT_F"/> structures are unequal; otherwise <see langword="false"/>.
+		/// </returns>
+		public static bool operator !=(D2D_RECT_F left, D2D_RECT_F right) => !(left == right);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="System.Drawing.RectangleF"/> to <see cref="D2D_RECT_F"/>.
+		/// </summary>
+		/// <param name="r">The r.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_RECT_F(RectangleF r) => new(r.Left, r.Top, r.Right, r.Bottom);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="D2D_RECT_F"/> to <see cref="System.Drawing.RectangleF"/>.
+		/// </summary>
+		/// <param name="r">The r.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator RectangleF(D2D_RECT_F r) => RectangleF.FromLTRB(r.left, r.top, r.right, r.bottom);
+	}
+
+	/// <summary>Represents a rectangle defined by the upper-left corner pair of coordinates (left,top) and the lower-right corner pair of coordinates (right, bottom). These coordinates are expressed as a 32-bit integer values.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_rect_u
+	// typedef struct D2D_RECT_U { UINT32 left; UINT32 top; UINT32 right; UINT32 bottom; } D2D_RECT_U;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_RECT_U")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D_RECT_U(uint left, uint top, uint right, uint bottom) : IEquatable<D2D_RECT_U>
+	{
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The x-coordinate of the upper-left corner of the rectangle.</para>
+		/// </summary>
+		public uint left = left;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The y-coordinate of the upper-left corner of the rectangle.</para>
+		/// </summary>
+		public uint top = top;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The x-coordinate of the lower-right corner of the rectangle.</para>
+		/// </summary>
+		public uint right = right;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The y-coordinate of the lower-right corner of the rectangle.</para>
+		/// </summary>
+		public uint bottom = bottom;
+
+		/// <summary>Gets a value indicating whether this instance is empty.</summary>
+		/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
+		public bool IsEmpty => left == 0 && top == 0 && right == 0 && bottom == 0;
+
+		/// <summary>Gets a value indicating whether this instance is infinite.</summary>
+		/// <value><c>true</c> if this instance is infinite; otherwise, <c>false</c>.</value>
+		public bool IsInfinite => left == 0 && top == 0 && right == uint.MaxValue && bottom == uint.MaxValue;
+
+		/// <summary>
+		/// Gets a value representing an infinite rectange that has its upper-left corner set to (0u, 0u) and its lower-right corner set to
+		/// (UINT32_MAX, UINT32_MAX).
+		/// </summary>
+		public static D2D_RECT_U Infinite => new(0, 0, uint.MaxValue, uint.MaxValue);
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_RECT_U f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_RECT_U other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => (left, top, right, bottom).GetHashCode();
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_U"/> structures have equal location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_U"/> structure that is to the left of the equality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_U"/> structure that is to the right of the equality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if the two <see cref="D2D_RECT_U"/> structures have equal left, top, right, and
+		/// bottom properties.
+		/// </returns>
+		public static bool operator ==(D2D_RECT_U left, D2D_RECT_U right) => left.Equals(right);
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_U"/> structures differ in location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_U"/> structure that is to the left of the inequality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_U"/> structure that is to the right of the inequality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if any of the left, top, right, and bottom properties of the two <see
+		/// cref="D2D_RECT_U"/> structures are unequal; otherwise <see langword="false"/>.
+		/// </returns>
+		public static bool operator !=(D2D_RECT_U left, D2D_RECT_U right) => !(left == right);
+	}
+
+	/// <summary>
+	/// Represents a rectangle defined by the coordinates of the upper-left corner (left, top) and the coordinates of the lower-right
+	/// corner (right, bottom).
+	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_rect_f typedef struct D2D_RECT_F { FLOAT left; FLOAT
+	// top; FLOAT right; FLOAT bottom; } D2D_RECT_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868"), StructLayout(LayoutKind.Sequential)]
+	public class PD2D_RECT_F(float left, float top, float right, float bottom)
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -4261,19 +4584,32 @@ public static partial class DXGI
 		/// </summary>
 		public float bottom = bottom;
 
-		/// <summary>
-		/// Performs an implicit conversion from <see cref="System.Drawing.RectangleF"/> to <see cref="D2D_RECT_F"/>.
-		/// </summary>
-		/// <param name="r">The r.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator D2D_RECT_F(RectangleF r) => new(r.Left, r.Top, r.Right, r.Bottom);
+		private D2D_RECT_F rect => new(left, top, right, bottom);
 
-		/// <summary>
-		/// Performs an implicit conversion from <see cref="D2D_RECT_F"/> to <see cref="System.Drawing.RectangleF"/>.
-		/// </summary>
-		/// <param name="r">The r.</param>
+		/// <summary>Performs an implicit conversion from <see cref="PD2D_RECT_F"/> to <see cref="D2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="PD2D_RECT_F"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RectangleF(D2D_RECT_F r) => RectangleF.FromLTRB(r.left, r.top, r.right, r.bottom);
+		public static implicit operator D2D_RECT_F?(PD2D_RECT_F r) => r?.rect;
+
+		/// <summary>Performs an implicit conversion from <see cref="PD2D_RECT_F"/> to <see cref="RectangleF"/>.</summary>
+		/// <param name="r">The <see cref="PD2D_RECT_F"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator RectangleF?(PD2D_RECT_F r) => r?.rect;
+
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{RectangleF}"/> to <see cref="PD2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="RectangleF"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_RECT_F?(RectangleF? r) => r.HasValue ? new(r.Value.Left, r.Value.Top, r.Value.Right, r.Value.Bottom) : null;
+
+		/// <summary>Performs an implicit conversion from <see cref="D2D_RECT_F"/> to <see cref="PD2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="D2D_RECT_F"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_RECT_F(D2D_RECT_F r) => new(r.left, r.top, r.right, r.bottom);
+
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{D2D_RECT_F}"/> to <see cref="PD2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="D2D_RECT_F"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_RECT_F?(D2D_RECT_F? r) => r.HasValue ? new(r.Value.left, r.Value.top, r.Value.right, r.Value.bottom) : null;
 	}
 
 	/// <summary>Stores an ordered pair of floating-point values, typically the width and height of a rectangle.</summary>
