@@ -1,4 +1,5 @@
 ﻿global using static Vanara.PInvoke.DXGI;
+global using DWRITE_COLOR_F = Vanara.PInvoke.DXGI.D3DCOLORVALUE;
 
 namespace Vanara.PInvoke;
 
@@ -1302,6 +1303,58 @@ public static partial class Dwrite
 		/// <summary>Wrap between any valid character clusters.</summary>
 		DWRITE_WORD_WRAPPING_CHARACTER,
 	}
+
+	/// <summary>Dwrites the make font feature tag.</summary>
+	/// <param name="a">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The first character in the tag.</para>
+	/// </param>
+	/// <param name="b">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The second character in the tag.</para>
+	/// </param>
+	/// <param name="c">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The third character in the tag.</para>
+	/// </param>
+	/// <param name="d">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The fourth character in the tag.</para>
+	/// </param>
+	/// <returns></returns>
+	[PInvokeData("dwrite.h", MSDNShortId = "NF:dwrite.DWRITE_MAKE_OPENTYPE_TAG")]
+	public static DWRITE_FONT_FEATURE_TAG DWRITE_MAKE_FONT_FEATURE_TAG(char a, char b, char c, char d) => (DWRITE_FONT_FEATURE_TAG)DWRITE_MAKE_OPENTYPE_TAG(a, b, c, d);
+
+	/// <summary>
+	/// Creates an OpenType tag as a 32-bit integer, such that the first character in the tag is the lowest byte (least significant on
+	/// little-endian architectures), which can be used to compare with tags in the font file. This macro is compatible with <c>DWRITE_FONT_FEATURE_TAG</c>.
+	/// </summary>
+	/// <param name="a">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The first character in the tag.</para>
+	/// </param>
+	/// <param name="b">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The second character in the tag.</para>
+	/// </param>
+	/// <param name="c">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The third character in the tag.</para>
+	/// </param>
+	/// <param name="d">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The fourth character in the tag.</para>
+	/// </param>
+	/// <returns>None</returns>
+	/// <remarks>
+	/// The OpenType language (such as "ROM ", "URD ", and "FAR " for Romanian, Urdu, and Persian) are determined from the locale, and the
+	/// script ("latn" and "arab" for Latin and Arabic) is determined from the script analyzer. That's why these are not listed under
+	/// OpenType tags; only the feature tags.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-dwrite_make_opentype_tag
+	// void DWRITE_MAKE_OPENTYPE_TAG( a, b, c, d );
+	[PInvokeData("dwrite.h", MSDNShortId = "NF:dwrite.DWRITE_MAKE_OPENTYPE_TAG")]
+	public static uint DWRITE_MAKE_OPENTYPE_TAG(char a, char b, char c, char d) => a | ((uint)b << 8) | ((uint)c << 16) | ((uint)d << 24);
 
 	/// <summary>Contains information about a glyph cluster.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/ns-dwrite-dwrite_cluster_metrics struct DWRITE_CLUSTER_METRICS { FLOAT
